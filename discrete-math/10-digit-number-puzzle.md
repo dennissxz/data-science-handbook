@@ -62,15 +62,11 @@ A python script can be
 ```python
 from itertools import product
 for ds in product(range(1, 10), *(range(10 // i + 1) for i in range(1, 10))):
-    a += 1
     if sum(ds) == 10 and sum(i * ds[i] for i in range(10)) == 10:
-        c = True
         for i in range(10):
-            if ds.count(i) == ds[i]:
-                continue
-            c = False
-            break
-        if c:
+            if ds.count(i) != ds[i]:
+                break
+        else: # no break
             print("".join(str(d) for d in ds))
 ```
 
