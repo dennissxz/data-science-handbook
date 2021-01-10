@@ -1,14 +1,14 @@
 
 # Infect 1000
 
-*There are 1,000 people in one room. One of them carries a disease which infects 100% if one shakes hands with an infected person. In each minute all the people in the room are randomly paired to shake hands with each other. What is your estimate of the expected number of people infected after 10 minutes? Can you use only pen and paper to solve this?*
+*There are 1,000 people in one room. One of them carries a disease which infects 100% if one shares hands with an infected person. In each minute all the people in the room are randomly paired to share hands with each other. What is your estimate of the expected number of people infected after 10 minutes? Can you use only pen and paper to solve this?*
 
 
 ## Solution 1: Markov Chain
 
 Let $I_t$ be the number of infected individuals after $t$ minutes. Define a transition matrix $P$, where
 
-$$p_{i,j} = \operatorname{P}(I_{t+1}=j\vert I_t=i)$$
+$$p_{i,j} = \mathrm{P}(I_{t+1}=j\vert I_t=i)$$
 
 It's easy to see that
 
@@ -17,7 +17,7 @@ It's easy to see that
 
 In general, we have, for $l=0,1,\ldots, \min(k, \frac{n}{2}-k)$,
 
-$$p_{2k, 2(k+l)}= \frac{C_{2k}^{2l} C_{n-2k}^{2l} P_{2l}^{2l} R_{2k-2l} R_{n-2k-2l}}{R_{n}}$$
+$$p_{2k, 2(t+l)}= \frac{C_{2k}^{2l} C_{n-2k}^{2l} P_{2l}^{2l} R_{2k-2l} R_{n-2k-2l}}{R_{n}}$$
 
 where
 - $C_{2k}^{2l}$ is the number of ways to select $2l$ infected individuals from the total $2k$ infected individuals, to be paired with $2l$ healthy individuals
@@ -28,8 +28,8 @@ where
 $$R_m=\frac{C_m^2C_{m-2}^2\ldots C_2^2 }{\frac{m}{2}!} = \frac{m!}{(2!)^{\frac{m}{2}}(\frac{m}{2}!)}$$
 
 
-- $R_{2k-2l}$ is the number of ways to arrange $2k-2l$ infected individuals into pairs, who do not shake hands with healthy individuals
-- $R_{n-2k-2l}$ is the number of ways to arrange $n-2k-2l$ healthy individuals into pairs, who do not shake hands with infected individuals and keep being healthy
+- $R_{2k-2l}$ is the number of ways to arrange $2k-2l$ infected individuals into pairs, who do not share hands with healthy individuals
+- $R_{n-2k-2l}$ is the number of ways to arrange $n-2k-2l$ healthy individuals into pairs, who do not share hands with infected individuals and keep being healthy
 - $R_n$ is the total number of ways to arrange $n$ people into $n/2$ pairs in the room
 
 Simplification gives
@@ -54,7 +54,7 @@ import scipy.sparse as sparse
 from scipy.special import comb, perm, factorial
 
 n = 1000
-t = 5
+t = 10
 ks = list(range(1, 500+1))
 rows = [0, 1]
 cols = [0, 2]
@@ -112,8 +112,8 @@ How to solve it?
 By the law of total expectation,
 
 $$\begin{align}
-\mathrm{E}(I_{t+1}) & = E\left[\mathrm{E}(I_{t+1}|I_t)\right] \\
-& = E\left(I_t + I_t \times \frac{n-I_t}{n - 1} \right)\\
+\mathrm{E}(I_{t+1}) & = \mathrm{E}\left( \mathrm{E}(I_{t+1}|I_t) \right) \\
+& = \mathrm{E}\left(I_t + I_t \times \frac{n-I_t}{n - 1} \right)\\
 & = \frac{2n-1}{n-1}\mathrm{E}\left( I_t \right) - \frac{1}{n-1}\mathrm{E}\left( I_t^2 \right)
 \end{align}$$
 
@@ -121,17 +121,53 @@ $$\begin{align}
 In particular, since $\mathrm{P}(I_1=2\vert I_0=1)=1$, there is no randomness in $I_1$, such that
 $$\begin{align}
 
-\mathrm{E}(I_2) &= E\left[\mathrm{E}(I_2\vert I_1)\right] \\
-&= E\left(I_1 + I_1 \times \frac{n-I_1}{n - 1}\right)\\
+\mathrm{E}(I_2) &= \mathrm{E}\left( \mathrm{E}(I_2\vert I_1) \right) \\
+&= \mathrm{E}\left(I_1 + I_1 \times \frac{n-I_1}{n - 1}\right)\\
 & = 2 + 2 \times 998 / 999 \\
 & = 3994/999
 \end{align}$$
 
-But when $t\ge 3$, the recurrence relation become complicated due to the second-order term $\mathrm{E}\left( I_t^2 \right)$
+But when $t\ge 3$, the computation become complicated due to the second-order term $\mathrm{E}\left( I_t^2 \right)$
 
-An attempt is to find a range that does not involve the second-order term,
+One attempt is to approximate $\mathrm{E}\left( I_t^2 \right)$ by $\left[ \mathrm{E}\left( I_t \right) \right]^2$ such that we have a **recurrence relation**
 
-$$? \le I_t + I_t \times \frac{n-I_t}{n - 1} \le 2I_t$$
+$$\mathrm{E}\left( I_{t+1} \right) \approx \frac{2n-1}{n-1}\mathrm{E}\left( I_t \right) - \frac{1}{n-1}\left[ \mathrm{E}\left( I_t \right) \right]^2$$
+
+Note that this will lead to a larger result since $\mathrm{E}\left( I_t^2 \right) - \left[ \mathrm{E}\left( I_t \right) \right]^2 = \mathrm{Var}\left( I_t \right) \ge 0$. But since $\mathrm{Var}\left( I_t \right)$ is small, the positive error is also small.
+
+
+A python script of the iteration is
+
+```python
+def f(n, t, I0=1):
+    Is = [I0] # initial number of infected
+    for _ in range(1, t+1):
+        Is.append(Is[-1] + Is[-1] * (n - Is[-1]) / (n - 1))
+
+    return Is[-1]
+
+n = 1000
+t = 10
+print(f(n, t)) # 642.975
+```
+
+The result $642.975$ is slightly larger than the result $642.347$ in Solution 1.
+
+If we take a closer look at the recurrence relation, dividing $2n-1$ on both sides gives
+
+$$\frac{\mathrm{E}\left( I_{t+1} \right)}{2n-1} \approx \frac{2n-1}{n-1} \frac{\mathrm{E}\left( I_t \right)}{2n-1} - \frac{2n-1}{n-1}\left[ \frac{\mathrm{E}\left( I_t \right)}{2n-1} \right]^2$$
+
+Let $x_t = \frac{\mathrm{E}\left( I_t \right)}{2n-1}$ then it becomes
+
+$$x_{t+1} \approx 2x_t(1-x_t)$$
+
+when $n$ is large.
+
+Given $x_0$, if the equality holds, we can solve for $x_t$ by
+
+$$x_{t} = \frac{1}{2}\left\{1-\exp \left[2^{t} \ln \left(1-2 x_{0}\right)\right]\right\}$$
+
+For details, see [Logistic Map](https://mathworld.wolfram.com/LogisticMap.html).
 
 
 
@@ -154,8 +190,8 @@ class Population():
         simulate infection for t minutes
         """
         for _ in range(t):
-            perm = np.random.permutation(self.size) # permutation of indexes
-            perm_pairs = perm.reshape(n//2, 2)
+            perm = np.random.permutation(self.size)
+            perm_pairs = perm.reshape(n//2, 2) # random pairs
             status = np.isin(perm, self.infected, assume_unique=True)
             status_pairs = status.reshape(self.size//2, 2)
             new_pairs = np.logical_xor(status_pairs[:,0], status_pairs[:,1])
