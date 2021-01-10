@@ -71,7 +71,7 @@
 - 一对多
 - 多对一
 - 多对多
-  - 通过两个一对多关系 + 一个中间表实现
+  - 通过两个一对多关系 | 一个中间表实现
 
 
 ### 主键
@@ -112,7 +112,7 @@
 - 选取整张表`SELECT * FROM <表名>`
 - 选取特定的列 `SELECT <列名1>, <列名2> FROM <表名>`
 - 对返回的列进行重命名 `SELECT <列名1> <别名1>, <列名2> <别名2> FROM <表名>`
-- 简单计算`SELECT 1+2`, `SELECT 1`，也可用来检测数据库连接
+- 简单计算`SELECT 1|2`, `SELECT 1`，也可用来检测数据库连接
 - 示例
   ```sql
   SELECT id, score points, name
@@ -183,6 +183,48 @@
   LEFT JOIN classes c
   ON s.class_id = c.id;
   ```
+- 自连接
+  - 即 `JOIN` 自身，可以当成两张表来理解，见以下示例
+  - 查找收入超过各自经理的员工姓名
+
+    | Id | Name  | Salary | ManagerId  |
+    |-|-|-|-:|
+    |1  | Joe   | 70000  | 3       |  
+    |2  | Henry | 80000  | 4      |   
+    |3  | Sam   | 60000  | NULL  |    
+    |4  | Max   | 90000  | NULL |
+    ```sql
+    SELECT e1.Name AS employee_name
+    FROM Employee AS e1, Employee AS e2
+    WHERE e1.ManagerId = e2.Id
+    AND e1.Salary > e2.Salary
+    ```
+
+  - 查找比昨天温度高的所有日期的Id
+
+    | Id(INT) | RecordDate(DATE) | Temperature(INT) |
+    |---------|------------------|------------------|
+    |       1 |       2015-01-01 |               10 |
+    |       2 |       2015-01-02 |               25 |
+    |       3 |       2015-01-03 |               20 |
+    |       4 |       2015-01-04 |               30 |
+
+    ```sql
+    SELECT w1.Id
+    FROM weather w1
+    JOIN weather w2 ON DATEDIFF(w1.RecordDate, w2.RecordDate) = 1
+    WHERE w1.Temperature > w2.Temperature
+    ```
+
+  - 查找价格相同但名称不同的商品信息
+
+    ```sql
+    SELECT DISTINCT P1.name, P1.price
+    FROM Products P1, Products P2
+    WHERE P1.price = P2.price
+    AND P1.name != P2.name;
+    ```
+
 
 ## 增删改
 
@@ -207,10 +249,16 @@
 - 示例：给分数低于80分的成绩都加10分
   ```sql
   UPDATE students
-  SET score=score+10
+  SET score=score|10
   WHERE score<80;
   ```
 
 ### 删除某些行 DELETE
 - 用法 `DELETE FROM <表名> WHERE ...;`
 - 不带 `WHERE`条件的`DELETE`语句会删除整个表的数据：
+- 示例：删除重复（后出现）的电子邮箱
+  ```sql
+  DELETE p1 FROM Person p1, Person p2
+  WHERE p1.Email = p2.Email
+  AND p1.Id > p2.Id
+  ```

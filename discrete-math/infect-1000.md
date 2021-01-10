@@ -62,12 +62,10 @@ How to solve it?
 By the law of total expectation,
 
 $$\begin{align}
-
 \mathrm{E}(I_{t+1}) & = E\left[\mathrm{E}(I_{t+1}|I_t)\right] \\
 & = E\left(I_t + I_t \times \frac{n-I_t}{n - 1} \right)\\
 \end{align}$$
 In particular, since $\mathrm{P}(I_1=2\vert I_0=1)=1$,
-
 $$\begin{align}
 
 \mathrm{E}(I_2) &= E\left[\mathrm{E}(I_2\vert I_1)\right] \\
@@ -87,4 +85,13 @@ $$\begin{align}
 
 \end{align}$$
 
-and use this recurrence relation to find $\mathrm{E}(I_{10})$. But clearly this is incorrect since expectation is a linear operator and $\mathrm{E}(I_t^2)\ne [\mathrm{E}(I_t)]^2$, unless $\mathrm{Var}(I_t)=0$, but it's clearly not.
+and use this recurrence relation to find $\mathrm{E}(I_{10})$. But clearly this is incorrect since expectation is a linear operator so $\mathrm{E}(I_t^2)\ne [\mathrm{E}(I_t)]^2$, unless $\mathrm{Var}(I_t)=0$, but it's clearly not.
+
+Another attempt is to find a range,
+
+$$\begin{align}
+\mathrm{E}(I_{t+1}) & = E\left[\mathrm{E}(I_{t+1}|I_t)\right] \\
+& = E\left(I_t + I_t \times \frac{n-I_t}{n - 1} \right)\\
+\end{align}$$
+In particular, since $\mathrm{P}(I_1=2\vert I_0=1)=1$,
+$$\begin{align}
