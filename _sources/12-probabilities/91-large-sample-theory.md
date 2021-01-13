@@ -25,7 +25,7 @@ Let $X_1, \ldots, X_n$ be independently and identically distributed random varia
 Then for every $\epsilon>0$,
 
 $$
-\lim_{n\rightarrow\infty}P\left(\left|\bar{X}_{n}-\mu\right|<\epsilon\right)=1
+\lim_{n\rightarrow\infty}\mathrm{P}\left(\left|\bar{X}_{n}-\mu\right|<\epsilon\right)=1
 $$
 
 i.e. the sample mean converge in probability to the theoretical mean $\mu$,
@@ -39,7 +39,10 @@ It leaves open the possibility that $\left|\overline{X}_{n}-\mu \right|>\epsilon
 To prove it, by Chebychev's Inequality,
 
 $$
-P\left(\left|\bar{X}_{n}-\mu\right|\geq\epsilon\right)=P\left(\left(\bar{X}_{n}-\mu\right)^{2}\geq\epsilon^{2}\right)\leq\frac{\mathrm{E}\left(\bar{X}_{n}-\mu\right)^{2}}{\epsilon^{2}}=\frac{\operatorname{Var}\bar{X}_{\mathfrak{H}}}{\epsilon^{2}}=\frac{\sigma^{2}}{n\epsilon^{2}} \rightarrow 0
+\mathrm{P}\left(\left|\bar{X}_{n}-\mu\right|\geq\epsilon\right)
+=\mathrm{P}\left(\left(\bar{X}_{n}-\mu\right)^{2}\geq\epsilon^{2}\right)
+\leq\frac{\mathrm{E}\left(\bar{X}_{n}-\mu\right)^{2}}{\epsilon^{2}}
+=\frac{\operatorname{Var}\bar{X}_{\mathfrak{H}}}{\epsilon^{2}}=\frac{\sigma^{2}}{n\epsilon^{2}} \rightarrow 0
 $$
 
 
@@ -50,7 +53,7 @@ Let $X_1, \ldots, X_n$ be independently and identically distributed random varia
 Then for every $\epsilon>0$,
 
 $$
-P\left(\lim_{n\rightarrow\infty}\left|\bar{X}_{n}-\mu\right|<\epsilon\right)=1
+\mathrm{P}\left(\lim_{n\rightarrow\infty}\left|\bar{X}_{n}-\mu\right|<\epsilon\right)=1
 $$
 
 i.e. the sample mean converge to the theoretical mean $\mu$ almost surely,
@@ -60,7 +63,8 @@ $$
 $$
 
 ```{note}
-Converge almost surely is a stronger condition than converge in probability. However, in some cases the strong law does not hold, but the weak law does.
+- Converge almost surely is a stronger condition than converge in probability.
+- In some cases, the strong law does not hold, but the weak law does.
 ```
 
 ## Central Limit Theorem
@@ -70,7 +74,7 @@ The Central Limit Theorem, in probability theory, when independent random variab
 There are many versions of CLT with various problem settings. Here we introduce Lindeberg–Lévy CLT.
 
 Let $X_1, \ldots, X_n$ be a sequence of independently and identically distributed random variables such that
-$E(X_{i})=\mu$, $Var(X_{i})=\sigma^{2}>0$. Let $G_{n}(x)$ denote
+$\mathrm{E}\left( X_{i} \right)=\mu$, $\mathrm{Var}\left( X_{i} \right)=\sigma^{2}>0$. Let $G_{n}(x)$ denote
 the CDF of $\frac{\sqrt{n}\left(\bar{X}_{n}-\mu\right)}{\sigma}$,
 then
 
@@ -78,24 +82,38 @@ $$
 \lim_{n\rightarrow\infty}G_{n}(x)=\Phi(x)
 $$
 
-i.e., the normalized sample mean converge in distribution to a standardized normal distribution,
+i.e., the normalized sample mean converge in distribution to a standard normal random variable,
 
 
 $$
 \frac{\sqrt{n}\left(\bar{X}_{n}-\mu\right)}{\sigma}\overset{\mathcal{D}}{\rightarrow}N(0,1)
 $$
 
-The Central Limit Theorem implies that we can obtain a normal distribution from a uniform random variable generator. Let  $X\sim U(0,1)$, then $\mathrm{E}\left( X \right) =\frac{1}{2}$ and $\mathrm{Var}\left(X \right) =\frac{1}{12}$, a python script can be
+The Central Limit Theorem implies that we can obtain a normal distribution from a uniform random variable generator. Let  $X\sim U(0,1)$, then $\mu = \mathrm{E}\left( X \right) =\frac{1}{2}$, $\sigma = \sqrt{\mathrm{Var}\left(X \right)} = \sqrt{\frac{1}{12}}$. Hence,
 
+$$
+Y_n=\frac{\sqrt{n}\left(\bar{X}_{n}-\mu\right)}{\sigma}\overset{\mathcal{D}}{\rightarrow}N(0,1)
+$$
 
+Implementation with Python:
 
-```{code-cell} python 
+```{code-cell}
 import numpy as np
 import matplotlib.pyplot as plt
+from scipy.stats import norm
+
 n = 10000 # sample size
 m = 10000 # number of samples
 means = np.random.rand(m, n).mean(axis=1)
-std_means = np.sqrt(n) * (means - 0.5) / (1/12)
-plt.hist(std_means, bins='auto')
+std_means = np.sqrt(n) * (means - 0.5) / np.sqrt(1/12)
+
+points = np.linspace(-5, 5, 100)
+true = norm.pdf(points)
+
+plt.hist(std_means, bins='auto', density=True, label='sampling from uniform')
+plt.plot(points, true, label='true standard normal')
+plt.legend()
 plt.show()
 ```
+
+In general, one can then sample from any normal distribution $N(a,b^2)$ by the transformation $Z = bY_n+a$.

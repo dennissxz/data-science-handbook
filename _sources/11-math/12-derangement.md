@@ -10,7 +10,7 @@ $$
 D_{n}=n! \left( \frac{1}{2!}-\frac{1}{3!}+\ldots+(-1)^{n} \frac{1}{n!}\right)
 $$
 
-## Solution 1: Recurrence Relation
+## Sol.1 Recurrence Relation
 
 There is a recurrence relation
 
@@ -58,7 +58,7 @@ Finally, substituting the equation into $D_n=n! M_n$ gives
 
 $$D_{n}=n!\left(\frac{1}{2 !}-\frac{1}{3 !}+\ldots+(-1)^{n} \frac{1}{n !}\right)$$
 
-## Solution 2: Inclusion-Exclusion Principle
+## Sol.2 Inclusion-Exclusion Principle
 
 Let $E_i$ be the event that the $i$-th person gets his hat. Then the event that at least one person get his hat is
 
