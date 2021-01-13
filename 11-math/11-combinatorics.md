@@ -94,24 +94,26 @@ $$\sum_{i=1}^k S(n,i)$$
 
 1. *How many ways are there to distribute 6 different books into 3 indistinguishable boxes, each of size 1, 2, and 3?*
 
+    ```{dropdown} solution
     $\frac{6!}{3!2!1!}=60$
-
+    ```
 
 1. *How many ways are there to evenly distribute 6 different books into 3 non-empty indistinguishable boxes?*
-
+    ```{dropdown} solution  
     It must be $(2,2,2)$, so $\frac{6!}{2!2!2!} \cdot \frac{1}{3!}=15$
-
+    ```
 
 1. *How many ways are there to distribute 6 different books to 3 non-empty indistinguishable groups?*
-
+    ```{dropdown} solution
     We first find the 3 possible combinations of $(m_1, m_2, m_3)$: $(3,2,1), (2,2,2), (4,1,1)$. Then for each scenario, we count the number of ways.
 
     $$\frac{6!}{3!2!1!} + \frac{6!}{2!2!2!} \cdot \frac{1}{3!} + \frac{6!}{4!1!1!} \cdot \frac{1}{2!} = 90 = S(6,3)$$
+    ```
 
 1. *True/False: To count the number of ways to distribute 8 distinct balls to 3 identical boxes so that each box has at least 2 balls, we can place one ball in each box and this problem reduces to the regular case of distributing $8-3=5$ balls to 3 identical boxes, which is $S(5,3)$*.
-
+    ```{dropdown} solution
     False. We can only do so if the balls are identical.
-
+    ```
 
 
 ## Distinct Balls and Distinct Boxes
@@ -144,7 +146,7 @@ $$k^n$$
 ### Exercise
 
 1. *How many ways are there to deal hands of 2 cards to each of 5 players from a deck containing 52 cards?*
-
+    ```{dropdown} solution
     In this case, cards are distinct balls and players are distinct boxes. Since there are $52-5\times2=42$ cards left, we can think that there is an 6-th player who gets that 42 cards. Note that the permutation of the 5 hands of 2 cards only happen to the first 5 players. Applying the formula gives
 
     $$\frac{52!}{2!2!2!2!2!42!} \cdot \frac{1}{5!} \cdot (6-1)!$$
@@ -152,13 +154,14 @@ $$k^n$$
     A more straightforward way is
 
     $$C_{52}^2 C_{50}^2 C_{48}^2 C_{46}^2 C_{44}^2$$
+    ```
 
 1. *How many ways are there to deal hands of 13 cards to each of 4 players from a deck containing 52 cards so that the youngest player gets the queen of spades $\spadesuit \text{Q}$?*
-
+    ```{dropdown} solution
     We can first deal $\spadesuit \text{Q}$ to the youngest player and then deal the remaining 51 cards. The number of ways is
 
     $$C_{51}^{12} C_{39}^{13} C_{26}^{13} C_{13}^{13}$$
-
+    ```
 
 
 
@@ -172,7 +175,8 @@ Let $P(n,k)$ where $n \ge k$ be the number of ways. There are two cases:
 - At least 1 box has exactly 1 ball. Imagine that we first exclude that box and that ball from analysis so that there are $n-1$ balls and $k-1$ boxes left. As a result, the number of ways is $P(n-1, k-1)$.
 - All boxes have at least 2 balls. Imagine that we first place 1 ball to each box and then place the $n-k$ balls. As a result, the number of ways is $P(n-k, k)$.
 
-Therefore, the iteration equation is
+Therefore, the recurrence equation is
+
 $$P(n,k) = P(n-1,k-1) + P(n-k, k)$$
 
 It is easy to find $P(i,i)=1, P(2,1)=1$.
@@ -188,13 +192,14 @@ $$\sum_{i=1}^k P(n,i)$$
 ### Exercise
 
 1. *How many ways are there to distribute 6 identical balls into 3 non-empty indistinguishable bins?*
-
+    ```{dropdown} solution
     There are $P(6,3)=3$ possible ways: $(3,2,1), (2,2,2), (4,1,1)$.
+    ```
 
 1. *How many ways are there to distribute 20 identical balls to 3 identical boxes if each box have at least 4 balls?*
-
+    ```{dropdown} solution
     We can first put 3 balls in each box and distribute the remaining 11 balls. The number of way is $P(11,3)$.
-
+    ```
 
 ## Identical Balls and Distinct Boxes
 
@@ -213,6 +218,7 @@ Then we follow the arrangement:
 
 
 For instance, the $6$ identical balls below are placed into $3$ boxes $(2, 3, 1)$ by $3-1=2$ bars.
+
 $$\bullet \bullet \vert \bullet \bullet \bullet \vert \bullet $$
 
 It is easy to see that the number of ways is
@@ -252,43 +258,48 @@ $$x_{1}+x_{2}+\ldots+x_{k}=n$$
 
 
 1. *How many ways are there to distribute 6 identical books into 3 persons such that each person gets at least 1 book?*
-
+    ```{dropdown} solution
     $C_{6-1}^{3-1}=C_5^2=10$.
-
+    ```
 
 1. *How many solutions are there to $x_{1}+x_{2}+x_{3}+x_{4}+x_{5}=10$* if all are positive integers and $x_1\le 4$?
-
+    ```{dropdown} solution
     Imagine that there are 10 distinct balls and 5 identical boxes. Each boxes contains at least one ball and the first box contains no more than 4 balls. We can just solve by complementary counting: what if $x_1 \ge 5$? This is equivalent to $x_{1}+x_{2}+x_{3}+x_{4}+x_{5}=10 - (5-1) = 6$ with $x_i\ge 1$. The number of ways in this complementary case is $C_{6-1}^{5-1}$, so the number of ways required is $C_{10-1}^{5-1} - C_{6-1}^{5-1}$.
+    ```
 
 1. *How many 3-digit numbers have a sum of digits equal to 9*
-
+    ```{dropdown} solution
     We can formulate this problem as $x_1 + x_2 + x_3 = 9$ and $x_1 \ge 1$. Solving by complementary counting gives $C_{9+3-1}^{3-1} - C_{9+2-1}^{2-1} = 10$.
 
     Another way is to convert the problem to $x_1 + x_2 + x_3 = 8$ without any constraints, which gives $C_{8+3-1}^{3-1} = C_{10}^2 = 10$.
+    ```
 
 1. *How many numbers less than 1000 have the sum of their digits equal to 10?*
-
+    ```{dropdown} solution
     We can formulate this problem as $x_1 + x_2 + x_3 = 10$ with constraints $x_i \le 9$. Solving by complementary counting gives $C_{10+3-1}^{3-1} - 3$.
+    ```
 
 1. *How many 8-digit decreasing numbers are there? Suppose the $i$-th digit is $d_i$, a decreasing number means $d_i \ge d_{i+1}$. For instance, 99,765,111.*
-
+    ```{dropdown} solution
     We can formulate this problem as placing $8$ identical balls to $10$ distinct bins. If there are $x_j$ balls in the $j$-th bin, then there are $x_j$ number of numeral $j$ in the decreasing number $d_1d_2\ldots d_8$.
 
     There is a one-one-correspondence between the decreasing numbers and the patterns of the placements. For example, $\vert \bullet \bullet \bullet \vert \vert \vert \vert \bullet \vert \bullet \vert \bullet \vert \vert  \bullet \bullet$ corresponds to 99,765,111 if the bins are increasingly numbered from left to right.
 
     Note that the case of all zeros is not valid. Therefore, the number of ways is $C_{8+10-1}^{10-1}-1$.
+    ```
 
 1. *In the question above, what if no digits have the same value, i.e. $d_i > d_{i+1}$*?
-
+    ```{dropdown} solution
     This implies that each bin has at most 1 ball. So we are choose 8 bins from the 10 bins to place balls. The number of ways is $C_{10}^8$.
+    ```
 
 1. *In the question above, what if there is exactly one pair of digits has the same value $d_i = d_{i+1}$ while all other digits are different $d_j>d_k$ for $j<k, j\ne i$?*
-
+    ```{dropdown} solution
     This means the $d_i$-th bin has two balls and other $9$ bins can have at most 1 ball. Thus, we can exclude the $d_i$-th ball into consideration so that we are placing $8-2=6$ balls to the remaining $9$ bins. Since there are $10$ ways to choose an $d_i$, the number of ways is $10C_9^6$.
+    ```
 
-1. *Caveat*
-
-    Using the balls and boxes approach for counting is convenient, but one should be cautious when it comes to probability. Consider a simpler example of 2 digits, each take value from 0, 1, or 2. This corresponds to 2 balls and 3 bins. The correspondence relations are listed below.
+    ```{warning}
+    Using the balls and boxes approach for counting is convenient, but one should be cautious when it comes to **probability**. Consider a simpler example of 2 digits, each take value from 0, 1, or 2. This corresponds to 2 balls and 3 bins. The correspondence relations are listed below.
 
 
     |        No.       | two balls <br> goes to | # balls <br> in each bin |             pattern            | decreasing <br> number |
@@ -309,3 +320,4 @@ $$x_{1}+x_{2}+\ldots+x_{k}=n$$
     - But from our approach above, the number of ways to see $d_i>d_{i+1}$ is $C_3^2=3$ and the total possible 3-digit number is $3^2-1=8$, so the probability should be $\frac{3}{8}$
 
     What's wrong? The first method makes a mistake when understanding the random process of how the decreasing numbers are generated. The balls and boxes approach inherently mask all numbers into decreasing numbers, so we see two $20$, two $10$, and two $21$. These numbers are count twice so the final answer are doubled.
+    ```
