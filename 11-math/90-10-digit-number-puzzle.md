@@ -4,7 +4,7 @@ Tags: Jane Street, Trader, 18Q4
 
 There is a 10-digit number. From left to right, the first digit equals the number of 0's in that number, the second digit equals the number of 1's in that number, and so on. What is this number?
 
-## Solution 1: Enumeration by Hand
+## Sol.1 Enumeration by Hand
 
 Suppose this number is $\underline{d_0d_1d_2d_3d_4d_5d_6d_7d_8d_9}$, where
 
@@ -57,7 +57,7 @@ Then we find $d_i$ by trial and error by applying the above constraints and the 
 Enumeration by hand is tedious. We have found a solution 6210001000 but we have to enumerate all other cases to see if there exists any other solutions.
 
 
-## Solution 2: Enumeration by Computer
+## Sol.2 Enumeration by Computer
 
 It seems that the time complexity is $O(10^{n-1})$ for a $n$-digit number, but in fact we can optimize it by adding the constraints.
 
@@ -78,7 +78,7 @@ for ds in product(range(1, 10), *(range(10 // i + 1) for i in range(1, 10))):
 
 It turns out that 6210001000 is the unique solution.
 
-## Solution 3: Mathematical Reasoning
+## Sol.3 Mathematical Reasoning
 
 In the above solutions we did partial reasoning and partial enumeration. Now we try more rigorous reasoning.
 

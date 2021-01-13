@@ -19,11 +19,16 @@ kernelspec:
 
 # Markov Chain
 
+
+## Exercise
+
+### Infect 1000
+
 *There are 1,000 people in one room. One of them carries a disease which infects 100% if one shares hands with an infected person. In each minute all the people in the room are randomly paired to share hands with each other. What is your estimate of the expected number of people infected after 10 minutes? Can you use only pen and paper to solve this?*
 
 +++
 
-## Solution 1: Markov Chain
+#### Sol.1 Markov Chain
 
 Let $I_t$ be the number of infected individuals after $t$ minutes. Define a transition matrix $P$, where
 
@@ -89,14 +94,14 @@ P = sparse.coo_matrix((ps, (rows,cols)), shape=(n+1, n+1))
 Pt = P**t
 distribution = Pt[1, :]
 Et = sum([i * distribution.toarray()[0, i] for i in range(1, n+1)])
-print(Et) 
+print(Et)
 ```
 
 +++
 
 +++
 
-## Solution 2: Conditional Expectation
+#### Sol.2 Conditional Expectation
 
 Let $p_{t,j}$ be the probability that infected individual $j$ is paired with a **healthy** individual from time $t$ to $t+1$, we have
 
@@ -203,7 +208,7 @@ For details, see [Logistic Map](https://mathworld.wolfram.com/LogisticMap.html).
 
 +++
 
-## Solution 3: Simulation
+#### Sol.3 Simulation
 
 To verify the solutions above, we can simulate the infection process.
 

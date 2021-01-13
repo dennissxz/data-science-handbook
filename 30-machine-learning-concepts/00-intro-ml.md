@@ -160,7 +160,7 @@ Aka imputation
     - like collaborative filtering,
           the matrix is sparse. but not considered as missing
 
-# Semi-supervised Learning
+## Semi-supervised Learning
 
 Unlabeled data and labeled data are available simultaneously.
 
@@ -174,6 +174,7 @@ Unlabeled data and labeled data are available simultaneously.
   - definition: have a fixed number of parameters
   - pros: faster to use
   - cons: stronger assumptions
+  
 - non-parametric models
   - definition: the number of parameters grow with the amount of training data
   - pros: flexible
@@ -192,8 +193,6 @@ Unlabeled data and labeled data are available simultaneously.
   - poor performance in high dimensional settings
 
 ### The Curse of Dimensionality
-
-
 
 - parametric models for classification and regression
 - curse of dimensionality

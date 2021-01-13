@@ -2,11 +2,11 @@
 
 
 
-*How many ways can we place $n$ balls two $k$ boxes?*
+*How many ways can we place $n$ balls to $k$ boxes?*
 
 Well, the answer depends on whether the balls and boxes are distinct or identical, and whether we allow some boxes to be empty.
 
-A summary table of the solutions is shown below:
+The solutions in various scenarios are summarized below. We will introduce the them one by one.
 
 <p align="center">
 
@@ -90,7 +90,7 @@ If empty boxes are allowed, then it is easy to derive the number of ways is
 
 $$\sum_{i=1}^k S(n,i)$$
 
-**Exercise**
+### Exercise
 
 1. *How many ways are there to distribute 6 different books into 3 indistinguishable boxes, each of size 1, 2, and 3?*
 
@@ -141,7 +141,7 @@ For each ball, it can go to one of the $k$ boxes, i.e., there are $k$ distinct o
 $$k^n$$
 
 
-**Exercise**
+### Exercise
 
 1. *How many ways are there to deal hands of 2 cards to each of 5 players from a deck containing 52 cards?*
 
@@ -185,7 +185,7 @@ If empty boxes are allowed, it is easy to find the number of ways is
 $$\sum_{i=1}^k P(n,i)$$
 
 
-**Exercise**
+### Exercise
 
 1. *How many ways are there to distribute 6 identical balls into 3 non-empty indistinguishable bins?*
 
@@ -248,7 +248,7 @@ This corresponds to the number of nonnegative integer solutions $x_j\ge 0$ to th
 
 $$x_{1}+x_{2}+\ldots+x_{k}=n$$
 
-**Exercise**
+### Exercise
 
 
 1. *How many ways are there to distribute 6 identical books into 3 persons such that each person gets at least 1 book?*

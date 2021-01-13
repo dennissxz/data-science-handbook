@@ -1,3 +1,3 @@
-# Math Foundations
+# Math
 
-In this section we introduce some interesting math problems with solutions.
+In this section we introduce math foundations.

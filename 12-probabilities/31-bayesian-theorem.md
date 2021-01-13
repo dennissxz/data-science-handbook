@@ -1,4 +1,6 @@
-# Boy or Girl Paradox
+# Bayesian's Theorem
+
+## Boy or Girl Paradox
 
 *Q1: Mr. Smith has two children. At least one of them is a boy. What is the probability that both children are boys?*
 
@@ -8,7 +10,7 @@
 reference:
   - https://en.wikipedia.org/wiki/Boy_or_Girl_paradox
 
-## Solution to Q1
+### Solution to Q1
 
 If we formulate the question in the other way: You tossed two fair coins. It's known that at least one of them came up a head. What is the probability that both coins came up heads?
 
@@ -21,7 +23,7 @@ But when it comes to boy or girl, it simulated a great deal of controversy. The 
 
 
 
-## Solution to Q2
+### Solution to Q2
 
 This is also a controversial question. Let $X_B \in \{0,1,2\}$ be the number of boys in the family. Let $A \in \{B,G\}$ be the outcome of who answer the call. And let $O\in\{BB,BG,GB,GG\}$ be the birth order of the wo children. It's known that
 

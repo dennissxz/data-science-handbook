@@ -1,3 +1,0 @@
-# Coding and Algorithms
-
-Placeholder

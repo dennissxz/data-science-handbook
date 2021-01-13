@@ -1,4 +1,4 @@
 
 # Statistics
 
-Placeholder
+Statistics is a different domain from probabilities.

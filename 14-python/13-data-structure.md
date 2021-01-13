@@ -1,79 +1,8 @@
 
-# Intermediate Python
+# Data Structures
 
-- references
-  - https://github.com/yasoob/intermediatePython
-  - https://www.liaoxuefeng.com/wiki/1016959663602400 (Chinese)
-  - https://wiki.python.org/moin/Powerful%20Python%20One-Liners
+## Mutable vs Immutable
 
-
-## Programmer tools
-### debugging
-- methods
-  - `pdb.set_trace()` to pause running. now use `breakpoint()` after 3.7
-  - `assert x == 2, 'msg'`
-  - `logging` and output specific msg type
-- see https://www.liaoxuefeng.com/wiki/1016959663602400/1017602696742912
-
-
-### object introspection
-
-- `dir()`
-  - return a list of attributes and methods belonging to an object
-- `type()`
-- `id()`
-- `inspect.getmembers()`
-
-
-### decorators and decorator classes
-- see https://github.com/yasoob/intermediatePython/blob/master/decorators.rst
-  - note the methods `__init__` and `__call__`
-- `@lru_cache(maxsize=32)` to cache the values of function calls
-  - not execute the function if the function has been called with the same args before
-  - returns value in cash
-  - saves time and effort
-
-## Syntax
-
-### exceptions
-  - `try, except, else, finally`
-  - `try, except E1 as e, except E2 as e` to catch multiple error one by one
-  - `try, except Exception as e` to catch multiple errors at once
-
-
-### for/else
-- `else` clause is executes after the loop completes normally (without `break`)
-- e.g. loop to search, if found then `break`, if not found then go to `else`
-
-
-### tenery operator
-- `x = 1 if a > 1 else a`
-- `name = 'a' or 'b'` return `a`.
-- dynamic default name
-```python
-def my_function(real_name, optional_display_name=None):
-    optional_display_name = optional_display_name or real_name
-```
-
-### `*args` and `**kwargs`
-- when define `def fun(*arg, **kwarg)`
-  - `args` passes an unspecified number of non-keyworded arguments in a **list**
-  - `kwargs` passes an unspecified number of keyworded arguments in a **dictionary**
-  - e.g. pass plot arguments to `plt.plot()` in self-defined plot functions.
-- when call `fun(*arg, **kwarg)`
-  - `args` can be a pre-defined tuple
-  - `kwargs` can be a pre-defined dictionary, with arg-value being the key-value pair
-  - `*` and `**` is used to unpack
-
-### `open()` and context managers
-- see
-  - https://github.com/yasoob/intermediatePython/blob/master/open_function.rst
-  - https://github.com/yasoob/intermediatePython/blob/master/context_managers.rst
-
-
-## Data structures
-
-### mutable vs immutable
 - identity, type, and value
   - an object’s identity never changes once it has been created; you may think of it as the object’s address in memory.
     - The `is` operator compares the identity of two objects
@@ -142,7 +71,7 @@ def my_function(real_name, optional_display_name=None):
   - https://towardsdatascience.com/https-towardsdatascience-com-python-basics-mutable-vs-immutable-objects-829a0cb1530a
 
 
-### classes and magic methods
+## Classes and Magic Methods
 
 
 - class variables vs instance variables
@@ -194,7 +123,8 @@ def my_function(real_name, optional_display_name=None):
       ```
     - ref: https://stackoverflow.com/questions/472000/usage-of-slots
 
-### iterables, iterators, generators and coroutines
+## Iterables, Iterators, Generators and Coroutines
+
 - An `iteratble` is any object in Python which has an `__iter__` or a `__getitem__` method defined, which returns an iterator or can take indexes
 - An `iterator` is any object in Python which has a `__next__` method defined
   - e.g. `str` is an itertable but not an iterator. `iter(iterable)` will return an inerator object.
@@ -226,7 +156,7 @@ def my_function(real_name, optional_display_name=None):
   - see https://github.com/yasoob/intermediatePython/blob/master/coroutines.rst
 
 
-### `collections` module
+## `collections` module
 - the `collections` python module contains a number of useful container data types
 
 - `defaultdict`
@@ -304,67 +234,3 @@ def my_function(real_name, optional_display_name=None):
     Weekday = Enum('Day', ('Mon', 'Tue', 'Wed', 'Th', 'Fri', 'Sat', 'Sun'))
     print(Weekday.Mon.value) # 1
     ```
-
-
-## Functional programming
-
-### `enumerate()`
-- can take an optional argument to specify the starting index `enumerate(my_list, 1)`
-- can also be used to create a list of tuples `list(enumerate(my_list, 1))`
-
-
-### `lambda`
-- used to define a anonymous function
-- e.g. sort a list of tuples by the first element in that tuple
-  ```python
-  a = [(1, 2), (4, 1), (9, 10)]
-  a.sort(key=lambda x: x[1])
-  ```
-
-
-### `sorted()`
-- the `list.sort()` method is only defined for lists.
-- in contrast, the `sorted()` function accepts any iterable.
-- e.g. sort words in a sentence in alphabet order.
-  ```python
-  sorted("This is a test string from Andrew".split(), key=str.lower)
-  ```
-- the key-function can be `itemgetter()` or `attrgetter()` from the `operator` module.
-- see https://docs.python.org/3/howto/sorting.html
-
-
-### `map(), filter()` and `reduce()`
-- `map(fun, iterable)` may be faster than list comprehension if `fun` is pre-defined (not through `lambda`)
-- `filter(fun, iterable)` is used for masking, where `fun` should return `True/False`
-- `reduce(fun, iterable, initilizer=None)` applies a particular function passed in its argument to all of the list elements mentioned in the sequence passed along.
-
-  ```python
-  def reduce(function, iterable, initializer=None): # roughly equivalent
-      it = iter(iterable)
-      if initializer is None:
-          value = next(it)
-      else:
-          value = initializer
-      for element in it:
-          value = function(value, element)
-      return value
-
-  from functools import reduce
-  reduce(lambda a, b: a + b, l) # sum(l)
-  reduce(lambda a, b : a if a > b else b, l) # max(l)
-  reduce(lambda z, x: z + [y + [x] for y in z], l, [[]]) # all subsets of l
-  ```
-
-
-### comprehensions
-- `list` comprehensions: `squared = [x**2 for x in range(10)]`
-- `set` comprehensions: `{x**2 for x in [1, 1, 2]}`
-- `dict` comprehensions: `{key: value for ... }`
-  - e.g. swap keys and values `{v: k for k, v in some_dict.items()}`
-- `generator` comprehensions
-  - don't allocate memory for the whole list but generate one item at a time, thus more memory efficient.
-  ```python
-  my_gen = (i for i in range(30) if i % 3 == 0)
-  for x in my_gen:
-    ...
-  ```

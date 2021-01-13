@@ -1,17 +1,46 @@
-# Triangular Sampling
+---
+jupytext:
+  cell_metadata_filter: -all
+  formats: md:myst
+  text_representation:
+    extension: .md
+    format_name: myst
+    format_version: 0.12
+    jupytext_version: 1.9.1
+kernelspec:
+  display_name: Python 3
+  language: python
+  name: python3
+---
+
+
+# Sampling
+
+## Rejection Sampling
+
+## Finite Population Sampling
+
+### Poisson Sampling
+
+### Bernoulli Sampling
+
++++
+
+## Exercise
+
+### Sampling from a Triangle
 
 Tags: TwoSigma, Quant, 20Q4
 
 *How to generate uniformly distributed points in a triangle in a $xy$-plane, given the coordinates of the three vertices? Suppose that you have a generator that can generate uniformly distributed random values over the interval $[0,1]$ and you can use it twice.*
 
-
-## Solution
++++
 
 We can first start from a special case and then generalize it: what if the three coordinates are $(1,0), (0,1), (1,1)$? Call this triangle the basic triangle.
 
 We can draw a random point $(x,y)$ from the square with vertices $(0,0), (0,1), (1,1), (1,0)$, using twice the random generator. If the point is inside the basic triangle, which is identified by $x+y>1$, then we keep it, otherwise we keep its symmetric point $(1-x, 1-y)$ which is inside the basic triangle. The sampling process is implemented in the below python script.
 
-```python
+```{code-cell} python
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -26,7 +55,7 @@ plt.scatter(points[:,0], points[:,1])
 plt.show()
 ```
 
-Then we can map these uniform random points in the basic triangle to the target triangle, by affine transformation.
+Then we can map these uniform random points in the basic triangle to the target triangle, by an affine transformation.
 
 $$
 \boldsymbol{y}_i = A \boldsymbol{x}_i + \boldsymbol{b}
@@ -47,6 +76,7 @@ b_{2}
 
 There are four unknown variables in $A$ and 2 in $\boldsymbol{b}$, and there are six equations, so we are able to solve them. Rearranging the equations gives the standard form of a linear system
 
++++
 
 $$
 \left[\begin{array}{cccccc}
@@ -75,7 +105,7 @@ $$
 
 Below is a python script to solve for $A$ and $\boldsymbol{b}$
 
-```python
+```{code-cell} python
 from numpy.linalg import solve
 def solve_affine(y):
     """
@@ -99,7 +129,7 @@ A, b = solve_affine(y)
 
 Finally we can write the function for the random generator.
 
-```python
+```{code-cell} python
 def sample_triangle(n, y):
     """
     sample from a triangle with vertex coordinates (0,1), (1,1), (1,0)
