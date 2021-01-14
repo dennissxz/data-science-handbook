@@ -18,7 +18,6 @@
 
 
 
-
 ## Basic Concepts
 
 ### Parametric vs Non-parametric Models
