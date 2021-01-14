@@ -294,6 +294,8 @@ $$x_{1}+x_{2}+\ldots+x_{k}=n$$
     ```
 
 1. *In the question above, what if there is exactly one pair of digits has the same value $d_i = d_{i+1}$ while all other digits are different $d_j>d_k$ for $j<k, j\ne i$?*
+
+
     ```{dropdown} solution
     This means the $d_i$-th bin has two balls and other $9$ bins can have at most 1 ball. Thus, we can exclude the $d_i$-th ball into consideration so that we are placing $8-2=6$ balls to the remaining $9$ bins. Since there are $10$ ways to choose an $d_i$, the number of ways is $10C_9^6$.
     ```
@@ -302,7 +304,7 @@ $$x_{1}+x_{2}+\ldots+x_{k}=n$$
     Using the balls and boxes approach for counting is convenient, but one should be cautious when it comes to **probability**. Consider a simpler example of 2 digits, each take value from 0, 1, or 2. This corresponds to 2 balls and 3 bins. The correspondence relations are listed below.
 
 
-    |        No.       | two balls <br> goes to | # balls <br> in each bin |             pattern            | decreasing <br> number |
+    |        No.       | two balls goes to | # balls in each bin |             pattern            | decreasing number |
     |:----------------:|:-----------------:|:-------------------:|:------------------------------:|:-----------------:|
     |         1        |        0,0        |        2,0,0        |  $\bullet \bullet \vert \vert$ |   00 (discarded)  |
     |         2        |        0,1        |        1,1,0        | $\bullet \vert \bullet  \vert$ |         10        |
@@ -313,7 +315,7 @@ $$x_{1}+x_{2}+\ldots+x_{k}=n$$
     |         7        |        2,0        |        1,0,1        |  $\bullet \vert \vert \bullet$ |         20        |
     |         8        |        2,1        |        0,1,1        | $\vert \bullet  \vert \bullet$ |         21        |
     |         9        |        2,2        |        0,0,2        |  $\vert \vert \bullet \bullet$ |         22        |
-    | # distinct <br>  items |         9         |          6          |                6               |         5         |
+    | # distinct <br>  items |       9       |        6          |              6               |         5         |
 
     The result from the table is consistent with our previous approach $C_{2+3-1}^{3-1}-1=5$. Now what if you are asked what is $\mathrm{P}\left( d_i > d_{d+1} \right)$ in a 2-digit number?
     - From the table the answer is $\frac{9-3}{9-1} = \frac{6}{8}$, where $-1$ discards $00$ and $-3$ discards $00,11,22$.
