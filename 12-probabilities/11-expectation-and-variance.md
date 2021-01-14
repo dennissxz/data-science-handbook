@@ -4,48 +4,30 @@
 
 We quickly review the definitions of expectation, variance and covariance.
 
-- Mean $\mu$
 
-  - defined by
-    - discrete case: $\operatorname{E}\left( X \right) = \sum_{i=1}^n x_i p(x_i)$
-    - continuous case: $\operatorname{E}\left( X \right) = \int_{\mathcal{X}} xf(x) \mathrm{~d}x$
-
-  - sample mean $\bar x = \frac{1}{n}\sum_i x_i$
-
-- Variance
-
-  - defined by $\sigma^2=\operatorname{Var}\left( X \right) = \operatorname{E}\left[ \left( X-\mu \right)^2 \right]$
-
-  - sample variance $s^2 = \frac{1}{n}\sum_i(x_i - \bar x)^2$
+$$\begin{align}
+&&&\text{Population} && \text{Sample} \\
+& \text{Mean} & \mu &= \sum_{i=1}^n x_i p(x_i) \text{ or } \int_{\mathcal{X}} x f(x) \mathrm{~d}x &  \bar x &= \frac{1}{n}\sum_i x_i  \\
+& \text{Variance} & \sigma^2 &= \operatorname{E}\left[ \left( X-\mu \right)^2 \right]  & s^2 &= \frac{1}{n}\sum_i(x_i - \bar x)^2\\
+& \text{Standard deviation}  & \sigma &= \sqrt{\operatorname{E}\left[ \left( X-\mu \right)^2 \right]}  & s &= \sqrt{\frac{1}{n}\sum_i(x_i - \bar x)^2} \\
+& \text{Covariance}  & \sigma_{X,Y}^2 &= \operatorname{E}\left[ (X-\mu_X)(Y-\mu_Y) \right] & s_{X,Y}^2 &= \frac{1}{n}\sum_i \left[ (x_i - \bar x)(y_i - \bar y) \right]
+\end{align}$$
 
 
-- Standard deviation
+Also recall the definitions of conditional expectation and conditional variance:
 
-  - defined by $\sigma=\mathrm{sd}\left( X \right) = \sqrt{\operatorname{Var}\left( X \right)}$
-
-  - sample standard deviation $s=\sqrt{s^2}$
-
-- Covariance
-
-  - defined by $\operatorname{Cov}\left( X, Y \right) = \operatorname{E}\left[ (X-\mu_X)(Y-\mu_Y) \right]$
-
-  - sample covariance $\widehat{\operatorname{Cov}}\left( X, Y \right) = \frac{1}{n}\sum_i \left( x_i - \bar x \right)\left( y_i - \bar y \right)$
-
-- Conditional expectation $\mu_{X\mid Y=y}$
-
-  - discrete case: $\operatorname{E}(X \mid Y=y)=\sum_{x} x P(X=x \mid Y=y)$
-
-  - continuous case: $\operatorname{E}(X \mid Y=y)=\int_{-\infty}^{\infty} x f_{X \mid Y}(x, y) \mathrm{~d} x$
-
-- Conditional variance
-
-  - $\operatorname{Var}\left( X \mid Y=y \right)=\operatorname{E}\left[ (X-\mu_{X\mid Y=y})^{2} \mid Y=y \right]$
-
+$$\begin{align}
+ \operatorname{E}(X \mid Y=y)
+ &= \sum_{x} x P(X=x \mid Y=y) \\
+ &\text{or} \int_{-\infty}^{\infty} x f_{X \mid Y}(x, y) \mathrm{~d} x \\
+\operatorname{Var}\left( X \mid Y=y \right)
+ &= \operatorname{E}\left[ (X-\mu_{X\mid Y=y})^{2} \mid Y=y \right] \\
+\end{align}$$
 
 
 ```{note}
-- The notation $X \mid Y=y$ in $\operatorname{E}(X \mid Y=y)$ means that $Y=y$ is observed. In this case, the conditional expectation is a function of the observed value $y$, i.e., $\operatorname{E}(X \mid Y=y) = g(y)$, which itself is a constant.
-- The notation $X \mid Y$ in $\operatorname{E}(X \mid Y)$ means that $Y$ is a random variable and has not been observed yet. In this case, the conditional expectation is a function of the random variable $Y$, i.e. $\operatorname{E}(X \mid Y) = g(Y)$, which itself is a random variable.
+- The notation $X \mid Y=y$ means that $Y=y$ is observed. In this case, the conditional expectation (variance) is a function of the observed value $y$, i.e., $\operatorname{E}(X \mid Y=y) = g(y)$, which itself is a constant.
+- The notation $X \mid Y$ means that $Y$ is a random variable and has not been observed yet. In this case, the conditional expectation (variance) is a function of the random variable $Y$, i.e. $\operatorname{E}(X \mid Y) = g(Y)$, which itself is a random variable.
 ```
 
 
@@ -55,20 +37,26 @@ We quickly review the definitions of expectation, variance and covariance.
 
 In general, we have
 
-- $\operatorname{E}\left( aX + bY \right) = a \operatorname{E}\left( X \right) + b \operatorname{E}\left( Y \right)$
-- $\operatorname{Var}\left( aX + bY \right) = a^2\operatorname{Var}\left( X \right) + b^2\operatorname{Var}\left( Y \right) + 2ab\operatorname{Cov}\left( X, Y \right)$
-- $\operatorname{Var}\left( X \right) = \operatorname{E}\left( X^2 \right) - \left[ \operatorname{E}\left( X \right) \right]^2$, or $\operatorname{E}\left( X^2 \right) = \mu^2 + \sigma^2$
-- $\operatorname{Cov}\left( X, X \right) = \operatorname{Var}\left( X \right)$
-- $\operatorname{Cov}\left( X,Y \right) = \operatorname{E}\left( XY \right) - \operatorname{E}\left( X \right)\operatorname{E}\left( Y \right)$
-- $\operatorname{Cov}\left( X, a \right) = 0$
-- $\operatorname{Cov}\left( X, Y+Z \right) = \operatorname{Cov}\left( X, Y \right) + \operatorname{Cov}\left( X, Z \right)$
-- $\operatorname{Cov}\left( aX, bY \right) = ab \operatorname{Cov}\left( X, Y \right)$
+$$\begin{align}
+\operatorname{E}\left( aX + bY \right) &= a \operatorname{E}\left( X \right) + b \operatorname{E}\left( Y \right) \\
+\operatorname{Var}\left( aX + bY \right) &= a^2\operatorname{Var}\left( X \right) + b^2\operatorname{Var}\left( Y \right) + 2ab\operatorname{Cov}\left( X, Y \right) \\
+\operatorname{Var}\left( X \right) &= \operatorname{E}\left( X^2 \right) - \left[ \operatorname{E}\left( X \right) \right]^2\\
+\operatorname{E}\left( X^2 \right) &= \mu^2 + \sigma^2 \\
+\operatorname{Cov}\left( X, X \right) &= \operatorname{Var}\left( X \right) \\
+\operatorname{Cov}\left( X,Y \right) &= \operatorname{E}\left( XY \right) - \operatorname{E}\left( X \right)\operatorname{E}\left( Y \right) \\
+\operatorname{Cov}\left( X, a \right) &= 0 \\
+\operatorname{Cov}\left( X, Y+Z \right) &= \operatorname{Cov}\left( X, Y \right) + \operatorname{Cov}\left( X, Z \right) \\
+\operatorname{Cov}\left( aX, bY \right) &= ab \operatorname{Cov}\left( X, Y \right)
+\end{align}$$
+
 
 If $X$ and $Y$ are independent,
 
-- $\operatorname{E}\left( XY \right) = \operatorname{E}\left( X \right)\operatorname{E}\left( Y \right)$
-- $\operatorname{Cov}\left( X, Y \right) = 0$
-- $\operatorname{Var}\left( aX + bY \right) = a^2\operatorname{Var}\left( X \right) + b^2\operatorname{Var}\left( Y \right)$
+$$\begin{align}
+\operatorname{E}\left( XY \right) &= \operatorname{E}\left( X \right)\operatorname{E}\left( Y \right) \\
+\operatorname{Cov}\left( X, Y \right) &= 0 \\
+\operatorname{Var}\left( aX + bY \right) &= a^2\operatorname{Var}\left( X \right) + b^2\operatorname{Var}\left( Y \right) \\
+\end{align}$$
 
 ### Linear Combinations
 
