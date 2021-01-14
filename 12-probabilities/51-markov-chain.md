@@ -30,7 +30,7 @@ kernelspec:
 
 #### Sol.1 Markov Chain
 
-Let $I_t$ be the number of infected individuals after $t$ minutes. Define a transition matrix $P$, where
+Let $I_t$ be the number of infected individuals after $t$ minutes. Define a transition matrix $\boldsymbol{P}=\left\{ p_{i,j} \right\}$, where
 
 $$p_{i,j} = \mathrm{P}(I_{t+1}=j\vert I_t=i)$$
 
@@ -63,7 +63,7 @@ $$p_{2k, 2(k+l)} =\frac{C_{n/2}^{k+l}C_{k+l}^{2l}4^l}{C_n^{2k}}$$
 
 Then the distribution of $I_{10}$ is
 
-$$\boldsymbol{p}_{I_{10}}^\top=\boldsymbol{e}_1^\top P^{10}$$
+$$\boldsymbol{p}_{I_{10}}^\top=\boldsymbol{e}_1^\top \boldsymbol{P}^{10}$$
 
 where $\boldsymbol{e}_1 = [1,0,\ldots,0]$ and $\boldsymbol{p}_{I_{10}} = [p_{1,1}^{(10)}, \ldots, p_{1,n}^{(10)}]$
 
