@@ -1,3 +1,8 @@
 # Greedy Algorithms
 
-placehodler
+
+## Problem
+
+Decision is
+- sequential
+- simple

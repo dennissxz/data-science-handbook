@@ -46,7 +46,7 @@
     <script src="../_static/copybutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="../_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
     <script >
@@ -193,7 +193,7 @@
   <ul class="collapse-ul">
    <li class="toctree-l2">
     <a class="reference internal" href="../14-python/11-programming-tools.html">
-     Tools and Syntax
+     Programmer tools
     </a>
    </li>
    <li class="toctree-l2">
@@ -203,12 +203,12 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../14-python/13-data-structure.html">
-     Data structures
+     Data Structures
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../14-python/15-functional-programming.html">
-     Functional programming
+     Functional Programming
     </a>
    </li>
   </ul>
@@ -238,6 +238,25 @@
    <li class="toctree-l2">
     <a class="reference internal" href="../17-sql/33-data-manipulation.html">
      Data Manipulation
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../19-miscellaneous/00-miscellaneous.html">
+   Miscellaneous
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../19-miscellaneous/11-latex.html">
+     LaTeX
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../19-miscellaneous/13-myst.html">
+     MyST Markdown
     </a>
    </li>
   </ul>
@@ -456,7 +475,7 @@
 <p><em>There are 1,000 people in one room. One of them carries a disease which infects 100% if one shares hands with an infected person. In each minute all the people in the room are randomly paired to share hands with each other. What is your estimate of the expected number of people infected after 10 minutes? Can you use only pen and paper to solve this?</em></p>
 <div class="section" id="sol-1-markov-chain">
 <h4>Sol.1 Markov Chain<a class="headerlink" href="#sol-1-markov-chain" title="Permalink to this headline">¶</a></h4>
-<p>Let <span class="math notranslate nohighlight">\(I_t\)</span> be the number of infected individuals after <span class="math notranslate nohighlight">\(t\)</span> minutes. Define a transition matrix <span class="math notranslate nohighlight">\(P\)</span>, where</p>
+<p>Let <span class="math notranslate nohighlight">\(I_t\)</span> be the number of infected individuals after <span class="math notranslate nohighlight">\(t\)</span> minutes. Define a transition matrix <span class="math notranslate nohighlight">\(\boldsymbol{P}=\left\{ p_{i,j} \right\}\)</span>, where</p>
 <div class="math notranslate nohighlight">
 \[p_{i,j} = \mathrm{P}(I_{t+1}=j\vert I_t=i)\]</div>
 <p>It’s easy to see that</p>
@@ -486,7 +505,7 @@
 \[p_{2k, 2(k+l)} =\frac{C_{n/2}^{k+l}C_{k+l}^{2l}4^l}{C_n^{2k}}\]</div>
 <p>Then the distribution of <span class="math notranslate nohighlight">\(I_{10}\)</span> is</p>
 <div class="math notranslate nohighlight">
-\[\boldsymbol{p}_{I_{10}}^\top=\boldsymbol{e}_1^\top P^{10}\]</div>
+\[\boldsymbol{p}_{I_{10}}^\top=\boldsymbol{e}_1^\top \boldsymbol{P}^{10}\]</div>
 <p>where <span class="math notranslate nohighlight">\(\boldsymbol{e}_1 = [1,0,\ldots,0]\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{p}_{I_{10}} = [p_{1,1}^{(10)}, \ldots, p_{1,n}^{(10)}]\)</span></p>
 <p>The expected number is</p>
 <div class="math notranslate nohighlight">
@@ -494,7 +513,7 @@
 <p>A python script to implement the above steps:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">scipy.sparse</span> <span class="k">as</span> <span class="nn">sparse</span>
 <span class="kn">from</span> <span class="nn">scipy.special</span> <span class="kn">import</span> <span class="n">comb</span><span class="p">,</span> <span class="n">perm</span><span class="p">,</span> <span class="n">factorial</span>
 
@@ -515,11 +534,6 @@
 <span class="n">distribution</span> <span class="o">=</span> <span class="n">Pt</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span>
 <span class="n">Et</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">([</span><span class="n">i</span> <span class="o">*</span> <span class="n">distribution</span><span class="o">.</span><span class="n">toarray</span><span class="p">()[</span><span class="mi">0</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)])</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">Et</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>642.3471200227278
 </pre></div>
 </div>
 </div>
@@ -584,7 +598,7 @@ I_{t+1,j}=\begin{cases}
 <p>A python script of the iteration is</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">I0</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">I0</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
     <span class="n">Is</span> <span class="o">=</span> <span class="p">[</span><span class="n">I0</span><span class="p">]</span> <span class="c1"># initial number of infected</span>
     <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
         <span class="n">Is</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Is</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">Is</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">Is</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
@@ -594,11 +608,6 @@ I_{t+1,j}=\begin{cases}
 <span class="n">n</span> <span class="o">=</span> <span class="mi">1000</span>
 <span class="n">t</span> <span class="o">=</span> <span class="mi">10</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">t</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>642.9754330548355
 </pre></div>
 </div>
 </div>
@@ -621,7 +630,7 @@ I_{t+1,j}=\begin{cases}
 <p>To verify the solutions above, we can simulate the infection process.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="k">class</span> <span class="nc">Population</span><span class="p">():</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
@@ -654,16 +663,11 @@ I_{t+1,j}=\begin{cases}
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>658
-</pre></div>
-</div>
-</div>
 </div>
 <p>To get the expected number <span class="math notranslate nohighlight">\(E(I_{10})\)</span>, we can try to simulate <span class="math notranslate nohighlight">\(m\)</span> times and take the average.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 <span class="n">It</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="n">m</span> <span class="o">=</span> <span class="mi">10000</span>
 <span class="n">t</span> <span class="o">=</span> <span class="mi">10</span>
@@ -672,11 +676,6 @@ I_{t+1,j}=\begin{cases}
     <span class="n">pop</span><span class="o">.</span><span class="n">infect</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
     <span class="n">It</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pop</span><span class="o">.</span><span class="n">count_infected</span><span class="p">())</span>
 <span class="nb">print</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">It</span><span class="p">)</span><span class="o">/</span><span class="n">m</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>642.2862
 </pre></div>
 </div>
 </div>

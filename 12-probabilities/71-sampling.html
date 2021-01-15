@@ -46,7 +46,7 @@
     <script src="../_static/copybutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="../_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
     <script >
@@ -193,7 +193,7 @@
   <ul class="collapse-ul">
    <li class="toctree-l2">
     <a class="reference internal" href="../14-python/11-programming-tools.html">
-     Tools and Syntax
+     Programmer tools
     </a>
    </li>
    <li class="toctree-l2">
@@ -203,12 +203,12 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../14-python/13-data-structure.html">
-     Data structures
+     Data Structures
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../14-python/15-functional-programming.html">
-     Functional programming
+     Functional Programming
     </a>
    </li>
   </ul>
@@ -238,6 +238,25 @@
    <li class="toctree-l2">
     <a class="reference internal" href="../17-sql/33-data-manipulation.html">
      Data Manipulation
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../19-miscellaneous/00-miscellaneous.html">
+   Miscellaneous
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../19-miscellaneous/11-latex.html">
+     LaTeX
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../19-miscellaneous/13-myst.html">
+     MyST Markdown
     </a>
    </li>
   </ul>
@@ -476,7 +495,7 @@
 <p>We can draw a random point <span class="math notranslate nohighlight">\((x,y)\)</span> from the square with vertices <span class="math notranslate nohighlight">\((0,0), (0,1), (1,1), (1,0)\)</span>, using twice the random generator. If the point is inside the basic triangle, which is identified by <span class="math notranslate nohighlight">\(x+y&gt;1\)</span>, then we keep it, otherwise we keep its symmetric point <span class="math notranslate nohighlight">\((1-x, 1-y)\)</span> which is inside the basic triangle. The sampling process is implemented in the below python script.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 
 <span class="k">def</span> <span class="nf">sample_basic_triangle</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
@@ -490,9 +509,6 @@
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../_images/71-sampling_3_0.png" src="../_images/71-sampling_3_0.png" />
 </div>
 </div>
 <p>Then we can map these uniform random points in the basic triangle to the target triangle, by an affine transformation.</p>
@@ -542,7 +558,7 @@ y_{32}
 <p>Below is a python script to solve for <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{b}\)</span></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">numpy.linalg</span> <span class="kn">import</span> <span class="n">solve</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">numpy.linalg</span> <span class="kn">import</span> <span class="n">solve</span>
 <span class="k">def</span> <span class="nf">solve_affine</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    y: shape (3,2), the vertex coordinates of the target triangle</span>
@@ -568,7 +584,7 @@ y_{32}
 <p>Finally we can write the function for the random generator.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">sample_triangle</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">sample_triangle</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    sample from a triangle with vertex coordinates (0,1), (1,1), (1,0)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -585,9 +601,6 @@ y_{32}
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../_images/71-sampling_8_0.png" src="../_images/71-sampling_8_0.png" />
 </div>
 </div>
 </div>
