@@ -1,6 +1,6 @@
 # Data Science Handbook
 
-This is a book that summarizes theories, models, and interview questions in data science.
+This is a book that summarizes theories, models, and questions in data science.
 Click [here](https://dennissxz.github.io/data-science-handbook/) to view the book online.
 
 ## Build the Book
