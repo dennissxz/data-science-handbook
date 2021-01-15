@@ -14,8 +14,7 @@ jupyter-book myst init filename.md --kernel kernelname
 
 Then, to build the book, run
 ```bash
-cd ..
-jupyter-book build data-science-handbook/
+jupyter-book build .
 ```
 It will execute and merge all `.md` and `.ipynb` files according to the table of contents structure specified in `_toc.yml`, and output HTML files to `_build/html`.
 
