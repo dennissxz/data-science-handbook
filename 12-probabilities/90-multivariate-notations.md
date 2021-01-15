@@ -71,11 +71,3 @@ $$
 ### Data Matrix
 
 ### Mean
-
-
-$$
-\begin{align}    
-\text{Compare} &    &  x^3 + y^3 &= 1               \\
-                  &  &          x &= \sqrt[3]{1-y^3}
-\end{align}
-$$
