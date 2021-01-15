@@ -21,7 +21,7 @@ $$
 
 **Properties**
 
-1. $E\left(\boldsymbol{a}^{\boldsymbol{\prime}} \boldsymbol{x}\right)=\boldsymbol{a}^{\boldsymbol{\prime}} \boldsymbol{\mu}$
+1. $E\left(\boldsymbol{a}^{\boldsymbol{\top}} \boldsymbol{x}\right)=\boldsymbol{a}^{\boldsymbol{\top}} \boldsymbol{\mu}$
 
 1. $E(\boldsymbol{A x})=\boldsymbol{A} \boldsymbol{\mu}$
 
@@ -49,8 +49,8 @@ In matrix form,
 $$
 \begin{align}
 \operatorname{Var}(\boldsymbol{x})
-&=E\left[(\boldsymbol{x}-E(\boldsymbol{x}))(\boldsymbol{x}-E(\boldsymbol{x}))^{\prime}\right] \\
-&=E\left(\boldsymbol{x} \boldsymbol{x}^{\prime}\right)-E(\boldsymbol{x}) E(\boldsymbol{x})
+&=E\left[(\boldsymbol{x}-E(\boldsymbol{x}))(\boldsymbol{x}-E(\boldsymbol{x}))^{\top}\right] \\
+&=E\left(\boldsymbol{x} \boldsymbol{x}^{\top}\right)-E(\boldsymbol{x}) E(\boldsymbol{x})
 \end{align}
 $$
 
@@ -58,7 +58,7 @@ $$
 
 1. $\operatorname{Var}\left( \boldsymbol{a}^\top \boldsymbol{x} + b \right)$
 
-1. $\operatorname{Var}\left( \boldsymbol{a}^\prime \boldsymbol{x} + b \right)$
+1. $\operatorname{Var}\left( \boldsymbol{a}^\top \boldsymbol{x} + b \right)$
 
 
 ## Covariance Matrix of Two Vectors
