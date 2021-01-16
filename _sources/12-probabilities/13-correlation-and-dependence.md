@@ -1,14 +1,154 @@
 # Correlation and Dependence
+<!-- TOC -->
+
+- [Correlation and Dependence](#correlation-and-dependence)
+  - [Definitions](#definitions)
+    - [Correlation](#correlation)
+    - [Dependence](#dependence)
+  - [Comparison](#comparison)
+  - [Simpson's Paradox](#simpsons-paradox)
+  - [Exercise](#exercise)
+    - [Raining](#raining)
+    - [Expected Value of Maximum of Two Uniform Random Variables](#expected-value-of-maximum-of-two-uniform-random-variables)
+
+<!-- /TOC -->
 
 ## Definitions
 
 ### Correlation
 
+
+The correlation of two random variables measures how two or more variables are related or associated to one another. There are several correlation coefficients, and the most familiar one is Pearson correlation coefficient.
+
+
+#### Pearson Correlation Coefficient
+
+It is defined for two continuous variables $X,Y$ and only measure the **linear relationship** between them.
+
+$$
+\rho
+= \frac{\operatorname{Cov}\left( X, Y \right)}{\sqrt{\operatorname{Var}\left( X \right)\operatorname{Var}\left( Y \right)}}
+= \frac{\sigma_{X,Y}}{\sigma_X \sigma_Y}
+= \frac{\mathrm{E}\left[\left(X-\mu_{X}\right)\left(Y-\mu_{Y}\right)\right]}{\sigma_{X} \sigma_{Y}}
+$$
+
+If $X$ and $Y$ are more likely to have values larger or smallerthan their means $\mu_X, \mu_Y$ concurrently, then the product $\left(X-\mu_{X}\right)\left(Y-\mu_{Y}\right)$ is more likely to be positive, which leads to a positive value of the correlation coefficient. On the other hand, the correlation coefficient is more likely to be negative.
+
+By the Cauchy-Schwarz inequality we have
+
+$$
+\left\vert \operatorname{Cov}\left( X,Y \right) \right\vert^2 \le \operatorname{Var}\left( X \right) \operatorname{Var}\left( Y \right)
+$$
+
+and hence
+
+$$
+-1 \le \rho \le 1
+$$
+
+The equality holds iff there is a deterministic linear relation between $X$ and $Y$, $Y = aX + b$.
+
+Given a sample of $n$ observed pairs $(x_i, y_i)$, the sample correlation coefficient is defined as
+
+$$
+r_{x y}
+= \frac{s_{x,y}}{s_x, s_y}
+= \frac{\sum_{i=1}^{n}\left(x_{i}-\bar{x}\right)\left(y_{i}-\bar{y}\right)}{\sqrt{\sum_{i=1}^{n}\left(x_{i}-\bar{x}\right)^{2} \sum_{i=1}^{n}\left(y_{i}-\bar{y}\right)^{2}}},
+$$
+
+or equivalently,
+
+$$
+\begin{aligned}
+r_{x y} &=\frac{\sum x_{i} y_{i}-n \bar{x} \bar{y}}{n s_{x}^{\prime} s_{y}^{\prime}} \\
+&=\frac{n \sum x_{i} y_{i}-\sum x_{i} \sum y_{i}}{\sqrt{n \sum x_{i}^{2}-\left(\sum x_{i}\right)^{2}} \sqrt{n \sum y_{i}^{2}-\left(\sum y_{i}\right)^{2}}}
+\end{aligned}
+$$
+
+
+#### Spearman Correlation Coefficient
+
+Spearman's rank correlation is more robust than Pearson's to capture nonlinear relationships. In fact, it assesses monotonic relationships. For a sample of $n$ scores $X_i, Y_i$, they are first converted to ranks $\operatorname{rg}_{X_i}, \operatorname{rg}_{Y_i}$, and the Spearman correlation coefficient is defined as the Pearson correlation coefficient between the rank variables.µ
+
+$$
+r_{s}=\rho_{\mathrm{rg}_{X}, \mathrm{rg}_{Y}}=\frac{\operatorname{Cov}\left(\mathrm{rg}_{X}, \mathrm{rg}_{Y}\right)}{\sigma_{\mathrm{rg}_{X}} \sigma_{\mathrm{rg}_{Y}}}
+$$
+
+If there is **no ties,** then it can be computed by the formula
+
+$$
+r_{s}=1-\frac{6 \sum_i d_{i}^{2}}{n\left(n^{2}-1\right)}
+$$
+
+where $d_i = \operatorname{rg}_{X_i} - \operatorname{rg}_{Y_i}$ is the rank difference of each observation.
+
+One can see that
+- If two variables are monotonically related (even if their relationship is not linear), then $d_i = 0$ for all $i$, and therefore $r_s = 1$. For instance, $X\sim U(-1,1), Y=X^3$.
+- If two variables are inversely monotonically related, then $d_i = n-1, n-3, \ldots, 3-n, 1-n$ and $\sum_i d_i ^2 = \frac{1}{3} n (n^2-1)$, and therefore $r_s = 1-2 = -1$
+
+
+```{seealso}
+Mutual information can also be applied to measure association between two variables, given their distribution functions.
+```
+
+### Correlated
+
+Two random variables are said to be correlated if $\operatorname{Cov}\left( X,Y \right) \ne 0$ and uncorrelated if $\operatorname{Cov}\left( X,Y \right) = 0$.
+
 ### Dependence
+
+Two random variables $X,Y$ are independent iff the joints cumulative distribution function satisfies
+
+$$
+F_{X, Y}(x, y)=F_{X}(x) F_{Y}(y) \quad \text{for all}\ x, y
+$$
+
+or equivalently, the joint density satisfies
+
+$$
+f_{X, Y}(x, y)=f_{X}(x) f_{Y}(y) \quad \text{for all}\ x, y
+$$
+
+From this definition we have
+
+$$
+f_{X\mid Y}(x\mid y) = \frac{f_{X,Y}(x,y)}{f_Y(y)}  = f_X(x)
+$$
+
+which can be interpreted as "knowing any information about $Y=y$ does not change our knowledge of $X$". If this is false then the two random variables are not independent.
 
 ## Comparison
 
-Does correlation imply dependence? Or vice versa?
+### Independent $\Rightarrow$ Uncorrelated
+
+
+If two random variables are independent, then $\operatorname{E}\left( XY \right) = \operatorname{E}\left( X \right) \operatorname{E}\left( Y \right)$, $\operatorname{Cov}\left( X,Y \right) = 0$, i.e., they are uncorrelated.
+
+### Uncorrelated $\not \Rightarrow$ Independent
+
+If $\operatorname{Cov}\left( X,Y \right) = 0$, then we CAN NOT say they are independent.
+
+
+For instance, let $X\sim U(-1,1)$ and $Y = \left\vert X \right\vert$. Then $Y$ is completely dependent on $X$, but
+
+
+$$\begin{align}
+\operatorname{Cov}\left( X, Y \right)  
+&= \operatorname{E}\left( XY \right) - \operatorname{E}\left( X \right) \operatorname{E}\left( Y \right)   \\
+&= \operatorname{E}\left( X \left\vert X \right\vert \right) - \operatorname{E}\left( X \right) \operatorname{E}\left( \left\vert X \right\vert \right)\\
+&= \operatorname{E}\left( X^2 \right)\cdot \frac{1}{2} + \operatorname{E}\left( -X^2 \right)\cdot \frac{1}{2} - 0 \cdot \frac{1}{2} \\
+& = 0
+\end{align}$$
+
+so that $\rho(X,Y) = 0$
+
+```{seealso}
+- One special case is bivariate normal distribution. If two variables $X,Y$ follows a bivariate normal distribution, then $\operatorname{Cov}\left( X,Y \right) = 0$ implies their independence. However, this does not hold for two arbitrary normal variables. See __.
+
+- For two random variables, if their mutual information is 0, then they are independent. See __.
+```
+
+
 
 ## Simpson's Paradox
 
@@ -107,7 +247,7 @@ p_2 &= \mathrm{P}(\text{raining on either Saturday or Sunday})  \\
 \end{align}$$
 
 
-### Expected Value of Maximum of Two Uniform Random Variables
+### Expected Value of the Maximum of Two Uniform Random Variables
 
 *Suppose $X$ and $Y$ are two uniformly distributed random variables over the interval $[0,1]$. What is the expected value $\mathrm{E}[\max(X,Y)]$?*
 
@@ -182,3 +322,29 @@ Let $Z=\max(X,Y)$. Since there is no dependence specified, we start from the spe
 
 
 It seems that the range is $[\frac{1}{2}, \frac{3}{4}]$.
+
+### Lower Bound of Correlation for IID
+
+Suppose $X_1, X_2, \ldots, X_n$ where $n\ge 2$ are IID variables with common pairwise correlation $\rho = \operatorname{Corr}\left( X_i, X_j \right)$ for $i\ne j$. What is the lower bound of $r$ and when is it obtained?
+
+***Solution***
+
+Since
+
+$$\begin{align}
+\operatorname{Var}\left( \sum_i X_i \right)
+&= \sum_i \operatorname{Var}\left( X_i \right) + \sum_{i=1}^n \sum_{j\ne i}^n \operatorname{Cov}\left( X_i, X_j \right) \\
+&= n \sigma^2 + n(n-1)\rho\sigma^2 \\
+\ge 0 \\
+\end{align}$$
+
+we have
+
+
+$$
+\rho \ge - \frac{1}{n-1}
+$$
+
+if $\sigma^2 > 0$, otherwise $\rho$ is undefined.
+
+The lower bound is obtained iff $\operatorname{Var}\left( \sum_i X_i \right) = 0$, i.e., $\sum_i X_i = \text{constant}$ almost surely.

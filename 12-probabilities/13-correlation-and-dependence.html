@@ -415,6 +415,23 @@
     <a class="reference internal nav-link" href="#correlation">
      Correlation
     </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#pearson-correlation-coefficient">
+       Pearson Correlation Coefficient
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#spearman-correlation-coefficient">
+       Spearman Correlation Coefficient
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#correlated">
+     Correlated
+    </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#dependence">
@@ -427,6 +444,26 @@
   <a class="reference internal nav-link" href="#comparison">
    Comparison
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#independent-rightarrow-uncorrelated">
+     Independent
+     <span class="math notranslate nohighlight">
+      \(\Rightarrow\)
+     </span>
+     Uncorrelated
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#uncorrelated-not-rightarrow-independent">
+     Uncorrelated
+     <span class="math notranslate nohighlight">
+      \(\not \Rightarrow\)
+     </span>
+     Independent
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#simpson-s-paradox">
@@ -444,8 +481,13 @@
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#expected-value-of-maximum-of-two-uniform-random-variables">
-     Expected Value of Maximum of Two Uniform Random Variables
+    <a class="reference internal nav-link" href="#expected-value-of-the-maximum-of-two-uniform-random-variables">
+     Expected Value of the Maximum of Two Uniform Random Variables
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#lower-bound-of-correlation-for-iid">
+     Lower Bound of Correlation for IID
     </a>
    </li>
   </ul>
@@ -463,18 +505,146 @@
                 
   <div class="section" id="correlation-and-dependence">
 <h1>Correlation and Dependence<a class="headerlink" href="#correlation-and-dependence" title="Permalink to this headline">¶</a></h1>
+<!-- TOC -->
+<ul class="simple">
+<li><p><a class="reference external" href="#correlation-and-dependence">Correlation and Dependence</a></p>
+<ul>
+<li><p><a class="reference external" href="#definitions">Definitions</a></p>
+<ul>
+<li><p><a class="reference external" href="#correlation">Correlation</a></p></li>
+<li><p><a class="reference external" href="#dependence">Dependence</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference external" href="#comparison">Comparison</a></p></li>
+<li><p><a class="reference external" href="#simpsons-paradox">Simpson’s Paradox</a></p></li>
+<li><p><a class="reference external" href="#exercise">Exercise</a></p>
+<ul>
+<li><p><a class="reference external" href="#raining">Raining</a></p></li>
+<li><p><a class="reference external" href="#expected-value-of-maximum-of-two-uniform-random-variables">Expected Value of Maximum of Two Uniform Random Variables</a></p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<!-- /TOC -->
 <div class="section" id="definitions">
 <h2>Definitions<a class="headerlink" href="#definitions" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="correlation">
 <h3>Correlation<a class="headerlink" href="#correlation" title="Permalink to this headline">¶</a></h3>
+<p>The correlation of two random variables measures how two or more variables are related or associated to one another. There are several correlation coefficients, and the most familiar one is Pearson correlation coefficient.</p>
+<div class="section" id="pearson-correlation-coefficient">
+<h4>Pearson Correlation Coefficient<a class="headerlink" href="#pearson-correlation-coefficient" title="Permalink to this headline">¶</a></h4>
+<p>It is defined for two continuous variables <span class="math notranslate nohighlight">\(X,Y\)</span> and only measure the <strong>linear relationship</strong> between them.</p>
+<div class="math notranslate nohighlight">
+\[
+\rho
+= \frac{\operatorname{Cov}\left( X, Y \right)}{\sqrt{\operatorname{Var}\left( X \right)\operatorname{Var}\left( Y \right)}}
+= \frac{\sigma_{X,Y}}{\sigma_X \sigma_Y}
+= \frac{\mathrm{E}\left[\left(X-\mu_{X}\right)\left(Y-\mu_{Y}\right)\right]}{\sigma_{X} \sigma_{Y}}
+\]</div>
+<p>If <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span> are more likely to have values larger or smallerthan their means <span class="math notranslate nohighlight">\(\mu_X, \mu_Y\)</span> concurrently, then the product <span class="math notranslate nohighlight">\(\left(X-\mu_{X}\right)\left(Y-\mu_{Y}\right)\)</span> is more likely to be positive, which leads to a positive value of the correlation coefficient. On the other hand, the correlation coefficient is more likely to be negative.</p>
+<p>By the Cauchy-Schwarz inequality we have</p>
+<div class="math notranslate nohighlight">
+\[
+\left\vert \operatorname{Cov}\left( X,Y \right) \right\vert^2 \le \operatorname{Var}\left( X \right) \operatorname{Var}\left( Y \right)
+\]</div>
+<p>and hence</p>
+<div class="math notranslate nohighlight">
+\[
+-1 \le \rho \le 1
+\]</div>
+<p>The equality holds iff there is a deterministic linear relation between <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span>, <span class="math notranslate nohighlight">\(Y = aX + b\)</span>.</p>
+<p>Given a sample of <span class="math notranslate nohighlight">\(n\)</span> observed pairs <span class="math notranslate nohighlight">\((x_i, y_i)\)</span>, the sample correlation coefficient is defined as</p>
+<div class="math notranslate nohighlight">
+\[
+r_{x y}
+= \frac{s_{x,y}}{s_x, s_y}
+= \frac{\sum_{i=1}^{n}\left(x_{i}-\bar{x}\right)\left(y_{i}-\bar{y}\right)}{\sqrt{\sum_{i=1}^{n}\left(x_{i}-\bar{x}\right)^{2} \sum_{i=1}^{n}\left(y_{i}-\bar{y}\right)^{2}}},
+\]</div>
+<p>or equivalently,</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+r_{x y} &amp;=\frac{\sum x_{i} y_{i}-n \bar{x} \bar{y}}{n s_{x}^{\prime} s_{y}^{\prime}} \\
+&amp;=\frac{n \sum x_{i} y_{i}-\sum x_{i} \sum y_{i}}{\sqrt{n \sum x_{i}^{2}-\left(\sum x_{i}\right)^{2}} \sqrt{n \sum y_{i}^{2}-\left(\sum y_{i}\right)^{2}}}
+\end{aligned}
+\end{split}\]</div>
+</div>
+<div class="section" id="spearman-correlation-coefficient">
+<h4>Spearman Correlation Coefficient<a class="headerlink" href="#spearman-correlation-coefficient" title="Permalink to this headline">¶</a></h4>
+<p>Spearman’s rank correlation is more robust than Pearson’s to capture nonlinear relationships. In fact, it assesses monotonic relationships. For a sample of <span class="math notranslate nohighlight">\(n\)</span> scores <span class="math notranslate nohighlight">\(X_i, Y_i\)</span>, they are first converted to ranks <span class="math notranslate nohighlight">\(\operatorname{rg}_{X_i}, \operatorname{rg}_{Y_i}\)</span>, and the Spearman correlation coefficient is defined as the Pearson correlation coefficient between the rank variables.µ</p>
+<div class="math notranslate nohighlight">
+\[
+r_{s}=\rho_{\mathrm{rg}_{X}, \mathrm{rg}_{Y}}=\frac{\operatorname{Cov}\left(\mathrm{rg}_{X}, \mathrm{rg}_{Y}\right)}{\sigma_{\mathrm{rg}_{X}} \sigma_{\mathrm{rg}_{Y}}}
+\]</div>
+<p>If there is <strong>no ties,</strong> then it can be computed by the formula</p>
+<div class="math notranslate nohighlight">
+\[
+r_{s}=1-\frac{6 \sum_i d_{i}^{2}}{n\left(n^{2}-1\right)}
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(d_i = \operatorname{rg}_{X_i} - \operatorname{rg}_{Y_i}\)</span> is the rank difference of each observation.</p>
+<p>One can see that</p>
+<ul class="simple">
+<li><p>If two variables are monotonically related (even if their relationship is not linear), then <span class="math notranslate nohighlight">\(d_i = 0\)</span> for all <span class="math notranslate nohighlight">\(i\)</span>, and therefore <span class="math notranslate nohighlight">\(r_s = 1\)</span>. For instance, <span class="math notranslate nohighlight">\(X\sim U(-1,1), Y=X^3\)</span>.</p></li>
+<li><p>If two variables are inversely monotonically related, then <span class="math notranslate nohighlight">\(d_i = n-1, n-3, \ldots, 3-n, 1-n\)</span> and <span class="math notranslate nohighlight">\(\sum_i d_i ^2 = \frac{1}{3} n (n^2-1)\)</span>, and therefore <span class="math notranslate nohighlight">\(r_s = 1-2 = -1\)</span></p></li>
+</ul>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>Mutual information can also be applied to measure association between two variables, given their distribution functions.</p>
+</div>
+</div>
+</div>
+<div class="section" id="correlated">
+<h3>Correlated<a class="headerlink" href="#correlated" title="Permalink to this headline">¶</a></h3>
+<p>Two random variables are said to be correlated if <span class="math notranslate nohighlight">\(\operatorname{Cov}\left( X,Y \right) \ne 0\)</span> and uncorrelated if <span class="math notranslate nohighlight">\(\operatorname{Cov}\left( X,Y \right) = 0\)</span>.</p>
 </div>
 <div class="section" id="dependence">
 <h3>Dependence<a class="headerlink" href="#dependence" title="Permalink to this headline">¶</a></h3>
+<p>Two random variables <span class="math notranslate nohighlight">\(X,Y\)</span> are independent iff the joints cumulative distribution function satisfies</p>
+<div class="math notranslate nohighlight">
+\[
+F_{X, Y}(x, y)=F_{X}(x) F_{Y}(y) \quad \text{for all}\ x, y
+\]</div>
+<p>or equivalently, the joint density satisfies</p>
+<div class="math notranslate nohighlight">
+\[
+f_{X, Y}(x, y)=f_{X}(x) f_{Y}(y) \quad \text{for all}\ x, y
+\]</div>
+<p>From this definition we have</p>
+<div class="math notranslate nohighlight">
+\[
+f_{X\mid Y}(x\mid y) = \frac{f_{X,Y}(x,y)}{f_Y(y)}  = f_X(x)
+\]</div>
+<p>which can be interpreted as “knowing any information about <span class="math notranslate nohighlight">\(Y=y\)</span> does not change our knowledge of <span class="math notranslate nohighlight">\(X\)</span>”. If this is false then the two random variables are not independent.</p>
 </div>
 </div>
 <div class="section" id="comparison">
 <h2>Comparison<a class="headerlink" href="#comparison" title="Permalink to this headline">¶</a></h2>
-<p>Does correlation imply dependence? Or vice versa?</p>
+<div class="section" id="independent-rightarrow-uncorrelated">
+<h3>Independent <span class="math notranslate nohighlight">\(\Rightarrow\)</span> Uncorrelated<a class="headerlink" href="#independent-rightarrow-uncorrelated" title="Permalink to this headline">¶</a></h3>
+<p>If two random variables are independent, then <span class="math notranslate nohighlight">\(\operatorname{E}\left( XY \right) = \operatorname{E}\left( X \right) \operatorname{E}\left( Y \right)\)</span>, <span class="math notranslate nohighlight">\(\operatorname{Cov}\left( X,Y \right) = 0\)</span>, i.e., they are uncorrelated.</p>
+</div>
+<div class="section" id="uncorrelated-not-rightarrow-independent">
+<h3>Uncorrelated <span class="math notranslate nohighlight">\(\not \Rightarrow\)</span> Independent<a class="headerlink" href="#uncorrelated-not-rightarrow-independent" title="Permalink to this headline">¶</a></h3>
+<p>If <span class="math notranslate nohighlight">\(\operatorname{Cov}\left( X,Y \right) = 0\)</span>, then we CAN NOT say they are independent.</p>
+<p>For instance, let <span class="math notranslate nohighlight">\(X\sim U(-1,1)\)</span> and <span class="math notranslate nohighlight">\(Y = \left\vert X \right\vert\)</span>. Then <span class="math notranslate nohighlight">\(Y\)</span> is completely dependent on <span class="math notranslate nohighlight">\(X\)</span>, but</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+\operatorname{Cov}\left( X, Y \right)  
+&amp;= \operatorname{E}\left( XY \right) - \operatorname{E}\left( X \right) \operatorname{E}\left( Y \right)   \\
+&amp;= \operatorname{E}\left( X \left\vert X \right\vert \right) - \operatorname{E}\left( X \right) \operatorname{E}\left( \left\vert X \right\vert \right)\\
+&amp;= \operatorname{E}\left( X^2 \right)\cdot \frac{1}{2} + \operatorname{E}\left( -X^2 \right)\cdot \frac{1}{2} - 0 \cdot \frac{1}{2} \\
+&amp; = 0
+\end{align}\end{split}\]</div>
+<p>so that <span class="math notranslate nohighlight">\(\rho(X,Y) = 0\)</span></p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<ul class="simple">
+<li><p>One special case is bivariate normal distribution. If two variables <span class="math notranslate nohighlight">\(X,Y\)</span> follows a bivariate normal distribution, then <span class="math notranslate nohighlight">\(\operatorname{Cov}\left( X,Y \right) = 0\)</span> implies their independence. However, this does not hold for two arbitrary normal variables. See __.</p></li>
+<li><p>For two random variables, if their mutual information is 0, then they are independent. See __.</p></li>
+</ul>
+</div>
+</div>
 </div>
 <div class="section" id="simpson-s-paradox">
 <h2>Simpson’s Paradox<a class="headerlink" href="#simpson-s-paradox" title="Permalink to this headline">¶</a></h2>
@@ -570,8 +740,8 @@ p_2 &amp;= \mathrm{P}(\text{raining on either Saturday or Sunday})  \\
  &amp; \in [\vert p-q\vert, \min(p+q, 2-p-q)]
 \end{align}\end{split}\]</div>
 </div>
-<div class="section" id="expected-value-of-maximum-of-two-uniform-random-variables">
-<h3>Expected Value of Maximum of Two Uniform Random Variables<a class="headerlink" href="#expected-value-of-maximum-of-two-uniform-random-variables" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="expected-value-of-the-maximum-of-two-uniform-random-variables">
+<h3>Expected Value of the Maximum of Two Uniform Random Variables<a class="headerlink" href="#expected-value-of-the-maximum-of-two-uniform-random-variables" title="Permalink to this headline">¶</a></h3>
 <p><em>Suppose <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span> are two uniformly distributed random variables over the interval <span class="math notranslate nohighlight">\([0,1]\)</span>. What is the expected value <span class="math notranslate nohighlight">\(\mathrm{E}[\max(X,Y)]\)</span>?</em></p>
 <p>Let <span class="math notranslate nohighlight">\(Z=\max(X,Y)\)</span>. Since there is no dependence specified, we start from the special cases.</p>
 <ul>
@@ -637,6 +807,26 @@ p_2 &amp;= \mathrm{P}(\text{raining on either Saturday or Sunday})  \\
 </li>
 </ul>
 <p>It seems that the range is <span class="math notranslate nohighlight">\([\frac{1}{2}, \frac{3}{4}]\)</span>.</p>
+</div>
+<div class="section" id="lower-bound-of-correlation-for-iid">
+<h3>Lower Bound of Correlation for IID<a class="headerlink" href="#lower-bound-of-correlation-for-iid" title="Permalink to this headline">¶</a></h3>
+<p>Suppose <span class="math notranslate nohighlight">\(X_1, X_2, \ldots, X_n\)</span> where <span class="math notranslate nohighlight">\(n\ge 2\)</span> are IID variables with common pairwise correlation <span class="math notranslate nohighlight">\(\rho = \operatorname{Corr}\left( X_i, X_j \right)\)</span> for <span class="math notranslate nohighlight">\(i\ne j\)</span>. What is the lower bound of <span class="math notranslate nohighlight">\(r\)</span> and when is it obtained?</p>
+<p><em><strong>Solution</strong></em></p>
+<p>Since</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+\operatorname{Var}\left( \sum_i X_i \right)
+&amp;= \sum_i \operatorname{Var}\left( X_i \right) + \sum_{i=1}^n \sum_{j\ne i}^n \operatorname{Cov}\left( X_i, X_j \right) \\
+&amp;= n \sigma^2 + n(n-1)\rho\sigma^2 \\
+\ge 0 \\
+\end{align}\end{split}\]</div>
+<p>we have</p>
+<div class="math notranslate nohighlight">
+\[
+\rho \ge - \frac{1}{n-1}
+\]</div>
+<p>if <span class="math notranslate nohighlight">\(\sigma^2 &gt; 0\)</span>, otherwise <span class="math notranslate nohighlight">\(\rho\)</span> is undefined.</p>
+<p>The lower bound is obtained iff <span class="math notranslate nohighlight">\(\operatorname{Var}\left( \sum_i X_i \right) = 0\)</span>, i.e., <span class="math notranslate nohighlight">\(\sum_i X_i = \text{constant}\)</span> almost surely.</p>
 </div>
 </div>
 </div>

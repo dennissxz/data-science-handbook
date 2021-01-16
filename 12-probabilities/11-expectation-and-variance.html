@@ -458,6 +458,11 @@
      Chebyshev’s Inequality
     </a>
    </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#covariance-and-variances">
+     Covariance and Variances
+    </a>
+   </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -506,7 +511,7 @@
 &amp; \text{Mean} &amp; \mu &amp;= \sum_{i=1}^n x_i p(x_i) \text{ or } \int_{\mathcal{X}} x f(x) \mathrm{~d}x &amp;  \bar x &amp;= \frac{1}{n}\sum_i x_i  \\
 &amp; \text{Variance} &amp; \sigma^2 &amp;= \operatorname{E}\left[ \left( X-\mu \right)^2 \right]  &amp; s^2 &amp;= \frac{1}{n}\sum_i(x_i - \bar x)^2\\
 &amp; \text{Standard deviation}  &amp; \sigma &amp;= \sqrt{\operatorname{E}\left[ \left( X-\mu \right)^2 \right]}  &amp; s &amp;= \sqrt{\frac{1}{n}\sum_i(x_i - \bar x)^2} \\
-&amp; \text{Covariance}  &amp; \sigma_{X,Y}^2 &amp;= \operatorname{E}\left[ (X-\mu_X)(Y-\mu_Y) \right] &amp; s_{X,Y}^2 &amp;= \frac{1}{n}\sum_i \left[ (x_i - \bar x)(y_i - \bar y) \right]
+&amp; \text{Covariance}  &amp; \sigma_{X,Y} &amp;= \operatorname{E}\left[ (X-\mu_X)(Y-\mu_Y) \right] &amp; s_{X,Y} &amp;= \frac{1}{n}\sum_i \left[ (x_i - \bar x)(y_i - \bar y) \right]
 \end{align}\end{split}\]</div>
 <p>Also recall the definitions of conditional expectation and conditional variance:</p>
 <div class="math notranslate nohighlight">
@@ -517,8 +522,8 @@
 \operatorname{Var}\left( X \mid Y=y \right)
  &amp;= \operatorname{E}\left[ (X-\mu_{X\mid Y=y})^{2} \mid Y=y \right] \\
 \end{align}\end{split}\]</div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
 <ul class="simple">
 <li><p>The notation <span class="math notranslate nohighlight">\(X \mid Y=y\)</span> means that <span class="math notranslate nohighlight">\(Y=y\)</span> is observed. In this case, the conditional expectation (variance) is a function of the observed value <span class="math notranslate nohighlight">\(y\)</span>, i.e., <span class="math notranslate nohighlight">\(\operatorname{E}(X \mid Y=y) = g(y)\)</span>, which itself is a constant.</p></li>
 <li><p>The notation <span class="math notranslate nohighlight">\(X \mid Y\)</span> means that <span class="math notranslate nohighlight">\(Y\)</span> is a random variable and has not been observed yet. In this case, the conditional expectation (variance) is a function of the random variable <span class="math notranslate nohighlight">\(Y\)</span>, i.e. <span class="math notranslate nohighlight">\(\operatorname{E}(X \mid Y) = g(Y)\)</span>, which itself is a random variable.</p></li>
@@ -542,6 +547,14 @@
 \operatorname{Cov}\left( X, Y+Z \right) &amp;= \operatorname{Cov}\left( X, Y \right) + \operatorname{Cov}\left( X, Z \right) \\
 \operatorname{Cov}\left( aX, bY \right) &amp;= ab \operatorname{Cov}\left( X, Y \right)
 \end{align}\end{split}\]</div>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>Be careful about the notation</p>
+<div class="math notranslate nohighlight">
+\[
+\sigma_X^2 = \operatorname{Var}\left( X \right) = \operatorname{Cov}\left( X, X \right) = \sigma_{X,X}
+\]</div>
+</div>
 <p>If <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span> are independent,</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
@@ -611,34 +624,35 @@
 \[
 \operatorname{E}\left( X \right) = \int_{0}^{\infty} \operatorname{P}(X \geq x) \mathrm{~d} x
 \]</div>
-<p><em>Proof</em></p>
+<p><em><strong>Proof</strong></em></p>
 <p>We prove by changing the <strong>order</strong> of summation/integral.</p>
-<ul class="simple">
-<li><p>discrete case</p></li>
-</ul>
+<ul>
+<li><p>discrete case</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
-\sum_{n=0}^{\infty} \operatorname{P}\left( X&gt;n \right)
-&amp;= \sum_{n=0}^{\infty} \sum_{k=n+1}^{\infty} \operatorname{P}\left( X=k \right) \\
-&amp;= \sum_{k=1}^{\infty} \sum_{n=1}^k \operatorname{P}\left( X=k \right) \\
-&amp;= \sum_{k=1}^{\infty} k \operatorname{P}\left( X=k \right) \\
-&amp;= \sum_{k=0}^{\infty} k \operatorname{P}\left( X=k \right) \\
-&amp;= \operatorname{E}\left( X \right)
-\end{align}\end{split}\]</div>
-<ul class="simple">
-<li><p>continuous case</p></li>
-</ul>
+  \sum_{n=0}^{\infty} \operatorname{P}\left( X&gt;n \right)
+  &amp;= \sum_{n=0}^{\infty} \sum_{k=n+1}^{\infty} \operatorname{P}\left( X=k \right) \\
+  &amp;= \sum_{k=1}^{\infty} \sum_{n=1}^k \operatorname{P}\left( X=k \right) \\
+  &amp;= \sum_{k=1}^{\infty} k \operatorname{P}\left( X=k \right) \\
+  &amp;= \sum_{k=0}^{\infty} k \operatorname{P}\left( X=k \right) \\
+  &amp;= \operatorname{E}\left( X \right)
+  \end{align}\end{split}\]</div>
+</li>
+<li><p>continuous case</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
-\begin{aligned}
-\int_{0}^{\infty} \operatorname{P}(X \ge x) \mathrm{~d} x
-&amp;=\int_{0}^{\infty} \int_{x}^{\infty} f_{X}(y) \mathrm{~d} y \mathrm{~d} x \\
-&amp;=\int_{0}^{\infty} \int_{0}^{y} f_{X}(y) \mathrm{~d} x \mathrm{~d} y \\
-&amp;=\int_{0}^{\infty} f_{X}(y) \int_{0}^{y} 1 \mathrm{~d} x \mathrm{~d} y \\
-&amp;=\int_{0}^{\infty} y f_{X}(y) \mathrm{~d} y \\
-&amp;=\operatorname{E}\left( X \right)
-\end{aligned}
-\end{split}\]</div>
+  \begin{aligned}
+  \int_{0}^{\infty} \operatorname{P}(X \ge x) \mathrm{~d} x
+  &amp;=\int_{0}^{\infty} \int_{x}^{\infty} f_{X}(y) \mathrm{~d} y \mathrm{~d} x \\
+  &amp;=\int_{0}^{\infty} \int_{0}^{y} f_{X}(y) \mathrm{~d} x \mathrm{~d} y \\
+  &amp;=\int_{0}^{\infty} f_{X}(y) \int_{0}^{y} 1 \mathrm{~d} x \mathrm{~d} y \\
+  &amp;=\int_{0}^{\infty} y f_{X}(y) \mathrm{~d} y \\
+  &amp;=\operatorname{E}\left( X \right)
+  \end{aligned}
+  \end{split}\]</div>
+<p><span class="math notranslate nohighlight">\(\square\)</span></p>
+</li>
+</ul>
 </div>
 <div class="section" id="law-of-total-expectation">
 <h3>Law of Total Expectation<a class="headerlink" href="#law-of-total-expectation" title="Permalink to this headline">¶</a></h3>
@@ -666,7 +680,7 @@
 \[
 \operatorname{E}(X)=\operatorname{E}\left(X \mid X&gt;0\right) \operatorname{P}\left(X&gt;0\right) + \operatorname{E}\left(X \mid X&lt;0\right) \operatorname{P}\left(X&lt;0\right)
 \]</div>
-<p><em>Proof</em></p>
+<p><em><strong>Proof</strong></em></p>
 <p>By definition</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -679,6 +693,7 @@
 &amp;=\operatorname{E}(X)
 \end{aligned}
 \end{split}\]</div>
+<p><span class="math notranslate nohighlight">\(\square\)</span></p>
 </div>
 <div class="section" id="law-of-total-variance">
 <h3>Law of Total Variance<a class="headerlink" href="#law-of-total-variance" title="Permalink to this headline">¶</a></h3>
@@ -692,7 +707,7 @@
 <p>Here both <span class="math notranslate nohighlight">\(\operatorname{Var}\left( X \mid Y \right)\)</span> and <span class="math notranslate nohighlight">\(\operatorname{E}\left( X \mid Y \right)\)</span> are random. The outside expectation and variance are taken w.r.t. the conditioned variable, <span class="math notranslate nohighlight">\(Y\)</span>.</p>
 </div>
 <p>The first and the second term can be interpreted as the unexplained and the explained components of the variance of <span class="math notranslate nohighlight">\(X\)</span> by knowing <span class="math notranslate nohighlight">\(Y\)</span>. Imagine that there is a deterministic relation <span class="math notranslate nohighlight">\(X=f(Y)\)</span>, then <span class="math notranslate nohighlight">\(\operatorname{Var}\left( X \mid Y \right) = 0\)</span> so that the first term is 0, and the second term becomes <span class="math notranslate nohighlight">\(\operatorname{Var}\left(  f(Y) \right) = \operatorname{Var}\left( X \right)\)</span>.</p>
-<p><em>Proof</em></p>
+<p><em><strong>Proof</strong></em></p>
 <p>Note that the relation <span class="math notranslate nohighlight">\(\operatorname{Var}\left( X \right) = \operatorname{E}\left( X^2 \right) - \left[ \operatorname{E}\left( X \right) \right]^2\)</span> holds in a similar fashion when conditioning on <span class="math notranslate nohighlight">\(Y\)</span></p>
 <div class="math notranslate nohighlight">
 \[
@@ -714,6 +729,7 @@
 &amp;=  \operatorname{E}\left\{ \operatorname{Var}\left( X \mid Y \right) + \left[ \operatorname{E}\left( X \mid Y\right) \right]^2  \right\} - \left\{ \operatorname{E}\left[ \operatorname{E}\left( X\mid Y \right) \right] \right\}^2\\
 &amp;= \operatorname{E}[\operatorname{Var}(X \mid Y)]+\operatorname{Var}(\operatorname{E}[X \mid Y])
 \end{align}\end{split}\]</div>
+<p><span class="math notranslate nohighlight">\(\square\)</span></p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>From above we see that the identity that holds for expectation</p>
@@ -735,33 +751,36 @@
 <p>There are two important inequalities that connect probability, expectation and variance.</p>
 <div class="section" id="markov-s-inequality">
 <h3>Markov’s Inequality<a class="headerlink" href="#markov-s-inequality" title="Permalink to this headline">¶</a></h3>
-<p>Markov’s inequality upper bounds right-tail probability <span class="math notranslate nohighlight">\(\operatorname{P}\left( X\ge a \right)\)</span> by expectation <span class="math notranslate nohighlight">\(\operatorname{E}\left( \frac{X}{a} \right)\)</span>.</p>
+<p>Markov’s inequality upper bounds right-tail probability <span class="math notranslate nohighlight">\(\operatorname{P}\left( X\ge a \right)\)</span> by <span class="math notranslate nohighlight">\(\frac{1}{a} \operatorname{E}\left( X \right)\)</span>.</p>
 <p>For a nonnegative random variable <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(a&gt;0\)</span>,</p>
 <div class="math notranslate nohighlight">
 \[
 \operatorname{P}(X \geq a) \leq \frac{\operatorname{E}(X)}{a}
 \]</div>
-<p><em>Proof</em></p>
-<ul class="simple">
-<li><p>By the law of total expectation, and since <span class="math notranslate nohighlight">\(\operatorname{E}(X \mid X&lt;a)\ge0\)</span> and <span class="math notranslate nohighlight">\(\operatorname{E}(X \mid X \geq a)\ge a\)</span>, we have</p></li>
-</ul>
+<p>A simple way to memorize this is: <span class="math notranslate nohighlight">\(\operatorname{P}\left( \frac{X}{a} \ge 1 \right ) \le \operatorname{E}\left( \frac{X}{a}  \right)\)</span></p>
+<p><em><strong>Proof</strong></em></p>
+<ul>
+<li><p>By the law of total expectation, and since <span class="math notranslate nohighlight">\(\operatorname{E}(X \mid X&lt;a)\ge0\)</span> and <span class="math notranslate nohighlight">\(\operatorname{E}(X \mid X \geq a)\ge a\)</span>, we have</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
-\operatorname{E}(X) &amp; =  \operatorname{E}(X \mid X&lt;a) \cdot \operatorname{P}(X&lt;a) +  \operatorname{E}(X \mid X \geq a) \cdot \operatorname{P}(X \geq a)\\
-&amp; \ge 0 \cdot \operatorname{P}(X&lt;a) +\operatorname{E}(X \mid X \geq a) \cdot \operatorname{P}(X \geq a) \\
-&amp; \geq a \cdot \operatorname{P}(X \geq a)
-\end{align}\end{split}\]</div>
-<ul class="simple">
-<li><p>By the definition of expectation,</p></li>
-</ul>
+    \operatorname{E}(X) &amp; =  \operatorname{E}(X \mid X&lt;a) \cdot \operatorname{P}(X&lt;a) +  \operatorname{E}(X \mid X \geq a) \cdot \operatorname{P}(X \geq a)\\
+    &amp; \ge 0 \cdot \operatorname{P}(X&lt;a) +\operatorname{E}(X \mid X \geq a) \cdot \operatorname{P}(X \geq a) \\
+    &amp; \geq a \cdot \operatorname{P}(X \geq a)
+    \end{align}\end{split}\]</div>
+<p><span class="math notranslate nohighlight">\(\square\)</span></p>
+</li>
+<li><p>By the definition of expectation,</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
-\operatorname{E}(X) &amp;= \int_{0}^{a} x f(x) \mathrm{~d} x+\int_{a}^{\infty} x f(x) \mathrm{~d} x \\
-&amp; \geq \int_{a}^{\infty} x f(x) \mathrm{~d} x \\
-&amp; \geq \int_{a}^{\infty} a f(x) \mathrm{~d} x \\
-&amp; =a \int_{a}^{\infty} f(x) \mathrm{~d} x \\
-&amp;=a \operatorname{P}(X \geq a)
-\end{align}\end{split}\]</div>
+    \operatorname{E}(X) &amp;= \int_{0}^{a} x f(x) \mathrm{~d} x+\int_{a}^{\infty} x f(x) \mathrm{~d} x \\
+    &amp; \geq \int_{a}^{\infty} x f(x) \mathrm{~d} x \\
+    &amp; \geq \int_{a}^{\infty} a f(x) \mathrm{~d} x \\
+    &amp; =a \int_{a}^{\infty} f(x) \mathrm{~d} x \\
+    &amp;=a \operatorname{P}(X \geq a)
+    \end{align}\end{split}\]</div>
+<p><span class="math notranslate nohighlight">\(\square\)</span></p>
+</li>
+</ul>
 </div>
 <div class="section" id="chebyshev-s-inequality">
 <h3>Chebyshev’s Inequality<a class="headerlink" href="#chebyshev-s-inequality" title="Permalink to this headline">¶</a></h3>
@@ -776,7 +795,7 @@
 \[
 \operatorname{P}\left( \mu - \sqrt{2}\sigma \le X \le \mu - \sqrt{2}\sigma \right) &gt; \frac{1}{2}
 \]</div>
-<p><em>Proof</em></p>
+<p><em><strong>Proof</strong></em></p>
 <p>By the law of total expectation,</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
@@ -786,6 +805,42 @@
 &amp; \geq(k \sigma)^{2} \operatorname{P}\left( k \sigma \leq|X-\mu| \right)+0 \cdot \operatorname{P}\left( k \sigma&gt;|X-\mu| \right) \\
 &amp;=k^{2} \sigma^{2} \operatorname{P}[k \sigma \leq|X-\mu|]
 \end{align}\end{split}\]</div>
+<p><span class="math notranslate nohighlight">\(\square\)</span></p>
+</div>
+<div class="section" id="covariance-and-variances">
+<h3>Covariance and Variances<a class="headerlink" href="#covariance-and-variances" title="Permalink to this headline">¶</a></h3>
+<p>For two random variables <span class="math notranslate nohighlight">\(X, Y\)</span> we have</p>
+<div class="math notranslate nohighlight">
+\[
+\left[ \operatorname{Cov}\left( X,Y \right) \right]^2 \le \operatorname{Var}\left( X \right) \operatorname{Var}\left( Y \right)
+\]</div>
+<p>The equality holds iff there is a deterministic linear relation between <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span>, <span class="math notranslate nohighlight">\(Y = aX + b\)</span>.</p>
+<p><em><strong>Proof</strong></em></p>
+<p>Recall the Cauchy-Schewarz inequality for vectors <span class="math notranslate nohighlight">\(\boldsymbol{u}, \boldsymbol{v}\)</span> of an innver product space,</p>
+<div class="math notranslate nohighlight">
+\[
+|\langle\mathbf{u}, \mathbf{v}\rangle|^{2} \leq\langle\mathbf{u}, \mathbf{u}\rangle \cdot\langle\mathbf{v}, \mathbf{v}\rangle
+\]</div>
+<p>Define an inner product on the set of random variables using the expectation of their product</p>
+<div class="math notranslate nohighlight">
+\[
+\langle X, Y\rangle:=\mathrm{E}(X Y)
+\]</div>
+<p>Then the Cauchy-Schewrz inequality becomes</p>
+<div class="math notranslate nohighlight">
+\[
+|\mathrm{E}(X Y)|^{2} \leq \mathrm{E}\left(X^{2}\right) \mathrm{E}\left(Y^{2}\right)
+\]</div>
+<p>Substituting <span class="math notranslate nohighlight">\(X\)</span> by <span class="math notranslate nohighlight">\(X-\mu_X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span> by <span class="math notranslate nohighlight">\(Y-\mu_Y\)</span> gives</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+|\operatorname{Cov}(X, Y)|^{2} &amp;=\left\vert \mathrm{E}\left[ (X-\mu_X)(Y-\mu_Y) \right] \right\vert^{2} \\
+&amp;\le \mathrm{E}\left[ (X-\mu_X)^{2} \right] \mathrm{E}\left[ (Y-\mu_Y)^2\right]\\
+&amp;=\operatorname{Var}(X) \operatorname{Var}(Y)
+\end{aligned}
+\end{split}\]</div>
+<p><span class="math notranslate nohighlight">\(\square\)</span></p>
 </div>
 </div>
 <div class="section" id="exercise">
