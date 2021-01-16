@@ -154,6 +154,11 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="90-multivariate-notations.html">
+     Multivariate Notations
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="91-large-sample-theory.html">
      Large Sample Theory
     </a>
@@ -297,23 +302,18 @@
 </p>
 <ul class="nav sidenav_l1">
  <li class="toctree-l1">
-  <a class="reference internal" href="../30-machine-learning-concepts/00-intro-ml.html">
-   Introduction to Machine Learning
+  <a class="reference internal" href="../30-basic-concepts/00-basic-concepts.html">
+   Basic Concepts
   </a>
  </li>
  <li class="toctree-l1 collapsible-parent">
-  <a class="reference internal" href="../31-regression/00-intro-reg.html">
+  <a class="reference internal" href="../31-regression/00-regression.html">
    Regression
   </a>
   <ul class="collapse-ul">
    <li class="toctree-l2">
     <a class="reference internal" href="../31-regression/11-linear-models.html">
      Linear Models
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../31-regression/12-generalized-linear-models.html">
-     Generalized Linear Models
     </a>
    </li>
   </ul>
@@ -471,21 +471,24 @@
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#successive-heads">
-     Successive Heads
+    <a class="reference internal nav-link" href="#coin-flips-count-trials">
+     Coin Flips - Count Trials
     </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#sol-1-law-of-total-expectation">
-       Sol.1 Law of Total Expectation
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#sol-2-recurrence-relation">
-       Sol.2 Recurrence Relation
-      </a>
-     </li>
-    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#coin-flips-count-rows">
+     Coin Flips - Count Rows
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#coin-flips-count-runs">
+     Coin Flips - Count Runs
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#incremental-update-of-mean-and-variance">
+     Incremental Update of Mean and Variance
+    </a>
    </li>
   </ul>
  </li>
@@ -522,11 +525,11 @@
 \operatorname{Var}\left( X \mid Y=y \right)
  &amp;= \operatorname{E}\left[ (X-\mu_{X\mid Y=y})^{2} \mid Y=y \right] \\
 \end{align}\end{split}\]</div>
-<div class="admonition attention">
-<p class="admonition-title">Attention</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
 <ul class="simple">
 <li><p>The notation <span class="math notranslate nohighlight">\(X \mid Y=y\)</span> means that <span class="math notranslate nohighlight">\(Y=y\)</span> is observed. In this case, the conditional expectation (variance) is a function of the observed value <span class="math notranslate nohighlight">\(y\)</span>, i.e., <span class="math notranslate nohighlight">\(\operatorname{E}(X \mid Y=y) = g(y)\)</span>, which itself is a constant.</p></li>
-<li><p>The notation <span class="math notranslate nohighlight">\(X \mid Y\)</span> means that <span class="math notranslate nohighlight">\(Y\)</span> is a random variable and has not been observed yet. In this case, the conditional expectation (variance) is a function of the random variable <span class="math notranslate nohighlight">\(Y\)</span>, i.e. <span class="math notranslate nohighlight">\(\operatorname{E}(X \mid Y) = g(Y)\)</span>, which itself is a random variable.</p></li>
+<li><p>The notation <span class="math notranslate nohighlight">\(X \mid Y\)</span> means that <span class="math notranslate nohighlight">\(Y\)</span> is a random variable and has not been observed yet. In this case, the conditional expectation (variance) is a function of the random variable <span class="math notranslate nohighlight">\(Y\)</span>, i.e., <span class="math notranslate nohighlight">\(\operatorname{E}(X \mid Y) = g(Y)\)</span>, which itself is a random variable.</p></li>
 </ul>
 </div>
 </div>
@@ -547,9 +550,9 @@
 \operatorname{Cov}\left( X, Y+Z \right) &amp;= \operatorname{Cov}\left( X, Y \right) + \operatorname{Cov}\left( X, Z \right) \\
 \operatorname{Cov}\left( aX, bY \right) &amp;= ab \operatorname{Cov}\left( X, Y \right)
 \end{align}\end{split}\]</div>
-<div class="admonition attention">
-<p class="admonition-title">Attention</p>
-<p>Be careful about the notation</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Be careful about the notations <span class="math notranslate nohighlight">\(\sigma_X ^2\)</span> and <span class="math notranslate nohighlight">\(\sigma_{X,X}\)</span></p>
 <div class="math notranslate nohighlight">
 \[
 \sigma_X^2 = \operatorname{Var}\left( X \right) = \operatorname{Cov}\left( X, X \right) = \sigma_{X,X}
@@ -845,35 +848,40 @@
 </div>
 <div class="section" id="exercise">
 <h2>Exercise<a class="headerlink" href="#exercise" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="successive-heads">
-<h3>Successive Heads<a class="headerlink" href="#successive-heads" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="coin-flips-count-trials">
+<h3>Coin Flips - Count Trials<a class="headerlink" href="#coin-flips-count-trials" title="Permalink to this headline">¶</a></h3>
 <p><em>What is the expected number of coin flips to get two heads in a row?</em></p>
-<div class="section" id="sol-1-law-of-total-expectation">
-<h4>Sol.1 Law of Total Expectation<a class="headerlink" href="#sol-1-law-of-total-expectation" title="Permalink to this headline">¶</a></h4>
-<p>Denote the required number of flips by <span class="math notranslate nohighlight">\(X\)</span>. We can partition the sample space into <strong>three</strong> parts:</p>
+<details class="sphinx-bs dropdown card mb-3">
+<summary class="summary-title card-header">
+Solution 1: Law of Total Expectation<div class="summary-down docutils">
+<svg version="1.1" width="24" height="24" class="octicon octicon-chevron-down" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M5.22 8.72a.75.75 0 000 1.06l6.25 6.25a.75.75 0 001.06 0l6.25-6.25a.75.75 0 00-1.06-1.06L12 14.44 6.28 8.72a.75.75 0 00-1.06 0z"></path></svg></div>
+<div class="summary-up docutils">
+<svg version="1.1" width="24" height="24" class="octicon octicon-chevron-up" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M18.78 15.28a.75.75 0 000-1.06l-6.25-6.25a.75.75 0 00-1.06 0l-6.25 6.25a.75.75 0 101.06 1.06L12 9.56l5.72 5.72a.75.75 0 001.06 0z"></path></svg></div>
+</summary><div class="summary-content card-body docutils">
+<p class="card-text">Denote the required number of flips by <span class="math notranslate nohighlight">\(X\)</span>. We can partition the sample space into <strong>three</strong> parts:</p>
 <ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(A_T\)</span>: the first flip is a tail</p></li>
-<li><p><span class="math notranslate nohighlight">\(A_{HT}\)</span>: the first two flips are head, tail</p></li>
-<li><p><span class="math notranslate nohighlight">\(A_{HH}\)</span>: the first two flips are head, head</p></li>
+<li><p class="card-text"><span class="math notranslate nohighlight">\(A_T\)</span>: the first flip is a tail</p></li>
+<li><p class="card-text"><span class="math notranslate nohighlight">\(A_{HT}\)</span>: the first two flips are head, tail</p></li>
+<li><p class="card-text"><span class="math notranslate nohighlight">\(A_{HH}\)</span>: the first two flips are head, head</p></li>
 </ul>
-<p>It’s easy to see</p>
+<p class="card-text">It’s easy to see</p>
 <div class="math notranslate nohighlight">
 \[
 \operatorname{P}\left( A_T \right) = \frac{1}{2}, \operatorname{P}\left( A_{HT} \right) = \operatorname{P}\left( A_{HH} \right) = \frac{1}{4}
 \]</div>
-<p>But what are <span class="math notranslate nohighlight">\(\operatorname{E}\left( X \mid A_T \right), \operatorname{E}\left( X \mid A_{HT} \right), \operatorname{E}\left( X \mid A_{HH} \right)\)</span>?</p>
+<p class="card-text">But what are <span class="math notranslate nohighlight">\(\operatorname{E}\left( X \mid A_T \right), \operatorname{E}\left( X \mid A_{HT} \right), \operatorname{E}\left( X \mid A_{HH} \right)\)</span>?</p>
 <ul class="simple">
-<li><p>If the first flip is T, then we start over, and waste 1 flip</p></li>
-<li><p>If the first two flips are HT, then we start over, and waste 2 flips</p></li>
-<li><p>If the first two flips are HH, then done! We use 2 flips</p></li>
+<li><p class="card-text">If the first flip is T, then we start over, and waste 1 flip</p></li>
+<li><p class="card-text">If the first two flips are HT, then we start over, and waste 2 flips</p></li>
+<li><p class="card-text">If the first two flips are HH, then done! We use 2 flips</p></li>
 </ul>
-<p>As a result, we have</p>
+<p class="card-text">As a result, we have</p>
 <ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(\operatorname{E}\left( X \mid A_T \right) = \operatorname{E}\left( X \right) + 1\)</span></p></li>
-<li><p><span class="math notranslate nohighlight">\(\operatorname{E}\left( X \mid A_{HT} \right) = \operatorname{E}\left( X \right)+ 2\)</span></p></li>
-<li><p><span class="math notranslate nohighlight">\(\operatorname{E}\left( X \mid A_{HH} \right) = 2\)</span></p></li>
+<li><p class="card-text"><span class="math notranslate nohighlight">\(\operatorname{E}\left( X \mid A_T \right) = \operatorname{E}\left( X \right) + 1\)</span></p></li>
+<li><p class="card-text"><span class="math notranslate nohighlight">\(\operatorname{E}\left( X \mid A_{HT} \right) = \operatorname{E}\left( X \right)+ 2\)</span></p></li>
+<li><p class="card-text"><span class="math notranslate nohighlight">\(\operatorname{E}\left( X \mid A_{HH} \right) = 2\)</span></p></li>
 </ul>
-<p>Then by the law of total expectation</p>
+<p class="card-text">Then by the law of total expectation</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{align}
@@ -886,12 +894,12 @@
  + 2 \cdot \frac{1}{4} \\
 \end{align}
 \end{split}\]</div>
-<p>Solving the equation gives <span class="math notranslate nohighlight">\(\operatorname{E}\left( X \right) = 6\)</span></p>
+<p class="card-text">Solving the equation gives <span class="math notranslate nohighlight">\(\operatorname{E}\left( X \right) = 6\)</span></p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>One may also partition the sample space to two parts <span class="math notranslate nohighlight">\({A_H}\)</span> and <span class="math notranslate nohighlight">\(A_T\)</span>, but to compute <span class="math notranslate nohighlight">\(\operatorname{E}\left( X \mid A_H \right)\)</span>, it requires to partition <span class="math notranslate nohighlight">\(A_H\)</span> into <span class="math notranslate nohighlight">\(A_{HT}\)</span> and <span class="math notranslate nohighlight">\(A_{HH}\)</span>, and then use the law of total expectation again, which is complicated and easy to make mistakes. So it would be better to partition <span class="math notranslate nohighlight">\(A\)</span> to three parts at the beginning.</p>
+<p class="card-text">One may also partition the sample space to two parts <span class="math notranslate nohighlight">\({A_H}\)</span> and <span class="math notranslate nohighlight">\(A_T\)</span>, but to compute <span class="math notranslate nohighlight">\(\operatorname{E}\left( X \mid A_H \right)\)</span>, it requires to partition <span class="math notranslate nohighlight">\(A_H\)</span> into <span class="math notranslate nohighlight">\(A_{HT}\)</span> and <span class="math notranslate nohighlight">\(A_{HH}\)</span>, and then use the law of total expectation again, which is complicated and easy to make mistakes. So it would be better to partition <span class="math notranslate nohighlight">\(A\)</span> to three parts at the beginning.</p>
 </div>
-<p>In general, what is the expected number of coin flips to get <span class="math notranslate nohighlight">\(n\)</span> heads in a row? In fact, we just need to continue to partition <span class="math notranslate nohighlight">\(A_{HH}\)</span> into <span class="math notranslate nohighlight">\(A_{HHT}\)</span> and <span class="math notranslate nohighlight">\(A_{HHH}\)</span>, and so on. By the law of total expectation the equation becomes</p>
+<p class="card-text">In general, what is the expected number of coin flips to get <span class="math notranslate nohighlight">\(n\)</span> heads in a row? In fact, we just need to continue to partition <span class="math notranslate nohighlight">\(A_{HH}\)</span> into <span class="math notranslate nohighlight">\(A_{HHT}\)</span> and <span class="math notranslate nohighlight">\(A_{HHH}\)</span>, and so on. By the law of total expectation the equation becomes</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \operatorname{E}\left( X_n \right)
@@ -901,16 +909,21 @@
  + \left[ \operatorname{E}\left( X_n \right) + n\right] \cdot \frac{1}{2^n}
  + n \cdot \frac{1}{2^n} \\
 \end{split}\]</div>
-<p>The solution is</p>
+<p class="card-text">The solution is</p>
 <div class="math notranslate nohighlight">
 \[
 \operatorname{E}\left( X_n \right) = 2 \left( 2^n-1 \right)
 \]</div>
 </div>
-<div class="section" id="sol-2-recurrence-relation">
-<h4>Sol.2 Recurrence Relation<a class="headerlink" href="#sol-2-recurrence-relation" title="Permalink to this headline">¶</a></h4>
-<p>One can also derive the solution from a recurrence relation between <span class="math notranslate nohighlight">\(\operatorname{E}\left( X_n \right)\)</span> and <span class="math notranslate nohighlight">\(\operatorname{E}\left( X_{n-1} \right)\)</span>.</p>
-<p>Let <span class="math notranslate nohighlight">\(Y_{n} = X_n - X_{n-1}\)</span> be the number of additional flips required to get <span class="math notranslate nohighlight">\(n\)</span> heads in a row, given that we already got <span class="math notranslate nohighlight">\(n-1\)</span> heads in a row. Then by the law of total expectation,</p>
+</details><details class="sphinx-bs dropdown card mb-3">
+<summary class="summary-title card-header">
+Solution 2: Recurrence Relation<div class="summary-down docutils">
+<svg version="1.1" width="24" height="24" class="octicon octicon-chevron-down" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M5.22 8.72a.75.75 0 000 1.06l6.25 6.25a.75.75 0 001.06 0l6.25-6.25a.75.75 0 00-1.06-1.06L12 14.44 6.28 8.72a.75.75 0 00-1.06 0z"></path></svg></div>
+<div class="summary-up docutils">
+<svg version="1.1" width="24" height="24" class="octicon octicon-chevron-up" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M18.78 15.28a.75.75 0 000-1.06l-6.25-6.25a.75.75 0 00-1.06 0l-6.25 6.25a.75.75 0 101.06 1.06L12 9.56l5.72 5.72a.75.75 0 001.06 0z"></path></svg></div>
+</summary><div class="summary-content card-body docutils">
+<p class="card-text">One can also derive the solution from a recurrence relation between <span class="math notranslate nohighlight">\(\operatorname{E}\left( X_n \right)\)</span> and <span class="math notranslate nohighlight">\(\operatorname{E}\left( X_{n-1} \right)\)</span>.</p>
+<p class="card-text">Let <span class="math notranslate nohighlight">\(Y_{n} = X_n - X_{n-1}\)</span> be the number of additional flips required to get <span class="math notranslate nohighlight">\(n\)</span> heads in a row, given that we already got <span class="math notranslate nohighlight">\(n-1\)</span> heads in a row. Then by the law of total expectation,</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{align}
@@ -920,16 +933,115 @@
 &amp;= 1 \cdot \frac{1}{2} + \left[ 1 + \operatorname{E}\left( X_n \right) \right] \cdot \frac{1}{2}
  \end{align}
 \end{split}\]</div>
-<p>Hence, we have the recurrence relation</p>
+<p class="card-text">Hence, we have the recurrence relation</p>
 <div class="math notranslate nohighlight">
 \[
 \operatorname{E}\left( X_n \right) = 2 \operatorname{E}\left( X_{n-1} \right) + 2
 \]</div>
-<p>Let <span class="math notranslate nohighlight">\(f(n) = \operatorname{E}\left( X_n\right) + 2\)</span> then we have <span class="math notranslate nohighlight">\(f(n) = 2f(n-1)\)</span>. Since <span class="math notranslate nohighlight">\(f(1) = \operatorname{E}\left( X_1 \right)+2 = 4\)</span>, we have <span class="math notranslate nohighlight">\(f(n) = 2^{n+1}\)</span>. Therefore,</p>
+<p class="card-text">Let <span class="math notranslate nohighlight">\(f(n) = \operatorname{E}\left( X_n\right) + 2\)</span> then we have <span class="math notranslate nohighlight">\(f(n) = 2f(n-1)\)</span>. Since <span class="math notranslate nohighlight">\(f(1) = \operatorname{E}\left( X_1 \right)+2 = 4\)</span>, we have <span class="math notranslate nohighlight">\(f(n) = 2^{n+1}\)</span>. Therefore,</p>
 <div class="math notranslate nohighlight">
 \[\operatorname{E}\left( X_n \right) = 2^{n+1}-2\]</div>
 </div>
+</details></div>
+<div class="section" id="coin-flips-count-rows">
+<h3>Coin Flips - Count Rows<a class="headerlink" href="#coin-flips-count-rows" title="Permalink to this headline">¶</a></h3>
+<p><em>What is the expected number of times to see <span class="math notranslate nohighlight">\(k\)</span> heads in a row, i.e., HH…HH, in <span class="math notranslate nohighlight">\(n\)</span> flips of a coin?</em></p>
+<details class="sphinx-bs dropdown card mb-3">
+<summary class="summary-title card-header">
+Solution<div class="summary-down docutils">
+<svg version="1.1" width="24" height="24" class="octicon octicon-chevron-down" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M5.22 8.72a.75.75 0 000 1.06l6.25 6.25a.75.75 0 001.06 0l6.25-6.25a.75.75 0 00-1.06-1.06L12 14.44 6.28 8.72a.75.75 0 00-1.06 0z"></path></svg></div>
+<div class="summary-up docutils">
+<svg version="1.1" width="24" height="24" class="octicon octicon-chevron-up" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M18.78 15.28a.75.75 0 000-1.06l-6.25-6.25a.75.75 0 00-1.06 0l-6.25 6.25a.75.75 0 101.06 1.06L12 9.56l5.72 5.72a.75.75 0 001.06 0z"></path></svg></div>
+</summary><div class="summary-content card-body docutils">
+<p class="card-text">In <span class="math notranslate nohighlight">\(n\)</span> flips of a coin, there are <span class="math notranslate nohighlight">\(n-k+1\)</span> places where the string HH…HH can start to appear, each with a (non-independent) probability <span class="math notranslate nohighlight">\(\frac{1}{2^k} \)</span> of happening. Let <span class="math notranslate nohighlight">\(X\)</span> be the number of times to see the string HH…HH, and <span class="math notranslate nohighlight">\(X_i\)</span> be the indicator variable that is <span class="math notranslate nohighlight">\(1\)</span> if the string starts to appear at the <span class="math notranslate nohighlight">\(i\)</span>-th flip, then</p>
+<div class="math notranslate nohighlight">
+\[
+X = \sum_{i=1}^{n-k+1} X_i
+\]</div>
+<p class="card-text">and hence</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+\operatorname{E}\left( X \right) &amp;= \operatorname{E}\left( \sum_{i=1}^{n-k+1} X_i \right)\\
+&amp;= \sum_{i=1}^{n-k+1} \operatorname{E}\left( X_i \right)\\
+&amp;= \frac{n-k+1}{2^k} \\
+\end{align}\end{split}\]</div>
+<p class="card-text">The first second last line holds even if <span class="math notranslate nohighlight">\(X_i\)</span>’s are not independent.</p>
 </div>
+</details></div>
+<div class="section" id="coin-flips-count-runs">
+<h3>Coin Flips - Count Runs<a class="headerlink" href="#coin-flips-count-runs" title="Permalink to this headline">¶</a></h3>
+<details class="sphinx-bs dropdown card mb-3">
+<summary class="summary-title card-header">
+Solution<div class="summary-down docutils">
+<svg version="1.1" width="24" height="24" class="octicon octicon-chevron-down" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M5.22 8.72a.75.75 0 000 1.06l6.25 6.25a.75.75 0 001.06 0l6.25-6.25a.75.75 0 00-1.06-1.06L12 14.44 6.28 8.72a.75.75 0 00-1.06 0z"></path></svg></div>
+<div class="summary-up docutils">
+<svg version="1.1" width="24" height="24" class="octicon octicon-chevron-up" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M18.78 15.28a.75.75 0 000-1.06l-6.25-6.25a.75.75 0 00-1.06 0l-6.25 6.25a.75.75 0 101.06 1.06L12 9.56l5.72 5.72a.75.75 0 001.06 0z"></path></svg></div>
+</summary><div class="summary-content card-body docutils">
+<p class="card-text">A coin with a probability <span class="math notranslate nohighlight">\(p\)</span> to get a head is flipped <span class="math notranslate nohighlight">\(n\)</span> times. A “run” is a maximal sequence of consecutive flips that are all the same. For instance, HTHHHTTH has five runs and <span class="math notranslate nohighlight">\(n=8\)</span>. What is the expected number of runs?</p>
+<p class="card-text">Let <span class="math notranslate nohighlight">\(X_i\)</span> be the indicator for the event that a run starts at the <span class="math notranslate nohighlight">\(i-th\)</span> toss. Let <span class="math notranslate nohighlight">\(X = \sum_i X_i\)</span> be the total number of runs. It is easy to see <span class="math notranslate nohighlight">\(\operatorname{E}\left( X_1 \right) = 1\)</span>. For <span class="math notranslate nohighlight">\(i&gt;1\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+\mathrm{E}\left(X_{i}\right)=&amp; \operatorname{P}\left(X_{i}=1\right) \\
+=&amp; \operatorname{P}\left(i \text { -th toss is } \mathrm{H} \mid(i-1) \text { -th toss is } \mathrm{T}\right) \times \operatorname{P}\left((i-1) \text { -th toss is } \mathrm{T}\right) \\
+&amp;+\operatorname{P}\left(i \text { -th toss is } \mathrm{T} \mid(i-1)\text {-th} \text { toss is } \mathrm{H}\right) \times \operatorname{P}\left((i-1)\text {-th } \text { toss is } \mathrm{H}\right) \\
+=&amp; p(1-p)+(1-p) p \\
+=&amp; 2 p(1-p)
+\end{aligned}
+\end{split}\]</div>
+<p class="card-text">Therefore,</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+\mathrm{E}(X) &amp;=\mathrm{E}\left(X_{1}+X_{2}+\cdots+X_{n}\right) \\
+&amp;=\mathrm{E}\left(X_{1}\right)+\mathrm{E}\left(X_{2}\right)+\cdots+\mathrm{E}\left(X_{n}\right) \\
+&amp;=\mathrm{E}\left(X_{1}\right)+\left[\mathrm{E}\left(X_{2}\right)+\cdots+\mathrm{E}\left(X_{n}\right)\right] \\
+&amp;=1+(n-1) \times 2 p(1-p) \\
+&amp;=1+2(n-1) p(1-p)
+\end{aligned}
+\end{split}\]</div>
+</div>
+</details></div>
+<div class="section" id="incremental-update-of-mean-and-variance">
+<h3>Incremental Update of Mean and Variance<a class="headerlink" href="#incremental-update-of-mean-and-variance" title="Permalink to this headline">¶</a></h3>
+<p><em>Suppose you have <span class="math notranslate nohighlight">\(n\)</span> observations <span class="math notranslate nohighlight">\(x_1, x_2, \ldots, x_n\)</span>. Now a new value <span class="math notranslate nohighlight">\(x_{n+1}\)</span> is observed. Write recurrence functions to update the sample mean <span class="math notranslate nohighlight">\(\bar{x}_n\)</span> and variance <span class="math notranslate nohighlight">\(s^2_n\)</span>.</em></p>
+<details class="sphinx-bs dropdown card mb-3">
+<summary class="summary-title card-header">
+Solution<div class="summary-down docutils">
+<svg version="1.1" width="24" height="24" class="octicon octicon-chevron-down" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M5.22 8.72a.75.75 0 000 1.06l6.25 6.25a.75.75 0 001.06 0l6.25-6.25a.75.75 0 00-1.06-1.06L12 14.44 6.28 8.72a.75.75 0 00-1.06 0z"></path></svg></div>
+<div class="summary-up docutils">
+<svg version="1.1" width="24" height="24" class="octicon octicon-chevron-up" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M18.78 15.28a.75.75 0 000-1.06l-6.25-6.25a.75.75 0 00-1.06 0l-6.25 6.25a.75.75 0 101.06 1.06L12 9.56l5.72 5.72a.75.75 0 001.06 0z"></path></svg></div>
+</summary><div class="summary-content card-body docutils">
+<p class="card-text">To update mean,</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+\bar{x}_{n+1}
+&amp;= \frac{\sum_{i=1}^{n+1} x_i}{n+1} \\
+&amp;= \frac{x_{n+1} + \sum_{i=1}^n x_i}{n+1} \\
+&amp;= \frac{x_{n+1} + n\bar{x}_n}{n+1} \\
+&amp;= \bar{x}_n + \frac{1}{n+1}(x_{n+1} - \bar{x}_n) \quad (*)
+\end{align}\end{split}\]</div>
+<p class="card-text">The last line is to avoid computing a large number <span class="math notranslate nohighlight">\(n \bar{x}_n\)</span>.</p>
+<p class="card-text">The second last line implies that the new sample mean <span class="math notranslate nohighlight">\(\bar{x}_{n+1}\)</span> is a weighted average of the current sample mean <span class="math notranslate nohighlight">\(\bar{x}_{n+1}\)</span> and the new observed value <span class="math notranslate nohighlight">\(x_{n+1}\)</span>.</p>
+<p class="card-text">To update variance, we first find <span class="math notranslate nohighlight">\(\bar{x}_n\)</span>, then let <span class="math notranslate nohighlight">\(S_n = ns_{n}^2\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+S_{n+1}
+&amp;=  \sum_{i=1}^{n+1}x_i^2  - (n+1) \bar{x}_{n+1}^2  \\
+&amp;=  \sum_{i=1}^{n}x_i^2 - n\bar{x}_n^2 + n\bar{x}_n^2 + x_{n+1}^2  - (n+1) \bar{x}_{n+1}^2  \\
+&amp;=  S_{n} + n\bar{x}_n^2 + x_{n+1}^2  - (n+1) \bar{x}_{n+1}^2  \\
+&amp;=  S_{n}  + x_{n+1}^2  + (n+1)(\bar{x}_n - \bar{x}_{n+1})(\bar{x}_n + \bar{x}_{n+1}) - \bar{x}_{n}^2  \\
+&amp;=  S_{n}  + x_{n+1}^2  + (\bar{x}_n - x_{n+1} )(\bar{x}_n + \bar{x}_{n+1}) - \bar{x}_{n}^2 \quad \text{by} \ (*) \\
+&amp;=  S_{n}  + x_{n+1}^2  + \bar{x}_n \bar{x}_{n+1} - x_{n+1} (\bar{x}_n + \bar{x}_{n+1}) \\
+&amp;=  S_{n}  + (x_{n+1}  - \bar{x}_n)(x_{n+1}  - \bar{x}_{n+1})
+\end{align}\end{split}\]</div>
+<p class="card-text">Finally <span class="math notranslate nohighlight">\(s_{n+1}^2 = \frac{1}{n+1} S_{n+1}\)</span>.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p class="card-text">The substitution <span class="math notranslate nohighlight">\(S_n = ns_n^2\)</span> avoids the computation that involves <span class="math notranslate nohighlight">\(\frac{1}{n} \)</span> and <span class="math notranslate nohighlight">\(\frac{1}{n+1} \)</span>. And the update equation of the mean is also quite useful.</p>
+</div>
+</div>
+</details></div>
 </div>
 </div>
 
