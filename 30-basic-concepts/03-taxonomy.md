@@ -172,3 +172,16 @@ Aka imputation.
 ## Reinforcement Learning
 
 ### Multi-agent Learning
+
+
+### Parametric vs Non-parametric Models
+
+- parametric models
+  - definition: have a fixed number of parameters
+  - pros: faster to use
+  - cons: stronger assumptions
+
+- non-parametric models
+  - definition: the number of parameters grow with the amount of training data
+  - pros: flexible
+  - cons: computationally intractable for large datasets

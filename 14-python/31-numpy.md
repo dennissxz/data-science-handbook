@@ -8,3 +8,7 @@
 ## `concatenate`, `vstack` and `hstack`
 
 ## `strides`
+
+## `empty`
+
+## `array` vs `asarray`
