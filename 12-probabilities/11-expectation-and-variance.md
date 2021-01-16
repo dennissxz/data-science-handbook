@@ -10,7 +10,7 @@ $$\begin{align}
 & \text{Mean} & \mu &= \sum_{i=1}^n x_i p(x_i) \text{ or } \int_{\mathcal{X}} x f(x) \mathrm{~d}x &  \bar x &= \frac{1}{n}\sum_i x_i  \\
 & \text{Variance} & \sigma^2 &= \operatorname{E}\left[ \left( X-\mu \right)^2 \right]  & s^2 &= \frac{1}{n}\sum_i(x_i - \bar x)^2\\
 & \text{Standard deviation}  & \sigma &= \sqrt{\operatorname{E}\left[ \left( X-\mu \right)^2 \right]}  & s &= \sqrt{\frac{1}{n}\sum_i(x_i - \bar x)^2} \\
-& \text{Covariance}  & \sigma_{X,Y}^2 &= \operatorname{E}\left[ (X-\mu_X)(Y-\mu_Y) \right] & s_{X,Y}^2 &= \frac{1}{n}\sum_i \left[ (x_i - \bar x)(y_i - \bar y) \right]
+& \text{Covariance}  & \sigma_{X,Y} &= \operatorname{E}\left[ (X-\mu_X)(Y-\mu_Y) \right] & s_{X,Y} &= \frac{1}{n}\sum_i \left[ (x_i - \bar x)(y_i - \bar y) \right]
 \end{align}$$
 
 
@@ -25,7 +25,7 @@ $$\begin{align}
 \end{align}$$
 
 
-```{note}
+```{attention}
 - The notation $X \mid Y=y$ means that $Y=y$ is observed. In this case, the conditional expectation (variance) is a function of the observed value $y$, i.e., $\operatorname{E}(X \mid Y=y) = g(y)$, which itself is a constant.
 - The notation $X \mid Y$ means that $Y$ is a random variable and has not been observed yet. In this case, the conditional expectation (variance) is a function of the random variable $Y$, i.e. $\operatorname{E}(X \mid Y) = g(Y)$, which itself is a random variable.
 ```
@@ -49,6 +49,14 @@ $$\begin{align}
 \operatorname{Cov}\left( aX, bY \right) &= ab \operatorname{Cov}\left( X, Y \right)
 \end{align}$$
 
+
+```{attention}
+Be careful about the notation
+
+$$
+\sigma_X^2 = \operatorname{Var}\left( X \right) = \operatorname{Cov}\left( X, X \right) = \sigma_{X,X}
+$$
+```
 
 If $X$ and $Y$ are independent,
 
@@ -127,37 +135,35 @@ $$
 \operatorname{E}\left( X \right) = \int_{0}^{\infty} \operatorname{P}(X \geq x) \mathrm{~d} x
 $$
 
-*Proof*
+***Proof***
 
 We prove by changing the **order** of summation/integral.
 
 - discrete case
 
-$$\begin{align}
-\sum_{n=0}^{\infty} \operatorname{P}\left( X>n \right)
-&= \sum_{n=0}^{\infty} \sum_{k=n+1}^{\infty} \operatorname{P}\left( X=k \right) \\
-&= \sum_{k=1}^{\infty} \sum_{n=1}^k \operatorname{P}\left( X=k \right) \\
-&= \sum_{k=1}^{\infty} k \operatorname{P}\left( X=k \right) \\
-&= \sum_{k=0}^{\infty} k \operatorname{P}\left( X=k \right) \\
-&= \operatorname{E}\left( X \right)
-\end{align}$$
+  $$\begin{align}
+  \sum_{n=0}^{\infty} \operatorname{P}\left( X>n \right)
+  &= \sum_{n=0}^{\infty} \sum_{k=n+1}^{\infty} \operatorname{P}\left( X=k \right) \\
+  &= \sum_{k=1}^{\infty} \sum_{n=1}^k \operatorname{P}\left( X=k \right) \\
+  &= \sum_{k=1}^{\infty} k \operatorname{P}\left( X=k \right) \\
+  &= \sum_{k=0}^{\infty} k \operatorname{P}\left( X=k \right) \\
+  &= \operatorname{E}\left( X \right)
+  \end{align}$$
 
 - continuous case
 
+  $$
+  \begin{aligned}
+  \int_{0}^{\infty} \operatorname{P}(X \ge x) \mathrm{~d} x
+  &=\int_{0}^{\infty} \int_{x}^{\infty} f_{X}(y) \mathrm{~d} y \mathrm{~d} x \\
+  &=\int_{0}^{\infty} \int_{0}^{y} f_{X}(y) \mathrm{~d} x \mathrm{~d} y \\
+  &=\int_{0}^{\infty} f_{X}(y) \int_{0}^{y} 1 \mathrm{~d} x \mathrm{~d} y \\
+  &=\int_{0}^{\infty} y f_{X}(y) \mathrm{~d} y \\
+  &=\operatorname{E}\left( X \right)
+  \end{aligned}
+  $$
 
-$$
-\begin{aligned}
-\int_{0}^{\infty} \operatorname{P}(X \ge x) \mathrm{~d} x
-&=\int_{0}^{\infty} \int_{x}^{\infty} f_{X}(y) \mathrm{~d} y \mathrm{~d} x \\
-&=\int_{0}^{\infty} \int_{0}^{y} f_{X}(y) \mathrm{~d} x \mathrm{~d} y \\
-&=\int_{0}^{\infty} f_{X}(y) \int_{0}^{y} 1 \mathrm{~d} x \mathrm{~d} y \\
-&=\int_{0}^{\infty} y f_{X}(y) \mathrm{~d} y \\
-&=\operatorname{E}\left( X \right)
-\end{aligned}
-$$
-
-
-
+  $\square$
 
 ### Law of Total Expectation
 
@@ -189,7 +195,7 @@ $$
 \operatorname{E}(X)=\operatorname{E}\left(X \mid X>0\right) \operatorname{P}\left(X>0\right) + \operatorname{E}\left(X \mid X<0\right) \operatorname{P}\left(X<0\right)
 $$
 
-*Proof*
+***Proof***
 
 By definition
 
@@ -203,6 +209,8 @@ $$
 &=\operatorname{E}(X)
 \end{aligned}
 $$
+
+$\square$
 
 ### Law of Total Variance
 
@@ -218,7 +226,7 @@ Here both $\operatorname{Var}\left( X \mid Y \right)$ and $\operatorname{E}\left
 
 The first and the second term can be interpreted as the unexplained and the explained components of the variance of $X$ by knowing $Y$. Imagine that there is a deterministic relation $X=f(Y)$, then $\operatorname{Var}\left( X \mid Y \right) = 0$ so that the first term is 0, and the second term becomes $\operatorname{Var}\left(  f(Y) \right) = \operatorname{Var}\left( X \right)$.
 
-*Proof*
+***Proof***
 
 Note that the relation $\operatorname{Var}\left( X \right) = \operatorname{E}\left( X^2 \right) - \left[ \operatorname{E}\left( X \right) \right]^2$ holds in a similar fashion when conditioning on $Y$
 
@@ -243,6 +251,8 @@ $$\begin{align}
 &=  \operatorname{E}\left\{ \operatorname{Var}\left( X \mid Y \right) + \left[ \operatorname{E}\left( X \mid Y\right) \right]^2  \right\} - \left\{ \operatorname{E}\left[ \operatorname{E}\left( X\mid Y \right) \right] \right\}^2\\
 &= \operatorname{E}[\operatorname{Var}(X \mid Y)]+\operatorname{Var}(\operatorname{E}[X \mid Y])
 \end{align}$$
+
+$\square$
 
 ```{warning}
 From above we see that the identity that holds for expectation
@@ -270,7 +280,7 @@ There are two important inequalities that connect probability, expectation and v
 
 ### Markov's Inequality
 
-Markov's inequality upper bounds right-tail probability $\operatorname{P}\left( X\ge a \right)$ by expectation $\operatorname{E}\left( \frac{X}{a} \right)$.
+Markov's inequality upper bounds right-tail probability $\operatorname{P}\left( X\ge a \right)$ by $\frac{1}{a} \operatorname{E}\left( X \right)$.
 
 For a nonnegative random variable $X$ and $a>0$,
 
@@ -278,25 +288,31 @@ $$
 \operatorname{P}(X \geq a) \leq \frac{\operatorname{E}(X)}{a}
 $$
 
-*Proof*
+A simple way to memorize this is: $\operatorname{P}\left( \frac{X}{a} \ge 1 \right ) \le \operatorname{E}\left( \frac{X}{a}  \right)$
+
+***Proof***
 
 - By the law of total expectation, and since $\operatorname{E}(X \mid X<a)\ge0$ and $\operatorname{E}(X \mid X \geq a)\ge a$, we have
 
-$$\begin{align}
-\operatorname{E}(X) & =  \operatorname{E}(X \mid X<a) \cdot \operatorname{P}(X<a) +  \operatorname{E}(X \mid X \geq a) \cdot \operatorname{P}(X \geq a)\\
-& \ge 0 \cdot \operatorname{P}(X<a) +\operatorname{E}(X \mid X \geq a) \cdot \operatorname{P}(X \geq a) \\
-& \geq a \cdot \operatorname{P}(X \geq a)
-\end{align}$$
+    $$\begin{align}
+    \operatorname{E}(X) & =  \operatorname{E}(X \mid X<a) \cdot \operatorname{P}(X<a) +  \operatorname{E}(X \mid X \geq a) \cdot \operatorname{P}(X \geq a)\\
+    & \ge 0 \cdot \operatorname{P}(X<a) +\operatorname{E}(X \mid X \geq a) \cdot \operatorname{P}(X \geq a) \\
+    & \geq a \cdot \operatorname{P}(X \geq a)
+    \end{align}$$
+
+    $\square$
 
 - By the definition of expectation,
 
-$$\begin{align}
-\operatorname{E}(X) &= \int_{0}^{a} x f(x) \mathrm{~d} x+\int_{a}^{\infty} x f(x) \mathrm{~d} x \\
-& \geq \int_{a}^{\infty} x f(x) \mathrm{~d} x \\
-& \geq \int_{a}^{\infty} a f(x) \mathrm{~d} x \\
-& =a \int_{a}^{\infty} f(x) \mathrm{~d} x \\
-&=a \operatorname{P}(X \geq a)
-\end{align}$$
+    $$\begin{align}
+    \operatorname{E}(X) &= \int_{0}^{a} x f(x) \mathrm{~d} x+\int_{a}^{\infty} x f(x) \mathrm{~d} x \\
+    & \geq \int_{a}^{\infty} x f(x) \mathrm{~d} x \\
+    & \geq \int_{a}^{\infty} a f(x) \mathrm{~d} x \\
+    & =a \int_{a}^{\infty} f(x) \mathrm{~d} x \\
+    &=a \operatorname{P}(X \geq a)
+    \end{align}$$
+
+    $\square$
 
 ### Chebyshev's Inequality
 
@@ -314,7 +330,7 @@ $$
 \operatorname{P}\left( \mu - \sqrt{2}\sigma \le X \le \mu - \sqrt{2}\sigma \right) > \frac{1}{2}
 $$
 
-*Proof*
+***Proof***
 
 By the law of total expectation,
 
@@ -325,6 +341,51 @@ $$\begin{align}
 & \geq(k \sigma)^{2} \operatorname{P}\left( k \sigma \leq|X-\mu| \right)+0 \cdot \operatorname{P}\left( k \sigma>|X-\mu| \right) \\
 &=k^{2} \sigma^{2} \operatorname{P}[k \sigma \leq|X-\mu|]
 \end{align}$$
+
+$\square$
+
+### Covariance and Variances
+
+For two random variables $X, Y$ we have
+
+$$
+\left[ \operatorname{Cov}\left( X,Y \right) \right]^2 \le \operatorname{Var}\left( X \right) \operatorname{Var}\left( Y \right)
+$$
+
+
+The equality holds iff there is a deterministic linear relation between $X$ and $Y$, $Y = aX + b$.
+
+***Proof***
+
+Recall the Cauchy-Schewarz inequality for vectors $\boldsymbol{u}, \boldsymbol{v}$ of an innver product space,
+
+$$
+|\langle\mathbf{u}, \mathbf{v}\rangle|^{2} \leq\langle\mathbf{u}, \mathbf{u}\rangle \cdot\langle\mathbf{v}, \mathbf{v}\rangle
+$$
+
+Define an inner product on the set of random variables using the expectation of their product
+
+$$
+\langle X, Y\rangle:=\mathrm{E}(X Y)
+$$
+
+Then the Cauchy-Schewrz inequality becomes
+
+$$
+|\mathrm{E}(X Y)|^{2} \leq \mathrm{E}\left(X^{2}\right) \mathrm{E}\left(Y^{2}\right)
+$$
+
+Substituting $X$ by $X-\mu_X$ and $Y$ by $Y-\mu_Y$ gives
+
+$$
+\begin{aligned}
+|\operatorname{Cov}(X, Y)|^{2} &=\left\vert \mathrm{E}\left[ (X-\mu_X)(Y-\mu_Y) \right] \right\vert^{2} \\
+&\le \mathrm{E}\left[ (X-\mu_X)^{2} \right] \mathrm{E}\left[ (Y-\mu_Y)^2\right]\\
+&=\operatorname{Var}(X) \operatorname{Var}(Y)
+\end{aligned}
+$$
+
+$\square$
 
 ## Exercise
 
