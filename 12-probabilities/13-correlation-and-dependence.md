@@ -1,17 +1,4 @@
 # Correlation and Dependence
-<!-- TOC -->
-
-- [Correlation and Dependence](#correlation-and-dependence)
-  - [Definitions](#definitions)
-    - [Correlation](#correlation)
-    - [Dependence](#dependence)
-  - [Comparison](#comparison)
-  - [Simpson's Paradox](#simpsons-paradox)
-  - [Exercise](#exercise)
-    - [Raining](#raining)
-    - [Expected Value of Maximum of Two Uniform Random Variables](#expected-value-of-maximum-of-two-uniform-random-variables)
-
-<!-- /TOC -->
 
 ## Definitions
 
@@ -93,7 +80,9 @@ Mutual information can also be applied to measure association between two variab
 
 ### Correlated
 
-Two random variables are said to be correlated if $\operatorname{Cov}\left( X,Y \right) \ne 0$ and uncorrelated if $\operatorname{Cov}\left( X,Y \right) = 0$.
+Two random variables $X,Y$ are said to be
+- correlated if $\operatorname{Cov}\left( X,Y \right) \ne 0$
+- uncorrelated if $\operatorname{Cov}\left( X,Y \right) = 0$.
 
 ### Dependence
 
@@ -121,13 +110,11 @@ which can be interpreted as "knowing any information about $Y=y$ does not change
 
 ### Independent $\Rightarrow$ Uncorrelated
 
-
 If two random variables are independent, then $\operatorname{E}\left( XY \right) = \operatorname{E}\left( X \right) \operatorname{E}\left( Y \right)$, $\operatorname{Cov}\left( X,Y \right) = 0$, i.e., they are uncorrelated.
 
 ### Uncorrelated $\not \Rightarrow$ Independent
 
-If $\operatorname{Cov}\left( X,Y \right) = 0$, then we CAN NOT say they are independent.
-
+If $\operatorname{Cov}\left( X,Y \right) = 0$ or $\rho(X,Y) = 0$, then we CAN NOT say they are independent.
 
 For instance, let $X\sim U(-1,1)$ and $Y = \left\vert X \right\vert$. Then $Y$ is completely dependent on $X$, but
 
@@ -196,6 +183,8 @@ Tags: Jane Street, Quant, 20Q4
 *Suppose the probabilities of raining on Saturday and Sunday are $p$ and $q$ respectively. What is the probability of raining on weekend? What is the probability that it rains on either Saturday or Sunday?*
 
 
+```{dropdown} Solution
+
 Note that the question does not specify the dependence of raining on Saturday and Sunday. To be rigorous, we introduce two indicator variables
 
 
@@ -245,6 +234,7 @@ p_2 &= \mathrm{P}(\text{raining on either Saturday or Sunday})  \\
  & = p+q-2a \\
  & \in [\vert p-q\vert, \min(p+q, 2-p-q)]
 \end{align}$$
+```
 
 
 ### Expected Value of the Maximum of Two Uniform Random Variables
@@ -252,6 +242,7 @@ p_2 &= \mathrm{P}(\text{raining on either Saturday or Sunday})  \\
 *Suppose $X$ and $Y$ are two uniformly distributed random variables over the interval $[0,1]$. What is the expected value $\mathrm{E}[\max(X,Y)]$?*
 
 
+```{dropdown} Solution
 Let $Z=\max(X,Y)$. Since there is no dependence specified, we start from the special cases.
 
 - If $X$ and $Y$ are independent, then
@@ -320,15 +311,14 @@ Let $Z=\max(X,Y)$. Since there is no dependence specified, we start from the spe
   &= - 1
   \end{align}$$
 
-
 It seems that the range is $[\frac{1}{2}, \frac{3}{4}]$.
+```
 
 ### Lower Bound of Correlation for IID
 
-Suppose $X_1, X_2, \ldots, X_n$ where $n\ge 2$ are IID variables with common pairwise correlation $\rho = \operatorname{Corr}\left( X_i, X_j \right)$ for $i\ne j$. What is the lower bound of $r$ and when is it obtained?
+*Suppose $X_1, X_2, \ldots, X_n$ where $n\ge 2$ are IID variables with common pairwise correlation $\rho = \operatorname{Corr}\left( X_i, X_j \right)$ for $i\ne j$. What is the lower bound of $r$ and when is it obtained?*
 
-***Solution***
-
+```{dropdown} Solution
 Since
 
 $$\begin{align}
@@ -348,3 +338,4 @@ $$
 if $\sigma^2 > 0$, otherwise $\rho$ is undefined.
 
 The lower bound is obtained iff $\operatorname{Var}\left( \sum_i X_i \right) = 0$, i.e., $\sum_i X_i = \text{constant}$ almost surely.
+```
