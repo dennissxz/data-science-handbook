@@ -25,9 +25,9 @@ $$\begin{align}
 \end{align}$$
 
 
-```{attention}
+```{note}
 - The notation $X \mid Y=y$ means that $Y=y$ is observed. In this case, the conditional expectation (variance) is a function of the observed value $y$, i.e., $\operatorname{E}(X \mid Y=y) = g(y)$, which itself is a constant.
-- The notation $X \mid Y$ means that $Y$ is a random variable and has not been observed yet. In this case, the conditional expectation (variance) is a function of the random variable $Y$, i.e. $\operatorname{E}(X \mid Y) = g(Y)$, which itself is a random variable.
+- The notation $X \mid Y$ means that $Y$ is a random variable and has not been observed yet. In this case, the conditional expectation (variance) is a function of the random variable $Y$, i.e., $\operatorname{E}(X \mid Y) = g(Y)$, which itself is a random variable.
 ```
 
 
@@ -50,8 +50,8 @@ $$\begin{align}
 \end{align}$$
 
 
-```{attention}
-Be careful about the notation
+```{note}
+Be careful about the notations $\sigma_X ^2$ and $\sigma_{X,X}$
 
 $$
 \sigma_X^2 = \operatorname{Var}\left( X \right) = \operatorname{Cov}\left( X, X \right) = \sigma_{X,X}
@@ -389,12 +389,11 @@ $\square$
 
 ## Exercise
 
-### Successive Heads  
+### Coin Flips - Count Trials
 
 *What is the expected number of coin flips to get two heads in a row?*
 
-#### Sol.1 Law of Total Expectation
-
+````{dropdown} Solution 1: Law of Total Expectation
 
 Denote the required number of flips by $X$. We can partition the sample space into **three** parts:
 - $A_T$: the first flip is a tail
@@ -455,9 +454,10 @@ The solution is
 $$
 \operatorname{E}\left( X_n \right) = 2 \left( 2^n-1 \right)
 $$
+````
 
-#### Sol.2 Recurrence Relation
 
+```{dropdown} Solution 2: Recurrence Relation
 One can also derive the solution from a recurrence relation between $\operatorname{E}\left( X_n \right)$ and $\operatorname{E}\left( X_{n-1} \right)$.
 
 Let $Y_{n} = X_n - X_{n-1}$ be the number of additional flips required to get $n$ heads in a row, given that we already got $n-1$ heads in a row. Then by the law of total expectation,
@@ -480,3 +480,105 @@ $$
 Let $f(n) = \operatorname{E}\left( X_n\right) + 2$ then we have $f(n) = 2f(n-1)$. Since $f(1) = \operatorname{E}\left( X_1 \right)+2 = 4$, we have $f(n) = 2^{n+1}$. Therefore,  
 
 $$\operatorname{E}\left( X_n \right) = 2^{n+1}-2$$
+```
+
+### Coin Flips - Count Rows
+
+*What is the expected number of times to see $k$ heads in a row, i.e., HH...HH, in $n$ flips of a coin?*
+
+
+```{dropdown} Solution
+
+In $n$ flips of a coin, there are $n-k+1$ places where the string HH...HH can start to appear, each with a (non-independent) probability $\frac{1}{2^k} $ of happening. Let $X$ be the number of times to see the string HH...HH, and $X_i$ be the indicator variable that is $1$ if the string starts to appear at the $i$-th flip, then
+
+$$
+X = \sum_{i=1}^{n-k+1} X_i
+$$
+
+and hence
+
+$$\begin{align}
+\operatorname{E}\left( X \right) &= \operatorname{E}\left( \sum_{i=1}^{n-k+1} X_i \right)\\
+&= \sum_{i=1}^{n-k+1} \operatorname{E}\left( X_i \right)\\
+&= \frac{n-k+1}{2^k} \\
+\end{align}$$
+
+The first second last line holds even if $X_i$'s are not independent.
+
+```
+
+
+### Coin Flips - Count Runs
+
+
+
+````{dropdown} Solution
+A coin with a probability $p$ to get a head is flipped $n$ times. A "run" is a maximal sequence of consecutive flips that are all the same. For instance, HTHHHTTH has five runs and $n=8$. What is the expected number of runs?
+
+Let $X_i$ be the indicator for the event that a run starts at the $i-th$ toss. Let $X = \sum_i X_i$ be the total number of runs. It is easy to see $\operatorname{E}\left( X_1 \right) = 1$. For $i>1$,
+
+
+$$
+\begin{aligned}
+\mathrm{E}\left(X_{i}\right)=& \operatorname{P}\left(X_{i}=1\right) \\
+=& \operatorname{P}\left(i \text { -th toss is } \mathrm{H} \mid(i-1) \text { -th toss is } \mathrm{T}\right) \times \operatorname{P}\left((i-1) \text { -th toss is } \mathrm{T}\right) \\
+&+\operatorname{P}\left(i \text { -th toss is } \mathrm{T} \mid(i-1)\text {-th} \text { toss is } \mathrm{H}\right) \times \operatorname{P}\left((i-1)\text {-th } \text { toss is } \mathrm{H}\right) \\
+=& p(1-p)+(1-p) p \\
+=& 2 p(1-p)
+\end{aligned}
+$$
+
+Therefore,
+
+$$
+\begin{aligned}
+\mathrm{E}(X) &=\mathrm{E}\left(X_{1}+X_{2}+\cdots+X_{n}\right) \\
+&=\mathrm{E}\left(X_{1}\right)+\mathrm{E}\left(X_{2}\right)+\cdots+\mathrm{E}\left(X_{n}\right) \\
+&=\mathrm{E}\left(X_{1}\right)+\left[\mathrm{E}\left(X_{2}\right)+\cdots+\mathrm{E}\left(X_{n}\right)\right] \\
+&=1+(n-1) \times 2 p(1-p) \\
+&=1+2(n-1) p(1-p)
+\end{aligned}
+$$
+````
+
+
+### Incremental Update of Mean and Variance
+
+*Suppose you have $n$ observations $x_1, x_2, \ldots, x_n$. Now a new value $x_{n+1}$ is observed. Write recurrence functions to update the sample mean $\bar{x}_n$ and variance $s^2_n$.*
+
+````{dropdown} Solution
+To update mean,
+
+$$\begin{align}
+\bar{x}_{n+1}
+&= \frac{\sum_{i=1}^{n+1} x_i}{n+1} \\
+&= \frac{x_{n+1} + \sum_{i=1}^n x_i}{n+1} \\
+&= \frac{x_{n+1} + n\bar{x}_n}{n+1} \\
+&= \bar{x}_n + \frac{1}{n+1}(x_{n+1} - \bar{x}_n) \quad (*)
+\end{align}$$
+
+The last line is to avoid computing a large number $n \bar{x}_n$.
+
+The second last line implies that the new sample mean $\bar{x}_{n+1}$ is a weighted average of the current sample mean $\bar{x}_{n+1}$ and the new observed value $x_{n+1}$.
+
+To update variance, we first find $\bar{x}_n$, then let $S_n = ns_{n}^2$,
+
+
+$$\begin{align}
+S_{n+1}
+&=  \sum_{i=1}^{n+1}x_i^2  - (n+1) \bar{x}_{n+1}^2  \\
+&=  \sum_{i=1}^{n}x_i^2 - n\bar{x}_n^2 + n\bar{x}_n^2 + x_{n+1}^2  - (n+1) \bar{x}_{n+1}^2  \\
+&=  S_{n} + n\bar{x}_n^2 + x_{n+1}^2  - (n+1) \bar{x}_{n+1}^2  \\
+&=  S_{n}  + x_{n+1}^2  + (n+1)(\bar{x}_n - \bar{x}_{n+1})(\bar{x}_n + \bar{x}_{n+1}) - \bar{x}_{n}^2  \\
+&=  S_{n}  + x_{n+1}^2  + (\bar{x}_n - x_{n+1} )(\bar{x}_n + \bar{x}_{n+1}) - \bar{x}_{n}^2 \quad \text{by} \ (*) \\
+&=  S_{n}  + x_{n+1}^2  + \bar{x}_n \bar{x}_{n+1} - x_{n+1} (\bar{x}_n + \bar{x}_{n+1}) \\
+&=  S_{n}  + (x_{n+1}  - \bar{x}_n)(x_{n+1}  - \bar{x}_{n+1})
+\end{align}$$
+
+Finally $s_{n+1}^2 = \frac{1}{n+1} S_{n+1}$.
+
+
+```{tip}
+The substitution $S_n = ns_n^2$ avoids the computation that involves $\frac{1}{n} $ and $\frac{1}{n+1} $. And the update equation of the mean is also quite useful.
+```
+````
