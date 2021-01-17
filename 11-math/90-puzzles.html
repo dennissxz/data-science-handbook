@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>10-digit Number Puzzle &#8212; Data Science Handbook</title>
+    <title>Puzzles &#8212; Data Science Handbook</title>
     
   <link rel="stylesheet" href="../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
 
@@ -58,7 +58,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Probabilities" href="../12-probabilities/00-probabilities.html" />
-    <link rel="prev" title="Derangement" href="12-derangement.html" />
+    <link rel="prev" title="Linear Algebra" href="21-linear-algebra.html" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
@@ -114,9 +114,14 @@
      Derangement
     </a>
    </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="21-linear-algebra.html">
+     Linear Algebra
+    </a>
+   </li>
    <li class="toctree-l2 current active">
     <a class="current reference internal" href="#">
-     10-digit Number Puzzle
+     Puzzles
     </a>
    </li>
   </ul>
@@ -151,6 +156,11 @@
    <li class="toctree-l2">
     <a class="reference internal" href="../12-probabilities/71-sampling.html">
      Sampling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/90-multivariate-notations.html">
+     Multivariate Notations
     </a>
    </li>
    <li class="toctree-l2">
@@ -296,24 +306,28 @@
  </span>
 </p>
 <ul class="nav sidenav_l1">
- <li class="toctree-l1">
-  <a class="reference internal" href="../30-machine-learning-concepts/00-intro-ml.html">
-   Introduction to Machine Learning
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../30-basic-concepts/00-basic-concepts.html">
+   Basic Concepts
   </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../30-basic-concepts/01-information-theory.html">
+     Information Theory
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
  </li>
  <li class="toctree-l1 collapsible-parent">
-  <a class="reference internal" href="../31-regression/00-intro-reg.html">
+  <a class="reference internal" href="../31-regression/00-regression.html">
    Regression
   </a>
   <ul class="collapse-ul">
    <li class="toctree-l2">
     <a class="reference internal" href="../31-regression/11-linear-models.html">
      Linear Models
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../31-regression/12-generalized-linear-models.html">
-     Generalized Linear Models
     </a>
    </li>
   </ul>
@@ -360,7 +374,7 @@
         <!-- ipynb file if we had a myst markdown file -->
         
         <!-- Download raw file -->
-        <a class="dropdown-buttons" href="../_sources/11-math/90-10-digit-number-puzzle.md"><button type="button"
+        <a class="dropdown-buttons" href="../_sources/11-math/90-puzzles.md"><button type="button"
                 class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
                 data-placement="left">.md</button></a>
         <!-- Download PDF via print -->
@@ -380,7 +394,7 @@
                 data-toggle="tooltip" data-placement="left" title="Source repository"><i
                     class="fab fa-github"></i>repository</button></a>
         <a class="issues-button"
-            href="https://github.com/dennissxz/data-science-handbook/issues/new?title=Issue%20on%20page%20%2F11-math/90-10-digit-number-puzzle.html&body=Your%20issue%20content%20here."><button
+            href="https://github.com/dennissxz/data-science-handbook/issues/new?title=Issue%20on%20page%20%2F11-math/90-puzzles.html&body=Your%20issue%20content%20here."><button
                 type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
                 title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
         
@@ -407,18 +421,34 @@
         <nav id="bd-toc-nav">
             <ul class="nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#sol-1-enumeration-by-hand">
-   Sol.1 Enumeration by Hand
+  <a class="reference internal nav-link" href="#digit-number-puzzle">
+   10-digit Number Puzzle
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#sol-1-enumeration-by-hand">
+     Sol.1 Enumeration by Hand
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#sol-2-enumeration-by-computer">
+     Sol.2 Enumeration by Computer
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#sol-3-mathematical-reasoning">
+     Sol.3 Mathematical Reasoning
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#sol-2-enumeration-by-computer">
-   Sol.2 Enumeration by Computer
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#sol-3-mathematical-reasoning">
-   Sol.3 Mathematical Reasoning
+  <a class="reference internal nav-link" href="#trailing-zeros-in-n-factorial">
+   Trailing zeros in
+   <span class="math notranslate nohighlight">
+    \(n\)
+   </span>
+   factorial
   </a>
  </li>
 </ul>
@@ -432,12 +462,15 @@
         
               <div>
                 
-  <div class="section" id="digit-number-puzzle">
-<h1>10-digit Number Puzzle<a class="headerlink" href="#digit-number-puzzle" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="puzzles">
+<h1>Puzzles<a class="headerlink" href="#puzzles" title="Permalink to this headline">¶</a></h1>
+<p>This section contains some interesting math puzzles.</p>
+<div class="section" id="digit-number-puzzle">
+<h2>10-digit Number Puzzle<a class="headerlink" href="#digit-number-puzzle" title="Permalink to this headline">¶</a></h2>
 <p>Tags: Jane Street, Trader, 18Q4</p>
 <p>There is a 10-digit number. From left to right, the first digit equals the number of 0’s in that number, the second digit equals the number of 1’s in that number, and so on. What is this number?</p>
 <div class="section" id="sol-1-enumeration-by-hand">
-<h2>Sol.1 Enumeration by Hand<a class="headerlink" href="#sol-1-enumeration-by-hand" title="Permalink to this headline">¶</a></h2>
+<h3>Sol.1 Enumeration by Hand<a class="headerlink" href="#sol-1-enumeration-by-hand" title="Permalink to this headline">¶</a></h3>
 <p>Suppose this number is <span class="math notranslate nohighlight">\(\underline{d_0d_1d_2d_3d_4d_5d_6d_7d_8d_9}\)</span>, where</p>
 <div class="math notranslate nohighlight">
 \[d_{i} = \sum_j\mathbb{I}[d_j=i]\in \{0,1,2,\dots,9\}\]</div>
@@ -499,7 +532,7 @@
 <p>Enumeration by hand is tedious. We have found a solution 6210001000 but we have to enumerate all other cases to see if there exists any other solutions.</p>
 </div>
 <div class="section" id="sol-2-enumeration-by-computer">
-<h2>Sol.2 Enumeration by Computer<a class="headerlink" href="#sol-2-enumeration-by-computer" title="Permalink to this headline">¶</a></h2>
+<h3>Sol.2 Enumeration by Computer<a class="headerlink" href="#sol-2-enumeration-by-computer" title="Permalink to this headline">¶</a></h3>
 <p>It seems that the time complexity is <span class="math notranslate nohighlight">\(O(10^{n-1})\)</span> for a <span class="math notranslate nohighlight">\(n\)</span>-digit number, but in fact we can optimize it by adding the constraints.</p>
 <p>Since <span class="math notranslate nohighlight">\(\sum_i i\cdot d_i = 10\)</span> we have <span class="math notranslate nohighlight">\(d_i \le \lfloor \frac{10}{i} \rfloor\)</span> for <span class="math notranslate nohighlight">\(i \ge 1\)</span>. So the time complexity is greatly reduced to <span class="math notranslate nohighlight">\(O(\Pi_{i=1}^{n-1} \lfloor \frac{10}{i} \rfloor)\)</span></p>
 <p>A python script can be</p>
@@ -516,7 +549,7 @@
 <p>It turns out that 6210001000 is the unique solution.</p>
 </div>
 <div class="section" id="sol-3-mathematical-reasoning">
-<h2>Sol.3 Mathematical Reasoning<a class="headerlink" href="#sol-3-mathematical-reasoning" title="Permalink to this headline">¶</a></h2>
+<h3>Sol.3 Mathematical Reasoning<a class="headerlink" href="#sol-3-mathematical-reasoning" title="Permalink to this headline">¶</a></h3>
 <p>In the above solutions we did partial reasoning and partial enumeration. Now we try more rigorous reasoning.</p>
 <p>Define a set <span class="math notranslate nohighlight">\(A = \{d_i\vert d_i\ge 1\}\)</span>. Then the cardinality is</p>
 <div class="math notranslate nohighlight">
@@ -570,6 +603,29 @@ d_i &amp;\le 2 \ \  \forall \ i\ge1 &amp;(3)
 </ul>
 </div>
 </div>
+<div class="section" id="trailing-zeros-in-n-factorial">
+<h2>Trailing zeros in <span class="math notranslate nohighlight">\(n\)</span> factorial<a class="headerlink" href="#trailing-zeros-in-n-factorial" title="Permalink to this headline">¶</a></h2>
+<p><em>Find the number of trailing zeros</em> in <span class="math notranslate nohighlight">\(n!\)</span>.</p>
+<p>It is easy to see the trailing zeros are produced by prime factors <span class="math notranslate nohighlight">\(2\)</span> and <span class="math notranslate nohighlight">\(5\)</span>. If there are <span class="math notranslate nohighlight">\(m\)</span> number of factor <span class="math notranslate nohighlight">\(2\)</span> and <span class="math notranslate nohighlight">\(n\)</span> number of factor <span class="math notranslate nohighlight">\(5\)</span> in <span class="math notranslate nohighlight">\(n!\)</span>, then there will be <span class="math notranslate nohighlight">\(\min(m,n)\)</span> number of trailing zeros.</p>
+<p>Also note that</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(m&gt;n\)</span>, since every <span class="math notranslate nohighlight">\(5\)</span> numbers produce a factor <span class="math notranslate nohighlight">\(5\)</span> and at least <span class="math notranslate nohighlight">\(3\)</span> factors of <span class="math notranslate nohighlight">\(2\)</span>.</p></li>
+<li><p>multiples of 5 like <span class="math notranslate nohighlight">\(25, 125\)</span> bring more than one factor of <span class="math notranslate nohighlight">\(5\)</span>.</p></li>
+</ul>
+<p>Therefore, we conclude that <span class="math notranslate nohighlight">\(\min(m,n) = n\)</span>. How to count <span class="math notranslate nohighlight">\(n\)</span>? The easiest way is <span class="math notranslate nohighlight">\(\lfloor \frac{n}{5} \rfloor\)</span>. But we have to take numbers like <span class="math notranslate nohighlight">\(25, 125\)</span> into consideration. The solution is to add <span class="math notranslate nohighlight">\(\lfloor \frac{n}{25} \rfloor, \lfloor \frac{n}{125} \rfloor\)</span>, etc.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">count_trailing_zeros</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+
+    <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">5</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">n</span><span class="o">/</span><span class="n">i</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">count</span> <span class="o">+=</span> <span class="n">n</span> <span class="o">//</span> <span class="n">i</span>
+        <span class="n">i</span> <span class="o">*=</span> <span class="mi">5</span>
+
+    <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">count</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
 
     <script type="text/x-thebe-config">
     {
@@ -599,7 +655,7 @@ d_i &amp;\le 2 \ \  \forall \ i\ge1 &amp;(3)
     
     <div class='prev-next-bottom'>
         
-    <a class='left-prev' id="prev-link" href="12-derangement.html" title="previous page">Derangement</a>
+    <a class='left-prev' id="prev-link" href="21-linear-algebra.html" title="previous page">Linear Algebra</a>
     <a class='right-next' id="next-link" href="../12-probabilities/00-probabilities.html" title="next page">Probabilities</a>
 
     </div>

@@ -220,10 +220,14 @@ class Population():
         self.size = n
         self.infected = np.array([0]) # indexes of infected individuals
 
-    def infect(self, t=1):
+    def count_infected(self):
+        return len(self.infected)
+
+    def infect(self, t=1, return_records=False):
         """
         simulate infection for t minutes
         """
+        It_records = []
         for _ in range(t):
             perm = np.random.permutation(self.size)
             perm_pairs = perm.reshape(n//2, 2) # random pairs
@@ -233,15 +237,18 @@ class Population():
             new_boolean = ~status_pairs[new_pairs]
             new_individuals = perm_pairs[new_pairs][new_boolean].flatten()
             self.infected = np.hstack((self.infected, new_individuals))
+            It_records.append(self.count_infected())
 
-    def count_infected(self):
-        return len(self.infected)
+        if return_records:
+            return np.array(It_records)
+
+
 
 np.random.seed(0)
 n = 1000
 t = 10
 pop = Population(n)
-pop.infect(t=10)
+pop.infect(t)
 print(pop.count_infected())
 ```
 
@@ -249,14 +256,24 @@ To get the expected number $E(I_{10})$, we can try to simulate $m$ times and tak
 
 ```{code-cell}
 np.random.seed(0)
-It = []
 m = 10000
 t = 10
-for _ in range(m):
+Its = np.empty((m,t))
+for i in range(m):
     pop = Population(n)
-    pop.infect(t)
-    It.append(pop.count_infected())
-print(sum(It)/m)
+    Its[i] = pop.infect(t, return_records=True)
+print(Its[:, 9].mean())
 ```
 
 We see the simulation result $642.286$ is quite close to the result $E(I_{10}) = 642.347$ in Solution 1.
+
+The plot below shows $m$ trajectories of $I_t$ in the simulation. We can see all lines are close to each other, which verifies that the variance is quite small.
+
+```{code-cell}
+import matplotlib.pyplot as plt
+for row in range(m):
+    plt.plot(Its[row], c='C0', alpha=0.1)
+plt.ylabel(r'infected number $I_t$')    
+plt.xlabel(r'time $t$')    
+plt.show()
+```

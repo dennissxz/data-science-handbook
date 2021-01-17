@@ -1,0 +1,915 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Linear Algebra &#8212; Data Science Handbook</title>
+    
+  <link rel="stylesheet" href="../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+  <link rel="stylesheet"
+    href="../_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="../_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinx-book-theme.40e2e510f6b7d1648584402491bb10fe.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/style.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.3da636dd464baa7582d2.js">
+
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Puzzles" href="90-puzzles.html" />
+    <link rel="prev" title="Derangement" href="12-derangement.html" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+
+
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+<a class="navbar-brand text-wrap" href="../index.html">
+  
+  
+  <h1 class="site-logo" id="site-title">Data Science Handbook</h1>
+  
+</a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form>
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+    <ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../index.html">
+   Data Science Handbook
+  </a>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Foundations
+ </span>
+</p>
+<ul class="current nav sidenav_l1">
+ <li class="toctree-l1 current active collapsible-parent">
+  <a class="reference internal" href="00-math.html">
+   Math
+  </a>
+  <ul class="current collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="11-combinatorics.html">
+     Combinatorics
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="12-derangement.html">
+     Derangement
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     Linear Algebra
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="90-puzzles.html">
+     Puzzles
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../12-probabilities/00-probabilities.html">
+   Probabilities
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/11-expectation-and-variance.html">
+     Expectation and Variance
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/13-correlation-and-dependence.html">
+     Correlation and Dependence
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/31-bayesian-theorem.html">
+     Bayesian’s Theorem
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/51-markov-chain.html">
+     Markov Chain
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/71-sampling.html">
+     Sampling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/90-multivariate-notations.html">
+     Multivariate Notations
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/91-large-sample-theory.html">
+     Large Sample Theory
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../13-statistics/00-statistics.html">
+   Statistics
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/11-stat-sampling.html">
+     Statistical Sampling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/21-hypothesis-testing.html">
+     Hypothesis Testing
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/33-confusion-matrix.html">
+     Confusion Matrix
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../14-python/00-python.html">
+   Python
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../14-python/11-programming-tools.html">
+     Programmer tools
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../14-python/12-syntax.html">
+     Syntax
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../14-python/13-data-structure.html">
+     Data Structures
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../14-python/15-functional-programming.html">
+     Functional Programming
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../17-sql/00-sql.html">
+   SQL
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../17-sql/11-database.html">
+     Database
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../17-sql/12-relational-structure.html">
+     Relational Structure
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../17-sql/31-data-query.html">
+     Data Query
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../17-sql/33-data-manipulation.html">
+     Data Manipulation
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../19-miscellaneous/00-miscellaneous.html">
+   Miscellaneous
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../19-miscellaneous/11-latex.html">
+     LaTeX
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../19-miscellaneous/13-myst.html">
+     MyST Markdown
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Algorithms
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../21-greedy-algorithms/00-greedy-algorithms.html">
+   Greedy Algorithms
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../21-greedy-algorithms/11-interval-scheduling.html">
+     Interval Scheduling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../21-greedy-algorithms/13-denominations.html">
+     Denominations
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Machine Learning
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../30-basic-concepts/00-basic-concepts.html">
+   Basic Concepts
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../30-basic-concepts/01-information-theory.html">
+     Information Theory
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../31-regression/00-regression.html">
+   Regression
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/11-linear-models.html">
+     Linear Models
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+</ul>
+
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="row topbar fixed-top container-xl">
+    <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show">
+    </div>
+    <div class="col pl-2 topbar-main">
+        
+        <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+            data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+            aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+            title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+            <i class="fas fa-bars"></i>
+            <i class="fas fa-arrow-left"></i>
+            <i class="fas fa-arrow-up"></i>
+        </button>
+        
+        
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../_sources/11-math/21-linear-algebra.md"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.md</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+        <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/dennissxz/data-science-handbook"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/dennissxz/data-science-handbook/issues/new?title=Issue%20on%20page%20%2F11-math/21-linear-algebra.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+
+        <!-- Full screen (wrap in <a> to have style consistency -->
+        <a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+                data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+                title="Fullscreen mode"><i
+                    class="fas fa-expand"></i></button></a>
+
+        <!-- Launch buttons -->
+
+    </div>
+
+    <!-- Table of contents -->
+    <div class="d-none d-md-block col-md-2 bd-toc show">
+        
+        <div class="tocsection onthispage pt-5 pb-3">
+            <i class="fas fa-list"></i> Contents
+        </div>
+        <nav id="bd-toc-nav">
+            <ul class="nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#matrix-operations">
+   Matrix Operations
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#transpose">
+     Transpose
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#determinant">
+     Determinant
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#inverse">
+     Inverse
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#trace">
+     Trace
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#eigenvalues">
+     Eigenvalues
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#special-matrices">
+   Special Matrices
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#symmetric-matrices">
+     Symmetric Matrices
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#orthogonal-matrices">
+     Orthogonal Matrices
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#idempotent-matrices">
+     Idempotent Matrices
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#projection-matrices">
+     Projection Matrices
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#positive-semi-definite-and-positive-definite">
+     Positive Semi-Definite and Positive Definite
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#matrix-differentiation">
+   Matrix Differentiation
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#matrix-decomposition">
+   Matrix Decomposition
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#eigenvalue-decomposition">
+     Eigenvalue Decomposition
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#cholesky-decomposition">
+     Cholesky Decomposition
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#canonical-decomposition">
+     Canonical Decomposition
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#singular-value-decomposition">
+     Singular Value Decomposition
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#qr-decomposition">
+     QR Decomposition
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#lu-decomposition">
+     LU Decomposition
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#schur-decomposition">
+     Schur Decomposition
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+        </nav>
+        
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="linear-algebra">
+<h1>Linear Algebra<a class="headerlink" href="#linear-algebra" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="matrix-operations">
+<h2>Matrix Operations<a class="headerlink" href="#matrix-operations" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="transpose">
+<h3>Transpose<a class="headerlink" href="#transpose" title="Permalink to this headline">¶</a></h3>
+<dl class="simple myst">
+<dt>Definition</dt><dd><p><span class="math notranslate nohighlight">\(\boldsymbol{a} ^\top =\left( a_{ji} \right)\)</span></p>
+</dd>
+<dt>Properties</dt><dd><p><span class="math notranslate nohighlight">\(\ \)</span></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+  \begin{aligned}
+  \left(\boldsymbol{A}^{\top}\right)^{\top} &amp;=\boldsymbol{A} \\
+  (\boldsymbol{A}+\boldsymbol{B})^{\top} &amp;=\boldsymbol{A}^{\top}+\boldsymbol{B}^{\top} \\
+  (\boldsymbol{A} \boldsymbol{B})^{\top} &amp;=\boldsymbol{B}^{\top} \boldsymbol{A}^{\top} \\
+  \left(\begin{array}{ll}
+  \boldsymbol{A} &amp; \boldsymbol{B} \\
+  \boldsymbol{C} &amp; \boldsymbol{D}
+  \end{array}\right)^{\top} &amp;=\left(\begin{array}{l}
+  \boldsymbol{A}^{\top} \boldsymbol{C}^{\top} \\
+  \boldsymbol{B}^{\top} &amp; \boldsymbol{D}^{\top}
+  \end{array}\right)
+  \end{aligned}
+  \end{split}\]</div>
+</dd>
+</dl>
+</div>
+<div class="section" id="determinant">
+<h3>Determinant<a class="headerlink" href="#determinant" title="Permalink to this headline">¶</a></h3>
+<dl class="simple myst">
+<dt>Definition</dt><dd><p>The determinant is a scalar value function of a square matrix. The Leibniz formula is</p>
+<div class="math notranslate nohighlight">
+\[
+  \operatorname{det}(A)=\sum_{\sigma \in S_{n}}\left(\operatorname{sgn}(\sigma) \prod_{i=1}^{n} a_{i, \sigma_{i}}\right)
+  \]</div>
+<p>where</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\sigma\)</span> is a permutation of set <span class="math notranslate nohighlight">\({1, 2, \ldots, n}\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(S_n\)</span> is the set of all such permutations.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\sigma_i\)</span> is the value in the <span class="math notranslate nohighlight">\(i\)</span>-th position after the reordering <span class="math notranslate nohighlight">\(\sigma\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\operatorname{sgn}{\sigma}\)</span> is the signature of <span class="math notranslate nohighlight">\(\sigma\)</span>, which is <span class="math notranslate nohighlight">\(1\)</span> if the reordering given by <span class="math notranslate nohighlight">\(\sigma\)</span> can be achieved by successively interchanging two entries an even number of times, and <span class="math notranslate nohighlight">\(-1\)</span> otherwise.</p></li>
+</ul>
+</dd>
+<dt>Properties</dt><dd><p><span class="math notranslate nohighlight">\(\ \)</span></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+  \begin{align}
+  |\boldsymbol{A} \boldsymbol{B}|&amp;=|\boldsymbol{A}||\boldsymbol{B}| \\
+  \left\vert\begin{array}{l}
+  \boldsymbol{A} \quad C \\
+  0 \quad \boldsymbol{B}
+  \end{array}\right\vert&amp;=| \boldsymbol{A}|| \boldsymbol{B} \mid \\
+  \left|\boldsymbol{I}_{p}+\boldsymbol{A} \boldsymbol{B}\right|&amp;=\left|\boldsymbol{I}_{q}+\boldsymbol{B} \boldsymbol{A}\right|
+  \end{align}
+  \end{split}\]</div>
+</dd>
+</dl>
+</div>
+<div class="section" id="inverse">
+<h3>Inverse<a class="headerlink" href="#inverse" title="Permalink to this headline">¶</a></h3>
+<dl class="simple myst">
+<dt>Definition</dt><dd><p>The inverse of a square matrix is <span class="math notranslate nohighlight">\(\boldsymbol{A} ^{-1}\)</span> such that <span class="math notranslate nohighlight">\(\boldsymbol{A} \boldsymbol{A} ^{-1} = \boldsymbol{I}\)</span>.</p>
+</dd>
+<dt>Properties</dt><dd><p><span class="math notranslate nohighlight">\(\ \)</span></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+  \begin{align}
+  \left(\boldsymbol{A}^{\top}\right)^{-1}&amp;=\left(\boldsymbol{A}^{-1}\right)^{\top} \\
+  (\boldsymbol{A} \boldsymbol{B})^{-1}&amp;=\boldsymbol{B}^{-1} \boldsymbol{A}^{-1} \\
+  \left|\boldsymbol{A}^{-1}\right|&amp;=|\boldsymbol{A}|^{-1} \\
+  (\boldsymbol{A}+\boldsymbol{C B D})^{-1}
+  &amp;=\boldsymbol{A}^{-1}-\boldsymbol{A}^{-1} \boldsymbol{C B}\left(\boldsymbol{B}+\boldsymbol{B D A}^{-1} \boldsymbol{C B}\right)^{-1} \boldsymbol{B D A}^{-1} \\
+  \left(\boldsymbol{A}+\boldsymbol{c} \boldsymbol{d}^{\top}\right)^{-1}&amp;=\boldsymbol{A}^{-1}-\frac{\boldsymbol{A}^{-1} \boldsymbol{c} \boldsymbol{d}^{\top} \boldsymbol{A}^{-1}}{1+\boldsymbol{d}^{\top} \boldsymbol{A}^{-1} \boldsymbol{c}} \\
+  \left|\boldsymbol{A}+\boldsymbol{c} \boldsymbol{d}^{\top}\right|&amp;=|\boldsymbol{A}|\left(1+\boldsymbol{d}^{\top} \boldsymbol{A}^{-1} \boldsymbol{c}\right)
+  \end{align}
+  \end{split}\]</div>
+</dd>
+</dl>
+</div>
+<div class="section" id="trace">
+<h3>Trace<a class="headerlink" href="#trace" title="Permalink to this headline">¶</a></h3>
+<dl class="simple myst">
+<dt>Definition</dt><dd><p>For a square matrix <span class="math notranslate nohighlight">\(A\)</span>, <span class="math notranslate nohighlight">\(\operatorname{tr}\left( \boldsymbol{A}  \right)\)</span> is the sum of the diagonal elements</p>
+<div class="math notranslate nohighlight">
+\[
+  \operatorname{tr}\left( \boldsymbol{A}  \right) = \sum_i a_{ii}
+  \]</div>
+</dd>
+<dt>Properties</dt><dd><p><span class="math notranslate nohighlight">\(\ \)</span></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+  \operatorname{tr}(\boldsymbol{A}+\boldsymbol{B})
+  &amp;=\operatorname{tr}(\boldsymbol{A})+\operatorname{tr}(\boldsymbol{B}) \\
+  \operatorname{tr}(\boldsymbol{A B}) &amp;=\operatorname{tr}(\boldsymbol{B} \boldsymbol{A}) \\
+  \operatorname{tr}(\alpha \boldsymbol{A}) &amp;=\alpha \operatorname{tr}(\boldsymbol{A}) \\
+  \end{align}\end{split}\]</div>
+</dd>
+</dl>
+</div>
+<div class="section" id="eigenvalues">
+<h3>Eigenvalues<a class="headerlink" href="#eigenvalues" title="Permalink to this headline">¶</a></h3>
+<dl class="simple myst">
+<dt>Definition</dt><dd><p>Let <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> be an <span class="math notranslate nohighlight">\(n\times n\)</span> square matrix and let <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> be an <span class="math notranslate nohighlight">\(n\times 1\)</span> nonzero vector that <span class="math notranslate nohighlight">\(\boldsymbol{A} \boldsymbol{x} = \lambda \boldsymbol{x}\)</span>. Then, <span class="math notranslate nohighlight">\(\lambda\)</span> is called an eigenvalue of <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> is called an eigenvector corresponding to eigenvalue <span class="math notranslate nohighlight">\(\lambda\)</span>. The eigenvalues are the solutions of</p>
+<div class="math notranslate nohighlight">
+\[
+  \left\vert \boldsymbol{A} - \lambda \boldsymbol{I}  \right\vert = 0
+  \]</div>
+</dd>
+<dt>Properties</dt><dd><p>For <span class="math notranslate nohighlight">\(\boldsymbol{A}_{n\times n}\)</span> with eigenvalues <span class="math notranslate nohighlight">\(\lambda_1, \lambda_2, \ldots, \lambda_n\)</span>, we have</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+  \begin{align}
+  \operatorname{tr}(\boldsymbol{A}) &amp;=\sum_{i=1}^{n} \lambda_{i} \\
+  |\boldsymbol{A}|&amp;=\prod_{i=1}^{n} \lambda_{i} \\
+  \left|\boldsymbol{I}_{n} \pm \boldsymbol{A}\right|&amp;=\prod_{i=1}^{n}\left(1 \pm \lambda_{i}\right)
+  \end{align}
+  \end{split}\]</div>
+<p>The nonzero eigenvalues of <span class="math notranslate nohighlight">\(\boldsymbol{A} \boldsymbol{B}\)</span> are the same as those of <span class="math notranslate nohighlight">\(\boldsymbol{B} \boldsymbol{A}\)</span></p>
+</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="special-matrices">
+<h2>Special Matrices<a class="headerlink" href="#special-matrices" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="symmetric-matrices">
+<h3>Symmetric Matrices<a class="headerlink" href="#symmetric-matrices" title="Permalink to this headline">¶</a></h3>
+<dl class="simple myst">
+<dt>Definition</dt><dd><p>A matrix <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> is <strong>symmetric</strong> if <span class="math notranslate nohighlight">\(\boldsymbol{A} ^\top =\boldsymbol{A}\)</span>. This is denoted by <span class="math notranslate nohighlight">\(\boldsymbol{A} \in \mathrm{Sym}\)</span></p>
+</dd>
+</dl>
+</div>
+<div class="section" id="orthogonal-matrices">
+<h3>Orthogonal Matrices<a class="headerlink" href="#orthogonal-matrices" title="Permalink to this headline">¶</a></h3>
+<dl class="simple myst">
+<dt>Definition</dt><dd><p>A matrix <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> is <strong>orthogonal</strong> if <span class="math notranslate nohighlight">\(\boldsymbol{A} ^{-1} = \boldsymbol{A} ^\top\)</span>.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="idempotent-matrices">
+<h3>Idempotent Matrices<a class="headerlink" href="#idempotent-matrices" title="Permalink to this headline">¶</a></h3>
+<dl class="simple myst">
+<dt>Definition</dt><dd><p>A matrix <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> is idempotent if <span class="math notranslate nohighlight">\(\boldsymbol{A} ^2 = \boldsymbol{A}\)</span>.</p>
+</dd>
+<dt>Properties</dt><dd><p>If <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> is idempotent,</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{I} - \boldsymbol{A}\)</span> is idempotent</p></li>
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{P} ^\top \boldsymbol{A} \boldsymbol{P} \boldsymbol{x}\)</span></p></li>
+<li><p>and symmetric</p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(\operatorname{rank}\left( \boldsymbol{A} \right) = \operatorname{tr}\left( \boldsymbol{A}  \right)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\operatorname{rank}\left( \boldsymbol{A}  \right) = r \Rightarrow \boldsymbol{A}\)</span> has <span class="math notranslate nohighlight">\(r\)</span> eigevalues equal to 1 and <span class="math notranslate nohighlight">\(n-r\)</span> equal to <span class="math notranslate nohighlight">\(0\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\operatorname{rank}\left( \boldsymbol{A}  \right) = n \Rightarrow \boldsymbol{A} = \boldsymbol{I} _n\)</span></p></li>
+</ul>
+</li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="projection-matrices">
+<h3>Projection Matrices<a class="headerlink" href="#projection-matrices" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="positive-semi-definite-and-positive-definite">
+<h3>Positive Semi-Definite and Positive Definite<a class="headerlink" href="#positive-semi-definite-and-positive-definite" title="Permalink to this headline">¶</a></h3>
+<dl class="simple myst">
+<dt>Definitions</dt><dd><p>A symmetric matrix <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> is <strong>positive and semi-defiinite</strong> (p.s.d.) if <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> is symmetric and <span class="math notranslate nohighlight">\(\boldsymbol{c}^\top \boldsymbol{A} \boldsymbol{c} \ge 0\)</span> for all <span class="math notranslate nohighlight">\(\boldsymbol{c}\)</span>. This is denoted by <span class="math notranslate nohighlight">\(\boldsymbol{A} \succ \boldsymbol{0}\)</span> or <span class="math notranslate nohighlight">\(\boldsymbol{A} \in \mathrm{PD}\)</span>.</p>
+</dd>
+<dd><p>A symmetric matrix <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> is <strong>positive and definite</strong> (p.d.) if <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> is symmetric and <span class="math notranslate nohighlight">\(\boldsymbol{c}^\top \boldsymbol{A} \boldsymbol{c} \ge 0\)</span> for all <span class="math notranslate nohighlight">\(\boldsymbol{c}\ne \boldsymbol{0}\)</span>. This is denoted by <span class="math notranslate nohighlight">\(\boldsymbol{A} \succeq \boldsymbol{0}\)</span> or <span class="math notranslate nohighlight">\(\boldsymbol{A} \in \mathrm{PSD}\)</span>.</p>
+</dd>
+<dt>Properties</dt><dd><p><span class="math notranslate nohighlight">\(\ \)</span></p>
+</dd>
+</dl>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+\boldsymbol{A} \in \mathrm{PD} &amp;\Leftrightarrow \lambda_i(\boldsymbol{A}) &gt; 0 \\
+&amp;\Leftrightarrow \exists \text{ non-singular } \boldsymbol{R}: \boldsymbol{A} = \boldsymbol{R} \boldsymbol{R} ^\top\\
+&amp;\Rightarrow \boldsymbol{A} \text{ is nonsingular} \\
+\boldsymbol{A} \in \mathrm{PSD} &amp;\Leftrightarrow \lambda_i(\boldsymbol{A}) \ge 0 \\
+&amp;\Leftrightarrow \exists \text{ square } \boldsymbol{R}, \operatorname{rank}\left( R \right) = \operatorname{rank}\left( \boldsymbol{A}  \right): \boldsymbol{A} = \boldsymbol{R} \boldsymbol{R} ^\top\\
+\text{square } \boldsymbol{B} &amp;\Rightarrow \boldsymbol{B} ^\top \boldsymbol{B} \in \mathrm{PSD}\\
+\end{align}\end{split}\]</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> is p.s.d. (p.d.) there exists a p.s.d. (p.d.) matrix <span class="math notranslate nohighlight">\(\boldsymbol{B}\)</span> such that <span class="math notranslate nohighlight">\(\boldsymbol{A} = \boldsymbol{B} ^2\)</span>. The matrix <span class="math notranslate nohighlight">\(\boldsymbol{B}\)</span> is written as <span class="math notranslate nohighlight">\(\boldsymbol{A} ^{\frac{1}{2} }\)</span> notationally.</p>
+</div>
+<dl class="simple myst">
+<dt>Inequalities</dt><dd><p>If <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> is p.d., then for all <span class="math notranslate nohighlight">\(\boldsymbol{a}\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+  \frac{\left(\boldsymbol{a}^{\top} \boldsymbol{b} \right)^{2}}{\boldsymbol{a}^{\top} \boldsymbol{A} \boldsymbol{a}} \leq \boldsymbol{b} ^{\top} \boldsymbol{A}^{-1} \boldsymbol{b}
+  \]</div>
+<p>The equality holds when <span class="math notranslate nohighlight">\(\boldsymbol{a} \propto \boldsymbol{R} ^{-1} \boldsymbol{b}\)</span>.</p>
+<p>The inequality can be proved by Cauchy-Schwarz inequality where <span class="math notranslate nohighlight">\(\boldsymbol{u} = \boldsymbol{R} ^\top \boldsymbol{a} , \boldsymbol{v} = \boldsymbol{R} ^{-1} \boldsymbol{b}\)</span>.</p>
+</dd>
+<dd><p>If <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> is symmetric and <span class="math notranslate nohighlight">\(\boldsymbol{B}\)</span> is p.d., both of size <span class="math notranslate nohighlight">\(n \times n\)</span>, then for all <span class="math notranslate nohighlight">\(\boldsymbol{a}\)</span> ,</p>
+<div class="math notranslate nohighlight">
+\[
+  \lambda_{\min}(\boldsymbol{B} ^{-1} \boldsymbol{A} )
+  \le
+  \frac{\boldsymbol{a} ^\top \boldsymbol{A} \boldsymbol{a} }{\boldsymbol{a} ^\top \boldsymbol{B} \boldsymbol{a} }  
+  \le
+  \lambda_{\max}(\boldsymbol{B} ^{-1} \boldsymbol{A} )
+  \]</div>
+<p>The equality on either side holds when <span class="math notranslate nohighlight">\(\boldsymbol{a}\)</span> is proportional to the corresponding eigenvector.</p>
+</dd>
+<dd><p>If <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{B}\)</span> are p.d.,</p>
+<div class="math notranslate nohighlight">
+\[
+  \max _{a, b} \frac{\left(\boldsymbol{a}^{\top} \boldsymbol{D} \boldsymbol{b}\right)^{2}}{\boldsymbol{a}^{\top} \boldsymbol{A} \boldsymbol{a} \cdot \boldsymbol{b}^{\top} \boldsymbol{B} \boldsymbol{b}}=\theta
+  \]</div>
+<p>where <span class="math notranslate nohighlight">\(\theta\)</span> is the largest eigenvalue of <span class="math notranslate nohighlight">\(\boldsymbol{A} ^{-1} \boldsymbol{D} \boldsymbol{B} ^{-1} \boldsymbol{D} ^\top\)</span> or <span class="math notranslate nohighlight">\(\boldsymbol{B} ^{-1} \boldsymbol{D} ^\top \boldsymbol{A} ^{-1} \boldsymbol{D}\)</span>.</p>
+<p>The maximum is obtained when <span class="math notranslate nohighlight">\(\boldsymbol{a}\)</span> is proportional to an eigenvector of <span class="math notranslate nohighlight">\(\boldsymbol{A} ^{-1} \boldsymbol{D} \boldsymbol{B} ^{-1} \boldsymbol{D} ^\top\)</span> corresponding to <span class="math notranslate nohighlight">\(\theta\)</span>, <span class="math notranslate nohighlight">\(\boldsymbol{b}\)</span> is proportional to an eigenvector of <span class="math notranslate nohighlight">\(\boldsymbol{B} ^{-1} \boldsymbol{D} ^\top \boldsymbol{A} ^{-1} \boldsymbol{D}\)</span> corresponding to <span class="math notranslate nohighlight">\(\theta\)</span>.</p>
+</dd>
+<dd><p>If <span class="math notranslate nohighlight">\(\boldsymbol{A} , \boldsymbol{\Sigma}\)</span> are p.d., then the function</p>
+<div class="math notranslate nohighlight">
+\[
+  f(\boldsymbol{\Sigma} ) = \log \left\vert \boldsymbol{\Sigma}  \right\vert + \operatorname{tr}\left( \boldsymbol{\Sigma} ^{-1} \boldsymbol{A}  \right)
+  \]</div>
+<p>is minimized uniquely at <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma} =\boldsymbol{A}\)</span>.</p>
+</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="matrix-differentiation">
+<h2>Matrix Differentiation<a class="headerlink" href="#matrix-differentiation" title="Permalink to this headline">¶</a></h2>
+<dl class="simple myst">
+<dt>Definitions</dt><dd><p><span class="math notranslate nohighlight">\(\ \)</span></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+  \begin{array}{l}
+  \frac{\partial y}{\partial \boldsymbol{x}}=\left(\begin{array}{c}
+  \frac{\partial y}{\partial x_{1}} \\
+  \vdots \\
+  \frac{\partial y}{\partial x_{n}}
+  \end{array}\right) \\
+  \frac{\partial y}{\partial \boldsymbol{X}}=\left(\begin{array}{ccc}
+  \frac{\partial y}{\partial x_{11}} &amp; \cdots &amp; \frac{\partial y}{\partial x_{1 n}} \\
+  \vdots &amp; &amp; \vdots \\
+  \frac{\partial y}{\partial x_{n 1}} &amp; \cdots &amp; \frac{\partial y}{\partial x_{n n}}
+  \end{array}\right)
+  \end{array}
+  \end{split}\]</div>
+</dd>
+<dt>Properties</dt><dd><p><span class="math notranslate nohighlight">\(\ \)</span></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+  \begin{aligned}
+  \frac{\partial \boldsymbol{a}^{\top} \boldsymbol{x}}{\partial \boldsymbol{x}}&amp;=\boldsymbol{a}\\
+  \frac{\partial \boldsymbol{x}^{\top} \boldsymbol{A} \boldsymbol{x}}{\partial \boldsymbol{x}}&amp;=2 \boldsymbol{A} \boldsymbol{x} \text { if } \boldsymbol{A} \text { is symmetric. }\\
+  \frac{\partial \operatorname{tr}(\boldsymbol{X})}{\partial \boldsymbol{X}}&amp;=\boldsymbol{I}\\
+  \frac{\partial \operatorname{tr}(\boldsymbol{A} \boldsymbol{X})}{\partial \boldsymbol{X}}&amp;=\left\{\begin{array}{ll}
+  \boldsymbol{A}^{\top}  &amp;\text { if all elements of } \boldsymbol{X} \text { are distinct } \\
+  \boldsymbol{A}+\boldsymbol{A}^{\top}-\operatorname{diag}(\boldsymbol{A})  &amp;\text { if } \boldsymbol{X} \text { is symmetric. }
+  \end{array}\right.\\
+  \frac{\partial|\boldsymbol{X}|}{\partial \boldsymbol{X}}&amp;=\left\{\begin{array}{ll}
+  |\boldsymbol{X}|\left(\boldsymbol{X}^{-1}\right)^{\top}  &amp;\text { if all elements of } \boldsymbol{X} \text { are distinct } \\
+  |\boldsymbol{X}|\left(2 \boldsymbol{X}^{-1}-\operatorname{diag}\left(\boldsymbol{X}^{-1}\right)\right)^{\top}  &amp;\text { if } \boldsymbol{X} \text { is symmetric. }
+  \end{array}\right.
+  \end{aligned}
+  \end{split}\]</div>
+</dd>
+</dl>
+</div>
+<div class="section" id="matrix-decomposition">
+<h2>Matrix Decomposition<a class="headerlink" href="#matrix-decomposition" title="Permalink to this headline">¶</a></h2>
+<p>Summary table</p>
+<div class="section" id="eigenvalue-decomposition">
+<h3>Eigenvalue Decomposition<a class="headerlink" href="#eigenvalue-decomposition" title="Permalink to this headline">¶</a></h3>
+<p>If <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> is symmetric, there exists an orthogonal matrix <span class="math notranslate nohighlight">\(\boldsymbol{U} = \left[ \boldsymbol{u} _1, \boldsymbol{u} _2, \ldots, \boldsymbol{u} _n \right]\)</span> such that</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\boldsymbol{U}^{\top} \boldsymbol{A} \boldsymbol{U}=\boldsymbol{\Lambda} = \left[\begin{array}{cccc}
+\lambda_{1} &amp; 0 &amp; \cdots &amp; 0 \\
+0 &amp; \lambda_{2} &amp; \cdots &amp; 0 \\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+0 &amp; 0 &amp; \cdots &amp; \lambda_{n}
+\end{array}\right]
+\end{split}\]</div>
+<p>or</p>
+<div class="math notranslate nohighlight">
+\[
+\boldsymbol{A} = \boldsymbol{U} \boldsymbol{\Lambda} \boldsymbol{U} ^\top
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\lambda_1, \lambda_2, \ldots, \lambda_n\)</span> are eigenvalues of <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{u}  _i\)</span> are their corresponding eigenvectors.</p>
+</div>
+<div class="section" id="cholesky-decomposition">
+<h3>Cholesky Decomposition<a class="headerlink" href="#cholesky-decomposition" title="Permalink to this headline">¶</a></h3>
+<p>If <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> is p.s.d. (p.d.), there exists a (unique) upper triangular matrix <span class="math notranslate nohighlight">\(\boldsymbol{U}\)</span> with non-negative (positive) diagonal elements such that</p>
+<div class="math notranslate nohighlight">
+\[
+\boldsymbol{A} = \boldsymbol{U} ^\top \boldsymbol{U}
+\]</div>
+<p>Cholesky decomposition is a special case of LU decomposition.</p>
+</div>
+<div class="section" id="canonical-decomposition">
+<h3>Canonical Decomposition<a class="headerlink" href="#canonical-decomposition" title="Permalink to this headline">¶</a></h3>
+<p>If <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> is symmetric and <span class="math notranslate nohighlight">\(\boldsymbol{B}\)</span> is p.d., then there exists a non-singular matrix <span class="math notranslate nohighlight">\(\boldsymbol{P}\)</span> such that</p>
+<div class="math notranslate nohighlight">
+\[\boldsymbol{P} ^\top \boldsymbol{A} \boldsymbol{P} = \boldsymbol{\Lambda} \text{ and } \boldsymbol{P} ^\top \boldsymbol{B} \boldsymbol{P} = \boldsymbol{I} _n\]</div>
+<p>where <span class="math notranslate nohighlight">\(\boldsymbol{\Lambda} =\operatorname{diag}\left( \lambda_1, \lambda_2, \ldots, \lambda_n \right)\)</span> and the <span class="math notranslate nohighlight">\(\lambda_i\)</span> are the eigenvalues of <span class="math notranslate nohighlight">\(\boldsymbol{B} ^{-1} \boldsymbol{A}\)</span> or <span class="math notranslate nohighlight">\(\boldsymbol{A} \boldsymbol{B} ^{-1}\)</span>.</p>
+</div>
+<div class="section" id="singular-value-decomposition">
+<h3>Singular Value Decomposition<a class="headerlink" href="#singular-value-decomposition" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="qr-decomposition">
+<h3>QR Decomposition<a class="headerlink" href="#qr-decomposition" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="lu-decomposition">
+<h3>LU Decomposition<a class="headerlink" href="#lu-decomposition" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="schur-decomposition">
+<h3>Schur Decomposition<a class="headerlink" href="#schur-decomposition" title="Permalink to this headline">¶</a></h3>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./11-math"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        </div>
+    </div>
+    
+    
+    <div class='prev-next-bottom'>
+        
+    <a class='left-prev' id="prev-link" href="12-derangement.html" title="previous page">Derangement</a>
+    <a class='right-next' id="next-link" href="90-puzzles.html" title="next page">Puzzles</a>
+
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By Dennis Zheng<br/>
+        
+            &copy; Copyright 2020.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+
+    
+  <script src="../_static/js/index.3da636dd464baa7582d2.js"></script>
+
+
+    
+  </body>
+</html>

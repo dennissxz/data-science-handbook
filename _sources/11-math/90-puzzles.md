@@ -1,10 +1,14 @@
-# 10-digit Number Puzzle
+# Puzzles
+
+This section contains some interesting math puzzles.
+
+## 10-digit Number Puzzle
 
 Tags: Jane Street, Trader, 18Q4
 
 There is a 10-digit number. From left to right, the first digit equals the number of 0's in that number, the second digit equals the number of 1's in that number, and so on. What is this number?
 
-## Sol.1 Enumeration by Hand
+### Sol.1 Enumeration by Hand
 
 Suppose this number is $\underline{d_0d_1d_2d_3d_4d_5d_6d_7d_8d_9}$, where
 
@@ -57,7 +61,7 @@ Then we find $d_i$ by trial and error by applying the above constraints and the 
 Enumeration by hand is tedious. We have found a solution 6210001000 but we have to enumerate all other cases to see if there exists any other solutions.
 
 
-## Sol.2 Enumeration by Computer
+### Sol.2 Enumeration by Computer
 
 It seems that the time complexity is $O(10^{n-1})$ for a $n$-digit number, but in fact we can optimize it by adding the constraints.
 
@@ -78,7 +82,7 @@ for ds in product(range(1, 10), *(range(10 // i + 1) for i in range(1, 10))):
 
 It turns out that 6210001000 is the unique solution.
 
-## Sol.3 Mathematical Reasoning
+### Sol.3 Mathematical Reasoning
 
 In the above solutions we did partial reasoning and partial enumeration. Now we try more rigorous reasoning.
 
@@ -136,3 +140,28 @@ When $n\le 6$, if $d_0 \ge 3$, then $\vert A \vert =4$ and $n=d_0+4>7$, contradi
   - When $n-4$, $d_1=0$, the number is 2020.
   - When $n=5$, $d_1=1$, the number if 21200.
   - When $n=6$, $d_1=2$, so $2$ appears three times but $d_2=2$, contradiction.
+
+
+## Trailing zeros in $n$ factorial
+
+*Find the number of trailing zeros* in $n!$.
+
+It is easy to see the trailing zeros are produced by prime factors $2$ and $5$. If there are $m$ number of factor $2$ and $n$ number of factor $5$ in $n!$, then there will be $\min(m,n)$ number of trailing zeros.
+
+Also note that
+- $m>n$, since every $5$ numbers produce a factor $5$ and at least $3$ factors of $2$.
+- multiples of 5 like $25, 125$ bring more than one factor of $5$.
+
+Therefore, we conclude that $\min(m,n) = n$. How to count $n$? The easiest way is $\lfloor \frac{n}{5} \rfloor$. But we have to take numbers like $25, 125$ into consideration. The solution is to add $\lfloor \frac{n}{25} \rfloor, \lfloor \frac{n}{125} \rfloor$, etc.
+
+```python
+def count_trailing_zeros(n):
+
+    count = 0
+    i = 5
+    while (n/i >= 1):
+        count += n // i
+        i *= 5
+
+    return int(count)
+```

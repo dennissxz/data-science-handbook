@@ -115,8 +115,13 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../11-math/90-10-digit-number-puzzle.html">
-     10-digit Number Puzzle
+    <a class="reference internal" href="../11-math/21-linear-algebra.html">
+     Linear Algebra
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/90-puzzles.html">
+     Puzzles
     </a>
    </li>
   </ul>
@@ -151,6 +156,11 @@
    <li class="toctree-l2">
     <a class="reference internal" href="71-sampling.html">
      Sampling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="90-multivariate-notations.html">
+     Multivariate Notations
     </a>
    </li>
    <li class="toctree-l2">
@@ -296,24 +306,28 @@
  </span>
 </p>
 <ul class="nav sidenav_l1">
- <li class="toctree-l1">
-  <a class="reference internal" href="../30-machine-learning-concepts/00-intro-ml.html">
-   Introduction to Machine Learning
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../30-basic-concepts/00-basic-concepts.html">
+   Basic Concepts
   </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../30-basic-concepts/01-information-theory.html">
+     Information Theory
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
  </li>
  <li class="toctree-l1 collapsible-parent">
-  <a class="reference internal" href="../31-regression/00-intro-reg.html">
+  <a class="reference internal" href="../31-regression/00-regression.html">
    Regression
   </a>
   <ul class="collapse-ul">
    <li class="toctree-l2">
     <a class="reference internal" href="../31-regression/11-linear-models.html">
      Linear Models
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../31-regression/12-generalized-linear-models.html">
-     Generalized Linear Models
     </a>
    </li>
   </ul>
@@ -647,10 +661,14 @@ I_{t+1,j}=\begin{cases}
         <span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">n</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">infected</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">])</span> <span class="c1"># indexes of infected individuals</span>
 
-    <span class="k">def</span> <span class="nf">infect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">count_infected</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">infected</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">infect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">return_records</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        simulate infection for t minutes</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">It_records</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
             <span class="n">perm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
             <span class="n">perm_pairs</span> <span class="o">=</span> <span class="n">perm</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">n</span><span class="o">//</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="c1"># random pairs</span>
@@ -660,15 +678,18 @@ I_{t+1,j}=\begin{cases}
             <span class="n">new_boolean</span> <span class="o">=</span> <span class="o">~</span><span class="n">status_pairs</span><span class="p">[</span><span class="n">new_pairs</span><span class="p">]</span>
             <span class="n">new_individuals</span> <span class="o">=</span> <span class="n">perm_pairs</span><span class="p">[</span><span class="n">new_pairs</span><span class="p">][</span><span class="n">new_boolean</span><span class="p">]</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">infected</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">infected</span><span class="p">,</span> <span class="n">new_individuals</span><span class="p">))</span>
+            <span class="n">It_records</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">count_infected</span><span class="p">())</span>
 
-    <span class="k">def</span> <span class="nf">count_infected</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">infected</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">return_records</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">It_records</span><span class="p">)</span>
+
+
 
 <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 <span class="n">n</span> <span class="o">=</span> <span class="mi">1000</span>
 <span class="n">t</span> <span class="o">=</span> <span class="mi">10</span>
 <span class="n">pop</span> <span class="o">=</span> <span class="n">Population</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
-<span class="n">pop</span><span class="o">.</span><span class="n">infect</span><span class="p">(</span><span class="n">t</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">pop</span><span class="o">.</span><span class="n">infect</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">pop</span><span class="o">.</span><span class="n">count_infected</span><span class="p">())</span>
 </pre></div>
 </div>
@@ -683,14 +704,13 @@ I_{t+1,j}=\begin{cases}
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">It</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="n">m</span> <span class="o">=</span> <span class="mi">10000</span>
 <span class="n">t</span> <span class="o">=</span> <span class="mi">10</span>
-<span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+<span class="n">Its</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">m</span><span class="p">,</span><span class="n">t</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
     <span class="n">pop</span> <span class="o">=</span> <span class="n">Population</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
-    <span class="n">pop</span><span class="o">.</span><span class="n">infect</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
-    <span class="n">It</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pop</span><span class="o">.</span><span class="n">count_infected</span><span class="p">())</span>
-<span class="nb">print</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">It</span><span class="p">)</span><span class="o">/</span><span class="n">m</span><span class="p">)</span>
+    <span class="n">Its</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">pop</span><span class="o">.</span><span class="n">infect</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">return_records</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">Its</span><span class="p">[:,</span> <span class="mi">9</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
 </pre></div>
 </div>
 </div>
@@ -701,6 +721,22 @@ I_{t+1,j}=\begin{cases}
 </div>
 </div>
 <p>We see the simulation result <span class="math notranslate nohighlight">\(642.286\)</span> is quite close to the result <span class="math notranslate nohighlight">\(E(I_{10}) = 642.347\)</span> in Solution 1.</p>
+<p>The plot below shows <span class="math notranslate nohighlight">\(m\)</span> trajectories of <span class="math notranslate nohighlight">\(I_t\)</span> in the simulation. We can see all lines are close to each other, which verifies that the variance is quite small.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">Its</span><span class="p">[</span><span class="n">row</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;C0&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;infected number $I_t$&#39;</span><span class="p">)</span>    
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;time $t$&#39;</span><span class="p">)</span>    
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/51-markov-chain_14_0.png" src="../_images/51-markov-chain_14_0.png" />
+</div>
+</div>
 </div>
 </div>
 </div>

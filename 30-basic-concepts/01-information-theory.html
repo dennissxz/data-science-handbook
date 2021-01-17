@@ -1,0 +1,948 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Information Theory &#8212; Data Science Handbook</title>
+    
+  <link rel="stylesheet" href="../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+  <link rel="stylesheet"
+    href="../_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="../_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinx-book-theme.40e2e510f6b7d1648584402491bb10fe.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/style.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.3da636dd464baa7582d2.js">
+
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Regression" href="../31-regression/00-regression.html" />
+    <link rel="prev" title="Basic Concepts" href="00-basic-concepts.html" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+
+
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+<a class="navbar-brand text-wrap" href="../index.html">
+  
+  
+  <h1 class="site-logo" id="site-title">Data Science Handbook</h1>
+  
+</a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form>
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+    <ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../index.html">
+   Data Science Handbook
+  </a>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Foundations
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../11-math/00-math.html">
+   Math
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/11-combinatorics.html">
+     Combinatorics
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/12-derangement.html">
+     Derangement
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/21-linear-algebra.html">
+     Linear Algebra
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/90-puzzles.html">
+     Puzzles
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../12-probabilities/00-probabilities.html">
+   Probabilities
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/11-expectation-and-variance.html">
+     Expectation and Variance
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/13-correlation-and-dependence.html">
+     Correlation and Dependence
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/31-bayesian-theorem.html">
+     Bayesian’s Theorem
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/51-markov-chain.html">
+     Markov Chain
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/71-sampling.html">
+     Sampling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/90-multivariate-notations.html">
+     Multivariate Notations
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/91-large-sample-theory.html">
+     Large Sample Theory
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../13-statistics/00-statistics.html">
+   Statistics
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/11-stat-sampling.html">
+     Statistical Sampling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/21-hypothesis-testing.html">
+     Hypothesis Testing
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/33-confusion-matrix.html">
+     Confusion Matrix
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../14-python/00-python.html">
+   Python
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../14-python/11-programming-tools.html">
+     Programmer tools
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../14-python/12-syntax.html">
+     Syntax
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../14-python/13-data-structure.html">
+     Data Structures
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../14-python/15-functional-programming.html">
+     Functional Programming
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../17-sql/00-sql.html">
+   SQL
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../17-sql/11-database.html">
+     Database
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../17-sql/12-relational-structure.html">
+     Relational Structure
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../17-sql/31-data-query.html">
+     Data Query
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../17-sql/33-data-manipulation.html">
+     Data Manipulation
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../19-miscellaneous/00-miscellaneous.html">
+   Miscellaneous
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../19-miscellaneous/11-latex.html">
+     LaTeX
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../19-miscellaneous/13-myst.html">
+     MyST Markdown
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Algorithms
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../21-greedy-algorithms/00-greedy-algorithms.html">
+   Greedy Algorithms
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../21-greedy-algorithms/11-interval-scheduling.html">
+     Interval Scheduling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../21-greedy-algorithms/13-denominations.html">
+     Denominations
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Machine Learning
+ </span>
+</p>
+<ul class="current nav sidenav_l1">
+ <li class="toctree-l1 current active collapsible-parent">
+  <a class="reference internal" href="00-basic-concepts.html">
+   Basic Concepts
+  </a>
+  <ul class="current collapse-ul">
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     Information Theory
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../31-regression/00-regression.html">
+   Regression
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/11-linear-models.html">
+     Linear Models
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+</ul>
+
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="row topbar fixed-top container-xl">
+    <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show">
+    </div>
+    <div class="col pl-2 topbar-main">
+        
+        <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+            data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+            aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+            title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+            <i class="fas fa-bars"></i>
+            <i class="fas fa-arrow-left"></i>
+            <i class="fas fa-arrow-up"></i>
+        </button>
+        
+        
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../_sources/30-basic-concepts/01-information-theory.md"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.md</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+        <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/dennissxz/data-science-handbook"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/dennissxz/data-science-handbook/issues/new?title=Issue%20on%20page%20%2F30-basic-concepts/01-information-theory.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+
+        <!-- Full screen (wrap in <a> to have style consistency -->
+        <a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+                data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+                title="Fullscreen mode"><i
+                    class="fas fa-expand"></i></button></a>
+
+        <!-- Launch buttons -->
+
+    </div>
+
+    <!-- Table of contents -->
+    <div class="d-none d-md-block col-md-2 bd-toc show">
+        
+        <div class="tocsection onthispage pt-5 pb-3">
+            <i class="fas fa-list"></i> Contents
+        </div>
+        <nav id="bd-toc-nav">
+            <ul class="nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#definitions">
+   Definitions
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#shannon-entropy">
+     Shannon Entropy
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#differential-entropy">
+     Differential Entropy
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#joint-entropy">
+     Joint Entropy
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#conditional-entropy">
+     Conditional Entropy
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#cross-entropy">
+     Cross Entropy
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#kullback-leibler-divergence">
+     Kullback-Leibler Divergence
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#mutual-information">
+     Mutual Information
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#identities">
+   Identities
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#chain-rule-for-conditional-entropy">
+     Chain Rule for Conditional Entropy
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#bayes-rule-for-conditional-entropy">
+     Bayes’ Rule for Conditional Entropy
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#others">
+     Others
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#inequalities">
+   Inequalities
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#data-processing-inequality">
+     Data Processing Inequality
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+        </nav>
+        
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="information-theory">
+<h1>Information Theory<a class="headerlink" href="#information-theory" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="definitions">
+<h2>Definitions<a class="headerlink" href="#definitions" title="Permalink to this headline">¶</a></h2>
+<p>First we introduce the definitions of some fundamental concepts in informaition theory summarized in the table below.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+&amp; \text{Entropy} &amp; \operatorname{H}(Y)&amp;=-\sum_{\mathcal{Y}}p(y)\log p(y) \\
+&amp; \text{Differntial Entropy} &amp; h(Y)&amp;=-\int_{\mathcal{Y}}f(y)\log f(y)dy \\
+&amp; \text{Joint Entropy} &amp; \operatorname{H}(X,Y)&amp;=-\operatorname{E}_{X,Y\sim p(x,y)}\log\operatorname{P}(X,Y) \\
+&amp; \text{Conditional Entropy} &amp; \operatorname{H}(Y\vert X)&amp;=-\operatorname{E}_{X,Y\sim p(x,y)}\log \operatorname{P}(Y\mid X) \\
+&amp; \text{Cross Entropy} &amp; \operatorname{H}(P,Q)&amp;=-\operatorname{E}_{Y\sim P}\left[\ln\left(Q(Y)\right)\right] \\
+&amp; \text{KL Divergence} &amp; \operatorname{KL}(P,Q)&amp;=\operatorname{E}_{Y\sim P}\left[\ln\frac{P(Y)}{Q(Y)}\right] \\
+&amp; \text{Mutual Information} &amp; \operatorname{I}(X,Y)&amp;=\operatorname{KL}\left(P_{X,Y},P_{X}P_{Y}\right)
+\end{align}\end{split}\]</div>
+<div class="section" id="shannon-entropy">
+<h3>Shannon Entropy<a class="headerlink" href="#shannon-entropy" title="Permalink to this headline">¶</a></h3>
+<dl class="simple myst">
+<dt>Definition</dt><dd><p>The Shannon Entropy of a discrete distribution <span class="math notranslate nohighlight">\(p\left( y \right)\)</span> is defined by</p>
+</dd>
+</dl>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+\operatorname{H}\left( Y \right)
+&amp;= \operatorname{E}_{Y\sim p(y)}\left[ - \log \operatorname{P}\left( Y \right) \right]\\
+&amp;= -\sum_{i=1}^{n}p(y_i)\log p(y_i)
+\end{align}\end{split}\]</div>
+<p>This quantity measures the average level of “information”, or “uncertainty” inherent in the variables’ possible outcomes.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>Entropy has similarity with variance. Both are non-negative, measure uncertainty/information. But variance depends on the observed value <span class="math notranslate nohighlight">\(y\)</span> of the random variable <span class="math notranslate nohighlight">\(Y\)</span>, while entropy only depends on the probability <span class="math notranslate nohighlight">\(p(y)\)</span>.</p>
+</div>
+<dl class="simple myst">
+<dt>Properties</dt><dd><p><span class="math notranslate nohighlight">\(\operatorname{H}\left( Y \right) &gt; 0\)</span></p>
+</dd>
+</dl>
+</div>
+<div class="section" id="differential-entropy">
+<h3>Differential Entropy<a class="headerlink" href="#differential-entropy" title="Permalink to this headline">¶</a></h3>
+<dl class="simple myst">
+<dt>Definition</dt><dd><p>Let <span class="math notranslate nohighlight">\(Y\)</span> be a random variable with probability density function <span class="math notranslate nohighlight">\(f\)</span> whose support is <span class="math notranslate nohighlight">\(\mathcal{Y}\)</span>. The differential entropy of <span class="math notranslate nohighlight">\(Y\)</span>, denoted <span class="math notranslate nohighlight">\(h(Y)\)</span>, is defined as</p>
+<div class="math notranslate nohighlight">
+\[
+  h(Y)=-\int_{\mathcal{Y}}f(y)\log f(y)dy
+  \]</div>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Differential Entropy began as an attempt by Shannon to extend the idea of Shannon entropy to continuous PDF. Actually, the correct extension of Shannon entropy to continuous distributions is called limiting density of discrete points (LDDP), while differential entropy, aka continuous entropy, is a limiting case of the LDDP.</p>
+</div>
+<dl class="simple myst">
+<dt>Properties</dt><dd><ul>
+<li><p>Can be negative</p>
+<p>Differential entropy does not have all properties of discrete entropy. For instance, discrete entropy is always greater than 0, while differential entropy can be less than 0, or diverges to <span class="math notranslate nohighlight">\(-\infty\)</span>.</p>
+</li>
+<li><p>Sensitive to units</p>
+<p>The value of differential entropy is sensitive to the choice of units.</p>
+</li>
+<li><p>Transformation</p>
+<p>The entropy of processed information <span class="math notranslate nohighlight">\(h\left(z(Y)\right)\)</span> can be larger <strong>or</strong> smaller than the original entropy <span class="math notranslate nohighlight">\(h(Y)\)</span>. Just consider <span class="math notranslate nohighlight">\(z=ay\)</span> for <span class="math notranslate nohighlight">\(a&gt;1\)</span> and <span class="math notranslate nohighlight">\(a&lt;1\)</span>.</p>
+</li>
+</ul>
+</dd>
+<dt>Example</dt><dd><ul>
+<li><p>Consider a uniform distribution over an interval on the real line of width <span class="math notranslate nohighlight">\(\Delta\)</span>, then <span class="math notranslate nohighlight">\(p(y) = \frac{1}{\Delta}\)</span>, and hence the entropy is</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+    h(X) &amp;= \operatorname{E}_{x\sim p(\cdot)}\left( - \ln \frac{1}{\Delta}  \right)\\
+    &amp;= \ln \Delta \\
+    \end{align}\end{split}\]</div>
+<p>As <span class="math notranslate nohighlight">\(\Delta \rightarrow 0\)</span>, we have <span class="math notranslate nohighlight">\(h\rightarrow -\infty\)</span>.</p>
+</li>
+<li><p>The entropy for a Gaussian variable with density <span class="math notranslate nohighlight">\(N(0, \sigma)\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[
+    h \left( N(0, \sigma) \right) = C + \ln \sigma
+    \]</div>
+<p>As <span class="math notranslate nohighlight">\(\sigma \rightarrow 0\)</span>, we have <span class="math notranslate nohighlight">\(h\rightarrow -\infty\)</span>.</p>
+</li>
+<li><p>Consider the uniform distribution above. Suppose the unit is meter and the interval is <span class="math notranslate nohighlight">\((0, 1000)\)</span>. Note if we change the unit to kilometer, then the interval changes to <span class="math notranslate nohighlight">\((0, 1)\)</span>, and the interval decreases from <span class="math notranslate nohighlight">\(\ln 1000\)</span> to <span class="math notranslate nohighlight">\(\ln 1\)</span>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The right way to think about differential entropy is that, it is actually <strong>infinite</strong>. Recall entropy measures uncertainty. An actual real number carries an infinite number of bits, i.e. infinite amount of information. A meaningful convention is the <span class="math notranslate nohighlight">\(h(f)=+\infty\)</span> for any continuous density <span class="math notranslate nohighlight">\(p(y)\)</span>.</p>
+</div>
+</li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="joint-entropy">
+<h3>Joint Entropy<a class="headerlink" href="#joint-entropy" title="Permalink to this headline">¶</a></h3>
+<dl class="simple myst">
+<dt>Definition</dt><dd><p>The joint Shannon entropy of two discrete random variables <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span> with joint distribution <span class="math notranslate nohighlight">\(p(x,y)\)</span> is defined as</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+  \begin{align}
+  \operatorname{H}(X,Y)
+  &amp; = \operatorname{E}_{X,Y\sim p(x, y)}\left[ - \log \operatorname{P}(X,Y) \right]\\
+  &amp; = - \sum_{x\in\mathcal{X}}\sum_{y\in\mathcal{Y}}p(x,y)\log_{2}[p(x,y)]
+  \end{align}
+  \end{split}\]</div>
+<p>More generally, for multiple random variables, we can define</p>
+<div class="math notranslate nohighlight">
+\[
+  \operatorname{H}\left(X_{1},\ldots,X_{n}\right)=-\sum_{x_{1}\in\mathcal{X}_{1}}\ldots\sum_{x_{n}\in\mathcal{X}_{n}}p\left(x_{1},\ldots,x_{n}\right)\log_{2}\left[p\left(x_{1},\ldots,x_{n}\right)\right]
+  \]</div>
+<p>Likewise, we can define joint differential entropy for two continuous random variables with joint density <span class="math notranslate nohighlight">\(f(x,y)\)</span> as</p>
+<div class="math notranslate nohighlight">
+\[
+  h(X,Y)=-\int_{\mathcal{X},\mathcal{Y}}f(x,y)\log f(x,y)dxdy
+  \]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[
+  h\left(X_{1},\ldots,X_{n}\right)=-\int f\left(x_{1},\ldots,x_{n}\right)\log f\left(x_{1},\ldots,x_{n}\right)dx_{1}\ldots dx_{n}
+  \]</div>
+</dd>
+<dt>Properties of Discrete Joint Entropy</dt><dd><ul class="simple">
+<li><p>Nonnegativeity: <span class="math notranslate nohighlight">\(\operatorname{H}(X,Y)\ge0\)</span></p></li>
+<li><p>Greater than or equal to individual entropies: <span class="math notranslate nohighlight">\(\operatorname{H}(X,Y)\ge\max\left(\operatorname{H}(X),\operatorname{H}(Y)\right)\)</span></p></li>
+<li><p>Less than or equal to the sum of individual entropies <span class="math notranslate nohighlight">\(\operatorname{H}(X,Y)\le \operatorname{H}(X)+\operatorname{H}(Y)\)</span></p></li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="conditional-entropy">
+<h3>Conditional Entropy<a class="headerlink" href="#conditional-entropy" title="Permalink to this headline">¶</a></h3>
+<dl class="simple myst">
+<dt>Definition</dt><dd><p>For two random variables <span class="math notranslate nohighlight">\(X, Y\)</span> with density function <span class="math notranslate nohighlight">\(p(x,y)\)</span>, the conditional entropy of <span class="math notranslate nohighlight">\(Y\)</span> given <span class="math notranslate nohighlight">\(X\)</span> is defined as</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+  \operatorname{H}(Y\mid X)	 
+  &amp; = \operatorname{E}_{X,Y\sim p(x, y)}\left[ - \log \operatorname{P}(Y \mid X) \right]\\
+  &amp;=-\sum_{x\in\mathcal{X},y\in\mathcal{Y}}p(x,y)\log p(y\vert x) \\
+  h(Y\mid X)	&amp;=-\int_{\mathcal{X},\mathcal{Y}}f(x,y)\log f(y\vert x)dxdy
+  \end{align}\end{split}\]</div>
+<p>It also quantifies the amount of information needed to describe the outcome of a random variable <span class="math notranslate nohighlight">\(Y\)</span> given the value of another random variable <span class="math notranslate nohighlight">\(X\)</span>.</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>One can compare entropy vs. conditional entropy, and probability vs conditional probability. Both are defined by the expectation of negative log probability.</p>
+<ul class="simple">
+<li><p>the entropy of <span class="math notranslate nohighlight">\(Y\)</span> is the expectation of negative unconditional log probability <span class="math notranslate nohighlight">\(\log p(y)\)</span></p></li>
+<li><p>the conditional entropy of <span class="math notranslate nohighlight">\(Y\)</span> given <span class="math notranslate nohighlight">\(X\)</span> is the expectation of the negative conditional log probability <span class="math notranslate nohighlight">\(\log p(y \mid x)\)</span></p></li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Conditional entropy samples <span class="math notranslate nohighlight">\(X,Y\)</span> from the joint distribution <span class="math notranslate nohighlight">\(p(x,y)\)</span>. This is different from conditional expectation, which samples <span class="math notranslate nohighlight">\(Y\)</span> from the conditional distribution <span class="math notranslate nohighlight">\(Y \sim p_{Y\mid X}(y\mid x)\)</span>.</p>
+</div>
+<p>To understand it, first we consider the entropy of <span class="math notranslate nohighlight">\(Y\)</span> given <span class="math notranslate nohighlight">\(X\)</span> takes a certain value <span class="math notranslate nohighlight">\(x\)</span>. Recall the unconditional entropy of <span class="math notranslate nohighlight">\(Y\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[
+\operatorname{H}(Y)=-\sum_{y\in\mathcal{Y}}\operatorname{P}(Y=y)\log_{2}\operatorname{P}(Y=y)
+\]</div>
+<p>Now <span class="math notranslate nohighlight">\(X\)</span> is known to be <span class="math notranslate nohighlight">\(x\)</span>, then the distribution of <span class="math notranslate nohighlight">\(Y\)</span> becomes conditional on <span class="math notranslate nohighlight">\(X=x\)</span>. We just replace <span class="math notranslate nohighlight">\(\operatorname{P}(Y=y)\)</span> by <span class="math notranslate nohighlight">\(\operatorname{P}(Y=y\mid X=x)\)</span>. Hence,</p>
+<div class="math notranslate nohighlight">
+\[
+\operatorname{H}(Y\vert X=x)=-\sum_{y\in\mathcal{Y}}\operatorname{P}(Y=y\mid X=x)\log_{2}\operatorname{P}(Y=y\mid X=x)
+\]</div>
+<p>Finally, the conditional entropy <span class="math notranslate nohighlight">\(\operatorname{H}(Y\vert X)\)</span> is defined as the sum of <span class="math notranslate nohighlight">\(\operatorname{H}(Y\vert X=x)\)</span> weighted on <span class="math notranslate nohighlight">\(\operatorname{P}(X=x)\)</span>, i.e.,</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}\operatorname{H}(Y\vert X) &amp; \equiv\sum_{x\in\mathcal{X}}p(x)\operatorname{H}(Y\vert X=x)\\
+ &amp; =-\sum_{x\in\mathcal{X}}p(x)\sum_{y\in\mathcal{Y}}p(y\vert x)\log p(y\vert x)\\
+ &amp; =-\sum_{x\in\mathcal{X}}\sum_{y\in\mathcal{Y}}p(x,y)\log p(y\vert x)\\
+ &amp; =-\sum_{x\in\mathcal{X},y\in\mathcal{Y}}p(x,y)\log\frac{p(x,y)}{p(x)}
+\end{aligned}
+\end{split}\]</div>
+<dl class="simple myst">
+<dt>Properties</dt><dd><ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\operatorname{H}(Y\vert X)=0\)</span> iff <span class="math notranslate nohighlight">\(Y\)</span> is completely determined by the value of <span class="math notranslate nohighlight">\(X\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\operatorname{H}(Y\vert X)=\operatorname{H}(Y)\)</span> iff <span class="math notranslate nohighlight">\(Y\)</span> and <span class="math notranslate nohighlight">\(X\)</span> are independent</p></li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="cross-entropy">
+<h3>Cross Entropy<a class="headerlink" href="#cross-entropy" title="Permalink to this headline">¶</a></h3>
+<dl class="simple myst">
+<dt>Definition</dt><dd><p>The cross entropy of two distributions <span class="math notranslate nohighlight">\(P\)</span> and <span class="math notranslate nohighlight">\(Q\)</span> on the same
+support <span class="math notranslate nohighlight">\(\mathcal{Y}\)</span> is defined as</p>
+</dd>
+</dl>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align}
+\operatorname{H}\left( P, Q \right) &amp; =\operatorname{E}_{Y\sim p(y)}\left[-\ln\left(Q(Y)\right)\right]\\
+ &amp; =\int_{\mathcal{Y}}f_{P}(y)\left[-\ln\left(f_{Q}(y)\right)\right]\text{d}y\quad\text{for continuous}\ P,Q\\
+ &amp; =-\sum_{y\in\mathcal{Y}}P(y)\log Q(y)\qquad\qquad\text{for discrete}\ P,Q
+\end{align}
+\end{split}\]</div>
+<p>Cross entropy can be interpreted as the <strong>expected message-length</strong> per datum when a wrong distribution <span class="math notranslate nohighlight">\(Q\)</span> is assumed while the data actually follows a distribution <span class="math notranslate nohighlight">\(P\)</span>. If we use <span class="math notranslate nohighlight">\(\log_{2}\)</span>, the quantity <span class="math notranslate nohighlight">\(\operatorname{H}\left( P, Q \right)\)</span> can also be interpreted
+as 1.44 times the number of bits used to code draws from <span class="math notranslate nohighlight">\(P\)</span> when
+using the imperfect code defined by <span class="math notranslate nohighlight">\(Q\)</span>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>The cross entropy <span class="math notranslate nohighlight">\(\operatorname{H}(P,Q)\)</span> of <strong>two</strong> distributions <span class="math notranslate nohighlight">\(P(y), Q(y)\)</span> is different from the joint entropy <span class="math notranslate nohighlight">\(\operatorname{H}(X,Y)\)</span> of <strong>one</strong> joint distribution <span class="math notranslate nohighlight">\(p(x,y)\)</span> of <strong>two</strong> random variables <span class="math notranslate nohighlight">\(X, Y\)</span>.</p></li>
+<li><p>“Cross” means we sample <span class="math notranslate nohighlight">\(y\)</span> from one distribution <span class="math notranslate nohighlight">\(P(y)\)</span>, and then compute the negative log probability with the other distribution <span class="math notranslate nohighlight">\(-\ln(Q(y))\)</span>.</p></li>
+</ul>
+</div>
+<dl class="simple myst">
+<dt>Properties</dt><dd><ul class="simple">
+<li><p>asymmetric: <span class="math notranslate nohighlight">\(\operatorname{H}\left( P, Q \right)\ne \operatorname{H}(Q,P)\)</span></p></li>
+<li><p>larger than entropy: <span class="math notranslate nohighlight">\(\operatorname{H}\left( P, Q \right)\ge \operatorname{H}(P)\)</span> with equality iff <span class="math notranslate nohighlight">\(Q=P\)</span></p></li>
+</ul>
+</dd>
+</dl>
+<p>Cross entropy is tightly related to KL divergence.</p>
+</div>
+<div class="section" id="kullback-leibler-divergence">
+<h3>Kullback-Leibler Divergence<a class="headerlink" href="#kullback-leibler-divergence" title="Permalink to this headline">¶</a></h3>
+<p>: The KL Divergence of two distributions <span class="math notranslate nohighlight">\(P\)</span> and <span class="math notranslate nohighlight">\(Q\)</span> on the \textbf{same}
+support <span class="math notranslate nohighlight">\(\mathcal{Y}\)</span> is defined as</p>
+<div class="math notranslate nohighlight">
+\[
+  \begin{aligned}
+  \operatorname{KL}\left( P, Q \right) &amp; =\operatorname{E}_{Y\sim p(y)}\left[\ln\frac{P(Y)}{Q(Y)}\right]
+  \end{aligned}
+  \]</div>
+<p>Kullback–Leibler divergence (also called relative entropy) is a  measure of how one probability distribution is different from a second,  reference probability distribution, i.e. the <strong>distance</strong> between  two distributions on the same support. It is a distribution-wise <strong>asymmetric</strong> measure and thus does not qualify as a statistical <strong>metric</strong> of spread - it also does not satisfy the triangle inequality.</p>
+<dl class="simple myst">
+<dt>Properties</dt><dd><ul>
+<li><p><span class="math notranslate nohighlight">\(\operatorname{KL}\left( P, Q \right) \ge 0\)</span>, with equality iff the two distributions are identical.</p>
+<details class="sphinx-bs dropdown card mb-3">
+<summary class="summary-title card-header">
+Proof<div class="summary-down docutils">
+<svg version="1.1" width="24" height="24" class="octicon octicon-chevron-down" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M5.22 8.72a.75.75 0 000 1.06l6.25 6.25a.75.75 0 001.06 0l6.25-6.25a.75.75 0 00-1.06-1.06L12 14.44 6.28 8.72a.75.75 0 00-1.06 0z"></path></svg></div>
+<div class="summary-up docutils">
+<svg version="1.1" width="24" height="24" class="octicon octicon-chevron-up" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M18.78 15.28a.75.75 0 000-1.06l-6.25-6.25a.75.75 0 00-1.06 0l-6.25 6.25a.75.75 0 101.06 1.06L12 9.56l5.72 5.72a.75.75 0 001.06 0z"></path></svg></div>
+</summary><div class="summary-content card-body docutils">
+<p class="card-text">KL divergence is non-negative by Jensen’s inequality of convex functions</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}\operatorname{KL}\left( P, Q \right) &amp; =\operatorname{E}_{y\sim p(\cdot)}\left[-\ln\frac{Q(y)}{P(y)}\right]\\
+ &amp; \geq-\ln \operatorname{E}_{y\sim p(\cdot)}\frac{Q(y)}{P(y)}\\
+ &amp; =-\ln\sum_{y}P(y)\frac{Q(y)}{P(y)}\\
+ &amp; =-\ln\sum_{y}Q(y)\\
+ &amp; =0
+\end{aligned}
+\end{split}\]</div>
+<p class="card-text">For two continuous distributions,</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+\operatorname{KL}\left( P, Q \right) &amp; =\int_{-\infty}^{\infty}p(y)\log\left(\frac{p(y)}{q(y)}\right)dy\\
+ &amp; \ge0
+\end{align}\end{split}\]</div>
+<p class="card-text">Equality holds iff <span class="math notranslate nohighlight">\(\forall y\ P(y)=Q(y)\)</span>, i.e. two distributions
+are identical.</p>
+</div>
+</details></li>
+<li><p>Relation to cross entropy:</p>
+<div class="math notranslate nohighlight">
+\[
+    \operatorname{KL}\left( P, Q \right)=\operatorname{H}\left( P, Q \right)-\operatorname{H}(P)
+    \]</div>
+</li>
+<li><p>If <span class="math notranslate nohighlight">\(P\)</span> is some fixed distribution, then <span class="math notranslate nohighlight">\(\operatorname{H}(P)\)</span> is a constant. Hence,</p>
+<div class="math notranslate nohighlight">
+\[
+    \operatorname{argmax}_{Q}\ \operatorname{KL}\left( P, Q \right)=\operatorname{argmax}_{Q}\operatorname{H}\left( P, Q \right)
+    \]</div>
+<p>i.e. minimizing/maximizing the KL divergence <span class="math notranslate nohighlight">\(\operatorname{KL}\left( P, Q \right)\)</span> of two distributions is equivalent to minimizing/maximizing their cross entropy <span class="math notranslate nohighlight">\(\operatorname{H}\left( P, Q \right)\)</span>, given <span class="math notranslate nohighlight">\(P\)</span> is a fixed distribution.</p>
+</li>
+</ul>
+</dd>
+<dt>Example</dt><dd><p>The KL-Divergence between two multivariate Gaussian <span class="math notranslate nohighlight">\(\mathcal{N}(\mu_{p},\Sigma_{p})\)</span>
+and <span class="math notranslate nohighlight">\(\mathcal{N}(\mu_{q},\Sigma_{q})\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[
+  \operatorname{KL}\left( P, Q \right)=\frac{1}{2}\left[\log\frac{\left|\Sigma_{q}\right|}{\left|\Sigma_{p}\right|}-k+\left(\mu_{p}-\mu_{q}\right)^{T}\Sigma_{q}^{-1}\left(\mu_{p}-\mu_{q}\right)+\operatorname{tr}\left\{ \Sigma_{q}^{-1}\Sigma_{p}\right\} \right]
+  \]</div>
+<p>In particular, if the reference distribution <span class="math notranslate nohighlight">\(Q\)</span> is <span class="math notranslate nohighlight">\(\mathcal{N}(0,I)\)</span> then we get</p>
+<div class="math notranslate nohighlight">
+\[
+  \operatorname{KL}\left( P, Q \right)=\frac{1}{2}\left[\Vert\mu_{p}\Vert^{2}+\operatorname{tr}\left\{ \Sigma_{p}\right\} -k-\log\left|\Sigma_{p}\right|\right]
+  \]</div>
+</dd>
+</dl>
+</div>
+<div class="section" id="mutual-information">
+<h3>Mutual Information<a class="headerlink" href="#mutual-information" title="Permalink to this headline">¶</a></h3>
+<p>Aka information gain.</p>
+<dl class="simple myst">
+<dt>Definition</dt><dd><p>Let <span class="math notranslate nohighlight">\(\left(X,Y\right)\)</span> be a pair of random variables with values over the space <span class="math notranslate nohighlight">\(\mathcal{X}\times\mathcal{Y}\)</span>. Suppose their joint distribution is <span class="math notranslate nohighlight">\(\operatorname{P}_{X,Y}\)</span> and the marginal distributions are <span class="math notranslate nohighlight">\(\operatorname{P}_{X}\)</span> and <span class="math notranslate nohighlight">\(\operatorname{P}_{Y}\)</span>. The mutual information of <span class="math notranslate nohighlight">\(X, Y\)</span> is defined by a KL divergence</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+  \operatorname{I}\left(X, Y \right) &amp; = \operatorname{KL}\left(\operatorname{P}_{X,Y},\operatorname{P}_{X}\operatorname{P}_{Y}\right)\\
+   &amp; = \operatorname{E}_{X,Y}\left[ \ln\frac{\operatorname{P}_{X,Y}(X,Y)}{\operatorname{P}_X(X)\operatorname{P}_Y(Y)} \right]\\
+  \end{align}\end{split}\]</div>
+<p>For discrete case,</p>
+<div class="math notranslate nohighlight">
+\[
+  \operatorname{I}\left(X, Y \right)=\sum_{y\in\mathcal{Y}}\sum_{x\in\mathcal{X}}p_{X,Y}(x,y)\log\left(\frac{p_{(X,Y)}(x,y)}{p_{X}(x)p_{Y}(y)}\right)
+  \]</div>
+<p>and for continuous case,</p>
+<div class="math notranslate nohighlight">
+\[
+  \operatorname{I}\left(X, Y \right)=\int_{y}\int_{\mathcal{X}}p_{X,Y}(x,y)\log\left(\frac{p_{(X,Y)}(x,y)}{p_{X}(x)p_{Y}(y)}\right)
+\]</div>
+</dd>
+<dt>Properties</dt><dd><p><span class="math notranslate nohighlight">\(\operatorname{I}(X,Y) \ge 0\)</span>, with equality holds iff <span class="math notranslate nohighlight">\(P_{X,Y}=P_{X}P_{Y}\)</span>, i.e. when <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span> are independent, and hence there is no mutual dependence.</p>
+</dd>
+</dl>
+<p>Mutual information is a measure of the mutual <strong>dependence</strong> between the two variables. More specifically, it quantifies the amount of information (in units such as shannons, commonly called bits) obtained about one random variable through observing the other random variable.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>Similar to absolute correlation \left\vert \rho \right\vert? Both are non-negative, larger when
+<span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span> are dependent, and equal 0 when independent. But <span class="math notranslate nohighlight">\(\vert\rho\vert=0\ \not{\Rightarrow}\ X\perp Y\)</span> while <span class="math notranslate nohighlight">\(\operatorname{I}\left(X, Y \right)=0\ \Leftrightarrow\ X\perp Y\)</span>.</p>
+</div>
+</div>
+</div>
+<div class="section" id="identities">
+<h2>Identities<a class="headerlink" href="#identities" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="chain-rule-for-conditional-entropy">
+<h3>Chain Rule for Conditional Entropy<a class="headerlink" href="#chain-rule-for-conditional-entropy" title="Permalink to this headline">¶</a></h3>
+<p>Analogous to <span class="math notranslate nohighlight">\(p(y\vert x)=\frac{p(x,y)}{p(x)}\)</span> in probability, we have an equation that connects entropy, joint entropy and conditional entropy. Instead of division, we use subtraction,</p>
+<div class="math notranslate nohighlight">
+\[
+\operatorname{H}(Y\vert X)=\operatorname{H}(X,Y)-\operatorname{H}(X)
+\]</div>
+<p>where we have the following interpretation</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\operatorname{H}(X,Y)\)</span> measures the bits of information on average to describe the state of the combined system <span class="math notranslate nohighlight">\((X,Y)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\operatorname{H}(X)\)</span> measures the bits of information we have about <span class="math notranslate nohighlight">\(\operatorname{H}(X)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\operatorname{H}(Y\vert X)\)</span> measures the <strong>additional</strong> information required to describe <span class="math notranslate nohighlight">\((X,Y)\)</span>, given <span class="math notranslate nohighlight">\(X\)</span>. Note that <span class="math notranslate nohighlight">\(\operatorname{H}(Y\vert X)\le \operatorname{H}(Y)\)</span> with equality iff <span class="math notranslate nohighlight">\(X\bot Y\)</span>.</p></li>
+</ul>
+<p>The general form for multiple random variables is</p>
+<div class="math notranslate nohighlight">
+\[ \operatorname{H}\left(X_{1},X_{2},\ldots,X_{n}\right)=\sum_{i=1}^{n}\operatorname{H}\left(X_{i}\vert X_{1},\ldots,X_{i-1}\right)
+\]</div>
+<p>which has a similar form to chain rule in probability theory, except that here is addition <span class="math notranslate nohighlight">\(\sum_{i=1}^{n}\)</span> instead of multiplication <span class="math notranslate nohighlight">\(\Pi_{i=1}^{n}\)</span>.</p>
+<p><em><strong>Proof</strong></em></p>
+<p>By definition,</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+  \begin{aligned}\operatorname{H}(Y\vert X)
+  &amp; = -\sum_{x\in\mathcal{X},y\in\mathcal{Y}}p(x,y)\log\frac{p(x)}{p(x,y)}\\
+   &amp; =- \sum_{x\in\mathcal{X},y\in\mathcal{Y}}p(x,y)(\log p(x)-\log p(x,y))\\
+   &amp; =-\sum_{x\in\mathcal{X},y\in\mathcal{Y}}p(x,y)\log p(x,y)+\sum_{x\in\mathcal{X},y\in\mathcal{Y}}p(x,y)\log p(x)\\
+   &amp; =\operatorname{H}(X,Y)+\sum_{x\in\mathcal{X}}p(x)\log p(x)\\
+   &amp; =\operatorname{H}(X,Y)-\operatorname{H}(X)
+  \end{aligned}
+  \end{split}\]</div>
+</div>
+<div class="section" id="bayes-rule-for-conditional-entropy">
+<h3>Bayes’ Rule for Conditional Entropy<a class="headerlink" href="#bayes-rule-for-conditional-entropy" title="Permalink to this headline">¶</a></h3>
+<p>Analogous to the Bayes rule <span class="math notranslate nohighlight">\(p(y\vert x)=\frac{p(x\vert y)p(y)}{p(x)}\)</span> in probability, we have an equation to link <span class="math notranslate nohighlight">\(\operatorname{H}(Y\vert X)\)</span> and <span class="math notranslate nohighlight">\(\operatorname{H}(X\vert Y)\)</span>, which is simply a result from the chain rule. Instead of division for the Bayes’ rule in probability, we use subtraction</p>
+<div class="math notranslate nohighlight">
+\[
+\operatorname{H}(Y\vert X)=\operatorname{H}(X\vert Y)-\operatorname{H}(X)+\operatorname{H}(Y)
+\]</div>
+</div>
+<div class="section" id="others">
+<h3>Others<a class="headerlink" href="#others" title="Permalink to this headline">¶</a></h3>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}\operatorname{H}(X,Y) &amp; =\operatorname{H}(X\vert Y)+\operatorname{H}(Y\vert X)+\operatorname{I}\left(X, Y \right)\\
+\operatorname{H}(X,Y) &amp; =\operatorname{H}(X)+\operatorname{H}(Y)-\operatorname{I}\left(X, Y \right)\\
+\operatorname{I}\left(X, Y \right) &amp; \leq \operatorname{H}(X)
+\end{aligned}
+\end{split}\]</div>
+</div>
+</div>
+<div class="section" id="inequalities">
+<h2>Inequalities<a class="headerlink" href="#inequalities" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="data-processing-inequality">
+<h3>Data Processing Inequality<a class="headerlink" href="#data-processing-inequality" title="Permalink to this headline">¶</a></h3>
+<p>The data processing inequality says post-processing cannot increase information.</p>
+<p>Let three random variables form the Markov Chain <span class="math notranslate nohighlight">\(X\rightarrow Y\rightarrow Z\)</span>, implying that the conditional distribution of <span class="math notranslate nohighlight">\(Z\)</span> depends only on <span class="math notranslate nohighlight">\(Y\)</span> and is conditionally independent of <span class="math notranslate nohighlight">\(X\)</span>. The joint PMF can be written as</p>
+<div class="math notranslate nohighlight">
+\[p(x,y,z)=p(x)p(y\mid x)p(z\mid y)\]</div>
+<p>In this setting, no processing <span class="math notranslate nohighlight">\(Z(Y)\)</span> of <span class="math notranslate nohighlight">\(Y\)</span>, deterministic or random, can increase the information that <span class="math notranslate nohighlight">\(Y\)</span> contains about <span class="math notranslate nohighlight">\(X\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[\operatorname{I}\left(X, Y \right)\ge I(X,Z)\]</div>
+<p>with the quality iff <span class="math notranslate nohighlight">\(Z\)</span> and <span class="math notranslate nohighlight">\(Y\)</span> contain the same information about <span class="math notranslate nohighlight">\(X\)</span>.</p>
+<p>Note that <span class="math notranslate nohighlight">\(\operatorname{H}(Z)\le \operatorname{H}(Y)\)</span> but <span class="math notranslate nohighlight">\(h(Z)\)</span> can be larger or smaller than <span class="math notranslate nohighlight">\(h(Y)\)</span>.</p>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./30-basic-concepts"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        </div>
+    </div>
+    
+    
+    <div class='prev-next-bottom'>
+        
+    <a class='left-prev' id="prev-link" href="00-basic-concepts.html" title="previous page">Basic Concepts</a>
+    <a class='right-next' id="next-link" href="../31-regression/00-regression.html" title="next page">Regression</a>
+
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By Dennis Zheng<br/>
+        
+            &copy; Copyright 2020.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+
+    
+  <script src="../_static/js/index.3da636dd464baa7582d2.js"></script>
+
+
+    
+  </body>
+</html>

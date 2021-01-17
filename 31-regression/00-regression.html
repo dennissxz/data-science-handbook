@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Generalized Linear Models &#8212; Data Science Handbook</title>
+    <title>Regression &#8212; Data Science Handbook</title>
     
   <link rel="stylesheet" href="../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
 
@@ -57,7 +57,8 @@
     <script async="async" src="../_static/sphinx-thebe.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="prev" title="Linear Models" href="11-linear-models.html" />
+    <link rel="next" title="Linear Models" href="11-linear-models.html" />
+    <link rel="prev" title="Information Theory" href="../30-basic-concepts/01-information-theory.html" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
@@ -114,8 +115,13 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../11-math/90-10-digit-number-puzzle.html">
-     10-digit Number Puzzle
+    <a class="reference internal" href="../11-math/21-linear-algebra.html">
+     Linear Algebra
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/90-puzzles.html">
+     Puzzles
     </a>
    </li>
   </ul>
@@ -150,6 +156,11 @@
    <li class="toctree-l2">
     <a class="reference internal" href="../12-probabilities/71-sampling.html">
      Sampling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/90-multivariate-notations.html">
+     Multivariate Notations
     </a>
    </li>
    <li class="toctree-l2">
@@ -295,24 +306,28 @@
  </span>
 </p>
 <ul class="current nav sidenav_l1">
- <li class="toctree-l1">
-  <a class="reference internal" href="../30-machine-learning-concepts/00-intro-ml.html">
-   Introduction to Machine Learning
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../30-basic-concepts/00-basic-concepts.html">
+   Basic Concepts
   </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../30-basic-concepts/01-information-theory.html">
+     Information Theory
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
  </li>
  <li class="toctree-l1 current active collapsible-parent">
-  <a class="reference internal" href="00-intro-reg.html">
+  <a class="current reference internal" href="#">
    Regression
   </a>
-  <ul class="current collapse-ul">
+  <ul class="collapse-ul">
    <li class="toctree-l2">
     <a class="reference internal" href="11-linear-models.html">
      Linear Models
-    </a>
-   </li>
-   <li class="toctree-l2 current active">
-    <a class="current reference internal" href="#">
-     Generalized Linear Models
     </a>
    </li>
   </ul>
@@ -359,7 +374,7 @@
         <!-- ipynb file if we had a myst markdown file -->
         
         <!-- Download raw file -->
-        <a class="dropdown-buttons" href="../_sources/31-regression/12-generalized-linear-models.md"><button type="button"
+        <a class="dropdown-buttons" href="../_sources/31-regression/00-regression.md"><button type="button"
                 class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
                 data-placement="left">.md</button></a>
         <!-- Download PDF via print -->
@@ -379,7 +394,7 @@
                 data-toggle="tooltip" data-placement="left" title="Source repository"><i
                     class="fab fa-github"></i>repository</button></a>
         <a class="issues-button"
-            href="https://github.com/dennissxz/data-science-handbook/issues/new?title=Issue%20on%20page%20%2F31-regression/12-generalized-linear-models.html&body=Your%20issue%20content%20here."><button
+            href="https://github.com/dennissxz/data-science-handbook/issues/new?title=Issue%20on%20page%20%2F31-regression/00-regression.html&body=Your%20issue%20content%20here."><button
                 type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
                 title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
         
@@ -400,54 +415,6 @@
     <!-- Table of contents -->
     <div class="d-none d-md-block col-md-2 bd-toc show">
         
-        <div class="tocsection onthispage pt-5 pb-3">
-            <i class="fas fa-list"></i> Contents
-        </div>
-        <nav id="bd-toc-nav">
-            <ul class="nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#model">
-   Model
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#structural-form">
-     Structural Form
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#assumptions">
-     Assumptions
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#estimation">
-   Estimation
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#objective-function">
-     Objective Function
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#metrics">
-     Metrics
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#prediction">
-   Prediction
-  </a>
- </li>
-</ul>
-
-        </nav>
-        
     </div>
 </div>
     <div id="main-content" class="row">
@@ -455,46 +422,10 @@
         
               <div>
                 
-  <div class="section" id="generalized-linear-models">
-<h1>Generalized Linear Models<a class="headerlink" href="#generalized-linear-models" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="model">
-<h2>Model<a class="headerlink" href="#model" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="structural-form">
-<h3>Structural Form<a class="headerlink" href="#structural-form" title="Permalink to this headline">¶</a></h3>
-<p>A genearlized linear model has the form</p>
-<div class="math notranslate nohighlight">
-\[g \left( \mathrm{E}\left( Y_{i} \right) \right) = \boldsymbol{x_i} ^\top \boldsymbol{\beta} \]</div>
-<p>where</p>
-<ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(Y_{i}\)</span> is a random component</p></li>
-<li><p><span class="math notranslate nohighlight">\(\boldsymbol{x}_i ^\top \boldsymbol{\beta}\)</span> is a linear predictor. As in ordinary least squared models, <span class="math notranslate nohighlight">\(\boldsymbol{x}_{i}\)</span> can include interactions, non-linear transformations of the observed covariates and the constant term.</p></li>
-<li><p><span class="math notranslate nohighlight">\(g(\cdot)\)</span> is a link function, which connects the linear predictor with the random components.</p>
-<ul>
-<li><p>For linear models, <span class="math notranslate nohighlight">\(g(\mu)=\mu\)</span>, such that <span class="math notranslate nohighlight">\(\mathrm{E}\left( Y_i \right) = \boldsymbol{x} _i ^\top \boldsymbol{\beta}\)</span></p></li>
-<li><p>For logistics regression, <span class="math notranslate nohighlight">\(g(\mu) = \ln \frac{\mu}{1-\mu}\)</span>, such that <span class="math notranslate nohighlight">\(\ln \frac{\mathrm{P}\left( Y_i=1\vert \boldsymbol{x} _i \right) }{\mathrm{P}\left( Y_i=0 \vert \boldsymbol{x} _i\right) } = \boldsymbol{x} _i^\top \boldsymbol{\beta}\)</span></p></li>
-<li><p>For poisson regression, <span class="math notranslate nohighlight">\(g(\mu) = \ln \mu\)</span>, such that <span class="math notranslate nohighlight">\(\ln \mathrm{E}\left( Y_i \right)  = \boldsymbol{x} _i^\top \boldsymbol{\beta}\)</span></p></li>
-</ul>
-</li>
-</ul>
-</div>
-<div class="section" id="assumptions">
-<h3>Assumptions<a class="headerlink" href="#assumptions" title="Permalink to this headline">¶</a></h3>
-<ul class="simple">
-<li><p>We assume <span class="math notranslate nohighlight">\(Y_i \overset{  \text{iid}}{\sim} F\)</span> where <span class="math notranslate nohighlight">\(F\)</span> is some distribution, such as normal, binomial, poisson. Thus, we generalize the response <span class="math notranslate nohighlight">\(y_i\)</span> from continuous real values in ordinary linear models, to binary response, counts, categories etc. Usually F is from an exponential family.</p></li>
-</ul>
-</div>
-</div>
-<div class="section" id="estimation">
-<h2>Estimation<a class="headerlink" href="#estimation" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="objective-function">
-<h3>Objective Function<a class="headerlink" href="#objective-function" title="Permalink to this headline">¶</a></h3>
-</div>
-<div class="section" id="metrics">
-<h3>Metrics<a class="headerlink" href="#metrics" title="Permalink to this headline">¶</a></h3>
-</div>
-</div>
-<div class="section" id="prediction">
-<h2>Prediction<a class="headerlink" href="#prediction" title="Permalink to this headline">¶</a></h2>
+  <div class="section" id="regression">
+<h1>Regression<a class="headerlink" href="#regression" title="Permalink to this headline">¶</a></h1>
+<p>placeholder</p>
+<div class="toctree-wrapper compound">
 </div>
 </div>
 
@@ -526,7 +457,8 @@
     
     <div class='prev-next-bottom'>
         
-    <a class='left-prev' id="prev-link" href="11-linear-models.html" title="previous page">Linear Models</a>
+    <a class='left-prev' id="prev-link" href="../30-basic-concepts/01-information-theory.html" title="previous page">Information Theory</a>
+    <a class='right-next' id="next-link" href="11-linear-models.html" title="next page">Linear Models</a>
 
     </div>
     <footer class="footer mt-5 mt-md-0">
