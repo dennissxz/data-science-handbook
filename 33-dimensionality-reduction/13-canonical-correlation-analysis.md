@@ -105,7 +105,10 @@ $$
 
 where $s = \min(p, q)$
 
-Proof
+
+```{dropdown} Derivation
+
+Recall [](Covariance-Matrix-of-Two-Vectors).
 
 We consider the following maximization problem:
 
@@ -149,8 +152,8 @@ Premultiply the first condition by $\boldsymbol{\alpha} T$ and the second condit
 $$
 \begin{equation}
 \begin{array}{l}
-\left(\boldsymbol{\alpha}^{\prime} \boldsymbol{\Sigma}_{12} \boldsymbol{\beta}\right)^{2}=\lambda \boldsymbol{\alpha}^{\prime} \boldsymbol{\Sigma}_{11} \boldsymbol{\alpha} \\
-\left(\boldsymbol{\alpha}^{\prime} \boldsymbol{\Sigma}_{12} \boldsymbol{\beta}\right)^{2}=\theta \boldsymbol{\beta}^{\prime} \boldsymbol{\Sigma}_{22} \boldsymbol{\beta}
+\left(\boldsymbol{\alpha}^{\prime} \boldsymbol{\Sigma}_{12} \boldsymbol{\beta}\right)^{2}=\lambda \boldsymbol{\alpha}^{\prime} \boldsymbol{\Sigma}_{11} \boldsymbol{\alpha} = \lambda \\
+\left(\boldsymbol{\alpha}^{\prime} \boldsymbol{\Sigma}_{12} \boldsymbol{\beta}\right)^{2}=\theta \boldsymbol{\beta}^{\prime} \boldsymbol{\Sigma}_{22} \boldsymbol{\beta} = \theta
 \end{array}
 \end{equation}
 $$
@@ -168,7 +171,7 @@ which implies that the Lagrangian multipliers are equal to the maximized value o
 \operatorname{Corr}^{2}\left(\boldsymbol{\alpha}^{\prime} \boldsymbol{x}_{1}, \boldsymbol{\beta}^{\prime} \boldsymbol{x}_{2}\right)
 \end{equation}$, i.e., $\rho^2$.
 
-Based on the above results, we can further simplify the first and second conditions
+Based on the above results, we can further simplify the first and second conditions by replacing $\boldsymbol{\alpha} ^\top \boldsymbol{\Sigma} _{12} \boldsymbol{\beta}$ by $\sqrt{\lambda}$ and $\sqrt{\theta}$ respectively.
 
 
 $$
@@ -249,7 +252,7 @@ $$
 **Invariance property**
 : Canonical corelations $\rho_i$'s between $\boldsymbol{x} _1$ and $\boldsymbol{x} _2$ are the same as those between $\boldsymbol{A} _1 \boldsymbol{x} _1 + \boldsymbol{c}_1$ and $\boldsymbol{A} _2 \boldsymbol{x} _2 + \boldsymbol{c} _2$, where both $\boldsymbol{A} _1$ and $\boldsymbol{A} _2$ are non-singular square matrices and their computation can be based on either the partitioned covariance matrix or the partitioned correlation matrix. However, the canonical coefficients contained in $\boldsymbol{\alpha} _k$ and $\boldsymbol{\beta} _k$ are **not** invariant under the same transforam, nor their estimates.
 
-
+```
 
 
 ## Tuning
@@ -258,7 +261,7 @@ Now let $\boldsymbol{S} _{11}, \boldsymbol{S} _{12}, \boldsymbol{S} _{22}$ and $
 
 $$\boldsymbol{S}_{11}^{-1 / 2} \boldsymbol{S}_{12} \boldsymbol{S}_{22}^{-1} \boldsymbol{S}_{21} \boldsymbol{S}_{11}^{-1 / 2}$$
 
-in parallel to $\boldsymbol{\Sigma}_{11}^{-1/2} \boldsymbol{\Sigma}_{12} \boldsymbol{\Sigma}_{22}^{-1} \boldsymbol{\Sigma}_{21} \boldsymbol{\Sigma}_{11}^{-1/2}$. Then the $i$-th pari of sample canonical variables $\hat{U}_i, \hat{V}_i$ is
+in parallel to $\boldsymbol{\Sigma}_{11}^{-1/2} \boldsymbol{\Sigma}_{12} \boldsymbol{\Sigma}_{22}^{-1} \boldsymbol{\Sigma}_{21} \boldsymbol{\Sigma}_{11}^{-1/2}$. Then the $i$-th pair of sample canonical variables $\hat{U}_i, \hat{V}_i$ is
 
 
 $$
