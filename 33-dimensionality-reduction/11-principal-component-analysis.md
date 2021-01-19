@@ -32,21 +32,24 @@ Consider a $p$-dimensional random vector $\boldsymbol{x} = \left( X_1, X_2, \ldo
 - The linear combinations $Y_i$ and $Y_j$ are **uncorrelated** for $i\ne j$. This imply that each variable in $\boldsymbol{y} = \left( Y_1, Y_2, \ldots, Y_m \right)^\top$ can be analyzed by using **univariate** techniques.
 
 
-Another formulation: Find a linear mapping $\boldsymbol{W}$ (assume $\boldsymbol{X}$  is centered)
+![](../imgs/pca_illustration.png)
+
+
+Other formulations: Find a linear mapping $\boldsymbol{W}: \mathbb{R} ^p \rightarrow \mathbb{R} ^m$ (assume $\boldsymbol{X}$  is centered) to
 
 - Minimize reconstruction residuals
 
-  $$\begin{align}
-  \boldsymbol{W}^*  = \underset{\boldsymbol{\boldsymbol{W} } }{\operatorname{argmin}} \, & \sum_i^n \left\Vert \boldsymbol{x}_i - \hat{\boldsymbol{x} }_i \right\Vert ^2    \\
-   \text{s.t.}  & \boldsymbol{W} ^\top \boldsymbol{W} = \boldsymbol{I}  
-  \end{align}$$
+    $$\begin{align}
+    \boldsymbol{W}^*  = \underset{\boldsymbol{\boldsymbol{W} } }{\operatorname{argmin}} \, & \sum_i^n \left\Vert \boldsymbol{x}_i - \hat{\boldsymbol{x} }_i \right\Vert ^2    \\
+     \text{s.t.}  & \boldsymbol{W} ^\top \boldsymbol{W} = \boldsymbol{I}  
+    \end{align}$$
 
-- Maximize the variance of projected data $\boldsymbol{W} ^\top \boldsymbol{X}$
+- Maximize the total variance $\sum_i \operatorname{Var}\left( Y_i \right)$ of projected data $\boldsymbol{Y} =  \boldsymbol{W} ^\top \boldsymbol{X}$
 
-$$\begin{align}
-\boldsymbol{W}^*  = \underset{\boldsymbol{\boldsymbol{W} } }{\operatorname{argmax}} \, & \operatorname{tr}\left( \boldsymbol{W} ^\top \boldsymbol{X} \boldsymbol{X} ^\top \boldsymbol{W} \right)   \\
- \text{s.t.}  & \ \boldsymbol{W} ^\top \boldsymbol{W} = \boldsymbol{I}  
-\end{align}$$
+    $$\begin{align}
+    \boldsymbol{W}^*  = \underset{\boldsymbol{\boldsymbol{W} } }{\operatorname{argmax}} \, & \operatorname{tr}\left( \boldsymbol{W} ^\top \boldsymbol{X} \boldsymbol{X} ^\top \boldsymbol{W} \right)   \\
+     \text{s.t.}  & \ \boldsymbol{W} ^\top \boldsymbol{W} = \boldsymbol{I}  
+    \end{align}$$
 
 ## Learning
 
@@ -83,7 +86,7 @@ Y_i = \boldsymbol{\alpha} _i^\top \boldsymbol{x}
 $$
 
 
-```{dropdown}
+```{dropdown} Derivation
 
 
 We consider the maximization problem:
@@ -352,23 +355,39 @@ There are several ways to choose the number of principal components to retain.
 
     Construct the so-called scree plot of the eigenvalue $\ell_i$ on the vertical axis versus $i$ on horizontal axis with equal intervals for $i = 1, 2, \ldots, p$, and join the points into a decreasing polygon. Try to find a “clean-cut” where the polygon “levels off” so that the first few eigenvalues seem to be far apart from the others.
 
-    [picture]
+    <div align="center">
+    <img src="../imgs/pca_scree_plot.png" width = "40%" alt="scree plot" align=center />
+    </div>
+
 
 1. **Hypothesis testing**
 
     Perform formal significance tests to determine the larger an unequal eigenvalues and retain the principal components to these eigenvalues.
 
-1. **reconstruction loss**
-    We can look at the expansion
-    $$
-    \hat{\boldsymbol{x} }=\mu_{\boldsymbol{x}} +\sum_{j=1}^{k}\left(\phi_{j}^{T} \boldsymbol{x} \right) \phi_{j}
-    $$
-    and examine the residual $\left\Vert \boldsymbol{x} - \hat{\boldsymbol{x} } \right\Vert _ $
-    [image, pg22]
+1. **Reconstruction loss**
 
-    note: expected residual corresponds to variance in the remaining subspace.
+    Recall the principal component transform $\boldsymbol{y} = \boldsymbol{U} ^\top \boldsymbol{x}$. Hence, $\boldsymbol{U} \boldsymbol{y} = \boldsymbol{x}$. To reconstruct $\hat{\boldsymbol{x} }$ by the first $k$ components $\boldsymbol{\alpha} _1, \ldots, \boldsymbol{\alpha} _k$ in $\boldsymbol{U}$ , we can use the expansion
+
+    $$
+    \hat{\boldsymbol{x} }=\sum_{j=1}^{k}y_j \boldsymbol{\alpha} _{j} = \sum_{j=1}^{k}\left(\boldsymbol{\alpha}_{j}^{\top} \boldsymbol{x} \right) \boldsymbol{\alpha} _{j}
+    $$
+
+    If $\boldsymbol{x}$ was centered before PCA, we add the mean back
+    $$
+    \hat{\boldsymbol{x} }=\boldsymbol{\mu} _{\boldsymbol{x}} +\sum_{j=1}^{k}\left(\boldsymbol{\alpha}_{j}^{\top} \boldsymbol{x} \right) \boldsymbol{\alpha} _{j}
+    $$
+
+    To choose an optimal number of principal components $k$, we can examine the magnitude of the residual $\left\Vert \boldsymbol{x} - \hat{\boldsymbol{x} } \right\Vert ^2$. The expected residual corresponds to variance in the **remaining** subspace.
+
+    <div align="center">
+    <img src="../imgs/pca_reconstruction.png" width = "90%" alt="" align=center />
+    </div>
+
+
 
 1. **Downstream task performance**
+
+    Use the performance of the downstream task to choose an optimal number of principal components.
 
 
 ## Interpretation
@@ -376,7 +395,6 @@ There are several ways to choose the number of principal components to retain.
 ### Geometric Meaning: Direction of Variation
 
 For the distribution of $\boldsymbol{x}$, thelcenter location is determined by $\boldsymbol{\mu} _ \boldsymbol{x}$ and the variation is captured by each principal direction $\boldsymbol{\alpha} _i$
-
 
 
 For the multinormal distribution, the family of **contours** of $\boldsymbol{x}$ (on each of which the pdf is a constant) is a family of ellipsoids in the original coordinate system $\boldsymbol{x}$ satisfying the following equation for a
@@ -398,7 +416,15 @@ with length
 - $2c\lambda_i^{1/2}$
 - directional cosines as coefficients given in $\boldsymbol{\alpha} _i$ for the $i$-th axis.
 
-[digit image, page 20]
+<div align="center">
+<img src="../imgs/pca_pc_ellipsoids.png" width = "80%" alt="" align=center />
+</div>
+
+Another example is hand written digits. Suppose $\boldsymbol{\mu} _ \boldsymbol{x}$ is the sample mean that determines the "mean" appearance of the digit $2$, then $\boldsymbol{\phi}_j$ is a principal direction which determines the location of variation of the black/white pixels.
+
+<div align="center">
+<img src="../imgs/pca_pc_digits.png" width = "50%" alt="" align=center />
+</div>
 
 
 ### Proportion Explained
@@ -468,18 +494,26 @@ $$\bar{\boldsymbol{x}}, \boldsymbol{S} , \boldsymbol{R} , \ell_i, \boldsymbol{a}
 ```
 
 
-
 ## Cons
 
-**Sensitive to variable transformation**
+**Sensitive to Variable Transformation**
 
-The results of PCA are not invariant under a linear transformation and, even worse, there is no easy correspondence between the two sets of results $\boldsymbol{y}$ and $\boldsymbol{y} ^\prime$, before and after the linear transformation. For example, the PCA using $\\boldsymbol{\Sigma}$ is not the same as the PCA using $\boldsymbol{\rho}$ and we cannot use the PCA from $\boldsymbol{\rho} $ to get the PCA results from the original variables.
+The results of PCA are not invariant under a linear transformation and, even worse, there is no easy correspondence between the two sets of results $\boldsymbol{y}$ and $\boldsymbol{y} ^\prime$, before and after the linear transformation. For example, the PCA using $\boldsymbol{\Sigma}$ is not the same as the PCA using $\boldsymbol{\rho}$ and we cannot use the PCA from $\boldsymbol{\rho}$ to get the PCA results from the original variables.
 
 If the two sets of results are consistent to each other, the PCA based on $\boldsymbol{\Sigma}$  may be preferred in some situation. If they are very different, or even contradictory, subject-matter knowledge and/or wisdom are needed to make a choice.
 
 The PCA based on covariance matrix is preferred when the original measurements units are very important, like in many applications in
 natural sciences. However, when the units of measurement are of artificial nature, like scores in some questions as frequently used in social sciences, the PCA based on correlation matrix is preferred.
 
+**Direction of Variance may not be Discriminative**
+
+But note that the direction of largest variance need not to be the most discriminative direction. See the example below.
+
+<div align="center">
+<img src="../imgs/pca_classification.png" width = "90%" alt="" align=center />
+</div>
+
+If we knew the labels, we could use a supervised dimensionality reduction, e.g. linear discriminant analysis.
 
 ## Relation to
 
@@ -520,12 +554,6 @@ Probabilistic PCA
 For a classification task, we can perform PCA on the features before fitting the data to a classifier. The classifier might be more accurate since PCA reduces noise.
 
 
-But note that the direction of largest variance need not to be the most disriminative direction.
-
-[image pg29]
-
-If we knew the labels, we could use a supervised dimensionality reduction, e.g. linear discriminant analysis.
-
 ## Extension
 
 Probabilistic PCA  is a method of fitting a constrained Gaussian, where some variances are equal.
@@ -544,7 +572,6 @@ $$
 $$
 
 Estimate for the noise variance $\sigma^2$
-
 
 $$
 \begin{equation}
