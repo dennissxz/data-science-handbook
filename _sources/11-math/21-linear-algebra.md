@@ -129,6 +129,8 @@ Definition
 
 ### Orthogonal Matrices
 
+Aka rotation matrices.
+
 Definition
 : A matrix $\boldsymbol{A}$ is **orthogonal** if $\boldsymbol{A} ^{-1} = \boldsymbol{A} ^\top$.
 
@@ -150,6 +152,7 @@ Properties
 
 
 ### Projection Matrices
+
 
 
 

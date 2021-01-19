@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Basic Concepts &#8212; Data Science Handbook</title>
+    <title>Algorithms Basics &#8212; Data Science Handbook</title>
     
   <link rel="stylesheet" href="../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
 
@@ -57,8 +57,8 @@
     <script async="async" src="../_static/sphinx-thebe.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Information Theory" href="01-information-theory.html" />
-    <link rel="prev" title="Denominations" href="../21-greedy-algorithms/13-denominations.html" />
+    <link rel="next" title="Greedy Algorithms" href="../21-greedy-algorithms/00-greedy-algorithms.html" />
+    <link rel="prev" title="MyST Markdown" href="../19-miscellaneous/13-myst.html" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
@@ -279,7 +279,12 @@
   Algorithms
  </span>
 </p>
-<ul class="nav sidenav_l1">
+<ul class="current nav sidenav_l1">
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Algorithms Basics
+  </a>
+ </li>
  <li class="toctree-l1 collapsible-parent">
   <a class="reference internal" href="../21-greedy-algorithms/00-greedy-algorithms.html">
    Greedy Algorithms
@@ -305,14 +310,14 @@
   Machine Learning
  </span>
 </p>
-<ul class="current nav sidenav_l1">
- <li class="toctree-l1 current active collapsible-parent">
-  <a class="current reference internal" href="#">
-   Basic Concepts
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../30-ml-basics/00-ml-basics.html">
+   Machine Learning Basics
   </a>
   <ul class="collapse-ul">
    <li class="toctree-l2">
-    <a class="reference internal" href="01-information-theory.html">
+    <a class="reference internal" href="../30-ml-basics/01-information-theory.html">
      Information Theory
     </a>
    </li>
@@ -328,6 +333,25 @@
    <li class="toctree-l2">
     <a class="reference internal" href="../31-regression/11-linear-models.html">
      Linear Models
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../33-dimensionality-reduction/00-dimensionality-reduction.html">
+   Dimensionality Reduction
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/11-principal-component-analysis.html">
+     Principal Component Analysis
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/13-canonical-correlation-analysis.html">
+     Canonical Corerlation Analysis
     </a>
    </li>
   </ul>
@@ -374,7 +398,7 @@
         <!-- ipynb file if we had a myst markdown file -->
         
         <!-- Download raw file -->
-        <a class="dropdown-buttons" href="../_sources/30-basic-concepts/00-basic-concepts.md"><button type="button"
+        <a class="dropdown-buttons" href="../_sources/20-algorithms-basics/00-algorithms-basics.md"><button type="button"
                 class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
                 data-placement="left">.md</button></a>
         <!-- Download PDF via print -->
@@ -394,7 +418,7 @@
                 data-toggle="tooltip" data-placement="left" title="Source repository"><i
                     class="fab fa-github"></i>repository</button></a>
         <a class="issues-button"
-            href="https://github.com/dennissxz/data-science-handbook/issues/new?title=Issue%20on%20page%20%2F30-basic-concepts/00-basic-concepts.html&body=Your%20issue%20content%20here."><button
+            href="https://github.com/dennissxz/data-science-handbook/issues/new?title=Issue%20on%20page%20%2F20-algorithms-basics/00-algorithms-basics.html&body=Your%20issue%20content%20here."><button
                 type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
                 title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
         
@@ -415,23 +439,6 @@
     <!-- Table of contents -->
     <div class="d-none d-md-block col-md-2 bd-toc show">
         
-        <div class="tocsection onthispage pt-5 pb-3">
-            <i class="fas fa-list"></i> Contents
-        </div>
-        <nav id="bd-toc-nav">
-            <ul class="nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#k-nearest-neighbors">
-   <span class="math notranslate nohighlight">
-    \(K\)
-   </span>
-   -nearest Neighbors
-  </a>
- </li>
-</ul>
-
-        </nav>
-        
     </div>
 </div>
     <div id="main-content" class="row">
@@ -439,30 +446,8 @@
         
               <div>
                 
-  <div class="section" id="basic-concepts">
-<h1>Basic Concepts<a class="headerlink" href="#basic-concepts" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="k-nearest-neighbors">
-<h2><span class="math notranslate nohighlight">\(K\)</span>-nearest Neighbors<a class="headerlink" href="#k-nearest-neighbors" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li><p>task: classification</p></li>
-<li><p>parametric: no</p></li>
-<li><p>prediction: <span class="math notranslate nohighlight">\(p(y=c\vert \boldsymbol{x}, \mathcal{D}, K) = \frac{1}{K} \sum_{j \in N_K (\boldsymbol{x}, \mathcal{D})} \mathbb{I}\left( y_j =c \right)\)</span></p></li>
-<li><p>description</p>
-<ul>
-<li><p>it simply look at the <span class="math notranslate nohighlight">\(K\)</span> points in the training set that are nearest to the test input <span class="math notranslate nohighlight">\(\boldsymbol{x}_i\)</span></p></li>
-<li><p>it is an example of <strong>memory-based learning</strong> or <strong>instance-based learning</strong></p></li>
-<li><p>it requires a distance measure <span class="math notranslate nohighlight">\(d(\boldsymbol{x}_i, \boldsymbol{x}_j)\)</span>, such as Euclidean distance, to identity <span class="math notranslate nohighlight">\(N_K \left( \boldsymbol{x} \mathcal{D} \right)\)</span>, the <span class="math notranslate nohighlight">\(K\)</span> nearest points to <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span></p></li>
-</ul>
-</li>
-<li><p>cons:</p>
-<ul>
-<li><p>poor performance in high dimensional settings</p></li>
-</ul>
-</li>
-</ul>
-<div class="toctree-wrapper compound">
-</div>
-</div>
+  <div class="section" id="algorithms-basics">
+<h1>Algorithms Basics<a class="headerlink" href="#algorithms-basics" title="Permalink to this headline">¶</a></h1>
 </div>
 
     <script type="text/x-thebe-config">
@@ -478,7 +463,7 @@
         },
         kernelOptions: {
             kernelName: "python3",
-            path: "./30-basic-concepts"
+            path: "./20-algorithms-basics"
         },
         predefinedOutput: true
     }
@@ -493,8 +478,8 @@
     
     <div class='prev-next-bottom'>
         
-    <a class='left-prev' id="prev-link" href="../21-greedy-algorithms/13-denominations.html" title="previous page">Denominations</a>
-    <a class='right-next' id="next-link" href="01-information-theory.html" title="next page">Information Theory</a>
+    <a class='left-prev' id="prev-link" href="../19-miscellaneous/13-myst.html" title="previous page">MyST Markdown</a>
+    <a class='right-next' id="next-link" href="../21-greedy-algorithms/00-greedy-algorithms.html" title="next page">Greedy Algorithms</a>
 
     </div>
     <footer class="footer mt-5 mt-md-0">

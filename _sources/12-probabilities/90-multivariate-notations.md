@@ -151,12 +151,13 @@ $$
 is called the corrected (centered) sums of squares and products matrix (CSSP). One can view it as a multivariate generalization of the corrected (centered) sum of squares $\sum_i \left( x_i - \bar{x} \right)^2$ in the univariate case.
 
 
+(Covariance-Matrix-of-Two-Vectors)=
 ### Covariance Matrix of Two Vectors
 
 The covariance matrix of two random vectors $\boldsymbol{x} _{p\times 1}, \boldsymbol{y} _{q \times 1}$ is defined as
 
 $$
-\operatorname{Cov}\left( \boldsymbol{x} _{p \times 1}, \boldsymbol{y} _q \times 1 \right) = \operatorname{E}\left[(\boldsymbol{x}-\boldsymbol{\mu} _x)(\boldsymbol{y}-\boldsymbol{\mu} _y)^{\top}\right]_{p\times q}
+\operatorname{Cov}\left( \boldsymbol{x} _{p \times 1}, \boldsymbol{y} _ {q \times 1} \right) = \operatorname{E}\left[(\boldsymbol{x}-\boldsymbol{\mu} _x)(\boldsymbol{y}-\boldsymbol{\mu} _y)^{\top}\right]_{p\times q}
 $$
 
 Note that the shape is $p \times q$, which implies the non-symmetry of covariance matrix

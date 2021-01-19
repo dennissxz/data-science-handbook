@@ -1,0 +1,826 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Canonical Corerlation Analysis &#8212; Data Science Handbook</title>
+    
+  <link rel="stylesheet" href="../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+  <link rel="stylesheet"
+    href="../_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="../_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinx-book-theme.40e2e510f6b7d1648584402491bb10fe.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/style.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.3da636dd464baa7582d2.js">
+
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Principal Component Analysis" href="11-principal-component-analysis.html" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+
+
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+<a class="navbar-brand text-wrap" href="../index.html">
+  
+  
+  <h1 class="site-logo" id="site-title">Data Science Handbook</h1>
+  
+</a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form>
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+    <ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../index.html">
+   Data Science Handbook
+  </a>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Foundations
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../11-math/00-math.html">
+   Math
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/11-combinatorics.html">
+     Combinatorics
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/12-derangement.html">
+     Derangement
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/21-linear-algebra.html">
+     Linear Algebra
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/90-puzzles.html">
+     Puzzles
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../12-probabilities/00-probabilities.html">
+   Probabilities
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/11-expectation-and-variance.html">
+     Expectation and Variance
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/13-correlation-and-dependence.html">
+     Correlation and Dependence
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/31-bayesian-theorem.html">
+     Bayesian’s Theorem
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/51-markov-chain.html">
+     Markov Chain
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/71-sampling.html">
+     Sampling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/90-multivariate-notations.html">
+     Multivariate Notations
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/91-large-sample-theory.html">
+     Large Sample Theory
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../13-statistics/00-statistics.html">
+   Statistics
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/11-stat-sampling.html">
+     Statistical Sampling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/21-hypothesis-testing.html">
+     Hypothesis Testing
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/33-confusion-matrix.html">
+     Confusion Matrix
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../14-python/00-python.html">
+   Python
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../14-python/11-programming-tools.html">
+     Programmer tools
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../14-python/12-syntax.html">
+     Syntax
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../14-python/13-data-structure.html">
+     Data Structures
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../14-python/15-functional-programming.html">
+     Functional Programming
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../17-sql/00-sql.html">
+   SQL
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../17-sql/11-database.html">
+     Database
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../17-sql/12-relational-structure.html">
+     Relational Structure
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../17-sql/31-data-query.html">
+     Data Query
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../17-sql/33-data-manipulation.html">
+     Data Manipulation
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../19-miscellaneous/00-miscellaneous.html">
+   Miscellaneous
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../19-miscellaneous/11-latex.html">
+     LaTeX
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../19-miscellaneous/13-myst.html">
+     MyST Markdown
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Algorithms
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../20-algorithms-basics/00-algorithms-basics.html">
+   Algorithms Basics
+  </a>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../21-greedy-algorithms/00-greedy-algorithms.html">
+   Greedy Algorithms
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../21-greedy-algorithms/11-interval-scheduling.html">
+     Interval Scheduling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../21-greedy-algorithms/13-denominations.html">
+     Denominations
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Machine Learning
+ </span>
+</p>
+<ul class="current nav sidenav_l1">
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../30-ml-basics/00-ml-basics.html">
+   Machine Learning Basics
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../30-ml-basics/01-information-theory.html">
+     Information Theory
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../31-regression/00-regression.html">
+   Regression
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/11-linear-models.html">
+     Linear Models
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 current active collapsible-parent">
+  <a class="reference internal" href="00-dimensionality-reduction.html">
+   Dimensionality Reduction
+  </a>
+  <ul class="current collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="11-principal-component-analysis.html">
+     Principal Component Analysis
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     Canonical Corerlation Analysis
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+</ul>
+
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="row topbar fixed-top container-xl">
+    <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show">
+    </div>
+    <div class="col pl-2 topbar-main">
+        
+        <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+            data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+            aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+            title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+            <i class="fas fa-bars"></i>
+            <i class="fas fa-arrow-left"></i>
+            <i class="fas fa-arrow-up"></i>
+        </button>
+        
+        
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../_sources/33-dimensionality-reduction/13-canonical-correlation-analysis.md"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.md</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+        <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/dennissxz/data-science-handbook"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/dennissxz/data-science-handbook/issues/new?title=Issue%20on%20page%20%2F33-dimensionality-reduction/13-canonical-correlation-analysis.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+
+        <!-- Full screen (wrap in <a> to have style consistency -->
+        <a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+                data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+                title="Fullscreen mode"><i
+                    class="fas fa-expand"></i></button></a>
+
+        <!-- Launch buttons -->
+
+    </div>
+
+    <!-- Table of contents -->
+    <div class="d-none d-md-block col-md-2 bd-toc show">
+        
+        <div class="tocsection onthispage pt-5 pb-3">
+            <i class="fas fa-list"></i> Contents
+        </div>
+        <nav id="bd-toc-nav">
+            <ul class="nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#objective">
+   Objective
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#learning">
+   Learning
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#sequential-optimization">
+     Sequential Optimization
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#spectral-decomposition">
+     Spectral Decomposition
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#properties">
+   Properties
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#tuning">
+   Tuning
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#hypothesis-testing">
+     Hypothesis Testing
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#interpretation">
+   Interpretation
+  </a>
+ </li>
+</ul>
+
+        </nav>
+        
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="canonical-corerlation-analysis">
+<h1>Canonical Corerlation Analysis<a class="headerlink" href="#canonical-corerlation-analysis" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="objective">
+<h2>Objective<a class="headerlink" href="#objective" title="Permalink to this headline">¶</a></h2>
+<p>Hotelling (1936) extended the idea of multiple correlation to the problem of measuring linear association between two <strong>groups</strong> of variables, say <span class="math notranslate nohighlight">\(\boldsymbol{x} _1\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{x} _2\)</span>. Thus we consider the simple correlation coefficient between every pair of <strong>linear combinations</strong> of elements of <span class="math notranslate nohighlight">\(x_1\)</span> and of <span class="math notranslate nohighlight">\(\boldsymbol{x} _2\)</span> and choose the maximum.</p>
+<div class="math notranslate nohighlight">
+\[
+\max _{\boldsymbol{\alpha}, \boldsymbol{\beta} } \, \operatorname{Corr}\left(\boldsymbol{\alpha}^{\prime} \boldsymbol{x}_{1}, \boldsymbol{\beta}^{\prime} \boldsymbol{x}_{2}\right)
+\]</div>
+<p>This maximum, <span class="math notranslate nohighlight">\(\rho_1\)</span>, is called the first canonical correlation and the corresponding pair of linear combinations, say <span class="math notranslate nohighlight">\((U_1, V_1)\)</span>, is called the first pair of canonical variables.</p>
+<p>Since each group has more than one variable, one single correlation coefficient may miss significant linear association in other dimensions. So we consider the subclass of <strong>all</strong> pairs of linear combinations of elements of <span class="math notranslate nohighlight">\(\boldsymbol{x}  _1\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{x}  _2\)</span> whose members are <strong>uncorrelated</strong> with <span class="math notranslate nohighlight">\((U_1, V_1）\)</span>. The maximum simple correlation coefficient, <span class="math notranslate nohighlight">\(\rho _2\)</span>, of such pairs is called the second canonical correlation and the pair, say <span class="math notranslate nohighlight">\((U_2, V_2)\)</span>, achieving this maximum is called the second pair of canonical variables.</p>
+<p>Continuing this way we shall get the <span class="math notranslate nohighlight">\(p\)</span> canonical correlations and <span class="math notranslate nohighlight">\(p\)</span> pairs of canonical variables, where <span class="math notranslate nohighlight">\(p\)</span> is the smallest dimension of <span class="math notranslate nohighlight">\(\boldsymbol{x} _1\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{x} _2\)</span>.</p>
+</div>
+<div class="section" id="learning">
+<h2>Learning<a class="headerlink" href="#learning" title="Permalink to this headline">¶</a></h2>
+<p>Partition the covariance matrix of full rank in accordance with two groups of variables,</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{equation}
+\operatorname{Var}\left(\begin{array}{l}
+\boldsymbol{x}_{1} \\
+\boldsymbol{x}_{2}
+\end{array}\right)=\left(\begin{array}{ll}
+\boldsymbol{\Sigma}_{11} &amp; \boldsymbol{\Sigma}_{12} \\
+\boldsymbol{\Sigma}_{21} &amp; \boldsymbol{\Sigma}_{22}
+\end{array}\right), \quad \boldsymbol{x}_{1} \text { is } p \times 1, \boldsymbol{x}_{2} \text { is } q \times 1, p \leq q
+\end{equation}
+\end{split}\]</div>
+<div class="section" id="sequential-optimization">
+<h3>Sequential Optimization<a class="headerlink" href="#sequential-optimization" title="Permalink to this headline">¶</a></h3>
+<p>The first canonical correlation, <span class="math notranslate nohighlight">\(\rho _1\)</span>, equals the maximum correlation between all pairs of linear combinations of <span class="math notranslate nohighlight">\(\boldsymbol{x} _1\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{x} _2\)</span> with unit variance. That is,</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+\max _{\boldsymbol{\alpha}, \beta} \operatorname{Corr}\left(\boldsymbol{\alpha}^{\prime} \boldsymbol{x}_{1}, \boldsymbol{\beta}^{\prime} \boldsymbol{x}_{2}\right)
+= \max &amp;  _{\boldsymbol{\alpha}, \boldsymbol{\beta}}  \frac{\boldsymbol{\alpha}^{\prime} \boldsymbol{\Sigma}_{12} \boldsymbol{\beta}}{\sqrt{\boldsymbol{\alpha}^{\prime} \boldsymbol{\Sigma}_{11} \boldsymbol{\alpha} \boldsymbol{\beta}^{\prime} \boldsymbol{\Sigma}_{22} \boldsymbol{\beta}}} \\
+\text{s.t.}  &amp;  \ \quad \boldsymbol{\alpha} ^\top \boldsymbol{\Sigma} _{11} \boldsymbol{\alpha} =1 \\
+  &amp;  \ \quad \boldsymbol{\beta} ^\top \boldsymbol{\Sigma} _{22} \boldsymbol{\beta} =1 \\
+\end{align}\end{split}\]</div>
+<p>If the maximum is achieved at <span class="math notranslate nohighlight">\(\boldsymbol{\alpha} _1\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{\beta} _1\)</span>, then the first pair of canonical varibales are defined as</p>
+<div class="math notranslate nohighlight">
+\[
+U_{1}=\boldsymbol{\alpha}_{1}^{\prime} \boldsymbol{x}_{1}, \quad V_{1}=\boldsymbol{\beta}_{1}^{\prime} \boldsymbol{x}_{2}
+\]</div>
+<p>Successively, for <span class="math notranslate nohighlight">\(i = 2, \ldots, p\)</span>, the <span class="math notranslate nohighlight">\(i\)</span>-th canonical correlation <span class="math notranslate nohighlight">\(\rho_i\)</span> is defined as</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+\rho_{i}
+ =\max _{\boldsymbol{\alpha}, \boldsymbol{\beta}} &amp; \quad \operatorname{corr}\left(\boldsymbol{\alpha}^{\prime} \boldsymbol{x}_{1}, \boldsymbol{\beta}^{\prime} \boldsymbol{x}_{2}\right) \\
+ \text{s.t.} &amp;  \quad (\boldsymbol{\alpha} ^\top \boldsymbol{x} _1, \boldsymbol{\beta} ^\top \boldsymbol{x} _2) \text{ uncorrelated with } (U_1, V_1), \ldots, (U_{i-1}, V_{i-1}) \\
+\end{align}\end{split}\]</div>
+<p>If the maximum is achived at <span class="math notranslate nohighlight">\(\boldsymbol{\alpha} _i\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{\beta} _i\)</span>, then the first pair of canonical varibales are defined as</p>
+<div class="math notranslate nohighlight">
+\[
+U_{i}=\boldsymbol{\alpha}_{i}^{\prime} \boldsymbol{x}_{i}, \quad V_{i}=\boldsymbol{\beta}_{i}^{\prime} \boldsymbol{x}_{2}
+\]</div>
+</div>
+<div class="section" id="spectral-decomposition">
+<h3>Spectral Decomposition<a class="headerlink" href="#spectral-decomposition" title="Permalink to this headline">¶</a></h3>
+<p>Rather than obtaining pairs of canonical variables and canonical correlation sequentially, it can be shown that the canonical correlations <span class="math notranslate nohighlight">\(\rho\)</span>’s and hence pairs of canonical variables <span class="math notranslate nohighlight">\((U,V)\)</span>’s can be obtained simultaneously by solving for
+the eigenvalues <span class="math notranslate nohighlight">\(\rho^2\)</span>’s and eigenvectors <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}\)</span>’s of the matrix</p>
+<div class="math notranslate nohighlight">
+\[
+\boldsymbol{\Sigma}_{11}^{-1} \boldsymbol{\Sigma}_{12} \boldsymbol{\Sigma}_{22}^{-1} \boldsymbol{\Sigma}_{21}
+\]</div>
+<p>A difficulty of this problem is that the matrix <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}_{11}^{-1} \boldsymbol{\Sigma}_{12} \boldsymbol{\Sigma}_{22}^{-1} \boldsymbol{\Sigma}_{21}\)</span> is not symmetric. Consequently, the symmetric matrix</p>
+<div class="math notranslate nohighlight">
+\[
+\boldsymbol{\Sigma}_{11}^{-1/2} \boldsymbol{\Sigma}_{12} \boldsymbol{\Sigma}_{22}^{-1} \boldsymbol{\Sigma}_{21} \boldsymbol{\Sigma}_{11}^{-1/2}
+\]</div>
+<p>is considered instead for the computational efficiency. Note that the two matrices possess the <strong>same</strong> eigenvalues and their eigenvectors are linearly related.</p>
+<p>It turns out that the canonical correlation <span class="math notranslate nohighlight">\(\rho_i\)</span> and the canonical variables <span class="math notranslate nohighlight">\((\boldsymbol{\alpha} _i, \boldsymbol{\beta} _i), i = 1, 2, \ldots, p\)</span> are related to matrix eigen-analysis:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{equation}
+\begin{aligned}
+\rho_{1}^{2} \geq \rho_{2}^{2} \geq \cdots \geq \rho_{p}^{2} &amp; \quad \text {eigenvalues of } \boldsymbol{\Sigma}_{11}^{-1 / 2} \boldsymbol{\Sigma}_{12} \boldsymbol{\Sigma}_{22}^{-1} \boldsymbol{\Sigma}_{21} \boldsymbol{\Sigma}_{11}^{-1 / 2}\\
+\boldsymbol{\alpha}_{1}^{\star}\quad \boldsymbol{\alpha}_{2}^{\star} \quad\cdots \quad \boldsymbol{\alpha}_{s}^{\star} &amp; \quad \text { associated unit-norm eigenvectors,}\left(\boldsymbol{\alpha}_{i}^{\star}\right)^{\prime} \boldsymbol{\alpha}_{i}^{\star}=1
+\\
+\boldsymbol{\alpha}_{i}=\boldsymbol{\alpha}_{i}^{\star} / \sqrt{\left(\boldsymbol{\alpha}_{i}^{\star}\right)^{\prime} \boldsymbol{\Sigma}_{11} \boldsymbol{\alpha}_{i}^{\star}} &amp; \quad \text { coefficients of } U_{i}, \boldsymbol{\alpha}_{i}^{\prime} \boldsymbol{\Sigma}_{11} \boldsymbol{\alpha}_{i}=1\\
+\boldsymbol{\alpha}_{i}=\boldsymbol{\Sigma}_{11}^{-1 / 2} \boldsymbol{\alpha}_{i}^{\star} &amp; \quad \text { 2nd formula for coefficients of } U_{i}\\
+\boldsymbol{\beta}_{i}=\boldsymbol{\Sigma}_{22}^{-1} \boldsymbol{\Sigma}_{21} \boldsymbol{\alpha}_{i} &amp; \quad \text { coefficients of } V_{i}, \boldsymbol{\beta}_{i}^{\prime} \boldsymbol{\Sigma}_{22} \boldsymbol{\beta}_{i}=1
+\end{aligned}
+\end{equation}
+\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(s = \min(p, q)\)</span></p>
+<details class="sphinx-bs dropdown card mb-3">
+<summary class="summary-title card-header">
+Derivation<div class="summary-down docutils">
+<svg version="1.1" width="24" height="24" class="octicon octicon-chevron-down" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M5.22 8.72a.75.75 0 000 1.06l6.25 6.25a.75.75 0 001.06 0l6.25-6.25a.75.75 0 00-1.06-1.06L12 14.44 6.28 8.72a.75.75 0 00-1.06 0z"></path></svg></div>
+<div class="summary-up docutils">
+<svg version="1.1" width="24" height="24" class="octicon octicon-chevron-up" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M18.78 15.28a.75.75 0 000-1.06l-6.25-6.25a.75.75 0 00-1.06 0l-6.25 6.25a.75.75 0 101.06 1.06L12 9.56l5.72 5.72a.75.75 0 001.06 0z"></path></svg></div>
+</summary><div class="summary-content card-body docutils">
+<p class="card-text">Recall <a class="reference internal" href="../12-probabilities/90-multivariate-notations.html#covariance-matrix-of-two-vectors"><span class="std std-ref">Covariance Matrix of Two Vectors</span></a>.</p>
+<p class="card-text">We consider the following maximization problem:</p>
+<div class="math notranslate nohighlight">
+\[
+\begin{equation}
+\rho^{2} \equiv \max _{\boldsymbol{\alpha}, \boldsymbol{\beta}} \operatorname{Corr}^{2}\left(\boldsymbol{\alpha}^{\prime} \boldsymbol{x}_{1}, \boldsymbol{\beta}^{\prime} \boldsymbol{x}_{2}\right)=\max _{\boldsymbol{\alpha}, \boldsymbol{\beta}} \frac{\left(\boldsymbol{\alpha}^{\prime} \boldsymbol{\Sigma}_{12} \boldsymbol{\beta}\right)^{2}}{\left(\boldsymbol{\alpha}^{\prime} \boldsymbol{\Sigma}_{11} \boldsymbol{\alpha}\right)\left(\boldsymbol{\beta}^{\prime} \boldsymbol{\Sigma}_{22} \boldsymbol{\beta}\right)} \quad \text { s.t. } \boldsymbol{\alpha}^{\prime} \boldsymbol{\Sigma}_{11} \boldsymbol{\alpha}=\boldsymbol{\beta}^{\prime} \boldsymbol{\Sigma}_{22} \boldsymbol{\beta}=1
+\end{equation}
+\]</div>
+<p class="card-text">The Lagrangean is</p>
+<div class="math notranslate nohighlight">
+\[
+\begin{equation}
+L(\boldsymbol{\alpha}, \boldsymbol{\beta}, \lambda, \theta)=\left(\boldsymbol{\alpha}^{\prime} \boldsymbol{\Sigma}_{12} \boldsymbol{\beta}\right)^{2}-\lambda\left(\boldsymbol{\alpha}^{\prime} \boldsymbol{\Sigma}_{11} \boldsymbol{\alpha}-1\right)-\theta\left(\boldsymbol{\beta}^{\prime} \boldsymbol{\Sigma}_{22} \boldsymbol{\beta}-1\right)
+\end{equation}
+\]</div>
+<p class="card-text">The first order conditions are</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{equation}
+\begin{aligned}
+\frac{\partial L}{\partial \boldsymbol{\alpha}}=&amp; 2\left(\boldsymbol{\alpha}^{\prime} \boldsymbol{\Sigma}_{12} \boldsymbol{\beta}\right) \boldsymbol{\Sigma}_{12} \boldsymbol{\beta}-2 \lambda \boldsymbol{\Sigma}_{11} \boldsymbol{\alpha}=\mathbf{0} \\
+\Rightarrow \qquad \qquad &amp;\left(\boldsymbol{\alpha}^{\prime} \boldsymbol{\Sigma}_{12} \boldsymbol{\beta}\right) \boldsymbol{\Sigma}_{12} \boldsymbol{\beta}=\lambda \boldsymbol{\Sigma}_{11} \boldsymbol{\alpha} \\
+\frac{\partial L}{\partial \boldsymbol{\beta}}=&amp; 2\left(\boldsymbol{\alpha}^{\prime} \boldsymbol{\Sigma}_{12} \boldsymbol{\beta}\right) \boldsymbol{\Sigma}_{21} \boldsymbol{\alpha}-2 \theta \boldsymbol{\Sigma}_{22} \boldsymbol{\beta}=\mathbf{0} \\
+\Rightarrow \qquad \qquad &amp;\left(\boldsymbol{\alpha}^{\prime} \boldsymbol{\Sigma}_{12} \boldsymbol{\beta}\right) \boldsymbol{\Sigma}_{21} \boldsymbol{\alpha}=\theta \boldsymbol{\Sigma}_{22} \boldsymbol{\beta} \\
+\quad \frac{\partial L}{\partial \lambda}=&amp; 1-\boldsymbol{\alpha}^{\prime} \boldsymbol{\Sigma}_{11} \boldsymbol{\alpha}=0 \\
+\Rightarrow \qquad \qquad &amp; \boldsymbol{\alpha}^{\prime} \boldsymbol{\Sigma}_{11} \boldsymbol{\alpha}=1 \\
+\quad \frac{\partial L}{\partial \theta}=&amp; 1-\boldsymbol{\beta}^{\prime} \boldsymbol{\Sigma}_{22} \boldsymbol{\beta}=0 \\
+\Rightarrow \qquad \qquad &amp; \boldsymbol{\beta}^{\prime} \boldsymbol{\Sigma}_{22} \boldsymbol{\beta}=1
+\end{aligned}
+\end{equation}
+\end{split}\]</div>
+<p class="card-text">Premultiply the first condition by <span class="math notranslate nohighlight">\(\boldsymbol{\alpha} T\)</span> and the second condition by <span class="math notranslate nohighlight">\(\boldsymbol{\beta} ^\top\)</span>, we have</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{equation}
+\begin{array}{l}
+\left(\boldsymbol{\alpha}^{\prime} \boldsymbol{\Sigma}_{12} \boldsymbol{\beta}\right)^{2}=\lambda \boldsymbol{\alpha}^{\prime} \boldsymbol{\Sigma}_{11} \boldsymbol{\alpha} = \lambda \\
+\left(\boldsymbol{\alpha}^{\prime} \boldsymbol{\Sigma}_{12} \boldsymbol{\beta}\right)^{2}=\theta \boldsymbol{\beta}^{\prime} \boldsymbol{\Sigma}_{22} \boldsymbol{\beta} = \theta
+\end{array}
+\end{equation}
+\end{split}\]</div>
+<p class="card-text">Hence</p>
+<div class="math notranslate nohighlight">
+\[
+\begin{equation}
+\lambda=\theta=\left(\boldsymbol{\alpha}^{\prime} \boldsymbol{\Sigma}_{12} \boldsymbol{\beta}\right)^{2}
+\end{equation}
+\]</div>
+<p class="card-text">which implies that the Lagrangian multipliers are equal to the maximized value of squared correlation <span class="math notranslate nohighlight">\(\begin{equation}
+\operatorname{Corr}^{2}\left(\boldsymbol{\alpha}^{\prime} \boldsymbol{x}_{1}, \boldsymbol{\beta}^{\prime} \boldsymbol{x}_{2}\right)
+\end{equation}\)</span>, i.e., <span class="math notranslate nohighlight">\(\rho^2\)</span>.</p>
+<p class="card-text">Based on the above results, we can further simplify the first and second conditions by replacing <span class="math notranslate nohighlight">\(\boldsymbol{\alpha} ^\top \boldsymbol{\Sigma} _{12} \boldsymbol{\beta}\)</span> by <span class="math notranslate nohighlight">\(\sqrt{\lambda}\)</span> and <span class="math notranslate nohighlight">\(\sqrt{\theta}\)</span> respectively.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{equation}
+\begin{aligned}
+\left\{\begin{array}{l}
+\boldsymbol{\Sigma}_{12} \boldsymbol{\beta}-\sqrt{\lambda} \boldsymbol{\Sigma}_{11} \boldsymbol{\alpha} &amp; =\mathbf{0} \\
+\boldsymbol{\Sigma}_{21} \boldsymbol{\alpha}-\sqrt{\lambda} \boldsymbol{\Sigma}_{22} \boldsymbol{\beta} &amp; =\mathbf{0}
+\end{array}\right.\\
+\Rightarrow\left(\begin{array}{cc}
+-\sqrt{\lambda} \boldsymbol{\Sigma}_{11} &amp; \boldsymbol{\Sigma}_{12} \\
+\boldsymbol{\Sigma}_{21} &amp; -\sqrt{\lambda} \boldsymbol{\Sigma}_{22}
+\end{array}\right) \left(\begin{array}{l}
+\boldsymbol{\alpha} \\
+\boldsymbol{\beta}
+\end{array}\right)&amp; =\mathbf{0}
+\end{aligned}
+\end{equation}
+\end{split}\]</div>
+<p class="card-text">In order to obtain the non-trivial solutions for <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}\)</span>  and <span class="math notranslate nohighlight">\(\boldsymbol{\beta}\)</span>, we require</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{equation}
+\left|\begin{array}{cc}
+-\sqrt{\lambda} \boldsymbol{\Sigma}_{11} &amp; \boldsymbol{\Sigma}_{12} \\
+\boldsymbol{\Sigma}_{21} &amp; -\sqrt{\lambda} \boldsymbol{\Sigma}_{22}
+\end{array}\right|=0
+\end{equation}
+\end{split}\]</div>
+<p class="card-text">which gives</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{equation}
+\begin{array}{l}
+\left|\begin{array}{cc}
+-\sqrt{\lambda} \boldsymbol{\Sigma}_{11} &amp; \boldsymbol{\Sigma}_{12} \\
+\boldsymbol{\Sigma}_{21} &amp; -\sqrt{\lambda} \boldsymbol{\Sigma}_{22}
+\end{array}\right|=\left|\sqrt{\lambda} \boldsymbol{\Sigma}_{22}\right|\left|\sqrt{\lambda} \boldsymbol{\Sigma}_{11}-\boldsymbol{\Sigma}_{12}\left(\sqrt{\lambda} \boldsymbol{\Sigma}_{22}\right)^{-1} \boldsymbol{\Sigma}_{21}\right|=0 \\
+\Rightarrow\left|\sqrt{\lambda} \boldsymbol{\Sigma}_{11}-\boldsymbol{\Sigma}_{12}\left(\sqrt{\lambda} \boldsymbol{\Sigma}_{22}\right)^{-1} \boldsymbol{\Sigma}_{21}\right|=0 \quad \because\left|\boldsymbol{\Sigma}_{11}\right|&gt;0 \\
+\Rightarrow\left|(1 / \sqrt{\lambda})\left(\lambda \boldsymbol{\Sigma}_{11}-\boldsymbol{\Sigma}_{12} \boldsymbol{\Sigma}_{22}^{-1} \boldsymbol{\Sigma}_{21}\right)\right|=0 &amp; \\
+\Rightarrow\left|\boldsymbol{\Sigma}_{12} \boldsymbol{\Sigma}_{22}^{-1} \boldsymbol{\Sigma}_{21}-\lambda \boldsymbol{\Sigma}_{11}\right|=0 \quad \because \lambda&gt;0
+\end{array}
+\end{equation}
+\end{split}\]</div>
+<p class="card-text">which indeed is the eigenvalue problem of</p>
+<div class="math notranslate nohighlight">
+\[
+\begin{equation}
+\boldsymbol{\Sigma}_{11}^{-1} \boldsymbol{\Sigma}_{12} \boldsymbol{\Sigma}_{22}^{-1} \boldsymbol{\Sigma}_{21} \boldsymbol{\alpha}=\lambda \boldsymbol{\alpha}
+\end{equation}
+\]</div>
+<p class="card-text">Once the solution for <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}\)</span>  is obtained, the solution for <span class="math notranslate nohighlight">\(\boldsymbol{\beta}\)</span>  can be obtained by</p>
+<div class="math notranslate nohighlight">
+\[
+\begin{equation}
+\boldsymbol{\beta} \propto \boldsymbol{\Sigma}_{22}^{-1} \boldsymbol{\Sigma}_{21} \boldsymbol{\alpha}
+\end{equation}
+\]</div>
+<p class="card-text">with the normalized condition</p>
+<div class="math notranslate nohighlight">
+\[
+\begin{equation}
+\boldsymbol{\beta}^{\prime} \boldsymbol{\Sigma}_{22} \boldsymbol{\beta}=1
+\end{equation}
+\]</div>
+</div>
+</details></div>
+</div>
+<div class="section" id="properties">
+<h2>Properties<a class="headerlink" href="#properties" title="Permalink to this headline">¶</a></h2>
+<dl class="simple myst">
+<dt><strong>Invariance property</strong></dt><dd><p>Canonical corelations <span class="math notranslate nohighlight">\(\rho_i\)</span>’s between <span class="math notranslate nohighlight">\(\boldsymbol{x} _1\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{x} _2\)</span> are the same as those between <span class="math notranslate nohighlight">\(\boldsymbol{A} _1 \boldsymbol{x} _1 + \boldsymbol{c}_1\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{A} _2 \boldsymbol{x} _2 + \boldsymbol{c} _2\)</span>, where both <span class="math notranslate nohighlight">\(\boldsymbol{A} _1\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{A} _2\)</span> are non-singular square matrices and their computation can be based on either the partitioned covariance matrix or the partitioned correlation matrix. However, the canonical coefficients contained in <span class="math notranslate nohighlight">\(\boldsymbol{\alpha} _k\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{\beta} _k\)</span> are <strong>not</strong> invariant under the same transforam, nor their estimates.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="tuning">
+<h2>Tuning<a class="headerlink" href="#tuning" title="Permalink to this headline">¶</a></h2>
+<p>Now let <span class="math notranslate nohighlight">\(\boldsymbol{S} _{11}, \boldsymbol{S} _{12}, \boldsymbol{S} _{22}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{S} _{21}\)</span> be the corresponding sub-matrices of the sample covariance matrix <span class="math notranslate nohighlight">\(\boldsymbol{S} \)</span>. For <span class="math notranslate nohighlight">\(i = 1, 2, \ldots, p\)</span>, let <span class="math notranslate nohighlight">\(r_i ^2, \boldsymbol{a} _i\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{b} _i\)</span> be respectively the sample estimators of <span class="math notranslate nohighlight">\(\rho_i^2, \boldsymbol{\alpha} _i\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{\beta} _i\)</span>, all based on</p>
+<div class="math notranslate nohighlight">
+\[\boldsymbol{S}_{11}^{-1 / 2} \boldsymbol{S}_{12} \boldsymbol{S}_{22}^{-1} \boldsymbol{S}_{21} \boldsymbol{S}_{11}^{-1 / 2}\]</div>
+<p>in parallel to <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}_{11}^{-1/2} \boldsymbol{\Sigma}_{12} \boldsymbol{\Sigma}_{22}^{-1} \boldsymbol{\Sigma}_{21} \boldsymbol{\Sigma}_{11}^{-1/2}\)</span>. Then the <span class="math notranslate nohighlight">\(i\)</span>-th pair of sample canonical variables <span class="math notranslate nohighlight">\(\hat{U}_i, \hat{V}_i\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{equation}
+\left\{\begin{array}{l}
+\hat{U}_{i}=a_{i}^{\prime} \boldsymbol{x}_{1} \\
+\hat{V}_{i}=\boldsymbol{b}_{i}^{\prime} \boldsymbol{x}_{2}, \text { where } \boldsymbol{b}_{i}=\boldsymbol{S}_{22}^{-1} \boldsymbol{S}_{21} \boldsymbol{a}_{i}
+\end{array}\right.
+\end{equation}
+\end{split}\]</div>
+<div class="section" id="hypothesis-testing">
+<h3>Hypothesis Testing<a class="headerlink" href="#hypothesis-testing" title="Permalink to this headline">¶</a></h3>
+<p>Since these are not the population quantities and we don’t know whether some <span class="math notranslate nohighlight">\(\rho_i\)</span> are zero, or equivalently how many pairs of the canonical variables based on the sample to be retained. This can be answered by testing a sequence of null hypotheses of the form</p>
+<div class="math notranslate nohighlight">
+\[
+H_{0}(k): \rho_{k+1}=\cdots=\rho_{p}=0, k=0,1, \cdots, p
+\]</div>
+<p>until we accept one of them. Note that the first hypothesis of retaining no pair,</p>
+<div class="math notranslate nohighlight">
+\[
+H_{0}(k=0): \rho_{1}=\cdots=\rho_{p}=0
+\]</div>
+<p>is equivalent to independence between <span class="math notranslate nohighlight">\(\boldsymbol{x} 1\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{x} _2\)</span>, or <span class="math notranslate nohighlight">\(H_0: \boldsymbol{\Sigma} _{12} = 0\)</span>. If it is rejected, test</p>
+<div class="math notranslate nohighlight">
+\[H_{0}(k=1): \rho_{2}=\cdots=\rho_{p}=0\]</div>
+<p>i.e., retain only the first pair; if rejected, test</p>
+<div class="math notranslate nohighlight">
+\[
+H_{0}(k=2): \rho_{3}=\cdots=\rho_{p}=0
+\]</div>
+<p>i.e., retain only the first two pairs, etc., until we obtain <span class="math notranslate nohighlight">\(k\)</span> such that</p>
+<div class="math notranslate nohighlight">
+\[
+H_{0}(k): \rho_{k+1}=\cdots=\rho_{p}=0
+\]</div>
+<p>is accepted. Then we shall retain only the first <span class="math notranslate nohighlight">\(k\)</span> pairs of canonical variables to describe the linear association between <span class="math notranslate nohighlight">\(\boldsymbol{x} _1\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{x} _2\)</span>.</p>
+</div>
+</div>
+<div class="section" id="interpretation">
+<h2>Interpretation<a class="headerlink" href="#interpretation" title="Permalink to this headline">¶</a></h2>
+<p>The meanings of the canonical variables are to be interpreted either</p>
+<ul class="simple">
+<li><p>in terms of the relative weighting of the coefficients associated with the original variables, or</p></li>
+<li><p>by comparison of the correlations of a canonical variable with original variables.</p></li>
+</ul>
+<p>It is an art to provide a good name to a canonical variable that represents the interpretation and often requires subject-matter knowledge in the field.</p>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./33-dimensionality-reduction"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        </div>
+    </div>
+    
+    
+    <div class='prev-next-bottom'>
+        
+    <a class='left-prev' id="prev-link" href="11-principal-component-analysis.html" title="previous page">Principal Component Analysis</a>
+
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By Dennis Zheng<br/>
+        
+            &copy; Copyright 2020.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+
+    
+  <script src="../_static/js/index.3da636dd464baa7582d2.js"></script>
+
+
+    
+  </body>
+</html>

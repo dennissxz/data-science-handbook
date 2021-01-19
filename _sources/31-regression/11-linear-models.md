@@ -54,3 +54,5 @@ $$\hat{y}_i = \boldsymbol{x}_i^\top \boldsymbol{\beta}$$
 
 ## What is ANOVA?
 The Analysis Of Variance, popularly known as the ANOVA, can be used in cases where there are more than two groups.
+
+https://www.1point3acres.com/bbs/thread-703302-1-1.html

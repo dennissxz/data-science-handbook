@@ -28,6 +28,7 @@
 - 按照 `WHERE` 筛选后的某列进行排序 `ORDER BY <列名>`
 - 默认升序 `ASC` ，若需要倒序，在最后面加 `DESC`
 - 可以按照多列依次排序 `ORDER BY score DESC, gender`
+- `ORDER BY 1` where 1 means the first column
 
 ## 对结果进行分页 `LIMIT`
 - 用法 `LIMIT <每页个数> OFFSET <起始位置>`，起始位置从0开始
@@ -42,6 +43,9 @@
   - 跟在 `SELECT` 后面，通常对返回的值另取别名
   - `COUNT(<列名>)` 返回行数，其他返回特定值
   - 如果 `WHERE` 没有匹配到行，则 `COUNT` 返回0，其他返回 `NULL`
+- Others
+  - `GROUP_CONCAT(column SEPARATOR ',' ORDER BY ...)` to concatenate strings.
+
 - 通常和 `GROUP BY <分组列>` 连用，按 `<分组列>`的值先分组，再进行aggregation
   - 通常也会把 `<分组列>` 加入 `SELECT`，便于观察返回的值来自哪个组
   - 分组列可以有多个， `<分组列1>, <分组列2>`
