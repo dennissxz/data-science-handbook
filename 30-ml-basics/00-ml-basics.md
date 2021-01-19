@@ -2,6 +2,10 @@
 # Machine Learning Basics
 
 For each model, we introduce
-- problem setup
-- learning
-- review
+- Objective
+- Learning
+- Tuning
+- Properties
+- Interpretation
+- Relation
+- Extension
