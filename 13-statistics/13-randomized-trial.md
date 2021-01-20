@@ -148,8 +148,49 @@ To check for bad randomization, one can perform balance tests.
 - If randomization is good, treated and control should be similar on observable attributes.
 
 
-
-
 ```{note}
 Often as a first step we want to know the (non-causal) relationships between variables and then we try and figure out what is behind the patterns, i.e. if they relationships are possibly causal.
 ```
+
+### Potential Problems and Limitations
+
+#### Attrition
+
+Participants may leave a study (i.e., attrit). So we don't observe $Y$. For instance, job training, drug trial, diet program, etc.
+- If attrition is uncorrelated with $Y$, we still have independence between $S$ and $Y$ in remaining sample.
+- If attrition is correlated with $Y$, then the independence is broken and there is selection bias. We will observe non-random set of treated outcomes.
+
+#### Compliance
+
+Sometimes people refuse to follow the treatment, but you still observe their outcomes.
+- Perhaps treated people refuse to take treatment
+- Perhaps control people seek treatment outside program
+If you observe outcomes $Y$, you can still get a valid estimate of something called the **intent to treat** parameter.
+
+Consider a compliance matrix of four groups of participants.
+
+||Assigned $t$| Assigned $c$|
+|-|-|-|
+|Received $t$   | A  |  B |
+|Received $c$   | C  |  D |
+
+Here
+- $A$ and $D$ are compliers
+- $B$ and $C$ are non-compliers
+
+A researcher might compare $(A,B)$ to $(C,D)$ to estimate the average treatment effect. But if compliance is a function of $Y$, then independence is lost.
+
+Intent to treat analysis compares $(A,C)$ to $(B,D)$
+
+
+#### Cost
+
+Randomized controlled trial tend to be ery expensive compared with observational studies. What if you already have many observational datasets?
+
+#### External validity
+
+An estimate is internally valid if it is a good (unbiased) estimate for the population and setting of the trial.
+
+An estimate is externally valid if it is a good (unbiased) estimate for populations and settings outside those of the trial.
+
+All studies (RCT or not) have issues of external validity.
