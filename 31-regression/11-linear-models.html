@@ -453,17 +453,15 @@
   <a class="reference internal nav-link" href="#objective">
    Objective
   </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#assumptions">
-     Assumptions
-    </a>
-   </li>
-  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#learning-estimation">
-   Learning (Estimation)
+  <a class="reference internal nav-link" href="#assumptions">
+   Assumptions
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#estimation-learning">
+   Estimation (Learning)
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
@@ -494,8 +492,8 @@
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#sign-of-slope-vs-correlation">
-     Sign of Slope vs Correlation
+    <a class="reference internal nav-link" href="#slope-vs-correlation">
+     Slope vs Correlation
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
@@ -518,19 +516,17 @@
        Residual
       </a>
      </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#independence">
+       Independence
+      </a>
+     </li>
     </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#decomposition-of-total-sum-of-squares">
      Decomposition of Total Sum of Squares
     </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#error-variance">
-       Error Variance
-      </a>
-     </li>
-    </ul>
    </li>
   </ul>
  </li>
@@ -545,6 +541,18 @@
       \(R\)
      </span>
      -squared
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#interpretation">
+   Interpretation
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#what-is-anova">
+     What is ANOVA?
     </a>
    </li>
   </ul>
@@ -565,8 +573,8 @@
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#transformation">
-     Transformation
+    <a class="reference internal nav-link" href="#transformation-of-variables">
+     Transformation of Variables
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
@@ -577,18 +585,6 @@
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#heteroscedasticity">
      Heteroscedasticity
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#interpretation">
-   Interpretation
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#what-is-anova">
-     What is ANOVA?
     </a>
    </li>
   </ul>
@@ -606,43 +602,6 @@
                 
   <div class="section" id="linear-models">
 <h1>Linear Models<a class="headerlink" href="#linear-models" title="Permalink to this headline">¶</a></h1>
-<!-- TOC -->
-<ul class="simple">
-<li><p><a class="reference external" href="#linear-models">Linear Models</a></p>
-<ul>
-<li><p><a class="reference external" href="#objective">Objective</a></p>
-<ul>
-<li><p><a class="reference external" href="#assumptions">Assumptions</a></p></li>
-</ul>
-</li>
-<li><p><a class="reference external" href="#learning-estimation">Learning (Estimation)</a></p>
-<ul>
-<li><p><a class="reference external" href="#least-squares">Least Squares</a></p></li>
-<li><p><a class="reference external" href="#maximum-likelihood">Maximum Likelihood</a></p></li>
-<li><p><a class="reference external" href="#gradient-descent">Gradient Descent</a></p></li>
-</ul>
-</li>
-<li><p><a class="reference external" href="#properties">Properties</a></p>
-<ul>
-<li><p><a class="reference external" href="#coefficients">Coefficients</a></p></li>
-<li><p><a class="reference external" href="#residual">Residual</a></p></li>
-<li><p><a class="reference external" href="#decomposition-of-total-sum-of-squares">Decomposition of Total Sum of Squares</a></p></li>
-</ul>
-</li>
-<li><p><a class="reference external" href="#model-selection">Model Selection</a></p></li>
-</ul>
-</li>
-<li><p><a class="reference external" href="#special-cases">Special Cases</a></p>
-<ul>
-<li><p><a class="reference external" href="#interpretation">Interpretation</a></p>
-<ul>
-<li><p><a class="reference external" href="#what-is-anova">What is ANOVA?</a></p></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<!-- /TOC -->
 <div class="section" id="objective">
 <h2>Objective<a class="headerlink" href="#objective" title="Permalink to this headline">¶</a></h2>
 <p>To estimate how <span class="math notranslate nohighlight">\(y\)</span> change with <span class="math notranslate nohighlight">\(x\)</span>.</p>
@@ -666,37 +625,37 @@
 \[
 Y_i = \beta_0 + \beta_1 x_i + \varepsilon_i
 \]</div>
+<p>which is called <strong>simple linear regression</strong>. When <span class="math notranslate nohighlight">\(p&gt;2\)</span>, it is called <strong>multiple linear regression</strong>. When there are multiple dependent variables, we call it <strong>multivariate regression</strong>.</p>
+</div>
 <div class="section" id="assumptions">
-<h3>Assumptions<a class="headerlink" href="#assumptions" title="Permalink to this headline">¶</a></h3>
-<p>Weak assumptions</p>
-<ul>
-<li><p><span class="math notranslate nohighlight">\(\boldsymbol{x}_i\)</span> is known and fixed</p></li>
+<h2>Assumptions<a class="headerlink" href="#assumptions" title="Permalink to this headline">¶</a></h2>
+<p>Basic assumptions</p>
+<ol class="simple">
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{x}_i\)</span> is known and fixed.</p></li>
 <li><p><span class="math notranslate nohighlight">\(\operatorname{E}\left( y_i \right) = \boldsymbol{x}_i ^\top \boldsymbol{\beta}\)</span> is linear in covariates <span class="math notranslate nohighlight">\(X_j\)</span>.</p></li>
-<li><p>The error terms are i.i.d. distributed with mean <span class="math notranslate nohighlight">\(\operatorname{E}\left( \varepsilon_i \right) = 0\)</span> and variance <span class="math notranslate nohighlight">\(\operatorname{Var}\left( \varepsilon_i \right) = \sigma^2\)</span>.</p>
+<li><p>The error terms are i.i.d. distributed with mean <span class="math notranslate nohighlight">\(\operatorname{E}\left( \varepsilon_i \right) = 0\)</span> and variance <span class="math notranslate nohighlight">\(\operatorname{Var}\left( \varepsilon_i \right) = \sigma^2\)</span>.</p></li>
+</ol>
 <p>As a result, <span class="math notranslate nohighlight">\(\operatorname{E}\left( \boldsymbol{y}  \mid \boldsymbol{X} \right) = \boldsymbol{X} \boldsymbol{\beta}\)</span>, or <span class="math notranslate nohighlight">\(\operatorname{E}\left( y \mid x \right) = \beta_0 + \beta_1 x\)</span> when <span class="math notranslate nohighlight">\(p=2\)</span>, which can be illustrated by the plots below.</p>
-<div align="center">
-<img src="../imgs/lm_cond_distribution.png" width = "50%" alt="" align=center />
-</div>
-<div align="center">
-<img src="../imgs/lm_xyplane_dots.png" width = "50%" alt="" align=center />
-</div>
+  <div align="center">
+  <img src="../imgs/lm_cond_distribution.png" width = "50%" alt="" align=center />
+  </div>
+  <div align="center">
+  <img src="../imgs/lm_xyplane_dots.png" width = "50%" alt="" align=center />
+  </div>
 <p>To predict <span class="math notranslate nohighlight">\(\hat{y}_i\)</span>, we just use <span class="math notranslate nohighlight">\(\hat{y}_i = \boldsymbol{x}_i ^\top \hat{\boldsymbol{\beta}}\)</span> .</p>
-</li>
-</ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>In some social science courses, there is an Zero Conditional Mean assumption: <span class="math notranslate nohighlight">\(\operatorname{E}\left( \varepsilon_i \mid \boldsymbol{x}_i  \right) = 0\)</span> and it is used for estimation.</p>
 </div>
-<p>Strong assumptions on the distribution of error term (necessary for some inference)</p>
-<ul>
-<li><p>The error terms follow Gaussian distribution <span class="math notranslate nohighlight">\(\varepsilon_i \overset{\text{iid}}{\sim}N(0, \sigma^2)\)</span>, or <span class="math notranslate nohighlight">\(\boldsymbol{\varepsilon} \sim N_n (\boldsymbol{0} , \sigma^2 \boldsymbol{I} _n)\)</span>.</p>
+<p>An additional stronger assumption on the distribution of error term (necessary for some inference)</p>
+<ol class="simple">
+<li><p>The error terms follow Gaussian distribution <span class="math notranslate nohighlight">\(\varepsilon_i \overset{\text{iid}}{\sim}N(0, \sigma^2)\)</span>, or <span class="math notranslate nohighlight">\(\boldsymbol{\varepsilon} \sim N_n (\boldsymbol{0} , \sigma^2 \boldsymbol{I} _n)\)</span>.</p></li>
+</ol>
 <p>As a result, we have <span class="math notranslate nohighlight">\(Y_i \sim N(\boldsymbol{x}_i ^\top \boldsymbol{\beta} , \sigma^2 )\)</span> or <span class="math notranslate nohighlight">\(\boldsymbol{y} \sim N_n(\boldsymbol{X} \boldsymbol{\beta} , \sigma^2 \boldsymbol{I} _n)\)</span></p>
-</li>
-</ul>
 </div>
-</div>
-<div class="section" id="learning-estimation">
-<h2>Learning (Estimation)<a class="headerlink" href="#learning-estimation" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="estimation-learning">
+<h2>Estimation (Learning)<a class="headerlink" href="#estimation-learning" title="Permalink to this headline">¶</a></h2>
+<p>We introduce various methods to estimate the parameters <span class="math notranslate nohighlight">\(\boldsymbol{\beta}\)</span> and <span class="math notranslate nohighlight">\(\sigma^2\)</span>.</p>
 <div class="section" id="least-squares">
 <h3>Least Squares<a class="headerlink" href="#least-squares" title="Permalink to this headline">¶</a></h3>
 <p>We can estimate the parameter <span class="math notranslate nohighlight">\(\hat{\boldsymbol{\beta}}\)</span> by minimizing the sum of squared errors.</p>
@@ -717,11 +676,12 @@ Y_i = \beta_0 + \beta_1 x_i + \varepsilon_i
 \boldsymbol{X} ^\top \boldsymbol{X} \boldsymbol{\beta} = \boldsymbol{X} ^\top \boldsymbol{y}
 \]</div>
 <p>This linear system is called the <strong>normal equation</strong>.</p>
-<p>The closed form solution is
-$<span class="math notranslate nohighlight">\(\hat{\boldsymbol{\beta}} = \left( \boldsymbol{X} ^\top \boldsymbol{X}   \right)^{-1}\boldsymbol{X} \boldsymbol{y}  \)</span>$</p>
+<p>The closed form solution is</p>
+<div class="math notranslate nohighlight">
+\[\hat{\boldsymbol{\beta}} = \left( \boldsymbol{X} ^\top \boldsymbol{X}   \right)^{-1}\boldsymbol{X} \boldsymbol{y}  \]</div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Computer programs use specific functions to solve the normal equation <span class="math notranslate nohighlight">\(\boldsymbol{X} ^\top \boldsymbol{X} \boldsymbol{\beta}\)</span> for <span class="math notranslate nohighlight">\(\boldsymbol{\beta}\)</span>, instead of using the inverse <span class="math notranslate nohighlight">\((\boldsymbol{X} ^\top \boldsymbol{X}) ^{-1}\)</span> directly which can be slow and unstable.</p>
+<p>Computing software use specific functions to solve the normal equation <span class="math notranslate nohighlight">\(\boldsymbol{X} ^\top \boldsymbol{X} \boldsymbol{\beta} = \boldsymbol{X} ^\top \boldsymbol{y}\)</span> for <span class="math notranslate nohighlight">\(\boldsymbol{\beta}\)</span>, instead of using the inverse <span class="math notranslate nohighlight">\((\boldsymbol{X} ^\top \boldsymbol{X}) ^{-1}\)</span> directly which can be slow and unstable.</p>
 </div>
 <p>An unbiased estimator of the error variance <span class="math notranslate nohighlight">\(\sigma^2 = \operatorname{Var}\left( \varepsilon \right)\)</span> is (to be discussed [later])</p>
 <div class="math notranslate nohighlight">
@@ -730,7 +690,7 @@ $<span class="math notranslate nohighlight">\(\hat{\boldsymbol{\beta}} = \left( 
 \]</div>
 <p>When <span class="math notranslate nohighlight">\(p=2\)</span>, we have</p>
 <div class="math notranslate nohighlight">
-\[\hat{\beta_0}, \hat{\beta_1} =  \underset{\beta_0, \beta_1 }{\mathrm{argmin}} \, \sum_i \left( y_i - \beta_0 - \beta_1 x_i \right)^2\]</div>
+\[\hat{\beta}_0, \hat{\beta}_1 =  \underset{\beta_0, \beta_1 }{\mathrm{argmin}} \, \sum_i \left( y_i - \beta_0 - \beta_1 x_i \right)^2\]</div>
 <p>Differentiation w.r.t. <span class="math notranslate nohighlight">\(\beta_1\)</span> gives</p>
 <div class="math notranslate nohighlight">
 \[
@@ -755,12 +715,12 @@ $<span class="math notranslate nohighlight">\(\hat{\boldsymbol{\beta}} = \left( 
 <p>where <span class="math notranslate nohighlight">\(\hat\varepsilon_i = y_i - \hat{\beta}_0 - \hat{\beta}_1 x_i\)</span>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The objective function, sum of squared errors,</p>
+<p>The objective function, <strong>sum of squared errors</strong>,</p>
 <div class="math notranslate nohighlight">
 \[
 \left\Vert \boldsymbol{y}  - \boldsymbol{X}  \boldsymbol{\beta}  \right\Vert ^2 = \sum_i \left( y_i - \boldsymbol{x}_i ^\top \boldsymbol{\beta} \right)^2
 \]</div>
-<p>can be replaced by mean squared error,</p>
+<p>can be replaced by <strong>mean squared error</strong>,</p>
 <div class="math notranslate nohighlight">
 \[
 \frac{1}{n} \sum_i \left( y_i - \boldsymbol{x}_i ^\top \boldsymbol{\beta} \right)^2
@@ -809,8 +769,8 @@ $<span class="math notranslate nohighlight">\(\hat{\boldsymbol{\beta}} = \left( 
 </div>
 <div class="section" id="properties">
 <h2>Properties<a class="headerlink" href="#properties" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="sign-of-slope-vs-correlation">
-<h3>Sign of Slope vs Correlation<a class="headerlink" href="#sign-of-slope-vs-correlation" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="slope-vs-correlation">
+<h3>Slope vs Correlation<a class="headerlink" href="#slope-vs-correlation" title="Permalink to this headline">¶</a></h3>
 <p>When <span class="math notranslate nohighlight">\(p=2\)</span>, we can see from the solution</p>
 <div class="math notranslate nohighlight">
 \[\begin{align}
@@ -819,14 +779,16 @@ $<span class="math notranslate nohighlight">\(\hat{\boldsymbol{\beta}} = \left( 
 <p>that</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
-\hat{\beta_1} &amp;= \frac{\widehat{\operatorname{Cov}}\left( Y, X \right)}{\widehat{\operatorname{Var}}\left( X \right)}  \\
+\hat{\beta}_1 &amp;= \frac{\widehat{\operatorname{Cov}}\left( Y, X \right)}{\widehat{\operatorname{Var}}\left( X \right)}  \\
 &amp;= r_{X,Y} \frac{s_Y}{s_X}
 \end{align}\end{split}\]</div>
 <p>Thus, the slope has the same sign with the correlation <span class="math notranslate nohighlight">\(r_{X,Y}\)</span>, and equals to the correlation times a ratio of the sample standard deviations of the dependent variable over the independent variable.</p>
+<p>Once can see that the magnitude of <span class="math notranslate nohighlight">\(\hat\beta_1\)</span> increases with the magnitude of <span class="math notranslate nohighlight">\(\rho_{X,Y}\)</span> and <span class="math notranslate nohighlight">\(s_Y\)</span>, and decreases with <span class="math notranslate nohighlight">\(s_X\)</span>, holding others fixed.</p>
 </div>
 <div class="section" id="fitted-line-passes-sample-mean">
 <h3>Fitted Line Passes Sample Mean<a class="headerlink" href="#fitted-line-passes-sample-mean" title="Permalink to this headline">¶</a></h3>
 <p>Since <span class="math notranslate nohighlight">\(\hat{\beta}_{0} =\bar{y}-\hat{\beta}_{1} \bar{x}\)</span>, we have <span class="math notranslate nohighlight">\(\bar{y} = \hat{\beta}_{0} + \hat{\beta}_{1} \bar{x}\)</span>, i.e. the regression line always goes through the mean <span class="math notranslate nohighlight">\((\bar{x}, \bar{y})\)</span> of the sample.</p>
+<p>This also hold for multiple regression, by the first order condition w.r.t. <span class="math notranslate nohighlight">\(\beta_0\)</span>.</p>
 </div>
 <div class="section" id="inference">
 <h3>Inference<a class="headerlink" href="#inference" title="Permalink to this headline">¶</a></h3>
@@ -846,12 +808,12 @@ $<span class="math notranslate nohighlight">\(\hat{\boldsymbol{\beta}} = \left( 
 \hat{\beta}_{1}
 &amp;=\frac{\sum_{i=1}^{n}\left(x_{i}-\bar{x}\right)\left(y_{i}-\bar{y}\right)}{\sum_{i=1}^{n}\left(x_{i}-\bar{x}\right)^{2}} \\
 \end{align}\end{split}\]</div>
-<p>Using the fact that for any constant <span class="math notranslate nohighlight">\(c\)</span>,</p>
+<p>To prove unbiasedness, using the fact that for any constant <span class="math notranslate nohighlight">\(c\)</span>,</p>
 <div class="math notranslate nohighlight">
 \[
 \sum_i (x_i - \bar{x})c = 0
 \]</div>
-<p>the numerator becomes</p>
+<p>Then, the numerator becomes</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
 \sum_{i=1}^{n}\left(x_{i}-\bar{x}\right)\left(y_{i}-\bar{y}\right)
@@ -867,7 +829,14 @@ $<span class="math notranslate nohighlight">\(\hat{\boldsymbol{\beta}} = \left( 
 \hat{\beta}_{1}=\beta_{1}+\frac{\sum\left(x_{i}-\bar{x}\right) u_{i}}{\sum \left(x_{i}-\bar{x}\right)^{2}}
 \end{equation}
 \]</div>
-<p>Variance</p>
+<p>The variance (matrix) is</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+\operatorname{Var}\left( \boldsymbol{\beta}  \right) &amp;= \operatorname{Var}\left(  (\boldsymbol{X} ^\top \boldsymbol{X} ) ^{-1} \boldsymbol{X}^\top  \boldsymbol{y}  \right)  \\
+&amp;=   (\boldsymbol{X} ^\top \boldsymbol{X} ) ^{-1} \boldsymbol{X}^\top \operatorname{Var}\left( \boldsymbol{y}  \right)  \boldsymbol{X}  (\boldsymbol{X} ^\top \boldsymbol{X} ) ^{-1} \\
+&amp;= \sigma^2 (\boldsymbol{X} ^\top \boldsymbol{X} ) ^{-1}\\
+\end{align}\end{split}\]</div>
+<p>when <span class="math notranslate nohighlight">\(p=2\)</span>, it is</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
 \operatorname{Var}\left( \hat{\beta}_1 \right)
@@ -883,9 +852,9 @@ $<span class="math notranslate nohighlight">\(\hat{\boldsymbol{\beta}} = \left( 
 <li><p>The larger the error variance, <span class="math notranslate nohighlight">\(\sigma^2\)</span>, the larger the variance of the slope estimator</p></li>
 <li><p>The larger the variability in the <span class="math notranslate nohighlight">\(x_i\)</span>, the smaller the variance of the slope estimator</p></li>
 <li><p>A larger sample size should decrease the variance of the slope estimator</p></li>
-<li><p>A problem is that the error <span class="math notranslate nohighlight">\(\sigma^2\)</span> variance is unknown</p></li>
+<li><p>A problem is that the error <span class="math notranslate nohighlight">\(\sigma^2\)</span> variance is <strong>unknown</strong></p></li>
 </ul>
-<p>We can estimate <span class="math notranslate nohighlight">\(\sigma^2\)</span> by <span class="math notranslate nohighlight">\(\hat{\sigma}^2=\frac{\sum_i (x_i - \bar{x})}{n-2}\)</span> (to be shown below), and substitute it into <span class="math notranslate nohighlight">\(\operatorname{Var}\left( \hat{\beta}_1 \right)\)</span>. Since <span class="math notranslate nohighlight">\(\hat{\sigma}^2\)</span> is estimated, the variance <span class="math notranslate nohighlight">\(\operatorname{Var}\left( \hat{\beta}_1 \right)\)</span> is estimated too, and the square root is called standard error of <span class="math notranslate nohighlight">\(\hat{\beta}\)</span>, instead of standard deviation.</p>
+<p>We can estimate <span class="math notranslate nohighlight">\(\sigma^2\)</span> by its unbiased estimator <span class="math notranslate nohighlight">\(\hat{\sigma}^2=\frac{\sum_i (x_i - \bar{x})}{n-2}\)</span> (to be shown [below]), and substitute it into <span class="math notranslate nohighlight">\(\operatorname{Var}\left( \hat{\beta}_1 \right)\)</span>. Since the error variance <span class="math notranslate nohighlight">\(\hat{\sigma}^2\)</span> is estimated, the slope variance <span class="math notranslate nohighlight">\(\operatorname{Var}\left( \hat{\beta}_1 \right)\)</span> is estimated too, and hence the square root is called standard error of <span class="math notranslate nohighlight">\(\hat{\beta}\)</span>, instead of standard deviation.</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
 \operatorname{se}\left(\hat{\beta}_{1}\right)
@@ -909,7 +878,7 @@ $<span class="math notranslate nohighlight">\(\hat{\boldsymbol{\beta}} = \left( 
 &amp;= \sum_i(y_i - \boldsymbol{x}_i ^\top \hat{\boldsymbol{\beta} }_i)  \\
 &amp;= 0
 \end{align}\end{split}\]</div>
-<p>From the normal equation we can also get</p>
+<p>From the normal equation [below] we can also get</p>
 <div class="math notranslate nohighlight">
 \[
 \sum_i x_{ij} \hat{\varepsilon}_i = 0
@@ -920,6 +889,12 @@ $<span class="math notranslate nohighlight">\(\hat{\boldsymbol{\beta}} = \left( 
 \[
 \widehat{\operatorname{Cov}}\left(X_j, \varepsilon \right) = 0
 \]</div>
+<p><strong>Distribution</strong></p>
+<p>TBD</p>
+</div>
+<div class="section" id="independence">
+<h4>Independence<a class="headerlink" href="#independence" title="Permalink to this headline">¶</a></h4>
+<p>TBD</p>
 </div>
 </div>
 <div class="section" id="decomposition-of-total-sum-of-squares">
@@ -944,13 +919,11 @@ SST
 <p>where use the fact that <span class="math notranslate nohighlight">\(\sum_i \varepsilon_i = 0\)</span> and <span class="math notranslate nohighlight">\(\sum_i \varepsilon_i x_i = 0\)</span> shown [above].</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>Some social science courses use <span class="math notranslate nohighlight">\(SSR\)</span> and <span class="math notranslate nohighlight">\(SSE\)</span> denote the opposite quantity in statistics courses.</p>
-<p>Explained sum of squares: <span class="math notranslate nohighlight">\(SSE = \sum\left(\hat{y}_{i}-\bar{y}\right)^{2}\)</span>
-Residual sum of squares: <span class="math notranslate nohighlight">\(SSR = SSE = \sum (y_i - \hat{y}_i)^2\)</span></p>
-</div>
-<div class="section" id="error-variance">
-<h4>Error Variance<a class="headerlink" href="#error-variance" title="Permalink to this headline">¶</a></h4>
-<p>Now we find an unbiased estimator for <span class="math notranslate nohighlight">\(\sigma^2\)</span>.</p>
+<p>Some social science courses use <span class="math notranslate nohighlight">\(SSR\)</span> and <span class="math notranslate nohighlight">\(SSE\)</span> to denote the opposite quantity in statistics courses.</p>
+<ul class="simple">
+<li><p>Explained sum of squares: <span class="math notranslate nohighlight">\(SSE = \sum\left(\hat{y}_{i}-\bar{y}\right)^{2}\)</span></p></li>
+<li><p>Residual sum of squares: <span class="math notranslate nohighlight">\(SSR = \sum (y_i - \hat{y}_i)^2\)</span></p></li>
+</ul>
 </div>
 </div>
 </div>
@@ -958,12 +931,20 @@ Residual sum of squares: <span class="math notranslate nohighlight">\(SSR = SSE 
 <h2>Model Selection<a class="headerlink" href="#model-selection" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="r-squared">
 <h3><span class="math notranslate nohighlight">\(R\)</span>-squared<a class="headerlink" href="#r-squared" title="Permalink to this headline">¶</a></h3>
-<p>R-squared (R2) is a statistical measure that represents the proportion of the variance for a dependent variable that’s explained by an independent variable or variables in a regression model. Whereas correlation explains the strength of the relationship between an independent and dependent variable, R-squared explains to what extent the variance of one variable explains the variance of the second variable.</p>
+<p><span class="math notranslate nohighlight">\(R\)</span>-squared (<span class="math notranslate nohighlight">\(R\)</span>^2) is a statistical measure that represents the proportion of the variance for a dependent variable that’s explained by an independent variable or variables in a regression model.</p>
+<p>Whereas correlation explains the strength of the relationship between an independent and dependent variable, <span class="math notranslate nohighlight">\(R\)</span>-squared explains to what extent the variance of one variable explains the variance of the second variable.</p>
 <div class="math notranslate nohighlight">
 \[
 R^2 = \frac{SSR}{SST}  = 1 - \frac{SSE}{SST}
 \]</div>
 <p>relation with <span class="math notranslate nohighlight">\(\beta\)</span> in simple linear models:</p>
+</div>
+</div>
+<div class="section" id="interpretation">
+<h2>Interpretation<a class="headerlink" href="#interpretation" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="what-is-anova">
+<h3>What is ANOVA?<a class="headerlink" href="#what-is-anova" title="Permalink to this headline">¶</a></h3>
+<p>The Analysis Of Variance, popularly known as the ANOVA, can be used in cases where there are more than two groups.</p>
 </div>
 </div>
 <div class="section" id="special-cases">
@@ -1010,8 +991,8 @@ y = \beta x + \varepsilon
 <p>Hence, if the intercept is known to be zero, better use <span class="math notranslate nohighlight">\(\tilde\beta\)</span> instead of <span class="math notranslate nohighlight">\(\hat\beta\)</span>, since the standard error of the <span class="math notranslate nohighlight">\(\tilde\beta\)</span> is smaller, and both are unbiased.</p>
 <p>If the true model has a non-zero intercept, then <span class="math notranslate nohighlight">\(\tilde\beta\)</span> is biased for <span class="math notranslate nohighlight">\(\beta\)</span>, but it has a smaller variance, which brings a tradeoff of bias vs variance.</p>
 </div>
-<div class="section" id="transformation">
-<h3>Transformation<a class="headerlink" href="#transformation" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="transformation-of-variables">
+<h3>Transformation of Variables<a class="headerlink" href="#transformation-of-variables" title="Permalink to this headline">¶</a></h3>
 <p>If <span class="math notranslate nohighlight">\(X ^\prime = aX + b\)</span>, then the new slope estimate is</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
@@ -1052,13 +1033,6 @@ y = \beta x + \varepsilon
 <div class="section" id="heteroscedasticity">
 <h3>Heteroscedasticity<a class="headerlink" href="#heteroscedasticity" title="Permalink to this headline">¶</a></h3>
 <p>TBD</p>
-</div>
-</div>
-<div class="section" id="interpretation">
-<h2>Interpretation<a class="headerlink" href="#interpretation" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="what-is-anova">
-<h3>What is ANOVA?<a class="headerlink" href="#what-is-anova" title="Permalink to this headline">¶</a></h3>
-<p>The Analysis Of Variance, popularly known as the ANOVA, can be used in cases where there are more than two groups.</p>
 <p>https://www.1point3acres.com/bbs/thread-703302-1-1.html</p>
 </div>
 </div>
