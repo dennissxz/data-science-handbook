@@ -183,6 +183,11 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/13-randomized-trial.html">
+     Causality and Randomized Trial
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="../13-statistics/21-hypothesis-testing.html">
      Hypothesis Testing
     </a>
@@ -445,37 +450,47 @@
         <nav id="bd-toc-nav">
             <ul class="nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#greedy-algorithm-solutions">
-   Greedy Algorithm Solutions
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#correctness-proof">
-   Correctness Proof
+  <a class="reference internal nav-link" href="#basic-problem">
+   Basic Problem
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#proof-1-exchange-argument">
-     Proof 1: Exchange Argument
+    <a class="reference internal nav-link" href="#problem-setup">
+     Problem Setup
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#proof-2-one-to-one-mapping-from-opt-to-s">
-     Proof 2: one-to-one mapping from
-     <span class="math notranslate nohighlight">
-      \(OPT\)
-     </span>
-     to
-     <span class="math notranslate nohighlight">
-      \(S\)
-     </span>
+    <a class="reference internal nav-link" href="#greedy-algorithm-solution">
+     Greedy Algorithm Solution
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#correctness-proof">
+     Correctness Proof
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#exchange-argument">
+       Exchange Argument
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#charging-scheme">
+       Charging Scheme
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#analysis-of-running-time">
+     Analysis of Running time
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#analysis-of-running-time">
-   Analysis of Running time
+  <a class="reference internal nav-link" href="#extension-1">
+   Extension 1:
   </a>
  </li>
 </ul>
@@ -492,48 +507,53 @@
   <div class="section" id="interval-scheduling">
 <h1>Interval Scheduling<a class="headerlink" href="#interval-scheduling" title="Permalink to this headline">¶</a></h1>
 <p>Aka. job interval selection problem (JISP)</p>
+<div class="section" id="basic-problem">
+<h2>Basic Problem<a class="headerlink" href="#basic-problem" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="problem-setup">
+<h3>Problem Setup<a class="headerlink" href="#problem-setup" title="Permalink to this headline">¶</a></h3>
 <p>How to schedule jobs</p>
+<dl class="simple myst">
+<dt>Input</dt><dd><ul class="simple">
+<li><p>A set <span class="math notranslate nohighlight">\(J\)</span> of <span class="math notranslate nohighlight">\(n\)</span> jobs</p></li>
+<li><p>The start time <span class="math notranslate nohighlight">\(s_j\)</span> and finish time <span class="math notranslate nohighlight">\(f_j\)</span> of each job <span class="math notranslate nohighlight">\(j\)</span> so that job <span class="math notranslate nohighlight">\(j\)</span>’s interval <span class="math notranslate nohighlight">\(I(j)\)</span> is <span class="math notranslate nohighlight">\((s_j, f_j]\)</span></p></li>
+</ul>
+</dd>
+<dt>Goal</dt><dd><ul class="simple">
+<li><p>Schedule as many jobs (intervals) as possible</p></li>
+</ul>
+</dd>
+<dt>Constraints</dt><dd><ul class="simple">
+<li><p>No two jobs (intervals) can overlap in time</p></li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="greedy-algorithm-solution">
+<h3>Greedy Algorithm Solution<a class="headerlink" href="#greedy-algorithm-solution" title="Permalink to this headline">¶</a></h3>
+<p>A solution by greedy algorithms is</p>
 <ul class="simple">
-<li><p>input</p>
+<li><p>Start with an empty set <span class="math notranslate nohighlight">\(S=\emptyset\)</span>.</p></li>
+<li><p>While <span class="math notranslate nohighlight">\(J\ne \emptyset\)</span>, do</p>
 <ul>
-<li><p>a set <span class="math notranslate nohighlight">\(J\)</span> of <span class="math notranslate nohighlight">\(n\)</span> jobs</p></li>
-<li><p>start time <span class="math notranslate nohighlight">\(s_j\)</span> and finish time <span class="math notranslate nohighlight">\(f_j\)</span> of each job <span class="math notranslate nohighlight">\(j\)</span> so that job <span class="math notranslate nohighlight">\(j\)</span>’s interval is <span class="math notranslate nohighlight">\((s_j, f_j]\)</span></p></li>
+<li><p>Choose a job <span class="math notranslate nohighlight">\(j\)</span> by a greedy rule, to be discussed below</p></li>
+<li><p>Add <span class="math notranslate nohighlight">\(j\)</span> to <span class="math notranslate nohighlight">\(S\)</span></p></li>
+<li><p>Delete from <span class="math notranslate nohighlight">\(J\)</span> all jobs that overlap with <span class="math notranslate nohighlight">\(j\)</span> (include <span class="math notranslate nohighlight">\(j\)</span> itself)</p></li>
 </ul>
 </li>
-<li><p>goal</p>
-<ul>
-<li><p>schedule as many jobs (intervals) as possible</p></li>
-<li><p>aka. max independent set of intervals</p></li>
-</ul>
-</li>
-<li><p>constraints</p>
-<ul>
-<li><p>no two jobs (intervals) can overlap in time</p></li>
-</ul>
-</li>
-</ul>
-<div class="section" id="greedy-algorithm-solutions">
-<h2>Greedy Algorithm Solutions<a class="headerlink" href="#greedy-algorithm-solutions" title="Permalink to this headline">¶</a></h2>
-<p>Start with an empty set <span class="math notranslate nohighlight">\(s=\emptyset\)</span>.
-While <span class="math notranslate nohighlight">\(J\ne \emptyset\)</span>, do</p>
-<ul class="simple">
-<li><p>choose a job <span class="math notranslate nohighlight">\(j\)</span> by a greedy rule, to be discussed below</p></li>
-<li><p>add <span class="math notranslate nohighlight">\(j\)</span> to <span class="math notranslate nohighlight">\(S\)</span></p></li>
-<li><p>delete from <span class="math notranslate nohighlight">\(J\)</span> all jobs that overlap with <span class="math notranslate nohighlight">\(j\)</span> (include <span class="math notranslate nohighlight">\(j\)</span> itself)</p></li>
 </ul>
 <p>What greedy rule should we use?</p>
 <ul class="simple">
-<li><p>shortest job</p>
+<li><p>shortest job <span class="math notranslate nohighlight">\(\operatorname{argmin}_{j \in J} \, f_j - s_j\)</span></p>
 <ul>
 <li><p>cons: the shortest job could be in the middle and rule out all of the others by chance, e.g. <span class="math notranslate nohighlight">\((0.9, 1.1]\)</span> rules out <span class="math notranslate nohighlight">\((0,2], (1,2]\)</span>.</p></li>
 </ul>
 </li>
-<li><p>leftmost left endpoint</p>
+<li><p>leftmost left endpoint <span class="math notranslate nohighlight">\(\operatorname{argmin}_{j \in J} \, s_j\)</span></p>
 <ul>
 <li><p>cons: one job overlaps many jobs</p></li>
 </ul>
 </li>
-<li><p>leftmost right endpoint</p>
+<li><p>leftmost right endpoint <span class="math notranslate nohighlight">\(\operatorname{argmin}_{j \in J} \, f_j\)</span></p>
 <ul>
 <li><p>optimal, to be proved below</p></li>
 </ul>
@@ -541,35 +561,49 @@ While <span class="math notranslate nohighlight">\(J\ne \emptyset\)</span>, do</
 </ul>
 </div>
 <div class="section" id="correctness-proof">
-<h2>Correctness Proof<a class="headerlink" href="#correctness-proof" title="Permalink to this headline">¶</a></h2>
-<p>Two steps in correctness proof:</p>
-<ul class="simple">
-<li><p>feasible, i.e. satisfy the constraints</p></li>
-<li><p>optimal. optimal set is denoted as <span class="math notranslate nohighlight">\(OPT\)</span>.</p></li>
-</ul>
+<h3>Correctness Proof<a class="headerlink" href="#correctness-proof" title="Permalink to this headline">¶</a></h3>
+<p>Feasibility Claim: No two jobs in <span class="math notranslate nohighlight">\(S\)</span> overlap.
+:</p>
 <p>Feasibility is guaranteed since we delete all jobs that overlap with <span class="math notranslate nohighlight">\(j\)</span> from <span class="math notranslate nohighlight">\(J\)</span>.</p>
-<p>Optimality: <span class="math notranslate nohighlight">\(\vert S \vert = \vert OPT \vert\)</span>.</p>
-<p>Intuition is that, we are pushing intervals to the left
-Method: prove <span class="math notranslate nohighlight">\(S\)</span> is approaching <span class="math notranslate nohighlight">\(OPT\)</span> gradually.</p>
-<div class="section" id="proof-1-exchange-argument">
-<h3>Proof 1: Exchange Argument<a class="headerlink" href="#proof-1-exchange-argument" title="Permalink to this headline">¶</a></h3>
-<p>Want to prove <span class="math notranslate nohighlight">\(\vert S \vert \ge \vert OPT \vert\)</span>.</p>
-<p>Suppose the first job in <span class="math notranslate nohighlight">\(OPT\)</span> is <span class="math notranslate nohighlight">\(j_1^*\)</span> and the first job in <span class="math notranslate nohighlight">\(S\)</span> is <span class="math notranslate nohighlight">\(j_1\)</span>. According to the greedy rule, the finish time of <span class="math notranslate nohighlight">\(j_1\)</span> is ealier than <span class="math notranslate nohighlight">\(j_1^*\)</span>, so substituting <span class="math notranslate nohighlight">\(j_1^*\)</span> by <span class="math notranslate nohighlight">\(j_1\)</span> in <span class="math notranslate nohighlight">\(OPT\)</span> does not affect the optimality of <span class="math notranslate nohighlight">\(OPT\)</span>. Call the updated <span class="math notranslate nohighlight">\(OPT\)</span> <span class="math notranslate nohighlight">\(OPT_1\)</span>. We can then substitute <span class="math notranslate nohighlight">\(j_2^*\)</span> in <span class="math notranslate nohighlight">\(OPT_1\)</span> by <span class="math notranslate nohighlight">\(j_2\)</span> in <span class="math notranslate nohighlight">\(S\)</span>, and so on.</p>
-<p>What if <span class="math notranslate nohighlight">\(\vert S \vert &lt; \vert OPT_k \vert\)</span>, i.e. we run out of jobs in <span class="math notranslate nohighlight">\(S\)</span> after <span class="math notranslate nohighlight">\(k\)</span> substitutions? This is impossible. Our algorithm will select <span class="math notranslate nohighlight">\(j\)</span> in <span class="math notranslate nohighlight">\(J\)</span> until <span class="math notranslate nohighlight">\(J\)</span> is empty. So if there is any jobs in <span class="math notranslate nohighlight">\(OPT_k\)</span> that do not in <span class="math notranslate nohighlight">\(S\)</span>, they should be added to <span class="math notranslate nohighlight">\(S\)</span> by our algorithm.</p>
+<dl class="simple myst">
+<dt>Optimality: <span class="math notranslate nohighlight">\(\left\vert S \right\vert = \left\vert OPT \right\vert\)</span></dt><dd><p>Intuition is that, we are pushing intervals to the left</p>
+</dd>
+<dd><p>formal proof are shown below</p>
+</dd>
+</dl>
+<div class="section" id="exchange-argument">
+<h4>Exchange Argument<a class="headerlink" href="#exchange-argument" title="Permalink to this headline">¶</a></h4>
+<p>Want to prove <span class="math notranslate nohighlight">\(\vert S \vert \le \vert OPT \vert\)</span>. Try to show <span class="math notranslate nohighlight">\(OPT\)</span> approaches our solution <span class="math notranslate nohighlight">\(S\)</span>.</p>
+<p><em><strong>Proof</strong></em></p>
+<p>Suppose the first job in <span class="math notranslate nohighlight">\(OPT\)</span> is <span class="math notranslate nohighlight">\(j_1^*\)</span> and the first job in <span class="math notranslate nohighlight">\(S\)</span> is <span class="math notranslate nohighlight">\(j_1\)</span>. According to the greedy rule, the finish time of <span class="math notranslate nohighlight">\(j_1\)</span> is ealier than <span class="math notranslate nohighlight">\(j_1^*\)</span>, so substituting <span class="math notranslate nohighlight">\(j_1^*\)</span> by <span class="math notranslate nohighlight">\(j_1\)</span> in <span class="math notranslate nohighlight">\(OPT\)</span> does not affect the optimality of <span class="math notranslate nohighlight">\(OPT\)</span>. Call the updated <span class="math notranslate nohighlight">\(OPT\)</span> by <span class="math notranslate nohighlight">\(OPT_1\)</span>. We can then substitute <span class="math notranslate nohighlight">\(j_2^*\)</span> in <span class="math notranslate nohighlight">\(OPT_1\)</span> by <span class="math notranslate nohighlight">\(j_2\)</span> in <span class="math notranslate nohighlight">\(S\)</span> (note that <span class="math notranslate nohighlight">\(f_{j_2} \le f_{j_2^*}\)</span> by our algorithms), and so on.</p>
+<p>What if <span class="math notranslate nohighlight">\(\vert S \vert &lt; \vert OPT_k \vert\)</span>, i.e. we run out of jobs in <span class="math notranslate nohighlight">\(S\)</span> after <span class="math notranslate nohighlight">\(k\)</span> substitutions? This is impossible. Our algorithm will select <span class="math notranslate nohighlight">\(j\)</span> in <span class="math notranslate nohighlight">\(J\)</span> until <span class="math notranslate nohighlight">\(J\)</span> is empty. So if there is any jobs in <span class="math notranslate nohighlight">\(OPT_k\)</span> that is not in <span class="math notranslate nohighlight">\(S\)</span>, they should be in <span class="math notranslate nohighlight">\(J\)</span> and be added to <span class="math notranslate nohighlight">\(S\)</span> by our algorithm.</p>
+<p><span class="math notranslate nohighlight">\(\square\)</span></p>
 </div>
-<div class="section" id="proof-2-one-to-one-mapping-from-opt-to-s">
-<h3>Proof 2: one-to-one mapping from <span class="math notranslate nohighlight">\(OPT\)</span> to <span class="math notranslate nohighlight">\(S\)</span><a class="headerlink" href="#proof-2-one-to-one-mapping-from-opt-to-s" title="Permalink to this headline">¶</a></h3>
-<p>Claim 1: <span class="math notranslate nohighlight">\(g(j_i^*) = j\)</span></p>
-<p>If <span class="math notranslate nohighlight">\(j_i^* \in S\)</span> then <span class="math notranslate nohighlight">\(g(j_1^*) = j_1^*\)</span>. Otherwise there is a job <span class="math notranslate nohighlight">\(j^\prime \in S\)</span> whose right endpoint lies in <span class="math notranslate nohighlight">\((s_{j_i^*}, f_{j_i^*}]\)</span>.</p>
-<p>Claim 2: each job in <span class="math notranslate nohighlight">\(S\)</span> is responsible?? for at most one job in <span class="math notranslate nohighlight">\(OPT\)</span>.</p>
-<p>In sum, the mapping is one-to-one, such that <span class="math notranslate nohighlight">\(\vert OPT \vert = \vert S \vert\)</span></p>
+<div class="section" id="charging-scheme">
+<h4>Charging Scheme<a class="headerlink" href="#charging-scheme" title="Permalink to this headline">¶</a></h4>
+<p>Given <span class="math notranslate nohighlight">\(\left\vert S \right\vert \le \left\vert OPT \right\vert\)</span>, want to show <span class="math notranslate nohighlight">\(\left\vert S \right\vert \ge \left\vert OPT \right\vert\)</span> such that <span class="math notranslate nohighlight">\(\left\vert S \right\vert = \left\vert OPT \right\vert\)</span>.</p>
+<p>Let the jobs in <span class="math notranslate nohighlight">\(OPT\)</span> be <span class="math notranslate nohighlight">\(j_1^*, \ldots, j_{\left\vert OPT \right\vert} ^*\)</span> and the jobs in <span class="math notranslate nohighlight">\(S\)</span> be  <span class="math notranslate nohighlight">\(j_1^*, \ldots, j_{\left\vert S \right\vert} ^*\)</span></p>
+<p>Define a one-to-one function from set <span class="math notranslate nohighlight">\(OPT\)</span> to set <span class="math notranslate nohighlight">\(S\)</span>: <span class="math notranslate nohighlight">\(g(j_i^*) = j_\ell\)</span>. This means every job in <span class="math notranslate nohighlight">\(OPT\)</span> is mapped to a job in <span class="math notranslate nohighlight">\(S\)</span>, but there can be jobs in <span class="math notranslate nohighlight">\(S\)</span> that has not mapping from <span class="math notranslate nohighlight">\(OPT\)</span>. If such function exists then <span class="math notranslate nohighlight">\(\left\vert S \right\vert \ge \left\vert OPS \right\vert\)</span>. Now we prove such function exists.</p>
+<p>Let’s look at a job <span class="math notranslate nohighlight">\(j_i^*\)</span> in <span class="math notranslate nohighlight">\(OPT\)</span>.</p>
+<ul>
+<li><p>If <span class="math notranslate nohighlight">\(j_1^* \in S\)</span> then we let the mapping to be an identity mapping <span class="math notranslate nohighlight">\(g(j_i^*) = j_i^*\)</span>.</p></li>
+<li><p>If <span class="math notranslate nohighlight">\(j_i^*\notin OPT\)</span>, then we deleted it at some time in <span class="math notranslate nohighlight">\(J\)</span>, since it overlaps from a job in <span class="math notranslate nohighlight">\(S\)</span>. Let the corresponding job in be <span class="math notranslate nohighlight">\(j ^\prime\)</span>, then its end time must be earlier than the end time of <span class="math notranslate nohighlight">\(j_i^*\)</span>, otherwise we won’t select <span class="math notranslate nohighlight">\(j ^\prime\)</span> and delete <span class="math notranslate nohighlight">\(j_i^*\)</span> from <span class="math notranslate nohighlight">\(J\)</span>. In short, the interval <span class="math notranslate nohighlight">\((s_{j^*}, f_{j^*}]\)</span> must contains <span class="math notranslate nohighlight">\(f_{j ^\prime}\)</span>.</p>
+<p>In this case, let the mapping be <span class="math notranslate nohighlight">\(g(j_i^*) = j ^\prime\)</span>.</p>
+</li>
+</ul>
+<p>Moreover, for each job <span class="math notranslate nohighlight">\(j ^\prime \in S\)</span>, it can take up to one mapping. If it takes two jobs <span class="math notranslate nohighlight">\(j_i^*, j_k^* \in OPT\)</span>, then both intervals of <span class="math notranslate nohighlight">\(j_i^*\)</span> and <span class="math notranslate nohighlight">\(j_k^*\)</span> should contain <span class="math notranslate nohighlight">\(f_{j ^\prime}\)</span>, which is impossible since the intervals in <span class="math notranslate nohighlight">\(OPT\)</span> cannot overlap.</p>
+<p>In sum, this function <span class="math notranslate nohighlight">\(g\)</span> exists. Hence, <span class="math notranslate nohighlight">\(\left\vert S \right\vert \ge \left\vert OPT \right\vert\)</span>.</p>
+<p><span class="math notranslate nohighlight">\(\square\)</span></p>
 </div>
 </div>
 <div class="section" id="analysis-of-running-time">
-<h2>Analysis of Running time<a class="headerlink" href="#analysis-of-running-time" title="Permalink to this headline">¶</a></h2>
-<p>at most <span class="math notranslate nohighlight">\(n\)</span> iterations</p>
-<p><span class="math notranslate nohighlight">\(O(n)\)</span> time per iteration</p>
-<p>so <span class="math notranslate nohighlight">\(O(n^2)\)</span> total</p>
+<h3>Analysis of Running time<a class="headerlink" href="#analysis-of-running-time" title="Permalink to this headline">¶</a></h3>
+<p>There are at most <span class="math notranslate nohighlight">\(n\)</span> iterations in <code class="docutils literal notranslate"><span class="pre">while</span></code>, and in every iteration we need to find <span class="math notranslate nohighlight">\(\operatorname{argmin}_j \, s_j\)</span>, which can be doen in <span class="math notranslate nohighlight">\(O(n)\)</span>. In sum, the overall time complexity is <span class="math notranslate nohighlight">\(O(n^2)\)</span>.</p>
+<p>Another way of implementation is to sort the jobs by <span class="math notranslate nohighlight">\(s_j\)</span>. Then there are at most <span class="math notranslate nohighlight">\(n\)</span> iterations. The overall time complexity is <span class="math notranslate nohighlight">\(O(n \log n)\)</span>.</p>
+</div>
+</div>
+<div class="section" id="extension-1">
+<h2>Extension 1:<a class="headerlink" href="#extension-1" title="Permalink to this headline">¶</a></h2>
 </div>
 </div>
 

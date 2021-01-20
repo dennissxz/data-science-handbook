@@ -1,0 +1,840 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Causality and Randomized Trial &#8212; Data Science Handbook</title>
+    
+  <link rel="stylesheet" href="../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+  <link rel="stylesheet"
+    href="../_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="../_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinx-book-theme.40e2e510f6b7d1648584402491bb10fe.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/style.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.3da636dd464baa7582d2.js">
+
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Hypothesis Testing" href="21-hypothesis-testing.html" />
+    <link rel="prev" title="Statistical Sampling" href="11-stat-sampling.html" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+
+
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+<a class="navbar-brand text-wrap" href="../index.html">
+  
+  
+  <h1 class="site-logo" id="site-title">Data Science Handbook</h1>
+  
+</a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form>
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+    <ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../index.html">
+   Data Science Handbook
+  </a>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Foundations
+ </span>
+</p>
+<ul class="current nav sidenav_l1">
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../11-math/00-math.html">
+   Math
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/11-combinatorics.html">
+     Combinatorics
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/12-derangement.html">
+     Derangement
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/21-linear-algebra.html">
+     Linear Algebra
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/90-puzzles.html">
+     Puzzles
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../12-probabilities/00-probabilities.html">
+   Probabilities
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/11-expectation-and-variance.html">
+     Expectation and Variance
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/13-correlation-and-dependence.html">
+     Correlation and Dependence
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/31-bayesian-theorem.html">
+     Bayesian’s Theorem
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/51-markov-chain.html">
+     Markov Chain
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/71-sampling.html">
+     Sampling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/90-multivariate-notations.html">
+     Multivariate Notations
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/91-large-sample-theory.html">
+     Large Sample Theory
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 current active collapsible-parent">
+  <a class="reference internal" href="00-statistics.html">
+   Statistics
+  </a>
+  <ul class="current collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="11-stat-sampling.html">
+     Statistical Sampling
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     Causality and Randomized Trial
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="21-hypothesis-testing.html">
+     Hypothesis Testing
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="33-confusion-matrix.html">
+     Confusion Matrix
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../14-python/00-python.html">
+   Python
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../14-python/11-programming-tools.html">
+     Programmer tools
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../14-python/12-syntax.html">
+     Syntax
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../14-python/13-data-structure.html">
+     Data Structures
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../14-python/15-functional-programming.html">
+     Functional Programming
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../17-sql/00-sql.html">
+   SQL
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../17-sql/11-database.html">
+     Database
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../17-sql/12-relational-structure.html">
+     Relational Structure
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../17-sql/31-data-query.html">
+     Data Query
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../17-sql/33-data-manipulation.html">
+     Data Manipulation
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../19-miscellaneous/00-miscellaneous.html">
+   Miscellaneous
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../19-miscellaneous/11-latex.html">
+     LaTeX
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../19-miscellaneous/13-myst.html">
+     MyST Markdown
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Algorithms
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../20-algorithms-basics/00-algorithms-basics.html">
+   Algorithms Basics
+  </a>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../21-greedy-algorithms/00-greedy-algorithms.html">
+   Greedy Algorithms
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../21-greedy-algorithms/11-interval-scheduling.html">
+     Interval Scheduling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../21-greedy-algorithms/13-denominations.html">
+     Denominations
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Machine Learning
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../30-ml-basics/00-ml-basics.html">
+   Machine Learning Basics
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../30-ml-basics/01-information-theory.html">
+     Information Theory
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../31-regression/00-regression.html">
+   Regression
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/11-linear-models.html">
+     Linear Models
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../33-dimensionality-reduction/00-dimensionality-reduction.html">
+   Dimensionality Reduction
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/11-principal-component-analysis.html">
+     Principal Component Analysis
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/13-canonical-correlation-analysis.html">
+     Canonical Corerlation Analysis
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+</ul>
+
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="row topbar fixed-top container-xl">
+    <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show">
+    </div>
+    <div class="col pl-2 topbar-main">
+        
+        <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+            data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+            aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+            title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+            <i class="fas fa-bars"></i>
+            <i class="fas fa-arrow-left"></i>
+            <i class="fas fa-arrow-up"></i>
+        </button>
+        
+        
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../_sources/13-statistics/13-randomized-trial.md"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.md</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+        <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/dennissxz/data-science-handbook"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/dennissxz/data-science-handbook/issues/new?title=Issue%20on%20page%20%2F13-statistics/13-randomized-trial.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+
+        <!-- Full screen (wrap in <a> to have style consistency -->
+        <a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+                data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+                title="Fullscreen mode"><i
+                    class="fas fa-expand"></i></button></a>
+
+        <!-- Launch buttons -->
+
+    </div>
+
+    <!-- Table of contents -->
+    <div class="d-none d-md-block col-md-2 bd-toc show">
+        
+        <div class="tocsection onthispage pt-5 pb-3">
+            <i class="fas fa-list"></i> Contents
+        </div>
+        <nav id="bd-toc-nav">
+            <ul class="nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#rubin-model-of-causation">
+   Rubin Model of Causation
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#definitions">
+     Definitions
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#statistical-solution">
+     Statistical Solution
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#example-of-assignment-mechanism-rubins-perfect-doctor">
+     Example of Assignment Mechanism: Rubin’s Perfect Doctor
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#randomized-control-trial">
+   Randomized Control Trial
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#randomized-control-trial-makes-independence-plausible">
+     Randomized Control Trial Makes Independence Plausible
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#check-for-randomization">
+     Check for Randomization
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#potential-problems-and-limitations">
+     Potential Problems and Limitations
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#attrition">
+       Attrition
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#compliance">
+       Compliance
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#cost">
+       Cost
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#external-validity">
+       External validity
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+        </nav>
+        
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="causality-and-randomized-trial">
+<h1>Causality and Randomized Trial<a class="headerlink" href="#causality-and-randomized-trial" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="rubin-model-of-causation">
+<h2>Rubin Model of Causation<a class="headerlink" href="#rubin-model-of-causation" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="definitions">
+<h3>Definitions<a class="headerlink" href="#definitions" title="Permalink to this headline">¶</a></h3>
+<p>First we define some basic concepts.</p>
+<dl class="simple myst">
+<dt>Unit</dt><dd><p>an object <span class="math notranslate nohighlight">\(i\)</span> at a given point int time</p>
+</dd>
+<dt>Treatment and control</dt><dd><p>A treatment <span class="math notranslate nohighlight">\(t\)</span> is an intervention, whose effects we want to estimate as compared to a control <span class="math notranslate nohighlight">\(c\)</span>, which is the lack of an intervention.</p>
+</dd>
+<dt>State <span class="math notranslate nohighlight">\(S\)</span></dt><dd><p>The state of the world <span class="math notranslate nohighlight">\(S\)</span> for unit <span class="math notranslate nohighlight">\(i\)</span> is its treatment status, <span class="math notranslate nohighlight">\(S \in {t, c}\)</span></p>
+</dd>
+<dt>Potential outcomes</dt><dd><p><strong>Before</strong> treatment is assigned, we can imagine the measure of interest <span class="math notranslate nohighlight">\(Y\)</span> for each unit, under both treatment and control, labeled <span class="math notranslate nohighlight">\(Y_i^t\)</span> and <span class="math notranslate nohighlight">\(Y_i^c\)</span>.</p>
+</dd>
+<dt>Assignment mechanism</dt><dd><p>is the algorithm that determines whether <span class="math notranslate nohighlight">\(i\)</span> receives <span class="math notranslate nohighlight">\(t\)</span> or <span class="math notranslate nohighlight">\(c\)</span>.</p>
+</dd>
+<dt>Causal effect (treatment effect)</dt><dd><p>is the difference between potential outcomes for a given unit <span class="math notranslate nohighlight">\(i\)</span></p>
+</dd>
+</dl>
+<div class="math notranslate nohighlight">
+\[T_i = Y_i^t - Y_i^c\]</div>
+<dl class="simple myst">
+<dt>Fundamental problem of causal inference</dt><dd><p>Once the state <span class="math notranslate nohighlight">\(S \in {t, c}\)</span> is determined, we observe one outcome <span class="math notranslate nohighlight">\(Y_i^t\)</span> or <span class="math notranslate nohighlight">\(Y_i^c\)</span>. It is impossible to observe the value <span class="math notranslate nohighlight">\(Y_i^t\)</span> and <span class="math notranslate nohighlight">\(Y_i^c\)</span> for the same unit and, therefore, it is impossible to observe the effect of treatment <span class="math notranslate nohighlight">\(t\)</span> versus control <span class="math notranslate nohighlight">\(c\)</span> on object <span class="math notranslate nohighlight">\(i\)</span>.</p>
+</dd>
+<dt>Identification problem</dt><dd><p>Because of the fundamental problem of causal inference, we cannot get an unbiased estimate (identify) causal parameters unless the assignment mechanism meets certain conditions.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="statistical-solution">
+<h3>Statistical Solution<a class="headerlink" href="#statistical-solution" title="Permalink to this headline">¶</a></h3>
+<p>We give up on calculating <span class="math notranslate nohighlight">\(T_i = Y_i^t - Y_i^c\)</span>, and settle for <span class="math notranslate nohighlight">\(d\)</span>, the average treatment effect</p>
+<div class="math notranslate nohighlight">
+\[
+d = \operatorname{E}\left( Y^t - Y^c \right) = \operatorname{E}\left( Y^t\right) - \operatorname{E}\left(Y^c \right) = \operatorname{E}\left( T \right)
+\]</div>
+<p>Note that we cannot observe <span class="math notranslate nohighlight">\(Y^t\)</span> and <span class="math notranslate nohighlight">\(Y^c\)</span> at the same time. What we observe is actually <span class="math notranslate nohighlight">\(Y^t \mid S=t\)</span> and <span class="math notranslate nohighlight">\(Y^c \mid S=c\)</span>. Consider the conditional expectations</p>
+<div class="math notranslate nohighlight">
+\[
+\operatorname{E}\left( Y^t \mid S=t  \right) \text{ and } \operatorname{E}\left( Y^c \mid S=c  \right)
+\]</div>
+<p>If <span class="math notranslate nohighlight">\(S\)</span> is <strong>independent</strong> with <span class="math notranslate nohighlight">\(Y^t\)</span> and <span class="math notranslate nohighlight">\(Y^c\)</span>, then</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+\operatorname{E}\left( Y^t \mid S=t  \right)  &amp;= \operatorname{E}\left( Y^t \right) \\
+\operatorname{E}\left( Y^c \mid S=c  \right) &amp;= \operatorname{E}\left( Y^c \right)
+\end{align}\end{split}\]</div>
+<p>and hence</p>
+<div class="math notranslate nohighlight">
+\[
+d = \operatorname{E}\left( Y^t \mid S=t  \right)  - \operatorname{E}\left( Y^c \mid S=c  \right)
+\]</div>
+<p>Note that we can get unbiased estimators of the conditional expectations</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+\hat{\operatorname{E}}\left( Y^t \mid S=t  \right)
+ &amp;= \frac{1}{n_t} \sum_{S = t} Y^t \\
+\hat{\operatorname{E}}\left( Y^c \mid S=c  \right)  
+&amp;= \frac{1}{n_c} \sum_{S = c} Y^c
+\end{align}\end{split}\]</div>
+<p>Therefore, if <span class="math notranslate nohighlight">\(S\)</span> is independent with <span class="math notranslate nohighlight">\(Y^t\)</span> and <span class="math notranslate nohighlight">\(Y^c\)</span>, then we have an unbiased estimator for <span class="math notranslate nohighlight">\(d\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+\hat{d}
+ &amp;= \frac{1}{n_t} \sum_{i: S = t} Y^t  - \frac{1}{n_c} \sum_{i: S = c} Y^c \\
+\operatorname{E}\left( \hat{d} \right)&amp;= d
+\end{align}\end{split}\]</div>
+<p>Random assignment of <span class="math notranslate nohighlight">\(S\)</span> makes independence (at the sample level) plausible, but not certain</p>
+</div>
+<div class="section" id="example-of-assignment-mechanism-rubins-perfect-doctor">
+<h3>Example of Assignment Mechanism: Rubin’s Perfect Doctor<a class="headerlink" href="#example-of-assignment-mechanism-rubins-perfect-doctor" title="Permalink to this headline">¶</a></h3>
+<p>Let’s see an example where assignment <span class="math notranslate nohighlight">\(S\)</span> and potential outcome <span class="math notranslate nohighlight">\(Y\)</span> is not independent.</p>
+<p>Suppose that patients with a particular form of cancer can have surgery (<span class="math notranslate nohighlight">\(t\)</span>) or not (<span class="math notranslate nohighlight">\(c\)</span>). We want to know the effect on years remaining. Imagine that there is a perfect doctor who can see both potential outcomes (years remaining):</p>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Person</p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(Y^t\)</span> (Surgery)</p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(Y^c\)</span> (Not)</p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(T\)</span></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>A</p></td>
+<td><p>8</p></td>
+<td><p>12</p></td>
+<td><p>-4</p></td>
+</tr>
+<tr class="row-odd"><td><p>B</p></td>
+<td><p>1</p></td>
+<td><p>8</p></td>
+<td><p>-7</p></td>
+</tr>
+<tr class="row-even"><td><p>C</p></td>
+<td><p>12</p></td>
+<td><p>10</p></td>
+<td><p>2</p></td>
+</tr>
+<tr class="row-odd"><td><p>D</p></td>
+<td><p>2</p></td>
+<td><p>4</p></td>
+<td><p>-2</p></td>
+</tr>
+<tr class="row-even"><td><p>E</p></td>
+<td><p>10</p></td>
+<td><p>8</p></td>
+<td><p>2</p></td>
+</tr>
+<tr class="row-odd"><td><p>F</p></td>
+<td><p>11</p></td>
+<td><p>8</p></td>
+<td><p>3</p></td>
+</tr>
+</tbody>
+</table>
+<p>From the table we have</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+\operatorname{E}\left( Y^t \right) &amp;= 44/6\\
+\operatorname{E}\left( Y^c \right)&amp;= 50/6\\
+d&amp;= \operatorname{E}\left( T \right)\\
+&amp;= -1
+\end{align}\end{split}\]</div>
+<p>So on average, the treatment is <strong>bad</strong>.</p>
+<p>Now suppose the omnipotent doctor assigns the treatment to those who will <strong>benefit</strong>. As researchers we would see</p>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Person</p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(Y_i^t\)</span> (Surgery)</p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(Y_i^c\)</span> (Not)</p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(T_i\)</span></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>A</p></td>
+<td><p>?</p></td>
+<td><p>12</p></td>
+<td><p><span class="math notranslate nohighlight">\(c\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p>B</p></td>
+<td><p>?</p></td>
+<td><p>8</p></td>
+<td><p><span class="math notranslate nohighlight">\(c\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p>C</p></td>
+<td><p>12</p></td>
+<td><p>?</p></td>
+<td><p><span class="math notranslate nohighlight">\(t\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p>D</p></td>
+<td><p>?</p></td>
+<td><p>4</p></td>
+<td><p><span class="math notranslate nohighlight">\(c\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p>E</p></td>
+<td><p>10</p></td>
+<td><p>?</p></td>
+<td><p><span class="math notranslate nohighlight">\(t\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p>F</p></td>
+<td><p>11</p></td>
+<td><p>?</p></td>
+<td><p><span class="math notranslate nohighlight">\(t\)</span></p></td>
+</tr>
+</tbody>
+</table>
+<p>and calculate</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+\operatorname{E}\left( Y^t \mid S = t\right) &amp;= 33/3\\
+\operatorname{E}\left( Y^c \mid S = c\right)&amp;= 24/3\\
+d &amp; =\operatorname{E}\left( T \right)\\
+&amp;= 3
+\end{align}\end{split}\]</div>
+<p>and conclude that the treatment is <strong>good</strong>.</p>
+<p>The cause of this contradiction is that the assignment <span class="math notranslate nohighlight">\(S\)</span> is dependent on <span class="math notranslate nohighlight">\(Y\)</span>.</p>
+</div>
+</div>
+<div class="section" id="randomized-control-trial">
+<h2>Randomized Control Trial<a class="headerlink" href="#randomized-control-trial" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="randomized-control-trial-makes-independence-plausible">
+<h3>Randomized Control Trial Makes Independence Plausible<a class="headerlink" href="#randomized-control-trial-makes-independence-plausible" title="Permalink to this headline">¶</a></h3>
+<p>If treatment determined randomly, then sample independence is plausible (not guaranteed). Randomized control trial uses such a random assignment mechanism, e.g., flip a fair coin for each patient to determine the assignment. In this way, The two groups should have approximately the same distribution of unobservable characteristics, such as the potential outcome and other confounding variables.</p>
+<p>We will often refer to exogenous treatment, versus endogenous. Exogenous meant to denote “outside control of optimizing agent”, makes independence plausible.</p>
+</div>
+<div class="section" id="check-for-randomization">
+<h3>Check for Randomization<a class="headerlink" href="#check-for-randomization" title="Permalink to this headline">¶</a></h3>
+<p>By chance, RCT could result in a poor randomization. For instance, there are <span class="math notranslate nohighlight">\(2^6 = 64\)</span> ways to assign treatment <span class="math notranslate nohighlight">\(t\)</span> to 6 patients in the Perfect Doctor example. Thus, there is <span class="math notranslate nohighlight">\(\frac{1}{64}\)</span> probability that RCT would give same (bad) result as Perfect Doctor.</p>
+<p>To check for bad randomization, one can perform balance tests.</p>
+<ul class="simple">
+<li><p>Test for independence of <span class="math notranslate nohighlight">\(S\)</span> and exogenous characteristics (not outcomes <span class="math notranslate nohighlight">\(Y\)</span>).</p></li>
+<li><p>If randomization is good, treated and control should be similar on observable attributes.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Often as a first step we want to know the (non-causal) relationships between variables and then we try and figure out what is behind the patterns, i.e. if they relationships are possibly causal.</p>
+</div>
+</div>
+<div class="section" id="potential-problems-and-limitations">
+<h3>Potential Problems and Limitations<a class="headerlink" href="#potential-problems-and-limitations" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="attrition">
+<h4>Attrition<a class="headerlink" href="#attrition" title="Permalink to this headline">¶</a></h4>
+<p>Participants may leave a study (i.e., attrit). So we don’t observe <span class="math notranslate nohighlight">\(Y\)</span>. For instance, job training, drug trial, diet program, etc.</p>
+<ul class="simple">
+<li><p>If attrition is uncorrelated with <span class="math notranslate nohighlight">\(Y\)</span>, we still have independence between <span class="math notranslate nohighlight">\(S\)</span> and <span class="math notranslate nohighlight">\(Y\)</span> in remaining sample.</p></li>
+<li><p>If attrition is correlated with <span class="math notranslate nohighlight">\(Y\)</span>, then the independence is broken and there is selection bias. We will observe non-random set of treated outcomes.</p></li>
+</ul>
+</div>
+<div class="section" id="compliance">
+<h4>Compliance<a class="headerlink" href="#compliance" title="Permalink to this headline">¶</a></h4>
+<p>Sometimes people refuse to follow the treatment, but you still observe their outcomes.</p>
+<ul class="simple">
+<li><p>Perhaps treated people refuse to take treatment</p></li>
+<li><p>Perhaps control people seek treatment outside program
+If you observe outcomes <span class="math notranslate nohighlight">\(Y\)</span>, you can still get a valid estimate of something called the <strong>intent to treat</strong> parameter.</p></li>
+</ul>
+<p>Consider a compliance matrix of four groups of participants.</p>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p></p></th>
+<th class="head"><p>Assigned <span class="math notranslate nohighlight">\(t\)</span></p></th>
+<th class="head"><p>Assigned <span class="math notranslate nohighlight">\(c\)</span></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Received <span class="math notranslate nohighlight">\(t\)</span></p></td>
+<td><p>A</p></td>
+<td><p>B</p></td>
+</tr>
+<tr class="row-odd"><td><p>Received <span class="math notranslate nohighlight">\(c\)</span></p></td>
+<td><p>C</p></td>
+<td><p>D</p></td>
+</tr>
+</tbody>
+</table>
+<p>Here</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(D\)</span> are compliers</p></li>
+<li><p><span class="math notranslate nohighlight">\(B\)</span> and <span class="math notranslate nohighlight">\(C\)</span> are non-compliers</p></li>
+</ul>
+<p>A researcher might compare <span class="math notranslate nohighlight">\((A,B)\)</span> to <span class="math notranslate nohighlight">\((C,D)\)</span> to estimate the average treatment effect. But if compliance is a function of <span class="math notranslate nohighlight">\(Y\)</span>, then independence is lost.</p>
+<p>Intent to treat analysis compares <span class="math notranslate nohighlight">\((A,C)\)</span> to <span class="math notranslate nohighlight">\((B,D)\)</span></p>
+</div>
+<div class="section" id="cost">
+<h4>Cost<a class="headerlink" href="#cost" title="Permalink to this headline">¶</a></h4>
+<p>Randomized controlled trial tend to be ery expensive compared with observational studies. What if you already have many observational datasets?</p>
+</div>
+<div class="section" id="external-validity">
+<h4>External validity<a class="headerlink" href="#external-validity" title="Permalink to this headline">¶</a></h4>
+<p>An estimate is internally valid if it is a good (unbiased) estimate for the population and setting of the trial.</p>
+<p>An estimate is externally valid if it is a good (unbiased) estimate for populations and settings outside those of the trial.</p>
+<p>All studies (RCT or not) have issues of external validity.</p>
+</div>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./13-statistics"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        </div>
+    </div>
+    
+    
+    <div class='prev-next-bottom'>
+        
+    <a class='left-prev' id="prev-link" href="11-stat-sampling.html" title="previous page">Statistical Sampling</a>
+    <a class='right-next' id="next-link" href="21-hypothesis-testing.html" title="next page">Hypothesis Testing</a>
+
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By Dennis Zheng<br/>
+        
+            &copy; Copyright 2020.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+
+    
+  <script src="../_static/js/index.3da636dd464baa7582d2.js"></script>
+
+
+    
+  </body>
+</html>
