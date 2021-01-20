@@ -212,6 +212,7 @@ $$
 
 $\square$
 
+
 ### Law of Total Variance
 
 Aka law of iterated variances, variance decomposition formula, Eve's law.
@@ -344,7 +345,7 @@ $$\begin{align}
 
 $\square$
 
-### Covariance and Variances
+### Cauchy-Schewarz Inequality in Probability
 
 For two random variables $X, Y$ we have
 
