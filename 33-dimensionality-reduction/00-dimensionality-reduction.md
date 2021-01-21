@@ -47,6 +47,10 @@ $$
 where $\boldsymbol{y}$ can be seen as a low-dimensional representation of $\boldsymbol{x}$
 
 
+### Multi-view
+
+
+
 ## Applications
 
 - models

@@ -422,10 +422,13 @@ with length
 
 Another example is hand written digits. Suppose $\boldsymbol{\mu} _ \boldsymbol{x}$ is the sample mean that determines the "mean" appearance of the digit $2$, then $\boldsymbol{\phi}_j$ is a principal direction which determines the location of variation of the black/white pixels.
 
-<div align="center">
-<img src="../imgs/pca_pc_digits.png" width = "50%" alt="" align=center />
-</div>
 
+
+:::{figure,myclass} markdown-fig
+<img src="../imgs/pca_pc_digits.png" width = "50%" alt=""/>
+
+caption
+:::
 
 ### Proportion Explained
 
