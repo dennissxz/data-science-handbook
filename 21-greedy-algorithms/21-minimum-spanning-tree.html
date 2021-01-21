@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Interval Scheduling &#8212; Data Science Handbook</title>
+    <title>Minimum Spanning Tree &#8212; Data Science Handbook</title>
     
   <link rel="stylesheet" href="../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
 
@@ -57,8 +57,8 @@
     <script async="async" src="../_static/sphinx-thebe.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Denominations" href="13-denominations.html" />
-    <link rel="prev" title="Greedy Algorithms" href="00-greedy-algorithms.html" />
+    <link rel="next" title="Huffman Coding" href="31-huffman-coding.html" />
+    <link rel="prev" title="Denominations" href="13-denominations.html" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
@@ -295,8 +295,8 @@
    Greedy Algorithms
   </a>
   <ul class="current collapse-ul">
-   <li class="toctree-l2 current active">
-    <a class="current reference internal" href="#">
+   <li class="toctree-l2">
+    <a class="reference internal" href="11-interval-scheduling.html">
      Interval Scheduling
     </a>
    </li>
@@ -305,8 +305,8 @@
      Denominations
     </a>
    </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="21-minimum-spanning-tree.html">
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
      Minimum Spanning Tree
     </a>
    </li>
@@ -413,7 +413,7 @@
         <!-- ipynb file if we had a myst markdown file -->
         
         <!-- Download raw file -->
-        <a class="dropdown-buttons" href="../_sources/21-greedy-algorithms/11-interval-scheduling.md"><button type="button"
+        <a class="dropdown-buttons" href="../_sources/21-greedy-algorithms/21-minimum-spanning-tree.md"><button type="button"
                 class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
                 data-placement="left">.md</button></a>
         <!-- Download PDF via print -->
@@ -433,7 +433,7 @@
                 data-toggle="tooltip" data-placement="left" title="Source repository"><i
                     class="fab fa-github"></i>repository</button></a>
         <a class="issues-button"
-            href="https://github.com/dennissxz/data-science-handbook/issues/new?title=Issue%20on%20page%20%2F21-greedy-algorithms/11-interval-scheduling.html&body=Your%20issue%20content%20here."><button
+            href="https://github.com/dennissxz/data-science-handbook/issues/new?title=Issue%20on%20page%20%2F21-greedy-algorithms/21-minimum-spanning-tree.html&body=Your%20issue%20content%20here."><button
                 type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
                 title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
         
@@ -460,18 +460,18 @@
         <nav id="bd-toc-nav">
             <ul class="nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#basic-problem">
-   Basic Problem
+  <a class="reference internal nav-link" href="#problem-setup">
+   Problem Setup
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#analysis">
+   Analysis
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#problem-setup">
-     Problem Setup
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#greedy-algorithm-solution">
-     Greedy Algorithm Solution
+    <a class="reference internal nav-link" href="#kruskal-s-algorithm">
+     Kruskal’s Algorithm
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
@@ -480,27 +480,42 @@
     </a>
     <ul class="nav section-nav flex-column">
      <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#exchange-argument">
-       Exchange Argument
+      <a class="reference internal nav-link" href="#feasibility">
+       Feasibility
       </a>
      </li>
      <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#charging-scheme">
-       Charging Scheme
+      <a class="reference internal nav-link" href="#optimality">
+       Optimality
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#extension">
+       Extension
       </a>
      </li>
     </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#analysis-of-running-time">
-     Analysis of Running time
+    <a class="reference internal nav-link" href="#implementation">
+     Implementation
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#complexity">
+     Complexity
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#extension-1">
-   Extension 1:
+  <a class="reference internal nav-link" href="#reversed-kruskal">
+   Reversed Kruskal
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#prim-s-algorithms">
+   Prim’s Algorithms
   </a>
  </li>
 </ul>
@@ -514,106 +529,162 @@
         
               <div>
                 
-  <div class="section" id="interval-scheduling">
-<h1>Interval Scheduling<a class="headerlink" href="#interval-scheduling" title="Permalink to this headline">¶</a></h1>
-<p>Aka. job interval selection problem (JISP)</p>
-<div class="section" id="basic-problem">
-<h2>Basic Problem<a class="headerlink" href="#basic-problem" title="Permalink to this headline">¶</a></h2>
+  <div class="section" id="minimum-spanning-tree">
+<h1>Minimum Spanning Tree<a class="headerlink" href="#minimum-spanning-tree" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="problem-setup">
-<h3>Problem Setup<a class="headerlink" href="#problem-setup" title="Permalink to this headline">¶</a></h3>
-<p>How to schedule jobs</p>
+<h2>Problem Setup<a class="headerlink" href="#problem-setup" title="Permalink to this headline">¶</a></h2>
 <dl class="simple myst">
-<dt>Input</dt><dd><ul class="simple">
-<li><p>A set <span class="math notranslate nohighlight">\(J\)</span> of <span class="math notranslate nohighlight">\(n\)</span> jobs</p></li>
-<li><p>The start time <span class="math notranslate nohighlight">\(s_j\)</span> and finish time <span class="math notranslate nohighlight">\(f_j\)</span> of each job <span class="math notranslate nohighlight">\(j\)</span> so that job <span class="math notranslate nohighlight">\(j\)</span>’s interval <span class="math notranslate nohighlight">\(I(j)\)</span> is <span class="math notranslate nohighlight">\((s_j, f_j]\)</span></p></li>
+<dt>Input</dt><dd><p>Graph <span class="math notranslate nohighlight">\(G=(V,E)\)</span>, with</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\left\vert V \right\vert = n\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\left\vert E \right\vert = m\)</span></p></li>
+<li><p>weights <span class="math notranslate nohighlight">\(w(e)\ge 0\)</span></p></li>
 </ul>
 </dd>
-<dt>Goal</dt><dd><ul class="simple">
-<li><p>Schedule as many jobs (intervals) as possible</p></li>
-</ul>
+<dt>Goal</dt><dd><p>Select minimum-weight edge set <span class="math notranslate nohighlight">\(E^\prime \subseteq E\)</span>.</p>
 </dd>
-<dt>Constraints</dt><dd><ul class="simple">
-<li><p>No two jobs (intervals) can overlap in time</p></li>
+<dt>Constraint</dt><dd><p><span class="math notranslate nohighlight">\(G(V, E^\prime)\)</span> is connected.</p>
+</dd>
+<dt>Notations:</dt><dd><ul class="simple">
+<li><p>We denoted <span class="math notranslate nohighlight">\(G(V, E ^\prime)\)</span> by <span class="math notranslate nohighlight">\(G(E ^\prime)\)</span>.</p></li>
 </ul>
 </dd>
 </dl>
+<ul class="simple">
+<li><p>We denoted the total cost <span class="math notranslate nohighlight">\(\sum_{e \in E} w(e)\)</span> by <span class="math notranslate nohighlight">\(w(E)\)</span>.</p></li>
+</ul>
 </div>
-<div class="section" id="greedy-algorithm-solution">
-<h3>Greedy Algorithm Solution<a class="headerlink" href="#greedy-algorithm-solution" title="Permalink to this headline">¶</a></h3>
-<p>A solution by greedy algorithms is</p>
+<div class="section" id="analysis">
+<h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
+<p>Try to think some reasonable assumptions to transform the original problem setting into a simpler setting.</p>
+<ol>
+<li><p>The input graph is connected.</p>
+<p>Otherwise the output graph cannot be connected.</p>
+</li>
+<li><p>All edge weights are positive <span class="math notranslate nohighlight">\(w(e)&gt;0\)</span>.</p>
+<p>For <span class="math notranslate nohighlight">\(e\)</span> with zero weight, we can include it to <span class="math notranslate nohighlight">\(E ^\prime\)</span> for free so there is no problem of connection of this edge, and merge the two vertices into one. We solve the problem on the new graph, and the optimal solution in the new graph with the zero edges give the optimal solution on the original graph.</p>
+</li>
+<li><p>All edge weights are different <span class="math notranslate nohighlight">\(w(e_i)\ne w(e_j)\)</span>. If not, we can add a tiny amount <span class="math notranslate nohighlight">\(w(e) \leftarrow w(e) + \frac{1}{n^k}\)</span> to achieve that without changing the optimal solution.</p></li>
+</ol>
+<p>Analysis of OPT</p>
+<ul>
+<li><p>The optimal solution must be a <strong>tree</strong> (a graph without cycles).</p>
+<p>If there exists cycles, then removing the additional edges in the cycle keeps the graph connected and reduces the weight sum.</p>
+</li>
+<li><p>Since the tree include every vertex in the graph, i.e. <span class="math notranslate nohighlight">\(\left\vert V^\prime \right\vert = n\)</span>, it’s a <strong>spanning tree</strong> (a subgraph of <span class="math notranslate nohighlight">\(G\)</span> that is a tree which includes all vertices of <span class="math notranslate nohighlight">\(G\)</span>).</p></li>
+<li><p>For an OPT (a spanning tree), the number of edges is always <span class="math notranslate nohighlight">\((n-1)\)</span></p></li>
+<li><p>If you add an additional edge <span class="math notranslate nohighlight">\(e(u,v)\)</span> to a spanning tree (connected graph), you must close a cycle, since the vertices <span class="math notranslate nohighlight">\((u, v)\)</span> are already connected. If you delete an arbitrary edge on the cycle created, then the resulting graph is still a spanning tree.</p></li>
+</ul>
+<p>Therefore, to generate a spanning tree (a feasible solution), one algorithm can be</p>
 <ul class="simple">
-<li><p>Start with an empty set <span class="math notranslate nohighlight">\(S=\emptyset\)</span>.</p></li>
-<li><p>While <span class="math notranslate nohighlight">\(J\ne \emptyset\)</span>, do</p>
-<ul>
-<li><p>Choose a job <span class="math notranslate nohighlight">\(j\)</span> by a greedy rule, to be discussed below</p></li>
-<li><p>Add <span class="math notranslate nohighlight">\(j\)</span> to <span class="math notranslate nohighlight">\(S\)</span></p></li>
-<li><p>Delete from <span class="math notranslate nohighlight">\(J\)</span> all jobs that overlap with <span class="math notranslate nohighlight">\(j\)</span> (include <span class="math notranslate nohighlight">\(j\)</span> itself)</p></li>
+<li><p>choose one edge according to some rule at a time that does not close a cycle</p></li>
+<li><p>repeat until there are <span class="math notranslate nohighlight">\((n-1)\)</span> edges.</p></li>
 </ul>
-</li>
-</ul>
-<p>What greedy rule should we use?</p>
-<ul class="simple">
-<li><p>shortest job <span class="math notranslate nohighlight">\(\operatorname{argmin}_{j \in J} \, f_j - s_j\)</span></p>
-<ul>
-<li><p>cons: the shortest job could be in the middle and rule out all of the others by chance, e.g. <span class="math notranslate nohighlight">\((0.9, 1.1]\)</span> rules out <span class="math notranslate nohighlight">\((0,2], (1,2]\)</span>.</p></li>
-</ul>
-</li>
-<li><p>leftmost left endpoint <span class="math notranslate nohighlight">\(\operatorname{argmin}_{j \in J} \, s_j\)</span></p>
-<ul>
-<li><p>cons: one job overlaps many jobs</p></li>
-</ul>
-</li>
-<li><p>leftmost right endpoint <span class="math notranslate nohighlight">\(\operatorname{argmin}_{j \in J} \, f_j\)</span></p>
-<ul>
-<li><p>optimal, to be proved below</p></li>
-</ul>
-</li>
-</ul>
+<p>Then we will have a graph with <span class="math notranslate nohighlight">\((n-1)\)</span> edges and no cycles, which must be a spanning tree. The question is, what rule should we use to minimize the total cost <span class="math notranslate nohighlight">\(w(E)\)</span>?</p>
+<div class="section" id="kruskal-s-algorithm">
+<h3>Kruskal’s Algorithm<a class="headerlink" href="#kruskal-s-algorithm" title="Permalink to this headline">¶</a></h3>
+<p>Kruskal’s Algorithm use a greedy rule: add a <strong>minimum-weight</strong> edge connecting <strong>different connected components</strong> of the graph.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Can it happen that there is no edge to add but the graph is still not connected? If the original graph is not connected, then this happens. But we assume the original graph is connected.</p>
+</div>
 </div>
 <div class="section" id="correctness-proof">
 <h3>Correctness Proof<a class="headerlink" href="#correctness-proof" title="Permalink to this headline">¶</a></h3>
-<p>Feasibility Claim: No two jobs in <span class="math notranslate nohighlight">\(S\)</span> overlap.
-:</p>
-<p>Feasibility is guaranteed since we delete all jobs that overlap with <span class="math notranslate nohighlight">\(j\)</span> from <span class="math notranslate nohighlight">\(J\)</span>.</p>
+<div class="section" id="feasibility">
+<h4>Feasibility<a class="headerlink" href="#feasibility" title="Permalink to this headline">¶</a></h4>
+<p>Immediate.</p>
+</div>
+<div class="section" id="optimality">
+<h4>Optimality<a class="headerlink" href="#optimality" title="Permalink to this headline">¶</a></h4>
+<p>We use the conclusion from the analysis part.</p>
 <dl class="simple myst">
-<dt>Optimality: <span class="math notranslate nohighlight">\(\left\vert S \right\vert = \left\vert OPT \right\vert\)</span></dt><dd><p>Intuition is that, we are pushing intervals to the left</p>
-</dd>
-<dd><p>formal proof are shown below</p>
+<dt>Claim 1</dt><dd><p>An optimal solution is a spanning tree.</p>
 </dd>
 </dl>
-<div class="section" id="exchange-argument">
-<h4>Exchange Argument<a class="headerlink" href="#exchange-argument" title="Permalink to this headline">¶</a></h4>
-<p>Want to prove <span class="math notranslate nohighlight">\(\vert S \vert \le \vert OPT \vert\)</span>. Try to show <span class="math notranslate nohighlight">\(OPT\)</span> approaches our solution <span class="math notranslate nohighlight">\(S\)</span>.</p>
-<p><em><strong>Proof</strong></em></p>
-<p>Suppose the first job in <span class="math notranslate nohighlight">\(OPT\)</span> is <span class="math notranslate nohighlight">\(j_1^*\)</span> and the first job in <span class="math notranslate nohighlight">\(S\)</span> is <span class="math notranslate nohighlight">\(j_1\)</span>. According to the greedy rule, the finish time of <span class="math notranslate nohighlight">\(j_1\)</span> is ealier than <span class="math notranslate nohighlight">\(j_1^*\)</span>, so substituting <span class="math notranslate nohighlight">\(j_1^*\)</span> by <span class="math notranslate nohighlight">\(j_1\)</span> in <span class="math notranslate nohighlight">\(OPT\)</span> does not affect the optimality of <span class="math notranslate nohighlight">\(OPT\)</span>. Call the updated <span class="math notranslate nohighlight">\(OPT\)</span> by <span class="math notranslate nohighlight">\(OPT_1\)</span>. We can then substitute <span class="math notranslate nohighlight">\(j_2^*\)</span> in <span class="math notranslate nohighlight">\(OPT_1\)</span> by <span class="math notranslate nohighlight">\(j_2\)</span> in <span class="math notranslate nohighlight">\(S\)</span> (note that <span class="math notranslate nohighlight">\(f_{j_2} \le f_{j_2^*}\)</span> by our algorithms), and so on.</p>
-<p>What if <span class="math notranslate nohighlight">\(\vert S \vert &lt; \vert OPT_k \vert\)</span>, i.e. we run out of jobs in <span class="math notranslate nohighlight">\(S\)</span> after <span class="math notranslate nohighlight">\(k\)</span> substitutions? This is impossible. Our algorithm will select <span class="math notranslate nohighlight">\(j\)</span> in <span class="math notranslate nohighlight">\(J\)</span> until <span class="math notranslate nohighlight">\(J\)</span> is empty. So if there is any jobs in <span class="math notranslate nohighlight">\(OPT_k\)</span> that is not in <span class="math notranslate nohighlight">\(S\)</span>, they should be in <span class="math notranslate nohighlight">\(J\)</span> and be added to <span class="math notranslate nohighlight">\(S\)</span> by our algorithm.</p>
-<p><span class="math notranslate nohighlight">\(\square\)</span></p>
+<p>Then we do reasoning.</p>
+<dl class="simple myst">
+<dt>Definition (Cut)</dt><dd><p>A cut of a graph is a partition of the vertices <span class="math notranslate nohighlight">\(V\)</span> into 2 non-empty sets <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span>. The edges that go across the two sets are denoted by <span class="math notranslate nohighlight">\(E(A,B)\)</span>, called cut edges in short.</p>
+</dd>
+<dt>Claim 2</dt><dd><p>For every cut <span class="math notranslate nohighlight">\((A,B)\)</span> of <span class="math notranslate nohighlight">\(G\)</span>, if <span class="math notranslate nohighlight">\(e\)</span> is the smallest weight edge in <span class="math notranslate nohighlight">\(E(A,B)\)</span>, then <span class="math notranslate nohighlight">\(e\)</span> lies in every minimum spanning tree. This smallest weight edge is called <strong>a special edge</strong>.</p>
+<details class="sphinx-bs dropdown card mb-3">
+<summary class="summary-title card-header">
+Proof by contradiction<div class="summary-down docutils">
+<svg version="1.1" width="24" height="24" class="octicon octicon-chevron-down" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M5.22 8.72a.75.75 0 000 1.06l6.25 6.25a.75.75 0 001.06 0l6.25-6.25a.75.75 0 00-1.06-1.06L12 14.44 6.28 8.72a.75.75 0 00-1.06 0z"></path></svg></div>
+<div class="summary-up docutils">
+<svg version="1.1" width="24" height="24" class="octicon octicon-chevron-up" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M18.78 15.28a.75.75 0 000-1.06l-6.25-6.25a.75.75 0 00-1.06 0l-6.25 6.25a.75.75 0 101.06 1.06L12 9.56l5.72 5.72a.75.75 0 001.06 0z"></path></svg></div>
+</summary><div class="summary-content card-body docutils">
+<p class="card-text">Assume that there exist</p>
+<ul class="simple">
+<li><p class="card-text">a cut <span class="math notranslate nohighlight">\((A, B)\)</span></p></li>
+<li><p class="card-text">an edge <span class="math notranslate nohighlight">\(e\)</span> that is the smallest-weight edge in <span class="math notranslate nohighlight">\(E(A, B)\)</span>, with vertices <span class="math notranslate nohighlight">\(u \in A\)</span> and <span class="math notranslate nohighlight">\(v \in B\)</span>.</p></li>
+<li><p class="card-text">a minimum spanning tree, denoted by <span class="math notranslate nohighlight">\(T\)</span></p></li>
+</ul>
+<p class="card-text">such that <span class="math notranslate nohighlight">\(e \notin T\)</span>.</p>
+<p class="card-text">Since <span class="math notranslate nohighlight">\(u\)</span> and <span class="math notranslate nohighlight">\(v\)</span> are connected in <span class="math notranslate nohighlight">\(T\)</span>, there must exists a path in <span class="math notranslate nohighlight">\(T\)</span> that goes across <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span>. Let <span class="math notranslate nohighlight">\(e ^\prime\)</span> be the edge that is in that path and goes across <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span>. Since <span class="math notranslate nohighlight">\(w(e) &lt; w(e ^\prime)\)</span>, we can replace <span class="math notranslate nohighlight">\(e ^\prime\)</span> by <span class="math notranslate nohighlight">\(e\)</span> and obtain a new graph <span class="math notranslate nohighlight">\(T^\prime = \left( T \cup {e} \right) \backslash \left\{ e^\prime \right\}\)</span>.</p>
+<p class="card-text">Note that <span class="math notranslate nohighlight">\(T \cup \{e\}\)</span> is a connected graph. After deleting an edge <span class="math notranslate nohighlight">\(e ^\prime\)</span> that lies on a cycle of <span class="math notranslate nohighlight">\(T \cup \{e\}\)</span>, the the remaining graph <span class="math notranslate nohighlight">\(T ^\prime = T \cup \left\{ e \right\} \backslash \left\{ e ^\prime \right\} ^\prime\)</span> graph is still connected, i.e. a feasible solution. Moreover, the total cost is reduced, <span class="math notranslate nohighlight">\(w(T ^\prime) &lt; w(T)\)</span>.</p>
+<p class="card-text">Hence, <span class="math notranslate nohighlight">\(T\)</span> is <strong>not</strong> a minimum spanning tree, contradiction.</p>
 </div>
-<div class="section" id="charging-scheme">
-<h4>Charging Scheme<a class="headerlink" href="#charging-scheme" title="Permalink to this headline">¶</a></h4>
-<p>Given <span class="math notranslate nohighlight">\(\left\vert S \right\vert \le \left\vert OPT \right\vert\)</span>, want to show <span class="math notranslate nohighlight">\(\left\vert S \right\vert \ge \left\vert OPT \right\vert\)</span> such that <span class="math notranslate nohighlight">\(\left\vert S \right\vert = \left\vert OPT \right\vert\)</span>.</p>
-<p>Let the jobs in <span class="math notranslate nohighlight">\(OPT\)</span> be <span class="math notranslate nohighlight">\(j_1^*, \ldots, j_{\left\vert OPT \right\vert} ^*\)</span> and the jobs in <span class="math notranslate nohighlight">\(S\)</span> be  <span class="math notranslate nohighlight">\(j_1^*, \ldots, j_{\left\vert S \right\vert} ^*\)</span></p>
-<p>Define a one-to-one function from set <span class="math notranslate nohighlight">\(OPT\)</span> to set <span class="math notranslate nohighlight">\(S\)</span>: <span class="math notranslate nohighlight">\(g(j_i^*) = j_\ell\)</span>. This means every job in <span class="math notranslate nohighlight">\(OPT\)</span> is mapped to a job in <span class="math notranslate nohighlight">\(S\)</span>, but there can be jobs in <span class="math notranslate nohighlight">\(S\)</span> that has not mapping from <span class="math notranslate nohighlight">\(OPT\)</span>. If such function exists then <span class="math notranslate nohighlight">\(\left\vert S \right\vert \ge \left\vert OPS \right\vert\)</span>. Now we prove such function exists.</p>
-<p>Let’s look at a job <span class="math notranslate nohighlight">\(j_i^*\)</span> in <span class="math notranslate nohighlight">\(OPT\)</span>.</p>
+</details></dd>
+<dt>Corollary 2</dt><dd><p>If <span class="math notranslate nohighlight">\(T\)</span> is a spanning tree of <span class="math notranslate nohighlight">\(G\)</span>, then it must contains <strong>all</strong> special edges of <span class="math notranslate nohighlight">\(G\)</span>.</p>
+</dd>
+<dt>Claim 3</dt><dd><p>There are <span class="math notranslate nohighlight">\((n-1)\)</span> special edges in a graph.</p>
+</dd>
+<dt>Claim 4</dt><dd><p>If <span class="math notranslate nohighlight">\(G ^\prime\)</span> is an optimal solution, then it has <span class="math notranslate nohighlight">\((n-1)\)</span> edges and all of them are special edges.</p>
+</dd>
+<dd><p>Proved by Claim 1, Claim 2, Corollary 2, Claim 3</p>
+</dd>
+<dt>Corollary 4</dt><dd><p>If a tree has and only has <span class="math notranslate nohighlight">\((n-1)\)</span> special edges, then it is the unique optimal solution.</p>
+</dd>
+<dd><p>Proved by Claim 3</p>
+</dd>
+</dl>
+<p>Since every edge we add according to the greedy rule is a special edge, our solution <span class="math notranslate nohighlight">\(G(E ^\prime)\)</span> has <span class="math notranslate nohighlight">\((n-1)\)</span> special edges. By Corollary 4, <span class="math notranslate nohighlight">\(G(E ^\prime)\)</span> is the optimal solution.</p>
+</div>
+<div class="section" id="extension">
+<h4>Extension<a class="headerlink" href="#extension" title="Permalink to this headline">¶</a></h4>
+<p>What if not all edge weights are distinct? There will be multiple optimal solutions. We’ll still get an optimal solutions by this algorithm. Just choose an arbitrary edge if there are multiple smallest weight edges.</p>
+</div>
+</div>
+<div class="section" id="implementation">
+<h3>Implementation<a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Sort edges by their weights to <span class="math notranslate nohighlight">\(E = \left\{ e_1, e_2, \ldots, e_m \right\}\)</span> such that <span class="math notranslate nohighlight">\(w(e_1) &lt; w(e_2)&lt;\dots &lt; w(e_m)\)</span>.</p></li>
+<li><p>Start with <span class="math notranslate nohighlight">\(E = \emptyset\)</span></p></li>
+<li><p>For <span class="math notranslate nohighlight">\(i=1\)</span> to <span class="math notranslate nohighlight">\(m\)</span></p>
 <ul>
-<li><p>If <span class="math notranslate nohighlight">\(j_1^* \in S\)</span> then we let the mapping to be an identity mapping <span class="math notranslate nohighlight">\(g(j_i^*) = j_i^*\)</span>.</p></li>
-<li><p>If <span class="math notranslate nohighlight">\(j_i^*\notin OPT\)</span>, then we deleted it at some time in <span class="math notranslate nohighlight">\(J\)</span>, since it overlaps from a job in <span class="math notranslate nohighlight">\(S\)</span>. Let the corresponding job in be <span class="math notranslate nohighlight">\(j ^\prime\)</span>, then its end time must be earlier than the end time of <span class="math notranslate nohighlight">\(j_i^*\)</span>, otherwise we won’t select <span class="math notranslate nohighlight">\(j ^\prime\)</span> and delete <span class="math notranslate nohighlight">\(j_i^*\)</span> from <span class="math notranslate nohighlight">\(J\)</span>. In short, the interval <span class="math notranslate nohighlight">\((s_{j^*}, f_{j^*}]\)</span> must contains <span class="math notranslate nohighlight">\(f_{j ^\prime}\)</span>.</p>
-<p>In this case, let the mapping be <span class="math notranslate nohighlight">\(g(j_i^*) = j ^\prime\)</span>.</p>
+<li><p>if endpoints of <span class="math notranslate nohighlight">\(e_i\)</span> lie in different connected component of <span class="math notranslate nohighlight">\(G(E^\prime)\)</span>, then add this edge <span class="math notranslate nohighlight">\(E^\prime \leftarrow E^\prime \cup {e_i}\)</span></p></li>
+</ul>
 </li>
 </ul>
-<p>Moreover, for each job <span class="math notranslate nohighlight">\(j ^\prime \in S\)</span>, it can take up to one mapping. If it takes two jobs <span class="math notranslate nohighlight">\(j_i^*, j_k^* \in OPT\)</span>, then both intervals of <span class="math notranslate nohighlight">\(j_i^*\)</span> and <span class="math notranslate nohighlight">\(j_k^*\)</span> should contain <span class="math notranslate nohighlight">\(f_{j ^\prime}\)</span>, which is impossible since the intervals in <span class="math notranslate nohighlight">\(OPT\)</span> cannot overlap.</p>
-<p>In sum, this function <span class="math notranslate nohighlight">\(g\)</span> exists. Hence, <span class="math notranslate nohighlight">\(\left\vert S \right\vert \ge \left\vert OPT \right\vert\)</span>.</p>
-<p><span class="math notranslate nohighlight">\(\square\)</span></p>
+</div>
+<div class="section" id="complexity">
+<h3>Complexity<a class="headerlink" href="#complexity" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Sorting <span class="math notranslate nohighlight">\(O(m\log m)\)</span></p></li>
+<li><p>Iteration: <span class="math notranslate nohighlight">\(m\)</span> iteration, for each iteration</p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(O(\left\vert E ^\prime \right\vert) = O(n)\)</span>: BFS/DFS to check if two vertices are in the same connected component of <span class="math notranslate nohighlight">\(G(E^\prime)\)</span> (check if there is a path). Total <span class="math notranslate nohighlight">\(O(mn)\)</span></p></li>
+<li><p>Better? Can maintain data structure that responds to connected queries in time <span class="math notranslate nohighlight">\(O(\log n)\)</span> per iteration. So total run time <span class="math notranslate nohighlight">\(O(m\log n)\)</span></p></li>
+</ul>
+</li>
+</ul>
 </div>
 </div>
-<div class="section" id="analysis-of-running-time">
-<h3>Analysis of Running time<a class="headerlink" href="#analysis-of-running-time" title="Permalink to this headline">¶</a></h3>
-<p>There are at most <span class="math notranslate nohighlight">\(n\)</span> iterations in <code class="docutils literal notranslate"><span class="pre">while</span></code>, and in every iteration we need to find <span class="math notranslate nohighlight">\(\operatorname{argmin}_j \, s_j\)</span>, which can be doen in <span class="math notranslate nohighlight">\(O(n)\)</span>. In sum, the overall time complexity is <span class="math notranslate nohighlight">\(O(n^2)\)</span>.</p>
-<p>Another way of implementation is to sort the jobs by <span class="math notranslate nohighlight">\(s_j\)</span>. Then there are at most <span class="math notranslate nohighlight">\(n\)</span> iterations. The overall time complexity is <span class="math notranslate nohighlight">\(O(n \log n)\)</span>.</p>
+<div class="section" id="reversed-kruskal">
+<h2>Reversed Kruskal<a class="headerlink" href="#reversed-kruskal" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Start <span class="math notranslate nohighlight">\(E^\prime = E\)</span>, so <span class="math notranslate nohighlight">\(G(E^\prime)\)</span> is always connected.</p></li>
+<li><p>While <span class="math notranslate nohighlight">\(\exists \, e: G(E^\prime) \backslash \left\{ e \right\}\)</span> is connected</p>
+<ul>
+<li><p>delete max-weight <span class="math notranslate nohighlight">\(e\)</span></p></li>
+</ul>
+</li>
+</ul>
 </div>
-</div>
-<div class="section" id="extension-1">
-<h2>Extension 1:<a class="headerlink" href="#extension-1" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="prim-s-algorithms">
+<h2>Prim’s Algorithms<a class="headerlink" href="#prim-s-algorithms" title="Permalink to this headline">¶</a></h2>
+<p>Just grow a single connected component. Every time, add the cheapest edge reaching out from a connected component.</p>
 </div>
 </div>
 
@@ -645,8 +716,8 @@
     
     <div class='prev-next-bottom'>
         
-    <a class='left-prev' id="prev-link" href="00-greedy-algorithms.html" title="previous page">Greedy Algorithms</a>
-    <a class='right-next' id="next-link" href="13-denominations.html" title="next page">Denominations</a>
+    <a class='left-prev' id="prev-link" href="13-denominations.html" title="previous page">Denominations</a>
+    <a class='right-next' id="next-link" href="31-huffman-coding.html" title="next page">Huffman Coding</a>
 
     </div>
     <footer class="footer mt-5 mt-md-0">

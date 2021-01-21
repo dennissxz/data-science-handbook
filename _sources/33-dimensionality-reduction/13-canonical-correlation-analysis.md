@@ -255,7 +255,7 @@ $$
 ```
 
 
-## Tuning
+## Model Selection
 
 Now let $\boldsymbol{S} _{11}, \boldsymbol{S} _{12}, \boldsymbol{S} _{22}$ and $\boldsymbol{S} _{21}$ be the corresponding sub-matrices of the sample covariance matrix $\boldsymbol{S} $. For $i = 1, 2, \ldots, p$, let $r_i ^2, \boldsymbol{a} _i$ and $\boldsymbol{b} _i$ be respectively the sample estimators of $\rho_i^2, \boldsymbol{\alpha} _i$ and $\boldsymbol{\beta} _i$, all based on
 
@@ -316,3 +316,8 @@ The meanings of the canonical variables are to be interpreted either
 - by comparison of the correlations of a canonical variable with original variables.
 
 It is an art to provide a good name to a canonical variable that represents the interpretation and often requires subject-matter knowledge in the field.
+
+
+## Extension
+
+### Regularizing CCA
