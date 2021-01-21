@@ -1,5 +1,7 @@
 # Support Vector Machine
 
+We first introduce the basic linear separable case (aka. hard margin), and introduce the linear non-separable case later (aka. soft margin).
+
 ## Prerequisite
 
 ### Distance from a Point to a Hyperplane
@@ -56,15 +58,70 @@ d = \frac{1}{\left\Vert \boldsymbol{w}  \right\Vert}\left\vert \boldsymbol{w} ^\
 $$
 ```
 
+Note that the points on the same side of the hyperplane have the same sign of $\boldsymbol{w} ^\top  \boldsymbol{x}_i  + b$. If we label the points with positive values of $\boldsymbol{w} ^\top  \boldsymbol{x}_i  + b$ by $y_i = 1$ and those with negative values by $y_i = -1$, then the distance can be written as
+
+
+$$
+\frac{1}{\left\Vert \boldsymbol{w}  \right\Vert } y_i (\boldsymbol{w} ^\top  \boldsymbol{x}  + b )
+$$
+
+
 ## Objective
 
 
+:::{figure,myclass} markdown-fig
+<img src="../imgs/svm-hard-margin.png" width = "50%" alt=""/>
+
+caption
+:::
+
+Definition (Margin)
+: The margin is defined as the shortest distance from a point to the hyperplane.
+
+$$
+\min _{i} \frac{1}{|\mathbf{w}|} y_{i}\left(\mathbf{w}^{T} \mathbf{x}_{i}+w_{0}\right)
+$$
+
+The objective of SVM is to find a hyperplane $\mathbf{w}^{T} \mathbf{x}_{i}+w_{0} = 0$ that separates two types of points and maximizes the margin.
+
+$$
+\arg \max _{\mathbf{w}, w_{0}}\left\{\min _i \frac{1}{\|\mathbf{w}\|} y_{i}\left(\mathbf{w}^{T} \mathbf{x}_{i}+w_{0}\right)\right\}
+$$
+
+i.e.,
 
 
-Binary classification
+$$
+\arg \max _{\mathbf{w}, w_{0}} \frac{1}{\|\mathbf{w}\|} \left\{\min _i  y_{i}\left(\mathbf{w}^{T} \mathbf{x}_{i}+w_{0}\right)\right\}
+$$
 
-Find a hyper-plane to separate data points.
+## Learning
 
-Maximize the distance from the plane to the closest data.
+We transform the optimization problem step by step such that it becomes easier to solve.
 
-##
+Note that distance is invariant to scaling of $\boldsymbol{w}$ and $b$ (or note that $\boldsymbol{w} ^\top \boldsymbol{x} +b = 0$ and $(k\boldsymbol{w}) ^\top \boldsymbol{x} + (kb) = 0$ characterize the same hyperplane), thus we can assume
+
+$$
+\min _{i} y_{i}\left(\mathbf{w}^{T} \mathbf{x}+w_{0}\right)=1
+$$
+
+Then the maximization-minimization problem becomes a constrained maximization problem
+
+
+$$
+\begin{equation}
+\underset{\mathbf{w}, w_{0}}{\arg \max } \frac{1}{\|\mathbf{w}\|} \text { s.t. } \min _{i} y_{i}\left(\mathbf{w}^{T} \mathbf{x}+w_{0}\right)=1
+\end{equation}
+$$
+
+Or equivalently,
+
+$$
+\begin{equation}
+\underset{\mathbf{w}, w_{0}}{\arg \max } \|\mathbf{w}\| \quad \text { s.t. } y_{i}\left(\mathbf{w}^{T} \mathbf{x}_{i}+w_{0}\right) \geq 1
+\end{equation}
+$$
+
+Why support vector?
+
+Any $\boldsymbol{x}_i$ that satisfies $\hat{\boldsymbol{w}} ^\top \boldsymbol{x} + \hat{b} = 0$ is a support vector.
