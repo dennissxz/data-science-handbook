@@ -57,7 +57,7 @@
     <script async="async" src="../_static/sphinx-thebe.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Puzzles" href="90-puzzles.html" />
+    <link rel="next" title="Optimization" href="51-optimization.html" />
     <link rel="prev" title="Derangement" href="12-derangement.html" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -117,6 +117,11 @@
    <li class="toctree-l2 current active">
     <a class="current reference internal" href="#">
      Linear Algebra
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="51-optimization.html">
+     Optimization
     </a>
    </li>
    <li class="toctree-l2">
@@ -319,6 +324,25 @@
   <i class="fas fa-chevron-down">
   </i>
  </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../23-dynamic-programming/00-dynamic-programming.html">
+   Dynamic Programming
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/11-weighted-interval-scheduling.html">
+     Weighted JISP
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/13-longest-common-subsequence.html">
+     Longest Common Subsequence
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
 </ul>
 <p class="caption collapsible-parent">
  <span class="caption-text">
@@ -348,6 +372,20 @@
    <li class="toctree-l2">
     <a class="reference internal" href="../31-regression/11-linear-models.html">
      Linear Models
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../32-classification/00-classification.html">
+   Classification
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../32-classification/11-support-vector-machine.html">
+     Support Vector Machine
     </a>
    </li>
   </ul>
@@ -684,7 +722,7 @@
 <div class="section" id="eigenvalues">
 <h3>Eigenvalues<a class="headerlink" href="#eigenvalues" title="Permalink to this headline">¶</a></h3>
 <dl class="simple myst">
-<dt>Definition</dt><dd><p>Let <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> be an <span class="math notranslate nohighlight">\(n\times n\)</span> square matrix and let <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> be an <span class="math notranslate nohighlight">\(n\times 1\)</span> nonzero vector that <span class="math notranslate nohighlight">\(\boldsymbol{A} \boldsymbol{x} = \lambda \boldsymbol{x}\)</span>. Then, <span class="math notranslate nohighlight">\(\lambda\)</span> is called an eigenvalue of <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> is called an eigenvector corresponding to eigenvalue <span class="math notranslate nohighlight">\(\lambda\)</span>. The eigenvalues are the solutions of</p>
+<dt>Definition</dt><dd><p>Let <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> be an <span class="math notranslate nohighlight">\(n\times n\)</span> square matrix and let <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> be an <span class="math notranslate nohighlight">\(n\times 1\)</span> nonzero vector that <span class="math notranslate nohighlight">\(\boldsymbol{A} \boldsymbol{x} = \lambda \boldsymbol{x}\)</span>. Then, <span class="math notranslate nohighlight">\(\lambda\)</span> is called an eigenvalue of <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> is called an eigenvector corresponding to eigenvalue <span class="math notranslate nohighlight">\(\lambda\)</span>. The eigenvalues are the solutions of the <strong>characteristic function</strong></p>
 <div class="math notranslate nohighlight">
 \[
   \left\vert \boldsymbol{A} - \lambda \boldsymbol{I}  \right\vert = 0
@@ -718,6 +756,14 @@
 <p>Aka rotation matrices.</p>
 <dl class="simple myst">
 <dt>Definition</dt><dd><p>A matrix <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> is <strong>orthogonal</strong> if <span class="math notranslate nohighlight">\(\boldsymbol{A} ^{-1} = \boldsymbol{A} ^\top\)</span>.</p>
+</dd>
+<dt>Properties</dt><dd><p>Transformation by <span class="math notranslate nohighlight">\(\boldsymbol{U}\)</span> preserves vector length an angle.</p>
+<div class="math notranslate nohighlight">
+\[
+  \begin{equation}
+  \|\mathbf{U x}\|=\|\mathbf{x}\|,(\mathbf{U x})^{T} \mathbf{U} \mathbf{y}=\mathbf{x}^{T} \mathbf{y}
+  \end{equation}
+  \]</div>
 </dd>
 </dl>
 </div>
@@ -850,7 +896,8 @@
 <p>Summary table</p>
 <div class="section" id="eigenvalue-decomposition">
 <h3>Eigenvalue Decomposition<a class="headerlink" href="#eigenvalue-decomposition" title="Permalink to this headline">¶</a></h3>
-<p>If <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> is symmetric, there exists an orthogonal matrix <span class="math notranslate nohighlight">\(\boldsymbol{U} = \left[ \boldsymbol{u} _1, \boldsymbol{u} _2, \ldots, \boldsymbol{u} _n \right]\)</span> such that</p>
+<p>[detail] If <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span>  has <span class="math notranslate nohighlight">\(n\)</span> independent eigenvectors, then is has EVD.</p>
+<p>[detail] <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> is symmetric <span class="math notranslate nohighlight">\(\Leftrightarrow\)</span> there exists an orthogonal matrix <span class="math notranslate nohighlight">\(\boldsymbol{U} = \left[ \boldsymbol{u} _1, \boldsymbol{u} _2, \ldots, \boldsymbol{u} _n \right]\)</span> such that</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \boldsymbol{U}^{\top} \boldsymbol{A} \boldsymbol{U}=\boldsymbol{\Lambda} = \left[\begin{array}{cccc}
@@ -866,6 +913,21 @@
 \boldsymbol{A} = \boldsymbol{U} \boldsymbol{\Lambda} \boldsymbol{U} ^\top
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(\lambda_1, \lambda_2, \ldots, \lambda_n\)</span> are eigenvalues of <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{u}  _i\)</span> are their corresponding eigenvectors.</p>
+<dl class="simple myst">
+<dt>Corollary</dt><dd><p>the eigenvalues of symmetric matrices are real.
+Proof:</p>
+</dd>
+</dl>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{equation}
+\begin{array}{l}
+\mathbf{A} \mathbf{u}=\lambda \mathbf{u} \Rightarrow \mathbf{u}^{\star T} \mathbf{A} \mathbf{u}=\lambda \mathbf{u}^{\star T} \mathbf{u} \\
+\mathbf{A} \mathbf{u}^{\star}=\lambda^{\star} \mathbf{u}^{\star} \Rightarrow \mathbf{u}^{T} \mathbf{A} \mathbf{u}^{\star}=\lambda^{\star} \mathbf{u}^{T} \mathbf{u}^{\star} \Rightarrow \mathbf{u}^{\star T} \mathbf{A}^{T} \mathbf{u}=\lambda^{\star} \mathbf{u}^{\star T} \mathbf{u} \\
+\mathbf{A}=\mathbf{A}^{T} \Rightarrow\left(\lambda-\lambda^{\star}\right) \mathbf{u}^{\star T} \mathbf{u}=0 \Rightarrow \lambda=\lambda^{\star}
+\end{array}
+\end{equation}
+\end{split}\]</div>
 </div>
 <div class="section" id="cholesky-decomposition">
 <h3>Cholesky Decomposition<a class="headerlink" href="#cholesky-decomposition" title="Permalink to this headline">¶</a></h3>
@@ -885,6 +947,28 @@
 </div>
 <div class="section" id="singular-value-decomposition">
 <h3>Singular Value Decomposition<a class="headerlink" href="#singular-value-decomposition" title="Permalink to this headline">¶</a></h3>
+<dl class="simple myst">
+<dt>Definition</dt><dd><p>For any matrix <span class="math notranslate nohighlight">\(\boldsymbol{A} \in \mathbb{R} ^{n \times p}\)</span>, we can write <span class="math notranslate nohighlight">\(\boldsymbol{A} = \boldsymbol{U} \boldsymbol{\Sigma} \boldsymbol{V} ^\top\)</span>. where</p>
+</dd>
+</dl>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{U} \in \mathbb{R} ^{n \times n}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{V} \in \mathbb{R} ^{p\times p}\)</span> are orthogonal matrices.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\\boldsymbol{\Sigma}\)</span> is a diagonal matrix.</p></li>
+</ul>
+<dl class="simple myst">
+<dt>Properties</dt><dd><p>We can also write SVD as</p>
+</dd>
+</dl>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{A}=\sigma_{1} \mathbf{u}_{1} \mathbf{v}_{1}^{T}+\sigma_{2} \mathbf{u}_{2} \mathbf{v}_{2}^{T}+\ldots+\sigma_{r} \mathbf{u}_{r} \mathbf{v}_{r}^{T}
+\]</div>
+<dl class="simple myst">
+<dt>where <span class="math notranslate nohighlight">\(r = \operatorname{rank}\left( \boldsymbol{A}  \right)\)</span>.</dt><dd><p>As a result, <span class="math notranslate nohighlight">\(\mathbf{A} \mathbf{v}=\sigma \mathbf{u}, \mathbf{A}^{T} \mathbf{u}=\sigma \mathbf{v}\)</span>.</p>
+</dd>
+<dt>Theorem</dt><dd><p>Every matrix has SVD.</p>
+</dd>
+</dl>
 </div>
 <div class="section" id="qr-decomposition">
 <h3>QR Decomposition<a class="headerlink" href="#qr-decomposition" title="Permalink to this headline">¶</a></h3>
@@ -927,7 +1011,7 @@
     <div class='prev-next-bottom'>
         
     <a class='left-prev' id="prev-link" href="12-derangement.html" title="previous page">Derangement</a>
-    <a class='right-next' id="next-link" href="90-puzzles.html" title="next page">Puzzles</a>
+    <a class='right-next' id="next-link" href="51-optimization.html" title="next page">Optimization</a>
 
     </div>
     <footer class="footer mt-5 mt-md-0">

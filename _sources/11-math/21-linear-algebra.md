@@ -100,7 +100,7 @@ Properties
 ### Eigenvalues
 
 Definition
-: Let $\boldsymbol{A}$ be an $n\times n$ square matrix and let $\boldsymbol{x}$ be an $n\times 1$ nonzero vector that $\boldsymbol{A} \boldsymbol{x} = \lambda \boldsymbol{x}$. Then, $\lambda$ is called an eigenvalue of $\boldsymbol{A}$ and $\boldsymbol{x}$ is called an eigenvector corresponding to eigenvalue $\lambda$. The eigenvalues are the solutions of
+: Let $\boldsymbol{A}$ be an $n\times n$ square matrix and let $\boldsymbol{x}$ be an $n\times 1$ nonzero vector that $\boldsymbol{A} \boldsymbol{x} = \lambda \boldsymbol{x}$. Then, $\lambda$ is called an eigenvalue of $\boldsymbol{A}$ and $\boldsymbol{x}$ is called an eigenvector corresponding to eigenvalue $\lambda$. The eigenvalues are the solutions of the **characteristic function**
 
   $$
   \left\vert \boldsymbol{A} - \lambda \boldsymbol{I}  \right\vert = 0
@@ -134,6 +134,14 @@ Aka rotation matrices.
 Definition
 : A matrix $\boldsymbol{A}$ is **orthogonal** if $\boldsymbol{A} ^{-1} = \boldsymbol{A} ^\top$.
 
+Properties
+: Transformation by $\boldsymbol{U}$ preserves vector length an angle.
+
+  $$
+  \begin{equation}
+  \|\mathbf{U x}\|=\|\mathbf{x}\|,(\mathbf{U x})^{T} \mathbf{U} \mathbf{y}=\mathbf{x}^{T} \mathbf{y}
+  \end{equation}
+  $$
 
 
 ### Idempotent Matrices
@@ -152,8 +160,6 @@ Properties
 
 
 ### Projection Matrices
-
-
 
 
 ### Positive Semi-Definite and Positive Definite
@@ -269,7 +275,9 @@ Summary table
 
 ### Eigenvalue Decomposition
 
-If $\boldsymbol{A}$ is symmetric, there exists an orthogonal matrix $\boldsymbol{U} = \left[ \boldsymbol{u} _1, \boldsymbol{u} _2, \ldots, \boldsymbol{u} _n \right]$ such that
+[detail] If $\boldsymbol{A}$  has $n$ independent eigenvectors, then is has EVD.
+
+[detail] $\boldsymbol{A}$ is symmetric $\Leftrightarrow$ there exists an orthogonal matrix $\boldsymbol{U} = \left[ \boldsymbol{u} _1, \boldsymbol{u} _2, \ldots, \boldsymbol{u} _n \right]$ such that
 
 $$
 \boldsymbol{U}^{\top} \boldsymbol{A} \boldsymbol{U}=\boldsymbol{\Lambda} = \left[\begin{array}{cccc}
@@ -287,6 +295,20 @@ $$
 $$
 
 where $\lambda_1, \lambda_2, \ldots, \lambda_n$ are eigenvalues of $\boldsymbol{A}$ and $\boldsymbol{u}  _i$ are their corresponding eigenvectors.
+
+Corollary
+: the eigenvalues of symmetric matrices are real.
+Proof:
+
+$$
+\begin{equation}
+\begin{array}{l}
+\mathbf{A} \mathbf{u}=\lambda \mathbf{u} \Rightarrow \mathbf{u}^{\star T} \mathbf{A} \mathbf{u}=\lambda \mathbf{u}^{\star T} \mathbf{u} \\
+\mathbf{A} \mathbf{u}^{\star}=\lambda^{\star} \mathbf{u}^{\star} \Rightarrow \mathbf{u}^{T} \mathbf{A} \mathbf{u}^{\star}=\lambda^{\star} \mathbf{u}^{T} \mathbf{u}^{\star} \Rightarrow \mathbf{u}^{\star T} \mathbf{A}^{T} \mathbf{u}=\lambda^{\star} \mathbf{u}^{\star T} \mathbf{u} \\
+\mathbf{A}=\mathbf{A}^{T} \Rightarrow\left(\lambda-\lambda^{\star}\right) \mathbf{u}^{\star T} \mathbf{u}=0 \Rightarrow \lambda=\lambda^{\star}
+\end{array}
+\end{equation}
+$$
 
 ### Cholesky Decomposition
 
@@ -307,6 +329,27 @@ $$\boldsymbol{P} ^\top \boldsymbol{A} \boldsymbol{P} = \boldsymbol{\Lambda} \tex
 where $\boldsymbol{\Lambda} =\operatorname{diag}\left( \lambda_1, \lambda_2, \ldots, \lambda_n \right)$ and the $\lambda_i$ are the eigenvalues of $\boldsymbol{B} ^{-1} \boldsymbol{A}$ or $\boldsymbol{A} \boldsymbol{B} ^{-1}$.
 
 ### Singular Value Decomposition
+
+Definition
+: For any matrix $\boldsymbol{A} \in \mathbb{R} ^{n \times p}$, we can write $\boldsymbol{A} = \boldsymbol{U} \boldsymbol{\Sigma} \boldsymbol{V} ^\top$. where
+- $\boldsymbol{U} \in \mathbb{R} ^{n \times n}$ and $\boldsymbol{V} \in \mathbb{R} ^{p\times p}$ are orthogonal matrices.
+- $\\boldsymbol{\Sigma}$ is a diagonal matrix.
+
+
+Properties
+: We can also write SVD as
+
+
+$$
+\mathbf{A}=\sigma_{1} \mathbf{u}_{1} \mathbf{v}_{1}^{T}+\sigma_{2} \mathbf{u}_{2} \mathbf{v}_{2}^{T}+\ldots+\sigma_{r} \mathbf{u}_{r} \mathbf{v}_{r}^{T}
+$$
+
+where $r = \operatorname{rank}\left( \boldsymbol{A}  \right)$.
+
+: As a result, $\mathbf{A} \mathbf{v}=\sigma \mathbf{u}, \mathbf{A}^{T} \mathbf{u}=\sigma \mathbf{v}$.
+
+Theorem
+: Every matrix has SVD.
 
 ### QR Decomposition
 

@@ -1,0 +1,871 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Support Vector Machine &#8212; Data Science Handbook</title>
+    
+  <link rel="stylesheet" href="../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+  <link rel="stylesheet"
+    href="../_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="../_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinx-book-theme.40e2e510f6b7d1648584402491bb10fe.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/style.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.3da636dd464baa7582d2.js">
+
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Dimensionality Reduction" href="../33-dimensionality-reduction/00-dimensionality-reduction.html" />
+    <link rel="prev" title="Classification" href="00-classification.html" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+
+
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+<a class="navbar-brand text-wrap" href="../index.html">
+  
+  
+  <h1 class="site-logo" id="site-title">Data Science Handbook</h1>
+  
+</a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form>
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+    <ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../index.html">
+   Data Science Handbook
+  </a>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Foundations
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../11-math/00-math.html">
+   Math
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/11-combinatorics.html">
+     Combinatorics
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/12-derangement.html">
+     Derangement
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/21-linear-algebra.html">
+     Linear Algebra
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/51-optimization.html">
+     Optimization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/90-puzzles.html">
+     Puzzles
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../12-probabilities/00-probabilities.html">
+   Probabilities
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/11-expectation-and-variance.html">
+     Expectation and Variance
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/13-correlation-and-dependence.html">
+     Correlation and Dependence
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/31-bayesian-theorem.html">
+     Bayesian’s Theorem
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/51-markov-chain.html">
+     Markov Chain
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/71-sampling.html">
+     Sampling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/90-multivariate-notations.html">
+     Multivariate Notations
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/91-large-sample-theory.html">
+     Large Sample Theory
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../13-statistics/00-statistics.html">
+   Statistics
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/11-stat-sampling.html">
+     Statistical Sampling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/13-randomized-trial.html">
+     Causality and Randomized Trial
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/21-hypothesis-testing.html">
+     Hypothesis Testing
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/33-confusion-matrix.html">
+     Confusion Matrix
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../14-python/00-python.html">
+   Python
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../14-python/11-programming-tools.html">
+     Programmer tools
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../14-python/12-syntax.html">
+     Syntax
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../14-python/13-data-structure.html">
+     Data Structures
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../14-python/15-functional-programming.html">
+     Functional Programming
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../17-sql/00-sql.html">
+   SQL
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../17-sql/11-database.html">
+     Database
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../17-sql/12-relational-structure.html">
+     Relational Structure
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../17-sql/31-data-query.html">
+     Data Query
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../17-sql/33-data-manipulation.html">
+     Data Manipulation
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../19-miscellaneous/00-miscellaneous.html">
+   Miscellaneous
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../19-miscellaneous/11-latex.html">
+     LaTeX
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../19-miscellaneous/13-myst.html">
+     MyST Markdown
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Algorithms
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../20-algorithms-basics/00-algorithms-basics.html">
+   Algorithms Basics
+  </a>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../21-greedy-algorithms/00-greedy-algorithms.html">
+   Greedy Algorithms
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../21-greedy-algorithms/11-interval-scheduling.html">
+     Interval Scheduling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../21-greedy-algorithms/13-denominations.html">
+     Denominations
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../21-greedy-algorithms/21-minimum-spanning-tree.html">
+     Minimum Spanning Tree
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../21-greedy-algorithms/31-huffman-coding.html">
+     Huffman Coding
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../23-dynamic-programming/00-dynamic-programming.html">
+   Dynamic Programming
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/11-weighted-interval-scheduling.html">
+     Weighted JISP
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/13-longest-common-subsequence.html">
+     Longest Common Subsequence
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Machine Learning
+ </span>
+</p>
+<ul class="current nav sidenav_l1">
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../30-ml-basics/00-ml-basics.html">
+   Machine Learning Basics
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../30-ml-basics/01-information-theory.html">
+     Information Theory
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../31-regression/00-regression.html">
+   Regression
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/11-linear-models.html">
+     Linear Models
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 current active collapsible-parent">
+  <a class="reference internal" href="00-classification.html">
+   Classification
+  </a>
+  <ul class="current collapse-ul">
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     Support Vector Machine
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../33-dimensionality-reduction/00-dimensionality-reduction.html">
+   Dimensionality Reduction
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/11-principal-component-analysis.html">
+     Principal Component Analysis
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/13-canonical-correlation-analysis.html">
+     Canonical Corerlation Analysis
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+</ul>
+
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="row topbar fixed-top container-xl">
+    <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show">
+    </div>
+    <div class="col pl-2 topbar-main">
+        
+        <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+            data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+            aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+            title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+            <i class="fas fa-bars"></i>
+            <i class="fas fa-arrow-left"></i>
+            <i class="fas fa-arrow-up"></i>
+        </button>
+        
+        
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../_sources/32-classification/11-support-vector-machine.md"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.md</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+        <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/dennissxz/data-science-handbook"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/dennissxz/data-science-handbook/issues/new?title=Issue%20on%20page%20%2F32-classification/11-support-vector-machine.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+
+        <!-- Full screen (wrap in <a> to have style consistency -->
+        <a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+                data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+                title="Fullscreen mode"><i
+                    class="fas fa-expand"></i></button></a>
+
+        <!-- Launch buttons -->
+
+    </div>
+
+    <!-- Table of contents -->
+    <div class="d-none d-md-block col-md-2 bd-toc show">
+        
+        <div class="tocsection onthispage pt-5 pb-3">
+            <i class="fas fa-list"></i> Contents
+        </div>
+        <nav id="bd-toc-nav">
+            <ul class="nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#prerequisite">
+   Prerequisite
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#distance-from-a-point-to-a-hyperplane">
+     Distance from a Point to a Hyperplane
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#optimization">
+     Optimization
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#objective">
+   Objective
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#learning">
+   Learning
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#properties">
+   Properties
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#soft-margin-case">
+   Soft Margin Case
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#extension">
+   Extension
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#multiclass">
+     Multiclass
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+        </nav>
+        
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="support-vector-machine">
+<h1>Support Vector Machine<a class="headerlink" href="#support-vector-machine" title="Permalink to this headline">¶</a></h1>
+<p>We first introduce the basic linear separable case (aka. hard margin), and introduce the linear non-separable case later (aka. soft margin).</p>
+<div class="section" id="prerequisite">
+<h2>Prerequisite<a class="headerlink" href="#prerequisite" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="distance-from-a-point-to-a-hyperplane">
+<h3>Distance from a Point to a Hyperplane<a class="headerlink" href="#distance-from-a-point-to-a-hyperplane" title="Permalink to this headline">¶</a></h3>
+<p>Suppose there is a hyperplane in <span class="math notranslate nohighlight">\(p\)</span>-dimensional space characterized by</p>
+<div class="math notranslate nohighlight">
+\[
+w_{1} x_{1}+w_{2} x_{2}+\cdots+w_{p} x_{p} + b = 0
+\]</div>
+<p>or in vector form,</p>
+<div class="math notranslate nohighlight">
+\[
+\boldsymbol{w} ^\top  \boldsymbol{x}  + b = 0
+\]</div>
+<p>then the distance from a point <span class="math notranslate nohighlight">\(X\)</span> with coordinates <span class="math notranslate nohighlight">\(\boldsymbol{x} = (x_1, x_2, \ldots, x_p)\)</span> to this hyperplane is</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{1}{\left\Vert \boldsymbol{w}  \right\Vert } \left\vert \boldsymbol{w} ^\top  \boldsymbol{x}  + b  \right\vert
+\]</div>
+<p>note that the distance is always positive.</p>
+<details class="sphinx-bs dropdown card mb-3">
+<summary class="summary-title card-header">
+Derivation<div class="summary-down docutils">
+<svg version="1.1" width="24" height="24" class="octicon octicon-chevron-down" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M5.22 8.72a.75.75 0 000 1.06l6.25 6.25a.75.75 0 001.06 0l6.25-6.25a.75.75 0 00-1.06-1.06L12 14.44 6.28 8.72a.75.75 0 00-1.06 0z"></path></svg></div>
+<div class="summary-up docutils">
+<svg version="1.1" width="24" height="24" class="octicon octicon-chevron-up" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M18.78 15.28a.75.75 0 000-1.06l-6.25-6.25a.75.75 0 00-1.06 0l-6.25 6.25a.75.75 0 101.06 1.06L12 9.56l5.72 5.72a.75.75 0 001.06 0z"></path></svg></div>
+</summary><div class="summary-content card-body docutils">
+<p class="card-text">For any two points <span class="math notranslate nohighlight">\(Y,Z\)</span> with coordinates <span class="math notranslate nohighlight">\(\boldsymbol{y}, \boldsymbol{z}\)</span> on the hyperplane we have</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+\boldsymbol{w} ^\top \boldsymbol{y} + b &amp;= 0 \\
+\boldsymbol{w} ^\top \boldsymbol{z} + b &amp;= 0
+\end{align}\end{split}\]</div>
+<p class="card-text">Hence,</p>
+<div class="math notranslate nohighlight">
+\[
+\boldsymbol{w} ^\top (\boldsymbol{y} - \boldsymbol{z})= 0
+\]</div>
+<p class="card-text">which implies that the vector <span class="math notranslate nohighlight">\(\boldsymbol{w}\)</span> is orthogonal to the hyperplane.</p>
+<p class="card-text">The distance from point <span class="math notranslate nohighlight">\(X\)</span> to the hyperplane can be formulated as</p>
+<div class="math notranslate nohighlight">
+\[
+d = \left\vert \left( \frac{\boldsymbol{w}}{\left\Vert \boldsymbol{w}  \right\Vert } \right)  ^\top (\boldsymbol{x} - \boldsymbol{y}) \right\vert
+\]</div>
+<p class="card-text">where <span class="math notranslate nohighlight">\(\frac{\boldsymbol{w}}{\left\Vert \boldsymbol{w}  \right\Vert }\)</span> is a unit vector orthogonal to the hyperplane and <span class="math notranslate nohighlight">\(\boldsymbol{x} - \boldsymbol{y}\)</span> is a vector pointing from point <span class="math notranslate nohighlight">\(Y\)</span> (on the hyperplane) to point <span class="math notranslate nohighlight">\(X\)</span>. The absolute value of the cross product is the of the projection of vector <span class="math notranslate nohighlight">\(\boldsymbol{x} - \boldsymbol{y}\)</span> onto the direction of <span class="math notranslate nohighlight">\(\boldsymbol{w}\)</span>, i.e., <span class="math notranslate nohighlight">\(d\)</span>.</p>
+<p class="card-text">Substituting <span class="math notranslate nohighlight">\(\boldsymbol{w} ^\top \boldsymbol{y} + b = 0\)</span> gives</p>
+<div class="math notranslate nohighlight">
+\[
+d = \frac{1}{\left\Vert \boldsymbol{w}  \right\Vert}\left\vert \boldsymbol{w} ^\top \boldsymbol{x} + \boldsymbol{b} \right\vert
+\]</div>
+</div>
+</details><p>note that the points on the same side of the hyperplane have the same sign of <span class="math notranslate nohighlight">\(\boldsymbol{w} ^\top  \boldsymbol{x}_i  + b\)</span>. If we label the points with positive values of <span class="math notranslate nohighlight">\(\boldsymbol{w} ^\top  \boldsymbol{x}_i  + b\)</span> by <span class="math notranslate nohighlight">\(y_i = 1\)</span> and those with negative values by <span class="math notranslate nohighlight">\(y_i = -1\)</span>, then the distance can be written as</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{1}{\left\Vert \boldsymbol{w}  \right\Vert } y_i (\boldsymbol{w} ^\top  \boldsymbol{x}  + b )
+\]</div>
+</div>
+<div class="section" id="optimization">
+<h3>Optimization<a class="headerlink" href="#optimization" title="Permalink to this headline">¶</a></h3>
+<p>See [optimization]</p>
+</div>
+</div>
+<div class="section" id="objective">
+<h2>Objective<a class="headerlink" href="#objective" title="Permalink to this headline">¶</a></h2>
+<p>Support vector machine is used for binary classification tasks.</p>
+<div class="myclass figure align-default" id="use-a-hyperplane-to-separate-two-types-of-points">
+<a class="reference internal image-reference" href="../_images/svm-hard-margin.png"><img alt="" src="../_images/svm-hard-margin.png" style="width: 30%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 2 </span><span class="caption-text">caption</span><a class="headerlink" href="#use-a-hyperplane-to-separate-two-types-of-points" title="Permalink to this image">¶</a></p>
+</div>
+<dl class="simple myst">
+<dt>Definition (Margin)</dt><dd><p>The margin is defined as the shortest distance from a point to the hyperplane.</p>
+</dd>
+</dl>
+<div class="math notranslate nohighlight">
+\[
+\min _{i} \frac{1}{|\boldsymbol{w}|} y_{i}\left(\boldsymbol{w}^{T} \mathbf{x}_{i}+b\right)
+\]</div>
+<p>The objective of SVM is to find a hyperplane <span class="math notranslate nohighlight">\(\boldsymbol{w}^{T} \mathbf{x}_{i}+b = 0\)</span> that separates two types of points and maximizes the margin.</p>
+<div class="math notranslate nohighlight">
+\[
+\max _{\boldsymbol{w}, b}\left\{\min _i \frac{1}{\|\boldsymbol{w}\|} y_{i}\left(\boldsymbol{w}^{T} \mathbf{x}_{i}+b\right)\right\}
+\]</div>
+<p>i.e.,</p>
+<div class="math notranslate nohighlight">
+\[
+\max _{\boldsymbol{w}, b} \frac{1}{\|\boldsymbol{w}\|} \left\{\min _i  y_{i}\left(\boldsymbol{w}^{T} \mathbf{x}_{i}+b\right)\right\}
+\]</div>
+<p>To classify a point with coordinates <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span>, we use the solution <span class="math notranslate nohighlight">\(\boldsymbol{w}^*\)</span> and <span class="math notranslate nohighlight">\(b^*\)</span>.</p>
+<ul class="simple">
+<li><p>If <span class="math notranslate nohighlight">\(\boldsymbol{w}^{* \top} \boldsymbol{x} + b^* &gt; 0\)</span> then <span class="math notranslate nohighlight">\(\hat{y_i} = 1\)</span></p></li>
+<li><p>If <span class="math notranslate nohighlight">\(\boldsymbol{w}^{* \top} \boldsymbol{x} + b^* &lt; 0\)</span> then <span class="math notranslate nohighlight">\(\hat{y_i} = -1\)</span></p></li>
+</ul>
+</div>
+<div class="section" id="learning">
+<h2>Learning<a class="headerlink" href="#learning" title="Permalink to this headline">¶</a></h2>
+<p>We convert the optimization problem step by step such that it becomes easier to solve.</p>
+<p>Note that distance is invariant to scaling of <span class="math notranslate nohighlight">\(\boldsymbol{w}\)</span> and <span class="math notranslate nohighlight">\(b\)</span> (or note that <span class="math notranslate nohighlight">\(\boldsymbol{w} ^\top \boldsymbol{x} +b = 0\)</span> and <span class="math notranslate nohighlight">\((k\boldsymbol{w}) ^\top \boldsymbol{x} + (kb) = 0\)</span> characterize the same hyperplane), thus we can assume</p>
+<div class="math notranslate nohighlight">
+\[
+\min _{i} y_{i}\left(\boldsymbol{w}^{T} \mathbf{x}_i + b\right)=1
+\]</div>
+<p>Then the maximization-minimization problem becomes a constrained maximization problem</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+\underset{\boldsymbol{w}, b}{\max }&amp;\quad \frac{1}{\|\boldsymbol{w}\|}\\
+\text {s.t.}&amp;\quad \min_{i} y_{i}\left(\boldsymbol{w}^{T} \mathbf{x}_i+b\right)=1\\
+\end{align}\end{split}\]</div>
+<p>Or equivalently,</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+\underset{\boldsymbol{w}, b}{\min }&amp;\quad \frac{1}{2} \boldsymbol{w} ^\top \boldsymbol{w}    \\
+\text {s.t.}&amp;\quad y_{i}\left(\boldsymbol{w}^{T} \mathbf{x}_i+b\right)\ge1\\
+\end{align}\end{split}\]</div>
+<p>To get rid of the constraints on <span class="math notranslate nohighlight">\(\boldsymbol{w}\)</span> and <span class="math notranslate nohighlight">\(b\)</span>, we use Lagrangian multiplier method. Let</p>
+<div class="math notranslate nohighlight">
+\[
+L(\boldsymbol{w} ,b,\lambda) = \frac{1}{2} \boldsymbol{w} ^\top \boldsymbol{w}  + \sum_i ^n \lambda_i (1-y_i(\boldsymbol{w} ^\top \boldsymbol{x}_i + b))
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\lambda_i \ge 0\)</span>.</p>
+<p>Then the problem becomes</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+\underset{\boldsymbol{w}, b}{\min } \, \max _{\boldsymbol{\lambda}} &amp;\quad L(\boldsymbol{w} ,b, \boldsymbol{\lambda}) \\
+\text {s.t.}&amp;\quad \lambda_i \ge 0\\
+\end{align}\end{split}\]</div>
+<p>Since <span class="math notranslate nohighlight">\(\min_{\boldsymbol{w} ,b} L\)</span> is better to solve than <span class="math notranslate nohighlight">\(\max_{\boldsymbol{\lambda} } L\)</span>, we want exchange the min-max order. This step is valid since it is a quadratic minimization with <span class="math notranslate nohighlight">\(n\)</span> linear constraints, which leads to strong duality. As a result, its dual problem is</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+\max _{\boldsymbol{\lambda}} \, \underset{\boldsymbol{w}, b}{\min }  &amp;\quad L(\boldsymbol{w} ,b, \boldsymbol{\lambda}) \\
+\text {s.t.}&amp;\quad \lambda_i \ge 0\\
+\end{align}\end{split}\]</div>
+<p>which is has the same solutions <span class="math notranslate nohighlight">\(\boldsymbol{w}^*, b^*\)</span> with the primal problem.</p>
+<p>We first solve the minimization problem. Taking derivatives of <span class="math notranslate nohighlight">\(L\)</span> w.r.t. <span class="math notranslate nohighlight">\(\boldsymbol{w} ,b\)</span> and equating them to zero gives</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+&amp;&amp; \frac{\partial}{\partial \boldsymbol{w}} L\left(\boldsymbol{w}, b, \boldsymbol{\lambda}\right) &amp;= \boldsymbol{w}-\sum_{i=1}^{n} \lambda_{i} y_{i} \mathbf{x}_{i}\overset{\text{set}}{=} 0 \\
+&amp;\Rightarrow &amp; \boldsymbol{w} &amp;= \sum_{i=1}^{n} \lambda_{i} y_{i} \mathbf{x}_{i}  \\
+&amp;&amp; \frac{\partial}{\partial b} L\left(\boldsymbol{w}, b, \boldsymbol{\lambda}\right)
+&amp; =-\sum_{i=1}^{n} \lambda_{i} y_{i} \overset{\text{set}}{=} 0  \\
+&amp;\Rightarrow &amp;  \sum_{i=1}^{n} \lambda_{i} y_{i} &amp; = 0 \\
+\end{align}\end{split}\]</div>
+<p>Substituting the result back to the dual problem,</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+\max _{\boldsymbol{\lambda}} \,  &amp;\quad \sum_{i=1}^{n} \lambda_{i}-\frac{1}{2} \sum_{i=1}^{n} \sum_{j=1}^{n}\lambda_{i} \lambda_{j} y_{i} y_{j} \mathbf{x}_{i} \mathbf{x}_{j} \\
+\text {s.t.}&amp;\quad \sum_{i=1}^{n} \lambda_{i} y_{i}=0, \lambda_{i} \geq 0\\
+\end{align}\end{split}\]</div>
+<p>Solving this quadratic program with linear constraints yields <span class="math notranslate nohighlight">\(\boldsymbol{\lambda} ^*\)</span>.</p>
+<p>Besides, due to strong duality, KKT conditions hold, such that</p>
+<div class="math notranslate nohighlight">
+\[
+\exists\left(x_{k}, y_{n}\right):\, 1-y_{k}\left(\boldsymbol{w} ^{*\top} \boldsymbol{x}_{k}+b\right)=0
+\]</div>
+<p>which gives</p>
+<div class="math notranslate nohighlight">
+\[
+b^* = y_k - \boldsymbol{w} ^{* \top} \boldsymbol{x} _k
+\]</div>
+<p>Therefore,
+$<span class="math notranslate nohighlight">\(
+\boldsymbol{w} ^{*}=\sum_{i=0}^{n} \lambda_{i} y_{i} \boldsymbol{x}_{i} \quad b^{*}=y_{k}-\sum_{i=0}^{n} \lambda_{i} y_{i} \boldsymbol{x}_{i}^{\top} \boldsymbol{x}_{k}
+\)</span>$</p>
+</div>
+<div class="section" id="properties">
+<h2>Properties<a class="headerlink" href="#properties" title="Permalink to this headline">¶</a></h2>
+<p>The weights is a linear combination of data vectors</p>
+<div class="math notranslate nohighlight">
+\[
+\boldsymbol{w} ^{*}=\sum_{i=0}^{n} \lambda_{i} y_{i} \boldsymbol{x}_{i}
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\lambda_i \ne 0\)</span> for the points that lies on the margin, i.e. only the data on the margin defines <span class="math notranslate nohighlight">\(\boldsymbol{w}^*\)</span>.</p>
+<p>Moreover,</p>
+<ul class="simple">
+<li><p>If <span class="math notranslate nohighlight">\(\boldsymbol{w}^{* \top} \boldsymbol{x} + b^* = \pm 1\)</span> then the point lie on the hyperplane <span class="math notranslate nohighlight">\(\pm\)</span> margin. The vector <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> is called a <strong>support vector</strong>.</p></li>
+<li><p>If <span class="math notranslate nohighlight">\(\boldsymbol{w}^{* \top} \boldsymbol{x} + b^* &lt; 1\)</span> then the point lie inside the two margins.</p></li>
+<li><p>If <span class="math notranslate nohighlight">\(\boldsymbol{w}^{* \top} \boldsymbol{x} + b^* &gt; 1\)</span> then the point lie outside the two margins.</p></li>
+</ul>
+</div>
+<div class="section" id="soft-margin-case">
+<h2>Soft Margin Case<a class="headerlink" href="#soft-margin-case" title="Permalink to this headline">¶</a></h2>
+<p>Recall the objective function for the hard margin case</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{equation}
+\begin{array}{ll}
+\min _{\boldsymbol{w}, b} &amp; \frac{1}{2} \boldsymbol{w}^{\top} \boldsymbol{w} \\
+\text { s.t. } &amp; y_{i}\left(\boldsymbol{w}^{T} \mathbf{x}_{i}+b\right) \geq 1
+\end{array}
+\end{equation}
+\end{split}\]</div>
+<p>What if we cannot find a hyperplane that separate the two types of points? That is, the constraint</p>
+<div class="math notranslate nohighlight">
+\[
+y_{i}\left(\boldsymbol{w}^{T} \mathbf{x}_{i}+b\right) \geq 1
+\]</div>
+<p>does not hold for all <span class="math notranslate nohighlight">\(i\)</span>. Some observation will violate this constraint.</p>
+<p>In such case, we can add a loss term to measure the extent of violation, and include this loss into the objective function. This kind of margin is called <strong>soft margin</strong>.</p>
+<p>The new objective function becomes</p>
+<div class="math notranslate nohighlight">
+\[
+\min _{\boldsymbol{w}, b}  \frac{1}{2} \boldsymbol{w}^{\top} \boldsymbol{w} + C\sum_i^n R(\boldsymbol{w} ,b, \boldsymbol{x}_i ,y_i)
+\]</div>
+<p>where</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(R\)</span> is some loss function.</p></li>
+<li><p><span class="math notranslate nohighlight">\(C\)</span> is a parameter to control the weight on the loss term. When <span class="math notranslate nohighlight">\(C\rightarrow \infty\)</span>, the formulation approaches separable case.</p></li>
+</ul>
+<p>For instance, <span class="math notranslate nohighlight">\(R\)</span> can be an indicator function, with value <span class="math notranslate nohighlight">\(1\)</span> if the constraint is violated, i.e.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{equation}
+R(\boldsymbol{w} ,b, \boldsymbol{x}_i ,y_i) =\left\{\begin{array}{ll}
+1, &amp; \text { if } y_{i}\left(\boldsymbol{w}^{T} \mathbf{x}_{i}+b\right) &lt; 1 \\
+0, &amp; \text { otherwise }
+\end{array}\right.
+\end{equation}
+\end{split}\]</div>
+<p>A more reasonable loss is to measure the actual deviation from the constrain, i.e., <span class="math notranslate nohighlight">\(1 - y_{i}\left(\boldsymbol{w}^{T} \mathbf{x}_{i}+b\right)\)</span>, for those who violates the constraint, i.e.  <span class="math notranslate nohighlight">\(y_{i}\left(\boldsymbol{w}^{T} \mathbf{x}_{i}+b\right) &lt; 1\)</span>. Overall, the loss function is</p>
+<div class="math notranslate nohighlight">
+\[
+R(\boldsymbol{w} ,b, \boldsymbol{x}_i ,y_i) = \max \left\{ 0, 1 - y_{i}\left(\boldsymbol{w}^{T} \mathbf{x}_{i}+b\right)  \right\}
+\]</div>
+<p>which is called <strong>Hinge loss</strong>.</p>
+<div class="myclass figure align-default" id="hinge-loss">
+<a class="reference internal image-reference" href="../_images/svm-hinge-loss.png"><img alt="" src="../_images/svm-hinge-loss.png" style="width: 50%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 3 </span><span class="caption-text">caption</span><a class="headerlink" href="#hinge-loss" title="Permalink to this image">¶</a></p>
+</div>
+<p>Let <span class="math notranslate nohighlight">\(\xi_{i}=\max \left\{0,1-y_{i}\left(\mathbf{w}^{T} x_{i}+w_{0}\right)\right\}\)</span>, then the objective is</p>
+<div class="math notranslate nohighlight">
+\[
+\min _{\boldsymbol{w}, b}  \frac{1}{2} \boldsymbol{w}^{\top} \boldsymbol{w} + C\sum_i^n \xi_i
+\]</div>
+<p>From optimization point of view <span class="math notranslate nohighlight">\(\xi_i\)</span> is called a slack variable.</p>
+<p>Applying similar conversion to the basic case above, we get</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+\underset{\boldsymbol{w}, b}{\min }&amp;\quad \sum_{i=1}^{N} \alpha_{i}-\frac{1}{2} \sum_{i, j=1}^{N} \alpha_{i} \alpha_{j} y_{i} y_{j} \mathbf{x}_{i} \mathbf{x}_{j}    \\
+\text {s.t.}&amp;\quad \sum_{i=1}^{N} \alpha_{i} y_{i}=0\\
+&amp; \quad 0 \leq \alpha_{i} \leq C
+\end{align}\end{split}\]</div>
+<p>This can be solved by gradient descent.</p>
+</div>
+<div class="section" id="extension">
+<h2>Extension<a class="headerlink" href="#extension" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="multiclass">
+<h3>Multiclass<a class="headerlink" href="#multiclass" title="Permalink to this headline">¶</a></h3>
+<p>One-versus-rest: construct K separate SVMs. Using
+<span class="math notranslate nohighlight">\(k^*=\arg \max _{k} (\boldsymbol{w}_k ^\top \boldsymbol{x} + b_k)\)</span></p>
+<p>One-versus-one: construct <span class="math notranslate nohighlight">\(\frac{K(K-1)}{2}\)</span> SVMs on all pairs. Test: select one with highest votes <span class="math notranslate nohighlight">\(k^* = \arg \max _k \sum_{j\ne k} \hat{y}_{kj}\)</span></p>
+<p>“True” multi-class SVMs (Crammer and Singer, 2001)</p>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./32-classification"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        </div>
+    </div>
+    
+    
+    <div class='prev-next-bottom'>
+        
+    <a class='left-prev' id="prev-link" href="00-classification.html" title="previous page">Classification</a>
+    <a class='right-next' id="next-link" href="../33-dimensionality-reduction/00-dimensionality-reduction.html" title="next page">Dimensionality Reduction</a>
+
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By Dennis Zheng<br/>
+        
+            &copy; Copyright 2020.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+
+    
+  <script src="../_static/js/index.3da636dd464baa7582d2.js"></script>
+
+
+    
+  </body>
+</html>
