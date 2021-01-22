@@ -49,3 +49,28 @@ $$
 $$
 
 and we can solve for $\theta_{MLE}$.
+
+## Examples
+
+### Gaussian
+
+The log-likelihood function for multivariate Gaussian is
+
+
+$$
+\begin{equation}
+\log \mathcal{N}(\mathbf{X} ; \boldsymbol{\mu}, \boldsymbol{\Sigma})=-\frac{n}{2} \log |\boldsymbol{\Sigma}|-\frac{1}{2} \sum_{i=1}^{n}\left(\boldsymbol{x}_{i}-\boldsymbol{\mu}\right)^{\top} \boldsymbol{\Sigma}^{-1}\left(\boldsymbol{x}_{i}-\boldsymbol{\mu}\right)+ \text{constant}
+\end{equation}
+$$
+
+The MLE for $\boldsymbol{\mu}$ and $\boldsymbol{\Sigma}$ are
+
+
+$$
+\begin{equation}
+\begin{array}{l}
+\widehat{\boldsymbol{\mu}}_{MLE}=\frac{1}{n} \sum_{i=1}^{n} \boldsymbol{x}_{i} \\
+\widehat{\boldsymbol{\Sigma}}_{MLE}=\frac{1}{n} \sum_{i=1}^{n}\left(\boldsymbol{x}_{i}-\hat{\boldsymbol{\mu}}_{MLE}\right)\left(\boldsymbol{x}_{i}-\hat{\boldsymbol{\mu}}_{MLE}\right)^{\top}
+\end{array}
+\end{equation}
+$$
