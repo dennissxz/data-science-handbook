@@ -1,12 +1,16 @@
 # Linear Models
 
+In this section we introduce linear models from a statistics' perspective. The introduction from econometrics' perspective or social science's perspective may be different. In short, the statistics' perspective focuses on general multivariate cases and heavily rely on linear algebra for derivation, while the econometrics' or social science's perspective prefers to introduce models in univariate cases by basic arithmetics (whose form can be complicated without linear algebra notations) and extend the intuitions and conclusions into multivariate cases.
+
+Personally, I involved in four courses that introduced linear models, i.e. at undergrad/grad level offered by stat/social science department. The style of the two courses offered by the stat departments were quite alike while the graduate level one covered more topics. In both undergrad/grad level courses offered by the social science departments, sometimes I got confused by the course materials that was contradictory to my statistics training , but the instructors did not have a clear response...In sum, to fully understand the fundamental and most widely used statistical model, I highly suggest to take a linear algebra course first and take the regression course offered by math/stat department.
+
 ## Objective
 
-To estimate how $y$ change with $x$.
+Linear models aim to model the relationship between a scalar response and one or more explanatory variables in a linear format:
 
-Model:
+$$Y_i  = \beta_0 + \beta_1 x_{i,1} + \ldots + \beta_{p-1} x_{i,p-1}  + \varepsilon_i $$
 
-$$Y_i  = \boldsymbol{x}_i ^\top \boldsymbol{\beta}  + \varepsilon_i $$
+for observations $i=1, 2, \ldots, n$.
 
 In matrix form,
 
@@ -15,10 +19,11 @@ $$
 $$
 
 where
-- $\boldsymbol{X}_{n\times p}$ is called the design matrix. There are $p$ independent variables (aka covariates) $X_1, X_2, \ldots, X_p$ and $n$ observations. The first columns is usually $\boldsymbol{1}$ , i.e. intercept.
-- $\boldsymbol{y}_{n \times 1}$ is a vector of dependent variable.
-- $\boldsymbol{\beta}_{n \times 1}$ are coefficients to be estimate
-- $\boldsymbol{\varepsilon}_{n \times 1}$ are unobserved random error
+- $\boldsymbol{X}_{n\times p}$ is called the design matrix. The first column is usually set to be $\boldsymbol{1}$, i.e., intercept. The remaining $p-1$ columns are designed values $x_{ij}$ where $i = 1, 2, \ldots, n$ and $j=1, \ldots, p-1$. These $p-1$ columns are called explanatory/independent variables, or covariates.
+- $\boldsymbol{y}_{n \times 1}$ is a vector of response/dependent variables $Y_1, Y_2, \ldots, Y_n$.
+- $\boldsymbol{\beta}_{p \times 1}$ is a vector of coefficients to be estimated.
+- $\boldsymbol{\varepsilon}_{n \times 1}$ is a vector of unobserved random errors, which includes everything that we have not measured and included in the model.
+
 
 When $p=2$, we have
 
@@ -26,42 +31,96 @@ $$
 Y_i = \beta_0 + \beta_1 x_i + \varepsilon_i
 $$
 
-which is called **simple linear regression**. When $p>2$, it is called **multiple linear regression**. When there are multiple dependent variables, we call it **multivariate regression**.
+which is called **simple linear regression**.
 
+When $p>2$, it is called **multiple linear regression**. For instance, when $p=3$
+
+$$
+Y_i = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \varepsilon_i
+$$
+
+
+When there are multiple dependent variables, we call it **multivariate regression**, which will be introduced in another section.
+
+When $p=1$,
+- if we include intercept, then the regression model $y_i = \beta_0$ means that we use a single constant to predict $y_i$. The estimator, $\hat{\beta}_0$, by ordinary least square, should be the sample mean $\hat{y}$.
+- if we do not include intercept, then the regression model $y_i = \beta x_i$ means that we expect that $y$ is proportional to $x$. See [here](lm-proportional-model) for details.
+
+
+```{note}
+In natural science, researchers design $n\times p$ values in the design matrix $\boldsymbol{X}$ and run experiments to obtain the response $y_i$. We call this kind of data **experimental data**. In this sense, the explanatory variables $x_{ij}$'s are designed before the experiment, so they are also constants. The coefficients $\beta_j$'s are unknown constants. The error term $\varepsilon_i$ is random. The response variable $Y_i$ on the left hand side is random due to the randomness in the error term $\varepsilon_i$.  
+
+In social science, most of data is **observational data**. That is, researchers obtain the values of many variables at the same time, and they choose one of interest to be the response variable $y_i$ and some others to be the explanatory variables $\boldsymbol{x}_i$. In this case, as a data set, we can talk about descriptive statistics, such as variance of each explanatory variable, or covariance between pair of explanatory variables. This is valid since we often view the columns of a data set as random variables.
+
+However, the inference methods of the coefficients $\boldsymbol{\beta}$ are developed based on the natural science setting, i.e. the values of explanatory variables are pre-designed constants. Many social science courses frequently use descriptive statistics of the explanatory variables assuming they are random, and apply inference methods assuming they are constant. This is quite confusing for beginners to linear models.
+
+To sum up, we stick to the natural science setting. We use subscript $i$ in every $y_i, x_i, \varepsilon_i$ instead of $y, x, \varepsilon$ which gives a sense that $x$ is random. And we use descriptive statistics for the explanatory variables only when necessary.
+```
 
 ## Assumptions
 
 Basic assumptions
 
-1. $\boldsymbol{x}_i$ is known and fixed.
-
 1. $\operatorname{E}\left( y_i \right) = \boldsymbol{x}_i ^\top \boldsymbol{\beta}$ is linear in covariates $X_j$.
 
-1. The error terms are i.i.d. distributed with mean $\operatorname{E}\left( \varepsilon_i \right) = 0$ and variance $\operatorname{Var}\left( \varepsilon_i \right) = \sigma^2$.
+1. $\boldsymbol{x}_i$ is known and fixed.
 
-  As a result, $\operatorname{E}\left( \boldsymbol{y}  \mid \boldsymbol{X} \right) = \boldsymbol{X} \boldsymbol{\beta}$, or $\operatorname{E}\left( y \mid x \right) = \beta_0 + \beta_1 x$ when $p=2$, which can be illustrated by the plots below.
+1. The error terms are uncorrelated $\operatorname{Cov}\left( \varepsilon_i, \varepsilon_j \right)= 0$, with common mean $\operatorname{E}\left( \varepsilon_i \right) = 0$ and variance $\operatorname{Var}\left( \varepsilon_i \right) = \sigma^2$.
 
-  <div align="center">
-  <img src="../imgs/lm_cond_distribution.png" width = "50%" alt="" align=center />
-  </div>
+    As a result, $\operatorname{E}\left( \boldsymbol{y}  \mid \boldsymbol{X} \right) = \boldsymbol{X} \boldsymbol{\beta}$, or $\operatorname{E}\left( y \mid x \right) = \beta_0 + \beta_1 x$ when $p=2$, which can be illustrated by the plots below.
 
-  <div align="center">
-  <img src="../imgs/lm_xyplane_dots.png" width = "50%" alt="" align=center />
-  </div>
+    :::{figure} lm-distribution-of-y-given-x
+    <img src="../imgs/lm_cond_distribution.png" width = "50%" alt=""/>
 
-  To predict $\hat{y}_i$, we just use $\hat{y}_i = \boldsymbol{x}_i ^\top \hat{\boldsymbol{\beta}}$ .
+    Distributions of $y$ given $x$ [Meyer 2021]
+    :::
+
+    :::{figure} lm-observation-of-y-given-x
+    <img src="../imgs/lm_xyplane_dots.png" width = "50%" alt=""/>
+
+    Observations of $y$ given $x$ [Meyer 2021]
+    :::
+
+    To predict $\hat{y}_i$, we just use $\hat{y}_i = \boldsymbol{x}_i ^\top \hat{\boldsymbol{\beta}}$ .
 
 
-```{note}
-In some social science courses, there is an Zero Conditional Mean assumption: $\operatorname{E}\left( \varepsilon_i \mid \boldsymbol{x}_i  \right) = 0$ and it is used for estimation.
+1. The error terms are independent and follow Gaussian distribution $\varepsilon_i \overset{\text{iid}}{\sim}N(0, \sigma^2)$, or $\boldsymbol{\varepsilon} \sim N_n (\boldsymbol{0} , \sigma^2 \boldsymbol{I} _n)$.
+
+    As a result, we have $Y_i \sim N(\boldsymbol{x}_i ^\top \boldsymbol{\beta} , \sigma^2 )$ or $\boldsymbol{y} \sim N_n(\boldsymbol{X} \boldsymbol{\beta} , \sigma^2 \boldsymbol{I} _n)$
+
+
+These assumptions are used for different objectives.
+- derivation of $\hat{\boldsymbol{\beta}}$ by least squares uses assumptions 1, 2.
+- derivation of $\operatorname{E}\left( \hat{\boldsymbol{\beta}} \right)$ uses assumptions 1, 2, $\operatorname{E}\left( \varepsilon_i \right) = 0$ in 3.
+- derivation of $\operatorname{Var}\left( \hat{\boldsymbol{\beta}} \right)$ uses assumptions 1, 2, $\operatorname{Cov}\left( \varepsilon_i, \varepsilon_j \right) = 0$ and $\operatorname{Var}\left( \epsilon_i \right) = \sigma^2$ in 3.
+- derivation of the distribution of $\hat{\boldsymbol{\beta} }$ uses 1, 2 and 3.
+- derivation of $\hat{\boldsymbol{\beta}}$ by maximal likelihood uses assumptions 1, 2, 3.
+
+
+```{dropdown, note}
+In some social science or econometrics courses, there is an Zero Conditional Mean assumption. For $p=2$, it is
+
+$$\operatorname{E}\left( \varepsilon \mid x  \right) = 0$$
+
+which (in their setting) implies
+
+$$\begin{align}
+\operatorname{E}\left( \varepsilon \right)
+&= \operatorname{E}\left( \operatorname{E}\left( \varepsilon \mid x \right) \right)\\
+&= 0\\
+\operatorname{Cov}\left( \varepsilon, x \right)
+&= \operatorname{E}\left( \varepsilon x \right) - \operatorname{E}\left( \varepsilon \right)\operatorname{E}\left( x \right)\\
+&= \operatorname{E}\left( \operatorname{E}\left( \varepsilon x \mid x \right) \right)- 0 \times \operatorname{E}\left( x \right)\\
+&= \operatorname{E}\left( x \operatorname{E}\left( \varepsilon \mid x \right) \right) \\
+&= 0
+\end{align}$$
+
+Then they these two corollaries are used for [estimation](lm-estimation-by-assumpation).
+
+As discussed above, in their setting $x$ is random (at this stage), so they use notations such as $\operatorname{E}\left( \varepsilon \mid x \right)$ and $\operatorname{Cov}\left( x, \varepsilon \right)$. It also seems that they view $\varepsilon$ as an "overall" measure of random error, instead of $\varepsilon_i$ for specific $i$ in the natural science setting. But they can mean so by using the conditional notation $\operatorname{E}\left( \varepsilon \mid x \right)$.
+
+I suppose they introduce these two identities purely to interpret the two normal equations (introduced below) from the minimizing sum of squared errors. Then one day, someone found that there is a beautiful equation $\operatorname{E}\left( \varepsilon \mid x \right)=0$ that can summarize these two identities. So it is added to the assumptions.
 ```
-
-An additional stronger assumption on the distribution of error term (necessary for some inference)
-
-1. The error terms follow Gaussian distribution $\varepsilon_i \overset{\text{iid}}{\sim}N(0, \sigma^2)$, or $\boldsymbol{\varepsilon} \sim N_n (\boldsymbol{0} , \sigma^2 \boldsymbol{I} _n)$.
-
-  As a result, we have $Y_i \sim N(\boldsymbol{x}_i ^\top \boldsymbol{\beta} , \sigma^2 )$ or $\boldsymbol{y} \sim N_n(\boldsymbol{X} \boldsymbol{\beta} , \sigma^2 \boldsymbol{I} _n)$
-
 
 ## Estimation (Learning)
 
@@ -122,7 +181,7 @@ $$
 Differentiation w.r.t. $\beta_0$ gives
 
 $$
-- 2\sum_i (y_i - \beta_0 - \beta_1 x_i)= 0
+- 2\sum_i (y_i - \beta_0 - \beta_1 x_i) = 0
 $$
 
 Solve the system of the equations, we have
@@ -132,8 +191,9 @@ $$\begin{align}
 \hat{\beta}_{0} &=\bar{y}-\hat{\beta}_{1} \bar{x}
 \end{align}$$
 
-Moreover,
+The expression for $\hat{\beta}_0$ implies that the fitted line cross the sample mean point $(\bar{x}, \bar{y})$.
 
+Moreover,
 
 $$
 \hat{\sigma}^2 = \frac{1}{n-2} \sum_i \hat\varepsilon_i^2
@@ -159,7 +219,7 @@ $$
 and the results are the same.
 ```
 
-
+(lm-estimation-by-assumpation)
 ### By Assumptions
 
 In some social science courses, the estimation is done by using the assumptions
@@ -205,35 +265,11 @@ TBD.
 
 ## Properties
 
-### Slope vs Correlation
+We describe the properties of OLS estimator $\hat{\boldsymbol{\beta}}$ and the corresponding residuals $\hat{\boldsymbol{\varepsilon} }$.
 
-When $p=2$, we can see from the solution
+### Coefficients
 
-$$\begin{align}
-\hat{\beta}_{1} &=\frac{\sum_{i=1}^{n}\left(x_{i}-\bar{x}\right)\left(y_{i}-\bar{y}\right)}{\sum_{i=1}^{n}\left(x_{i}-\bar{x}\right)^{2}}
-\end{align}$$
-
-that
-
-$$\begin{align}
-\hat{\beta}_1 &= \frac{\widehat{\operatorname{Cov}}\left( Y, X \right)}{\widehat{\operatorname{Var}}\left( X \right)}  \\
-&= r_{X,Y} \frac{s_Y}{s_X}
-\end{align}$$
-
-Thus, the slope has the same sign with the correlation $r_{X,Y}$, and equals to the correlation times a ratio of the sample standard deviations of the dependent variable over the independent variable.
-
-Once can see that the magnitude of $\hat\beta_1$ increases with the magnitude of $\rho_{X,Y}$ and $s_Y$, and decreases with $s_X$, holding others fixed.
-
-
-### Fitted Line Passes Sample Mean
-
-Since $\hat{\beta}_{0} =\bar{y}-\hat{\beta}_{1} \bar{x}$, we have $\bar{y} = \hat{\beta}_{0} + \hat{\beta}_{1} \bar{x}$, i.e. the regression line always goes through the mean $(\bar{x}, \bar{y})$ of the sample.
-
-This also hold for multiple regression, by the first order condition w.r.t. $\beta_0$.
-
-### Inference
-
-#### Slope
+#### Unbiasedness
 
 The OLS estimators are unbiased since
 
@@ -249,7 +285,7 @@ when $p=2$,
 $$\begin{align}
 \hat{\beta}_{1}
 &=\frac{\sum_{i=1}^{n}\left(x_{i}-\bar{x}\right)\left(y_{i}-\bar{y}\right)}{\sum_{i=1}^{n}\left(x_{i}-\bar{x}\right)^{2}} \\
-\end{align}$$
+#### \end{align}$$
 
 To prove unbiasedness, using the fact that for any constant $c$,
 
@@ -275,6 +311,7 @@ $$
 \end{equation}
 $$
 
+#### Variance
 
 The variance (matrix) is
 
@@ -314,14 +351,35 @@ $$\begin{align}
 &= \frac{\hat{\sigma}}{\sqrt{\sum \left(x_{i}-\bar{x}\right)^{2}}}
 \end{align}$$
 
-#### Residual
+Theorem (Gauss–Markov)
+: The ordinary least squares (OLS) estimator has the lowest sampling variance within the class of linear unbiased estimators, if the errors in the linear regression model are uncorrelated, have equal variances and expectation value of zero.
 
-The residual $\hat\varepsilon_i = y_i - \hat{y}_i$ is an estimate of the error term $\varepsilon_i$, and is the vertical difference between the fitted regression line and the observation points.
+#### Hypothesis Testing
 
-The sum of the residual is zero. Recall the normal equation
+### Residuals
+
+Definition
+: The residual is defined as the difference between the true response value $y$ and our fitted response value $\hat{y}$.
+
+    $$\hat\varepsilon_i = y_i - \hat{y}_i = y_i - \boldsymbol{x}_i ^\top \hat{\boldsymbol{\beta}}$$
+
+    It is an estimate of the error term $\varepsilon_i$
+
+Properties
+: - The sum of the residual is zero $\sum_i \hat{\varepsilon}_i  = 0$
+
+Proof
+
+Recall the normal equation
 
 $$
 \boldsymbol{X} ^\top (\boldsymbol{y} - \boldsymbol{X} \hat{\boldsymbol{\beta} }) = \boldsymbol{0}
+$$
+
+we get
+
+$$
+\boldsymbol{X} ^\top \boldsymbol{\hat{\varepsilon}}  = \boldsymbol{0}
 $$
 
 Since the first column of $\boldsymbol{X}$ is $\boldsymbol{1}$ , we have
@@ -333,27 +391,28 @@ $$\begin{align}
 &= 0
 \end{align}$$
 
-From the normal equation [below] we can also get
+
+: - The sum of the product of residual and any covariate: $\sum_i x_{ij} \hat{\varepsilon}_i = 0$ for all $j$.
+
+Proof
+
+A corollary of
 
 $$
-\sum_i x_{ij} \hat{\varepsilon}_i = 0
+\boldsymbol{X} ^\top \boldsymbol{\hat{\varepsilon}}  = \boldsymbol{0}
 $$
 
-for all $j$.
 
-These two equations together gives the zero sample covariance between residuals and each covariate $X_j$.
+```{note}
+Some social science courses describe this property as "the residual and the independent variables are uncorrelated".
+```
 
-$$
-\widehat{\operatorname{Cov}}\left(X_j, \varepsilon \right) = 0
-$$
 
-**Distribution**
+### Independence of $\hat{\boldsymbol{\beta}}$ and $\hat{\sigma}^2$
 
 TBD
 
-#### Independence
 
-TBD
 
 ### Decomposition of Total Sum of Squares
 
@@ -387,6 +446,60 @@ Some social science courses use $SSR$ and $SSE$ to denote the opposite quantity 
 
 
 
+## Interpretation
+
+### Coefficients
+
+$\beta_j$ is the expected change in the value of the response variable $y$ if the value of the covariate $x_j$ increases by 1, holding other covariates fixed.
+
+$\beta_0$ is the expected value of the response variable $y$ if all covariates have values of zero.
+
+
+```{warning}
+Linear regression models only reveal linear associations between the response variable and the independent variables. But association does not imply causation.
+
+Only when the data is from a randomized controlled trial, correlation will imply causation,
+```
+
+### Partialling Out
+
+
+When $p=3$, i.e.,
+
+$$
+\hat{y}=\hat{\beta}_{0}+\hat{\beta}_{1} x_{1}+\hat{\beta}_{2} x_{2}
+$$
+
+We can obtain $\hat{\beta}_1$ by the following three steps
+
+1. regress $x_1$ over $x_2$ and obtain
+
+    $$\hat{x}_{1}=\hat{\gamma}_{0}+\hat{\gamma}_{1} x_{2}$$
+
+1. compute the residuals $\hat{u}_{1}$ in the above regression
+
+    $$
+    \hat{u}_{i} = x_{1i} - \hat{x}_{1i}
+    $$
+
+1. regress $y$ on the the residuals $\hat{u}_{1}$, and the estimated coefficient equals the required coefficient.
+
+
+    $$\begin{align}
+    \hat{y}
+    &=\hat{\alpha}_{0}+\hat{\alpha}_{1} \hat{u} \\
+    \hat{\alpha}_{1}
+    &= \frac{\sum (\hat{u}_i - \bar{\hat{u}}_i)(y_i - \bar{y})}{\sum (\hat{u}_i - \bar{\hat{u}}_i)^2} \\
+    &= \frac{\sum \hat{u}_{i}y_i}{\sum \hat{u}_{i}^2} \qquad \because \bar{\hat{u}}_i = 0\\
+    &\overset{\text{claimed}}{=} \hat{\beta}_1
+    \end{align}$$
+
+
+In this approach, $\hat{u}$ is interpreted as the part in $x_1$ that cannot be predicted by $x_2$, or is uncorrelated with $x_2$. We then regress $y$ on $\hat{u}$, to get the effect of $x_1$ on $y$ after $x_2$ has been "partialled out".
+
+
+
+
 ## Model Selection
 
 
@@ -402,15 +515,79 @@ $$
 
 relation with $\beta$ in simple linear models:
 
-## Interpretation
-
 
 ### What is ANOVA?
 The Analysis Of Variance, popularly known as the ANOVA, can be used in cases where there are more than two groups.
 
+
+### Stepwise
+
 ## Special Cases
 
+### Omitted Variable Bias
+
+
+
+
+For instance, suppose the true model (p=3) is
+
+$$
+y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \varepsilon
+$$
+
+
+
+
+### Heteroscedasticity
+
+### Multicollinearity
+
+### Categorical $X$
+
+dummy variables $X_ij$
+
+when $c = 2$,
+
+interpretation
+- $\hat{\beta_1}$: difference in means between the group with $X=1$ and $X=0$.
+- $\hat{\beta_0}$: mean of the group with $X=0$.
+
+TBD
+
+
+https://www.1point3acres.com/bbs/thread-703302-1-1.html
+
+## Exercise
+
+### Slope vs Correlation
+
+When $p=2$, we can see from the solution
+
+$$\begin{align}
+\hat{\beta}_{1} &=\frac{\sum_{i=1}^{n}\left(x_{i}-\bar{x}\right)\left(y_{i}-\bar{y}\right)}{\sum_{i=1}^{n}\left(x_{i}-\bar{x}\right)^{2}}
+\end{align}$$
+
+that
+
+$$\begin{align}
+\hat{\beta}_1 &= \frac{\widehat{\operatorname{Cov}}\left( Y, X \right)}{\widehat{\operatorname{Var}}\left( X \right)}  \\
+&= r_{X,Y} \frac{s_Y}{s_X}
+\end{align}$$
+
+Thus, the slope has the same sign with the correlation $r_{X,Y}$, and equals to the correlation times a ratio of the sample standard deviations of the dependent variable over the independent variable.
+
+Once can see that the magnitude of $\hat\beta_1$ increases with the magnitude of $\rho_{X,Y}$ and $s_Y$, and decreases with $s_X$, holding others fixed.
+
+
+### Fitted Line Passes Sample Mean
+
+Since $\hat{\beta}_{0} =\bar{y}-\hat{\beta}_{1} \bar{x}$, we have $\bar{y} = \hat{\beta}_{0} + \hat{\beta}_{1} \bar{x}$, i.e. the regression line always goes through the mean $(\bar{x}, \bar{y})$ of the sample.
+
+This also hold for multiple regression, by the first order condition w.r.t. $\beta_0$.
+
 ### Non-zero Mean of Error Term
+
+*What if the mean of the error term is not zero?*
 
 If $\operatorname{E}\left( \varepsilon \right) = \mu_\varepsilon \ne 0$, we can just denote $\varepsilon = \mu_\varepsilon + v$, where $v$ is a new error term with zero mean. Our model becomes
 
@@ -420,7 +597,10 @@ $$
 
 where $(\beta_0 + \mu_\varepsilon)$ is the new intercept. We can still apply the methods above to conduct estimation and inference.
 
+(lm-proportional-model)
 ### No Intercept
+
+*Assume the intercept $\beta_0$ in the model $y=\beta_0 + \beta_1 x + \varepsilon$ is zero. Find the OLS estimate for $\beta_1$, denoted $\tilde{\beta}$. Find its mean, variance, and compare them with those of the OLS estimate for $\beta_1$ when there is an intercept term.*
 
 If there is no intercept, consider a simple case
 
@@ -500,14 +680,48 @@ $$\begin{align}
 &= c\hat\beta_0 + d\\
 \end{align}$$
 
-### Omitted Variable Bias
-
-TBD
-
-### Heteroscedasticity
-
-TBD
+### Exchange $X$ and $Y$
 
 
+## Question
 
-https://www.1point3acres.com/bbs/thread-703302-1-1.html
+When will
+
+$$\operatorname{E}\left( Y \mid X \right) = 0 ?$$
+
+## Claim
+
+If
+
+$$\operatorname{E}\left( v \right) = 0$$
+
+and
+
+$$\operatorname{Cov}\left( v, edu \right) = 0$$
+
+then
+
+$$\operatorname{E}\left( v \mid edu \right) = 0$$
+
+## Counterexample
+
+Generate random values $edu, v$ by
+
+$$\begin{align}
+
+edu &\sim \mathrm{Uniform}(0,1) \\
+v &= |edu - 0.5| \\
+\end{align}$$
+
+then
+
+$$
+E(v) = 0 \\
+\operatorname{Cov}\left( v, edu \right) = 0
+$$
+
+but
+
+$$
+\operatorname{E}\left( v \mid edu \right) = \operatorname{E}\left( |edu - 0.5| \mid edu \right) = |edu - 0.5|  \ne 0
+$$
