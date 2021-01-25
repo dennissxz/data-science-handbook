@@ -2,6 +2,10 @@
 
 In this section we introduce linear models from a statistics' perspective. The introduction from econometrics' perspective or social science's perspective may be different. In short, the statistics' perspective focuses on general multivariate cases and heavily rely on linear algebra for derivation, while the econometrics' or social science's perspective prefers to introduce models in univariate cases by basic arithmetics (whose form can be complicated without linear algebra notations) and extend the intuitions and conclusions into multivariate cases.
 
+<!---
+My handwritten notes for the graduate level course STAT 343 offered by UChicago statistics department can be found [here](../imgs/lm-notes-applied-stat.pdf).
+-->
+
 Personally, I involved in four courses that introduced linear models, i.e. at undergrad/grad level offered by stat/social science department. The style of the two courses offered by the stat departments were quite alike while the graduate level one covered more topics. In both undergrad/grad level courses offered by the social science departments, sometimes I got confused by the course materials that was contradictory to my statistics training , but the instructors did not have a clear response...In sum, to fully understand the fundamental and most widely used statistical model, I highly suggest to take a linear algebra course first and take the regression course offered by math/stat department.
 
 ## Objective
@@ -47,15 +51,15 @@ When $p=1$,
 - if we do not include intercept, then the regression model $y_i = \beta x_i$ means that we expect that $y$ is proportional to $x$. See [here](lm-proportional-model) for details.
 
 
-```{note}
+:::{admonition} Fixed or random $\boldsymbol{X}$?
 In natural science, researchers design $n\times p$ values in the design matrix $\boldsymbol{X}$ and run experiments to obtain the response $y_i$. We call this kind of data **experimental data**. In this sense, the explanatory variables $x_{ij}$'s are designed before the experiment, so they are also constants. The coefficients $\beta_j$'s are unknown constants. The error term $\varepsilon_i$ is random. The response variable $Y_i$ on the left hand side is random due to the randomness in the error term $\varepsilon_i$.  
 
-In social science, most of data is **observational data**. That is, researchers obtain the values of many variables at the same time, and they choose one of interest to be the response variable $y_i$ and some others to be the explanatory variables $\boldsymbol{x}_i$. In this case, as a data set, we can talk about descriptive statistics, such as variance of each explanatory variable, or covariance between pair of explanatory variables. This is valid since we often view the columns of a data set as random variables.
+In social science, most of data is **observational data**. That is, researchers obtain the values of many variables at the same time, and choose one of interest to be the response variable $y_i$ and some others to be the explanatory variables $\boldsymbol{x}_i$. In this case, $\boldsymbol{X}$ is viewed as a data set, and we can talk about descriptive statistics, such as variance of each explanatory variable, or covariance between pair of explanatory variables. This is valid since we often view the columns of a data set as random variables.
 
-However, the inference methods of the coefficients $\boldsymbol{\beta}$ are developed based on the natural science setting, i.e. the values of explanatory variables are pre-designed constants. Many social science courses frequently use descriptive statistics of the explanatory variables assuming they are random, and apply inference methods assuming they are constant. This is quite confusing for beginners to linear models.
+However, the inference methods of the coefficients $\boldsymbol{\beta}$ are developed based on the natural science setting, i.e., the values of explanatory variables are pre-designed constants. Many social science courses frequently use descriptive statistics of the explanatory variables which assumes they are random, and apply inference methods which assumes they are constant. This is quite confusing for beginners to linear models.
 
-To sum up, we stick to the natural science setting. We use subscript $i$ in every $y_i, x_i, \varepsilon_i$ instead of $y, x, \varepsilon$ which gives a sense that $x$ is random. And we use descriptive statistics for the explanatory variables only when necessary.
-```
+To be clear, we stick to the natural science setting. We use subscript $i$ in every $y_i, x_i, \varepsilon_i$ instead of $y, x, \varepsilon$ which gives a sense that $x$ is random. And we use descriptive statistics for the explanatory variables only when necessary.
+:::
 
 ## Assumptions
 
@@ -97,8 +101,8 @@ These assumptions are used for different objectives.
 - derivation of $\hat{\boldsymbol{\beta}}$ by maximal likelihood uses assumptions 1, 2, 3.
 
 
-```{dropdown, note}
-In some social science or econometrics courses, there is an Zero Conditional Mean assumption. For $p=2$, it is
+:::{admonition} Zero conditional mean assumption
+In some social science or econometrics courses, they follow the "Gauss-Markov assumptions", are roughly similar to the assumptions, but in different formats. One of them is zero conditional mean assumption. For $p=2$, it is
 
 $$\operatorname{E}\left( \varepsilon \mid x  \right) = 0$$
 
@@ -120,7 +124,7 @@ Then they these two corollaries are used for [estimation](lm-estimation-by-assum
 As discussed above, in their setting $x$ is random (at this stage), so they use notations such as $\operatorname{E}\left( \varepsilon \mid x \right)$ and $\operatorname{Cov}\left( x, \varepsilon \right)$. It also seems that they view $\varepsilon$ as an "overall" measure of random error, instead of $\varepsilon_i$ for specific $i$ in the natural science setting. But they can mean so by using the conditional notation $\operatorname{E}\left( \varepsilon \mid x \right)$.
 
 I suppose they introduce these two identities purely to interpret the two normal equations (introduced below) from the minimizing sum of squared errors. Then one day, someone found that there is a beautiful equation $\operatorname{E}\left( \varepsilon \mid x \right)=0$ that can summarize these two identities. So it is added to the assumptions.
-```
+:::
 
 ## Estimation (Learning)
 
@@ -128,8 +132,11 @@ We introduce various methods to estimate the parameters $\boldsymbol{\beta}$ and
 
 ### Least Squares
 
-We can estimate the parameter $\hat{\boldsymbol{\beta}}$ by minimizing the sum of squared errors.
+The most common way is to estimate the parameter $\hat{\boldsymbol{\beta}}$ by minimizing the sum of squared errors $\sum_i(y_i-\hat{y}_i)^2$.
 
+```{margin} A note on substitution
+We substitute the predicted $\hat{\boldsymbol{y} }$ by $\boldsymbol{X} \boldsymbol{\beta}$. The $\boldsymbol{\beta}$ here just means a variable in the optimization problem, not the unknown constant coefficients in our model.
+```
 
 $$\begin{align}
 \hat{\boldsymbol{\beta}} &= \underset{\boldsymbol{\beta} }{\mathrm{argmin}} \, \left\Vert \boldsymbol{y}  - \hat{\boldsymbol{y}}  \right\Vert ^2 \\
@@ -156,9 +163,39 @@ The closed form solution is
 
 $$\hat{\boldsymbol{\beta}} = \left( \boldsymbol{X} ^\top \boldsymbol{X}   \right)^{-1}\boldsymbol{X} \boldsymbol{y}  $$
 
-```{note}
-Computing software use specific functions to solve the normal equation $\boldsymbol{X} ^\top \boldsymbol{X} \boldsymbol{\beta} = \boldsymbol{X} ^\top \boldsymbol{y}$ for $\boldsymbol{\beta}$, instead of using the inverse $(\boldsymbol{X} ^\top \boldsymbol{X}) ^{-1}$ directly which can be slow and unstable.
-```
+:::{admonition,dropdown,note} Solving the linear system by software
+Computing software use specific functions to solve the normal equation $\boldsymbol{X} ^\top \boldsymbol{X} \boldsymbol{\beta} = \boldsymbol{X} ^\top \boldsymbol{y}$ for $\boldsymbol{\beta}$, instead of using the inverse $(\boldsymbol{X} ^\top \boldsymbol{X}) ^{-1}$ directly which can be slow and numerically unstable. For instance, one can use QR factorization of $X$,
+
+$$
+\boldsymbol{X} = \boldsymbol{Q} \left[\begin{array}{l}
+\boldsymbol{R}_{p \times p}  \\
+\boldsymbol{0}_{(n-p) \times p}
+\end{array}\right]
+$$
+
+Hence,
+
+$$
+\begin{aligned}
+\| \boldsymbol{y} - \boldsymbol{X}  \boldsymbol{\beta}  \|^{2}
+&=\left\|\boldsymbol{Q} ^{\top} \boldsymbol{y}  - \boldsymbol{Q} ^\top \boldsymbol{X} \boldsymbol{\beta}  \right\|^{2} \\
+&=\left\|\left(\begin{array}{c}
+\boldsymbol{f}  \\
+\boldsymbol{r}
+\end{array}\right)-\left(\begin{array}{c}
+\boldsymbol{R} \boldsymbol{\beta}  \\
+\boldsymbol{0}
+\end{array}\right)\right\|^{2} \\
+&=\|\boldsymbol{f} - \boldsymbol{R} \boldsymbol{\beta} \|^{2}+\|\boldsymbol{r} \|^{2}
+\end{aligned}
+$$
+
+Finally
+
+$$
+\boldsymbol{\beta} = \boldsymbol{R} ^{-1} \boldsymbol{f}
+$$
+:::
 
 An unbiased estimator of the error variance $\sigma^2 = \operatorname{Var}\left( \varepsilon \right)$ is (to be discussed [later])
 
@@ -202,7 +239,8 @@ $$
 where $\hat\varepsilon_i = y_i - \hat{\beta}_0 - \hat{\beta}_1 x_i$.
 
 
-```{note}
+
+:::{admonition} Minimizing mean squared error
 The objective function, **sum of squared errors**,
 
 $$
@@ -217,9 +255,9 @@ $$
 $$
 
 and the results are the same.
-```
+:::
 
-(lm-estimation-by-assumpation)
+(lm-estimation-by-assumpation)=
 ### By Assumptions
 
 In some social science courses, the estimation is done by using the assumptions
@@ -267,6 +305,8 @@ TBD.
 
 We describe the properties of OLS estimator $\hat{\boldsymbol{\beta}}$ and the corresponding residuals $\hat{\boldsymbol{\varepsilon} }$.
 
+Note that $\hat{\boldsymbol{\beta}}=(\boldsymbol{X} ^\top \boldsymbol{X} ) ^{-1} \boldsymbol{X}^\top  \boldsymbol{y}$ is a random variable, since it is a linear combination of the random vector $\boldsymbol{y}$. This means that, keeping $\boldsymbol{X}$ fixed, repeat the experiment, we will probably get different response values $\boldsymbol{y}$, and hence different $\hat{\boldsymbol{\beta}}$. As a result, there is a sampling distribution of $\hat{\boldsymbol{\beta}}$, and we can find its mean, variance, and conduct hypothesis testing.
+
 ### Coefficients
 
 #### Unbiasedness
@@ -285,7 +325,7 @@ when $p=2$,
 $$\begin{align}
 \hat{\beta}_{1}
 &=\frac{\sum_{i=1}^{n}\left(x_{i}-\bar{x}\right)\left(y_{i}-\bar{y}\right)}{\sum_{i=1}^{n}\left(x_{i}-\bar{x}\right)^{2}} \\
-#### \end{align}$$
+\end{align}$$
 
 To prove unbiasedness, using the fact that for any constant $c$,
 
@@ -313,7 +353,7 @@ $$
 
 #### Variance
 
-The variance (matrix) is
+The variance (covariance matrix) of the coefficients is
 
 
 $$\begin{align}
@@ -322,7 +362,7 @@ $$\begin{align}
 &= \sigma^2 (\boldsymbol{X} ^\top \boldsymbol{X} ) ^{-1}\\
 \end{align}$$
 
-when $p=2$, it is
+when $p=2$, the variance of $\hat{\beta}_1$ is
 
 
 $$\begin{align}
@@ -331,8 +371,7 @@ $$\begin{align}
 &= \frac{\operatorname{Var}\left( \sum\left(x_{i}-\bar{x}\right) u_{i} \right)}{\left[ \sum \left(x_{i}-\bar{x}\right)^{2} \right]^2}\\
 &= \frac{\sum\left(x_{i}-\bar{x}\right)^2 \operatorname{Var}\left( u_{i} \right)}{\left[ \sum \left(x_{i}-\bar{x}\right)^{2} \right]^2}\\
 &= \sigma^2 \frac{\sum\left(x_{i}-\bar{x}\right)^2 }{\left[ \sum \left(x_{i}-\bar{x}\right)^{2} \right]^2}\\
-&= \frac{\sigma^2}{\sum \left(x_{i}-\bar{x}\right)^{2}}\\
-&= \frac{\sigma^2}{(n-1)s_X^2}\\
+&= \frac{\sigma^2}{\sum_{i=1}^n \left(x_{i}-\bar{x}\right)^{2}}\\
 \end{align}$$
 
 We conclude that
@@ -342,7 +381,7 @@ We conclude that
 - A larger sample size should decrease the variance of the slope estimator
 - A problem is that the error $\sigma^2$ variance is **unknown**
 
-We can estimate $\sigma^2$ by its unbiased estimator $\hat{\sigma}^2=\frac{\sum_i (x_i - \bar{x})}{n-2}$ (to be shown [below]), and substitute it into $\operatorname{Var}\left( \hat{\beta}_1 \right)$. Since the error variance $\hat{\sigma}^2$ is estimated, the slope variance $\operatorname{Var}\left( \hat{\beta}_1 \right)$ is estimated too, and hence the square root is called standard error of $\hat{\beta}$, instead of standard deviation.
+We can estimate $\sigma^2$ by its unbiased estimator $\hat{\sigma}^2=\frac{\sum_i (x_i - \bar{x})}{n-2}$ (to be shown [link]), and substitute it into $\operatorname{Var}\left( \hat{\beta}_1 \right)$. Since the error variance $\hat{\sigma}^2$ is estimated, the slope variance $\operatorname{Var}\left( \hat{\beta}_1 \right)$ is estimated too, and hence the square root is called standard error of $\hat{\beta}$, instead of standard deviation.
 
 
 $$\begin{align}
@@ -351,8 +390,45 @@ $$\begin{align}
 &= \frac{\hat{\sigma}}{\sqrt{\sum \left(x_{i}-\bar{x}\right)^{2}}}
 \end{align}$$
 
+
 Theorem (Gauss–Markov)
-: The ordinary least squares (OLS) estimator has the lowest sampling variance within the class of linear unbiased estimators, if the errors in the linear regression model are uncorrelated, have equal variances and expectation value of zero.
+: The ordinary least squares (OLS) estimator has the **lowest** sampling variance within the class of linear unbiased estimators, if the errors in the linear regression model are uncorrelated, have equal variances and expectation value of zero. In abbreviation, the OLS estimator is BLUE: Best (lowest variance) Linear Unbiased Estimator.
+
+
+: ```{dropdown} Proof
+
+  Let $\tilde{\boldsymbol{\beta}} = \boldsymbol{C} \boldsymbol{y}$ be another linear estimator of $\boldsymbol{\beta}$. We can write $\boldsymbol{C} = \left( \boldsymbol{X} ^\top \boldsymbol{X}  \right)^{-1} \boldsymbol{X} ^\top + \boldsymbol{D}$ where $\boldsymbol{D} \ne \boldsymbol{0}$. Then
+
+  $$\begin{align}
+  \operatorname{E}\left( \tilde{\boldsymbol{\beta} } \right)
+  &= \operatorname{E}\left( \boldsymbol{C} \boldsymbol{y}   \right)\\
+  &= \boldsymbol{C} \operatorname{E}\left( \boldsymbol{X} \boldsymbol{\beta} + \boldsymbol{\varepsilon}  \right)\\
+  &= \boldsymbol{\beta} + \boldsymbol{D} \boldsymbol{X} \boldsymbol{\beta} \\
+  \end{align}$$
+
+  Hence, $\tilde{\boldsymbol{\beta}}$ is unbiased iff $\boldsymbol{D} \boldsymbol{X}  = 0$.
+
+  The variance is
+
+  $$\begin{align}
+  \operatorname{Var}\left( \tilde{\boldsymbol{\beta} } \right)
+  &= \boldsymbol{C}\operatorname{Var}\left( \boldsymbol{y}  \right) \boldsymbol{C} ^\top \\
+  &= \sigma^2 \boldsymbol{C} \boldsymbol{C} ^\top \\
+  &= \sigma^2 \left[ \left( \boldsymbol{X} ^\top \boldsymbol{X}  \right) ^{-1}  + (\boldsymbol{X} ^\top \boldsymbol{X} ) ^{-1} \boldsymbol{X} ^\top \boldsymbol{D} ^\top + \boldsymbol{D} \boldsymbol{X} \left( \boldsymbol{X} ^\top \boldsymbol{X}  \right) ^\top  + \boldsymbol{D} \boldsymbol{D} ^\top  \right]\\
+  &= \sigma^2 \left[ \left( \boldsymbol{X} ^\top \boldsymbol{X}  \right) ^{-1} + \boldsymbol{D} \boldsymbol{D} ^\top  \right]\\
+  &= \operatorname{Var}\left( \hat{\boldsymbol{\beta} } \right) + \sigma^2 \boldsymbol{D} \boldsymbol{D} ^\top \\
+  \end{align}$$
+
+  Since $\sigma^2 \boldsymbol{D} \boldsymbol{D} ^\top \in \mathrm{PSD}$, we have
+
+  $$
+  \operatorname{Var}\left( \tilde{\boldsymbol{\beta} } \right) \succeq \operatorname{Var}\left( \hat{\boldsymbol{\beta} } \right)
+  $$
+
+  The equality holds iff $\boldsymbol{D} ^\top \boldsymbol{D} = 0$, which implies that $\operatorname{tr}\left( \boldsymbol{D} \boldsymbol{D} ^\top  \right) = 0$, then $\left\Vert \boldsymbol{D}  \right\Vert _F^2 = 0$, then $\boldsymbol{D} = 0$, i.e. $\tilde{\boldsymbol{\beta} } = \hat{\boldsymbol{\beta} }$. Therefore, BLUE is unique.
+  ```
+
+
 
 #### Hypothesis Testing
 
@@ -365,47 +441,43 @@ Definition
 
     It is an estimate of the error term $\varepsilon_i$
 
-Properties
-: - The sum of the residual is zero $\sum_i \hat{\varepsilon}_i  = 0$
-
-Proof
-
-Recall the normal equation
-
-$$
-\boldsymbol{X} ^\top (\boldsymbol{y} - \boldsymbol{X} \hat{\boldsymbol{\beta} }) = \boldsymbol{0}
-$$
-
-we get
-
-$$
-\boldsymbol{X} ^\top \boldsymbol{\hat{\varepsilon}}  = \boldsymbol{0}
-$$
-
-Since the first column of $\boldsymbol{X}$ is $\boldsymbol{1}$ , we have
-
-$$\begin{align}
-\sum_i \hat{\varepsilon}_i  
-&= \sum_i(y_i - \hat{y}_i)  \\
-&= \sum_i(y_i - \boldsymbol{x}_i ^\top \hat{\boldsymbol{\beta} }_i)  \\
-&= 0
-\end{align}$$
-
-
-: - The sum of the product of residual and any covariate: $\sum_i x_{ij} \hat{\varepsilon}_i = 0$ for all $j$.
-
-Proof
-
-A corollary of
-
-$$
-\boldsymbol{X} ^\top \boldsymbol{\hat{\varepsilon}}  = \boldsymbol{0}
-$$
-
-
-```{note}
-Some social science courses describe this property as "the residual and the independent variables are uncorrelated".
+```{margin}
+Sometimes the second property is described as "the residuals and the explanatory variables are uncorrelated".
 ```
+
+Properties
+: - The sum of the residual is zero: $\sum_i \hat{\varepsilon}_i  = 0$
+  - The sum of the product of residual and any covariate: $\sum_i x_{ij} \hat{\varepsilon}_i = 0$ for all $j$.
+
+    ```{dropdown} Proof
+    Recall the normal equation
+
+    $$
+    \boldsymbol{X} ^\top (\boldsymbol{y} - \boldsymbol{X} \hat{\boldsymbol{\beta} }) = \boldsymbol{0}
+    $$
+
+    We obtain
+
+    $$
+    \boldsymbol{X} ^\top \boldsymbol{\hat{\varepsilon}}  = \boldsymbol{0}
+    $$
+
+    Since the first column of $\boldsymbol{X}$ is $\boldsymbol{1}$ , we have
+
+    $$\begin{align}
+    \sum_i \hat{\varepsilon}_i  
+    &= \sum_i(y_i - \hat{y}_i)  \\
+    &= \sum_i(y_i - \boldsymbol{x}_i ^\top \hat{\boldsymbol{\beta} }_i)  \\
+    &= 0
+    \end{align}$$
+
+    For other columns $\boldsymbol{x}_j$ in $\boldsymbol{X}$, we have
+
+    $$
+    \boldsymbol{x}_j ^\top \boldsymbol{\hat{\varepsilon}}  = \boldsymbol{0}
+    $$
+    ```
+
 
 
 ### Independence of $\hat{\boldsymbol{\beta}}$ and $\hat{\sigma}^2$
@@ -461,8 +533,9 @@ Linear regression models only reveal linear associations between the response va
 Only when the data is from a randomized controlled trial, correlation will imply causation,
 ```
 
-### Partialling Out
+#### Partialling Out
 
+We can interpret the coefficients in multiple linear regression from "partialling out" perspective.
 
 When $p=3$, i.e.,
 
@@ -526,21 +599,228 @@ The Analysis Of Variance, popularly known as the ANOVA, can be used in cases whe
 
 ### Omitted Variable Bias
 
-
-
-
-For instance, suppose the true model (p=3) is
+Suppose the true model is
 
 $$
-y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \varepsilon
+\boldsymbol{y} = \boldsymbol{X}_{n \times p} \boldsymbol{\beta} + \boldsymbol{\varepsilon}  
 $$
+
+And we omit one explanatory variable $X_j$. Thus, our new design matrix has size $n \times (p-1)$, denoted by $\boldsymbol{X}_{-j}$. Without loss of generality, let it be in the last column of the original design matrix, i.e. $\boldsymbol{X} = \left[ \boldsymbol{X} _{-j} \quad \boldsymbol{x}_j \right]$. The new estimated coefficients vector is denoted by $\hat{\boldsymbol{\beta}}_{-j}$.
+
+The coefficient for $\boldsymbol{x}_j$ in the true model is denoted by $\beta_j$, and the vector of coefficients for other explanatory variables is denoted by $\boldsymbol{\beta} _{-j}$. Hence, $\boldsymbol{\beta} ^\top = \left[ \boldsymbol{\beta} _{-j} \quad \beta_j  \right] ^\top$.
+
+Question: Is $\hat{\boldsymbol{\beta}}_{-j}$ unbised for $\boldsymbol{\beta}_{-j}$?
+
+Answer: No. **Omitting an relevant variable increases bias**. There is a deterministic identity.
+
+We find the expression of the new estimator $\hat{\boldsymbol{\beta}}_{-j}$
+
+$$\begin{align}
+ \hat{\boldsymbol{\beta} }_{-j}
+&= \left( \boldsymbol{X} ^\top _{-j} \boldsymbol{X}  _{-j} \right) ^{-1} \boldsymbol{X} ^\top _{-j} \boldsymbol{y} \\
+&= \left( \boldsymbol{X} ^\top _{-j} \boldsymbol{X}  _{-j} \right) ^{-1} \boldsymbol{X} ^\top _{-j} \left\{ \left[ \boldsymbol{X} _{-j} \quad \boldsymbol{x}_j \right]\left[\begin{array}{l}
+\boldsymbol{\beta} _{-j}  \\
+\beta _j
+\end{array}\right] + \boldsymbol{\varepsilon}  \right\}\\
+&= \left( \boldsymbol{X} ^\top _{-j} \boldsymbol{X}  _{-j} \right) ^{-1} \boldsymbol{X} ^\top _{-j} \left( \boldsymbol{X} _{-j} \boldsymbol{\beta} _{-j} +  \boldsymbol{x}_j \beta _j + \boldsymbol{\varepsilon}  \right) \\
+&=  \boldsymbol{\beta} _{-j} + \left[ \left( \boldsymbol{X} ^\top _{-j} \boldsymbol{X}  _{-j} \right) ^{-1} \boldsymbol{X} ^\top _{-j} \right]\left(  \boldsymbol{x}_j \beta _j+ \boldsymbol{\varepsilon}  \right)\\
+\end{align}$$
+
+The expectation, therefore, is
+
+$$
+\operatorname{E}\left( \hat{\boldsymbol{\beta} }_{-j} \right) =  \boldsymbol{\beta} _{-j} + \left[ \left( \boldsymbol{X} ^\top _{-j} \boldsymbol{X}  _{-j} \right) ^{-1} \boldsymbol{X} ^\top _{-j} \boldsymbol{x}_j \right]\beta _j\\
+$$
+
+What is $\left( \boldsymbol{X} ^\top _{-j} \boldsymbol{X}  _{-j} \right) ^{-1} \boldsymbol{X} ^\top _{-j}   \boldsymbol{x}_j$? You may recognize this form. It is actually the vector of estimated coefficients when we regress the omitted variable $X_j$ on all other explanatory variables $\boldsymbol{X} _{-j}$. Let it be $\boldsymbol{\alpha}_{(p-1) \times 1}$.
+
+Therefore, we have, for the $k$-th explanatory variable in the new model,
+
+$$
+\operatorname{E}\left( \hat{\beta} _{-j,k} \right) = \beta_{k} + \alpha_k \beta_j
+$$
+
+So the bias is $\alpha_k \beta_j$. The sign can be positive or negative.
+
+This identity can be converted to the following diagram. The explanatory variable $X_k$ is associated with the response $Y$ in two ways. First is directly by itself with strength is $\beta_k$, and second is through the omitted variable $X_j$, with a "compound" strength $\alpha_k \beta_j$.
+
+$$
+X_k \quad \overset{\quad \beta_{k} \quad }{\longrightarrow} \quad Y
+$$
+
+$$
+\alpha_k \searrow \qquad \nearrow \beta_j
+$$
+
+$$
+X_j
+$$
+
+When will the bias be zero?
+
+- If $\alpha_k = 0$, that is, the omitted variable $X_j$ and the concerned explanatory variable $X_k$ is uncorrelated, i.e., $\boldsymbol{x}_j ^\top \boldsymbol{x}_k = 0$ in the design matrix.
+- If $\beta_j = 0$, that is, the omitted variable $X_j$ and the response $Y$ is uncorrelated, i.e., $\boldsymbol{x}_j ^\top \boldsymbol{y}  = 0$.
+
+
+What about the relation between the sample estimates?
+
+$$
+\hat{\beta }_{-j,k} =  \hat{\beta}_k + \hat{\alpha}_k\hat{\beta}_j
+$$
+
+Verify:
+
+```python
+import numpy as np
+from sklearn.linear_model import LinearRegression
+
+n = 1000
+b0 = np.ones(n)
+x1 = np.random.normal(0,1,n)
+x2 = np.random.normal(0,1,n)
+rho = 0.5
+x3 = rho * x2 + np.sqrt(1-rho**2) * np.random.normal(0,1,n)
+e = np.random.normal(0,1,n)*0.1
+y = 1 + 1* x1 + 2*x2 + 3*x3 + e
+y = y.reshape((-1,1))
+X = np.vstack([b0,x1,x2,x3]).transpose()
+
+lm = LinearRegression(fit_intercept=False).fit(X, y)
+print(lm.coef_)
+r = y - lm.predict(X)
+
+lmo = LinearRegression(fit_intercept=False).fit(X[:, :-1], y)
+print(lmo.coef_)
+ro = y - lmo.predict(X[:, :-1])
+
+lmx = LinearRegression(fit_intercept=False).fit(X[:, :-1], X[:, [-1]])
+print(lmx.coef_)
+rx = y - lmx.predict(X[:, :-1])
+
+print(lm.coef_[0,:3] + lmx.coef_[0] * lm.coef_[0, -1] - lmo.coef_[0])
+```
+
+The message here is that we should include the omitted factors to reduce bias, but in practice we can never know what all relevant factors are, and rarely can we measure all relevant factors.
+
+
+### Multicollinearity
+
+Definition (Multicollinearity)
+: Multicollinearity measure the extent of pairwise correlation of variables in the design matrix.
+
+
+```{margin} Multicollinearity in computation
+From numerical algebra's perspective, the extent of correlation of variables in the design matrix $\boldsymbol{X}$ determines the condition number of $\boldsymbol{X} ^\top \boldsymbol{X}$. As the correlation increases, the inverse becomes unstable. When perfect linear relation exists, then $\boldsymbol{X} ^\top \boldsymbol{X}$ is not of full rank, so no inverse exists.
+```
+
+Definition (Perfect multicollinearity)
+: A set of variables is perfectly multicollinear if a variable does not vary, or if there is an exact linear relationship between a set of variables:
+
+$$
+X_{j}=\delta_{0}+\delta_{1} X_{1}+\cdots+\delta_{j-1} X_{j-1}+\delta_{i+1} X_{i+1}+\cdots+\delta_{k} X_{k}
+$$
+
+As long as the variables in the design matrix are not uncorrelated, then multicollinearity exists.
+
+#### Diagnosis
+
+Some common symptoms include
+- $F$-test is significant, $R^2$ is good, but $t$-test is not significant.
+- Large magnitude of $\hat{\beta}_j$
+- Large standard error $\operatorname{se}(\beta_j)$
+
+We can measure the extent of multicollinearity by variance inflation factor (VIF) for each explanatory variable.
+
+
+$$
+\operatorname{VIF}_j = \frac{1}{1-R_{-j}^2}
+$$
+
+where $R_{-j}^2$ is the value of $R^2$ when we regress $Y$ over all other explanatory variables excluding $X_j$. The value of $\operatorname{VIF}_j$ can be interpreted as: the standard error $\operatorname{se}(\beta)$ is $\sqrt{\operatorname{VIF}_j}$ time larger than it would have been without multicollinearity.
+
+A second way measurement is the **condition number** of $\boldsymbol{X} ^\top \boldsymbol{X}$. If it is greater than 30, then we can conclude that the multicollinearity problem cannot be ignored.
+
+$$
+\kappa_2 \left( \boldsymbol{X} ^\top \boldsymbol{X}  \right) = \sqrt{\frac{\lambda_1 (\boldsymbol{X} ^\top \boldsymbol{X} )}{\lambda_p (\boldsymbol{X} ^\top \boldsymbol{X} )} }
+$$
+
+Finally, correlation matrix can also be used to measure multicolinearity.
+
+#### Consequences
+
+1. It inflates $\operatorname{Var}\left( \hat{\beta}_j \right)$.
+
+    $$\begin{align}
+    \operatorname{Var}\left( \hat{\beta}_j \right)
+    &= \sigma^2 \frac{1}{1- R^2_{-j}} \frac{1}{\sum_i (x_{ij} - \bar{x}_j)^2}  \\
+    &=  \sigma^2 \frac{\operatorname{VIF}_j}{\operatorname{Var}\left( X_j \right)}  
+    \end{align}$$
+
+    When perfect multicollinearity exists, the variance goes to infinity since $R^2_{-j} = 1$.
+
+1. $t$-tests fail to reveal significant predictors, due to 1.
+
+1. Estimated coefficients are sensitive to randomness in $Y$, i.e. unreliable. If you run the experiment again, the coefficients can change dramatically, which is measured by $\operatorname{Var}\left( \hat{\boldsymbol{\beta} } \right)$.
+
+1. If $\operatorname{Corr}\left( X_1, X_2 \right)$ is large, then we expect to have large $\operatorname{Var}\left( \hat{\beta}_1 \right), \operatorname{Var}\left( \hat{\beta}_2 \right), \operatorname{Var}\left( \hat{\beta}_1, \hat{\beta}_2 \right)$, but $\operatorname{Var}\left( \hat{\beta}_1 + \hat{\beta}_2 \right)$ can be small. This means we cannot distinguish the effect of $X_1 + X_2$ on $Y$ is from $X_1$ or $X_2$, i.e. **non-identifiable**.
+
+
+    ```{dropdown} Proof
+    Proof
+
+    By the fact that, for symmetric positive definite matrix $\boldsymbol{S}$, if
+
+    $$
+    \boldsymbol{a} ^\top \boldsymbol{S} \boldsymbol{a}  = \boldsymbol{a} \boldsymbol{U} \boldsymbol{\Lambda} \boldsymbol{U} ^\top \boldsymbol{a} = \boldsymbol{b} ^\top \boldsymbol{\Lambda} \boldsymbol{b} = \sum \lambda_i b_i ^2
+    $$
+
+    then
+
+    $$
+    \boldsymbol{a} ^\top \boldsymbol{S} ^{-1}  \boldsymbol{a}  = \boldsymbol{a} \boldsymbol{U} \boldsymbol{\Lambda} ^{-1}  \boldsymbol{U} ^\top \boldsymbol{a} = \boldsymbol{b} ^\top \boldsymbol{\Lambda} ^{-1}  \boldsymbol{b} = \sum \frac{1}{\lambda_i}  b_i ^2
+    $$
+
+    we have:
+
+    If
+
+    $$
+    \left( \boldsymbol{x}_1 - \boldsymbol{x}_2 \right) ^\top \left( \boldsymbol{x}_1 - \boldsymbol{x}_2 \right)  = \left( \boldsymbol{e}_1 - \boldsymbol{e}_2   \right) ^\top \boldsymbol{X} ^\top \boldsymbol{X} \left( \boldsymbol{e}_1 - \boldsymbol{e} _2   \right) \approx 0
+    $$
+
+    then
+
+    $$
+    \operatorname{Var}\left( \hat{\beta}_1 - \hat{\beta}_2 \right)  = \sigma^2  \left( \boldsymbol{e}_1 - \boldsymbol{e}_2   \right) ^\top \left( \boldsymbol{X} ^\top \boldsymbol{X} \right) ^{-1}  \left( \boldsymbol{e}_1 - \boldsymbol{e} _2   \right) \approx \infty
+    $$
+
+    If
+
+    $$
+    \left( \boldsymbol{x}_1 + \boldsymbol{x}_2 \right) ^\top \left( \boldsymbol{x}_1 + \boldsymbol{x}_2 \right)  = \left( \boldsymbol{e}_1 + \boldsymbol{e}_2   \right) ^\top \boldsymbol{X} ^\top \boldsymbol{X} \left( \boldsymbol{e}_1 + \boldsymbol{e} _2   \right) \approx \text{constant}
+    $$
+
+    then
+
+    $$
+    \operatorname{Var}\left( \hat{\beta}_1 + \hat{\beta}_2 \right)  = \sigma^2  \left( \boldsymbol{e}_1 + \boldsymbol{e}_2   \right) ^\top \left( \boldsymbol{X} ^\top \boldsymbol{X} \right) ^{-1}  \left( \boldsymbol{e}_1 + \boldsymbol{e} _2   \right) \approx \text{constant}
+    $$
+```
+
+
+
+#### Implications
+
+If $X_1$ and $X_2$ show high correlation, then
+
+1. $X_1$ may be a proxy of $X_2$.
+1. $X_1 - X_2$ may just be noise.
+1. If $X_2$ is removed, $X_1$ may still be good for prediction.
 
 
 
 
 ### Heteroscedasticity
-
-### Multicollinearity
 
 ### Categorical $X$
 
@@ -597,7 +877,7 @@ $$
 
 where $(\beta_0 + \mu_\varepsilon)$ is the new intercept. We can still apply the methods above to conduct estimation and inference.
 
-(lm-proportional-model)
+(lm-proportional-model)=
 ### No Intercept
 
 *Assume the intercept $\beta_0$ in the model $y=\beta_0 + \beta_1 x + \varepsilon$ is zero. Find the OLS estimate for $\beta_1$, denoted $\tilde{\beta}$. Find its mean, variance, and compare them with those of the OLS estimate for $\beta_1$ when there is an intercept term.*
@@ -682,46 +962,20 @@ $$\begin{align}
 
 ### Exchange $X$ and $Y$
 
+### Covariance and $\beta_j$
 
-## Question
+In multiple regression, if $\operatorname{Cov}\left( Y, X_j \right) = 0$ then $\beta_j= 0$?
 
-When will
+Is it possible that $\operatorname{Cov}\left( X_j, X_k \right) \ne 0, \operatorname{Cov}\left( Y, X_k \right) \ne 0$ but $\operatorname{Cov}\left( Y, X_j \right) = 0$?
 
-$$\operatorname{E}\left( Y \mid X \right) = 0 ?$$
+### Decrease \operatorname{Var}\left( \hat{\beta}_j \right)
 
-## Claim
-
-If
-
-$$\operatorname{E}\left( v \right) = 0$$
-
-and
-
-$$\operatorname{Cov}\left( v, edu \right) = 0$$
-
-then
-
-$$\operatorname{E}\left( v \mid edu \right) = 0$$
-
-## Counterexample
-
-Generate random values $edu, v$ by
+Since
 
 $$\begin{align}
-
-edu &\sim \mathrm{Uniform}(0,1) \\
-v &= |edu - 0.5| \\
+\operatorname{Var}\left( \hat{\beta}_j \right)
+&= \sigma^2 \frac{1}{1- R^2_j} \frac{1}{\sum_i (x_{ij} - \bar{x}_j)^2}  \\
+&=  \sigma^2 \frac{\operatorname{VIF}_j}{\operatorname{Var}\left( X_j \right)}  
 \end{align}$$
 
-then
-
-$$
-E(v) = 0 \\
-\operatorname{Cov}\left( v, edu \right) = 0
-$$
-
-but
-
-$$
-\operatorname{E}\left( v \mid edu \right) = \operatorname{E}\left( |edu - 0.5| \mid edu \right) = |edu - 0.5|  \ne 0
-$$
+We can increase the variability in $X_j$, such as put $X_j$ at minimum and maximum possible values, and some middle values.
