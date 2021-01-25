@@ -52,10 +52,10 @@ More
 - Marginal is also Gaussian
 - Conditional (slice) is algo Gaussian
 
-:::{figure,myclass} Marginal Gaussian and conditional Gaussian are also Gaussian [Shi 2020]
+:::{figure,myclass} gaussian-marginal-conditional [Shi 2021]
 <img src="../imgs/gaussian-marginal-conditional.png" width = "80%" alt=""/>
 
-caption
+Marginal Gaussian and conditional Gaussian are also Gaussians [Shi 2020]
 :::
 
 ### Visualization
@@ -74,10 +74,10 @@ $$
 
 In the 2-d case, an ellipsoid reduces to an ellipse.
 
-:::{figure,myclass} Gaussian ellipse in 2-d plane [Shi 2020]
+:::{figure,myclass} gaussian-contour-2d
 <img src="../imgs/gaussian-2d.png" width = "50%" alt=""/>
 
-caption
+Gaussian ellipse in 2-d plane [Shi 2020]
 :::
 
 

@@ -1,14 +1,12 @@
 
 # Interval Scheduling
 
-Aka. job interval selection problem (JISP)
+Aka. job interval selection problem (JISP).
 
-## Basic Problem
+## Basic Case
 
 
-### Problem Setup
-
-How to schedule jobs
+### Problem
 
 Input
 : - A set $J$ of $n$ jobs
@@ -20,15 +18,21 @@ Goal
 Constraints
 : - No two jobs (intervals) can overlap in time
 
-### Greedy Algorithm Solution
+### Solution
 
 A solution by greedy algorithms is
 
+---
+**Algorithm** Interval Scheduling
+
+---
 - Start with an empty set $S=\emptyset$.
 - While $J\ne \emptyset$, do
   - Choose a job $j$ by a greedy rule, to be discussed below
   - Add $j$ to $S$
   - Delete from $J$ all jobs that overlap with $j$ (include $j$ itself)
+---
+
 
 What greedy rule should we use?
 - shortest job $\operatorname{argmin}_{j \in J} \, f_j - s_j$
