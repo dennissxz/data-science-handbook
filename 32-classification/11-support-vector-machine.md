@@ -303,6 +303,6 @@ This can be solved by gradient descent.
 One-versus-rest: construct K separate SVMs. Using
 $k^*=\arg \max _{k} (\boldsymbol{w}_k ^\top \boldsymbol{x} + b_k)$
 
-One-versus-one: construct $\frac{K(K-1)}{2}$ SVMs on all pairs. Test: select one with highest votes $k^* = \arg \max _k \sum_{j\ne k} \hat{y}_{kj}$
+One-versus-one: construct $\frac{K(K-1)}{2}$ SVMs on all pairs. Each SVM classifies a point to either $k_1$ or $k_2$. For prediction, select $k$ with the highest votes.
 
 “True” multi-class SVMs (Crammer and Singer, 2001)
