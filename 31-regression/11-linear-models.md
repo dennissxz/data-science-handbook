@@ -58,18 +58,20 @@ In social science, most of data is **observational data**. That is, researchers 
 
 However, the inference methods of the coefficients $\boldsymbol{\beta}$ are developed based on the natural science setting, i.e., the values of explanatory variables are pre-designed constants. Many social science courses frequently use descriptive statistics of the explanatory variables which assumes they are random, and apply inference methods which assumes they are constant. This is quite confusing for beginners to linear models.
 
-To be clear, we stick to the natural science setting. We use subscript $i$ in every $y_i, x_i, \varepsilon_i$ instead of $y, x, \varepsilon$ which gives a sense that $x$ is random. And we use descriptive statistics for the explanatory variables only when necessary.
+To be clear, we stick to the natural science setting and make the second assumption below. We use subscript $i$ in every $y_i, x_i, \varepsilon_i$ instead of $y, x, \varepsilon$ which gives a sense that $x$ is random. And we use descriptive statistics for the explanatory variables only when necessary.
 :::
 
 ## Assumptions
 
 Basic assumptions
 
-1. $\operatorname{E}\left( y_i \right) = \boldsymbol{x}_i ^\top \boldsymbol{\beta}$ is linear in covariates $X_j$.
+1. $\operatorname{E}\left( y_i \right) = \boldsymbol{x}_i ^\top \boldsymbol{\beta}$ is **linear** in covariates $X_j$.
 
-1. $\boldsymbol{x}_i$ is known and fixed.
+1. The values of explanatory variables $\boldsymbol{x}_i$ are known and fixed. Randomness only comes from $\varepsilon_i$.
 
-1. The error terms are uncorrelated $\operatorname{Cov}\left( \varepsilon_i, \varepsilon_j \right)= 0$, with common mean $\operatorname{E}\left( \varepsilon_i \right) = 0$ and variance $\operatorname{Var}\left( \varepsilon_i \right) = \sigma^2$.
+1. No $X_j$ is constant for all observations. No exact linear relationships among the explanatory variables (no perfect multicollinearity).
+
+1. The error terms are uncorrelated $\operatorname{Cov}\left( \varepsilon_i, \varepsilon_j \right)= 0$, with common mean $\operatorname{E}\left( \varepsilon_i \right) = 0$ and variance $\operatorname{Var}\left( \varepsilon_i \right) = \sigma^2$ (homoskedasticity).
 
     As a result, $\operatorname{E}\left( \boldsymbol{y}  \mid \boldsymbol{X} \right) = \boldsymbol{X} \boldsymbol{\beta}$, or $\operatorname{E}\left( y \mid x \right) = \beta_0 + \beta_1 x$ when $p=2$, which can be illustrated by the plots below.
 
@@ -88,17 +90,19 @@ Basic assumptions
     To predict $\hat{y}_i$, we just use $\hat{y}_i = \boldsymbol{x}_i ^\top \hat{\boldsymbol{\beta}}$ .
 
 
+
 1. The error terms are independent and follow Gaussian distribution $\varepsilon_i \overset{\text{iid}}{\sim}N(0, \sigma^2)$, or $\boldsymbol{\varepsilon} \sim N_n (\boldsymbol{0} , \sigma^2 \boldsymbol{I} _n)$.
 
     As a result, we have $Y_i \sim N(\boldsymbol{x}_i ^\top \boldsymbol{\beta} , \sigma^2 )$ or $\boldsymbol{y} \sim N_n(\boldsymbol{X} \boldsymbol{\beta} , \sigma^2 \boldsymbol{I} _n)$
 
 
-These assumptions are used for different objectives.
-- derivation of $\hat{\boldsymbol{\beta}}$ by least squares uses assumptions 1, 2.
-- derivation of $\operatorname{E}\left( \hat{\boldsymbol{\beta}} \right)$ uses assumptions 1, 2, $\operatorname{E}\left( \varepsilon_i \right) = 0$ in 3.
-- derivation of $\operatorname{Var}\left( \hat{\boldsymbol{\beta}} \right)$ uses assumptions 1, 2, $\operatorname{Cov}\left( \varepsilon_i, \varepsilon_j \right) = 0$ and $\operatorname{Var}\left( \epsilon_i \right) = \sigma^2$ in 3.
-- derivation of the distribution of $\hat{\boldsymbol{\beta} }$ uses 1, 2 and 3.
-- derivation of $\hat{\boldsymbol{\beta}}$ by maximal likelihood uses assumptions 1, 2, 3.
+These assumptions are used for different objectives. The first 3 assumptions are the base, and in additiona to them,
+- derivation of $\operatorname{E}\left( \hat{\boldsymbol{\beta}} \right)$ uses $\operatorname{E}\left( \varepsilon_i \right) = 0$ in 4.
+- derivation of $\operatorname{Var}\left( \hat{\boldsymbol{\beta}} \right)$ uses 1, 2, $\operatorname{Cov}\left( \varepsilon_i, \varepsilon_j \right) = 0$ and $\operatorname{Var}\left( \epsilon_i \right) = \sigma^2$ in 4.
+- proof of Gaussian-Markov Theorem (BLUE) uses 4.
+- derivation of the distribution of $\hat{\boldsymbol{\beta} }$ uses 4 and 5.
+- derivation of $\hat{\boldsymbol{\beta}}$ by least squares uses no more assumptions.
+- derivation of $\hat{\boldsymbol{\beta}}$ by maximal likelihood uses assumptions 4 and 5.
 
 
 :::{admonition} Zero conditional mean assumption
@@ -351,6 +355,7 @@ $$
 \end{equation}
 $$
 
+(lm-inference-variance)=
 #### Variance
 
 The variance (covariance matrix) of the coefficients is
@@ -362,7 +367,17 @@ $$\begin{align}
 &= \sigma^2 (\boldsymbol{X} ^\top \boldsymbol{X} ) ^{-1}\\
 \end{align}$$
 
-when $p=2$, the variance of $\hat{\beta}_1$ is
+
+More specifically, for the the $j$-th coefficient estimate, its variance is,
+
+$$\begin{align}
+\operatorname{Var}\left( \hat{\beta}_j \right)
+&= \sigma^2 \frac{1}{1- R^2_{-j}} \frac{1}{\sum_i (x_{ij} - \bar{x}_j)^2}
+\end{align}$$
+
+where $R_{-j}^2$ is the value of $R^2$ when we regress $X_j$ over all other explanatory variables excluding $X_j$.
+
+When $p=2$, the variance of $\hat{\beta}_1$ is
 
 
 $$\begin{align}
@@ -374,14 +389,16 @@ $$\begin{align}
 &= \frac{\sigma^2}{\sum_{i=1}^n \left(x_{i}-\bar{x}\right)^{2}}\\
 \end{align}$$
 
+since the $R^2$ when regressing $X_1$ to intercept is 0.
+
 We conclude that
 
-- The larger the error variance, $\sigma^2$, the larger the variance of the slope estimator
-- The larger the variability in the $x_i$, the smaller the variance of the slope estimator
-- A larger sample size should decrease the variance of the slope estimator
-- A problem is that the error $\sigma^2$ variance is **unknown**
+- The larger the error variance, $\sigma^2$, the larger the variance of the coefficient estimates.
+- The larger the variability in the $x_i$, the smaller the variance.
+- A larger sample size should decrease the variance.
+- In multiple regression, reduce the relation between $X_j$ and other covariates (e.g. by orthogonal design) can decreases $R^2_{-j}$, and hence decrease the variance.
 
-We can estimate $\sigma^2$ by its unbiased estimator $\hat{\sigma}^2=\frac{\sum_i (x_i - \bar{x})}{n-2}$ (to be shown [link]), and substitute it into $\operatorname{Var}\left( \hat{\beta}_1 \right)$. Since the error variance $\hat{\sigma}^2$ is estimated, the slope variance $\operatorname{Var}\left( \hat{\beta}_1 \right)$ is estimated too, and hence the square root is called standard error of $\hat{\beta}$, instead of standard deviation.
+A problem is that the error $\sigma^2$ variance is **unknown**. In practice, we can estimate $\sigma^2$ by its unbiased estimator $\hat{\sigma}^2=\frac{\sum_i (x_i - \bar{x})}{n-2}$ (to be shown [link]), and substitute it into $\operatorname{Var}\left( \hat{\beta}_1 \right)$. Since the error variance $\hat{\sigma}^2$ is estimated, the slope variance $\operatorname{Var}\left( \hat{\beta}_1 \right)$ is estimated too, and hence the square root is called standard error of $\hat{\beta}$, instead of standard deviation.
 
 
 $$\begin{align}
@@ -390,6 +407,7 @@ $$\begin{align}
 &= \frac{\hat{\sigma}}{\sqrt{\sum \left(x_{i}-\bar{x}\right)^{2}}}
 \end{align}$$
 
+### BLUE
 
 Theorem (Gauss–Markov)
 : The ordinary least squares (OLS) estimator has the **lowest** sampling variance within the class of linear unbiased estimators, if the errors in the linear regression model are uncorrelated, have equal variances and expectation value of zero. In abbreviation, the OLS estimator is BLUE: Best (lowest variance) Linear Unbiased Estimator.
@@ -428,7 +446,9 @@ Theorem (Gauss–Markov)
   The equality holds iff $\boldsymbol{D} ^\top \boldsymbol{D} = 0$, which implies that $\operatorname{tr}\left( \boldsymbol{D} \boldsymbol{D} ^\top  \right) = 0$, then $\left\Vert \boldsymbol{D}  \right\Vert _F^2 = 0$, then $\boldsymbol{D} = 0$, i.e. $\tilde{\boldsymbol{\beta} } = \hat{\boldsymbol{\beta} }$. Therefore, BLUE is unique.
   ```
 
+If error term is normally distributed, then OLS is most efficient among all consistent estimators (not just linear ones).
 
+When error term is non-normal, other estimators may have lower variance than OLS such as least absolute deviation (median regression).
 
 #### Hypothesis Testing
 
@@ -490,33 +510,52 @@ TBD
 
 We can think of each observation as being made up of an explained part, and an unexplained part.
 
-- Total sum of squares: $SST = \sum\left(y_{i}-\bar{y}\right)^{2}$
-- Sum of squares due to regression : $SSR = \sum\left(\hat{y}_{i}-\bar{y}\right)^{2}$
-- Sum of squared errors: $SSE = \sum (y_i - \hat{y}_i)^2$
+- Total sum of squares: $TSS = \sum\left(y_{i}-\bar{y}\right)^{2}$
+- Explained sum of squares: $ESS = \sum\left(\hat{y}_{i}-\bar{y}\right)^{2}$
+- Residual sum of squares: $RSS = \sum (y_i - \hat{y}_i)^2$
 
 Then
 
 $$\begin{align}
-SST
+TSS
 &=\sum\left(y_{i}-\bar{y}\right)^{2} \\
 &=\sum\left[\left(y_{i}-\hat{y}_{i}\right)+\left(\hat{y}_{i}-\bar{y}\right)\right]^{2} \\
 &=\sum\left[\hat{\varepsilon}_{i}+\left(\hat{y}_{i}-\bar{y}\right)\right]^{2} \\
 &=\sum \hat{\varepsilon}_{i}^{2}+2 \sum \hat{\varepsilon}_{i}\left(\hat{y}_{i}-\bar{y}\right)+\sum\left(\hat{y}_{i}-\bar{y}\right)^{2} \\
-&=\mathrm{SSR}+2 \sum \hat{\varepsilon}_{i}\left(\hat{\beta}_0 + \hat{\beta}_1 x_{i}-\bar{y}\right)+SSE \\
-&= SSR + SSE
+&= RSS + 2  \sum \hat{\varepsilon}_{i}\left(\hat{\beta}_0 + \hat{\beta}_1 x_{i}-\bar{y}\right)+ ESS \\
+&= RSS + ESS
 \end{align}$$
 
 where use the fact that $\sum_i \varepsilon_i = 0$ and $\sum_i \varepsilon_i x_i = 0$ shown [above].
 
 
 ```{warning}
-Some social science courses use $SSR$ and $SSE$ to denote the opposite quantity in statistics courses.
+Some courses use the letters $R$ and $E$ to denote the opposite quantity in statistics courses.
 
-- Explained sum of squares: $SSE = \sum\left(\hat{y}_{i}-\bar{y}\right)^{2}$
-- Residual sum of squares: $SSR = \sum (y_i - \hat{y}_i)^2$
+- Sum of squares due to regression: $SSR = \sum\left(\hat{y}_{i}-\bar{y}\right)^{2}$
+- Sum of squared errors: $SSE = \sum (y_i - \hat{y}_i)^2$
 ```
 
+From linear algebra's perspective, the decomposition identity is equivalent to
 
+$$
+\left\Vert \boldsymbol{y} - \bar{y} \boldsymbol{1} _n  \right\Vert ^2 = \left\Vert \boldsymbol{y} - \hat{\boldsymbol{y} }  \right\Vert ^2 + \left\Vert \hat{\boldsymbol{y} } - \bar{y} \boldsymbol{1} _n\right\Vert ^2
+$$
+
+which holds because the LHS vector $\boldsymbol{y} - \bar{y}\boldsymbol{1} _n$ is the the sum of two vectors and they are orthogonal
+
+$$
+\boldsymbol{y} - \hat{\boldsymbol{y} } \perp \hat{\boldsymbol{y} } - \bar{y} \boldsymbol{1} _n
+$$
+
+More specifically, they are orthogonal because
+
+
+$$
+\boldsymbol{y} - \hat{\boldsymbol{y} } \in \operatorname{im}(X)^\perp \quad  \hat{\boldsymbol{y} } - \bar{y} \boldsymbol{1} _n \in \operatorname{im}(X)
+$$
+
+drawing [here]
 
 ## Interpretation
 
@@ -576,17 +615,103 @@ In this approach, $\hat{u}$ is interpreted as the part in $x_1$ that cannot be p
 ## Model Selection
 
 
-### $R$-squared
+### $R$-squared and Adjusted $R$-squared
 
-$R$-squared ($R$^2) is a statistical measure that represents the proportion of the variance for a dependent variable that's explained by an independent variable or variables in a regression model.
+By the decomposition of $SST$, we can define $R$-squared.
 
-Whereas correlation explains the strength of the relationship between an independent and dependent variable, $R$-squared explains to what extent the variance of one variable explains the variance of the second variable.
+Defintion
+: $R$-squared is a statistical measure that represents the **proportion of the variance** for a dependent variable that's **explained** by an independent variable or variables in a regression model.
+
+  $$
+  R^2 = \frac{SSR}{SST}  = 1 - \frac{SSE}{SST} = 1 - \frac{\sum (y_i - \hat{y}_i)^2}{\sum (y_i - \bar{y})^2}
+  $$
+
+
+Properties
+: $R$-squared can never decrease when an additional explanatory variable is added to the model.
+  As long as $Cov(Y, X_j) \ne 0$, then $X_j$ has some explanatory power to $Y$, and thus SST decreases. As a result, it is not a good measure for model selection, which can cause overfitting.
+: $R$-squared equals the squared correlation coefficient between the actual value of the response and the fitted value $\operatorname{Corr}\left( y, \hat{y} \right)^2$.
+  In particular, in simple linear regression, $R^2 = \rho_{X,Y}^2$.
+
+    ```{dropdown} Proof
+
+    $$\begin{align}
+    \operatorname{Corr}\left( y, \hat{y} \right)^2
+    &= \frac{\operatorname{Cov}\left( y, \hat{y} \right)^2}{\operatorname{Var}\left( y \right)\operatorname{Var}\left( \hat{y} \right)} \\
+    &= \frac{\operatorname{Cov}\left( \hat{y} + \hat{\varepsilon}, \hat{y} \right)^2}{\operatorname{Var}\left( y \right)\operatorname{Var}\left( \hat{y} \right)} \\
+    &= \frac{\operatorname{Cov}\left( \hat{y} , \hat{y} \right)^2}{\operatorname{Var}\left( y \right)\operatorname{Var}\left( \hat{y} \right)} \\
+    &= \frac{\operatorname{Var}\left( \hat{y} \right)^2}{\operatorname{Var}\left( y \right)\operatorname{Var}\left( \hat{y} \right)} \\
+    &= \frac{\operatorname{Var}\left( \hat{y} \right)}{\operatorname{Var}\left( y \right)} \\
+    &= \frac{SSR}{SST} \\
+    &= R^2 \\
+    \end{align}$$
+
+    The third equality holds since
+
+    $$
+    \operatorname{Cov}\left( \hat{\varepsilon}, \hat{y} \right) = \operatorname{Cov}\left( \hat{\varepsilon}, \sum_j x_j \hat{\beta}_j  \right) = \sum_j \hat{\beta}_j \operatorname{Cov}\left( \hat{\varepsilon},  x_j \right) = 0
+    $$
+
+    When $p=2$, since $\hat{y_i} = \hat{\beta}_0 + \hat{\beta}_1 x$, we have
+
+    $$
+    R^2 = \operatorname{Corr}\left(y, \hat{y} \right)^2 = \operatorname{Corr}\left(y, x \right)^2
+    $$
+
+    ```
+
+:::{admonition,dropdown,note} $R$-squared when there is no intercept
+
+When there is no intercept, then $\bar{y} \boldsymbol{1} _n \notin \operatorname{im}(X)$ and hence $\hat{\boldsymbol{y} } - \bar{y} \boldsymbol{1} _n \notin \operatorname{im}(X)$. The decomposition does not hold. What happen to $R$-squared depends on whether we define it using $TSS$ with $RSS$ or $ESS$.
+
+If we define $R^2 = \frac{ESS}{TSS}$, then when
 
 $$
-R^2 = \frac{SSR}{SST}  = 1 - \frac{SSE}{SST}
+\left\Vert \hat{\boldsymbol{y} } - \boldsymbol{y}  \right\Vert> \left\Vert \boldsymbol{y} - \bar{y}\boldsymbol{1} _n \right\Vert
 $$
 
-relation with $\beta$ in simple linear models:
+we will have $ESS > TSS$, i.e., $R^2 > 1$.
+
+On the other hand, if we define $R^2 = 1 - \frac{RSS}{TSS}$, then when
+
+$$
+\left\Vert \hat{\boldsymbol{y} } - \bar{y}\boldsymbol{1} _n \right\Vert> \left\Vert \boldsymbol{y} - \bar{y}\boldsymbol{1} _n \right\Vert
+$$
+
+we will have $RSS > TSS$, i.e. $R^2 < 0$.
+
+:::
+
+Due to the non-decrease property of $R$-squared, we define adjusted $R$-squared which is a better measure of goodness of fitting.
+
+Definition
+: Adjusted $R$-squared, denoted by $\bar{R}^2$, is defined as
+
+  $$
+  \bar{R}^2 = 1-\frac{RSS / (n-p)}{ TSS / (n-1)}
+  $$
+
+Properties
+: - $\bar{R}^2$ can increase or decrease. When a new variable is included, $RSS$ decreases, but $(n-p)$ also decreases.
+  - Relation to $R$-squared is
+
+    $$
+    \bar{R}^2 = 1-\frac{n-1}{ n-p}(1 - R^2) < R^2
+    $$
+
+  - Relation to estimated variance of random error and variance of response
+
+    $$
+    \bar{R}^2 = 1-\frac{\hat{\sigma}^2}{\operatorname{Var}\left( y \right)}
+    $$
+
+  - Can be negative when
+
+    $$
+    R^2 < \frac{p-1}{n-p}
+    $$  
+
+    If $p > \frac{n+1}{2}$ then the above inequality always hold, and adjusted $R$-squared is always negative.
 
 
 ### What is ANOVA?
@@ -597,7 +722,7 @@ The Analysis Of Variance, popularly known as the ANOVA, can be used in cases whe
 
 ## Special Cases
 
-### Omitted Variable Bias
+### Omitted Relevant Variables
 
 Suppose the true model is
 
@@ -609,9 +734,13 @@ And we omit one explanatory variable $X_j$. Thus, our new design matrix has size
 
 The coefficient for $\boldsymbol{x}_j$ in the true model is denoted by $\beta_j$, and the vector of coefficients for other explanatory variables is denoted by $\boldsymbol{\beta} _{-j}$. Hence, $\boldsymbol{\beta} ^\top = \left[ \boldsymbol{\beta} _{-j} \quad \beta_j  \right] ^\top$.
 
-Question: Is $\hat{\boldsymbol{\beta}}_{-j}$ unbised for $\boldsymbol{\beta}_{-j}$?
+```{margin}
+Though the common focus is on bias, omitting a variable probably decreases variance. See the relevant section [here], or the variance expression [above]](lm-inference-variance).
+```
 
-Answer: No. **Omitting an relevant variable increases bias**. There is a deterministic identity.
+*Question: Is $\hat{\boldsymbol{\beta}}_{-j}$ unbised for $\boldsymbol{\beta}_{-j}$?*
+
+*Answer: No. **Omitting an relevant variable increases bias. There is a deterministic identity for the bias.*
 
 We find the expression of the new estimator $\hat{\boldsymbol{\beta}}_{-j}$
 
@@ -702,6 +831,11 @@ print(lm.coef_[0,:3] + lmx.coef_[0] * lm.coef_[0, -1] - lmo.coef_[0])
 
 The message here is that we should include the omitted factors to reduce bias, but in practice we can never know what all relevant factors are, and rarely can we measure all relevant factors.
 
+### Include Non-relevant Variables
+
+Increase $\operatorname{Var}\left( \boldsymbol{\beta}  \right)$
+
+no effect to bias.
 
 ### Multicollinearity
 
@@ -736,7 +870,7 @@ $$
 \operatorname{VIF}_j = \frac{1}{1-R_{-j}^2}
 $$
 
-where $R_{-j}^2$ is the value of $R^2$ when we regress $Y$ over all other explanatory variables excluding $X_j$. The value of $\operatorname{VIF}_j$ can be interpreted as: the standard error $\operatorname{se}(\beta)$ is $\sqrt{\operatorname{VIF}_j}$ time larger than it would have been without multicollinearity.
+where $R_{-j}^2$ is the value of $R^2$ when we regress $X_j$ over all other explanatory variables excluding $X_j$. The value of $\operatorname{VIF}_j$ can be interpreted as: the standard error $\operatorname{se}(\beta)$ is $\sqrt{\operatorname{VIF}_j}$ time larger than it would have been without multicollinearity.
 
 A second way measurement is the **condition number** of $\boldsymbol{X} ^\top \boldsymbol{X}$. If it is greater than 30, then we can conclude that the multicollinearity problem cannot be ignored.
 
@@ -763,7 +897,6 @@ Finally, correlation matrix can also be used to measure multicolinearity.
 1. Estimated coefficients are sensitive to randomness in $Y$, i.e. unreliable. If you run the experiment again, the coefficients can change dramatically, which is measured by $\operatorname{Var}\left( \hat{\boldsymbol{\beta} } \right)$.
 
 1. If $\operatorname{Corr}\left( X_1, X_2 \right)$ is large, then we expect to have large $\operatorname{Var}\left( \hat{\beta}_1 \right), \operatorname{Var}\left( \hat{\beta}_2 \right), \operatorname{Var}\left( \hat{\beta}_1, \hat{\beta}_2 \right)$, but $\operatorname{Var}\left( \hat{\beta}_1 + \hat{\beta}_2 \right)$ can be small. This means we cannot distinguish the effect of $X_1 + X_2$ on $Y$ is from $X_1$ or $X_2$, i.e. **non-identifiable**.
-
 
     ```{dropdown} Proof
     Proof
@@ -805,7 +938,7 @@ Finally, correlation matrix can also be used to measure multicolinearity.
     $$
     \operatorname{Var}\left( \hat{\beta}_1 + \hat{\beta}_2 \right)  = \sigma^2  \left( \boldsymbol{e}_1 + \boldsymbol{e}_2   \right) ^\top \left( \boldsymbol{X} ^\top \boldsymbol{X} \right) ^{-1}  \left( \boldsymbol{e}_1 + \boldsymbol{e} _2   \right) \approx \text{constant}
     $$
-```
+    ```
 
 
 
@@ -968,14 +1101,13 @@ In multiple regression, if $\operatorname{Cov}\left( Y, X_j \right) = 0$ then $\
 
 Is it possible that $\operatorname{Cov}\left( X_j, X_k \right) \ne 0, \operatorname{Cov}\left( Y, X_k \right) \ne 0$ but $\operatorname{Cov}\left( Y, X_j \right) = 0$?
 
-### Decrease \operatorname{Var}\left( \hat{\beta}_j \right)
+### Increase Estimation Precision
 
-Since
+- The larger the error variance, $\sigma^2$, the larger the variance of the coefficient estimates.
+- The larger the variability in the $x_i$, the smaller the variance.
+- A larger sample size should decrease the variance.
+- In multiple regression, reduce the relation between $X_j$ and other covariates (e.g. by orthogonal design) can decreases $R^2_{-j}$, and hence decrease the variance.
 
-$$\begin{align}
-\operatorname{Var}\left( \hat{\beta}_j \right)
-&= \sigma^2 \frac{1}{1- R^2_j} \frac{1}{\sum_i (x_{ij} - \bar{x}_j)^2}  \\
-&=  \sigma^2 \frac{\operatorname{VIF}_j}{\operatorname{Var}\left( X_j \right)}  
-\end{align}$$
+### $R$-squared vs $\hat{\boldsymbol{\beta}}$
 
-We can increase the variability in $X_j$, such as put $X_j$ at minimum and maximum possible values, and some middle values.
+### Partialling Out in general case
