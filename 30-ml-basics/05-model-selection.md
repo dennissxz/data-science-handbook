@@ -62,12 +62,20 @@ In this sense, model families corresponding to decreasing value of $\lambda$ (gr
 
 ## Hyperparameter Tuning
 
-The parameter $\lambda$ introduced above is a hyperparameter. Hyperparameters are tuned on validation/tuning data, instead of training data.
+The parameter $\lambda$ introduced above is a hyperparameter, which affect the model performance. Hyperparameter tuning is the process of selecting the appropriate hyperparameter value to optimize the model performance.
+
+Note that hyperparameters are tuned on validation/tuning data, instead of training data.
 
 Assumption
 : training, validation, test data are drawn from the true distribution, so validation is a proxy for test.
 
 
+Methods:
+- Manual
+  - start with good initial values
+  - train and test with a coarse "grid"
+  - zoom in the grid if good results lie there
+  - expand the grid if good results lie on the edge
 - Automatically: Bayesian hyperparameter optimization, gradient descent on held-out set
 - Learning to learn: meta-learning
 
