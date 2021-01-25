@@ -16,6 +16,11 @@ Since each group has more than one variable, one single correlation coefficient 
 
  Continuing this way we shall get the $p$ canonical correlations and $p$ pairs of canonical variables, where $p$ is the smallest dimension of $\boldsymbol{x} _1$ and $\boldsymbol{x} _2$.
 
+Input: n paired vectors.$\begin{equation}
+\left\{\left(\boldsymbol{x} _{1}, \boldsymbol{y} _{1}\right), \ldots,\left(\boldsymbol{x} _{n}, \boldsymbol{y} _{n}\right)\right\}
+\end{equation}$
+
+
 ## Learning
 
 Partition the covariance matrix of full rank in accordance with two groups of variables,
@@ -254,6 +259,21 @@ $$
 
 ```
 
+### Alternatives formulation
+
+minimize the difference of data in two projected space.
+
+
+$$
+\begin{equation}
+\begin{array}{ll}
+\text { minimize : } & E\left\|W^{T} Y-V^{T} X\right\|_{F}^{2} \\
+\text { or maximize : } & \operatorname{Tr} V^{T} C_{x y} W \\
+\text { subject to : } & V^{T} C_{x x} V=W^{T} C_{y y} W=I
+\end{array}
+\end{equation}
+$$
+
 
 ## Model Selection
 
@@ -307,7 +327,6 @@ $$
 is accepted. Then we shall retain only the first $k$ pairs of canonical variables to describe the linear association between $\boldsymbol{x} _1$ and $\boldsymbol{x} _2$.
 
 
-
 ## Interpretation
 
 
@@ -318,6 +337,47 @@ The meanings of the canonical variables are to be interpreted either
 It is an art to provide a good name to a canonical variable that represents the interpretation and often requires subject-matter knowledge in the field.
 
 
+## Pros Cons
+
+## Pros
+
+Unlike PCA, CCA has discriminative power in some cases.
+
+:::{figure,myclass} cca-has-disc-power
+<img src="../imgs/cca-has-disc-power.png" width = "90%" alt=""/>
+
+CCA has discriminative power [Livescu 2021]
+:::
+
+
+
+### Overfitting
+
+CCA tends to overfit, i.e. find spurious correlations in the training data.
+- sol: regularize CCA, or do an initial dimensionality reduction via PCA
+
+
 ## Extension
 
 ### Regularizing CCA
+
+Add noise
+
+$$
+\begin{equation}
+v_{1}, w_{1}=\underset{v, w}{\operatorname{argmax}} \frac{v^{T} C_{x y} w}{\sqrt{v^{T}\left(C_{x x}+r_{x} I\right) v w^{T}\left(C_{y y}+r_{y} I\right) w}}
+\end{equation}
+$$
+
+The solution becomes
+
+$$
+\begin{equation}
+\left(C_{x x}+r_{x} I\right)^{-1} C_{x y}\left(C_{y y}+r_{y} I\right)^{-1} C_{y x}
+\end{equation}
+$$
+
+
+replace
+x1 x2 -> x, y
+p, q -> d_x, d_y
