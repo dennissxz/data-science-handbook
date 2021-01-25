@@ -46,7 +46,7 @@ $$
 
 When the training set $\mathcal{D}$ is a good representatie of the underlying distribution $p(\boldsymbol{x} , y)$, the empirical loss serves as a proxy for the risk.
 
-###Discriminative vs Generative
+### Discriminative vs Generative
 
 Models for **classification** can be divided into two types.
 
