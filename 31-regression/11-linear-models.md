@@ -508,7 +508,7 @@ TBD
 
 TBD
 
-(lm-tss-decomposition)=
+(lm-tss-identity)=
 ### Decomposition of Total Sum of Squares
 
 We can think of each observation as being made up of an explained part, and an unexplained part.
@@ -517,7 +517,7 @@ We can think of each observation as being made up of an explained part, and an u
 -   Explained sum of squares: $ESS = \sum\left(\hat{y}_{i}-\bar{y}\right)^{2}$
 -   Residual sum of squares: $RSS = \sum (y_i - \hat{y}_i)^2$
 
-Then
+Then we have the decomposition identity
 
 $$\begin{align}
 TSS
@@ -538,23 +538,27 @@ Some courses use the letters $R$ and $E$ to denote the opposite quantity in stat
 - Sum of squared errors: $SSE = \sum (y_i - \hat{y}_i)^2$
 ```
 
-From linear algebra’s perspective, the decomposition identity is equivalent to
+From linear algebra’s perspective, the identity is equivalent to
 
 $$
 \left\Vert \boldsymbol{y} - \bar{y} \boldsymbol{1} _n  \right\Vert ^2 = \left\Vert \boldsymbol{y} - \hat{\boldsymbol{y} }  \right\Vert ^2 + \left\Vert \hat{\boldsymbol{y} } - \bar{y} \boldsymbol{1} _n\right\Vert ^2
 $$
 
-which holds because the LHS vector $\boldsymbol{y} - \bar{y}\boldsymbol{1} _n$ is the the sum of two vectors and they are orthogonal
+which holds because the LHS vector $\boldsymbol{y} - \bar{y}\boldsymbol{1} _n$ is the the sum of the two RHS vectors, and the two vectors are orthogonal
 
-$$
-\boldsymbol{y} - \hat{\boldsymbol{y} } \perp \hat{\boldsymbol{y} } - \bar{y} \boldsymbol{1} _n
-$$
+
+$$\begin{aligned}
+\boldsymbol{y}  - \bar{y} \boldsymbol{1} _n = (\boldsymbol{y} - \hat{\boldsymbol{y} }) &+ (\hat{\boldsymbol{y} } - \bar{y} \boldsymbol{1} _n) \\
+\boldsymbol{y} - \hat{\boldsymbol{y} } &\perp \hat{\boldsymbol{y} } - \bar{y} \boldsymbol{1} _n
+\end{aligned}$$
 
 More specifically, they are orthogonal because
 
 $$
 \boldsymbol{y} - \hat{\boldsymbol{y} } \in \operatorname{im}(\boldsymbol{X} )^\perp \quad  \hat{\boldsymbol{y} } - \bar{y} \boldsymbol{1} _n \in \operatorname{im}(\boldsymbol{X} )
 $$
+
+since $\boldsymbol{1} _n \in \operatorname{im}(\boldsymbol{X})$, if an intercept term is included in the model.
 
 drawing \[here\]
 
@@ -616,7 +620,7 @@ In this approach, $\hat{u}$ is interpreted as the part in $x_1$ that cannot be p
 (lm-rsquared)=
 ### $R$-squared and Adjusted $R$-squared
 
-By the [decomposition equation](lm-tss-decomposition) of $TSS$, we can define $R$-squared.
+Assuming the [decomposition identity](lm-tss-identity) of $TSS$ holds, we can define $R$-squared.
 
 Defintion  
 $R$-squared is a statistical measure that represents the **proportion of the variance** for a dependent variable that’s **explained** by an independent variable or variables in a regression model.
@@ -664,12 +668,12 @@ As long as $Cov(Y, X_j) \ne 0$, then $X_j$ has some explanatory power to $Y$, an
 
 :::{admonition,dropdown,note} $R$-squared when there is no intercept
 
-When there is no intercept, then $\bar{y} \boldsymbol{1} _n \notin \operatorname{im}(X)$ and hence $\hat{\boldsymbol{y} } - \bar{y} \boldsymbol{1} _n \notin \operatorname{im}(X)$. The decomposition does not hold. What happen to $R$-squared depends on whether we define it using $TSS$ with $RSS$ or $ESS$.
+When there is no intercept, then $\bar{y} \boldsymbol{1} _n \notin \operatorname{im}(X)$ and hence $\hat{\boldsymbol{y} } - \bar{y} \boldsymbol{1} _n \notin \operatorname{im}(X)$. The decomposition identity may not hold. Thus, the value of $R$-squared may no longer be in $[0,1]$, and its interpretation is no longer valid. What actually happen to the value $R$-squared depends on whether we define it using $TSS$ with $RSS$ or $ESS$.
 
 If we define $R^2 = \frac{ESS}{TSS}$, then when
 
 $$
-\left\Vert \hat{\boldsymbol{y} } - \boldsymbol{y}  \right\Vert> \left\Vert \boldsymbol{y} - \bar{y}\boldsymbol{1} _n \right\Vert
+\sqrt{ESS} = \left\Vert \hat{\boldsymbol{y} } - \bar{y}\boldsymbol{1} _n \right\Vert> \left\Vert \boldsymbol{y} - \bar{y}\boldsymbol{1} _n \right\Vert = \sqrt{TSS}
 $$
 
 we will have $ESS > TSS$, i.e., $R^2 > 1$.
@@ -677,7 +681,7 @@ we will have $ESS > TSS$, i.e., $R^2 > 1$.
 On the other hand, if we define $R^2 = 1 - \frac{RSS}{TSS}$, then when
 
 $$
-\left\Vert \hat{\boldsymbol{y} } - \bar{y}\boldsymbol{1} _n \right\Vert> \left\Vert \boldsymbol{y} - \bar{y}\boldsymbol{1} _n \right\Vert
+\sqrt{RSS} = \left\Vert \hat{\boldsymbol{y} } -  \boldsymbol{y} \right\Vert> \left\Vert \boldsymbol{y} - \bar{y}\boldsymbol{1} _n \right\Vert = \sqrt{TSS}
 $$
 
 we will have $RSS > TSS$, i.e. $R^2 < 0$.
