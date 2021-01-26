@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Canonical Corerlation Analysis &#8212; Data Science Handbook</title>
     
-  <link rel="stylesheet" href="../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
+  <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
 
     
   <link rel="stylesheet"
@@ -35,7 +35,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
     <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
     
-  <link rel="preload" as="script" href="../_static/js/index.3da636dd464baa7582d2.js">
+  <link rel="preload" as="script" href="../_static/js/index.d3f166471bb80abb5163.js">
 
     <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
@@ -522,6 +522,13 @@
   <a class="reference internal nav-link" href="#properties">
    Properties
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#alternatives-formulation">
+     Alternatives formulation
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#model-selection">
@@ -539,6 +546,23 @@
   <a class="reference internal nav-link" href="#interpretation">
    Interpretation
   </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#pros-cons">
+   Pros Cons
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#pros">
+   Pros
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#overfitting">
+     Overfitting
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#extension">
@@ -575,6 +599,9 @@
 <p>This maximum, <span class="math notranslate nohighlight">\(\rho_1\)</span>, is called the first canonical correlation and the corresponding pair of linear combinations, say <span class="math notranslate nohighlight">\((U_1, V_1)\)</span>, is called the first pair of canonical variables.</p>
 <p>Since each group has more than one variable, one single correlation coefficient may miss significant linear association in other dimensions. So we consider the subclass of <strong>all</strong> pairs of linear combinations of elements of <span class="math notranslate nohighlight">\(\boldsymbol{x}  _1\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{x}  _2\)</span> whose members are <strong>uncorrelated</strong> with <span class="math notranslate nohighlight">\((U_1, V_1）\)</span>. The maximum simple correlation coefficient, <span class="math notranslate nohighlight">\(\rho _2\)</span>, of such pairs is called the second canonical correlation and the pair, say <span class="math notranslate nohighlight">\((U_2, V_2)\)</span>, achieving this maximum is called the second pair of canonical variables.</p>
 <p>Continuing this way we shall get the <span class="math notranslate nohighlight">\(p\)</span> canonical correlations and <span class="math notranslate nohighlight">\(p\)</span> pairs of canonical variables, where <span class="math notranslate nohighlight">\(p\)</span> is the smallest dimension of <span class="math notranslate nohighlight">\(\boldsymbol{x} _1\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{x} _2\)</span>.</p>
+<p>Input: n paired vectors.<span class="math notranslate nohighlight">\(\begin{equation}
+\left\{\left(\boldsymbol{x} _{1}, \boldsymbol{y} _{1}\right), \ldots,\left(\boldsymbol{x} _{n}, \boldsymbol{y} _{n}\right)\right\}
+\end{equation}\)</span></p>
 </div>
 <div class="section" id="learning">
 <h2>Learning<a class="headerlink" href="#learning" title="Permalink to this headline">¶</a></h2>
@@ -780,6 +807,20 @@ L(\boldsymbol{\alpha}, \boldsymbol{\beta}, \lambda, \theta)=\left(\boldsymbol{\a
 <dt><strong>Invariance property</strong></dt><dd><p>Canonical corelations <span class="math notranslate nohighlight">\(\rho_i\)</span>’s between <span class="math notranslate nohighlight">\(\boldsymbol{x} _1\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{x} _2\)</span> are the same as those between <span class="math notranslate nohighlight">\(\boldsymbol{A} _1 \boldsymbol{x} _1 + \boldsymbol{c}_1\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{A} _2 \boldsymbol{x} _2 + \boldsymbol{c} _2\)</span>, where both <span class="math notranslate nohighlight">\(\boldsymbol{A} _1\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{A} _2\)</span> are non-singular square matrices and their computation can be based on either the partitioned covariance matrix or the partitioned correlation matrix. However, the canonical coefficients contained in <span class="math notranslate nohighlight">\(\boldsymbol{\alpha} _k\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{\beta} _k\)</span> are <strong>not</strong> invariant under the same transforam, nor their estimates.</p>
 </dd>
 </dl>
+<div class="section" id="alternatives-formulation">
+<h3>Alternatives formulation<a class="headerlink" href="#alternatives-formulation" title="Permalink to this headline">¶</a></h3>
+<p>minimize the difference of data in two projected space.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{equation}
+\begin{array}{ll}
+\text { minimize : } &amp; E\left\|W^{T} Y-V^{T} X\right\|_{F}^{2} \\
+\text { or maximize : } &amp; \operatorname{Tr} V^{T} C_{x y} W \\
+\text { subject to : } &amp; V^{T} C_{x x} V=W^{T} C_{y y} W=I
+\end{array}
+\end{equation}
+\end{split}\]</div>
+</div>
 </div>
 <div class="section" id="model-selection">
 <h2>Model Selection<a class="headerlink" href="#model-selection" title="Permalink to this headline">¶</a></h2>
@@ -833,10 +874,45 @@ H_{0}(k): \rho_{k+1}=\cdots=\rho_{p}=0
 </ul>
 <p>It is an art to provide a good name to a canonical variable that represents the interpretation and often requires subject-matter knowledge in the field.</p>
 </div>
+<div class="section" id="pros-cons">
+<h2>Pros Cons<a class="headerlink" href="#pros-cons" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="pros">
+<h2>Pros<a class="headerlink" href="#pros" title="Permalink to this headline">¶</a></h2>
+<p>Unlike PCA, CCA has discriminative power in some cases.</p>
+<div class="myclass figure align-default" id="cca-has-disc-power">
+<a class="reference internal image-reference" href="../_images/cca-has-disc-power.png"><img alt="" src="../_images/cca-has-disc-power.png" style="width: 90%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 11 </span><span class="caption-text">CCA has discriminative power [Livescu 2021]</span><a class="headerlink" href="#cca-has-disc-power" title="Permalink to this image">¶</a></p>
+</div>
+<div class="section" id="overfitting">
+<h3>Overfitting<a class="headerlink" href="#overfitting" title="Permalink to this headline">¶</a></h3>
+<p>CCA tends to overfit, i.e. find spurious correlations in the training data.</p>
+<ul class="simple">
+<li><p>sol: regularize CCA, or do an initial dimensionality reduction via PCA</p></li>
+</ul>
+</div>
+</div>
 <div class="section" id="extension">
 <h2>Extension<a class="headerlink" href="#extension" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="regularizing-cca">
 <h3>Regularizing CCA<a class="headerlink" href="#regularizing-cca" title="Permalink to this headline">¶</a></h3>
+<p>Add noise</p>
+<div class="math notranslate nohighlight">
+\[
+\begin{equation}
+v_{1}, w_{1}=\underset{v, w}{\operatorname{argmax}} \frac{v^{T} C_{x y} w}{\sqrt{v^{T}\left(C_{x x}+r_{x} I\right) v w^{T}\left(C_{y y}+r_{y} I\right) w}}
+\end{equation}
+\]</div>
+<p>The solution becomes</p>
+<div class="math notranslate nohighlight">
+\[
+\begin{equation}
+\left(C_{x x}+r_{x} I\right)^{-1} C_{x y}\left(C_{y y}+r_{y} I\right)^{-1} C_{y x}
+\end{equation}
+\]</div>
+<p>replace
+x1 x2 -&gt; x, y
+p, q -&gt; d_x, d_y</p>
 </div>
 </div>
 </div>
@@ -889,7 +965,7 @@ H_{0}(k): \rho_{k+1}=\cdots=\rho_{p}=0
     </div>
 
     
-  <script src="../_static/js/index.3da636dd464baa7582d2.js"></script>
+  <script src="../_static/js/index.d3f166471bb80abb5163.js"></script>
 
 
     

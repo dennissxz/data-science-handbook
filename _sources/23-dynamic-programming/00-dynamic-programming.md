@@ -1,5 +1,5 @@
 
-# Dynamic Programming 
+# Dynamic Programming
 
 We take Fibonacci numbers as an example.
 
@@ -34,7 +34,7 @@ Since $F(i) \ge 2F(i-2)$, we get $F(n) \ge 2^ {\Omega(n)}$, i.e. exponential run
 
 Memoization means we record the results and use it, so that we don't need to re-evaluate it again when it is needed.
 
-In this case, for any $i$, after $Fib(i)$ is called for the first time, record the result. In each subsequent call, return its recorded result.
+In this case, for any $i$, after $Fib(i)$ is called for the first time, we record the result. In each subsequent call, return its recorded result.
 
 As a result, $Fib(i)$ is evaluated only $O(1)$ time when we call $Fib(n)$. The running time for the memoization approach is $O(n)$.
 
@@ -46,18 +46,28 @@ It is iterative (use stored results), not recursive (call itself).
 
 In the Fibonacci case, the table has only one row (column) $T(i)$.
 
+It's known that $T(1) = T(2) = 1$. Then for $i=3$ to $n$, compute
+
+$$
+T(i) = T(i-1) + T(i-2)
+$$
+
+with $T(1) = T(2) = 1$.
+
+
+diff with memoization??
 
 ## Summary
 
-consider all sub-cases
+for an end case consider all sub-cases
 
-find iterative formula, usually use $\max$ for maximization problem.
+find iterative formula, usually use $\max$ for maximization problem. initialize the base case.
 
-design table
+design a DP table, initialize the base case.
 
-order of entry filling that meet the iterative formula (already stored)
+figure out an order of entry filling that meet the iterative formula (already stored)
 
-determine which entry should be the output
+determine which entry should be the final output
 
 proof by induction
 

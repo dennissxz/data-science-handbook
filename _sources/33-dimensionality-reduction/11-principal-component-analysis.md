@@ -1,7 +1,33 @@
 # Principal Component Analysis
 
-Proposed by Pearson in 1901 and further deveoped by Hotelling in 1993.
+Proposed by Pearson in 1901 and further developed by Hotelling in 1993.
 
+<!-- TOC -->
+
+- [Principal Component Analysis](#principal-component-analysis)
+  - [Objective](#objective)
+  - [Learning](#learning)
+    - [Sequential Maximization](#sequential-maximization)
+    - [Eigenvalue Decomposition](#eigenvalue-decomposition)
+  - [Special Cases](#special-cases)
+    - [Variables are Uncorrelated](#variables-are-uncorrelated)
+    - [Variables are Perfectly Correlated](#variables-are-perfectly-correlated)
+    - [Few Variables Have Extremely Large Variances](#few-variables-have-extremely-large-variances)
+  - [Properties](#properties)
+  - [Tuning](#tuning)
+  - [Interpretation](#interpretation)
+    - [Geometric Meaning: Direction of Variation](#geometric-meaning-direction-of-variation)
+    - [Proportion Explained](#proportion-explained)
+    - [Score of an Observation in Sample Data](#score-of-an-observation-in-sample-data)
+  - [Cons](#cons)
+  - [Relation to](#relation-to)
+    - [SVD](#svd)
+    - [Compression](#compression)
+    - [Gaussians](#gaussians)
+    - [Classification](#classification)
+  - [Extension](#extension)
+
+<!-- /TOC -->
 
 ## Objective
 
@@ -32,8 +58,11 @@ Consider a $p$-dimensional random vector $\boldsymbol{x} = \left( X_1, X_2, \ldo
 - The linear combinations $Y_i$ and $Y_j$ are **uncorrelated** for $i\ne j$. This imply that each variable in $\boldsymbol{y} = \left( Y_1, Y_2, \ldots, Y_m \right)^\top$ can be analyzed by using **univariate** techniques.
 
 
-![](../imgs/pca_illustration.png)
+:::{figure,myclass} pca-illustration
+<img src="../imgs/pca_illustration.png" width = "80%" alt=""/>
 
+Illustration of the objective of PCA
+:::
 
 Other formulations: Find a linear mapping $\boldsymbol{W}: \mathbb{R} ^p \rightarrow \mathbb{R} ^m$ (assume $\boldsymbol{X}$  is centered) to
 
@@ -355,10 +384,11 @@ There are several ways to choose the number of principal components to retain.
 
     Construct the so-called scree plot of the eigenvalue $\ell_i$ on the vertical axis versus $i$ on horizontal axis with equal intervals for $i = 1, 2, \ldots, p$, and join the points into a decreasing polygon. Try to find a “clean-cut” where the polygon “levels off” so that the first few eigenvalues seem to be far apart from the others.
 
-    <div align="center">
-    <img src="../imgs/pca_scree_plot.png" width = "40%" alt="scree plot" align=center />
-    </div>
+    :::{figure,myclass} pca-scree-plot
+    <img src="../imgs/pca_scree_plot.png" width = "50%" alt=""/>
 
+    Scree plot of $\lambda$. [Fung 2021]
+    :::
 
 1. **Hypothesis testing**
 
@@ -379,10 +409,11 @@ There are several ways to choose the number of principal components to retain.
 
     To choose an optimal number of principal components $k$, we can examine the magnitude of the residual $\left\Vert \boldsymbol{x} - \hat{\boldsymbol{x} } \right\Vert ^2$. The expected residual corresponds to variance in the **remaining** subspace.
 
-    <div align="center">
-    <img src="../imgs/pca_reconstruction.png" width = "90%" alt="" align=center />
-    </div>
+    :::{figure,myclass} pca-reconstruction
+    <img src="../imgs/pca_reconstruction.png" width = "80%" alt=""/>
 
+    Reconstruction of digits with mean and principal components [Livescu 2021]
+    :::
 
 
 1. **Downstream task performance**
@@ -416,18 +447,17 @@ with length
 - $2c\lambda_i^{1/2}$
 - directional cosines as coefficients given in $\boldsymbol{\alpha} _i$ for the $i$-th axis.
 
-<div align="center">
+<div align="center"> PCA and Ellipsoids of Gaussian [Fung 2018]
 <img src="../imgs/pca_pc_ellipsoids.png" width = "80%" alt="" align=center />
 </div>
 
 Another example is hand written digits. Suppose $\boldsymbol{\mu} _ \boldsymbol{x}$ is the sample mean that determines the "mean" appearance of the digit $2$, then $\boldsymbol{\phi}_j$ is a principal direction which determines the location of variation of the black/white pixels.
 
 
-
-:::{figure,myclass} markdown-fig
+:::{figure,myclass} pca-reconstruction-scale
 <img src="../imgs/pca_pc_digits.png" width = "50%" alt=""/>
 
-caption
+Reconstruction of digits with mean and scaled principal components [Livescu 2021]
 :::
 
 ### Proportion Explained
@@ -512,9 +542,11 @@ natural sciences. However, when the units of measurement are of artificial natur
 
 But note that the direction of largest variance need not to be the most discriminative direction. See the example below.
 
-<div align="center">
-<img src="../imgs/pca_classification.png" width = "90%" alt="" align=center />
-</div>
+:::{figure,myclass} pca-not-discriminative
+<img src="../imgs/pca_classification.png" width = "80%" alt=""/>
+
+PCA may not be discriminative [Livescu 2021]
+:::
 
 If we knew the labels, we could use a supervised dimensionality reduction, e.g. linear discriminant analysis.
 
@@ -581,3 +613,122 @@ $$
 \sigma^{2}=\frac{1}{d-k} \sum_{j=k+1}^{d} \lambda_{j}
 \end{equation}
 $$
+
+
+
+## Extension
+
+### Probabilistic PCA
+
+Add a probabilistic component (interpretation) to the PCA model.
+
+Model for $\boldsymbol{x}$:
+
+First draw low dimensional $\mathbf{z} \in \mathbb{R}^{k}$,
+
+$$
+p(\mathbf{z}) =\mathcal{N}(\mathbf{z} ; \mathbf{0}, \mathbf{I})
+$$
+
+and draw $\mathbf{x} \in \mathbb{R}^{d}, k \leq d$ by
+
+$$
+p(\mathbf{x} \mid \mathbf{z}) =\mathcal{N}\left(\mathbf{x} ; \mathbf{W} \mathbf{z}+\mu, \sigma^{2} \mathbf{I}\right)
+$$
+
+Or equivalently,
+$$
+\begin{equation}
+\mathbf{x}=\mathbf{W} \mathbf{z}+\boldsymbol{\mu} + \boldsymbol{\epsilon} , \text { where } \boldsymbol{\epsilon}  \sim \mathcal{N}\left(0, \sigma^{2} \mathbf{I}\right)
+\end{equation}
+$$
+
+The goal is to estimate the parameter $\boldsymbol{W} , \boldsymbol{\mu} , \sigma$ that maximize the log likelihood $\sum_{i=1}^{N} \log p\left(\mathbf{x}_{i}\right)$.
+
+By the property of multivariate Gaussian, the marginal distribution over $\boldsymbol{x}$ is also Gaussian.
+
+$$
+p(\mathbf{x})=\mathcal{N}\left(\mu, \mathbf{W} \mathbf{W}^{T}+\sigma^{2} \mathbf{I}\right)
+$$
+
+Before seeking the ML solution, notice that the solution is not unique: if $\boldsymbol{R}$ is an orthogonal matrix, then $\tilde{\boldsymbol{W}} = \boldsymbol{W} \boldsymbol{\boldsymbol{R}}$ is indistinguishable from $\boldsymbol{W}$
+
+
+$$
+\begin{equation}
+\tilde{\mathbf{W}} \tilde{\mathbf{W}}^{T}=\mathbf{W} \mathbf{R} \mathbf{R}^{T} \mathbf{W}^{T}=\mathbf{W} \mathbf{W}^{T}
+\end{equation}
+$$
+
+So we will find a solution up to a rotation $\boldsymbol{R}$.
+
+The conditional distribution of $\boldsymbol{z}$ given $\boldsymbol{x}$ is
+
+$$
+p(\mathbf{z} \mid \mathbf{x})=\mathcal{N}\left(\mathbf{z} ; \mathbf{M}^{-1} \mathbf{W}^{T}(\mathbf{x}-\mu), \sigma^{2} \mathbf{M}^{-1}\right)
+$$
+
+where $\boldsymbol{M} = \boldsymbol{W} ^\top \boldsymbol{W}  + \sigma^2 \boldsymbol{I}_k$.
+
+Let $\boldsymbol{C}  = \boldsymbol{W} \boldsymbol{W} ^\top + \sigma^2 \boldsymbol{I}_d$. The log likelihood is
+
+$$
+\begin{equation}
+-\frac{N d}{2} \log (2 \pi)-\frac{N}{2} \log |\mathbf{C}|-\frac{1}{2} \sum_{i=1}^{N}\left(\mathbf{x}_{i}-\mu\right)^{T} \mathbf{C}^{-1}\left(\mathbf{x}_{i}-\mu\right)
+\end{equation}
+$$
+
+Setting the derivative w.r.t. $\mu$ to $0$ we have
+
+$$\mu_{MLE} = \bar{\boldsymbol{x}}$$
+
+i.e. the sample mean. The solution for $\boldsymbol{W}$ and $\sigma^2$ is more complicated, but closed form.
+
+$$
+\begin{equation}
+\begin{aligned}
+\mathbf{W}_{M L} &=\mathbf{U}_{d \times k}\left(\Lambda_{k}-\sigma^{2} \mathbf{I}_k\right)^{1 / 2} \mathbf{R}_k \\
+\sigma_{M L}^{2} &=\frac{1}{d-k} \sum_{j=k+1}^{d} \lambda_{j}
+\end{aligned}
+\end{equation}
+$$
+
+where
+- $\boldsymbol{U} _{d \times k}$ is the first $k$ eigenvectors of the sample covariance matrix $\boldsymbol{S}$
+- $\boldsymbol{\Lambda}_k$ is the diagonal matrix of eigenvalues
+- $\boldsymbol{R}_k$ is an arbitrary orthogonal matrix
+
+Properties
+
+- For $\boldsymbol{R}_k = \boldsymbol{I}_k$ , the solution for $\boldsymbol{W}$ is just a scaled version (by $\boldsymbol{\Lambda} _k - \sigma^2 \boldsymbol{I} _k$) of that of standard PCA $U_{d\times k}$.
+- $\sigma^2_{ML}$ is the average variance of the discarded dimensions in $\mathcal{X}$
+- If $k = d$, i.e., no dimension reduction, then the MLE for the covariance matrix $\boldsymbol{C}$ of $\boldsymbol{x}$ is equal to $\boldsymbol{S}$, which is just the standard ML solution for a Gaussian distribution.
+
+$$
+\boldsymbol{C}_{ML} = \boldsymbol{W} _{ML} \boldsymbol{W} _{ML} ^\top + \sigma^2 \boldsymbol{I}  = \boldsymbol{U} (\boldsymbol{\Lambda} - \sigma^2 I) \boldsymbol{U} ^\top  + \sigma^2 \boldsymbol{I}   = \boldsymbol{U} \boldsymbol{\Lambda} \boldsymbol{U} ^\top  = \boldsymbol{S}.
+$$
+
+revise
+
+
+Representation
+
+$$
+\operatorname{E}\left( \boldsymbol{z} \mid \boldsymbol{x}   \right) = \boldsymbol{M}  ^{-1} \boldsymbol{W} ^\top _{MLE}(\boldsymbol{x} - \bar{\boldsymbol{x}})
+$$
+
+where $\boldsymbol{M} = \boldsymbol{W} _{MLE} ^\top \boldsymbol{W} _{MLE}  + \sigma^2 \boldsymbol{I}_k$.
+
+- As $\sigma^2 \rightarrow 0$, the posterior mean approaches the standard PCA projection $\boldsymbol{ z } =  \boldsymbol{U}  ^\top (\boldsymbol{x}  - \bar{\boldsymbol{x} })$
+- As $\sigma^2 > 0 $, the posterior mean "shrinks" the solution in magnitude from standard PCA. Since we are less certain about the representation. => smaller magnitude??
+
+It isalso possible to find the PPCA solution iteratively, visa the EM algorithm. This is useful if doing the eigen decomposition is too computationally demanding.
+
+PPCA provide
+- a way of approximating a Gaussian using fewer parameters (e.g. common variance)
+- a way of sampling from the data distribution as a probabilistic model
+
+- ML to MLE
+- d to p
+- k to m
+- W mapping

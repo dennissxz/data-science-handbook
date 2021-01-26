@@ -47,9 +47,6 @@ $$
 where $\boldsymbol{y}$ can be seen as a low-dimensional representation of $\boldsymbol{x}$
 
 
-### Multi-view
-
-
 
 ## Applications
 
@@ -89,3 +86,27 @@ Reconstruction error
 $$
 \boldsymbol{x}_i - \hat{\boldsymbol{x}}_i
 $$
+
+
+### Multi-view Dimensionality Reduction
+
+Unsupervised dimensionality reduction is very challenging. If we happen to have multiple data views, it can be easier.
+
+View means the number of ways we describe a data object.
+- picture: pixel value + captions
+- wiki webpage: page texts + hyper link structure
+- articles: two languages
+- speech: voice wave + video of mouth
+
+In multi-view representation learning, training data consists of samples of a $d$-dimensional random vector that has some natural split into two sub-vectors.
+
+$$
+\left[\begin{array}{l}
+\mathbf{x} \\
+\mathbf{y}
+\end{array}\right], \mathbf{x} \in \mathbf{R}^{d_{x}}, \mathbf{y} \in \mathbf{R}^{d_{y}}, d_{x}+d_{y}=d
+$$
+
+The task is to learn useful features/subspaces from such two view data. Typically involves learning representations of one view that are **predictive** of the other.
+
+One example of linear multi-view representation learning is canonical correlation anlaysis.

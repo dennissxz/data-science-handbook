@@ -1,9 +1,11 @@
 
 # Machine Learning Basics
 
+
+
 For each model, we introduce
 - Objective
-  - What is the sructural form of the model
+  - What is the structural form of the model
   - What quantity to optimize
 - Learning
   - Aka training, fitting, estimation
@@ -13,6 +15,9 @@ For each model, we introduce
 - Model Selection
   - How to select a good hyperparameter
 - Interpretation
+  - the logic behind the model
+  - the parameter of the model 
+  - the result of the model
 - Relation
   - Relation to other models or topics
 - Special Cases
