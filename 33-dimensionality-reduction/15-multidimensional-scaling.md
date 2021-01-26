@@ -11,7 +11,7 @@ MDS seeks a $k$-dimensional representation $\boldsymbol{z} \in \mathbb{R} ^k$ of
 
 $$
 \begin{equation}
-\min \sum_{i j}\left(\mathbf{x}_{i} \cdot \mathbf{x}_{j}-\mathbf{z}_{i} \cdot \mathbf{z}_{j}\right)^{2}
+\min \sum_{i j}\left(\boldsymbol{x}_{i} \cdot \boldsymbol{x}_{j}-\boldsymbol{z}_{i} \cdot \boldsymbol{z}_{j}\right)^{2}
 \end{equation}
 $$
 
@@ -22,7 +22,7 @@ The solution can be obtained from the $N\times N$ Gram matrix of inner products
 
 $$
 \begin{equation}
-\mathbf{G}=\mathbf{X} \mathbf{X}^{T}
+\boldsymbol{G}=\boldsymbol{X} \boldsymbol{X}^{T}
 \end{equation}
 $$
 
@@ -30,7 +30,7 @@ where
 
 $$
 \begin{equation}
-\mathbf{G}_{i j}=\mathbf{x}_{i} \cdot \mathbf{x}_{j}
+g_{i j}=\boldsymbol{x}_{i} \cdot \boldsymbol{x}_{j}
 \end{equation}
 $$
 
@@ -38,17 +38,19 @@ The output projections are given by
 
 $$
 \begin{equation}
-\mathbf{z}_{i \alpha}=\sqrt{\lambda_{\alpha}} \mathbf{v}_{\alpha i}, 1 \leq \alpha \leq k
+\boldsymbol{z}_{i \alpha}=\sqrt{\lambda_{\alpha}} \boldsymbol{v}_{\alpha i}, 1 \leq \alpha \leq k
 \end{equation}
 $$
 
 where $\boldsymbol{v} _\alpha$ is the $\alpha^{\text{th}}$ eigenvector of $\boldsymbol{G}$
 
-Define the Euclidean distances matrix
+#### Special Case
+
+Define the Euclidean distances matrix $\boldsymbol{F}$
 
 $$
 \begin{equation}
-\mathbf{F}_{i j}=\left\|\mathbf{x}_{i}-\mathbf{x}_{j}\right\|^{2}=\left\|\mathbf{x}_{i}\right\|^{2}-2 \mathbf{x}_{i}^{T} \mathbf{x}_{j}+\left\|\mathbf{x}_{j}\right\|^{2}
+f_{i j}=\left\|\boldsymbol{x}_{i}-\boldsymbol{x}_{j}\right\|^{2}=\left\|\boldsymbol{x}_{i}\right\|^{2}-2 \boldsymbol{x}_{i}^{T} \boldsymbol{x}_{j}+\left\|\boldsymbol{x}_{j}\right\|^{2}
 \end{equation}
 $$
 
@@ -56,7 +58,7 @@ If $\boldsymbol{x} _i$ are centered (zero-mean), we can convert the Euclidean di
 
 $$
 \begin{equation}
-\mathbf{G}=-\frac{1}{2}\left(\mathbf{I}-\mathbf{u} \mathbf{u}^{T}\right) \mathbf{F}\left(\mathbf{I}-\mathbf{u} \mathbf{u}^{T}\right)
+\boldsymbol{G}=-\frac{1}{2}\left(\boldsymbol{I}-\boldsymbol{u} \boldsymbol{u}^{T}\right) \boldsymbol{F}\left(\boldsymbol{I}-\boldsymbol{u} \boldsymbol{u}^{T}\right)
 \end{equation}
 $$
 
@@ -64,7 +66,7 @@ where
 
 $$
 \begin{equation}
-\mathbf{u}=\frac{1}{\sqrt{N}}(1,1, \ldots, 1)^{T}
+\boldsymbol{u}=\frac{1}{\sqrt{N}}(1,1, \ldots, 1)^{T}
 \end{equation}
 $$
 
@@ -73,3 +75,5 @@ $$
 MDS projections $\boldsymbol{z} _i$ are the same as those of PCA.
 - For each eigenvector $\boldsymbol{u}_i$ of $\boldsymbol{S}$, there is a corresponding eigenvector $\boldsymbol{v} _j = \boldsymbol{X} ^\top \boldsymbol{w} _i$ ?? of $\boldsymbol{G} = \boldsymbol{X} ^\top \boldsymbol{X}$.
 - The first $k$ vectors $\boldsymbol{v} _i$ gives the projected  data in both PCA and MDS.
+- Many non-linear dimensionality reduction methods are extension to MDS.
+- Unlike PCA, MDS only gives projections for the training set; it does not give us a way to project a new data point.
