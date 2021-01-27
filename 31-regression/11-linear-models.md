@@ -274,15 +274,14 @@ and the results are the same.
 ### By Assumptions
 
 In some social science courses, the estimation is done by using the assumptions
+
 - $\operatorname{E}\left( \varepsilon \right) = 0$
 - $\operatorname{E}\left( \varepsilon \mid X \right) = 0$
 
 The first one gives
 
 $$
-\begin{equation}
 \frac{1}{n}  \sum_{i=1}^{n}\left(y_{i}-\hat{\beta}_{0}-\hat{\beta}_{1} x_{i}\right)=0
-\end{equation}
 $$
 
 The second one gives
@@ -302,6 +301,27 @@ $$
 $$
 
 Therefore, we have the same normal equations to solve for $\hat{\beta}_0$ and $\hat{\beta}_1$.
+
+
+
+:::{admonition} Warning
+:class: warning
+
+Estimation by the two assumptions derived from the zero conditional mean assumption can be problematic. Consider a model without intercept $y_i = \beta x_i + \varepsilon_i$. Fitting by OLS, we have only ONE first order condition
+
+$$
+\sum_{i=1}^{n} x_{i}\left(y_{i}-\hat{\beta}_{1} x_{i}\right)=0
+$$
+
+If we fit by assumptions, then in addition to the condition above, the first assumption $\operatorname{E}\left( \varepsilon \right) = 0$ also gives
+
+$$
+ \sum_{i=1}^{n}\left(y_{i}-\hat{\beta}_{1} x_{i}\right)=0
+$$
+
+These two conditions may not hold at the same time.
+:::
+
 
 ### Maximum Likelihood
 
@@ -516,10 +536,7 @@ TBD
 
 ### Independence of $\hat{\boldsymbol{\beta}}$ and $\hat{\sigma}^2$
 
-TBD
-
-(lm-tss-identity)=
-### Decomposition of Total Sum of Squares
+### Sum of Squares
 
 We can think of each observation as being made up of an explained part, and an unexplained part.
 
@@ -527,7 +544,11 @@ We can think of each observation as being made up of an explained part, and an u
 -   Explained sum of squares: $ESS = \sum\left(\hat{y}_{i}-\bar{y}\right)^{2}$
 -   Residual sum of squares: $RSS = \sum (y_i - \hat{y}_i)^2$
 
-Then we have the decomposition identity
+
+(lm-tss-identity)=
+#### Decomposition of TSS
+
+We have the decomposition identity
 
 $$\begin{align}
 TSS
@@ -571,6 +592,50 @@ $$
 since $\boldsymbol{1} _n \in \operatorname{im}(\boldsymbol{X})$, if an intercept term is included in the model.
 
 drawing \[here\]
+
+(lm-rss-nonincreasing)=
+#### Non-increasing RSS
+
+```{margin}
+This is equivalent to say [$R$-squared](lm-rsquared) is always increasing or unchanged, if an intercept term in included in the model.
+```
+
+Given a data set, when we add an new explanatory variable into a regression model, $RSS$ is non-decreasing.
+
+Since we are comparing two nested minimization problems
+
+$$\begin{aligned}
+&\text{Problem 1: with } x_{p}  \ &\min &\ \left\Vert  \boldsymbol{y} - \boldsymbol{X} _{n \times p} \boldsymbol{\beta} _{p\times 1} \right\Vert ^2   = \min \ RSS_1 \\
+&\text{Problem 2: without } x_{p} \ &\min &\ \left\Vert  \boldsymbol{y} - \boldsymbol{X} _{n \times p} \boldsymbol{\beta} _{p\times 1} \right\Vert ^2  = \min \ RSS_2 \\
+&&\text{s.t.}  &\ \beta_{p} = 0
+\end{aligned}$$
+
+As a result, the minimum value of the Problem 1 should be no larger than the minimum value of the Problem 2, i.e. $RSS_1^* \le RSS_2^*$ , When will they be equal? Only when the solution $\hat{\beta}_{p}=0$ in Problame 1.
+
+When will $\hat{\beta}_{p}=0$ in problem 1? No clear condition.
+
+- If $\boldsymbol{x}_i$'s are orthogonal such that $\boldsymbol{X} ^\top \boldsymbol{X} = I_{p}$, then
+
+  $$
+  \boldsymbol{x}_{p} ^\top \boldsymbol{y} = 0 \Leftrightarrow \hat{\beta}_{p}=0
+  $$
+
+- Note that in general, $\not\Leftarrow$. An simple example can be a data set of two points $(1,0), (1,1)$. The fitted line is $y=0.5$.
+
+- Also, in general, $\not\Rightarrow$. An example is shown below where $\hat{\beta}_{2} \ne 0$.
+
+    ```{code-cell}
+    import numpy as np
+    y = np.array([[1,2,3]]).T
+    x0 = np.array([[1,1,1]])
+    x1 = np.array([[1,2,5]])
+    x2 = np.array([[1,-2,1]])
+    print(x2 @ y)
+    X = np.vstack((x0, x1, x2)).T
+    XXinv = np.linalg.inv(np.dot(X.T, X))
+    b = np.dot(XXinv, np.dot(X.T, y))
+    print(b)
+    ```
 
 ## Interpretation
 
@@ -647,9 +712,9 @@ $$
 Properties  
 -   $R$-squared can never decrease when an additional explanatory variable is added to the model.
 
-As long as $Cov(Y, X_j) \ne 0$, then $X_j$ has some explanatory power to $Y$, and thus SST decreases. As a result, it is not a good measure for model selection, which can cause overfitting.
+    As long as $Cov(Y, X_j) \ne 0$, then $X_j$ has some explanatory power to $Y$, and thus $RSS$ decreases, See the [section](lm-rss-nonincreasing) of $RSS$ for details. As a result, $R$-squared  is not a good measure for model selection, which can cause overfitting.
 
--   $R$-squared equals the squared correlation coefficient between the actual value of the response and the fitted value $\operatorname{Corr}\left( y, \hat{y} \right)^2$.
+-   $R$-squared equals the squared correlation coefficient between the actual value of the response and the fitted value $\operatorname{Corr}\left( Y, \hat{Y} \right)^2$.
 
     In particular, in simple linear regression, $R^2 = \rho_{X,Y}^2$.
 
@@ -749,7 +814,7 @@ TBD
 No models are perfect. In this section we introduce what happen when our model is misspecified or when some assumptions fail.
 
 (lm-omit-variable)=
-### Omit a Variables
+### Omit a Variable
 
 Suppose the true model is
 
@@ -796,6 +861,7 @@ $$
 \operatorname{E}\left( \hat{\beta} _{-j,k} \right) = \beta_{k} + \alpha_k \beta_j
 $$
 
+
 So the bias is $\alpha_k \beta_j$. The sign can be positive or negative.
 
 This identity can be converted to the following diagram. The explanatory variable $X_k$ is associated with the response $Y$ in two ways. First is directly by itself with strength is $\beta_k$, and second is through the omitted variable $X_j$, with a “compound” strength $\alpha_k \beta_j$.
@@ -816,6 +882,10 @@ When will the bias be zero?
 
 -   If $\alpha_k = 0$, that is, the omitted variable $X_j$ and the concerned explanatory variable $X_k$ is uncorrelated, i.e., $\boldsymbol{x}_j ^\top \boldsymbol{x}_k = 0$ in the design matrix.
 -   If $\beta_j = 0$, that is, the omitted variable $X_j$ and the response $Y$ is uncorrelated, i.e., $\boldsymbol{x}_j ^\top \boldsymbol{y} = 0$.
+
+```{margin}
+The takeaway here is that we should include all relevant omitted factors to reduce bias. But in practice, we can never know what all relevant factors are, and rarely can we measure all relevant factors.
+```
 
 That’s how we define “relevant”.
 
@@ -859,7 +929,6 @@ rx = y - lmx.predict(X[:, :-1])
 print("reconstruction difference of b0, b1, b2 :", lm.coef_[0,:3] + lmx.coef_[0] * lm.coef_[0, -1] - lmo.coef_[0])
 ```
 
-The takeaway here is that we should include the omitted factors to reduce bias. But in practice, we can never know what all relevant factors are, and rarely can we measure all relevant factors.
 
 
 (lm-include-variable)=
@@ -1080,6 +1149,8 @@ If the true model has a non-zero intercept, then $\tilde\beta$ is biased for $\b
 
 ### Transformation of Variables
 
+[insert] summary table.
+
 First, we take simple linear regression as an example.
 
 If $X ^\prime = aX + b$, then the new slope estimate is
@@ -1127,7 +1198,7 @@ TBD.
 
 TBD.
 
-### Covariance and $\beta_j$
+### Covariance, $R$-squared, and $\beta_j$
 
 In multiple regression, if $\operatorname{Cov}\left( Y, X_j \right) = 0$ then $\beta_j= 0$?
 
@@ -1144,9 +1215,6 @@ TBD.
 -   A larger sample size should decrease the variance.
 -   In multiple regression, reduce the relation between $X_j$ and other covariates (e.g. by orthogonal design) can decreases $R^2_{-j}$, and hence decrease the variance.
 
-### $R$-squared vs $\hat{\boldsymbol{\beta}}$
-
-TBD.
 
 ### Partialling Out in General Cases
 
@@ -1160,40 +1228,11 @@ TBD.
 
 
 (lm-rsq-non-decreasing)=
-### $R$-squared Non-decreasing
 
-Given a data set, when we add an new explanatory variable into a regression model, $R$-squared is non-decreasing.
+### Add/Remove a Variable/Observation
 
-This is equivalent to say $RSS$ is always decreases or unchanged.
+TBD
 
-Since we are comparing two nested minimization problems
+Table summary.
 
-$$\begin{aligned}
-\text{with } x_{p}  \quad \min &\ \left\Vert  \boldsymbol{y} - \boldsymbol{X} _{n \times p} \boldsymbol{\beta} _{p\times 1} \right\Vert ^2  \\
-\text{without } x_{p} \quad \min &\ \left\Vert  \boldsymbol{y} - \boldsymbol{X} _{n \times p} \boldsymbol{\beta} _{p\times 1} \right\Vert ^2  \\
-\text{s.t.}  &\ \beta_{p} = 0
-\end{aligned}$$
-
-As a result, the minimum value of the first problem should be no larger than the minimum value of the second problem. When will they be equal? Only when the solution $\hat{\beta}_{p}=0$ in problem 1.
-
-When will $\hat{\beta}_{p}=0$ in problem 1? No clear condition.
-- If $\boldsymbol{x}_i$'s are orthogonal such that $\boldsymbol{X} ^\top \boldsymbol{X} = I_{p}$, then
-
-  $$
-  \boldsymbol{x}_{p} ^\top \boldsymbol{y} = 0 \Leftrightarrow \hat{\beta}_{p}=0
-  $$
-
-- Note that in general, $\not\Rightarrow$. An example is shown below where $\hat{\beta}_{2} \ne 0$. Also, in general, $\not\Leftarrow$. An simple example can be a data set of two points $(1,0), (1,1)$. The fitted line is $y=0.5$.
-
-```{code-cell}
-import numpy as np
-y = np.array([[1,2,3]]).T
-x0 = np.array([[1,1,1]])
-x1 = np.array([[1,2,5]])
-x2 = np.array([[1,-2,1]])
-print(x2 @ y)
-X = np.vstack((x0, x1, x2)).T
-XXinv = np.linalg.inv(np.dot(X.T, X))
-b = np.dot(XXinv, np.dot(X.T, y))
-print(b)
-```
+Rows: E(b), Var(b), RSS, TSS, R^2
