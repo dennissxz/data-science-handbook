@@ -72,6 +72,13 @@ where $\boldsymbol{y}$ can be seen as a low-dimensional representation of $\bold
   - cluster purity
   - degree of compression
 
+- evaluate it on labeled data
+
+- reconstruction error
+  - need to evaluate on hold out data
+  - but some model do not work with out-of-sample data
+
+- KL distance between kernel density estimators on training set and embedding data set.
 
 ### Linear Dimensionality Reduction
 
