@@ -2,6 +2,9 @@
 
 We consider a distribution function $p(x; \theta)$ of $x$ parameterized by $\theta$. Our goal is to construct an estimator for the parameter. Maximum likelihood estimator, aka. MLE, as it name suggests, is an estimator for the parameter that is constructed by maximizing the likelihood function.
 
+
+Good example of likelihood principle: 245.ps1.q3
+
 ## Likelihood Function
 
 Definition (Likelihood Function)
