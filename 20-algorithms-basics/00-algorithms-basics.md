@@ -12,6 +12,8 @@ To prove feasibility, we just check whether the constraints are satisfied. To pr
 
 - $OPT$ gradually approaches out solution $S$, e.g. by induction
 
+Say our solution will not overshoot by saying that it is a feasible solution.
+
 ## Simplification
 
 Try to think some reasonable assumptions to transform the original problem setting into a simpler setting.
