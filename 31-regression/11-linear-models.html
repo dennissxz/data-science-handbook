@@ -681,13 +681,13 @@
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#omit-relevant-variables">
-     Omit Relevant Variables
+    <a class="reference internal nav-link" href="#omit-a-variables">
+     Omit a Variables
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#include-non-relevant-variables">
-     Include Non-relevant Variables
+    <a class="reference internal nav-link" href="#include-a-variable">
+     Include a Variable
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
@@ -798,6 +798,19 @@
      Partialling Out in General Cases
     </a>
    </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#causal">
+     Causal?
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#r-squared-non-decreasing">
+     <span class="math notranslate nohighlight">
+      \(R\)
+     </span>
+     -squared Non-decreasing
+    </a>
+   </li>
   </ul>
  </li>
 </ul>
@@ -813,11 +826,12 @@
                 
   <div class="section" id="linear-models">
 <h1>Linear Models<a class="headerlink" href="#linear-models" title="Permalink to this headline">¶</a></h1>
-<p>In this section we introduce linear models from a statistics’ perspective. The introduction from econometrics’ perspective or social science’s perspective may be different. In short, the statistics’ perspective focuses on general multivariate cases and heavily rely on linear algebra for derivation, while the econometrics’ or social science’s perspective prefers to introduce models in univariate cases by basic arithmetics (whose form can be complicated without linear algebra notations) and extend the intuitions and conclusions into multivariate cases.</p>
+<p>In this section we introduce linear models from a statistics’ perspective. The introduction from econometrics’ perspective or social science’s perspective may be different. In short, the statistics’ perspective focuses on general multivariate cases and heavily rely on linear algebra for derivation, while the econometrics’ or the social science’s perspective prefers to introduce models in univariate cases by basic arithmetics (whose form can be complicated without linear algebra notations) and extend the intuitions and conclusions into multivariate cases.</p>
 <!---
 My handwritten notes for the graduate level course STAT 343 offered by UChicago statistics department can be found [here](../imgs/lm-notes-applied-stat.pdf).
 -->
-<p>Personally, I involved in four courses that introduced linear models, i.e. at undergrad/grad level offered by stat/social science department. The style of the two courses offered by the stat departments were quite alike while the graduate level one covered more topics. In both undergrad/grad level courses offered by the social science departments, sometimes I got confused by the course materials that was contradictory to my statistics training , but the instructors did not have a clear response…In sum, to fully understand the fundamental and most widely used statistical model, I highly suggest to take a linear algebra course first and take the regression course offered by math/stat department.</p>
+<p>Personally, I involved in four courses that introduced linear models, i.e. at undergrad/grad level offered by stat/social science department. The style of the two courses offered by the stat departments were quite alike while the graduate level one covered more topics. In both undergrad/grad level courses offered by the social science departments, sometimes I got confused by the course materials that were contradictory to my statistics training , but the instructors had no clear response or even no response at all…</p>
+<p>In sum, to fully understand the most fundamental and widely used statistical model, I highly suggest to take a linear algebra course first and take the regression course offered by math/stat department.</p>
 <div class="section" id="objective">
 <h2>Objective<a class="headerlink" href="#objective" title="Permalink to this headline">¶</a></h2>
 <p>Linear models aim to model the relationship between a scalar response and one or more explanatory variables in a linear format:</p>
@@ -895,7 +909,13 @@ Y_i = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \varepsilon_i
 </ul>
 <div class="dropdown note admonition">
 <p class="admonition-title"> Zero conditional mean assumption</p>
-<p>In some social science or econometrics courses, they follow the “Gauss-Markov assumptions” that are roughly the same to the assumptions, but in different formats. One of them is zero conditional mean assumption. For <span class="math notranslate nohighlight">\(p=2\)</span>, it is</p>
+<p>In some social science or econometrics courses, they follow the “Gauss-Markov assumptions” that are roughly the same to the assumptions, but in different formats. One of them is zero conditional mean assumption.</p>
+<p>In general, it says</p>
+<div class="math notranslate nohighlight">
+\[
+\operatorname{E}\left( \varepsilon \mid x_1, x_2, \ldots, x_p\right) = 0
+\]</div>
+<p>For <span class="math notranslate nohighlight">\(p=2\)</span>, it is</p>
 <div class="math notranslate nohighlight">
 \[\operatorname{E}\left( \varepsilon \mid x  \right) = 0\]</div>
 <p>which (in their setting) implies</p>
@@ -943,7 +963,7 @@ Y_i = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \varepsilon_i
 <p>This linear system is called the <strong>normal equation</strong>.</p>
 <p>The closed form solution is</p>
 <div class="math notranslate nohighlight">
-\[\hat{\boldsymbol{\beta}} = \left( \boldsymbol{X} ^\top \boldsymbol{X}   \right)^{-1}\boldsymbol{X} \boldsymbol{y}  \]</div>
+\[\hat{\boldsymbol{\beta}} = \left( \boldsymbol{X} ^\top \boldsymbol{X}   \right)^{-1}\boldsymbol{X} ^\top  \boldsymbol{y}  \]</div>
 <div class="dropdown note admonition">
 <p class="admonition-title"> Solving the linear system by software</p>
 <p>Computing software use specific functions to solve the normal equation <span class="math notranslate nohighlight">\(\boldsymbol{X} ^\top \boldsymbol{X} \boldsymbol{\beta} = \boldsymbol{X} ^\top \boldsymbol{y}\)</span> for <span class="math notranslate nohighlight">\(\boldsymbol{\beta}\)</span>, instead of using the inverse <span class="math notranslate nohighlight">\((\boldsymbol{X} ^\top \boldsymbol{X}) ^{-1}\)</span> directly which can be slow and numerically unstable. For instance, one can use QR factorization of <span class="math notranslate nohighlight">\(X\)</span>,</p>
@@ -1260,14 +1280,14 @@ The residual is defined as the difference between the true response value <span 
 <p>TBD</p>
 </div>
 <div class="section" id="decomposition-of-total-sum-of-squares">
-<span id="lm-tss-decomposition"></span><h3>Decomposition of Total Sum of Squares<a class="headerlink" href="#decomposition-of-total-sum-of-squares" title="Permalink to this headline">¶</a></h3>
+<span id="lm-tss-identity"></span><h3>Decomposition of Total Sum of Squares<a class="headerlink" href="#decomposition-of-total-sum-of-squares" title="Permalink to this headline">¶</a></h3>
 <p>We can think of each observation as being made up of an explained part, and an unexplained part.</p>
 <ul class="simple">
 <li><p>Total sum of squares: <span class="math notranslate nohighlight">\(TSS = \sum\left(y_{i}-\bar{y}\right)^{2}\)</span></p></li>
 <li><p>Explained sum of squares: <span class="math notranslate nohighlight">\(ESS = \sum\left(\hat{y}_{i}-\bar{y}\right)^{2}\)</span></p></li>
 <li><p>Residual sum of squares: <span class="math notranslate nohighlight">\(RSS = \sum (y_i - \hat{y}_i)^2\)</span></p></li>
 </ul>
-<p>Then</p>
+<p>Then we have the decomposition identity</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
 TSS
@@ -1287,21 +1307,23 @@ TSS
 <li><p>Sum of squared errors: <span class="math notranslate nohighlight">\(SSE = \sum (y_i - \hat{y}_i)^2\)</span></p></li>
 </ul>
 </div>
-<p>From linear algebra’s perspective, the decomposition identity is equivalent to</p>
+<p>From linear algebra’s perspective, the identity is equivalent to</p>
 <div class="math notranslate nohighlight">
 \[
 \left\Vert \boldsymbol{y} - \bar{y} \boldsymbol{1} _n  \right\Vert ^2 = \left\Vert \boldsymbol{y} - \hat{\boldsymbol{y} }  \right\Vert ^2 + \left\Vert \hat{\boldsymbol{y} } - \bar{y} \boldsymbol{1} _n\right\Vert ^2
 \]</div>
-<p>which holds because the LHS vector <span class="math notranslate nohighlight">\(\boldsymbol{y} - \bar{y}\boldsymbol{1} _n\)</span> is the the sum of two vectors and they are orthogonal</p>
+<p>which holds because the LHS vector <span class="math notranslate nohighlight">\(\boldsymbol{y} - \bar{y}\boldsymbol{1} _n\)</span> is the the sum of the two RHS vectors, and the two vectors are orthogonal</p>
 <div class="math notranslate nohighlight">
-\[
-\boldsymbol{y} - \hat{\boldsymbol{y} } \perp \hat{\boldsymbol{y} } - \bar{y} \boldsymbol{1} _n
-\]</div>
+\[\begin{split}\begin{aligned}
+\boldsymbol{y}  - \bar{y} \boldsymbol{1} _n = (\boldsymbol{y} - \hat{\boldsymbol{y} }) &amp;+ (\hat{\boldsymbol{y} } - \bar{y} \boldsymbol{1} _n) \\
+\boldsymbol{y} - \hat{\boldsymbol{y} } &amp;\perp \hat{\boldsymbol{y} } - \bar{y} \boldsymbol{1} _n
+\end{aligned}\end{split}\]</div>
 <p>More specifically, they are orthogonal because</p>
 <div class="math notranslate nohighlight">
 \[
 \boldsymbol{y} - \hat{\boldsymbol{y} } \in \operatorname{im}(\boldsymbol{X} )^\perp \quad  \hat{\boldsymbol{y} } - \bar{y} \boldsymbol{1} _n \in \operatorname{im}(\boldsymbol{X} )
 \]</div>
+<p>since <span class="math notranslate nohighlight">\(\boldsymbol{1} _n \in \operatorname{im}(\boldsymbol{X})\)</span>, if an intercept term is included in the model.</p>
 <p>drawing [here]</p>
 </div>
 </div>
@@ -1313,9 +1335,10 @@ TSS
 <h4>Value<a class="headerlink" href="#value" title="Permalink to this headline">¶</a></h4>
 <p><span class="math notranslate nohighlight">\(\beta_j\)</span> is the expected change in the value of the response variable <span class="math notranslate nohighlight">\(y\)</span> if the value of the covariate <span class="math notranslate nohighlight">\(x_j\)</span> increases by 1, holding other covariates fixed.</p>
 <p><span class="math notranslate nohighlight">\(\beta_0\)</span> is the expected value of the response variable <span class="math notranslate nohighlight">\(y\)</span> if all covariates have values of zero.</p>
+<p>If the response is in log format, i.e. <span class="math notranslate nohighlight">\(\log(Y)\)</span>, then the <span class="math notranslate nohighlight">\(\beta_j\)</span> can be interpreted as the percentage change in <span class="math notranslate nohighlight">\(Y\)</span> associated with one unit increase of <span class="math notranslate nohighlight">\(X_j\)</span>.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>Linear regression models only reveal linear associations between the response variable and the independent variables. But association does not imply causation.</p>
+<p>Linear regression models only reveal linear associations between the response variable and the independent variables. But association does not imply causation. Simple example: in SLR, regress <span class="math notranslate nohighlight">\(X\)</span> over <span class="math notranslate nohighlight">\(Y\)</span>, the coefficient has same sign and significance??, but causation cannot be reversed.</p>
 <p>Only when the data is from a randomized controlled trial, correlation will imply causation.</p>
 </div>
 </div>
@@ -1362,7 +1385,7 @@ TSS
 <h2>Model Selection<a class="headerlink" href="#model-selection" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="r-squared-and-adjusted-r-squared">
 <span id="lm-rsquared"></span><h3><span class="math notranslate nohighlight">\(R\)</span>-squared and Adjusted <span class="math notranslate nohighlight">\(R\)</span>-squared<a class="headerlink" href="#r-squared-and-adjusted-r-squared" title="Permalink to this headline">¶</a></h3>
-<p>By the <a class="reference internal" href="#lm-tss-decomposition"><span class="std std-ref">decomposition equation</span></a> of <span class="math notranslate nohighlight">\(TSS\)</span>, we can define <span class="math notranslate nohighlight">\(R\)</span>-squared.</p>
+<p>Assuming the <a class="reference internal" href="#lm-tss-identity"><span class="std std-ref">decomposition identity</span></a> of <span class="math notranslate nohighlight">\(TSS\)</span> holds, we can define <span class="math notranslate nohighlight">\(R\)</span>-squared.</p>
 <p>Defintion<br />
 <span class="math notranslate nohighlight">\(R\)</span>-squared is a statistical measure that represents the <strong>proportion of the variance</strong> for a dependent variable that’s <strong>explained</strong> by an independent variable or variables in a regression model.</p>
 <div class="math notranslate nohighlight">
@@ -1411,17 +1434,17 @@ R^2 = \operatorname{Corr}\left(y, \hat{y} \right)^2 = \operatorname{Corr}\left(y
 </ul>
 <div class="dropdown note admonition">
 <p class="admonition-title"> <span class="math notranslate nohighlight">\(R\)</span>-squared when there is no intercept</p>
-<p>When there is no intercept, then <span class="math notranslate nohighlight">\(\bar{y} \boldsymbol{1} _n \notin \operatorname{im}(X)\)</span> and hence <span class="math notranslate nohighlight">\(\hat{\boldsymbol{y} } - \bar{y} \boldsymbol{1} _n \notin \operatorname{im}(X)\)</span>. The decomposition does not hold. What happen to <span class="math notranslate nohighlight">\(R\)</span>-squared depends on whether we define it using <span class="math notranslate nohighlight">\(TSS\)</span> with <span class="math notranslate nohighlight">\(RSS\)</span> or <span class="math notranslate nohighlight">\(ESS\)</span>.</p>
+<p>When there is no intercept, then <span class="math notranslate nohighlight">\(\bar{y} \boldsymbol{1} _n \notin \operatorname{im}(X)\)</span> and hence <span class="math notranslate nohighlight">\(\hat{\boldsymbol{y} } - \bar{y} \boldsymbol{1} _n \notin \operatorname{im}(X)\)</span>. The decomposition identity may not hold. Thus, the value of <span class="math notranslate nohighlight">\(R\)</span>-squared may no longer be in <span class="math notranslate nohighlight">\([0,1]\)</span>, and its interpretation is no longer valid. What actually happen to the value <span class="math notranslate nohighlight">\(R\)</span>-squared depends on whether we define it using <span class="math notranslate nohighlight">\(TSS\)</span> with <span class="math notranslate nohighlight">\(RSS\)</span> or <span class="math notranslate nohighlight">\(ESS\)</span>.</p>
 <p>If we define <span class="math notranslate nohighlight">\(R^2 = \frac{ESS}{TSS}\)</span>, then when</p>
 <div class="math notranslate nohighlight">
 \[
-\left\Vert \hat{\boldsymbol{y} } - \boldsymbol{y}  \right\Vert&gt; \left\Vert \boldsymbol{y} - \bar{y}\boldsymbol{1} _n \right\Vert
+\sqrt{ESS} = \left\Vert \hat{\boldsymbol{y} } - \bar{y}\boldsymbol{1} _n \right\Vert&gt; \left\Vert \boldsymbol{y} - \bar{y}\boldsymbol{1} _n \right\Vert = \sqrt{TSS}
 \]</div>
 <p>we will have <span class="math notranslate nohighlight">\(ESS &gt; TSS\)</span>, i.e., <span class="math notranslate nohighlight">\(R^2 &gt; 1\)</span>.</p>
 <p>On the other hand, if we define <span class="math notranslate nohighlight">\(R^2 = 1 - \frac{RSS}{TSS}\)</span>, then when</p>
 <div class="math notranslate nohighlight">
 \[
-\left\Vert \hat{\boldsymbol{y} } - \bar{y}\boldsymbol{1} _n \right\Vert&gt; \left\Vert \boldsymbol{y} - \bar{y}\boldsymbol{1} _n \right\Vert
+\sqrt{RSS} = \left\Vert \hat{\boldsymbol{y} } -  \boldsymbol{y} \right\Vert&gt; \left\Vert \boldsymbol{y} - \bar{y}\boldsymbol{1} _n \right\Vert = \sqrt{TSS}
 \]</div>
 <p>we will have <span class="math notranslate nohighlight">\(RSS &gt; TSS\)</span>, i.e. <span class="math notranslate nohighlight">\(R^2 &lt; 0\)</span>.</p>
 </div>
@@ -1473,8 +1496,8 @@ Adjusted <span class="math notranslate nohighlight">\(R\)</span>-squared, denote
 <div class="section" id="special-cases">
 <h2>Special Cases<a class="headerlink" href="#special-cases" title="Permalink to this headline">¶</a></h2>
 <p>No models are perfect. In this section we introduce what happen when our model is misspecified or when some assumptions fail.</p>
-<div class="section" id="omit-relevant-variables">
-<h3>Omit Relevant Variables<a class="headerlink" href="#omit-relevant-variables" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="omit-a-variables">
+<span id="lm-omit-variable"></span><h3>Omit a Variables<a class="headerlink" href="#omit-a-variables" title="Permalink to this headline">¶</a></h3>
 <p>Suppose the true model is</p>
 <div class="math notranslate nohighlight">
 \[
@@ -1488,7 +1511,7 @@ Adjusted <span class="math notranslate nohighlight">\(R\)</span>-squared, denote
 <p><em>Question: Is <span class="math notranslate nohighlight">\(\hat{\boldsymbol{\beta}}_{-j}\)</span> unbised for <span class="math notranslate nohighlight">\(\boldsymbol{\beta}_{-j}\)</span>?</em></p>
 <p><em>Answer: No. Omitting a relevant variable increases bias. There is a deterministic identity for the bias.</em></p>
 <p>We will see the meaning of “relevant” later.</p>
-<p>We find the expression of the new estimator <span class="math notranslate nohighlight">\(\hat{\boldsymbol{\beta}}_{-j}\)</span></p>
+<p>We first find the expression of the new estimator <span class="math notranslate nohighlight">\(\hat{\boldsymbol{\beta}}_{-j}\)</span></p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
  \hat{\boldsymbol{\beta} }_{-j}
@@ -1531,11 +1554,12 @@ X_j
 <li><p>If <span class="math notranslate nohighlight">\(\beta_j = 0\)</span>, that is, the omitted variable <span class="math notranslate nohighlight">\(X_j\)</span> and the response <span class="math notranslate nohighlight">\(Y\)</span> is uncorrelated, i.e., <span class="math notranslate nohighlight">\(\boldsymbol{x}_j ^\top \boldsymbol{y} = 0\)</span>.</p></li>
 </ul>
 <p>That’s how we define “relevant”.</p>
-<p>What about the relation between the sample estimates?</p>
+<p>What is the relation between the sample estimates? The relation has a similar form.</p>
 <div class="math notranslate nohighlight">
 \[
 \hat{\beta }_{-j,k} =  \hat{\beta}_k + \hat{\alpha}_k\hat{\beta}_j
 \]</div>
+<p>Proof: TBD. Need linear algebra about inverse.</p>
 <p>Verify:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1586,11 +1610,11 @@ X_j
 </div>
 <p>The takeaway here is that we should include the omitted factors to reduce bias. But in practice, we can never know what all relevant factors are, and rarely can we measure all relevant factors.</p>
 </div>
-<div class="section" id="include-non-relevant-variables">
-<span id="lm-include-variable"></span><h3>Include Non-relevant Variables<a class="headerlink" href="#include-non-relevant-variables" title="Permalink to this headline">¶</a></h3>
-<p>Increase <span class="math notranslate nohighlight">\(\operatorname{Var}\left( \boldsymbol{\beta} \right)\)</span></p>
-<p>no effect to bias.</p>
-<p>TBD</p>
+<div class="section" id="include-a-variable">
+<span id="lm-include-variable"></span><h3>Include a Variable<a class="headerlink" href="#include-a-variable" title="Permalink to this headline">¶</a></h3>
+<p>What if we add a new variable <span class="math notranslate nohighlight">\(x_p\)</span>? What will happen to the existing estimator <span class="math notranslate nohighlight">\(\hat\beta_k\)</span>?</p>
+<p>Increase <span class="math notranslate nohighlight">\(\operatorname{Var}\left(\hat{\beta}_{k}\right)=\sigma^{2} \frac{1}{1-R_{-j}^{2}} \frac{1}{\sum_{i}\left(x_{i k}-\bar{x}_{k}\right)^{2}}\)</span> if <span class="math notranslate nohighlight">\(R_{-k}^2\)</span> increases. When will <span class="math notranslate nohighlight">\(R^2_{-k}\)</span> be unchanged? When the new variable <span class="math notranslate nohighlight">\(x_p\)</span> has no explanatory power to <span class="math notranslate nohighlight">\(x_k\)</span>. See the <a class="reference internal" href="#lm-rsq-non-decreasing"><span class="std std-ref">exercise</span></a>.</p>
+<p>In terms of bias, if we say the model with <span class="math notranslate nohighlight">\(x_p\)</span> is “true”, then <span class="math notranslate nohighlight">\(\operatorname{E}\left( \hat{\beta}_k \right)\)</span> is probably closer to <span class="math notranslate nohighlight">\(\beta_k\)</span> according to the equation described in the above <a class="reference internal" href="#lm-omit-variable"><span class="std std-ref">section</span></a>.</p>
 </div>
 <div class="section" id="multicollinearity">
 <h3>Multicollinearity<a class="headerlink" href="#multicollinearity" title="Permalink to this headline">¶</a></h3>
@@ -1781,6 +1805,7 @@ y = \beta x + \varepsilon
 </div>
 <div class="section" id="transformation-of-variables">
 <h3>Transformation of Variables<a class="headerlink" href="#transformation-of-variables" title="Permalink to this headline">¶</a></h3>
+<p>First, we take simple linear regression as an example.</p>
 <p>If <span class="math notranslate nohighlight">\(X ^\prime = aX + b\)</span>, then the new slope estimate is</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
@@ -1813,17 +1838,22 @@ y = \beta x + \varepsilon
 &amp;= (c\bar{y}+d) - c\hat\beta_1 \bar{x} \\
 &amp;= c\hat\beta_0 + d\\
 \end{align}\end{split}\]</div>
+<p>Can the conclusions be extended to multiple regression?</p>
+<p>TBD.</p>
 </div>
 <div class="section" id="exchange-x-and-y">
 <h3>Exchange <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span><a class="headerlink" href="#exchange-x-and-y" title="Permalink to this headline">¶</a></h3>
+<p>TBD.</p>
 </div>
 <div class="section" id="covariance-and-beta-j">
 <h3>Covariance and <span class="math notranslate nohighlight">\(\beta_j\)</span><a class="headerlink" href="#covariance-and-beta-j" title="Permalink to this headline">¶</a></h3>
 <p>In multiple regression, if <span class="math notranslate nohighlight">\(\operatorname{Cov}\left( Y, X_j \right) = 0\)</span> then <span class="math notranslate nohighlight">\(\beta_j= 0\)</span>?</p>
 <p>Is it possible that <span class="math notranslate nohighlight">\(\operatorname{Cov}\left( X_j, X_k \right) \ne 0, \operatorname{Cov}\left( Y, X_k \right) \ne 0\)</span> but <span class="math notranslate nohighlight">\(\operatorname{Cov}\left( Y, X_j \right) = 0\)</span>?</p>
+<p>TBD.</p>
 </div>
 <div class="section" id="increase-estimation-precision">
 <h3>Increase Estimation Precision<a class="headerlink" href="#increase-estimation-precision" title="Permalink to this headline">¶</a></h3>
+<p>TBD.</p>
 <ul class="simple">
 <li><p>The larger the error variance, <span class="math notranslate nohighlight">\(\sigma^2\)</span>, the larger the variance of the coefficient estimates.</p></li>
 <li><p>The larger the variability in the <span class="math notranslate nohighlight">\(x_i\)</span>, the smaller the variance.</p></li>
@@ -1833,9 +1863,55 @@ y = \beta x + \varepsilon
 </div>
 <div class="section" id="r-squared-vs-hat-boldsymbol-beta">
 <h3><span class="math notranslate nohighlight">\(R\)</span>-squared vs <span class="math notranslate nohighlight">\(\hat{\boldsymbol{\beta}}\)</span><a class="headerlink" href="#r-squared-vs-hat-boldsymbol-beta" title="Permalink to this headline">¶</a></h3>
+<p>TBD.</p>
 </div>
 <div class="section" id="partialling-out-in-general-cases">
 <h3>Partialling Out in General Cases<a class="headerlink" href="#partialling-out-in-general-cases" title="Permalink to this headline">¶</a></h3>
+<p>TBD.</p>
+</div>
+<div class="section" id="causal">
+<h3>Causal?<a class="headerlink" href="#causal" title="Permalink to this headline">¶</a></h3>
+<p>313.qz1.q2</p>
+<p>TBD.</p>
+</div>
+<div class="section" id="r-squared-non-decreasing">
+<span id="lm-rsq-non-decreasing"></span><h3><span class="math notranslate nohighlight">\(R\)</span>-squared Non-decreasing<a class="headerlink" href="#r-squared-non-decreasing" title="Permalink to this headline">¶</a></h3>
+<p>Given a data set, when we add an new explanatory variable into a regression model, <span class="math notranslate nohighlight">\(R\)</span>-squared is non-decreasing.</p>
+<p>This is equivalent to say <span class="math notranslate nohighlight">\(RSS\)</span> is always decreases or unchanged.</p>
+<p>Since we are comparing two nested minimization problems</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\text{with } x_{p}  \quad \min &amp;\ \left\Vert  \boldsymbol{y} - \boldsymbol{X} _{n \times p} \boldsymbol{\beta} _{p\times 1} \right\Vert ^2  \\
+\text{without } x_{p} \quad \min &amp;\ \left\Vert  \boldsymbol{y} - \boldsymbol{X} _{n \times p} \boldsymbol{\beta} _{p\times 1} \right\Vert ^2  \\
+\text{s.t.}  &amp;\ \beta_{p} = 0
+\end{aligned}\end{split}\]</div>
+<p>As a result, the minimum value of the first problem should be no larger than the minimum value of the second problem. When will they be equal? Only when the solution <span class="math notranslate nohighlight">\(\hat{\beta}_{p}=0\)</span> in problem 1.</p>
+<p>When will <span class="math notranslate nohighlight">\(\hat{\beta}_{p}=0\)</span> in problem 1? No clear condition.</p>
+<ul>
+<li><p>If <span class="math notranslate nohighlight">\(\boldsymbol{x}_i\)</span>’s are orthogonal such that <span class="math notranslate nohighlight">\(\boldsymbol{X} ^\top \boldsymbol{X} = I_{p}\)</span>, then</p>
+<div class="math notranslate nohighlight">
+\[
+  \boldsymbol{x}_{p} ^\top \boldsymbol{y} = 0 \Leftrightarrow \hat{\beta}_{p}=0
+  \]</div>
+</li>
+<li><p>Note that in general, <span class="math notranslate nohighlight">\(\not\Rightarrow\)</span>. An example is shown below where <span class="math notranslate nohighlight">\(\hat{\beta}_{2} \ne 0\)</span>. Also, in general, <span class="math notranslate nohighlight">\(\not\Leftarrow\)</span>. An simple example can be a data set of two points <span class="math notranslate nohighlight">\((1,0), (1,1)\)</span>. The fitted line is <span class="math notranslate nohighlight">\(y=0.5\)</span>.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]])</span><span class="o">.</span><span class="n">T</span>
+<span class="n">x0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]])</span>
+<span class="n">x1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">5</span><span class="p">]])</span>
+<span class="n">x2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">]])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">x2</span> <span class="o">@</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">x0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">))</span><span class="o">.</span><span class="n">T</span>
+<span class="n">XXinv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">X</span><span class="p">))</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">XXinv</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>

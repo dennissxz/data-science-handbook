@@ -506,6 +506,33 @@
   <a class="reference internal nav-link" href="#algorithms">
    Algorithms
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#dp-table">
+     DP Table
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#order-of-computation">
+     Order of computation
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#backtrace">
+     Backtrace
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#running-time">
+   Running Time
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#correctness">
+   Correctness
+  </a>
  </li>
 </ul>
 
@@ -535,19 +562,70 @@
 </div>
 <div class="section" id="algorithms">
 <h2>Algorithms<a class="headerlink" href="#algorithms" title="Permalink to this headline">¶</a></h2>
+<p>For now, we only compute the length, not the exact LCS <span class="math notranslate nohighlight">\(X\)</span>.</p>
 <ul class="simple">
-<li><p>If the last two letters of the two sequences are the same, i.e., <span class="math notranslate nohighlight">\(A[n] = B[n] = z\)</span>, then <span class="math notranslate nohighlight">\(z\)</span> is the last letter of <span class="math notranslate nohighlight">\(LCS(A, B)\)</span> (proof by contradiction), and hence</p></li>
+<li><p>If the last two letters of the two sequences are the same, i.e., <span class="math notranslate nohighlight">\(A_{[-1]} = B_{[-1]} = z\)</span>, then <span class="math notranslate nohighlight">\(z\)</span> is the last letter of <span class="math notranslate nohighlight">\(LCS(A, B)\)</span> (proof by contradiction), and hence</p></li>
 </ul>
 <div class="math notranslate nohighlight">
-\[LCS(A,B) = LCS(A[:n-1], B[:n-1]) \circ z\]</div>
+\[LCS(A,B) = LCS(A_{[:-1]}, B_{[:-1]}) \circ z\]</div>
 <ul class="simple">
-<li><p>If the last two letters of the two sequences are difference, i.e., <span class="math notranslate nohighlight">\(A[n] \ne B[n]\)</span>, then</p></li>
+<li><p>If the last two letters of the two sequences are difference, i.e., <span class="math notranslate nohighlight">\(A_{[-1]} \ne B_{[-1]}\)</span>, then</p></li>
 </ul>
 <div class="math notranslate nohighlight">
-\[
-LCS(A,B) = \max \left\{  LCS(A, B[:n-1]),  LCS(A[:n-1], B) \right\}
-\]</div>
-<p>Therefore,</p>
+\[\begin{split}
+LCS(A,B) = \max \left\{\begin{array}{ll}
+LCS(A, B_{[:-1]}) \\
+LCS(A_{[:-1]}, B)
+\end{array}\right.
+\end{split}\]</div>
+<div class="section" id="dp-table">
+<h3>DP Table<a class="headerlink" href="#dp-table" title="Permalink to this headline">¶</a></h3>
+<p>For all <span class="math notranslate nohighlight">\(0 \le i \le n, 0 \le j \le m\)</span>, the table entry <span class="math notranslate nohighlight">\(T_{[i,j]}\)</span> stores the length <span class="math notranslate nohighlight">\(\left\vert LCS(A_{[:i]}, B_{[:j]}) \right\vert\)</span></p>
+</div>
+<div class="section" id="order-of-computation">
+<h3>Order of computation<a class="headerlink" href="#order-of-computation" title="Permalink to this headline">¶</a></h3>
+<p>In non-decreasing order of <span class="math notranslate nohighlight">\(i+j\)</span>. Because <span class="math notranslate nohighlight">\(T_{[i,j]}\)</span> depends on three entries <span class="math notranslate nohighlight">\(T_{[i-1, j-1]}, T_{[i, j-1]}, T_{[i-1, j]}\)</span>.</p>
+<p>Another order can follow fixed <span class="math notranslate nohighlight">\(i\)</span> and increasing <span class="math notranslate nohighlight">\(j\)</span>. Any order works as long as a new value is computed from existing values.</p>
+<dl class="simple myst">
+<dt>Base</dt><dd><p>For all <span class="math notranslate nohighlight">\(0 \le i \le n, 0 \le j \le m\)</span>,
+$<span class="math notranslate nohighlight">\(
+T_{[i,0]} = 0 \\
+T_{[0,j]} = 0
+\)</span>$</p>
+</dd>
+<dt>Step</dt><dd><p>Compute <span class="math notranslate nohighlight">\(T_{[i,j]}\)</span> for <span class="math notranslate nohighlight">\(i,j&gt;0\)</span></p>
+</dd>
+</dl>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+T_{[i,j]} =  \left\{\begin{array}{ll}
+T_{[i-1,j-1]} + 1 &amp; \text{if } A_{[i]} = B_{[j]}  \\
+\max \left\{\begin{array}{ll}
+T_{[i-1, j]} \\
+T_{[i, j-1]}
+\end{array}\right.
+&amp; \text{otherwise}
+\end{array}\right.
+\end{split}\]</div>
+</div>
+<div class="section" id="backtrace">
+<h3>Backtrace<a class="headerlink" href="#backtrace" title="Permalink to this headline">¶</a></h3>
+<p>If the condition <span class="math notranslate nohighlight">\(A_{[i]} = B_{[j]}\)</span> holds, this means we pop out <span class="math notranslate nohighlight">\(A_{[i]}\)</span>.</p>
+<p>??30:00</p>
+</div>
+</div>
+<div class="section" id="running-time">
+<h2>Running Time<a class="headerlink" href="#running-time" title="Permalink to this headline">¶</a></h2>
+<p>In total <span class="math notranslate nohighlight">\(n\times m\)</span> entires, time for each entry is <span class="math notranslate nohighlight">\(O(1)\)</span>, so total time is <span class="math notranslate nohighlight">\(O(nm)\)</span>.</p>
+</div>
+<div class="section" id="correctness">
+<h2>Correctness<a class="headerlink" href="#correctness" title="Permalink to this headline">¶</a></h2>
+<dl class="simple myst">
+<dt>Claim</dt><dd><p>For all <span class="math notranslate nohighlight">\(0 \le i \le n, 0 \le j \le m\)</span>, the table entry <span class="math notranslate nohighlight">\(T_{[i,j]}\)</span> stores the length <span class="math notranslate nohighlight">\(\left\vert LCS(A_{[:i]}, B_{[:j]}) \right\vert\)</span>. The final solution is <span class="math notranslate nohighlight">\(T_{[n,m]} = \left\vert LCS(A, B) \right\vert\)</span></p>
+</dd>
+<dt><em>Proof</em></dt><dd><p>Induction over <span class="math notranslate nohighlight">\(i+j\)</span>.</p>
+</dd>
+</dl>
 </div>
 </div>
 

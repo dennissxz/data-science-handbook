@@ -14,13 +14,15 @@ kernelspec:
 
 # Linear Models
 
-In this section we introduce linear models from a statistics’ perspective. The introduction from econometrics’ perspective or social science’s perspective may be different. In short, the statistics’ perspective focuses on general multivariate cases and heavily rely on linear algebra for derivation, while the econometrics’ or social science’s perspective prefers to introduce models in univariate cases by basic arithmetics (whose form can be complicated without linear algebra notations) and extend the intuitions and conclusions into multivariate cases.
+In this section we introduce linear models from a statistics’ perspective. The introduction from econometrics’ perspective or social science’s perspective may be different. In short, the statistics’ perspective focuses on general multivariate cases and heavily rely on linear algebra for derivation, while the econometrics’ or the social science’s perspective prefers to introduce models in univariate cases by basic arithmetics (whose form can be complicated without linear algebra notations) and extend the intuitions and conclusions into multivariate cases.
 
 <!---
 My handwritten notes for the graduate level course STAT 343 offered by UChicago statistics department can be found [here](../imgs/lm-notes-applied-stat.pdf).
 -->
 
-Personally, I involved in four courses that introduced linear models, i.e. at undergrad/grad level offered by stat/social science department. The style of the two courses offered by the stat departments were quite alike while the graduate level one covered more topics. In both undergrad/grad level courses offered by the social science departments, sometimes I got confused by the course materials that was contradictory to my statistics training , but the instructors did not have a clear response…In sum, to fully understand the fundamental and most widely used statistical model, I highly suggest to take a linear algebra course first and take the regression course offered by math/stat department.
+Personally, I involved in four courses that introduced linear models, i.e. at undergrad/grad level offered by stat/social science department. The style of the two courses offered by the stat departments were quite alike while the graduate level one covered more topics. In both undergrad/grad level courses offered by the social science departments, sometimes I got confused by the course materials that were contradictory to my statistics training , but the instructors had no clear response or even no response at all...
+
+In sum, to fully understand the most fundamental and widely used statistical model, I highly suggest to take a linear algebra course first and take the regression course offered by math/stat department.
 
 ## Objective
 
@@ -113,7 +115,15 @@ These assumptions are used for different objectives. The first 3 assumptions are
 - derivation of the distribution of $\hat{\boldsymbol{\beta} }$ uses 4 and 5.
 
 :::{admonition,dropdown,note} Zero conditional mean assumption
-In some social science or econometrics courses, they follow the “Gauss-Markov assumptions” that are roughly the same to the assumptions, but in different formats. One of them is zero conditional mean assumption. For $p=2$, it is
+In some social science or econometrics courses, they follow the “Gauss-Markov assumptions” that are roughly the same to the assumptions, but in different formats. One of them is zero conditional mean assumption.
+
+In general, it says
+
+$$
+\operatorname{E}\left( \varepsilon \mid x_1, x_2, \ldots, x_p\right) = 0
+$$
+
+For $p=2$, it is
 
 $$\operatorname{E}\left( \varepsilon \mid x  \right) = 0$$
 
@@ -169,7 +179,7 @@ This linear system is called the **normal equation**.
 
 The closed form solution is
 
-$$\hat{\boldsymbol{\beta}} = \left( \boldsymbol{X} ^\top \boldsymbol{X}   \right)^{-1}\boldsymbol{X} \boldsymbol{y}  $$
+$$\hat{\boldsymbol{\beta}} = \left( \boldsymbol{X} ^\top \boldsymbol{X}   \right)^{-1}\boldsymbol{X} ^\top  \boldsymbol{y}  $$
 
 :::{admonition,dropdown,note} Solving the linear system by software
 Computing software use specific functions to solve the normal equation $\boldsymbol{X} ^\top \boldsymbol{X} \boldsymbol{\beta} = \boldsymbol{X} ^\top \boldsymbol{y}$ for $\boldsymbol{\beta}$, instead of using the inverse $(\boldsymbol{X} ^\top \boldsymbol{X}) ^{-1}$ directly which can be slow and numerically unstable. For instance, one can use QR factorization of $X$,
@@ -508,7 +518,7 @@ TBD
 
 TBD
 
-(lm-tss-decomposition)=
+(lm-tss-identity)=
 ### Decomposition of Total Sum of Squares
 
 We can think of each observation as being made up of an explained part, and an unexplained part.
@@ -517,7 +527,7 @@ We can think of each observation as being made up of an explained part, and an u
 -   Explained sum of squares: $ESS = \sum\left(\hat{y}_{i}-\bar{y}\right)^{2}$
 -   Residual sum of squares: $RSS = \sum (y_i - \hat{y}_i)^2$
 
-Then
+Then we have the decomposition identity
 
 $$\begin{align}
 TSS
@@ -538,23 +548,27 @@ Some courses use the letters $R$ and $E$ to denote the opposite quantity in stat
 - Sum of squared errors: $SSE = \sum (y_i - \hat{y}_i)^2$
 ```
 
-From linear algebra’s perspective, the decomposition identity is equivalent to
+From linear algebra’s perspective, the identity is equivalent to
 
 $$
 \left\Vert \boldsymbol{y} - \bar{y} \boldsymbol{1} _n  \right\Vert ^2 = \left\Vert \boldsymbol{y} - \hat{\boldsymbol{y} }  \right\Vert ^2 + \left\Vert \hat{\boldsymbol{y} } - \bar{y} \boldsymbol{1} _n\right\Vert ^2
 $$
 
-which holds because the LHS vector $\boldsymbol{y} - \bar{y}\boldsymbol{1} _n$ is the the sum of two vectors and they are orthogonal
+which holds because the LHS vector $\boldsymbol{y} - \bar{y}\boldsymbol{1} _n$ is the the sum of the two RHS vectors, and the two vectors are orthogonal
 
-$$
-\boldsymbol{y} - \hat{\boldsymbol{y} } \perp \hat{\boldsymbol{y} } - \bar{y} \boldsymbol{1} _n
-$$
+
+$$\begin{aligned}
+\boldsymbol{y}  - \bar{y} \boldsymbol{1} _n = (\boldsymbol{y} - \hat{\boldsymbol{y} }) &+ (\hat{\boldsymbol{y} } - \bar{y} \boldsymbol{1} _n) \\
+\boldsymbol{y} - \hat{\boldsymbol{y} } &\perp \hat{\boldsymbol{y} } - \bar{y} \boldsymbol{1} _n
+\end{aligned}$$
 
 More specifically, they are orthogonal because
 
 $$
 \boldsymbol{y} - \hat{\boldsymbol{y} } \in \operatorname{im}(\boldsymbol{X} )^\perp \quad  \hat{\boldsymbol{y} } - \bar{y} \boldsymbol{1} _n \in \operatorname{im}(\boldsymbol{X} )
 $$
+
+since $\boldsymbol{1} _n \in \operatorname{im}(\boldsymbol{X})$, if an intercept term is included in the model.
 
 drawing \[here\]
 
@@ -568,8 +582,11 @@ $\beta_j$ is the expected change in the value of the response variable $y$ if th
 
 $\beta_0$ is the expected value of the response variable $y$ if all covariates have values of zero.
 
+If the response is in log format, i.e. $\log(Y)$, then the $\beta_j$ can be interpreted as the percentage change in $Y$ associated with one unit increase of $X_j$.
+
+
 ``` {warning}
-Linear regression models only reveal linear associations between the response variable and the independent variables. But association does not imply causation.
+Linear regression models only reveal linear associations between the response variable and the independent variables. But association does not imply causation. Simple example: in SLR, regress $X$ over $Y$, the coefficient has same sign and significance??, but causation cannot be reversed.
 
 Only when the data is from a randomized controlled trial, correlation will imply causation.
 ```
@@ -609,6 +626,8 @@ We can obtain $\hat{\beta}_1$ by the following three steps
 
 In this approach, $\hat{u}$ is interpreted as the part in $x_1$ that cannot be predicted by $x_2$, or is uncorrelated with $x_2$. We then regress $y$ on $\hat{u}$, to get the effect of $x_1$ on $y$ after $x_2$ has been “partialled out”.
 
+
+
 #### Hypothesis Testing
 
 ## Model Selection
@@ -616,7 +635,7 @@ In this approach, $\hat{u}$ is interpreted as the part in $x_1$ that cannot be p
 (lm-rsquared)=
 ### $R$-squared and Adjusted $R$-squared
 
-By the [decomposition equation](lm-tss-decomposition) of $TSS$, we can define $R$-squared.
+Assuming the [decomposition identity](lm-tss-identity) of $TSS$ holds, we can define $R$-squared.
 
 Defintion  
 $R$-squared is a statistical measure that represents the **proportion of the variance** for a dependent variable that’s **explained** by an independent variable or variables in a regression model.
@@ -664,12 +683,12 @@ As long as $Cov(Y, X_j) \ne 0$, then $X_j$ has some explanatory power to $Y$, an
 
 :::{admonition,dropdown,note} $R$-squared when there is no intercept
 
-When there is no intercept, then $\bar{y} \boldsymbol{1} _n \notin \operatorname{im}(X)$ and hence $\hat{\boldsymbol{y} } - \bar{y} \boldsymbol{1} _n \notin \operatorname{im}(X)$. The decomposition does not hold. What happen to $R$-squared depends on whether we define it using $TSS$ with $RSS$ or $ESS$.
+When there is no intercept, then $\bar{y} \boldsymbol{1} _n \notin \operatorname{im}(X)$ and hence $\hat{\boldsymbol{y} } - \bar{y} \boldsymbol{1} _n \notin \operatorname{im}(X)$. The decomposition identity may not hold. Thus, the value of $R$-squared may no longer be in $[0,1]$, and its interpretation is no longer valid. What actually happen to the value $R$-squared depends on whether we define it using $TSS$ with $RSS$ or $ESS$.
 
 If we define $R^2 = \frac{ESS}{TSS}$, then when
 
 $$
-\left\Vert \hat{\boldsymbol{y} } - \boldsymbol{y}  \right\Vert> \left\Vert \boldsymbol{y} - \bar{y}\boldsymbol{1} _n \right\Vert
+\sqrt{ESS} = \left\Vert \hat{\boldsymbol{y} } - \bar{y}\boldsymbol{1} _n \right\Vert> \left\Vert \boldsymbol{y} - \bar{y}\boldsymbol{1} _n \right\Vert = \sqrt{TSS}
 $$
 
 we will have $ESS > TSS$, i.e., $R^2 > 1$.
@@ -677,7 +696,7 @@ we will have $ESS > TSS$, i.e., $R^2 > 1$.
 On the other hand, if we define $R^2 = 1 - \frac{RSS}{TSS}$, then when
 
 $$
-\left\Vert \hat{\boldsymbol{y} } - \bar{y}\boldsymbol{1} _n \right\Vert> \left\Vert \boldsymbol{y} - \bar{y}\boldsymbol{1} _n \right\Vert
+\sqrt{RSS} = \left\Vert \hat{\boldsymbol{y} } -  \boldsymbol{y} \right\Vert> \left\Vert \boldsymbol{y} - \bar{y}\boldsymbol{1} _n \right\Vert = \sqrt{TSS}
 $$
 
 we will have $RSS > TSS$, i.e. $R^2 < 0$.
@@ -729,7 +748,8 @@ TBD
 
 No models are perfect. In this section we introduce what happen when our model is misspecified or when some assumptions fail.
 
-### Omit Relevant Variables
+(lm-omit-variable)=
+### Omit a Variables
 
 Suppose the true model is
 
@@ -749,7 +769,7 @@ Though the common focus is on bias, omitting a variable probably decreases varia
 
 We will see the meaning of “relevant” later.
 
-We find the expression of the new estimator $\hat{\boldsymbol{\beta}}_{-j}$
+We first find the expression of the new estimator $\hat{\boldsymbol{\beta}}_{-j}$
 
 $$\begin{align}
  \hat{\boldsymbol{\beta} }_{-j}
@@ -799,11 +819,13 @@ When will the bias be zero?
 
 That’s how we define “relevant”.
 
-What about the relation between the sample estimates?
+What is the relation between the sample estimates? The relation has a similar form.
 
 $$
 \hat{\beta }_{-j,k} =  \hat{\beta}_k + \hat{\alpha}_k\hat{\beta}_j
 $$
+
+Proof: TBD. Need linear algebra about inverse.
 
 Verify:
 
@@ -839,14 +861,16 @@ print("reconstruction difference of b0, b1, b2 :", lm.coef_[0,:3] + lmx.coef_[0]
 
 The takeaway here is that we should include the omitted factors to reduce bias. But in practice, we can never know what all relevant factors are, and rarely can we measure all relevant factors.
 
+
 (lm-include-variable)=
-### Include Non-relevant Variables
+### Include a Variable
 
-Increase $\operatorname{Var}\left( \boldsymbol{\beta} \right)$
+What if we add a new variable $x_p$? What will happen to the existing estimator $\hat\beta_k$?
 
-no effect to bias.
+Increase $\operatorname{Var}\left(\hat{\beta}_{k}\right)=\sigma^{2} \frac{1}{1-R_{-j}^{2}} \frac{1}{\sum_{i}\left(x_{i k}-\bar{x}_{k}\right)^{2}}$ if $R_{-k}^2$ increases. When will $R^2_{-k}$ be unchanged? When the new variable $x_p$ has no explanatory power to $x_k$. See the [exercise](lm-rsq-non-decreasing).
 
-TBD
+In terms of bias, if we say the model with $x_p$ is "true", then $\operatorname{E}\left( \hat{\beta}_k \right)$ is probably closer to $\beta_k$ according to the equation described in the above [section](lm-omit-variable).
+
 
 ### Multicollinearity
 
@@ -1056,6 +1080,8 @@ If the true model has a non-zero intercept, then $\tilde\beta$ is biased for $\b
 
 ### Transformation of Variables
 
+First, we take simple linear regression as an example.
+
 If $X ^\prime = aX + b$, then the new slope estimate is
 
 $$\begin{align}
@@ -1092,7 +1118,14 @@ $$\begin{align}
 &= c\hat\beta_0 + d\\
 \end{align}$$
 
+
+Can the conclusions be extended to multiple regression?
+
+TBD.
+
 ### Exchange $X$ and $Y$
+
+TBD.
 
 ### Covariance and $\beta_j$
 
@@ -1100,7 +1133,11 @@ In multiple regression, if $\operatorname{Cov}\left( Y, X_j \right) = 0$ then $\
 
 Is it possible that $\operatorname{Cov}\left( X_j, X_k \right) \ne 0, \operatorname{Cov}\left( Y, X_k \right) \ne 0$ but $\operatorname{Cov}\left( Y, X_j \right) = 0$?
 
+TBD.
+
 ### Increase Estimation Precision
+
+TBD.
 
 -   The larger the error variance, $\sigma^2$, the larger the variance of the coefficient estimates.
 -   The larger the variability in the $x_i$, the smaller the variance.
@@ -1109,4 +1146,54 @@ Is it possible that $\operatorname{Cov}\left( X_j, X_k \right) \ne 0, \operatorn
 
 ### $R$-squared vs $\hat{\boldsymbol{\beta}}$
 
+TBD.
+
 ### Partialling Out in General Cases
+
+TBD.
+
+### Causal?
+
+313.qz1.q2
+
+TBD.
+
+
+(lm-rsq-non-decreasing)=
+### $R$-squared Non-decreasing
+
+Given a data set, when we add an new explanatory variable into a regression model, $R$-squared is non-decreasing.
+
+This is equivalent to say $RSS$ is always decreases or unchanged.
+
+Since we are comparing two nested minimization problems
+
+$$\begin{aligned}
+\text{with } x_{p}  \quad \min &\ \left\Vert  \boldsymbol{y} - \boldsymbol{X} _{n \times p} \boldsymbol{\beta} _{p\times 1} \right\Vert ^2  \\
+\text{without } x_{p} \quad \min &\ \left\Vert  \boldsymbol{y} - \boldsymbol{X} _{n \times p} \boldsymbol{\beta} _{p\times 1} \right\Vert ^2  \\
+\text{s.t.}  &\ \beta_{p} = 0
+\end{aligned}$$
+
+As a result, the minimum value of the first problem should be no larger than the minimum value of the second problem. When will they be equal? Only when the solution $\hat{\beta}_{p}=0$ in problem 1.
+
+When will $\hat{\beta}_{p}=0$ in problem 1? No clear condition.
+- If $\boldsymbol{x}_i$'s are orthogonal such that $\boldsymbol{X} ^\top \boldsymbol{X} = I_{p}$, then
+
+  $$
+  \boldsymbol{x}_{p} ^\top \boldsymbol{y} = 0 \Leftrightarrow \hat{\beta}_{p}=0
+  $$
+
+- Note that in general, $\not\Rightarrow$. An example is shown below where $\hat{\beta}_{2} \ne 0$. Also, in general, $\not\Leftarrow$. An simple example can be a data set of two points $(1,0), (1,1)$. The fitted line is $y=0.5$.
+
+```{code-cell}
+import numpy as np
+y = np.array([[1,2,3]]).T
+x0 = np.array([[1,1,1]])
+x1 = np.array([[1,2,5]])
+x2 = np.array([[1,-2,1]])
+print(x2 @ y)
+X = np.vstack((x0, x1, x2)).T
+XXinv = np.linalg.inv(np.dot(X.T, X))
+b = np.dot(XXinv, np.dot(X.T, y))
+print(b)
+```
