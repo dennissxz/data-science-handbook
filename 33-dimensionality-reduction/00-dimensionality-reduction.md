@@ -5,65 +5,44 @@ Aka representation learning.
 
 ## Motivation
 
-- although the data may appear high dimensional, there may only be a small number of degrees of variability, corresponding to latent factors
-- low dimensional representations are useful for enabling fast nearest neighbor searches and 2-d projections are useful for visualization
+Although the data may appear high dimensional, there may only be a small number of degrees of variability, corresponding to latent factors. Low dimensional representations are useful for enabling fast nearest neighbor searches and 2-d projections are useful for visualization. It is also useful for  compression and downstream learning tasks.
 
-- for compression
-- for visualization
-- for downstream learning tasks
+The question to ponder before making dimensionality reduction: If I take away some information, am I able to reconstruct it?
 
+## Objective
 
-If I take away some information, am I able to reconstruct it?
+We want to reduce the dimensionality by projecting the data to a lower dimensional subspace which captures the **essence** of the data, i.e. find a projection $\mathcal{X} \rightarrow \mathcal{Z}$ such that $\mathrm{dim}  \left( \mathcal{Z} \right)  \ll \mathrm{dim} \left( \mathcal{X} \right)$
 
-## Model
-
-- input
-  - $\mathcal{D} = \left\{ \boldsymbol{x} _i  \right\}_{i=1}^N$
-- goals
-  - reduce the dimensionality by projecting the data to a lower dimensional subspace which captures the **essence** of the data, i.e. find a projection $\mathcal{X} \rightarrow \mathcal{Z}$ such that $\mathrm{dim}  \left( \mathcal{Z} \right)  \ll \mathrm{dim} \left( \mathcal{X} \right)$
-
-
-
-Seek a projection
+More specifically, we seek a projection
 
 $$
-P(\mathbf{x} ; \boldsymbol{\theta}): \mathbb{R}^{d} \rightarrow \mathbb{R}^{k}, \quad k \ll d
+P(\boldsymbol{x} ; \boldsymbol{\theta}): \mathbb{R}^{d} \rightarrow \mathbb{R}^{k}, \quad k \ll d
 $$
 
-Fit $P$ by optimize some goodness of fit $J$
+by optimizing some goodness of fit criteria $J$
 
 $$
-\min _{\boldsymbol{\theta}} J\left(\mathbf{x}_{1}, \ldots, \mathbf{x}_{N}, P\left(\mathbf{x}_{1}\right), \ldots, P\left(\mathbf{x}_{N}\right)\right)
+\min _{\boldsymbol{\theta}} J\left(\mathbf{x}_{1}, \ldots, \mathbf{x}_{n}, P\left(\mathbf{x}_{1}\right), \ldots, P\left(\mathbf{x}_{n}\right)\right)
 $$
 
-Linear subspace is defined by a $m \ times p$ matrix $\boldsymbol{W}$.
-
-Approximation of $\boldsymbol{x}$ as a weighted combination of the vectors in $\boldsymbol{W}$:
-
-$$
-\hat{\boldsymbol{x}} = \boldsymbol{W} \boldsymbol{y}
-$$
-
-where $\boldsymbol{y}$ can be seen as a low-dimensional representation of $\boldsymbol{x}$
-
-
-
-## Applications
-
-- models
-  - principal components analysis
-  - autoencoders
-  - find latent factors
-  - word embeddings, contextual word embeddings
-
-- matrix
-  - minimize the reconstruction cost
+- For linear dimensionality models, the projection $P(\boldsymbol{x}; \boldsymbol{\theta} )$ can be represented by a $d \times k$ matrix $\boldsymbol{W}$. The low dimensional representation $\boldsymbol{z}$ is computed by
 
     $$
-    \min \sum_i J(\boldsymbol{x}_i, \boldsymbol{z}_i)
+    \boldsymbol{z} = \boldsymbol{W} ^\top \boldsymbol{x}  
     $$
+
+    and the reconstruction of $\boldsymbol{x}$ is a weighted combination of the vectors in $\boldsymbol{W}$:
+
+    $$
+    \hat{\boldsymbol{x}} = \boldsymbol{W} \boldsymbol{z} = \boldsymbol{W} \boldsymbol{W} ^\top \boldsymbol{x}
+    $$
+
+- For non-linear dimensionality reduction models, projection $P$ can be quite different.
+
 
 ## Metrics
+
+The performance of a dimensionality reduction method can be measured by
 
 - qualitative evaluation
   - does the visualization looks better?
@@ -80,22 +59,9 @@ where $\boldsymbol{y}$ can be seen as a low-dimensional representation of $\bold
 
 - KL distance between kernel density estimators on training set and embedding data set.
 
-### Linear Dimensionality Reduction
-
-Linear subspace is defined by a $d\times k$ matrix $W$ containing $k$.
-
-$$
-\hat{\boldsymbol{x}_i} = W \boldsymbol{z}_i
-$$
-
-Reconstruction error
-
-$$
-\boldsymbol{x}_i - \hat{\boldsymbol{x}}_i
-$$
 
 
-### Multi-view Dimensionality Reduction
+## Multi-view Dimensionality Reduction
 
 Unsupervised dimensionality reduction is very challenging. If we happen to have multiple data views, it can be easier.
 
@@ -105,7 +71,7 @@ View means the number of ways we describe a data object.
 - articles: two languages
 - speech: voice wave + video of mouth
 
-In multi-view representation learning, training data consists of samples of a $d$-dimensional random vector that has some natural split into two sub-vectors.
+For instance, in two-view representation learning, training data consists of samples of a $d$-dimensional random vector that has some natural split into two sub-vectors.
 
 $$
 \left[\begin{array}{l}
@@ -114,6 +80,6 @@ $$
 \end{array}\right], \mathbf{x} \in \mathbf{R}^{d_{x}}, \mathbf{y} \in \mathbf{R}^{d_{y}}, d_{x}+d_{y}=d
 $$
 
-The task is to learn useful features/subspaces from such two view data. Typically involves learning representations of one view that are **predictive** of the other.
+The task is to learn useful features/subspaces from such two-view data. Typically involves learning representations of one view that are **predictive** of the other.
 
 One example of linear multi-view representation learning is canonical correlation anlaysis.
