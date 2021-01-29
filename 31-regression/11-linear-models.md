@@ -624,18 +624,18 @@ When will $\hat{\beta}_{p}=0$ in problem 1? No clear condition.
 
 - Also, in general, $\not\Rightarrow$. An example is shown below where $\hat{\beta}_{2} \ne 0$.
 
-    ```{code-cell}
-    import numpy as np
-    y = np.array([[1,2,3]]).T
-    x0 = np.array([[1,1,1]])
-    x1 = np.array([[1,2,5]])
-    x2 = np.array([[1,-2,1]])
-    print(x2 @ y)
-    X = np.vstack((x0, x1, x2)).T
-    XXinv = np.linalg.inv(np.dot(X.T, X))
-    b = np.dot(XXinv, np.dot(X.T, y))
-    print(b)
-    ```
+```{code-cell}
+import numpy as np
+y = np.array([[1,2,3]]).T
+x0 = np.array([[1,1,1]])
+x1 = np.array([[1,2,5]])
+x2 = np.array([[1,-2,1]])
+print(x2 @ y)
+X = np.vstack((x0, x1, x2)).T
+XXinv = np.linalg.inv(np.dot(X.T, X))
+b = np.dot(XXinv, np.dot(X.T, y))
+print(b)
+```
 
 ## Interpretation
 
