@@ -2,33 +2,6 @@
 
 Proposed by Pearson in 1901 and further developed by Hotelling in 1993.
 
-<!-- TOC -->
-
-- [Principal Component Analysis](#principal-component-analysis)
-  - [Objective](#objective)
-  - [Learning](#learning)
-    - [Sequential Maximization](#sequential-maximization)
-    - [Eigenvalue Decomposition](#eigenvalue-decomposition)
-  - [Special Cases](#special-cases)
-    - [Variables are Uncorrelated](#variables-are-uncorrelated)
-    - [Variables are Perfectly Correlated](#variables-are-perfectly-correlated)
-    - [Few Variables Have Extremely Large Variances](#few-variables-have-extremely-large-variances)
-  - [Properties](#properties)
-  - [Tuning](#tuning)
-  - [Interpretation](#interpretation)
-    - [Geometric Meaning: Direction of Variation](#geometric-meaning-direction-of-variation)
-    - [Proportion Explained](#proportion-explained)
-    - [Score of an Observation in Sample Data](#score-of-an-observation-in-sample-data)
-  - [Cons](#cons)
-  - [Relation to](#relation-to)
-    - [SVD](#svd)
-    - [Compression](#compression)
-    - [Gaussians](#gaussians)
-    - [Classification](#classification)
-  - [Extension](#extension)
-
-<!-- /TOC -->
-
 ## Objective
 
 Given $X_1, X_2, \ldots, X_d$, we want to extract the most useful information of $p$ measurements such that
@@ -38,7 +11,7 @@ Given $X_1, X_2, \ldots, X_d$, we want to extract the most useful information of
 2. **estimate latent variables** (i.e. variables that cannot be measured or observed.) which can explain the variation of the $p$ original measurements, especially in
 social behavioral sciences.
 
-3. **simplify the dimension** of the observed data set. Lower dimension can be chosen from the data set such that the variations of measurements can be captured with an acceptable level. For example, $m \ll p$ latent variables are chosen to capture 90% of variation of $p$ original measurements. Indeed, this can be regarded as the data reduction or dimension reduction.
+3. **simplify the dimension** of the observed data set. Lower dimension can be chosen from the data set such that the variations of measurements can be captured with an acceptable level. For example, $k \ll d$ latent variables are chosen to capture 90% of variation of $p$ original measurements. Indeed, this can be regarded as the data reduction or dimension reduction.
 
 
 Consider a $d$-dimensional random vector $\boldsymbol{x} = \left( X_1, X_2, \ldots, X_d \right)^\top$ with mean vector $\boldsymbol{\mu} = \left( \mu_1, \ldots, \mu_d \right)^\top$ and covariance matrix $\boldsymbol{\Sigma}$. PCA aimes to obtain the variables $Z_1, Z_2, \ldots, Z_k$ which are the **linear combinations** of $X_1, X_2, \ldots, X_d$ and $k \le d$, such that
@@ -58,13 +31,14 @@ Consider a $d$-dimensional random vector $\boldsymbol{x} = \left( X_1, X_2, \ldo
 - The linear combinations $Z_i$ and $Z_j$ are **uncorrelated** for $i\ne j$. This imply that each variable in $\boldsymbol{z} = \left( Z_1, Z_2, \ldots, Z_k \right)^\top$ can be analyzed by using **univariate** techniques.
 
 
-Other formulations: Find a linear mapping \mathbb{R} ^d \rightarrow \mathbb{R} ^k$ (assume $\boldsymbol{X}$  is centered) from to project the data matrix $\boldsymbol{X}$ to a lower dimensional embedding matrix $\boldsymbol{Z}$.
+Other formulations: Find a linear mapping $\mathbb{R} ^d \rightarrow \mathbb{R} ^k$ (assume $\boldsymbol{X}$  is centered) from to project the data matrix $\boldsymbol{X}$ to a lower dimensional embedding matrix $\boldsymbol{Z}$.
 
-$$
-\boldsymbol{Z}_{n \times k} = \boldsymbol{W} ^\top \boldsymbol{X}_{n \times d}
-$$
 
-by
+$$\begin{aligned}
+\boldsymbol{z}_i &= \boldsymbol{W}_{d \times k} ^\top \boldsymbol{x}_i \\
+\boldsymbol{Z}_{n \times k} &= \boldsymbol{X}_{n \times d}  \boldsymbol{W} _{d \times k} \\
+\end{aligned}$$
+
 
 - Minimize total reconstruction loss
 
@@ -75,10 +49,11 @@ by
        &\ \boldsymbol{W} \in \mathbb{R} _{d \times k}
     \end{align}$$
 
-- Maximize the total variances $\sum_i \operatorname{Var}\left( Z_i \right)$ of the projected data $\boldsymbol{Z} =  \boldsymbol{W} ^\top \boldsymbol{X}$
+- Maximize the total variances $\sum_i \operatorname{Var}\left( Z_i \right)$ of the projected data $\boldsymbol{Z} =  \boldsymbol{X}  \boldsymbol{W}$
 
     $$\begin{align}
-    \boldsymbol{W}^*  = \underset{\boldsymbol{\boldsymbol{W} } }{\operatorname{argmax}} \, & \operatorname{tr}\left( \boldsymbol{W} ^\top \boldsymbol{X} \boldsymbol{X} ^\top \boldsymbol{W} \right)   \\
+    \boldsymbol{W}^*  = \underset{\boldsymbol{\boldsymbol{W} } }{\operatorname{argmax}} \, & \operatorname{tr}\left( \boldsymbol{Z} ^\top \boldsymbol{Z}  \right)   \\
+     = \underset{\boldsymbol{\boldsymbol{W} } }{\operatorname{argmax}} \, & \operatorname{tr}\left( \boldsymbol{W} ^\top \boldsymbol{X} ^\top \boldsymbol{X} \boldsymbol{W} \right)   \\
      \text{s.t.}  & \ \boldsymbol{W} ^\top \boldsymbol{W} = \boldsymbol{I}  \\
        &\ \boldsymbol{W} \in \mathbb{R} _{d \times k}
     \end{align}$$
@@ -117,9 +92,7 @@ $$
 Z_i = \boldsymbol{u} _i^\top \boldsymbol{x}
 $$
 
-
-```{dropdown} Derivation
-
+:::{admonition,dropdown,seealso} Derivation
 We consider the maximization problem:
 
 $$\begin{align}
@@ -183,8 +156,7 @@ which implies $\lambda$ is the eigenvalue of $\boldsymbol{\Sigma}$.
 
 
 Therefore, the maximized variance $\boldsymbol{u} ^\top \boldsymbol{\Sigma} \boldsymbol{u}$ equals to the largest eigenvalue of $\boldsymbol{\Sigma}$.
-
-```
+:::
 
 ### Eigenvalue Decomposition
 
@@ -208,7 +180,7 @@ $$
 Z_{k}=\boldsymbol{u}_{k}^{\top} \boldsymbol{x}=u_{1 k} X_{1}+u_{2 k} X_{2}+\cdots+u_{d k} X_{k}, \quad k=1, \ldots, d
 $$
 
-The principal component transform is then
+The principal component transform using the first $k$ principal directions is then
 
 $$
 \boldsymbol{z} = \boldsymbol{U}_{[:k]} ^\top \boldsymbol{x}
@@ -219,8 +191,7 @@ $$
 1. All principal components are uncorrelated, i.e., $\operatorname{Cov}\left( Z_i, Z_j \right) = 0$ for $i \ne j$
 
 
-    ```{dropdown} Proof
-
+    :::{admonition,dropdown,seealso} *Proof*
     $$
     \begin{aligned}
     \operatorname{Cov}\left(Z_{i}, Z_{j}\right) &=\operatorname{Cov}\left(\boldsymbol{u}_{i}^{\top} \boldsymbol{x}, \boldsymbol{u}_{j}^{\top} \boldsymbol{x}\right) \\
@@ -237,22 +208,21 @@ $$
     &=0
     \end{aligned}
     $$
-
-    ```
+    :::
 
 
 1. The variance of the $i$-th principal component is $\lambda_i$, i.e. $\operatorname{Var}\left( Z_i \right) = \lambda_i$.
 
+    :::{admonition,dropdown,seealso} *Proof*
 
-    ```{dropdown} Proof
-    $$\begin{align}
+    $$\begin{aligned}
     \operatorname{Var}\left( Z_i \right)
     &= \operatorname{Var}\left( \boldsymbol{u} _i ^\top \boldsymbol{x}  \right) \\
     &= \boldsymbol{u} _i ^\top \boldsymbol{\Sigma} \boldsymbol{u} _i \\
     &= \boldsymbol{e}_i ^\top \boldsymbol{\Lambda} \boldsymbol{e}_i  \\
     &= \lambda_i
-    \end{align}$$
-    ```
+    \end{aligned}$$
+    :::
 
 1. The first principal component $Z_1 = \boldsymbol{u} _1 ^\top \boldsymbol{x}$ has the largest variance among all linear combinations of $X_i$'s. The $i=2, \ldots, p$, the $i$-th principal component has the largest variance among all linear combinations of $X_i$'s, which are uncorrelated with the first $(i-1)$ principal components.
 
@@ -269,8 +239,7 @@ $$
     \sum_{i=1}^{p} \lambda_{i}=\sum_{i=1}^{p} \sigma_{i i}
     $$
 
-
-    ```{dropdown} Proof
+    :::{admonition,dropdown,seealso} *Proof*
     $$
     \begin{aligned}
     \sum_{i=1}^{p} \sigma_{i i} &=\operatorname{tr}(\boldsymbol{\Sigma}) \\
@@ -280,8 +249,7 @@ $$
     &=\sum_{i=1}^{p} \lambda_{i}
     \end{aligned}
     $$
-    ```
-
+    :::
 
 1. The correlation between a principal component $Z_j$ and an original variable $X_i$ is given by
 
@@ -291,9 +259,7 @@ $$
 
     where $u_{ij}$ denotes the $i$-th element of $\boldsymbol{u} _j$.
 
-
-    ```{dropdown} Proof
-
+    :::{admonition,dropdown,seealso} *Proof*
     $$
     \begin{aligned}
     \operatorname{Cov}\left(X_{i}, Z_{j}\right) &=\operatorname{Cov}\left(X_{i}, \boldsymbol{u}_{j}^{\top} \boldsymbol{x}\right) \\
@@ -314,7 +280,7 @@ $$
     &=\frac{\lambda_{j} u_{i j}}{\sqrt{\sigma_{i i} \lambda_{j}}} \\
     &=\frac{\sqrt{\lambda_{j}} u_{i j}}{\sqrt{\sigma_{i i}}}
     \end{align}$$
-    ```
+    :::
 
 1. If the correlation matrix $\boldsymbol{\rho} = \boldsymbol{D}^{-1}\boldsymbol{\Sigma} \boldsymbol{D}^{-1}$ instead of the covariance matrix $\boldsymbol{\Sigma}$ is used, i.e. variables $X_1, X_2, \ldots, X_d$ are standardized, then
 
@@ -411,9 +377,12 @@ with length
 - $2c\lambda_i^{1/2}$
 - directional cosines as coefficients given in $\boldsymbol{u} _i$ for the $i$-th axis.
 
-<div align="center"> PCA and Ellipsoids of Gaussian [Fung 2018]
-<img src="../imgs/pca_pc_ellipsoids.png" width = "80%" alt="" align=center />
-</div>
+:::{figure} pca-gausian-ellipsoids
+<img src="../imgs/pca_pc_ellipsoids.png" width = "80%" alt=""/>
+
+PCA and Ellipsoids of Gaussian [Fung 2018]
+:::
+
 
 Another example is hand written digits. Suppose $\boldsymbol{\mu} _ \boldsymbol{x}$ is the sample mean that determines the "mean" appearance of the digit $2$, then $\boldsymbol{\phi}_j$ is a principal direction which determines the location of variation of the black/white pixels.
 
@@ -480,8 +449,8 @@ $$\boldsymbol{z} _i = \boldsymbol{U}^\top  \boldsymbol{x} _i , i= 1, 2, \ldots, 
 where $\boldsymbol{z} _i$ can be interpreted as a vector of principal component scores for the $i$-th observation.
 
 
-```{note}
-Properties of the population principal components are all valid in the sample context, by replaceing
+```{margin}
+Properties of the population principal components are all valid in the sample context, by replacing
 
 $$\boldsymbol{\mu}, \boldsymbol{\Sigma} , \boldsymbol{\rho}, \lambda_i, \boldsymbol{u} _i$$
 
