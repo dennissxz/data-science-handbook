@@ -8,13 +8,15 @@ Instead of a $n \times p$ data matrix, MDS looks at pairwise similarity measures
 - co-occurrence counts of words between documents
 - an adjacency matrix of web pages
 
+Non-metric MDS applies ranks, KL divergences, etc (rather than numerical similarities).
+
 
 ## Objective
 
 MDS seeks a $k$-dimensional representation $\boldsymbol{z} \in \mathbb{R} ^k$ of a data set that preserves inner products between pairs of data points $(\boldsymbol{x_i}, \boldsymbol{x}_j)$
 
 $$
-\min \sum_{i j}\left(\boldsymbol{x}_{i} \cdot \boldsymbol{x}_{j}-\boldsymbol{z}_{i} \cdot \boldsymbol{z}_{j}\right)^{2}
+\min \sum_{i, j}\left(\boldsymbol{x}_{i} \cdot \boldsymbol{x}_{j}-\boldsymbol{z}_{i} \cdot \boldsymbol{z}_{j}\right)^{2}
 $$
 
 or equivalently
@@ -29,7 +31,7 @@ $$
 Note $\boldsymbol{G}_{n\times n} = \boldsymbol{X} \boldsymbol{X} ^\top  $ it is different from the data covariance matrix $\boldsymbol{S}_{d\times d} = \boldsymbol{X} ^\top \boldsymbol{X}$.
 ```
 
-The solution can be obtained from the $N\times N$ Gram matrix of inner products
+The solution can be obtained from the $n\times n$ Gram matrix of inner products
 
 $$
 \boldsymbol{G}=\boldsymbol{X} \boldsymbol{X} ^\top
@@ -46,10 +48,10 @@ $$
 The projected data matrix is
 
 $$
-\boldsymbol{Z}_{n \times k} = \boldsymbol{V}_{[:k]} \operatorname{diag}\left( \boldsymbol{\Lambda} ^{1/2}  \right) , \quad  1 \leq \alpha \leq k
+\boldsymbol{Z}_{n \times k} = \left[  \boldsymbol{V} \operatorname{diag}\left( \boldsymbol{\Lambda} ^{1/2}  \right) \right]_{[:k]}
 $$
 
-where $\boldsymbol{V}$ is the eigenvector matrix and $\boldsymbol{\Lambda}$ is the eigenvalue matrix of $\boldsymbol{G}$.
+where $\boldsymbol{V}_{n \times 1}$ is the eigenvector matrix and $\boldsymbol{\Lambda}_{n \times n}$ is the eigenvalue matrix of $\boldsymbol{G}$.
 
 ## Special Cases
 
@@ -73,7 +75,7 @@ $$
 
 And then we can run MDS to $\boldsymbol{G}$.
 
-In this case, for each eigenvector $\boldsymbol{u}_i$ of the data covariance matrix $\boldsymbol{S} = \boldsymbol{X} ^\top \boldsymbol{X}$, there is a corresponding eigenvector $\boldsymbol{v} _i$ of the Gram matrix $\boldsymbol{G} = \boldsymbol{X}  \boldsymbol{X} ^\top$ such that
+In this case, for each eigenvector $\boldsymbol{u}_i$ of the data covariance matrix $\boldsymbol{S} = \frac{1}{n}  \boldsymbol{X} ^\top \boldsymbol{X}$, there is a corresponding eigenvector $\boldsymbol{v} _i$ of the Gram matrix $\boldsymbol{G} = \boldsymbol{X}  \boldsymbol{X} ^\top$ such that
 
 $$
 \boldsymbol{v} _i = \boldsymbol{X} ^\top \boldsymbol{u} _i
