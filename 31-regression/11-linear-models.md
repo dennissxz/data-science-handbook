@@ -61,6 +61,7 @@ $$
 When there are multiple dependent variables, we call it **multivariate regression**, which will be introduced in another section.
 
 When $p=1$,
+
 - if we include intercept, then the regression model $y_i = \beta_0$ means that we use a single constant to predict $y_i$. The estimator, $\hat{\beta}_0$, by ordinary least square, should be the sample mean $\hat{y}$.
 - if we do not include intercept, then the regression model $y_i = \beta x_i$ means that we expect that $y$ is proportional to $x$. See [here](lm-proportional-model) for details.
 
@@ -181,6 +182,29 @@ The closed form solution is
 
 $$\hat{\boldsymbol{\beta}} = \left( \boldsymbol{X} ^\top \boldsymbol{X}   \right)^{-1}\boldsymbol{X} ^\top  \boldsymbol{y}  $$
 
+
+::::{admonition,dropdown,tip} View least squares as projection
+
+Substitute the solve $\hat{\boldsymbol{\beta}}$ into the prediction $\hat{\boldsymbol{y}}$ we have
+
+
+$$
+\hat{\boldsymbol{y}} = \boldsymbol{X} \hat{\boldsymbol{\beta}} = \underbrace {\boldsymbol{X} (\boldsymbol{X} ^\top \boldsymbol{X} ) ^{-1} \boldsymbol{X} ^\top}_{\boldsymbol{H}} \boldsymbol{y}
+$$
+
+Here $\boldsymbol{H}$ is a projection matrix onto the column space (image) of $\boldsymbol{X}$. Recall that a projection matrix onto the column span of a matrix $\boldsymbol{X}$ has the form $\boldsymbol{P} _{\operatorname{col}(\boldsymbol{X} )} = \boldsymbol{X} \boldsymbol{X} ^\dagger$ where $\boldsymbol{X} ^\dagger =  (\boldsymbol{X} ^\top \boldsymbol{X} ) ^{-1} \boldsymbol{X} ^\top$ is the pseudo inverse of $\boldsymbol{X}$.
+
+Essentially, we are trying to find a vector $\hat{\boldsymbol{y}}$ in the column space of the data matrix $\boldsymbol{X}$ that is as close to $\boldsymbol{y}$ as possible, and the closest one is just the projection of $\boldsymbol{y}$ onto $\operatorname{col}(\boldsymbol{X})$, which is $\boldsymbol{H}\boldsymbol{y}$. The distance is measured by the norm $\left\| \boldsymbol{y} - \hat{\boldsymbol{y}}  \right\|$, which is the squared root of sum of squared errors. Note that $\boldsymbol{y} - \hat{\boldsymbol{y}} = (\boldsymbol{I} - \boldsymbol{H} ) \boldsymbol{y} \in \operatorname{col}(\boldsymbol{X}) ^ \bot$ since $\boldsymbol{I} - \boldsymbol{H} = \boldsymbol{I}  - \boldsymbol{P}_{\operatorname{col}(\boldsymbol{X}) } = \boldsymbol{P}_{\operatorname{col}(\boldsymbol{X}) ^ \bot}$ is the projection matrix onto the orthogonal complement $\operatorname{col}(\boldsymbol{X}) ^ \bot$.
+
+:::{figure} lm-projection
+<img src="../imgs/lm-projection.png" width = "50%" alt=""/>
+
+Least squares as a projection [[Gold 2017]](https://waterprogramming.wordpress.com/2017/05/12/an-introduction-to-econometrics-part-1-classical-ordinary-least-squares-regression/)
+:::
+
+::::
+
+
 :::{admonition,dropdown,note} Solving the linear system by software
 Computing software use specific functions to solve the normal equation $\boldsymbol{X} ^\top \boldsymbol{X} \boldsymbol{\beta} = \boldsymbol{X} ^\top \boldsymbol{y}$ for $\boldsymbol{\beta}$, instead of using the inverse $(\boldsymbol{X} ^\top \boldsymbol{X}) ^{-1}$ directly which can be slow and numerically unstable. For instance, one can use QR factorization of $X$,
 
@@ -254,7 +278,7 @@ $$
 
 where $\hat\varepsilon_i = y_i - \hat{\beta}_0 - \hat{\beta}_1 x_i$.
 
-:::{admonition} Minimizing mean squared error
+:::{admonition,note} Minimizing mean squared error
 The objective function, **sum of squared errors**,
 
 $$
@@ -269,6 +293,9 @@ $$
 
 and the results are the same.
 :::
+
+
+
 
 (lm-estimation-by-assumpation)=
 ### By Assumptions
@@ -304,8 +331,7 @@ Therefore, we have the same normal equations to solve for $\hat{\beta}_0$ and $\
 
 
 
-:::{admonition} Warning
-:class: warning
+:::{admonition,warning} Warning
 
 Estimation by the two assumptions derived from the zero conditional mean assumption can be problematic. Consider a model without intercept $y_i = \beta x_i + \varepsilon_i$. Fitting by OLS, we have only ONE first order condition
 
@@ -403,10 +429,10 @@ More specifically, for the $j$-th coefficient estimator $\hat{\beta}_j$, its var
 
 $$\begin{align}
 \operatorname{Var}\left( \hat{\beta}_j \right)
-&= \sigma^2 \frac{1}{1- R^2_{-j}} \frac{1}{\sum_i (x_{ij} - \bar{x}_j)^2}
+&= \sigma^2 \frac{1}{1- R^2_{j}} \frac{1}{\sum_i (x_{ij} - \bar{x}_j)^2}
 \end{align}$$
 
-where $R_{-j}^2$ is the value of [$R$-squared](lm-rsquared) when we regress $X_j$ over all other explanatory variables.
+where $R_j^2$ is the value of [$R$-squared](lm-rsquared) when we regress $X_j$ over all other explanatory variables.
 
 Note that the value of $R^2$ when we regressing $X_1$ to an constant intercept is 0. So we have the particular result below.
 :::
@@ -427,7 +453,7 @@ We conclude that
 -   The larger the error variance, $\sigma^2$, the larger the variance of the coefficient estimates.
 -   The larger the variability in the $x_i$, the smaller the variance.
 -   A larger sample size should decrease the variance.
--   In multiple regression, reduce the relation between $X_j$ and other covariates (e.g. by orthogonal design) can decreases $R^2_{-j}$, and hence decrease the variance.
+-   In multiple regression, reduce the relation between $X_j$ and other covariates (e.g. by orthogonal design) can decreases $R^2_{j}$, and hence decrease the variance.
 
 A problem is that the error $\sigma^2$ variance is **unknown**. In practice, we can estimate $\sigma^2$ by its unbiased estimator $\hat{\sigma}^2=\frac{\sum_i (x_i - \bar{x})}{n-2}$ (to be shown \[link\]), and substitute it into $\operatorname{Var}\left( \hat{\beta}_1 \right)$. Since the error variance $\hat{\sigma}^2$ is estimated, the slope variance $\operatorname{Var}\left( \hat{\beta}_1 \right)$ is estimated too, and hence the square root is called standard error of $\hat{\beta}$, instead of standard deviation.
 
@@ -437,71 +463,89 @@ $$\begin{align}
 &= \frac{\hat{\sigma}}{\sqrt{\sum \left(x_{i}-\bar{x}\right)^{2}}}
 \end{align}$$
 
-### BLUE
+#### BLUE
 
 Theorem (Gauss–Markov)  
 : The ordinary least squares (OLS) estimator has the **lowest** sampling variance within the class of linear unbiased estimators, if the errors in the linear regression model are uncorrelated, have equal variances and expectation value of zero. In abbreviation, the OLS estimator is BLUE: Best (lowest variance) Linear Unbiased Estimator.
 
-: ```{dropdown} *Proof*
+:::{admonition,dropdown,seealso} *Proof*
 
-  Let $\tilde{\boldsymbol{\beta}} = \boldsymbol{C} \boldsymbol{y}$ be another linear estimator of $\boldsymbol{\beta}$. We can write $\boldsymbol{C} = \left( \boldsymbol{X} ^\top \boldsymbol{X} \right)^{-1} \boldsymbol{X} ^\top + \boldsymbol{D}$ where $\boldsymbol{D} \ne \boldsymbol{0}$. Then
+Let $\tilde{\boldsymbol{\beta}} = \boldsymbol{C} \boldsymbol{y}$ be another linear estimator of $\boldsymbol{\beta}$. We can write $\boldsymbol{C} = \left( \boldsymbol{X} ^\top \boldsymbol{X} \right)^{-1} \boldsymbol{X} ^\top + \boldsymbol{D}$ where $\boldsymbol{D} \ne \boldsymbol{0}$. Then
 
-  $$\begin{align}
-    \operatorname{E}\left( \tilde{\boldsymbol{\beta} } \right)
-    &= \operatorname{E}\left( \boldsymbol{C} \boldsymbol{y}   \right)\\
-    &= \boldsymbol{C} \operatorname{E}\left( \boldsymbol{X} \boldsymbol{\beta} + \boldsymbol{\varepsilon}  \right)\\
-    &= \boldsymbol{\beta} + \boldsymbol{D} \boldsymbol{X} \boldsymbol{\beta} \\
-    \end{align}$$
+$$\begin{align}
+  \operatorname{E}\left( \tilde{\boldsymbol{\beta} } \right)
+  &= \operatorname{E}\left( \boldsymbol{C} \boldsymbol{y}   \right)\\
+  &= \boldsymbol{C} \operatorname{E}\left( \boldsymbol{X} \boldsymbol{\beta} + \boldsymbol{\varepsilon}  \right)\\
+  &= \boldsymbol{\beta} + \boldsymbol{D} \boldsymbol{X} \boldsymbol{\beta} \\
+  \end{align}$$
 
-  Hence, $\tilde{\boldsymbol{\beta}}$ is unbiased iff $\boldsymbol{D} \boldsymbol{X} = 0$.
+Hence, $\tilde{\boldsymbol{\beta}}$ is unbiased iff $\boldsymbol{D} \boldsymbol{X} = 0$.
 
-  The variance is
+The variance is
 
-  $$\begin{align}
-    \operatorname{Var}\left( \tilde{\boldsymbol{\beta} } \right)
-    &= \boldsymbol{C}\operatorname{Var}\left( \boldsymbol{y}  \right) \boldsymbol{C} ^\top \\
-    &= \sigma^2 \boldsymbol{C} \boldsymbol{C} ^\top \\
-    &= \sigma^2 \left[ \left( \boldsymbol{X} ^\top \boldsymbol{X}  \right) ^{-1}  + (\boldsymbol{X} ^\top \boldsymbol{X} ) ^{-1} \boldsymbol{X} ^\top \boldsymbol{D} ^\top + \boldsymbol{D} \boldsymbol{X} \left( \boldsymbol{X} ^\top \boldsymbol{X}  \right) ^\top  + \boldsymbol{D} \boldsymbol{D} ^\top  \right]\\
-    &= \sigma^2 \left[ \left( \boldsymbol{X} ^\top \boldsymbol{X}  \right) ^{-1} + \boldsymbol{D} \boldsymbol{D} ^\top  \right]\\
-    &= \operatorname{Var}\left( \hat{\boldsymbol{\beta} } \right) + \sigma^2 \boldsymbol{D} \boldsymbol{D} ^\top \\
-    \end{align}$$
+$$\begin{align}
+  \operatorname{Var}\left( \tilde{\boldsymbol{\beta} } \right)
+  &= \boldsymbol{C}\operatorname{Var}\left( \boldsymbol{y}  \right) \boldsymbol{C} ^\top \\
+  &= \sigma^2 \boldsymbol{C} \boldsymbol{C} ^\top \\
+  &= \sigma^2 \left[ \left( \boldsymbol{X} ^\top \boldsymbol{X}  \right) ^{-1}  + (\boldsymbol{X} ^\top \boldsymbol{X} ) ^{-1} \boldsymbol{X} ^\top \boldsymbol{D} ^\top + \boldsymbol{D} \boldsymbol{X} \left( \boldsymbol{X} ^\top \boldsymbol{X}  \right) ^\top  + \boldsymbol{D} \boldsymbol{D} ^\top  \right]\\
+  &= \sigma^2 \left[ \left( \boldsymbol{X} ^\top \boldsymbol{X}  \right) ^{-1} + \boldsymbol{D} \boldsymbol{D} ^\top  \right]\\
+  &= \operatorname{Var}\left( \hat{\boldsymbol{\beta} } \right) + \sigma^2 \boldsymbol{D} \boldsymbol{D} ^\top \\
+  \end{align}$$
 
-  Since $\sigma^2 \boldsymbol{D} \boldsymbol{D} ^\top \in \mathrm{PSD}$, we have
+Since $\sigma^2 \boldsymbol{D} \boldsymbol{D} ^\top \in \mathrm{PSD}$, we have
 
+$$
+  \operatorname{Var}\left( \tilde{\boldsymbol{\beta} } \right) \succeq \operatorname{Var}\left( \hat{\boldsymbol{\beta} } \right)
   $$
-    \operatorname{Var}\left( \tilde{\boldsymbol{\beta} } \right) \succeq \operatorname{Var}\left( \hat{\boldsymbol{\beta} } \right)
-    $$
 
-  The equality holds iff $\boldsymbol{D} ^\top \boldsymbol{D} = 0$, which implies that $\operatorname{tr}\left( \boldsymbol{D} \boldsymbol{D} ^\top \right) = 0$, then $\left\Vert \boldsymbol{D} \right\Vert _F^2 = 0$, then $\boldsymbol{D} = 0$, i.e. $\tilde{\boldsymbol{\beta} } = \hat{\boldsymbol{\beta} }$. Therefore, BLUE is unique.
-  ```
+The equality holds iff $\boldsymbol{D} ^\top \boldsymbol{D} = 0$, which implies that $\operatorname{tr}\left( \boldsymbol{D} \boldsymbol{D} ^\top \right) = 0$, then $\left\Vert \boldsymbol{D} \right\Vert _F^2 = 0$, then $\boldsymbol{D} = 0$, i.e. $\tilde{\boldsymbol{\beta} } = \hat{\boldsymbol{\beta} }$. Therefore, BLUE is unique.
+:::
 
 If error term is normally distributed, then OLS is most efficient among all consistent estimators (not just linear ones).
 
 When the distribution of error term is non-normal, other estimators may have lower variance than OLS such as least absolute deviation (median regression).
 
-#### Hypothesis Testing
+#### Distribution
 
-TBD
+If we assume $\varepsilon_i \overset{\text{iid}}{\sim} N(0, \sigma^2)$, or $\boldsymbol{\varepsilon} \sim N_n(\boldsymbol{0} , \boldsymbol{I} _n)$, then
 
-### Residuals
+$$
+\boldsymbol{y} \sim N(\boldsymbol{X} \boldsymbol{\beta} , \sigma^2 \boldsymbol{I} )
+$$
+
+Hence, the distribution of the coefficients estimator is
+
+
+$$\begin{aligned}
+\hat{\boldsymbol{\beta}}
+&= (\boldsymbol{X} ^\top \boldsymbol{X} ) ^{-1} \boldsymbol{X} ^\top \boldsymbol{y}   \\
+&\sim  N(\boldsymbol{\beta} , (\boldsymbol{X} ^\top \boldsymbol{X} ) ^{-1} \boldsymbol{X} \operatorname{Var}\left( \boldsymbol{y}  \right)) \boldsymbol{X} ^\top (\boldsymbol{X} ^\top \boldsymbol{X} ) ^{-1} \\
+&\sim N(\boldsymbol{\beta} , \sigma^2 (\boldsymbol{X} ^\top \boldsymbol{X} )^{-1} ) \\
+\end{aligned}$$
+
+
+
+### Residuals and Error Variance
+
+#### Residuals
 
 Definition  
-The residual is defined as the difference between the true response value $y$ and our fitted response value $\hat{y}$.
+: The residual is defined as the difference between the true response value $y$ and our fitted response value $\hat{y}$.
 
-$$\hat\varepsilon_i = y_i - \hat{y}_i = y_i - \boldsymbol{x}_i ^\top \hat{\boldsymbol{\beta}}$$
+  $$\hat\varepsilon_i = y_i - \hat{y}_i = y_i - \boldsymbol{x}_i ^\top \hat{\boldsymbol{\beta}}$$
 
-It is an estimate of the error term $\varepsilon_i$.
+  It is an estimate of the error term $\varepsilon_i$.
 
-```{margin}
-Sometimes the second property is described as "the residuals and the explanatory variables are uncorrelated".
-```
 
-Properties  
--   The sum of the residual is zero: $\sum_i \hat{\varepsilon}_i = 0$
+**Properties**
 
--   The sum of the product of residual and any covariate: $\sum_i x_{ij} \hat{\varepsilon}_i = 0$ for all $j$.
+1. The sum of the residual is zero: $\sum_i \hat{\varepsilon}_i = 0$
 
-```{dropdown} *Proof*
+1. The sum of the product of residual and any covariate is zero, or they are "uncorrelated": $\sum_i x_{ij} \hat{\varepsilon}_i = 0$ for all $j$.
+
+1. The sum of squared residuals: $\left\| \boldsymbol{\hat{\varepsilon}}  \right\|^2   = \left\| \boldsymbol{y} - \boldsymbol{H} \boldsymbol{y}   \right\|^2  = \boldsymbol{y} ^\top (\boldsymbol{I} - \boldsymbol{H} ) \boldsymbol{y}$
+
+:::{admonition,dropdown,seealso} *Proof*
 Recall the normal equation
 
 $$
@@ -528,13 +572,163 @@ For other columns $\boldsymbol{x}_j$ in $\boldsymbol{X}$, we have
 $$
 \boldsymbol{x}_j ^\top \boldsymbol{\hat{\varepsilon}}  = \boldsymbol{0}
 $$
-```
 
-### Error Term Variance Estimation
+The 3rd equality holds since $\boldsymbol{I} - \boldsymbol{H}$ is a projection matrix if $\boldsymbol{H}$ is a projection matrix, i.e.,
 
-TBD
+$$
+(\boldsymbol{I} - \boldsymbol{H}) (\boldsymbol{I} - \boldsymbol{H} ) = \boldsymbol{I} -\boldsymbol{H}
+$$
 
+:::
+
+#### Estimation of Error Variance
+
+In the estimation section we mentioned the estimator for the error variance $\sigma^2$ is
+
+$$
+\hat{\sigma}^{2}=\frac{\|\boldsymbol{y}-\boldsymbol{X} \hat{\boldsymbol{\beta}}\|^{2}}{n-p}
+$$
+
+This is because
+
+
+$$
+\left\| \hat{\boldsymbol{\varepsilon}}  \right\|  ^2 \sim \sigma^2\chi ^2 _{n-p}  \\
+
+
+
+\Rightarrow  \quad \sigma^2 =\operatorname{E}\left( \frac{\|\boldsymbol{y}-\boldsymbol{X} \hat{\boldsymbol{\beta}}\|^{2}}{n-p} \right)
+$$
+
+and we used the method of moment estimator. The derivation of the above expectation is a little involved.
+
+:::{admonition,dropdown,seealso} *Derivation*
+
+Let
+
+- $\boldsymbol{U} = [\boldsymbol{U} _ \boldsymbol{X} , \boldsymbol{U} _\bot]$ be an orthogonal basis of $\mathbb{R} ^{n\times n}$ where
+- $\boldsymbol{U} _ \boldsymbol{X}  = [\boldsymbol{u} _1, \ldots, \boldsymbol{u} _p]$ is an orthogonal basis of the column space (image) of $\boldsymbol{X}$, denoted $\operatorname{col}(\boldsymbol{X} )$
+- $\boldsymbol{U} _ \bot  = [\boldsymbol{u} _{p+1}, \ldots, \boldsymbol{u} _n]$ is an orthogonal basis of the orthogonal complement of the column space (kernel) of $\boldsymbol{X}$, , denoted $\operatorname{col}(\boldsymbol{X} ) ^\bot$.
+
+Recall
+
+$$ \hat{\boldsymbol{\varepsilon}}  = \boldsymbol{y} - \hat{\boldsymbol{y}} = (\boldsymbol{I} - \boldsymbol{H} ) \boldsymbol{y} \in \operatorname{col}(\boldsymbol{X} ) ^\bot$$
+
+which is
+
+$$\begin{aligned}
+\left\| \hat{\boldsymbol{\varepsilon}}  \right\|  ^2
+&= \left\| \boldsymbol{P} _{\boldsymbol{U} _\bot} \boldsymbol{y}   \right\|  \\
+&= \left\| \boldsymbol{U} _\bot \boldsymbol{U} _\bot ^\top \boldsymbol{y}  \right\|^2  \\
+&= \left\| \boldsymbol{U} _\bot ^\top \boldsymbol{y}  \right\|^2  \\
+&= \left\| \boldsymbol{U} _\bot ^\top (\boldsymbol{X} \boldsymbol{\beta} + \boldsymbol{\varepsilon})    \right\|^2  \\
+&= \left\| \boldsymbol{U} _\bot ^\top  \boldsymbol{\varepsilon}    \right\|^2  \quad \because \boldsymbol{U} _\bot ^\top\boldsymbol{X} = \boldsymbol{0} \\
+\end{aligned}$$
+
+Note that assuming $\boldsymbol{\varepsilon} \sim N(\boldsymbol{0} , \sigma^2 \boldsymbol{I} )$, we have
+
+
+$$\begin{aligned}
+\boldsymbol{U} _\bot ^\top \boldsymbol{\varepsilon}
+&\sim N_{n-p}(\boldsymbol{0} , \boldsymbol{U} _\bot ^\top \sigma^2 \boldsymbol{I}_n \boldsymbol{U} _\bot) \\
+&\sim N_{n-p}(\boldsymbol{0} , \sigma^2 \boldsymbol{I}_{n-p}) \\
+\end{aligned}$$
+
+and hence the sum of squared normal variables follows
+
+$$
+\left\| \boldsymbol{U} _\bot ^\top \boldsymbol{\varepsilon} \right\|  ^2 \sim \sigma^2 \chi ^2 _{n-p}  
+$$
+
+Thus,
+
+$$
+\left\| \hat{\boldsymbol{\varepsilon}}  \right\|  ^2 \sim \sigma^2 \chi ^2 _{n-p}  
+$$
+
+The first moment is
+
+$$
+\operatorname{E}\left( \left\| \hat{\boldsymbol{\varepsilon}} \right\|^2    \right) = \sigma^2 (n-p)
+$$
+
+or equivalently
+
+$$
+\sigma^2 = \frac{\operatorname{E}\left( \left\| \hat{\boldsymbol{\varepsilon}} \right\|^2\right)}{n-p}
+$$
+
+Therefore, the method of moment estimator for $\sigma^2$ is
+
+$$
+\hat{\sigma}^2 = \frac{\left\| \hat{\boldsymbol{\varepsilon}}  \right\|^2  }{n-p}
+$$
+
+which is unbiased.
+
+:::
+
+
+Can we find $\operatorname{Var}\left( \hat{\sigma}^2  \right)$ like we did for $\operatorname{Var}\left( \hat{\boldsymbol{\beta}}  \right)$? No, unless we assume higher order moments of $\varepsilon_i$.
+
+
+(lm-independent-beta-sigma)=
 ### Independence of $\hat{\boldsymbol{\beta}}$ and $\hat{\sigma}^2$
+
+To prove the independence between the coefficients estimator $\hat{\boldsymbol{\beta} }$ and the error variance estiamtor $\hat{\sigma}^2$, we need the Lemma below.
+
+
+Lemma
+: Suppose a random vector $\boldsymbol{y}$ follows multivariate normal distribution $\boldsymbol{y} \sim N_m(\boldsymbol{\mu} , \sigma^2 I_m)$ and $S, T$ are orthogonal subspaces of $\mathbb{R} ^m$, then the two projected random vectors are independent
+
+$$
+\boldsymbol{P}_S (\boldsymbol{y}) \perp\!\!\!\perp  \boldsymbol{P}_T (\boldsymbol{y})
+$$
+
+:::{admonition,dropdown,seealso} *Proof*
+
+Let $\boldsymbol{z} \sim N(\boldsymbol{0} , \boldsymbol{I} _m)$ be a standard multivariate normal random vector, and $\boldsymbol{U} = [\boldsymbol{U} _S, \boldsymbol{U} _T]$ be orthogonal basis of $\mathbb{R} ^n$. Then
+
+$$\begin{aligned}
+&&\boldsymbol{U} ^\top \boldsymbol{z} &\sim N(\boldsymbol{0} , \boldsymbol{I} _m) \\
+&\Rightarrow& \quad \left[\begin{array}{l}
+\boldsymbol{U}_S ^\top \boldsymbol{z} \\
+\boldsymbol{U}_T ^\top \boldsymbol{z} \\
+\end{array}\right]&\sim N(\boldsymbol{0} , \boldsymbol{I} _m) \\
+&\Rightarrow& \quad \boldsymbol{U} ^\top _S \boldsymbol{z}  &\perp\!\!\!\perp \boldsymbol{U} ^\top _T \boldsymbol{z}  \\
+&\Rightarrow& \quad  f(\boldsymbol{U} ^\top _S \boldsymbol{z})  &\perp\!\!\!\perp f(\boldsymbol{U} ^\top _T \boldsymbol{z})  \\
+\end{aligned}$$
+
+Let $\boldsymbol{y} = \boldsymbol{\mu} + \sigma \boldsymbol{z}$, then  
+
+$$
+\boldsymbol{P} _S(\boldsymbol{y} ) = \boldsymbol{U} _S \boldsymbol{U} _S ^\top (\boldsymbol{\mu} + \sigma \boldsymbol{z} ) \perp\!\!\!\perp \boldsymbol{U} _T \boldsymbol{U} _T ^\top (\boldsymbol{\mu} + \sigma \boldsymbol{z} ) = \boldsymbol{P} _T(\boldsymbol{y} )
+$$
+
+$\square$
+
+:::
+
+Note that $\hat{\boldsymbol{\beta}}$ is a function of $\boldsymbol{P}  _{\operatorname{im}(\boldsymbol{X}) } (\boldsymbol{y})$ since
+
+
+$$\begin{aligned}
+\hat{\boldsymbol{\beta}}
+&= (\boldsymbol{X} ^\top \boldsymbol{X} ) ^{-1} \boldsymbol{X} ^\top \boldsymbol{y} \\
+&= (\boldsymbol{X} ^\top \boldsymbol{X} ) ^{-1} \boldsymbol{X} ^\top \boldsymbol{X} (\boldsymbol{X} ^\top \boldsymbol{X} ) ^{-1} \boldsymbol{X} ^\top \boldsymbol{y} \\
+&= (\boldsymbol{X} ^\top \boldsymbol{X} ) ^{-1} \boldsymbol{X} ^\top \boldsymbol{P}_{\operatorname{im}(\boldsymbol{X} ) } (\boldsymbol{y})  \\
+\end{aligned}$$
+
+and note that $\hat{\sigma}^2$ is a function of $\boldsymbol{P}  _{\operatorname{im}(\boldsymbol{X} )^\bot } (\boldsymbol{y})$ since
+
+
+$$
+\hat{\sigma}^{2}=\frac{\|\hat{\boldsymbol{\varepsilon}} \|^{2}}{n-p} =
+\frac{\left\| \boldsymbol{P}  _{\operatorname{im}(\boldsymbol{X})^\bot } (\boldsymbol{y}) \right\| ^2  }{n-p}
+$$
+
+Therefore, by the lemma, they are independent. As a result, we can then perform $t$-test of the coefficients.
+
 
 ### Sum of Squares
 
@@ -586,10 +780,10 @@ $$\begin{aligned}
 More specifically, they are orthogonal because
 
 $$
-\boldsymbol{y} - \hat{\boldsymbol{y} } \in \operatorname{im}(\boldsymbol{X} )^\perp \quad  \hat{\boldsymbol{y} } - \bar{y} \boldsymbol{1} _n \in \operatorname{im}(\boldsymbol{X} )
+\boldsymbol{y} - \hat{\boldsymbol{y} } \in \operatorname{col}(\boldsymbol{X} )^\perp \quad  \hat{\boldsymbol{y} } - \bar{y} \boldsymbol{1} _n \in \operatorname{col}(\boldsymbol{X} )
 $$
 
-since $\boldsymbol{1} _n \in \operatorname{im}(\boldsymbol{X})$, if an intercept term is included in the model.
+since $\boldsymbol{1} _n \in \operatorname{col}(\boldsymbol{X})$, if an intercept term is included in the model.
 
 drawing \[here\]
 
@@ -709,16 +903,17 @@ $$
   R^2 = \frac{SSR}{SST}  = 1 - \frac{SSE}{SST} = 1 - \frac{\sum (y_i - \hat{y}_i)^2}{\sum (y_i - \bar{y})^2}
   $$
 
-Properties  
--   $R$-squared can never decrease when an additional explanatory variable is added to the model.
+**Properties**
+
+1. $R$-squared can never decrease when an additional explanatory variable is added to the model.
 
     As long as $Cov(Y, X_j) \ne 0$, then $X_j$ has some explanatory power to $Y$, and thus $RSS$ decreases, See the [section](lm-rss-nonincreasing) of $RSS$ for details. As a result, $R$-squared  is not a good measure for model selection, which can cause overfitting.
 
--   $R$-squared equals the squared correlation coefficient between the actual value of the response and the fitted value $\operatorname{Corr}\left( Y, \hat{Y} \right)^2$.
+1. $R$-squared equals the squared correlation coefficient between the actual value of the response and the fitted value $\operatorname{Corr}\left( Y, \hat{Y} \right)^2$.
 
     In particular, in simple linear regression, $R^2 = \rho_{X,Y}^2$.
 
-    ```{dropdown} *Proof*
+    :::{admonition,dropdown,seealso} *Proof*
     By the definition of correlation,
 
     $$\begin{align}
@@ -743,12 +938,10 @@ Properties
     $$
     R^2 = \operatorname{Corr}\left(y, \hat{y} \right)^2 = \operatorname{Corr}\left(y, x \right)^2
     $$
+    :::
 
-    ```
 
-:::{admonition,dropdown,note} $R$-squared when there is no intercept
-
-When there is no intercept, then $\bar{y} \boldsymbol{1} _n \notin \operatorname{im}(X)$ and hence $\hat{\boldsymbol{y} } - \bar{y} \boldsymbol{1} _n \notin \operatorname{im}(X)$. The decomposition identity may not hold. Thus, the value of $R$-squared may no longer be in $[0,1]$, and its interpretation is no longer valid. What actually happen to the value $R$-squared depends on whether we define it using $TSS$ with $RSS$ or $ESS$.
+When there is **no** intercept, then $\bar{y} \boldsymbol{1} _n \notin \operatorname{col}(X)$ and hence $\hat{\boldsymbol{y} } - \bar{y} \boldsymbol{1} _n \notin \operatorname{col}(X)$. The decomposition identity may not hold. Thus, the value of $R$-squared may no longer be in $[0,1]$, and its interpretation is no longer valid. What actually happen to the value $R$-squared depends on whether we define it using $TSS$ with $RSS$ or $ESS$.
 
 If we define $R^2 = \frac{ESS}{TSS}$, then when
 
@@ -766,12 +959,15 @@ $$
 
 we will have $RSS > TSS$, i.e. $R^2 < 0$.
 
-:::
+
+
+### Adjusted $R$-squared
+
 
 Due to the non-decrease property of $R$-squared, we define adjusted $R$-squared which is a better measure of goodness of fitting.
 
 Definition  
-Adjusted $R$-squared, denoted by $\bar{R}^2$, is defined as
+: Adjusted $R$-squared, denoted by $\bar{R}^2$, is defined as
 
 $$
   \bar{R}^2 = 1-\frac{RSS / (n-p)}{ TSS / (n-1)}
@@ -798,6 +994,10 @@ $$
     $$
 
     If $p > \frac{n+1}{2}$ then the above inequality always hold, and adjusted $R$-squared is always negative.
+
+
+
+
 
 ### ANOVA?
 
@@ -936,7 +1136,7 @@ print("reconstruction difference of b0, b1, b2 :", lm.coef_[0,:3] + lmx.coef_[0]
 
 What if we add a new variable $x_p$? What will happen to the existing estimator $\hat\beta_k$?
 
-Increase $\operatorname{Var}\left(\hat{\beta}_{k}\right)=\sigma^{2} \frac{1}{1-R_{-j}^{2}} \frac{1}{\sum_{i}\left(x_{i k}-\bar{x}_{k}\right)^{2}}$ if $R_{-k}^2$ increases. When will $R^2_{-k}$ be unchanged? When the new variable $x_p$ has no explanatory power to $x_k$. See the [exercise](lm-rsq-non-decreasing).
+Increase $\operatorname{Var}\left(\hat{\beta}_{k}\right)=\sigma^{2} \frac{1}{1-R_j^{2}} \frac{1}{\sum_{i}\left(x_{i k}-\bar{x}_{k}\right)^{2}}$ if $R_{-k}^2$ increases. When will $R^2_{-k}$ be unchanged? When the new variable $x_p$ has no explanatory power to $x_k$. See the [exercise](lm-rsq-non-decreasing).
 
 In terms of bias, if we say the model with $x_p$ is "true", then $\operatorname{E}\left( \hat{\beta}_k \right)$ is probably closer to $\beta_k$ according to the equation described in the above [section](lm-omit-variable).
 
@@ -969,10 +1169,10 @@ Some common symptoms include
 We can measure the extent of multicollinearity by **variance inflation factor** (VIF) for each explanatory variable.
 
 $$
-\operatorname{VIF}_j = \frac{1}{1-R_{-j}^2}
+\operatorname{VIF}_j = \frac{1}{1-R_j^2}
 $$
 
-where $R_{-j}^2$ is the value of $R^2$ when we regress $X_j$ over all other explanatory variables excluding $X_j$. The value of $\operatorname{VIF}_j$ can be interpreted as: the standard error $\operatorname{se}(\beta)$ is $\sqrt{\operatorname{VIF}_j}$ times larger than it would have been without multicollinearity.
+where $R_j^2$ is the value of $R^2$ when we regress $X_j$ over all other explanatory variables excluding $X_j$. The value of $\operatorname{VIF}_j$ can be interpreted as: the standard error $\operatorname{se}(\beta)$ is $\sqrt{\operatorname{VIF}_j}$ times larger than it would have been without multicollinearity.
 
 A second way of measurement is the **condition number** of $\boldsymbol{X} ^\top \boldsymbol{X}$. If it is greater than $30$, then we can conclude that the multicollinearity problem cannot be ignored.
 
@@ -988,11 +1188,11 @@ Finally, **correlation matrix** can also be used to measure multicollinearity si
 
     $$\begin{align}
      \operatorname{Var}\left( \hat{\beta}_j \right)
-     &= \sigma^2 \frac{1}{1- R^2_{-j}} \frac{1}{\sum_i (x_{ij} - \bar{x}_j)^2}  \\
+     &= \sigma^2 \frac{1}{1- R^2_{j}} \frac{1}{\sum_i (x_{ij} - \bar{x}_j)^2}  \\
      &=  \sigma^2 \frac{\operatorname{VIF}_j}{\operatorname{Var}\left( X_j \right)}  
      \end{align}$$
 
-    When perfect multicollinearity exists, the variance goes to infinity since $R^2_{-j} = 1$.
+    When perfect multicollinearity exists, the variance goes to infinity since $R^2_{j} = 1$.
 
 2.  $t$-tests fail to reveal significant predictors, due to 1.
 
@@ -1213,7 +1413,7 @@ TBD.
 -   The larger the error variance, $\sigma^2$, the larger the variance of the coefficient estimates.
 -   The larger the variability in the $x_i$, the smaller the variance.
 -   A larger sample size should decrease the variance.
--   In multiple regression, reduce the relation between $X_j$ and other covariates (e.g. by orthogonal design) can decreases $R^2_{-j}$, and hence decrease the variance.
+-   In multiple regression, reduce the relation between $X_j$ and other covariates (e.g. by orthogonal design) can decreases $R^2_{j}$, and hence decrease the variance.
 
 
 ### Partialling Out in General Cases
