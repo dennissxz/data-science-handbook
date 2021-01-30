@@ -83,7 +83,7 @@ Basic assumptions
 
 2.  The values of explanatory variables $\boldsymbol{x}_i$ are known and fixed. Randomness only comes from $\varepsilon_i$.
 
-3.  No $X_j$ is constant for all observations. No exact linear relationships among the explanatory variables (no perfect multicollinearity).
+3.  No $X_j$ is constant for all observations. No exact linear relationships among the explanatory variables (aka no perfect multicollinearity, or the design matrix $\boldsymbol{X}$ is of full rank).
 
 4.  The error terms are uncorrelated $\operatorname{Cov}\left( \varepsilon_i, \varepsilon_j \right)= 0$, with common mean $\operatorname{E}\left( \varepsilon_i \right) = 0$ and variance $\operatorname{Var}\left( \varepsilon_i \right) = \sigma^2$ (homoskedasticity).
 
@@ -429,6 +429,7 @@ More specifically, for the $j$-th coefficient estimator $\hat{\beta}_j$, its var
 
 $$\begin{align}
 \operatorname{Var}\left( \hat{\beta}_j \right)
+&= \sigma^2 \left[ (\boldsymbol{X} ^\top \boldsymbol{X} )^{-1} \right]_{[j,j]} \\
 &= \sigma^2 \frac{1}{1- R^2_{j}} \frac{1}{\sum_i (x_{ij} - \bar{x}_j)^2}
 \end{align}$$
 
@@ -436,6 +437,7 @@ where $R_j^2$ is the value of [$R$-squared](lm-rsquared) when we regress $X_j$ o
 
 Note that the value of $R^2$ when we regressing $X_1$ to an constant intercept is 0. So we have the particular result below.
 :::
+
 
 When $p=2$, the variance of $\hat{\beta}_1$ is
 
