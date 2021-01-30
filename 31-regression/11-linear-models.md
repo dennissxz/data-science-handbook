@@ -997,6 +997,59 @@ $$
 
 
 
+### $t$-test
+
+We can use $t$-test to test a null hypothesis on $\boldsymbol{\beta}$, which has a general form
+
+$$
+\boldsymbol{v} ^\top \boldsymbol{\beta}_{\text{null}} = c
+$$
+
+Usually $c=0$.
+
+- If $c=0, \boldsymbol{v} = \boldsymbol{e} _j$ then this is equivalent to test $\beta_j=0$, i.e. the variable $X_i$ has no effect on $Y$ given all other variabels.
+- If $c=0, v_i=1, v_j=-1$ and $v_k=0, k\ne i, j$ then this is equivalent to test $\beta_i = \beta_j$, i.e. the two variables $X_i$ and $X_j$ has the same effect on $Y$ given all other variables.
+
+First, we need to find the distribution of $\boldsymbol{v} ^\top \hat{\boldsymbol{\beta}}$. Recall that
+
+$$
+\hat{\boldsymbol{\beta}} \sim N(\boldsymbol{\beta}_{\text{null}} , \sigma^2 (\boldsymbol{X} ^\top \boldsymbol{X} )^{-1})
+$$
+
+Hence,
+
+
+$$
+\boldsymbol{v} ^\top \hat{\boldsymbol{\beta}}  \sim N(\boldsymbol{v} ^\top \boldsymbol{\beta}_{\text{null}} , \sigma^2 \boldsymbol{v} ^\top (\boldsymbol{X} ^\top \boldsymbol{X} ) ^{-1} \boldsymbol{v} )
+$$
+
+Also recall that the RSS has the distribution
+
+$$
+(n-p)\frac{\hat{\sigma}^2}{\sigma^2 } \sim \sim \chi ^2 _{n-p}  
+$$
+
+and the two quantities $\boldsymbol{v} ^\top \hat{\boldsymbol{\beta}}$ and $(n-p)\frac{\hat{\sigma}^2}{\sigma^2 }$ are [independent](lm-independent-beta-sigma). Therefore, we can construct a test statistic
+
+
+$$
+\frac{\boldsymbol{v} ^\top \hat{\boldsymbol{\beta}} - \boldsymbol{v} ^\top \boldsymbol{\beta}_{\text{null}}}{\sigma\sqrt{\boldsymbol{v} ^\top (\boldsymbol{X} ^\top \boldsymbol{X} ) ^{-1} \boldsymbol{v} }} / \sqrt{\frac{(n-p)\hat{\sigma}^2 }{\sigma^2 } / (n-p)} \sim t_{n-p}
+$$
+
+i.e.,
+
+
+$$
+\frac{\boldsymbol{v} ^\top \hat{\boldsymbol{\beta}} - \boldsymbol{v} ^\top \boldsymbol{\beta}_{\text{null}}}{\hat{\sigma}\sqrt{\boldsymbol{v} ^\top (\boldsymbol{X} ^\top \boldsymbol{X} ) ^{-1} \boldsymbol{v} }} \sim t_{n-p}
+$$
+
+In particular, when $p=2$, to test $\beta_1 = c$, we use
+
+$$
+\frac{\hat{\beta}_1 - c}{\hat{\sigma}/ \sqrt{\operatorname{Var}\left( X \right)}}  \sim t_{n-2}
+$$
+
+
 
 
 ### ANOVA?
