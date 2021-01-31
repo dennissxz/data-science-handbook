@@ -315,7 +315,7 @@ There are several ways to choose the number of principal components to retain.
     Construct the so-called scree plot of the eigenvalue $\ell_i$ on the vertical axis versus $i$ on horizontal axis with equal intervals for $i = 1, 2, \ldots, d$, and join the points into a decreasing polygon. Try to find a “clean-cut” where the polygon “levels off” so that the first few eigenvalues seem to be far apart from the others.
 
     :::{figure,myclass} pca-scree-plot
-    <img src="../imgs/pca_scree_plot.png" width = "50%" alt=""/>
+    <img src="../imgs/pca-scree-plot.png" width = "50%" alt=""/>
 
     Scree plot of $\lambda$. [Fung 2021]
     :::
@@ -340,7 +340,7 @@ There are several ways to choose the number of principal components to retain.
     To choose an optimal number of principal components $k$, we can examine the magnitude of the residual $\left\Vert \boldsymbol{x} - \hat{\boldsymbol{x} } \right\Vert ^2$. The expected residual corresponds to variance in the **remaining** subspace.
 
     :::{figure,myclass} pca-reconstruction
-    <img src="../imgs/pca_reconstruction.png" width = "80%" alt=""/>
+    <img src="../imgs/pca-reconstruction.png" width = "80%" alt=""/>
 
     Reconstruction of digits with mean and principal components [Livescu 2021]
     :::
@@ -378,7 +378,7 @@ with length
 - directional cosines as coefficients given in $\boldsymbol{u} _i$ for the $i$-th axis.
 
 :::{figure} pca-gausian-ellipsoids
-<img src="../imgs/pca_pc_ellipsoids.png" width = "80%" alt=""/>
+<img src="../imgs/pca-pc-ellipsoids.png" width = "80%" alt=""/>
 
 PCA and Ellipsoids of Gaussian [Fung 2018]
 :::
@@ -388,7 +388,7 @@ Another example is hand written digits. Suppose $\boldsymbol{\mu} _ \boldsymbol{
 
 
 :::{figure,myclass} pca-reconstruction-scale
-<img src="../imgs/pca_pc_digits.png" width = "50%" alt=""/>
+<img src="../imgs/pca-pc-digits.png" width = "50%" alt=""/>
 
 Reconstruction of digits with mean and scaled principal components [Livescu 2021]
 :::
@@ -516,7 +516,7 @@ natural sciences. However, when the units of measurement are of artificial natur
 But note that the direction of largest variance need not to be the most discriminative direction. See the example below.
 
 :::{figure,myclass} pca-not-discriminative
-<img src="../imgs/pca_classification.png" width = "80%" alt=""/>
+<img src="../imgs/pca-classification.png" width = "80%" alt=""/>
 
 PCA may not be discriminative [Livescu 2021]
 :::
