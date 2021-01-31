@@ -835,9 +835,8 @@ print(b)
 
 ## Interpretation
 
-### Coefficients
 
-#### Value
+### Value of Estimated Coefficients
 
 $\beta_j$ is the expected change in the value of the response variable $y$ if the value of the covariate $x_j$ increases by 1, holding other covariates fixed.
 
@@ -852,7 +851,7 @@ Linear regression models only reveal linear associations between the response va
 Only when the data is from a randomized controlled trial, correlation will imply causation.
 ```
 
-#### Partialling Out
+### Partialling Out Explanation for MLR
 
 We can interpret the coefficients in multiple linear regression from “partialling out” perspective.
 
@@ -889,7 +888,195 @@ In this approach, $\hat{u}$ is interpreted as the part in $x_1$ that cannot be p
 
 
 
-#### Hypothesis Testing
+## Inference
+
+In this section we talk about hypothesis testing and confidence intervals for $\boldsymbol{v} ^\top \boldsymbol{\beta}$ and other quantities.
+
+
+### $t$-test of $\boldsymbol{v} ^\top \boldsymbol{\beta}$
+
+We can use $t$-test to test a null hypothesis on $\boldsymbol{\beta}$, which has a general form
+
+$$
+\boldsymbol{v} ^\top \boldsymbol{\beta}_{\text{null}} = c
+$$
+
+Usually $c=0$.
+
+- If $c=0, \boldsymbol{v} = \boldsymbol{e} _j$ then this is equivalent to test $\beta_j=0$, i.e. the variable $X_i$ has no effect on $Y$ given all other variabels.
+- If $c=0, v_i=1, v_j=-1$ and $v_k=0, k\ne i, j$ then this is equivalent to test $\beta_i = \beta_j$, i.e. the two variables $X_i$ and $X_j$ has the same effect on $Y$ given all other variables.
+
+First, we need to find the distribution of $\boldsymbol{v} ^\top \hat{\boldsymbol{\beta}}$. Recall that
+
+$$
+\hat{\boldsymbol{\beta}} \sim N(\boldsymbol{\beta}_{\text{null}} , \sigma^2 (\boldsymbol{X} ^\top \boldsymbol{X} )^{-1})
+$$
+
+Hence,
+
+
+$$
+\boldsymbol{v} ^\top \hat{\boldsymbol{\beta}}  \sim N(\boldsymbol{v} ^\top \boldsymbol{\beta}_{\text{null}} , \sigma^2 \boldsymbol{v} ^\top (\boldsymbol{X} ^\top \boldsymbol{X} ) ^{-1} \boldsymbol{v} )
+$$
+
+Also recall that the RSS has the distribution
+
+$$
+(n-p)\frac{\hat{\sigma}^2}{\sigma^2 } \sim \sim \chi ^2 _{n-p}  
+$$
+
+and the two quantities $\boldsymbol{v} ^\top \hat{\boldsymbol{\beta}}$ and $(n-p)\frac{\hat{\sigma}^2}{\sigma^2 }$ are [independent](lm-independent-beta-sigma). Therefore, we can construct a test statistic
+
+
+$$
+\frac{\boldsymbol{v} ^\top \hat{\boldsymbol{\beta}} - \boldsymbol{v} ^\top \boldsymbol{\beta}_{\text{null}}}{\sigma\sqrt{\boldsymbol{v} ^\top (\boldsymbol{X} ^\top \boldsymbol{X} ) ^{-1} \boldsymbol{v} }} / \sqrt{\frac{(n-p)\hat{\sigma}^2 }{\sigma^2 } / (n-p)} \sim t_{n-p}
+$$
+
+i.e.,
+
+
+$$
+\frac{\boldsymbol{v} ^\top \hat{\boldsymbol{\beta}} - \boldsymbol{v} ^\top \boldsymbol{\beta}_{\text{null}}}{\hat{\sigma}\sqrt{\boldsymbol{v} ^\top (\boldsymbol{X} ^\top \boldsymbol{X} ) ^{-1} \boldsymbol{v} }} \sim t_{n-p}
+$$
+
+In particular, when $p=2$, to test $\beta_1 = c$, we use
+
+$$
+\frac{\hat{\beta}_1 - c}{\hat{\sigma}/ \sqrt{\operatorname{Var}\left( X \right)}}  \sim t_{n-2}
+$$
+
+
+Another way to conduct a test without normality assumption is to use permutation test. For instance, to test $\beta_2=0$, we fix $y$ and $x_1$, and sample the same $n$ values of $x_2$ from the column of $X_2$, and compute the $t$ statistic. Repeat the permutation for multiple times and compute the percentage that
+
+$$
+\left\vert t_{\text{perm} } \right\vert >  \left\vert t_{\text{original} }  \right\vert
+$$
+
+which is the $p$-value.
+
+### Confidence Interval for $\boldsymbol{v} ^\top \boldsymbol{\beta}$
+
+
+Following the analysis above, we can find the $(1-\alpha)\%$-confidence interval for a scalar $\boldsymbol{v} ^\top \boldsymbol{\beta}$ as
+
+$$
+\boldsymbol{v} ^\top \hat{\boldsymbol{\beta}} \pm t_{n-p}^{(1-\alpha/2)}\cdot \hat{\sigma} \sqrt{\boldsymbol{v} ^\top (\boldsymbol{X} ^\top \boldsymbol{X} )^{-1} \boldsymbol{v} }
+$$
+
+In particular,
+
+- If $\boldsymbol{v} = \boldsymbol{e}_j$, then this is the confidence interval for a coefficient $\boldsymbol{\beta} _j$.
+- If $\boldsymbol{v} = \boldsymbol{x}_i$ where $\boldsymbol{x}_i$ is in the data set, then this is the confidence interval for in-sample fitting of $y_i$. We are making prediction at the mean value $\operatorname{E}\left( \boldsymbol{y} _i \right) = \boldsymbol{x}_i ^\top \boldsymbol{\beta}$. If $\boldsymbol{x}_i$ is not in the design matrix, then we are doing out-of-sample prediction.
+
+
+### Prediction Interval for $\boldsymbol{y} _{new}$
+
+For a new $\boldsymbol{x}$, the new response is
+
+$$
+\boldsymbol{y} _{new} = \boldsymbol{x} ^\top \boldsymbol{\beta} + \boldsymbol{\varepsilon} _{new}
+$$
+
+where $\boldsymbol{\varepsilon} _{new} \perp\!\!\!\perp \hat{\boldsymbol{\beta}} , \hat{\sigma}$ since the RHS are from training set.
+
+The prediction is
+
+$$
+\hat{\boldsymbol{y}} _{new} = \boldsymbol{x} ^\top \hat{\boldsymbol{\beta}}
+$$
+
+Thus, the prediction error is
+
+$$\begin{aligned}
+\boldsymbol{y} _{new} - \hat{\boldsymbol{y} }_{new}
+&= \boldsymbol{\varepsilon} _{new} + \boldsymbol{x} ^\top (\boldsymbol{\beta} - \hat{\boldsymbol{\beta}} )\\
+&\sim N \left( \boldsymbol{0} , \sigma^2 (1 + \boldsymbol{x} ^\top (\boldsymbol{X} ^\top \boldsymbol{X} )^{-1} \boldsymbol{x} ) \right) \\
+\end{aligned}$$
+
+Hence, the $(1-\alpha)\%$-confidence prediction interval for a new response value $\boldsymbol{y} _{new}$ at an out-of-sample $\boldsymbol{x}$ is
+
+$$
+\boldsymbol{x} ^\top \hat{\boldsymbol{\beta}} \pm t_{n-p}^{(1-\alpha/2)}\cdot \hat{\sigma} \sqrt{1 + \boldsymbol{x} ^\top (\boldsymbol{X} ^\top \boldsymbol{X} )^{-1} \boldsymbol{x} }
+$$
+
+
+::::{admonition,note} Width of an interval
+
+
+When we are building confidence interval for $\boldsymbol{y} _i$ or prediction interval for $\boldsymbol{y} _{new}$, the width depends on the magnitude of $n$ the choice of $\boldsymbol{x}$.
+
+As $n \rightarrow \infty$, we have $\boldsymbol{a} ^\top
+(\boldsymbol{X} ^\top \boldsymbol{X} ) ^{-1} \boldsymbol{a}\rightarrow 0$ for all $\boldsymbol{a}$, hence the
+
+- CI for $\boldsymbol{y} _i$: $\operatorname{se}  \rightarrow 0, \operatorname{width} \rightarrow 0$
+
+- PI for $\boldsymbol{y} _{new}$: $\operatorname{se}  \rightarrow \hat{\sigma}, \operatorname{width} \rightarrow 2 \times t_{n-p}^{(1-\alpha/2)} \hat{\sigma}$
+
+The width also depends on the choice of $\boldsymbol{x}$.
+
+- If $\boldsymbol{x}$ is aligned with a large eigenvector of $\boldsymbol{X} ^\top \boldsymbol{X}$, then $\boldsymbol{x} ^\top (\boldsymbol{X} ^\top \boldsymbol{X} )^{-1} \boldsymbol{x}$ is small. This is because larger eigenvectors indicate a direction of large variation in the data set, and hence it has more distinguishability.
+
+- If $\boldsymbol{x}$ is aligned with a small eigenvector of $\boldsymbol{X} ^\top \boldsymbol{X}$, then $\boldsymbol{x} ^\top (\boldsymbol{X} ^\top \boldsymbol{X} )^{-1} \boldsymbol{x}$ is large. This is because smaller eigenvectors indicate a direction of small variation in the data set, and hence it has less distinguishability and more uncertainty.
+
+:::{figure}
+<img src="../imgs/pca-pc-ellipsoids.png" width = "70%" alt=""/>
+
+Illustration of eigenvectors in bivariate Gaussian [Fung 2018]
+:::
+
+::::
+
+#### Confidence Region for $\boldsymbol{\beta}$
+
+If we want to draw conclusions to multiple coefficients $\beta_1, \beta_2, \ldots$ simultaneously, we need a confidence region, and consider the multiple testing issue.
+
+To find a $(1-\alpha)\%$ confidence region for $\boldsymbol{\beta}$, one attemp is to use a cuboid, whose $j$-th side length equals to the $(1-\alpha/p)-%$ confidence interval for $\beta_j$. Namely, the confidence region is
+
+$$
+\left[ (1-\alpha/p) \text{ C.I. for } \beta_1 \right] \times \left[ (1-\alpha/p) \text{ C.I. for } \beta_2 \right] \ldots
+$$
+
+In this way, we ensure the overall confidence of the confidence region is at least $(1-\alpha)\%$.
+
+$$
+\operatorname{P}\left( \text{all $\beta$'s are in its C.I.}  \right) \ge 1-\alpha
+$$
+
+A more natural approach is using an ellipsoid. Recall that
+
+$$
+\hat{\boldsymbol{\beta}} \sim N(\boldsymbol{\beta} , \sigma^2 (\boldsymbol{X} ^\top \boldsymbol{X} )^{-1} )
+$$
+
+Hence a pivot quantity for $\boldsymbol{\beta}$ can be constructed as follows,
+
+
+$$\begin{aligned}
+&&\frac{(\boldsymbol{X} ^\top \boldsymbol{X} )^{1/2}(\hat{\boldsymbol{\beta}} -\boldsymbol{\beta} )}{\sigma^2 }
+&\sim N(\boldsymbol{0} , \boldsymbol{I} _p)  \\
+&\Rightarrow& \ \frac{1}{\sigma^2} \left\| (\boldsymbol{X} ^\top \boldsymbol{X} )^{1/2}(\hat{\boldsymbol{\beta}} -\boldsymbol{\beta} ) \right\|^2    &\sim \chi ^2 _p \\
+&\Rightarrow& \ \frac{\frac{1}{\sigma^2} \left\| (\boldsymbol{X} ^\top \boldsymbol{X} )^{1/2}(\hat{\boldsymbol{\beta}} -\boldsymbol{\beta} ) \right\|^2/p}{\frac{(n-p)\hat{\sigma}^2}{\sigma^2 }/(n-p)}   &\sim F_{p, n-p}\\
+&\Rightarrow& \ \frac{ (\hat{\boldsymbol{\beta}} -\boldsymbol{\beta} )^\top (\boldsymbol{X} ^\top \boldsymbol{X} )(\hat{\boldsymbol{\beta}} -\boldsymbol{\beta} )}{p \hat{\sigma}^2}   &\sim F_{p, n-p}\\
+\end{aligned}$$
+
+Therefore, we can obtain an $(1-\alpha)\%$ confidence region for $\boldsymbol{\beta}$ from this distribution
+
+$$
+\boldsymbol{\beta} \in \left\{ \boldsymbol{v} \in \mathbb{R} ^p: \frac{ (\hat{\boldsymbol{\beta}} -\boldsymbol{v} )^\top (\boldsymbol{X} ^\top \boldsymbol{X} )(\hat{\boldsymbol{\beta}} -\boldsymbol{v} )}{p \hat{\sigma}^2}   \le F_{p, n-p}^{(1-\alpha)} \right\}
+$$
+
+which is an ellipsoid centered at $\hat{\boldsymbol{\beta}}$, scaled by $\frac{1}{p \hat{\sigma}}$, rotated by $(\boldsymbol{X} ^\top \boldsymbol{X})$.
+
+
+In general, for matrix $\boldsymbol{A} \in \mathbb{R} ^{p \times k}, \operatorname{rank}\left( \boldsymbol{A}  \right) = k$, the confidence region for $\boldsymbol{A} ^\top \boldsymbol{\beta}$ can be found in a similar way
+
+
+$$\begin{aligned}
+\boldsymbol{A} ^\top \hat{\boldsymbol{\beta}}
+&\sim N(\boldsymbol{A} ^\top \boldsymbol{\beta} , \sigma^2 \boldsymbol{A} ^\top (\boldsymbol{X} ^\top \boldsymbol{X} ) ^{-1}  \boldsymbol{A} ) \\
+\Rightarrow \quad\ldots &\sim F_{k, n-p} \\
+\end{aligned}$$
+
 
 ## Model Selection
 
@@ -996,61 +1183,6 @@ $$
     $$
 
     If $p > \frac{n+1}{2}$ then the above inequality always hold, and adjusted $R$-squared is always negative.
-
-
-
-### $t$-test
-
-We can use $t$-test to test a null hypothesis on $\boldsymbol{\beta}$, which has a general form
-
-$$
-\boldsymbol{v} ^\top \boldsymbol{\beta}_{\text{null}} = c
-$$
-
-Usually $c=0$.
-
-- If $c=0, \boldsymbol{v} = \boldsymbol{e} _j$ then this is equivalent to test $\beta_j=0$, i.e. the variable $X_i$ has no effect on $Y$ given all other variabels.
-- If $c=0, v_i=1, v_j=-1$ and $v_k=0, k\ne i, j$ then this is equivalent to test $\beta_i = \beta_j$, i.e. the two variables $X_i$ and $X_j$ has the same effect on $Y$ given all other variables.
-
-First, we need to find the distribution of $\boldsymbol{v} ^\top \hat{\boldsymbol{\beta}}$. Recall that
-
-$$
-\hat{\boldsymbol{\beta}} \sim N(\boldsymbol{\beta}_{\text{null}} , \sigma^2 (\boldsymbol{X} ^\top \boldsymbol{X} )^{-1})
-$$
-
-Hence,
-
-
-$$
-\boldsymbol{v} ^\top \hat{\boldsymbol{\beta}}  \sim N(\boldsymbol{v} ^\top \boldsymbol{\beta}_{\text{null}} , \sigma^2 \boldsymbol{v} ^\top (\boldsymbol{X} ^\top \boldsymbol{X} ) ^{-1} \boldsymbol{v} )
-$$
-
-Also recall that the RSS has the distribution
-
-$$
-(n-p)\frac{\hat{\sigma}^2}{\sigma^2 } \sim \sim \chi ^2 _{n-p}  
-$$
-
-and the two quantities $\boldsymbol{v} ^\top \hat{\boldsymbol{\beta}}$ and $(n-p)\frac{\hat{\sigma}^2}{\sigma^2 }$ are [independent](lm-independent-beta-sigma). Therefore, we can construct a test statistic
-
-
-$$
-\frac{\boldsymbol{v} ^\top \hat{\boldsymbol{\beta}} - \boldsymbol{v} ^\top \boldsymbol{\beta}_{\text{null}}}{\sigma\sqrt{\boldsymbol{v} ^\top (\boldsymbol{X} ^\top \boldsymbol{X} ) ^{-1} \boldsymbol{v} }} / \sqrt{\frac{(n-p)\hat{\sigma}^2 }{\sigma^2 } / (n-p)} \sim t_{n-p}
-$$
-
-i.e.,
-
-
-$$
-\frac{\boldsymbol{v} ^\top \hat{\boldsymbol{\beta}} - \boldsymbol{v} ^\top \boldsymbol{\beta}_{\text{null}}}{\hat{\sigma}\sqrt{\boldsymbol{v} ^\top (\boldsymbol{X} ^\top \boldsymbol{X} ) ^{-1} \boldsymbol{v} }} \sim t_{n-p}
-$$
-
-In particular, when $p=2$, to test $\beta_1 = c$, we use
-
-$$
-\frac{\hat{\beta}_1 - c}{\hat{\sigma}/ \sqrt{\operatorname{Var}\left( X \right)}}  \sim t_{n-2}
-$$
-
 
 
 
