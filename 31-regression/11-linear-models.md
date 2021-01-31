@@ -67,7 +67,7 @@ When there are multiple dependent variables, we call it **multivariate regressio
 When $p=1$,
 
 - if we include intercept, then the regression model $y_i = \beta_0$ means that we use a single constant to predict $y_i$. The estimator, $\hat{\beta}_0$, by ordinary least square, should be the sample mean $\hat{y}$.
-- if we do not include intercept, then the regression model $y_i = \beta x_i$ means that we expect that $y$ is proportional to $x$. See [here](lm-proportional-model) for details.
+- if we do not include intercept, then the regression model $y_i = \beta x_i$ means that we expect that $y$ is proportional to $x$.
 
 :::{admonition,dropdown,note} Fixed or random $\boldsymbol{X}$?
 In natural science, researchers design $n\times p$ values in the design matrix $\boldsymbol{X}$ and run experiments to obtain the response $y_i$. We call this kind of data **experimental data**. In this sense, the explanatory variables $x_{ij}$’s are designed before the experiment, so they are also constants. The coefficients $\beta_j$’s are unknown constants. The error term $\varepsilon_i$ is random. The response variable $Y_i$ on the left hand side is random due to the randomness in the error term $\varepsilon_i$.
@@ -534,7 +534,7 @@ Moreover,
 
 #### Consistency
 
-The OLS estimator is unbiased and consistent.
+The OLS and consistent,
 
 $$
 \hat{\boldsymbol{\beta}}_{OLS} \stackrel{P}{\rightarrow} \boldsymbol{\beta}
@@ -551,7 +551,7 @@ $$\begin{aligned}
 \end{aligned}$$
 
 
-### Large Sample Distribution
+#### Large Sample Distribution
 
 
 If we assume $\varepsilon_i \overset{\text{iid}}{\sim} N(0, \sigma^2)$, or $\boldsymbol{\varepsilon} \sim N_n(\boldsymbol{0} , \boldsymbol{I} _n)$, then
@@ -1494,7 +1494,7 @@ A $F$-test on $\beta_1=\beta_2=0$ is difference from two univariate $t$-tests $\
 
 
 
-### ANOVA?
+### ANOVA
 
 The Analysis Of Variance, popularly known as the ANOVA, can be used in cases where there are more than two groups.
 
@@ -1769,129 +1769,135 @@ https://www.1point3acres.com/bbs/thread-703302-1-1.html
 
 1. Slope vs Correlation
 
-When $p=2$, we can see from the solution
+    When $p=2$, we can see from the solution
 
-$$\begin{align}
-\hat{\beta}_{1} &=\frac{\sum_{i=1}^{n}\left(x_{i}-\bar{x}\right)\left(y_{i}-\bar{y}\right)}{\sum_{i=1}^{n}\left(x_{i}-\bar{x}\right)^{2}}
-\end{align}$$
+    $$\begin{align}
+    \hat{\beta}_{1} &=\frac{\sum_{i=1}^{n}\left(x_{i}-\bar{x}\right)\left(y_{i}-\bar{y}\right)}{\sum_{i=1}^{n}\left(x_{i}-\bar{x}\right)^{2}}
+    \end{align}$$
 
-that
+    that
 
-$$\begin{align}
-\hat{\beta}_1 &= \frac{\widehat{\operatorname{Cov}}\left( Y, X \right)}{\widehat{\operatorname{Var}}\left( X \right)}  \\
-&= r_{X,Y} \frac{s_Y}{s_X}
-\end{align}$$
+    $$\begin{align}
+    \hat{\beta}_1 &= \frac{\widehat{\operatorname{Cov}}\left( Y, X \right)}{\widehat{\operatorname{Var}}\left( X \right)}  \\
+    &= r_{X,Y} \frac{s_Y}{s_X}
+    \end{align}$$
 
-Thus, the slope has the same sign with the correlation $r_{X,Y}$, and equals to the correlation times a ratio of the sample standard deviations of the dependent variable over the independent variable.
+    Thus, the slope has the same sign with the correlation $r_{X,Y}$, and equals to the correlation times a ratio of the sample standard deviations of the dependent variable over the independent variable.
 
-Once can see that the magnitude of $\hat\beta_1$ increases with the magnitude of $\rho_{X,Y}$ and $s_Y$, and decreases with $s_X$, holding others fixed.
+    Once can see that the magnitude of $\hat\beta_1$ increases with the magnitude of $\rho_{X,Y}$ and $s_Y$, and decreases with $s_X$, holding others fixed.
 
 2. Fitted Line Passes Sample Mean
 
-Since $\hat{\beta}_{0} =\bar{y}-\hat{\beta}_{1} \bar{x}$, we have $\bar{y} = \hat{\beta}_{0} + \hat{\beta}_{1} \bar{x}$, i.e. the regression line always goes through the mean $(\bar{x}, \bar{y})$ of the sample.
+    Since $\hat{\beta}_{0} =\bar{y}-\hat{\beta}_{1} \bar{x}$, we have $\bar{y} = \hat{\beta}_{0} + \hat{\beta}_{1} \bar{x}$, i.e. the regression line always goes through the mean $(\bar{x}, \bar{y})$ of the sample.
 
-This also hold for multiple regression, by the first order condition w.r.t. $\beta_0$.
+    This also hold for multiple regression, by the first order condition w.r.t. $\beta_0$.
 
 3. Non-zero Mean of Error Term
 
-*What if the mean of the error term is not zero?*
+    *What if the mean of the error term is not zero?*
 
-If $\operatorname{E}\left( \varepsilon \right) = \mu_\varepsilon \ne 0$, we can just denote $\varepsilon = \mu_\varepsilon + v$, where $v$ is a new error term with zero mean. Our model becomes
+    :::{admonition,dropdown,seealso} *Solution*
 
-$$
-y_i = (\beta_0 + \mu_\varepsilon) + \beta_1 x_1 + v
-$$
+    If $\operatorname{E}\left( \varepsilon \right) = \mu_\varepsilon \ne 0$, we can just denote $\varepsilon = \mu_\varepsilon + v$, where $v$ is a new error term with zero mean. Our model becomes
 
-where $(\beta_0 + \mu_\varepsilon)$ is the new intercept. We can still apply the methods above to conduct estimation and inference.
+    $$
+    y_i = (\beta_0 + \mu_\varepsilon) + \beta_1 x_1 + v
+    $$
 
-(lm-proportional-model)=
-### No Intercept
+    where $(\beta_0 + \mu_\varepsilon)$ is the new intercept. We can still apply the methods above to conduct estimation and inference.
 
-*Assume the intercept $\beta_0$ in the model $y=\beta_0 + \beta_1 x + \varepsilon$ is zero. Find the OLS estimate for $\beta_1$, denoted $\tilde{\beta}$. Find its mean, variance, and compare them with those of the OLS estimate for $\beta_1$ when there is an intercept term.*
+    :::
 
-If there is no intercept, consider a simple case
+1. No Intercept
 
-$$
-y = \beta x + \varepsilon
-$$
+    *Assume the intercept $\beta_0$ in the model $y=\beta_0 + \beta_1 x + \varepsilon$ is zero. Find the OLS estimate for $\beta_1$, denoted $\tilde{\beta}$. Find its mean, variance, and compare them with those of the OLS estimate for $\beta_1$ when there is an intercept term.*
 
-Then by minimizing sum of squared errors
+    :::{admonition,dropdown,seealso} *Solution*
 
-$$
-\min \sum_i (y_i - \beta x)^2
-$$
+    If there is no intercept, consider a simple case
 
-we have
+    $$
+    y_i = \beta x_i + \varepsilon_i
+    $$
 
-$$
--2 \sum_i (y_i - \beta x) x = 0
-$$
+    Then by minimizing sum of squared errors
 
-and hence,
+    $$
+    \min \sum_i (y_i - \beta x_i)^2
+    $$
 
-$$\begin{align}
-\tilde{\beta}
-&= \frac{\sum_i x_i y_i}{\sum_i x_i^2} \\
-&= \frac{\sum_i x_i (\beta x_i + \varepsilon_i)}{\sum_i x_i^2}\\
-&= \beta + \frac{\sum x_i \varepsilon_i}{\sum_i x_i^2}
-\end{align}$$
+    we have
 
-Therefore, $\tilde{\beta}$ is still an unbiased estimator of $\beta$, while its variance is smaller than the variance calculated assuming the intercept is non-zero.
+    $$
+    -2 \sum_i (y_i - \beta x_i) x_i = 0
+    $$
 
-$$
-\operatorname{Var}\left( \tilde{\beta} \right) = \frac{\sigma^2}{\sum x_i^2} \le  \frac{\sigma^2}{\sum (x_i - \bar{x})^2} = \operatorname{Var}\left( \hat{\beta}  \right)
-$$
+    and hence,
 
-Hence, if the intercept is known to be zero, better use $\tilde\beta$ instead of $\hat\beta$, since the standard error of the $\tilde\beta$ is smaller, and both are unbiased.
+    $$\begin{align}
+    \tilde{\beta}
+    &= \frac{\sum_i x_i y_i}{\sum_i x_i^2} \\
+    &= \frac{\sum_i x_i (\beta x_i + \varepsilon_i)}{\sum_i x_i^2}\\
+    &= \beta + \frac{\sum x_i \varepsilon_i}{\sum_i x_i^2}
+    \end{align}$$
 
-If the true model has a non-zero intercept, then $\tilde\beta$ is biased for $\beta$, but it has a smaller variance, which brings a tradeoff of bias vs variance.
+    Therefore, $\tilde{\beta}$ is still an unbiased estimator of $\beta$, while its variance is smaller than the variance calculated assuming the intercept is non-zero.
+
+    $$
+    \operatorname{Var}\left( \tilde{\beta} \right) = \frac{\sigma^2}{\sum x_i^2} \le  \frac{\sigma^2}{\sum (x_i - \bar{x})^2} = \operatorname{Var}\left( \hat{\beta}  \right)
+    $$
+
+    Hence, if the intercept is known to be zero, better use $\tilde\beta$ instead of $\hat\beta$, since the standard error of the $\tilde\beta$ is smaller, and both are unbiased.
+
+    If the true model has a non-zero intercept, then $\tilde\beta$ is biased for $\beta$, but it has a smaller variance, which brings a tradeoff of bias vs variance.
+    :::
 
 1. Transformation of Variables
 
-[insert] summary table.
+    [insert] summary table.
 
-First, we take simple linear regression as an example.
+    First, we take simple linear regression as an example.
 
-If $X ^\prime = aX + b$, then the new slope estimate is
+    If $X ^\prime = aX + b$, then the new slope estimate is
 
-$$\begin{align}
-\tilde{\beta}_1 &= \frac{\widehat{\operatorname{Cov}}\left( Y, X ^\prime \right)}{\widehat{\operatorname{Var}}\left( X ^\prime \right)}  \\
-&= \frac{\widehat{\operatorname{Cov}}\left( Y, aX + b  \right)}{\widehat{\operatorname{Var}}\left( aX+b \right)}  \\
-&= \frac{a\widehat{\operatorname{Cov}}\left( Y, X \right)}{a^2\widehat{\operatorname{Var}}\left( X \right)}  \\
-&= \frac{1}{a} \hat\beta_1 \\
-\end{align}$$
+    $$\begin{align}
+    \tilde{\beta}_1 &= \frac{\widehat{\operatorname{Cov}}\left( Y, X ^\prime \right)}{\widehat{\operatorname{Var}}\left( X ^\prime \right)}  \\
+    &= \frac{\widehat{\operatorname{Cov}}\left( Y, aX + b  \right)}{\widehat{\operatorname{Var}}\left( aX+b \right)}  \\
+    &= \frac{a\widehat{\operatorname{Cov}}\left( Y, X \right)}{a^2\widehat{\operatorname{Var}}\left( X \right)}  \\
+    &= \frac{1}{a} \hat\beta_1 \\
+    \end{align}$$
 
-and the new intercept is
+    and the new intercept is
 
-$$\begin{align}
-\tilde\beta_0
-&= \bar{y} - \tilde\beta_1 \bar{x} ^\prime \\
-&= \bar{y} - \hat\beta_1 \frac{1}{a}  (a\bar{x}+b) \\
-&= \hat\beta_0 - \hat\beta_1 \frac{b}{a} \\
-\end{align}$$
+    $$\begin{align}
+    \tilde\beta_0
+    &= \bar{y} - \tilde\beta_1 \bar{x} ^\prime \\
+    &= \bar{y} - \hat\beta_1 \frac{1}{a}  (a\bar{x}+b) \\
+    &= \hat\beta_0 - \hat\beta_1 \frac{b}{a} \\
+    \end{align}$$
 
-If $Y ^\prime = cY + d$ then
+    If $Y ^\prime = cY + d$ then
 
-$$\begin{align}
-\tilde{\beta}_1 &= \frac{\widehat{\operatorname{Cov}}\left( Y ^\prime, X ^\prime \right)}{\widehat{\operatorname{Var}}\left( X ^\prime \right)}  \\
-&= \frac{\widehat{\operatorname{Cov}}\left( cY+d, X  \right)}{\widehat{\operatorname{Var}}\left( X \right)}  \\
-&= \frac{c\widehat{\operatorname{Cov}}\left( Y, X \right)}{c\widehat{\operatorname{Var}}\left( X \right)}  \\
-&= c \hat\beta_1 \\
-\end{align}$$
+    $$\begin{align}
+    \tilde{\beta}_1 &= \frac{\widehat{\operatorname{Cov}}\left( Y ^\prime, X ^\prime \right)}{\widehat{\operatorname{Var}}\left( X ^\prime \right)}  \\
+    &= \frac{\widehat{\operatorname{Cov}}\left( cY+d, X  \right)}{\widehat{\operatorname{Var}}\left( X \right)}  \\
+    &= \frac{c\widehat{\operatorname{Cov}}\left( Y, X \right)}{c\widehat{\operatorname{Var}}\left( X \right)}  \\
+    &= c \hat\beta_1 \\
+    \end{align}$$
 
-and
+    and
 
-$$\begin{align}
-\tilde\beta_0
-&= \bar{y}^\prime - \tilde\beta_1 \bar{x} \\
-&= (c\bar{y}+d) - c\hat\beta_1 \bar{x} \\
-&= c\hat\beta_0 + d\\
-\end{align}$$
+    $$\begin{align}
+    \tilde\beta_0
+    &= \bar{y}^\prime - \tilde\beta_1 \bar{x} \\
+    &= (c\bar{y}+d) - c\hat\beta_1 \bar{x} \\
+    &= c\hat\beta_0 + d\\
+    \end{align}$$
 
 
-Can the conclusions be extended to multiple regression?
+    Can the conclusions be extended to multiple regression?
 
-TBD.
+    TBD.
 
 1. Exchange $X$ and $Y$
 
@@ -1899,20 +1905,20 @@ TBD.
 
 1. Covariance, $R$-squared, and $\beta_j$
 
-In multiple regression, if $\operatorname{Cov}\left( Y, X_j \right) = 0$ then $\beta_j= 0$?
+    In multiple regression, if $\operatorname{Cov}\left( Y, X_j \right) = 0$ then $\beta_j= 0$?
 
-Is it possible that $\operatorname{Cov}\left( X_j, X_k \right) \ne 0, \operatorname{Cov}\left( Y, X_k \right) \ne 0$ but $\operatorname{Cov}\left( Y, X_j \right) = 0$?
+    Is it possible that $\operatorname{Cov}\left( X_j, X_k \right) \ne 0, \operatorname{Cov}\left( Y, X_k \right) \ne 0$ but $\operatorname{Cov}\left( Y, X_j \right) = 0$?
 
-TBD.
+    TBD.
 
 1. Increase Estimation Precision
 
-TBD.
+    TBD.
 
--   The larger the error variance, $\sigma^2$, the larger the variance of the coefficient estimates.
--   The larger the variability in the $x_i$, the smaller the variance.
--   A larger sample size should decrease the variance.
--   In multiple regression, reduce the relation between $X_j$ and other covariates (e.g. by orthogonal design) can decreases $R^2_{j}$, and hence decrease the variance.
+    -   The larger the error variance, $\sigma^2$, the larger the variance of the coefficient estimates.
+    -   The larger the variability in the $x_i$, the smaller the variance.
+    -   A larger sample size should decrease the variance.
+    -   In multiple regression, reduce the relation between $X_j$ and other covariates (e.g. by orthogonal design) can decreases $R^2_{j}$, and hence decrease the variance.
 
 
 1. Partialling Out in General Cases
@@ -1921,25 +1927,24 @@ TBD.
 
 1. Causal?
 
-313.qz1.q2
+    313.qz1.q2
 
-TBD.
+    TBD.
 
 1. Add/Remove a Variable/Observation
 
-TBD
+    TBD
 
-Table summary.
+    Table summary.
 
-Rows: E(b), Var(b), RSS, TSS, R^2
+    Rows: E(b), Var(b), RSS, TSS, R^2
 
 1. To compare the effects of two variable $X_j, X_k$, can we say they have the same effect since the confidence interval of $\beta_j, \beta_k$ overlaps?
 
-:::{admonition,dropdown,seealso} *Solution*
+    :::{admonition,dropdown,seealso} *Solution*
 
-No, since
+    No, since
 
-- the two coefficients are probably correlated $\operatorname{Cov}\left( \boldsymbol{\beta} _j, \beta_k \right) \ne 0$
-- even if they are not correlated, we still need to find a pivot quantity for $\theta = \beta_j - \beta_k$ and conduct a hypothesis testing on $\theta=0$. See the [$t$-test section](lm-t-test).
--
-:::
+    - the two coefficients are probably correlated $\operatorname{Cov}\left( \boldsymbol{\beta} _j, \beta_k \right) \ne 0$
+    - even if they are not correlated, we still need to find a pivot quantity for $\theta = \beta_j - \beta_k$ and conduct a hypothesis testing on $\theta=0$. See the [$t$-test section](lm-t-test).
+    :::
