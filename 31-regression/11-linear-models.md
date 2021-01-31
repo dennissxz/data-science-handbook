@@ -18,6 +18,10 @@ In this section we introduce linear models from a statistics’ perspective. The
 
 <!---
 My handwritten notes for the graduate level course STAT 343 offered by UChicago statistics department can be found [here](../imgs/lm-notes-applied-stat.pdf).
+
+Ref:
+
+http://www3.grips.ac.jp/~yamanota/Lecture%20Note%204%20to%207%20OLS.pdf
 -->
 
 Personally, I involved in four courses that introduced linear models, i.e. at undergrad/grad level offered by stat/social science department. The style of the two courses offered by the stat departments were quite alike while the graduate level one covered more topics. In both undergrad/grad level courses offered by the social science departments, sometimes I got confused by the course materials that were contradictory to my statistics training , but the instructors had no clear response or even no response at all...
@@ -430,16 +434,32 @@ More specifically, for the $j$-th coefficient estimator $\hat{\beta}_j$, its var
 $$\begin{align}
 \operatorname{Var}\left( \hat{\beta}_j \right)
 &= \sigma^2 \left[ (\boldsymbol{X} ^\top \boldsymbol{X} )^{-1} \right]_{[j,j]} \\
-&= \sigma^2 \frac{1}{1- R^2_{j}} \frac{1}{\sum_i (x_{ij} - \bar{x}_j)^2}
+&= \sigma^2 \frac{1}{1- R^2_{j}} \frac{1}{\sum_i (x_{ij} - \bar{x}_j)^2} \\
+&= \sigma^2 \frac{TSS_j}{RSS_j} \frac{1}{TSS_j} \\
+&= \sigma^2 \frac{1}{\sum_i(\hat{x}_{ij} - x_{ij})} \\
 \end{align}$$
 
-where $R_j^2$ is the value of [$R$-squared](lm-rsquared) when we regress $X_j$ over all other explanatory variables.
+where $R_j^2$, $RSS_j$, $TSS_j$, and $\hat{x}_{ij}$ are the corresponding representatives when we regress $X_j$ over all other explanatory variables.
 
 Note that the value of $R^2$ when we regressing $X_1$ to an constant intercept is 0. So we have the particular result below.
 :::
 
 
-When $p=2$, the variance of $\hat{\beta}_1$ is
+When $p=2$, the inverse $(\boldsymbol{X} ^\top \boldsymbol{X} )^\top$ is
+
+
+$$
+\begin{array}{c}
+\left(\boldsymbol{X} ^\top \boldsymbol{X} \right)^{-1}
+=\frac{1}{\sum_{i=1}^{n} \left(x_{i}-\bar{x}\right)^{2}}\left[\begin{array}{cc}
+\bar{x^2} & - \bar{x} \\
+- \bar{x} & 1
+\end{array}\right]
+\end{array}
+$$
+
+
+the variance of $\hat{\beta}_1$ is
 
 $$\begin{align}
 \operatorname{Var}\left( \hat{\beta}_1 \right)
@@ -465,7 +485,7 @@ $$\begin{align}
 &= \frac{\hat{\sigma}}{\sqrt{\sum \left(x_{i}-\bar{x}\right)^{2}}}
 \end{align}$$
 
-#### BLUE
+#### Efficiency (BLUE)
 
 Theorem (Gauss–Markov)  
 : The ordinary least squares (OLS) estimator has the **lowest** sampling variance within the class of linear unbiased estimators, if the errors in the linear regression model are uncorrelated, have equal variances and expectation value of zero. In abbreviation, the OLS estimator is BLUE: Best (lowest variance) Linear Unbiased Estimator.
@@ -503,11 +523,36 @@ $$
 The equality holds iff $\boldsymbol{D} ^\top \boldsymbol{D} = 0$, which implies that $\operatorname{tr}\left( \boldsymbol{D} \boldsymbol{D} ^\top \right) = 0$, then $\left\Vert \boldsymbol{D} \right\Vert _F^2 = 0$, then $\boldsymbol{D} = 0$, i.e. $\tilde{\boldsymbol{\beta} } = \hat{\boldsymbol{\beta} }$. Therefore, BLUE is unique.
 :::
 
-If error term is normally distributed, then OLS is most efficient among all consistent estimators (not just linear ones).
 
-When the distribution of error term is non-normal, other estimators may have lower variance than OLS such as least absolute deviation (median regression).
+Moreover,
 
-#### Distribution
+- If error term is normally distributed, then OLS is most efficient among all consistent estimators (not just linear ones).
+
+- When the distribution of error term is non-normal, other estimators may have lower variance than OLS such as least absolute deviation (median regression).
+
+
+
+#### Consistency
+
+The OLS estimator is unbiased and consistent.
+
+$$
+\hat{\boldsymbol{\beta}}_{OLS} \stackrel{P}{\rightarrow} \boldsymbol{\beta}
+$$
+
+since
+
+
+$$\begin{aligned}
+\operatorname{plim} \hat{\boldsymbol{\beta}}
+&= \operatorname{plim} \left( \boldsymbol{\beta} + (\boldsymbol{X} ^\top \boldsymbol{X} )^{-1} \boldsymbol{X} ^\top \boldsymbol{\varepsilon}  \right) \\
+&= \boldsymbol{\beta} + \left( \frac{1}{n} \boldsymbol{X} ^\top \boldsymbol{X} \right)^{-1} \underbrace{\operatorname{plim} \left( \frac{1}{n} \boldsymbol{X} ^\top \boldsymbol{\varepsilon}  \right) }_{=0 \text{ by CLM} }\\
+&= \boldsymbol{\beta} \\
+\end{aligned}$$
+
+
+### Large Sample Distribution
+
 
 If we assume $\varepsilon_i \overset{\text{iid}}{\sim} N(0, \sigma^2)$, or $\boldsymbol{\varepsilon} \sim N_n(\boldsymbol{0} , \boldsymbol{I} _n)$, then
 
@@ -517,13 +562,67 @@ $$
 
 Hence, the distribution of the coefficients estimator is
 
-
 $$\begin{aligned}
 \hat{\boldsymbol{\beta}}
 &= (\boldsymbol{X} ^\top \boldsymbol{X} ) ^{-1} \boldsymbol{X} ^\top \boldsymbol{y}   \\
 &\sim  N(\boldsymbol{\beta} , (\boldsymbol{X} ^\top \boldsymbol{X} ) ^{-1} \boldsymbol{X} \operatorname{Var}\left( \boldsymbol{y}  \right)) \boldsymbol{X} ^\top (\boldsymbol{X} ^\top \boldsymbol{X} ) ^{-1} \\
 &\sim N(\boldsymbol{\beta} , \sigma^2 (\boldsymbol{X} ^\top \boldsymbol{X} )^{-1} ) \\
 \end{aligned}$$
+
+The assumption may fail when the response variable $y$ is
+
+- right skewed, e.g. wages, savings
+- non-negative, e.g. counts, arrests
+
+When the normality assumption of the error term fails, the OLS estimator is **asymptotically** normal,
+
+$$
+\hat{\boldsymbol{\beta}} \overset{\mathcal{D}}{\rightarrow} N(\boldsymbol{\beta},\sigma^2 (\boldsymbol{X} ^\top \boldsymbol{X} )^{-1} )
+$$
+
+Therefore, in a large sample, even if the normality assumption fails, we can still do hypothesis testing which assumes normality.
+
+
+:::{admonition,dropdown,seealso} *Derivation*
+
+Since
+
+$$
+\hat{\boldsymbol{\beta}}  - \boldsymbol{\beta} = \left( \frac{1}{n} \boldsymbol{X} ^\top \boldsymbol{X}   \right) ^{-1} \left( \frac{1}{n} \boldsymbol{X} ^\top \boldsymbol{\varepsilon}  \right)
+$$
+
+Let $\boldsymbol{A} =  \frac{1}{n} \boldsymbol{X} ^\top \boldsymbol{X}$. The limit variance is
+
+
+$$\begin{aligned}
+\operatorname{plim}\left[ \sqrt{n}(\hat{\boldsymbol{\beta}} - \boldsymbol{\beta} ) \cdot \sqrt{n}(\hat{\boldsymbol{\beta}} - \boldsymbol{\beta} )^\top \right]
+&= \operatorname{plim} \left[ \boldsymbol{A} ^{-1} \left( \frac{1}{n} \boldsymbol{X} ^\top \boldsymbol{\varepsilon} \boldsymbol{\varepsilon} ^\top \boldsymbol{X}  \right) \boldsymbol{A} ^{-1}   \right] \\
+&=  \boldsymbol{A} ^{-1} \left( \frac{1}{n} \boldsymbol{X} ^\top \operatorname{plim} \left( \boldsymbol{\varepsilon} \boldsymbol{\varepsilon} ^\top \right)  \boldsymbol{X}  \right) \boldsymbol{A} ^{-1} \\
+&=  \boldsymbol{A} ^{-1} \left( \frac{\sigma^2 }{n} \boldsymbol{X} ^\top    \boldsymbol{X}  \right)    \boldsymbol{A} ^{-1} \\
+&=  \sigma^2  \boldsymbol{A} ^{-1}\boldsymbol{A} \boldsymbol{A} ^{-1} \\
+&= \sigma^2 \boldsymbol{A} ^{-1}\\
+\end{aligned}$$
+
+where we used the fact that $\operatorname{plim} \left( \boldsymbol{\varepsilon} \boldsymbol{\varepsilon} ^\top \right) = \sigma^2 \boldsymbol{I} _n$.
+
+Moreover, by the consistence of $\hat{\boldsymbol{\beta}}$ we have
+
+$$
+\operatorname{plim}(\hat{\boldsymbol{\beta}} -\boldsymbol{\beta} )  = 0
+$$
+
+Therefore, the limit distribution of $\hat{\boldsymbol{\beta}}$ is
+
+$$
+\sqrt{n}(\hat{\boldsymbol{\beta}} -\boldsymbol{\beta} ) \overset{\mathcal{D}}{\rightarrow} N(\boldsymbol{0} , \sigma^2 \boldsymbol{A} ^{-1}  )
+$$
+
+or equivalently,
+
+$$
+\hat{\boldsymbol{\beta}} \overset{\mathcal{D}}{\rightarrow} N(\boldsymbol{\beta},\sigma^2 (\boldsymbol{X} ^\top \boldsymbol{X} )^{-1} )
+$$
+:::
 
 
 
@@ -796,41 +895,57 @@ drawing \[here\]
 This is equivalent to say [$R$-squared](lm-rsquared) is always increasing or unchanged, if an intercept term in included in the model.
 ```
 
-Given a data set, when we add an new explanatory variable into a regression model, $RSS$ is non-decreasing.
+Given a data set, when we add an new explanatory variable into a regression model, $RSS$ is non-increasing.
 
 Since we are comparing two nested minimization problems
 
 $$\begin{aligned}
-&\text{Problem 1: with } x_{p}  \ &\min &\ \left\Vert  \boldsymbol{y} - \boldsymbol{X} _{n \times p} \boldsymbol{\beta} _{p\times 1} \right\Vert ^2   = \min \ RSS_1 \\
-&\text{Problem 2: without } x_{p} \ &\min &\ \left\Vert  \boldsymbol{y} - \boldsymbol{X} _{n \times p} \boldsymbol{\beta} _{p\times 1} \right\Vert ^2  = \min \ RSS_2 \\
+&\text{Problem 1 / Full model / with } X_{p}  \ &\min &\ \left\Vert  \boldsymbol{y} - \boldsymbol{X} \boldsymbol{\beta} _{(p+1)\times 1} \right\Vert ^2   = \min \ RSS_1 \\
+&\text{Problem 2 / Reduced model / without } X_{p} \ &\min &\ \left\Vert  \boldsymbol{y} - \boldsymbol{X} \boldsymbol{\beta} _{(p+1)\times 1} \right\Vert ^2  = \min \ RSS_2 \\
 &&\text{s.t.}  &\ \beta_{p} = 0
 \end{aligned}$$
 
-As a result, the minimum value of the Problem 1 should be no larger than the minimum value of the Problem 2, i.e. $RSS_1^* \le RSS_2^*$ , When will they be equal? Only when the solution $\hat{\beta}_{p}=0$ in Problame 1.
+Due to the constraint in Problem 2, the minimum value of the Problem 1 should be no larger than the minimum value of the Problem 2, i.e. $RSS_1^* \le RSS_2^*$ , When will they be equal?
 
-When will $\hat{\beta}_{p}=0$ in problem 1? No clear condition.
+- From projection's perspective, they are equal iff the additional orthogonal basis vector of the design matrix $\boldsymbol{X}$ introduced by the new column $X_p$ is orthogonal to the response vector $\boldsymbol{y}$. See the derivation of [$F$-test](lm-F-test) for details. Note that this is different from $\boldsymbol{x} _p ^\top \boldsymbol{y} =0$. The example below shows reduction in RSS even if $\boldsymbol{x} _p ^\top \boldsymbol{y} =0$.
 
-- If $\boldsymbol{x}_i$'s are orthogonal such that $\boldsymbol{X} ^\top \boldsymbol{X} = I_{p}$, then
+- From optimization's perspective, they are equal iff $\hat{\beta}_{p}=0$ in Problem 1's solution. When will $\hat{\beta}_{p}=0$? No clear condition.
 
-  $$
-  \boldsymbol{x}_{p} ^\top \boldsymbol{y} = 0 \Leftrightarrow \hat{\beta}_{p}=0
-  $$
+  - If $\boldsymbol{x}_i$'s are orthogonal such that $\boldsymbol{X} ^\top \boldsymbol{X} = I_{p}$, then
 
-- Note that in general, $\not\Leftarrow$. An simple example can be a data set of two points $(1,0), (1,1)$. The fitted line is $y=0.5$.
+    $$
+    \boldsymbol{x}_{p} ^\top \boldsymbol{y} = 0 \Leftrightarrow \hat{\beta}_{p}=0
+    $$
 
-- Also, in general, $\not\Rightarrow$. An example is shown below where $\hat{\beta}_{2} \ne 0$.
+  - Note that in general, $\not\Leftarrow$. An simple example can be a data set of two points $(1,0), (1,1)$. The fitted line is $y=0.5$.
 
-```{code-cell}
+  - Also, in general, $\not\Rightarrow$. The example below shows $\hat{\beta}_{2} \ne 0$ even if $\boldsymbol{x} ^\top _p \boldsymbol{y} =0$
+
+```python
 import numpy as np
+
 y = np.array([[1,2,3]]).T
 x0 = np.array([[1,1,1]])
-x1 = np.array([[1,2,5]])
+x1 = np.array([[1,2,4]])
+
+# reduced model
+X = np.vstack((x0, x1)).T
+XXinv = np.linalg.inv(np.dot(X.T, X))
+b = np.dot(XXinv, np.dot(X.T, y))
+print(b)
+r = y - X.dot(b)
+print(r.T.dot(r))
+
+# full model
 x2 = np.array([[1,-2,1]])
 print(x2 @ y)
 X = np.vstack((x0, x1, x2)).T
 XXinv = np.linalg.inv(np.dot(X.T, X))
 b = np.dot(XXinv, np.dot(X.T, y))
 print(b)
+r = y - X.dot(b)
+X.dot(b)
+print(r.T.dot(r))
 ```
 
 ## Interpretation
@@ -890,16 +1005,30 @@ In this approach, $\hat{u}$ is interpreted as the part in $x_1$ that cannot be p
 
 ## Inference
 
-In this section we talk about hypothesis testing and confidence intervals for $\boldsymbol{v} ^\top \boldsymbol{\beta}$ and other quantities.
+In this section we talk about hypothesis testing and confidence intervals for $\boldsymbol{v} ^\top \boldsymbol{\beta}$ and other quantities. All these methods assume normality of the error terms $\varepsilon_i \overset{\text{iid}}{\sim} N(0, \sigma^2)$ unless otherwise specified. As a result,
 
+$$
+\hat{\boldsymbol{\beta}} \sim N(\boldsymbol{\beta}, \sigma^2 (\boldsymbol{X} ^\top \boldsymbol{X} )^{-1})
+$$
 
+since $\hat{\boldsymbol{\beta}}$ is an affine transformation of the error terms $\boldsymbol{\varepsilon}$
+
+$$
+\hat{\boldsymbol{\beta}}  = \boldsymbol{\beta} + (\boldsymbol{X} ^\top \boldsymbol{X} )^{-1} \boldsymbol{X} ^\top \boldsymbol{\varepsilon}
+$$
+
+(lm-t-test)=
 ### $t$-test of $\boldsymbol{v} ^\top \boldsymbol{\beta}$
 
-We can use $t$-test to test a null hypothesis on $\boldsymbol{\beta}$, which has a general form
+We can use $t$-test to conduct a hypothesis testing on $\boldsymbol{\beta}$, which has a general form
 
-$$
-\boldsymbol{v} ^\top \boldsymbol{\beta}_{\text{null}} = c
-$$
+
+$$\begin{aligned}
+H_0
+&: \boldsymbol{v} ^\top \boldsymbol{\beta}_{\text{null}} = c \\
+H_1
+&: \boldsymbol{v} ^\top \boldsymbol{\beta}_{\text{null}} \ne c (\text{two-sided} )\\
+\end{aligned}$$
 
 Usually $c=0$.
 
@@ -919,14 +1048,19 @@ $$
 \boldsymbol{v} ^\top \hat{\boldsymbol{\beta}}  \sim N(\boldsymbol{v} ^\top \boldsymbol{\beta}_{\text{null}} , \sigma^2 \boldsymbol{v} ^\top (\boldsymbol{X} ^\top \boldsymbol{X} ) ^{-1} \boldsymbol{v} )
 $$
 
+or
+
+$$
+\frac{\boldsymbol{v} ^\top \hat{\boldsymbol{\beta}} - \boldsymbol{v} ^\top \boldsymbol{\beta}_{\text{null}}}{\sigma\sqrt{\boldsymbol{v} ^\top (\boldsymbol{X} ^\top \boldsymbol{X} ) ^{-1} \boldsymbol{v} }} \sim N(0, 1)
+$$
+
 Also recall that the RSS has the distribution
 
 $$
-(n-p)\frac{\hat{\sigma}^2}{\sigma^2 } \sim \sim \chi ^2 _{n-p}  
+(n-p)\frac{\hat{\sigma}^2}{\sigma^2 } \sim \chi ^2 _{n-p}  
 $$
 
-and the two quantities $\boldsymbol{v} ^\top \hat{\boldsymbol{\beta}}$ and $(n-p)\frac{\hat{\sigma}^2}{\sigma^2 }$ are [independent](lm-independent-beta-sigma). Therefore, we can construct a test statistic
-
+and the two quantities $\boldsymbol{v} ^\top \hat{\boldsymbol{\beta}}$ and $(n-p)\frac{\hat{\sigma}^2}{\sigma^2 }$ are [independent](lm-independent-beta-sigma). Therefore, with a standard normal and a Chi-squared that are independent, we can construct a $t$-test statistic
 
 $$
 \frac{\boldsymbol{v} ^\top \hat{\boldsymbol{\beta}} - \boldsymbol{v} ^\top \boldsymbol{\beta}_{\text{null}}}{\sigma\sqrt{\boldsymbol{v} ^\top (\boldsymbol{X} ^\top \boldsymbol{X} ) ^{-1} \boldsymbol{v} }} / \sqrt{\frac{(n-p)\hat{\sigma}^2 }{\sigma^2 } / (n-p)} \sim t_{n-p}
@@ -939,10 +1073,12 @@ $$
 \frac{\boldsymbol{v} ^\top \hat{\boldsymbol{\beta}} - \boldsymbol{v} ^\top \boldsymbol{\beta}_{\text{null}}}{\hat{\sigma}\sqrt{\boldsymbol{v} ^\top (\boldsymbol{X} ^\top \boldsymbol{X} ) ^{-1} \boldsymbol{v} }} \sim t_{n-p}
 $$
 
+The RHS changes from $N(0,1)$ to $t_{n-p}$ because we are estiamteing $\sigma$ by $\hat{\sigma}$.
+
 In particular, when $p=2$, to test $\beta_1 = c$, we use
 
 $$
-\frac{\hat{\beta}_1 - c}{\hat{\sigma}/ \sqrt{\operatorname{Var}\left( X \right)}}  \sim t_{n-2}
+\frac{\hat{\beta}_1 - c}{\hat{\sigma}/ \sqrt{\operatorname{Var}\left( X_1 \right)}}  \sim t_{n-2}
 $$
 
 
@@ -953,6 +1089,28 @@ $$
 $$
 
 which is the $p$-value.
+
+:::{admonition,dropdown,note} Social science's trick to test $\beta_1 = \beta_2$
+
+Some social science courses introduce a trick to test $\beta_1 = \beta_2$ by rearranging the explanatory variables. For instance, if our model is,
+
+$$
+Y_i = \beta_0 + \beta_1 x_{i1} + \beta_2 x_{i2} + \varepsilon_i
+$$
+
+Then they define $\gamma = \beta_1 - \beta_2$ and $x_{i3} = x_{i1} + x_{i2}$, rearrange RHS,
+
+$$\begin{aligned}
+Y_i
+&= \beta_0 + (\gamma + \beta_2) x_{i1} + \beta_2 x_{i2} + \varepsilon_i \\
+&= \beta_0 + \gamma x_{i1} + \beta_2 (x_{i1} + x_{i2}) + \varepsilon_i \\
+&= \beta_0 + \gamma x_{i1} + \beta_2 x_{i3} + \varepsilon_i
+\end{aligned}$$
+
+Finally, they run the regression of the last line and check the $p$-value of $\gamma$. Other parts of the model ($R$-squared, $p$-value of $\beta_0$, etc) remain the same.
+
+:::
+
 
 ### Confidence Interval for $\boldsymbol{v} ^\top \boldsymbol{\beta}$
 
@@ -1028,6 +1186,10 @@ Illustration of eigenvectors in bivariate Gaussian [Fung 2018]
 
 ### Confidence Region for $\boldsymbol{\beta}$
 
+```{margin}
+To test $\boldsymbol{\beta}=\boldsymbol{0}$, see [$F$-test](lm-F-test)
+```
+
 If we want to draw conclusions to multiple coefficients $\beta_1, \beta_2, \ldots$ simultaneously, we need a confidence region, and consider the multiple testing issue.
 
 To find a $(1-\alpha)\%$ confidence region for $\boldsymbol{\beta}$, one attemp is to use a cuboid, whose $j$-th side length equals to the $(1-\alpha/p)-%$ confidence interval for $\beta_j$. Namely, the confidence region is
@@ -1078,10 +1240,15 @@ $$\begin{aligned}
 \end{aligned}$$
 
 
+
+
+
+
+
 ## Model Selection
 
 (lm-rsquared)=
-### $R$-squared and Adjusted $R$-squared
+### $R$-squared
 
 Assuming the [decomposition identity](lm-tss-identity) of $TSS$ holds, we can define $R$-squared.
 
@@ -1186,6 +1353,8 @@ $$
 
 
 
+
+(lm-F-test)=
 ### $F$-test
 
 ```{margin} Nested
@@ -1204,10 +1373,21 @@ $$\begin{aligned}
 \text{Reduced model: } Y &\sim \left\{ X_j, j=1, \ldots, p-k-1 \right\}
 \end{aligned}$$
 
+
+```{margin} Interpretation of $F$-test
+Given it's form, we can interpret the numerator as an average reduction in $RSS$ by adding the $k$ explanatory variables. Since the denominator is fixed, if average reduction is large enough, then we reject the null hypothesis that their coefficients are 0.
+```
+
 We can use the $F$-test. The test statistic is
 
 $$
 \frac{(RSS_{\text{reduced} } - RSS_{\text{full} })/k}{RSS_{\text{full}}/(n-p)} \sim F_{k, n-p}
+$$
+
+which can be computed by $R^2$ since $TSS$ are the same for the two models
+
+$$
+F = \frac{(R^2 _{\text{full}} - R^2 _{\text{reduced}})/k}{(1 - R^2 _{\text{full}})/(n-p)}
 $$
 
 In particular,
@@ -1227,10 +1407,10 @@ In particular,
     and
 
     $$
-    F = \frac{(TSS - TSS)/(p-1)}{RSS/(n-p)}  = \frac{n-p}{p-1}\left( \frac{1}{1-R^2} -1 \right)
+    F = \frac{(TSS - RSS_{\text{full}})/(p-1)}{RSS_{\text{full}}/(n-p)}  = \frac{R^2 _{\text{full}}/k}{(1 - R^2 _{\text{full}})/(n-p)}
     $$
 
-- When $k=1$, we are testing $\beta_{p-1} = 0$. In this case, the $F$-test is equivalent to the $t$-test. The two test statistics have the relstion $F=t^2$.
+- When $k=1$, we are testing $\beta_{p-1} = 0$. In this case, the $F$-test is equivalent to the $t$-test. The two test statistics have the relation $F_{1, n-p}=t^2_{n-p}$.
 
 
 :::{admonition,dropdown,seealso} *Derivation*
@@ -1302,6 +1482,16 @@ $$
 $$
 
 :::
+
+
+:::{admonition,warning} Warning
+
+A $F$-test on $\beta_1=\beta_2=0$ is difference from two univariate $t$-tests $\beta_1=0, \beta_2=0$. A group of $t$-tests may be misleading if the regressors are highly correlated.
+
+:::
+
+
+
 
 
 ### ANOVA?
@@ -1439,11 +1629,15 @@ print("reconstruction difference of b0, b1, b2 :", lm.coef_[0,:3] + lmx.coef_[0]
 (lm-include-variable)=
 ### Include a Variable
 
-What if we add a new variable $x_p$? What will happen to the existing estimator $\hat\beta_k$?
+What if we add a new variable $X_j$? What will happen to the existing estimator $\hat\beta_k$?
 
-Increase $\operatorname{Var}\left(\hat{\beta}_{k}\right)=\sigma^{2} \frac{1}{1-R_j^{2}} \frac{1}{\sum_{i}\left(x_{i k}-\bar{x}_{k}\right)^{2}}$ if $R_{-k}^2$ increases. When will $R^2_{-k}$ be unchanged? When the new variable $x_p$ has no explanatory power to $x_k$. See the [exercise](lm-rsq-non-decreasing).
+Increase
 
-In terms of bias, if we say the model with $x_p$ is "true", then $\operatorname{E}\left( \hat{\beta}_k \right)$ is probably closer to $\beta_k$ according to the equation described in the above [section](lm-omit-variable).
+$$\operatorname{Var}\left(\hat{\beta}_{k}\right)=\sigma^{2} \frac{1}{1-R_k^{2}} \frac{1}{\sum_{i}\left(x_{i k}-\bar{x}_{k}\right)^{2}}$$
+
+if $R_{k}^2$ increases. When will $R^2_{k}$ be unchanged? When the new variable $X_j$ has no explanatory power to $X_k$. See the [section](lm-rss-nonincreasing).
+
+In terms of bias, if we say the model with $X_p$ is "true", then $\operatorname{E}\left( \hat{\beta}_k \right)$ is probably closer to $\beta_k$ according to the equation described in the above [section](lm-omit-variable).
 
 
 ### Multicollinearity
@@ -1573,7 +1767,7 @@ https://www.1point3acres.com/bbs/thread-703302-1-1.html
 
 ## Exercise
 
-### Slope vs Correlation
+1. Slope vs Correlation
 
 When $p=2$, we can see from the solution
 
@@ -1592,13 +1786,13 @@ Thus, the slope has the same sign with the correlation $r_{X,Y}$, and equals to 
 
 Once can see that the magnitude of $\hat\beta_1$ increases with the magnitude of $\rho_{X,Y}$ and $s_Y$, and decreases with $s_X$, holding others fixed.
 
-### Fitted Line Passes Sample Mean
+2. Fitted Line Passes Sample Mean
 
 Since $\hat{\beta}_{0} =\bar{y}-\hat{\beta}_{1} \bar{x}$, we have $\bar{y} = \hat{\beta}_{0} + \hat{\beta}_{1} \bar{x}$, i.e. the regression line always goes through the mean $(\bar{x}, \bar{y})$ of the sample.
 
 This also hold for multiple regression, by the first order condition w.r.t. $\beta_0$.
 
-### Non-zero Mean of Error Term
+3. Non-zero Mean of Error Term
 
 *What if the mean of the error term is not zero?*
 
@@ -1652,7 +1846,7 @@ Hence, if the intercept is known to be zero, better use $\tilde\beta$ instead of
 
 If the true model has a non-zero intercept, then $\tilde\beta$ is biased for $\beta$, but it has a smaller variance, which brings a tradeoff of bias vs variance.
 
-### Transformation of Variables
+1. Transformation of Variables
 
 [insert] summary table.
 
@@ -1699,11 +1893,11 @@ Can the conclusions be extended to multiple regression?
 
 TBD.
 
-### Exchange $X$ and $Y$
+1. Exchange $X$ and $Y$
 
 TBD.
 
-### Covariance, $R$-squared, and $\beta_j$
+1. Covariance, $R$-squared, and $\beta_j$
 
 In multiple regression, if $\operatorname{Cov}\left( Y, X_j \right) = 0$ then $\beta_j= 0$?
 
@@ -1711,7 +1905,7 @@ Is it possible that $\operatorname{Cov}\left( X_j, X_k \right) \ne 0, \operatorn
 
 TBD.
 
-### Increase Estimation Precision
+1. Increase Estimation Precision
 
 TBD.
 
@@ -1721,23 +1915,31 @@ TBD.
 -   In multiple regression, reduce the relation between $X_j$ and other covariates (e.g. by orthogonal design) can decreases $R^2_{j}$, and hence decrease the variance.
 
 
-### Partialling Out in General Cases
+1. Partialling Out in General Cases
 
 TBD.
 
-### Causal?
+1. Causal?
 
 313.qz1.q2
 
 TBD.
 
-
-(lm-rsq-non-decreasing)=
-
-### Add/Remove a Variable/Observation
+1. Add/Remove a Variable/Observation
 
 TBD
 
 Table summary.
 
 Rows: E(b), Var(b), RSS, TSS, R^2
+
+1. To compare the effects of two variable $X_j, X_k$, can we say they have the same effect since the confidence interval of $\beta_j, \beta_k$ overlaps?
+
+:::{admonition,dropdown,seealso} *Solution*
+
+No, since
+
+- the two coefficients are probably correlated $\operatorname{Cov}\left( \boldsymbol{\beta} _j, \beta_k \right) \ne 0$
+- even if they are not correlated, we still need to find a pivot quantity for $\theta = \beta_j - \beta_k$ and conduct a hypothesis testing on $\theta=0$. See the [$t$-test section](lm-t-test).
+-
+:::
