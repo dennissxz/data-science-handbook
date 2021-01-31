@@ -90,13 +90,13 @@ Basic assumptions
     As a result, $\operatorname{E}\left( \boldsymbol{y} \mid \boldsymbol{X} \right) = \boldsymbol{X} \boldsymbol{\beta}$, or $\operatorname{E}\left( y_i \mid x_i \right) = \beta_0 + \beta_1 x_i$ when $p=2$, which can be illustrated by the plots below.
 
     :::{figure} lm-distribution-of-y-given-x
-    <img src="../imgs/lm_cond_distribution.png" width = "40%" alt=""/>
+    <img src="../imgs/lm-cond-distribution.png" width = "40%" alt=""/>
 
     Distributions of $y$ given $x$ \[Meyer 2021\]
     :::
 
     :::{figure} lm-observation-of-y-given-x
-    <img src="../imgs/lm_xyplane_dots.png" width = "50%" alt=""/>
+    <img src="../imgs/lm-xyplane-dots.png" width = "50%" alt=""/>
 
     Observations of $y$ given $x$ \[Meyer 2021\]
     :::
@@ -957,7 +957,7 @@ which is the $p$-value.
 ### Confidence Interval for $\boldsymbol{v} ^\top \boldsymbol{\beta}$
 
 
-Following the analysis above, we can find the $(1-\alpha)\%$-confidence interval for a scalar $\boldsymbol{v} ^\top \boldsymbol{\beta}$ as
+Following the analysis above, we can find the $(1-\alpha)\%$ confidence interval for a scalar $\boldsymbol{v} ^\top \boldsymbol{\beta}$ as
 
 $$
 \boldsymbol{v} ^\top \hat{\boldsymbol{\beta}} \pm t_{n-p}^{(1-\alpha/2)}\cdot \hat{\sigma} \sqrt{\boldsymbol{v} ^\top (\boldsymbol{X} ^\top \boldsymbol{X} )^{-1} \boldsymbol{v} }
@@ -969,12 +969,12 @@ In particular,
 - If $\boldsymbol{v} = \boldsymbol{x}_i$ where $\boldsymbol{x}_i$ is in the data set, then this is the confidence interval for in-sample fitting of $y_i$. We are making prediction at the mean value $\operatorname{E}\left( \boldsymbol{y} _i \right) = \boldsymbol{x}_i ^\top \boldsymbol{\beta}$. If $\boldsymbol{x}_i$ is not in the design matrix, then we are doing out-of-sample prediction.
 
 
-### Prediction Interval for $\boldsymbol{y} _{new}$
+### Prediction Interval for $y_{new}$
 
 For a new $\boldsymbol{x}$, the new response is
 
 $$
-\boldsymbol{y} _{new} = \boldsymbol{x} ^\top \boldsymbol{\beta} + \boldsymbol{\varepsilon} _{new}
+y _{new} = \boldsymbol{x} ^\top \boldsymbol{\beta} + \boldsymbol{\varepsilon} _{new}
 $$
 
 where $\boldsymbol{\varepsilon} _{new} \perp\!\!\!\perp \hat{\boldsymbol{\beta}} , \hat{\sigma}$ since the RHS are from training set.
@@ -982,25 +982,25 @@ where $\boldsymbol{\varepsilon} _{new} \perp\!\!\!\perp \hat{\boldsymbol{\beta}}
 The prediction is
 
 $$
-\hat{\boldsymbol{y}} _{new} = \boldsymbol{x} ^\top \hat{\boldsymbol{\beta}}
+\hat{y} _{new} = \boldsymbol{x} ^\top \hat{\boldsymbol{\beta}}
 $$
 
 Thus, the prediction error is
 
 $$\begin{aligned}
-\boldsymbol{y} _{new} - \hat{\boldsymbol{y} }_{new}
+y _{new} - \hat{y}_{new}
 &= \boldsymbol{\varepsilon} _{new} + \boldsymbol{x} ^\top (\boldsymbol{\beta} - \hat{\boldsymbol{\beta}} )\\
 &\sim N \left( \boldsymbol{0} , \sigma^2 (1 + \boldsymbol{x} ^\top (\boldsymbol{X} ^\top \boldsymbol{X} )^{-1} \boldsymbol{x} ) \right) \\
 \end{aligned}$$
 
-Hence, the $(1-\alpha)\%$-confidence prediction interval for a new response value $\boldsymbol{y} _{new}$ at an out-of-sample $\boldsymbol{x}$ is
+Hence, the $(1-\alpha)\%$ confidence prediction interval for a new response value $\boldsymbol{y} _{new}$ at an out-of-sample $\boldsymbol{x}$ is
 
 $$
 \boldsymbol{x} ^\top \hat{\boldsymbol{\beta}} \pm t_{n-p}^{(1-\alpha/2)}\cdot \hat{\sigma} \sqrt{1 + \boldsymbol{x} ^\top (\boldsymbol{X} ^\top \boldsymbol{X} )^{-1} \boldsymbol{x} }
 $$
 
 
-::::{admonition,note} Width of an interval
+::::{admonition,dropdown,note} Width of an interval
 
 
 When we are building confidence interval for $\boldsymbol{y} _i$ or prediction interval for $\boldsymbol{y} _{new}$, the width depends on the magnitude of $n$ the choice of $\boldsymbol{x}$.
@@ -1026,20 +1026,20 @@ Illustration of eigenvectors in bivariate Gaussian [Fung 2018]
 
 ::::
 
-#### Confidence Region for $\boldsymbol{\beta}$
+### Confidence Region for $\boldsymbol{\beta}$
 
 If we want to draw conclusions to multiple coefficients $\beta_1, \beta_2, \ldots$ simultaneously, we need a confidence region, and consider the multiple testing issue.
 
 To find a $(1-\alpha)\%$ confidence region for $\boldsymbol{\beta}$, one attemp is to use a cuboid, whose $j$-th side length equals to the $(1-\alpha/p)-%$ confidence interval for $\beta_j$. Namely, the confidence region is
 
 $$
-\left[ (1-\alpha/p) \text{ C.I. for } \beta_1 \right] \times \left[ (1-\alpha/p) \text{ C.I. for } \beta_2 \right] \ldots
+\left[ (1-\alpha/p) \text{ C.I. for } \beta_0 \right] \times \left[ (1-\alpha/p) \text{ C.I. for } \beta_1 \right] \times \ldots \times \left[ (1-\alpha/p) \text{ C.I. for } \beta_{p-1} \right]
 $$
 
 In this way, we ensure the overall confidence of the confidence region is at least $(1-\alpha)\%$.
 
 $$
-\operatorname{P}\left( \text{all $\beta$'s are in its C.I.}  \right) \ge 1-\alpha
+\operatorname{P}\left( \text{every $\beta$ is in its C.I.}  \right) \ge 1-\alpha
 $$
 
 A more natural approach is using an ellipsoid. Recall that
@@ -1184,6 +1184,124 @@ $$
 
     If $p > \frac{n+1}{2}$ then the above inequality always hold, and adjusted $R$-squared is always negative.
 
+
+
+### $F$-test
+
+```{margin} Nested
+It is called nested since the reduced model is a special case of the full model with
+
+$$
+\beta_{p-k}=\ldots= \beta_{p-1} =0
+$$
+
+```
+To compare two nested models
+
+
+$$\begin{aligned}
+\text{Full model: } Y &\sim \left\{ X_j, j=1, \ldots, p-1 \right\} \\
+\text{Reduced model: } Y &\sim \left\{ X_j, j=1, \ldots, p-k-1 \right\}
+\end{aligned}$$
+
+We can use the $F$-test. The test statistic is
+
+$$
+\frac{(RSS_{\text{reduced} } - RSS_{\text{full} })/k}{RSS_{\text{full}}/(n-p)} \sim F_{k, n-p}
+$$
+
+In particular,
+
+- When $k=p-1$, we are comparing a full model vs. intercept only, i.e.,
+
+    $$
+    \beta_1 = \ldots = \beta_p-1 = 0
+    $$
+
+    In this case,
+
+    $$
+    RSS_{\text{reduced}} = \left\| \boldsymbol{y} - \bar{y} \boldsymbol{1} _n \right\|  ^2 = TSS
+    $$
+
+    and
+
+    $$
+    F = \frac{(TSS - TSS)/(p-1)}{RSS/(n-p)}  = \frac{n-p}{p-1}\left( \frac{1}{1-R^2} -1 \right)
+    $$
+
+- When $k=1$, we are testing $\beta_{p-1} = 0$. In this case, the $F$-test is equivalent to the $t$-test. The two test statistics have the relstion $F=t^2$.
+
+
+:::{admonition,dropdown,seealso} *Derivation*
+
+We need to find the distribution of $RSS_{\text{reduced} }$ and $RSS_{\text{full}}$ and then construct a pivot quantity.
+
+Let $\boldsymbol{U}$ be an orthogonal basis of $\mathbb{R} ^n$ with three orthogonal parts
+
+$$
+\boldsymbol{U}  = [\underbrace{\boldsymbol{u} _1, \ldots, \boldsymbol{u} _{p-k}} _{\boldsymbol{U} _1}, \underbrace{\boldsymbol{u} _{p-k+1}, \ldots, \boldsymbol{u} _{p}} _{\boldsymbol{U} _2}, \underbrace{\boldsymbol{u} _{p+1}, \ldots, \boldsymbol{u} _{n}} _{\boldsymbol{U} _3}]
+$$
+
+Then
+
+$$
+\boldsymbol{U} ^\top \boldsymbol{y} = \left[\begin{array}{l}
+\boldsymbol{U} _1 ^\top  \boldsymbol{y}  \\
+\boldsymbol{U} _2 ^\top  \boldsymbol{y}  \\
+\boldsymbol{U} _3 ^\top  \boldsymbol{y}  \\
+\end{array}\right]
+\sim N_n \left( \left[\begin{array}{l}
+\boldsymbol{U} _1 ^\top  \boldsymbol{X} \boldsymbol{\beta}   \\
+\boldsymbol{U} _2 ^\top  \boldsymbol{X} \boldsymbol{\beta}   \\
+\boldsymbol{U} _3 ^\top  \boldsymbol{X} \boldsymbol{\beta}   \\
+\end{array}\right] , \sigma^2 \boldsymbol{I} _n \right)
+$$
+
+Thus, we have pairwise independences among $\boldsymbol{U}_1 ^\top \boldsymbol{y} , \boldsymbol{U} _2 ^\top \boldsymbol{y}$ and $\boldsymbol{U} _3 ^\top \boldsymbol{y}$.
+
+Moreover, by the property of multivariate normal, we have
+
+
+$$\begin{aligned}
+\left\| \boldsymbol{U} _2 ^\top \boldsymbol{y}  \right\|  ^2
+&\sim \sigma^2  \chi ^2 _k \\
+\left\| \boldsymbol{U} _3 ^\top \boldsymbol{y}  \right\|  ^2
+&\sim \sigma^2  \chi ^2 _{n-p}   \\
+\end{aligned}$$
+
+The RSSs have the relations
+
+
+$$\begin{aligned}
+RSS_{\text{full} }
+&= \left\| \boldsymbol{P}_{\operatorname{im}(\boldsymbol{U} _1 \boldsymbol{U} _2) ^\bot } \boldsymbol{y}  \right\| ^2 \\
+&= \left\| \boldsymbol{P}_{\operatorname{im}(\boldsymbol{U} _3} \boldsymbol{y}  \right\| ^2 \\
+&= \left\| \boldsymbol{U} ^\top _3 \boldsymbol{y}  \right\| ^2 \\
+RSS_{\text{reduced} }
+&= \left\| \boldsymbol{P}_{\operatorname{im}(\boldsymbol{U} _1) ^\bot } \boldsymbol{y}  \right\| ^2 \\
+&= \left\| \boldsymbol{P}_{\operatorname{im}([\boldsymbol{U} _2 \boldsymbol{U} _3])} \boldsymbol{y}  \right\| ^2 \\
+&= \left\| \left[ \boldsymbol{U}_2, \boldsymbol{U}_3 \right] ^\top \boldsymbol{y}  \right\| ^2   \\
+&= \left\| \boldsymbol{U} ^\top _2  \boldsymbol{y}   \right\| ^2 +  \left\| \boldsymbol{U} ^\top _3 \boldsymbol{y}   \right\| ^2
+\end{aligned}$$
+
+Hence
+
+$$\begin{aligned}
+RSS_{\text{reduced} } - RSS_{\text{full} } = \left\| \boldsymbol{U} _2 ^\top \boldsymbol{y}  \right\|  ^2
+&\sim \sigma^2  \chi ^2 _k \\
+RSS_{\text{full} } =  \left\| \boldsymbol{U} _3 ^\top \boldsymbol{y}  \right\|  ^2
+&\sim \sigma^2  \chi ^2 _{n-p}  \\
+\end{aligned}$$
+
+Therefore, we have the pivot quantity
+
+
+$$
+\frac{(RSS_{\text{reduced} } - RSS_{\text{full} })/k}{RSS_{\text{full} }/(n-p)}  \sim F_{k, n-p}
+$$
+
+:::
 
 
 ### ANOVA?
