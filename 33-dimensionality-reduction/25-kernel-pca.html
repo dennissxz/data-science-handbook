@@ -1,0 +1,793 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kernel PCA &#8212; Data Science Handbook</title>
+    
+  <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+  <link rel="stylesheet"
+    href="../_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="../_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinx-book-theme.40e2e510f6b7d1648584402491bb10fe.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/style.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.d3f166471bb80abb5163.js">
+
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="SNE and \(t\)-SNE" href="31-t-SNE.html" />
+    <link rel="prev" title="Graph-based Spectral Methods" href="23-graph-based-spectral-methods.html" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+
+
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+<a class="navbar-brand text-wrap" href="../index.html">
+  
+  
+  <h1 class="site-logo" id="site-title">Data Science Handbook</h1>
+  
+</a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form>
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+    <ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../index.html">
+   Data Science Handbook
+  </a>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Foundations
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../11-math/00-math.html">
+   Math
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/11-combinatorics.html">
+     Combinatorics
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/12-derangement.html">
+     Derangement
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/21-linear-algebra.html">
+     Linear Algebra
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/51-optimization.html">
+     Optimization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/90-puzzles.html">
+     Puzzles
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../12-probabilities/00-probabilities.html">
+   Probabilities
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/11-expectation-and-variance.html">
+     Expectation and Variance
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/13-correlation-and-dependence.html">
+     Correlation and Dependence
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/31-bayesian-theorem.html">
+     Bayesian’s Theorem
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/51-markov-chain.html">
+     Markov Chain
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/71-sampling.html">
+     Sampling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/90-multivariate-notations.html">
+     Multivariate Notations
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/91-large-sample-theory.html">
+     Large Sample Theory
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../13-statistics/00-statistics.html">
+   Statistics
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/11-stat-sampling.html">
+     Statistical Sampling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/13-randomized-trial.html">
+     Causality and Randomized Trial
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/21-hypothesis-testing.html">
+     Hypothesis Testing
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/33-confusion-matrix.html">
+     Confusion Matrix
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../14-python/00-python.html">
+   Python
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../14-python/11-programming-tools.html">
+     Programmer tools
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../14-python/12-syntax.html">
+     Syntax
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../14-python/13-data-structure.html">
+     Data Structures
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../14-python/15-functional-programming.html">
+     Functional Programming
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../17-sql/00-sql.html">
+   SQL
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../17-sql/11-database.html">
+     Database
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../17-sql/12-relational-structure.html">
+     Relational Structure
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../17-sql/31-data-query.html">
+     Data Query
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../17-sql/33-data-manipulation.html">
+     Data Manipulation
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../19-miscellaneous/00-miscellaneous.html">
+   Miscellaneous
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../19-miscellaneous/11-latex.html">
+     LaTeX
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../19-miscellaneous/13-myst.html">
+     MyST Markdown
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Algorithms
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../20-algorithms-basics/00-algorithms-basics.html">
+   Algorithms Basics
+  </a>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../21-greedy-algorithms/00-greedy-algorithms.html">
+   Greedy Algorithms
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../21-greedy-algorithms/11-interval-scheduling.html">
+     Interval Scheduling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../21-greedy-algorithms/13-denominations.html">
+     Denominations
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../21-greedy-algorithms/21-minimum-spanning-tree.html">
+     Minimum Spanning Tree
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../21-greedy-algorithms/31-huffman-coding.html">
+     Huffman Coding
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../23-dynamic-programming/00-dynamic-programming.html">
+   Dynamic Programming
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/11-weighted-interval-scheduling.html">
+     Weighted JISP
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/13-longest-common-subsequence.html">
+     Longest Common Subsequence
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Machine Learning
+ </span>
+</p>
+<ul class="current nav sidenav_l1">
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../30-ml-basics/00-ml-basics.html">
+   Machine Learning Basics
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../30-ml-basics/02-taxonomy.html">
+     Taxonomy
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../30-ml-basics/03-information-theory.html">
+     Information Theory
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../30-ml-basics/05-kernels.html">
+     Kernels
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../31-regression/00-regression.html">
+   Regression
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/11-linear-models.html">
+     Linear Models
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../32-classification/00-classification.html">
+   Classification
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../32-classification/11-support-vector-machine.html">
+     Support Vector Machine
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 current active collapsible-parent">
+  <a class="reference internal" href="00-dimensionality-reduction.html">
+   Dimensionality Reduction
+  </a>
+  <ul class="current collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="11-principal-component-analysis.html">
+     Principal Component Analysis
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="13-canonical-correlation-analysis.html">
+     Canonical Corerlation Analysis
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="21-multidimensional-scaling.html">
+     Multidimensional Scaling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="23-graph-based-spectral-methods.html">
+     Graph-based Spectral Methods
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     Kernel PCA
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="31-t-SNE.html">
+     SNE and
+     <span class="math notranslate nohighlight">
+      \(t\)
+     </span>
+     -SNE
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../37-neural-networks/00-neural-networks.html">
+   Neural Networks
+  </a>
+ </li>
+</ul>
+
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="row topbar fixed-top container-xl">
+    <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show">
+    </div>
+    <div class="col pl-2 topbar-main">
+        
+        <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+            data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+            aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+            title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+            <i class="fas fa-bars"></i>
+            <i class="fas fa-arrow-left"></i>
+            <i class="fas fa-arrow-up"></i>
+        </button>
+        
+        
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../_sources/33-dimensionality-reduction/25-kernel-pca.md"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.md</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+        <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/dennissxz/data-science-handbook"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/dennissxz/data-science-handbook/issues/new?title=Issue%20on%20page%20%2F33-dimensionality-reduction/25-kernel-pca.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+
+        <!-- Full screen (wrap in <a> to have style consistency -->
+        <a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+                data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+                title="Fullscreen mode"><i
+                    class="fas fa-expand"></i></button></a>
+
+        <!-- Launch buttons -->
+
+    </div>
+
+    <!-- Table of contents -->
+    <div class="d-none d-md-block col-md-2 bd-toc show">
+        
+        <div class="tocsection onthispage pt-5 pb-3">
+            <i class="fas fa-list"></i> Contents
+        </div>
+        <nav id="bd-toc-nav">
+            <ul class="nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#objective">
+   Objective
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#choice-of-kernel">
+   Choice of Kernel
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#pros-and-cos">
+   Pros and Cos
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#relation-to-graph-based-spectral-methods">
+   Relation to Graph-based Spectral Methods
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#projection-of-new-observations">
+   Projection of New Observations
+  </a>
+ </li>
+</ul>
+
+        </nav>
+        
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="kernel-pca">
+<h1>Kernel PCA<a class="headerlink" href="#kernel-pca" title="Permalink to this headline">¶</a></h1>
+<p>Kernel PCA is a nonlinear extension of PCA where dot products are replaced with generalized dot products in feature space computed by a kernel function.</p>
+<div class="section" id="objective">
+<h2>Objective<a class="headerlink" href="#objective" title="Permalink to this headline">¶</a></h2>
+<p>Linear PCA only consider linear subspaces</p>
+<div class="math notranslate nohighlight">
+\[
+\hat{\boldsymbol{x}} = \boldsymbol{W} \boldsymbol{z}
+\]</div>
+<p>To solve this, we can apply feature transformation <span class="math notranslate nohighlight">\(\boldsymbol{\phi}: \mathbb{R} ^d \rightarrow \mathbb{R} ^p\)</span> to include non-linear features, such as <span class="math notranslate nohighlight">\(\boldsymbol{\phi} ([x_1, x_2])= [x_1, x_1^2, x_1 x_2]\)</span>.</p>
+<p>Then the data matrix changes from <span class="math notranslate nohighlight">\(\boldsymbol{X}_{n \times d}\)</span> to <span class="math notranslate nohighlight">\(\boldsymbol{\Phi}_{n \times p}\)</span>. And the inner product matrix changes from <span class="math notranslate nohighlight">\(\boldsymbol{X} \boldsymbol{X} ^\top\)</span> to <span class="math notranslate nohighlight">\(\boldsymbol{\Phi} \boldsymbol{\Phi} ^\top\)</span>.</p>
+<p>, handcrafting feature transformation <span class="math notranslate nohighlight">\(\boldsymbol{\phi}\)</span> is equivalent to choosing a kernel function <span class="math notranslate nohighlight">\(k(\boldsymbol{x}_1, \boldsymbol{x} _2) = \boldsymbol{\phi}(\boldsymbol{x} _1) ^\top \boldsymbol{\phi}(\boldsymbol{x} _2)\)</span>. We can compute the new inner product matrix by <span class="math notranslate nohighlight">\(\boldsymbol{K} = \boldsymbol{\Phi} \boldsymbol{\Phi} ^\top\)</span>.</p>
+<p>Then we can run MDS on <span class="math notranslate nohighlight">\(\boldsymbol{K}\)</span>.</p>
+<div class="note admonition">
+<p class="admonition-title"> Mean normalization</p>
+<p>We’ve implicitly assumed zero-mean inputs. If the inputs <span class="math notranslate nohighlight">\(\boldsymbol{K}\)</span> are not zero-mean, we center it by</p>
+<div class="math notranslate nohighlight">
+\[
+\boldsymbol{K} ^\prime = (\boldsymbol{I} - \boldsymbol{u} \boldsymbol{u} ^\top )\boldsymbol{K}(\boldsymbol{I} - \boldsymbol{u} \boldsymbol{u} ^\top)  
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\boldsymbol{u} = \frac{1}{\sqrt{n}}[1 \ldots 1]^{\top}\)</span></p>
+</div>
+</div>
+<div class="section" id="choice-of-kernel">
+<h2>Choice of Kernel<a class="headerlink" href="#choice-of-kernel" title="Permalink to this headline">¶</a></h2>
+<p>As <a class="reference internal" href="../30-ml-basics/05-kernels.html#kernels-logic"><span class="std std-ref">discussed</span></a>, in practice, we don’t engineer <span class="math notranslate nohighlight">\(\phi(\cdot)\)</span>, but directly think about <span class="math notranslate nohighlight">\(k(\cdot, \cdot)\)</span>.</p>
+<ul>
+<li><p>One common choice of kernel is radial basis function (RBF), aka Gaussian kernel</p>
+<div class="math notranslate nohighlight">
+\[
+    k\left(\mathbf{x}_{1}, \mathbf{x}_{2}\right)=e^{\frac{-\left(\mathbf{x}_{1}-\mathbf{x}_{2}\right)^{2}}{2 \sigma^{2}}}
+    \]</div>
+<p>where the standard deviation (radius) <span class="math notranslate nohighlight">\(\sigma\)</span> is a tuning parameter.</p>
+<p>RBF corresponds to an implicit feature space of infinite dimensionality.</p>
+</li>
+</ul>
+<div class="figure align-default" id="kernels-rbf">
+<a class="reference internal image-reference" href="../_images/kernels-RBF.png"><img alt="" src="../_images/kernels-RBF.png" style="width: 50%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 18 </span><span class="caption-text">Gaussian kernels</span><a class="headerlink" href="#kernels-rbf" title="Permalink to this image">¶</a></p>
+</div>
+<ul>
+<li><p>Polynomial kernel</p>
+<div class="math notranslate nohighlight">
+\[
+    k\left(\mathbf{x}_{1}, \mathbf{x}_{2}\right)=\left(1+\mathbf{x}_{1}^{T} \mathbf{x}_{2}\right)^{p}
+    \]</div>
+<p>where the polynomial degree <span class="math notranslate nohighlight">\(p\)</span> is a tuning parameter. <span class="math notranslate nohighlight">\(p=2\)</span> is common.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="pros-and-cos">
+<h2>Pros and Cos<a class="headerlink" href="#pros-and-cos" title="Permalink to this headline">¶</a></h2>
+<p><strong>Pros</strong></p>
+<p>Kernel PCA works well</p>
+<ul>
+<li><p>if the data is non-linear and fit the chosen kernel.</p>
+<div class="figure align-default" id="kernel-pca-ep1">
+<a class="reference internal image-reference" href="../_images/kernel-pca-ep1.png"><img alt="" src="../_images/kernel-pca-ep1.png" style="width: 80%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 19 </span><span class="caption-text">Kernel PCA with a RBF kernel on points [Livescu 2021].</span><a class="headerlink" href="#kernel-pca-ep1" title="Permalink to this image">¶</a></p>
+</div>
+</li>
+<li><p>if there is much noise in the data</p>
+<div class="figure align-default" id="id1">
+<a class="reference internal image-reference" href="../_images/kernel-pca-ep2.png"><img alt="" src="../_images/kernel-pca-ep2.png" style="width: 60%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 20 </span><span class="caption-text">Kernel PCA on images [Livescu 2021].</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</div>
+</li>
+</ul>
+<p><strong>Cons</strong></p>
+<ul>
+<li><p>Kernel PCA works bad when the data lies a special manifold</p>
+<div class="figure align-default" id="id2">
+<a class="reference internal image-reference" href="../_images/kernel-pca-ep3.png"><img alt="" src="../_images/kernel-pca-ep3.png" style="width: 50%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 21 </span><span class="caption-text">Kernel PCA with RBF kernel on a Swiss roll manifold [Livescu 2021]</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+</div>
+</li>
+<li><p>Computationally expensive to compute <span class="math notranslate nohighlight">\(n \times n\)</span> pairwise kernel values when <span class="math notranslate nohighlight">\(n\)</span> is large. Remedies include</p>
+<ul>
+<li><p>use subset of the entire data set</p></li>
+<li><p>use kernel approximation techniques</p>
+<ul>
+<li><p>approximate <span class="math notranslate nohighlight">\(\boldsymbol{K} \approx \boldsymbol{F}^\top \boldsymbol{F}\)</span> where <span class="math notranslate nohighlight">\(\boldsymbol{F} \in \mathbb{R} ^{m \times n}, k \ll m \ll n\)</span>. The value of <span class="math notranslate nohighlight">\(m\)</span> should be as large as you can handle.</p></li>
+<li><p>For RBF kernels, there is one remarkable good approximation (due to Fourier transform properties) called random Fourier features (Rahimi &amp; Recht 2008), which replaces each data point <span class="math notranslate nohighlight">\(\boldsymbol{x}_i\)</span> with</p>
+<div class="math notranslate nohighlight">
+\[
+      \left[\cos \left(\boldsymbol{w}_{1}^{T} \boldsymbol{x}_{i}+b_{1}\right) \ldots \cos \left(\boldsymbol{w}_{m}^{T} \boldsymbol{x}_{i}+b_{m}\right)\right]^{T}=\boldsymbol{f} _{i}
+      \]</div>
+<p>\boldsymbol{w}here</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+      \begin{aligned}
+      b_{1}, \ldots, b_{m} &amp; \sim \operatorname{Unif}[0,2 \pi] \\
+      \boldsymbol{w}_{1}, \ldots, \boldsymbol{w}_{m} &amp; \sim \mathcal{N}\left(0, \frac{2}{\sigma^{2}} \boldsymbol{I}_d \right)
+      \end{aligned}
+      \end{split}\]</div>
+</li>
+</ul>
+</li>
+<li><p>don’t use kernel methods.</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="relation-to-graph-based-spectral-methods">
+<h2>Relation to Graph-based Spectral Methods<a class="headerlink" href="#relation-to-graph-based-spectral-methods" title="Permalink to this headline">¶</a></h2>
+<p>Both are motivates as extensions of MDS and involves a <span class="math notranslate nohighlight">\(n \times n\)</span> matrix.</p>
+<p>We can view kernel in kernel PCA as the edge weights in <a class="reference internal" href="23-graph-based-spectral-methods.html"><span class="doc std std-doc">graph-based spectral methods</span></a>. But the main difference is that in kernel PCA we compute the kernel value of <strong>every pair</strong> of data points (computationally demanding), but in graph-based spectral methods we only compute weights between points that are neighbors.</p>
+</div>
+<div class="section" id="projection-of-new-observations">
+<h2>Projection of New Observations<a class="headerlink" href="#projection-of-new-observations" title="Permalink to this headline">¶</a></h2>
+<p>To find a way to project observations, we first introduce an alternative formulation of the kernel PCA problem.</p>
+<p>The covariance matrix in the feature space <span class="math notranslate nohighlight">\(\frac{1}{n} \boldsymbol{\Phi} ^\top \boldsymbol{\Phi}\)</span> can be written as a sum of outer products of features over data points</p>
+<div class="math notranslate nohighlight">
+\[
+\boldsymbol{C} = \frac{1}{n} \sum_{i=1}^n \boldsymbol{\phi}(\boldsymbol{x}_i )  \boldsymbol{\phi}(\boldsymbol{x}_i ) ^\top
+\]</div>
+<p>To solve the kernel PCA, we find the eigenvectors of <span class="math notranslate nohighlight">\(\boldsymbol{C}\)</span>. The <span class="math notranslate nohighlight">\(j\)</span>-th PCA projection vector <span class="math notranslate nohighlight">\(\boldsymbol{w}\)</span> is an eigenvector of <span class="math notranslate nohighlight">\(\boldsymbol{C}\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[
+\boldsymbol{C} \boldsymbol{w}_j  = \lambda_j \boldsymbol{w}_j
+\]</div>
+<p>It can be shown that</p>
+<div class="math notranslate nohighlight">
+\[
+\boldsymbol{w}_j = \frac{1}{\lambda n} \sum_{i=1}^n \left( \boldsymbol{\phi}(\boldsymbol{x}_i ) ^\top  \boldsymbol{w}_j  \right) \boldsymbol{\phi}(\boldsymbol{x}_i ) = \sum_{i=1}^n \alpha_{ji} \boldsymbol{\phi}(\boldsymbol{x}_i)
+\]</div>
+<p>which implies that <span class="math notranslate nohighlight">\(\boldsymbol{w}\)</span> lies in the column span of <span class="math notranslate nohighlight">\(\boldsymbol{\Phi} ^\top\)</span>.</p>
+<p>Substituting the above expression back to <span class="math notranslate nohighlight">\(\boldsymbol{C} \boldsymbol{w}  = \lambda_j \boldsymbol{w}\)</span> gives</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+LHS
+&amp;= \boldsymbol{C} \boldsymbol{w} \\
+&amp;= \frac{1}{n} \sum_{i=1}^n \boldsymbol{\phi}(\boldsymbol{x}_i )  \boldsymbol{\phi}(\boldsymbol{x}_i ) ^\top \boldsymbol{w} \\
+&amp;= \frac{1}{n} \sum_{i=1}^n \boldsymbol{\phi}(\boldsymbol{x}_i )  \boldsymbol{\phi}(\boldsymbol{x}_i ) ^\top \left( \sum_{\ell=1}^n \alpha_{j\ell} \boldsymbol{\phi}(\boldsymbol{x}_i)  \right) \\
+&amp;= \frac{1}{n} \sum_{i=1}^n \boldsymbol{\phi}(\boldsymbol{x}_i ) \left( \sum_{\ell=1}^n \alpha_{j\ell} k(\boldsymbol{x}_{i} , \boldsymbol{x} _\ell)  \right) \\
+RHS
+&amp;= \lambda_j \sum_{i=1}^n \alpha_{ji} \boldsymbol{\phi}(\boldsymbol{x}_i)
+\end{aligned}\end{split}\]</div>
+<div class="margin sidebar">
+<p class="sidebar-title"></p>
+<p>For kernelized problems, the original problem formulation (primal) is in the original feature space, and the kernelized problem formulation (dual) is in the transformed space.</p>
+</div>
+<p>and finally</p>
+<div class="math notranslate nohighlight">
+\[
+\boldsymbol{K} \boldsymbol{\alpha} _j= n \lambda_j \boldsymbol{\alpha} _j
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\boldsymbol{K} = \boldsymbol{\Phi}  \boldsymbol{\Phi}  ^\top\)</span>. So now our task changes to solve an eigenproblem of the above equation. The normalization constraint <span class="math notranslate nohighlight">\(\boldsymbol{w} _j ^\top \boldsymbol{w} _j = 1\)</span> in the original problem <span class="math notranslate nohighlight">\(\boldsymbol{C} \boldsymbol{w}_j = \lambda_j \boldsymbol{w}\)</span> becomes</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+&amp;&amp; \boldsymbol{w} _j ^\top \boldsymbol{w} _j &amp;= 1 \\
+&amp;\Rightarrow&amp; \sum_{k=1}^n \sum_{\ell=1}^n \alpha_{j\ell} \alpha_{jk} \boldsymbol{\phi}(\boldsymbol{x} _{\ell})^\top \boldsymbol{\phi}(\boldsymbol{x} _k)  &amp;=1 \\
+&amp;\Rightarrow&amp; \boldsymbol{\alpha} _j ^\top \boldsymbol{K} \boldsymbol{\alpha} _j &amp;= 1 \\
+\end{aligned}\end{split}\]</div>
+<p>To project a new data point <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span>, we project its feature vector onto each eigenvector (like <span class="math notranslate nohighlight">\(\boldsymbol{z} = \boldsymbol{U} ^\top \boldsymbol{x}\)</span> in standard PCA) using the kernel value with each of the <span class="math notranslate nohighlight">\(n\)</span> data points</p>
+<div class="math notranslate nohighlight">
+\[
+z_j = \boldsymbol{w}_j ^\top  \boldsymbol{\phi}(\boldsymbol{x} ) = \sum_{i=1}^n \alpha_{ji} \boldsymbol{\phi}(\boldsymbol{x}_i) ^\top \boldsymbol{\phi} (\boldsymbol{x} ) = \sum_{i=1}^n \alpha_{ji} k(\boldsymbol{x}_i ,\boldsymbol{x})
+\]</div>
+<p>which allows the kernel version of the formulation (dual) and then project a new observation <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> not in the training set, without writing out the feature vector <span class="math notranslate nohighlight">\(\boldsymbol{\phi}(\boldsymbol{x})\)</span>.</p>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./33-dimensionality-reduction"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        </div>
+    </div>
+    
+    
+    <div class='prev-next-bottom'>
+        
+    <a class='left-prev' id="prev-link" href="23-graph-based-spectral-methods.html" title="previous page">Graph-based Spectral Methods</a>
+    <a class='right-next' id="next-link" href="31-t-SNE.html" title="next page">SNE and <span class="math notranslate nohighlight">\(t\)</span>-SNE</a>
+
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By Dennis Zheng<br/>
+        
+            &copy; Copyright 2020.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+
+    
+  <script src="../_static/js/index.d3f166471bb80abb5163.js"></script>
+
+
+    
+  </body>
+</html>

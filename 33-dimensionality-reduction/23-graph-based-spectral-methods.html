@@ -57,6 +57,7 @@
     <script async="async" src="../_static/sphinx-thebe.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Kernel PCA" href="25-kernel-pca.html" />
     <link rel="prev" title="Multidimensional Scaling" href="21-multidimensional-scaling.html" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -355,7 +356,12 @@
   </a>
   <ul class="collapse-ul">
    <li class="toctree-l2">
-    <a class="reference internal" href="../30-ml-basics/01-information-theory.html">
+    <a class="reference internal" href="../30-ml-basics/02-taxonomy.html">
+     Taxonomy
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../30-ml-basics/03-information-theory.html">
      Information Theory
     </a>
    </li>
@@ -422,28 +428,27 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="#isomap">
-     Isomap
+    <a class="reference internal" href="25-kernel-pca.html">
+     Kernel PCA
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="#laplacian-eigenmaps">
-     Laplacian Eigenmaps
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="#locally-linear-embedding">
-     Locally Linear Embedding
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="#maximum-variance-unfolding">
-     Maximum Variance Unfolding
+    <a class="reference internal" href="31-t-SNE.html">
+     SNE and
+     <span class="math notranslate nohighlight">
+      \(t\)
+     </span>
+     -SNE
     </a>
    </li>
   </ul>
   <i class="fas fa-chevron-down">
   </i>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../37-neural-networks/00-neural-networks.html">
+   Neural Networks
+  </a>
  </li>
 </ul>
 
@@ -531,39 +536,46 @@
         </div>
         <nav id="bd-toc-nav">
             <ul class="nav section-nav flex-column">
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#">
-   Graph-based Spectral Methods
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#isomap">
    Isomap
   </a>
   <ul class="nav section-nav flex-column">
-   <li class="toc-h2 nav-item toc-entry">
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#learning">
      Learning
     </a>
    </li>
-   <li class="toc-h2 nav-item toc-entry">
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#pros-cons">
      Pros Cons
     </a>
    </li>
   </ul>
  </li>
- <li class="toc-h1 nav-item toc-entry">
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#laplacian-eigenmaps">
    Laplacian Eigenmaps
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#objective">
+     Objective
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id1">
+     Learning
+    </a>
+   </li>
+  </ul>
  </li>
- <li class="toc-h1 nav-item toc-entry">
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#locally-linear-embedding">
    Locally Linear Embedding
   </a>
  </li>
- <li class="toc-h1 nav-item toc-entry">
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#maximum-variance-unfolding">
    Maximum Variance Unfolding
   </a>
@@ -581,64 +593,114 @@
                 
   <div class="section" id="graph-based-spectral-methods">
 <h1>Graph-based Spectral Methods<a class="headerlink" href="#graph-based-spectral-methods" title="Permalink to this headline">¶</a></h1>
-<p>Taks inspiration from MDS, extend to a variety of distance/similarity measures.</p>
+<p>PCA, CCA, MDS are linear dimensionality reduction methods. If out data lies on a nonlinear manifold (a topological space locally resembling Euclidean space), then we need non-linear dimensionality reduction methods. Many of them are extended from MDS.</p>
+<p>Graph-based spectral methods takes inspiration from MDS, extends to a variety of distance/similarity measures.</p>
+<p>In general, there are three steps:</p>
 <ul class="simple">
-<li><p>Construct a graph where each node corresponds to a data point and edges corresponds to neighbor relationship</p></li>
-<li><p>Construct a matrix summarization of the graph</p></li>
+<li><p>Construct a graph with nodes being the data points. Define a similarity measure between neighbors. Assign the similarity measure value to edge weights.</p></li>
+<li><p>Construct a <span class="math notranslate nohighlight">\(n \times n\)</span> matrix summarization of the data set / graph, where the entries are pairwise weights (usually sparse).</p></li>
+<li><p>Perform operations on the wight matrix to find the data projections (e.g. spectral decomposition).</p></li>
 </ul>
-</div>
+<p>Examples: Isomap, maximum variance unfolding, locally linear embedding, Laplacian eigenmaps.</p>
 <div class="section" id="isomap">
-<h1>Isomap<a class="headerlink" href="#isomap" title="Permalink to this headline">¶</a></h1>
-<p>A direct extension of MDS where Euclidean distances are replaced by estimated ??geodesic distance along the manifold.</p>
+<h2>Isomap<a class="headerlink" href="#isomap" title="Permalink to this headline">¶</a></h2>
+<p>[Tenenbaum et al. 2000]</p>
+<p>For a manifold in a high-dimensional space, it may NOT be reasonable to use Euclidean distance to measure the pairwise dissimilarity of points. Geodesic distance along the manifold may be more appropriate.</p>
+<p>Isomap is a direct extension of MDS where Euclidean distances are replaced with <em>estimated geodesic distances</em> along the manifold, i.e. it tries to “unfold” a manifold and preserve the pairwise geodesic distances.</p>
 <div class="section" id="learning">
-<h2>Learning<a class="headerlink" href="#learning" title="Permalink to this headline">¶</a></h2>
+<h3>Learning<a class="headerlink" href="#learning" title="Permalink to this headline">¶</a></h3>
+<p>Isomap algorithm:</p>
 <ol class="simple">
-<li><p>Construct a graph where node <span class="math notranslate nohighlight">\(i\)</span> corresponds to input example <span class="math notranslate nohighlight">\(\boldsymbol{x}_i\)</span>, and nodes <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(j\)</span> are connected by an edge if <span class="math notranslate nohighlight">\(\boldsymbol{x}_i, \boldsymbol{x}_j\)</span> are <span class="math notranslate nohighlight">\(N\)</span>-nearest neighbors (by some definition).</p></li>
-<li><p>For each <span class="math notranslate nohighlight">\(i,j\)</span> compute pairwise distance <span class="math notranslate nohighlight">\(\Delta_{i j}^{2}\)</span> along the shortest path in the graph (e.g., using Dijkstra’s shortest path algorithm)</p></li>
-<li><p>Perform MDS for some dimensionality <span class="math notranslate nohighlight">\(k\)</span>, taking the distances <span class="math notranslate nohighlight">\(\Delta_{i j}^{2}\)</span> as input in place of Euclidean distances.</p></li>
+<li><p>Construct a graph where node <span class="math notranslate nohighlight">\(i\)</span> corresponds to input example <span class="math notranslate nohighlight">\(\boldsymbol{x}_i\)</span>, and nodes <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(j\)</span> are connected by an edge if <span class="math notranslate nohighlight">\(\boldsymbol{x}_i, \boldsymbol{x}_j\)</span> are nearest neighbors (by some definition) with edge weight being the Euclidean distance <span class="math notranslate nohighlight">\(d_{ij} = \left\| \boldsymbol{x}_i -\boldsymbol{x}_j  \right\|\)</span>.</p></li>
+<li><p>For each <span class="math notranslate nohighlight">\(i,j\)</span> in the graph, compute pairwise distance <span class="math notranslate nohighlight">\(\Delta_{i j}\)</span> along the shortest path in the graph (e.g., using Dijkstra’s shortest path algorithm) as the estimated geodesic distance.</p></li>
+<li><p>Perform MDS for some dimensionality <span class="math notranslate nohighlight">\(k\)</span>, taking the estimated geodesic distances <span class="math notranslate nohighlight">\(\Delta_{i j}\)</span> as input in place of Euclidean distances.</p></li>
 </ol>
-<p>The output is the k-dimensional projections of all of the data points zi, which satisfy</p>
+<p>The output is the <span class="math notranslate nohighlight">\(k\)</span>-dimensional projections of all of the data points <span class="math notranslate nohighlight">\(\boldsymbol{z}_i\)</span> such that the Euclidean distances in the projected space approximate the geodesic distances on the manifold.</p>
 <div class="math notranslate nohighlight">
 \[
 \left\|\mathbf{z}_{i}-\mathbf{z}_{j}\right\|^{2} \approx \Delta_{i j}^{2}
 \]</div>
-<div class="figure align-default" id="id1">
+<div class="figure align-default" id="isomap-geodesic-distance">
 <a class="reference internal image-reference" href="../_images/gb-isomap-d3k2.png"><img alt="" src="../_images/gb-isomap-d3k2.png" style="width: 80%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 14 </span><span class="caption-text">Iso map with <span class="math notranslate nohighlight">\(d=3,k=2\)</span> [Livescu 2021]</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 14 </span><span class="caption-text">Isomap with <span class="math notranslate nohighlight">\(d=3,k=2\)</span>. The blue line is the real geodesic distance and the red line is estimated.  [Livescu 2021]</span><a class="headerlink" href="#isomap-geodesic-distance" title="Permalink to this image">¶</a></p>
 </div>
 </div>
 <div class="section" id="pros-cons">
-<h2>Pros Cons<a class="headerlink" href="#pros-cons" title="Permalink to this headline">¶</a></h2>
-<p>Pros</p>
+<h3>Pros Cons<a class="headerlink" href="#pros-cons" title="Permalink to this headline">¶</a></h3>
+<p><strong>Pros</strong></p>
 <ul class="simple">
-<li><p>As the data set size increases, Isomap is guaranteed to converge to the correct manifold that the data was drawn from</p></li>
+<li><p>As the data set size increases, isomap is guaranteed to converge to the correct manifold that the data was drawn from, under certain conditions (e.g. no holes)</p></li>
 </ul>
-<p>Cons</p>
-<ul class="simple">
-<li><p>Can be sensitive to the neighborhood <strong>size</strong> used in graph construction, or equivalently to the noise in the data.</p></li>
-</ul>
-<div class="figure align-default" id="id2">
+<p><strong>Cons</strong></p>
+<ul>
+<li><p>Can be sensitive to the <strong>neighborhood size</strong> used in graph construction, or equivalently to the noise in the data.</p>
+<div class="figure align-default" id="isomap-noise">
 <a class="reference internal image-reference" href="../_images/gb-isomap-failure.png"><img alt="" src="../_images/gb-isomap-failure.png" style="width: 70%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 15 </span><span class="caption-text">Isomap fails when there are noises [Livescu 2021]</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 15 </span><span class="caption-text">Isomap fails when there are noises [Livescu 2021]</span><a class="headerlink" href="#isomap-noise" title="Permalink to this image">¶</a></p>
 </div>
-<ul class="simple">
-<li><p>Can’t handle holes in the manifold. Geodesic distance computation can break)</p></li>
-</ul>
-<div class="figure align-default" id="id3">
+</li>
+<li><p>Can’t handle <strong>holes</strong> in the manifold. Geodesic distance computation can break. This is because the two points (even with the same color/label) sit in opposite to the hole have large geodesic distance on the manifold, which leads to large Euclidean distance in the projected space.</p>
+<div class="figure align-default" id="gb-isomap-holes">
 <a class="reference internal image-reference" href="../_images/gb-isomap-holes.png"><img alt="" src="../_images/gb-isomap-holes.png" style="width: 80%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 16 </span><span class="caption-text">Isomap fails when there are holds [Livescu 2021]</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 16 </span><span class="caption-text">Isomap fails when there are holes [Livescu 2021]</span><a class="headerlink" href="#gb-isomap-holes" title="Permalink to this image">¶</a></p>
 </div>
-<p>This is because the two points of the color sit in opposite to the hole have large distance on the manifold.</p>
+</li>
+</ul>
 </div>
 </div>
 <div class="section" id="laplacian-eigenmaps">
-<h1>Laplacian Eigenmaps<a class="headerlink" href="#laplacian-eigenmaps" title="Permalink to this headline">¶</a></h1>
+<h2>Laplacian Eigenmaps<a class="headerlink" href="#laplacian-eigenmaps" title="Permalink to this headline">¶</a></h2>
+<p>[Belkin &amp; Niyogi 2003]</p>
+<p>Unlike isomap where the edge weights are local Euclidean distances, Laplacian eigenmaps define edge weights in another way.</p>
+<div class="section" id="objective">
+<h3>Objective<a class="headerlink" href="#objective" title="Permalink to this headline">¶</a></h3>
+<ol>
+<li><p>Define a weight matrix <span class="math notranslate nohighlight">\(\boldsymbol{W}\)</span> with pairwise edge weights as</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+    w_{i j}=\left\{\begin{array}{ll}
+    \exp \left(-\left\|\mathbf{x}_{i}-\mathbf{x}_{j}\right\|^{2} / t\right), &amp; \left\|\mathbf{x}_{i}-\mathbf{x}_{j}\right\|&lt;\epsilon \\
+    0 &amp; \text { otherwise }
+    \end{array}\right.
+    \end{split}\]</div>
+<p>where</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\epsilon\)</span> is a hyperparameter used to define nearest neighbors (can also use counts)</p></li>
+<li><p><span class="math notranslate nohighlight">\(t\)</span> is a hyperparameter like temperature.</p></li>
+</ul>
+</li>
+<li><p>Then we define a diagonal matrix <span class="math notranslate nohighlight">\(\boldsymbol{D}\)</span> with <span class="math notranslate nohighlight">\(d_{ii} = \sum_j w_{ij}\)</span>. This can be seen as the density around the node <span class="math notranslate nohighlight">\(i\)</span>.</p></li>
+<li><p>Find centered and unit-covariance projections <span class="math notranslate nohighlight">\(\boldsymbol{z}_i\)</span> that solve the total projected pairwise distances weighted by <span class="math notranslate nohighlight">\(w_{ij}\)</span> and scaled by <span class="math notranslate nohighlight">\(d_{ii}d_{jj}\)</span></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+    \min &amp;\ \sum_{i j} \frac{w_{i j}|| \mathbf{z}_{i}-\mathbf{z}_{j}||^{2}}{\sqrt{d_{i i} d_{j j}}} \\
+    \text{s.t.} &amp;\ \boldsymbol{Z} \text{ is centered and has unit covariance} \\
+    \end{aligned}\end{split}\]</div>
+</li>
+</ol>
+</div>
+<div class="section" id="id1">
+<h3>Learning<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<p>The solution is given by the <span class="math notranslate nohighlight">\(k\)</span> <strong>bottom</strong> eigenvectors of</p>
+<div class="math notranslate nohighlight">
+\[
+\boldsymbol{L} =\boldsymbol{I}  - \boldsymbol{D} ^{-\frac{1}{2}} \boldsymbol{W}  \boldsymbol{D} ^{-\frac{1}{2}}
+\]</div>
+<p>excluding the bottom (constant) eigenvector??. This is a symmetrized, normalized form of the graph Laplacian <span class="math notranslate nohighlight">\(\boldsymbol{D} - \boldsymbol{W}\)</span>.</p>
+<div class="figure align-default" id="gb-laplacian-eigenmap-nt">
+<a class="reference internal image-reference" href="../_images/gb-laplacian-eigenmap-Nt.png"><img alt="" src="../_images/gb-laplacian-eigenmap-Nt.png" style="width: 50%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 17 </span><span class="caption-text">Laplacian eigenmap with varing N-nearest-neighbors and temperature <span class="math notranslate nohighlight">\(t\)</span> [Livescu 2021]</span><a class="headerlink" href="#gb-laplacian-eigenmap-nt" title="Permalink to this image">¶</a></p>
+</div>
+</div>
 </div>
 <div class="section" id="locally-linear-embedding">
-<h1>Locally Linear Embedding<a class="headerlink" href="#locally-linear-embedding" title="Permalink to this headline">¶</a></h1>
+<h2>Locally Linear Embedding<a class="headerlink" href="#locally-linear-embedding" title="Permalink to this headline">¶</a></h2>
+<p>Locally linear embedding learns a mapping in which each point can be expressed as a <strong>linear function</strong> of its nearest neighbors.</p>
 </div>
 <div class="section" id="maximum-variance-unfolding">
-<h1>Maximum Variance Unfolding<a class="headerlink" href="#maximum-variance-unfolding" title="Permalink to this headline">¶</a></h1>
+<h2>Maximum Variance Unfolding<a class="headerlink" href="#maximum-variance-unfolding" title="Permalink to this headline">¶</a></h2>
+<p>Maximum variance unfolding tries to maximize the variance of the data (like PCA) while respecting neighborhood relationships.</p>
+</div>
 </div>
 
     <script type="text/x-thebe-config">
@@ -670,6 +732,7 @@
     <div class='prev-next-bottom'>
         
     <a class='left-prev' id="prev-link" href="21-multidimensional-scaling.html" title="previous page">Multidimensional Scaling</a>
+    <a class='right-next' id="next-link" href="25-kernel-pca.html" title="next page">Kernel PCA</a>
 
     </div>
     <footer class="footer mt-5 mt-md-0">

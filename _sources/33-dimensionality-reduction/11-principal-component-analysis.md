@@ -158,7 +158,7 @@ which implies $\lambda$ is the eigenvalue of $\boldsymbol{\Sigma}$.
 Therefore, the maximized variance $\boldsymbol{u} ^\top \boldsymbol{\Sigma} \boldsymbol{u}$ equals to the largest eigenvalue of $\boldsymbol{\Sigma}$.
 :::
 
-### Eigenvalue Decomposition
+### Spectral Decomposition
 
 Rather than obtaining the principal components sequentially, the principal components and their variances can be obtained simultaneously by solving for the eigenvectors and eigenvalues of $\boldsymbol{\Sigma}$. Using the Spectral Decomposition Theorem,
 
@@ -185,6 +185,14 @@ The principal component transform using the first $k$ principal directions is th
 $$
 \boldsymbol{z} = \boldsymbol{U}_{[:k]} ^\top \boldsymbol{x}
 $$
+
+or
+
+$$
+\boldsymbol{Z} = \boldsymbol{X} \boldsymbol{U} _{[:k]}
+$$
+
+where $\boldsymbol{U} _{[:k]}$ means the matrix consisting of the first $k$ columns of $\boldsymbol{U}$.
 
 ## Properties
 
@@ -706,4 +714,4 @@ $$
 where $\boldsymbol{M} _{ML} = \boldsymbol{W} _{ML} ^\top \boldsymbol{W} _{ML}  + \sigma^2 _{ML} \boldsymbol{I}_k$.
 
 - As $\sigma^2 _{ML} \rightarrow 0$, the posterior mean approaches the standard PCA projection $\boldsymbol{ z } =  \boldsymbol{U}  ^\top (\boldsymbol{x}  - \bar{\boldsymbol{x} })$
-- As $\sigma^2 _{ML}> 0$, the posterior mean "shrinks" the solution in magnitude from standard PCA. Since we are less certain about the representation when the noise is large. => smaller magnitude??
+- As $\sigma^2 _{ML}> 0$, the posterior mean "shrinks" the solution in magnitude from standard PCA. Since we are less certain about the representation when the noise is large.
