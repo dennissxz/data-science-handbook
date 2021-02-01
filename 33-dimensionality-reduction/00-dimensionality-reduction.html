@@ -360,6 +360,11 @@
      Information Theory
     </a>
    </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../30-ml-basics/05-kernels.html">
+     Kernels
+    </a>
+   </li>
   </ul>
   <i class="fas fa-chevron-down">
   </i>
@@ -405,6 +410,36 @@
    <li class="toctree-l2">
     <a class="reference internal" href="13-canonical-correlation-analysis.html">
      Canonical Corerlation Analysis
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="21-multidimensional-scaling.html">
+     Multidimensional Scaling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="23-graph-based-spectral-methods.html">
+     Graph-based Spectral Methods
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="23-graph-based-spectral-methods.html#isomap">
+     Isomap
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="23-graph-based-spectral-methods.html#laplacian-eigenmaps">
+     Laplacian Eigenmaps
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="23-graph-based-spectral-methods.html#locally-linear-embedding">
+     Locally Linear Embedding
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="23-graph-based-spectral-methods.html#maximum-variance-unfolding">
+     Maximum Variance Unfolding
     </a>
    </li>
   </ul>
@@ -503,31 +538,24 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#model">
-   Model
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#applications">
-   Applications
+  <a class="reference internal nav-link" href="#objective">
+   Objective
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#metrics">
    Metrics
   </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#linear-dimensionality-reduction">
-     Linear Dimensionality Reduction
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#multi-view-dimensionality-reduction">
-     Multi-view Dimensionality Reduction
-    </a>
-   </li>
-  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#multi-view-dimensionality-reduction">
+   Multi-view Dimensionality Reduction
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#summary">
+   Summary
+  </a>
  </li>
 </ul>
 
@@ -545,72 +573,40 @@
 <p>Aka representation learning.</p>
 <div class="section" id="motivation">
 <h2>Motivation<a class="headerlink" href="#motivation" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li><p>although the data may appear high dimensional, there may only be a small number of degrees of variability, corresponding to latent factors</p></li>
-<li><p>low dimensional representations are useful for enabling fast nearest neighbor searches and 2-d projections are useful for visualization</p></li>
-<li><p>for compression</p></li>
-<li><p>for visualization</p></li>
-<li><p>for downstream learning tasks</p></li>
-</ul>
-<p>If I take away some information, am I able to reconstruct it?</p>
+<p>Although the data may appear high dimensional, there may only be a small number of degrees of variability, corresponding to latent factors. Low dimensional representations are useful for enabling fast nearest neighbor searches and 2-d projections are useful for visualization. It is also useful for  compression and downstream learning tasks.</p>
+<p>The question to ponder before making dimensionality reduction: If I take away some information, am I able to reconstruct it?</p>
 </div>
-<div class="section" id="model">
-<h2>Model<a class="headerlink" href="#model" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li><p>input</p>
-<ul>
-<li><p><span class="math notranslate nohighlight">\(\mathcal{D} = \left\{ \boldsymbol{x} _i  \right\}_{i=1}^N\)</span></p></li>
-</ul>
-</li>
-<li><p>goals</p>
-<ul>
-<li><p>reduce the dimensionality by projecting the data to a lower dimensional subspace which captures the <strong>essence</strong> of the data, i.e. find a projection <span class="math notranslate nohighlight">\(\mathcal{X} \rightarrow \mathcal{Z}\)</span> such that <span class="math notranslate nohighlight">\(\mathrm{dim}  \left( \mathcal{Z} \right)  \ll \mathrm{dim} \left( \mathcal{X} \right)\)</span></p></li>
-</ul>
-</li>
-</ul>
-<p>Seek a projection</p>
+<div class="section" id="objective">
+<h2>Objective<a class="headerlink" href="#objective" title="Permalink to this headline">¶</a></h2>
+<p>We want to reduce the dimensionality by projecting the data to a lower dimensional subspace which captures the <strong>essence</strong> of the data, i.e. find a projection <span class="math notranslate nohighlight">\(\mathcal{X} \rightarrow \mathcal{Z}\)</span> such that <span class="math notranslate nohighlight">\(\mathrm{dim}  \left( \mathcal{Z} \right)  \ll \mathrm{dim} \left( \mathcal{X} \right)\)</span></p>
+<p>More specifically, we seek a projection</p>
 <div class="math notranslate nohighlight">
 \[
-P(\mathbf{x} ; \boldsymbol{\theta}): \mathbb{R}^{d} \rightarrow \mathbb{R}^{k}, \quad k \ll d
+P(\boldsymbol{x} ; \boldsymbol{\theta}): \mathbb{R}^{d} \rightarrow \mathbb{R}^{k}, \quad k \ll d
 \]</div>
-<p>Fit <span class="math notranslate nohighlight">\(P\)</span> by optimize some goodness of fit <span class="math notranslate nohighlight">\(J\)</span></p>
+<p>by optimizing some goodness of fit criteria <span class="math notranslate nohighlight">\(J\)</span></p>
 <div class="math notranslate nohighlight">
 \[
-\min _{\boldsymbol{\theta}} J\left(\mathbf{x}_{1}, \ldots, \mathbf{x}_{N}, P\left(\mathbf{x}_{1}\right), \ldots, P\left(\mathbf{x}_{N}\right)\right)
+\min _{\boldsymbol{\theta}} J\left(\mathbf{x}_{1}, \ldots, \mathbf{x}_{n}, P\left(\mathbf{x}_{1}\right), \ldots, P\left(\mathbf{x}_{n}\right)\right)
 \]</div>
-<p>Linear subspace is defined by a <span class="math notranslate nohighlight">\(m \ times p\)</span> matrix <span class="math notranslate nohighlight">\(\boldsymbol{W}\)</span>.</p>
-<p>Approximation of <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> as a weighted combination of the vectors in <span class="math notranslate nohighlight">\(\boldsymbol{W}\)</span>:</p>
+<ul>
+<li><p>For linear dimensionality models, the projection <span class="math notranslate nohighlight">\(P(\boldsymbol{x}; \boldsymbol{\theta} )\)</span> can be represented by a <span class="math notranslate nohighlight">\(d \times k\)</span> matrix <span class="math notranslate nohighlight">\(\boldsymbol{W}\)</span>. The low dimensional representation <span class="math notranslate nohighlight">\(\boldsymbol{z}\)</span> is computed by</p>
 <div class="math notranslate nohighlight">
 \[
-\hat{\boldsymbol{x}} = \boldsymbol{W} \boldsymbol{y}
-\]</div>
-<p>where <span class="math notranslate nohighlight">\(\boldsymbol{y}\)</span> can be seen as a low-dimensional representation of <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span></p>
-</div>
-<div class="section" id="applications">
-<h2>Applications<a class="headerlink" href="#applications" title="Permalink to this headline">¶</a></h2>
-<ul>
-<li><p>models</p>
-<ul class="simple">
-<li><p>principal components analysis</p></li>
-<li><p>autoencoders</p></li>
-<li><p>find latent factors</p></li>
-<li><p>word embeddings, contextual word embeddings</p></li>
-</ul>
-</li>
-<li><p>matrix</p>
-<ul>
-<li><p>minimize the reconstruction cost</p>
+    \boldsymbol{z} = \boldsymbol{W} ^\top \boldsymbol{x}  
+    \]</div>
+<p>and the reconstruction of <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> is a weighted combination of the vectors in <span class="math notranslate nohighlight">\(\boldsymbol{W}\)</span>:</p>
 <div class="math notranslate nohighlight">
 \[
-    \min \sum_i J(\boldsymbol{x}_i, \boldsymbol{z}_i)
+    \hat{\boldsymbol{x}} = \boldsymbol{W} \boldsymbol{z} = \boldsymbol{W} \boldsymbol{W} ^\top \boldsymbol{x}
     \]</div>
 </li>
-</ul>
-</li>
+<li><p>For non-linear dimensionality reduction models, projection <span class="math notranslate nohighlight">\(P\)</span> can be quite different.</p></li>
 </ul>
 </div>
 <div class="section" id="metrics">
 <h2>Metrics<a class="headerlink" href="#metrics" title="Permalink to this headline">¶</a></h2>
+<p>The performance of a dimensionality reduction method can be measured by</p>
 <ul class="simple">
 <li><p>qualitative evaluation</p>
 <ul>
@@ -624,22 +620,18 @@ P(\mathbf{x} ; \boldsymbol{\theta}): \mathbb{R}^{d} \rightarrow \mathbb{R}^{k}, 
 <li><p>degree of compression</p></li>
 </ul>
 </li>
+<li><p>evaluate it on labeled data</p></li>
+<li><p>reconstruction error</p>
+<ul>
+<li><p>need to evaluate on hold out data</p></li>
+<li><p>but some model do not work with out-of-sample data</p></li>
 </ul>
-<div class="section" id="linear-dimensionality-reduction">
-<h3>Linear Dimensionality Reduction<a class="headerlink" href="#linear-dimensionality-reduction" title="Permalink to this headline">¶</a></h3>
-<p>Linear subspace is defined by a <span class="math notranslate nohighlight">\(d\times k\)</span> matrix <span class="math notranslate nohighlight">\(W\)</span> containing <span class="math notranslate nohighlight">\(k\)</span>.</p>
-<div class="math notranslate nohighlight">
-\[
-\hat{\boldsymbol{x}_i} = W \boldsymbol{z}_i
-\]</div>
-<p>Reconstruction error</p>
-<div class="math notranslate nohighlight">
-\[
-\boldsymbol{x}_i - \hat{\boldsymbol{x}}_i
-\]</div>
+</li>
+<li><p>KL distance between kernel density estimators on training set and embedding data set.</p></li>
+</ul>
 </div>
 <div class="section" id="multi-view-dimensionality-reduction">
-<h3>Multi-view Dimensionality Reduction<a class="headerlink" href="#multi-view-dimensionality-reduction" title="Permalink to this headline">¶</a></h3>
+<h2>Multi-view Dimensionality Reduction<a class="headerlink" href="#multi-view-dimensionality-reduction" title="Permalink to this headline">¶</a></h2>
 <p>Unsupervised dimensionality reduction is very challenging. If we happen to have multiple data views, it can be easier.</p>
 <p>View means the number of ways we describe a data object.</p>
 <ul class="simple">
@@ -648,7 +640,7 @@ P(\mathbf{x} ; \boldsymbol{\theta}): \mathbb{R}^{d} \rightarrow \mathbb{R}^{k}, 
 <li><p>articles: two languages</p></li>
 <li><p>speech: voice wave + video of mouth</p></li>
 </ul>
-<p>In multi-view representation learning, training data consists of samples of a <span class="math notranslate nohighlight">\(d\)</span>-dimensional random vector that has some natural split into two sub-vectors.</p>
+<p>For instance, in two-view representation learning, training data consists of samples of a <span class="math notranslate nohighlight">\(d\)</span>-dimensional random vector that has some natural split into two sub-vectors.</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \left[\begin{array}{l}
@@ -656,10 +648,58 @@ P(\mathbf{x} ; \boldsymbol{\theta}): \mathbb{R}^{d} \rightarrow \mathbb{R}^{k}, 
 \mathbf{y}
 \end{array}\right], \mathbf{x} \in \mathbf{R}^{d_{x}}, \mathbf{y} \in \mathbf{R}^{d_{y}}, d_{x}+d_{y}=d
 \end{split}\]</div>
-<p>The task is to learn useful features/subspaces from such two view data. Typically involves learning representations of one view that are <strong>predictive</strong> of the other.</p>
+<p>The task is to learn useful features/subspaces from such two-view data. Typically involves learning representations of one view that are <strong>predictive</strong> of the other.</p>
 <p>One example of linear multi-view representation learning is canonical correlation anlaysis.</p>
-<div class="toctree-wrapper compound">
 </div>
+<div class="section" id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Model</p></th>
+<th class="head"><p>Input</p></th>
+<th class="head"><p>Objective</p></th>
+<th class="head"><p>Solution</p></th>
+<th class="head"><p>Pros</p></th>
+<th class="head"><p>Cons</p></th>
+<th class="head"><p>Remarks</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>PCA</p></td>
+<td><p><span class="math notranslate nohighlight">\(\boldsymbol{S} =\boldsymbol{X} ^\top \boldsymbol{X}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\operatorname{Var}\left(Z_{1}\right)=\max _{\|\boldsymbol{\alpha}\|_{2}^{2}=1} \boldsymbol{\alpha}^{\top} \boldsymbol{\Sigma} \boldsymbol{\alpha}\)</span> <br> <span class="math notranslate nohighlight">\(\max_{\boldsymbol{W}} \sum_i \operatorname{Var}\left( Z_i \right)\)</span> <br> <span class="math notranslate nohighlight">\(\boldsymbol{Z} =  \boldsymbol{W} ^\top \boldsymbol{X}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\boldsymbol{S} = \boldsymbol{U} \boldsymbol{\Lambda} \boldsymbol{U} ^\top\)</span> <br> <span class="math notranslate nohighlight">\(\boldsymbol{z} = \boldsymbol{U}_{[:k]} ^\top \boldsymbol{x}\)</span></p></td>
+<td><p></p></td>
+<td><p>1. Sensitive to variable scale. <br> 2. Principal direction may not be discriminative.</p></td>
+<td><p>Standardize before running</p></td>
+</tr>
+<tr class="row-odd"><td><p>Probabilistic PCA</p></td>
+<td><p><span class="math notranslate nohighlight">\(\boldsymbol{S}  = \boldsymbol{X} ^\top \boldsymbol{X}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\boldsymbol{z} \sim \mathcal{N}( \boldsymbol{0}, \boldsymbol{I})\)</span> <br> <span class="math notranslate nohighlight">\(\boldsymbol{x} \mid \boldsymbol{z} \sim \mathcal{N}\left( \boldsymbol{W} \boldsymbol{z}+\boldsymbol{\mu} , \sigma^{2} \boldsymbol{I}\right)\)</span> <br> ML <span class="math notranslate nohighlight">\(\boldsymbol{W} , \boldsymbol{\mu} , \sigma\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\boldsymbol{W}_{M L} =\boldsymbol{U}_{d \times k}\left(\boldsymbol{\Lambda} _{k}-\sigma^{2} \boldsymbol{I}_k\right)^{1 / 2} \boldsymbol{R}_k\)</span> <br> <span class="math notranslate nohighlight">\(\sigma_{M L}^{2} =\frac{1}{d-k} \sum_{j=k+1}^{d} \lambda_{j}\)</span> <br>  <span class="math notranslate nohighlight">\(\widehat{\operatorname{E}}\left( \boldsymbol{z} \mid \boldsymbol{x}   \right) = \boldsymbol{M}  ^{-1} _{ML} \boldsymbol{W} ^\top _{ML}(\boldsymbol{x} - \bar{\boldsymbol{x}})\)</span></p></td>
+<td><p>1. Fewer variance parameters <br> 2. Sampling</p></td>
+<td><p></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>CCA</p></td>
+<td><p><span class="math notranslate nohighlight">\(\boldsymbol{X} , \boldsymbol{Y}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\max _{\boldsymbol{\alpha}, \boldsymbol{\beta} } \operatorname{Corr}\left(\boldsymbol{\alpha}^{\prime} \boldsymbol{x} , \boldsymbol{\beta}^{\prime} \boldsymbol{y} \right)\)</span></p></td>
+<td><p>solve eigenproblem <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}_{x x}^{-1} \boldsymbol{\Sigma}_{x y} \boldsymbol{\Sigma}_{y y}^{-1} \boldsymbol{\Sigma}_{y x} \boldsymbol{\alpha} = \rho^2 \boldsymbol{\alpha}\)</span> <br> <span class="math notranslate nohighlight">\(\boldsymbol{\beta} \propto \boldsymbol{\Sigma}_{y y}^{-1} \boldsymbol{\Sigma}_{y x} \boldsymbol{\alpha}\)</span></p></td>
+<td><p>Has discriminative power in some cases that PCA doesn’t</p></td>
+<td><p>Easy to overfit tiny signals</p></td>
+<td><p><span class="math notranslate nohighlight">\(\rho\)</span> is invariant of scaling of linear transformation of <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span> or <span class="math notranslate nohighlight">\(\boldsymbol{Y}\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p>Regularized CCA</p></td>
+<td><p></p></td>
+<td><p></p></td>
+<td><p><span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}_{x x} \leftarrow\boldsymbol{\Sigma}_{x x}+r_{x} I\)</span> <br> <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}_{y y} \leftarrow \boldsymbol{\Sigma}_{y y}+r_{y} I\)</span></p></td>
+<td><p></p></td>
+<td><p></p></td>
+<td><p>add spherical noise <span class="math notranslate nohighlight">\(rI\)</span> to the covariance matrices</p></td>
+</tr>
+</tbody>
+</table>
+<div class="toctree-wrapper compound">
 </div>
 </div>
 </div>

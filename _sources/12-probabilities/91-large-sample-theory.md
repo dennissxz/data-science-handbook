@@ -14,6 +14,29 @@ kernelspec:
 # Large Sample Theory
 
 
+## Convergence in Probability
+
+Definition (Convergence in probability)
+: A sequence ${X_n}$ of random variables converges in probability towards the random variable $X$ if for all $\varepsilon > 0$,
+
+  $$
+  \lim _{n \rightarrow \infty} \operatorname{P}\left(\left|X_{n}-X\right|>\varepsilon\right)=0
+  $$
+
+In short, we write $X_{n} \stackrel{P}{\rightarrow} X$ or $\operatorname{plim} X_{n}=X$.
+
+**Properties**
+
+1. $\operatorname{plim} \frac{X_n}{Y_n}   = \frac{\operatorname{plim} X_n }{\operatorname{plim} Y_n }$
+
+1. $\operatorname{plim} X_nY_n  = \operatorname{plim} X_n  \operatorname{plim} Y_n$
+
+1. $\operatorname{plim} (X_n+Y_n)  = \operatorname{plim} X_n  + \operatorname{plim} Y_n$
+
+1. $\operatorname{plim} g(X_n)  = g(\operatorname{plim} X_n )$ if $g$ if is continuous at $\operatorname{plim} X_n$
+
+
+
 ## Law of Large Numbers
 
 The Law of Large Numbers states that, as the number of identically distributed, randomly generated variables increases, their sample mean (average) approaches their theoretical mean.

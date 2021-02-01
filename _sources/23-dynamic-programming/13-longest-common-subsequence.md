@@ -25,10 +25,10 @@ $$LCS(A,B) = LCS(A_{[:-1]}, B_{[:-1]}) \circ z$$
 
 
 $$
-LCS(A,B) = \max \left\{\begin{array}{ll}
+LCS(A,B) = \arg \operatorname{longer}  \left\{\begin{array}{ll}
 LCS(A, B_{[:-1]}) \\
 LCS(A_{[:-1]}, B)
-\end{array}\right.
+\end{array}\right\}
 $$
 
 ### DP Table
@@ -58,7 +58,7 @@ T_{[i-1,j-1]} + 1 & \text{if } A_{[i]} = B_{[j]}  \\
 \max \left\{\begin{array}{ll}
 T_{[i-1, j]} \\
 T_{[i, j-1]}
-\end{array}\right.
+\end{array}\right\}
 & \text{otherwise}
 \end{array}\right.
 $$

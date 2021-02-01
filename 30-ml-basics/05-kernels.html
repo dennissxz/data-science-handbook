@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SQL &#8212; Data Science Handbook</title>
+    <title>Kernels &#8212; Data Science Handbook</title>
     
   <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
 
@@ -57,8 +57,8 @@
     <script async="async" src="../_static/sphinx-thebe.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Database" href="11-database.html" />
-    <link rel="prev" title="Functional Programming" href="../14-python/15-functional-programming.html" />
+    <link rel="next" title="Regression" href="../31-regression/00-regression.html" />
+    <link rel="prev" title="Information Theory" href="01-information-theory.html" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
@@ -98,7 +98,7 @@
   Foundations
  </span>
 </p>
-<ul class="current nav sidenav_l1">
+<ul class="nav sidenav_l1">
  <li class="toctree-l1 collapsible-parent">
   <a class="reference internal" href="../11-math/00-math.html">
    Math
@@ -235,28 +235,28 @@
   <i class="fas fa-chevron-down">
   </i>
  </li>
- <li class="toctree-l1 current active collapsible-parent">
-  <a class="current reference internal" href="#">
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../17-sql/00-sql.html">
    SQL
   </a>
   <ul class="collapse-ul">
    <li class="toctree-l2">
-    <a class="reference internal" href="11-database.html">
+    <a class="reference internal" href="../17-sql/11-database.html">
      Database
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="12-relational-structure.html">
+    <a class="reference internal" href="../17-sql/12-relational-structure.html">
      Relational Structure
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="31-data-query.html">
+    <a class="reference internal" href="../17-sql/31-data-query.html">
      Data Query
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="33-data-manipulation.html">
+    <a class="reference internal" href="../17-sql/33-data-manipulation.html">
      Data Manipulation
     </a>
    </li>
@@ -349,19 +349,19 @@
   Machine Learning
  </span>
 </p>
-<ul class="nav sidenav_l1">
- <li class="toctree-l1 collapsible-parent">
-  <a class="reference internal" href="../30-ml-basics/00-ml-basics.html">
+<ul class="current nav sidenav_l1">
+ <li class="toctree-l1 current active collapsible-parent">
+  <a class="reference internal" href="00-ml-basics.html">
    Machine Learning Basics
   </a>
-  <ul class="collapse-ul">
+  <ul class="current collapse-ul">
    <li class="toctree-l2">
-    <a class="reference internal" href="../30-ml-basics/01-information-theory.html">
+    <a class="reference internal" href="01-information-theory.html">
      Information Theory
     </a>
    </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../30-ml-basics/05-kernels.html">
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
      Kernels
     </a>
    </li>
@@ -486,7 +486,7 @@
         <!-- ipynb file if we had a myst markdown file -->
         
         <!-- Download raw file -->
-        <a class="dropdown-buttons" href="../_sources/17-sql/00-sql.md"><button type="button"
+        <a class="dropdown-buttons" href="../_sources/30-ml-basics/05-kernels.md"><button type="button"
                 class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
                 data-placement="left">.md</button></a>
         <!-- Download PDF via print -->
@@ -506,7 +506,7 @@
                 data-toggle="tooltip" data-placement="left" title="Source repository"><i
                     class="fab fa-github"></i>repository</button></a>
         <a class="issues-button"
-            href="https://github.com/dennissxz/data-science-handbook/issues/new?title=Issue%20on%20page%20%2F17-sql/00-sql.html&body=Your%20issue%20content%20here."><button
+            href="https://github.com/dennissxz/data-science-handbook/issues/new?title=Issue%20on%20page%20%2F30-ml-basics/05-kernels.html&body=Your%20issue%20content%20here."><button
                 type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
                 title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
         
@@ -527,6 +527,52 @@
     <!-- Table of contents -->
     <div class="d-none d-md-block col-md-2 bd-toc show">
         
+        <div class="tocsection onthispage pt-5 pb-3">
+            <i class="fas fa-list"></i> Contents
+        </div>
+        <nav id="bd-toc-nav">
+            <ul class="nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#definitions">
+   Definitions
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#construction-of-psd-kernels">
+   Construction of PSD Kernels
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#popular-kernels">
+   Popular Kernels
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#why-using-kernels">
+   Why Using Kernels
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#mercer-s-theorem">
+     Mercer’s Theorem
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#representer-theorem">
+     Representer Theorem
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#logic">
+     Logic
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+        </nav>
+        
     </div>
 </div>
     <div id="main-content" class="row">
@@ -534,16 +580,122 @@
         
               <div>
                 
-  <div class="section" id="sql">
-<h1>SQL<a class="headerlink" href="#sql" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="kernels">
+<h1>Kernels<a class="headerlink" href="#kernels" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="definitions">
+<h2>Definitions<a class="headerlink" href="#definitions" title="Permalink to this headline">¶</a></h2>
+<dl class="simple myst">
+<dt>Definition (Kernel)</dt><dd><p>A kernel is a function <span class="math notranslate nohighlight">\(k: \mathcal{S} \times \mathcal{S} \rightarrow \mathbb{C}\)</span> where <span class="math notranslate nohighlight">\(\mathbb{S}\)</span> is an arbitrary set.</p>
+</dd>
+<dt>Definition (Positive semi-definite kernels)</dt><dd><p>A kernel <span class="math notranslate nohighlight">\(k\)</span> is a positive semi-definite kernel if <span class="math notranslate nohighlight">\(\forall x_{1}, \ldots, x_{n} \in \mathcal{S}\)</span>, the matrix <span class="math notranslate nohighlight">\(\boldsymbol{C}\)</span> defined below is positive semi-definite,</p>
+</dd>
+</dl>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\boldsymbol{C}=\left(\begin{array}{l}
+k\left(x_{1}, x_{1}\right), \ldots, k\left(x_{1}, x_{n}\right) \\
+k\left(x_{2}, x_{1}\right), \ldots, k\left(x_{2}, x_{n}\right) \\
+\vdots  \\
+k\left(x_{n}, x_{1}\right), \ldots, k\left(x_{n}, x_{n}\right)
+\end{array}\right) \in \mathbb{C}^{n \times n}
+\end{split}\]</div>
+<dl class="simple myst">
+<dt>Examples</dt><dd><p>Dot product <span class="math notranslate nohighlight">\(k(\boldsymbol{x}, \boldsymbol{y})=\boldsymbol{x}^{*} \boldsymbol{y}\)</span>, where <span class="math notranslate nohighlight">\(\boldsymbol{x}, \boldsymbol{y} \in \mathbb{C}^{d}\)</span>, is a PSD kernel, since the matrix <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span> is PSD because <span class="math notranslate nohighlight">\(\boldsymbol{u} ^* \boldsymbol{C} \boldsymbol{u} =  \boldsymbol{u} ^* \boldsymbol{X} ^* \boldsymbol{X} \boldsymbol{u} \ge 0\)</span>.</p>
+</dd>
+<dd><p>In general, <span class="math notranslate nohighlight">\(k(x, y) \triangleq \boldsymbol{\phi}(x) ^\top \boldsymbol{\phi}(y)\)</span>, with arbitrary map <span class="math notranslate nohighlight">\(\boldsymbol{\phi}: \mathcal{S} \rightarrow \mathbb{R}^{d}\)</span>, is a PSD kernel,</p>
+</dd>
+<dd><p>More generally, <span class="math notranslate nohighlight">\(k(x, y) \triangleq\langle\boldsymbol{\phi}(x), \boldsymbol{\phi}(y)\rangle_{\mathcal{H}}\)</span>, with <span class="math notranslate nohighlight">\(\boldsymbol{\phi}: \mathcal{S} \rightarrow \mathcal{H}\)</span>, is a PSD kernel.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="construction-of-psd-kernels">
+<h2>Construction of PSD Kernels<a class="headerlink" href="#construction-of-psd-kernels" title="Permalink to this headline">¶</a></h2>
+<p>If <span class="math notranslate nohighlight">\(k, k_1, k_2\)</span>  are real PSD kernels on some arbitrary set <span class="math notranslate nohighlight">\(\mathcal{S}\)</span>, the following ones are also real PSD kernels.</p>
+<ol class="simple">
+<li><p><span class="math notranslate nohighlight">\(\alpha k(x,y)\)</span>, where <span class="math notranslate nohighlight">\(\alpha \in \mathbb{R} _{\ge 0}\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(k_1(x,y) + k_2 (x,y)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(k_1(x,y) k_2 (x,y)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(p(k(x,y))\)</span> where <span class="math notranslate nohighlight">\(p\)</span> is a polinomial that has non-negative coefficients</p></li>
+<li><p><span class="math notranslate nohighlight">\(\exp (k(x,y ))\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(f(x)k(x,y)f(y), \forall \, f: \mathcal{S} \rightarrow \mathbb{R}\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(k\left(\xi\left(x^{\prime}\right), \xi\left(y^{\prime}\right)\right), \forall \xi: \mathcal{S}^{\prime} \rightarrow \mathcal{S}\)</span></p></li>
+</ol>
+</div>
+<div class="section" id="popular-kernels">
+<h2>Popular Kernels<a class="headerlink" href="#popular-kernels" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p>references</p>
-<ul>
-<li><p>https://www.liaoxuefeng.com/wiki/1177760294764384</p></li>
+<li><p>Linear kernel (dot product): <span class="math notranslate nohighlight">\(k(\boldsymbol{x}, \boldsymbol{y})=\boldsymbol{x}^{\top} \boldsymbol{y}\)</span></p></li>
+<li><p>Polynomial kernel: <span class="math notranslate nohighlight">\(k(\boldsymbol{x}, \boldsymbol{y})=p\left(\boldsymbol{x}^{\top} \boldsymbol{y}\right)\)</span> with non-negative coefficients</p></li>
+<li><p>Gaussian (RBF) kernel: <span class="math notranslate nohighlight">\(k\left(\boldsymbol{x}, \boldsymbol{y} ; \sigma^{2}\right)=\exp \left(-\frac{\|\boldsymbol{x}-\boldsymbol{y}\|^{2}}{2 \sigma^{2}}\right)\)</span></p></li>
+</ul>
+<p>All three are PSD kernels, and we can use them to construct PSD kernels.</p>
+</div>
+<div class="section" id="why-using-kernels">
+<h2>Why Using Kernels<a class="headerlink" href="#why-using-kernels" title="Permalink to this headline">¶</a></h2>
+<p>Kernels are popular. Why? Let’s first see two theorems.</p>
+<div class="section" id="mercer-s-theorem">
+<span id="ml-mercers-theorem"></span><h3>Mercer’s Theorem<a class="headerlink" href="#mercer-s-theorem" title="Permalink to this headline">¶</a></h3>
+<dl class="simple myst">
+<dt>Theorem (Mercer’s, 1909)</dt><dd><p>Under fairly general conditions, for any PSD kernel <span class="math notranslate nohighlight">\(k: \mathcal{S} \times \mathcal{S} \rightarrow \mathbb{C}\)</span>, there <strong>exists</strong> a map <span class="math notranslate nohighlight">\(\boldsymbol{\phi}: \mathcal{S} \rightarrow \mathcal{H}\)</span> such that <span class="math notranslate nohighlight">\(k(x, y)=\langle\boldsymbol{\phi}(x), \boldsymbol{\phi}(y)\rangle_{\mathcal{H}}\)</span>.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="representer-theorem">
+<span id="ml-representer-theorem"></span><h3>Representer Theorem<a class="headerlink" href="#representer-theorem" title="Permalink to this headline">¶</a></h3>
+<dl class="simple myst">
+<dt>Representer Theorem (Simplified)</dt><dd><p>Consider the optimization problem on a data set <span class="math notranslate nohighlight">\(\mathcal{D} = \left\{ \boldsymbol{x}_i ,y_i \right\} _{i=1}^n, \boldsymbol{x}_i \in \mathcal{S}\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+  \boldsymbol{w}^{*}=\underset{\boldsymbol{w}}{\arg \min } \sum_{i=1}^{n} \mathcal{L}\left(\left\langle\boldsymbol{w}, \boldsymbol{\phi} \left(\boldsymbol{x}_i \right)\right\rangle, y_{i}\right)+\|\boldsymbol{w}\|^{2}
+  \]</div>
+<p>where</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{\phi} : \mathcal{S} \rightarrow \mathbb{R} ^d\)</span> (or <span class="math notranslate nohighlight">\(\mathcal{S} \rightarrow \mathcal{H}\)</span> in general)</p></li>
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{w} \in \mathbb{R} ^d\)</span> is the coefficients in the model to be solved</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathcal{L}(\cdot, \cdot): \mathbb{R} \times \mathbb{R} \rightarrow \mathbb{R}\)</span> on some arbitrary loss function.</p></li>
+</ul>
+<p>Then there <span class="math notranslate nohighlight">\(\exists\left\{\alpha_{i} \in \mathbb{R}\right\}_{i=1}^{n}\)</span> such that the solution <span class="math notranslate nohighlight">\(\boldsymbol{w} ^*\)</span> is a linear combination of the <span class="math notranslate nohighlight">\(n\)</span> transformed data vectors.</p>
+<div class="math notranslate nohighlight">
+\[\boldsymbol{w}^{*}=\sum_{i=1}^{n} \alpha_{i} \boldsymbol{\phi} \left(\boldsymbol{x}_i \right) = \boldsymbol{X} ^\top \boldsymbol{\alpha}\]</div>
+</dd>
+<dt><strong>Example (Linear regression OLS)</strong></dt><dd><p>In linear regression, we can write <span class="math notranslate nohighlight">\(\boldsymbol{\beta}\)</span> as a linear combination of data vectors <span class="math notranslate nohighlight">\(\boldsymbol{x}_i\)</span> (identical transformation <span class="math notranslate nohighlight">\(\boldsymbol{\phi}\)</span>).</p>
+</dd>
+</dl>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+&amp;&amp; \boldsymbol{X} ^\top \boldsymbol{\alpha} &amp;= (\boldsymbol{X} ^\top \boldsymbol{X} )^{-1} \boldsymbol{X} ^\top \boldsymbol{y} \\
+&amp;\Rightarrow&amp; (\boldsymbol{X} \boldsymbol{X}  ^\top )(\boldsymbol{X} \boldsymbol{X}  ^\top) \boldsymbol{\alpha} &amp;=\boldsymbol{X} \left( \boldsymbol{X} ^\top \boldsymbol{X}  (\boldsymbol{X} ^\top \boldsymbol{X} )^{-1}  \right)\boldsymbol{X} ^\top \boldsymbol{y} \\
+&amp;\Rightarrow&amp;  \boldsymbol{K}^2 \boldsymbol{\alpha} &amp;= \boldsymbol{K} \boldsymbol{y}  \quad \text{let } \boldsymbol{K} = \boldsymbol{X} \boldsymbol{X} ^\top  \\
+&amp;\Rightarrow&amp;  \boldsymbol{\alpha} &amp;= \boldsymbol{K} ^{-1} \boldsymbol{y}  \\
+\end{aligned}\end{split}\]</div>
+<p><strong>Implication</strong></p>
+<p>Substituting <span class="math notranslate nohighlight">\(\boldsymbol{w} ^*\)</span> back into the loss function, we have, for the loss of a data point <span class="math notranslate nohighlight">\((\boldsymbol{x}, y)\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned} \mathcal{L}\left(\left\langle\boldsymbol{w}^{*}, \boldsymbol{\phi}(\boldsymbol{x})\right\rangle, y\right) &amp;=\mathcal{L}\left(\left\langle\sum_{i=1}^{n} \alpha_{i} \boldsymbol{\phi}\left(\boldsymbol{x}_{i}\right), \boldsymbol{\phi}(\boldsymbol{x})\right\rangle, y\right) \\ &amp;=\mathcal{L}\left(\sum_{i=1}^{n} \alpha_{i}\left\langle\boldsymbol{\phi}\left(\boldsymbol{x}_{i}\right), \boldsymbol{\phi}(\boldsymbol{x})\right\rangle, y\right) \\ &amp;=\mathcal{L}\left(\sum_{i=1}^{n} \alpha_{i} k\left(\boldsymbol{x}_{i}, \boldsymbol{x}\right), y\right) \end{aligned}\end{split}\]</div>
+<p>The last line implies that</p>
+<ul class="simple">
+<li><p>We don’t even need to know what <span class="math notranslate nohighlight">\(\boldsymbol{\phi}\)</span> is exactly. We just need to care about kernels and there is a corresponding <span class="math notranslate nohighlight">\(\boldsymbol{\phi}\)</span> under the wood.</p></li>
+<li><p>We can convert the problem of minimization over <span class="math notranslate nohighlight">\(\boldsymbol{w}\)</span> to that over <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}\)</span>.</p></li>
+</ul>
+</div>
+<div class="section" id="logic">
+<h3>Logic<a class="headerlink" href="#logic" title="Permalink to this headline">¶</a></h3>
+<p>Now we can summarize the logic of using kernels.</p>
+<ol class="simple">
+<li><p>People find that feature transformation <span class="math notranslate nohighlight">\(\boldsymbol{\phi}\)</span> help improve model performance. But there are many choices of <span class="math notranslate nohighlight">\(\boldsymbol{\phi}: S \rightarrow \mathbb{R} ^d\)</span>, hard to enumerate and handcraft an optimal one.</p></li>
+<li><p>People find using kernels can improve model performance too, and more importantly kernels are related to feature transformation:</p>
+<ul class="simple">
+<li><p>For every <span class="math notranslate nohighlight">\(\boldsymbol{\phi} (\boldsymbol{x}_i)\)</span> in <span class="math notranslate nohighlight">\(\mathcal{H}\)</span>, there is a corresponding kernel <span class="math notranslate nohighlight">\(k(\boldsymbol{x}_i , \boldsymbol{x}_j) = \boldsymbol{\phi}(\boldsymbol{x}_i ) ^\top \boldsymbol{\phi}(\boldsymbol{x}_j )\)</span>. In particular, if there is an optimal <span class="math notranslate nohighlight">\(\boldsymbol{\phi} ^*\)</span>, then there is a kernel <span class="math notranslate nohighlight">\(k = \boldsymbol{\phi} ^{* \top} \boldsymbol{\phi} ^*\)</span>.</p></li>
+<li><p>For every PSD kernel <span class="math notranslate nohighlight">\(k(\cdot, \cdot)\)</span>, there exists a feature transformatin <span class="math notranslate nohighlight">\(\boldsymbol{\phi}(\cdot)\)</span> by <a class="reference internal" href="#ml-mercers-theorem"><span class="std std-ref">Mercer’s Theorem</span></a>. Note that <span class="math notranslate nohighlight">\(\boldsymbol{\phi}(\cdot)\)</span> can be infinite dimensional for some <span class="math notranslate nohighlight">\(k(\cdot, \cdot)\)</span>.</p></li>
 </ul>
 </li>
-</ul>
-<div class="toctree-wrapper compound">
+<li><p>Therefore, instead of handcrafting feature transformations <span class="math notranslate nohighlight">\(\boldsymbol{\phi}\)</span>, people change to choosing (PSD) kernels to improve model performance.</p></li>
+</ol>
+<div class="note admonition">
+<p class="admonition-title"> Dot product in loss function</p>
+<p>Note that the kernel methods only apply to models with loss function that involves dot product <span class="math notranslate nohighlight">\(\boldsymbol{x}_i ^\top \boldsymbol{x}_j\)</span>, for instance, SVM, PCA. If there is no dot product, there is no corresponding kernelized version of that model, such as linear regression.</p>
+</div>
+</div>
 </div>
 </div>
 
@@ -560,7 +712,7 @@
         },
         kernelOptions: {
             kernelName: "python3",
-            path: "./17-sql"
+            path: "./30-ml-basics"
         },
         predefinedOutput: true
     }
@@ -575,8 +727,8 @@
     
     <div class='prev-next-bottom'>
         
-    <a class='left-prev' id="prev-link" href="../14-python/15-functional-programming.html" title="previous page">Functional Programming</a>
-    <a class='right-next' id="next-link" href="11-database.html" title="next page">Database</a>
+    <a class='left-prev' id="prev-link" href="01-information-theory.html" title="previous page">Information Theory</a>
+    <a class='right-next' id="next-link" href="../31-regression/00-regression.html" title="next page">Regression</a>
 
     </div>
     <footer class="footer mt-5 mt-md-0">

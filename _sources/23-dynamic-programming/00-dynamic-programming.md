@@ -61,7 +61,12 @@ diff with memoization??
 
 for an end case consider all sub-cases
 
-find iterative formula, usually use $\max$ for maximization problem. initialize the base case.
+find iterative formula
+- usually use $\max$ for maximization problem.
+- one-way table, $max(T_1, \ldots, T_k)$.
+- two-way table, if-else
+
+initialize the base case.
 
 design a DP table, initialize the base case.
 

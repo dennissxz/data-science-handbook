@@ -151,7 +151,7 @@ $$
 is called the corrected (centered) sums of squares and products matrix (CSSP). One can view it as a multivariate generalization of the corrected (centered) sum of squares $\sum_i \left( x_i - \bar{x} \right)^2$ in the univariate case.
 
 
-(Covariance-Matrix-of-Two-Vectors)=
+(prob-covariance-matrix-of-two-vectors)=
 ### Covariance Matrix of Two Vectors
 
 The covariance matrix of two random vectors $\boldsymbol{x} _{p\times 1}, \boldsymbol{y} _{q \times 1}$ is defined as
