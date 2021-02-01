@@ -1410,7 +1410,7 @@ In particular,
     F = \frac{(TSS - RSS_{\text{full}})/(p-1)}{RSS_{\text{full}}/(n-p)}  = \frac{R^2 _{\text{full}}/k}{(1 - R^2 _{\text{full}})/(n-p)}
     $$
 
-- When $k=1$, we are testing $\beta_{p-1} = 0$. In this case, the $F$-test is equivalent to the $t$-test. The two test statistics have the relation $F_{1, n-p}=t^2_{n-p}$.
+- When $k=1$, we are testing $\beta_{p-1} = 0$. In this case, the $F$-test is equivalent to the $t$-test. The two test statistics have the relation $F_{1, n-p}=t^2_{n-p}$. Note that the alternative hypothesis in both tests are two-sided, and $t$-test is two-sided while $F$-test is one-sided.
 
 
 :::{admonition,dropdown,seealso} *Derivation*
