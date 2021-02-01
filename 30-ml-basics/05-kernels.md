@@ -54,12 +54,14 @@ All three are PSD kernels, and we can use them to construct PSD kernels.
 
 Kernels are popular. Why? Let's first see two theorems.
 
+
+(ml-mercers-theorem)=
 ### Mercer's Theorem
 
 Theorem (Mercer's, 1909)
 : Under fairly general conditions, for any PSD kernel $k: \mathcal{S} \times \mathcal{S} \rightarrow \mathbb{C}$, there **exists** a map $\boldsymbol{\phi}: \mathcal{S} \rightarrow \mathcal{H}$ such that $k(x, y)=\langle\boldsymbol{\phi}(x), \boldsymbol{\phi}(y)\rangle_{\mathcal{H}}$.
 
-
+(ml-representer-theorem)=
 ### Representer Theorem
 
 Representer Theorem (Simplified)
@@ -114,7 +116,7 @@ Now we can summarize the logic of using kernels.
 2. People find using kernels can improve model performance too, and more importantly kernels are related to feature transformation:
 
    - For every $\boldsymbol{\phi} (\boldsymbol{x}_i)$ in $\mathcal{H}$, there is a corresponding kernel $k(\boldsymbol{x}_i , \boldsymbol{x}_j) = \boldsymbol{\phi}(\boldsymbol{x}_i ) ^\top \boldsymbol{\phi}(\boldsymbol{x}_j )$. In particular, if there is an optimal $\boldsymbol{\phi} ^*$, then there is a kernel $k = \boldsymbol{\phi} ^{* \top} \boldsymbol{\phi} ^*$.
-   - For every PSD kernel $k(\cdot, \cdot)$, there exists a feature transformatin $\boldsymbol{\phi}(\cdot)$ by Mercer's Theorem. Note that $\boldsymbol{\phi}(\cdot)$ can be infinite dimensional for some $k(\cdot, \cdot)$.
+   - For every PSD kernel $k(\cdot, \cdot)$, there exists a feature transformatin $\boldsymbol{\phi}(\cdot)$ by [Mercer's Theorem](ml-mercers-theorem). Note that $\boldsymbol{\phi}(\cdot)$ can be infinite dimensional for some $k(\cdot, \cdot)$.
 
 3. Therefore, instead of handcrafting feature transformations $\boldsymbol{\phi}$, people change to choosing (PSD) kernels to improve model performance.
 
