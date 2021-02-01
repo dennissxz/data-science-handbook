@@ -107,6 +107,7 @@ The last line implies that
 
 - We can convert the problem of minimization over $\boldsymbol{w}$ to that over $\boldsymbol{\alpha}$.
 
+(kernels-logic)=
 ### Logic
 
 Now we can summarize the logic of using kernels.
@@ -117,6 +118,7 @@ Now we can summarize the logic of using kernels.
 
    - For every $\boldsymbol{\phi} (\boldsymbol{x}_i)$ in $\mathcal{H}$, there is a corresponding kernel $k(\boldsymbol{x}_i , \boldsymbol{x}_j) = \boldsymbol{\phi}(\boldsymbol{x}_i ) ^\top \boldsymbol{\phi}(\boldsymbol{x}_j )$. In particular, if there is an optimal $\boldsymbol{\phi} ^*$, then there is a kernel $k = \boldsymbol{\phi} ^{* \top} \boldsymbol{\phi} ^*$.
    - For every PSD kernel $k(\cdot, \cdot)$, there exists a feature transformatin $\boldsymbol{\phi}(\cdot)$ by [Mercer's Theorem](ml-mercers-theorem). Note that $\boldsymbol{\phi}(\cdot)$ can be infinite dimensional for some $k(\cdot, \cdot)$.
+   - A advantage of kernels over $\boldsymbol{\phi}$ is that we do not need to compute the dot product, which can be intractable in high-dimensional spaces.
 
 3. Therefore, instead of handcrafting feature transformations $\boldsymbol{\phi}$, people change to choosing (PSD) kernels to improve model performance.
 
