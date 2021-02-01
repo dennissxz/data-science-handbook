@@ -1,3 +1,0 @@
-# Variational Autoencoders
-
-placeholder
