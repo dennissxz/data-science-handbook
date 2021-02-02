@@ -9,14 +9,14 @@ Most machine learning relies almost entirely on linear predictors, where predict
 Feature transform $\boldsymbol{\phi} : \mathcal{X} \rightarrow \mathbb{R}^{d}$
 
 $$
-f_{y}(\boldsymbol{x} ; \boldsymbol{w}, \boldsymbol{b})=\boldsymbol{w}_{y} \cdot \boldsymbol{\phi} (\boldsymbol{x})+b_{y}
+f_{y}(\boldsymbol{x} ; \boldsymbol{w}, b)=\boldsymbol{w}_{y} \cdot \boldsymbol{\phi} (\boldsymbol{x})+b_{y}
 $$
 
 Shallow learning: hand-crafted, non-hierarchical $\boldsymbol{\phi}$.
 
 Basic example:
 - polynomial regression: $\phi_{j}(x)=x^{j}, j=0, \ldots, d$
-- Kernel SVM: employing kernel $K$ corresponds to (some) feature space such that $k\left(\boldsymbol{x}_{i}, \boldsymbol{x}_{j}\right)=\phi\left(\boldsymbol{x}_{i}\right) \cdot \phi\left(\boldsymbol{x}_{j}\right)$. SVM is just a linear classifier in that space.
+- Kernel SVM: employing kernel $k$ corresponds to (some) feature space such that $k\left(\boldsymbol{x}_{i}, \boldsymbol{x}_{j}\right)=\phi\left(\boldsymbol{x}_{i}\right) \cdot \phi\left(\boldsymbol{x}_{j}\right)$. SVM is just a linear classifier in that space.
 
 ```{margin}
 The hierarchy structure is the reason why it is called "deep".
@@ -176,7 +176,7 @@ h(a)=\frac{1}{1+\exp (a)}
 $$
 
 :::{figure} nn-sigmoid-plot
-<img src="../imgs/nn-sigmoid-plot.png" width = "50%" alt=""/>
+<img src="../imgs/nn-sigmoid-plot.png" width = "30%" alt=""/>
 
 Plot of sigmoid function
 :::
@@ -188,7 +188,7 @@ h(a)=\tanh (a)
 $$
 
 :::{figure} nn-tanh-plot
-<img src="../imgs/nn-relu-plot.png" width = "50%" alt=""/>
+<img src="../imgs/nn-relu-plot.png" width = "30%" alt=""/>
 
 Plot of tanh function
 :::
@@ -214,7 +214,7 @@ h(a)=\max (0, a)
 $$
 
 :::{figure} nn-relu-plot
-<img src="../imgs/nn-relu-plot.png" width = "50%" alt=""/>
+<img src="../imgs/nn-relu-plot.png" width = "30%" alt=""/>
 
 Plot of ReLU function
 :::
