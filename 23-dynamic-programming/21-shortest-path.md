@@ -1,34 +1,101 @@
 # Shortest Path
 
-
 ## Problem
 
+```{margin}
+If the graph is not complete, we can assign arbitrary large edge length to the non-existing edge to make the graph complete.
+```
+
 Input
-: Connected graph with edge length $\ell(e)$.
+: - A directed complete graph with non-negative edge length $\ell(e)$.
+  - A source vertex $s$.
 
 
 Goal
-: Find the shortest path
-  $$
-  \ell(p) = \sum _{e \in E(P)} \ell(e)
-  $$
+: Find the shortest path $P$ between $s$ and all other vertices
 
 
-# Dijkstra's Algorithm
+## Dijkstra's Algorithm
 
-If all edge length are positive.
+Dijkstra's algorithm is a greedy algorithm, which maintains a set of vertices $S$ and update it iteratively. At start, $S={s}$. If we found a shortest path between $s$ to a vertex $u$, then $u$ is added to $S$. If $S=V$, then the algorithm terminates.
 
-Maintain a set of vertices $S$.
+Definition (Shortest path from $s$ to $u$ w.r.t $S$)
+: The shortest path from $s$ to $u$ w.r.t. $S$ is a shortest path such that all vertices along the it $(s,u)$ are in $S$. The distance is denoted as $\operatorname{dist}(u)$.
 
+Let $\operatorname{short}(u)$ be the unconstrained shortest path from $s$ to $u$. Then we have
 
 $$
-\forall v \in S, \ d(v) = dist(s,v) \\
-d(v) = d(u) = \ell(u,v)
+\operatorname{dist}(u) \ge \operatorname{short}(u)
 $$
+
+The algorithm add $u$ to $S$ if the equality is achieved.
+
+Implementation:
 
 ---
+**Dijkstra's algorithm**
 
-What if there are negative edge weights?
+---
+- Initialize
+
+  - $S = \left\{ s \right\}$
+  - $\operatorname{dist}(s)=0$
+  - For all other nodes $u \in V \backslash \left\{ s \right\}$,
+    - if $u$ is an neighbor of $s$, set $\operatorname{dist}(u) = \ell(s,u)$
+    - else set $\operatorname{dist}(u) = \infty$
+
+```{margin}
+If we only want to find the shortest path between $s$ and a specific target vertex $t$, then the loop condition can be changed to WHILE $t \notin S$.
+```
+
+- While $S \ne V$,
+
+  - Find $u^* = \arg\min _{u \notin S} d(u)$
+  - Add $u^*$ to $S$
+  - For $v \notin S$,
+    - If $\operatorname{dist}(u^*) + \ell(u^*, v) < \operatorname{dist}(v)$, then update $\operatorname{dist}(v) \leftarrow \operatorname{dist}(u^*) + \ell(u^*, v)$
+---
+
+### Correctness
+
+Claim: For every $u\in S$, we have $\operatorname{dist}(u) = \operatorname{short}(u)$
+
+***Proof by induction***
+
+- Base: at initialization, $S = \left\{ s \right\}, \operatorname{dist}(s) = \operatorname{short}(s) = 0$
+
+- Step: if the claim holds before adding $u^*$, then it also holds after adding $u^*$
+
+For a newly added note $u^*$, suppose there is another path $Q_{s,u^*}$, from $s$ to $u^*$ through $y\notin S$. Since the algorithm select by $u^* = \arg\min _{u \notin S} d(u)$, we have
+
+$$
+\operatorname{dist}(u^*) \le \operatorname{dist}(y)
+$$
+
+Let $d(y,u^*)$ be the path length from $y$ to $u^*$ along $Q_{s,u^*}$, then by step assumption,
+
+$$
+\operatorname{dist}(y) + d(y,v) \le \ell(Q_{s,u^*})
+$$
+
+Therefore,
+
+$$
+\operatorname{dist}(u^*) \le \ell(Q_{s,u^*})
+$$
+
+Since $Q_{s,u^*}$ is arbitrary, we have $\operatorname{dist}(u^*) = \operatorname{short}(u^*)$
+
+$\square$
+
+### Complexity
+
+There are $n-1$ iterations. In every iteration, the $\arg\min$ step takes $O(n)$, and the update takes $O(n)$.
+
+So total $O(n^3)$.
+
+
+### Negative Edge
 
 Definition (Negative cycle)
 : We call a cycle negative if the sum of the weights of the edges in a cycle is negative.
