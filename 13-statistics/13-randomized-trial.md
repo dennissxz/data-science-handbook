@@ -189,8 +189,6 @@ Randomized controlled trial tend to be ery expensive compared with observational
 
 #### External validity
 
-An estimate is internally valid if it is a good (unbiased) estimate for the population and setting of the trial.
-
 An estimate is externally valid if it is a good (unbiased) estimate for populations and settings outside those of the trial.
 
 All studies (RCT or not) have issues of external validity.

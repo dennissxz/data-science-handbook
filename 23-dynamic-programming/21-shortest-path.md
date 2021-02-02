@@ -108,7 +108,7 @@ $$
 
 Then the path found by Dijkstra's algorithm goes around the negative cycle for infinite times.
 
-# DP-based Algorithm (Bellman-Fosd)
+## DP-based Algorithm (Bellman-Fosd)
 
 Definition (Simple Path)
 : A path is a simple path if each vertex appears only once, i.e., no cycles.
@@ -126,9 +126,9 @@ $$
 
 Moreover, such path can only contains at most $\left\vert V \right\vert - 1$ vertices.
 
-## Algorithm
+### Algorithm
 
-### DP-table
+#### DP-table
 
 For every $v \in V(G)$ and $0 \le i \le n$, $T_{[i,v]}$ will store the length of shortest $s-v$ path containing at most m$i$ edges.
 
@@ -157,13 +157,13 @@ $$
 Step
 :
 
-## Run Time
+### Run Time
 
 $O(n^2)$ entries in the DP table, $O(n)$ table to compute each entry.
 
 Total $O(n^2)$.
 
-## Correctness
+### Correctness
 
 Claim
 : For all $i, v$, entry $T_{i,v}$ contains the length of shortest $s-v$ path with less than $i$ vertices.

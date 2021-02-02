@@ -1,4 +1,4 @@
-# Statistical Sampling
+# Sample Survey
 
 *Explain commonly used sampling methods.*
 
