@@ -20,36 +20,36 @@ Structure of Autoencoders
 
 The objective is minimizing the difference between the input $\boldsymbol{x}$ and the output $(\boldsymbol{\psi} \circ \boldsymbol{\phi} )\boldsymbol{x}$,
 
-\[
+$$
 \begin{array}{l}
 \text{encoder}\qquad \boldsymbol{\psi} :\mathcal{X}\rightarrow\mathcal{Z}\\
 \text{decoder}\qquad \boldsymbol{\psi} :\mathcal{Z}\rightarrow\mathcal{X}\\
 \qquad\qquad \boldsymbol{\phi,\psi} =\underset{\boldsymbol{\phi,\psi} }{\arg\min}\|\boldsymbol{x} -(\boldsymbol{\psi} \circ \boldsymbol{\phi} )\boldsymbol{x} \|^{2}
 \end{array}
-\]
+$$
 
 
 **Example**
 
 In the simplest case, given one hidden layer, the encoder stage of an autoencoder takes the input $\boldsymbol{x}\in\mathbb{R}^{d}=\mathcal{X}$ and maps it to code/representation/latent variable $\boldsymbol{z}\in\mathbb{R}^{k}=\mathcal{Z}$.
 
-\[
+$$
 \boldsymbol{z}=\sigma(\boldsymbol{W}\boldsymbol{x}+\boldsymbol{b})
-\]
+$$
 
 Like other neural networks, the weights $\boldsymbol{W}$ and biases $\boldsymbol{b}$ are initialized randomly and updated iteratively during training through backpaopagation.
 
 The decoder stage of the antoencoder maps $\boldsymbol{h}$ to the reconstruction
 $\boldsymbol{x}'$ of the same shape as $\boldsymbol{x}$.
-\[
+$$
 \boldsymbol{x}^{\prime}=\sigma^{\prime}\left(\boldsymbol{W}^{\prime}\boldsymbol{z}+\boldsymbol{b}^{\prime}\right)
-\]
+$$
 
 Autoencoders are trained to minimize reconstruction loss
 
-\[
+$$
 \mathcal{L}\left(\boldsymbol{x},\boldsymbol{x}^{\prime}\right)=\left\Vert \boldsymbol{x}-\boldsymbol{x}^{\prime}\right\Vert ^{2}=\left\Vert \boldsymbol{x}-\sigma^{\prime}\left(\boldsymbol{W}^{\prime}(\sigma(\boldsymbol{W}\boldsymbol{x}+\boldsymbol{b}))+\boldsymbol{b}^{\prime}\right)\right\Vert ^{2}
-\]
+$$
 
 
 :::{admonition,note} Number of neurons in the code layer
@@ -91,7 +91,9 @@ Other distributions produce different losses.
 
 The most traditional application was dimensionality reduction or feature learning. Several variants exist to the basic model, with the aim of forcing the learned representations of the input to assume useful properties. Examples are the
 
-- Regularized autoencoders, where various techniques are applied to prevent autoencoders from learning the identity function and to improve their ability to capture important information and learn richer representations. They are proven effective in learning representations for subsequent classification tasks. Some examples include
+- Regularized autoencoders
+
+    Various techniques are applied to prevent autoencoders from learning the identity function and to improve their ability to capture important information and learn richer representations. They are proven effective in learning representations for subsequent classification tasks. Some examples include
 
   - sparse encoders
 
@@ -99,9 +101,11 @@ The most traditional application was dimensionality reduction or feature learnin
 
   - contractive autoencoders
 
-- Variational autoencoders, with their recent applications as generative models.
+- Variational autoencoders
 
-Here we introduce regularized autoencoders. Variational autoencoders are introduced in a separated [section](37-neural-networks/13-variational-autoencoders).
+    Recent applications as generative models.
+
+Here we introduce regularized autoencoders. Variational autoencoders are introduced in a separated [section](../37-neural-networks/13-variational-autoencoders).
 
 ### Sparse Autoencoders
 
@@ -111,16 +115,15 @@ for training.
 The objective include a sparsity penalty term $R(\boldsymbol{z})$
 on the code layer $\boldsymbol{z}$.
 
-\[
+$$
 \mathcal{L}\left(\boldsymbol{x},\boldsymbol{x}^{\prime}\right)+R(\boldsymbol{z})
-\]
+$$
 
 For instance, we can use L1 or L2 regularization,
 
-\[
+$$
 \mathcal{L}\left(\boldsymbol{x},\boldsymbol{x}^{\prime}\right)+\lambda\left\Vert \boldsymbol{z}\right\Vert
-\]
-
+$$
 
 ### Denoising Autoencoders
 
@@ -143,9 +146,9 @@ $$
 
 The objective function is still to minimize the reconstruction error
 
-\[
+$$
 \mathcal{L}\left(\boldsymbol{x},\boldsymbol{x}^{\prime}\right)
-\]
+$$
 
 The corruption process $q_{D}(\tilde{\boldsymbol{x}}\mid\boldsymbol{x})$ might be
 
@@ -164,9 +167,9 @@ Contractive autoencoder (CAE) adds an explicit regularizer in their objective fu
 
 This regularizer corresponds to the Frobenius norm of the Jacobian matrix of the encoder activations with respect to the input. Since the penalty is applied to training examples only, this term forces the model to learn useful information about the training distribution. Theobjective function has the following form:
 
-\[
+$$
 \mathcal{L}\left(\boldsymbol{x},\boldsymbol{x}^{\prime}\right)+\lambda\left\Vert \nabla_{\boldsymbol{x}}\boldsymbol{z}\right\Vert ^{2}
-\]
+$$
 
 The name contractive comes from the fact that CAE is encouraged to map a neighborhood of input points to a smaller neighborhood of output points.
 
