@@ -127,6 +127,10 @@ One can check if the residual capacity assigned to a pair of forward edge and ba
 
 Ford-Fulkerson algorithm is an iterative algorithm. In each iteration, we compute the residual floe network of the current graph and use that to improve the original graph. Note that flow $f()$ only exists in the original graph.
 
+---
+**Ford-Fulkerson's algorithm**
+
+---
 - Start:
 
     - For all edge $e \in E(G)$, initialize zero flow $f(e)=0$.
@@ -154,6 +158,8 @@ An augmenting path in residual graph can be found using DFS or BFS.
         $$f(v,u) \leftarrow f(v,u) - \Delta$$
 
   - Re-compute $G_f$.
+---
+
 
 ## Correctness
 
@@ -279,9 +285,7 @@ $$\begin{aligned}
 &= f^{\text{out}}(A)- f^{\text{in}}(A)  \\\\
 \end{aligned}$$
 
-$$
 
-$$
 
 
 Claim 3:
