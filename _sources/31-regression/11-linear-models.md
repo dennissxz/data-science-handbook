@@ -18,10 +18,6 @@ In this section we introduce linear models from a statistics’ perspective. The
 
 <!---
 My handwritten notes for the graduate level course STAT 343 offered by UChicago statistics department can be found [here](../imgs/lm-notes-applied-stat.pdf).
-
-Ref:
-
-http://www3.grips.ac.jp/~yamanota/Lecture%20Note%204%20to%207%20OLS.pdf
 -->
 
 Personally, I involved in four courses that introduced linear models, i.e. at undergrad/grad level offered by stat/social science department. The style of the two courses offered by the stat departments were quite alike while the graduate level one covered more topics. In both undergrad/grad level courses offered by the social science departments, sometimes I got confused by the course materials that were contradictory to my statistics training , but the instructors had no clear response or even no response at all...
@@ -467,7 +463,7 @@ $$\begin{align}
 &= \frac{\operatorname{Var}\left( \sum\left(x_{i}-\bar{x}\right) u_{i} \right)}{\left[ \sum \left(x_{i}-\bar{x}\right)^{2} \right]^2}\\
 &= \frac{\sum\left(x_{i}-\bar{x}\right)^2 \operatorname{Var}\left( u_{i} \right)}{\left[ \sum \left(x_{i}-\bar{x}\right)^{2} \right]^2}\\
 &= \sigma^2 \frac{\sum\left(x_{i}-\bar{x}\right)^2 }{\left[ \sum \left(x_{i}-\bar{x}\right)^{2} \right]^2}\\
-&= \frac{\sigma^2}{\sum_{i=1}^n \left(x_{i}-\bar{x}\right)^{2}}\\
+#### &= \frac{\sigma^2}{\sum_{i=1}^n \left(x_{i}-\bar{x}\right)^{2}}\\
 \end{align}$$
 
 We conclude that
@@ -574,6 +570,10 @@ The assumption may fail when the response variable $y$ is
 - right skewed, e.g. wages, savings
 - non-negative, e.g. counts, arrests
 
+```{margin}
+As discussed at the beginning, the data matrix $\boldsymbol{X}$ is treated as fixed by statisticians while as random by econometricians. As a result, the derivation of the asymptotic distribution differs in the two domains.
+```
+
 When the normality assumption of the error term fails, the OLS estimator is **asymptotically** normal,
 
 $$
@@ -583,39 +583,27 @@ $$
 Therefore, in a large sample, even if the normality assumption fails, we can still do hypothesis testing which assumes normality.
 
 
-:::{admonition,dropdown,seealso} *Derivation*
+:::{admonition,dropdown,seealso} *Sketch of Derivation*
 
-Since
-
-$$
-\hat{\boldsymbol{\beta}}  - \boldsymbol{\beta} = \left( \frac{1}{n} \boldsymbol{X} ^\top \boldsymbol{X}   \right) ^{-1} \left( \frac{1}{n} \boldsymbol{X} ^\top \boldsymbol{\varepsilon}  \right)
-$$
-
-Let $\boldsymbol{A} =  \frac{1}{n} \boldsymbol{X} ^\top \boldsymbol{X}$. The limit variance is
-
-
-$$\begin{aligned}
-\operatorname{plim}\left[ \sqrt{n}(\hat{\boldsymbol{\beta}} - \boldsymbol{\beta} ) \cdot \sqrt{n}(\hat{\boldsymbol{\beta}} - \boldsymbol{\beta} )^\top \right]
-&= \operatorname{plim} \left[ \boldsymbol{A} ^{-1} \left( \frac{1}{n} \boldsymbol{X} ^\top \boldsymbol{\varepsilon} \boldsymbol{\varepsilon} ^\top \boldsymbol{X}  \right) \boldsymbol{A} ^{-1}   \right] \\
-&=  \boldsymbol{A} ^{-1} \left( \frac{1}{n} \boldsymbol{X} ^\top \operatorname{plim} \left( \boldsymbol{\varepsilon} \boldsymbol{\varepsilon} ^\top \right)  \boldsymbol{X}  \right) \boldsymbol{A} ^{-1} \\
-&=  \boldsymbol{A} ^{-1} \left( \frac{\sigma^2 }{n} \boldsymbol{X} ^\top    \boldsymbol{X}  \right)    \boldsymbol{A} ^{-1} \\
-&=  \sigma^2  \boldsymbol{A} ^{-1}\boldsymbol{A} \boldsymbol{A} ^{-1} \\
-&= \sigma^2 \boldsymbol{A} ^{-1}\\
-\end{aligned}$$
-
-where we used the fact that $\operatorname{plim} \left( \boldsymbol{\varepsilon} \boldsymbol{\varepsilon} ^\top \right) = \sigma^2 \boldsymbol{I} _n$.
-
-Moreover, by the consistence of $\hat{\boldsymbol{\beta}}$ we have
+Note that
 
 $$
-\operatorname{plim}(\hat{\boldsymbol{\beta}} -\boldsymbol{\beta} )  = 0
+\sqrt{n}\left( \hat{\boldsymbol{\beta}}  - \boldsymbol{\beta}  \right)= \left( \frac{1}{n} \boldsymbol{X} ^\top \boldsymbol{X}   \right) ^{-1} \left( \frac{1}{\sqrt{n}} \boldsymbol{X} ^\top \boldsymbol{\varepsilon}  \right)
 $$
 
-Therefore, the limit distribution of $\hat{\boldsymbol{\beta}}$ is
+By CLT, the second term
+
 
 $$
-\sqrt{n}(\hat{\boldsymbol{\beta}} -\boldsymbol{\beta} ) \overset{\mathcal{D}}{\rightarrow} N(\boldsymbol{0} , \sigma^2 \boldsymbol{A} ^{-1}  )
+\frac{1}{\sqrt{n}} \boldsymbol{X} ^\top \boldsymbol{\varepsilon}  \overset{\mathcal{D}}{\longrightarrow} N \left( \boldsymbol{0}, \frac{\sigma^2 }{n} \boldsymbol{X} ^\top \boldsymbol{X}  \right)
 $$
+
+By Slusky's Theorem, the product
+
+$$
+\left( \frac{1}{n} \boldsymbol{X} ^\top \boldsymbol{X}   \right) ^{-1} \left( \frac{1}{\sqrt{n}} \boldsymbol{X} ^\top \boldsymbol{\varepsilon}  \right) \overset{\mathcal{D}}{\longrightarrow} N \left( \boldsymbol{0}, \sigma^2 \left( \frac{1}{n}  \boldsymbol{X} ^\top \boldsymbol{X}  \right) ^{-1}  \right)
+$$
+
 
 or equivalently,
 
@@ -623,8 +611,6 @@ $$
 \hat{\boldsymbol{\beta}} \overset{\mathcal{D}}{\rightarrow} N(\boldsymbol{\beta},\sigma^2 (\boldsymbol{X} ^\top \boldsymbol{X} )^{-1} )
 $$
 :::
-
-
 
 ### Residuals and Error Variance
 
@@ -1365,7 +1351,8 @@ $$
 $$
 
 ```
-To compare two nested models
+
+$F$-test can be used to compare two nested models
 
 
 $$\begin{aligned}
@@ -1378,7 +1365,7 @@ $$\begin{aligned}
 Given it's form, we can interpret the numerator as an average reduction in $RSS$ by adding the $k$ explanatory variables. Since the denominator is fixed, if average reduction is large enough, then we reject the null hypothesis that their coefficients are 0.
 ```
 
-We can use the $F$-test. The test statistic is
+The test statistic is
 
 $$
 \frac{(RSS_{\text{reduced} } - RSS_{\text{full} })/k}{RSS_{\text{full}}/(n-p)} \sim F_{k, n-p}
@@ -1661,9 +1648,8 @@ As long as the variables in the design matrix are not uncorrelated, then multico
 #### Diagnosis
 
 Some common symptoms include
-- $F$-test is significant, $R^2$ is good, but $t$-test is not significant.
-- Large magnitude of $\hat{\beta}_j$
 - Large standard error $\operatorname{se}(\beta_j)$
+- Overall $F$-test is significant, $R^2$ is good, but individual $t$-tests are not significant due to large standard errors.
 
 We can measure the extent of multicollinearity by **variance inflation factor** (VIF) for each explanatory variable.
 

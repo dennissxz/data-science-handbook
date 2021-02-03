@@ -57,6 +57,7 @@
     <script async="async" src="../_static/sphinx-thebe.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Autoencoders" href="11-autoencoders.html" />
     <link rel="prev" title="SNE and \(t\)-SNE" href="../33-dimensionality-reduction/31-t-SNE.html" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -182,8 +183,8 @@
   </a>
   <ul class="collapse-ul">
    <li class="toctree-l2">
-    <a class="reference internal" href="../13-statistics/11-stat-sampling.html">
-     Statistical Sampling
+    <a class="reference internal" href="../13-statistics/11-sample-survey.html">
+     Sample Survey
     </a>
    </li>
    <li class="toctree-l2">
@@ -197,8 +198,23 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/25-two-sample-tests.html">
+     Two Sample Mean Tests
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="../13-statistics/33-confusion-matrix.html">
      Confusion Matrix
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/41-maximum-likelihood-estimation.html">
+     Maximum Likelihood Estimator
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/43-estimators-evaluation.html">
+     Estimators Evaluation
     </a>
    </li>
   </ul>
@@ -305,16 +321,6 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../21-greedy-algorithms/13-denominations.html">
-     Denominations
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../21-greedy-algorithms/21-minimum-spanning-tree.html">
-     Minimum Spanning Tree
-    </a>
-   </li>
-   <li class="toctree-l2">
     <a class="reference internal" href="../21-greedy-algorithms/31-huffman-coding.html">
      Huffman Coding
     </a>
@@ -336,6 +342,30 @@
    <li class="toctree-l2">
     <a class="reference internal" href="../23-dynamic-programming/13-longest-common-subsequence.html">
      Longest Common Subsequence
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../25-graph-related/00-graph-related.html">
+   Graph Related
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/13-shortest-path.html">
+     Shortest Path
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/21-minimum-spanning-tree.html">
+     Minimum Spanning Tree
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/31-maximum-flow.html">
+     Maximum Flow
     </a>
    </li>
   </ul>
@@ -444,10 +474,24 @@
   <i class="fas fa-chevron-down">
   </i>
  </li>
- <li class="toctree-l1 current active">
+ <li class="toctree-l1 current active collapsible-parent">
   <a class="current reference internal" href="#">
    Neural Networks
   </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="11-autoencoders.html">
+     Autoencoders
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="13-variational-autoencoders.html">
+     Variational Autoencoders
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
  </li>
 </ul>
 
@@ -646,13 +690,13 @@
 <p>Feature transform <span class="math notranslate nohighlight">\(\boldsymbol{\phi} : \mathcal{X} \rightarrow \mathbb{R}^{d}\)</span></p>
 <div class="math notranslate nohighlight">
 \[
-f_{y}(\boldsymbol{x} ; \boldsymbol{w}, \boldsymbol{b})=\boldsymbol{w}_{y} \cdot \boldsymbol{\phi} (\boldsymbol{x})+b_{y}
+f_{y}(\boldsymbol{x} ; \boldsymbol{w}, b)=\boldsymbol{w}_{y} \cdot \boldsymbol{\phi} (\boldsymbol{x})+b_{y}
 \]</div>
 <p>Shallow learning: hand-crafted, non-hierarchical <span class="math notranslate nohighlight">\(\boldsymbol{\phi}\)</span>.</p>
 <p>Basic example:</p>
 <ul class="simple">
 <li><p>polynomial regression: <span class="math notranslate nohighlight">\(\phi_{j}(x)=x^{j}, j=0, \ldots, d\)</span></p></li>
-<li><p>Kernel SVM: employing kernel <span class="math notranslate nohighlight">\(K\)</span> corresponds to (some) feature space such that <span class="math notranslate nohighlight">\(k\left(\boldsymbol{x}_{i}, \boldsymbol{x}_{j}\right)=\phi\left(\boldsymbol{x}_{i}\right) \cdot \phi\left(\boldsymbol{x}_{j}\right)\)</span>. SVM is just a linear classifier in that space.</p></li>
+<li><p>Kernel SVM: employing kernel <span class="math notranslate nohighlight">\(k\)</span> corresponds to (some) feature space such that <span class="math notranslate nohighlight">\(k\left(\boldsymbol{x}_{i}, \boldsymbol{x}_{j}\right)=\phi\left(\boldsymbol{x}_{i}\right) \cdot \phi\left(\boldsymbol{x}_{j}\right)\)</span>. SVM is just a linear classifier in that space.</p></li>
 </ul>
 <div class="margin sidebar">
 <p class="sidebar-title"></p>
@@ -797,7 +841,7 @@ f_{y}(\boldsymbol{x})=F_{L}\left(F_{L-1}\left(F_{L-2}\left(\cdots F_{1}(\boldsym
 h(a)=\frac{1}{1+\exp (a)}
 \]</div>
 <div class="figure align-default" id="nn-sigmoid-plot">
-<a class="reference internal image-reference" href="../_images/nn-sigmoid-plot.png"><img alt="" src="../_images/nn-sigmoid-plot.png" style="width: 50%;" /></a>
+<a class="reference internal image-reference" href="../_images/nn-sigmoid-plot.png"><img alt="" src="../_images/nn-sigmoid-plot.png" style="width: 30%;" /></a>
 <p class="caption"><span class="caption-number">Fig. 26 </span><span class="caption-text">Plot of sigmoid function</span><a class="headerlink" href="#nn-sigmoid-plot" title="Permalink to this image">¶</a></p>
 </div>
 <p>The tanh function is</p>
@@ -806,7 +850,7 @@ h(a)=\frac{1}{1+\exp (a)}
 h(a)=\tanh (a)
 \]</div>
 <div class="figure align-default" id="nn-tanh-plot">
-<a class="reference internal image-reference" href="../_images/nn-relu-plot.png"><img alt="" src="../_images/nn-relu-plot.png" style="width: 50%;" /></a>
+<a class="reference internal image-reference" href="../_images/nn-relu-plot.png"><img alt="" src="../_images/nn-relu-plot.png" style="width: 30%;" /></a>
 <p class="caption"><span class="caption-number">Fig. 27 </span><span class="caption-text">Plot of tanh function</span><a class="headerlink" href="#nn-tanh-plot" title="Permalink to this image">¶</a></p>
 </div>
 <p>The two functions are</p>
@@ -829,7 +873,7 @@ h(a)=\tanh (a)
 h(a)=\max (0, a)
 \]</div>
 <div class="figure align-default" id="nn-relu-plot">
-<a class="reference internal image-reference" href="../_images/nn-relu-plot.png"><img alt="" src="../_images/nn-relu-plot.png" style="width: 50%;" /></a>
+<a class="reference internal image-reference" href="../_images/nn-relu-plot.png"><img alt="" src="../_images/nn-relu-plot.png" style="width: 30%;" /></a>
 <p class="caption"><span class="caption-number">Fig. 28 </span><span class="caption-text">Plot of ReLU function</span><a class="headerlink" href="#nn-relu-plot" title="Permalink to this image">¶</a></p>
 </div>
 </div>
@@ -885,6 +929,8 @@ h(a)=\max (0, a)
 </li>
 <li><p>Self-supervised representation learning</p></li>
 </ul>
+<div class="toctree-wrapper compound">
+</div>
 </div>
 </div>
 
@@ -917,6 +963,7 @@ h(a)=\max (0, a)
     <div class='prev-next-bottom'>
         
     <a class='left-prev' id="prev-link" href="../33-dimensionality-reduction/31-t-SNE.html" title="previous page">SNE and <span class="math notranslate nohighlight">\(t\)</span>-SNE</a>
+    <a class='right-next' id="next-link" href="11-autoencoders.html" title="next page">Autoencoders</a>
 
     </div>
     <footer class="footer mt-5 mt-md-0">

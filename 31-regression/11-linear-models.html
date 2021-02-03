@@ -183,8 +183,8 @@
   </a>
   <ul class="collapse-ul">
    <li class="toctree-l2">
-    <a class="reference internal" href="../13-statistics/11-stat-sampling.html">
-     Statistical Sampling
+    <a class="reference internal" href="../13-statistics/11-sample-survey.html">
+     Sample Survey
     </a>
    </li>
    <li class="toctree-l2">
@@ -198,8 +198,23 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/25-two-sample-tests.html">
+     Two Sample Mean Tests
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="../13-statistics/33-confusion-matrix.html">
      Confusion Matrix
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/41-maximum-likelihood-estimation.html">
+     Maximum Likelihood Estimator
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/43-estimators-evaluation.html">
+     Estimators Evaluation
     </a>
    </li>
   </ul>
@@ -306,16 +321,6 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../21-greedy-algorithms/13-denominations.html">
-     Denominations
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../21-greedy-algorithms/21-minimum-spanning-tree.html">
-     Minimum Spanning Tree
-    </a>
-   </li>
-   <li class="toctree-l2">
     <a class="reference internal" href="../21-greedy-algorithms/31-huffman-coding.html">
      Huffman Coding
     </a>
@@ -337,6 +342,30 @@
    <li class="toctree-l2">
     <a class="reference internal" href="../23-dynamic-programming/13-longest-common-subsequence.html">
      Longest Common Subsequence
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../25-graph-related/00-graph-related.html">
+   Graph Related
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/13-shortest-path.html">
+     Shortest Path
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/21-minimum-spanning-tree.html">
+     Minimum Spanning Tree
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/31-maximum-flow.html">
+     Maximum Flow
     </a>
    </li>
   </ul>
@@ -445,10 +474,24 @@
   <i class="fas fa-chevron-down">
   </i>
  </li>
- <li class="toctree-l1">
+ <li class="toctree-l1 collapsible-parent">
   <a class="reference internal" href="../37-neural-networks/00-neural-networks.html">
    Neural Networks
   </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/11-autoencoders.html">
+     Autoencoders
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/13-variational-autoencoders.html">
+     Variational Autoencoders
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
  </li>
 </ul>
 
@@ -852,10 +895,6 @@
 <p>In this section we introduce linear models from a statistics’ perspective. The introduction from econometrics’ perspective or social science’s perspective may be different. In short, the statistics’ perspective focuses on general multivariate cases and heavily rely on linear algebra for derivation, while the econometrics’ or the social science’s perspective prefers to introduce models in univariate cases by basic arithmetics (whose form can be complicated without linear algebra notations) and extend the intuitions and conclusions into multivariate cases.</p>
 <!---
 My handwritten notes for the graduate level course STAT 343 offered by UChicago statistics department can be found [here](../imgs/lm-notes-applied-stat.pdf).
-
-Ref:
-
-http://www3.grips.ac.jp/~yamanota/Lecture%20Note%204%20to%207%20OLS.pdf
 -->
 <p>Personally, I involved in four courses that introduced linear models, i.e. at undergrad/grad level offered by stat/social science department. The style of the two courses offered by the stat departments were quite alike while the graduate level one covered more topics. In both undergrad/grad level courses offered by the social science departments, sometimes I got confused by the course materials that were contradictory to my statistics training , but the instructors had no clear response or even no response at all…</p>
 <p>In sum, to fully understand the most fundamental and widely used statistical model, I highly suggest to take a linear algebra course first and take the regression course offered by math/stat department.</p>
@@ -1225,7 +1264,7 @@ Y_i = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \varepsilon_i
 &amp;= \frac{\operatorname{Var}\left( \sum\left(x_{i}-\bar{x}\right) u_{i} \right)}{\left[ \sum \left(x_{i}-\bar{x}\right)^{2} \right]^2}\\
 &amp;= \frac{\sum\left(x_{i}-\bar{x}\right)^2 \operatorname{Var}\left( u_{i} \right)}{\left[ \sum \left(x_{i}-\bar{x}\right)^{2} \right]^2}\\
 &amp;= \sigma^2 \frac{\sum\left(x_{i}-\bar{x}\right)^2 }{\left[ \sum \left(x_{i}-\bar{x}\right)^{2} \right]^2}\\
-&amp;= \frac{\sigma^2}{\sum_{i=1}^n \left(x_{i}-\bar{x}\right)^{2}}\\
+#### &amp;= \frac{\sigma^2}{\sum_{i=1}^n \left(x_{i}-\bar{x}\right)^{2}}\\
 \end{align}\end{split}\]</div>
 <p>We conclude that</p>
 <ul class="simple">
@@ -1318,6 +1357,10 @@ Y_i = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \varepsilon_i
 <li><p>right skewed, e.g. wages, savings</p></li>
 <li><p>non-negative, e.g. counts, arrests</p></li>
 </ul>
+<div class="margin sidebar">
+<p class="sidebar-title"></p>
+<p>As discussed at the beginning, the data matrix <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span> is treated as fixed by statisticians while as random by econometricians. As a result, the derivation of the asymptotic distribution differs in the two domains.</p>
+</div>
 <p>When the normality assumption of the error term fails, the OLS estimator is <strong>asymptotically</strong> normal,</p>
 <div class="math notranslate nohighlight">
 \[
@@ -1325,32 +1368,21 @@ Y_i = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \varepsilon_i
 \]</div>
 <p>Therefore, in a large sample, even if the normality assumption fails, we can still do hypothesis testing which assumes normality.</p>
 <div class="dropdown seealso admonition">
-<p class="admonition-title"> <em>Derivation</em></p>
-<p>Since</p>
+<p class="admonition-title"> <em>Sketch of Derivation</em></p>
+<p>Note that</p>
 <div class="math notranslate nohighlight">
 \[
-\hat{\boldsymbol{\beta}}  - \boldsymbol{\beta} = \left( \frac{1}{n} \boldsymbol{X} ^\top \boldsymbol{X}   \right) ^{-1} \left( \frac{1}{n} \boldsymbol{X} ^\top \boldsymbol{\varepsilon}  \right)
+\sqrt{n}\left( \hat{\boldsymbol{\beta}}  - \boldsymbol{\beta}  \right)= \left( \frac{1}{n} \boldsymbol{X} ^\top \boldsymbol{X}   \right) ^{-1} \left( \frac{1}{\sqrt{n}} \boldsymbol{X} ^\top \boldsymbol{\varepsilon}  \right)
 \]</div>
-<p>Let <span class="math notranslate nohighlight">\(\boldsymbol{A} =  \frac{1}{n} \boldsymbol{X} ^\top \boldsymbol{X}\)</span>. The limit variance is</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{aligned}
-\operatorname{plim}\left[ \sqrt{n}(\hat{\boldsymbol{\beta}} - \boldsymbol{\beta} ) \cdot \sqrt{n}(\hat{\boldsymbol{\beta}} - \boldsymbol{\beta} )^\top \right]
-&amp;= \operatorname{plim} \left[ \boldsymbol{A} ^{-1} \left( \frac{1}{n} \boldsymbol{X} ^\top \boldsymbol{\varepsilon} \boldsymbol{\varepsilon} ^\top \boldsymbol{X}  \right) \boldsymbol{A} ^{-1}   \right] \\
-&amp;=  \boldsymbol{A} ^{-1} \left( \frac{1}{n} \boldsymbol{X} ^\top \operatorname{plim} \left( \boldsymbol{\varepsilon} \boldsymbol{\varepsilon} ^\top \right)  \boldsymbol{X}  \right) \boldsymbol{A} ^{-1} \\
-&amp;=  \boldsymbol{A} ^{-1} \left( \frac{\sigma^2 }{n} \boldsymbol{X} ^\top    \boldsymbol{X}  \right)    \boldsymbol{A} ^{-1} \\
-&amp;=  \sigma^2  \boldsymbol{A} ^{-1}\boldsymbol{A} \boldsymbol{A} ^{-1} \\
-&amp;= \sigma^2 \boldsymbol{A} ^{-1}\\
-\end{aligned}\end{split}\]</div>
-<p>where we used the fact that <span class="math notranslate nohighlight">\(\operatorname{plim} \left( \boldsymbol{\varepsilon} \boldsymbol{\varepsilon} ^\top \right) = \sigma^2 \boldsymbol{I} _n\)</span>.</p>
-<p>Moreover, by the consistence of <span class="math notranslate nohighlight">\(\hat{\boldsymbol{\beta}}\)</span> we have</p>
+<p>By CLT, the second term</p>
 <div class="math notranslate nohighlight">
 \[
-\operatorname{plim}(\hat{\boldsymbol{\beta}} -\boldsymbol{\beta} )  = 0
+\frac{1}{\sqrt{n}} \boldsymbol{X} ^\top \boldsymbol{\varepsilon}  \overset{\mathcal{D}}{\longrightarrow} N \left( \boldsymbol{0}, \frac{\sigma^2 }{n} \boldsymbol{X} ^\top \boldsymbol{X}  \right)
 \]</div>
-<p>Therefore, the limit distribution of <span class="math notranslate nohighlight">\(\hat{\boldsymbol{\beta}}\)</span> is</p>
+<p>By Slusky’s Theorem, the product</p>
 <div class="math notranslate nohighlight">
 \[
-\sqrt{n}(\hat{\boldsymbol{\beta}} -\boldsymbol{\beta} ) \overset{\mathcal{D}}{\rightarrow} N(\boldsymbol{0} , \sigma^2 \boldsymbol{A} ^{-1}  )
+\left( \frac{1}{n} \boldsymbol{X} ^\top \boldsymbol{X}   \right) ^{-1} \left( \frac{1}{\sqrt{n}} \boldsymbol{X} ^\top \boldsymbol{\varepsilon}  \right) \overset{\mathcal{D}}{\longrightarrow} N \left( \boldsymbol{0}, \sigma^2 \left( \frac{1}{n}  \boldsymbol{X} ^\top \boldsymbol{X}  \right) ^{-1}  \right)
 \]</div>
 <p>or equivalently,</p>
 <div class="math notranslate nohighlight">
@@ -1982,7 +2014,7 @@ y _{new} - \hat{y}_{new}
 \beta_{p-k}=\ldots= \beta_{p-1} =0
 \]</div>
 </div>
-<p>To compare two nested models</p>
+<p><span class="math notranslate nohighlight">\(F\)</span>-test can be used to compare two nested models</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{aligned}
 \text{Full model: } Y &amp;\sim \left\{ X_j, j=1, \ldots, p-1 \right\} \\
@@ -1992,7 +2024,7 @@ y _{new} - \hat{y}_{new}
 <p class="sidebar-title">Interpretation of <span class="math notranslate nohighlight">\(F\)</span>-test</p>
 <p>Given it’s form, we can interpret the numerator as an average reduction in <span class="math notranslate nohighlight">\(RSS\)</span> by adding the <span class="math notranslate nohighlight">\(k\)</span> explanatory variables. Since the denominator is fixed, if average reduction is large enough, then we reject the null hypothesis that their coefficients are 0.</p>
 </div>
-<p>We can use the <span class="math notranslate nohighlight">\(F\)</span>-test. The test statistic is</p>
+<p>The test statistic is</p>
 <div class="math notranslate nohighlight">
 \[
 \frac{(RSS_{\text{reduced} } - RSS_{\text{full} })/k}{RSS_{\text{full}}/(n-p)} \sim F_{k, n-p}
@@ -2243,9 +2275,8 @@ X_{j}=\delta_{0}+\delta_{1} X_{1}+\cdots+\delta_{j-1} X_{j-1}+\delta_{i+1} X_{i+
 <h4>Diagnosis<a class="headerlink" href="#diagnosis" title="Permalink to this headline">¶</a></h4>
 <p>Some common symptoms include</p>
 <ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(F\)</span>-test is significant, <span class="math notranslate nohighlight">\(R^2\)</span> is good, but <span class="math notranslate nohighlight">\(t\)</span>-test is not significant.</p></li>
-<li><p>Large magnitude of <span class="math notranslate nohighlight">\(\hat{\beta}_j\)</span></p></li>
 <li><p>Large standard error <span class="math notranslate nohighlight">\(\operatorname{se}(\beta_j)\)</span></p></li>
+<li><p>Overall <span class="math notranslate nohighlight">\(F\)</span>-test is significant, <span class="math notranslate nohighlight">\(R^2\)</span> is good, but individual <span class="math notranslate nohighlight">\(t\)</span>-tests are not significant due to large standard errors.</p></li>
 </ul>
 <p>We can measure the extent of multicollinearity by <strong>variance inflation factor</strong> (VIF) for each explanatory variable.</p>
 <div class="math notranslate nohighlight">

@@ -4,7 +4,7 @@ $t$-Distributed Stochastic Neighborhood Embedding [van der Maaten & Hinton 2008]
 
 We first introduce its precursor SNE [Hinton & Roweis 2002].
 
-## SNE - Objective
+## SNE Objective
 
 SNE is suitable when we
 
