@@ -1,20 +1,6 @@
 # Two Sample Mean Tests
 
 
-<!-- TOC -->
-
-- [Two Sample Tests](#two-sample-tests)
-  - [Paired](#paired)
-    - [Normal](#normal)
-    - [Non-normal](#non-normal)
-  - [Independent](#independent)
-    - [Equal Variance](#equal-variance)
-      - [Normal](#normal-1)
-      - [Non-normal](#non-normal-1)
-    - [Unequal Variance](#unequal-variance)
-
-<!-- /TOC -->
-
 Suppose we have two samples of data $\left\{x_{1}, \cdots, x_{n}\right\}$ and $\left\{y_{1}, \cdots, y_{m}\right\}$.
 
 A question of interest: Did the two samples come from the same distribution, as opposed to, one sample having larger values than the other on average?
@@ -128,7 +114,7 @@ $$
 S_{p}^{2}=S_{\text {pooled }}^{2}=\frac{(n-1) S_{X}^{2}+(m-1) S_{Y}^{2}}{n+m-2}
 $$
 
-which has a larger testing power than the two sample variances.
+which has a **larger testing power** than the two sample variances.
 
 #### Normal
 
@@ -174,7 +160,7 @@ Consider the case n = m with equal variance.
     \operatorname{Var} (\bar{X}-\bar{Y})=(1-\rho) \frac{2 \sigma^{2}}{n}< \frac{2 \sigma^{2}}{n}
     $$
 
-As a result, when correlation exists, the smaller paired sample variance is the appropriate one to use, since the test statistic using it has a larger power.
+As a result, when correlation exists, the smaller paired sample variance is the appropriate one to use, since the test statistic using it has a **larger power**.
 
 On the other hand, if the correlation is substantial and we fail to take it into consideration, the pooled sample variance estimator likely will overestimate the variance, and the estimate could be too large to be useful.
 
@@ -219,7 +205,7 @@ Hence, $T$ is not $t$-distributed.
 If $n$ and $m$ are both large, we can resort to Central Limit Theorem as usual,
 
 $$
-T=\frac{\bar{X}-\bar{Y}-\left(\mu_{X}-\mu_{Y}\right)}{\sqrt{\frac{S_{X}^{2}}{n}+\frac{S_{Y}^{2}}{m}}} \stackrel{\mathcal{D}}{\longrightarrow} N(0,1)
+T=\frac{\left( \bar{X}-\bar{Y} \right)-\left(\mu_{X}-\mu_{Y}\right)}{\sqrt{\frac{S_{X}^{2}}{n}+\frac{S_{Y}^{2}}{m}}} \stackrel{\mathcal{D}}{\longrightarrow} N(0,1)
 $$
 
 The asymptotic approximation lead to a $(1-\alpha)\%$ confidence interval for the true difference in mean $\mu_X - \mu_Y$
@@ -244,15 +230,20 @@ $$
 The asymptotic approximation lead to a $(1-\alpha)\%$ confidence interval for the true difference in mean $\mu_X - \mu_Y$,
 
 $$
-\bar{X}_{i}-\bar{Y} \pm t_{\nu, 1-\alpha / 2} \sqrt{\frac{S_{X}^{2}}{n}+\frac{S_{Y}^{2}}{m}}
+\bar{X}_{i}-\bar{Y} \pm t_{\nu}^{1-\alpha / 2} \sqrt{\frac{S_{X}^{2}}{n}+\frac{S_{Y}^{2}}{m}}
 $$
 
 ## Summary
 
 The analysis for the above cases are summarized into the table below. In general, if $X$ and $Y$ are of normal distributions, the pivot quantity follows a known distribution. If not, we use CLT to obtain an approximate distribution, which requires **large** $n$ and $m$.
 
-| Dependency | Test statistic | Normal | Non-normal |
+$$
+H_0: \mu_X - \mu_Y = 0
+$$
+
+
+| Dependency | Test statistic | Normal | Non-normal, large $n, m$ |
 | - | - | - | - |
 | Paired (reduced to a univariate test)| $\frac{\bar{D}-\mu_{D}}{S_{D} / \sqrt{n}}$ | $\sim t_{n-1}$ | $\stackrel{\mathcal{D}}{\longrightarrow} N(0,1)$ |
 | Independent with equal variance | $\frac{(\bar{X}-\bar{Y})-\left(\mu_{X}-\mu_{Y}\right)}{S_{p} \sqrt{\frac{1}{n}+\frac{1}{m}}}$ | $\sim t_{n+m-2}$ | $\stackrel{\mathcal{D}}{\longrightarrow} N(0,1)$ |
-| Independent with unequal variance | $\frac{(\bar{X}-\bar{Y})-\left(\mu_{X}-\mu_{Y}\right)}{\sqrt{\frac{S_{X}^{2}}{n}+\frac{S_{Y}^{2}}{m}}}$ | / | $t_v$ | 
+| Independent with unequal variance | $\frac{\left( \bar{X}-\bar{Y} \right)-\left(\mu_{X}-\mu_{Y}\right)}{\sqrt{\frac{S_{X}^{2}}{n}+\frac{S_{Y}^{2}}{m}}}$ | / | $t_v$ |
