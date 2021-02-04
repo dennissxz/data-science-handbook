@@ -1,5 +1,7 @@
 # Neural Networks
 
+In this section we introduce neural networks and its application for regression, classification, dimensionality-reduction, generation, etc.
+
 ## General Form
 
 ### Versus Machine Learning: Linear vs Hierarchical
