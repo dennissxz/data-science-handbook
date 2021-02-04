@@ -59,6 +59,16 @@ diff with memoization??
 
 ## Summary
 
+Three elements: TABLE, ORDER, COMPUTATION
+
+1. Define a DP table, $T_{i,j}$ ...
+
+1. Compute entries of base cases
+
+1. Compute other entries using the iterative equation
+
+1. Return $T_{m,n}$
+
 for an end case consider all sub-cases
 
 find iterative formula
@@ -69,6 +79,8 @@ find iterative formula
 initialize the base case.
 
 design a DP table, initialize the base case.
+
+Normally 1-dim or 2-dim
 
 figure out an order of entry filling that meet the iterative formula (already stored)
 
