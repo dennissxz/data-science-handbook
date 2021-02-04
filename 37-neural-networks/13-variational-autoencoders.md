@@ -2,12 +2,11 @@
 
 More or less simultaneously proposed by Kingma & Welling (2013) and Rezende et al. (2014)
 
-VAE is a type of generative model for a vector of random variables $\boldsymbol{x}$ assumed to be generated from a set of latent variables $\boldsymbol{z}$. Assuming both $\boldsymbol{x}$ and $\boldsymbol{z}$ are continuous, the unconditional distribution of $\boldsymbol{x}$ can be written as
+VAE is a type of generative model for a vector of random variables $\boldsymbol{x}$ assumed to be generated from a set of latent variables $\boldsymbol{z}$. Assuming both $\boldsymbol{x} \in \mathbb{R}^d$ and $\boldsymbol{z} \in \mathbb{R}^k$ are continuous, the unconditional distribution of $\boldsymbol{x}$ can be written as
 
 $$
-p(\boldsymbol{x})=\int_{\boldsymbol{z}} p(\boldsymbol{x} \mid \boldsymbol{z}) p(\boldsymbol{z}) d \boldsymbol{z}
+p(\boldsymbol{x})=\int_{\boldsymbol{z}} p(\boldsymbol{x} \vert \boldsymbol{z}) p(\boldsymbol{z}) \mathrm{~d} \boldsymbol{z}
 $$
-
 
 Initially used for generation, VAE has also been successful for representation learning. It is popular, fast, and relatively easy to train.
 
@@ -23,7 +22,7 @@ Ideally, the encoder and decoder should learn the two conditional distributions 
 Ideal case of VAE [Durr 2016]
 :::
 
-But $p(\boldsymbol{z} \mid \boldsymbol{x} )$ can be very costly to estimate. As a result, we approximate it with another neural function $q(\boldsymbol{z} \mid \boldsymbol{x} )$, which is the decoder.
+But $p(\boldsymbol{z} \vert \boldsymbol{x} )$ can be very costly to estimate. As a result, we approximate it with another neural function $q(\boldsymbol{z} \vert \boldsymbol{x} )$, which is the decoder.
 
 Assume w.l.o.g. that latent variable $\boldsymbol{z}$ is 1-dimensional, $\boldsymbol{x}$ is 2-dimensional. The VAE structure can be shown as
 
@@ -33,11 +32,11 @@ Assume w.l.o.g. that latent variable $\boldsymbol{z}$ is 1-dimensional, $\boldsy
 VAE structure [Durr 2016]
 :::
 
-- $q(\boldsymbol{x}  \mid \boldsymbol{z} )$ is the distribution learned by the encoder part.
-- $p(\boldsymbol{x} \mid \boldsymbol{z})$ is the distribution learned by the decoder part.
+- $q(\boldsymbol{x}  \vert \boldsymbol{z} )$ is the distribution learned by the encoder part.
+- $p(\boldsymbol{x} \vert \boldsymbol{z})$ is the distribution learned by the decoder part.
 
 ```{margin}
-We often assume $q(\boldsymbol{z})$ is Gaussian.
+We often assume $q(\boldsymbol{z})$ is spherical Gaussian.
 ```
 
 - The orange nodes in the middle and at the right are the parameters in the distribution $q(\boldsymbol{z})$ and $p(\boldsymbol{x})$ respectively.
@@ -47,7 +46,7 @@ After the model is trained, we have
 
 - a learned representation described by $q(\boldsymbol{z})$. To output a single value, we can use the mean, or mode.
 
-- a generator $p(\boldsymbol{x} \mid \boldsymbol{z} )$. To generate $\boldsymbol{x}$ (e.g. an image) given $\boldsymbol{z}$, we can use the decoder network.
+- a generator $p(\boldsymbol{x} \vert \boldsymbol{z} )$. To generate $\boldsymbol{x}$ (e.g. an image) given $\boldsymbol{z}$, we can use the decoder network.
 
 :::{figure}
 <img src="../imgs/vae-decoder-generation.png" width = "80%" alt=""/>
@@ -65,6 +64,8 @@ Of course, the function can be a neural network.
 
 ## Training
 
+### Variational Optimization
+
 Directly Maximizing the likelihood can be challenging. Instead, we maximize the lower bound of the likelihood.
 
 By some formula from conditional probability and [information theory](../30-ml-basics/03-information-theory), we have
@@ -73,16 +74,16 @@ By some formula from conditional probability and [information theory](../30-ml-b
 $$
 \begin{aligned}
 L &=\log p(x) \\
-\text { multiply by 1, }\quad  &=\sum_{z} q(z \mid x) \log p(x) \\
-&=\sum_{z} q(z \mid x) \log \left(\frac{p(z, x)}{p(z \mid x)}\right) \\
-\text { multiply by 1, } \quad&=\sum_{z} q(z \mid x) \log \left(\frac{p(z, x)}{q(z \mid x)} \frac{q(z \mid x)}{p(z \mid x)}\right) \\
-&=\sum_{z} q(z \mid x) \log \left(\frac{p(z, x)}{q(z \mid x)}\right)+\sum_{z} q(z \mid x) \log \left(\frac{q(z \mid x)}{p(z \mid x)}\right) \\
-&=L^{v} + KL \left[ q(z \mid x), p(z \mid x) \right] \\
+\text { multiply by 1, }\quad  &=\sum_{z} q(z \vert x) \log p(x) \\
+&=\sum_{z} q(z \vert x) \log \left(\frac{p(z, x)}{p(z \vert x)}\right) \\
+\text { multiply by 1, } \quad&=\sum_{z} q(z \vert x) \log \left(\frac{p(z, x)}{q(z \vert x)} \frac{q(z \vert x)}{p(z \vert x)}\right) \\
+&=\sum_{z} q(z \vert x) \log \left(\frac{p(z, x)}{q(z \vert x)}\right)+\sum_{z} q(z \vert x) \log \left(\frac{q(z \vert x)}{p(z \vert x)}\right) \\
+&=L^{v} + KL \left[ q(z \vert x), p(z \vert x) \right] \\
 & \geq L^{v}
 \end{aligned}
 $$
 
-If we can well approximate $p(z \mid x)$ by $q(z \mid x)$, then the KL divergence is small, and we can maximizing $L$ by maximizing $L^v$.
+If we can well approximate $p(z \vert x)$ by $q(z \vert x)$, then the KL divergence is small, and we can maximizing $L$ by maximizing $L^v$.
 
 ```{margin}
 The lower abound $L^v$ is also known as evidence lower bound, or ELBO.
@@ -91,11 +92,11 @@ The lower bound $L^v$ can be further arranged to
 
 $$
 \begin{aligned}
-L^{v} &=\sum_{z} q(z \mid x) \log \left(\frac{p(z, x)}{q(z \mid x)}\right) \\
-&=\sum_{z} q(z \mid x) \log \left(\frac{p(x \mid z) p(z)}{q(z \mid x)}\right) \\
-&=\sum_{z} q(z \mid x) \log \left(\frac{p(z)}{q(z \mid x)}\right)+\sum_{z} q(z \mid x) \log p(x \mid z)\\
-&=-KL \left[ q(z \mid x), p(z) \right]+E_{q(z \mid x)}\left[ \log p(x \mid z) \right] \\
-\text { for } x_{i} \ldots &=-KL \left[ q\left(z \mid x_{i}\right), p(z) \right]+E_{q\left(z \mid x_{i}\right)}\left[ \log p\left(x_{i} \mid z\right) \right]
+L^{v} &=\sum_{z} q(z \vert x) \log \left(\frac{p(z, x)}{q(z \vert x)}\right) \\
+&=\sum_{z} q(z \vert x) \log \left(\frac{p(x \vert z) p(z)}{q(z \vert x)}\right) \\
+&=\sum_{z} q(z \vert x) \log \left(\frac{p(z)}{q(z \vert x)}\right)+\sum_{z} q(z \vert x) \log p(x \vert z)\\
+&=-KL \left[ q(z \vert x), p(z) \right]+E_{q(z \vert x)}\left[ \log p(x \vert z) \right] \\
+\text { for } x_{i} \ldots &=-KL \left[ q\left(z \vert x_{i}\right), p(z) \right]+E_{q\left(z \vert x_{i}\right)}\left[ \log p\left(x_{i} \vert z\right) \right]
 \end{aligned}
 $$
 
@@ -106,17 +107,61 @@ We then maximizing the last line.
     When $p(z) = N (0, 1)$ and $q(z|x)$ is also Gaussian, this KL divergence has a closed form
 
     $$
-    -KL \left[ q\left(z \mid x_{i}\right), p(z) \right]=\frac{1}{2} \sum_{j=1}^{J} 1+\log \left(\sigma_{z_{i, j}}^{2}\right)-\mu_{z_{i, j}}^{2}-\sigma_{z_{i, j}}^{2}
+    -KL \left[ q\left(z \vert x_{i}\right), p(z) \right]=\frac{1}{2} \sum_{j=1}^{J} 1+\log \left(\sigma_{z_{i, j}}^{2}\right)-\mu_{z_{i, j}}^{2}-\sigma_{z_{i, j}}^{2}
     $$
 
-- The second term can be seen as a reconstruction loss, which equals $\log(1)$ if $\boldsymbol{x}_i$ is perfectly reconstructed from $\boldsymbol{z}$. In training, the expectation is estimated by sampling $B$ samples from the decoder network $q(z\mid x_i)$
+- The second term can be seen as a reconstruction loss, which equals $\log(1)$ if $\boldsymbol{x}_i$ is perfectly reconstructed from $\boldsymbol{z}$. In training, the expectation is estimated by sampling $B$ samples from the decoder network $q(z\vert x_i)$ and compute the average of $\log p\left(x_{i} \mid z_{i, l}\right)$
 
     $$
-    E_{q(z \mid x)}\left[ \log p(x \mid z) \right] = \frac{1}{B} \sum_{l=1}^{B}\log p\left(x_{i} \mid z_{i, l}\right)
+    E_{q(z \vert x)}\left[ \log p(x \vert z) \right] = \frac{1}{B} \sum_{l=1}^{B}\log p\left(x_{i} \vert z_{i, l}\right)
     $$
 
-    If $p(x \mid z)$ is Gaussian and $B=1$ (often used), then it is just a least squares loss
+    If $p(x \vert z)$ is Gaussian and $B=1$ (often used), then it is just a least squares loss
 
     $$
-    \log p\left(x_{i} \mid z_{i}\right)=\sum_{j=1}^{D} \frac{1}{2} \log \sigma_{x_{j}}^{2}+\frac{\left(x_{i, j}-\mu_{x_{j}}\right)^{2}}{2 \sigma_{x_{j}}^{2}}
+    \log p\left(x_{i} \vert z_{i}\right)=\sum_{j=1}^{d} \frac{1}{2} \log \sigma_{x_{j}}^{2}+\frac{\left(x_{i, j}-\mu_{x_{j}}\right)^{2}}{2 \sigma_{x_{j}}^{2}}
     $$
+
+In sum, we want the representation $\boldsymbol{x}$ be as accurate as possible, and use it to reconstruct $\boldsymbol{x}$ as accurate possible.
+
+### Reparameterization Trick
+
+Note that at the end of the encoder part, we have the neurons that corresponds to the parameters in $q(\boldsymbol{z})$, then we sample $\boldsymbol{z}$. Then $z$ is random in the back. The question is, how to do backpropagation through this random node?
+
+A trick is to reparameterize $\boldsymbol{z}$ by
+
+$$
+\boldsymbol{z} = \boldsymbol{\mu} _ \boldsymbol{z} + \sigma_z \boldsymbol{\varepsilon}
+$$
+
+where $\boldsymbol{\varepsilon} \sim N(\boldsymbol{0}, \boldsymbol{I})$ can be viewed as noise.
+
+Then random node becomes $\boldsymbol{\varepsilon}$, and we won't need to compute its gradient during backpropagation.
+
+[img16]
+
+Q??: this trick only solve the problem for distribution that can be written in that form (from some standard distribution of that distribution class)?
+
+## Interpretation
+
+After obtaining $q(\boldsymbol{z})$, we can create a hypergrid with varying values in each dimension $z_1, z_2, \ldots, z_k$, and then pass them to decoder to generate $\boldsymbol{x}$, then we can see that how these $\boldsymbol{z}$'s differ according to varying values of $z_1, z_2, \ldots, z_k$, and the difference along dimension $j$ can be interpreted as the learned representation by $z_j$.
+
+Interpretable dimensions of continuous variation can be
+
+- Images: facial expression, digit writing style, ...
+
+- Music: pitch, timbre, ...
+- Speech audio: speaker characteristics, emotion, ...
+- Text: shades of meaning, sentiment, ..
+
+Interpretable dimensions of discrete variation dimensions can be
+
+- Images: digit identity, face identity, object type, ...
+
+- Music: instrument identity, discrete pitch, ...
+- Speech audio: phoneme, word, language, ...
+- Text: part of speech, phrase (constituent) type, topic, ...
+
+[img20]
+
+## Extension: VQ-VAE
