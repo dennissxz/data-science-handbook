@@ -125,6 +125,30 @@ Example (Linear regression $t$-test with different $\alpha$)
 In practice, to control both types of errors, usually we **fixed** on type I error $\alpha$ (the value is called significance level), and try to minimize type II error $\beta$ by some methods, such as increasing the sample size $n$.
 
 
+## Sample Size
+
+How to choose a sample size? This depends on how we want to control our errors.
+
+As discussed above, we first fixed $\alpha$, and then control $\beta$. Take $t$-test in simple linear regression as an example. The power $(1-\beta)$ is
+
+$$\begin{aligned}
+\text{power}
+&= \mathrm{P}\left(H_{0} \text { is rejected } \mid H_{1} \text { is true }\right) \\
+&= \mathrm{P}\left( \left\vert T \right\vert > t_{n-2}^{{1-\alpha/2}}\mid H_{1} \text { is true }\right) \\
+&\ge \text{threshold} \\
+\end{aligned}$$
+
+So we can see it depends on $\alpha, n$, and distribution of $T$ under $H_1$, which involves the true parameter $\beta_1$ and variance of observations $\sigma^2$.
+
+To choose a sample size to ensure power is larger than some threshold, we need to
+
+1. fixed type I error $\alpha$
+
+1. assume true $\beta_1$ and $\sigma^2$
+
+1. find the distribution of the test statistic $T$ under the above settings
+
+1. solve the inequality for $n$
 
 ## Confidence Interval
 
