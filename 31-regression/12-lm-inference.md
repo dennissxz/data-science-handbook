@@ -838,6 +838,8 @@ Finally, they run the regression of the last line and check the $p$-value of $\g
 (lm-F-test)=
 ## $F$-test
 
+### Compare Two Nested Models
+
 ```{margin} Nested
 It is called nested since the reduced model is a special case of the full model with
 
@@ -972,7 +974,71 @@ A $F$-test on $\beta_1=\beta_2=0$ is difference from two univariate $t$-tests $\
 
 :::
 
+### Compare Two Groups of Data
 
+If the data set contains data from two groups, then the regression line can be different. For instance,
+
+- In time series analysis, there may be a structural break at a period which can be assumed to be known a priori (for instance, a major historical event such as a war).
+
+- In program evaluation, the explanatory variables may have different impacts on different subgroups of the population.
+
+:::{figure} lm-chow-test
+<img src="../imgs/lm-chow-test.png" width = "80%" alt=""/>
+
+Illustration of two groups of data [[Wikipedia]](https://en.wikipedia.org/wiki/Chow_test)
+:::
+
+
+Testing whether a regression function is different for one group $(i=1,\ldots,m)$ versus another $(i=m+1,\ldots,n)$, we can use $F$-test. The full model is
+
+
+$$\begin{aligned}
+y_{i}
+&= \left( \beta_{0}+\beta_{1} x_{1 i}+\beta_{2} x_{2 i}+\ldots+\beta_{k} x_{k i} \right) \\
+&\ + \left( \gamma_{0}+\gamma_{1} (d_i x_{1 i})+\gamma_{2} (d_i x_{2 i})+\ldots+\gamma_{k} (d_i x_{k i}) \right) \\
+&\ +\varepsilon_{i}
+\end{aligned}$$
+
+where dummy variable $d_i = 1$ if $i=m+1, \ldots, n$ and $0$ otherwise.
+
+The null and alternative hypotheses are
+
+$$\begin{aligned}
+H_{0}:&\ \gamma_{0}=0, \gamma_{1}=0, \ldots, \gamma_{k}=0 \\
+H_{1}:&\ \text{otherwise}
+\end{aligned}$$
+
+The $F$-test statistic is
+
+$$
+F=\frac{\left(RSS_{\text{reduced}}-RSS_{\text{full}}\right) /(k+1)}{RSS_{\text{full}} / (n-2(k+1))}
+$$
+
+```{margin} Question
+Can you show why the fact holds?
+```
+
+Equivalently, there is a method called **Chow test**. It uses the fact that
+
+$$
+RSS_{\text{full}} = RSS_{1} + RSS_{2}  
+$$
+
+where $RSS_1$ and $RSS_2$ are the RSS obtained when we run the following regression model on two groups of data respectively,
+
+$$
+y_{i} = \beta_{0}+\beta_{1} x_{1 i}+\beta_{2} x_{2 i}+\ldots+\beta_{k} x_{k i} +\varepsilon_{i}
+$$
+
+Hence, there is no need to create dummy variables $d_i$. There are only three steps:
+
+1. Run the regression with group 1's data to obtain $RSS_1$
+
+1. Run the regression with group 2's data to obtain $RSS_2$
+
+1. Run the regression with all data to obtain $RSS_{\text{reduced}}$
+
+And then use the $F$-test to test the hypothesis.
 
 ### Confidence Region for $\boldsymbol{\beta}$
 
