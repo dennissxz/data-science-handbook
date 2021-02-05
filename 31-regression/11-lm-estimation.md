@@ -387,7 +387,7 @@ If the response is in log format, i.e. $\log(Y)$, then the $\beta_j$ can be inte
 
 
 ``` {warning}
-Linear regression models only reveal linear associations between the response variable and the independent variables. But association does not imply causation. Simple example: in SLR, regress $X$ over $Y$, the coefficient has same sign and significance??, but causation cannot be reversed.
+Linear regression models only reveal linear associations between the response variable and the independent variables. But association does not imply causation. Simple example: in SLR, regress $X$ over $Y$, the coefficient has same sign and significance, but causation cannot be reversed.
 
 Only when the data is from a randomized controlled trial, correlation will imply causation.
 ```
@@ -446,9 +446,13 @@ In this approach, $\hat{u}$ is interpreted as the part in $x_1$ that cannot be p
 
 ## Exercise
 
-1. Slope vs Correlation
+SLR stands for simple linear regression $y_i = \beta_0 + \beta_1 x_i + \varepsilon_i $
 
-    When $p=2$, we can see from the solution
+1. *In SLR, can you compute $\hat{\beta}_1$ from correlation $r_{X,Y}$ and standard deviations $s_X$ and $s_Y$?*
+
+    :::{admonition,dropdown,seealso} *Solution*
+
+    In SLR, we can see from the solution
 
     $$\begin{align}
     \hat{\beta}_{1} &=\frac{\sum_{i=1}^{n}\left(x_{i}-\bar{x}\right)\left(y_{i}-\bar{y}\right)}{\sum_{i=1}^{n}\left(x_{i}-\bar{x}\right)^{2}}
@@ -463,17 +467,21 @@ In this approach, $\hat{u}$ is interpreted as the part in $x_1$ that cannot be p
 
     Thus, the slope has the same sign with the correlation $r_{X,Y}$, and equals to the correlation times a ratio of the sample standard deviations of the dependent variable over the independent variable.
 
-    Once can see that the magnitude of $\hat\beta_1$ increases with the magnitude of $\rho_{X,Y}$ and $s_Y$, and decreases with $s_X$, holding others fixed.
+    Once can see that the magnitude of $\hat\beta_1$ increases with the magnitude of $r_{X,Y}$ and $s_Y$, and decreases with $s_X$, holding others fixed.
 
-2. Fitted Line Passes Sample Mean
+    :::
+
+2. *In SLR, can you compute $\bar{y}$ given $\hat{\beta}_0,\hat{\beta}_1$ and $\bar{x}$?*
+
+    :::{admonition,dropdown,seealso} *Solution*
 
     Since $\hat{\beta}_{0} =\bar{y}-\hat{\beta}_{1} \bar{x}$, we have $\bar{y} = \hat{\beta}_{0} + \hat{\beta}_{1} \bar{x}$, i.e. the regression line always goes through the mean $(\bar{x}, \bar{y})$ of the sample.
 
     This also hold for multiple regression, by the first order condition w.r.t. $\beta_0$.
 
-3. Non-zero Mean of Error Term
+    :::
 
-    *What if the mean of the error term is not zero?*
+3. *What if the mean of the error term is not zero? Can you write down an equivalent model?*
 
     :::{admonition,dropdown,seealso} *Solution*
 
@@ -487,9 +495,7 @@ In this approach, $\hat{u}$ is interpreted as the part in $x_1$ that cannot be p
 
     :::
 
-1. No Intercept
-
-    *Assume the intercept $\beta_0$ in the model $y=\beta_0 + \beta_1 x + \varepsilon$ is zero. Find the OLS estimate for $\beta_1$, denoted $\tilde{\beta}$. Find its mean, variance, and compare them with those of the OLS estimate for $\beta_1$ when there is an intercept term.*
+1. *Assume the intercept $\beta_0$ in the model $y=\beta_0 + \beta_1 x + \varepsilon$ is zero. Find the OLS estimate for $\beta_1$, denoted $\tilde{\beta}$. Find its mean, variance, and compare them with those of the OLS estimate for $\beta_1$ when there is an intercept term.*
 
     :::{admonition,dropdown,seealso} *Solution*
 
@@ -526,83 +532,147 @@ In this approach, $\hat{u}$ is interpreted as the part in $x_1$ that cannot be p
     \operatorname{Var}\left( \tilde{\beta} \right) = \frac{\sigma^2}{\sum x_i^2} \le  \frac{\sigma^2}{\sum (x_i - \bar{x})^2} = \operatorname{Var}\left( \hat{\beta}  \right)
     $$
 
-    Hence, if the intercept is known to be zero, better use $\tilde\beta$ instead of $\hat\beta$, since the standard error of the $\tilde\beta$ is smaller, and both are unbiased.
+    Hence, we conclude that
 
-    If the true model has a non-zero intercept, then $\tilde\beta$ is biased for $\beta$, but it has a smaller variance, which brings a tradeoff of bias vs variance.
+    - if the intercept is known to be zero, better use $\tilde\beta$ instead of $\hat\beta$, since the standard error of the $\tilde\beta$ is smaller, and both are unbiased.
+
+    - If the true model has a non-zero intercept, then $\tilde\beta$ is biased for $\beta$, but it has a smaller variance, which brings a tradeoff of bias vs variance.
+
     :::
 
-1. Transformation of Variables
+1. *What happen to $\beta$, its standard error, and its p-value, if we scale the $j$-th covariate $x_j$, or add a constant to $x_j$? How about if we change $Y$?*
 
-    [insert] summary table.
+    :::{admonition,dropdown,seealso} *Proof*
 
-    First, we take simple linear regression as an example.
+    In short, for an affine transformation on $x_j$ or $Y$, since the column space of $\boldsymbol{X}$ and the direction of $\boldsymbol{y}$ are unchanged, the overall fitting should be unchanged, such as $R^2$, $t$-test and $F-test$. The estimates (coefficients, residuals) may change.
 
-    If $X ^\prime = aX + b$, then the new slope estimate is
+    One can re-write the model and compare with the original one. Suppose the original model is
 
-    $$\begin{align}
-    \tilde{\beta}_1 &= \frac{\widehat{\operatorname{Cov}}\left( Y, X ^\prime \right)}{\widehat{\operatorname{Var}}\left( X ^\prime \right)}  \\
-    &= \frac{\widehat{\operatorname{Cov}}\left( Y, aX + b  \right)}{\widehat{\operatorname{Var}}\left( aX+b \right)}  \\
-    &= \frac{a\widehat{\operatorname{Cov}}\left( Y, X \right)}{a^2\widehat{\operatorname{Var}}\left( X \right)}  \\
-    &= \frac{1}{a} \hat\beta_1 \\
-    \end{align}$$
+    $$
+    Y = \beta_0 + \beta_1 x_1 + \ldots + \beta_j x_j + \varepsilon
+    $$
 
-    and the new intercept is
+    Let $x_j ^\prime = ax_j + b$, and let $\gamma_j$ be the new slope, $\gamma_0$ be the new intercept, and $u$ be the new error term.
 
-    $$\begin{align}
-    \tilde\beta_0
-    &= \bar{y} - \tilde\beta_1 \bar{x} ^\prime \\
-    &= \bar{y} - \hat\beta_1 \frac{1}{a}  (a\bar{x}+b) \\
-    &= \hat\beta_0 - \hat\beta_1 \frac{b}{a} \\
-    \end{align}$$
+    $$
+    Y = \gamma_0 + \gamma_1 x_1 + \ldots + \gamma_j (ax_j + b) + u
+    $$
 
-    If $Y ^\prime = cY + d$ then
+    Comparing the two models, we obtain
 
-    $$\begin{align}
-    \tilde{\beta}_1 &= \frac{\widehat{\operatorname{Cov}}\left( Y ^\prime, X ^\prime \right)}{\widehat{\operatorname{Var}}\left( X ^\prime \right)}  \\
-    &= \frac{\widehat{\operatorname{Cov}}\left( cY+d, X  \right)}{\widehat{\operatorname{Var}}\left( X \right)}  \\
-    &= \frac{c\widehat{\operatorname{Cov}}\left( Y, X \right)}{c\widehat{\operatorname{Var}}\left( X \right)}  \\
-    &= c \hat\beta_1 \\
-    \end{align}$$
+    $$\begin{aligned}
+    \gamma_j &= \frac{1}{a} \beta_j  \\
+    \gamma_0 &= \beta_0 - \gamma_j b \\
+    &= \beta_0 - \beta_j \frac{b}{a}  \\
+    \end{aligned}$$
 
-    and
+    Others slope and the error term are unchanged.
 
-    $$\begin{align}
-    \tilde\beta_0
-    &= \bar{y}^\prime - \tilde\beta_1 \bar{x} \\
-    &= (c\bar{y}+d) - c\hat\beta_1 \bar{x} \\
-    &= c\hat\beta_0 + d\\
-    \end{align}$$
+    The estimated variance becomes
+
+    $$
+    \widehat{Var}(\hat{\gamma}_j) = \hat{\sigma}^2 \frac{1}{1-R_j^2} \frac{1}{\sum (x ^\prime - \bar{x} ^\prime)^2} = \frac{1}{a^2}  \widehat{Var}(\hat{\beta}_j)
+    $$
+
+    Hence, the standard error is $\operatorname{se}(\hat{\gamma}_j) = \operatorname{se}(\hat{\beta}_j)$ and the $t$-test statistic is
+
+    $$
+    \frac{\hat{\gamma}_j}{\operatorname{se}(\hat{\gamma}_j) } = \frac{\beta_j/a}{\operatorname{se}(\hat{\beta}_j)/a}   =  \frac{\beta_j}{\operatorname{se}(\hat{\beta}_j)}
+    $$
+
+    which is unchanged as expected.
+
+    For the case $Y ^\prime = c Y + d$, it is easy to write
+
+    $$
+    cY + d = \gamma_0 + \gamma_1 x_1 + \ldots + \gamma_j x_j + u
+    $$
+
+    and we have
+
+    $$\begin{aligned}
+    \gamma_j &= c \beta_j \quad \forall j\\
+    \gamma_0 &= c \beta_0 + d\\
+    \end{aligned}$$
+
+    The residuals are scaled by $c$ such that the standard error is scaled by $c$ too. Finally, the $t$-test statistic remains unchanged.
+
+    The takeaway is that, one can scale the variable to a proper unit for better interpretation.
+
+    :::
 
 
-    Can the conclusions be extended to multiple regression?
+1. *True or False: In SLR, exchange $X$ and $Y$, the new slope estimate equals the reciprocal of the original one*.
 
-    TBD.
+    :::{admonition,dropdown,seealso} *Solution*
 
-1. Exchange $X$ and $Y$
+    False.
 
-TBD.
+    Since $\hat{\beta}_1 = r_{X,Y}\frac{s_Y}{s_X}$, the new slope estimate is $\hat{\gamma}_1 = r_{X,Y}\frac{s_X}{s_Y}$. We only have $\hat{\beta}_1 \hat{\gamma}_1 = r_{X,Y}^2 = R^2$. The last equality holds in SLR, see [proof](lm-rsquared).
 
-1. Covariance, $R$-squared, and $\beta_j$
+    More analysis:
 
-    In multiple regression, if $\operatorname{Cov}\left( Y, X_j \right) = 0$ then $\beta_j= 0$?
+    - Since in this case $F$-test depends only on $R^2$ ([proof](lm-F-test)), then the $F$-test are the same.
 
-    Is it possible that $\operatorname{Cov}\left( X_j, X_k \right) \ne 0, \operatorname{Cov}\left( Y, X_k \right) \ne 0$ but $\operatorname{Cov}\left( Y, X_j \right) = 0$?
+    - Since in this case $F$-test is equivalent to $t$-test ([proof](lm-F-test)), the $t$-test for $\hat{\beta}_1$ and $\hat{\gamma}_1$ are the same.
 
-    TBD.
+    - Hence, we have
 
-1. Increase Estimation Precision
+        $$
+        \frac{\sqrt{\hat{\sigma}_1^2 / s_X^2}}{\sqrt{\hat{\sigma}_2^2 / s_Y^2}} =  \frac{\operatorname{se}(\hat{\beta}_1)}{\operatorname{se}(\hat{\gamma_1})} = \frac{\hat{\beta}_1}{\hat{\gamma_1}} = \frac{s_Y^2}{s_X^2}
+        $$
 
-    TBD.
+        then
+
+        $$
+        \frac{\hat{\sigma}_1}{\hat{\sigma}_2} = \frac{s_Y}{s_X} = \sqrt{\frac{\hat{\beta}_1}{\hat{\gamma_1}}}
+        $$
+
+    :::
+
+
+1. *True or False: if $\operatorname{Cov}\left( Y, X_j \right) = 0$ then $\beta_j= 0$?*
+
+    :::{admonition,dropdown,seealso} *Solution*
+
+    In SLR, this is true, but in MLR, this is generally not true. See [here](lm-rss-nonincreasing) for explanation.
+
+    :::
+
+
+1. *What affect estimation precision?*
+
+    :::{admonition,dropdown,seealso} *Solution*
+
+    Recall
+
+    $$
+    \begin{aligned}
+    \operatorname{Var}\left(\hat{\beta}_{j}\right) &=\sigma^{2}\left[\left(\boldsymbol{X}^{\top} \boldsymbol{X}\right)^{-1}\right]_{[j, j]} \\
+    &=\sigma^{2} \frac{1}{1-R_{j}^{2}} \frac{1}{\sum_{i}\left(x_{i j}-\bar{x}_{j}\right)^{2}}
+    \end{aligned}
+    $$
 
     -   The larger the error variance, $\sigma^2$, the larger the variance of the coefficient estimates.
     -   The larger the variability in the $x_i$, the smaller the variance.
     -   A larger sample size should decrease the variance.
     -   In multiple regression, reduce the relation between $X_j$ and other covariates (e.g. by orthogonal design) can decreases $R^2_{j}$, and hence decrease the variance.
 
+    :::
 
-1. Partialling Out in General Cases
 
-TBD.
+1. To compare the effects of two variable $X_j, X_k$, can we say they have the same effect since the confidence interval of $\beta_j, \beta_k$ overlaps?
+
+    :::{admonition,dropdown,seealso} *Solution*
+
+    No, since
+
+    - the two coefficients are probably correlated $\operatorname{Cov}\left( \boldsymbol{\beta} _j, \beta_k \right) \ne 0$
+    - even if they are not correlated, we still need to find a pivot quantity for $\theta = \beta_j - \beta_k$ and conduct a hypothesis testing on $\theta=0$. See the [$t$-test section](lm-t-test).
+    :::
+
+1. *Does the partialling out method holds for $p \ge 3$*?
+
 
 1. Causal?
 
@@ -617,13 +687,3 @@ TBD.
     Table summary.
 
     Rows: E(b), Var(b), RSS, TSS, R^2
-
-1. To compare the effects of two variable $X_j, X_k$, can we say they have the same effect since the confidence interval of $\beta_j, \beta_k$ overlaps?
-
-    :::{admonition,dropdown,seealso} *Solution*
-
-    No, since
-
-    - the two coefficients are probably correlated $\operatorname{Cov}\left( \boldsymbol{\beta} _j, \beta_k \right) \ne 0$
-    - even if they are not correlated, we still need to find a pivot quantity for $\theta = \beta_j - \beta_k$ and conduct a hypothesis testing on $\theta=0$. See the [$t$-test section](lm-t-test).
-    :::
