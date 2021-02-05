@@ -148,6 +148,18 @@ if $R_{k}^2$ increases. When will $R^2_{k}$ be unchanged? When the new variable 
 In terms of bias, if we say the model with $X_p$ is "true", then $\operatorname{E}\left( \hat{\beta}_k \right)$ is probably closer to $\beta_k$ according to the equation described in the above [section](lm-omit-variable).
 
 
+## Special Observations
+
+### Outliers
+
+What if an outlier exists?
+
+- If outlier is a mistake (typo) you can drop it (or correct it)
+
+- If outlier is valid but unusual, look for robustness – does dropping it change answer?
+
+- If it does change answer, report both versions – and argue for the approach you think more appropriate
+
 ## Multicollinearity
 
 Definition (Multicollinearity)  
