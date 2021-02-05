@@ -379,11 +379,92 @@ TBD.
 
 ### Value of Estimated Coefficients
 
-$\beta_j$ is the expected change in the value of the response variable $y$ if the value of the covariate $x_j$ increases by 1, holding other covariates fixed.
+```{margin} Non-linear term in linear models.
+"Linear" model is linear in predictors. A predictor can be a non-linear feature of inputs $x_1, \ldots, x_p$, say $x_1^2, ln^{x_1}, x_1 x_2, $ etc.
+```
 
-$\beta_0$ is the expected value of the response variable $y$ if all covariates have values of zero.
+1. For a model in a standard form,
 
-If the response is in log format, i.e. $\log(Y)$, then the $\beta_j$ can be interpreted as the percentage change in $Y$ associated with one unit increase of $X_j$.
+    - $\beta_j$ is the expected change in the value of the response variable $y$ if the value of the covariate $x_j$ increases by 1, holding other covariates fixed.
+
+    - $\beta_0$ is the expected value of the response variable $y$ if all covariates have values of zero.
+
+1. If the covariate is an interaction term, for instance,
+
+    $$
+    Y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \beta_{12} x_1 x_2 + \varepsilon
+    $$
+
+    Then $(\hat{\beta}_1 + \hat{\beta}_{12}x_2)$ can be interpreted as the estimated effect of one unit change in $x_1$ on $Y$ given a fixed value $x_2$. Usually $x_2$ is an dummy variable, say gender.
+
+    In short, we build this model because we believe the effect of $x_1$ on $Y$ depends on $x_2$.
+
+    Often higher-order interactions are added after lower-order interactions are included.
+
+
+1. For polynomial covariates, say,
+
+    $$
+    Y = \beta_0 + \beta_1 x_1 + \beta_2 x_1^2 + \beta_{3} x_1^3 + \varepsilon
+    $$
+
+    the interpretation of the marginal effect of $x_1$ is simply the partial derivative $\beta_1 + 2\beta_2 x_1 + 3 \beta_3 x_1^2$. We build such model because the plot suggests a non-linear relation between $Y$ and $x_1$, or we believe the effect of $x_1$ on $Y$ depends on the value of $x_1$. Note in this case the effect can change sign.
+
+
+1. For a model that involes $\ln(\cdot)$, we need some approximation.
+
+    - $Y = \beta_0 + \beta_1 \ln(x) + \mu$
+
+        $$\begin{aligned}
+        \ln(1+0.01)&\approx 0.01\\
+        \Rightarrow \quad \ln(x + 0.01x) &\approx \ln(x)  + 0.01 \\
+        \end{aligned}$$
+
+        Hence, $0.01x$ change in $x$, or $1%$ change in $x$, is associated with $0.01\beta_1$ change in value of $Y$.
+
+    - $\ln(Y) = \beta_0 + \beta_1 x + \mu$
+
+        $$\begin{aligned}
+        Y ^\prime
+        &= \exp(\beta_0 + \beta_1 (x + 1) + \varepsilon)   \\
+        &= \exp(\beta_0 + \beta_1 + \varepsilon) \exp(\beta_1)  \\
+        &\approx Y (1 + \beta_1) \quad \text{if $\beta_1$ is close to 0}  \\
+        \end{aligned}$$
+
+        Hence, $1$ unit change in $x$ is associated with $100\beta_1 \%$ change in $Y$.
+
+    - $\ln(Y) = \beta_0 + \beta_1 \ln(x) + \mu$
+
+        $$\begin{aligned}
+        Y ^\prime
+        &= \exp(\beta_0 + \beta_1 \ln(x + 0.01x) + \varepsilon)   \\
+        &\approx \exp(\beta_0 + \beta_1 (\ln(x) + 0.01) + \varepsilon)   \\
+        &\approx \exp(\beta_0 + \beta_1 \ln(x) + \varepsilon)\exp(0.01\beta_1)   \\
+        &\approx Y (1 + 0.01\beta_1) \quad \text{if $0.01\beta_1$ is close to 0}  \\
+        \end{aligned}$$
+
+        Hence, $1\%$ change in $x$ is associated with $\beta_1 \%$ change in $Y$, i.e. $\beta_1$ measures **elasticity**.
+
+
+
+:::{admonition,note} When to use log?
+
+Log is often used
+
+- when the variable has a right skewed distribution, e.g. wages, prices
+
+- to reduce heteroskedasticity
+
+not used when
+
+- the variable has negative values
+
+- the variable are in percentages or proportions (hard to interpret)
+
+Also note that logging can change significance tests.
+
+:::
+
 
 
 ``` {warning}
@@ -393,6 +474,9 @@ Only when the data is from a randomized controlled trial, correlation will imply
 ```
 
 We can measure if a coefficient is statistically significant by [$t$-test](lm-t-test).
+
+
+
 
 ### $R$-squared
 
