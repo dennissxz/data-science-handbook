@@ -29,7 +29,7 @@ $$
 f_{y}(\boldsymbol{x})=F_{L}\left(F_{L-1}\left(F_{L-2}\left(\cdots F_{1}(\boldsymbol{x}) \cdots\right)\right)\right)
 $$
 
-## A 2-layer Neural Network
+### A 2-layer Neural Network
 
 The simplest case is a 2-layer neural network, which can be represented by
 
@@ -51,7 +51,7 @@ where $h$ is a non-linear activation function, and is applied elementwise; $\bol
 A 2-layer feedforward neural network
 :::
 
-## Softmax Layer
+### Softmax Layer
 
 There are many other layers, e.g., the softmax layer, convolutional layer, residual connection etc. Here we introduce the softmax layer which is used for classification.
 
