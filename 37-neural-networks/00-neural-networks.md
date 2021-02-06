@@ -77,7 +77,7 @@ $$
 
 ### Activation Functions
 
-There are several kinds of activation functions we can choose to build a neural network. Their advantages and weakness are discussed in [trainability](03-trainability)
+There are several kinds of activation functions we can choose to build a neural network. Their advantages and weakness are discussed in [trainability](03-trainability) section.
 
 #### Sigmoid and tanh
 
@@ -100,7 +100,7 @@ h(a)=\tanh (a)
 $$
 
 :::{figure} nn-tanh-plot
-<img src="../imgs/nn-relu-plot.png" width = "30%" alt=""/>
+<img src="../imgs/nn-tanh-plot.png" width = "30%" alt=""/>
 
 Plot of tanh function
 :::
