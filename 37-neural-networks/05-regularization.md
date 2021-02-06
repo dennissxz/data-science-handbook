@@ -2,7 +2,9 @@
 
 There are various ways to avoid overfitting of neural networks.
 
-## Weight Decay
+## On Loss
+
+### Weight Decay
 
 In neural networks, $L_2$ regularization is often called weight decay. It is easy to incorporate weight decay into the gradient calculation of the loss
 
