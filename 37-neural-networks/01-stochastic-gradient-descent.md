@@ -72,6 +72,110 @@ Comparison of gradient descent methods [Shi 2021]
 :::
 
 
+## Learning Rate Scheduling
+
+How to tune learning rate? First we review some concepts in optimization, and introduce learning rate decay, and finally introduce theoretical foundation for it.
+
+### Concepts Review
+
+- Local minimum
+
+    A point $\boldsymbol{x}^{\&}$ where $\boldsymbol{g}^{\&}=0$ and $H^{\&}\succeq0$
+
+- Stationary point
+
+  - In classical optimization, $x^{*}$ is a stationary point if the gradient is zero
+
+      $$
+      \nabla f(x^{*})=0
+      $$
+
+  - In deep learning SGD, gradient and parameter update and loss update are random since the batch is random
+
+      $$
+      \begin{aligned}
+      \hat{g} & =E_{(x,y)\sim\text{ Batch }}\nabla_{\Phi}\mathcal{L}(\Phi,x,y)\\
+      \Delta\Phi & =\eta\hat{g}
+      \end{aligned}
+      $$
+
+
+      Sometimes the stationary point $\Phi^{*}$ is defined similarly as that in classical optimization, i.e. average gradient is zero
+
+      $$
+      \nabla_{\Phi}E_{(x,y)\sim\operatorname{Train}}\mathcal{L}(\Phi,x,t)=E_{(x,y)\sim\text{ Batch }}\nabla_{\Phi}\mathcal{L}(\Phi,x,y)=0
+      $$
+
+      but sometimes we say we reach a stationary point $\Phi^{*}$ of aloss function $\mathcal{L}$ if that the (expected) **loss update** is 0, i.e.
+
+      $$
+      E\left[\mathcal{L}(\Phi^{*}+\Delta\Phi)-\mathcal{L}(\Phi^{*})\right]=0
+      $$
+
+- Stationary distribution
+
+    ```{margin}
+    Similar to the sense of stationary distribution in Markov Chains.
+    ```
+
+    After we reach a stationary point, the parameters after one update is $\Phi^{*}+\Delta_{1}\Phi$, after two update is $\Phi^{*}+\Delta_{1}\Phi+\Delta_{2}\Phi$ and all these updated parameters follow a distribution $\sim$ stationary distribution.
+
+### Learning Rate Decay
+
+The magnitude of learning rate is important. When we are close to a minimum, if the learning rate is still large, then we will jump around and cannot achieve the minimum. Thus, an attempt is reduce learning rate by time.
+
+:::{figure} nn-lr-decay-traj
+<img src="../imgs/nn-lr-decay-traj.png" width = "50%" alt=""/>
+
+Loss trajectory with (green) vs without (blue) learning rate decay [Ng 2017]
+:::
+
+
+
+In practice, we start with a reasonable learning rate, and drop learning rate by some schedule
+
+- $\eta = 0.95 ^{\text{epoch} } \eta_0$
+
+- $\eta = \frac{k}{\sqrt{\text{epoch}}} \eta_0$ or $\eta = \frac{k}{\sqrt{t}} \eta_0$
+
+- decay by a factor of $\alpha$ every $\beta$ epochs.
+
+- manually drop (typically 1/10) when loss appears stuck (monitor mini-batch training loss)
+
+:::{figure} nn-lr-decay
+<img src="../imgs/nn-lr-decay.png" width = "50%" alt=""/>
+
+Training loss drop down by learning rate decay [Shi 2021]
+:::
+
+
+### Classical Convergence Theorem
+
+If use the fundamental update equation
+
+$$
+\Phi \mathrel{+}= - \eta_{t}\nabla_{\Phi}\mathcal{L}\left(\Phi,x_{t},y_{t}\right)
+$$
+
+and if the following conditions of learning rate holds
+
+$$
+\eta_{t}\geq0\quad\lim_{t\rightarrow\infty}\eta_{t}=0\quad\sum_{t}\eta_{t}=\infty\quad\sum_{t}\eta_{t}^{2}<\infty
+$$
+
+then
+
+- the training loss $E_{(x,y)\sim\operatorname{Train}}\mathcal{L}(\Phi,x,t)$ will converges to a limit, and
+
+- any limit point of the sequence $\Phi_{t}$ is a stationary point in the sense that the gradient at that point is $0$.
+
+    $$
+    \nabla_{\Phi}E_{(x,y)\sim\operatorname{Train}}\mathcal{L}(\Phi,x,t)=0
+    $$
+
+Note that it may be a saddle point, not a local optimum.
+
+
 
 ## Optimizers
 
