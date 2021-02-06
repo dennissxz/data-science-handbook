@@ -192,6 +192,12 @@ There are various algorithms to reduce oscillations in the training trajectory a
 
 Momentum SGD use a running average of gradient instead of the raw gradient. The averaging step can reduce oscillations in the trajectory. It also has interpretation as velocity and acceleration.
 
+:::{figure} nn-sgd-momentum
+<img src="../imgs/nn-sgd-momentum.png" width = "80%" alt=""/>
+
+SGD with and without momentum [S. Ruder]
+:::
+
 #### Review of Running Average
 
 First we review the concept of running average.
@@ -216,35 +222,34 @@ Typical values for $\beta$ are 0.9, 0.99 or 0.999 corresponding to
 $N$ being $10,100$ or $1000$, which is the window size.
 
 
-
 :::{admonition,note} Bias correction in warm up period
 
 Note there is a warm up period $t<N$ of the running average $\tilde{x}_{t}$,
 where the value is strongly biased toward zero if $\tilde{x}_{0}=0$.
 
-\[
+$$
 \begin{array}{l}
 \tilde{x}_{0}=0\\
 \tilde{x}_{t}=\left(1-\frac{1}{N}\right)\tilde{x}_{t-1}+\left(\frac{1}{N}\right)x_{t}
 \end{array}
-\]
+$$
 
 We can consider not to use the last $N$ terms but use all other terms
 $x_{1}$ to $x_{t}$
 
-\[
+$$
 \begin{aligned}\tilde{x}_{t} & =\left(\frac{t-1}{t}\right)\tilde{x}_{t-1}+\left(\frac{1}{t}\right)x_{t}\\
  & =\left(1-\frac{1}{t}\right)\tilde{x}_{t-1}+\left(\frac{1}{t}\right)x_{t}
 \end{aligned}
-\]
+$$
 
 and we have $\tilde{x}_{1}=x_{1}$, as initial value. But this fails
 to track a moving average when $t\gg N$. So to combine the two methods
 together,
 
-\[
+$$
 \tilde{x}_{t}=\left(1-\frac{1}{\min(N,t)}\right)\tilde{x}_{t-1}+\left(\frac{1}{\min(N,t)}\right)x_{t}
-\]
+$$
 
 :::
 
@@ -270,6 +275,7 @@ where
 
 The hyperparameters are $N_g, \eta$.
 
+
 ### Root Mean Square Prop (RMSProp)
 
 #### Motivation
@@ -280,15 +286,17 @@ One attempt is to can set the learning rate in the update
 equation ${\boldsymbol{\Phi}}_{t+1}[i]={\boldsymbol{\Phi}}_{t}[i]-\eta{\color{blue}{\hat{\boldsymbol{g}}_{t}[i]}}$
 to be $\eta_{i}=\eta_{0}/\sigma_{i}^{2}$, where $\sigma_i^2 = \operatorname{Var}\left( \boldsymbol{g} _t[i] \right)$ is a measure of large/small gradient in that parameter dimension.
 
-\[
+$$
 {\boldsymbol{\Phi}}_{t+1}[i]={\boldsymbol{\Phi}}_{t}[i]-\frac{\eta_{0}}{\sigma_{i}^{2}}{\color{blue}{\hat{\boldsymbol{g}}_{t}[i]}}
-\]
+$$
+
 i.e. learning rate is inversely proportional to the variance.
 
 But in practice, dividing by standard deviation works better
-\[
+
+$$
 {\boldsymbol{\Phi}}_{t+1}[i]={\boldsymbol{\Phi}}_{t}[i]-\frac{\eta_{0}}{\sigma_{i}}{\color{blue}{\hat{\boldsymbol{g}}_{t}[i]}}
-\]
+$$
 
 So question is, how to find $\sigma _i$?
 
@@ -296,11 +304,11 @@ So question is, how to find $\sigma _i$?
 
 RMSrPop's approximates $\sigma_i$ by a running average $\boldsymbol{s}_{t}[i]$ of the **second moment** of the gradient of a particular parameter dimension, written as ${\color{blue}{\hat{\boldsymbol{g} }_{t}[i]^{2}}}$.
 
-\[
-\begin{aligned}{\color{yellow}{\boldsymbol{s}_{t}[i]}} & =\left(1-\frac{1}{N_{s}}\right)\color{yellow}{\boldsymbol{s}_{t-1}[i]}+\frac{1}{N_{s}}{\color{blue}{\hat{\boldsymbol{g}}_{t}[i]^{2}}}\\
-{\boldsymbol{\Phi}}_{t+1}[i] & ={\boldsymbol{\Phi}}_{t}[i]-\frac{\eta}{\sqrt{{\color{yellow}{\boldsymbol{s}_{t}[i]}}}+\epsilon}{\color{blue}{\hat{\boldsymbol{g}}_{t}[i]}}
+$$
+\begin{aligned}{\color{brown}{\boldsymbol{s}_{t}[i]}} & =\left(1-\frac{1}{N_{s}}\right){\color{brown}{\boldsymbol{s}_{t-1}[i]}} +\frac{1}{N_{s}}{\color{blue}{\hat{\boldsymbol{g}}_{t}[i]^{2}}}\\
+{\boldsymbol{\Phi}}_{t+1}[i] & ={\boldsymbol{\Phi}}_{t}[i]-\frac{\eta}{\sqrt{{\color{brown}{\boldsymbol{s}_{t}[i]}}}+\epsilon}{\color{blue}{\hat{\boldsymbol{g}}_{t}[i]}}
 \end{aligned}
-\]
+$$
 
 where $\epsilon$ is used to avoid $/0$.
 
@@ -309,7 +317,7 @@ PyTorch has a *centering* option
 that switches from the second moment to the variance.
 ```
 
-Basically, $\color{yellow}{\boldsymbol{s}_{t}[i]}$ approximates the variance $\operatorname{Var} (\color{blue}{\hat{\boldsymbol{g}}_{t}[i]})$ well
+Basically, $\color{brown}{\boldsymbol{s}_{t}[i]}$ approximates the variance $\operatorname{Var} (\color{blue}{\hat{\boldsymbol{g}}_{t}[i]})$ well
 if $\operatorname{E} (\color{blue}{\hat{\boldsymbol{g}}_{t}[i]})$ is small.
 
 The hyperparameters are $N_s, \eta, \varepsilon$.
@@ -317,14 +325,14 @@ The hyperparameters are $N_s, \eta, \varepsilon$.
 
 ### Adaptive Momentum (Adam)
 
-Adam combines momentum and RMSProp. It maintains a running average $\color{teal}{\tilde{\boldsymbol{g}}_{t}[i]}$ of the gradient $\color{blue}{\hat{\boldsymbol{g}}_{t}[i]}$, and another running average $\color{yellow}{\boldsymbol{s}_{t}[i]}$ of the second moment of the gradient. The two window sizes can be different.
+Adam combines momentum and RMSProp. It maintains a running average $\color{teal}{\tilde{\boldsymbol{g}}_{t}[i]}$ of the gradient $\color{blue}{\hat{\boldsymbol{g}}_{t}[i]}$, and another running average $\color{brown}{\boldsymbol{s}_{t}[i]}$ of the second moment of the gradient. The two window sizes can be different.
 
 
 $$
 \begin{aligned}
 \color{teal}{\tilde{\boldsymbol{g}}_{t}[i]} & =\left(1-\frac{1}{N_g }\right)\color{teal}{\tilde{\boldsymbol{g}}_{t-1}[i]}+\frac{1}{N_g }{\color{blue}{\hat{\boldsymbol{g}}_{t}[i]}}\\
-{\color{yellow}{s_{t}[i]}} & =\left(1-\frac{1}{N_s}\right){\color{yellow}{s_{t-1}[i]}} +\frac{1}{N_ s}{\color{blue}{\hat{\boldsymbol{g}}_{t}[i]}}^{2}\\
-\boldsymbol{\Phi}_{t+1}[i] & =\boldsymbol{\Phi}_{t}-\frac{\eta}{\sqrt{{\color{yellow}{s_{t}[i]}}}+\epsilon}{\color{teal}{\tilde{\boldsymbol{g}}_{t}[i]}}
+{\color{brown}{s_{t}[i]}} & =\left(1-\frac{1}{N_s}\right){\color{brown}{s_{t-1}[i]}} +\frac{1}{N_ s}{\color{blue}{\hat{\boldsymbol{g}}_{t}[i]}}^{2}\\
+\boldsymbol{\Phi}_{t+1}[i] & =\boldsymbol{\Phi}_{t}-\frac{\eta}{\sqrt{{\color{brown}{s_{t}[i]}}}+\epsilon}{\color{teal}{\tilde{\boldsymbol{g}}_{t}[i]}}
 \end{aligned}
 $$
 
@@ -333,10 +341,10 @@ The hyperparameters are $N_g, N_s, \eta, \varepsilon$.
 
 ## Issues
 
-• Gradient Estimation: inaccurate estimation brings noise. More than batch size effect
+- Gradient Estimation: inaccurate estimation brings noise. More than batch size effect
 
-• Gradient Drifit (2nd order structure): g changes as the parameters \Phi change, determined by H. But second order analyses are controversial in SGD.
+- Gradient Drift (2nd order structure): g changes as the parameters \Phi change, determined by H. But second order analyses are controversial in SGD.
 
-• Convergence: to converge to a local optimum the learning rate must be gradually reduced toward zero, how to design the schedule? see below
+- Convergence: to converge to a local optimum the learning rate must be gradually reduced toward zero, how to design the schedule? see below
 
-• Exploration: deep models are non-convex, we need to search over the parameter space. SGD can behave like MCMC.
+- Exploration: deep models are non-convex, we need to search over the parameter space. SGD can behave like MCMC.
