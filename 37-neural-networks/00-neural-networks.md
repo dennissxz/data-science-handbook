@@ -181,7 +181,7 @@ The general form of gradient descent is
 
   - check for stopping criteria (convergence of loss / gradient, model performance, etc)
 
-The learning rate $\eta$ controls the step size. The effect of different learning rates are shown in the below picture. There are many algorithm that optimizes the training process by modifying $\eta$ and $\boldsymbol{g} ^{(t)}$, e.g., AdaGrad, RMSProp, Adam, which are introduced in [optimizers](01-optimizers).
+The learning rate $\eta$ controls the step size. The effect of different learning rates are shown in the below picture. There are many algorithm that optimizes the training process by modifying $\eta$ and $\boldsymbol{g} ^{(t)}$, e.g., AdaGrad, RMSProp, Adam. For more details on gradient descent, see [here](01-stochastic-gradient-descent).
 
 :::{figure} nn-lr-comparison
 <img src="../imgs/nn-lr-comparison.png" width = "50%" alt=""/>
@@ -190,62 +190,7 @@ Comparison of different learning rate [Lecun et al 1996]
 :::
 
 
-#### Basic Gradient Descent
 
-Definition (Epoch)
-: An epoch is a single pass through the training set.
-
-```{margin} Total loss vs sum of losses
-In some cases the total loss is not a sum of per-example losses
-```
-
-A single “iteration” $t$ can be an epoch, which means we loop over examples (or in parallel) to compute the gradient $\boldsymbol{g}^{(t)}\left(\boldsymbol{x}_{i}, y_{i}\right)$ for each observation $i$ and use the average gradient to approximate the true gradient
-
-$$
-\boldsymbol{g}^{(t)}(X, Y)=\frac{1}{n} \sum_{i} \boldsymbol{g}^{(t)}\left(\boldsymbol{x}_{i}, y_{i}\right)
-$$
-
-Then we make a single update at the end of the epoch.
-
-Assuming $n$ is large, $\boldsymbol{g}^{(t)}(X, Y)$ is a good estimate for gradient, but it costs $O(n)$ to compute.
-
-#### Stochastic Gradient Descent
-
-Computing gradient on all $n$ examples is expensive and may be wasteful: many data points provide similar information.
-
-Instead, SGD present examples one observation at a time. It estimates the gradient on the entire set by the gradient on a single example in an iteration $t$.
-
-$$
-\frac{1}{n} \sum_{i=1}^{n} \nabla_{\Theta} L\left(y_{i}, \boldsymbol{x}_{i} ; \Theta\right) \approx \nabla_{\Theta} L\left(y_{t}, \boldsymbol{x}_{t} ; \Theta\right)
-$$
-
-#### Mini-batch Gradient Descent
-
-Mini-batch gradient descent use a batch $B$ of observations to estimate the sample gradient in an iteration. For some $B \subset \left\{ 1,2,\ldots, n \right\},|B| \ll n$,
-
-$$
-\frac{1}{n} \sum_{i=1}^{n} \nabla_{\Theta} L\left(y_{i}, \boldsymbol{x}_{i} ; \Theta\right) \approx \frac{1}{|B|} \sum_{b \in B} \nabla_{\Theta} L\left(y_{b}, \boldsymbol{x}_{b} ; \Theta\right)
-$$
-
-In each epoch, we shuffle data, partition into batches, and iterate over batches.
-
-In theory, if computation power is not an issue, we should set $\left\vert B \right\vert$ as large as possible. But in practice, people found there are some advantages of small $\left\vert B \right\vert$. Using small $\left\vert B \right\vert$ works like adding noise to the gradient, which brings regularization effect and make the trained model more robust. Usually $\left\vert B \right\vert = 32, 64$ are used.
-
-Nowadays, the term SGD often refers to batch GD.
-
-#### Comparison
-
-We can plot the contours of the loss value w.r.t. parameter $\boldsymbol{\Phi}$, and plot the trajectory of $\boldsymbol{\Phi}^{(t)}$ for GD, SGD and mini-batch GD. We can see
-
-- GD has the smoothest trajectory
-- SGD has the most tortuous trajectory
-- Batch GD is between the two
-
-:::{figure} nn-sgd-trajectory
-<img src="../imgs/nn-sgd-trajectory.png" width = "30%" alt=""/>
-
-Comparison of gradient descent methods [Shi 2021]
-:::
 
 
 ### Backward propagation
@@ -323,6 +268,52 @@ x\texttt{.grad} &\mathrel{+}= y\texttt{.grad} \times 2 \times x\texttt{.value}\\
 
 :::
 
+
+## Einstein Notation
+
+In many neural networks models, we will use Einstein notation, since it
+
+- Improves tensor equations for tensors with many indices
+
+- Explicitly writing all indices of tensors where repeated indices in a product of tensors are implicitly summed.
+
+- Not being correspondence with framework notation. Most frameworks hide indices.
+
+**Examples**
+
+- Slicing:
+
+  – $\boldsymbol{M}[i,j]$ : one element
+
+  – $\boldsymbol{M}[i,J]$: the $i$-th row of $\boldsymbol{M}$
+
+  – $\boldsymbol{M}[I,j]$: the $j$-th column of $\boldsymbol{M}$
+
+  – $\boldsymbol{M}[I,J]$: the full matrix $\boldsymbol{M}$
+
+- Product of tensors:
+
+    Repeated capital letters denote summation over those letters
+
+    - For $\boldsymbol{y}=\boldsymbol{W}\boldsymbol{x}$
+
+        $$
+        \begin{aligned}
+        \boldsymbol{y}[i]
+        &=\sum_{j}\boldsymbol{W}[i,j]\boldsymbol{x}[j]\\
+        & =\boldsymbol{W}[i,J]\boldsymbol{x}[J]
+        \end{aligned}
+        $$
+
+    - For $\boldsymbol{y}=\boldsymbol{x}^{\top}\boldsymbol{W}$,
+
+        $$
+        \begin{aligned}
+        \boldsymbol{y}[j]
+        &=\sum_{i}\boldsymbol{W}[i,j]\boldsymbol{x}[i]\\
+        &=\boldsymbol{W}[I,j]\boldsymbol{x}[I]
+        \end{aligned}
+        $$
 
 ## Unsupervised Deep Representation Learning
 
