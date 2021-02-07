@@ -13,7 +13,9 @@ Input
 Goal
 : Find the longest sequence $X$ that is a subsequence of both $A$ and $B$. $X = LCS(A,B)$.
 
-## Algorithms
+## Analysis
+
+### Recursive Relation
 
 For now, we only compute the length, not the exact LCS $X$.
 
@@ -25,7 +27,7 @@ $$LCS(A,B) = LCS(A_{[:-1]}, B_{[:-1]}) \circ z$$
 
 
 $$
-LCS(A,B) = \arg \operatorname{longer}  \left\{\begin{array}{ll}
+LCS(A,B) = \operatorname{long}  \left\{\begin{array}{ll}
 LCS(A, B_{[:-1]}) \\
 LCS(A_{[:-1]}, B)
 \end{array}\right\}
@@ -37,7 +39,7 @@ For all $0 \le i \le n, 0 \le j \le m$, the table entry $T_{[i,j]}$ stores the l
 
 ### Order of computation
 
-In non-decreasing order of $i+j$. Because $T_{[i,j]}$ depends on three entries $T_{[i-1, j-1]}, T_{[i, j-1]}, T_{[i-1, j]}$.
+In non-decreasing order of $i+j$. Because $T_{[i,j]}$ depends on three entries $T_{[i-1, j-1]}, T_{[i, j-1]}, T_{[i-1, j]}$ that are on the left/right of it.
 
 Another order can follow fixed $i$ and increasing $j$. Any order works as long as a new value is computed from existing values.
 
@@ -63,11 +65,10 @@ T_{[i, j-1]}
 \end{array}\right.
 $$
 
-### Backtrace
+### Track Solution
 
-If the condition $A_{[i]} = B_{[j]}$ holds, this means we pop out $A_{[i]}$.
+If the condition $A_{[i]} = B_{[j]}$ holds, this means we pop out $A_{[i]}$. Otherwise, we go to $T_{[i,j-1]}$ or $T_{[i-1,j]}$.
 
-??30:00
 
 
 ## Running Time
