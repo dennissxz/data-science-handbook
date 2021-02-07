@@ -29,14 +29,14 @@ Assume w.l.o.g. that latent variable $\boldsymbol{z}$ is 1-dimensional, $\boldsy
 :::{figure} vae-networks
 <img src="../imgs/vae-networks.png" width = "80%" alt=""/>
 
-VAE structure [Durr 2016]
+VAE structure (dash lines mean sampling) [Durr 2016]
 :::
 
 - $q(\boldsymbol{x}  \vert \boldsymbol{z} )$ is the distribution learned by the encoder part.
 - $p(\boldsymbol{x} \vert \boldsymbol{z})$ is the distribution learned by the decoder part.
 
 ```{margin}
-We often assume $q(\boldsymbol{z})$ is spherical Gaussian.
+We often assume $q(\boldsymbol{z})$ is spherical Gaussian. The node for the variance is actually $\log \sigma^2$ so that it is in $\mathbb{R}$.
 ```
 
 - The orange nodes in the middle and at the right are the parameters in the distribution $q(\boldsymbol{z})$ and $p(\boldsymbol{x})$ respectively.
@@ -95,8 +95,8 @@ $$
 L^{v} &=\sum_{z} q(z \vert x) \log \left(\frac{p(z, x)}{q(z \vert x)}\right) \\
 &=\sum_{z} q(z \vert x) \log \left(\frac{p(x \vert z) p(z)}{q(z \vert x)}\right) \\
 &=\sum_{z} q(z \vert x) \log \left(\frac{p(z)}{q(z \vert x)}\right)+\sum_{z} q(z \vert x) \log p(x \vert z)\\
-&=-KL \left[ q(z \vert x), p(z) \right]+E_{q(z \vert x)}\left[ \log p(x \vert z) \right] \\
-\text { for } x_{i} \ldots &=-KL \left[ q\left(z \vert x_{i}\right), p(z) \right]+E_{q\left(z \vert x_{i}\right)}\left[ \log p\left(x_{i} \vert z\right) \right]
+&=-KL \left[ q(z \vert x), p(z) \right]+E_{z \sim q(z \vert x)}\left[ \log p(x \vert z) \right] \\
+\text { for } x_{i} \ldots &=-KL \left[ q\left(z \vert x_{i}\right), p(z) \right]+E_{z \sim q\left(z \vert x_{i}\right)}\left[ \log p\left(x_{i} \vert z\right) \right]
 \end{aligned}
 $$
 
@@ -110,7 +110,7 @@ We then maximizing the last line.
     -KL \left[ q\left(z \vert x_{i}\right), p(z) \right]=\frac{1}{2} \sum_{j=1}^{J} 1+\log \left(\sigma_{z_{i, j}}^{2}\right)-\mu_{z_{i, j}}^{2}-\sigma_{z_{i, j}}^{2}
     $$
 
-- The second term can be seen as a reconstruction loss, which equals $\log(1)$ if $\boldsymbol{x}_i$ is perfectly reconstructed from $\boldsymbol{z}$. In training, the expectation is estimated by sampling $B$ samples from the decoder network $q(z\vert x_i)$ and compute the average of $\log p\left(x_{i} \mid z_{i, l}\right)$
+- The second term can be seen as a reconstruction loss, which equals $\log(1)$ if $\boldsymbol{x}_i$ is perfectly reconstructed from $\boldsymbol{z}$. In training, the expectation is estimated by sampling $B$ samples $z_{j,l}$ from the encoder network $q(z\vert x_i)$ and compute the average of $\log p\left(x_{i} \mid z_{i, l}\right)$
 
     $$
     E_{q(z \vert x)}\left[ \log p(x \vert z) \right] = \frac{1}{B} \sum_{l=1}^{B}\log p\left(x_{i} \vert z_{i, l}\right)
@@ -122,7 +122,28 @@ We then maximizing the last line.
     \log p\left(x_{i} \vert z_{i}\right)=\sum_{j=1}^{d} \frac{1}{2} \log \sigma_{x_{j}}^{2}+\frac{\left(x_{i, j}-\mu_{x_{j}}\right)^{2}}{2 \sigma_{x_{j}}^{2}}
     $$
 
-In sum, we want the representation $\boldsymbol{x}$ be as accurate as possible, and use it to reconstruct $\boldsymbol{x}$ as accurate possible.
+**Overall objective of VAE**: We want the representation $\boldsymbol{x}$ be as accurate as possible, and use it to reconstruct $\boldsymbol{x}$ as accurate possible
+
+
+:::{admonition,note} VAE vs denoising AE
+
+- Denoising AE:
+
+    $$
+    \boldsymbol{x} + \boldsymbol{\varepsilon}  \overset{\text{encoder}}{\longrightarrow} \boldsymbol{z} \overset{\text{decoder}}{\longrightarrow} \boldsymbol{x} ^\prime
+    $$
+
+    with reconstruction loss $\left\| \boldsymbol{x} - \boldsymbol{x} ^\prime  \right\|^2$.
+
+- VAE:
+
+    $$
+    \boldsymbol{x} \overset{\text{encoder}}{\longrightarrow} \boldsymbol{z} + \boldsymbol{\varepsilon}  \overset{\text{decoder}}{\longrightarrow} \boldsymbol{x} ^\prime
+    $$
+
+    with reconstruction loss $\left\| \boldsymbol{x} - \boldsymbol{x} ^\prime  \right\|^2$ **and** a KL divergence regularizer between prior $p(\boldsymbol{z})$ and posterior $q(\boldsymbol{z} \vert \boldsymbol{x})$.
+
+:::
 
 ### Reparameterization Trick
 
@@ -138,21 +159,40 @@ where $\boldsymbol{\varepsilon} \sim N(\boldsymbol{0}, \boldsymbol{I})$ can be v
 
 Then random node becomes $\boldsymbol{\varepsilon}$, and we won't need to compute its gradient during backpropagation.
 
-[img16]
+:::{figure} vae-reparm-trick.png
+<img src="../imgs/vae-reparm-trick.png" width = "50%" alt=""/>
+
+Reparametrization trick of VAE [Kingma 2015]
+:::
 
 Q??: this trick only solve the problem for distribution that can be written in that form (from some standard distribution of that distribution class)?
 
 ## Interpretation
 
-After obtaining $q(\boldsymbol{z})$, we can create a hypergrid with varying values in each dimension $z_1, z_2, \ldots, z_k$, and then pass them to decoder to generate $\boldsymbol{x}$, then we can see that how these $\boldsymbol{z}$'s differ according to varying values of $z_1, z_2, \ldots, z_k$, and the difference along dimension $j$ can be interpreted as the learned representation by $z_j$.
+### By Phase Diagrams
+
+After obtaining $q(\boldsymbol{z})$, we can create a phase diagram with varying values in each dimension $z_1, z_2, \ldots, z_k$, and then pass them to decoder to generate $\boldsymbol{x}$, then we can see that how these $\boldsymbol{z}$'s differ according to varying values of $z_1, z_2, \ldots, z_k$, and the difference along dimension $j$ can be interpreted as the learned representation by $z_j$.
+
+In the following example (a), $k=2$, the horizontal dimension is head tile, and the vertical dimension is degree of smiling vs frowning.
+
+:::{figure} vae-phase
+<img src="../imgs/vae-phase.png" width = "80%" alt=""/>
+
+VAE phase diagram for interpretation
+:::
+
+### Potential Representations
 
 Interpretable dimensions of continuous variation can be
 
 - Images: facial expression, digit writing style, ...
 
 - Music: pitch, timbre, ...
+
 - Speech audio: speaker characteristics, emotion, ...
+
 - Text: shades of meaning, sentiment, ..
+
 
 Interpretable dimensions of discrete variation dimensions can be
 
@@ -162,6 +202,6 @@ Interpretable dimensions of discrete variation dimensions can be
 - Speech audio: phoneme, word, language, ...
 - Text: part of speech, phrase (constituent) type, topic, ...
 
-[img20]
+Or, the representation just learn signal and get rid of noise.
 
 ## Extension: VQ-VAE
