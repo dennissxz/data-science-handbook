@@ -18,10 +18,42 @@ Output
 
 The subproblem should be on the subgraph.
 
-For a tree, how to defined a subgraph? Is there any natural hierachical relation in a tree?
+*Q: For a tree, how to defined a subgraph? Is there any natural hierarchical relation in a tree?*
 
-Ans: subtree.
+*A: subtree, child, grand-child, parent*
 
-First, we arbitrarily assign a node to be the root.
+We guess that, for a tree with root $r$, the maximum independent tree, denoted $S(r)$, has relation to the subtrees rooted at the children of $r$.
 
-For a node $v$, the 
+Besides, it is easy to see that neighbors cannot be in the set. And grand-child reflects this. So $S(r)$ also has relation to the subtrees rooted at the grand-children of $r$.
+
+Therefore, the iterative relation for $S(r)$ is
+
+$$
+S(r) = \operatorname{larger}  \left\{  \cup S(\text{child}) ,   (\cup S(\text{grand-child})) \cup \left\{ r \right\}  )  \right\}
+$$
+
+Note that in the first case, the root itself is not in the set.
+
+The DP table has $n$ entries. Each entry corresponds to a node $u$, and stores the size of the maximum independent set of the tree rooted at $u$, i.e. $\left\vert S(u) \right\vert$.
+
+## Solution
+
+Let entry $A_u$ be the size of the largest independent set of subtree rooted at node $u$.
+
+- Initialization: $A_u = 1$ for each leaf $u$.
+
+- Bottom up in tree $T$, for each vertex $u$ such that $\left\{ A_v \right\}_{v \in T_u  }$ are already computed,
+
+$$
+A_u = \max \left\{ \sum_{c \in \operatorname{children} (u)} A_c, 1+\sum_{g \in \operatorname{grand-children} (u)} A_g, \right\}
+$$
+
+- Return $A_r$.
+
+## Complexity
+
+The table $A$ consists of $n$ entries. For each entry, it takes $O(n)$ time to compute.
+
+So total is $O(n^2)$
+
+There are methods to improve it to $O(n)$.
