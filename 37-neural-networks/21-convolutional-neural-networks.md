@@ -30,7 +30,7 @@ Exercise: What happen if kernel size = 1, or = length?
 
 ### Max Pooling
 
-Invariance to translation, rotation, scale.
+Invariance to translation, rotation, scale. https://blog.csdn.net/fanre/article/details/93721879?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-1.control&depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-1.control
 
 ### Attention Pooling
 
