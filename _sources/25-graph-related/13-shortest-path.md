@@ -20,12 +20,12 @@ Goal
 Dijkstra's algorithm is a greedy algorithm, which maintains a set of vertices $S$ and update it iteratively. At start, $S={s}$. If we found a shortest path between $s$ to a vertex $u$, then $u$ is added to $S$. If $S=V$, then the algorithm terminates.
 
 Definition (Shortest path from $s$ to $u$ w.r.t $S$)
-: The shortest path from $s$ to $u$ w.r.t. $S$ is a shortest path such that all vertices along the it $(s,u)$ are in $S$. The distance is denoted as $\operatorname{dist}(u)$.
+: The shortest path from $s$ to $u$ w.r.t. $S$ is a shortest path such that all vertices along the it $(s,u)$ are in $S$. The distance is denoted as $d(u)$.
 
-Let $\operatorname{short}(u)$ be the unconstrained shortest path from $s$ to $u$. Then we have
+Let $d^{\text{opt}}(u)$ be the unconstrained shortest path from $s$ to $u$. Then we have
 
 $$
-\operatorname{dist}(u) \ge \operatorname{short}(u)
+d(u) \ge d^{\text{opt}}(u)
 $$
 
 The algorithm add $u$ to $S$ if the equality is achieved.
@@ -39,10 +39,10 @@ Implementation:
 - Initialize
 
   - $S = \left\{ s \right\}$
-  - $\operatorname{dist}(s)=0$
+  - $d(s)=0$
   - For all other nodes $u \in V \backslash \left\{ s \right\}$,
-    - if $u$ is an neighbor of $s$, set $\operatorname{dist}(u) = \ell(s,u)$
-    - else set $\operatorname{dist}(u) = \infty$
+    - if $u$ is an neighbor of $s$, set $d(u) = \ell(s,u)$
+    - else set $d(u) = \infty$
 
 ```{margin}
 If we only want to find the shortest path between $s$ and a specific target vertex $t$, then the loop condition can be changed to WHILE $t \notin S$.
@@ -52,39 +52,52 @@ If we only want to find the shortest path between $s$ and a specific target vert
 
   - Find $u^* = \arg\min _{u \notin S} d(u)$
   - Add $u^*$ to $S$
-  - For $v \notin S$,
-    - If $\operatorname{dist}(u^*) + \ell(u^*, v) < \operatorname{dist}(v)$, then update $\operatorname{dist}(v) \leftarrow \operatorname{dist}(u^*) + \ell(u^*, v)$
+  - For $u \notin S$,
+    - If $d(u^*) + \ell(u^*, u) < d(u)$, then update $d(u) \leftarrow d(u^*) + \ell(u^*, u)$
+
+- For $v \in S$, the shortest path from $s$ to $v$ are is the collection of edges to compute $d(v)$.
+
 ---
 
 ### Correctness
 
-Claim: For every $u\in S$, we have $\operatorname{dist}(u) = \operatorname{short}(u)$
+Claim: For every $u\in S$, we have $d(u) = d^{\text{opt}}(u)$
 
 ***Proof by induction***
 
-- Base: at initialization, $S = \left\{ s \right\}, \operatorname{dist}(s) = \operatorname{short}(s) = 0$
+- Base: at initialization, $S = \left\{ s \right\}, d(s) = d^{\text{opt}}(s) = 0$
 
 - Step: if the claim holds before adding $u^*$, then it also holds after adding $u^*$
 
-For a newly added note $u^*$, suppose there is another path $Q_{s,u^*}$, from $s$ to $u^*$ through $y\notin S$. Since the algorithm select by $u^* = \arg\min _{u \notin S} d(u)$, we have
+For a newly added note $u^*$, let $P_{s,u^*}^{y}$ be any path from $s$ to $u^*$ through $y\notin S$. Since the algorithm select by $u^* = \arg\min _{u \notin S} d(u)$, we have
 
 $$
-\operatorname{dist}(u^*) \le \operatorname{dist}(y)
+d(u^*) \le d(y)
 $$
 
-Let $d(y,u^*)$ be the path length from $y$ to $u^*$ along $Q_{s,u^*}$, then by step assumption,
+By step assumption,
 
 $$
-\operatorname{dist}(y) + d(y,v) \le \ell(Q_{s,u^*})
+d(y) \le \ell(\text{any other paths from $s$ to $y$})
 $$
+
+Let $\ell_{P}(y,u^*)$ be the path length from $y$ to $u^*$ along path $P_{s,u^*}^{y}$
+
+$$\begin{aligned}
+d(y) + \ell_{P}(y,u^*)
+&\le \ell(\text{any path from $s$ to $y$}) + \ell_{P}(y,u^*)  \\
+&\le \ell(\text{any path from $s$ to $y$, then $y$ to $u^*$}) \\
+&\le \ell(P_{s,u^*}^{y}) \\
+\end{aligned}$$
+
 
 Therefore,
 
 $$
-\operatorname{dist}(u^*) \le \ell(Q_{s,u^*})
+d(u^*) \le d(y) \le d(y)+ \ell_{P}(y,u^*) \le \ell(P_{s,u^*}^{y})
 $$
 
-Since $Q_{s,u^*}$ is arbitrary, we have $\operatorname{dist}(u^*) = \operatorname{short}(u^*)$
+for any $P_{s,u^*}^{y}$. Hence, $d(u^*) = d^{\text{opt}}(u^*)$
 
 $\square$
 

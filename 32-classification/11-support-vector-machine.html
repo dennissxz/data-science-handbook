@@ -409,8 +409,18 @@
   </a>
   <ul class="collapse-ul">
    <li class="toctree-l2">
-    <a class="reference internal" href="../31-regression/11-linear-models.html">
-     Linear Models
+    <a class="reference internal" href="../31-regression/11-lm-estimation.html">
+     Linear Models - Estimation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/12-lm-inference.html">
+     Linear Regression - Inference
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/13-lm-extension.html">
+     Linear Regression - Extension
     </a>
    </li>
   </ul>
@@ -475,10 +485,44 @@
   </i>
  </li>
  <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../34-clustering/00-clustering.html">
+   Clustering
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../34-clustering/11-k-means.html">
+     K-means clustering
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../34-clustering/13-agglomerative-methods.html">
+     Agglomerative Methods
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
   <a class="reference internal" href="../37-neural-networks/00-neural-networks.html">
    Neural Networks
   </a>
   <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/01-stochastic-gradient-descent.html">
+     Stochastic Gradient Descent
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/03-trainability.html">
+     Trainability
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/05-regularization.html">
+     Regularization
+    </a>
+   </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../37-neural-networks/11-autoencoders.html">
      Autoencoders
@@ -674,8 +718,7 @@ w_{1} x_{1}+w_{2} x_{2}+\cdots+w_{p} x_{p} + b = 0
 \frac{1}{\left\Vert \boldsymbol{w}  \right\Vert } \left\vert \boldsymbol{w} ^\top  \boldsymbol{x}  + b  \right\vert
 \]</div>
 <p>note that the distance is always positive.</p>
-<div class="dropdown seealso admonition">
-<p class="admonition-title"> <em>Derivation</em></p>
+<p>:::{admonition,dropdown,seealso} <em>Derivation</em></p>
 <p>For any two points <span class="math notranslate nohighlight">\(Y,Z\)</span> with coordinates <span class="math notranslate nohighlight">\(\boldsymbol{y}, \boldsymbol{z}\)</span> on the hyperplane we have</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
@@ -699,7 +742,7 @@ d = \left\vert \left( \frac{\boldsymbol{w}}{\left\Vert \boldsymbol{w}  \right\Ve
 \[
 d = \frac{1}{\left\Vert \boldsymbol{w}  \right\Vert}\left\vert \boldsymbol{w} ^\top \boldsymbol{x} + \boldsymbol{b} \right\vert
 \]</div>
-</div>
+<p>:::</p>
 <p>note that the points on the same side of the hyperplane have the same sign of <span class="math notranslate nohighlight">\(\boldsymbol{w} ^\top  \boldsymbol{x}_i  + b\)</span>. If we label the points with positive values of <span class="math notranslate nohighlight">\(\boldsymbol{w} ^\top  \boldsymbol{x}_i  + b\)</span> by <span class="math notranslate nohighlight">\(y_i = 1\)</span> and those with negative values by <span class="math notranslate nohighlight">\(y_i = -1\)</span>, then the distance can be written as</p>
 <div class="math notranslate nohighlight">
 \[
@@ -710,14 +753,12 @@ d = \frac{1}{\left\Vert \boldsymbol{w}  \right\Vert}\left\vert \boldsymbol{w} ^\
 <div class="section" id="objective">
 <h2>Objective<a class="headerlink" href="#objective" title="Permalink to this headline">¶</a></h2>
 <p>Support vector machine is used for binary classification tasks.</p>
-<div class="myclass figure align-default" id="use-a-hyperplane-to-separate-two-types-of-points">
-<a class="reference internal image-reference" href="../_images/svm-hard-margin.png"><img alt="" src="../_images/svm-hard-margin.png" style="width: 30%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 6 </span><span class="caption-text">caption</span><a class="headerlink" href="#use-a-hyperplane-to-separate-two-types-of-points" title="Permalink to this image">¶</a></p>
-</div>
-<dl class="simple myst">
-<dt>Definition (Margin)</dt><dd><p>The margin is defined as the shortest distance from a point to the hyperplane.</p>
-</dd>
-</dl>
+<p>:::{figure,myclass} Use a hyperplane to separate two types of points
+<img src="../imgs/svm-hard-margin.png" width = "30%" alt=""/></p>
+<p>caption
+:::</p>
+<p>Definition (Margin)
+: The margin is defined as the shortest distance from a point to the hyperplane.</p>
 <div class="math notranslate nohighlight">
 \[
 \min _{i} \frac{1}{|\boldsymbol{w}|} y_{i}\left(\boldsymbol{w}^{\top} \boldsymbol{x}_{i}+b\right)
@@ -878,10 +919,10 @@ R(\boldsymbol{w} ,b, \boldsymbol{x}_i ,y_i) =\left\{\begin{array}{ll}
 R(\boldsymbol{w} ,b, \boldsymbol{x}_i ,y_i) = \max \left\{ 0, 1 - y_{i}\left(\boldsymbol{w}^{\top} \boldsymbol{x}_{i}+b\right)  \right\}
 \]</div>
 <p>which is called <strong>Hinge loss</strong>.</p>
-<div class="myclass figure align-default" id="hinge-loss">
-<a class="reference internal image-reference" href="../_images/svm-hinge-loss.png"><img alt="" src="../_images/svm-hinge-loss.png" style="width: 50%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 7 </span><span class="caption-text">Comparison of loss functions</span><a class="headerlink" href="#hinge-loss" title="Permalink to this image">¶</a></p>
-</div>
+<p>:::{figure,myclass} hinge-loss
+<img src="../imgs/svm-hinge-loss.png" width = "50%" alt=""/></p>
+<p>Comparison of loss functions
+:::</p>
 <p>Let <span class="math notranslate nohighlight">\(\xi_{i}=\max \left\{0,1-y_{i}\left(\boldsymbol{w}^{\top} x_{i}+w_{0}\right)\right\}\)</span>, then the objective is</p>
 <div class="math notranslate nohighlight">
 \[

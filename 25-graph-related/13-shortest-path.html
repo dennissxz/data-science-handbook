@@ -409,8 +409,18 @@
   </a>
   <ul class="collapse-ul">
    <li class="toctree-l2">
-    <a class="reference internal" href="../31-regression/11-linear-models.html">
-     Linear Models
+    <a class="reference internal" href="../31-regression/11-lm-estimation.html">
+     Linear Models - Estimation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/12-lm-inference.html">
+     Linear Regression - Inference
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/13-lm-extension.html">
+     Linear Regression - Extension
     </a>
    </li>
   </ul>
@@ -475,10 +485,44 @@
   </i>
  </li>
  <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../34-clustering/00-clustering.html">
+   Clustering
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../34-clustering/11-k-means.html">
+     K-means clustering
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../34-clustering/13-agglomerative-methods.html">
+     Agglomerative Methods
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
   <a class="reference internal" href="../37-neural-networks/00-neural-networks.html">
    Neural Networks
   </a>
   <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/01-stochastic-gradient-descent.html">
+     Stochastic Gradient Descent
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/03-trainability.html">
+     Trainability
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/05-regularization.html">
+     Regularization
+    </a>
+   </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../37-neural-networks/11-autoencoders.html">
      Autoencoders
@@ -654,27 +698,23 @@
 <p class="sidebar-title"></p>
 <p>If the graph is not complete, we can assign arbitrary large edge length to the non-existing edge to make the graph complete.</p>
 </div>
-<dl class="simple myst">
-<dt>Input</dt><dd><ul class="simple">
-<li><p>A directed complete graph with non-negative edge length <span class="math notranslate nohighlight">\(\ell(e)\)</span>.</p></li>
+<p>Input
+: - A directed complete graph with non-negative edge length <span class="math notranslate nohighlight">\(\ell(e)\)</span>.</p>
+<ul class="simple">
 <li><p>A source vertex <span class="math notranslate nohighlight">\(s\)</span>.</p></li>
 </ul>
-</dd>
-<dt>Goal</dt><dd><p>Find the shortest path <span class="math notranslate nohighlight">\(P\)</span> between <span class="math notranslate nohighlight">\(s\)</span> and all other vertices</p>
-</dd>
-</dl>
+<p>Goal
+: Find the shortest path <span class="math notranslate nohighlight">\(P\)</span> between <span class="math notranslate nohighlight">\(s\)</span> and all other vertices</p>
 </div>
 <div class="section" id="dijkstra-s-algorithm">
 <h2>Dijkstra’s Algorithm<a class="headerlink" href="#dijkstra-s-algorithm" title="Permalink to this headline">¶</a></h2>
 <p>Dijkstra’s algorithm is a greedy algorithm, which maintains a set of vertices <span class="math notranslate nohighlight">\(S\)</span> and update it iteratively. At start, <span class="math notranslate nohighlight">\(S={s}\)</span>. If we found a shortest path between <span class="math notranslate nohighlight">\(s\)</span> to a vertex <span class="math notranslate nohighlight">\(u\)</span>, then <span class="math notranslate nohighlight">\(u\)</span> is added to <span class="math notranslate nohighlight">\(S\)</span>. If <span class="math notranslate nohighlight">\(S=V\)</span>, then the algorithm terminates.</p>
-<dl class="simple myst">
-<dt>Definition (Shortest path from <span class="math notranslate nohighlight">\(s\)</span> to <span class="math notranslate nohighlight">\(u\)</span> w.r.t <span class="math notranslate nohighlight">\(S\)</span>)</dt><dd><p>The shortest path from <span class="math notranslate nohighlight">\(s\)</span> to <span class="math notranslate nohighlight">\(u\)</span> w.r.t. <span class="math notranslate nohighlight">\(S\)</span> is a shortest path such that all vertices along the it <span class="math notranslate nohighlight">\((s,u)\)</span> are in <span class="math notranslate nohighlight">\(S\)</span>. The distance is denoted as <span class="math notranslate nohighlight">\(\operatorname{dist}(u)\)</span>.</p>
-</dd>
-</dl>
-<p>Let <span class="math notranslate nohighlight">\(\operatorname{short}(u)\)</span> be the unconstrained shortest path from <span class="math notranslate nohighlight">\(s\)</span> to <span class="math notranslate nohighlight">\(u\)</span>. Then we have</p>
+<p>Definition (Shortest path from <span class="math notranslate nohighlight">\(s\)</span> to <span class="math notranslate nohighlight">\(u\)</span> w.r.t <span class="math notranslate nohighlight">\(S\)</span>)
+: The shortest path from <span class="math notranslate nohighlight">\(s\)</span> to <span class="math notranslate nohighlight">\(u\)</span> w.r.t. <span class="math notranslate nohighlight">\(S\)</span> is a shortest path such that all vertices along the it <span class="math notranslate nohighlight">\((s,u)\)</span> are in <span class="math notranslate nohighlight">\(S\)</span>. The distance is denoted as <span class="math notranslate nohighlight">\(d(u)\)</span>.</p>
+<p>Let <span class="math notranslate nohighlight">\(d^{\text{opt}}(u)\)</span> be the unconstrained shortest path from <span class="math notranslate nohighlight">\(s\)</span> to <span class="math notranslate nohighlight">\(u\)</span>. Then we have</p>
 <div class="math notranslate nohighlight">
 \[
-\operatorname{dist}(u) \ge \operatorname{short}(u)
+d(u) \ge d^{\text{opt}}(u)
 \]</div>
 <p>The algorithm add <span class="math notranslate nohighlight">\(u\)</span> to <span class="math notranslate nohighlight">\(S\)</span> if the equality is achieved.</p>
 <p>Implementation:</p>
@@ -685,11 +725,11 @@
 <li><p>Initialize</p>
 <ul>
 <li><p><span class="math notranslate nohighlight">\(S = \left\{ s \right\}\)</span></p></li>
-<li><p><span class="math notranslate nohighlight">\(\operatorname{dist}(s)=0\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(d(s)=0\)</span></p></li>
 <li><p>For all other nodes <span class="math notranslate nohighlight">\(u \in V \backslash \left\{ s \right\}\)</span>,</p>
 <ul>
-<li><p>if <span class="math notranslate nohighlight">\(u\)</span> is an neighbor of <span class="math notranslate nohighlight">\(s\)</span>, set <span class="math notranslate nohighlight">\(\operatorname{dist}(u) = \ell(s,u)\)</span></p></li>
-<li><p>else set <span class="math notranslate nohighlight">\(\operatorname{dist}(u) = \infty\)</span></p></li>
+<li><p>if <span class="math notranslate nohighlight">\(u\)</span> is an neighbor of <span class="math notranslate nohighlight">\(s\)</span>, set <span class="math notranslate nohighlight">\(d(u) = \ell(s,u)\)</span></p></li>
+<li><p>else set <span class="math notranslate nohighlight">\(d(u) = \infty\)</span></p></li>
 </ul>
 </li>
 </ul>
@@ -704,39 +744,48 @@
 <ul>
 <li><p>Find <span class="math notranslate nohighlight">\(u^* = \arg\min _{u \notin S} d(u)\)</span></p></li>
 <li><p>Add <span class="math notranslate nohighlight">\(u^*\)</span> to <span class="math notranslate nohighlight">\(S\)</span></p></li>
-<li><p>For <span class="math notranslate nohighlight">\(v \notin S\)</span>,</p>
+<li><p>For <span class="math notranslate nohighlight">\(u \notin S\)</span>,</p>
 <ul>
-<li><p>If <span class="math notranslate nohighlight">\(\operatorname{dist}(u^*) + \ell(u^*, v) &lt; \operatorname{dist}(v)\)</span>, then update <span class="math notranslate nohighlight">\(\operatorname{dist}(v) \leftarrow \operatorname{dist}(u^*) + \ell(u^*, v)\)</span></p></li>
+<li><p>If <span class="math notranslate nohighlight">\(d(u^*) + \ell(u^*, u) &lt; d(u)\)</span>, then update <span class="math notranslate nohighlight">\(d(u) \leftarrow d(u^*) + \ell(u^*, u)\)</span></p></li>
 </ul>
 </li>
 </ul>
 </li>
+<li><p>For <span class="math notranslate nohighlight">\(v \in S\)</span>, the shortest path from <span class="math notranslate nohighlight">\(s\)</span> to <span class="math notranslate nohighlight">\(v\)</span> are is the collection of edges to compute <span class="math notranslate nohighlight">\(d(v)\)</span>.</p></li>
 </ul>
 <hr class="docutils" />
 <div class="section" id="correctness">
 <h3>Correctness<a class="headerlink" href="#correctness" title="Permalink to this headline">¶</a></h3>
-<p>Claim: For every <span class="math notranslate nohighlight">\(u\in S\)</span>, we have <span class="math notranslate nohighlight">\(\operatorname{dist}(u) = \operatorname{short}(u)\)</span></p>
+<p>Claim: For every <span class="math notranslate nohighlight">\(u\in S\)</span>, we have <span class="math notranslate nohighlight">\(d(u) = d^{\text{opt}}(u)\)</span></p>
 <p><em><strong>Proof by induction</strong></em></p>
 <ul class="simple">
-<li><p>Base: at initialization, <span class="math notranslate nohighlight">\(S = \left\{ s \right\}, \operatorname{dist}(s) = \operatorname{short}(s) = 0\)</span></p></li>
+<li><p>Base: at initialization, <span class="math notranslate nohighlight">\(S = \left\{ s \right\}, d(s) = d^{\text{opt}}(s) = 0\)</span></p></li>
 <li><p>Step: if the claim holds before adding <span class="math notranslate nohighlight">\(u^*\)</span>, then it also holds after adding <span class="math notranslate nohighlight">\(u^*\)</span></p></li>
 </ul>
-<p>For a newly added note <span class="math notranslate nohighlight">\(u^*\)</span>, suppose there is another path <span class="math notranslate nohighlight">\(Q_{s,u^*}\)</span>, from <span class="math notranslate nohighlight">\(s\)</span> to <span class="math notranslate nohighlight">\(u^*\)</span> through <span class="math notranslate nohighlight">\(y\notin S\)</span>. Since the algorithm select by <span class="math notranslate nohighlight">\(u^* = \arg\min _{u \notin S} d(u)\)</span>, we have</p>
+<p>For a newly added note <span class="math notranslate nohighlight">\(u^*\)</span>, let <span class="math notranslate nohighlight">\(P_{s,u^*}^{y}\)</span> be any path from <span class="math notranslate nohighlight">\(s\)</span> to <span class="math notranslate nohighlight">\(u^*\)</span> through <span class="math notranslate nohighlight">\(y\notin S\)</span>. Since the algorithm select by <span class="math notranslate nohighlight">\(u^* = \arg\min _{u \notin S} d(u)\)</span>, we have</p>
 <div class="math notranslate nohighlight">
 \[
-\operatorname{dist}(u^*) \le \operatorname{dist}(y)
+d(u^*) \le d(y)
 \]</div>
-<p>Let <span class="math notranslate nohighlight">\(d(y,u^*)\)</span> be the path length from <span class="math notranslate nohighlight">\(y\)</span> to <span class="math notranslate nohighlight">\(u^*\)</span> along <span class="math notranslate nohighlight">\(Q_{s,u^*}\)</span>, then by step assumption,</p>
+<p>By step assumption,</p>
 <div class="math notranslate nohighlight">
 \[
-\operatorname{dist}(y) + d(y,v) \le \ell(Q_{s,u^*})
+d(y) \le \ell(\text{any other paths from $s$ to $y$})
 \]</div>
+<p>Let <span class="math notranslate nohighlight">\(\ell_{P}(y,u^*)\)</span> be the path length from <span class="math notranslate nohighlight">\(y\)</span> to <span class="math notranslate nohighlight">\(u^*\)</span> along path <span class="math notranslate nohighlight">\(P_{s,u^*}^{y}\)</span></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+d(y) + \ell_{P}(y,u^*)
+&amp;\le \ell(\text{any path from $s$ to $y$}) + \ell_{P}(y,u^*)  \\
+&amp;\le \ell(\text{any path from $s$ to $y$, then $y$ to $u^*$}) \\
+&amp;\le \ell(P_{s,u^*}^{y}) \\
+\end{aligned}\end{split}\]</div>
 <p>Therefore,</p>
 <div class="math notranslate nohighlight">
 \[
-\operatorname{dist}(u^*) \le \ell(Q_{s,u^*})
+d(u^*) \le d(y) \le d(y)+ \ell_{P}(y,u^*) \le \ell(P_{s,u^*}^{y})
 \]</div>
-<p>Since <span class="math notranslate nohighlight">\(Q_{s,u^*}\)</span> is arbitrary, we have <span class="math notranslate nohighlight">\(\operatorname{dist}(u^*) = \operatorname{short}(u^*)\)</span></p>
+<p>for any <span class="math notranslate nohighlight">\(P_{s,u^*}^{y}\)</span>. Hence, <span class="math notranslate nohighlight">\(d(u^*) = d^{\text{opt}}(u^*)\)</span></p>
 <p><span class="math notranslate nohighlight">\(\square\)</span></p>
 </div>
 <div class="section" id="complexity">
@@ -746,10 +795,8 @@
 </div>
 <div class="section" id="negative-edge">
 <h3>Negative Edge<a class="headerlink" href="#negative-edge" title="Permalink to this headline">¶</a></h3>
-<dl class="simple myst">
-<dt>Definition (Negative cycle)</dt><dd><p>We call a cycle negative if the sum of the weights of the edges in a cycle is negative.</p>
-</dd>
-</dl>
+<p>Definition (Negative cycle)
+: We call a cycle negative if the sum of the weights of the edges in a cycle is negative.</p>
 <p>This leads to a problem</p>
 <div class="math notranslate nohighlight">
 \[
@@ -760,14 +807,10 @@ A - negative\ cycle - B
 </div>
 <div class="section" id="dp-based-algorithm-bellman-fosd">
 <h2>DP-based Algorithm (Bellman-Fosd)<a class="headerlink" href="#dp-based-algorithm-bellman-fosd" title="Permalink to this headline">¶</a></h2>
-<dl class="simple myst">
-<dt>Definition (Simple Path)</dt><dd><p>A path is a simple path if each vertex appears only once, i.e., no cycles.</p>
-</dd>
-<dt>Observations</dt><dd><ul class="simple">
-<li><p>If there are no negative cycles, then for every vertex <span class="math notranslate nohighlight">\(v\)</span>, there exists a shortest path <span class="math notranslate nohighlight">\(s-v\)</span> that a simple path.</p></li>
-</ul>
-</dd>
-</dl>
+<p>Definition (Simple Path)
+: A path is a simple path if each vertex appears only once, i.e., no cycles.</p>
+<p>Observations
+: - If there are no negative cycles, then for every vertex <span class="math notranslate nohighlight">\(v\)</span>, there exists a shortest path <span class="math notranslate nohighlight">\(s-v\)</span> that a simple path.</p>
 <p><em>Proof</em></p>
 <p>Let <span class="math notranslate nohighlight">\(P\)</span> be any shortest <span class="math notranslate nohighlight">\(s-v\)</span> path. If <span class="math notranslate nohighlight">\(p\)</span> is simple then done. Otherwise, some vertex <span class="math notranslate nohighlight">\(x\)</span> appears more than once on <span class="math notranslate nohighlight">\(P\)</span>. Then we can just delete all vertices between any appearances of <span class="math notranslate nohighlight">\(x\)</span> on this path. Since there are no negative cycles, the length of <span class="math notranslate nohighlight">\(P\)</span> does not increase.</p>
 <div class="math notranslate nohighlight">
@@ -807,14 +850,12 @@ T_{[0,v]} = \infty ??
 </div>
 <div class="section" id="id1">
 <h3>Correctness<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
-<dl class="simple myst">
-<dt>Claim</dt><dd><p>For all <span class="math notranslate nohighlight">\(i, v\)</span>, entry <span class="math notranslate nohighlight">\(T_{i,v}\)</span> contains the length of shortest <span class="math notranslate nohighlight">\(s-v\)</span> path with less than <span class="math notranslate nohighlight">\(i\)</span> vertices.</p>
-</dd>
-<dt>Base</dt><dd><p><span class="math notranslate nohighlight">\(i=0\)</span></p>
-</dd>
-<dt>Step</dt><dd><p>Assume correctness for all vertices below <span class="math notranslate nohighlight">\(i\)</span>…</p>
-</dd>
-</dl>
+<p>Claim
+: For all <span class="math notranslate nohighlight">\(i, v\)</span>, entry <span class="math notranslate nohighlight">\(T_{i,v}\)</span> contains the length of shortest <span class="math notranslate nohighlight">\(s-v\)</span> path with less than <span class="math notranslate nohighlight">\(i\)</span> vertices.</p>
+<p>Base
+: <span class="math notranslate nohighlight">\(i=0\)</span></p>
+<p>Step
+: Assume correctness for all vertices below <span class="math notranslate nohighlight">\(i\)</span>…</p>
 </div>
 </div>
 </div>

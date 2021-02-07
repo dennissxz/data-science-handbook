@@ -409,8 +409,18 @@
   </a>
   <ul class="collapse-ul">
    <li class="toctree-l2">
-    <a class="reference internal" href="../31-regression/11-linear-models.html">
-     Linear Models
+    <a class="reference internal" href="../31-regression/11-lm-estimation.html">
+     Linear Models - Estimation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/12-lm-inference.html">
+     Linear Regression - Inference
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/13-lm-extension.html">
+     Linear Regression - Extension
     </a>
    </li>
   </ul>
@@ -475,10 +485,44 @@
   </i>
  </li>
  <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../34-clustering/00-clustering.html">
+   Clustering
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../34-clustering/11-k-means.html">
+     K-means clustering
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../34-clustering/13-agglomerative-methods.html">
+     Agglomerative Methods
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
   <a class="reference internal" href="../37-neural-networks/00-neural-networks.html">
    Neural Networks
   </a>
   <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/01-stochastic-gradient-descent.html">
+     Stochastic Gradient Descent
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/03-trainability.html">
+     Trainability
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/05-regularization.html">
+     Regularization
+    </a>
+   </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../37-neural-networks/11-autoencoders.html">
      Autoencoders
@@ -663,10 +707,10 @@
 \[
 \left\|\mathbf{z}_{i}-\mathbf{z}_{j}\right\|^{2} \approx \Delta_{i j}^{2}
 \]</div>
-<div class="figure align-default" id="isomap-geodesic-distance">
-<a class="reference internal image-reference" href="../_images/gb-isomap-d3k2.png"><img alt="" src="../_images/gb-isomap-d3k2.png" style="width: 80%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 14 </span><span class="caption-text">Isomap with <span class="math notranslate nohighlight">\(d=3,k=2\)</span>. The blue line is the real geodesic distance and the red line is estimated.  [Livescu 2021]</span><a class="headerlink" href="#isomap-geodesic-distance" title="Permalink to this image">¶</a></p>
-</div>
+<p>:::{figure} isomap-geodesic-distance
+<img src="../imgs/gb-isomap-d3k2.png" width = "80%" alt=""/></p>
+<p>Isomap with <span class="math notranslate nohighlight">\(d=3,k=2\)</span>. The blue line is the real geodesic distance and the red line is estimated.  [Livescu 2021]
+:::</p>
 </div>
 <div class="section" id="pros-cons">
 <h3>Pros Cons<a class="headerlink" href="#pros-cons" title="Permalink to this headline">¶</a></h3>
@@ -677,16 +721,16 @@
 <p><strong>Cons</strong></p>
 <ul>
 <li><p>Can be sensitive to the <strong>neighborhood size</strong> used in graph construction, or equivalently to the noise in the data.</p>
-<div class="figure align-default" id="isomap-noise">
-<a class="reference internal image-reference" href="../_images/gb-isomap-failure.png"><img alt="" src="../_images/gb-isomap-failure.png" style="width: 70%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 15 </span><span class="caption-text">Isomap fails when there are noises [Livescu 2021]</span><a class="headerlink" href="#isomap-noise" title="Permalink to this image">¶</a></p>
-</div>
+<p>:::{figure} isomap-noise
+<img src="../imgs/gb-isomap-failure.png" width = "70%" alt=""/></p>
+<p>Isomap fails when there are noises [Livescu 2021]
+:::</p>
 </li>
 <li><p>Can’t handle <strong>holes</strong> in the manifold. Geodesic distance computation can break. This is because the two points (even with the same color/label) sit in opposite to the hole have large geodesic distance on the manifold, which leads to large Euclidean distance in the projected space.</p>
-<div class="figure align-default" id="gb-isomap-holes">
-<a class="reference internal image-reference" href="../_images/gb-isomap-holes.png"><img alt="" src="../_images/gb-isomap-holes.png" style="width: 80%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 16 </span><span class="caption-text">Isomap fails when there are holes [Livescu 2021]</span><a class="headerlink" href="#gb-isomap-holes" title="Permalink to this image">¶</a></p>
-</div>
+<p>:::{figure} gb-isomap-holes
+<img src="../imgs/gb-isomap-holes.png" width = "80%" alt=""/></p>
+<p>Isomap fails when there are holes [Livescu 2021]
+:::</p>
 </li>
 </ul>
 </div>
@@ -730,10 +774,10 @@
 \boldsymbol{L} =\boldsymbol{I}  - \boldsymbol{D} ^{-\frac{1}{2}} \boldsymbol{W}  \boldsymbol{D} ^{-\frac{1}{2}}
 \]</div>
 <p>excluding the bottom (constant) eigenvector??. This is a symmetrized, normalized form of the graph Laplacian <span class="math notranslate nohighlight">\(\boldsymbol{D} - \boldsymbol{W}\)</span>.</p>
-<div class="figure align-default" id="gb-laplacian-eigenmap-nt">
-<a class="reference internal image-reference" href="../_images/gb-laplacian-eigenmap-Nt.png"><img alt="" src="../_images/gb-laplacian-eigenmap-Nt.png" style="width: 50%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 17 </span><span class="caption-text">Laplacian eigenmap with varing N-nearest-neighbors and temperature <span class="math notranslate nohighlight">\(t\)</span> [Livescu 2021]</span><a class="headerlink" href="#gb-laplacian-eigenmap-nt" title="Permalink to this image">¶</a></p>
-</div>
+<p>:::{figure} gb-laplacian-eigenmap-Nt
+<img src="../imgs/gb-laplacian-eigenmap-Nt.png" width = "50%" alt=""/></p>
+<p>Laplacian eigenmap with varing N-nearest-neighbors and temperature <span class="math notranslate nohighlight">\(t\)</span> [Livescu 2021]</p>
+<p>:::</p>
 </div>
 </div>
 <div class="section" id="locally-linear-embedding">

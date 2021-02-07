@@ -1,0 +1,1088 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Stochastic Gradient Descent &#8212; Data Science Handbook</title>
+    
+  <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+  <link rel="stylesheet"
+    href="../_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="../_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinx-book-theme.40e2e510f6b7d1648584402491bb10fe.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/style.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.d3f166471bb80abb5163.js">
+
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Trainability" href="03-trainability.html" />
+    <link rel="prev" title="Neural Networks" href="00-neural-networks.html" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+
+
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+<a class="navbar-brand text-wrap" href="../index.html">
+  
+  
+  <h1 class="site-logo" id="site-title">Data Science Handbook</h1>
+  
+</a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form>
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+    <ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../index.html">
+   Data Science Handbook
+  </a>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Foundations
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../11-math/00-math.html">
+   Math
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/11-combinatorics.html">
+     Combinatorics
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/12-derangement.html">
+     Derangement
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/21-linear-algebra.html">
+     Linear Algebra
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/51-optimization.html">
+     Optimization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/90-puzzles.html">
+     Puzzles
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../12-probabilities/00-probabilities.html">
+   Probabilities
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/11-expectation-and-variance.html">
+     Expectation and Variance
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/13-correlation-and-dependence.html">
+     Correlation and Dependence
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/31-bayesian-theorem.html">
+     Bayesian’s Theorem
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/51-markov-chain.html">
+     Markov Chain
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/71-sampling.html">
+     Sampling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/90-multivariate-notations.html">
+     Multivariate Notations
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/91-large-sample-theory.html">
+     Large Sample Theory
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../13-statistics/00-statistics.html">
+   Statistics
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/11-sample-survey.html">
+     Sample Survey
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/13-randomized-trial.html">
+     Causality and Randomized Trial
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/21-hypothesis-testing.html">
+     Hypothesis Testing
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/25-two-sample-tests.html">
+     Two Sample Mean Tests
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/33-confusion-matrix.html">
+     Confusion Matrix
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/41-maximum-likelihood-estimation.html">
+     Maximum Likelihood Estimator
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/43-estimators-evaluation.html">
+     Estimators Evaluation
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../14-python/00-python.html">
+   Python
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../14-python/11-programming-tools.html">
+     Programmer tools
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../14-python/12-syntax.html">
+     Syntax
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../14-python/13-data-structure.html">
+     Data Structures
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../14-python/15-functional-programming.html">
+     Functional Programming
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../17-sql/00-sql.html">
+   SQL
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../17-sql/11-database.html">
+     Database
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../17-sql/12-relational-structure.html">
+     Relational Structure
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../17-sql/31-data-query.html">
+     Data Query
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../17-sql/33-data-manipulation.html">
+     Data Manipulation
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../19-miscellaneous/00-miscellaneous.html">
+   Miscellaneous
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../19-miscellaneous/11-latex.html">
+     LaTeX
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../19-miscellaneous/13-myst.html">
+     MyST Markdown
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Algorithms
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../20-algorithms-basics/00-algorithms-basics.html">
+   Algorithms Basics
+  </a>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../21-greedy-algorithms/00-greedy-algorithms.html">
+   Greedy Algorithms
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../21-greedy-algorithms/11-interval-scheduling.html">
+     Interval Scheduling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../21-greedy-algorithms/31-huffman-coding.html">
+     Huffman Coding
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../23-dynamic-programming/00-dynamic-programming.html">
+   Dynamic Programming
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/11-weighted-interval-scheduling.html">
+     Weighted JISP
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/13-longest-common-subsequence.html">
+     Longest Common Subsequence
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../25-graph-related/00-graph-related.html">
+   Graph Related
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/13-shortest-path.html">
+     Shortest Path
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/21-minimum-spanning-tree.html">
+     Minimum Spanning Tree
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/31-maximum-flow.html">
+     Maximum Flow
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Machine Learning
+ </span>
+</p>
+<ul class="current nav sidenav_l1">
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../30-ml-basics/00-ml-basics.html">
+   Machine Learning Basics
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../30-ml-basics/02-taxonomy.html">
+     Taxonomy
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../30-ml-basics/03-information-theory.html">
+     Information Theory
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../30-ml-basics/05-kernels.html">
+     Kernels
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../31-regression/00-regression.html">
+   Regression
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/11-lm-estimation.html">
+     Linear Models - Estimation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/12-lm-inference.html">
+     Linear Regression - Inference
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/13-lm-extension.html">
+     Linear Regression - Extension
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../32-classification/00-classification.html">
+   Classification
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../32-classification/11-support-vector-machine.html">
+     Support Vector Machine
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../33-dimensionality-reduction/00-dimensionality-reduction.html">
+   Dimensionality Reduction
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/11-principal-component-analysis.html">
+     Principal Component Analysis
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/13-canonical-correlation-analysis.html">
+     Canonical Corerlation Analysis
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/21-multidimensional-scaling.html">
+     Multidimensional Scaling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/23-graph-based-spectral-methods.html">
+     Graph-based Spectral Methods
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/25-kernel-pca.html">
+     Kernel PCA
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/31-t-SNE.html">
+     SNE and
+     <span class="math notranslate nohighlight">
+      \(t\)
+     </span>
+     -SNE
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../34-clustering/00-clustering.html">
+   Clustering
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../34-clustering/11-k-means.html">
+     K-means clustering
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../34-clustering/13-agglomerative-methods.html">
+     Agglomerative Methods
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 current active collapsible-parent">
+  <a class="reference internal" href="00-neural-networks.html">
+   Neural Networks
+  </a>
+  <ul class="current collapse-ul">
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     Stochastic Gradient Descent
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="03-trainability.html">
+     Trainability
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="05-regularization.html">
+     Regularization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="11-autoencoders.html">
+     Autoencoders
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="13-variational-autoencoders.html">
+     Variational Autoencoders
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+</ul>
+
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="row topbar fixed-top container-xl">
+    <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show">
+    </div>
+    <div class="col pl-2 topbar-main">
+        
+        <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+            data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+            aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+            title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+            <i class="fas fa-bars"></i>
+            <i class="fas fa-arrow-left"></i>
+            <i class="fas fa-arrow-up"></i>
+        </button>
+        
+        
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../_sources/37-neural-networks/01-stochastic-gradient-descent.md"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.md</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+        <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/dennissxz/data-science-handbook"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/dennissxz/data-science-handbook/issues/new?title=Issue%20on%20page%20%2F37-neural-networks/01-stochastic-gradient-descent.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+
+        <!-- Full screen (wrap in <a> to have style consistency -->
+        <a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+                data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+                title="Fullscreen mode"><i
+                    class="fas fa-expand"></i></button></a>
+
+        <!-- Launch buttons -->
+
+    </div>
+
+    <!-- Table of contents -->
+    <div class="d-none d-md-block col-md-2 bd-toc show">
+        
+        <div class="tocsection onthispage pt-5 pb-3">
+            <i class="fas fa-list"></i> Contents
+        </div>
+        <nav id="bd-toc-nav">
+            <ul class="nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#why-stochastic">
+   Why “Stochastic”
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#basic-gradient-descent">
+     Basic Gradient Descent
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id1">
+     Stochastic Gradient Descent
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#mini-batch-gradient-descent">
+     Mini-batch Gradient Descent
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#comparison">
+     Comparison
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#learning-rate-scheduling">
+   Learning Rate Scheduling
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#concepts-review">
+     Concepts Review
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#learning-rate-decay">
+     Learning Rate Decay
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#classical-convergence-theorem">
+     Classical Convergence Theorem
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#optimizers">
+   Optimizers
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#momentum-sgd">
+     Momentum SGD
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#review-of-running-average">
+       Review of Running Average
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#algorithm">
+       Algorithm
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#root-mean-square-prop-rmsprop">
+     Root Mean Square Prop (RMSProp)
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#motivation">
+       Motivation
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#id2">
+       Algorithm
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#adaptive-momentum-adam">
+     Adaptive Momentum (Adam)
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#issues">
+   Issues
+  </a>
+ </li>
+</ul>
+
+        </nav>
+        
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="stochastic-gradient-descent">
+<h1>Stochastic Gradient Descent<a class="headerlink" href="#stochastic-gradient-descent" title="Permalink to this headline">¶</a></h1>
+<p>In this section we talk stochastic gradient descent in detail. Recall the three general steps in stochastic gradient descent:</p>
+<ol class="simple">
+<li><p>run forward propagation with <span class="math notranslate nohighlight">\(\Theta^{(t-1)}\)</span> to compute the loss <span class="math notranslate nohighlight">\(\mathcal{L}\left(\boldsymbol{X} , \boldsymbol{y}; \Theta^{(t-1)}\right)\)</span></p></li>
+<li><p>compute gradient via chain rule <span class="math notranslate nohighlight">\(\boldsymbol{g}^{(t)}(\boldsymbol{X}, \boldsymbol{y})=\nabla_{\Theta} \mathcal{L}\left(\boldsymbol{X} , \boldsymbol{y}; \Theta^{(t-1)}\right)\)</span></p></li>
+<li><p>update the model parameters <span class="math notranslate nohighlight">\(\Theta^{(t)}=\Theta^{(t-1)}-\eta \boldsymbol{g}^{(t)}\)</span></p></li>
+</ol>
+<p>Then we check for stopping criteria (convergence of loss / gradient, model performance, etc).</p>
+<div class="section" id="why-stochastic">
+<h2>Why “Stochastic”<a class="headerlink" href="#why-stochastic" title="Permalink to this headline">¶</a></h2>
+<p>SGD differ from standard GD on how the gradient is computed.</p>
+<div class="section" id="basic-gradient-descent">
+<h3>Basic Gradient Descent<a class="headerlink" href="#basic-gradient-descent" title="Permalink to this headline">¶</a></h3>
+<p>Definition (Epoch)
+: An epoch is a single pass through the training set.</p>
+<div class="margin sidebar">
+<p class="sidebar-title">Total loss vs sum of losses</p>
+<p>In some cases the total loss is not a sum of per-example losses</p>
+</div>
+<p>A single “iteration” <span class="math notranslate nohighlight">\(t\)</span> can be an epoch, which means we loop over examples (or in parallel) to compute the gradient <span class="math notranslate nohighlight">\(\boldsymbol{g}^{(t)}\left(\boldsymbol{x}_{i}, y_{i}\right)\)</span> for each observation <span class="math notranslate nohighlight">\(i\)</span> and use the average gradient to approximate the true gradient</p>
+<div class="math notranslate nohighlight">
+\[
+\boldsymbol{g}^{(t)}(X, Y)=\frac{1}{n} \sum_{i} \boldsymbol{g}^{(t)}\left(\boldsymbol{x}_{i}, y_{i}\right)
+\]</div>
+<p>Then we make a single update at the end of the epoch.</p>
+<p>Assuming <span class="math notranslate nohighlight">\(n\)</span> is large, <span class="math notranslate nohighlight">\(\boldsymbol{g}^{(t)}(X, Y)\)</span> is a good estimate for gradient, but it costs <span class="math notranslate nohighlight">\(O(n)\)</span> to compute.</p>
+</div>
+<div class="section" id="id1">
+<h3>Stochastic Gradient Descent<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<p>Computing gradient on all <span class="math notranslate nohighlight">\(n\)</span> examples is expensive and may be wasteful: many data points provide similar information.</p>
+<p>Instead, SGD <strong>randomly</strong> select one observation at a time. It estimates the gradient on the entire set by the gradient on a single example in an iteration <span class="math notranslate nohighlight">\(t\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{1}{n} \sum_{i=1}^{n} \nabla_{\Theta} L\left(y_{i}, \boldsymbol{x}_{i} ; \Theta\right) \approx \nabla_{\Theta} L\left(y_{t}, \boldsymbol{x}_{t} ; \Theta\right)
+\]</div>
+</div>
+<div class="section" id="mini-batch-gradient-descent">
+<h3>Mini-batch Gradient Descent<a class="headerlink" href="#mini-batch-gradient-descent" title="Permalink to this headline">¶</a></h3>
+<p>Mini-batch gradient descent use a batch <span class="math notranslate nohighlight">\(B\)</span> of observations to estimate the sample gradient in an iteration. For some <span class="math notranslate nohighlight">\(B \subset \left\{ 1,2,\ldots, n \right\},|B| \ll n\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{1}{n} \sum_{i=1}^{n} \nabla_{\Theta} L\left(y_{i}, \boldsymbol{x}_{i} ; \Theta\right) \approx \frac{1}{|B|} \sum_{b \in B} \nabla_{\Theta} L\left(y_{b}, \boldsymbol{x}_{b} ; \Theta\right)
+\]</div>
+<p>In each epoch, we shuffle data, partition into batches, and iterate over batches.</p>
+<p>In theory, if computation power is not an issue, we should set <span class="math notranslate nohighlight">\(\left\vert B \right\vert\)</span> as large as possible. But in practice, people found there are some advantages of small <span class="math notranslate nohighlight">\(\left\vert B \right\vert\)</span>. Using small <span class="math notranslate nohighlight">\(\left\vert B \right\vert\)</span> works like adding noise to the gradient, which brings regularization effect and make the trained model more robust. Usually <span class="math notranslate nohighlight">\(\left\vert B \right\vert = 32, 64\)</span> are used.</p>
+<p>Nowadays, the term SGD often refers to batch GD.</p>
+</div>
+<div class="section" id="comparison">
+<h3>Comparison<a class="headerlink" href="#comparison" title="Permalink to this headline">¶</a></h3>
+<p>We can plot the contours of the loss value w.r.t. parameter <span class="math notranslate nohighlight">\(\boldsymbol{\Phi}\)</span>, and plot the trajectory of <span class="math notranslate nohighlight">\(\boldsymbol{\Phi}^{(t)}\)</span> for GD, SGD and mini-batch GD. We can see</p>
+<ul class="simple">
+<li><p>GD has the smoothest trajectory</p></li>
+<li><p>SGD has the most tortuous trajectory</p></li>
+<li><p>Batch GD is between the two. Increasing the batch size reduces the noise in gradient.</p></li>
+</ul>
+<p>:::{figure} nn-sgd-trajectory
+<img src="../imgs/nn-sgd-trajectory.png" width = "30%" alt=""/></p>
+<p>Comparison of gradient descent methods [Shi 2021]
+:::</p>
+</div>
+</div>
+<div class="section" id="learning-rate-scheduling">
+<h2>Learning Rate Scheduling<a class="headerlink" href="#learning-rate-scheduling" title="Permalink to this headline">¶</a></h2>
+<p>How to tune learning rate? First we review some concepts in optimization, and introduce learning rate decay, and finally introduce theoretical foundation for it.</p>
+<div class="section" id="concepts-review">
+<h3>Concepts Review<a class="headerlink" href="#concepts-review" title="Permalink to this headline">¶</a></h3>
+<ul>
+<li><p>Local minimum</p>
+<p>A point <span class="math notranslate nohighlight">\(\boldsymbol{x}^{\&amp;}\)</span> where <span class="math notranslate nohighlight">\(\boldsymbol{g}^{\&amp;}=0\)</span> and <span class="math notranslate nohighlight">\(H^{\&amp;}\succeq0\)</span></p>
+</li>
+<li><p>Stationary point</p>
+<ul>
+<li><p>In classical optimization, <span class="math notranslate nohighlight">\(x^{*}\)</span> is a stationary point if the gradient is zero</p>
+<div class="math notranslate nohighlight">
+\[
+      \nabla f(x^{*})=0
+      \]</div>
+</li>
+<li><p>In deep learning SGD, gradient and parameter update and loss update are random since the batch is random</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+      \begin{aligned}
+      \hat{g} &amp; =E_{(x,y)\sim\text{ Batch }}\nabla_{\Phi}\mathcal{L}(\Phi,x,y)\\
+      \Delta\Phi &amp; =\eta\hat{g}
+      \end{aligned}
+      \end{split}\]</div>
+<p>Sometimes the stationary point <span class="math notranslate nohighlight">\(\Phi^{*}\)</span> is defined similarly as that in classical optimization, i.e. average gradient is zero</p>
+<div class="math notranslate nohighlight">
+\[
+      \nabla_{\Phi}E_{(x,y)\sim\operatorname{Train}}\mathcal{L}(\Phi,x,t)=E_{(x,y)\sim\text{ Batch }}\nabla_{\Phi}\mathcal{L}(\Phi,x,y)=0
+      \]</div>
+<p>but sometimes we say we reach a stationary point <span class="math notranslate nohighlight">\(\Phi^{*}\)</span> of aloss function <span class="math notranslate nohighlight">\(\mathcal{L}\)</span> if that the (expected) <strong>loss update</strong> is 0, i.e.</p>
+<div class="math notranslate nohighlight">
+\[
+      E\left[\mathcal{L}(\Phi^{*}+\Delta\Phi)-\mathcal{L}(\Phi^{*})\right]=0
+      \]</div>
+</li>
+</ul>
+</li>
+<li><p>Stationary distribution</p>
+<div class="margin sidebar">
+<p class="sidebar-title"></p>
+<p>Similar to the sense of stationary distribution in Markov Chains.</p>
+</div>
+<p>After we reach a stationary point, the parameters after one update is <span class="math notranslate nohighlight">\(\Phi^{*}+\Delta_{1}\Phi\)</span>, after two update is <span class="math notranslate nohighlight">\(\Phi^{*}+\Delta_{1}\Phi+\Delta_{2}\Phi\)</span> and all these updated parameters follow a distribution <span class="math notranslate nohighlight">\(\sim\)</span> stationary distribution.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="learning-rate-decay">
+<h3>Learning Rate Decay<a class="headerlink" href="#learning-rate-decay" title="Permalink to this headline">¶</a></h3>
+<p>The magnitude of learning rate is important. When we are close to a minimum, if the learning rate is still large, then we will jump around and cannot achieve the minimum. Thus, an attempt is reduce learning rate by time.</p>
+<p>:::{figure} nn-lr-decay-traj
+<img src="../imgs/nn-lr-decay-traj.png" width = "50%" alt=""/></p>
+<p>Loss trajectory with (green) vs without (blue) learning rate decay [Ng 2017]
+:::</p>
+<p>In practice, we start with a reasonable learning rate, and drop learning rate by some schedule</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\eta = 0.95 ^{\text{epoch} } \eta_0\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\eta = \frac{k}{\sqrt{\text{epoch}}} \eta_0\)</span> or <span class="math notranslate nohighlight">\(\eta = \frac{k}{\sqrt{t}} \eta_0\)</span></p></li>
+<li><p>decay by a factor of <span class="math notranslate nohighlight">\(\alpha\)</span> every <span class="math notranslate nohighlight">\(\beta\)</span> epochs.</p></li>
+<li><p>manually drop (typically 1/10) when loss appears stuck (monitor mini-batch training loss)</p></li>
+</ul>
+<p>:::{figure} nn-lr-decay
+<img src="../imgs/nn-lr-decay.png" width = "50%" alt=""/></p>
+<p>Training loss drop down by learning rate decay [Shi 2021]
+:::</p>
+</div>
+<div class="section" id="classical-convergence-theorem">
+<h3>Classical Convergence Theorem<a class="headerlink" href="#classical-convergence-theorem" title="Permalink to this headline">¶</a></h3>
+<p>If use the fundamental update equation</p>
+<div class="math notranslate nohighlight">
+\[
+\Phi \mathrel{+}= - \eta_{t}\nabla_{\Phi}\mathcal{L}\left(\Phi,x_{t},y_{t}\right)
+\]</div>
+<p>and if the following conditions of learning rate holds</p>
+<div class="math notranslate nohighlight">
+\[
+\eta_{t}\geq0\quad\lim_{t\rightarrow\infty}\eta_{t}=0\quad\sum_{t}\eta_{t}=\infty\quad\sum_{t}\eta_{t}^{2}&lt;\infty
+\]</div>
+<p>then</p>
+<ul>
+<li><p>the training loss <span class="math notranslate nohighlight">\(E_{(x,y)\sim\operatorname{Train}}\mathcal{L}(\Phi,x,t)\)</span> will converges to a limit, and</p></li>
+<li><p>any limit point of the sequence <span class="math notranslate nohighlight">\(\Phi_{t}\)</span> is a stationary point in the sense that the gradient at that point is <span class="math notranslate nohighlight">\(0\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[
+    \nabla_{\Phi}E_{(x,y)\sim\operatorname{Train}}\mathcal{L}(\Phi,x,t)=0
+    \]</div>
+</li>
+</ul>
+<p>Note that it may be a saddle point, not a local optimum.</p>
+</div>
+</div>
+<div class="section" id="optimizers">
+<h2>Optimizers<a class="headerlink" href="#optimizers" title="Permalink to this headline">¶</a></h2>
+<p>There are various algorithms to reduce oscillations in the training trajectory and speed up training.</p>
+<ul class="simple">
+<li><p>Momentum SGD use a running average of gradient instead of the raw gradient.</p></li>
+<li><p>RMSProp is an adaptive SGD methods, in the sense that they use different learning rates for different parameters.</p></li>
+<li><p>Adam combines momentum and RMSProp, and is more widely used.</p></li>
+</ul>
+<div class="section" id="momentum-sgd">
+<h3>Momentum SGD<a class="headerlink" href="#momentum-sgd" title="Permalink to this headline">¶</a></h3>
+<p>Momentum SGD use a running average of gradient instead of the raw gradient. The averaging step can reduce oscillations in the trajectory. It also has interpretation as velocity and acceleration.</p>
+<p>:::{figure} nn-sgd-momentum
+<img src="../imgs/nn-sgd-momentum.png" width = "80%" alt=""/></p>
+<p>SGD with and without momentum [S. Ruder]
+:::</p>
+<div class="section" id="review-of-running-average">
+<h4>Review of Running Average<a class="headerlink" href="#review-of-running-average" title="Permalink to this headline">¶</a></h4>
+<p>First we review the concept of running average.</p>
+<p>A running average <span class="math notranslate nohighlight">\(\tilde{\boldsymbol{x}}_t\)</span> on input <span class="math notranslate nohighlight">\(x_t\)</span> is written as a weight sum of previous value <span class="math notranslate nohighlight">\(\tilde{\boldsymbol{x}}_{t-1}\)</span> and new input <span class="math notranslate nohighlight">\(x_t\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+\tilde{\boldsymbol{x}}_{t}=\left(1-\frac{1}{N}\right)\tilde{\boldsymbol{x}}_{t-1}+\left(\frac{1}{N}\right)x_{t}
+\]</div>
+<p>or equivalently
+$<span class="math notranslate nohighlight">\(
+\tilde{\boldsymbol{x}}_{t}=\beta\tilde{\boldsymbol{x}}_{t-1}+(1-\beta)x_{t}
+\)</span>$</p>
+<p>where
+$<span class="math notranslate nohighlight">\(
+\beta=1-1/N
+\)</span>$</p>
+<p>Typical values for <span class="math notranslate nohighlight">\(\beta\)</span> are 0.9, 0.99 or 0.999 corresponding to
+<span class="math notranslate nohighlight">\(N\)</span> being <span class="math notranslate nohighlight">\(10,100\)</span> or <span class="math notranslate nohighlight">\(1000\)</span>, which is the window size.</p>
+<p>:::{admonition,note} Bias correction in warm up period</p>
+<p>Note there is a warm up period <span class="math notranslate nohighlight">\(t&lt;N\)</span> of the running average <span class="math notranslate nohighlight">\(\tilde{x}_{t}\)</span>,
+where the value is strongly biased toward zero if <span class="math notranslate nohighlight">\(\tilde{x}_{0}=0\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{array}{l}
+\tilde{x}_{0}=0\\
+\tilde{x}_{t}=\left(1-\frac{1}{N}\right)\tilde{x}_{t-1}+\left(\frac{1}{N}\right)x_{t}
+\end{array}
+\end{split}\]</div>
+<p>We can consider not to use the last <span class="math notranslate nohighlight">\(N\)</span> terms but use all other terms
+<span class="math notranslate nohighlight">\(x_{1}\)</span> to <span class="math notranslate nohighlight">\(x_{t}\)</span></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}\tilde{x}_{t} &amp; =\left(\frac{t-1}{t}\right)\tilde{x}_{t-1}+\left(\frac{1}{t}\right)x_{t}\\
+ &amp; =\left(1-\frac{1}{t}\right)\tilde{x}_{t-1}+\left(\frac{1}{t}\right)x_{t}
+\end{aligned}
+\end{split}\]</div>
+<p>and we have <span class="math notranslate nohighlight">\(\tilde{x}_{1}=x_{1}\)</span>, as initial value. But this fails
+to track a moving average when <span class="math notranslate nohighlight">\(t\gg N\)</span>. So to combine the two methods
+together,</p>
+<div class="math notranslate nohighlight">
+\[
+\tilde{x}_{t}=\left(1-\frac{1}{\min(N,t)}\right)\tilde{x}_{t-1}+\left(\frac{1}{\min(N,t)}\right)x_{t}
+\]</div>
+<p>:::</p>
+</div>
+<div class="section" id="algorithm">
+<h4>Algorithm<a class="headerlink" href="#algorithm" title="Permalink to this headline">¶</a></h4>
+<p>The standard momentum SGD algorithm is</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+{\color{teal}{\boldsymbol{\tilde{g}}_{t}}} &amp;=\left(1-\frac{1}{N_g}\right){\color{teal}{\boldsymbol{\tilde{g}}_{t-1}}}+\frac{1}{N_g}{\color{blue}{\hat{\boldsymbol{g}}_{t}}} \\
+\boldsymbol{\Phi}_{t+1} &amp; =\boldsymbol{\Phi}_{t}- \eta \color{teal}{\boldsymbol{\tilde{g}}_{t}}
+\end{aligned}
+\end{split}\]</div>
+<p>where</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\({\color{teal}{\boldsymbol{\tilde{g}}_{t}}}\)</span> is a running average of gradient estimate <span class="math notranslate nohighlight">\(\color{blue}{\hat{\boldsymbol{g}}_{t}}\)</span>, also interpreted as <em>velocity</em></p></li>
+<li><p><span class="math notranslate nohighlight">\(\color{blue}{\hat{\boldsymbol{g}}_{t}}\)</span> is the gradient estimate, also interpreted as <em>acceleration</em></p></li>
+<li><p><span class="math notranslate nohighlight">\(N_g=10,100\)</span> or <span class="math notranslate nohighlight">\(1000\)</span> is the window size.</p></li>
+</ul>
+<p>The hyperparameters are <span class="math notranslate nohighlight">\(N_g, \eta\)</span>.</p>
+</div>
+</div>
+<div class="section" id="root-mean-square-prop-rmsprop">
+<h3>Root Mean Square Prop (RMSProp)<a class="headerlink" href="#root-mean-square-prop-rmsprop" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="motivation">
+<h4>Motivation<a class="headerlink" href="#motivation" title="Permalink to this headline">¶</a></h4>
+<p>To reduce oscillations in the training trajectory, we wants to slow down learning in the parameter direction with large gradient, and speed up learning in the parameter direction with small gradient. To achieve this, we need parameter dimension-specific update, and a measure of large/small gradient in that parameter dimension.</p>
+<p>One attempt is to can set the learning rate in the update
+equation <span class="math notranslate nohighlight">\({\boldsymbol{\Phi}}_{t+1}[i]={\boldsymbol{\Phi}}_{t}[i]-\eta{\color{blue}{\hat{\boldsymbol{g}}_{t}[i]}}\)</span>
+to be <span class="math notranslate nohighlight">\(\eta_{i}=\eta_{0}/\sigma_{i}^{2}\)</span>, where <span class="math notranslate nohighlight">\(\sigma_i^2 = \operatorname{Var}\left( \boldsymbol{g} _t[i] \right)\)</span> is a measure of large/small gradient in that parameter dimension.</p>
+<div class="math notranslate nohighlight">
+\[
+{\boldsymbol{\Phi}}_{t+1}[i]={\boldsymbol{\Phi}}_{t}[i]-\frac{\eta_{0}}{\sigma_{i}^{2}}{\color{blue}{\hat{\boldsymbol{g}}_{t}[i]}}
+\]</div>
+<p>i.e. learning rate is inversely proportional to the variance.</p>
+<p>But in practice, dividing by standard deviation works better</p>
+<div class="math notranslate nohighlight">
+\[
+{\boldsymbol{\Phi}}_{t+1}[i]={\boldsymbol{\Phi}}_{t}[i]-\frac{\eta_{0}}{\sigma_{i}}{\color{blue}{\hat{\boldsymbol{g}}_{t}[i]}}
+\]</div>
+<p>So question is, how to find <span class="math notranslate nohighlight">\(\sigma _i\)</span>?</p>
+</div>
+<div class="section" id="id2">
+<h4>Algorithm<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h4>
+<p>RMSrPop’s approximates <span class="math notranslate nohighlight">\(\sigma_i\)</span> by a running average <span class="math notranslate nohighlight">\(\boldsymbol{s}_{t}[i]\)</span> of the <strong>second moment</strong> of the gradient of a particular parameter dimension, written as <span class="math notranslate nohighlight">\({\color{blue}{\hat{\boldsymbol{g} }_{t}[i]^{2}}}\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}{\color{brown}{\boldsymbol{s}_{t}[i]}} &amp; =\left(1-\frac{1}{N_{s}}\right){\color{brown}{\boldsymbol{s}_{t-1}[i]}} +\frac{1}{N_{s}}{\color{blue}{\hat{\boldsymbol{g}}_{t}[i]^{2}}}\\
+{\boldsymbol{\Phi}}_{t+1}[i] &amp; ={\boldsymbol{\Phi}}_{t}[i]-\frac{\eta}{\sqrt{{\color{brown}{\boldsymbol{s}_{t}[i]}}}+\epsilon}{\color{blue}{\hat{\boldsymbol{g}}_{t}[i]}}
+\end{aligned}
+\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\epsilon\)</span> is used to avoid <span class="math notranslate nohighlight">\(/0\)</span>.</p>
+<div class="margin sidebar">
+<p class="sidebar-title"></p>
+<p>PyTorch has a <em>centering</em> option
+that switches from the second moment to the variance.</p>
+</div>
+<p>Basically, <span class="math notranslate nohighlight">\(\color{brown}{\boldsymbol{s}_{t}[i]}\)</span> approximates the variance <span class="math notranslate nohighlight">\(\operatorname{Var} (\color{blue}{\hat{\boldsymbol{g}}_{t}[i]})\)</span> well
+if <span class="math notranslate nohighlight">\(\operatorname{E} (\color{blue}{\hat{\boldsymbol{g}}_{t}[i]})\)</span> is small.</p>
+<p>The hyperparameters are <span class="math notranslate nohighlight">\(N_s, \eta, \varepsilon\)</span>.</p>
+</div>
+</div>
+<div class="section" id="adaptive-momentum-adam">
+<h3>Adaptive Momentum (Adam)<a class="headerlink" href="#adaptive-momentum-adam" title="Permalink to this headline">¶</a></h3>
+<p>Adam combines momentum and RMSProp. It maintains a running average <span class="math notranslate nohighlight">\(\color{teal}{\tilde{\boldsymbol{g}}_{t}[i]}\)</span> of the gradient <span class="math notranslate nohighlight">\(\color{blue}{\hat{\boldsymbol{g}}_{t}[i]}\)</span>, and another running average <span class="math notranslate nohighlight">\(\color{brown}{\boldsymbol{s}_{t}[i]}\)</span> of the second moment of the gradient. The two window sizes can be different.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+\color{teal}{\tilde{\boldsymbol{g}}_{t}[i]} &amp; =\left(1-\frac{1}{N_g }\right)\color{teal}{\tilde{\boldsymbol{g}}_{t-1}[i]}+\frac{1}{N_g }{\color{blue}{\hat{\boldsymbol{g}}_{t}[i]}}\\
+{\color{brown}{s_{t}[i]}} &amp; =\left(1-\frac{1}{N_s}\right){\color{brown}{s_{t-1}[i]}} +\frac{1}{N_ s}{\color{blue}{\hat{\boldsymbol{g}}_{t}[i]}}^{2}\\
+\boldsymbol{\Phi}_{t+1}[i] &amp; =\boldsymbol{\Phi}_{t}-\frac{\eta}{\sqrt{{\color{brown}{s_{t}[i]}}}+\epsilon}{\color{teal}{\tilde{\boldsymbol{g}}_{t}[i]}}
+\end{aligned}
+\end{split}\]</div>
+<p>The hyperparameters are <span class="math notranslate nohighlight">\(N_g, N_s, \eta, \varepsilon\)</span>.</p>
+</div>
+</div>
+<div class="section" id="issues">
+<h2>Issues<a class="headerlink" href="#issues" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Gradient Estimation: inaccurate estimation brings noise. More than batch size effect</p></li>
+<li><p>Gradient Drift (2nd order structure): g changes as the parameters \Phi change, determined by H. But second order analyses are controversial in SGD.</p></li>
+<li><p>Convergence: to converge to a local optimum the learning rate must be gradually reduced toward zero, how to design the schedule? see below</p></li>
+<li><p>Exploration: deep models are non-convex, we need to search over the parameter space. SGD can behave like MCMC.</p></li>
+</ul>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./37-neural-networks"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        </div>
+    </div>
+    
+    
+    <div class='prev-next-bottom'>
+        
+    <a class='left-prev' id="prev-link" href="00-neural-networks.html" title="previous page">Neural Networks</a>
+    <a class='right-next' id="next-link" href="03-trainability.html" title="next page">Trainability</a>
+
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By Dennis Zheng<br/>
+        
+            &copy; Copyright 2020.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+
+    
+  <script src="../_static/js/index.d3f166471bb80abb5163.js"></script>
+
+
+    
+  </body>
+</html>

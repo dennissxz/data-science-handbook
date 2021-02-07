@@ -260,8 +260,8 @@ Definition ($s-t$ cut)
   $$
 
 
-Definition (Capacity of a cut??)
-: The capacity of a cut is defined as the sum of capacities of the edges across the cut
+Definition (Capacity of an $s-t$ cut)
+: The capacity of an $s-t$ cut $(A,B)$ is defined as the sum of capacities of the edges from $A$ to $B$
 
   $$
   c(A,B) = \sum _{u\in A, v \in B} c(u, v)
@@ -274,6 +274,7 @@ Property (Compute flow value from a cut)
   \operatorname{val}(f) = f^{\text{out}}(A) - f^{\text{in}}(A)
   $$
 
+
 ***Proof***
 
 $$\begin{aligned}
@@ -285,13 +286,73 @@ $$\begin{aligned}
 &= f^{\text{out}}(A)- f^{\text{in}}(A)  \\\\
 \end{aligned}$$
 
+$\square$
 
 
+**Corollary**
 
-Claim 3:
-A flow is optimal iff its residual graph contains no augmenting path.
+1. $\operatorname{val}(f) = f^{\text{in}}(B) - f^{\text{out}}(B)$
+
+1. $\operatorname{val}(f) = f^{\text{in}}(t)$
+
+1. $\operatorname{val}(f) \le c(A,B)$, with equality iff $f^{\text{in}}(A) = 0$ and $f^{\text{out}}(A) = c(A,B)$.
 
 
+Theorem
+: If $f$ is any $s-t$ flow and $(A,B)$ is any $s-t$ cut, and $val(f) = c(A,B)$, then $f$ is a maximum flow, by Corollary 3.
+
+How about existence?
+
+Claim (Optimality)
+: If $f$ is the flow returned by FF algorithm, then there exists an $s-t$ cut $(A,B)$ such that $val(f) = c(A,B)$. So $f$ is optimal by the above theorem.
+
+***Proof***
+
+Recall that FF algorithm stops if there is no $s-t$ path. After it stops, consider a cut $(A,B)$ in $G_f$, where $A$ is the set of all vertices $v \in V$ such that there is an $s-v$ path in $G_f$, and all other vertices (e.g., $t$) are in $B$. By this definition, there is no edge from $A$ to $B$.
+
+Now, for the cut $(A,B)$ in $G$, we want to prove
+
+$$
+val(f) = c(A,B)
+$$
+
+By Corollary 3, this holds iff $f^{\text{in}}(A) = 0$ and $f^{\text{out}}(A) = c(A,B)$. Equivalently,
+
+1. $\forall e^- \in \delta^-(A), f(e^-) = 0 \\$
+
+1. $\forall e^+ \in \delta^+(A), f(e^+) = c(e^+)$
+
+These two conditions are indeed satisfied when FF algorithm stops.
+
+1. If there exists $e^- = (u,v): f(e^-) > 0$, then there is an edge $(v,u)$ from $A$ to $B$ in $G_f$ with residual capacity $c_f(v,u) > 0$, contradiction to the property of $G_f$.
+
+1. If there exists $e^+ = (u,v): f(e^+) < c(e^+)$, then there is an forward edge $(u,v)$ from $A$ to $B$ in $G_f$ with residual capacity $c_f(v,u) = c(e^+) - f(e^+)$, contradiction to the property of $G_f$.
+
+$\square$
+
+## Minimum Cut
+
+
+### Problem
+
+**Input**
+
+- A directed graph $G=(V,E)$.
+- Capacity $c(e)$.
+- Two special vertices $s$ and $t$.
+
+**Goal**
+
+Find an $s-t$ cut $(A,B)$ that minimizes cut capacity $c(A,B)$, called minimum cut.
+
+### Analysis
+
+Theorem (Equivalency of maximum flow and minimum cut)
+: In any flow network $G$, the value of a maximum $s-t$ flow is equal to value of a minimum $s-t$ cut.
+
+The proof is simply from the Corollary.
+
+Thus, FF algorithm also gives an algorithm for finding a minimum $s-t$ cut.
 
 ## Complexity
 
@@ -317,11 +378,30 @@ There are two inputs.
 
 Recall different running time??
 
-- strong-polynomial time: $Poly(\text{size of the combinatorial part})$, e.g. $O(n)$
+- strong-polynomial tim#e: $Poly(\text{size of the combinatorial part})$, e.g. $O(n)$
 - weak-polynomial time: $Poly(\text{sizes of both parts})$, e.g. $O(mn \times m)$
 - pseudo-polynomial time: $Poly(\text{the largest integer present in the input})$, e.g. $O(c_\max)$
 
 :::
+
+## Improvement
+
+We want to bound the number of iterations in Edmonds-Korp algorithm.
+
+To find an augmenting path, use the shortest path $s-t$ in $G$.
+
+Partition the algorithm's execution into phases. Number of phase lasts as low as the lengths of augmenting paths chosen in each iteration remain the same.
+
+Number of iteration is $O(mn)$. Total run time is $O(m^2 n)$.
+
+Observation: Let $G_f$ be the residual graph at the start of iteration $i$, and $G_f ^\prime$ be the residual path at the end of iteration $i$,.
+
+- if $e \in E(G_f) \backslash E(G_f ^\prime)$ then $e \in E(P)$ where $P$ is the augmenting path in iteration $i$.
+- $\left\vert E(G_f) \backslash E(G_f ^\prime) \right\vert \ge 1$.
+- if $e = (u,v) \in E(G_f) \backslash E(G_f ^\prime)$ then $e \in E(P)$.
+
+Claim
+:
 
 
 ## Exercise

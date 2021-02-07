@@ -409,8 +409,18 @@
   </a>
   <ul class="collapse-ul">
    <li class="toctree-l2">
-    <a class="reference internal" href="../31-regression/11-linear-models.html">
-     Linear Models
+    <a class="reference internal" href="../31-regression/11-lm-estimation.html">
+     Linear Models - Estimation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/12-lm-inference.html">
+     Linear Regression - Inference
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/13-lm-extension.html">
+     Linear Regression - Extension
     </a>
    </li>
   </ul>
@@ -475,10 +485,44 @@
   </i>
  </li>
  <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../34-clustering/00-clustering.html">
+   Clustering
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../34-clustering/11-k-means.html">
+     K-means clustering
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../34-clustering/13-agglomerative-methods.html">
+     Agglomerative Methods
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
   <a class="reference internal" href="../37-neural-networks/00-neural-networks.html">
    Neural Networks
   </a>
   <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/01-stochastic-gradient-descent.html">
+     Stochastic Gradient Descent
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/03-trainability.html">
+     Trainability
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/05-regularization.html">
+     Regularization
+    </a>
+   </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../37-neural-networks/11-autoencoders.html">
      Autoencoders
@@ -631,12 +675,10 @@
 <h1>Kernels<a class="headerlink" href="#kernels" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="definitions">
 <h2>Definitions<a class="headerlink" href="#definitions" title="Permalink to this headline">¶</a></h2>
-<dl class="simple myst">
-<dt>Definition (Kernel)</dt><dd><p>A kernel is a function <span class="math notranslate nohighlight">\(k: \mathcal{S} \times \mathcal{S} \rightarrow \mathbb{C}\)</span> where <span class="math notranslate nohighlight">\(\mathbb{S}\)</span> is an arbitrary set.</p>
-</dd>
-<dt>Definition (Positive semi-definite kernels)</dt><dd><p>A kernel <span class="math notranslate nohighlight">\(k\)</span> is a positive semi-definite kernel if <span class="math notranslate nohighlight">\(\forall x_{1}, \ldots, x_{n} \in \mathcal{S}\)</span>, the matrix <span class="math notranslate nohighlight">\(\boldsymbol{C}\)</span> defined below is positive semi-definite,</p>
-</dd>
-</dl>
+<p>Definition (Kernel)
+: A kernel is a function <span class="math notranslate nohighlight">\(k: \mathcal{S} \times \mathcal{S} \rightarrow \mathbb{C}\)</span> where <span class="math notranslate nohighlight">\(\mathbb{S}\)</span> is an arbitrary set.</p>
+<p>Definition (Positive semi-definite kernels)
+: A kernel <span class="math notranslate nohighlight">\(k\)</span> is a positive semi-definite kernel if <span class="math notranslate nohighlight">\(\forall x_{1}, \ldots, x_{n} \in \mathcal{S}\)</span>, the matrix <span class="math notranslate nohighlight">\(\boldsymbol{C}\)</span> defined below is positive semi-definite,</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \boldsymbol{C}=\left(\begin{array}{l}
@@ -646,14 +688,10 @@ k\left(x_{2}, x_{1}\right), \ldots, k\left(x_{2}, x_{n}\right) \\
 k\left(x_{n}, x_{1}\right), \ldots, k\left(x_{n}, x_{n}\right)
 \end{array}\right) \in \mathbb{C}^{n \times n}
 \end{split}\]</div>
-<dl class="simple myst">
-<dt>Examples</dt><dd><p>Dot product <span class="math notranslate nohighlight">\(k(\boldsymbol{x}, \boldsymbol{y})=\boldsymbol{x}^{*} \boldsymbol{y}\)</span>, where <span class="math notranslate nohighlight">\(\boldsymbol{x}, \boldsymbol{y} \in \mathbb{C}^{d}\)</span>, is a PSD kernel, since the matrix <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span> is PSD because <span class="math notranslate nohighlight">\(\boldsymbol{u} ^* \boldsymbol{C} \boldsymbol{u} =  \boldsymbol{u} ^* \boldsymbol{X} ^* \boldsymbol{X} \boldsymbol{u} \ge 0\)</span>.</p>
-</dd>
-<dd><p>In general, <span class="math notranslate nohighlight">\(k(x, y) \triangleq \boldsymbol{\phi}(x) ^\top \boldsymbol{\phi}(y)\)</span>, with arbitrary map <span class="math notranslate nohighlight">\(\boldsymbol{\phi}: \mathcal{S} \rightarrow \mathbb{R}^{d}\)</span>, is a PSD kernel,</p>
-</dd>
-<dd><p>More generally, <span class="math notranslate nohighlight">\(k(x, y) \triangleq\langle\boldsymbol{\phi}(x), \boldsymbol{\phi}(y)\rangle_{\mathcal{H}}\)</span>, with <span class="math notranslate nohighlight">\(\boldsymbol{\phi}: \mathcal{S} \rightarrow \mathcal{H}\)</span>, is a PSD kernel.</p>
-</dd>
-</dl>
+<p>Examples
+: Dot product <span class="math notranslate nohighlight">\(k(\boldsymbol{x}, \boldsymbol{y})=\boldsymbol{x}^{*} \boldsymbol{y}\)</span>, where <span class="math notranslate nohighlight">\(\boldsymbol{x}, \boldsymbol{y} \in \mathbb{C}^{d}\)</span>, is a PSD kernel, since the matrix <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span> is PSD because <span class="math notranslate nohighlight">\(\boldsymbol{u} ^* \boldsymbol{C} \boldsymbol{u} =  \boldsymbol{u} ^* \boldsymbol{X} ^* \boldsymbol{X} \boldsymbol{u} \ge 0\)</span>.</p>
+<p>: In general, <span class="math notranslate nohighlight">\(k(x, y) \triangleq \boldsymbol{\phi}(x) ^\top \boldsymbol{\phi}(y)\)</span>, with arbitrary map <span class="math notranslate nohighlight">\(\boldsymbol{\phi}: \mathcal{S} \rightarrow \mathbb{R}^{d}\)</span>, is a PSD kernel,</p>
+<p>: More generally, <span class="math notranslate nohighlight">\(k(x, y) \triangleq\langle\boldsymbol{\phi}(x), \boldsymbol{\phi}(y)\rangle_{\mathcal{H}}\)</span>, with <span class="math notranslate nohighlight">\(\boldsymbol{\phi}: \mathcal{S} \rightarrow \mathcal{H}\)</span>, is a PSD kernel.</p>
 </div>
 <div class="section" id="construction-of-psd-kernels">
 <h2>Construction of PSD Kernels<a class="headerlink" href="#construction-of-psd-kernels" title="Permalink to this headline">¶</a></h2>
@@ -682,15 +720,13 @@ k\left(x_{n}, x_{1}\right), \ldots, k\left(x_{n}, x_{n}\right)
 <p>Kernels are popular. Why? Let’s first see two theorems.</p>
 <div class="section" id="mercer-s-theorem">
 <span id="ml-mercers-theorem"></span><h3>Mercer’s Theorem<a class="headerlink" href="#mercer-s-theorem" title="Permalink to this headline">¶</a></h3>
-<dl class="simple myst">
-<dt>Theorem (Mercer’s, 1909)</dt><dd><p>Under fairly general conditions, for any PSD kernel <span class="math notranslate nohighlight">\(k: \mathcal{S} \times \mathcal{S} \rightarrow \mathbb{C}\)</span>, there <strong>exists</strong> a map <span class="math notranslate nohighlight">\(\boldsymbol{\phi}: \mathcal{S} \rightarrow \mathcal{H}\)</span> such that <span class="math notranslate nohighlight">\(k(x, y)=\langle\boldsymbol{\phi}(x), \boldsymbol{\phi}(y)\rangle_{\mathcal{H}}\)</span>.</p>
-</dd>
-</dl>
+<p>Theorem (Mercer’s, 1909)
+: Under fairly general conditions, for any PSD kernel <span class="math notranslate nohighlight">\(k: \mathcal{S} \times \mathcal{S} \rightarrow \mathbb{C}\)</span>, there <strong>exists</strong> a map <span class="math notranslate nohighlight">\(\boldsymbol{\phi}: \mathcal{S} \rightarrow \mathcal{H}\)</span> such that <span class="math notranslate nohighlight">\(k(x, y)=\langle\boldsymbol{\phi}(x), \boldsymbol{\phi}(y)\rangle_{\mathcal{H}}\)</span>.</p>
 </div>
 <div class="section" id="representer-theorem">
 <span id="ml-representer-theorem"></span><h3>Representer Theorem<a class="headerlink" href="#representer-theorem" title="Permalink to this headline">¶</a></h3>
-<dl class="simple myst">
-<dt>Representer Theorem (Simplified)</dt><dd><p>Consider the optimization problem on a data set <span class="math notranslate nohighlight">\(\mathcal{D} = \left\{ \boldsymbol{x}_i ,y_i \right\} _{i=1}^n, \boldsymbol{x}_i \in \mathcal{S}\)</span></p>
+<p>Representer Theorem (Simplified)
+: Consider the optimization problem on a data set <span class="math notranslate nohighlight">\(\mathcal{D} = \left\{ \boldsymbol{x}_i ,y_i \right\} _{i=1}^n, \boldsymbol{x}_i \in \mathcal{S}\)</span></p>
 <div class="math notranslate nohighlight">
 \[
   \boldsymbol{w}^{*}=\underset{\boldsymbol{w}}{\arg \min } \sum_{i=1}^{n} \mathcal{L}\left(\left\langle\boldsymbol{w}, \boldsymbol{\phi} \left(\boldsymbol{x}_i \right)\right\rangle, y_{i}\right)+\|\boldsymbol{w}\|^{2}
@@ -704,10 +740,8 @@ k\left(x_{n}, x_{1}\right), \ldots, k\left(x_{n}, x_{n}\right)
 <p>Then there <span class="math notranslate nohighlight">\(\exists\left\{\alpha_{i} \in \mathbb{R}\right\}_{i=1}^{n}\)</span> such that the solution <span class="math notranslate nohighlight">\(\boldsymbol{w} ^*\)</span> is a linear combination of the <span class="math notranslate nohighlight">\(n\)</span> transformed data vectors.</p>
 <div class="math notranslate nohighlight">
 \[\boldsymbol{w}^{*}=\sum_{i=1}^{n} \alpha_{i} \boldsymbol{\phi} \left(\boldsymbol{x}_i \right) = \boldsymbol{X} ^\top \boldsymbol{\alpha}\]</div>
-</dd>
-<dt><strong>Example (Linear regression OLS)</strong></dt><dd><p>In linear regression, we can write <span class="math notranslate nohighlight">\(\boldsymbol{\beta}\)</span> as a linear combination of data vectors <span class="math notranslate nohighlight">\(\boldsymbol{x}_i\)</span> (identical transformation <span class="math notranslate nohighlight">\(\boldsymbol{\phi}\)</span>).</p>
-</dd>
-</dl>
+<p><strong>Example (Linear regression OLS)</strong>
+: In linear regression, we can write <span class="math notranslate nohighlight">\(\boldsymbol{\beta}\)</span> as a linear combination of data vectors <span class="math notranslate nohighlight">\(\boldsymbol{x}_i\)</span> (identical transformation <span class="math notranslate nohighlight">\(\boldsymbol{\phi}\)</span>).</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{aligned}
 &amp;&amp; \boldsymbol{X} ^\top \boldsymbol{\alpha} &amp;= (\boldsymbol{X} ^\top \boldsymbol{X} )^{-1} \boldsymbol{X} ^\top \boldsymbol{y} \\
@@ -739,10 +773,9 @@ k\left(x_{n}, x_{1}\right), \ldots, k\left(x_{n}, x_{n}\right)
 </li>
 <li><p>Therefore, instead of handcrafting feature transformations <span class="math notranslate nohighlight">\(\boldsymbol{\phi}\)</span>, people change to choosing (PSD) kernels to improve model performance.</p></li>
 </ol>
-<div class="note admonition">
-<p class="admonition-title"> Dot product in loss function</p>
-<p>Note that the kernel methods only apply to models with loss function that involves dot product <span class="math notranslate nohighlight">\(\boldsymbol{x}_i ^\top \boldsymbol{x}_j\)</span>, for instance, SVM, PCA. If there is no dot product, there is no corresponding kernelized version of that model, such as linear regression.</p>
-</div>
+<p>:::{admonition,note} Dot product in loss function
+Note that the kernel methods only apply to models with loss function that involves dot product <span class="math notranslate nohighlight">\(\boldsymbol{x}_i ^\top \boldsymbol{x}_j\)</span>, for instance, SVM, PCA. If there is no dot product, there is no corresponding kernelized version of that model, such as linear regression.
+:::</p>
 </div>
 </div>
 </div>

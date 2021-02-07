@@ -409,8 +409,18 @@
   </a>
   <ul class="collapse-ul">
    <li class="toctree-l2">
-    <a class="reference internal" href="../31-regression/11-linear-models.html">
-     Linear Models
+    <a class="reference internal" href="../31-regression/11-lm-estimation.html">
+     Linear Models - Estimation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/12-lm-inference.html">
+     Linear Regression - Inference
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/13-lm-extension.html">
+     Linear Regression - Extension
     </a>
    </li>
   </ul>
@@ -475,10 +485,44 @@
   </i>
  </li>
  <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../34-clustering/00-clustering.html">
+   Clustering
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../34-clustering/11-k-means.html">
+     K-means clustering
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../34-clustering/13-agglomerative-methods.html">
+     Agglomerative Methods
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
   <a class="reference internal" href="../37-neural-networks/00-neural-networks.html">
    Neural Networks
   </a>
   <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/01-stochastic-gradient-descent.html">
+     Stochastic Gradient Descent
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/03-trainability.html">
+     Trainability
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/05-regularization.html">
+     Regularization
+    </a>
+   </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../37-neural-networks/11-autoencoders.html">
      Autoencoders
@@ -653,23 +697,19 @@
 <h1>Minimum Spanning Tree<a class="headerlink" href="#minimum-spanning-tree" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="problem-setup">
 <h2>Problem Setup<a class="headerlink" href="#problem-setup" title="Permalink to this headline">¶</a></h2>
-<dl class="simple myst">
-<dt>Input</dt><dd><p>Graph <span class="math notranslate nohighlight">\(G=(V,E)\)</span>, with</p>
+<p>Input
+: Graph <span class="math notranslate nohighlight">\(G=(V,E)\)</span>, with</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(\left\vert V \right\vert = n\)</span></p></li>
 <li><p><span class="math notranslate nohighlight">\(\left\vert E \right\vert = m\)</span></p></li>
 <li><p>weights <span class="math notranslate nohighlight">\(w(e)\ge 0\)</span></p></li>
 </ul>
-</dd>
-<dt>Goal</dt><dd><p>Select minimum-weight edge set <span class="math notranslate nohighlight">\(E^\prime \subseteq E\)</span>.</p>
-</dd>
-<dt>Constraint</dt><dd><p><span class="math notranslate nohighlight">\(G(V, E^\prime)\)</span> is connected.</p>
-</dd>
-<dt>Notations:</dt><dd><ul class="simple">
-<li><p>We denoted <span class="math notranslate nohighlight">\(G(V, E ^\prime)\)</span> by <span class="math notranslate nohighlight">\(G(E ^\prime)\)</span>.</p></li>
-</ul>
-</dd>
-</dl>
+<p>Goal
+: Select minimum-weight edge set <span class="math notranslate nohighlight">\(E^\prime \subseteq E\)</span>.</p>
+<p>Constraint
+: <span class="math notranslate nohighlight">\(G(V, E^\prime)\)</span> is connected.</p>
+<p>Notations:
+: - We denoted <span class="math notranslate nohighlight">\(G(V, E ^\prime)\)</span> by <span class="math notranslate nohighlight">\(G(E ^\prime)\)</span>.</p>
 <ul class="simple">
 <li><p>We denoted the total cost <span class="math notranslate nohighlight">\(\sum_{e \in E} w(e)\)</span> by <span class="math notranslate nohighlight">\(w(E)\)</span>.</p></li>
 </ul>
@@ -718,15 +758,13 @@
 <div class="section" id="optimality">
 <h4>Optimality<a class="headerlink" href="#optimality" title="Permalink to this headline">¶</a></h4>
 <p>We use the conclusion from the analysis part.</p>
-<dl class="simple myst">
-<dt>Claim 1</dt><dd><p>An optimal solution is a spanning tree.</p>
-</dd>
-</dl>
+<p>Claim 1
+: An optimal solution is a spanning tree.</p>
 <p>Then we do reasoning.</p>
-<dl class="simple myst">
-<dt>Definition (Cut)</dt><dd><p>A cut of a graph is a partition of the vertices <span class="math notranslate nohighlight">\(V\)</span> into 2 non-empty sets <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span>. The edges that go across the two sets are denoted by <span class="math notranslate nohighlight">\(E(A,B)\)</span>, called cut edges in short.</p>
-</dd>
-<dt>Claim 2</dt><dd><p>For every cut <span class="math notranslate nohighlight">\((A,B)\)</span> of <span class="math notranslate nohighlight">\(G\)</span>, if <span class="math notranslate nohighlight">\(e\)</span> is the smallest weight edge in <span class="math notranslate nohighlight">\(E(A,B)\)</span>, then <span class="math notranslate nohighlight">\(e\)</span> lies in every minimum spanning tree. This smallest weight edge is called <strong>a special edge</strong>.</p>
+<p>Definition (Cut)
+: A cut of a graph is a partition of the vertices <span class="math notranslate nohighlight">\(V\)</span> into 2 non-empty sets <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span>. The edges that go across the two sets are denoted by <span class="math notranslate nohighlight">\(E(A,B)\)</span>, called cut edges in short.</p>
+<p>Claim 2
+: For every cut <span class="math notranslate nohighlight">\((A,B)\)</span> of <span class="math notranslate nohighlight">\(G\)</span>, if <span class="math notranslate nohighlight">\(e\)</span> is the smallest weight edge in <span class="math notranslate nohighlight">\(E(A,B)\)</span>, then <span class="math notranslate nohighlight">\(e\)</span> lies in every minimum spanning tree. This smallest weight edge is called <strong>a special edge</strong>.</p>
 <details class="sphinx-bs dropdown card mb-3">
 <summary class="summary-title card-header">
 Proof by contradiction<div class="summary-down docutils">
@@ -745,20 +783,16 @@ Proof by contradiction<div class="summary-down docutils">
 <p class="card-text">Note that <span class="math notranslate nohighlight">\(T \cup \{e\}\)</span> is a connected graph. After deleting an edge <span class="math notranslate nohighlight">\(e ^\prime\)</span> that lies on a cycle of <span class="math notranslate nohighlight">\(T \cup \{e\}\)</span>, the the remaining graph <span class="math notranslate nohighlight">\(T ^\prime = T \cup \left\{ e \right\} \backslash \left\{ e ^\prime \right\} ^\prime\)</span> graph is still connected, i.e. a feasible solution. Moreover, the total cost is reduced, <span class="math notranslate nohighlight">\(w(T ^\prime) &lt; w(T)\)</span>.</p>
 <p class="card-text">Hence, <span class="math notranslate nohighlight">\(T\)</span> is <strong>not</strong> a minimum spanning tree, contradiction.</p>
 </div>
-</details></dd>
-<dt>Corollary 2</dt><dd><p>If <span class="math notranslate nohighlight">\(T\)</span> is a spanning tree of <span class="math notranslate nohighlight">\(G\)</span>, then it must contains <strong>all</strong> special edges of <span class="math notranslate nohighlight">\(G\)</span>.</p>
-</dd>
-<dt>Claim 3</dt><dd><p>There are <span class="math notranslate nohighlight">\((n-1)\)</span> special edges in a graph.</p>
-</dd>
-<dt>Claim 4</dt><dd><p>If <span class="math notranslate nohighlight">\(G ^\prime\)</span> is an optimal solution, then it has <span class="math notranslate nohighlight">\((n-1)\)</span> edges and all of them are special edges.</p>
-</dd>
-<dd><p>Proved by Claim 1, Claim 2, Corollary 2, Claim 3</p>
-</dd>
-<dt>Corollary 4</dt><dd><p>If a tree has and only has <span class="math notranslate nohighlight">\((n-1)\)</span> special edges, then it is the unique optimal solution.</p>
-</dd>
-<dd><p>Proved by Claim 3</p>
-</dd>
-</dl>
+</details><p>Corollary 2
+: If <span class="math notranslate nohighlight">\(T\)</span> is a spanning tree of <span class="math notranslate nohighlight">\(G\)</span>, then it must contains <strong>all</strong> special edges of <span class="math notranslate nohighlight">\(G\)</span>.</p>
+<p>Claim 3
+: There are <span class="math notranslate nohighlight">\((n-1)\)</span> special edges in a graph.</p>
+<p>Claim 4
+: If <span class="math notranslate nohighlight">\(G ^\prime\)</span> is an optimal solution, then it has <span class="math notranslate nohighlight">\((n-1)\)</span> edges and all of them are special edges.
+: Proved by Claim 1, Claim 2, Corollary 2, Claim 3</p>
+<p>Corollary 4
+: If a tree has and only has <span class="math notranslate nohighlight">\((n-1)\)</span> special edges, then it is the unique optimal solution.
+: Proved by Claim 3</p>
 <p>Since every edge we add according to the greedy rule is a special edge, our solution <span class="math notranslate nohighlight">\(G(E ^\prime)\)</span> has <span class="math notranslate nohighlight">\((n-1)\)</span> special edges. By Corollary 4, <span class="math notranslate nohighlight">\(G(E ^\prime)\)</span> is the optimal solution.</p>
 </div>
 <div class="section" id="extension">

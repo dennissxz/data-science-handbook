@@ -107,7 +107,7 @@ There are other unsupervised learning tasks, such as
 
 ### Semi-supervised Learning
 
-Besides, there are also** semi-supervised learning** tasks, where there are lots of unlabeled data $\boldsymbol{X} _U$ and a little labeled data $\boldsymbol{X}_L$. The objective is to learn representation from unlabeled data and use learned representation to improve performance of supervised learner on labeled data
+Besides, there are also** semi-supervised learning** tasks, where there are lots of unlabeled data $\boldsymbol{X} _U$ and a little labeled data $\boldsymbol{X}_L$. The objective is to learn representation from unlabeled data and use the learned representation to improve performance of supervised learner on labeled data.
 
 ```{note}
 - Supervised learning usually doesn't optimize the loss we really care about.

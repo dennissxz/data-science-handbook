@@ -409,8 +409,18 @@
   </a>
   <ul class="collapse-ul">
    <li class="toctree-l2">
-    <a class="reference internal" href="../31-regression/11-linear-models.html">
-     Linear Models
+    <a class="reference internal" href="../31-regression/11-lm-estimation.html">
+     Linear Models - Estimation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/12-lm-inference.html">
+     Linear Regression - Inference
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/13-lm-extension.html">
+     Linear Regression - Extension
     </a>
    </li>
   </ul>
@@ -475,10 +485,44 @@
   </i>
  </li>
  <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../34-clustering/00-clustering.html">
+   Clustering
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../34-clustering/11-k-means.html">
+     K-means clustering
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../34-clustering/13-agglomerative-methods.html">
+     Agglomerative Methods
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
   <a class="reference internal" href="../37-neural-networks/00-neural-networks.html">
    Neural Networks
   </a>
   <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/01-stochastic-gradient-descent.html">
+     Stochastic Gradient Descent
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/03-trainability.html">
+     Trainability
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/05-regularization.html">
+     Regularization
+    </a>
+   </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../37-neural-networks/11-autoencoders.html">
      Autoencoders
@@ -580,8 +624,8 @@
         <nav id="bd-toc-nav">
             <ul class="nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#functions">
-   Functions
+  <a class="reference internal nav-link" href="#fibonacci-example">
+   Fibonacci Example
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
@@ -602,8 +646,45 @@
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#summary">
-   Summary
+  <a class="reference internal nav-link" href="#analysis">
+   Analysis
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#subproblems">
+     Subproblems
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#recursive-relation">
+     Recursive Relation
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#computation">
+     Computation
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#algorithm">
+   Algorithm
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#proof">
+   Proof
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#track-solution">
+   Track Solution
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#complexity">
+   Complexity
   </a>
  </li>
 </ul>
@@ -619,23 +700,29 @@
                 
   <div class="section" id="dynamic-programming">
 <h1>Dynamic Programming<a class="headerlink" href="#dynamic-programming" title="Permalink to this headline">¶</a></h1>
-<p>We take Fibonacci numbers as an example.</p>
+<p>Dynamic programming is a multi-stage decision process. In every stage, we solve a sub-problem, which can be used to solve the original problem.</p>
+<p>Note that dynamic programming only applies to problems that satisfy the <strong>optimization principle</strong>:</p>
+<ul class="simple">
+<li><p>Any sub-output in an optimal output to the original input is optimal to the corresponding sub-input.</p></li>
+</ul>
+<p>We rely this principle to solve the original problem by solving its subproblems.</p>
+<p>Usually we use a table to store the optimal values of the subproblems, so the space complexity is larger than the recursive solution</p>
+<div class="section" id="fibonacci-example">
+<h2>Fibonacci Example<a class="headerlink" href="#fibonacci-example" title="Permalink to this headline">¶</a></h2>
+<p>We take Fibonacci numbers as an example, and compare three methods.</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
-&amp;F(1) &amp;= 1\\
-&amp;F(2) &amp;= 1 \\
-\text{for} \ i &gt; 2,\, &amp; F(i) &amp;= F(i-1) + F(i-2)
+F(1) &amp;= 1\\
+F(2) &amp;= 1 \\
+F(i) &amp;= F(i-1) + F(i-2) \quad \text{for} \ i &gt; 2
 \end{align}\end{split}\]</div>
-<p>Example: every rabbit needs one year to mature, and every matured rabbit produces a rabbit at a year.</p>
-<div class="section" id="functions">
-<h2>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="recursive">
 <h3>Recursive<a class="headerlink" href="#recursive" title="Permalink to this headline">¶</a></h3>
-<p>Fib(n)</p>
+<p>For the function <span class="math notranslate nohighlight">\(Fib(n)\)</span></p>
 <p>If <span class="math notranslate nohighlight">\(n=1\)</span> or <span class="math notranslate nohighlight">\(n=2\)</span>, return <span class="math notranslate nohighlight">\(1\)</span></p>
 <p>Otherwise, return <span class="math notranslate nohighlight">\(Fib(n-1) + Fib(n-2)\)</span></p>
-<p>Running time:
-Let <span class="math notranslate nohighlight">\(N(i)\)</span> be the number of function evaluations of <span class="math notranslate nohighlight">\(Fib(i)\)</span> when we call <span class="math notranslate nohighlight">\(F(n)\)</span>.</p>
+<p><strong>Running time</strong></p>
+<p>Let <span class="math notranslate nohighlight">\(N(i)\)</span> be the number of function evaluations of <span class="math notranslate nohighlight">\(Fib(i)\)</span> when we call <span class="math notranslate nohighlight">\(F(n)\)</span>.</p>
 <p><span class="math notranslate nohighlight">\(N(n)=1, N(n-2)=1, N(n-2)=2, N(i) = N(i+1) + N(i+2)\)</span></p>
 <p>It’s a Fibonacci sequence again. So the running time is at least <span class="math notranslate nohighlight">\(O(F(n))\)</span>.</p>
 <p>Since <span class="math notranslate nohighlight">\(F(i) \ge 2F(i-2)\)</span>, we get <span class="math notranslate nohighlight">\(F(n) \ge 2^ {\Omega(n)}\)</span>, i.e. exponential running time.</p>
@@ -649,7 +736,7 @@ Let <span class="math notranslate nohighlight">\(N(i)\)</span> be the number of 
 <div class="section" id="dynamic-programing">
 <h3>Dynamic Programing<a class="headerlink" href="#dynamic-programing" title="Permalink to this headline">¶</a></h3>
 <p>In DP, there is a DP table <span class="math notranslate nohighlight">\(T\)</span> that stores the computed value to avoid re-evaluation.</p>
-<p>It is iterative (use stored results), not recursive (call itself).</p>
+<p>It is <strong>iterative</strong> (use stored results), not <strong>recursive</strong> (call itself).</p>
 <p>In the Fibonacci case, the table has only one row (column) <span class="math notranslate nohighlight">\(T(i)\)</span>.</p>
 <p>It’s known that <span class="math notranslate nohighlight">\(T(1) = T(2) = 1\)</span>. Then for <span class="math notranslate nohighlight">\(i=3\)</span> to <span class="math notranslate nohighlight">\(n\)</span>, compute</p>
 <div class="math notranslate nohighlight">
@@ -660,21 +747,82 @@ T(i) = T(i-1) + T(i-2)
 <p>diff with memoization??</p>
 </div>
 </div>
-<div class="section" id="summary">
-<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
-<p>for an end case consider all sub-cases</p>
-<p>find iterative formula</p>
+<div class="section" id="analysis">
+<h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
+<p>To design a dynamic programming algorithm, there are elements: Subproblems, Recursive relation, Computation</p>
+<div class="section" id="subproblems">
+<h3>Subproblems<a class="headerlink" href="#subproblems" title="Permalink to this headline">¶</a></h3>
+<p>Subproblems are characterized by some parameters of the input, such as length, size, constraints etc.</p>
+<p>Think about</p>
 <ul class="simple">
-<li><p>usually use <span class="math notranslate nohighlight">\(\max\)</span> for maximization problem.</p></li>
-<li><p>one-way table, <span class="math notranslate nohighlight">\(max(T_1, \ldots, T_k)\)</span>.</p></li>
-<li><p>two-way table, if-else</p></li>
+<li><p>Is there any hierarchical structure in the input?</p></li>
+<li><p>What is the last computation step?</p></li>
+<li><p>Does the subproblem satisfy the optimization principle?</p></li>
 </ul>
-<p>initialize the base case.</p>
-<p>design a DP table, initialize the base case.</p>
-<p>figure out an order of entry filling that meet the iterative formula (already stored)</p>
-<p>determine which entry should be the final output</p>
-<p>proof by induction</p>
-<p>trace back to find schedule/path</p>
+<p>:::{admonition,tip} Tip</p>
+<ol>
+<li><p>Usually, for an input of a 1-d array <span class="math notranslate nohighlight">\(A_{1:n}\)</span>, the input to subproblem can be</p>
+<ul class="simple">
+<li><p>a subarray from the beginning to entry <span class="math notranslate nohighlight">\(j&lt;n\)</span>, <span class="math notranslate nohighlight">\(A_{1:j}\)</span></p></li>
+<li><p>a subarray from entry <span class="math notranslate nohighlight">\(i\ge 1\)</span> to entry <span class="math notranslate nohighlight">\(j&lt;n\)</span>, <span class="math notranslate nohighlight">\(A_{i:j}\)</span></p></li>
+</ul>
+</li>
+<li><p>For an input that is a tree, the sub-input can be a subtree.</p>
+<p>For instance, if the input to the original problem is a tree rooted at note <span class="math notranslate nohighlight">\(r\)</span>, then the input to the subproblem is a tree rooted at node <span class="math notranslate nohighlight">\(u\)</span>, which is a child of <span class="math notranslate nohighlight">\(r\)</span>.</p>
+</li>
+<li><p>If the input has two parameters <span class="math notranslate nohighlight">\(a,b\)</span>, then the subproblem may also have two parameters <span class="math notranslate nohighlight">\(c,d\)</span> where <span class="math notranslate nohighlight">\(c&lt;a, d&lt;b\)</span>.</p></li>
+</ol>
+<p>:::</p>
+</div>
+<div class="section" id="recursive-relation">
+<h3>Recursive Relation<a class="headerlink" href="#recursive-relation" title="Permalink to this headline">¶</a></h3>
+<p>Once we define a subproblem, we can figure out the iterative relation between the optimal solution to the subproblems and that to the original problem.</p>
+<p>Also, we need to define the base cases, which are the smallest/simplest subproblems.</p>
+<p>:::{admonition,tip} Tip</p>
+<p>Usually, if the original problem involves “maximum”, “largest” or “longest”, then the iterative relation involves <span class="math notranslate nohighlight">\(\max\)</span> comparison of value, size, length, etc.</p>
+<p>:::</p>
+</div>
+<div class="section" id="computation">
+<h3>Computation<a class="headerlink" href="#computation" title="Permalink to this headline">¶</a></h3>
+<p>To compute the final output, we need a dynamic programming table (DP table) to store the values. We need to figure out</p>
+<ul class="simple">
+<li><p>the values of the base cases.</p></li>
+<li><p>the order of filling the table, according to the iterative relation</p></li>
+<li><p>the required output from the table</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="algorithm">
+<h2>Algorithm<a class="headerlink" href="#algorithm" title="Permalink to this headline">¶</a></h2>
+<p>The general structure of a DP algorithm is</p>
+<p>Algorithm</p>
+<ol class="simple">
+<li><p>Define a DP table, <span class="math notranslate nohighlight">\(T_{i,j}\)</span> …</p></li>
+<li><p>Initialize the entries of base cases</p></li>
+<li><p>Compute other entries recursively by the iterative relation</p></li>
+<li><p>Return the required output, an entry in the table</p></li>
+</ol>
+</div>
+<div class="section" id="proof">
+<h2>Proof<a class="headerlink" href="#proof" title="Permalink to this headline">¶</a></h2>
+<p>Usually proof by induction</p>
+</div>
+<div class="section" id="track-solution">
+<h2>Track Solution<a class="headerlink" href="#track-solution" title="Permalink to this headline">¶</a></h2>
+<p>Usually, the DP algorithm only gives the size/length to the solution (array, set, path). To find the actual solution, we need to track the which value is selected in the comparison iterative relation, using some label function.</p>
+</div>
+<div class="section" id="complexity">
+<h2>Complexity<a class="headerlink" href="#complexity" title="Permalink to this headline">¶</a></h2>
+<p>For time complexity, we need to consider both the DP table and the tracking step, usually the latter is smaller than the former.</p>
+<ul class="simple">
+<li><p>How many entries in the DP table?</p></li>
+<li><p>In each entry, what’s the complexity to compute the value according to the iterative relation?</p>
+<ul>
+<li><p>Some iterative relation only require a two-value comparison, which is <span class="math notranslate nohighlight">\(O(1)\)</span></p></li>
+<li><p>Some iterative relation involve comparison over a bunch of values, whose size depends on some input parameter.</p></li>
+</ul>
+</li>
+</ul>
 <div class="toctree-wrapper compound">
 </div>
 </div>

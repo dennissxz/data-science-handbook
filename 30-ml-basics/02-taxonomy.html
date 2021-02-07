@@ -409,8 +409,18 @@
   </a>
   <ul class="collapse-ul">
    <li class="toctree-l2">
-    <a class="reference internal" href="../31-regression/11-linear-models.html">
-     Linear Models
+    <a class="reference internal" href="../31-regression/11-lm-estimation.html">
+     Linear Models - Estimation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/12-lm-inference.html">
+     Linear Regression - Inference
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/13-lm-extension.html">
+     Linear Regression - Extension
     </a>
    </li>
   </ul>
@@ -475,10 +485,44 @@
   </i>
  </li>
  <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../34-clustering/00-clustering.html">
+   Clustering
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../34-clustering/11-k-means.html">
+     K-means clustering
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../34-clustering/13-agglomerative-methods.html">
+     Agglomerative Methods
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
   <a class="reference internal" href="../37-neural-networks/00-neural-networks.html">
    Neural Networks
   </a>
   <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/01-stochastic-gradient-descent.html">
+     Stochastic Gradient Descent
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/03-trainability.html">
+     Trainability
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/05-regularization.html">
+     Regularization
+    </a>
+   </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../37-neural-networks/11-autoencoders.html">
      Autoencoders
@@ -643,8 +687,8 @@
 <p>In supervised learning, the input data set is <span class="math notranslate nohighlight">\(\mathcal{D} = \left\{ \left(\boldsymbol{x} _i, y_i  \right)  \right\}_{i=1}^n\)</span>, where <span class="math notranslate nohighlight">\(\boldsymbol{x_i}\)</span> is called features, and attributes or covariates <span class="math notranslate nohighlight">\(y_i\)</span> is called labels. The objective is to predict <span class="math notranslate nohighlight">\(y_i\)</span> by learning the relation between <span class="math notranslate nohighlight">\(\boldsymbol{x}_i\)</span> and <span class="math notranslate nohighlight">\(y_i\)</span>, or we say it aims to build a mapping from feature space <span class="math notranslate nohighlight">\(\mathcal{X}\)</span> to label space <span class="math notranslate nohighlight">\(\mathcal{Y}\)</span>, given training set <span class="math notranslate nohighlight">\(\mathcal{D} = \left\{ (\boldsymbol{x}_i , y_i) \right\}\)</span> with <span class="math notranslate nohighlight">\(\boldsymbol{x}_i \in \mathcal{X} , y_i \in \mathcal{Y}\)</span>.</p>
 <p>When <span class="math notranslate nohighlight">\(y_i\)</span> is a real value variable, i.e., <span class="math notranslate nohighlight">\(\mathcal{Y} = \boldsymbol{\mathbb{R}}\)</span> the learning tasks are called <strong>regression</strong>. When <span class="math notranslate nohighlight">\(y_i\)</span> is categorical, i.e., <span class="math notranslate nohighlight">\(\mathcal{Y} = \left\{ 1, \ldots, C \right\}\)</span>, the learning tasks are called <strong>classification</strong>.</p>
 <p>A model uses a function <span class="math notranslate nohighlight">\(f(\boldsymbol{x} ; \boldsymbol{\theta})\)</span> parameterized by <span class="math notranslate nohighlight">\(\boldsymbol{\theta}\)</span> to predict <span class="math notranslate nohighlight">\(\hat{y}\)</span>. In regression, this function returns the predicted value of <span class="math notranslate nohighlight">\(y\)</span>; in classification, it returns the per-class score <span class="math notranslate nohighlight">\(f_{y=c}(\boldsymbol{x}; \boldsymbol{\theta})\)</span> for each class <span class="math notranslate nohighlight">\(c\)</span>, and make prediction by choosing the class with the highest score.</p>
-<dl class="simple myst">
-<dt>Learning</dt><dd><p>There is a loss function <span class="math notranslate nohighlight">\(\ell\)</span> penalizing for predicting <span class="math notranslate nohighlight">\(\hat{y}\)</span> when eh ground truth is <span class="math notranslate nohighlight">\(y\)</span>. Learning is basically minimizing the <strong>empirical loss</strong></p>
+<p>Learning</p>
+<p>: There is a loss function <span class="math notranslate nohighlight">\(\ell\)</span> penalizing for predicting <span class="math notranslate nohighlight">\(\hat{y}\)</span> when eh ground truth is <span class="math notranslate nohighlight">\(y\)</span>. Learning is basically minimizing the <strong>empirical loss</strong></p>
 <div class="math notranslate nohighlight">
 \[
   \boldsymbol{\theta}^{*}=\underset{\boldsymbol{\theta}}{\operatorname{argmin}} \frac{1}{N}  \sum_{i} \ell\left(f\left(\boldsymbol{x}_i ; \boldsymbol{\theta}\right), y_{i}\right)
@@ -656,16 +700,9 @@
 <li><p>The loss function <span class="math notranslate nohighlight">\(\ell\)</span> is usually related to the specific task, but often is not exactly the same as the task loss (e.g., error rate, F1 score, etc.).</p></li>
 </ul>
 </div>
-</dd>
-<dt>Assumptions</dt><dd><ul class="simple">
-<li><p>observations <span class="math notranslate nohighlight">\((\boldsymbol{x}_i ,y_i)\)</span> are drawn i.i.d. from a joint probability distribution <span class="math notranslate nohighlight">\(p(\boldsymbol{x} ,y)\)</span></p></li>
-</ul>
-</dd>
-<dd><ul class="simple">
-<li><p>the joint distributions are the same in both training and test data.</p></li>
-</ul>
-</dd>
-</dl>
+<p>Assumptions
+: - observations <span class="math notranslate nohighlight">\((\boldsymbol{x}_i ,y_i)\)</span> are drawn i.i.d. from a joint probability distribution <span class="math notranslate nohighlight">\(p(\boldsymbol{x} ,y)\)</span>
+: - the joint distributions are the same in both training and test data.</p>
 <p>The ultimate goal is to minimize the <strong>expected loss</strong>, aka. <strong>risk</strong>.</p>
 <div class="math notranslate nohighlight">
 \[
@@ -752,7 +789,7 @@ p(y \mid \boldsymbol{x} ; \boldsymbol{\theta}) = \frac{p( \boldsymbol{x} ; \bold
 </div>
 <div class="section" id="semi-supervised-learning">
 <h3>Semi-supervised Learning<a class="headerlink" href="#semi-supervised-learning" title="Permalink to this headline">¶</a></h3>
-<p>Besides, there are also** semi-supervised learning** tasks, where there are lots of unlabeled data <span class="math notranslate nohighlight">\(\boldsymbol{X} _U\)</span> and a little labeled data <span class="math notranslate nohighlight">\(\boldsymbol{X}_L\)</span>. The objective is to learn representation from unlabeled data and use learned representation to improve performance of supervised learner on labeled data</p>
+<p>Besides, there are also** semi-supervised learning** tasks, where there are lots of unlabeled data <span class="math notranslate nohighlight">\(\boldsymbol{X} _U\)</span> and a little labeled data <span class="math notranslate nohighlight">\(\boldsymbol{X}_L\)</span>. The objective is to learn representation from unlabeled data and use the learned representation to improve performance of supervised learner on labeled data.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <ul class="simple">
@@ -765,20 +802,18 @@ p(y \mid \boldsymbol{x} ; \boldsymbol{\theta}) = \frac{p( \boldsymbol{x} ; \bold
 <div class="section" id="parametric-vs-non-parametric">
 <h2>Parametric vs Non-parametric<a class="headerlink" href="#parametric-vs-non-parametric" title="Permalink to this headline">¶</a></h2>
 <p>Whether there is a fixed number of parameters in the model can be another criteria to create a taxonomy.</p>
-<dl class="simple myst">
-<dt>Parametric</dt><dd><p>Parametric models have a fixed number of parameters</p>
+<p>Parametric
+: Parametric models have a fixed number of parameters</p>
 <ul class="simple">
 <li><p>pros: faster to use</p></li>
 <li><p>cons: stronger assumptions</p></li>
 </ul>
-</dd>
-<dt>Non-parametric</dt><dd><p>In non-parametric models, the number of parameters grow with the amount of training data.</p>
+<p>Non-parametric
+: In non-parametric models, the number of parameters grow with the amount of training data.</p>
 <ul class="simple">
 <li><p>pros: flexible, no or few assumptions</p></li>
 <li><p>cons: computationally intractable for large datasets</p></li>
 </ul>
-</dd>
-</dl>
 <p>Table 8.1 in the book <em>Machine Learning: a Probablistic Perspective</em> summarized the models as below.</p>
 <table class="colwidths-auto table">
 <thead>

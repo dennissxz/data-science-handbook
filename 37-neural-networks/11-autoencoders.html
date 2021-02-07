@@ -58,7 +58,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Variational Autoencoders" href="13-variational-autoencoders.html" />
-    <link rel="prev" title="Neural Networks" href="00-neural-networks.html" />
+    <link rel="prev" title="Regularization" href="05-regularization.html" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
@@ -409,8 +409,18 @@
   </a>
   <ul class="collapse-ul">
    <li class="toctree-l2">
-    <a class="reference internal" href="../31-regression/11-linear-models.html">
-     Linear Models
+    <a class="reference internal" href="../31-regression/11-lm-estimation.html">
+     Linear Models - Estimation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/12-lm-inference.html">
+     Linear Regression - Inference
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/13-lm-extension.html">
+     Linear Regression - Extension
     </a>
    </li>
   </ul>
@@ -474,11 +484,45 @@
   <i class="fas fa-chevron-down">
   </i>
  </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../34-clustering/00-clustering.html">
+   Clustering
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../34-clustering/11-k-means.html">
+     K-means clustering
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../34-clustering/13-agglomerative-methods.html">
+     Agglomerative Methods
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
  <li class="toctree-l1 current active collapsible-parent">
   <a class="reference internal" href="00-neural-networks.html">
    Neural Networks
   </a>
   <ul class="current collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="01-stochastic-gradient-descent.html">
+     Stochastic Gradient Descent
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="03-trainability.html">
+     Trainability
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="05-regularization.html">
+     Regularization
+    </a>
+   </li>
    <li class="toctree-l2 current active">
     <a class="current reference internal" href="#">
      Autoencoders
@@ -627,10 +671,10 @@
 <li><p>a <em>decoder</em> <span class="math notranslate nohighlight">\(\boldsymbol{\psi} (\cdot)\)</span>} that maps the code <span class="math notranslate nohighlight">\(\boldsymbol{z}\)</span> to a reconstruction of the original input <span class="math notranslate nohighlight">\(\boldsymbol{x} ^\prime = \boldsymbol{\psi}(\boldsymbol{z})\)</span>.</p></li>
 </ul>
 <p>As a result, the output layer has the same number of nodes as the input layer. The structure is shown below</p>
-<div class="figure align-default" id="ae-structure">
-<a class="reference internal image-reference" href="../_images/ae-structure.png"><img alt="" src="../_images/ae-structure.png" style="width: 70%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 31 </span><span class="caption-text">Structure of Autoencoders</span><a class="headerlink" href="#ae-structure" title="Permalink to this image">¶</a></p>
-</div>
+<p>:::{figure} ae-structure
+<img src="../imgs/ae-structure.png" width = "70%" alt=""/></p>
+<p>Structure of Autoencoders
+:::</p>
 <p>The objective is minimizing the difference between the input <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> and the output <span class="math notranslate nohighlight">\((\boldsymbol{\psi} \circ \boldsymbol{\phi} )\boldsymbol{x}\)</span>,</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -657,8 +701,7 @@ $<span class="math notranslate nohighlight">\(
 \[
 \mathcal{L}\left(\boldsymbol{x},\boldsymbol{x}^{\prime}\right)=\left\Vert \boldsymbol{x}-\boldsymbol{x}^{\prime}\right\Vert ^{2}=\left\Vert \boldsymbol{x}-\sigma^{\prime}\left(\boldsymbol{W}^{\prime}(\sigma(\boldsymbol{W}\boldsymbol{x}+\boldsymbol{b}))+\boldsymbol{b}^{\prime}\right)\right\Vert ^{2}
 \]</div>
-<div class="note admonition">
-<p class="admonition-title"> Number of neurons in the code layer</p>
+<p>:::{admonition,note} Number of neurons in the code layer</p>
 <p>Does the number of neurons in the code layer matters?</p>
 <ul class="simple">
 <li><p>Should the feature space <span class="math notranslate nohighlight">\({\displaystyle {\mathcal{Z}}}\)</span> have lower dimensionality than the input space <span class="math notranslate nohighlight">\({\displaystyle {\mathcal{X}}}\)</span>, the feature vector <span class="math notranslate nohighlight">\({\displaystyle \boldsymbol{z}=\boldsymbol{\phi} (\boldsymbol{x})}\)</span> can be regarded as a compressed representation of the input <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span>. This is the case of <strong>undercomplete autoencoders</strong>.</p></li>
@@ -670,15 +713,14 @@ $<span class="math notranslate nohighlight">\(
 <li><p>Limit dimensionality of <span class="math notranslate nohighlight">\(\boldsymbol{\phi} (\boldsymbol{x})\)</span></p></li>
 <li><p>Add a penalty to the loss, e.g. to induce sparsity in the learned representation</p></li>
 <li><p>Denoising autoencoders: Add noise to the input, but try to reproduce
-the <em>clean</em> input. The autoencoder learn to extract essential information of the input.</p></li>
+the <em>clean</em> input. The autoencoder learn to extract essential information of the input.
+:::</p></li>
 </ul>
-</div>
-<div class="note admonition">
-<p class="admonition-title"> View decoder as a distribution</p>
+<p>:::{admonition,note} View decoder as a distribution</p>
 <p>The decoder part can be viewed as representing a distribution <span class="math notranslate nohighlight">\(p(\boldsymbol{x} \mid \boldsymbol{z})\)</span> over the encoder input <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> given the output <span class="math notranslate nohighlight">\(\boldsymbol{z} = f(\boldsymbol{x})\)</span>, like probabilistic PCA.</p>
 <p>If <span class="math notranslate nohighlight">\(p(\boldsymbol{x} \mid \boldsymbol{z})\)</span> is, say, a spherical Gaussian with mean <span class="math notranslate nohighlight">\(\boldsymbol{\psi}(\boldsymbol{z} )\)</span>, then optimizing the likelihood over a training set is equivalent to the usual squared loss.</p>
 <p>Other distributions produce different losses.</p>
-</div>
+<p>:::</p>
 </div>
 <div class="section" id="variants-and-application">
 <h2>Variants and Application<a class="headerlink" href="#variants-and-application" title="Permalink to this headline">¶</a></h2>
@@ -790,7 +832,7 @@ original data, <strong>no</strong> corruption is added.</p>
     
     <div class='prev-next-bottom'>
         
-    <a class='left-prev' id="prev-link" href="00-neural-networks.html" title="previous page">Neural Networks</a>
+    <a class='left-prev' id="prev-link" href="05-regularization.html" title="previous page">Regularization</a>
     <a class='right-next' id="next-link" href="13-variational-autoencoders.html" title="next page">Variational Autoencoders</a>
 
     </div>

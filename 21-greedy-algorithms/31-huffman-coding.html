@@ -409,8 +409,18 @@
   </a>
   <ul class="collapse-ul">
    <li class="toctree-l2">
-    <a class="reference internal" href="../31-regression/11-linear-models.html">
-     Linear Models
+    <a class="reference internal" href="../31-regression/11-lm-estimation.html">
+     Linear Models - Estimation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/12-lm-inference.html">
+     Linear Regression - Inference
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/13-lm-extension.html">
+     Linear Regression - Extension
     </a>
    </li>
   </ul>
@@ -475,10 +485,44 @@
   </i>
  </li>
  <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../34-clustering/00-clustering.html">
+   Clustering
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../34-clustering/11-k-means.html">
+     K-means clustering
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../34-clustering/13-agglomerative-methods.html">
+     Agglomerative Methods
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
   <a class="reference internal" href="../37-neural-networks/00-neural-networks.html">
    Neural Networks
   </a>
   <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/01-stochastic-gradient-descent.html">
+     Stochastic Gradient Descent
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/03-trainability.html">
+     Trainability
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/05-regularization.html">
+     Regularization
+    </a>
+   </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../37-neural-networks/11-autoencoders.html">
      Autoencoders
@@ -624,26 +668,21 @@
 <h1>Huffman Coding<a class="headerlink" href="#huffman-coding" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="problem">
 <h2>Problem<a class="headerlink" href="#problem" title="Permalink to this headline">¶</a></h2>
-<dl class="simple myst">
-<dt>Definition (encoding)</dt><dd><p>an encoding <span class="math notranslate nohighlight">\(c\)</span> is a mapping from alphabet set <span class="math notranslate nohighlight">\(\Sigma\)</span> to binary string of finite length.</p>
-<div class="math notranslate nohighlight">
-\[
-    c: \Sigma \rightarrow \cup_{i\ge 1} \left\{ 0, 1 \right\}
-    \]</div>
-</dd>
-</dl>
+<p>Definition (encoding)
+: an encoding <span class="math notranslate nohighlight">\(c\)</span> is a mapping from alphabet set <span class="math notranslate nohighlight">\(\Sigma\)</span> to binary string of finite length.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$$
+c: \Sigma \rightarrow \cup_{i\ge 1} \left\{ 0, 1 \right\}
+$$
+</pre></div>
+</div>
 <p>For instance, the encoding of a word of letters <span class="math notranslate nohighlight">\(w = (\sigma_1, \sigma_2, \ldots, \sigma_n)\)</span> is <span class="math notranslate nohighlight">\(c(w) = c(\sigma_1)c(\sigma_2)\ldots c(\sigma_n)\)</span></p>
-<dl class="simple myst">
-<dt>Definition (unique decoding property)</dt><dd><p>We say that code <span class="math notranslate nohighlight">\(c\)</span> has unique decoding property iff for every two distinct finite length strings <span class="math notranslate nohighlight">\(s_1 \ne s_2\)</span>, we have <span class="math notranslate nohighlight">\(c(s_1) \ne c(s_2)\)</span>.</p>
-</dd>
-<dt>Definition (prefix code)</dt><dd><p>A code <span class="math notranslate nohighlight">\(c\)</span> for alphabet <span class="math notranslate nohighlight">\(\Sigma\)</span> is a prefix code iff for all <span class="math notranslate nohighlight">\(\sigma, \sigma ^\prime \in \Sigma\)</span>, such that <span class="math notranslate nohighlight">\(\sigma \ne \sigma ^\prime\)</span>: <span class="math notranslate nohighlight">\(c(\sigma)\)</span> is not a prefix of <span class="math notranslate nohighlight">\(c(\sigma ^\prime)\)</span></p>
-</dd>
-</dl>
+<p>Definition (unique decoding property)
+: We say that code <span class="math notranslate nohighlight">\(c\)</span> has unique decoding property iff for every two distinct finite length strings <span class="math notranslate nohighlight">\(s_1 \ne s_2\)</span>, we have <span class="math notranslate nohighlight">\(c(s_1) \ne c(s_2)\)</span>.</p>
+<p>Definition (prefix code)
+: A code <span class="math notranslate nohighlight">\(c\)</span> for alphabet <span class="math notranslate nohighlight">\(\Sigma\)</span> is a prefix code iff for all <span class="math notranslate nohighlight">\(\sigma, \sigma ^\prime \in \Sigma\)</span>, such that <span class="math notranslate nohighlight">\(\sigma \ne \sigma ^\prime\)</span>: <span class="math notranslate nohighlight">\(c(\sigma)\)</span> is not a prefix of <span class="math notranslate nohighlight">\(c(\sigma ^\prime)\)</span></p>
 <p>For instance, the code <span class="math notranslate nohighlight">\(\left\{ a:00, b:0010 \right\}\)</span> is not a prefix code.</p>
-<dl class="simple myst">
-<dt>Claim 1</dt><dd><p>If <span class="math notranslate nohighlight">\(c\)</span> is a prefix code, then it has unique decoding property nd efficient decoding algorithm.</p>
-</dd>
-</dl>
+<p>Claim 1
+: If <span class="math notranslate nohighlight">\(c\)</span> is a prefix code, then it has unique decoding property nd efficient decoding algorithm.</p>
 <p>We want to encode as short as possible and be able to decode correctly and efficiently.</p>
 <p>For instance, we can use five binary digits to encode <span class="math notranslate nohighlight">\(26\)</span> letters since <span class="math notranslate nohighlight">\(2^5 = 32 &gt; 26\)</span>. But this is wasteful since the letter <span class="math notranslate nohighlight">\(x\)</span> appears much less frequently that <span class="math notranslate nohighlight">\(e\)</span>. A solution is to use short encoding for frequent letters and long encoding for infrequent letters.</p>
 <p>Let the frequency of letter <span class="math notranslate nohighlight">\(a\)</span> in document <span class="math notranslate nohighlight">\(T\)</span> of length <span class="math notranslate nohighlight">\(n\)</span> be</p>
@@ -664,64 +703,48 @@ f(\sigma) = \frac{\text{# times $a$ appears in T}}{n}
 </div>
 <div class="section" id="analysis">
 <h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
-<dl class="simple myst">
-<dt>Claim 2</dt><dd><p>There is a one-to-one correspondence between a prefix code and a binary tree. Every leaf corresponds to a letter. Left edge means <span class="math notranslate nohighlight">\(0\)</span> and right edge means <span class="math notranslate nohighlight">\(1\)</span>.</p>
-</dd>
-</dl>
-<div class="myclass figure align-default" id="binary-code-tree">
-<a class="reference internal image-reference" href="https://www.techiedelight.com/wp-content/uploads/2016/11/Huffman-Coding-6.png"><img alt="" src="https://www.techiedelight.com/wp-content/uploads/2016/11/Huffman-Coding-6.png" style="width: 50%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 1 </span><span class="caption-text">A binary code tree</span><a class="headerlink" href="#binary-code-tree" title="Permalink to this image">¶</a></p>
-</div>
+<p>Claim 2
+: There is a one-to-one correspondence between a prefix code and a binary tree. Every leaf corresponds to a letter. Left edge means <span class="math notranslate nohighlight">\(0\)</span> and right edge means <span class="math notranslate nohighlight">\(1\)</span>.</p>
+<p>:::{figure,myclass} binary-code-tree
+<img src="https://www.techiedelight.com/wp-content/uploads/2016/11/Huffman-Coding-6.png" width = "50%" alt=""/></p>
+<p>A binary code tree
+:::</p>
 <p>What is the cost of this binary code tree?</p>
-<dl class="simple myst">
-<dt>Properties</dt><dd><ul class="simple">
-<li><p>code length of a letter <span class="math notranslate nohighlight">\(c(\sigma)\)</span> is the depth of leaf labelled <span class="math notranslate nohighlight">\(c(\sigma)\)</span> in the tree, denoted <span class="math notranslate nohighlight">\(d(\sigma)\)</span>.</p></li>
+<p>Properties
+: - code length of a letter <span class="math notranslate nohighlight">\(c(\sigma)\)</span> is the depth of leaf labelled <span class="math notranslate nohighlight">\(c(\sigma)\)</span> in the tree, denoted <span class="math notranslate nohighlight">\(d(\sigma)\)</span>.</p>
+<ul class="simple">
 <li><p>total cost is <span class="math notranslate nohighlight">\(\mathrm{cost}(T) = \Sigma_{\sigma \in T} f(\sigma) d(\sigma)\)</span></p></li>
 </ul>
-</dd>
-</dl>
 <p>Now we have converted the code problem to a tree problem to minimize the weighted depth.</p>
-<dl class="simple myst">
-<dt>Definition (full binary tree)</dt><dd><p>A tree is a full binary tree if every non-leaf vertex has exactly 2 children.</p>
-</dd>
-<dt>Claim 3</dt><dd><p>If <span class="math notranslate nohighlight">\(T\)</span> is an optimal tree, it is a full binary tree.</p>
-</dd>
-<dd><details class="sphinx-bs dropdown card mb-3">
-<summary class="summary-title card-header">
-<em>Proof by exchange argument / contradiction</em><div class="summary-down docutils">
-<svg version="1.1" width="24" height="24" class="octicon octicon-chevron-down" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M5.22 8.72a.75.75 0 000 1.06l6.25 6.25a.75.75 0 001.06 0l6.25-6.25a.75.75 0 00-1.06-1.06L12 14.44 6.28 8.72a.75.75 0 00-1.06 0z"></path></svg></div>
-<div class="summary-up docutils">
-<svg version="1.1" width="24" height="24" class="octicon octicon-chevron-up" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M18.78 15.28a.75.75 0 000-1.06l-6.25-6.25a.75.75 0 00-1.06 0l-6.25 6.25a.75.75 0 101.06 1.06L12 9.56l5.72 5.72a.75.75 0 001.06 0z"></path></svg></div>
-</summary><div class="summary-content card-body docutils">
-<p class="card-text">If we delete the non-leaf vertex that has 1 children and move the children up, the resulting tree is still optimal, but we reduce the average depth length, contradiction.</p>
-</div>
-</details></dd>
-<dt>Claim 4</dt><dd><p>Suppose there are two letters <span class="math notranslate nohighlight">\(x, y\)</span>, with lowest frequency <span class="math notranslate nohighlight">\(f(x) \le f(y) \le f(z)\)</span> for any <span class="math notranslate nohighlight">\(z \ne x, y\)</span>. There exists an optimal binary full tree <span class="math notranslate nohighlight">\(T\)</span>, where <span class="math notranslate nohighlight">\(x,y\)</span> are siblings, and they lie at the deepest level of the tree.</p>
-</dd>
-<dd><details class="sphinx-bs dropdown card mb-3">
-<summary class="summary-title card-header">
-<em>Proof by exchange argument</em><div class="summary-down docutils">
-<svg version="1.1" width="24" height="24" class="octicon octicon-chevron-down" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M5.22 8.72a.75.75 0 000 1.06l6.25 6.25a.75.75 0 001.06 0l6.25-6.25a.75.75 0 00-1.06-1.06L12 14.44 6.28 8.72a.75.75 0 00-1.06 0z"></path></svg></div>
-<div class="summary-up docutils">
-<svg version="1.1" width="24" height="24" class="octicon octicon-chevron-up" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M18.78 15.28a.75.75 0 000-1.06l-6.25-6.25a.75.75 0 00-1.06 0l-6.25 6.25a.75.75 0 101.06 1.06L12 9.56l5.72 5.72a.75.75 0 001.06 0z"></path></svg></div>
-</summary><div class="summary-content card-body docutils">
-<p class="card-text">Let <span class="math notranslate nohighlight">\(T\)</span> by any optimal tree, <span class="math notranslate nohighlight">\(d\)</span> be the deepest level, <span class="math notranslate nohighlight">\(a\)</span> be any vertex at level <span class="math notranslate nohighlight">\(d\)</span>. Let <span class="math notranslate nohighlight">\(b\)</span> be a sibling of <span class="math notranslate nohighlight">\(a\)</span>. If <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(y\)</span> lie at a shallower level <span class="math notranslate nohighlight">\(d ^\prime &lt; d\)</span> and we switch <span class="math notranslate nohighlight">\((a,b)\)</span> with <span class="math notranslate nohighlight">\((x,y)\)</span>, then the average code length of the new tree <span class="math notranslate nohighlight">\(T ^\prime\)</span> does <strong>not</strong> go up. Consider switch <span class="math notranslate nohighlight">\(a\)</span> and <span class="math notranslate nohighlight">\(x\)</span>,</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{align}
+<p>Definition (full binary tree)
+: A tree is a full binary tree if every non-leaf vertex has exactly 2 children.</p>
+<p>Claim 3
+: If <span class="math notranslate nohighlight">\(T\)</span> is an optimal tree, it is a full binary tree.</p>
+<p>: ```{dropdown} <em>Proof by exchange argument / contradiction</em>
+If we delete the non-leaf vertex that has 1 children and move the children up, the resulting tree is still optimal, but we reduce the average depth length, contradiction.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>
+
+Claim 4
+: Suppose there are two letters $x, y$, with lowest frequency $f(x) \le f(y) \le f(z)$ for any $z \ne x, y$. There exists an optimal binary full tree $T$, where $x,y$ are siblings, and they lie at the deepest level of the tree.
+
+: ```{dropdown} *Proof by exchange argument*
+Let $T$ by any optimal tree, $d$ be the deepest level, $a$ be any vertex at level $d$. Let $b$ be a sibling of $a$. If $x$ and $y$ lie at a shallower level $d ^\prime &lt; d$ and we switch $(a,b)$ with $(x,y)$, then the average code length of the new tree $T ^\prime$ does **not** go up. Consider switch $a$ and $x$,
+
+$$\begin{align}
 \mathrm{cost}(T ^\prime) - \mathrm{cost}(T)
 &amp;= f(a)[d_{T ^\prime}(a) -  d_{T}(a) ] + f(x)[d_{T ^\prime}(x) -  d_{T}(x) ] \\
 &amp;= f(a)(d ^\prime - d) + f(x)(d -  d ^\prime ) \\
 &amp;= (d ^\prime - d)[f(a) - f(x)]\\
 &amp;\le 0 \\
-\end{align}\end{split}\]</div>
-<p class="card-text">The proof for the change for switching <span class="math notranslate nohighlight">\(b\)</span> and <span class="math notranslate nohighlight">\(y\)</span> is similar.</p>
+\end{align}$$
+
+The proof for the change for switching $b$ and $y$ is similar.
+</pre></div>
 </div>
-</details></dd>
-<dt>Claim 5</dt><dd><p>Suppose in a tree <span class="math notranslate nohighlight">\(T\)</span> there are two sibling letters <span class="math notranslate nohighlight">\(x, y\)</span>, with frequencies <span class="math notranslate nohighlight">\(f(x), f(y)\)</span> and parent <span class="math notranslate nohighlight">\(z\)</span>. Then for the three <span class="math notranslate nohighlight">\(T^{\prime} = T^ \backslash \left\{ x, y \right\} \cup \left\{ z \right\}\)</span>, we have</p>
+<p>Claim 5
+: Suppose in a tree <span class="math notranslate nohighlight">\(T\)</span> there are two sibling letters <span class="math notranslate nohighlight">\(x, y\)</span>, with frequencies <span class="math notranslate nohighlight">\(f(x), f(y)\)</span> and parent <span class="math notranslate nohighlight">\(z\)</span>. Then for the three <span class="math notranslate nohighlight">\(T^{\prime} = T^ \backslash \left\{ x, y \right\} \cup \left\{ z \right\}\)</span>, we have</p>
 <div class="math notranslate nohighlight">
 \[\mathrm{cost}(T ) = \mathrm{cost}(T ^\prime) + f(x_1) + f(x_2)\]</div>
-</dd>
-</dl>
 <p>The above claims suggest that we can put infrequent letters at the lower levels.</p>
 </div>
 <div class="section" id="algorithm">

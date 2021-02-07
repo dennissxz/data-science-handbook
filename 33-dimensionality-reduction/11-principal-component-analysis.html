@@ -409,8 +409,18 @@
   </a>
   <ul class="collapse-ul">
    <li class="toctree-l2">
-    <a class="reference internal" href="../31-regression/11-linear-models.html">
-     Linear Models
+    <a class="reference internal" href="../31-regression/11-lm-estimation.html">
+     Linear Models - Estimation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/12-lm-inference.html">
+     Linear Regression - Inference
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/13-lm-extension.html">
+     Linear Regression - Extension
     </a>
    </li>
   </ul>
@@ -475,10 +485,44 @@
   </i>
  </li>
  <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../34-clustering/00-clustering.html">
+   Clustering
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../34-clustering/11-k-means.html">
+     K-means clustering
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../34-clustering/13-agglomerative-methods.html">
+     Agglomerative Methods
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
   <a class="reference internal" href="../37-neural-networks/00-neural-networks.html">
    Neural Networks
   </a>
   <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/01-stochastic-gradient-descent.html">
+     Stochastic Gradient Descent
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/03-trainability.html">
+     Trainability
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/05-regularization.html">
+     Regularization
+    </a>
+   </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../37-neural-networks/11-autoencoders.html">
      Autoencoders
@@ -807,9 +851,8 @@ Z_1 = \boldsymbol{u} _1^T \boldsymbol{x}
 \[
 Z_i = \boldsymbol{u} _i^\top \boldsymbol{x}
 \]</div>
-<div class="dropdown seealso admonition">
-<p class="admonition-title"> Derivation</p>
-<p>We consider the maximization problem:</p>
+<p>:::{admonition,dropdown,seealso} Derivation
+We consider the maximization problem:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
 \max _{\boldsymbol{u}} \quad &amp; \boldsymbol{u}^{\top} \boldsymbol{\Sigma} \boldsymbol{u}  \\
@@ -862,8 +905,8 @@ $<span class="math notranslate nohighlight">\(
 (\boldsymbol{\Sigma}-\lambda \boldsymbol{I}) \boldsymbol{u} =\boldsymbol{0}
 \]</div>
 <p>which implies <span class="math notranslate nohighlight">\(\lambda\)</span> is the eigenvalue of <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}\)</span>.</p>
-<p>Therefore, the maximized variance <span class="math notranslate nohighlight">\(\boldsymbol{u} ^\top \boldsymbol{\Sigma} \boldsymbol{u}\)</span> equals to the largest eigenvalue of <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}\)</span>.</p>
-</div>
+<p>Therefore, the maximized variance <span class="math notranslate nohighlight">\(\boldsymbol{u} ^\top \boldsymbol{\Sigma} \boldsymbol{u}\)</span> equals to the largest eigenvalue of <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}\)</span>.
+:::</p>
 </div>
 <div class="section" id="spectral-decomposition">
 <h3>Spectral Decomposition<a class="headerlink" href="#spectral-decomposition" title="Permalink to this headline">¶</a></h3>
@@ -899,30 +942,27 @@ Z_{k}=\boldsymbol{u}_{k}^{\top} \boldsymbol{x}=u_{1 k} X_{1}+u_{2 k} X_{2}+\cdot
 <h2>Properties<a class="headerlink" href="#properties" title="Permalink to this headline">¶</a></h2>
 <ol>
 <li><p>All principal components are uncorrelated, i.e., <span class="math notranslate nohighlight">\(\operatorname{Cov}\left( Z_i, Z_j \right) = 0\)</span> for <span class="math notranslate nohighlight">\(i \ne j\)</span></p>
-<div class="dropdown seealso admonition">
-<p class="admonition-title"> <em>Proof</em></p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
-    \begin{aligned}
-    \operatorname{Cov}\left(Z_{i}, Z_{j}\right) &amp;=\operatorname{Cov}\left(\boldsymbol{u}_{i}^{\top} \boldsymbol{x}, \boldsymbol{u}_{j}^{\top} \boldsymbol{x}\right) \\
-    &amp;=\mathrm{E}\left(\boldsymbol{u}_{i}^{\top}(\boldsymbol{x}-\boldsymbol{\mu})(\boldsymbol{x}-\boldsymbol{\mu})^{\top} \boldsymbol{u}_{j}\right) \\
-    &amp;=\boldsymbol{u}_{i}^{\top} \boldsymbol{\Sigma} \boldsymbol{u}_{j} \\
-    &amp;=\boldsymbol{u}_{i}^{\top} \boldsymbol{U} \boldsymbol{\Lambda} \boldsymbol{U} ^{\top} \boldsymbol{u}_{j} \\
-    &amp;=\left(\boldsymbol{u}_{i}^{\top}\right)\left(\boldsymbol{u}_{1} \boldsymbol{u}_{2} \cdots \boldsymbol{u}_{p}\right) \boldsymbol{\Lambda}\left(\begin{array}{c}
-    \boldsymbol{u}_{1}^{\top} \\
-    \boldsymbol{u}_{2}^{\top} \\
-    \vdots \\
-    \boldsymbol{u}_{p}^{\top}
-    \end{array}\right) \boldsymbol{u}_{j} \\
-    &amp;=\boldsymbol{e}_{i}^{\top} \boldsymbol{\Lambda} \boldsymbol{e}_{j} \\
-    &amp;=0
-    \end{aligned}
-    \end{split}\]</div>
-</div>
+<p>:::{admonition,dropdown,seealso} <em>Proof</em>
+$<span class="math notranslate nohighlight">\(
+ \begin{aligned}
+ \operatorname{Cov}\left(Z_{i}, Z_{j}\right) &amp;=\operatorname{Cov}\left(\boldsymbol{u}_{i}^{\top} \boldsymbol{x}, \boldsymbol{u}_{j}^{\top} \boldsymbol{x}\right) \\
+ &amp;=\mathrm{E}\left(\boldsymbol{u}_{i}^{\top}(\boldsymbol{x}-\boldsymbol{\mu})(\boldsymbol{x}-\boldsymbol{\mu})^{\top} \boldsymbol{u}_{j}\right) \\
+ &amp;=\boldsymbol{u}_{i}^{\top} \boldsymbol{\Sigma} \boldsymbol{u}_{j} \\
+ &amp;=\boldsymbol{u}_{i}^{\top} \boldsymbol{U} \boldsymbol{\Lambda} \boldsymbol{U} ^{\top} \boldsymbol{u}_{j} \\
+ &amp;=\left(\boldsymbol{u}_{i}^{\top}\right)\left(\boldsymbol{u}_{1} \boldsymbol{u}_{2} \cdots \boldsymbol{u}_{p}\right) \boldsymbol{\Lambda}\left(\begin{array}{c}
+ \boldsymbol{u}_{1}^{\top} \\
+ \boldsymbol{u}_{2}^{\top} \\
+ \vdots \\
+ \boldsymbol{u}_{p}^{\top}
+ \end{array}\right) \boldsymbol{u}_{j} \\
+ &amp;=\boldsymbol{e}_{i}^{\top} \boldsymbol{\Lambda} \boldsymbol{e}_{j} \\
+ &amp;=0
+ \end{aligned}
+ \)</span>$
+:::</p>
 </li>
 <li><p>The variance of the <span class="math notranslate nohighlight">\(i\)</span>-th principal component is <span class="math notranslate nohighlight">\(\lambda_i\)</span>, i.e. <span class="math notranslate nohighlight">\(\operatorname{Var}\left( Z_i \right) = \lambda_i\)</span>.</p>
-<div class="dropdown seealso admonition">
-<p class="admonition-title"> <em>Proof</em></p>
+<p>:::{admonition,dropdown,seealso} <em>Proof</em></p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{aligned}
     \operatorname{Var}\left( Z_i \right)
@@ -931,7 +971,7 @@ Z_{k}=\boldsymbol{u}_{k}^{\top} \boldsymbol{x}=u_{1 k} X_{1}+u_{2 k} X_{2}+\cdot
     &amp;= \boldsymbol{e}_i ^\top \boldsymbol{\Lambda} \boldsymbol{e}_i  \\
     &amp;= \lambda_i
     \end{aligned}\end{split}\]</div>
-</div>
+<p>:::</p>
 </li>
 <li><p>The first principal component <span class="math notranslate nohighlight">\(Z_1 = \boldsymbol{u} _1 ^\top \boldsymbol{x}\)</span> has the largest variance among all linear combinations of <span class="math notranslate nohighlight">\(X_i\)</span>’s. The <span class="math notranslate nohighlight">\(i=2, \ldots, p\)</span>, the <span class="math notranslate nohighlight">\(i\)</span>-th principal component has the largest variance among all linear combinations of <span class="math notranslate nohighlight">\(X_i\)</span>’s, which are uncorrelated with the first <span class="math notranslate nohighlight">\((i-1)\)</span> principal components.</p></li>
 <li><p>The principal component preserve the total variance</p>
@@ -944,19 +984,17 @@ Z_{k}=\boldsymbol{u}_{k}^{\top} \boldsymbol{x}=u_{1 k} X_{1}+u_{2 k} X_{2}+\cdot
 \[
     \sum_{i=1}^{p} \lambda_{i}=\sum_{i=1}^{p} \sigma_{i i}
     \]</div>
-<div class="dropdown seealso admonition">
-<p class="admonition-title"> <em>Proof</em></p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
-    \begin{aligned}
-    \sum_{i=1}^{p} \sigma_{i i} &amp;=\operatorname{tr}(\boldsymbol{\Sigma}) \\
-    &amp;=\operatorname{tr}\left(\sum_{i=1}^{p} \lambda_{i} \boldsymbol{u}_{i} \boldsymbol{u}_{i}^{\top}\right) \\
-    &amp;=\sum_{i=1}^{p} \lambda_{i} \operatorname{tr}\left(\boldsymbol{u}_{i} \boldsymbol{u}_{i}^{\top}\right) \\
-    &amp;=\sum_{i=1}^{p} \lambda_{i} \operatorname{tr}\left(\boldsymbol{u}_{i}^{\top} \boldsymbol{u}_{i}\right) \\
-    &amp;=\sum_{i=1}^{p} \lambda_{i}
-    \end{aligned}
-    \end{split}\]</div>
-</div>
+<p>:::{admonition,dropdown,seealso} <em>Proof</em>
+$<span class="math notranslate nohighlight">\(
+ \begin{aligned}
+ \sum_{i=1}^{p} \sigma_{i i} &amp;=\operatorname{tr}(\boldsymbol{\Sigma}) \\
+ &amp;=\operatorname{tr}\left(\sum_{i=1}^{p} \lambda_{i} \boldsymbol{u}_{i} \boldsymbol{u}_{i}^{\top}\right) \\
+ &amp;=\sum_{i=1}^{p} \lambda_{i} \operatorname{tr}\left(\boldsymbol{u}_{i} \boldsymbol{u}_{i}^{\top}\right) \\
+ &amp;=\sum_{i=1}^{p} \lambda_{i} \operatorname{tr}\left(\boldsymbol{u}_{i}^{\top} \boldsymbol{u}_{i}\right) \\
+ &amp;=\sum_{i=1}^{p} \lambda_{i}
+ \end{aligned}
+ \)</span>$
+:::</p>
 </li>
 <li><p>The correlation between a principal component <span class="math notranslate nohighlight">\(Z_j\)</span> and an original variable <span class="math notranslate nohighlight">\(X_i\)</span> is given by</p>
 <div class="math notranslate nohighlight">
@@ -964,20 +1002,18 @@ Z_{k}=\boldsymbol{u}_{k}^{\top} \boldsymbol{x}=u_{1 k} X_{1}+u_{2 k} X_{2}+\cdot
     \operatorname{Corr}\left( X_i, Z_j \right) = \frac{\sqrt{\lambda_j}a_{ij}}{\sqrt{\sigma_{ii}}}
     \]</div>
 <p>where <span class="math notranslate nohighlight">\(u_{ij}\)</span> denotes the <span class="math notranslate nohighlight">\(i\)</span>-th element of <span class="math notranslate nohighlight">\(\boldsymbol{u} _j\)</span>.</p>
-<div class="dropdown seealso admonition">
-<p class="admonition-title"> <em>Proof</em></p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
-    \begin{aligned}
-    \operatorname{Cov}\left(X_{i}, Z_{j}\right) &amp;=\operatorname{Cov}\left(X_{i}, \boldsymbol{u}_{j}^{\top} \boldsymbol{x}\right) \\
-    &amp;=\operatorname{Cov}\left(\boldsymbol{e}_{i}^{\top} \boldsymbol{x}, \boldsymbol{u}_{j}^{\top} \boldsymbol{x}\right) \\
-    &amp;=\boldsymbol{e}_{i}^{\top} \boldsymbol{\Sigma} \boldsymbol{u}_{j} \\
-    &amp;=\boldsymbol{e}_{i}^{\top} \sum_{k=1}^{p} \lambda_{k} \boldsymbol{u}_{k} \boldsymbol{u}_{k}^{\top} \boldsymbol{u}_{j} \\
-    &amp;=\lambda_{j} \boldsymbol{e}_{i}^{\top} \boldsymbol{u}_{j} \boldsymbol{u}_{j}^{\top} \boldsymbol{u}_{j} \\
-    &amp;=\lambda_{j} \boldsymbol{e}_{i}^{\top} \boldsymbol{u}_{j} \\
-    &amp;=\lambda_{j} u_{i j}
-    \end{aligned}
-    \end{split}\]</div>
+<p>:::{admonition,dropdown,seealso} <em>Proof</em>
+$<span class="math notranslate nohighlight">\(
+ \begin{aligned}
+ \operatorname{Cov}\left(X_{i}, Z_{j}\right) &amp;=\operatorname{Cov}\left(X_{i}, \boldsymbol{u}_{j}^{\top} \boldsymbol{x}\right) \\
+ &amp;=\operatorname{Cov}\left(\boldsymbol{e}_{i}^{\top} \boldsymbol{x}, \boldsymbol{u}_{j}^{\top} \boldsymbol{x}\right) \\
+ &amp;=\boldsymbol{e}_{i}^{\top} \boldsymbol{\Sigma} \boldsymbol{u}_{j} \\
+ &amp;=\boldsymbol{e}_{i}^{\top} \sum_{k=1}^{p} \lambda_{k} \boldsymbol{u}_{k} \boldsymbol{u}_{k}^{\top} \boldsymbol{u}_{j} \\
+ &amp;=\lambda_{j} \boldsymbol{e}_{i}^{\top} \boldsymbol{u}_{j} \boldsymbol{u}_{j}^{\top} \boldsymbol{u}_{j} \\
+ &amp;=\lambda_{j} \boldsymbol{e}_{i}^{\top} \boldsymbol{u}_{j} \\
+ &amp;=\lambda_{j} u_{i j}
+ \end{aligned}
+ \)</span>$</p>
 <p>and then</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
@@ -986,7 +1022,7 @@ Z_{k}=\boldsymbol{u}_{k}^{\top} \boldsymbol{x}=u_{1 k} X_{1}+u_{2 k} X_{2}+\cdot
     &amp;=\frac{\lambda_{j} u_{i j}}{\sqrt{\sigma_{i i} \lambda_{j}}} \\
     &amp;=\frac{\sqrt{\lambda_{j}} u_{i j}}{\sqrt{\sigma_{i i}}}
     \end{align}\end{split}\]</div>
-</div>
+<p>:::</p>
 </li>
 <li><p>If the correlation matrix <span class="math notranslate nohighlight">\(\boldsymbol{\rho} = \boldsymbol{D}^{-1}\boldsymbol{\Sigma} \boldsymbol{D}^{-1}\)</span> instead of the covariance matrix <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}\)</span> is used, i.e. variables <span class="math notranslate nohighlight">\(X_1, X_2, \ldots, X_d\)</span> are standardized, then</p>
 <div class="math notranslate nohighlight">
@@ -1015,10 +1051,10 @@ Z_{k}=\boldsymbol{u}_{k}^{\top} \boldsymbol{x}=u_{1 k} X_{1}+u_{2 k} X_{2}+\cdot
 </li>
 <li><p><strong>Scree plot</strong></p>
 <p>Construct the so-called scree plot of the eigenvalue <span class="math notranslate nohighlight">\(\ell_i\)</span> on the vertical axis versus <span class="math notranslate nohighlight">\(i\)</span> on horizontal axis with equal intervals for <span class="math notranslate nohighlight">\(i = 1, 2, \ldots, d\)</span>, and join the points into a decreasing polygon. Try to find a “clean-cut” where the polygon “levels off” so that the first few eigenvalues seem to be far apart from the others.</p>
-<div class="myclass figure align-default" id="pca-scree-plot">
-<a class="reference internal image-reference" href="../_images/pca-scree-plot.png"><img alt="" src="../_images/pca-scree-plot.png" style="width: 50%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 8 </span><span class="caption-text">Scree plot of <span class="math notranslate nohighlight">\(\lambda\)</span>. [Fung 2021]</span><a class="headerlink" href="#pca-scree-plot" title="Permalink to this image">¶</a></p>
-</div>
+<p>:::{figure,myclass} pca-scree-plot
+<img src="../imgs/pca-scree-plot.png" width = "50%" alt=""/></p>
+<p>Scree plot of <span class="math notranslate nohighlight">\(\lambda\)</span>. [Fung 2021]
+:::</p>
 </li>
 <li><p><strong>Hypothesis testing</strong></p>
 <p>Perform formal significance tests to determine the larger an unequal eigenvalues and retain the principal components to these eigenvalues.</p>
@@ -1034,10 +1070,10 @@ $<span class="math notranslate nohighlight">\(
  \hat{\boldsymbol{x} }=\boldsymbol{\mu} _{\boldsymbol{x}} +\sum_{j=1}^{k}\left(\boldsymbol{u}_{j}^{\top} \boldsymbol{x} \right) \boldsymbol{u} _{j}
  \)</span>$</p>
 <p>To choose an optimal number of principal components <span class="math notranslate nohighlight">\(k\)</span>, we can examine the magnitude of the residual <span class="math notranslate nohighlight">\(\left\Vert \boldsymbol{x} - \hat{\boldsymbol{x} } \right\Vert ^2\)</span>. The expected residual corresponds to variance in the <strong>remaining</strong> subspace.</p>
-<div class="myclass figure align-default" id="pca-reconstruction">
-<a class="reference internal image-reference" href="../_images/pca-reconstruction.png"><img alt="" src="../_images/pca-reconstruction.png" style="width: 80%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 9 </span><span class="caption-text">Reconstruction of digits with mean and principal components [Livescu 2021]</span><a class="headerlink" href="#pca-reconstruction" title="Permalink to this image">¶</a></p>
-</div>
+<p>:::{figure,myclass} pca-reconstruction
+<img src="../imgs/pca-reconstruction.png" width = "80%" alt=""/></p>
+<p>Reconstruction of digits with mean and principal components [Livescu 2021]
+:::</p>
 </li>
 <li><p><strong>Downstream task performance</strong></p>
 <p>Use the performance of the downstream task to choose an optimal number of principal components.</p>
@@ -1067,15 +1103,15 @@ constant <span class="math notranslate nohighlight">\(c\)</span>,</p>
 <li><p><span class="math notranslate nohighlight">\(2c\lambda_i^{1/2}\)</span></p></li>
 <li><p>directional cosines as coefficients given in <span class="math notranslate nohighlight">\(\boldsymbol{u} _i\)</span> for the <span class="math notranslate nohighlight">\(i\)</span>-th axis.</p></li>
 </ul>
-<div class="figure align-default" id="pca-gausian-ellipsoids">
-<a class="reference internal image-reference" href="../_images/pca-pc-ellipsoids1.png"><img alt="" src="../_images/pca-pc-ellipsoids1.png" style="width: 80%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 10 </span><span class="caption-text">PCA and Ellipsoids of Gaussian [Fung 2018]</span><a class="headerlink" href="#pca-gausian-ellipsoids" title="Permalink to this image">¶</a></p>
-</div>
+<p>:::{figure} pca-gausian-ellipsoids
+<img src="../imgs/pca-pc-ellipsoids.png" width = "80%" alt=""/></p>
+<p>PCA and Ellipsoids of Gaussian [Fung 2018]
+:::</p>
 <p>Another example is hand written digits. Suppose <span class="math notranslate nohighlight">\(\boldsymbol{\mu} _ \boldsymbol{x}\)</span> is the sample mean that determines the “mean” appearance of the digit <span class="math notranslate nohighlight">\(2\)</span>, then <span class="math notranslate nohighlight">\(\boldsymbol{\phi}_j\)</span> is a principal direction which determines the location of variation of the black/white pixels.</p>
-<div class="myclass figure align-default" id="pca-reconstruction-scale">
-<a class="reference internal image-reference" href="../_images/pca-pc-digits.png"><img alt="" src="../_images/pca-pc-digits.png" style="width: 50%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 11 </span><span class="caption-text">Reconstruction of digits with mean and scaled principal components [Livescu 2021]</span><a class="headerlink" href="#pca-reconstruction-scale" title="Permalink to this image">¶</a></p>
-</div>
+<p>:::{figure,myclass} pca-reconstruction-scale
+<img src="../imgs/pca-pc-digits.png" width = "50%" alt=""/></p>
+<p>Reconstruction of digits with mean and scaled principal components [Livescu 2021]
+:::</p>
 </div>
 <div class="section" id="proportion-explained">
 <h3>Proportion Explained<a class="headerlink" href="#proportion-explained" title="Permalink to this headline">¶</a></h3>
@@ -1180,10 +1216,10 @@ Z_i = \frac{X_i - \mu_i}{\sigma_i}
 natural sciences. However, when the units of measurement are of artificial nature, like scores in some questions as frequently used in social sciences, the PCA based on correlation matrix is preferred.</p>
 <p><strong>Direction of Variance may not be Discriminative</strong></p>
 <p>But note that the direction of largest variance need not to be the most discriminative direction. See the example below.</p>
-<div class="myclass figure align-default" id="pca-not-discriminative">
-<a class="reference internal image-reference" href="../_images/pca-classification.png"><img alt="" src="../_images/pca-classification.png" style="width: 80%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 12 </span><span class="caption-text">PCA may not be discriminative [Livescu 2021]</span><a class="headerlink" href="#pca-not-discriminative" title="Permalink to this image">¶</a></p>
-</div>
+<p>:::{figure,myclass} pca-not-discriminative
+<img src="../imgs/pca-classification.png" width = "80%" alt=""/></p>
+<p>PCA may not be discriminative [Livescu 2021]
+:::</p>
 <p>If we knew the labels, we could use a supervised dimensionality reduction, e.g. linear discriminant analysis.</p>
 </div>
 <div class="section" id="relation-to">
@@ -1252,15 +1288,17 @@ p(\boldsymbol{x} \mid \boldsymbol{z}) =\mathcal{N}\left( \boldsymbol{W} \boldsym
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(\boldsymbol{W} \in \mathbb{R} ^{d \times k}\)</span></p>
 <p>Or equivalently,
-$$</p>
-<div class="amsmath math notranslate nohighlight" id="equation-a14bc94c-678e-4ed2-9b74-2c83c1807f40">
-<span class="eqno">(1)<a class="headerlink" href="#equation-a14bc94c-678e-4ed2-9b74-2c83c1807f40" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+$<span class="math notranslate nohighlight">\(
+\begin{equation}
 \boldsymbol{x}=\boldsymbol{W} \boldsymbol{z}+\boldsymbol{\mu} + \boldsymbol{\epsilon} , \text { where } \boldsymbol{\epsilon}  \sim \mathcal{N}\left(0, \sigma^{2} \boldsymbol{I}\right)
-\end{equation}\]</div>
+\end{equation}
+\)</span>$</p>
+<p>If <span class="math notranslate nohighlight">\(\sigma = 0\)</span> then we get standard PCA.</p>
+<p>By the property of multivariate Gaussian, we have</p>
 <div class="math notranslate nohighlight">
-\[ \begin{align}\begin{aligned}If $\sigma = 0$ then we get standard PCA.\\By the property of multivariate Gaussian, we have\end{aligned}\end{align} \]</div>
-<p>p(\boldsymbol{x})=\mathcal{N}\left(\boldsymbol{\mu} , \boldsymbol{W} \boldsymbol{W}^{T}+\sigma^{2} \boldsymbol{I}\right)
-$$</p>
+\[
+p(\boldsymbol{x})=\mathcal{N}\left(\boldsymbol{\mu} , \boldsymbol{W} \boldsymbol{W}^{T}+\sigma^{2} \boldsymbol{I}\right)
+\]</div>
 <p>The goal is to estimate the parameter <span class="math notranslate nohighlight">\(\boldsymbol{W} , \boldsymbol{\mu} , \sigma\)</span> that maximize the log likelihood <span class="math notranslate nohighlight">\(\sum_{i=1}^{n} \log p\left(\boldsymbol{x}_{i} \mid \boldsymbol{W} , \boldsymbol{\mu} , \sigma\right)\)</span>.</p>
 </div>
 <div class="section" id="learning-mle">
