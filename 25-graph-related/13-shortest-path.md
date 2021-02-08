@@ -15,7 +15,7 @@ Goal
 : Find the shortest path $P$ between $s$ and all other vertices
 
 
-## Dijkstra's Algorithm
+## Greedy Algorithm (Dijkstra)
 
 Dijkstra's algorithm is a greedy algorithm, which maintains a set of vertices $S$ and update it iteratively. At start, $S={s}$. If we found a shortest path between $s$ to a vertex $u$, then $u$ is added to $S$. If $S=V$, then the algorithm terminates.
 
@@ -30,7 +30,7 @@ $$
 
 The algorithm add $u$ to $S$ if the equality is achieved.
 
-Implementation:
+### Solution
 
 ---
 **Dijkstra's algorithm**
@@ -110,26 +110,46 @@ So total $O(n^3)$.
 
 ### Negative Edge
 
+More generally, negative edge are allowed. Dijkstra's algorithm does not work. The greedy edge may have a larger length than the sum of other two edges.
+
+$$
+s \quad \overset{\quad 1 \quad }{\longrightarrow} \quad v
+$$
+
+$$
+1000 \searrow \qquad \nearrow -1000
+$$
+
+$$
+u
+$$
+
+
+## DP-based Algorithm (Bellman-Fosd)
+
+If there are negative edges but no negative cycles, then the shortest path problem is not well defined due to negative cycles.
+
 Definition (Negative cycle)
 : We call a cycle negative if the sum of the weights of the edges in a cycle is negative.
 
-This leads to a problem
-
 $$
-A - negative\ cycle - B
+A - \text{negative cycle}  - B
 $$
 
-Then the path found by Dijkstra's algorithm goes around the negative cycle for infinite times.
-
-## DP-based Algorithm (Bellman-Fosd)
+Then the path can go around the negative cycle for **infinite** times and have infinitely small length. Hence, out goal change to find the shortest **simple** path.
 
 Definition (Simple Path)
 : A path is a simple path if each vertex appears only once, i.e., no cycles.
 
-Observations
+
+### Analysis
+
+#### An Observation
+
+Observation
 : - If there are no negative cycles, then for every vertex $v$, there exists a shortest path $s-v$ that a simple path.
 
-*Proof*
+***Proof***
 
 Let $P$ be any shortest $s-v$ path. If $p$ is simple then done. Otherwise, some vertex $x$ appears more than once on $P$. Then we can just delete all vertices between any appearances of $x$ on this path. Since there are no negative cycles, the length of $P$ does not increase.
 
@@ -139,50 +159,55 @@ $$
 
 Moreover, such path can only contains at most $\left\vert V \right\vert - 1$ vertices.
 
-### Algorithm
 
 #### DP-table
 
-For every $v \in V(G)$ and $0 \le i \le n$, $T_{[i,v]}$ will store the length of shortest $s-v$ path containing at most m$i$ edges.
 
-The final solution is the entry $T_{[n,t]}$.
+We want to store the length and the number of edges from $s$ to any vertex $v$ along the shortest path.
 
+For every $v \in V(G)$ and $0 \le i \le n$, $T_{i,v}$ will store the **length** of shortest $s-v$ path containing **at most** $i$ edges.
 
+#### Iterative Relation
 
-Either $P$ contains less than $i-1$ edges such that $T_{[i-1, v]}$, or $P$ contains $i$ edges, such that $(u,v)$ i the last edge on $P$, then $T_{[i-1,u]} + \ell(u,v)$.
+For $T_{i,v}$, there are two cases
 
+- $P$ contains less than $i-1$ edges. Then $T_{i,v} = T_{i-1, v}$
+
+- $P$ contains $i$ edges. Let the last edge be $(u,v)$, then $T_{i,v} = T_{i-1,u} + \ell(u,v)$.
+
+Hence, we have
 
 $$
-T_{[i,v]} = \min \left\{\begin{array}{ll}
-T_{[i-1, v]} & \text { if } ??? \\
-\min_{u\ne v} \left\{ T_{[i-1, u]} + \ell(u,v) \right\} & \text { otherwise }
-\end{array}\right.
+T_{i,v} = \min \left\{\begin{array}{ll}
+T_{i-1, v}  \\
+\min_{u\ne v} \left\{ T_{i-1, u} + \ell(u,v) \right\}
+\end{array}\right\}
 $$
 
-Base
-:
-$$
-i=0 \\
-T_{[0,s]} = 0 \\
-T_{[0,v]} = \infty ??
-$$
+Base cases are
 
-Step
-:
+$$\begin{aligned}
+T_{0,s} &= 0 \\
+T_{0,v} &= \infty \ \forall v \ne s
+\end{aligned}$$
+
+
+#### Computational Order
+
+For $i=1, \ldots, n-1$, then for each vertex $v$.
+
 
 ### Run Time
 
-$O(n^2)$ entries in the DP table, $O(n)$ table to compute each entry.
+$O(n^2)$ entries in the DP table, $O(n)$ table to compute each entry due to $\min _{u\ne v}$.
 
-Total $O(n^2)$.
+Total $O(n^3)$.
 
-### Correctness
 
-Claim
-: For all $i, v$, entry $T_{i,v}$ contains the length of shortest $s-v$ path with less than $i$ vertices.
+:::{admonition,note} If there are negative cycles
 
-Base
-: $i=0$
+If there are negative cycles, then the Bellman-Ford algorithm still works but it will not stop in $n-1$ iterations.
 
-Step
-: Assume correctness for all vertices below $i$...
+It can also be used to detect negative cycle by checking whether $T_{n,v} = T_{n+1,v}$, and can be used to find the negative cycles.
+
+:::
