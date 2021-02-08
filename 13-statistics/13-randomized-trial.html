@@ -46,6 +46,8 @@
     <script src="../_static/copybutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="../_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
     <script >
         const thebe_selector = ".thebe"
@@ -491,7 +493,11 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../33-dimensionality-reduction/31-t-SNE.html">
-     SNE and $t$-SNE
+     SNE and
+     <span class="math notranslate nohighlight">
+      \(t\)
+     </span>
+     -SNE
     </a>
    </li>
   </ul>
@@ -722,22 +728,23 @@
 <h3>Definitions<a class="headerlink" href="#definitions" title="Permalink to this headline">¶</a></h3>
 <p>First we define some basic concepts.</p>
 <dl class="simple myst">
-<dt>Unit</dt><dd><p>an object $i$ at a given point int time</p>
+<dt>Unit</dt><dd><p>an object <span class="math notranslate nohighlight">\(i\)</span> at a given point int time</p>
 </dd>
-<dt>Treatment and control</dt><dd><p>A treatment $t$ is an intervention, whose effects we want to estimate as compared to a control $c$, which is the lack of an intervention.</p>
+<dt>Treatment and control</dt><dd><p>A treatment <span class="math notranslate nohighlight">\(t\)</span> is an intervention, whose effects we want to estimate as compared to a control <span class="math notranslate nohighlight">\(c\)</span>, which is the lack of an intervention.</p>
 </dd>
-<dt>State $S$</dt><dd><p>The state of the world $S$ for unit $i$ is its treatment status, $S \in {t, c}$</p>
+<dt>State <span class="math notranslate nohighlight">\(S\)</span></dt><dd><p>The state of the world <span class="math notranslate nohighlight">\(S\)</span> for unit <span class="math notranslate nohighlight">\(i\)</span> is its treatment status, <span class="math notranslate nohighlight">\(S \in {t, c}\)</span></p>
 </dd>
-<dt>Potential outcomes</dt><dd><p><strong>Before</strong> treatment is assigned, we can imagine the measure of interest $Y$ for each unit, under both treatment and control, labeled $Y_i^t$ and $Y_i^c$.</p>
+<dt>Potential outcomes</dt><dd><p><strong>Before</strong> treatment is assigned, we can imagine the measure of interest <span class="math notranslate nohighlight">\(Y\)</span> for each unit, under both treatment and control, labeled <span class="math notranslate nohighlight">\(Y_i^t\)</span> and <span class="math notranslate nohighlight">\(Y_i^c\)</span>.</p>
 </dd>
-<dt>Assignment mechanism</dt><dd><p>is the algorithm that determines whether $i$ receives $t$ or $c$.</p>
+<dt>Assignment mechanism</dt><dd><p>is the algorithm that determines whether <span class="math notranslate nohighlight">\(i\)</span> receives <span class="math notranslate nohighlight">\(t\)</span> or <span class="math notranslate nohighlight">\(c\)</span>.</p>
 </dd>
-<dt>Causal effect (treatment effect)</dt><dd><p>is the difference between potential outcomes for a given unit $i$</p>
+<dt>Causal effect (treatment effect)</dt><dd><p>is the difference between potential outcomes for a given unit <span class="math notranslate nohighlight">\(i\)</span></p>
 </dd>
 </dl>
-<p>$$T_i = Y_i^t - Y_i^c$$</p>
+<div class="math notranslate nohighlight">
+\[T_i = Y_i^t - Y_i^c\]</div>
 <dl class="simple myst">
-<dt>Fundamental problem of causal inference</dt><dd><p>Once the state $S \in {t, c}$ is determined, we observe one outcome $Y_i^t$ or $Y_i^c$. It is impossible to observe the value $Y_i^t$ and $Y_i^c$ for the same unit and, therefore, it is impossible to observe the effect of treatment $t$ versus control $c$ on object $i$.</p>
+<dt>Fundamental problem of causal inference</dt><dd><p>Once the state <span class="math notranslate nohighlight">\(S \in {t, c}\)</span> is determined, we observe one outcome <span class="math notranslate nohighlight">\(Y_i^t\)</span> or <span class="math notranslate nohighlight">\(Y_i^c\)</span>. It is impossible to observe the value <span class="math notranslate nohighlight">\(Y_i^t\)</span> and <span class="math notranslate nohighlight">\(Y_i^c\)</span> for the same unit and, therefore, it is impossible to observe the effect of treatment <span class="math notranslate nohighlight">\(t\)</span> versus control <span class="math notranslate nohighlight">\(c\)</span> on object <span class="math notranslate nohighlight">\(i\)</span>.</p>
 </dd>
 <dt>Identification problem</dt><dd><p>Because of the fundamental problem of causal inference, we cannot get an unbiased estimate (identify) causal parameters unless the assignment mechanism meets certain conditions.</p>
 </dd>
@@ -745,48 +752,54 @@
 </div>
 <div class="section" id="statistical-solution">
 <h3>Statistical Solution<a class="headerlink" href="#statistical-solution" title="Permalink to this headline">¶</a></h3>
-<p>We give up on calculating $T_i = Y_i^t - Y_i^c$, and settle for $d$, the average treatment effect</p>
-<p>$$
+<p>We give up on calculating <span class="math notranslate nohighlight">\(T_i = Y_i^t - Y_i^c\)</span>, and settle for <span class="math notranslate nohighlight">\(d\)</span>, the average treatment effect</p>
+<div class="math notranslate nohighlight">
+\[
 d = \operatorname{E}\left( Y^t - Y^c \right) = \operatorname{E}\left( Y^t\right) - \operatorname{E}\left(Y^c \right) = \operatorname{E}\left( T \right)
-$$</p>
-<p>Note that we cannot observe $Y^t$ and $Y^c$ at the same time. What we observe is actually $Y^t \mid S=t$ and $Y^c \mid S=c$. Consider the conditional expectations</p>
-<p>$$
+\]</div>
+<p>Note that we cannot observe <span class="math notranslate nohighlight">\(Y^t\)</span> and <span class="math notranslate nohighlight">\(Y^c\)</span> at the same time. What we observe is actually <span class="math notranslate nohighlight">\(Y^t \mid S=t\)</span> and <span class="math notranslate nohighlight">\(Y^c \mid S=c\)</span>. Consider the conditional expectations</p>
+<div class="math notranslate nohighlight">
+\[
 \operatorname{E}\left( Y^t \mid S=t  \right) \text{ and } \operatorname{E}\left( Y^c \mid S=c  \right)
-$$</p>
-<p>If $S$ is <strong>independent</strong> with $Y^t$ and $Y^c$, then</p>
-<p>$$\begin{align}
-\operatorname{E}\left( Y^t \mid S=t  \right)  &amp;= \operatorname{E}\left( Y^t \right) \
+\]</div>
+<p>If <span class="math notranslate nohighlight">\(S\)</span> is <strong>independent</strong> with <span class="math notranslate nohighlight">\(Y^t\)</span> and <span class="math notranslate nohighlight">\(Y^c\)</span>, then</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+\operatorname{E}\left( Y^t \mid S=t  \right)  &amp;= \operatorname{E}\left( Y^t \right) \\
 \operatorname{E}\left( Y^c \mid S=c  \right) &amp;= \operatorname{E}\left( Y^c \right)
-\end{align}$$</p>
+\end{align}\end{split}\]</div>
 <p>and hence</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 d = \operatorname{E}\left( Y^t \mid S=t  \right)  - \operatorname{E}\left( Y^c \mid S=c  \right)
-$$</p>
+\]</div>
 <p>Note that we can get unbiased estimators of the conditional expectations</p>
-<p>$$\begin{align}
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
 \hat{\operatorname{E}}\left( Y^t \mid S=t  \right)
-&amp;= \frac{1}{n_t} \sum_{S = t} Y^t \
-\hat{\operatorname{E}}\left( Y^c \mid S=c  \right)<br />
+ &amp;= \frac{1}{n_t} \sum_{S = t} Y^t \\
+\hat{\operatorname{E}}\left( Y^c \mid S=c  \right)  
 &amp;= \frac{1}{n_c} \sum_{S = c} Y^c
-\end{align}$$</p>
-<p>Therefore, if $S$ is independent with $Y^t$ and $Y^c$, then we have an unbiased estimator for $d$:</p>
-<p>$$\begin{align}
+\end{align}\end{split}\]</div>
+<p>Therefore, if <span class="math notranslate nohighlight">\(S\)</span> is independent with <span class="math notranslate nohighlight">\(Y^t\)</span> and <span class="math notranslate nohighlight">\(Y^c\)</span>, then we have an unbiased estimator for <span class="math notranslate nohighlight">\(d\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
 \hat{d}
-&amp;= \frac{1}{n_t} \sum_{i: S = t} Y^t  - \frac{1}{n_c} \sum_{i: S = c} Y^c \
+ &amp;= \frac{1}{n_t} \sum_{i: S = t} Y^t  - \frac{1}{n_c} \sum_{i: S = c} Y^c \\
 \operatorname{E}\left( \hat{d} \right)&amp;= d
-\end{align}$$</p>
-<p>Random assignment of $S$ makes independence (at the sample level) plausible, but not certain</p>
+\end{align}\end{split}\]</div>
+<p>Random assignment of <span class="math notranslate nohighlight">\(S\)</span> makes independence (at the sample level) plausible, but not certain</p>
 </div>
 <div class="section" id="example-of-assignment-mechanism-rubins-perfect-doctor">
 <h3>Example of Assignment Mechanism: Rubin’s Perfect Doctor<a class="headerlink" href="#example-of-assignment-mechanism-rubins-perfect-doctor" title="Permalink to this headline">¶</a></h3>
-<p>Let’s see an example where assignment $S$ and potential outcome $Y$ is not independent.</p>
-<p>Suppose that patients with a particular form of cancer can have surgery ($t$) or not ($c$). We want to know the effect on years remaining. Imagine that there is a perfect doctor who can see both potential outcomes (years remaining):</p>
+<p>Let’s see an example where assignment <span class="math notranslate nohighlight">\(S\)</span> and potential outcome <span class="math notranslate nohighlight">\(Y\)</span> is not independent.</p>
+<p>Suppose that patients with a particular form of cancer can have surgery (<span class="math notranslate nohighlight">\(t\)</span>) or not (<span class="math notranslate nohighlight">\(c\)</span>). We want to know the effect on years remaining. Imagine that there is a perfect doctor who can see both potential outcomes (years remaining):</p>
 <table class="colwidths-auto table">
 <thead>
 <tr class="row-odd"><th class="head"><p>Person</p></th>
-<th class="head"><p>$Y^t$ (Surgery)</p></th>
-<th class="head"><p>$Y^c$ (Not)</p></th>
-<th class="head"><p>$T$</p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(Y^t\)</span> (Surgery)</p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(Y^c\)</span> (Not)</p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(T\)</span></p></th>
 </tr>
 </thead>
 <tbody>
@@ -823,64 +836,66 @@ $$</p>
 </tbody>
 </table>
 <p>From the table we have</p>
-<p>$$\begin{align}
-\operatorname{E}\left( Y^t \right) &amp;= 44/6\
-\operatorname{E}\left( Y^c \right)&amp;= 50/6\
-d&amp;= \operatorname{E}\left( T \right)\
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+\operatorname{E}\left( Y^t \right) &amp;= 44/6\\
+\operatorname{E}\left( Y^c \right)&amp;= 50/6\\
+d&amp;= \operatorname{E}\left( T \right)\\
 &amp;= -1
-\end{align}$$</p>
+\end{align}\end{split}\]</div>
 <p>So on average, the treatment is <strong>bad</strong>.</p>
 <p>Now suppose the omnipotent doctor assigns the treatment to those who will <strong>benefit</strong>. As researchers we would see</p>
 <table class="colwidths-auto table">
 <thead>
 <tr class="row-odd"><th class="head"><p>Person</p></th>
-<th class="head"><p>$Y_i^t$ (Surgery)</p></th>
-<th class="head"><p>$Y_i^c$ (Not)</p></th>
-<th class="head"><p>$T_i$</p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(Y_i^t\)</span> (Surgery)</p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(Y_i^c\)</span> (Not)</p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(T_i\)</span></p></th>
 </tr>
 </thead>
 <tbody>
 <tr class="row-even"><td><p>A</p></td>
 <td><p>?</p></td>
 <td><p>12</p></td>
-<td><p>$c$</p></td>
+<td><p><span class="math notranslate nohighlight">\(c\)</span></p></td>
 </tr>
 <tr class="row-odd"><td><p>B</p></td>
 <td><p>?</p></td>
 <td><p>8</p></td>
-<td><p>$c$</p></td>
+<td><p><span class="math notranslate nohighlight">\(c\)</span></p></td>
 </tr>
 <tr class="row-even"><td><p>C</p></td>
 <td><p>12</p></td>
 <td><p>?</p></td>
-<td><p>$t$</p></td>
+<td><p><span class="math notranslate nohighlight">\(t\)</span></p></td>
 </tr>
 <tr class="row-odd"><td><p>D</p></td>
 <td><p>?</p></td>
 <td><p>4</p></td>
-<td><p>$c$</p></td>
+<td><p><span class="math notranslate nohighlight">\(c\)</span></p></td>
 </tr>
 <tr class="row-even"><td><p>E</p></td>
 <td><p>10</p></td>
 <td><p>?</p></td>
-<td><p>$t$</p></td>
+<td><p><span class="math notranslate nohighlight">\(t\)</span></p></td>
 </tr>
 <tr class="row-odd"><td><p>F</p></td>
 <td><p>11</p></td>
 <td><p>?</p></td>
-<td><p>$t$</p></td>
+<td><p><span class="math notranslate nohighlight">\(t\)</span></p></td>
 </tr>
 </tbody>
 </table>
 <p>and calculate</p>
-<p>$$\begin{align}
-\operatorname{E}\left( Y^t \mid S = t\right) &amp;= 33/3\
-\operatorname{E}\left( Y^c \mid S = c\right)&amp;= 24/3\
-d &amp; =\operatorname{E}\left( T \right)\
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+\operatorname{E}\left( Y^t \mid S = t\right) &amp;= 33/3\\
+\operatorname{E}\left( Y^c \mid S = c\right)&amp;= 24/3\\
+d &amp; =\operatorname{E}\left( T \right)\\
 &amp;= 3
-\end{align}$$</p>
+\end{align}\end{split}\]</div>
 <p>and conclude that the treatment is <strong>good</strong>.</p>
-<p>The cause of this contradiction is that the assignment $S$ is dependent on $Y$.</p>
+<p>The cause of this contradiction is that the assignment <span class="math notranslate nohighlight">\(S\)</span> is dependent on <span class="math notranslate nohighlight">\(Y\)</span>.</p>
 </div>
 </div>
 <div class="section" id="randomized-control-trial">
@@ -892,10 +907,10 @@ d &amp; =\operatorname{E}\left( T \right)\
 </div>
 <div class="section" id="check-for-randomization">
 <h3>Check for Randomization<a class="headerlink" href="#check-for-randomization" title="Permalink to this headline">¶</a></h3>
-<p>By chance, RCT could result in a poor randomization. For instance, there are $2^6 = 64$ ways to assign treatment $t$ to 6 patients in the Perfect Doctor example. Thus, there is $\frac{1}{64}$ probability that RCT would give same (bad) result as Perfect Doctor.</p>
+<p>By chance, RCT could result in a poor randomization. For instance, there are <span class="math notranslate nohighlight">\(2^6 = 64\)</span> ways to assign treatment <span class="math notranslate nohighlight">\(t\)</span> to 6 patients in the Perfect Doctor example. Thus, there is <span class="math notranslate nohighlight">\(\frac{1}{64}\)</span> probability that RCT would give same (bad) result as Perfect Doctor.</p>
 <p>To check for bad randomization, one can perform balance tests.</p>
 <ul class="simple">
-<li><p>Test for independence of $S$ and exogenous characteristics (not outcomes $Y$).</p></li>
+<li><p>Test for independence of <span class="math notranslate nohighlight">\(S\)</span> and exogenous characteristics (not outcomes <span class="math notranslate nohighlight">\(Y\)</span>).</p></li>
 <li><p>If randomization is good, treated and control should be similar on observable attributes.</p></li>
 </ul>
 <div class="admonition note">
@@ -907,10 +922,10 @@ d &amp; =\operatorname{E}\left( T \right)\
 <h3>Potential Problems and Limitations<a class="headerlink" href="#potential-problems-and-limitations" title="Permalink to this headline">¶</a></h3>
 <div class="section" id="attrition">
 <h4>Attrition<a class="headerlink" href="#attrition" title="Permalink to this headline">¶</a></h4>
-<p>Participants may leave a study (i.e., attrit). So we don’t observe $Y$. For instance, job training, drug trial, diet program, etc.</p>
+<p>Participants may leave a study (i.e., attrit). So we don’t observe <span class="math notranslate nohighlight">\(Y\)</span>. For instance, job training, drug trial, diet program, etc.</p>
 <ul class="simple">
-<li><p>If attrition is uncorrelated with $Y$, we still have independence between $S$ and $Y$ in remaining sample.</p></li>
-<li><p>If attrition is correlated with $Y$, then the independence is broken and there is selection bias. We will observe non-random set of treated outcomes.</p></li>
+<li><p>If attrition is uncorrelated with <span class="math notranslate nohighlight">\(Y\)</span>, we still have independence between <span class="math notranslate nohighlight">\(S\)</span> and <span class="math notranslate nohighlight">\(Y\)</span> in remaining sample.</p></li>
+<li><p>If attrition is correlated with <span class="math notranslate nohighlight">\(Y\)</span>, then the independence is broken and there is selection bias. We will observe non-random set of treated outcomes.</p></li>
 </ul>
 </div>
 <div class="section" id="compliance">
@@ -919,22 +934,22 @@ d &amp; =\operatorname{E}\left( T \right)\
 <ul class="simple">
 <li><p>Perhaps treated people refuse to take treatment</p></li>
 <li><p>Perhaps control people seek treatment outside program
-If you observe outcomes $Y$, you can still get a valid estimate of something called the <strong>intent to treat</strong> parameter.</p></li>
+If you observe outcomes <span class="math notranslate nohighlight">\(Y\)</span>, you can still get a valid estimate of something called the <strong>intent to treat</strong> parameter.</p></li>
 </ul>
 <p>Consider a compliance matrix of four groups of participants.</p>
 <table class="colwidths-auto table">
 <thead>
 <tr class="row-odd"><th class="head"><p></p></th>
-<th class="head"><p>Assigned $t$</p></th>
-<th class="head"><p>Assigned $c$</p></th>
+<th class="head"><p>Assigned <span class="math notranslate nohighlight">\(t\)</span></p></th>
+<th class="head"><p>Assigned <span class="math notranslate nohighlight">\(c\)</span></p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>Received $t$</p></td>
+<tr class="row-even"><td><p>Received <span class="math notranslate nohighlight">\(t\)</span></p></td>
 <td><p>A</p></td>
 <td><p>B</p></td>
 </tr>
-<tr class="row-odd"><td><p>Received $c$</p></td>
+<tr class="row-odd"><td><p>Received <span class="math notranslate nohighlight">\(c\)</span></p></td>
 <td><p>C</p></td>
 <td><p>D</p></td>
 </tr>
@@ -942,11 +957,11 @@ If you observe outcomes $Y$, you can still get a valid estimate of something cal
 </table>
 <p>Here</p>
 <ul class="simple">
-<li><p>$A$ and $D$ are compliers</p></li>
-<li><p>$B$ and $C$ are non-compliers</p></li>
+<li><p><span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(D\)</span> are compliers</p></li>
+<li><p><span class="math notranslate nohighlight">\(B\)</span> and <span class="math notranslate nohighlight">\(C\)</span> are non-compliers</p></li>
 </ul>
-<p>A researcher might compare $(A,B)$ to $(C,D)$ to estimate the average treatment effect. But if compliance is a function of $Y$, then independence is lost.</p>
-<p>Intent to treat analysis compares $(A,C)$ to $(B,D)$</p>
+<p>A researcher might compare <span class="math notranslate nohighlight">\((A,B)\)</span> to <span class="math notranslate nohighlight">\((C,D)\)</span> to estimate the average treatment effect. But if compliance is a function of <span class="math notranslate nohighlight">\(Y\)</span>, then independence is lost.</p>
+<p>Intent to treat analysis compares <span class="math notranslate nohighlight">\((A,C)\)</span> to <span class="math notranslate nohighlight">\((B,D)\)</span></p>
 </div>
 <div class="section" id="cost">
 <h4>Cost<a class="headerlink" href="#cost" title="Permalink to this headline">¶</a></h4>

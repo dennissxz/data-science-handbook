@@ -46,6 +46,8 @@
     <script src="../_static/copybutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="../_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
     <script >
         const thebe_selector = ".thebe"
@@ -491,7 +493,11 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../33-dimensionality-reduction/31-t-SNE.html">
-     SNE and $t$-SNE
+     SNE and
+     <span class="math notranslate nohighlight">
+      \(t\)
+     </span>
+     -SNE
     </a>
    </li>
   </ul>
@@ -752,9 +758,9 @@
 <h1>Stochastic Gradient Descent<a class="headerlink" href="#stochastic-gradient-descent" title="Permalink to this headline">¶</a></h1>
 <p>In this section we talk stochastic gradient descent in detail. Recall the three general steps in stochastic gradient descent:</p>
 <ol class="simple">
-<li><p>run forward propagation with $\Theta^{(t-1)}$ to compute the loss $\mathcal{L}\left(\boldsymbol{X} , \boldsymbol{y}; \Theta^{(t-1)}\right)$</p></li>
-<li><p>compute gradient via chain rule $\boldsymbol{g}^{(t)}(\boldsymbol{X}, \boldsymbol{y})=\nabla_{\Theta} \mathcal{L}\left(\boldsymbol{X} , \boldsymbol{y}; \Theta^{(t-1)}\right)$</p></li>
-<li><p>update the model parameters $\Theta^{(t)}=\Theta^{(t-1)}-\eta \boldsymbol{g}^{(t)}$</p></li>
+<li><p>run forward propagation with <span class="math notranslate nohighlight">\(\Theta^{(t-1)}\)</span> to compute the loss <span class="math notranslate nohighlight">\(\mathcal{L}\left(\boldsymbol{X} , \boldsymbol{y}; \Theta^{(t-1)}\right)\)</span></p></li>
+<li><p>compute gradient via chain rule <span class="math notranslate nohighlight">\(\boldsymbol{g}^{(t)}(\boldsymbol{X}, \boldsymbol{y})=\nabla_{\Theta} \mathcal{L}\left(\boldsymbol{X} , \boldsymbol{y}; \Theta^{(t-1)}\right)\)</span></p></li>
+<li><p>update the model parameters <span class="math notranslate nohighlight">\(\Theta^{(t)}=\Theta^{(t-1)}-\eta \boldsymbol{g}^{(t)}\)</span></p></li>
 </ol>
 <p>Then we check for stopping criteria (convergence of loss / gradient, model performance, etc).</p>
 <div class="section" id="why-stochastic">
@@ -770,43 +776,46 @@
 <p class="sidebar-title">Total loss vs sum of losses</p>
 <p>In some cases the total loss is not a sum of per-example losses</p>
 </div>
-<p>A single “iteration” $t$ can be an epoch, which means we loop over examples (or in parallel) to compute the gradient $\boldsymbol{g}^{(t)}\left(\boldsymbol{x}<em>{i}, y</em>{i}\right)$ for each observation $i$ and use the average gradient to approximate the true gradient</p>
-<p>$$
-\boldsymbol{g}^{(t)}(X, Y)=\frac{1}{n} \sum_{i} \boldsymbol{g}^{(t)}\left(\boldsymbol{x}<em>{i}, y</em>{i}\right)
-$$</p>
+<p>A single “iteration” <span class="math notranslate nohighlight">\(t\)</span> can be an epoch, which means we loop over examples (or in parallel) to compute the gradient <span class="math notranslate nohighlight">\(\boldsymbol{g}^{(t)}\left(\boldsymbol{x}_{i}, y_{i}\right)\)</span> for each observation <span class="math notranslate nohighlight">\(i\)</span> and use the average gradient to approximate the true gradient</p>
+<div class="math notranslate nohighlight">
+\[
+\boldsymbol{g}^{(t)}(X, Y)=\frac{1}{n} \sum_{i} \boldsymbol{g}^{(t)}\left(\boldsymbol{x}_{i}, y_{i}\right)
+\]</div>
 <p>Then we make a single update at the end of the epoch.</p>
-<p>Assuming $n$ is large, $\boldsymbol{g}^{(t)}(X, Y)$ is a good estimate for gradient, but it costs $O(n)$ to compute.</p>
+<p>Assuming <span class="math notranslate nohighlight">\(n\)</span> is large, <span class="math notranslate nohighlight">\(\boldsymbol{g}^{(t)}(X, Y)\)</span> is a good estimate for gradient, but it costs <span class="math notranslate nohighlight">\(O(n)\)</span> to compute.</p>
 </div>
 <div class="section" id="id1">
 <h3>Stochastic Gradient Descent<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
-<p>Computing gradient on all $n$ examples is expensive and may be wasteful: many data points provide similar information.</p>
-<p>Instead, SGD <strong>randomly</strong> select one observation at a time. It estimates the gradient on the entire set by the gradient on a single example in an iteration $t$.</p>
-<p>$$
-\frac{1}{n} \sum_{i=1}^{n} \nabla_{\Theta} L\left(y_{i}, \boldsymbol{x}<em>{i} ; \Theta\right) \approx \nabla</em>{\Theta} L\left(y_{t}, \boldsymbol{x}_{t} ; \Theta\right)
-$$</p>
+<p>Computing gradient on all <span class="math notranslate nohighlight">\(n\)</span> examples is expensive and may be wasteful: many data points provide similar information.</p>
+<p>Instead, SGD <strong>randomly</strong> select one observation at a time. It estimates the gradient on the entire set by the gradient on a single example in an iteration <span class="math notranslate nohighlight">\(t\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{1}{n} \sum_{i=1}^{n} \nabla_{\Theta} L\left(y_{i}, \boldsymbol{x}_{i} ; \Theta\right) \approx \nabla_{\Theta} L\left(y_{t}, \boldsymbol{x}_{t} ; \Theta\right)
+\]</div>
 </div>
 <div class="section" id="mini-batch-gradient-descent">
 <h3>Mini-batch Gradient Descent<a class="headerlink" href="#mini-batch-gradient-descent" title="Permalink to this headline">¶</a></h3>
-<p>Mini-batch gradient descent use a batch $B$ of observations to estimate the sample gradient in an iteration. For some $B \subset \left{ 1,2,\ldots, n \right},|B| \ll n$,</p>
-<p>$$
-\frac{1}{n} \sum_{i=1}^{n} \nabla_{\Theta} L\left(y_{i}, \boldsymbol{x}<em>{i} ; \Theta\right) \approx \frac{1}{|B|} \sum</em>{b \in B} \nabla_{\Theta} L\left(y_{b}, \boldsymbol{x}_{b} ; \Theta\right)
-$$</p>
+<p>Mini-batch gradient descent use a batch <span class="math notranslate nohighlight">\(B\)</span> of observations to estimate the sample gradient in an iteration. For some <span class="math notranslate nohighlight">\(B \subset \left\{ 1,2,\ldots, n \right\},|B| \ll n\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{1}{n} \sum_{i=1}^{n} \nabla_{\Theta} L\left(y_{i}, \boldsymbol{x}_{i} ; \Theta\right) \approx \frac{1}{|B|} \sum_{b \in B} \nabla_{\Theta} L\left(y_{b}, \boldsymbol{x}_{b} ; \Theta\right)
+\]</div>
 <p>In each epoch, we shuffle data, partition into batches, and iterate over batches.</p>
-<p>In theory, if computation power is not an issue, we should set $\left\vert B \right\vert$ as large as possible. But in practice, people found there are some advantages of small $\left\vert B \right\vert$. Using small $\left\vert B \right\vert$ works like adding noise to the gradient, which brings regularization effect and make the trained model more robust. Usually $\left\vert B \right\vert = 32, 64$ are used.</p>
+<p>In theory, if computation power is not an issue, we should set <span class="math notranslate nohighlight">\(\left\vert B \right\vert\)</span> as large as possible. But in practice, people found there are some advantages of small <span class="math notranslate nohighlight">\(\left\vert B \right\vert\)</span>. Using small <span class="math notranslate nohighlight">\(\left\vert B \right\vert\)</span> works like adding noise to the gradient, which brings regularization effect and make the trained model more robust. Usually <span class="math notranslate nohighlight">\(\left\vert B \right\vert = 32, 64\)</span> are used.</p>
 <p>Nowadays, the term SGD often refers to batch GD.</p>
 </div>
 <div class="section" id="comparison">
 <h3>Comparison<a class="headerlink" href="#comparison" title="Permalink to this headline">¶</a></h3>
-<p>We can plot the contours of the loss value w.r.t. parameter $\boldsymbol{\Phi}$, and plot the trajectory of $\boldsymbol{\Phi}^{(t)}$ for GD, SGD and mini-batch GD. We can see</p>
+<p>We can plot the contours of the loss value w.r.t. parameter <span class="math notranslate nohighlight">\(\boldsymbol{\Phi}\)</span>, and plot the trajectory of <span class="math notranslate nohighlight">\(\boldsymbol{\Phi}^{(t)}\)</span> for GD, SGD and mini-batch GD. We can see</p>
 <ul class="simple">
 <li><p>GD has the smoothest trajectory</p></li>
 <li><p>SGD has the most tortuous trajectory</p></li>
 <li><p>Batch GD is between the two. Increasing the batch size reduces the noise in gradient.</p></li>
 </ul>
-<p>:::{figure} nn-sgd-trajectory
-<img src="../imgs/nn-sgd-trajectory.png" width = "30%" alt=""/></p>
-<p>Comparison of gradient descent methods [Shi 2021]
-:::</p>
+<div class="figure align-default" id="nn-sgd-trajectory">
+<a class="reference internal image-reference" href="../_images/nn-sgd-trajectory.png"><img alt="" src="../_images/nn-sgd-trajectory.png" style="width: 30%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 43 </span><span class="caption-text">Comparison of gradient descent methods [Shi 2021]</span><a class="headerlink" href="#nn-sgd-trajectory" title="Permalink to this image">¶</a></p>
+</div>
 </div>
 </div>
 <div class="section" id="learning-rate-scheduling">
@@ -816,30 +825,34 @@ $$</p>
 <h3>Concepts Review<a class="headerlink" href="#concepts-review" title="Permalink to this headline">¶</a></h3>
 <ul>
 <li><p>Local minimum</p>
-<p>A point $\boldsymbol{x}^{&amp;}$ where $\boldsymbol{g}^{&amp;}=0$ and $H^{&amp;}\succeq0$</p>
+<p>A point <span class="math notranslate nohighlight">\(\boldsymbol{x}^{\&amp;}\)</span> where <span class="math notranslate nohighlight">\(\boldsymbol{g}^{\&amp;}=0\)</span> and <span class="math notranslate nohighlight">\(H^{\&amp;}\succeq0\)</span></p>
 </li>
 <li><p>Stationary point</p>
 <ul>
-<li><p>In classical optimization, $x^{*}$ is a stationary point if the gradient is zero</p>
-<p>$$
-\nabla f(x^{*})=0
-$$</p>
+<li><p>In classical optimization, <span class="math notranslate nohighlight">\(x^{*}\)</span> is a stationary point if the gradient is zero</p>
+<div class="math notranslate nohighlight">
+\[
+      \nabla f(x^{*})=0
+      \]</div>
 </li>
 <li><p>In deep learning SGD, gradient and parameter update and loss update are random since the batch is random</p>
-<p>$$
-\begin{aligned}
-\hat{g} &amp; =E_{(x,y)\sim\text{ Batch }}\nabla_{\Phi}\mathcal{L}(\Phi,x,y)\
-\Delta\Phi &amp; =\eta\hat{g}
-\end{aligned}
-$$</p>
-<p>Sometimes the stationary point $\Phi^{*}$ is defined similarly as that in classical optimization, i.e. average gradient is zero</p>
-<p>$$
-\nabla_{\Phi}E_{(x,y)\sim\operatorname{Train}}\mathcal{L}(\Phi,x,t)=E_{(x,y)\sim\text{ Batch }}\nabla_{\Phi}\mathcal{L}(\Phi,x,y)=0
-$$</p>
-<p>but sometimes we say we reach a stationary point $\Phi^{*}$ of aloss function $\mathcal{L}$ if that the (expected) <strong>loss update</strong> is 0, i.e.</p>
-<p>$$
-E\left[\mathcal{L}(\Phi^{<em>}+\Delta\Phi)-\mathcal{L}(\Phi^{</em>})\right]=0
-$$</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+      \begin{aligned}
+      \hat{g} &amp; =E_{(x,y)\sim\text{ Batch }}\nabla_{\Phi}\mathcal{L}(\Phi,x,y)\\
+      \Delta\Phi &amp; =\eta\hat{g}
+      \end{aligned}
+      \end{split}\]</div>
+<p>Sometimes the stationary point <span class="math notranslate nohighlight">\(\Phi^{*}\)</span> is defined similarly as that in classical optimization, i.e. average gradient is zero</p>
+<div class="math notranslate nohighlight">
+\[
+      \nabla_{\Phi}E_{(x,y)\sim\operatorname{Train}}\mathcal{L}(\Phi,x,t)=E_{(x,y)\sim\text{ Batch }}\nabla_{\Phi}\mathcal{L}(\Phi,x,y)=0
+      \]</div>
+<p>but sometimes we say we reach a stationary point <span class="math notranslate nohighlight">\(\Phi^{*}\)</span> of aloss function <span class="math notranslate nohighlight">\(\mathcal{L}\)</span> if that the (expected) <strong>loss update</strong> is 0, i.e.</p>
+<div class="math notranslate nohighlight">
+\[
+      E\left[\mathcal{L}(\Phi^{*}+\Delta\Phi)-\mathcal{L}(\Phi^{*})\right]=0
+      \]</div>
 </li>
 </ul>
 </li>
@@ -848,46 +861,49 @@ $$</p>
 <p class="sidebar-title"></p>
 <p>Similar to the sense of stationary distribution in Markov Chains.</p>
 </div>
-<p>After we reach a stationary point, the parameters after one update is $\Phi^{<em>}+\Delta_{1}\Phi$, after two update is $\Phi^{</em>}+\Delta_{1}\Phi+\Delta_{2}\Phi$ and all these updated parameters follow a distribution $\sim$ stationary distribution.</p>
+<p>After we reach a stationary point, the parameters after one update is <span class="math notranslate nohighlight">\(\Phi^{*}+\Delta_{1}\Phi\)</span>, after two update is <span class="math notranslate nohighlight">\(\Phi^{*}+\Delta_{1}\Phi+\Delta_{2}\Phi\)</span> and all these updated parameters follow a distribution <span class="math notranslate nohighlight">\(\sim\)</span> stationary distribution.</p>
 </li>
 </ul>
 </div>
 <div class="section" id="learning-rate-decay">
 <h3>Learning Rate Decay<a class="headerlink" href="#learning-rate-decay" title="Permalink to this headline">¶</a></h3>
 <p>The magnitude of learning rate is important. When we are close to a minimum, if the learning rate is still large, then we will jump around and cannot achieve the minimum. Thus, an attempt is reduce learning rate by time.</p>
-<p>:::{figure} nn-lr-decay-traj
-<img src="../imgs/nn-lr-decay-traj.png" width = "50%" alt=""/></p>
-<p>Loss trajectory with (green) vs without (blue) learning rate decay [Ng 2017]
-:::</p>
+<div class="figure align-default" id="nn-lr-decay-traj">
+<a class="reference internal image-reference" href="../_images/nn-lr-decay-traj.png"><img alt="" src="../_images/nn-lr-decay-traj.png" style="width: 50%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 44 </span><span class="caption-text">Loss trajectory with (green) vs without (blue) learning rate decay [Ng 2017]</span><a class="headerlink" href="#nn-lr-decay-traj" title="Permalink to this image">¶</a></p>
+</div>
 <p>In practice, we start with a reasonable learning rate, and drop learning rate by some schedule</p>
 <ul class="simple">
-<li><p>$\eta = 0.95 ^{\text{epoch} } \eta_0$</p></li>
-<li><p>$\eta = \frac{k}{\sqrt{\text{epoch}}} \eta_0$ or $\eta = \frac{k}{\sqrt{t}} \eta_0$</p></li>
-<li><p>decay by a factor of $\alpha$ every $\beta$ epochs.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\eta = 0.95 ^{\text{epoch} } \eta_0\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\eta = \frac{k}{\sqrt{\text{epoch}}} \eta_0\)</span> or <span class="math notranslate nohighlight">\(\eta = \frac{k}{\sqrt{t}} \eta_0\)</span></p></li>
+<li><p>decay by a factor of <span class="math notranslate nohighlight">\(\alpha\)</span> every <span class="math notranslate nohighlight">\(\beta\)</span> epochs.</p></li>
 <li><p>manually drop (typically 1/10) when loss appears stuck (monitor mini-batch training loss)</p></li>
 </ul>
-<p>:::{figure} nn-lr-decay
-<img src="../imgs/nn-lr-decay.png" width = "50%" alt=""/></p>
-<p>Training loss drop down by learning rate decay [Shi 2021]
-:::</p>
+<div class="figure align-default" id="nn-lr-decay">
+<a class="reference internal image-reference" href="../_images/nn-lr-decay.png"><img alt="" src="../_images/nn-lr-decay.png" style="width: 50%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 45 </span><span class="caption-text">Training loss drop down by learning rate decay [Shi 2021]</span><a class="headerlink" href="#nn-lr-decay" title="Permalink to this image">¶</a></p>
+</div>
 </div>
 <div class="section" id="classical-convergence-theorem">
 <h3>Classical Convergence Theorem<a class="headerlink" href="#classical-convergence-theorem" title="Permalink to this headline">¶</a></h3>
 <p>If use the fundamental update equation</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 \Phi \mathrel{+}= - \eta_{t}\nabla_{\Phi}\mathcal{L}\left(\Phi,x_{t},y_{t}\right)
-$$</p>
+\]</div>
 <p>and if the following conditions of learning rate holds</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 \eta_{t}\geq0\quad\lim_{t\rightarrow\infty}\eta_{t}=0\quad\sum_{t}\eta_{t}=\infty\quad\sum_{t}\eta_{t}^{2}&lt;\infty
-$$</p>
+\]</div>
 <p>then</p>
 <ul>
-<li><p>the training loss $E_{(x,y)\sim\operatorname{Train}}\mathcal{L}(\Phi,x,t)$ will converges to a limit, and</p></li>
-<li><p>any limit point of the sequence $\Phi_{t}$ is a stationary point in the sense that the gradient at that point is $0$.</p>
-<p>$$
-\nabla_{\Phi}E_{(x,y)\sim\operatorname{Train}}\mathcal{L}(\Phi,x,t)=0
-$$</p>
+<li><p>the training loss <span class="math notranslate nohighlight">\(E_{(x,y)\sim\operatorname{Train}}\mathcal{L}(\Phi,x,t)\)</span> will converges to a limit, and</p></li>
+<li><p>any limit point of the sequence <span class="math notranslate nohighlight">\(\Phi_{t}\)</span> is a stationary point in the sense that the gradient at that point is <span class="math notranslate nohighlight">\(0\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[
+    \nabla_{\Phi}E_{(x,y)\sim\operatorname{Train}}\mathcal{L}(\Phi,x,t)=0
+    \]</div>
 </li>
 </ul>
 <p>Note that it may be a saddle point, not a local optimum.</p>
@@ -904,67 +920,73 @@ $$</p>
 <div class="section" id="momentum-sgd">
 <h3>Momentum SGD<a class="headerlink" href="#momentum-sgd" title="Permalink to this headline">¶</a></h3>
 <p>Momentum SGD use a running average of gradient instead of the raw gradient. The averaging step can reduce oscillations in the trajectory. It also has interpretation as velocity and acceleration.</p>
-<p>:::{figure} nn-sgd-momentum
-<img src="../imgs/nn-sgd-momentum.png" width = "80%" alt=""/></p>
-<p>SGD with and without momentum [S. Ruder]
-:::</p>
+<div class="figure align-default" id="nn-sgd-momentum">
+<a class="reference internal image-reference" href="../_images/nn-sgd-momentum.png"><img alt="" src="../_images/nn-sgd-momentum.png" style="width: 80%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 46 </span><span class="caption-text">SGD with and without momentum [S. Ruder]</span><a class="headerlink" href="#nn-sgd-momentum" title="Permalink to this image">¶</a></p>
+</div>
 <div class="section" id="review-of-running-average">
 <h4>Review of Running Average<a class="headerlink" href="#review-of-running-average" title="Permalink to this headline">¶</a></h4>
 <p>First we review the concept of running average.</p>
-<p>A running average $\tilde{\boldsymbol{x}}<em>t$ on input $x_t$ is written as a weight sum of previous value $\tilde{\boldsymbol{x}}</em>{t-1}$ and new input $x_t$</p>
-<p>$$
-\tilde{\boldsymbol{x}}<em>{t}=\left(1-\frac{1}{N}\right)\tilde{\boldsymbol{x}}</em>{t-1}+\left(\frac{1}{N}\right)x_{t}
-$$</p>
+<p>A running average <span class="math notranslate nohighlight">\(\tilde{\boldsymbol{x}}_t\)</span> on input <span class="math notranslate nohighlight">\(x_t\)</span> is written as a weight sum of previous value <span class="math notranslate nohighlight">\(\tilde{\boldsymbol{x}}_{t-1}\)</span> and new input <span class="math notranslate nohighlight">\(x_t\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+\tilde{\boldsymbol{x}}_{t}=\left(1-\frac{1}{N}\right)\tilde{\boldsymbol{x}}_{t-1}+\left(\frac{1}{N}\right)x_{t}
+\]</div>
 <p>or equivalently
-$$
-\tilde{\boldsymbol{x}}<em>{t}=\beta\tilde{\boldsymbol{x}}</em>{t-1}+(1-\beta)x_{t}
-$$</p>
+$<span class="math notranslate nohighlight">\(
+\tilde{\boldsymbol{x}}_{t}=\beta\tilde{\boldsymbol{x}}_{t-1}+(1-\beta)x_{t}
+\)</span>$</p>
 <p>where
-$$
+$<span class="math notranslate nohighlight">\(
 \beta=1-1/N
-$$</p>
-<p>Typical values for $\beta$ are 0.9, 0.99 or 0.999 corresponding to
-$N$ being $10,100$ or $1000$, which is the window size.</p>
-<p>:::{admonition,note} Bias correction in warm up period</p>
-<p>Note there is a warm up period $t&lt;N$ of the running average $\tilde{x}<em>{t}$,
-where the value is strongly biased toward zero if $\tilde{x}</em>{0}=0$.</p>
-<p>$$
+\)</span>$</p>
+<p>Typical values for <span class="math notranslate nohighlight">\(\beta\)</span> are 0.9, 0.99 or 0.999 corresponding to
+<span class="math notranslate nohighlight">\(N\)</span> being <span class="math notranslate nohighlight">\(10,100\)</span> or <span class="math notranslate nohighlight">\(1000\)</span>, which is the window size.</p>
+<div class="note admonition">
+<p class="admonition-title"> Bias correction in warm up period</p>
+<p>Note there is a warm up period <span class="math notranslate nohighlight">\(t&lt;N\)</span> of the running average <span class="math notranslate nohighlight">\(\tilde{x}_{t}\)</span>,
+where the value is strongly biased toward zero if <span class="math notranslate nohighlight">\(\tilde{x}_{0}=0\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
 \begin{array}{l}
-\tilde{x}<em>{0}=0\
-\tilde{x}</em>{t}=\left(1-\frac{1}{N}\right)\tilde{x}<em>{t-1}+\left(\frac{1}{N}\right)x</em>{t}
+\tilde{x}_{0}=0\\
+\tilde{x}_{t}=\left(1-\frac{1}{N}\right)\tilde{x}_{t-1}+\left(\frac{1}{N}\right)x_{t}
 \end{array}
-$$</p>
-<p>We can consider not to use the last $N$ terms but use all other terms
-$x_{1}$ to $x_{t}$</p>
-<p>$$
-\begin{aligned}\tilde{x}<em>{t} &amp; =\left(\frac{t-1}{t}\right)\tilde{x}</em>{t-1}+\left(\frac{1}{t}\right)x_{t}\
-&amp; =\left(1-\frac{1}{t}\right)\tilde{x}<em>{t-1}+\left(\frac{1}{t}\right)x</em>{t}
+\end{split}\]</div>
+<p>We can consider not to use the last <span class="math notranslate nohighlight">\(N\)</span> terms but use all other terms
+<span class="math notranslate nohighlight">\(x_{1}\)</span> to <span class="math notranslate nohighlight">\(x_{t}\)</span></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}\tilde{x}_{t} &amp; =\left(\frac{t-1}{t}\right)\tilde{x}_{t-1}+\left(\frac{1}{t}\right)x_{t}\\
+ &amp; =\left(1-\frac{1}{t}\right)\tilde{x}_{t-1}+\left(\frac{1}{t}\right)x_{t}
 \end{aligned}
-$$</p>
-<p>and we have $\tilde{x}<em>{1}=x</em>{1}$, as initial value. But this fails
-to track a moving average when $t\gg N$. So to combine the two methods
+\end{split}\]</div>
+<p>and we have <span class="math notranslate nohighlight">\(\tilde{x}_{1}=x_{1}\)</span>, as initial value. But this fails
+to track a moving average when <span class="math notranslate nohighlight">\(t\gg N\)</span>. So to combine the two methods
 together,</p>
-<p>$$
-\tilde{x}<em>{t}=\left(1-\frac{1}{\min(N,t)}\right)\tilde{x}</em>{t-1}+\left(\frac{1}{\min(N,t)}\right)x_{t}
-$$</p>
-<p>:::</p>
+<div class="math notranslate nohighlight">
+\[
+\tilde{x}_{t}=\left(1-\frac{1}{\min(N,t)}\right)\tilde{x}_{t-1}+\left(\frac{1}{\min(N,t)}\right)x_{t}
+\]</div>
+</div>
 </div>
 <div class="section" id="algorithm">
 <h4>Algorithm<a class="headerlink" href="#algorithm" title="Permalink to this headline">¶</a></h4>
 <p>The standard momentum SGD algorithm is</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[\begin{split}
 \begin{aligned}
-{\color{teal}{\boldsymbol{\tilde{g}}<em>{t}}} &amp;=\left(1-\frac{1}{N_g}\right){\color{teal}{\boldsymbol{\tilde{g}}</em>{t-1}}}+\frac{1}{N_g}{\color{blue}{\hat{\boldsymbol{g}}<em>{t}}} \
-\boldsymbol{\Phi}</em>{t+1} &amp; =\boldsymbol{\Phi}<em>{t}- \eta \color{teal}{\boldsymbol{\tilde{g}}</em>{t}}
+{\color{teal}{\boldsymbol{\tilde{g}}_{t}}} &amp;=\left(1-\frac{1}{N_g}\right){\color{teal}{\boldsymbol{\tilde{g}}_{t-1}}}+\frac{1}{N_g}{\color{blue}{\hat{\boldsymbol{g}}_{t}}} \\
+\boldsymbol{\Phi}_{t+1} &amp; =\boldsymbol{\Phi}_{t}- \eta \color{teal}{\boldsymbol{\tilde{g}}_{t}}
 \end{aligned}
-$$</p>
+\end{split}\]</div>
 <p>where</p>
 <ul class="simple">
-<li><p>${\color{teal}{\boldsymbol{\tilde{g}}<em>{t}}}$ is a running average of gradient estimate $\color{blue}{\hat{\boldsymbol{g}}</em>{t}}$, also interpreted as <em>velocity</em></p></li>
-<li><p>$\color{blue}{\hat{\boldsymbol{g}}_{t}}$ is the gradient estimate, also interpreted as <em>acceleration</em></p></li>
-<li><p>$N_g=10,100$ or $1000$ is the window size.</p></li>
+<li><p><span class="math notranslate nohighlight">\({\color{teal}{\boldsymbol{\tilde{g}}_{t}}}\)</span> is a running average of gradient estimate <span class="math notranslate nohighlight">\(\color{blue}{\hat{\boldsymbol{g}}_{t}}\)</span>, also interpreted as <em>velocity</em></p></li>
+<li><p><span class="math notranslate nohighlight">\(\color{blue}{\hat{\boldsymbol{g}}_{t}}\)</span> is the gradient estimate, also interpreted as <em>acceleration</em></p></li>
+<li><p><span class="math notranslate nohighlight">\(N_g=10,100\)</span> or <span class="math notranslate nohighlight">\(1000\)</span> is the window size.</p></li>
 </ul>
-<p>The hyperparameters are $N_g, \eta$.</p>
+<p>The hyperparameters are <span class="math notranslate nohighlight">\(N_g, \eta\)</span>.</p>
 </div>
 </div>
 <div class="section" id="root-mean-square-prop-rmsprop">
@@ -973,48 +995,52 @@ $$</p>
 <h4>Motivation<a class="headerlink" href="#motivation" title="Permalink to this headline">¶</a></h4>
 <p>To reduce oscillations in the training trajectory, we wants to slow down learning in the parameter direction with large gradient, and speed up learning in the parameter direction with small gradient. To achieve this, we need parameter dimension-specific update, and a measure of large/small gradient in that parameter dimension.</p>
 <p>One attempt is to can set the learning rate in the update
-equation ${\boldsymbol{\Phi}}<em>{t+1}[i]={\boldsymbol{\Phi}}</em>{t}[i]-\eta{\color{blue}{\hat{\boldsymbol{g}}<em>{t}[i]}}$
-to be $\eta</em>{i}=\eta_{0}/\sigma_{i}^{2}$, where $\sigma_i^2 = \operatorname{Var}\left( \boldsymbol{g} _t[i] \right)$ is a measure of large/small gradient in that parameter dimension.</p>
-<p>$$
-{\boldsymbol{\Phi}}<em>{t+1}[i]={\boldsymbol{\Phi}}</em>{t}[i]-\frac{\eta_{0}}{\sigma_{i}^{2}}{\color{blue}{\hat{\boldsymbol{g}}_{t}[i]}}
-$$</p>
+equation <span class="math notranslate nohighlight">\({\boldsymbol{\Phi}}_{t+1}[i]={\boldsymbol{\Phi}}_{t}[i]-\eta{\color{blue}{\hat{\boldsymbol{g}}_{t}[i]}}\)</span>
+to be <span class="math notranslate nohighlight">\(\eta_{i}=\eta_{0}/\sigma_{i}^{2}\)</span>, where <span class="math notranslate nohighlight">\(\sigma_i^2 = \operatorname{Var}\left( \boldsymbol{g} _t[i] \right)\)</span> is a measure of large/small gradient in that parameter dimension.</p>
+<div class="math notranslate nohighlight">
+\[
+{\boldsymbol{\Phi}}_{t+1}[i]={\boldsymbol{\Phi}}_{t}[i]-\frac{\eta_{0}}{\sigma_{i}^{2}}{\color{blue}{\hat{\boldsymbol{g}}_{t}[i]}}
+\]</div>
 <p>i.e. learning rate is inversely proportional to the variance.</p>
 <p>But in practice, dividing by standard deviation works better</p>
-<p>$$
-{\boldsymbol{\Phi}}<em>{t+1}[i]={\boldsymbol{\Phi}}</em>{t}[i]-\frac{\eta_{0}}{\sigma_{i}}{\color{blue}{\hat{\boldsymbol{g}}_{t}[i]}}
-$$</p>
-<p>So question is, how to find $\sigma _i$?</p>
+<div class="math notranslate nohighlight">
+\[
+{\boldsymbol{\Phi}}_{t+1}[i]={\boldsymbol{\Phi}}_{t}[i]-\frac{\eta_{0}}{\sigma_{i}}{\color{blue}{\hat{\boldsymbol{g}}_{t}[i]}}
+\]</div>
+<p>So question is, how to find <span class="math notranslate nohighlight">\(\sigma _i\)</span>?</p>
 </div>
 <div class="section" id="id2">
 <h4>Algorithm<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h4>
-<p>RMSrPop’s approximates $\sigma_i$ by a running average $\boldsymbol{s}<em>{t}[i]$ of the <strong>second moment</strong> of the gradient of a particular parameter dimension, written as ${\color{blue}{\hat{\boldsymbol{g} }</em>{t}[i]^{2}}}$.</p>
-<p>$$
-\begin{aligned}{\color{brown}{\boldsymbol{s}<em>{t}[i]}} &amp; =\left(1-\frac{1}{N</em>{s}}\right){\color{brown}{\boldsymbol{s}<em>{t-1}[i]}} +\frac{1}{N</em>{s}}{\color{blue}{\hat{\boldsymbol{g}}<em>{t}[i]^{2}}}\
-{\boldsymbol{\Phi}}</em>{t+1}[i] &amp; ={\boldsymbol{\Phi}}<em>{t}[i]-\frac{\eta}{\sqrt{{\color{brown}{\boldsymbol{s}</em>{t}[i]}}}+\epsilon}{\color{blue}{\hat{\boldsymbol{g}}_{t}[i]}}
+<p>RMSrPop’s approximates <span class="math notranslate nohighlight">\(\sigma_i\)</span> by a running average <span class="math notranslate nohighlight">\(\boldsymbol{s}_{t}[i]\)</span> of the <strong>second moment</strong> of the gradient of a particular parameter dimension, written as <span class="math notranslate nohighlight">\({\color{blue}{\hat{\boldsymbol{g} }_{t}[i]^{2}}}\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}{\color{brown}{\boldsymbol{s}_{t}[i]}} &amp; =\left(1-\frac{1}{N_{s}}\right){\color{brown}{\boldsymbol{s}_{t-1}[i]}} +\frac{1}{N_{s}}{\color{blue}{\hat{\boldsymbol{g}}_{t}[i]^{2}}}\\
+{\boldsymbol{\Phi}}_{t+1}[i] &amp; ={\boldsymbol{\Phi}}_{t}[i]-\frac{\eta}{\sqrt{{\color{brown}{\boldsymbol{s}_{t}[i]}}}+\epsilon}{\color{blue}{\hat{\boldsymbol{g}}_{t}[i]}}
 \end{aligned}
-$$</p>
-<p>where $\epsilon$ is used to avoid $/0$.</p>
+\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\epsilon\)</span> is used to avoid <span class="math notranslate nohighlight">\(/0\)</span>.</p>
 <div class="margin sidebar">
 <p class="sidebar-title"></p>
 <p>PyTorch has a <em>centering</em> option
 that switches from the second moment to the variance.</p>
 </div>
-<p>Basically, $\color{brown}{\boldsymbol{s}<em>{t}[i]}$ approximates the variance $\operatorname{Var} (\color{blue}{\hat{\boldsymbol{g}}</em>{t}[i]})$ well
-if $\operatorname{E} (\color{blue}{\hat{\boldsymbol{g}}_{t}[i]})$ is small.</p>
-<p>The hyperparameters are $N_s, \eta, \varepsilon$.</p>
+<p>Basically, <span class="math notranslate nohighlight">\(\color{brown}{\boldsymbol{s}_{t}[i]}\)</span> approximates the variance <span class="math notranslate nohighlight">\(\operatorname{Var} (\color{blue}{\hat{\boldsymbol{g}}_{t}[i]})\)</span> well
+if <span class="math notranslate nohighlight">\(\operatorname{E} (\color{blue}{\hat{\boldsymbol{g}}_{t}[i]})\)</span> is small.</p>
+<p>The hyperparameters are <span class="math notranslate nohighlight">\(N_s, \eta, \varepsilon\)</span>.</p>
 </div>
 </div>
 <div class="section" id="adaptive-momentum-adam">
 <h3>Adaptive Momentum (Adam)<a class="headerlink" href="#adaptive-momentum-adam" title="Permalink to this headline">¶</a></h3>
-<p>Adam combines momentum and RMSProp. It maintains a running average $\color{teal}{\tilde{\boldsymbol{g}}<em>{t}[i]}$ of the gradient $\color{blue}{\hat{\boldsymbol{g}}</em>{t}[i]}$, and another running average $\color{brown}{\boldsymbol{s}_{t}[i]}$ of the second moment of the gradient. The two window sizes can be different.</p>
-<p>$$
+<p>Adam combines momentum and RMSProp. It maintains a running average <span class="math notranslate nohighlight">\(\color{teal}{\tilde{\boldsymbol{g}}_{t}[i]}\)</span> of the gradient <span class="math notranslate nohighlight">\(\color{blue}{\hat{\boldsymbol{g}}_{t}[i]}\)</span>, and another running average <span class="math notranslate nohighlight">\(\color{brown}{\boldsymbol{s}_{t}[i]}\)</span> of the second moment of the gradient. The two window sizes can be different.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
 \begin{aligned}
-\color{teal}{\tilde{\boldsymbol{g}}<em>{t}[i]} &amp; =\left(1-\frac{1}{N_g }\right)\color{teal}{\tilde{\boldsymbol{g}}</em>{t-1}[i]}+\frac{1}{N_g }{\color{blue}{\hat{\boldsymbol{g}}<em>{t}[i]}}\
-{\color{brown}{s</em>{t}[i]}} &amp; =\left(1-\frac{1}{N_s}\right){\color{brown}{s_{t-1}[i]}} +\frac{1}{N_ s}{\color{blue}{\hat{\boldsymbol{g}}<em>{t}[i]}}^{2}\
-\boldsymbol{\Phi}</em>{t+1}[i] &amp; =\boldsymbol{\Phi}<em>{t}-\frac{\eta}{\sqrt{{\color{brown}{s</em>{t}[i]}}}+\epsilon}{\color{teal}{\tilde{\boldsymbol{g}}_{t}[i]}}
+\color{teal}{\tilde{\boldsymbol{g}}_{t}[i]} &amp; =\left(1-\frac{1}{N_g }\right)\color{teal}{\tilde{\boldsymbol{g}}_{t-1}[i]}+\frac{1}{N_g }{\color{blue}{\hat{\boldsymbol{g}}_{t}[i]}}\\
+{\color{brown}{s_{t}[i]}} &amp; =\left(1-\frac{1}{N_s}\right){\color{brown}{s_{t-1}[i]}} +\frac{1}{N_ s}{\color{blue}{\hat{\boldsymbol{g}}_{t}[i]}}^{2}\\
+\boldsymbol{\Phi}_{t+1}[i] &amp; =\boldsymbol{\Phi}_{t}-\frac{\eta}{\sqrt{{\color{brown}{s_{t}[i]}}}+\epsilon}{\color{teal}{\tilde{\boldsymbol{g}}_{t}[i]}}
 \end{aligned}
-$$</p>
-<p>The hyperparameters are $N_g, N_s, \eta, \varepsilon$.</p>
+\end{split}\]</div>
+<p>The hyperparameters are <span class="math notranslate nohighlight">\(N_g, N_s, \eta, \varepsilon\)</span>.</p>
 </div>
 </div>
 <div class="section" id="issues">

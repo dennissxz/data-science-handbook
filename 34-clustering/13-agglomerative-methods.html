@@ -46,6 +46,8 @@
     <script src="../_static/copybutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="../_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
     <script >
         const thebe_selector = ".thebe"
@@ -491,7 +493,11 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../33-dimensionality-reduction/31-t-SNE.html">
-     SNE and $t$-SNE
+     SNE and
+     <span class="math notranslate nohighlight">
+      \(t\)
+     </span>
+     -SNE
     </a>
    </li>
   </ul>
@@ -660,62 +666,67 @@
                 
   <div class="section" id="agglomerative-methods">
 <h1>Agglomerative Methods<a class="headerlink" href="#agglomerative-methods" title="Permalink to this headline">¶</a></h1>
-<p>Unlike $k$-means which specify $k$ at start, agglomerative methods view each data point as a cluster, and then iteratively merge two <strong>closest</strong> clusters according to some distance measure, until some convergence criterion.</p>
+<p>Unlike <span class="math notranslate nohighlight">\(k\)</span>-means which specify <span class="math notranslate nohighlight">\(k\)</span> at start, agglomerative methods view each data point as a cluster, and then iteratively merge two <strong>closest</strong> clusters according to some distance measure, until some convergence criterion.</p>
 <div class="section" id="distance-measure">
 <h2>Distance Measure<a class="headerlink" href="#distance-measure" title="Permalink to this headline">¶</a></h2>
-<p>Let $A$ and $B$ be two clusters and let $a,b$ be individual data points.</p>
+<p>Let <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span> be two clusters and let <span class="math notranslate nohighlight">\(a,b\)</span> be individual data points.</p>
 <ul>
 <li><p><strong>Single-linkage</strong> uses the minimum distance</p>
-<p>$$\operatorname{dist}(A, B)=\min _{a \in A, b \in B} \operatorname{dist}(a, b)$$</p>
+<div class="math notranslate nohighlight">
+\[\operatorname{dist}(A, B)=\min _{a \in A, b \in B} \operatorname{dist}(a, b)\]</div>
 <p>Single-linkage tends to yield <strong>long</strong>, “stringy” clusters.</p>
 </li>
 <li><p><strong>Complete-linkage</strong> uses the maximal distance</p>
-<p>$$\operatorname{dist}(A, B)=\max _{a \in A, b \in B} \operatorname{dist}(a, b)$$</p>
+<div class="math notranslate nohighlight">
+\[\operatorname{dist}(A, B)=\max _{a \in A, b \in B} \operatorname{dist}(a, b)\]</div>
 <p>Complete-linkage tends to yield <strong>compact</strong>, “round” clusters.</p>
 </li>
 <li><p><strong>Average-linkage</strong> uses the average distance</p>
-<p>$$\operatorname{dist}(A, B)=\operatorname{mean}  _{a \in A, b \in B} \operatorname{dist}(a, b)$$</p>
+<div class="math notranslate nohighlight">
+\[\operatorname{dist}(A, B)=\operatorname{mean}  _{a \in A, b \in B} \operatorname{dist}(a, b)\]</div>
 </li>
 <li><p><strong>Wald’s methods</strong> uses the increment in total within-group difference if we merge them</p>
-<p>$$
-\begin{aligned}
-\operatorname{dist}(A, B) &amp;=\sum_{i \in A \cup B}\left|\mathbf{x}<em>{i}-\mathbf{\mu}</em>{A \cup B}\right|^{2}-\sum_{i \in A}\left|\mathbf{x}<em>{i}-\mathbf{\mu}</em>{A}\right|^{2}-\sum_{i \in B}\left|\mathbf{x}<em>{i}-\mathbf{\mu}</em>{B}\right|^2 \
-&amp;=\frac{|A||B|}{|A|+|B|}|| \mathbf{\mu}<em>{A}-\mathbf{\mu}</em>{B}||^{2}
-\end{aligned}
-$$</p>
-<p>:::{admonition,note} Wald’s method vs $k$-means</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+    \begin{aligned}
+    \operatorname{dist}(A, B) &amp;=\sum_{i \in A \cup B}\left\|\mathbf{x}_{i}-\mathbf{\mu}_{A \cup B}\right\|^{2}-\sum_{i \in A}\left\|\mathbf{x}_{i}-\mathbf{\mu}_{A}\right\|^{2}-\sum_{i \in B}\left\|\mathbf{x}_{i}-\mathbf{\mu}_{B}\right\|^2 \\
+    &amp;=\frac{|A||B|}{|A|+|B|}|| \mathbf{\mu}_{A}-\mathbf{\mu}_{B}||^{2}
+    \end{aligned}
+    \end{split}\]</div>
+<div class="note admonition">
+<p class="admonition-title"> Wald’s method vs <span class="math notranslate nohighlight">\(k\)</span>-means</p>
 <p>At each merge step, Ward’s method minimizes the same sum-of-squares criterion as k-means, but constrained by choices in previous iterations, so the total sum-of-squares for a given k is normally larger for Ward’s method than for k-means.</p>
 <p>A common trick: Use Ward’s method to pick k, then run k-means starting from the Ward cluster</p>
-<p>:::</p>
+</div>
 </li>
 </ul>
-<p>In the examples below, $k$-means tends to produce clusters with spherical shapes, and we can see how single-linkage is good or bad.</p>
-<p>:::{figure} clustering-comparison-1
-<img src="../imgs/clustering-comparison-1.png" width = "80%" alt=""/></p>
-<p>Comparison of clustering algorithms [Livescue 2021]
-:::</p>
-<p>:::{figure} clustering-comparison-2
-<img src="../imgs/clustering-comparison-2.png" width = "80%" alt=""/></p>
-<p>Comparison of clustering algorithms [Livescue 2021]
-:::</p>
+<p>In the examples below, <span class="math notranslate nohighlight">\(k\)</span>-means tends to produce clusters with spherical shapes, and we can see how single-linkage is good or bad.</p>
+<div class="figure align-default" id="clustering-comparison-1">
+<a class="reference internal image-reference" href="../_images/clustering-comparison-1.png"><img alt="" src="../_images/clustering-comparison-1.png" style="width: 80%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 33 </span><span class="caption-text">Comparison of clustering algorithms [Livescue 2021]</span><a class="headerlink" href="#clustering-comparison-1" title="Permalink to this image">¶</a></p>
+</div>
+<div class="figure align-default" id="clustering-comparison-2">
+<a class="reference internal image-reference" href="../_images/clustering-comparison-2.png"><img alt="" src="../_images/clustering-comparison-2.png" style="width: 80%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 34 </span><span class="caption-text">Comparison of clustering algorithms [Livescue 2021]</span><a class="headerlink" href="#clustering-comparison-2" title="Permalink to this image">¶</a></p>
+</div>
 </div>
 <div class="section" id="convergence-criterion">
 <h2>Convergence Criterion<a class="headerlink" href="#convergence-criterion" title="Permalink to this headline">¶</a></h2>
 <div class="margin sidebar">
 <p class="sidebar-title"></p>
-<p>This is one advantage of hierarchical clustering over “flat” clustering like $k$-means</p>
+<p>This is one advantage of hierarchical clustering over “flat” clustering like <span class="math notranslate nohighlight">\(k\)</span>-means</p>
 </div>
-<p>A good representation of clustering process is dendrogram. The $x$-axis represents items, and the $y$-axis is distance. It provides visual guidance to a good choice for the number of clusters</p>
+<p>A good representation of clustering process is dendrogram. The <span class="math notranslate nohighlight">\(x\)</span>-axis represents items, and the <span class="math notranslate nohighlight">\(y\)</span>-axis is distance. It provides visual guidance to a good choice for the number of clusters</p>
 <p>Stop merging when the merge cost (distance between merged clusters) would be much larger than in previous iterations (for some precise definition of “much larger”)</p>
-<p>:::{figure} clustering-dendrogram
-<img src="../imgs/clustering-dendrogram.png" width = "50%" alt=""/></p>
-<p>Representing clustering with dendrograms
-:::</p>
+<div class="figure align-default" id="clustering-dendrogram">
+<a class="reference internal image-reference" href="../_images/clustering-dendrogram.png"><img alt="" src="../_images/clustering-dendrogram.png" style="width: 50%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 35 </span><span class="caption-text">Representing clustering with dendrograms</span><a class="headerlink" href="#clustering-dendrogram" title="Permalink to this image">¶</a></p>
+</div>
 <p>For instance, given a matrix of phonemes and electrodes, we are interested in discovering cohesive neural regions/firing patterns and relating them to clusters of stimuli.</p>
-<p>:::{figure} clustering-neural-regions
-<img src="../imgs/clustering-neural-regions.png" width = "50%" alt=""/></p>
-<p>Cohesive neural regions/firing patterns [Bouchard et al. 2013]
-:::</p>
+<div class="figure align-default" id="clustering-neural-regions">
+<a class="reference internal image-reference" href="../_images/clustering-neural-regions.png"><img alt="" src="../_images/clustering-neural-regions.png" style="width: 50%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 36 </span><span class="caption-text">Cohesive neural regions/firing patterns [Bouchard et al. 2013]</span><a class="headerlink" href="#clustering-neural-regions" title="Permalink to this image">¶</a></p>
+</div>
 </div>
 </div>
 

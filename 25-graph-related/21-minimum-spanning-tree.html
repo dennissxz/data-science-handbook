@@ -46,6 +46,8 @@
     <script src="../_static/copybutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="../_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
     <script >
         const thebe_selector = ".thebe"
@@ -491,7 +493,11 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../33-dimensionality-reduction/31-t-SNE.html">
-     SNE and $t$-SNE
+     SNE and
+     <span class="math notranslate nohighlight">
+      \(t\)
+     </span>
+     -SNE
     </a>
    </li>
   </ul>
@@ -712,24 +718,24 @@
 <div class="section" id="problem-setup">
 <h2>Problem Setup<a class="headerlink" href="#problem-setup" title="Permalink to this headline">¶</a></h2>
 <dl class="simple myst">
-<dt>Input</dt><dd><p>Graph $G=(V,E)$, with</p>
+<dt>Input</dt><dd><p>Graph <span class="math notranslate nohighlight">\(G=(V,E)\)</span>, with</p>
 <ul class="simple">
-<li><p>$\left\vert V \right\vert = n$</p></li>
-<li><p>$\left\vert E \right\vert = m$</p></li>
-<li><p>weights $w(e)\ge 0$</p></li>
+<li><p><span class="math notranslate nohighlight">\(\left\vert V \right\vert = n\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\left\vert E \right\vert = m\)</span></p></li>
+<li><p>weights <span class="math notranslate nohighlight">\(w(e)\ge 0\)</span></p></li>
 </ul>
 </dd>
-<dt>Goal</dt><dd><p>Select minimum-weight edge set $E^\prime \subseteq E$.</p>
+<dt>Goal</dt><dd><p>Select minimum-weight edge set <span class="math notranslate nohighlight">\(E^\prime \subseteq E\)</span>.</p>
 </dd>
-<dt>Constraint</dt><dd><p>$G(V, E^\prime)$ is connected.</p>
+<dt>Constraint</dt><dd><p><span class="math notranslate nohighlight">\(G(V, E^\prime)\)</span> is connected.</p>
 </dd>
 <dt>Notations:</dt><dd><ul class="simple">
-<li><p>We denoted $G(V, E ^\prime)$ by $G(E ^\prime)$.</p></li>
+<li><p>We denoted <span class="math notranslate nohighlight">\(G(V, E ^\prime)\)</span> by <span class="math notranslate nohighlight">\(G(E ^\prime)\)</span>.</p></li>
 </ul>
 </dd>
 </dl>
 <ul class="simple">
-<li><p>We denoted the total cost $\sum_{e \in E} w(e)$ by $w(E)$.</p></li>
+<li><p>We denoted the total cost <span class="math notranslate nohighlight">\(\sum_{e \in E} w(e)\)</span> by <span class="math notranslate nohighlight">\(w(E)\)</span>.</p></li>
 </ul>
 </div>
 <div class="section" id="analysis">
@@ -739,26 +745,26 @@
 <li><p>The input graph is connected.</p>
 <p>Otherwise the output graph cannot be connected.</p>
 </li>
-<li><p>All edge weights are positive $w(e)&gt;0$.</p>
-<p>For $e$ with zero weight, we can include it to $E ^\prime$ for free so there is no problem of connection of this edge, and merge the two vertices into one. We solve the problem on the new graph, and the optimal solution in the new graph with the zero edges give the optimal solution on the original graph.</p>
+<li><p>All edge weights are positive <span class="math notranslate nohighlight">\(w(e)&gt;0\)</span>.</p>
+<p>For <span class="math notranslate nohighlight">\(e\)</span> with zero weight, we can include it to <span class="math notranslate nohighlight">\(E ^\prime\)</span> for free so there is no problem of connection of this edge, and merge the two vertices into one. We solve the problem on the new graph, and the optimal solution in the new graph with the zero edges give the optimal solution on the original graph.</p>
 </li>
-<li><p>All edge weights are different $w(e_i)\ne w(e_j)$. If not, we can add a tiny amount $w(e) \leftarrow w(e) + \frac{1}{n^k}$ to achieve that without changing the optimal solution.</p></li>
+<li><p>All edge weights are different <span class="math notranslate nohighlight">\(w(e_i)\ne w(e_j)\)</span>. If not, we can add a tiny amount <span class="math notranslate nohighlight">\(w(e) \leftarrow w(e) + \frac{1}{n^k}\)</span> to achieve that without changing the optimal solution.</p></li>
 </ol>
 <p>Analysis of OPT</p>
 <ul>
 <li><p>The optimal solution must be a <strong>tree</strong> (a graph without cycles).</p>
 <p>If there exists cycles, then removing the additional edges in the cycle keeps the graph connected and reduces the weight sum.</p>
 </li>
-<li><p>Since the tree include every vertex in the graph, i.e. $\left\vert V^\prime \right\vert = n$, it’s a <strong>spanning tree</strong> (a subgraph of $G$ that is a tree which includes all vertices of $G$).</p></li>
-<li><p>For an OPT (a spanning tree), the number of edges is always $(n-1)$</p></li>
-<li><p>If you add an additional edge $e(u,v)$ to a spanning tree (connected graph), you must close a cycle, since the vertices $(u, v)$ are already connected. If you delete an arbitrary edge on the cycle created, then the resulting graph is still a spanning tree.</p></li>
+<li><p>Since the tree include every vertex in the graph, i.e. <span class="math notranslate nohighlight">\(\left\vert V^\prime \right\vert = n\)</span>, it’s a <strong>spanning tree</strong> (a subgraph of <span class="math notranslate nohighlight">\(G\)</span> that is a tree which includes all vertices of <span class="math notranslate nohighlight">\(G\)</span>).</p></li>
+<li><p>For an OPT (a spanning tree), the number of edges is always <span class="math notranslate nohighlight">\((n-1)\)</span></p></li>
+<li><p>If you add an additional edge <span class="math notranslate nohighlight">\(e(u,v)\)</span> to a spanning tree (connected graph), you must close a cycle, since the vertices <span class="math notranslate nohighlight">\((u, v)\)</span> are already connected. If you delete an arbitrary edge on the cycle created, then the resulting graph is still a spanning tree.</p></li>
 </ul>
 <p>Therefore, to generate a spanning tree (a feasible solution), one algorithm can be</p>
 <ul class="simple">
 <li><p>choose one edge according to some rule at a time that does not close a cycle</p></li>
-<li><p>repeat until there are $(n-1)$ edges.</p></li>
+<li><p>repeat until there are <span class="math notranslate nohighlight">\((n-1)\)</span> edges.</p></li>
 </ul>
-<p>Then we will have a graph with $(n-1)$ edges and no cycles, which must be a spanning tree. The question is, what rule should we use to minimize the total cost $w(E)$?</p>
+<p>Then we will have a graph with <span class="math notranslate nohighlight">\((n-1)\)</span> edges and no cycles, which must be a spanning tree. The question is, what rule should we use to minimize the total cost <span class="math notranslate nohighlight">\(w(E)\)</span>?</p>
 <div class="section" id="kruskal-s-algorithm">
 <h3>Kruskal’s Algorithm<a class="headerlink" href="#kruskal-s-algorithm" title="Permalink to this headline">¶</a></h3>
 <p>Kruskal’s Algorithm use a greedy rule: add a <strong>minimum-weight</strong> edge connecting <strong>different connected components</strong> of the graph.</p>
@@ -782,9 +788,9 @@
 </dl>
 <p>Then we do reasoning.</p>
 <dl class="simple myst">
-<dt>Definition (Cut)</dt><dd><p>A cut of a graph is a partition of the vertices $V$ into 2 non-empty sets $A$ and $B$. The edges that go across the two sets are denoted by $E(A,B)$, called cut edges in short.</p>
+<dt>Definition (Cut)</dt><dd><p>A cut of a graph is a partition of the vertices <span class="math notranslate nohighlight">\(V\)</span> into 2 non-empty sets <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span>. The edges that go across the two sets are denoted by <span class="math notranslate nohighlight">\(E(A,B)\)</span>, called cut edges in short.</p>
 </dd>
-<dt>Claim 2</dt><dd><p>For every cut $(A,B)$ of $G$, if $e$ is the smallest weight edge in $E(A,B)$, then $e$ lies in every minimum spanning tree. This smallest weight edge is called <strong>a special edge</strong>.</p>
+<dt>Claim 2</dt><dd><p>For every cut <span class="math notranslate nohighlight">\((A,B)\)</span> of <span class="math notranslate nohighlight">\(G\)</span>, if <span class="math notranslate nohighlight">\(e\)</span> is the smallest weight edge in <span class="math notranslate nohighlight">\(E(A,B)\)</span>, then <span class="math notranslate nohighlight">\(e\)</span> lies in every minimum spanning tree. This smallest weight edge is called <strong>a special edge</strong>.</p>
 <details class="sphinx-bs dropdown card mb-3">
 <summary class="summary-title card-header">
 Proof by contradiction<div class="summary-down docutils">
@@ -794,30 +800,30 @@ Proof by contradiction<div class="summary-down docutils">
 </summary><div class="summary-content card-body docutils">
 <p class="card-text">Assume that there exist</p>
 <ul class="simple">
-<li><p class="card-text">a cut $(A, B)$</p></li>
-<li><p class="card-text">an edge $e$ that is the smallest-weight edge in $E(A, B)$, with vertices $u \in A$ and $v \in B$.</p></li>
-<li><p class="card-text">a minimum spanning tree, denoted by $T$</p></li>
+<li><p class="card-text">a cut <span class="math notranslate nohighlight">\((A, B)\)</span></p></li>
+<li><p class="card-text">an edge <span class="math notranslate nohighlight">\(e\)</span> that is the smallest-weight edge in <span class="math notranslate nohighlight">\(E(A, B)\)</span>, with vertices <span class="math notranslate nohighlight">\(u \in A\)</span> and <span class="math notranslate nohighlight">\(v \in B\)</span>.</p></li>
+<li><p class="card-text">a minimum spanning tree, denoted by <span class="math notranslate nohighlight">\(T\)</span></p></li>
 </ul>
-<p class="card-text">such that $e \notin T$.</p>
-<p class="card-text">Since $u$ and $v$ are connected in $T$, there must exists a path in $T$ that goes across $A$ and $B$. Let $e ^\prime$ be the edge that is in that path and goes across $A$ and $B$. Since $w(e) &lt; w(e ^\prime)$, we can replace $e ^\prime$ by $e$ and obtain a new graph $T^\prime = \left( T \cup {e} \right) \backslash \left{ e^\prime \right}$.</p>
-<p class="card-text">Note that $T \cup {e}$ is a connected graph. After deleting an edge $e ^\prime$ that lies on a cycle of $T \cup {e}$, the the remaining graph $T ^\prime = T \cup \left{ e \right} \backslash \left{ e ^\prime \right} ^\prime$ graph is still connected, i.e. a feasible solution. Moreover, the total cost is reduced, $w(T ^\prime) &lt; w(T)$.</p>
-<p class="card-text">Hence, $T$ is <strong>not</strong> a minimum spanning tree, contradiction.</p>
+<p class="card-text">such that <span class="math notranslate nohighlight">\(e \notin T\)</span>.</p>
+<p class="card-text">Since <span class="math notranslate nohighlight">\(u\)</span> and <span class="math notranslate nohighlight">\(v\)</span> are connected in <span class="math notranslate nohighlight">\(T\)</span>, there must exists a path in <span class="math notranslate nohighlight">\(T\)</span> that goes across <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span>. Let <span class="math notranslate nohighlight">\(e ^\prime\)</span> be the edge that is in that path and goes across <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span>. Since <span class="math notranslate nohighlight">\(w(e) &lt; w(e ^\prime)\)</span>, we can replace <span class="math notranslate nohighlight">\(e ^\prime\)</span> by <span class="math notranslate nohighlight">\(e\)</span> and obtain a new graph <span class="math notranslate nohighlight">\(T^\prime = \left( T \cup {e} \right) \backslash \left\{ e^\prime \right\}\)</span>.</p>
+<p class="card-text">Note that <span class="math notranslate nohighlight">\(T \cup \{e\}\)</span> is a connected graph. After deleting an edge <span class="math notranslate nohighlight">\(e ^\prime\)</span> that lies on a cycle of <span class="math notranslate nohighlight">\(T \cup \{e\}\)</span>, the the remaining graph <span class="math notranslate nohighlight">\(T ^\prime = T \cup \left\{ e \right\} \backslash \left\{ e ^\prime \right\} ^\prime\)</span> graph is still connected, i.e. a feasible solution. Moreover, the total cost is reduced, <span class="math notranslate nohighlight">\(w(T ^\prime) &lt; w(T)\)</span>.</p>
+<p class="card-text">Hence, <span class="math notranslate nohighlight">\(T\)</span> is <strong>not</strong> a minimum spanning tree, contradiction.</p>
 </div>
 </details></dd>
-<dt>Corollary 2</dt><dd><p>If $T$ is a spanning tree of $G$, then it must contains <strong>all</strong> special edges of $G$.</p>
+<dt>Corollary 2</dt><dd><p>If <span class="math notranslate nohighlight">\(T\)</span> is a spanning tree of <span class="math notranslate nohighlight">\(G\)</span>, then it must contains <strong>all</strong> special edges of <span class="math notranslate nohighlight">\(G\)</span>.</p>
 </dd>
-<dt>Claim 3</dt><dd><p>There are $(n-1)$ special edges in a graph.</p>
+<dt>Claim 3</dt><dd><p>There are <span class="math notranslate nohighlight">\((n-1)\)</span> special edges in a graph.</p>
 </dd>
-<dt>Claim 4</dt><dd><p>If $G ^\prime$ is an optimal solution, then it has $(n-1)$ edges and all of them are special edges.</p>
+<dt>Claim 4</dt><dd><p>If <span class="math notranslate nohighlight">\(G ^\prime\)</span> is an optimal solution, then it has <span class="math notranslate nohighlight">\((n-1)\)</span> edges and all of them are special edges.</p>
 </dd>
 <dd><p>Proved by Claim 1, Claim 2, Corollary 2, Claim 3</p>
 </dd>
-<dt>Corollary 4</dt><dd><p>If a tree has and only has $(n-1)$ special edges, then it is the unique optimal solution.</p>
+<dt>Corollary 4</dt><dd><p>If a tree has and only has <span class="math notranslate nohighlight">\((n-1)\)</span> special edges, then it is the unique optimal solution.</p>
 </dd>
 <dd><p>Proved by Claim 3</p>
 </dd>
 </dl>
-<p>Since every edge we add according to the greedy rule is a special edge, our solution $G(E ^\prime)$ has $(n-1)$ special edges. By Corollary 4, $G(E ^\prime)$ is the optimal solution.</p>
+<p>Since every edge we add according to the greedy rule is a special edge, our solution <span class="math notranslate nohighlight">\(G(E ^\prime)\)</span> has <span class="math notranslate nohighlight">\((n-1)\)</span> special edges. By Corollary 4, <span class="math notranslate nohighlight">\(G(E ^\prime)\)</span> is the optimal solution.</p>
 </div>
 <div class="section" id="extension">
 <h4>Extension<a class="headerlink" href="#extension" title="Permalink to this headline">¶</a></h4>
@@ -827,11 +833,11 @@ Proof by contradiction<div class="summary-down docutils">
 <div class="section" id="implementation">
 <h3>Implementation<a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li><p>Sort edges by their weights to $E = \left{ e_1, e_2, \ldots, e_m \right}$ such that $w(e_1) &lt; w(e_2)&lt;\dots &lt; w(e_m)$.</p></li>
-<li><p>Start with $E = \emptyset$</p></li>
-<li><p>For $i=1$ to $m$</p>
+<li><p>Sort edges by their weights to <span class="math notranslate nohighlight">\(E = \left\{ e_1, e_2, \ldots, e_m \right\}\)</span> such that <span class="math notranslate nohighlight">\(w(e_1) &lt; w(e_2)&lt;\dots &lt; w(e_m)\)</span>.</p></li>
+<li><p>Start with <span class="math notranslate nohighlight">\(E = \emptyset\)</span></p></li>
+<li><p>For <span class="math notranslate nohighlight">\(i=1\)</span> to <span class="math notranslate nohighlight">\(m\)</span></p>
 <ul>
-<li><p>if endpoints of $e_i$ lie in different connected component of $G(E^\prime)$, then add this edge $E^\prime \leftarrow E^\prime \cup {e_i}$</p></li>
+<li><p>if endpoints of <span class="math notranslate nohighlight">\(e_i\)</span> lie in different connected component of <span class="math notranslate nohighlight">\(G(E^\prime)\)</span>, then add this edge <span class="math notranslate nohighlight">\(E^\prime \leftarrow E^\prime \cup {e_i}\)</span></p></li>
 </ul>
 </li>
 </ul>
@@ -839,11 +845,11 @@ Proof by contradiction<div class="summary-down docutils">
 <div class="section" id="complexity">
 <h3>Complexity<a class="headerlink" href="#complexity" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li><p>Sorting $O(m\log m)$</p></li>
-<li><p>Iteration: $m$ iteration, for each iteration</p>
+<li><p>Sorting <span class="math notranslate nohighlight">\(O(m\log m)\)</span></p></li>
+<li><p>Iteration: <span class="math notranslate nohighlight">\(m\)</span> iteration, for each iteration</p>
 <ul>
-<li><p>$O(\left\vert E ^\prime \right\vert) = O(n)$: BFS/DFS to check if two vertices are in the same connected component of $G(E^\prime)$ (check if there is a path). Total $O(mn)$</p></li>
-<li><p>Better? Can maintain data structure that responds to connected queries in time $O(\log n)$ per iteration. So total run time $O(m\log n)$</p></li>
+<li><p><span class="math notranslate nohighlight">\(O(\left\vert E ^\prime \right\vert) = O(n)\)</span>: BFS/DFS to check if two vertices are in the same connected component of <span class="math notranslate nohighlight">\(G(E^\prime)\)</span> (check if there is a path). Total <span class="math notranslate nohighlight">\(O(mn)\)</span></p></li>
+<li><p>Better? Can maintain data structure that responds to connected queries in time <span class="math notranslate nohighlight">\(O(\log n)\)</span> per iteration. So total run time <span class="math notranslate nohighlight">\(O(m\log n)\)</span></p></li>
 </ul>
 </li>
 </ul>
@@ -852,10 +858,10 @@ Proof by contradiction<div class="summary-down docutils">
 <div class="section" id="reversed-kruskal">
 <h2>Reversed Kruskal<a class="headerlink" href="#reversed-kruskal" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p>Start $E^\prime = E$, so $G(E^\prime)$ is always connected.</p></li>
-<li><p>While $\exists , e: G(E^\prime) \backslash \left{ e \right}$ is connected</p>
+<li><p>Start <span class="math notranslate nohighlight">\(E^\prime = E\)</span>, so <span class="math notranslate nohighlight">\(G(E^\prime)\)</span> is always connected.</p></li>
+<li><p>While <span class="math notranslate nohighlight">\(\exists \, e: G(E^\prime) \backslash \left\{ e \right\}\)</span> is connected</p>
 <ul>
-<li><p>delete max-weight $e$</p></li>
+<li><p>delete max-weight <span class="math notranslate nohighlight">\(e\)</span></p></li>
 </ul>
 </li>
 </ul>

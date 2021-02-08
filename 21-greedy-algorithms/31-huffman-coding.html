@@ -46,6 +46,8 @@
     <script src="../_static/copybutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="../_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
     <script >
         const thebe_selector = ".thebe"
@@ -491,7 +493,11 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../33-dimensionality-reduction/31-t-SNE.html">
-     SNE and $t$-SNE
+     SNE and
+     <span class="math notranslate nohighlight">
+      \(t\)
+     </span>
+     -SNE
     </a>
    </li>
   </ul>
@@ -683,54 +689,58 @@
 <div class="section" id="problem">
 <h2>Problem<a class="headerlink" href="#problem" title="Permalink to this headline">¶</a></h2>
 <dl class="simple myst">
-<dt>Definition (encoding)</dt><dd><p>an encoding $c$ is a mapping from alphabet set $\Sigma$ to binary string of finite length.</p>
-<p>$$
-c: \Sigma \rightarrow \cup_{i\ge 1} \left{ 0, 1 \right}
-$$</p>
+<dt>Definition (encoding)</dt><dd><p>an encoding <span class="math notranslate nohighlight">\(c\)</span> is a mapping from alphabet set <span class="math notranslate nohighlight">\(\Sigma\)</span> to binary string of finite length.</p>
+<div class="math notranslate nohighlight">
+\[
+    c: \Sigma \rightarrow \cup_{i\ge 1} \left\{ 0, 1 \right\}
+    \]</div>
 </dd>
 </dl>
-<p>For instance, the encoding of a word of letters $w = (\sigma_1, \sigma_2, \ldots, \sigma_n)$ is $c(w) = c(\sigma_1)c(\sigma_2)\ldots c(\sigma_n)$</p>
+<p>For instance, the encoding of a word of letters <span class="math notranslate nohighlight">\(w = (\sigma_1, \sigma_2, \ldots, \sigma_n)\)</span> is <span class="math notranslate nohighlight">\(c(w) = c(\sigma_1)c(\sigma_2)\ldots c(\sigma_n)\)</span></p>
 <dl class="simple myst">
-<dt>Definition (unique decoding property)</dt><dd><p>We say that code $c$ has unique decoding property iff for every two distinct finite length strings $s_1 \ne s_2$, we have $c(s_1) \ne c(s_2)$.</p>
+<dt>Definition (unique decoding property)</dt><dd><p>We say that code <span class="math notranslate nohighlight">\(c\)</span> has unique decoding property iff for every two distinct finite length strings <span class="math notranslate nohighlight">\(s_1 \ne s_2\)</span>, we have <span class="math notranslate nohighlight">\(c(s_1) \ne c(s_2)\)</span>.</p>
 </dd>
-<dt>Definition (prefix code)</dt><dd><p>A code $c$ for alphabet $\Sigma$ is a prefix code iff for all $\sigma, \sigma ^\prime \in \Sigma$, such that $\sigma \ne \sigma ^\prime$: $c(\sigma)$ is not a prefix of $c(\sigma ^\prime)$</p>
+<dt>Definition (prefix code)</dt><dd><p>A code <span class="math notranslate nohighlight">\(c\)</span> for alphabet <span class="math notranslate nohighlight">\(\Sigma\)</span> is a prefix code iff for all <span class="math notranslate nohighlight">\(\sigma, \sigma ^\prime \in \Sigma\)</span>, such that <span class="math notranslate nohighlight">\(\sigma \ne \sigma ^\prime\)</span>: <span class="math notranslate nohighlight">\(c(\sigma)\)</span> is not a prefix of <span class="math notranslate nohighlight">\(c(\sigma ^\prime)\)</span></p>
 </dd>
 </dl>
-<p>For instance, the code $\left{ a:00, b:0010 \right}$ is not a prefix code.</p>
+<p>For instance, the code <span class="math notranslate nohighlight">\(\left\{ a:00, b:0010 \right\}\)</span> is not a prefix code.</p>
 <dl class="simple myst">
-<dt>Claim 1</dt><dd><p>If $c$ is a prefix code, then it has unique decoding property nd efficient decoding algorithm.</p>
+<dt>Claim 1</dt><dd><p>If <span class="math notranslate nohighlight">\(c\)</span> is a prefix code, then it has unique decoding property nd efficient decoding algorithm.</p>
 </dd>
 </dl>
 <p>We want to encode as short as possible and be able to decode correctly and efficiently.</p>
-<p>For instance, we can use five binary digits to encode $26$ letters since $2^5 = 32 &gt; 26$. But this is wasteful since the letter $x$ appears much less frequently that $e$. A solution is to use short encoding for frequent letters and long encoding for infrequent letters.</p>
-<p>Let the frequency of letter $a$ in document $T$ of length $n$ be</p>
-<p>$$
+<p>For instance, we can use five binary digits to encode <span class="math notranslate nohighlight">\(26\)</span> letters since <span class="math notranslate nohighlight">\(2^5 = 32 &gt; 26\)</span>. But this is wasteful since the letter <span class="math notranslate nohighlight">\(x\)</span> appears much less frequently that <span class="math notranslate nohighlight">\(e\)</span>. A solution is to use short encoding for frequent letters and long encoding for infrequent letters.</p>
+<p>Let the frequency of letter <span class="math notranslate nohighlight">\(a\)</span> in document <span class="math notranslate nohighlight">\(T\)</span> of length <span class="math notranslate nohighlight">\(n\)</span> be</p>
+<div class="math notranslate nohighlight">
+\[
 f(\sigma) = \frac{\text{# times $a$ appears in T}}{n}
-$$</p>
-<p>The total code length of the text $\left\vert c(T) \right\vert$ is</p>
-<p>$$
+\]</div>
+<p>The total code length of the text <span class="math notranslate nohighlight">\(\left\vert c(T) \right\vert\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[
 \left\vert c(T) \right\vert = \Sigma_{\sigma \in T} \left\vert c(\sigma) \right\vert f(\sigma) n
-$$</p>
-<p>We want to find optimal <strong>prefix</strong> encoding $c$ to minimize the <strong>average code length</strong></p>
-<p>$$
-\min ,  \frac{1}{n}  \left\vert c(T) \right\vert = \min , \Sigma_{\sigma \in T} \left\vert c(\sigma) \right\vert f(\sigma)
-$$</p>
+\]</div>
+<p>We want to find optimal <strong>prefix</strong> encoding <span class="math notranslate nohighlight">\(c\)</span> to minimize the <strong>average code length</strong></p>
+<div class="math notranslate nohighlight">
+\[
+\min \,  \frac{1}{n}  \left\vert c(T) \right\vert = \min \, \Sigma_{\sigma \in T} \left\vert c(\sigma) \right\vert f(\sigma)
+\]</div>
 </div>
 <div class="section" id="analysis">
 <h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
 <dl class="simple myst">
-<dt>Claim 2</dt><dd><p>There is a one-to-one correspondence between a prefix code and a binary tree. Every leaf corresponds to a letter. Left edge means $0$ and right edge means $1$.</p>
+<dt>Claim 2</dt><dd><p>There is a one-to-one correspondence between a prefix code and a binary tree. Every leaf corresponds to a letter. Left edge means <span class="math notranslate nohighlight">\(0\)</span> and right edge means <span class="math notranslate nohighlight">\(1\)</span>.</p>
 </dd>
 </dl>
-<p>:::{figure,myclass} binary-code-tree
-<img src="https://www.techiedelight.com/wp-content/uploads/2016/11/Huffman-Coding-6.png" width = "50%" alt=""/></p>
-<p>A binary code tree
-:::</p>
+<div class="myclass figure align-default" id="binary-code-tree">
+<a class="reference internal image-reference" href="https://www.techiedelight.com/wp-content/uploads/2016/11/Huffman-Coding-6.png"><img alt="" src="https://www.techiedelight.com/wp-content/uploads/2016/11/Huffman-Coding-6.png" style="width: 50%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 3 </span><span class="caption-text">A binary code tree</span><a class="headerlink" href="#binary-code-tree" title="Permalink to this image">¶</a></p>
+</div>
 <p>What is the cost of this binary code tree?</p>
 <dl class="simple myst">
 <dt>Properties</dt><dd><ul class="simple">
-<li><p>code length of a letter $c(\sigma)$ is the depth of leaf labelled $c(\sigma)$ in the tree, denoted $d(\sigma)$.</p></li>
-<li><p>total cost is $\mathrm{cost}(T) = \Sigma_{\sigma \in T} f(\sigma) d(\sigma)$</p></li>
+<li><p>code length of a letter <span class="math notranslate nohighlight">\(c(\sigma)\)</span> is the depth of leaf labelled <span class="math notranslate nohighlight">\(c(\sigma)\)</span> in the tree, denoted <span class="math notranslate nohighlight">\(d(\sigma)\)</span>.</p></li>
+<li><p>total cost is <span class="math notranslate nohighlight">\(\mathrm{cost}(T) = \Sigma_{\sigma \in T} f(\sigma) d(\sigma)\)</span></p></li>
 </ul>
 </dd>
 </dl>
@@ -738,7 +748,7 @@ $$</p>
 <dl class="simple myst">
 <dt>Definition (full binary tree)</dt><dd><p>A tree is a full binary tree if every non-leaf vertex has exactly 2 children.</p>
 </dd>
-<dt>Claim 3</dt><dd><p>If $T$ is an optimal tree, it is a full binary tree.</p>
+<dt>Claim 3</dt><dd><p>If <span class="math notranslate nohighlight">\(T\)</span> is an optimal tree, it is a full binary tree.</p>
 </dd>
 <dd><details class="sphinx-bs dropdown card mb-3">
 <summary class="summary-title card-header">
@@ -750,7 +760,7 @@ $$</p>
 <p class="card-text">If we delete the non-leaf vertex that has 1 children and move the children up, the resulting tree is still optimal, but we reduce the average depth length, contradiction.</p>
 </div>
 </details></dd>
-<dt>Claim 4</dt><dd><p>Suppose there are two letters $x, y$, with lowest frequency $f(x) \le f(y) \le f(z)$ for any $z \ne x, y$. There exists an optimal binary full tree $T$, where $x,y$ are siblings, and they lie at the deepest level of the tree.</p>
+<dt>Claim 4</dt><dd><p>Suppose there are two letters <span class="math notranslate nohighlight">\(x, y\)</span>, with lowest frequency <span class="math notranslate nohighlight">\(f(x) \le f(y) \le f(z)\)</span> for any <span class="math notranslate nohighlight">\(z \ne x, y\)</span>. There exists an optimal binary full tree <span class="math notranslate nohighlight">\(T\)</span>, where <span class="math notranslate nohighlight">\(x,y\)</span> are siblings, and they lie at the deepest level of the tree.</p>
 </dd>
 <dd><details class="sphinx-bs dropdown card mb-3">
 <summary class="summary-title card-header">
@@ -759,33 +769,35 @@ $$</p>
 <div class="summary-up docutils">
 <svg version="1.1" width="24" height="24" class="octicon octicon-chevron-up" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M18.78 15.28a.75.75 0 000-1.06l-6.25-6.25a.75.75 0 00-1.06 0l-6.25 6.25a.75.75 0 101.06 1.06L12 9.56l5.72 5.72a.75.75 0 001.06 0z"></path></svg></div>
 </summary><div class="summary-content card-body docutils">
-<p class="card-text">Let $T$ by any optimal tree, $d$ be the deepest level, $a$ be any vertex at level $d$. Let $b$ be a sibling of $a$. If $x$ and $y$ lie at a shallower level $d ^\prime &lt; d$ and we switch $(a,b)$ with $(x,y)$, then the average code length of the new tree $T ^\prime$ does <strong>not</strong> go up. Consider switch $a$ and $x$,</p>
-<p class="card-text">$$\begin{align}
+<p class="card-text">Let <span class="math notranslate nohighlight">\(T\)</span> by any optimal tree, <span class="math notranslate nohighlight">\(d\)</span> be the deepest level, <span class="math notranslate nohighlight">\(a\)</span> be any vertex at level <span class="math notranslate nohighlight">\(d\)</span>. Let <span class="math notranslate nohighlight">\(b\)</span> be a sibling of <span class="math notranslate nohighlight">\(a\)</span>. If <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(y\)</span> lie at a shallower level <span class="math notranslate nohighlight">\(d ^\prime &lt; d\)</span> and we switch <span class="math notranslate nohighlight">\((a,b)\)</span> with <span class="math notranslate nohighlight">\((x,y)\)</span>, then the average code length of the new tree <span class="math notranslate nohighlight">\(T ^\prime\)</span> does <strong>not</strong> go up. Consider switch <span class="math notranslate nohighlight">\(a\)</span> and <span class="math notranslate nohighlight">\(x\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
 \mathrm{cost}(T ^\prime) - \mathrm{cost}(T)
-&amp;= f(a)[d_{T ^\prime}(a) -  d_{T}(a) ] + f(x)[d_{T ^\prime}(x) -  d_{T}(x) ] \
-&amp;= f(a)(d ^\prime - d) + f(x)(d -  d ^\prime ) \
-&amp;= (d ^\prime - d)[f(a) - f(x)]\
-&amp;\le 0 \
-\end{align}$$</p>
-<p class="card-text">The proof for the change for switching $b$ and $y$ is similar.</p>
+&amp;= f(a)[d_{T ^\prime}(a) -  d_{T}(a) ] + f(x)[d_{T ^\prime}(x) -  d_{T}(x) ] \\
+&amp;= f(a)(d ^\prime - d) + f(x)(d -  d ^\prime ) \\
+&amp;= (d ^\prime - d)[f(a) - f(x)]\\
+&amp;\le 0 \\
+\end{align}\end{split}\]</div>
+<p class="card-text">The proof for the change for switching <span class="math notranslate nohighlight">\(b\)</span> and <span class="math notranslate nohighlight">\(y\)</span> is similar.</p>
 </div>
 </details></dd>
-<dt>Claim 5</dt><dd><p>Suppose in a tree $T$ there are two sibling letters $x, y$, with frequencies $f(x), f(y)$ and parent $z$. Then for the three $T^{\prime} = T^ \backslash \left{ x, y \right} \cup \left{ z \right}$, we have</p>
-<p>$$\mathrm{cost}(T ) = \mathrm{cost}(T ^\prime) + f(x_1) + f(x_2)$$</p>
+<dt>Claim 5</dt><dd><p>Suppose in a tree <span class="math notranslate nohighlight">\(T\)</span> there are two sibling letters <span class="math notranslate nohighlight">\(x, y\)</span>, with frequencies <span class="math notranslate nohighlight">\(f(x), f(y)\)</span> and parent <span class="math notranslate nohighlight">\(z\)</span>. Then for the three <span class="math notranslate nohighlight">\(T^{\prime} = T^ \backslash \left\{ x, y \right\} \cup \left\{ z \right\}\)</span>, we have</p>
+<div class="math notranslate nohighlight">
+\[\mathrm{cost}(T ) = \mathrm{cost}(T ^\prime) + f(x_1) + f(x_2)\]</div>
 </dd>
 </dl>
 <p>The above claims suggest that we can put infrequent letters at the lower levels.</p>
 </div>
 <div class="section" id="algorithm">
 <h2>Algorithm<a class="headerlink" href="#algorithm" title="Permalink to this headline">¶</a></h2>
-<p>Suppose $\left\vert \Sigma \right\vert &gt; 2$. We use a <strong>recursive</strong> algorithm $\mathrm{BuildTree}(\Sigma)$ to build an optimal three $T$ for alpha bet $\Sigma$.</p>
+<p>Suppose <span class="math notranslate nohighlight">\(\left\vert \Sigma \right\vert &gt; 2\)</span>. We use a <strong>recursive</strong> algorithm <span class="math notranslate nohighlight">\(\mathrm{BuildTree}(\Sigma)\)</span> to build an optimal three <span class="math notranslate nohighlight">\(T\)</span> for alpha bet <span class="math notranslate nohighlight">\(\Sigma\)</span>.</p>
 <ul class="simple">
-<li><p>When $\left\vert \Sigma \right\vert = 2$, assign two leaves to the root.</p></li>
-<li><p>When $\left\vert \Sigma \right\vert &gt; 2$</p>
+<li><p>When <span class="math notranslate nohighlight">\(\left\vert \Sigma \right\vert = 2\)</span>, assign two leaves to the root.</p></li>
+<li><p>When <span class="math notranslate nohighlight">\(\left\vert \Sigma \right\vert &gt; 2\)</span></p>
 <ul>
-<li><p>Let $x, y$ be 2 letters with the smallest frequencies (breaking ties arbitrarily). Consider a new letter $z$ with frequency $f(z) = f(x) + f(y)$ and a new alphabet set $\Sigma ^\prime = \left( \Sigma \backslash \left{ x,y \right} \right) \cup \left{ z \right}$</p></li>
-<li><p>Assign $T ^\prime \leftarrow \mathrm{BuildTree}(\Sigma ^\prime)$</p></li>
-<li><p>Repeat until obtain a final tree $T$ by adding $x, y$ as child vertices of $z$ and deleting the label of $z$</p></li>
+<li><p>Let <span class="math notranslate nohighlight">\(x, y\)</span> be 2 letters with the smallest frequencies (breaking ties arbitrarily). Consider a new letter <span class="math notranslate nohighlight">\(z\)</span> with frequency <span class="math notranslate nohighlight">\(f(z) = f(x) + f(y)\)</span> and a new alphabet set <span class="math notranslate nohighlight">\(\Sigma ^\prime = \left( \Sigma \backslash \left\{ x,y \right\} \right) \cup \left\{ z \right\}\)</span></p></li>
+<li><p>Assign <span class="math notranslate nohighlight">\(T ^\prime \leftarrow \mathrm{BuildTree}(\Sigma ^\prime)\)</span></p></li>
+<li><p>Repeat until obtain a final tree <span class="math notranslate nohighlight">\(T\)</span> by adding <span class="math notranslate nohighlight">\(x, y\)</span> as child vertices of <span class="math notranslate nohighlight">\(z\)</span> and deleting the label of <span class="math notranslate nohighlight">\(z\)</span></p></li>
 </ul>
 </li>
 </ul>
@@ -794,8 +806,8 @@ $$</p>
 <h2>Correctness Proof<a class="headerlink" href="#correctness-proof" title="Permalink to this headline">¶</a></h2>
 <p>Proof by induction</p>
 <ul>
-<li><p>Induction base: When $\left\vert \Sigma \right\vert = 2$, the algorithm computes a correct solution.</p></li>
-<li><p>Induction step: When $\left\vert \Sigma \right\vert \ge 2$, suppose $T ^\prime$ is an optimal tree for $\Sigma ^\prime$, then $T$ by adding $x,y$ as siblings lying at the lowest level in $T ^\prime$ is the optimal solution for $T = \left( \Sigma \cup \left{ x,y \right} \right) \backslash \left{ z \right}$.</p>
+<li><p>Induction base: When <span class="math notranslate nohighlight">\(\left\vert \Sigma \right\vert = 2\)</span>, the algorithm computes a correct solution.</p></li>
+<li><p>Induction step: When <span class="math notranslate nohighlight">\(\left\vert \Sigma \right\vert \ge 2\)</span>, suppose <span class="math notranslate nohighlight">\(T ^\prime\)</span> is an optimal tree for <span class="math notranslate nohighlight">\(\Sigma ^\prime\)</span>, then <span class="math notranslate nohighlight">\(T\)</span> by adding <span class="math notranslate nohighlight">\(x,y\)</span> as siblings lying at the lowest level in <span class="math notranslate nohighlight">\(T ^\prime\)</span> is the optimal solution for <span class="math notranslate nohighlight">\(T = \left( \Sigma \cup \left\{ x,y \right\} \right) \backslash \left\{ z \right\}\)</span>.</p>
 <details class="sphinx-bs dropdown card mb-3">
 <summary class="summary-title card-header">
 <em>Proof by contradiction</em><div class="summary-down docutils">
@@ -803,13 +815,14 @@ $$</p>
 <div class="summary-up docutils">
 <svg version="1.1" width="24" height="24" class="octicon octicon-chevron-up" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M18.78 15.28a.75.75 0 000-1.06l-6.25-6.25a.75.75 0 00-1.06 0l-6.25 6.25a.75.75 0 101.06 1.06L12 9.56l5.72 5.72a.75.75 0 001.06 0z"></path></svg></div>
 </summary><div class="summary-content card-body docutils">
-<p class="card-text">Suppose there exists an optimal tree $T^{<em>} \ne T$ such that $\mathrm{cost}(T^</em>) &lt; \mathrm{cost}(T)$, then by Claim 4, $x, y$ must lie at the lowest level. Consider a new tree $T^{<em>\prime} = T^</em> \backslash \left{ x, y \right} \cup \left{ z \right}$, then</p>
-<p class="card-text">$$\begin{align}
+<p class="card-text">Suppose there exists an optimal tree <span class="math notranslate nohighlight">\(T^{*} \ne T\)</span> such that <span class="math notranslate nohighlight">\(\mathrm{cost}(T^*) &lt; \mathrm{cost}(T)\)</span>, then by Claim 4, <span class="math notranslate nohighlight">\(x, y\)</span> must lie at the lowest level. Consider a new tree <span class="math notranslate nohighlight">\(T^{*\prime} = T^* \backslash \left\{ x, y \right\} \cup \left\{ z \right\}\)</span>, then</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
 \mathrm{cost}(T^{* ^\prime})
-&amp;= \mathrm{cost}(T^*) - f(x) - f(y) \quad \text{by Claim 5}\
-&amp;&lt; \mathrm{cost}(T)  - f(x) - f(y) \quad \text{by assumption}\
+&amp;= \mathrm{cost}(T^*) - f(x) - f(y) \quad \text{by Claim 5}\\
+&amp;&lt; \mathrm{cost}(T)  - f(x) - f(y) \quad \text{by assumption}\\
 &amp;= \mathrm{cost}(T ^\prime) \quad \text{by Claim 5}
-\end{align}$$</p>
+\end{align}\end{split}\]</div>
 <p class="card-text">contradiction to the assumption in the induction step.</p>
 </div>
 </details></li>
@@ -818,13 +831,13 @@ $$</p>
 <div class="section" id="complexity">
 <h2>Complexity<a class="headerlink" href="#complexity" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p>Number of recursive calls: at most $\left\vert \Sigma \right\vert$</p>
+<li><p>Number of recursive calls: at most <span class="math notranslate nohighlight">\(\left\vert \Sigma \right\vert\)</span></p>
 <ul>
-<li><p>Time in each call to find the two letters with the smallest frequencies: $\le \left\vert \Sigma \right\vert$</p></li>
+<li><p>Time in each call to find the two letters with the smallest frequencies: <span class="math notranslate nohighlight">\(\le \left\vert \Sigma \right\vert\)</span></p></li>
 </ul>
 </li>
 </ul>
-<p>Total: $O(\left\vert \Sigma \right\vert ^2)$</p>
+<p>Total: <span class="math notranslate nohighlight">\(O(\left\vert \Sigma \right\vert ^2)\)</span></p>
 </div>
 <div class="section" id="review">
 <h2>Review<a class="headerlink" href="#review" title="Permalink to this headline">¶</a></h2>

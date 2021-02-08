@@ -46,6 +46,8 @@
     <script src="../_static/copybutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="../_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
     <script >
         const thebe_selector = ".thebe"
@@ -491,7 +493,11 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../33-dimensionality-reduction/31-t-SNE.html">
-     SNE and $t$-SNE
+     SNE and
+     <span class="math notranslate nohighlight">
+      \(t\)
+     </span>
+     -SNE
     </a>
    </li>
   </ul>
@@ -639,7 +645,10 @@
             <ul class="nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#p-value">
-   $p$-value
+   <span class="math notranslate nohighlight">
+    \(p\)
+   </span>
+   -value
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -697,7 +706,7 @@
 <ul class="simple">
 <li><p><a class="reference external" href="#hypothesis-testing">Hypothesis Testing</a></p>
 <ul>
-<li><p><a class="reference external" href="#p-value">$p$-value</a></p></li>
+<li><p><a class="reference external" href="#p-value"><span class="math notranslate nohighlight">\(p\)</span>-value</a></p></li>
 <li><p><a class="reference external" href="#type-i-error-and-type-ii-error">Type I error and Type II error</a></p>
 <ul>
 <li><p><a class="reference external" href="#definitions">Definitions</a></p></li>
@@ -711,113 +720,123 @@
 </li>
 </ul>
 <!-- /TOC -->
-<p>When we investigate a question of interest, we first formulate a null hypothesis and an alternative hypothesis, denoted as $H_0$ and $H_1$ respectively. For instance,</p>
-<p>$$H_0: \theta = \theta_0\quad \text{vs} \quad H_1: \theta &gt; \theta_0$$</p>
+<p>When we investigate a question of interest, we first formulate a null hypothesis and an alternative hypothesis, denoted as <span class="math notranslate nohighlight">\(H_0\)</span> and <span class="math notranslate nohighlight">\(H_1\)</span> respectively. For instance,</p>
+<div class="math notranslate nohighlight">
+\[H_0: \theta = \theta_0\quad \text{vs} \quad H_1: \theta &gt; \theta_0\]</div>
 <p>To conduct a hypothesis test, there are three components</p>
 <ol class="simple">
-<li><p>Null and alternative hypothesis $H_0,H_1$</p></li>
-<li><p>Test statistic $T$</p></li>
-<li><p>Rejection rule, e.g. $T&gt;c$</p></li>
+<li><p>Null and alternative hypothesis <span class="math notranslate nohighlight">\(H_0,H_1\)</span></p></li>
+<li><p>Test statistic <span class="math notranslate nohighlight">\(T\)</span></p></li>
+<li><p>Rejection rule, e.g. <span class="math notranslate nohighlight">\(T&gt;c\)</span></p></li>
 </ol>
-<p>Give the null hypothesis $H_0$, we collect data and compute some test statistic $T$, and use its value in some rejection rule $(T&gt;c)$ to see whether we reject the null hypothesis or not.</p>
+<p>Give the null hypothesis <span class="math notranslate nohighlight">\(H_0\)</span>, we collect data and compute some test statistic <span class="math notranslate nohighlight">\(T\)</span>, and use its value in some rejection rule <span class="math notranslate nohighlight">\((T&gt;c)\)</span> to see whether we reject the null hypothesis or not.</p>
 <p>There are many other components that analysis the goodness of a test,</p>
 <ul class="simple">
-<li><p>$p$-value</p></li>
+<li><p><span class="math notranslate nohighlight">\(p\)</span>-value</p></li>
 <li><p>significance level</p></li>
 <li><p>Type I error, Type II error</p></li>
 <li><p>Power of a test</p></li>
 </ul>
 <p>We will introduce them one by one.</p>
-<p>:::{admonition,note} Fail to reject $H_0$</p>
-<p>Remember that failing to reject a null hypothesis does not necessarily mean that the null hypothesis is true. So we don’t say “accept the null”, instead we say “fail to reject the null” or “$H_0$ is not rejected”.</p>
-<p>:::</p>
+<div class="note admonition">
+<p class="admonition-title"> Fail to reject <span class="math notranslate nohighlight">\(H_0\)</span></p>
+<p>Remember that failing to reject a null hypothesis does not necessarily mean that the null hypothesis is true. So we don’t say “accept the null”, instead we say “fail to reject the null” or “<span class="math notranslate nohighlight">\(H_0\)</span> is not rejected”.</p>
+</div>
 <div class="section" id="p-value">
-<h2>$p$-value<a class="headerlink" href="#p-value" title="Permalink to this headline">¶</a></h2>
-<p>After we collected data and find the estimate, we want to know whether the estimate prefer $H_0$ or $H_1$. The $p$-value describe that how likely it is to observe more extreme cases than your current estimate, under the null hypothesis.</p>
-<p>$$p\text{-value}=P(\text{more extreme cases of your estimate},\vert, H_0)$$</p>
-<p>If the $p$-value is small, then it means your current estimate and the more extreme cases are unlikely to be observed under the null. But you do observed it, which implies the null may not hold. Hence, when $p$-value is too small, we reject $H_0$. That is, comparing $p$-value and some threshold can be one of the rejection rules.</p>
+<h2><span class="math notranslate nohighlight">\(p\)</span>-value<a class="headerlink" href="#p-value" title="Permalink to this headline">¶</a></h2>
+<p>After we collected data and find the estimate, we want to know whether the estimate prefer <span class="math notranslate nohighlight">\(H_0\)</span> or <span class="math notranslate nohighlight">\(H_1\)</span>. The <span class="math notranslate nohighlight">\(p\)</span>-value describe that how likely it is to observe more extreme cases than your current estimate, under the null hypothesis.</p>
+<div class="math notranslate nohighlight">
+\[p\text{-value}=P(\text{more extreme cases of your estimate}\,\vert\, H_0)\]</div>
+<p>If the <span class="math notranslate nohighlight">\(p\)</span>-value is small, then it means your current estimate and the more extreme cases are unlikely to be observed under the null. But you do observed it, which implies the null may not hold. Hence, when <span class="math notranslate nohighlight">\(p\)</span>-value is too small, we reject <span class="math notranslate nohighlight">\(H_0\)</span>. That is, comparing <span class="math notranslate nohighlight">\(p\)</span>-value and some threshold can be one of the rejection rules.</p>
 <p>The threshold is called significance level, which is the type I error we want to control, and set before the test.</p>
 </div>
 <div class="section" id="type-i-error-and-type-ii-error">
 <h2>Type I error and Type II error<a class="headerlink" href="#type-i-error-and-type-ii-error" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="definitions">
 <h3>Definitions<a class="headerlink" href="#definitions" title="Permalink to this headline">¶</a></h3>
-<p><strong>Type I error</strong>, aka <strong>size</strong> of a test, denoted $\alpha$, is defined as</p>
-<p>$$\alpha = \mathrm{P}\left( H_0 \text{ is rejected} ,\vert, H_0 \text{ is true}\right) $$</p>
-<p><strong>Type II error</strong>, $\beta$, is defined as</p>
-<p>$$\beta = \mathrm{P}\left( H_0 \text{ is not rejected} ,\vert, H_0 \text{ is false}\right) $$</p>
+<p><strong>Type I error</strong>, aka <strong>size</strong> of a test, denoted <span class="math notranslate nohighlight">\(\alpha\)</span>, is defined as</p>
+<div class="math notranslate nohighlight">
+\[\alpha = \mathrm{P}\left( H_0 \text{ is rejected} \,\vert\, H_0 \text{ is true}\right) \]</div>
+<p><strong>Type II error</strong>, <span class="math notranslate nohighlight">\(\beta\)</span>, is defined as</p>
+<div class="math notranslate nohighlight">
+\[\beta = \mathrm{P}\left( H_0 \text{ is not rejected} \,\vert\, H_0 \text{ is false}\right) \]</div>
 <p><strong>Power</strong> of a test is defined as</p>
-<p>$$\begin{aligned}
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
 \text{power}
-&amp;= \mathrm{P}\left( H_0 \text{ is rejected} ,\vert, H_0 \text{ is false}\right)\
-&amp;= 1 - \beta\
-\end{aligned}$$</p>
-<p>$\beta$ and power depends on the distribution of the parameter and the rejection rule (e.g., $\left\vert T \right\vert) &gt; t_{df}^{(1-\alpha/2)}$). If $H_0$ is false, the distribution of the test statistic depends on the true parameter value, so do $\beta$ and power. Since the true parameter value is unknown, there is no easy formula for $\beta$ and power.</p>
+&amp;= \mathrm{P}\left( H_0 \text{ is rejected} \,\vert\, H_0 \text{ is false}\right)\\
+&amp;= 1 - \beta\\
+\end{aligned}\end{split}\]</div>
+<p><span class="math notranslate nohighlight">\(\beta\)</span> and power depends on the distribution of the parameter and the rejection rule (e.g., <span class="math notranslate nohighlight">\(\left\vert T \right\vert) &gt; t_{df}^{(1-\alpha/2)}\)</span>). If <span class="math notranslate nohighlight">\(H_0\)</span> is false, the distribution of the test statistic depends on the true parameter value, so do <span class="math notranslate nohighlight">\(\beta\)</span> and power. Since the true parameter value is unknown, there is no easy formula for <span class="math notranslate nohighlight">\(\beta\)</span> and power.</p>
 </div>
 <div class="section" id="error-control">
 <h3>Error Control<a class="headerlink" href="#error-control" title="Permalink to this headline">¶</a></h3>
-<p>Both type I error and type II error are important. We want small $\alpha$ and small $\beta$ (large power). Though $\alpha$ can be pre-set, $\beta$ is hard to control. Recall the power is</p>
-<p>$$\begin{aligned}
+<p>Both type I error and type II error are important. We want small <span class="math notranslate nohighlight">\(\alpha\)</span> and small <span class="math notranslate nohighlight">\(\beta\)</span> (large power). Though <span class="math notranslate nohighlight">\(\alpha\)</span> can be pre-set, <span class="math notranslate nohighlight">\(\beta\)</span> is hard to control. Recall the power is</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
 \text{power}
-&amp;= \mathrm{P}\left(H_{0} \text { is rejected } \mid H_{1} \text { is true }\right) \
-&amp;= \mathrm{P}\left( T &gt; c\mid H_{1} \text { is true }\right) \
-\end{aligned}$$</p>
-<p>Usually the constant $c$ in the rejection rule $T&gt;c$ involves $\alpha$. The distribution of $T$ under $H_1$ depends on the true parameter in $H_1$, and probably sample size $n$. To see their effect, we look at the following examples of $t$-test in simple linear regression.</p>
+&amp;= \mathrm{P}\left(H_{0} \text { is rejected } \mid H_{1} \text { is true }\right) \\
+&amp;= \mathrm{P}\left( T &gt; c\mid H_{1} \text { is true }\right) \\
+\end{aligned}\end{split}\]</div>
+<p>Usually the constant <span class="math notranslate nohighlight">\(c\)</span> in the rejection rule <span class="math notranslate nohighlight">\(T&gt;c\)</span> involves <span class="math notranslate nohighlight">\(\alpha\)</span>. The distribution of <span class="math notranslate nohighlight">\(T\)</span> under <span class="math notranslate nohighlight">\(H_1\)</span> depends on the true parameter in <span class="math notranslate nohighlight">\(H_1\)</span>, and probably sample size <span class="math notranslate nohighlight">\(n\)</span>. To see their effect, we look at the following examples of <span class="math notranslate nohighlight">\(t\)</span>-test in simple linear regression.</p>
 <dl class="simple myst">
-<dt>Example (Linear regression $t$-test with different $H_1$)</dt><dd><p>In linear regression, $t$-test can be used to test parameter value. Suppose $H_0: \ \beta_1=0$, we see how the true distribution of the test statistic varies with varying true value of $\beta_1$ and sample size $n$.</p>
-<p>The null distribution $t_{n-2}$ (red curve) does not change with true $\beta_1$, which is unknown. Suppose the type I error is fixed at $\alpha$. Recall that the rejection rule is $\left\vert T \right\vert &gt; t_{n-2}^{{1-\alpha/2}}$, which is roughly $2$. The power is then</p>
-<p>$$\begin{aligned}
-\text{power}
-&amp;= \mathrm{P}\left(H_{0} \text { is rejected } \mid H_{1} \text { is true }\right) \
-&amp;= \mathrm{P}\left( \left\vert T \right\vert &gt; t_{n-2}^{{1-\alpha/2}}\mid H_{1} \text { is true }\right) \
-&amp;= \text{yellow area to the right of } 2 \text{ and to the left of } -2
-\end{aligned}$$</p>
-<p>The power increases with larger sample size and farther true $\beta_1$ from null $0$.</p>
-<p>:::{figure} test-power-phase1
-<img src="../imgs/test-power-phase1.png" width = "80%" alt=""/></p>
-<p>Comparison of null and true distribution in $t$-test [Meyer 2021]
-:::</p>
+<dt>Example (Linear regression <span class="math notranslate nohighlight">\(t\)</span>-test with different <span class="math notranslate nohighlight">\(H_1\)</span>)</dt><dd><p>In linear regression, <span class="math notranslate nohighlight">\(t\)</span>-test can be used to test parameter value. Suppose <span class="math notranslate nohighlight">\(H_0: \ \beta_1=0\)</span>, we see how the true distribution of the test statistic varies with varying true value of <span class="math notranslate nohighlight">\(\beta_1\)</span> and sample size <span class="math notranslate nohighlight">\(n\)</span>.</p>
+<p>The null distribution <span class="math notranslate nohighlight">\(t_{n-2}\)</span> (red curve) does not change with true <span class="math notranslate nohighlight">\(\beta_1\)</span>, which is unknown. Suppose the type I error is fixed at <span class="math notranslate nohighlight">\(\alpha\)</span>. Recall that the rejection rule is <span class="math notranslate nohighlight">\(\left\vert T \right\vert &gt; t_{n-2}^{{1-\alpha/2}}\)</span>, which is roughly <span class="math notranslate nohighlight">\(2\)</span>. The power is then</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+  \text{power}
+  &amp;= \mathrm{P}\left(H_{0} \text { is rejected } \mid H_{1} \text { is true }\right) \\
+  &amp;= \mathrm{P}\left( \left\vert T \right\vert &gt; t_{n-2}^{{1-\alpha/2}}\mid H_{1} \text { is true }\right) \\
+  &amp;= \text{yellow area to the right of } 2 \text{ and to the left of } -2
+  \end{aligned}\end{split}\]</div>
+<p>The power increases with larger sample size and farther true <span class="math notranslate nohighlight">\(\beta_1\)</span> from null <span class="math notranslate nohighlight">\(0\)</span>.</p>
+<div class="figure align-default" id="test-power-phase1">
+<a class="reference internal image-reference" href="../_images/test-power-phase1.png"><img alt="" src="../_images/test-power-phase1.png" style="width: 80%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 1 </span><span class="caption-text">Comparison of null and true distribution in <span class="math notranslate nohighlight">\(t\)</span>-test [Meyer 2021]</span><a class="headerlink" href="#test-power-phase1" title="Permalink to this image">¶</a></p>
+</div>
 </dd>
-<dt>Example (Linear regression $t$-test with different $\alpha$)</dt><dd><p>From the above example we can see power also depends on $\alpha$. We change $\alpha$ and see its effect on power.</p>
-<p>The observation is, <strong>larger $\alpha$ leads to larger power (smaller $\beta$)</strong>. So there is a tradeoff between type I error and type two error.</p>
-<p>:::{figure} test-power-phase2
-<img src="../imgs/test-power-phase2.png" width = "80%" alt=""/></p>
-<p>How power changes with $\alpha,n$ and $H_1$ in $t$-test [Meyer 2021]
-:::</p>
+<dt>Example (Linear regression <span class="math notranslate nohighlight">\(t\)</span>-test with different <span class="math notranslate nohighlight">\(\alpha\)</span>)</dt><dd><p>From the above example we can see power also depends on <span class="math notranslate nohighlight">\(\alpha\)</span>. We change <span class="math notranslate nohighlight">\(\alpha\)</span> and see its effect on power.</p>
+<p>The observation is, <strong>larger <span class="math notranslate nohighlight">\(\alpha\)</span> leads to larger power (smaller <span class="math notranslate nohighlight">\(\beta\)</span>)</strong>. So there is a tradeoff between type I error and type two error.</p>
+<div class="figure align-default" id="test-power-phase2">
+<a class="reference internal image-reference" href="../_images/test-power-phase2.png"><img alt="" src="../_images/test-power-phase2.png" style="width: 80%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 2 </span><span class="caption-text">How power changes with <span class="math notranslate nohighlight">\(\alpha,n\)</span> and <span class="math notranslate nohighlight">\(H_1\)</span> in <span class="math notranslate nohighlight">\(t\)</span>-test [Meyer 2021]</span><a class="headerlink" href="#test-power-phase2" title="Permalink to this image">¶</a></p>
+</div>
 </dd>
 </dl>
-<p>In practice, to control both types of errors, usually we <strong>fixed</strong> on type I error $\alpha$ (the value is called significance level), and try to minimize type II error $\beta$ by some methods, such as increasing the sample size $n$.</p>
+<p>In practice, to control both types of errors, usually we <strong>fixed</strong> on type I error <span class="math notranslate nohighlight">\(\alpha\)</span> (the value is called significance level), and try to minimize type II error <span class="math notranslate nohighlight">\(\beta\)</span> by some methods, such as increasing the sample size <span class="math notranslate nohighlight">\(n\)</span>.</p>
 </div>
 </div>
 <div class="section" id="sample-size">
 <h2>Sample Size<a class="headerlink" href="#sample-size" title="Permalink to this headline">¶</a></h2>
 <p>How to choose a sample size? This depends on how we want to control our errors.</p>
-<p>As discussed above, we first fixed $\alpha$, and then control $\beta$. Take $t$-test in simple linear regression as an example. The power $(1-\beta)$ is</p>
-<p>$$\begin{aligned}
+<p>As discussed above, we first fixed <span class="math notranslate nohighlight">\(\alpha\)</span>, and then control <span class="math notranslate nohighlight">\(\beta\)</span>. Take <span class="math notranslate nohighlight">\(t\)</span>-test in simple linear regression as an example. The power <span class="math notranslate nohighlight">\((1-\beta)\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
 \text{power}
-&amp;= \mathrm{P}\left(H_{0} \text { is rejected } \mid H_{1} \text { is true }\right) \
-&amp;= \mathrm{P}\left( \left\vert T \right\vert &gt; t_{n-2}^{{1-\alpha/2}}\mid H_{1} \text { is true }\right) \
-&amp;\ge \text{threshold} \
-\end{aligned}$$</p>
-<p>So we can see it depends on $\alpha, n$, and distribution of $T$ under $H_1$, which involves the true parameter $\beta_1$ and variance of observations $\sigma^2$.</p>
+&amp;= \mathrm{P}\left(H_{0} \text { is rejected } \mid H_{1} \text { is true }\right) \\
+&amp;= \mathrm{P}\left( \left\vert T \right\vert &gt; t_{n-2}^{{1-\alpha/2}}\mid H_{1} \text { is true }\right) \\
+&amp;\ge \text{threshold} \\
+\end{aligned}\end{split}\]</div>
+<p>So we can see it depends on <span class="math notranslate nohighlight">\(\alpha, n\)</span>, and distribution of <span class="math notranslate nohighlight">\(T\)</span> under <span class="math notranslate nohighlight">\(H_1\)</span>, which involves the true parameter <span class="math notranslate nohighlight">\(\beta_1\)</span> and variance of observations <span class="math notranslate nohighlight">\(\sigma^2\)</span>.</p>
 <p>To choose a sample size to ensure power is larger than some threshold, we need to</p>
 <ol class="simple">
-<li><p>fixed type I error $\alpha$</p></li>
-<li><p>assume true $\beta_1$ and $\sigma^2$</p></li>
-<li><p>find the distribution of the test statistic $T$ under the above settings</p></li>
-<li><p>solve the inequality for $n$</p></li>
+<li><p>fixed type I error <span class="math notranslate nohighlight">\(\alpha\)</span></p></li>
+<li><p>assume true <span class="math notranslate nohighlight">\(\beta_1\)</span> and <span class="math notranslate nohighlight">\(\sigma^2\)</span></p></li>
+<li><p>find the distribution of the test statistic <span class="math notranslate nohighlight">\(T\)</span> under the above settings</p></li>
+<li><p>solve the inequality for <span class="math notranslate nohighlight">\(n\)</span></p></li>
 </ol>
 </div>
 <div class="section" id="confidence-interval">
 <h2>Confidence Interval<a class="headerlink" href="#confidence-interval" title="Permalink to this headline">¶</a></h2>
-<p>A $(1-\alpha)$-confidence interval is an interval such that when you repeat the experiments many times, there is $(1-\alpha)$ of the times that the estimate falls into the interval.</p>
-<p>A $(1-\alpha)$-confidence interval can be constructed with an estimate and its standard error.</p>
-<p>$$\hat \theta \pm c_\alpha \cdot \mathrm{se}(\hat \theta)$$</p>
-<p>where $c_\alpha$ is a coefficient that depends on $\alpha$ such that the interval cover $(1-\alpha)$ of the cases.</p>
+<p>A <span class="math notranslate nohighlight">\((1-\alpha)\)</span>-confidence interval is an interval such that when you repeat the experiments many times, there is <span class="math notranslate nohighlight">\((1-\alpha)\)</span> of the times that the estimate falls into the interval.</p>
+<p>A <span class="math notranslate nohighlight">\((1-\alpha)\)</span>-confidence interval can be constructed with an estimate and its standard error.</p>
+<div class="math notranslate nohighlight">
+\[\hat \theta \pm c_\alpha \cdot \mathrm{se}(\hat \theta)\]</div>
+<p>where <span class="math notranslate nohighlight">\(c_\alpha\)</span> is a coefficient that depends on <span class="math notranslate nohighlight">\(\alpha\)</span> such that the interval cover <span class="math notranslate nohighlight">\((1-\alpha)\)</span> of the cases.</p>
 </div>
 <div class="section" id="credible-interval">
 <h2>Credible Interval<a class="headerlink" href="#credible-interval" title="Permalink to this headline">¶</a></h2>
-<p>In Bayesian statistics, a credible interval is constructed from the posterior distribution of the parameter of interest. The are various methods to choose which $(1-\alpha)$ interval to be the credible interval, e.g. equal tail $\alpha/2$, horizontal cutoff of the PDF, etc.</p>
+<p>In Bayesian statistics, a credible interval is constructed from the posterior distribution of the parameter of interest. The are various methods to choose which <span class="math notranslate nohighlight">\((1-\alpha)\)</span> interval to be the credible interval, e.g. equal tail <span class="math notranslate nohighlight">\(\alpha/2\)</span>, horizontal cutoff of the PDF, etc.</p>
 </div>
 <div class="section" id="bonferroni-correction">
 <h2>Bonferroni Correction<a class="headerlink" href="#bonferroni-correction" title="Permalink to this headline">¶</a></h2>

@@ -46,6 +46,8 @@
     <script src="../_static/copybutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="../_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
     <script >
         const thebe_selector = ".thebe"
@@ -491,7 +493,11 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="31-t-SNE.html">
-     SNE and $t$-SNE
+     SNE and
+     <span class="math notranslate nohighlight">
+      \(t\)
+     </span>
+     -SNE
     </a>
    </li>
   </ul>
@@ -683,26 +689,30 @@
 </div>
 <div class="section" id="objective">
 <h2>Objective<a class="headerlink" href="#objective" title="Permalink to this headline">¶</a></h2>
-<p>We want to reduce the dimensionality by projecting the data to a lower dimensional subspace which captures the <strong>essence</strong> of the data, i.e. find a projection $\mathcal{X} \rightarrow \mathcal{Z}$ such that $\mathrm{dim}  \left( \mathcal{Z} \right)  \ll \mathrm{dim} \left( \mathcal{X} \right)$</p>
+<p>We want to reduce the dimensionality by projecting the data to a lower dimensional subspace which captures the <strong>essence</strong> of the data, i.e. find a projection <span class="math notranslate nohighlight">\(\mathcal{X} \rightarrow \mathcal{Z}\)</span> such that <span class="math notranslate nohighlight">\(\mathrm{dim}  \left( \mathcal{Z} \right)  \ll \mathrm{dim} \left( \mathcal{X} \right)\)</span></p>
 <p>More specifically, we seek a projection</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 P(\boldsymbol{x} ; \boldsymbol{\theta}): \mathbb{R}^{d} \rightarrow \mathbb{R}^{k}, \quad k \ll d
-$$</p>
-<p>by optimizing some goodness of fit criteria $J$</p>
-<p>$$
-\min <em>{\boldsymbol{\theta}} J\left(\mathbf{x}</em>{1}, \ldots, \mathbf{x}<em>{n}, P\left(\mathbf{x}</em>{1}\right), \ldots, P\left(\mathbf{x}_{n}\right)\right)
-$$</p>
+\]</div>
+<p>by optimizing some goodness of fit criteria <span class="math notranslate nohighlight">\(J\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+\min _{\boldsymbol{\theta}} J\left(\mathbf{x}_{1}, \ldots, \mathbf{x}_{n}, P\left(\mathbf{x}_{1}\right), \ldots, P\left(\mathbf{x}_{n}\right)\right)
+\]</div>
 <ul>
-<li><p>For linear dimensionality models, the projection $P(\boldsymbol{x}; \boldsymbol{\theta} )$ can be represented by a $d \times k$ matrix $\boldsymbol{W}$. The low dimensional representation $\boldsymbol{z}$ is computed by</p>
-<p>$$
-\boldsymbol{z} = \boldsymbol{W} ^\top \boldsymbol{x}<br />
-$$</p>
-<p>and the reconstruction of $\boldsymbol{x}$ is a weighted combination of the vectors in $\boldsymbol{W}$:</p>
-<p>$$
-\hat{\boldsymbol{x}} = \boldsymbol{W} \boldsymbol{z} = \boldsymbol{W} \boldsymbol{W} ^\top \boldsymbol{x}
-$$</p>
+<li><p>For linear dimensionality models, the projection <span class="math notranslate nohighlight">\(P(\boldsymbol{x}; \boldsymbol{\theta} )\)</span> can be represented by a <span class="math notranslate nohighlight">\(d \times k\)</span> matrix <span class="math notranslate nohighlight">\(\boldsymbol{W}\)</span>. The low dimensional representation <span class="math notranslate nohighlight">\(\boldsymbol{z}\)</span> is computed by</p>
+<div class="math notranslate nohighlight">
+\[
+    \boldsymbol{z} = \boldsymbol{W} ^\top \boldsymbol{x}  
+    \]</div>
+<p>and the reconstruction of <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> is a weighted combination of the vectors in <span class="math notranslate nohighlight">\(\boldsymbol{W}\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+    \hat{\boldsymbol{x}} = \boldsymbol{W} \boldsymbol{z} = \boldsymbol{W} \boldsymbol{W} ^\top \boldsymbol{x}
+    \]</div>
 </li>
-<li><p>For non-linear dimensionality reduction models, projection $P$ can be quite different.</p></li>
+<li><p>For non-linear dimensionality reduction models, projection <span class="math notranslate nohighlight">\(P\)</span> can be quite different.</p></li>
 </ul>
 </div>
 <div class="section" id="metrics">
@@ -741,13 +751,14 @@ $$</p>
 <li><p>articles: two languages</p></li>
 <li><p>speech: voice wave + video of mouth</p></li>
 </ul>
-<p>For instance, in two-view representation learning, training data consists of samples of a $d$-dimensional random vector that has some natural split into two sub-vectors.</p>
-<p>$$
+<p>For instance, in two-view representation learning, training data consists of samples of a <span class="math notranslate nohighlight">\(d\)</span>-dimensional random vector that has some natural split into two sub-vectors.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
 \left[\begin{array}{l}
-\mathbf{x} \
+\mathbf{x} \\
 \mathbf{y}
 \end{array}\right], \mathbf{x} \in \mathbf{R}^{d_{x}}, \mathbf{y} \in \mathbf{R}^{d_{y}}, d_{x}+d_{y}=d
-$$</p>
+\end{split}\]</div>
 <p>The task is to learn useful features/subspaces from such two-view data. Typically involves learning representations of one view that are <strong>predictive</strong> of the other.</p>
 <p>One example of linear multi-view representation learning is canonical correlation anlaysis.</p>
 </div>
@@ -766,36 +777,36 @@ $$</p>
 </thead>
 <tbody>
 <tr class="row-even"><td><p>PCA</p></td>
-<td><p>$\boldsymbol{S} =\boldsymbol{X} ^\top \boldsymbol{X}$</p></td>
-<td><p>$\operatorname{Var}\left(Z_{1}\right)=\max <em>{|\boldsymbol{\alpha}|</em>{2}^{2}=1} \boldsymbol{\alpha}^{\top} \boldsymbol{\Sigma} \boldsymbol{\alpha}$ <br> $\max_{\boldsymbol{W}} \sum_i \operatorname{Var}\left( Z_i \right)$ <br> $\boldsymbol{Z} =  \boldsymbol{W} ^\top \boldsymbol{X}$</p></td>
-<td><p>$\boldsymbol{S} = \boldsymbol{U} \boldsymbol{\Lambda} \boldsymbol{U} ^\top$ <br> $\boldsymbol{z} = \boldsymbol{U}_{[:k]} ^\top \boldsymbol{x}$</p></td>
+<td><p><span class="math notranslate nohighlight">\(\boldsymbol{S} =\boldsymbol{X} ^\top \boldsymbol{X}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\operatorname{Var}\left(Z_{1}\right)=\max _{\|\boldsymbol{\alpha}\|_{2}^{2}=1} \boldsymbol{\alpha}^{\top} \boldsymbol{\Sigma} \boldsymbol{\alpha}\)</span> <br> <span class="math notranslate nohighlight">\(\max_{\boldsymbol{W}} \sum_i \operatorname{Var}\left( Z_i \right)\)</span> <br> <span class="math notranslate nohighlight">\(\boldsymbol{Z} =  \boldsymbol{W} ^\top \boldsymbol{X}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\boldsymbol{S} = \boldsymbol{U} \boldsymbol{\Lambda} \boldsymbol{U} ^\top\)</span> <br> <span class="math notranslate nohighlight">\(\boldsymbol{z} = \boldsymbol{U}_{[:k]} ^\top \boldsymbol{x}\)</span></p></td>
 <td><p></p></td>
 <td><p>1. Sensitive to variable scale. <br> 2. Principal direction may not be discriminative.</p></td>
 <td><p>Standardize before running</p></td>
 </tr>
 <tr class="row-odd"><td><p>Probabilistic PCA</p></td>
-<td><p>$\boldsymbol{S}  = \boldsymbol{X} ^\top \boldsymbol{X}$</p></td>
-<td><p>$\boldsymbol{z} \sim \mathcal{N}( \boldsymbol{0}, \boldsymbol{I})$ <br> $\boldsymbol{x} \mid \boldsymbol{z} \sim \mathcal{N}\left( \boldsymbol{W} \boldsymbol{z}+\boldsymbol{\mu} , \sigma^{2} \boldsymbol{I}\right)$ <br> ML $\boldsymbol{W} , \boldsymbol{\mu} , \sigma$</p></td>
-<td><p>$\boldsymbol{W}<em>{M L} =\boldsymbol{U}</em>{d \times k}\left(\boldsymbol{\Lambda} <em>{k}-\sigma^{2} \boldsymbol{I}<em>k\right)^{1 / 2} \boldsymbol{R}<em>k$ <br> $\sigma</em>{M L}^{2} =\frac{1}{d-k} \sum</em>{j=k+1}^{d} \lambda</em>{j}$ <br>  $\widehat{\operatorname{E}}\left( \boldsymbol{z} \mid \boldsymbol{x}   \right) = \boldsymbol{M}  ^{-1} _{ML} \boldsymbol{W} ^\top _{ML}(\boldsymbol{x} - \bar{\boldsymbol{x}})$</p></td>
+<td><p><span class="math notranslate nohighlight">\(\boldsymbol{S}  = \boldsymbol{X} ^\top \boldsymbol{X}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\boldsymbol{z} \sim \mathcal{N}( \boldsymbol{0}, \boldsymbol{I})\)</span> <br> <span class="math notranslate nohighlight">\(\boldsymbol{x} \mid \boldsymbol{z} \sim \mathcal{N}\left( \boldsymbol{W} \boldsymbol{z}+\boldsymbol{\mu} , \sigma^{2} \boldsymbol{I}\right)\)</span> <br> ML <span class="math notranslate nohighlight">\(\boldsymbol{W} , \boldsymbol{\mu} , \sigma\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\boldsymbol{W}_{M L} =\boldsymbol{U}_{d \times k}\left(\boldsymbol{\Lambda} _{k}-\sigma^{2} \boldsymbol{I}_k\right)^{1 / 2} \boldsymbol{R}_k\)</span> <br> <span class="math notranslate nohighlight">\(\sigma_{M L}^{2} =\frac{1}{d-k} \sum_{j=k+1}^{d} \lambda_{j}\)</span> <br>  <span class="math notranslate nohighlight">\(\widehat{\operatorname{E}}\left( \boldsymbol{z} \mid \boldsymbol{x}   \right) = \boldsymbol{M}  ^{-1} _{ML} \boldsymbol{W} ^\top _{ML}(\boldsymbol{x} - \bar{\boldsymbol{x}})\)</span></p></td>
 <td><p>1. Fewer variance parameters <br> 2. Sampling</p></td>
 <td><p></p></td>
 <td><p></p></td>
 </tr>
 <tr class="row-even"><td><p>CCA</p></td>
-<td><p>$\boldsymbol{X} , \boldsymbol{Y}$</p></td>
-<td><p>$\max _{\boldsymbol{\alpha}, \boldsymbol{\beta} } \operatorname{Corr}\left(\boldsymbol{\alpha}^{\prime} \boldsymbol{x} , \boldsymbol{\beta}^{\prime} \boldsymbol{y} \right)$</p></td>
-<td><p>solve eigenproblem $\boldsymbol{\Sigma}<em>{x x}^{-1} \boldsymbol{\Sigma}</em>{x y} \boldsymbol{\Sigma}<em>{y y}^{-1} \boldsymbol{\Sigma}</em>{y x} \boldsymbol{\alpha} = \rho^2 \boldsymbol{\alpha}$ <br> $\boldsymbol{\beta} \propto \boldsymbol{\Sigma}<em>{y y}^{-1} \boldsymbol{\Sigma}</em>{y x} \boldsymbol{\alpha}$</p></td>
+<td><p><span class="math notranslate nohighlight">\(\boldsymbol{X} , \boldsymbol{Y}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\max _{\boldsymbol{\alpha}, \boldsymbol{\beta} } \operatorname{Corr}\left(\boldsymbol{\alpha}^{\prime} \boldsymbol{x} , \boldsymbol{\beta}^{\prime} \boldsymbol{y} \right)\)</span></p></td>
+<td><p>solve eigenproblem <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}_{x x}^{-1} \boldsymbol{\Sigma}_{x y} \boldsymbol{\Sigma}_{y y}^{-1} \boldsymbol{\Sigma}_{y x} \boldsymbol{\alpha} = \rho^2 \boldsymbol{\alpha}\)</span> <br> <span class="math notranslate nohighlight">\(\boldsymbol{\beta} \propto \boldsymbol{\Sigma}_{y y}^{-1} \boldsymbol{\Sigma}_{y x} \boldsymbol{\alpha}\)</span></p></td>
 <td><p>Has discriminative power in some cases that PCA doesn’t</p></td>
 <td><p>Easy to overfit tiny signals</p></td>
-<td><p>$\rho$ is invariant of scaling of linear transformation of $\boldsymbol{X}$ or $\boldsymbol{Y}$</p></td>
+<td><p><span class="math notranslate nohighlight">\(\rho\)</span> is invariant of scaling of linear transformation of <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span> or <span class="math notranslate nohighlight">\(\boldsymbol{Y}\)</span></p></td>
 </tr>
 <tr class="row-odd"><td><p>Regularized CCA</p></td>
 <td><p></p></td>
 <td><p></p></td>
-<td><p>$\boldsymbol{\Sigma}<em>{x x} \leftarrow\boldsymbol{\Sigma}</em>{x x}+r_{x} I$ <br> $\boldsymbol{\Sigma}<em>{y y} \leftarrow \boldsymbol{\Sigma}</em>{y y}+r_{y} I$</p></td>
+<td><p><span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}_{x x} \leftarrow\boldsymbol{\Sigma}_{x x}+r_{x} I\)</span> <br> <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}_{y y} \leftarrow \boldsymbol{\Sigma}_{y y}+r_{y} I\)</span></p></td>
 <td><p></p></td>
 <td><p></p></td>
-<td><p>add spherical noise $rI$ to the covariance matrices</p></td>
+<td><p>add spherical noise <span class="math notranslate nohighlight">\(rI\)</span> to the covariance matrices</p></td>
 </tr>
 </tbody>
 </table>

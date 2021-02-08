@@ -8,7 +8,6 @@ Well, the answer depends on whether the balls and boxes are distinct or identica
 
 The solutions in various scenarios are summarized below. We will introduce the them one by one.
 
-<p align="center">
 
 | $n$ balls   | $k$ boxes | non-empty | empty | recurrence relation and hint|
 | :-: | :-: | :-: | :-: | :-: |
@@ -17,7 +16,6 @@ The solutions in various scenarios are summarized below. We will introduce the t
 | identical   | identical     | $P(n,k)$          | $\sum_{i=1}^{k}P(n,i)$  | $P(n,k) = P(n-1,k-1) + P(n-k, k)$ , partner|
 | identical   | distinct      | $C_{n-1}^{k-1}$   | $C_{n+k-1}^{k-1}$       | $C(n,k) = C(n-1, k-1) + C(n-1, k)$ , chosen|
 
-</p>
 
 In the "distinct + identical + non-empty" case, if the number of balls in each box, $m_j$, where $m_j \ge 1, \sum_{j=1}^k m_j = n$, are specified, and suppose there are $d$ distinct values of $m_j$, each corresponds to $c_l$ number of boxes, then the number of ways is
 

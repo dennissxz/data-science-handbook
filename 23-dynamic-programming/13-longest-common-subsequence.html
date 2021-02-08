@@ -46,6 +46,8 @@
     <script src="../_static/copybutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="../_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
     <script >
         const thebe_selector = ".thebe"
@@ -491,7 +493,11 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../33-dimensionality-reduction/31-t-SNE.html">
-     SNE and $t$-SNE
+     SNE and
+     <span class="math notranslate nohighlight">
+      \(t\)
+     </span>
+     -SNE
     </a>
    </li>
   </ul>
@@ -693,15 +699,15 @@
   <div class="section" id="longest-common-subsequence">
 <h1>Longest Common Subsequence<a class="headerlink" href="#longest-common-subsequence" title="Permalink to this headline">¶</a></h1>
 <dl class="simple myst">
-<dt>Definition (Subsequence)</dt><dd><p>Let $S = (s_1, s_2, \ldots, s_n)$ and $x = (x_1, x_2, \ldots, x_n)$. We say $X$ is a sub sequence of $S$ iff $\forall 1 \le j \le k, \exists i_j$ such that $1 \le i_1 &lt; i_2 &lt; \ldots, &lt; i_k \le n, x_j = s_{i_j}$.</p>
+<dt>Definition (Subsequence)</dt><dd><p>Let <span class="math notranslate nohighlight">\(S = (s_1, s_2, \ldots, s_n)\)</span> and <span class="math notranslate nohighlight">\(x = (x_1, x_2, \ldots, x_n)\)</span>. We say <span class="math notranslate nohighlight">\(X\)</span> is a sub sequence of <span class="math notranslate nohighlight">\(S\)</span> iff <span class="math notranslate nohighlight">\(\forall 1 \le j \le k, \exists i_j\)</span> such that <span class="math notranslate nohighlight">\(1 \le i_1 &lt; i_2 &lt; \ldots, &lt; i_k \le n, x_j = s_{i_j}\)</span>.</p>
 </dd>
 </dl>
 <div class="section" id="problem">
 <h2>Problem<a class="headerlink" href="#problem" title="Permalink to this headline">¶</a></h2>
 <dl class="simple myst">
-<dt>Input</dt><dd><p>$A$ is a sequence of length $n$, $B$ is a sequence of length $m$.</p>
+<dt>Input</dt><dd><p><span class="math notranslate nohighlight">\(A\)</span> is a sequence of length <span class="math notranslate nohighlight">\(n\)</span>, <span class="math notranslate nohighlight">\(B\)</span> is a sequence of length <span class="math notranslate nohighlight">\(m\)</span>.</p>
 </dd>
-<dt>Goal</dt><dd><p>Find the longest sequence $X$ that is a subsequence of both $A$ and $B$. $X = LCS(A,B)$.</p>
+<dt>Goal</dt><dd><p>Find the longest sequence <span class="math notranslate nohighlight">\(X\)</span> that is a subsequence of both <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span>. <span class="math notranslate nohighlight">\(X = LCS(A,B)\)</span>.</p>
 </dd>
 </dl>
 </div>
@@ -709,65 +715,68 @@
 <h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="iterative-relation">
 <h3>Iterative Relation<a class="headerlink" href="#iterative-relation" title="Permalink to this headline">¶</a></h3>
-<p>For now, we only compute the length, not the exact LCS $X$.</p>
+<p>For now, we only compute the length, not the exact LCS <span class="math notranslate nohighlight">\(X\)</span>.</p>
 <ul class="simple">
-<li><p>If the last two letters of the two sequences are the same, i.e., $A_{[-1]} = B_{[-1]} = z$, then $z$ is the last letter of $LCS(A, B)$ (proof by contradiction), and hence</p></li>
+<li><p>If the last two letters of the two sequences are the same, i.e., <span class="math notranslate nohighlight">\(A_{[-1]} = B_{[-1]} = z\)</span>, then <span class="math notranslate nohighlight">\(z\)</span> is the last letter of <span class="math notranslate nohighlight">\(LCS(A, B)\)</span> (proof by contradiction), and hence</p></li>
 </ul>
-<p>$$LCS(A,B) = LCS(A_{[:-1]}, B_{[:-1]}) \circ z$$</p>
+<div class="math notranslate nohighlight">
+\[LCS(A,B) = LCS(A_{[:-1]}, B_{[:-1]}) \circ z\]</div>
 <ul class="simple">
-<li><p>If the last two letters of the two sequences are difference, i.e., $A_{[-1]} \ne B_{[-1]}$, then</p></li>
+<li><p>If the last two letters of the two sequences are difference, i.e., <span class="math notranslate nohighlight">\(A_{[-1]} \ne B_{[-1]}\)</span>, then</p></li>
 </ul>
-<p>$$
-LCS(A,B) = \operatorname{long}  \left{\begin{array}{ll}
-LCS(A, B_{[:-1]}) \
+<div class="math notranslate nohighlight">
+\[\begin{split}
+LCS(A,B) = \operatorname{long}  \left\{\begin{array}{ll}
+LCS(A, B_{[:-1]}) \\
 LCS(A_{[:-1]}, B)
-\end{array}\right}
-$$</p>
+\end{array}\right\}
+\end{split}\]</div>
 </div>
 <div class="section" id="dp-table">
 <h3>DP Table<a class="headerlink" href="#dp-table" title="Permalink to this headline">¶</a></h3>
-<p>For all $0 \le i \le n, 0 \le j \le m$, the table entry $T_{[i,j]}$ stores the length $\left\vert LCS(A_{[:i]}, B_{[:j]}) \right\vert$</p>
+<p>For all <span class="math notranslate nohighlight">\(0 \le i \le n, 0 \le j \le m\)</span>, the table entry <span class="math notranslate nohighlight">\(T_{[i,j]}\)</span> stores the length <span class="math notranslate nohighlight">\(\left\vert LCS(A_{[:i]}, B_{[:j]}) \right\vert\)</span></p>
 </div>
 <div class="section" id="order-of-computation">
 <h3>Order of computation<a class="headerlink" href="#order-of-computation" title="Permalink to this headline">¶</a></h3>
-<p>In non-decreasing order of $i+j$. Because $T_{[i,j]}$ depends on three entries $T_{[i-1, j-1]}, T_{[i, j-1]}, T_{[i-1, j]}$ that are on the left/right of it.</p>
-<p>Another order can follow fixed $i$ and increasing $j$. Any order works as long as a new value is computed from existing values.</p>
+<p>In non-decreasing order of <span class="math notranslate nohighlight">\(i+j\)</span>. Because <span class="math notranslate nohighlight">\(T_{[i,j]}\)</span> depends on three entries <span class="math notranslate nohighlight">\(T_{[i-1, j-1]}, T_{[i, j-1]}, T_{[i-1, j]}\)</span> that are on the left/right of it.</p>
+<p>Another order can follow fixed <span class="math notranslate nohighlight">\(i\)</span> and increasing <span class="math notranslate nohighlight">\(j\)</span>. Any order works as long as a new value is computed from existing values.</p>
 <dl class="simple myst">
-<dt>Base</dt><dd><p>For all $0 \le i \le n, 0 \le j \le m$,
-$$
-T_{[i,0]} = 0 \
+<dt>Base</dt><dd><p>For all <span class="math notranslate nohighlight">\(0 \le i \le n, 0 \le j \le m\)</span>,
+$<span class="math notranslate nohighlight">\(
+T_{[i,0]} = 0 \\
 T_{[0,j]} = 0
-$$</p>
+\)</span>$</p>
 </dd>
-<dt>Step</dt><dd><p>Compute $T_{[i,j]}$ for $i,j&gt;0$</p>
+<dt>Step</dt><dd><p>Compute <span class="math notranslate nohighlight">\(T_{[i,j]}\)</span> for <span class="math notranslate nohighlight">\(i,j&gt;0\)</span></p>
 </dd>
 </dl>
-<p>$$
-T_{[i,j]} =  \left{\begin{array}{ll}
-T_{[i-1,j-1]} + 1 &amp; \text{if } A_{[i]} = B_{[j]}  \
-\max \left{\begin{array}{ll}
-T_{[i-1, j]} \
+<div class="math notranslate nohighlight">
+\[\begin{split}
+T_{[i,j]} =  \left\{\begin{array}{ll}
+T_{[i-1,j-1]} + 1 &amp; \text{if } A_{[i]} = B_{[j]}  \\
+\max \left\{\begin{array}{ll}
+T_{[i-1, j]} \\
 T_{[i, j-1]}
-\end{array}\right}
+\end{array}\right\}
 &amp; \text{otherwise}
 \end{array}\right.
-$$</p>
+\end{split}\]</div>
 </div>
 <div class="section" id="track-solution">
 <h3>Track Solution<a class="headerlink" href="#track-solution" title="Permalink to this headline">¶</a></h3>
-<p>If the condition $A_{[i]} = B_{[j]}$ holds, this means we pop out $A_{[i]}$. Otherwise, we go to $T_{[i,j-1]}$ or $T_{[i-1,j]}$.</p>
+<p>If the condition <span class="math notranslate nohighlight">\(A_{[i]} = B_{[j]}\)</span> holds, this means we pop out <span class="math notranslate nohighlight">\(A_{[i]}\)</span>. Otherwise, we go to <span class="math notranslate nohighlight">\(T_{[i,j-1]}\)</span> or <span class="math notranslate nohighlight">\(T_{[i-1,j]}\)</span>.</p>
 </div>
 </div>
 <div class="section" id="running-time">
 <h2>Running Time<a class="headerlink" href="#running-time" title="Permalink to this headline">¶</a></h2>
-<p>In total $n\times m$ entires, time for each entry is $O(1)$, so total time is $O(nm)$.</p>
+<p>In total <span class="math notranslate nohighlight">\(n\times m\)</span> entires, time for each entry is <span class="math notranslate nohighlight">\(O(1)\)</span>, so total time is <span class="math notranslate nohighlight">\(O(nm)\)</span>.</p>
 </div>
 <div class="section" id="correctness">
 <h2>Correctness<a class="headerlink" href="#correctness" title="Permalink to this headline">¶</a></h2>
 <dl class="simple myst">
-<dt>Claim</dt><dd><p>For all $0 \le i \le n, 0 \le j \le m$, the table entry $T_{[i,j]}$ stores the length $\left\vert LCS(A_{[:i]}, B_{[:j]}) \right\vert$. The final solution is $T_{[n,m]} = \left\vert LCS(A, B) \right\vert$</p>
+<dt>Claim</dt><dd><p>For all <span class="math notranslate nohighlight">\(0 \le i \le n, 0 \le j \le m\)</span>, the table entry <span class="math notranslate nohighlight">\(T_{[i,j]}\)</span> stores the length <span class="math notranslate nohighlight">\(\left\vert LCS(A_{[:i]}, B_{[:j]}) \right\vert\)</span>. The final solution is <span class="math notranslate nohighlight">\(T_{[n,m]} = \left\vert LCS(A, B) \right\vert\)</span></p>
 </dd>
-<dt><em>Proof</em></dt><dd><p>Induction over $i+j$.</p>
+<dt><em>Proof</em></dt><dd><p>Induction over <span class="math notranslate nohighlight">\(i+j\)</span>.</p>
 </dd>
 </dl>
 </div>

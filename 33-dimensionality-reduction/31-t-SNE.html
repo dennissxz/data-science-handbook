@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SNE and $t$-SNE &#8212; Data Science Handbook</title>
+    <title>SNE and \(t\)-SNE &#8212; Data Science Handbook</title>
     
   <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
 
@@ -46,6 +46,8 @@
     <script src="../_static/copybutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="../_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
     <script >
         const thebe_selector = ".thebe"
@@ -491,7 +493,11 @@
    </li>
    <li class="toctree-l2 current active">
     <a class="current reference internal" href="#">
-     SNE and $t$-SNE
+     SNE and
+     <span class="math notranslate nohighlight">
+      \(t\)
+     </span>
+     -SNE
     </a>
    </li>
   </ul>
@@ -654,7 +660,10 @@
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#t-sne-objective">
-   $t$-SNE Objective
+   <span class="math notranslate nohighlight">
+    \(t\)
+   </span>
+   -SNE Objective
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -669,7 +678,11 @@
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#extension-parametric-t-sne">
-   Extension: Parametric $t$-SNE
+   Extension: Parametric
+   <span class="math notranslate nohighlight">
+    \(t\)
+   </span>
+   -SNE
   </a>
  </li>
 </ul>
@@ -684,64 +697,69 @@
               <div>
                 
   <div class="section" id="sne-and-t-sne">
-<h1>SNE and $t$-SNE<a class="headerlink" href="#sne-and-t-sne" title="Permalink to this headline">¶</a></h1>
-<p>$t$-Distributed Stochastic Neighborhood Embedding [van der Maaten &amp; Hinton 2008]. Read as “tisney”.</p>
+<h1>SNE and <span class="math notranslate nohighlight">\(t\)</span>-SNE<a class="headerlink" href="#sne-and-t-sne" title="Permalink to this headline">¶</a></h1>
+<p><span class="math notranslate nohighlight">\(t\)</span>-Distributed Stochastic Neighborhood Embedding [van der Maaten &amp; Hinton 2008]. Read as “tisney”.</p>
 <p>We first introduce its precursor SNE [Hinton &amp; Roweis 2002].</p>
 <div class="section" id="sne-objective">
 <h2>SNE Objective<a class="headerlink" href="#sne-objective" title="Permalink to this headline">¶</a></h2>
 <p>SNE is suitable when we</p>
 <ul class="simple">
-<li><p>want visualization of static data set, i.e. $k=3$ or $k=3$.</p></li>
+<li><p>want visualization of static data set, i.e. <span class="math notranslate nohighlight">\(k=3\)</span> or <span class="math notranslate nohighlight">\(k=3\)</span>.</p></li>
 <li><p>don’t need an out-of-sample extension.</p></li>
 </ul>
-<p>Most nonlinear methods try to maintain <strong>global similarity measures</strong> (inner product or distance) in the original space $\mathcal{X}$ and the low-dimensional projections $\mathcal{Y}$. It’s actually impossible to actually maintin distances/similarities when we squash to only 2-3 dimensions.</p>
-<p>In contrast, SNE instead tries to maintain <strong>neighborhood properties</strong>: If $\boldsymbol{x}_i ,\boldsymbol{x}_j$ are likely to be neighbors in the original space, then their mappings in the low-dim space $\boldsymbol{z}_i , \boldsymbol{z}_j$ should also be neighbors.</p>
-<p>Define the probability that point $\boldsymbol{x}_i$ would pick $\boldsymbol{x}_j$ as its neighbor as</p>
-<p>$$
-p_{j \mid i}=\left{\begin{array}{ll}
-\frac{\exp \left( \left(-|| \boldsymbol{x}<em>{i}-\boldsymbol{x}</em>{j} |^{2}\right) / 2 \sigma_{i}^{2} \right)}{\sum_{k \neq i} \exp \left( \left(-|| \boldsymbol{x}<em>{i}-\boldsymbol{x}</em>{k} |^{2}\right) / 2 \sigma_{i}^{2} \right)} &amp; \text { if } i \neq j \
+<p>Most nonlinear methods try to maintain <strong>global similarity measures</strong> (inner product or distance) in the original space <span class="math notranslate nohighlight">\(\mathcal{X}\)</span> and the low-dimensional projections <span class="math notranslate nohighlight">\(\mathcal{Y}\)</span>. It’s actually impossible to actually maintin distances/similarities when we squash to only 2-3 dimensions.</p>
+<p>In contrast, SNE instead tries to maintain <strong>neighborhood properties</strong>: If <span class="math notranslate nohighlight">\(\boldsymbol{x}_i ,\boldsymbol{x}_j\)</span> are likely to be neighbors in the original space, then their mappings in the low-dim space <span class="math notranslate nohighlight">\(\boldsymbol{z}_i , \boldsymbol{z}_j\)</span> should also be neighbors.</p>
+<p>Define the probability that point <span class="math notranslate nohighlight">\(\boldsymbol{x}_i\)</span> would pick <span class="math notranslate nohighlight">\(\boldsymbol{x}_j\)</span> as its neighbor as</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+p_{j \mid i}=\left\{\begin{array}{ll}
+\frac{\exp \left( \left(-|| \boldsymbol{x}_{i}-\boldsymbol{x}_{j} \|^{2}\right) / 2 \sigma_{i}^{2} \right)}{\sum_{k \neq i} \exp \left( \left(-|| \boldsymbol{x}_{i}-\boldsymbol{x}_{k} \|^{2}\right) / 2 \sigma_{i}^{2} \right)} &amp; \text { if } i \neq j \\
 0 &amp; \text { if } i=j
 \end{array}\right.
-$$</p>
-<p>where $\sigma_i$ is a data point-specific variance of Gaussian centered at $\boldsymbol{x}_i$, to be introduced later.</p>
+\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\sigma_i\)</span> is a data point-specific variance of Gaussian centered at <span class="math notranslate nohighlight">\(\boldsymbol{x}_i\)</span>, to be introduced later.</p>
 <p>In the low-dimensional space, the probability is</p>
-<p>$$
-q_{j \mid i}=\left{\begin{array}{ll}
-\frac{\exp \left(-|| \boldsymbol{z}<em>{i}-\boldsymbol{z}</em>{j} |^{2}\right)}{\sum_{k \neq i} \exp \left(-|| \boldsymbol{z}<em>{i}-\boldsymbol{z}</em>{k}||^{2}\right)} &amp; \text { if } i \neq j \
+<div class="math notranslate nohighlight">
+\[\begin{split}
+q_{j \mid i}=\left\{\begin{array}{ll}
+\frac{\exp \left(-|| \boldsymbol{z}_{i}-\boldsymbol{z}_{j} \|^{2}\right)}{\sum_{k \neq i} \exp \left(-|| \boldsymbol{z}_{i}-\boldsymbol{z}_{k}||^{2}\right)} &amp; \text { if } i \neq j \\
 0 &amp; \text { if } i=j
 \end{array}\right.
-$$</p>
-<p>Note that there is no $\sigma^2 _i$. We keep variance fixed in low-dim space since changing it just rescales mapping.</p>
+\end{split}\]</div>
+<p>Note that there is no <span class="math notranslate nohighlight">\(\sigma^2 _i\)</span>. We keep variance fixed in low-dim space since changing it just rescales mapping.</p>
 <p>SNE wants these two distributions to be as <strong>similar</strong> as possible. How to measure the similarity of two distributions?</p>
-<p>Let $P_i$ (or $Q_i$) represent conditional distribution over all other data points given $\boldsymbol{x}_i$ (of $\boldsymbol{z}_i$ ). Objective to minimize is a sum over data-point specific KL divergences:</p>
-<p>$$
+<p>Let <span class="math notranslate nohighlight">\(P_i\)</span> (or <span class="math notranslate nohighlight">\(Q_i\)</span>) represent conditional distribution over all other data points given <span class="math notranslate nohighlight">\(\boldsymbol{x}_i\)</span> (of <span class="math notranslate nohighlight">\(\boldsymbol{z}_i\)</span> ). Objective to minimize is a sum over data-point specific KL divergences:</p>
+<div class="math notranslate nohighlight">
+\[
 \min \sum_{i} \mathrm{KL}\left(P_{i}|| Q_{i}\right)= \min \sum_{i} \sum_{j} p_{j \mid i} \log \frac{p_{j \mid i}}{q_{j \mid i}}
-$$</p>
-<p>It assign large cost for using widely separated $\boldsymbol{z}_i, \boldsymbol{z}<em>j$ (small $q</em>{j\mid i}$) to represent nearby $\boldsymbol{x}_i , \boldsymbol{x}<em>j$ (large $p</em>{j\mid i}$) (but not vice versa).</p>
-<p>:::{admonition,note} Interpretation of KL divergence</p>
+\]</div>
+<p>It assign large cost for using widely separated <span class="math notranslate nohighlight">\(\boldsymbol{z}_i, \boldsymbol{z}_j\)</span> (small <span class="math notranslate nohighlight">\(q_{j\mid i}\)</span>) to represent nearby <span class="math notranslate nohighlight">\(\boldsymbol{x}_i , \boldsymbol{x}_j\)</span> (large <span class="math notranslate nohighlight">\(p_{j\mid i}\)</span>) (but not vice versa).</p>
+<div class="note admonition">
+<p class="admonition-title"> Interpretation of KL divergence</p>
 <p>Recall KL divergence:</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[\begin{split}
 \begin{aligned}
-\mathrm{KL}(P | Q) &amp;=\sum_{j} p_{j} \log \frac{p_{j}}{q_{j}} \
+\mathrm{KL}(P \| Q) &amp;=\sum_{j} p_{j} \log \frac{p_{j}}{q_{j}} \\
 &amp;=H(P, Q)-H(P)
 \end{aligned}
-$$</p>
+\end{split}\]</div>
 <ul class="simple">
-<li><p>$H(P)$ = entropy of $P$ in bits</p></li>
-<li><p>$H(P,Q)$ = cross entropy between $P$ and $Q$ in bits.</p></li>
+<li><p><span class="math notranslate nohighlight">\(H(P)\)</span> = entropy of <span class="math notranslate nohighlight">\(P\)</span> in bits</p></li>
+<li><p><span class="math notranslate nohighlight">\(H(P,Q)\)</span> = cross entropy between <span class="math notranslate nohighlight">\(P\)</span> and <span class="math notranslate nohighlight">\(Q\)</span> in bits.</p></li>
 </ul>
 <p>Interpretations of KL divergence:</p>
 <ul class="simple">
-<li><p>The number of <strong>extra</strong> bits, on average, needed to encode samples from $P$ using a code optimized for $Q$, where “optimized” means less likely values get longer code words.</p></li>
-<li><p>Amount of information <strong>gained</strong> when going from prior $Q$ to posterior $P$ (viewing the low-dimensional data as coming from a prior).</p></li>
+<li><p>The number of <strong>extra</strong> bits, on average, needed to encode samples from <span class="math notranslate nohighlight">\(P\)</span> using a code optimized for <span class="math notranslate nohighlight">\(Q\)</span>, where “optimized” means less likely values get longer code words.</p></li>
+<li><p>Amount of information <strong>gained</strong> when going from prior <span class="math notranslate nohighlight">\(Q\)</span> to posterior <span class="math notranslate nohighlight">\(P\)</span> (viewing the low-dimensional data as coming from a prior).</p></li>
 <li><p>Amount of information <strong>loss</strong> when approximating P with Q.</p></li>
 </ul>
-<p>:::</p>
+</div>
 </div>
 <div class="section" id="sne-learning">
 <h2>SNE Learning<a class="headerlink" href="#sne-learning" title="Permalink to this headline">¶</a></h2>
 <p>The objective is non-convex, need to be optimized with gradient descent (the gradient is somewhat involved).</p>
-<p>Randomly initialize a $n \times k$ low-dim data matrix $\boldsymbol{Z}$ and do gradient descent to minimize the KL divergence.</p>
+<p>Randomly initialize a <span class="math notranslate nohighlight">\(n \times k\)</span> low-dim data matrix <span class="math notranslate nohighlight">\(\boldsymbol{Z}\)</span> and do gradient descent to minimize the KL divergence.</p>
 </div>
 <div class="section" id="sne-vs-t-sne">
 <h2>SNE vs t-SNE.<a class="headerlink" href="#sne-vs-t-sne" title="Permalink to this headline">¶</a></h2>
@@ -753,23 +771,26 @@ $$</p>
 </ul>
 </div>
 <div class="section" id="t-sne-objective">
-<h2>$t$-SNE Objective<a class="headerlink" href="#t-sne-objective" title="Permalink to this headline">¶</a></h2>
-<p>$t$-SNE uses the <strong>joint</strong> instead of conditional distributions of data pairs:</p>
-<p>$$
-\min \ \mathrm{KL}(P | Q)=\sum_{i} \sum_{j} p_{i j} \log \frac{p_{i j}}{q_{i j}}
-$$</p>
-<p>where $p_{ii} = q_{ii} = 0$</p>
+<h2><span class="math notranslate nohighlight">\(t\)</span>-SNE Objective<a class="headerlink" href="#t-sne-objective" title="Permalink to this headline">¶</a></h2>
+<p><span class="math notranslate nohighlight">\(t\)</span>-SNE uses the <strong>joint</strong> instead of conditional distributions of data pairs:</p>
+<div class="math notranslate nohighlight">
+\[
+\min \ \mathrm{KL}(P \| Q)=\sum_{i} \sum_{j} p_{i j} \log \frac{p_{i j}}{q_{i j}}
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(p_{ii} = q_{ii} = 0\)</span></p>
 <ul>
-<li><p>In high-dim space, $t$-SNE (and symmetrized SNE) uses an average</p>
-<p>$$
-p_{i j}=\frac{p_{j \mid i}+p_{i \mid j}}{2 n}
-$$</p>
+<li><p>In high-dim space, <span class="math notranslate nohighlight">\(t\)</span>-SNE (and symmetrized SNE) uses an average</p>
+<div class="math notranslate nohighlight">
+\[
+    p_{i j}=\frac{p_{j \mid i}+p_{i \mid j}}{2 n}
+    \]</div>
 </li>
 <li><p>In low-dim space, because the Gaussian distribution dies off very fast with distance from the mean, SNE only accurately represents very nearby points. Moderately distant points can’t be <strong>differentiated</strong> from each other. Many points end up “crushed” into the center of the map.</p>
 <p>t-SNE’s solution: use a heavy-tailed distribution in the low-dim space, e.g. t-distribution, with one-degree of freedom.</p>
-<p>$$
-q_{i j}=\frac{\left(1+\left|\boldsymbol{z}<em>{i}-\boldsymbol{z}</em>{j}\right|^{2}\right)^{-1}}{\sum_{k \neq l}\left(1+\left|\boldsymbol{z}<em>{k}-\boldsymbol{z}</em>{l}\right|^{2}\right)^{-1}}
-$$</p>
+<div class="math notranslate nohighlight">
+\[
+    q_{i j}=\frac{\left(1+\left\|\boldsymbol{z}_{i}-\boldsymbol{z}_{j}\right\|^{2}\right)^{-1}}{\sum_{k \neq l}\left(1+\left\|\boldsymbol{z}_{k}-\boldsymbol{z}_{l}\right\|^{2}\right)^{-1}}
+    \]</div>
 </li>
 </ul>
 </div>
@@ -785,48 +806,51 @@ $$</p>
 <li><p>Perplexity hyperparameter is important.</p></li>
 <li><p>Careful how you interpret it: Don’t trust visualizations with lots of tiny clusters, or just one big blob.</p></li>
 <li><p>Tends to fail for Swiss roll-type toy data. t-SNE tries to find cluster structure, even if there is no cluster nature in the data.</p>
-<p>:::{figure} tSNE-swiss-roll
-<img src="../imgs/tSNE-swiss-roll.png" width = "50%" alt=""/></p>
-<p>Comparison of performance over a manifold data set <a class="reference external" href="http://scikit-learn.org/stable/modules/manifold.html">[scikit-learn]</a></p>
-<p>:::</p>
+<div class="figure align-default" id="tsne-swiss-roll">
+<a class="reference internal image-reference" href="../_images/tSNE-swiss-roll.png"><img alt="" src="../_images/tSNE-swiss-roll.png" style="width: 50%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 27 </span><span class="caption-text">Comparison of performance over a manifold data set <a class="reference external" href="http://scikit-learn.org/stable/modules/manifold.html">[scikit-learn]</a></span><a class="headerlink" href="#tsne-swiss-roll" title="Permalink to this image">¶</a></p>
+</div>
 </li>
-<li><p>$t$-SNE is non-parametric and has no natural out-of-sample extension; parametric extensions exist, e.g. <a class="reference internal" href="#parametric-t-sne"><span class="std std-ref">parametric $t$-SNE</span></a>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(t\)</span>-SNE is non-parametric and has no natural out-of-sample extension; parametric extensions exist, e.g. <a class="reference internal" href="#parametric-t-sne"><span class="std std-ref">parametric <span class="math notranslate nohighlight">\(t\)</span>-SNE</span></a>.</p></li>
 </ul>
 </div>
 <div class="section" id="model-selection">
 <h2>Model Selection<a class="headerlink" href="#model-selection" title="Permalink to this headline">¶</a></h2>
-<p>How to set the hyperparameters $\sigma_i$?</p>
-<p>Data point-specific variances allow SNE/t-SNE to model varying densities in different parts of the high-dim space, but that’s as many hyperparameters as data points. SNE/t-SNE sets $\sigma_i$ based on a single user-provided hyperparameter, namely <strong>perplexity</strong>.</p>
+<p>How to set the hyperparameters <span class="math notranslate nohighlight">\(\sigma_i\)</span>?</p>
+<p>Data point-specific variances allow SNE/t-SNE to model varying densities in different parts of the high-dim space, but that’s as many hyperparameters as data points. SNE/t-SNE sets <span class="math notranslate nohighlight">\(\sigma_i\)</span> based on a single user-provided hyperparameter, namely <strong>perplexity</strong>.</p>
 <dl class="simple myst">
 <dt>Definition (Perplexity)</dt><dd><p>The perplexity of the distribution Pi is</p>
-<p>$$
-\begin{aligned}
-\operatorname{Perp}\left(P_{i}\right) &amp;=2^{H\left(P_{i}\right)} \
-H\left(P_{i}\right) &amp;=-\sum_{j} p_{j \mid i} \log <em>{2} p</em>{j \mid i}
-\end{aligned}
-$$</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+  \begin{aligned}
+  \operatorname{Perp}\left(P_{i}\right) &amp;=2^{H\left(P_{i}\right)} \\
+  H\left(P_{i}\right) &amp;=-\sum_{j} p_{j \mid i} \log _{2} p_{j \mid i}
+  \end{aligned}
+  \end{split}\]</div>
 </dd>
 </dl>
 <p>Entropy is the average number of bits needed to encode the random variable. Perplexity is the “effective number of values” in the support of the domain of the random variable.</p>
 <p><strong>Examples</strong></p>
 <ul>
 <li><p>Consider a uniform distribution P over N values:</p>
-<p>$$
-\begin{aligned}
-\operatorname{Perp}(P) &amp;=2^{-\sum_{i} p_{i} \log <em>{2} p</em>{i}} \
-&amp;=2^{-\sum_{i} \frac{1}{N} \log <em>{2}\left(\frac{1}{N}\right)} \
-&amp;=2^{\sum</em>{i} \frac{1}{N} \log _{2} N} \
-&amp;=2^{\log _{2} N}=N
-\end{aligned}
-$$</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+    \begin{aligned}
+    \operatorname{Perp}(P) &amp;=2^{-\sum_{i} p_{i} \log _{2} p_{i}} \\
+    &amp;=2^{-\sum_{i} \frac{1}{N} \log _{2}\left(\frac{1}{N}\right)} \\
+    &amp;=2^{\sum_{i} \frac{1}{N} \log _{2} N} \\
+    &amp;=2^{\log _{2} N}=N
+    \end{aligned}
+    \end{split}\]</div>
 </li>
 <li><p>Consider a distribution P where one value has probability 1:</p>
-<p>$$
-\begin{aligned}
-\operatorname{Perp}(P) &amp;=2^{-\sum_{i} p_{i} \log <em>{2} p</em>{i}} \
-&amp;=2^{-1 \log _{2} 1}=2^{0}=1
-\end{aligned}
-$$</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+    \begin{aligned}
+    \operatorname{Perp}(P) &amp;=2^{-\sum_{i} p_{i} \log _{2} p_{i}} \\
+    &amp;=2^{-1 \log _{2} 1}=2^{0}=1
+    \end{aligned}
+    \end{split}\]</div>
 </li>
 </ul>
 <p>Varying perplexity:</p>
@@ -834,28 +858,30 @@ $$</p>
 <li><p>Low perplexity, t-SNE tries to find more clusters of small size.</p></li>
 <li><p>High perplexity, t-SNE tries to find less clusters of large size.</p></li>
 </ul>
-<p>:::{figure} tSNE-varying-perp
-<img src="../imgs/tSNE-varying-perp.png" width = "90%" alt=""/></p>
-<p>t-SNE: varying perplexity (http://distill.pub/2016/misread-tsne/)
-:::</p>
+<div class="figure align-default" id="tsne-varying-perp">
+<a class="reference internal image-reference" href="../_images/tSNE-varying-perp.png"><img alt="" src="../_images/tSNE-varying-perp.png" style="width: 90%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 28 </span><span class="caption-text">t-SNE: varying perplexity (http://distill.pub/2016/misread-tsne/)</span><a class="headerlink" href="#tsne-varying-perp" title="Permalink to this image">¶</a></p>
+</div>
 <p>So we should set perplexity as the average degree of each point, if we know it.</p>
 <p>What if the degree distribution is wide, i.e. imbalance? t-SNE may fail, some large-size cluster may break up to small ones.</p>
 </div>
 <div class="section" id="extension-parametric-t-sne">
-<span id="parametric-t-sne"></span><h2>Extension: Parametric $t$-SNE<a class="headerlink" href="#extension-parametric-t-sne" title="Permalink to this headline">¶</a></h2>
-<p>Parametric $t$-SNE use a parametric function $f()$ to obtain the lower dimensional representation. The joint probability changes from</p>
-<p>$$
-q_{i j} =\frac{\left(1+\left|\boldsymbol{z}<em>{i}-\boldsymbol{z}</em>{j}\right|^{2}\right)^{-1}}{\sum_{k \neq l}\left(1+\left|\boldsymbol{z}<em>{k}-\boldsymbol{z}</em>{l}\right|^{2}\right)^{-1}} \
-$$</p>
+<span id="parametric-t-sne"></span><h2>Extension: Parametric <span class="math notranslate nohighlight">\(t\)</span>-SNE<a class="headerlink" href="#extension-parametric-t-sne" title="Permalink to this headline">¶</a></h2>
+<p>Parametric <span class="math notranslate nohighlight">\(t\)</span>-SNE use a parametric function <span class="math notranslate nohighlight">\(f()\)</span> to obtain the lower dimensional representation. The joint probability changes from</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+q_{i j} =\frac{\left(1+\left\|\boldsymbol{z}_{i}-\boldsymbol{z}_{j}\right\|^{2}\right)^{-1}}{\sum_{k \neq l}\left(1+\left\|\boldsymbol{z}_{k}-\boldsymbol{z}_{l}\right\|^{2}\right)^{-1}} \\
+\end{split}\]</div>
 <p>to</p>
-<p>$$
-q_{i j} =\frac{\left(1+\left|f\left(\boldsymbol{x}<em>{i}\right)-f\left(\boldsymbol{x}</em>{j}\right)\right|^{2}\right)^{-(\alpha+1) / 2}}{\sum_{k \neq l}\left(1+\left|f\left(\boldsymbol{x}<em>{k}\right)-f\left(\boldsymbol{x}</em>{l}\right)\right|^{2}\right)^{-(\alpha+1) / 2}}
-$$</p>
+<div class="math notranslate nohighlight">
+\[
+q_{i j} =\frac{\left(1+\left\|f\left(\boldsymbol{x}_{i}\right)-f\left(\boldsymbol{x}_{j}\right)\right\|^{2}\right)^{-(\alpha+1) / 2}}{\sum_{k \neq l}\left(1+\left\|f\left(\boldsymbol{x}_{k}\right)-f\left(\boldsymbol{x}_{l}\right)\right\|^{2}\right)^{-(\alpha+1) / 2}}
+\]</div>
 <p>where</p>
 <ul class="simple">
-<li><p>$f(\cdot)$ is a deep neural network</p></li>
-<li><p>$\alpha$ is the number of degrees of freedom of the Student t-distribution</p></li>
-<li><p>The higher the dimensionality of $f(\cdot)$, the higher $\alpha$ should be (can be set manually or learned).</p></li>
+<li><p><span class="math notranslate nohighlight">\(f(\cdot)\)</span> is a deep neural network</p></li>
+<li><p><span class="math notranslate nohighlight">\(\alpha\)</span> is the number of degrees of freedom of the Student t-distribution</p></li>
+<li><p>The higher the dimensionality of <span class="math notranslate nohighlight">\(f(\cdot)\)</span>, the higher <span class="math notranslate nohighlight">\(\alpha\)</span> should be (can be set manually or learned).</p></li>
 </ul>
 <p>As a result, we can do out-of-sample prediction.</p>
 </div>

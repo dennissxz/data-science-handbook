@@ -46,6 +46,8 @@
     <script src="../_static/copybutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="../_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
     <script >
         const thebe_selector = ".thebe"
@@ -491,7 +493,11 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../33-dimensionality-reduction/31-t-SNE.html">
-     SNE and $t$-SNE
+     SNE and
+     <span class="math notranslate nohighlight">
+      \(t\)
+     </span>
+     -SNE
     </a>
    </li>
   </ul>
@@ -720,9 +726,9 @@
 <p>Send something from a place to another over some networks, e.g. information, package, oil.</p>
 <p>Each edge has capacity limit.</p>
 <dl class="simple myst">
-<dt>Input</dt><dd><p>directed graph $G=(V,E)$, capacities $c(e)\ge 0$, source vertex $s\in V$, destination vertex $t \in V$.</p>
+<dt>Input</dt><dd><p>directed graph <span class="math notranslate nohighlight">\(G=(V,E)\)</span>, capacities <span class="math notranslate nohighlight">\(c(e)\ge 0\)</span>, source vertex <span class="math notranslate nohighlight">\(s\in V\)</span>, destination vertex <span class="math notranslate nohighlight">\(t \in V\)</span>.</p>
 </dd>
-<dt>Goal</dt><dd><p>find the maximum volume flowing from $s$ to $t$ subject to the capacity constraint.</p>
+<dt>Goal</dt><dd><p>find the maximum volume flowing from <span class="math notranslate nohighlight">\(s\)</span> to <span class="math notranslate nohighlight">\(t\)</span> subject to the capacity constraint.</p>
 </dd>
 </dl>
 </div>
@@ -731,60 +737,69 @@
 <p>Assume</p>
 <ul class="simple">
 <li><p>all capacities are integers (capacity is a finite number. if not integer, scale.)</p></li>
-<li><p>no edges enter $s$ or leave $t$ (makes no sense to use those edges)</p></li>
-<li><p>call all edges entering $v$ by $\delta ^- (v)$</p></li>
-<li><p>call all edges leaving $v$ by $\delta ^+ (v)$</p></li>
+<li><p>no edges enter <span class="math notranslate nohighlight">\(s\)</span> or leave <span class="math notranslate nohighlight">\(t\)</span> (makes no sense to use those edges)</p></li>
+<li><p>call all edges entering <span class="math notranslate nohighlight">\(v\)</span> by <span class="math notranslate nohighlight">\(\delta ^- (v)\)</span></p></li>
+<li><p>call all edges leaving <span class="math notranslate nohighlight">\(v\)</span> by <span class="math notranslate nohighlight">\(\delta ^+ (v)\)</span></p></li>
 </ul>
 <div class="margin sidebar">
 <p class="sidebar-title"></p>
-<p>If the two vertices of an edge are $e=(u,v)$, sometimes we write $f(u,v)$ for convenience. If there is no edge between two vertices $u$ and $v$, then $f(u,v)=0$.</p>
+<p>If the two vertices of an edge are <span class="math notranslate nohighlight">\(e=(u,v)\)</span>, sometimes we write <span class="math notranslate nohighlight">\(f(u,v)\)</span> for convenience. If there is no edge between two vertices <span class="math notranslate nohighlight">\(u\)</span> and <span class="math notranslate nohighlight">\(v\)</span>, then <span class="math notranslate nohighlight">\(f(u,v)=0\)</span>.</p>
 </div>
 <dl class="simple myst">
-<dt>Definition (Flow)</dt><dd><p>A function $f:E \rightarrow \mathbb{R}$ which assign a value $f(e)$ to every edge $e \in E$, subject to</p>
+<dt>Definition (Flow)</dt><dd><p>A function <span class="math notranslate nohighlight">\(f:E \rightarrow \mathbb{R}\)</span> which assign a value <span class="math notranslate nohighlight">\(f(e)\)</span> to every edge <span class="math notranslate nohighlight">\(e \in E\)</span>, subject to</p>
 </dd>
 </dl>
 <ul>
 <li><p>capacity constraints: edge flow less than edge capacity</p>
-<p>$$\forall e: \quad 0\le f(e) \le c(e)$$</p>
+<div class="math notranslate nohighlight">
+\[\forall e: \quad 0\le f(e) \le c(e)\]</div>
 </li>
 <li><p>flow conservation constraint: in-flow = out-flow for all intermediate nodes.</p>
-<p>$$\forall v \in V \backslash \left{ s,t \right}: \quad \sum_ {e\in \delta^- (v)} f(e) = \sum_ {e\in \delta^+ (v)} f(e) \quad$$</p>
+<div class="math notranslate nohighlight">
+\[\forall v \in V \backslash \left\{ s,t \right\}: \quad \sum_ {e\in \delta^- (v)} f(e) = \sum_ {e\in \delta^+ (v)} f(e) \quad\]</div>
 <p>or</p>
-<p>$$f^{\text{in}}(v) = f^{\text{out}}(v)$$</p>
+<div class="math notranslate nohighlight">
+\[f^{\text{in}}(v) = f^{\text{out}}(v)\]</div>
 </li>
 </ul>
 <dl class="simple myst">
-<dt>Definition (Value of flow)</dt><dd><p>The value of a flow is the amount of out-flow from source node $s$ (assuming no in-flow to $s$).</p>
-<p>$$
-\operatorname{val}(f) = f^{\text{out}}(s) = \sum_ {e\in \delta^+ (s)} f(e)
-$$</p>
+<dt>Definition (Value of flow)</dt><dd><p>The value of a flow is the amount of out-flow from source node <span class="math notranslate nohighlight">\(s\)</span> (assuming no in-flow to <span class="math notranslate nohighlight">\(s\)</span>).</p>
+<div class="math notranslate nohighlight">
+\[
+  \operatorname{val}(f) = f^{\text{out}}(s) = \sum_ {e\in \delta^+ (s)} f(e)
+  \]</div>
 </dd>
-<dt>Observation (Flow cancelation operation on anti-parallel edges)</dt><dd><p>For two anti-parallel edges $e = (u,v)$ and $e ^\prime  = (v,u)$. Suppose $f(e), f(e ^\prime ) &gt;0$.</p>
-<p>Let $\Delta = \min \left{ f(e), f(e ^\prime ) \right}$ and assign new flow</p>
-<p>$$
-f ^\prime (e) = f(e) - \Delta \
-f ^\prime (e ^\prime ) = f(e ^\prime ) - \Delta
-$$</p>
-<p>Then the new flow $f ^\prime$ is still a feasible flow with the same value of flow $f$.</p>
-<p>$$
-\operatorname{val}(f ^\prime ) = \operatorname{val}(f)
-$$</p>
+<dt>Observation (Flow cancelation operation on anti-parallel edges)</dt><dd><p>For two anti-parallel edges <span class="math notranslate nohighlight">\(e = (u,v)\)</span> and <span class="math notranslate nohighlight">\(e ^\prime  = (v,u)\)</span>. Suppose <span class="math notranslate nohighlight">\(f(e), f(e ^\prime ) &gt;0\)</span>.</p>
+<p>Let <span class="math notranslate nohighlight">\(\Delta = \min \left\{ f(e), f(e ^\prime ) \right\}\)</span> and assign new flow</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+  f ^\prime (e) = f(e) - \Delta \\
+  f ^\prime (e ^\prime ) = f(e ^\prime ) - \Delta
+  \end{split}\]</div>
+<p>Then the new flow <span class="math notranslate nohighlight">\(f ^\prime\)</span> is still a feasible flow with the same value of flow <span class="math notranslate nohighlight">\(f\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[
+  \operatorname{val}(f ^\prime ) = \operatorname{val}(f)
+  \]</div>
 </dd>
 </dl>
-<p>:::{admonition,dropdown,note} Greedy algorithms not optimal</p>
-<p>Given a simple $s-t$ path $P$ and a flow $f$, how much available capacity left?</p>
-<p>$$
-\Delta(P) = \min _{e \in E(P)} \left{ c(e) - f(e) \right}
-$$</p>
+<div class="dropdown note admonition">
+<p class="admonition-title"> Greedy algorithms not optimal</p>
+<p>Given a simple <span class="math notranslate nohighlight">\(s-t\)</span> path <span class="math notranslate nohighlight">\(P\)</span> and a flow <span class="math notranslate nohighlight">\(f\)</span>, how much available capacity left?</p>
+<div class="math notranslate nohighlight">
+\[
+\Delta(P) = \min _{e \in E(P)} \left\{ c(e) - f(e) \right\}
+\]</div>
 <ul class="simple">
-<li><p>Start: $\forall e \in E, f(e) = 0$</p></li>
-<li><p>While there is a simple $s-t$ path $P$ with $\Delta(P)&gt;0$, set for every $e \in E(P)$.</p></li>
+<li><p>Start: <span class="math notranslate nohighlight">\(\forall e \in E, f(e) = 0\)</span></p></li>
+<li><p>While there is a simple <span class="math notranslate nohighlight">\(s-t\)</span> path <span class="math notranslate nohighlight">\(P\)</span> with <span class="math notranslate nohighlight">\(\Delta(P)&gt;0\)</span>, set for every <span class="math notranslate nohighlight">\(e \in E(P)\)</span>.</p></li>
 </ul>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 f(e)\leftarrow f(e) + \Delta(p)
-$$</p>
-<p>This gives a feasible solution. Optimal? No, depends on the order of $s-t$ path in <code class="docutils literal notranslate"><span class="pre">WHILE</span></code>.</p>
-<p>:::</p>
+\]</div>
+<p>This gives a feasible solution. Optimal? No, depends on the order of <span class="math notranslate nohighlight">\(s-t\)</span> path in <code class="docutils literal notranslate"><span class="pre">WHILE</span></code>.</p>
+</div>
 </div>
 <div class="section" id="solution">
 <h2>Solution<a class="headerlink" href="#solution" title="Permalink to this headline">¶</a></h2>
@@ -794,41 +809,43 @@ $$</p>
 <p>This assumption is not necessary for the algorithm to run, but make the algorithm easier to understand.</p>
 </div>
 <dl class="simple myst">
-<dt>Assumption (No anti-parallel edges)</dt><dd><p>Input $G$ has no anti-parallel edges. If there is, say $e = (u,v)$ and $e ^\prime  = (v,u)$, then add a node $x$ in-between $e = (u,v)$ and the new edges have the same capacity$c((u,x)) = c((x,v)) = c((u,v))$.</p>
+<dt>Assumption (No anti-parallel edges)</dt><dd><p>Input <span class="math notranslate nohighlight">\(G\)</span> has no anti-parallel edges. If there is, say <span class="math notranslate nohighlight">\(e = (u,v)\)</span> and <span class="math notranslate nohighlight">\(e ^\prime  = (v,u)\)</span>, then add a node <span class="math notranslate nohighlight">\(x\)</span> in-between <span class="math notranslate nohighlight">\(e = (u,v)\)</span> and the new edges have the same capacity<span class="math notranslate nohighlight">\(c((u,x)) = c((x,v)) = c((u,v))\)</span>.</p>
 </dd>
-<dt>Definition (Residual Flow Network)</dt><dd><p>Given a graph $G$ and a feasible flow $f$ in $G$, let $G_f$ be a new graph with the same vertices but new edges.</p>
+<dt>Definition (Residual Flow Network)</dt><dd><p>Given a graph <span class="math notranslate nohighlight">\(G\)</span> and a feasible flow <span class="math notranslate nohighlight">\(f\)</span> in <span class="math notranslate nohighlight">\(G\)</span>, let <span class="math notranslate nohighlight">\(G_f\)</span> be a new graph with the same vertices but new edges.</p>
 </dd>
 </dl>
 <div class="margin sidebar">
 <p class="sidebar-title"></p>
-<p>One can check if the residual capacity assigned to a pair of forward edge and backward edge in the residual flow network are correct by checking their sum of residual capacity $c_f(e) + c_f(e ^\prime)$, which should be $c(e)$.</p>
+<p>One can check if the residual capacity assigned to a pair of forward edge and backward edge in the residual flow network are correct by checking their sum of residual capacity <span class="math notranslate nohighlight">\(c_f(e) + c_f(e ^\prime)\)</span>, which should be <span class="math notranslate nohighlight">\(c(e)\)</span>.</p>
 </div>
 <ul>
-<li><p>For every $e(u,v) \in G$, add edges and assign capacity (called <strong>residual capacity</strong>)</p>
+<li><p>For every <span class="math notranslate nohighlight">\(e(u,v) \in G\)</span>, add edges and assign capacity (called <strong>residual capacity</strong>)</p>
 <ul>
-<li><p>add a forward edge to reflect <strong>unused</strong> capacity of $e$</p>
-<p>$$
-c_f (u,v) = c(e) - f(e)
-$$</p>
+<li><p>add a forward edge to reflect <strong>unused</strong> capacity of <span class="math notranslate nohighlight">\(e\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+        c_f (u,v) = c(e) - f(e)
+        \]</div>
 </li>
-<li><p>add a backward edge $(v,u)$ to reflect <strong>used</strong> capacity</p>
-<p>$$
-c_f (v,u) = f(e)
-$$</p>
+<li><p>add a backward edge <span class="math notranslate nohighlight">\((v,u)\)</span> to reflect <strong>used</strong> capacity</p>
+<div class="math notranslate nohighlight">
+\[
+        c_f (v,u) = f(e)
+        \]</div>
 </li>
 </ul>
 </li>
-<li><p>For every edge $e ^\prime$ in $G_f$ with zero residual capacity $c_f (e ^\prime ) = 0$, delete.</p></li>
+<li><p>For every edge <span class="math notranslate nohighlight">\(e ^\prime\)</span> in <span class="math notranslate nohighlight">\(G_f\)</span> with zero residual capacity <span class="math notranslate nohighlight">\(c_f (e ^\prime ) = 0\)</span>, delete.</p></li>
 </ul>
-<p>Ford-Fulkerson algorithm is an iterative algorithm. In each iteration, we compute the residual floe network of the current graph and use that to improve the original graph. Note that flow $f()$ only exists in the original graph.</p>
+<p>Ford-Fulkerson algorithm is an iterative algorithm. In each iteration, we compute the residual floe network of the current graph and use that to improve the original graph. Note that flow <span class="math notranslate nohighlight">\(f()\)</span> only exists in the original graph.</p>
 <hr class="docutils" />
 <p><strong>Ford-Fulkerson’s algorithm</strong></p>
 <hr class="docutils" />
 <ul class="simple">
 <li><p>Start:</p>
 <ul>
-<li><p>For all edge $e \in E(G)$, initialize zero flow $f(e)=0$.</p></li>
-<li><p>Compute the residual flow network $G_f$.</p></li>
+<li><p>For all edge <span class="math notranslate nohighlight">\(e \in E(G)\)</span>, initialize zero flow <span class="math notranslate nohighlight">\(f(e)=0\)</span>.</p></li>
+<li><p>Compute the residual flow network <span class="math notranslate nohighlight">\(G_f\)</span>.</p></li>
 </ul>
 </li>
 </ul>
@@ -837,22 +854,25 @@ $$</p>
 <p>An augmenting path in residual graph can be found using DFS or BFS.</p>
 </div>
 <ul>
-<li><p>While $\exists$ a simple path $s-t$ path $P$ in the residual flow network $G_f$, we “push” flow along this path (aka <em>augmenting path</em>).</p>
+<li><p>While <span class="math notranslate nohighlight">\(\exists\)</span> a simple path <span class="math notranslate nohighlight">\(s-t\)</span> path <span class="math notranslate nohighlight">\(P\)</span> in the residual flow network <span class="math notranslate nohighlight">\(G_f\)</span>, we “push” flow along this path (aka <em>augmenting path</em>).</p>
 <ul>
 <li><p>Compute the smallest residual capacity along that path</p>
-<p>$$\Delta \leftarrow \min _{e \in E(P)} \left{ c_f(e) \right}$$</p>
+<div class="math notranslate nohighlight">
+\[\Delta \leftarrow \min _{e \in E(P)} \left\{ c_f(e) \right\}\]</div>
 </li>
-<li><p>For each edge $e=(u,v) \in P$, check whether it is a forward edge or a backward edge w.r.t. the original graph.</p>
+<li><p>For each edge <span class="math notranslate nohighlight">\(e=(u,v) \in P\)</span>, check whether it is a forward edge or a backward edge w.r.t. the original graph.</p>
 <ul>
-<li><p>If $e=(u,v)$ is a forward edge, then $(u,v) \in G$, and we <strong>increase</strong> the flow of that edge by $\Delta$,</p>
-<p>$$f(u,v)\leftarrow f(u,v) + \Delta$$</p>
+<li><p>If <span class="math notranslate nohighlight">\(e=(u,v)\)</span> is a forward edge, then <span class="math notranslate nohighlight">\((u,v) \in G\)</span>, and we <strong>increase</strong> the flow of that edge by <span class="math notranslate nohighlight">\(\Delta\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[f(u,v)\leftarrow f(u,v) + \Delta\]</div>
 </li>
-<li><p>Else, $e=(u,v)$ is a backward edge, then $(v,u) \in G$, and we <strong>decrease</strong> the flow of $(v,u)$ by $\Delta$,</p>
-<p>$$f(v,u) \leftarrow f(v,u) - \Delta$$</p>
+<li><p>Else, <span class="math notranslate nohighlight">\(e=(u,v)\)</span> is a backward edge, then <span class="math notranslate nohighlight">\((v,u) \in G\)</span>, and we <strong>decrease</strong> the flow of <span class="math notranslate nohighlight">\((v,u)\)</span> by <span class="math notranslate nohighlight">\(\Delta\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[f(v,u) \leftarrow f(v,u) - \Delta\]</div>
 </li>
 </ul>
 </li>
-<li><p>Re-compute $G_f$.</p></li>
+<li><p>Re-compute <span class="math notranslate nohighlight">\(G_f\)</span>.</p></li>
 </ul>
 </li>
 </ul>
@@ -863,127 +883,139 @@ $$</p>
 <div class="section" id="feasibility">
 <h3>Feasibility<a class="headerlink" href="#feasibility" title="Permalink to this headline">¶</a></h3>
 <dl class="simple myst">
-<dt>Claim 1 (Stops)</dt><dd><p>The FF algorithm stops after at most $\sum_{v\in \operatorname{succ}(s)} c(s, v)$ iterations.</p>
+<dt>Claim 1 (Stops)</dt><dd><p>The FF algorithm stops after at most <span class="math notranslate nohighlight">\(\sum_{v\in \operatorname{succ}(s)} c(s, v)\)</span> iterations.</p>
 </dd>
 </dl>
 <p><em><strong>Proof</strong></em></p>
-<p>Upon initialization, $f(e)=0$ are integers. In each iteration, in $G_f$, all residual capacities $c_f(e)$ are integers and at least 1. The smallest residual capacity is also integer and at least 1. So the update flow of each edge in $G$ is $f(e)\leftarrow f(e) \pm \Delta$.</p>
-<p>Note that along the augmenting path $P$, the first edge out from $s$ is always a forward edge (by assumption). As a result, the updated flow of that edge is $f(e) \mathrel{+}= \Delta$. Hence, the updated value of the flow is $\operatorname{val}(f) \mathrel{+}= \Delta$, which is at least 1.</p>
-<p>Therefore, the algorithm stops after at most $\sum_{v\in \operatorname{succ}(s)} c(s, v)$ iterations.</p>
-<p>$\square$</p>
+<p>Upon initialization, <span class="math notranslate nohighlight">\(f(e)=0\)</span> are integers. In each iteration, in <span class="math notranslate nohighlight">\(G_f\)</span>, all residual capacities <span class="math notranslate nohighlight">\(c_f(e)\)</span> are integers and at least 1. The smallest residual capacity is also integer and at least 1. So the update flow of each edge in <span class="math notranslate nohighlight">\(G\)</span> is <span class="math notranslate nohighlight">\(f(e)\leftarrow f(e) \pm \Delta\)</span>.</p>
+<p>Note that along the augmenting path <span class="math notranslate nohighlight">\(P\)</span>, the first edge out from <span class="math notranslate nohighlight">\(s\)</span> is always a forward edge (by assumption). As a result, the updated flow of that edge is <span class="math notranslate nohighlight">\(f(e) \mathrel{+}= \Delta\)</span>. Hence, the updated value of the flow is <span class="math notranslate nohighlight">\(\operatorname{val}(f) \mathrel{+}= \Delta\)</span>, which is at least 1.</p>
+<p>Therefore, the algorithm stops after at most <span class="math notranslate nohighlight">\(\sum_{v\in \operatorname{succ}(s)} c(s, v)\)</span> iterations.</p>
+<p><span class="math notranslate nohighlight">\(\square\)</span></p>
 <dl class="simple myst">
-<dt>Claim 2 (Always a valid flow)</dt><dd><p>Flow $f$ always remains a valid flow.</p>
+<dt>Claim 2 (Always a valid flow)</dt><dd><p>Flow <span class="math notranslate nohighlight">\(f\)</span> always remains a valid flow.</p>
 </dd>
 </dl>
 <p><em><strong>Proof by Induction</strong></em></p>
 <ul class="simple">
-<li><p>Base: $\forall e: f(e)=0$ at initialization is a valid flow</p></li>
-<li><p>Step: if at the beginning of an iteration, $f$ is valid, then after the iteration, it remains valid.</p></li>
+<li><p>Base: <span class="math notranslate nohighlight">\(\forall e: f(e)=0\)</span> at initialization is a valid flow</p></li>
+<li><p>Step: if at the beginning of an iteration, <span class="math notranslate nohighlight">\(f\)</span> is valid, then after the iteration, it remains valid.</p></li>
 </ul>
 <p>We now prove the capacity constraints and the conservation of flow constraints.</p>
 <p><strong>Capacity constraints</strong></p>
-<p>For every edge $e=(u,v)$ in the augmenting path $P$,</p>
+<p>For every edge <span class="math notranslate nohighlight">\(e=(u,v)\)</span> in the augmenting path <span class="math notranslate nohighlight">\(P\)</span>,</p>
 <ul class="simple">
-<li><p>If $e$ is a forward edge, $e \in G$, then we increases $f(e) \mathrel{+}= \Delta$. By definition, $\Delta \le c_f (e) =  c(e) - f(e)$. Hence $f(e)+\Delta \le c(e)$.</p></li>
-<li><p>If $e$ is a backward edge, then $e ^\prime = (v,u)\in G$, we decrease $f(e ^\prime) \mathrel{-}= \Delta$. Will it be negative? No, since by definition, $\Delta \le c_f(e) = f(e ^\prime)$, so $f(e ^\prime) - \Delta \ge 0$.</p></li>
+<li><p>If <span class="math notranslate nohighlight">\(e\)</span> is a forward edge, <span class="math notranslate nohighlight">\(e \in G\)</span>, then we increases <span class="math notranslate nohighlight">\(f(e) \mathrel{+}= \Delta\)</span>. By definition, <span class="math notranslate nohighlight">\(\Delta \le c_f (e) =  c(e) - f(e)\)</span>. Hence <span class="math notranslate nohighlight">\(f(e)+\Delta \le c(e)\)</span>.</p></li>
+<li><p>If <span class="math notranslate nohighlight">\(e\)</span> is a backward edge, then <span class="math notranslate nohighlight">\(e ^\prime = (v,u)\in G\)</span>, we decrease <span class="math notranslate nohighlight">\(f(e ^\prime) \mathrel{-}= \Delta\)</span>. Will it be negative? No, since by definition, <span class="math notranslate nohighlight">\(\Delta \le c_f(e) = f(e ^\prime)\)</span>, so <span class="math notranslate nohighlight">\(f(e ^\prime) - \Delta \ge 0\)</span>.</p></li>
 </ul>
-<p>$\square$</p>
+<p><span class="math notranslate nohighlight">\(\square\)</span></p>
 <p><strong>Conservation of flow constraints</strong></p>
-<p>By definition, we want to prove $\forall v \in V \backslash \left{ s,t \right}$</p>
-<p>$$f^{\text{in}}(v) = f^{\text{out}}(v)$$</p>
-<p>Suppose along $P$ the two edges of $v$ are $e_1, e_2$</p>
-<p>$$ \text{along } P: \quad \ldots \overset{e_1}{\longrightarrow} v \overset{e_2}{\longrightarrow} \ldots$$</p>
-<p>We have the following 3 possible situations for $e_1$ and $e_2$,</p>
+<p>By definition, we want to prove <span class="math notranslate nohighlight">\(\forall v \in V \backslash \left\{ s,t \right\}\)</span></p>
+<div class="math notranslate nohighlight">
+\[f^{\text{in}}(v) = f^{\text{out}}(v)\]</div>
+<p>Suppose along <span class="math notranslate nohighlight">\(P\)</span> the two edges of <span class="math notranslate nohighlight">\(v\)</span> are <span class="math notranslate nohighlight">\(e_1, e_2\)</span></p>
+<div class="math notranslate nohighlight">
+\[ \text{along } P: \quad \ldots \overset{e_1}{\longrightarrow} v \overset{e_2}{\longrightarrow} \ldots\]</div>
+<p>We have the following 3 possible situations for <span class="math notranslate nohighlight">\(e_1\)</span> and <span class="math notranslate nohighlight">\(e_2\)</span>,</p>
 <ol>
-<li><p>both forward edges, then we increase both $f(e_1)$ and $f(e_2)$ by $\Delta$, so the in- and out-flow of $v$ both increases by $\Delta$.</p>
-<p>$$ \text{in } G: \quad \ldots \overset{e_1}{\longrightarrow} v \overset{e_2}{\longrightarrow} \ldots$$</p>
+<li><p>both forward edges, then we increase both <span class="math notranslate nohighlight">\(f(e_1)\)</span> and <span class="math notranslate nohighlight">\(f(e_2)\)</span> by <span class="math notranslate nohighlight">\(\Delta\)</span>, so the in- and out-flow of <span class="math notranslate nohighlight">\(v\)</span> both increases by <span class="math notranslate nohighlight">\(\Delta\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[ \text{in } G: \quad \ldots \overset{e_1}{\longrightarrow} v \overset{e_2}{\longrightarrow} \ldots\]</div>
 </li>
-<li><p>both backward edges, then we decrease $f(e_1 ^\prime)$ and $f(e_2 ^\prime)$ by $\Delta$, so the in- and out-flow of $v$ both decreases by $\Delta$.</p>
-<p>$$\text{in } G: \quad \ldots \overset{e_1 ^\prime }{\longleftarrow} v \overset{e_2 ^\prime }{\longleftarrow} \ldots$$</p>
+<li><p>both backward edges, then we decrease <span class="math notranslate nohighlight">\(f(e_1 ^\prime)\)</span> and <span class="math notranslate nohighlight">\(f(e_2 ^\prime)\)</span> by <span class="math notranslate nohighlight">\(\Delta\)</span>, so the in- and out-flow of <span class="math notranslate nohighlight">\(v\)</span> both decreases by <span class="math notranslate nohighlight">\(\Delta\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[\text{in } G: \quad \ldots \overset{e_1 ^\prime }{\longleftarrow} v \overset{e_2 ^\prime }{\longleftarrow} \ldots\]</div>
 </li>
-<li><p>$e_1$ forward, $e_2$ backward, then $f(e_1)$ increases by $\Delta$, and $f(e_2 ^\prime)$ decreases by $\Delta$, so the two changes to in-follow of $v$ cancel out. No change to out-flow.</p>
-<p>$$\text{in } G: \quad \ldots \overset{e_1}{\longrightarrow} v \overset{e_2 ^\prime }{\longleftarrow} \ldots$$</p>
+<li><p><span class="math notranslate nohighlight">\(e_1\)</span> forward, <span class="math notranslate nohighlight">\(e_2\)</span> backward, then <span class="math notranslate nohighlight">\(f(e_1)\)</span> increases by <span class="math notranslate nohighlight">\(\Delta\)</span>, and <span class="math notranslate nohighlight">\(f(e_2 ^\prime)\)</span> decreases by <span class="math notranslate nohighlight">\(\Delta\)</span>, so the two changes to in-follow of <span class="math notranslate nohighlight">\(v\)</span> cancel out. No change to out-flow.</p>
+<div class="math notranslate nohighlight">
+\[\text{in } G: \quad \ldots \overset{e_1}{\longrightarrow} v \overset{e_2 ^\prime }{\longleftarrow} \ldots\]</div>
 </li>
-<li><p>$e_2$ forward, $e_1$ backward, similar to the case 3.</p></li>
+<li><p><span class="math notranslate nohighlight">\(e_2\)</span> forward, <span class="math notranslate nohighlight">\(e_1\)</span> backward, similar to the case 3.</p></li>
 </ol>
-<p>$\square$</p>
+<p><span class="math notranslate nohighlight">\(\square\)</span></p>
 <p>Therefore, we show that after an iteration is completed, the constraints remain to be satisfied, so the feasibility is guaranteed.</p>
 </div>
 <div class="section" id="optimality">
 <h3>Optimality<a class="headerlink" href="#optimality" title="Permalink to this headline">¶</a></h3>
 <p>To prove optimality of the FF algorithm, we first introduce some definitions.</p>
-<p>Recall the definition of in-flow to and out-flow from a node $v$</p>
-<p>$$
-f^{\text{in}}(v) = \sum_{e \in \delta^{-}(v)} f(e) \
+<p>Recall the definition of in-flow to and out-flow from a node <span class="math notranslate nohighlight">\(v\)</span></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+f^{\text{in}}(v) = \sum_{e \in \delta^{-}(v)} f(e) \\
 f^{\text{out}}(v) =\sum_{e \in \delta^{+}(v)} f(e)
-$$</p>
+\end{split}\]</div>
 <p>We define similar quantities for a set of vertices.</p>
 <dl class="simple myst">
-<dt>Definition (In- and out-flow of a set of vertices)</dt><dd><p>For a set of vertices $S \subseteq V$, ,</p>
-<p>$$
-f^{\text{in}}(S) = \sum_{u\notin S, v \in S} f(u, v) \
-f^{\text{out}}(S) = \sum_{u\in S, v \notin S} f(u, v) \
-$$</p>
+<dt>Definition (In- and out-flow of a set of vertices)</dt><dd><p>For a set of vertices <span class="math notranslate nohighlight">\(S \subseteq V\)</span>, ,</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+  f^{\text{in}}(S) = \sum_{u\notin S, v \in S} f(u, v) \\
+  f^{\text{out}}(S) = \sum_{u\in S, v \notin S} f(u, v) \\
+  \end{split}\]</div>
 </dd>
-<dt>Definition ($s-t$ cut)</dt><dd><p>An $s-t$ cut $(A,B)$ is a cut in $G$ such that the source node $s\in A$ and the destination node $t\in B$. The in- and out-flow of $A$ and $B$ have the relations</p>
-<p>$$
-f^{\text{in}}(A) = f^{\text{out}}(B) \
-f^{\text{out}}(A) = f^{\text{in}}(B)
-$$</p>
+<dt>Definition (<span class="math notranslate nohighlight">\(s-t\)</span> cut)</dt><dd><p>An <span class="math notranslate nohighlight">\(s-t\)</span> cut <span class="math notranslate nohighlight">\((A,B)\)</span> is a cut in <span class="math notranslate nohighlight">\(G\)</span> such that the source node <span class="math notranslate nohighlight">\(s\in A\)</span> and the destination node <span class="math notranslate nohighlight">\(t\in B\)</span>. The in- and out-flow of <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span> have the relations</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+  f^{\text{in}}(A) = f^{\text{out}}(B) \\
+  f^{\text{out}}(A) = f^{\text{in}}(B)
+  \end{split}\]</div>
 </dd>
-<dt>Definition (Capacity of an $s-t$ cut)</dt><dd><p>The capacity of an $s-t$ cut $(A,B)$ is defined as the sum of capacities of the edges from $A$ to $B$</p>
-<p>$$
-c(A,B) = \sum _{u\in A, v \in B} c(u, v)
-$$</p>
+<dt>Definition (Capacity of an <span class="math notranslate nohighlight">\(s-t\)</span> cut)</dt><dd><p>The capacity of an <span class="math notranslate nohighlight">\(s-t\)</span> cut <span class="math notranslate nohighlight">\((A,B)\)</span> is defined as the sum of capacities of the edges from <span class="math notranslate nohighlight">\(A\)</span> to <span class="math notranslate nohighlight">\(B\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+  c(A,B) = \sum _{u\in A, v \in B} c(u, v)
+  \]</div>
 </dd>
-<dt>Property (Compute flow value from a cut)</dt><dd><p>Let $f$ be any flow in $G$, recall that the definition of flow value $\operatorname{val}(f)=f^{\text{out}}(s)$. For any $s-t$ cut $c(A,B)$ in $G$, the value of the flow $f$ can be computed as</p>
-<p>$$
-\operatorname{val}(f) = f^{\text{out}}(A) - f^{\text{in}}(A)
-$$</p>
+<dt>Property (Compute flow value from a cut)</dt><dd><p>Let <span class="math notranslate nohighlight">\(f\)</span> be any flow in <span class="math notranslate nohighlight">\(G\)</span>, recall that the definition of flow value <span class="math notranslate nohighlight">\(\operatorname{val}(f)=f^{\text{out}}(s)\)</span>. For any <span class="math notranslate nohighlight">\(s-t\)</span> cut <span class="math notranslate nohighlight">\(c(A,B)\)</span> in <span class="math notranslate nohighlight">\(G\)</span>, the value of the flow <span class="math notranslate nohighlight">\(f\)</span> can be computed as</p>
+<div class="math notranslate nohighlight">
+\[
+  \operatorname{val}(f) = f^{\text{out}}(A) - f^{\text{in}}(A)
+  \]</div>
 </dd>
 </dl>
 <p><em><strong>Proof</strong></em></p>
-<p>$$\begin{aligned}
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
 \operatorname{val}(f)
-&amp;= \sum_{u \in A} \left[ f^{\text{out}}(u) - f^{\text{in}}(u) \right] \
-&amp;= \sum_{u \in A} \left[ \sum_{v} f(u,v) - \sum_{v} f(v,u) \right] \
-&amp;= \sum_{u \in A, v \in A}  f(u,v) + \sum_{u \in A, v \in B}  f(u,v) - \sum_{u \in A, v \in A} f(v,u) - \sum_{u \in A, v \in B} f(v,u)  \
-&amp;= \sum_{u \in A, v \in B}  f(u,v) - \sum_{u \in A, v \in B} f(v,u)  \
-&amp;= f^{\text{out}}(A)- f^{\text{in}}(A)  \
-\end{aligned}$$</p>
-<p>$\square$</p>
+&amp;= \sum_{u \in A} \left[ f^{\text{out}}(u) - f^{\text{in}}(u) \right] \\
+&amp;= \sum_{u \in A} \left[ \sum_{v} f(u,v) - \sum_{v} f(v,u) \right] \\\\
+&amp;= \sum_{u \in A, v \in A}  f(u,v) + \sum_{u \in A, v \in B}  f(u,v) - \sum_{u \in A, v \in A} f(v,u) - \sum_{u \in A, v \in B} f(v,u)  \\\\
+&amp;= \sum_{u \in A, v \in B}  f(u,v) - \sum_{u \in A, v \in B} f(v,u)  \\\\
+&amp;= f^{\text{out}}(A)- f^{\text{in}}(A)  \\\\
+\end{aligned}\end{split}\]</div>
+<p><span class="math notranslate nohighlight">\(\square\)</span></p>
 <p><strong>Corollary</strong></p>
 <ol class="simple">
-<li><p>$\operatorname{val}(f) = f^{\text{in}}(B) - f^{\text{out}}(B)$</p></li>
-<li><p>$\operatorname{val}(f) = f^{\text{in}}(t)$</p></li>
-<li><p>$\operatorname{val}(f) \le c(A,B)$, with equality iff $f^{\text{in}}(A) = 0$ and $f^{\text{out}}(A) = c(A,B)$.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\operatorname{val}(f) = f^{\text{in}}(B) - f^{\text{out}}(B)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\operatorname{val}(f) = f^{\text{in}}(t)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\operatorname{val}(f) \le c(A,B)\)</span>, with equality iff <span class="math notranslate nohighlight">\(f^{\text{in}}(A) = 0\)</span> and <span class="math notranslate nohighlight">\(f^{\text{out}}(A) = c(A,B)\)</span>.</p></li>
 </ol>
 <dl class="simple myst">
-<dt>Theorem</dt><dd><p>If $f$ is any $s-t$ flow and $(A,B)$ is any $s-t$ cut, and $val(f) = c(A,B)$, then $f$ is a maximum flow, by Corollary 3.</p>
+<dt>Theorem</dt><dd><p>If <span class="math notranslate nohighlight">\(f\)</span> is any <span class="math notranslate nohighlight">\(s-t\)</span> flow and <span class="math notranslate nohighlight">\((A,B)\)</span> is any <span class="math notranslate nohighlight">\(s-t\)</span> cut, and <span class="math notranslate nohighlight">\(val(f) = c(A,B)\)</span>, then <span class="math notranslate nohighlight">\(f\)</span> is a maximum flow, by Corollary 3.</p>
 </dd>
 </dl>
 <p>How about existence?</p>
 <dl class="simple myst">
-<dt>Claim (Optimality)</dt><dd><p>If $f$ is the flow returned by FF algorithm, then there exists an $s-t$ cut $(A,B)$ such that $val(f) = c(A,B)$. So $f$ is optimal by the above theorem.</p>
+<dt>Claim (Optimality)</dt><dd><p>If <span class="math notranslate nohighlight">\(f\)</span> is the flow returned by FF algorithm, then there exists an <span class="math notranslate nohighlight">\(s-t\)</span> cut <span class="math notranslate nohighlight">\((A,B)\)</span> such that <span class="math notranslate nohighlight">\(val(f) = c(A,B)\)</span>. So <span class="math notranslate nohighlight">\(f\)</span> is optimal by the above theorem.</p>
 </dd>
 </dl>
 <p><em><strong>Proof</strong></em></p>
-<p>Recall that FF algorithm stops if there is no $s-t$ path. After it stops, consider a cut $(A,B)$ in $G_f$, where $A$ is the set of all vertices $v \in V$ such that there is an $s-v$ path in $G_f$, and all other vertices (e.g., $t$) are in $B$. By this definition, there is no edge from $A$ to $B$.</p>
-<p>Now, for the cut $(A,B)$ in $G$, we want to prove</p>
-<p>$$
+<p>Recall that FF algorithm stops if there is no <span class="math notranslate nohighlight">\(s-t\)</span> path. After it stops, consider a cut <span class="math notranslate nohighlight">\((A,B)\)</span> in <span class="math notranslate nohighlight">\(G_f\)</span>, where <span class="math notranslate nohighlight">\(A\)</span> is the set of all vertices <span class="math notranslate nohighlight">\(v \in V\)</span> such that there is an <span class="math notranslate nohighlight">\(s-v\)</span> path in <span class="math notranslate nohighlight">\(G_f\)</span>, and all other vertices (e.g., <span class="math notranslate nohighlight">\(t\)</span>) are in <span class="math notranslate nohighlight">\(B\)</span>. By this definition, there is no edge from <span class="math notranslate nohighlight">\(A\)</span> to <span class="math notranslate nohighlight">\(B\)</span>.</p>
+<p>Now, for the cut <span class="math notranslate nohighlight">\((A,B)\)</span> in <span class="math notranslate nohighlight">\(G\)</span>, we want to prove</p>
+<div class="math notranslate nohighlight">
+\[
 val(f) = c(A,B)
-$$</p>
-<p>By Corollary 3, this holds iff $f^{\text{in}}(A) = 0$ and $f^{\text{out}}(A) = c(A,B)$. Equivalently,</p>
+\]</div>
+<p>By Corollary 3, this holds iff <span class="math notranslate nohighlight">\(f^{\text{in}}(A) = 0\)</span> and <span class="math notranslate nohighlight">\(f^{\text{out}}(A) = c(A,B)\)</span>. Equivalently,</p>
 <ol class="simple">
-<li><p>$\forall e^- \in \delta^-(A), f(e^-) = 0 \$</p></li>
-<li><p>$\forall e^+ \in \delta^+(A), f(e^+) = c(e^+)$</p></li>
+<li><p><span class="math notranslate nohighlight">\(\forall e^- \in \delta^-(A), f(e^-) = 0 \\\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\forall e^+ \in \delta^+(A), f(e^+) = c(e^+)\)</span></p></li>
 </ol>
 <p>These two conditions are indeed satisfied when FF algorithm stops.</p>
 <ol class="simple">
-<li><p>If there exists $e^- = (u,v): f(e^-) &gt; 0$, then there is an edge $(v,u)$ from $A$ to $B$ in $G_f$ with residual capacity $c_f(v,u) &gt; 0$, contradiction to the property of $G_f$.</p></li>
-<li><p>If there exists $e^+ = (u,v): f(e^+) &lt; c(e^+)$, then there is an forward edge $(u,v)$ from $A$ to $B$ in $G_f$ with residual capacity $c_f(v,u) = c(e^+) - f(e^+)$, contradiction to the property of $G_f$.</p></li>
+<li><p>If there exists <span class="math notranslate nohighlight">\(e^- = (u,v): f(e^-) &gt; 0\)</span>, then there is an edge <span class="math notranslate nohighlight">\((v,u)\)</span> from <span class="math notranslate nohighlight">\(A\)</span> to <span class="math notranslate nohighlight">\(B\)</span> in <span class="math notranslate nohighlight">\(G_f\)</span> with residual capacity <span class="math notranslate nohighlight">\(c_f(v,u) &gt; 0\)</span>, contradiction to the property of <span class="math notranslate nohighlight">\(G_f\)</span>.</p></li>
+<li><p>If there exists <span class="math notranslate nohighlight">\(e^+ = (u,v): f(e^+) &lt; c(e^+)\)</span>, then there is an forward edge <span class="math notranslate nohighlight">\((u,v)\)</span> from <span class="math notranslate nohighlight">\(A\)</span> to <span class="math notranslate nohighlight">\(B\)</span> in <span class="math notranslate nohighlight">\(G_f\)</span> with residual capacity <span class="math notranslate nohighlight">\(c_f(v,u) = c(e^+) - f(e^+)\)</span>, contradiction to the property of <span class="math notranslate nohighlight">\(G_f\)</span>.</p></li>
 </ol>
-<p>$\square$</p>
+<p><span class="math notranslate nohighlight">\(\square\)</span></p>
 </div>
 </div>
 <div class="section" id="minimum-cut">
@@ -992,59 +1024,60 @@ $$</p>
 <h3>Problem<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
 <p><strong>Input</strong></p>
 <ul class="simple">
-<li><p>A directed graph $G=(V,E)$.</p></li>
-<li><p>Capacity $c(e)$.</p></li>
-<li><p>Two special vertices $s$ and $t$.</p></li>
+<li><p>A directed graph <span class="math notranslate nohighlight">\(G=(V,E)\)</span>.</p></li>
+<li><p>Capacity <span class="math notranslate nohighlight">\(c(e)\)</span>.</p></li>
+<li><p>Two special vertices <span class="math notranslate nohighlight">\(s\)</span> and <span class="math notranslate nohighlight">\(t\)</span>.</p></li>
 </ul>
 <p><strong>Goal</strong></p>
-<p>Find an $s-t$ cut $(A,B)$ that minimizes cut capacity $c(A,B)$, called minimum cut.</p>
+<p>Find an <span class="math notranslate nohighlight">\(s-t\)</span> cut <span class="math notranslate nohighlight">\((A,B)\)</span> that minimizes cut capacity <span class="math notranslate nohighlight">\(c(A,B)\)</span>, called minimum cut.</p>
 </div>
 <div class="section" id="id2">
 <h3>Analysis<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
 <dl class="simple myst">
-<dt>Theorem (Equivalency of maximum flow and minimum cut)</dt><dd><p>In any flow network $G$, the value of a maximum $s-t$ flow is equal to value of a minimum $s-t$ cut.</p>
+<dt>Theorem (Equivalency of maximum flow and minimum cut)</dt><dd><p>In any flow network <span class="math notranslate nohighlight">\(G\)</span>, the value of a maximum <span class="math notranslate nohighlight">\(s-t\)</span> flow is equal to the capacity of a minimum <span class="math notranslate nohighlight">\(s-t\)</span> cut.</p>
 </dd>
 </dl>
-<p>The proof is simply from the Corollary.</p>
-<p>Thus, FF algorithm also gives an algorithm for finding a minimum $s-t$ cut.</p>
+<p>The proof is simply from Corollary 3.</p>
+<p>Thus, FF algorithm also gives an algorithm for finding a minimum <span class="math notranslate nohighlight">\(s-t\)</span> cut.</p>
 </div>
 </div>
 <div class="section" id="complexity">
 <h2>Complexity<a class="headerlink" href="#complexity" title="Permalink to this headline">¶</a></h2>
-<p>Let $m$ be the number of edges in the graph $G$.</p>
-<p>Recall that there are at most $\sum_{v\in \operatorname{succ}(s)} c(s, v)$ iterations. The bound is upper bounded by $n \times c _{\max}(e)$.</p>
+<p>Let <span class="math notranslate nohighlight">\(m\)</span> be the number of edges in the graph <span class="math notranslate nohighlight">\(G\)</span>.</p>
+<p>Recall that there are at most <span class="math notranslate nohighlight">\(\sum_{v\in \operatorname{succ}(s)} c(s, v)\)</span> iterations. The bound is upper bounded by <span class="math notranslate nohighlight">\(n \times c _{\max}(e)\)</span>.</p>
 <p>In each iteration</p>
 <ul class="simple">
-<li><p>Finding augmenting path $P$ takes $O(m)$</p></li>
-<li><p>Pushing flow along $P$ takes $O(m)$</p></li>
-<li><p>Recompute $G_f$ takes $O(m)$</p></li>
+<li><p>Finding augmenting path <span class="math notranslate nohighlight">\(P\)</span> takes <span class="math notranslate nohighlight">\(O(m)\)</span></p></li>
+<li><p>Pushing flow along <span class="math notranslate nohighlight">\(P\)</span> takes <span class="math notranslate nohighlight">\(O(m)\)</span></p></li>
+<li><p>Recompute <span class="math notranslate nohighlight">\(G_f\)</span> takes <span class="math notranslate nohighlight">\(O(m)\)</span></p></li>
 </ul>
-<p>So the total running time is $O(m\cdot n\cdot c _{\max})$</p>
-<p>:::{admonition,note} Is FF algorithm efficient?</p>
+<p>So the total running time is <span class="math notranslate nohighlight">\(O(m\cdot n\cdot c _{\max})\)</span></p>
+<div class="note admonition">
+<p class="admonition-title"> Is FF algorithm efficient?</p>
 <p>There are two inputs.</p>
 <ul class="simple">
-<li><p>Graph, which is a combinatorial part of size $(n,m)$</p></li>
-<li><p>Capacities, which is a numerical part of size $m$</p></li>
+<li><p>Graph, which is a combinatorial part of size <span class="math notranslate nohighlight">\((n,m)\)</span></p></li>
+<li><p>Capacities, which is a numerical part of size <span class="math notranslate nohighlight">\(m\)</span></p></li>
 </ul>
 <p>Recall different running time??</p>
 <ul class="simple">
-<li><p>strong-polynomial tim#e: $Poly(\text{size of the combinatorial part})$, e.g. $O(n)$</p></li>
-<li><p>weak-polynomial time: $Poly(\text{sizes of both parts})$, e.g. $O(mn \times m)$</p></li>
-<li><p>pseudo-polynomial time: $Poly(\text{the largest integer present in the input})$, e.g. $O(c_\max)$</p></li>
+<li><p>strong-polynomial time: <span class="math notranslate nohighlight">\(Poly(\text{size of the combinatorial part})\)</span>, e.g. <span class="math notranslate nohighlight">\(O(n)\)</span></p></li>
+<li><p>weak-polynomial time: <span class="math notranslate nohighlight">\(Poly(\text{sizes of both parts})\)</span>, e.g. <span class="math notranslate nohighlight">\(O(mn \times m)\)</span></p></li>
+<li><p>pseudo-polynomial time: <span class="math notranslate nohighlight">\(Poly(\text{the largest integer present in the input})\)</span>, e.g. <span class="math notranslate nohighlight">\(O(c_\max)\)</span></p></li>
 </ul>
-<p>:::</p>
+</div>
 </div>
 <div class="section" id="improvement">
 <h2>Improvement<a class="headerlink" href="#improvement" title="Permalink to this headline">¶</a></h2>
 <p>We want to bound the number of iterations in Edmonds-Korp algorithm.</p>
-<p>To find an augmenting path, use the shortest path $s-t$ in $G$.</p>
+<p>To find an augmenting path, use the shortest path <span class="math notranslate nohighlight">\(s-t\)</span> in <span class="math notranslate nohighlight">\(G\)</span>.</p>
 <p>Partition the algorithm’s execution into phases. Number of phase lasts as low as the lengths of augmenting paths chosen in each iteration remain the same.</p>
-<p>Number of iteration is $O(mn)$. Total run time is $O(m^2 n)$.</p>
-<p>Observation: Let $G_f$ be the residual graph at the start of iteration $i$, and $G_f ^\prime$ be the residual path at the end of iteration $i$,.</p>
+<p>Number of iteration is <span class="math notranslate nohighlight">\(O(mn)\)</span>. Total run time is <span class="math notranslate nohighlight">\(O(m^2 n)\)</span>.</p>
+<p>Observation: Let <span class="math notranslate nohighlight">\(G_f\)</span> be the residual graph at the start of iteration <span class="math notranslate nohighlight">\(i\)</span>, and <span class="math notranslate nohighlight">\(G_f ^\prime\)</span> be the residual path at the end of iteration <span class="math notranslate nohighlight">\(i\)</span>,.</p>
 <ul class="simple">
-<li><p>if $e \in E(G_f) \backslash E(G_f ^\prime)$ then $e \in E(P)$ where $P$ is the augmenting path in iteration $i$.</p></li>
-<li><p>$\left\vert E(G_f) \backslash E(G_f ^\prime) \right\vert \ge 1$.</p></li>
-<li><p>if $e = (u,v) \in E(G_f) \backslash E(G_f ^\prime)$ then $e \in E(P)$.</p></li>
+<li><p>if <span class="math notranslate nohighlight">\(e \in E(G_f) \backslash E(G_f ^\prime)\)</span> then <span class="math notranslate nohighlight">\(e \in E(P)\)</span> where <span class="math notranslate nohighlight">\(P\)</span> is the augmenting path in iteration <span class="math notranslate nohighlight">\(i\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\left\vert E(G_f) \backslash E(G_f ^\prime) \right\vert \ge 1\)</span>.</p></li>
+<li><p>if <span class="math notranslate nohighlight">\(e = (u,v) \in E(G_f) \backslash E(G_f ^\prime)\)</span> then <span class="math notranslate nohighlight">\(e \in E(P)\)</span>.</p></li>
 </ul>
 <p>Claim
 :</p>

@@ -46,6 +46,8 @@
     <script src="../_static/copybutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="../_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
     <script >
         const thebe_selector = ".thebe"
@@ -491,7 +493,11 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../33-dimensionality-reduction/31-t-SNE.html">
-     SNE and $t$-SNE
+     SNE and
+     <span class="math notranslate nohighlight">
+      \(t\)
+     </span>
+     -SNE
     </a>
    </li>
   </ul>
@@ -756,8 +762,8 @@
 <h3>Problem<a class="headerlink" href="#problem" title="Permalink to this headline">¶</a></h3>
 <dl class="simple myst">
 <dt>Input</dt><dd><ul class="simple">
-<li><p>A set $J$ of $n$ jobs</p></li>
-<li><p>The start time $s_j$ and finish time $f_j$ of each job $j$ so that job $j$’s interval $I(j)$ is $(s_j, f_j]$</p></li>
+<li><p>A set <span class="math notranslate nohighlight">\(J\)</span> of <span class="math notranslate nohighlight">\(n\)</span> jobs</p></li>
+<li><p>The start time <span class="math notranslate nohighlight">\(s_j\)</span> and finish time <span class="math notranslate nohighlight">\(f_j\)</span> of each job <span class="math notranslate nohighlight">\(j\)</span> so that job <span class="math notranslate nohighlight">\(j\)</span>’s interval <span class="math notranslate nohighlight">\(I(j)\)</span> is <span class="math notranslate nohighlight">\((s_j, f_j]\)</span></p></li>
 </ul>
 </dd>
 <dt>Goal</dt><dd><ul class="simple">
@@ -777,29 +783,29 @@
 <p><strong>Algorithm</strong> Interval Scheduling (Maximize #Jobs)</p>
 <hr class="docutils" />
 <ul class="simple">
-<li><p>Start with an empty set $S=\emptyset$.</p></li>
-<li><p>While $J\ne \emptyset$, do</p>
+<li><p>Start with an empty set <span class="math notranslate nohighlight">\(S=\emptyset\)</span>.</p></li>
+<li><p>While <span class="math notranslate nohighlight">\(J\ne \emptyset\)</span>, do</p>
 <ul>
-<li><p>Choose a job $j$ by a greedy rule, to be discussed below</p></li>
-<li><p>Add $j$ to $S$</p></li>
-<li><p>Delete from $J$ all jobs that overlap with $j$ (include $j$ itself)</p></li>
+<li><p>Choose a job <span class="math notranslate nohighlight">\(j\)</span> by a greedy rule, to be discussed below</p></li>
+<li><p>Add <span class="math notranslate nohighlight">\(j\)</span> to <span class="math notranslate nohighlight">\(S\)</span></p></li>
+<li><p>Delete from <span class="math notranslate nohighlight">\(J\)</span> all jobs that overlap with <span class="math notranslate nohighlight">\(j\)</span> (include <span class="math notranslate nohighlight">\(j\)</span> itself)</p></li>
 </ul>
 </li>
 </ul>
 <hr class="docutils" />
 <p>What greedy rule should we use?</p>
 <ul class="simple">
-<li><p>shortest job $\operatorname{argmin}_{j \in J} , f_j - s_j$</p>
+<li><p>shortest job <span class="math notranslate nohighlight">\(\operatorname{argmin}_{j \in J} \, f_j - s_j\)</span></p>
 <ul>
-<li><p>cons: the shortest job could be in the middle and rule out all of the others by chance, e.g. $(0.9, 1.1]$ rules out $(0,2], (1,2]$.</p></li>
+<li><p>cons: the shortest job could be in the middle and rule out all of the others by chance, e.g. <span class="math notranslate nohighlight">\((0.9, 1.1]\)</span> rules out <span class="math notranslate nohighlight">\((0,2], (1,2]\)</span>.</p></li>
 </ul>
 </li>
-<li><p>leftmost left endpoint $\operatorname{argmin}_{j \in J} , s_j$</p>
+<li><p>leftmost left endpoint <span class="math notranslate nohighlight">\(\operatorname{argmin}_{j \in J} \, s_j\)</span></p>
 <ul>
 <li><p>cons: one job overlaps many jobs</p></li>
 </ul>
 </li>
-<li><p>leftmost right endpoint $\operatorname{argmin}_{j \in J} , f_j$</p>
+<li><p>leftmost right endpoint <span class="math notranslate nohighlight">\(\operatorname{argmin}_{j \in J} \, f_j\)</span></p>
 <ul>
 <li><p>optimal, to be proved below</p></li>
 </ul>
@@ -808,38 +814,38 @@
 </div>
 <div class="section" id="correctness">
 <h3>Correctness<a class="headerlink" href="#correctness" title="Permalink to this headline">¶</a></h3>
-<p>Feasibility is guaranteed since we delete all jobs that overlap with $j$ from $J$.</p>
-<p>Optimality: $\left\vert S \right\vert = \left\vert OPT \right\vert$. The intuition is that, we are pushing intervals to the left. It can be shown in two ways.</p>
+<p>Feasibility is guaranteed since we delete all jobs that overlap with <span class="math notranslate nohighlight">\(j\)</span> from <span class="math notranslate nohighlight">\(J\)</span>.</p>
+<p>Optimality: <span class="math notranslate nohighlight">\(\left\vert S \right\vert = \left\vert OPT \right\vert\)</span>. The intuition is that, we are pushing intervals to the left. It can be shown in two ways.</p>
 <div class="section" id="exchange-argument">
 <h4>Exchange Argument<a class="headerlink" href="#exchange-argument" title="Permalink to this headline">¶</a></h4>
-<p>Want to prove $\vert S \vert \le \vert OPT \vert$. Try to show $OPT$ approaches our solution $S$.</p>
+<p>Want to prove <span class="math notranslate nohighlight">\(\vert S \vert \le \vert OPT \vert\)</span>. Try to show <span class="math notranslate nohighlight">\(OPT\)</span> approaches our solution <span class="math notranslate nohighlight">\(S\)</span>.</p>
 <p><em><strong>Proof</strong></em></p>
-<p>Suppose the first job in $OPT$ is $j_1^<em>$ and the first job in $S$ is $j_1$. According to the greedy rule, the finish time of $j_1$ is ealier than $j_1^</em>$, so substituting $j_1^<em>$ by $j_1$ in $OPT$ does not affect the optimality of $OPT$. Call the updated $OPT$ by $OPT_1$. We can then substitute $j_2^</em>$ in $OPT_1$ by $j_2$ in $S$ (note that $f_{j_2} \le f_{j_2^*}$ by our algorithms), and so on.</p>
-<p>What if $\vert S \vert &lt; \vert OPT_k \vert$, i.e. we run out of jobs in $S$ after $k$ substitutions? This is impossible. Our algorithm will select $j$ in $J$ until $J$ is empty. So if there is any jobs in $OPT_k$ that is not in $S$, they should be in $J$ and be added to $S$ by our algorithm.</p>
-<p>$\square$</p>
+<p>Suppose the first job in <span class="math notranslate nohighlight">\(OPT\)</span> is <span class="math notranslate nohighlight">\(j_1^*\)</span> and the first job in <span class="math notranslate nohighlight">\(S\)</span> is <span class="math notranslate nohighlight">\(j_1\)</span>. According to the greedy rule, the finish time of <span class="math notranslate nohighlight">\(j_1\)</span> is ealier than <span class="math notranslate nohighlight">\(j_1^*\)</span>, so substituting <span class="math notranslate nohighlight">\(j_1^*\)</span> by <span class="math notranslate nohighlight">\(j_1\)</span> in <span class="math notranslate nohighlight">\(OPT\)</span> does not affect the optimality of <span class="math notranslate nohighlight">\(OPT\)</span>. Call the updated <span class="math notranslate nohighlight">\(OPT\)</span> by <span class="math notranslate nohighlight">\(OPT_1\)</span>. We can then substitute <span class="math notranslate nohighlight">\(j_2^*\)</span> in <span class="math notranslate nohighlight">\(OPT_1\)</span> by <span class="math notranslate nohighlight">\(j_2\)</span> in <span class="math notranslate nohighlight">\(S\)</span> (note that <span class="math notranslate nohighlight">\(f_{j_2} \le f_{j_2^*}\)</span> by our algorithms), and so on.</p>
+<p>What if <span class="math notranslate nohighlight">\(\vert S \vert &lt; \vert OPT_k \vert\)</span>, i.e. we run out of jobs in <span class="math notranslate nohighlight">\(S\)</span> after <span class="math notranslate nohighlight">\(k\)</span> substitutions? This is impossible. Our algorithm will select <span class="math notranslate nohighlight">\(j\)</span> in <span class="math notranslate nohighlight">\(J\)</span> until <span class="math notranslate nohighlight">\(J\)</span> is empty. So if there is any jobs in <span class="math notranslate nohighlight">\(OPT_k\)</span> that is not in <span class="math notranslate nohighlight">\(S\)</span>, they should be in <span class="math notranslate nohighlight">\(J\)</span> and be added to <span class="math notranslate nohighlight">\(S\)</span> by our algorithm.</p>
+<p><span class="math notranslate nohighlight">\(\square\)</span></p>
 </div>
 <div class="section" id="charging-scheme">
 <h4>Charging Scheme<a class="headerlink" href="#charging-scheme" title="Permalink to this headline">¶</a></h4>
-<p>Given $\left\vert S \right\vert \le \left\vert OPT \right\vert$, want to show $\left\vert S \right\vert \ge \left\vert OPT \right\vert$ such that $\left\vert S \right\vert = \left\vert OPT \right\vert$.</p>
+<p>Given <span class="math notranslate nohighlight">\(\left\vert S \right\vert \le \left\vert OPT \right\vert\)</span>, want to show <span class="math notranslate nohighlight">\(\left\vert S \right\vert \ge \left\vert OPT \right\vert\)</span> such that <span class="math notranslate nohighlight">\(\left\vert S \right\vert = \left\vert OPT \right\vert\)</span>.</p>
 <p><em><strong>Proof</strong></em></p>
-<p>Let the jobs in $OPT$ be $j_1^<em>, \ldots, j_{\left\vert OPT \right\vert} ^</em>$ and the jobs in $S$ be  $j_1^<em>, \ldots, j_{\left\vert S \right\vert} ^</em>$</p>
-<p>Define a one-to-one function from set $OPT$ to set $S$: $g(j_i^*) = j_\ell$. This means every job in $OPT$ is mapped to a job in $S$, but there can be jobs in $S$ that has not mapping from $OPT$. If such function exists then $\left\vert S \right\vert \ge \left\vert OPS \right\vert$. Now we prove such function exists.</p>
-<p>Let’s look at a job $j_i^*$ in $OPT$.</p>
+<p>Let the jobs in <span class="math notranslate nohighlight">\(OPT\)</span> be <span class="math notranslate nohighlight">\(j_1^*, \ldots, j_{\left\vert OPT \right\vert} ^*\)</span> and the jobs in <span class="math notranslate nohighlight">\(S\)</span> be  <span class="math notranslate nohighlight">\(j_1^*, \ldots, j_{\left\vert S \right\vert} ^*\)</span></p>
+<p>Define a one-to-one function from set <span class="math notranslate nohighlight">\(OPT\)</span> to set <span class="math notranslate nohighlight">\(S\)</span>: <span class="math notranslate nohighlight">\(g(j_i^*) = j_\ell\)</span>. This means every job in <span class="math notranslate nohighlight">\(OPT\)</span> is mapped to a job in <span class="math notranslate nohighlight">\(S\)</span>, but there can be jobs in <span class="math notranslate nohighlight">\(S\)</span> that has not mapping from <span class="math notranslate nohighlight">\(OPT\)</span>. If such function exists then <span class="math notranslate nohighlight">\(\left\vert S \right\vert \ge \left\vert OPS \right\vert\)</span>. Now we prove such function exists.</p>
+<p>Let’s look at a job <span class="math notranslate nohighlight">\(j_i^*\)</span> in <span class="math notranslate nohighlight">\(OPT\)</span>.</p>
 <ul>
-<li><p>If $j_1^* \in S$ then we let the mapping to be an identity mapping $g(j_i^<em>) = j_i^</em>$.</p></li>
-<li><p>If $j_i^<em>\notin OPT$, then we deleted it at some time in $J$, since it overlaps from a job in $S$. Let the corresponding job in be $j ^\prime$, then its end time must be earlier than the end time of $j_i^</em>$, otherwise we won’t select $j ^\prime$ and delete $j_i^<em>$ from $J$. In short, the interval $(s_{j^</em>}, f_{j^*}]$ must contains $f_{j ^\prime}$.</p>
-<p>In this case, let the mapping be $g(j_i^*) = j ^\prime$.</p>
+<li><p>If <span class="math notranslate nohighlight">\(j_1^* \in S\)</span> then we let the mapping to be an identity mapping <span class="math notranslate nohighlight">\(g(j_i^*) = j_i^*\)</span>.</p></li>
+<li><p>If <span class="math notranslate nohighlight">\(j_i^*\notin OPT\)</span>, then we deleted it at some time in <span class="math notranslate nohighlight">\(J\)</span>, since it overlaps from a job in <span class="math notranslate nohighlight">\(S\)</span>. Let the corresponding job in be <span class="math notranslate nohighlight">\(j ^\prime\)</span>, then its end time must be earlier than the end time of <span class="math notranslate nohighlight">\(j_i^*\)</span>, otherwise we won’t select <span class="math notranslate nohighlight">\(j ^\prime\)</span> and delete <span class="math notranslate nohighlight">\(j_i^*\)</span> from <span class="math notranslate nohighlight">\(J\)</span>. In short, the interval <span class="math notranslate nohighlight">\((s_{j^*}, f_{j^*}]\)</span> must contains <span class="math notranslate nohighlight">\(f_{j ^\prime}\)</span>.</p>
+<p>In this case, let the mapping be <span class="math notranslate nohighlight">\(g(j_i^*) = j ^\prime\)</span>.</p>
 </li>
 </ul>
-<p>Moreover, for each job $j ^\prime \in S$, it can take up to one mapping. If it takes two jobs $j_i^<em>, j_k^</em> \in OPT$, then both intervals of $j_i^<em>$ and $j_k^</em>$ should contain $f_{j ^\prime}$, which is impossible since the intervals in $OPT$ cannot overlap.</p>
-<p>In sum, this function $g$ exists. Hence, $\left\vert S \right\vert \ge \left\vert OPT \right\vert$.</p>
-<p>$\square$</p>
+<p>Moreover, for each job <span class="math notranslate nohighlight">\(j ^\prime \in S\)</span>, it can take up to one mapping. If it takes two jobs <span class="math notranslate nohighlight">\(j_i^*, j_k^* \in OPT\)</span>, then both intervals of <span class="math notranslate nohighlight">\(j_i^*\)</span> and <span class="math notranslate nohighlight">\(j_k^*\)</span> should contain <span class="math notranslate nohighlight">\(f_{j ^\prime}\)</span>, which is impossible since the intervals in <span class="math notranslate nohighlight">\(OPT\)</span> cannot overlap.</p>
+<p>In sum, this function <span class="math notranslate nohighlight">\(g\)</span> exists. Hence, <span class="math notranslate nohighlight">\(\left\vert S \right\vert \ge \left\vert OPT \right\vert\)</span>.</p>
+<p><span class="math notranslate nohighlight">\(\square\)</span></p>
 </div>
 </div>
 <div class="section" id="analysis-of-running-time">
 <h3>Analysis of Running time<a class="headerlink" href="#analysis-of-running-time" title="Permalink to this headline">¶</a></h3>
-<p>There are at most $n$ iterations in <code class="docutils literal notranslate"><span class="pre">while</span></code>, and in every iteration we need to find $\operatorname{argmin}_j , s_j$, which can be doen in $O(n)$. In sum, the overall time complexity is $O(n^2)$.</p>
-<p>Another way of implementation is to sort the jobs by $s_j$. Then there are at most $n$ iterations. The overall time complexity is $O(n \log n)$.</p>
+<p>There are at most <span class="math notranslate nohighlight">\(n\)</span> iterations in <code class="docutils literal notranslate"><span class="pre">while</span></code>, and in every iteration we need to find <span class="math notranslate nohighlight">\(\operatorname{argmin}_j \, s_j\)</span>, which can be doen in <span class="math notranslate nohighlight">\(O(n)\)</span>. In sum, the overall time complexity is <span class="math notranslate nohighlight">\(O(n^2)\)</span>.</p>
+<p>Another way of implementation is to sort the jobs by <span class="math notranslate nohighlight">\(s_j\)</span>. Then there are at most <span class="math notranslate nohighlight">\(n\)</span> iterations. The overall time complexity is <span class="math notranslate nohighlight">\(O(n \log n)\)</span>.</p>
 </div>
 </div>
 <div class="section" id="minimize-machines-used">
@@ -849,8 +855,8 @@
 <h3>Problem<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
 <dl class="simple myst">
 <dt>Input</dt><dd><ul class="simple">
-<li><p>A set $J$ of $n$ jobs</p></li>
-<li><p>The start time $s_j$ and finish time $f_j$ of each job $j$ so that job $j$’s interval $I(j)$ is $(s_j, f_j]$</p></li>
+<li><p>A set <span class="math notranslate nohighlight">\(J\)</span> of <span class="math notranslate nohighlight">\(n\)</span> jobs</p></li>
+<li><p>The start time <span class="math notranslate nohighlight">\(s_j\)</span> and finish time <span class="math notranslate nohighlight">\(f_j\)</span> of each job <span class="math notranslate nohighlight">\(j\)</span> so that job <span class="math notranslate nohighlight">\(j\)</span>’s interval <span class="math notranslate nohighlight">\(I(j)\)</span> is <span class="math notranslate nohighlight">\((s_j, f_j]\)</span></p></li>
 </ul>
 </dd>
 <dt>Goal</dt><dd><ul class="simple">
@@ -871,7 +877,7 @@
 <hr class="docutils" />
 <ul class="simple">
 <li><p>Sort all jobs in the order of increasing start time, breaking ties arbitrarily.</p></li>
-<li><p>Assume without loss of generality that $s_{1} \leq s_{2} \leq \ldots \leq s_{n}$. Process jobs $j_{1}, \ldots, j_{n}$ in this order. Upon processing job $j_i$, schedule it on any used machine that does not contain a job whose interval overlaps with $\left(s_{i}, f_{i}\right]$; if there is no such machine, schedule it on a new machine.</p></li>
+<li><p>Assume without loss of generality that <span class="math notranslate nohighlight">\(s_{1} \leq s_{2} \leq \ldots \leq s_{n}\)</span>. Process jobs <span class="math notranslate nohighlight">\(j_{1}, \ldots, j_{n}\)</span> in this order. Upon processing job <span class="math notranslate nohighlight">\(j_i\)</span>, schedule it on any used machine that does not contain a job whose interval overlaps with <span class="math notranslate nohighlight">\(\left(s_{i}, f_{i}\right]\)</span>; if there is no such machine, schedule it on a new machine.</p></li>
 </ul>
 </div>
 <hr class="docutils" />
@@ -879,16 +885,16 @@
 <h3>Correctness<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
 <p>Feasibility is immediate. We prove optimality.</p>
 <dl class="simple myst">
-<dt>Claim 1</dt><dd><p>If our algorithm returns a scheduling using $k$ machines, then any feasible schedule has to use at least $k$ machines.</p>
+<dt>Claim 1</dt><dd><p>If our algorithm returns a scheduling using <span class="math notranslate nohighlight">\(k\)</span> machines, then any feasible schedule has to use at least <span class="math notranslate nohighlight">\(k\)</span> machines.</p>
 </dd>
 </dl>
 <p><em><strong>Proof</strong></em></p>
-<p>If our algorithm returns a scheduling using k machines, then there are $k$ jobs $j_{i_{1}}, \ldots, j_{i_{k}}$ in $J$, such that some time-point $x$ belongs to every interval in set $\left{\left(s_{i_{t}}, f_{i_{t}}\right] \mid 1 \leq t \leq k\right}$. Therefore, these jobs have to be scheduled on different machines in any feasible solution, and the claim then follows.</p>
-<p>$\square$</p>
+<p>If our algorithm returns a scheduling using k machines, then there are <span class="math notranslate nohighlight">\(k\)</span> jobs <span class="math notranslate nohighlight">\(j_{i_{1}}, \ldots, j_{i_{k}}\)</span> in <span class="math notranslate nohighlight">\(J\)</span>, such that some time-point <span class="math notranslate nohighlight">\(x\)</span> belongs to every interval in set <span class="math notranslate nohighlight">\(\left\{\left(s_{i_{t}}, f_{i_{t}}\right] \mid 1 \leq t \leq k\right\}\)</span>. Therefore, these jobs have to be scheduled on different machines in any feasible solution, and the claim then follows.</p>
+<p><span class="math notranslate nohighlight">\(\square\)</span></p>
 </div>
 <div class="section" id="complexity">
 <h3>Complexity<a class="headerlink" href="#complexity" title="Permalink to this headline">¶</a></h3>
-<p>The algorithm consists of at most n iterations. In each iteration we need to schedule a job $j$ on some machine. All this can be done in time $O(n)$ (by checking which scheduled jobs overlap with the current one), so the running time of the algorithm is $O(n^2)$.</p>
+<p>The algorithm consists of at most n iterations. In each iteration we need to schedule a job <span class="math notranslate nohighlight">\(j\)</span> on some machine. All this can be done in time <span class="math notranslate nohighlight">\(O(n)\)</span> (by checking which scheduled jobs overlap with the current one), so the running time of the algorithm is <span class="math notranslate nohighlight">\(O(n^2)\)</span>.</p>
 </div>
 </div>
 <div class="section" id="minimize-machine-rented">
@@ -897,17 +903,17 @@
 </div>
 <div class="section" id="minimize-maximum-lateness">
 <h2>Minimize Maximum Lateness<a class="headerlink" href="#minimize-maximum-lateness" title="Permalink to this headline">¶</a></h2>
-<p>In this problem, each job has a deadline $d_i$, and we have one machine. We want to execute all jobs, and minimize the maximum lateness of a job.</p>
+<p>In this problem, each job has a deadline <span class="math notranslate nohighlight">\(d_i\)</span>, and we have one machine. We want to execute all jobs, and minimize the maximum lateness of a job.</p>
 <div class="section" id="id4">
 <h3>Problem<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
 <dl class="simple myst">
 <dt>Input</dt><dd><ul class="simple">
-<li><p>A set $J$ of $n$ jobs</p></li>
-<li><p>Duration $t_j$ and deadline $d_j$ of each job $j$.</p></li>
+<li><p>A set <span class="math notranslate nohighlight">\(J\)</span> of <span class="math notranslate nohighlight">\(n\)</span> jobs</p></li>
+<li><p>Duration <span class="math notranslate nohighlight">\(t_j\)</span> and deadline <span class="math notranslate nohighlight">\(d_j\)</span> of each job <span class="math notranslate nohighlight">\(j\)</span>.</p></li>
 </ul>
 </dd>
 <dt>Goal</dt><dd><ul class="simple">
-<li><p>Schedule all jobs and minimize the maximum lateness, which is $\max \left{ 0, f_i - d_i \right}$.</p></li>
+<li><p>Schedule all jobs and minimize the maximum lateness, which is <span class="math notranslate nohighlight">\(\max \left\{ 0, f_i - d_i \right\}\)</span>.</p></li>
 </ul>
 </dd>
 <dt>Constraint</dt><dd><ul class="simple">
@@ -932,31 +938,31 @@
 <h3>Correctness<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
 <p>Feasibility is immediate. We prove correctness by proving two claims.</p>
 <dl class="simple myst">
-<dt>Definition (Inverted Pair)</dt><dd><p>A pair of indices $(i_1. i_j)$ from $\left{ 1, 2, \ldots, n \right}$ is an inverted pair in schedule $S$, iff $d_{i_1} &lt; d_{i_2}$ and job $j_{i_2}$ is scheduled <strong>immediate</strong> before $j_{i_1}$ in $S$.</p>
+<dt>Definition (Inverted Pair)</dt><dd><p>A pair of indices <span class="math notranslate nohighlight">\((i_1. i_j)\)</span> from <span class="math notranslate nohighlight">\(\left\{ 1, 2, \ldots, n \right\}\)</span> is an inverted pair in schedule <span class="math notranslate nohighlight">\(S\)</span>, iff <span class="math notranslate nohighlight">\(d_{i_1} &lt; d_{i_2}\)</span> and job <span class="math notranslate nohighlight">\(j_{i_2}\)</span> is scheduled <strong>immediate</strong> before <span class="math notranslate nohighlight">\(j_{i_1}\)</span> in <span class="math notranslate nohighlight">\(S\)</span>.</p>
 </dd>
 <dt>Claim 2</dt><dd><p>All schedules with no inverted pairs and no idle time have the same maximum lateness.</p>
 </dd>
 </dl>
 <p><strong>Proof</strong></p>
-<p>Let $S$ and $S ^\prime$ be any two different schedules with no inversions or idle time. Then $S$ and $S ^\prime$ may only differ in the order between jobs with identical deadlines. Consider any deadline $d$ and let $J_d$ be the set of jobs with the <strong>same</strong> deadline $d$. In both $S$ and $S ^\prime$, jobs in $J_d$ are all scheduled consecutively, and start at the same time $T_d$. Among all jobs in $J_d$, the one that is scheduled last in $S$ has the greatest lateness in $S$, which is $\left(T_{d}+\sum_{j_{i} \in J_{d}} t_{i}\right)-d$. Same for the last job in $J_d$ in $S ^\prime$.</p>
-<p>$\square$</p>
+<p>Let <span class="math notranslate nohighlight">\(S\)</span> and <span class="math notranslate nohighlight">\(S ^\prime\)</span> be any two different schedules with no inversions or idle time. Then <span class="math notranslate nohighlight">\(S\)</span> and <span class="math notranslate nohighlight">\(S ^\prime\)</span> may only differ in the order between jobs with identical deadlines. Consider any deadline <span class="math notranslate nohighlight">\(d\)</span> and let <span class="math notranslate nohighlight">\(J_d\)</span> be the set of jobs with the <strong>same</strong> deadline <span class="math notranslate nohighlight">\(d\)</span>. In both <span class="math notranslate nohighlight">\(S\)</span> and <span class="math notranslate nohighlight">\(S ^\prime\)</span>, jobs in <span class="math notranslate nohighlight">\(J_d\)</span> are all scheduled consecutively, and start at the same time <span class="math notranslate nohighlight">\(T_d\)</span>. Among all jobs in <span class="math notranslate nohighlight">\(J_d\)</span>, the one that is scheduled last in <span class="math notranslate nohighlight">\(S\)</span> has the greatest lateness in <span class="math notranslate nohighlight">\(S\)</span>, which is <span class="math notranslate nohighlight">\(\left(T_{d}+\sum_{j_{i} \in J_{d}} t_{i}\right)-d\)</span>. Same for the last job in <span class="math notranslate nohighlight">\(J_d\)</span> in <span class="math notranslate nohighlight">\(S ^\prime\)</span>.</p>
+<p><span class="math notranslate nohighlight">\(\square\)</span></p>
 <dl class="simple myst">
 <dt>Claim 3</dt><dd><p>There is an optimal schedule that has no inverted pairs and no idle time.</p>
 </dd>
 </dl>
 <p>First, it is easy to see that there is an optimal schedule with no idle time.</p>
-<p>Second, if there is an inverted pair $(i_1, i_2)$, we prove that swapping only that pair does not increase maximum lateness. Let the start time of that pair be $T$.</p>
+<p>Second, if there is an inverted pair <span class="math notranslate nohighlight">\((i_1, i_2)\)</span>, we prove that swapping only that pair does not increase maximum lateness. Let the start time of that pair be <span class="math notranslate nohighlight">\(T\)</span>.</p>
 <ul class="simple">
-<li><p>The original lateness of job $j_{i_1}$ is $\max{0, T + t_{i_2} + t_{i_1} - d_{i_1}}$, and after swapping it becomes $\max \left{0, T + t_{i_1} - d_{i_1} \right}$.</p></li>
-<li><p>The original lateness of job $j_{i_2}$ is $\max \left{0, T + t_{i_2} - d_{i_2} \right}$, and after swapping it becomes $\max \left{ 0, T + t_{i_2}  + t_{i_1} - d_{i_2} \right}$.</p></li>
+<li><p>The original lateness of job <span class="math notranslate nohighlight">\(j_{i_1}\)</span> is <span class="math notranslate nohighlight">\(\max\{0, T + t_{i_2} + t_{i_1} - d_{i_1}\}\)</span>, and after swapping it becomes <span class="math notranslate nohighlight">\(\max \left\{0, T + t_{i_1} - d_{i_1} \right\}\)</span>.</p></li>
+<li><p>The original lateness of job <span class="math notranslate nohighlight">\(j_{i_2}\)</span> is <span class="math notranslate nohighlight">\(\max \left\{0, T + t_{i_2} - d_{i_2} \right\}\)</span>, and after swapping it becomes <span class="math notranslate nohighlight">\(\max \left\{ 0, T + t_{i_2}  + t_{i_1} - d_{i_2} \right\}\)</span>.</p></li>
 </ul>
-<p>The maximum lateness of the two jobs changes from $\max \left{ T + t_{i_2} + t_{i_1} - d_{i_1} \right}$ to $\max \left{ T + t_{i_2} + t_{i_1} - d_{i_2} \right}$, which does not increase since $d_{i_1} &lt; d_{i_2}$.</p>
-<p>$\square$</p>
+<p>The maximum lateness of the two jobs changes from <span class="math notranslate nohighlight">\(\max \left\{ T + t_{i_2} + t_{i_1} - d_{i_1} \right\}\)</span> to <span class="math notranslate nohighlight">\(\max \left\{ T + t_{i_2} + t_{i_1} - d_{i_2} \right\}\)</span>, which does not increase since <span class="math notranslate nohighlight">\(d_{i_1} &lt; d_{i_2}\)</span>.</p>
+<p><span class="math notranslate nohighlight">\(\square\)</span></p>
 <p>It is easy to see that our algorithm computes a schedule with no inverted pairs. From the two claims above, we see the schedule computed by our algorithm is optimal.</p>
 </div>
 <div class="section" id="id7">
 <h3>Complexity<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
-<p>We first sort all jobs by their deadlines in time $O(n\log n)$, and then schedule jobs according to this order in time $O(n)$, so the running time of the algorithm is $O(n\log n)$.</p>
+<p>We first sort all jobs by their deadlines in time <span class="math notranslate nohighlight">\(O(n\log n)\)</span>, and then schedule jobs according to this order in time <span class="math notranslate nohighlight">\(O(n)\)</span>, so the running time of the algorithm is <span class="math notranslate nohighlight">\(O(n\log n)\)</span>.</p>
 </div>
 </div>
 </div>

@@ -46,6 +46,8 @@
     <script src="../_static/copybutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="../_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
     <script >
         const thebe_selector = ".thebe"
@@ -491,7 +493,11 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../33-dimensionality-reduction/31-t-SNE.html">
-     SNE and $t$-SNE
+     SNE and
+     <span class="math notranslate nohighlight">
+      \(t\)
+     </span>
+     -SNE
     </a>
    </li>
   </ul>
@@ -665,35 +671,38 @@
 <p><strong>K-means clustering</strong></p>
 <hr class="docutils" />
 <ul>
-<li><p>Initialize $k$ menas $\mu_1, \ldots, \mu_k$ to random locations.</p></li>
+<li><p>Initialize <span class="math notranslate nohighlight">\(k\)</span> menas <span class="math notranslate nohighlight">\(\mu_1, \ldots, \mu_k\)</span> to random locations.</p></li>
 <li><p>While True</p>
 <ul>
-<li><p>Assign each example $\boldsymbol{x} _i$ to the closest mean</p>
-<p>$$
-y_{i}=\operatorname{argmin}<em>{c}\left|\mathbf{x}</em>{i}-\mu_{c}\right|
-$$</p>
+<li><p>Assign each example <span class="math notranslate nohighlight">\(\boldsymbol{x} _i\)</span> to the closest mean</p>
+<div class="math notranslate nohighlight">
+\[
+      y_{i}=\operatorname{argmin}_{c}\left\|\mathbf{x}_{i}-\mu_{c}\right\|
+      \]</div>
 </li>
 <li><p>re-estimate each mean based on examples assigned to it</p>
-<p>$$
-\mu_{c}=\frac{1}{N_{c}} \sum_{y_{i}=c} \mathbf{x}_{i}
-$$</p>
-<p>where $N_{c}= \left\vert \left{\mathbf{x}<em>{i}: y</em>{i}=c\right} \right\vert$</p>
+<div class="math notranslate nohighlight">
+\[
+      \mu_{c}=\frac{1}{N_{c}} \sum_{y_{i}=c} \mathbf{x}_{i}
+      \]</div>
+<p>where <span class="math notranslate nohighlight">\(N_{c}= \left\vert \left\{\mathbf{x}_{i}: y_{i}=c\right\} \right\vert\)</span></p>
 </li>
 <li><p>repeat until there are no changes in assignment</p></li>
 </ul>
 </li>
 </ul>
 <hr class="docutils" />
-<p>:::{figure} k-means-example
-<img src="../imgs/k-means-example.png" width = "70%" alt=""/></p>
-<p>Iterations in $k$-means example [Livescue 2021]
-:::</p>
+<div class="figure align-default" id="k-means-example">
+<a class="reference internal image-reference" href="../_images/k-means-example.png"><img alt="" src="../_images/k-means-example.png" style="width: 70%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 31 </span><span class="caption-text">Iterations in <span class="math notranslate nohighlight">\(k\)</span>-means example [Livescue 2021]</span><a class="headerlink" href="#k-means-example" title="Permalink to this image">¶</a></p>
+</div>
 <div class="section" id="objective">
 <h2>Objective<a class="headerlink" href="#objective" title="Permalink to this headline">¶</a></h2>
-<p>We can define an objective for $k$-means. It minimizes the total distortion</p>
-<p>$$
-D=\sum_{c=1}^{k} \sum_{\mathbf{x} \in \text { cluster } c}\left|\mathbf{x}-\mu_{c}\right|^{2}
-$$</p>
+<p>We can define an objective for <span class="math notranslate nohighlight">\(k\)</span>-means. It minimizes the total distortion</p>
+<div class="math notranslate nohighlight">
+\[
+D=\sum_{c=1}^{k} \sum_{\mathbf{x} \in \text { cluster } c}\left\|\mathbf{x}-\mu_{c}\right\|^{2}
+\]</div>
 <p>It often converges to a local minimum, rather than global minimum. The results are affected by initialization.</p>
 </div>
 <div class="section" id="pros-cons">
@@ -706,15 +715,15 @@ $$</p>
 <ul class="simple">
 <li><p>Affected by random initialization.</p>
 <ul>
-<li><p>heuristic remedy: try several initializations, keep the result with lowest total distortion $D$</p></li>
+<li><p>heuristic remedy: try several initializations, keep the result with lowest total distortion <span class="math notranslate nohighlight">\(D\)</span></p></li>
 </ul>
 </li>
 <li><p>Work bad for clusters with non-ideal attributes</p></li>
 </ul>
-<p>:::{figure} k-means-bad
-<img src="../imgs/k-means-bad.png" width = "50%" alt=""/></p>
-<p>$k$-means fail for clusters with non-ideal shapes [Livescue 2021]
-:::</p>
+<div class="figure align-default" id="k-means-bad">
+<a class="reference internal image-reference" href="../_images/k-means-bad.png"><img alt="" src="../_images/k-means-bad.png" style="width: 50%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 32 </span><span class="caption-text"><span class="math notranslate nohighlight">\(k\)</span>-means fail for clusters with non-ideal shapes [Livescue 2021]</span><a class="headerlink" href="#k-means-bad" title="Permalink to this image">¶</a></p>
+</div>
 </div>
 </div>
 

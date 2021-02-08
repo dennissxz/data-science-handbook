@@ -46,6 +46,8 @@
     <script src="../_static/copybutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="../_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
     <script >
         const thebe_selector = ".thebe"
@@ -491,7 +493,11 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../33-dimensionality-reduction/31-t-SNE.html">
-     SNE and $t$-SNE
+     SNE and
+     <span class="math notranslate nohighlight">
+      \(t\)
+     </span>
+     -SNE
     </a>
    </li>
   </ul>
@@ -721,9 +727,9 @@
 <div class="section" id="sampling-from-a-triangle">
 <h3>Sampling from a Triangle<a class="headerlink" href="#sampling-from-a-triangle" title="Permalink to this headline">¶</a></h3>
 <p>Tags: TwoSigma, Quant, 20Q4</p>
-<p><em>How to generate uniformly distributed points in a triangle in a $xy$-plane, given the coordinates of the three vertices? Suppose that you have a generator that can generate uniformly distributed random values over the interval $[0,1]$ and you can use it twice.</em></p>
-<p>We can first start from a special case and then generalize it: what if the three coordinates are $(1,0), (0,1), (1,1)$? Call this triangle the basic triangle.</p>
-<p>We can draw a random point $(x,y)$ from the square with vertices $(0,0), (0,1), (1,1), (1,0)$, using twice the random generator. If the point is inside the basic triangle, which is identified by $x+y&gt;1$, then we keep it, otherwise we keep its symmetric point $(1-x, 1-y)$ which is inside the basic triangle. The sampling process is implemented in the below python script.</p>
+<p><em>How to generate uniformly distributed points in a triangle in a <span class="math notranslate nohighlight">\(xy\)</span>-plane, given the coordinates of the three vertices? Suppose that you have a generator that can generate uniformly distributed random values over the interval <span class="math notranslate nohighlight">\([0,1]\)</span> and you can use it twice.</em></p>
+<p>We can first start from a special case and then generalize it: what if the three coordinates are <span class="math notranslate nohighlight">\((1,0), (0,1), (1,1)\)</span>? Call this triangle the basic triangle.</p>
+<p>We can draw a random point <span class="math notranslate nohighlight">\((x,y)\)</span> from the square with vertices <span class="math notranslate nohighlight">\((0,0), (0,1), (1,1), (1,0)\)</span>, using twice the random generator. If the point is inside the basic triangle, which is identified by <span class="math notranslate nohighlight">\(x+y&gt;1\)</span>, then we keep it, otherwise we keep its symmetric point <span class="math notranslate nohighlight">\((1-x, 1-y)\)</span> which is inside the basic triangle. The sampling process is implemented in the below python script.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -746,48 +752,50 @@
 </div>
 </div>
 <p>Then we can map these uniform random points in the basic triangle to the target triangle, by an affine transformation.</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 \boldsymbol{y}_i = A \boldsymbol{x}_i + \boldsymbol{b}
-$$</p>
-<p>where for $i=1,2,3$</p>
+\]</div>
+<p>where for <span class="math notranslate nohighlight">\(i=1,2,3\)</span></p>
 <ul class="simple">
-<li><p>$\boldsymbol{y}<em>i = (y</em>{i1}, y_{i2})$ is vertex coordinate of the target triangle</p></li>
-<li><p>$\boldsymbol{x}<em>i = (x</em>{i1}, y_{i2})$ is vertex coordinate of the basic triangle</p></li>
-<li><p>$A=\left[\begin{array}{cc}
-a_{11} &amp; a_{12}\
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{y}_i = (y_{i1}, y_{i2})\)</span> is vertex coordinate of the target triangle</p></li>
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{x}_i = (x_{i1}, y_{i2})\)</span> is vertex coordinate of the basic triangle</p></li>
+<li><p><span class="math notranslate nohighlight">\(A=\left[\begin{array}{cc}
+a_{11} &amp; a_{12}\\
 a_{21} &amp; a_{22}
-\end{array}\right]$ is a matrix</p></li>
-<li><p>$\boldsymbol{b}=\left[\begin{array}{c}
-b_{1}\
+\end{array}\right]\)</span> is a matrix</p></li>
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{b}=\left[\begin{array}{c}
+b_{1}\\
 b_{2}
-\end{array}\right]$ is a vector</p></li>
+\end{array}\right]\)</span> is a vector</p></li>
 </ul>
-<p>There are four unknown variables in $A$ and 2 in $\boldsymbol{b}$, and there are six equations, so we are able to solve them. Rearranging the equations gives the standard form of a linear system</p>
-<p>$$
+<p>There are four unknown variables in <span class="math notranslate nohighlight">\(A\)</span> and 2 in <span class="math notranslate nohighlight">\(\boldsymbol{b}\)</span>, and there are six equations, so we are able to solve them. Rearranging the equations gives the standard form of a linear system</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
 \left[\begin{array}{cccccc}
-1 &amp; 0 &amp; 0 &amp; 0 &amp; 1 &amp; 0\
-0 &amp; 1 &amp; 0 &amp; 0 &amp; 0 &amp; 1\
-1 &amp; 1 &amp; 0 &amp; 0 &amp; 1 &amp; 0\
-0 &amp; 0 &amp; 1 &amp; 1 &amp; 0 &amp; 1\
-0 &amp; 0 &amp; 1 &amp; 0 &amp; 1 &amp; 0\
+1 &amp; 0 &amp; 0 &amp; 0 &amp; 1 &amp; 0\\
+0 &amp; 1 &amp; 0 &amp; 0 &amp; 0 &amp; 1\\
+1 &amp; 1 &amp; 0 &amp; 0 &amp; 1 &amp; 0\\
+0 &amp; 0 &amp; 1 &amp; 1 &amp; 0 &amp; 1\\
+0 &amp; 0 &amp; 1 &amp; 0 &amp; 1 &amp; 0\\
 0 &amp; 0 &amp; 0 &amp; 1 &amp; 0 &amp; 1
 \end{array}\right]\left[\begin{array}{c}
-a_{11}\
-a_{12}\
-a_{21}\
-a_{22}\
-b_{1}\
+a_{11}\\
+a_{12}\\
+a_{21}\\
+a_{22}\\
+b_{1}\\
 b_{2}
 \end{array}\right]=\left[\begin{array}{c}
-y_{11}\
-y_{12}\
-y_{21}\
-y_{22}\
-y_{31}\
+y_{11}\\
+y_{12}\\
+y_{21}\\
+y_{22}\\
+y_{31}\\
 y_{32}
 \end{array}\right]
-$$</p>
-<p>Below is a python script to solve for $A$ and $\boldsymbol{b}$</p>
+\end{split}\]</div>
+<p>Below is a python script to solve for <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{b}\)</span></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">numpy.linalg</span> <span class="kn">import</span> <span class="n">solve</span>

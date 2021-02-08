@@ -46,6 +46,8 @@
     <script src="../_static/copybutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="../_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
     <script >
         const thebe_selector = ".thebe"
@@ -491,7 +493,11 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../33-dimensionality-reduction/31-t-SNE.html">
-     SNE and $t$-SNE
+     SNE and
+     <span class="math notranslate nohighlight">
+      \(t\)
+     </span>
+     -SNE
     </a>
    </li>
   </ul>
@@ -673,7 +679,7 @@
 <div class="section" id="problem">
 <h2>Problem<a class="headerlink" href="#problem" title="Permalink to this headline">¶</a></h2>
 <dl class="simple myst">
-<dt>Input</dt><dd><p>A sequence of $n$ numbers $A = (a_1, a_2, \ldots, a_n)$, where $a_n \in \mathbb{R}$.</p>
+<dt>Input</dt><dd><p>A sequence of <span class="math notranslate nohighlight">\(n\)</span> numbers <span class="math notranslate nohighlight">\(A = (a_1, a_2, \ldots, a_n)\)</span>, where <span class="math notranslate nohighlight">\(a_n \in \mathbb{R}\)</span>.</p>
 </dd>
 <dt>Objective</dt><dd><p>Find a <strong>continuous</strong> subsequence that has the largest sum.</p>
 </dd>
@@ -687,27 +693,31 @@
 <li><p>If the array contains all non-positive numbers, then a solution is any subarray of size 1 containing the maximal value of the array (or the empty subarray, if it is permitted).</p></li>
 </ul>
 <p>A continuity constrain and the mixture of positive and negative makes this problem a little involved.</p>
-<p>Let $S_k$ be a subsequence <strong>ending</strong> at $a_k$ that has the largest sum.</p>
-<p>$$
-S_k = \underset{1 \le i \le k}{\operatorname{maxsum}}   \left{ S_{[i:k]}\right}
-$$</p>
-<p>We can consider the last number $a_k$. To obtina $S_k$, we can either add it to $S_{k-1}$, or discard $S_{k-1}$ and keep only $a_k$, whichever has a larger sum.</p>
+<p>Let <span class="math notranslate nohighlight">\(S_k\)</span> be a subsequence <strong>ending</strong> at <span class="math notranslate nohighlight">\(a_k\)</span> that has the largest sum.</p>
+<div class="math notranslate nohighlight">
+\[
+S_k = \underset{1 \le i \le k}{\operatorname{maxsum}}   \left\{ S_{[i:k]}\right\}
+\]</div>
+<p>We can consider the last number <span class="math notranslate nohighlight">\(a_k\)</span>. To obtina <span class="math notranslate nohighlight">\(S_k\)</span>, we can either add it to <span class="math notranslate nohighlight">\(S_{k-1}\)</span>, or discard <span class="math notranslate nohighlight">\(S_{k-1}\)</span> and keep only <span class="math notranslate nohighlight">\(a_k\)</span>, whichever has a larger sum.</p>
 <div class="margin sidebar">
 <p class="sidebar-title">Takeaway</p>
 <p>It can be the case that the value in the iterative relation is not OPT.</p>
 </div>
-<p>Hence, the iterative relation for $S_k$ is</p>
-<p>$$
-S_k = \operatorname{maxsum}  \left{ S_{k-1} \circ a_k, \left{ a_k \right} \right}
-$$</p>
+<p>Hence, the iterative relation for <span class="math notranslate nohighlight">\(S_k\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[
+S_k = \operatorname{maxsum}  \left\{ S_{k-1} \circ a_k, \left\{ a_k \right\} \right\}
+\]</div>
 <p>The corresponding iterative relation for the sum is</p>
-<p>$$
-C_k = \max \left{ C_{k-1} + a_k, a_k \right}
-$$</p>
-<p>so the choice only depends on $C_{k-1} &gt;0$ or not.</p>
-<p>The base case is $S_1= \left{ a_1 \right}$ if $a_1 &gt; 0$, or $0$ otherwise.</p>
-<p>The final output is NOT $S_n$. The optimal sequence can end anywhere. Thus,</p>
-<p>$$OPT = \max _{1 \le i \le n} \left{ S_i \right}$$</p>
+<div class="math notranslate nohighlight">
+\[
+C_k = \max \left\{ C_{k-1} + a_k, a_k \right\}
+\]</div>
+<p>so the choice only depends on <span class="math notranslate nohighlight">\(C_{k-1} &gt;0\)</span> or not.</p>
+<p>The base case is <span class="math notranslate nohighlight">\(S_1= \left\{ a_1 \right\}\)</span> if <span class="math notranslate nohighlight">\(a_1 &gt; 0\)</span>, or <span class="math notranslate nohighlight">\(0\)</span> otherwise.</p>
+<p>The final output is NOT <span class="math notranslate nohighlight">\(S_n\)</span>. The optimal sequence can end anywhere. Thus,</p>
+<div class="math notranslate nohighlight">
+\[OPT = \max _{1 \le i \le n} \left\{ S_i \right\}\]</div>
 </div>
 <div class="section" id="solution">
 <h2>Solution<a class="headerlink" href="#solution" title="Permalink to this headline">¶</a></h2>
@@ -716,36 +726,36 @@ $$</p>
 <p><strong>Largest Sum Subsequence</strong></p>
 <hr class="docutils" />
 <ul class="simple">
-<li><p>Initialize $C=0, OPT=0$</p></li>
-<li><p>For $k=1$ to $n$, // find $C_k$</p>
+<li><p>Initialize <span class="math notranslate nohighlight">\(C=0, OPT=0\)</span></p></li>
+<li><p>For <span class="math notranslate nohighlight">\(k=1\)</span> to <span class="math notranslate nohighlight">\(n\)</span>, // find <span class="math notranslate nohighlight">\(C_k\)</span></p>
 <ul>
-<li><p>if $C&gt;0$</p>
+<li><p>if <span class="math notranslate nohighlight">\(C&gt;0\)</span></p>
 <ul>
-<li><p>$C = C + a_k$</p></li>
+<li><p><span class="math notranslate nohighlight">\(C = C + a_k\)</span></p></li>
 </ul>
 </li>
 <li><p>else</p>
 <ul>
-<li><p>$C = a_k$</p></li>
-<li><p>$\text{start}  = k$ // record the start index</p></li>
+<li><p><span class="math notranslate nohighlight">\(C = a_k\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\text{start}  = k\)</span> // record the start index</p></li>
 </ul>
 </li>
-<li><p>if $C&gt;OPT$ // find a larger sum</p>
+<li><p>if <span class="math notranslate nohighlight">\(C&gt;OPT\)</span> // find a larger sum</p>
 <ul>
-<li><p>$OPT = C$</p></li>
-<li><p>$\text{end}  = k$ // record the ending index</p></li>
+<li><p><span class="math notranslate nohighlight">\(OPT = C\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\text{end}  = k\)</span> // record the ending index</p></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><p>Return $OPT, \text{start} , \text{end}$</p></li>
+<li><p>Return <span class="math notranslate nohighlight">\(OPT, \text{start} , \text{end}\)</span></p></li>
 </ul>
 <hr class="docutils" />
-<p>The optimal subsequence is $A_{[\text{start}: \text{end}]}$.</p>
+<p>The optimal subsequence is <span class="math notranslate nohighlight">\(A_{[\text{start}: \text{end}]}\)</span>.</p>
 </div>
 <div class="section" id="complexity">
 <h2>Complexity<a class="headerlink" href="#complexity" title="Permalink to this headline">¶</a></h2>
-<p>$O(n)$</p>
+<p><span class="math notranslate nohighlight">\(O(n)\)</span></p>
 </div>
 </div>
 

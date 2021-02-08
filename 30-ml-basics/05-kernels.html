@@ -46,6 +46,8 @@
     <script src="../_static/copybutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="../_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
     <script >
         const thebe_selector = ".thebe"
@@ -491,7 +493,11 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../33-dimensionality-reduction/31-t-SNE.html">
-     SNE and $t$-SNE
+     SNE and
+     <span class="math notranslate nohighlight">
+      \(t\)
+     </span>
+     -SNE
     </a>
    </li>
   </ul>
@@ -690,47 +696,48 @@
 <div class="section" id="definitions">
 <h2>Definitions<a class="headerlink" href="#definitions" title="Permalink to this headline">¶</a></h2>
 <dl class="simple myst">
-<dt>Definition (Kernel)</dt><dd><p>A kernel is a function $k: \mathcal{S} \times \mathcal{S} \rightarrow \mathbb{C}$ where $\mathbb{S}$ is an arbitrary set.</p>
+<dt>Definition (Kernel)</dt><dd><p>A kernel is a function <span class="math notranslate nohighlight">\(k: \mathcal{S} \times \mathcal{S} \rightarrow \mathbb{C}\)</span> where <span class="math notranslate nohighlight">\(\mathbb{S}\)</span> is an arbitrary set.</p>
 </dd>
-<dt>Definition (Positive semi-definite kernels)</dt><dd><p>A kernel $k$ is a positive semi-definite kernel if $\forall x_{1}, \ldots, x_{n} \in \mathcal{S}$, the matrix $\boldsymbol{C}$ defined below is positive semi-definite,</p>
+<dt>Definition (Positive semi-definite kernels)</dt><dd><p>A kernel <span class="math notranslate nohighlight">\(k\)</span> is a positive semi-definite kernel if <span class="math notranslate nohighlight">\(\forall x_{1}, \ldots, x_{n} \in \mathcal{S}\)</span>, the matrix <span class="math notranslate nohighlight">\(\boldsymbol{C}\)</span> defined below is positive semi-definite,</p>
 </dd>
 </dl>
-<p>$$
+<div class="math notranslate nohighlight">
+\[\begin{split}
 \boldsymbol{C}=\left(\begin{array}{l}
-k\left(x_{1}, x_{1}\right), \ldots, k\left(x_{1}, x_{n}\right) \
-k\left(x_{2}, x_{1}\right), \ldots, k\left(x_{2}, x_{n}\right) \
-\vdots  \
+k\left(x_{1}, x_{1}\right), \ldots, k\left(x_{1}, x_{n}\right) \\
+k\left(x_{2}, x_{1}\right), \ldots, k\left(x_{2}, x_{n}\right) \\
+\vdots  \\
 k\left(x_{n}, x_{1}\right), \ldots, k\left(x_{n}, x_{n}\right)
 \end{array}\right) \in \mathbb{C}^{n \times n}
-$$</p>
+\end{split}\]</div>
 <dl class="simple myst">
-<dt>Examples</dt><dd><p>Dot product $k(\boldsymbol{x}, \boldsymbol{y})=\boldsymbol{x}^{<em>} \boldsymbol{y}$, where $\boldsymbol{x}, \boldsymbol{y} \in \mathbb{C}^{d}$, is a PSD kernel, since the matrix $\boldsymbol{X}$ is PSD because $\boldsymbol{u} ^</em> \boldsymbol{C} \boldsymbol{u} =  \boldsymbol{u} ^* \boldsymbol{X} ^* \boldsymbol{X} \boldsymbol{u} \ge 0$.</p>
+<dt>Examples</dt><dd><p>Dot product <span class="math notranslate nohighlight">\(k(\boldsymbol{x}, \boldsymbol{y})=\boldsymbol{x}^{*} \boldsymbol{y}\)</span>, where <span class="math notranslate nohighlight">\(\boldsymbol{x}, \boldsymbol{y} \in \mathbb{C}^{d}\)</span>, is a PSD kernel, since the matrix <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span> is PSD because <span class="math notranslate nohighlight">\(\boldsymbol{u} ^* \boldsymbol{C} \boldsymbol{u} =  \boldsymbol{u} ^* \boldsymbol{X} ^* \boldsymbol{X} \boldsymbol{u} \ge 0\)</span>.</p>
 </dd>
-<dd><p>In general, $k(x, y) \triangleq \boldsymbol{\phi}(x) ^\top \boldsymbol{\phi}(y)$, with arbitrary map $\boldsymbol{\phi}: \mathcal{S} \rightarrow \mathbb{R}^{d}$, is a PSD kernel,</p>
+<dd><p>In general, <span class="math notranslate nohighlight">\(k(x, y) \triangleq \boldsymbol{\phi}(x) ^\top \boldsymbol{\phi}(y)\)</span>, with arbitrary map <span class="math notranslate nohighlight">\(\boldsymbol{\phi}: \mathcal{S} \rightarrow \mathbb{R}^{d}\)</span>, is a PSD kernel,</p>
 </dd>
-<dd><p>More generally, $k(x, y) \triangleq\langle\boldsymbol{\phi}(x), \boldsymbol{\phi}(y)\rangle_{\mathcal{H}}$, with $\boldsymbol{\phi}: \mathcal{S} \rightarrow \mathcal{H}$, is a PSD kernel.</p>
+<dd><p>More generally, <span class="math notranslate nohighlight">\(k(x, y) \triangleq\langle\boldsymbol{\phi}(x), \boldsymbol{\phi}(y)\rangle_{\mathcal{H}}\)</span>, with <span class="math notranslate nohighlight">\(\boldsymbol{\phi}: \mathcal{S} \rightarrow \mathcal{H}\)</span>, is a PSD kernel.</p>
 </dd>
 </dl>
 </div>
 <div class="section" id="construction-of-psd-kernels">
 <h2>Construction of PSD Kernels<a class="headerlink" href="#construction-of-psd-kernels" title="Permalink to this headline">¶</a></h2>
-<p>If $k, k_1, k_2$  are real PSD kernels on some arbitrary set $\mathcal{S}$, the following ones are also real PSD kernels.</p>
+<p>If <span class="math notranslate nohighlight">\(k, k_1, k_2\)</span>  are real PSD kernels on some arbitrary set <span class="math notranslate nohighlight">\(\mathcal{S}\)</span>, the following ones are also real PSD kernels.</p>
 <ol class="simple">
-<li><p>$\alpha k(x,y)$, where $\alpha \in \mathbb{R} _{\ge 0}$</p></li>
-<li><p>$k_1(x,y) + k_2 (x,y)$</p></li>
-<li><p>$k_1(x,y) k_2 (x,y)$</p></li>
-<li><p>$p(k(x,y))$ where $p$ is a polinomial that has non-negative coefficients</p></li>
-<li><p>$\exp (k(x,y ))$</p></li>
-<li><p>$f(x)k(x,y)f(y), \forall , f: \mathcal{S} \rightarrow \mathbb{R}$</p></li>
-<li><p>$k\left(\xi\left(x^{\prime}\right), \xi\left(y^{\prime}\right)\right), \forall \xi: \mathcal{S}^{\prime} \rightarrow \mathcal{S}$</p></li>
+<li><p><span class="math notranslate nohighlight">\(\alpha k(x,y)\)</span>, where <span class="math notranslate nohighlight">\(\alpha \in \mathbb{R} _{\ge 0}\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(k_1(x,y) + k_2 (x,y)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(k_1(x,y) k_2 (x,y)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(p(k(x,y))\)</span> where <span class="math notranslate nohighlight">\(p\)</span> is a polinomial that has non-negative coefficients</p></li>
+<li><p><span class="math notranslate nohighlight">\(\exp (k(x,y ))\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(f(x)k(x,y)f(y), \forall \, f: \mathcal{S} \rightarrow \mathbb{R}\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(k\left(\xi\left(x^{\prime}\right), \xi\left(y^{\prime}\right)\right), \forall \xi: \mathcal{S}^{\prime} \rightarrow \mathcal{S}\)</span></p></li>
 </ol>
 </div>
 <div class="section" id="popular-kernels">
 <h2>Popular Kernels<a class="headerlink" href="#popular-kernels" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p>Linear kernel (dot product): $k(\boldsymbol{x}, \boldsymbol{y})=\boldsymbol{x}^{\top} \boldsymbol{y}$</p></li>
-<li><p>Polynomial kernel: $k(\boldsymbol{x}, \boldsymbol{y})=p\left(\boldsymbol{x}^{\top} \boldsymbol{y}\right)$ with non-negative coefficients</p></li>
-<li><p>Gaussian (RBF) kernel: $k\left(\boldsymbol{x}, \boldsymbol{y} ; \sigma^{2}\right)=\exp \left(-\frac{|\boldsymbol{x}-\boldsymbol{y}|^{2}}{2 \sigma^{2}}\right)$</p></li>
+<li><p>Linear kernel (dot product): <span class="math notranslate nohighlight">\(k(\boldsymbol{x}, \boldsymbol{y})=\boldsymbol{x}^{\top} \boldsymbol{y}\)</span></p></li>
+<li><p>Polynomial kernel: <span class="math notranslate nohighlight">\(k(\boldsymbol{x}, \boldsymbol{y})=p\left(\boldsymbol{x}^{\top} \boldsymbol{y}\right)\)</span> with non-negative coefficients</p></li>
+<li><p>Gaussian (RBF) kernel: <span class="math notranslate nohighlight">\(k\left(\boldsymbol{x}, \boldsymbol{y} ; \sigma^{2}\right)=\exp \left(-\frac{\|\boldsymbol{x}-\boldsymbol{y}\|^{2}}{2 \sigma^{2}}\right)\)</span></p></li>
 </ul>
 <p>All three are PSD kernels, and we can use them to construct PSD kernels.</p>
 </div>
@@ -740,61 +747,66 @@ $$</p>
 <div class="section" id="mercer-s-theorem">
 <span id="ml-mercers-theorem"></span><h3>Mercer’s Theorem<a class="headerlink" href="#mercer-s-theorem" title="Permalink to this headline">¶</a></h3>
 <dl class="simple myst">
-<dt>Theorem (Mercer’s, 1909)</dt><dd><p>Under fairly general conditions, for any PSD kernel $k: \mathcal{S} \times \mathcal{S} \rightarrow \mathbb{C}$, there <strong>exists</strong> a map $\boldsymbol{\phi}: \mathcal{S} \rightarrow \mathcal{H}$ such that $k(x, y)=\langle\boldsymbol{\phi}(x), \boldsymbol{\phi}(y)\rangle_{\mathcal{H}}$.</p>
+<dt>Theorem (Mercer’s, 1909)</dt><dd><p>Under fairly general conditions, for any PSD kernel <span class="math notranslate nohighlight">\(k: \mathcal{S} \times \mathcal{S} \rightarrow \mathbb{C}\)</span>, there <strong>exists</strong> a map <span class="math notranslate nohighlight">\(\boldsymbol{\phi}: \mathcal{S} \rightarrow \mathcal{H}\)</span> such that <span class="math notranslate nohighlight">\(k(x, y)=\langle\boldsymbol{\phi}(x), \boldsymbol{\phi}(y)\rangle_{\mathcal{H}}\)</span>.</p>
 </dd>
 </dl>
 </div>
 <div class="section" id="representer-theorem">
 <span id="ml-representer-theorem"></span><h3>Representer Theorem<a class="headerlink" href="#representer-theorem" title="Permalink to this headline">¶</a></h3>
 <dl class="simple myst">
-<dt>Representer Theorem (Simplified)</dt><dd><p>Consider the optimization problem on a data set $\mathcal{D} = \left{ \boldsymbol{x}_i ,y_i \right} _{i=1}^n, \boldsymbol{x}_i \in \mathcal{S}$</p>
-<p>$$
-\boldsymbol{w}^{*}=\underset{\boldsymbol{w}}{\arg \min } \sum_{i=1}^{n} \mathcal{L}\left(\left\langle\boldsymbol{w}, \boldsymbol{\phi} \left(\boldsymbol{x}<em>i \right)\right\rangle, y</em>{i}\right)+|\boldsymbol{w}|^{2}
-$$</p>
+<dt>Representer Theorem (Simplified)</dt><dd><p>Consider the optimization problem on a data set <span class="math notranslate nohighlight">\(\mathcal{D} = \left\{ \boldsymbol{x}_i ,y_i \right\} _{i=1}^n, \boldsymbol{x}_i \in \mathcal{S}\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+  \boldsymbol{w}^{*}=\underset{\boldsymbol{w}}{\arg \min } \sum_{i=1}^{n} \mathcal{L}\left(\left\langle\boldsymbol{w}, \boldsymbol{\phi} \left(\boldsymbol{x}_i \right)\right\rangle, y_{i}\right)+\|\boldsymbol{w}\|^{2}
+  \]</div>
 <p>where</p>
 <ul class="simple">
-<li><p>$\boldsymbol{\phi} : \mathcal{S} \rightarrow \mathbb{R} ^d$ (or $\mathcal{S} \rightarrow \mathcal{H}$ in general)</p></li>
-<li><p>$\boldsymbol{w} \in \mathbb{R} ^d$ is the coefficients in the model to be solved</p></li>
-<li><p>$\mathcal{L}(\cdot, \cdot): \mathbb{R} \times \mathbb{R} \rightarrow \mathbb{R}$ on some arbitrary loss function.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{\phi} : \mathcal{S} \rightarrow \mathbb{R} ^d\)</span> (or <span class="math notranslate nohighlight">\(\mathcal{S} \rightarrow \mathcal{H}\)</span> in general)</p></li>
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{w} \in \mathbb{R} ^d\)</span> is the coefficients in the model to be solved</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathcal{L}(\cdot, \cdot): \mathbb{R} \times \mathbb{R} \rightarrow \mathbb{R}\)</span> on some arbitrary loss function.</p></li>
 </ul>
-<p>Then there $\exists\left{\alpha_{i} \in \mathbb{R}\right}_{i=1}^{n}$ such that the solution $\boldsymbol{w} ^*$ is a linear combination of the $n$ transformed data vectors.</p>
-<p>$$\boldsymbol{w}^{*}=\sum_{i=1}^{n} \alpha_{i} \boldsymbol{\phi} \left(\boldsymbol{x}_i \right) = \boldsymbol{X} ^\top \boldsymbol{\alpha}$$</p>
+<p>Then there <span class="math notranslate nohighlight">\(\exists\left\{\alpha_{i} \in \mathbb{R}\right\}_{i=1}^{n}\)</span> such that the solution <span class="math notranslate nohighlight">\(\boldsymbol{w} ^*\)</span> is a linear combination of the <span class="math notranslate nohighlight">\(n\)</span> transformed data vectors.</p>
+<div class="math notranslate nohighlight">
+\[\boldsymbol{w}^{*}=\sum_{i=1}^{n} \alpha_{i} \boldsymbol{\phi} \left(\boldsymbol{x}_i \right) = \boldsymbol{X} ^\top \boldsymbol{\alpha}\]</div>
 </dd>
-<dt><strong>Example (Linear regression OLS)</strong></dt><dd><p>In linear regression, we can write $\boldsymbol{\beta}$ as a linear combination of data vectors $\boldsymbol{x}_i$ (identical transformation $\boldsymbol{\phi}$).</p>
+<dt><strong>Example (Linear regression OLS)</strong></dt><dd><p>In linear regression, we can write <span class="math notranslate nohighlight">\(\boldsymbol{\beta}\)</span> as a linear combination of data vectors <span class="math notranslate nohighlight">\(\boldsymbol{x}_i\)</span> (identical transformation <span class="math notranslate nohighlight">\(\boldsymbol{\phi}\)</span>).</p>
 </dd>
 </dl>
-<p>$$\begin{aligned}
-&amp;&amp; \boldsymbol{X} ^\top \boldsymbol{\alpha} &amp;= (\boldsymbol{X} ^\top \boldsymbol{X} )^{-1} \boldsymbol{X} ^\top \boldsymbol{y} \
-&amp;\Rightarrow&amp; (\boldsymbol{X} \boldsymbol{X}  ^\top )(\boldsymbol{X} \boldsymbol{X}  ^\top) \boldsymbol{\alpha} &amp;=\boldsymbol{X} \left( \boldsymbol{X} ^\top \boldsymbol{X}  (\boldsymbol{X} ^\top \boldsymbol{X} )^{-1}  \right)\boldsymbol{X} ^\top \boldsymbol{y} \
-&amp;\Rightarrow&amp;  \boldsymbol{K}^2 \boldsymbol{\alpha} &amp;= \boldsymbol{K} \boldsymbol{y}  \quad \text{let } \boldsymbol{K} = \boldsymbol{X} \boldsymbol{X} ^\top  \
-&amp;\Rightarrow&amp;  \boldsymbol{\alpha} &amp;= \boldsymbol{K} ^{-1} \boldsymbol{y}  \
-\end{aligned}$$</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+&amp;&amp; \boldsymbol{X} ^\top \boldsymbol{\alpha} &amp;= (\boldsymbol{X} ^\top \boldsymbol{X} )^{-1} \boldsymbol{X} ^\top \boldsymbol{y} \\
+&amp;\Rightarrow&amp; (\boldsymbol{X} \boldsymbol{X}  ^\top )(\boldsymbol{X} \boldsymbol{X}  ^\top) \boldsymbol{\alpha} &amp;=\boldsymbol{X} \left( \boldsymbol{X} ^\top \boldsymbol{X}  (\boldsymbol{X} ^\top \boldsymbol{X} )^{-1}  \right)\boldsymbol{X} ^\top \boldsymbol{y} \\
+&amp;\Rightarrow&amp;  \boldsymbol{K}^2 \boldsymbol{\alpha} &amp;= \boldsymbol{K} \boldsymbol{y}  \quad \text{let } \boldsymbol{K} = \boldsymbol{X} \boldsymbol{X} ^\top  \\
+&amp;\Rightarrow&amp;  \boldsymbol{\alpha} &amp;= \boldsymbol{K} ^{-1} \boldsymbol{y}  \\
+\end{aligned}\end{split}\]</div>
 <p><strong>Implication</strong></p>
-<p>Substituting $\boldsymbol{w} ^*$ back into the loss function, we have, for the loss of a data point $(\boldsymbol{x}, y)$,</p>
-<p>$$\begin{aligned} \mathcal{L}\left(\left\langle\boldsymbol{w}^{*}, \boldsymbol{\phi}(\boldsymbol{x})\right\rangle, y\right) &amp;=\mathcal{L}\left(\left\langle\sum_{i=1}^{n} \alpha_{i} \boldsymbol{\phi}\left(\boldsymbol{x}<em>{i}\right), \boldsymbol{\phi}(\boldsymbol{x})\right\rangle, y\right) \ &amp;=\mathcal{L}\left(\sum</em>{i=1}^{n} \alpha_{i}\left\langle\boldsymbol{\phi}\left(\boldsymbol{x}<em>{i}\right), \boldsymbol{\phi}(\boldsymbol{x})\right\rangle, y\right) \ &amp;=\mathcal{L}\left(\sum</em>{i=1}^{n} \alpha_{i} k\left(\boldsymbol{x}_{i}, \boldsymbol{x}\right), y\right) \end{aligned}$$</p>
+<p>Substituting <span class="math notranslate nohighlight">\(\boldsymbol{w} ^*\)</span> back into the loss function, we have, for the loss of a data point <span class="math notranslate nohighlight">\((\boldsymbol{x}, y)\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned} \mathcal{L}\left(\left\langle\boldsymbol{w}^{*}, \boldsymbol{\phi}(\boldsymbol{x})\right\rangle, y\right) &amp;=\mathcal{L}\left(\left\langle\sum_{i=1}^{n} \alpha_{i} \boldsymbol{\phi}\left(\boldsymbol{x}_{i}\right), \boldsymbol{\phi}(\boldsymbol{x})\right\rangle, y\right) \\ &amp;=\mathcal{L}\left(\sum_{i=1}^{n} \alpha_{i}\left\langle\boldsymbol{\phi}\left(\boldsymbol{x}_{i}\right), \boldsymbol{\phi}(\boldsymbol{x})\right\rangle, y\right) \\ &amp;=\mathcal{L}\left(\sum_{i=1}^{n} \alpha_{i} k\left(\boldsymbol{x}_{i}, \boldsymbol{x}\right), y\right) \end{aligned}\end{split}\]</div>
 <p>The last line implies that</p>
 <ul class="simple">
-<li><p>We don’t even need to know what $\boldsymbol{\phi}$ is exactly. We just need to care about kernels and there is a corresponding $\boldsymbol{\phi}$ under the wood.</p></li>
-<li><p>We can convert the problem of minimization over $\boldsymbol{w}$ to that over $\boldsymbol{\alpha}$.</p></li>
+<li><p>We don’t even need to know what <span class="math notranslate nohighlight">\(\boldsymbol{\phi}\)</span> is exactly. We just need to care about kernels and there is a corresponding <span class="math notranslate nohighlight">\(\boldsymbol{\phi}\)</span> under the wood.</p></li>
+<li><p>We can convert the problem of minimization over <span class="math notranslate nohighlight">\(\boldsymbol{w}\)</span> to that over <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}\)</span>.</p></li>
 </ul>
 </div>
 <div class="section" id="logic">
 <span id="kernels-logic"></span><h3>Logic<a class="headerlink" href="#logic" title="Permalink to this headline">¶</a></h3>
 <p>Now we can summarize the logic of using kernels.</p>
 <ol class="simple">
-<li><p>People find that feature transformation $\boldsymbol{\phi}$ help improve model performance. But there are many choices of $\boldsymbol{\phi}: S \rightarrow \mathbb{R} ^d$, hard to enumerate and handcraft an optimal one.</p></li>
+<li><p>People find that feature transformation <span class="math notranslate nohighlight">\(\boldsymbol{\phi}\)</span> help improve model performance. But there are many choices of <span class="math notranslate nohighlight">\(\boldsymbol{\phi}: S \rightarrow \mathbb{R} ^d\)</span>, hard to enumerate and handcraft an optimal one.</p></li>
 <li><p>People find using kernels can improve model performance too, and more importantly kernels are related to feature transformation:</p>
 <ul class="simple">
-<li><p>For every $\boldsymbol{\phi} (\boldsymbol{x}_i)$ in $\mathcal{H}$, there is a corresponding kernel $k(\boldsymbol{x}_i , \boldsymbol{x}_j) = \boldsymbol{\phi}(\boldsymbol{x}_i ) ^\top \boldsymbol{\phi}(\boldsymbol{x}_j )$. In particular, if there is an optimal $\boldsymbol{\phi} ^<em>$, then there is a kernel $k = \boldsymbol{\phi} ^{</em> \top} \boldsymbol{\phi} ^*$.</p></li>
-<li><p>For every PSD kernel $k(\cdot, \cdot)$, there exists a feature transformatin $\boldsymbol{\phi}(\cdot)$ by <a class="reference internal" href="#ml-mercers-theorem"><span class="std std-ref">Mercer’s Theorem</span></a>. Note that $\boldsymbol{\phi}(\cdot)$ can be infinite dimensional for some $k(\cdot, \cdot)$.</p></li>
-<li><p>A advantage of kernels over $\boldsymbol{\phi}$ is that we do not need to compute the dot product, which can be intractable in high-dimensional spaces.</p></li>
+<li><p>For every <span class="math notranslate nohighlight">\(\boldsymbol{\phi} (\boldsymbol{x}_i)\)</span> in <span class="math notranslate nohighlight">\(\mathcal{H}\)</span>, there is a corresponding kernel <span class="math notranslate nohighlight">\(k(\boldsymbol{x}_i , \boldsymbol{x}_j) = \boldsymbol{\phi}(\boldsymbol{x}_i ) ^\top \boldsymbol{\phi}(\boldsymbol{x}_j )\)</span>. In particular, if there is an optimal <span class="math notranslate nohighlight">\(\boldsymbol{\phi} ^*\)</span>, then there is a kernel <span class="math notranslate nohighlight">\(k = \boldsymbol{\phi} ^{* \top} \boldsymbol{\phi} ^*\)</span>.</p></li>
+<li><p>For every PSD kernel <span class="math notranslate nohighlight">\(k(\cdot, \cdot)\)</span>, there exists a feature transformatin <span class="math notranslate nohighlight">\(\boldsymbol{\phi}(\cdot)\)</span> by <a class="reference internal" href="#ml-mercers-theorem"><span class="std std-ref">Mercer’s Theorem</span></a>. Note that <span class="math notranslate nohighlight">\(\boldsymbol{\phi}(\cdot)\)</span> can be infinite dimensional for some <span class="math notranslate nohighlight">\(k(\cdot, \cdot)\)</span>.</p></li>
+<li><p>A advantage of kernels over <span class="math notranslate nohighlight">\(\boldsymbol{\phi}\)</span> is that we do not need to compute the dot product, which can be intractable in high-dimensional spaces.</p></li>
 </ul>
 </li>
-<li><p>Therefore, instead of handcrafting feature transformations $\boldsymbol{\phi}$, people change to choosing (PSD) kernels to improve model performance.</p></li>
+<li><p>Therefore, instead of handcrafting feature transformations <span class="math notranslate nohighlight">\(\boldsymbol{\phi}\)</span>, people change to choosing (PSD) kernels to improve model performance.</p></li>
 </ol>
-<p>:::{admonition,note} Dot product in loss function
-Note that the kernel methods only apply to models with loss function that involves dot product $\boldsymbol{x}_i ^\top \boldsymbol{x}_j$, for instance, SVM, PCA. If there is no dot product, there is no corresponding kernelized version of that model, such as linear regression.
-:::</p>
+<div class="note admonition">
+<p class="admonition-title"> Dot product in loss function</p>
+<p>Note that the kernel methods only apply to models with loss function that involves dot product <span class="math notranslate nohighlight">\(\boldsymbol{x}_i ^\top \boldsymbol{x}_j\)</span>, for instance, SVM, PCA. If there is no dot product, there is no corresponding kernelized version of that model, such as linear regression.</p>
+</div>
 </div>
 </div>
 </div>

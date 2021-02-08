@@ -46,6 +46,8 @@
     <script src="../_static/copybutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="../_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
     <script >
         const thebe_selector = ".thebe"
@@ -491,7 +493,11 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../33-dimensionality-reduction/31-t-SNE.html">
-     SNE and $t$-SNE
+     SNE and
+     <span class="math notranslate nohighlight">
+      \(t\)
+     </span>
+     -SNE
     </a>
    </li>
   </ul>
@@ -660,74 +666,87 @@
                 
   <div class="section" id="derangement">
 <h1>Derangement<a class="headerlink" href="#derangement" title="Permalink to this headline">¶</a></h1>
-<p><em>At a party, $n$ gentlemen check their hats. They “have a good time”,
+<p><em>At a party, <span class="math notranslate nohighlight">\(n\)</span> gentlemen check their hats. They “have a good time”,
 and are each handed a hat on the way out. In how many ways can
 the hats be returned so that no one is returned his own hat?</em></p>
-<p>This is a derangement problem. An $n$-derangement is an $n$-permutation $\pi=p_1p_2\ldots p_n$ such that $p_1\ne1, p_2\ne2, \ldots, p_n\ne n$. We let $D_n$ be the number of all $n$-derangements, sometimes denoted by $!n$.</p>
-<p>$$
+<p>This is a derangement problem. An <span class="math notranslate nohighlight">\(n\)</span>-derangement is an <span class="math notranslate nohighlight">\(n\)</span>-permutation <span class="math notranslate nohighlight">\(\pi=p_1p_2\ldots p_n\)</span> such that <span class="math notranslate nohighlight">\(p_1\ne1, p_2\ne2, \ldots, p_n\ne n\)</span>. We let <span class="math notranslate nohighlight">\(D_n\)</span> be the number of all <span class="math notranslate nohighlight">\(n\)</span>-derangements, sometimes denoted by <span class="math notranslate nohighlight">\(!n\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[
 D_{n}=n! \left( \frac{1}{2!}-\frac{1}{3!}+\ldots+(-1)^{n} \frac{1}{n!}\right)
-$$</p>
+\]</div>
 <div class="section" id="sol-1-recurrence-relation">
 <h2>Sol.1 Recurrence Relation<a class="headerlink" href="#sol-1-recurrence-relation" title="Permalink to this headline">¶</a></h2>
 <p>There is a recurrence relation</p>
-<p>$$D_n = (n-1)\left(D_{n-1} + D_{n-2}\right)$$</p>
-<p>where $D(1)=0, D(2)=1$.</p>
-<p>To understand it, let person $i$’s hat be $h_i$, and suppose he gets person $j$’s hat $h_j$. Consider two cases that can happen to person $j$.</p>
+<div class="math notranslate nohighlight">
+\[D_n = (n-1)\left(D_{n-1} + D_{n-2}\right)\]</div>
+<p>where <span class="math notranslate nohighlight">\(D(1)=0, D(2)=1\)</span>.</p>
+<p>To understand it, let person <span class="math notranslate nohighlight">\(i\)</span>’s hat be <span class="math notranslate nohighlight">\(h_i\)</span>, and suppose he gets person <span class="math notranslate nohighlight">\(j\)</span>’s hat <span class="math notranslate nohighlight">\(h_j\)</span>. Consider two cases that can happen to person <span class="math notranslate nohighlight">\(j\)</span>.</p>
 <ul class="simple">
-<li><p>He gets $h_i$. In this case, the other $n-2$ persons and the other $n-2$ hats formulate a problem $D(n-2)$.</p></li>
-<li><p>He gets a hat other than $h_i$. In this case, he and the other $n-2$ persons and the $n-1$ hats (total excluding $h_j$) formulate a problem $D(n-1)$. Why? Check the constraints: for each of the $n-1$ person, there is a hat that he cannot get. In particular, person $j$ cannot get $h_i$, and person $k$ cannot get $h_k$ for $k\ne j$. The constraints are the same as a regular $D(n-1)$ problem.</p></li>
+<li><p>He gets <span class="math notranslate nohighlight">\(h_i\)</span>. In this case, the other <span class="math notranslate nohighlight">\(n-2\)</span> persons and the other <span class="math notranslate nohighlight">\(n-2\)</span> hats formulate a problem <span class="math notranslate nohighlight">\(D(n-2)\)</span>.</p></li>
+<li><p>He gets a hat other than <span class="math notranslate nohighlight">\(h_i\)</span>. In this case, he and the other <span class="math notranslate nohighlight">\(n-2\)</span> persons and the <span class="math notranslate nohighlight">\(n-1\)</span> hats (total excluding <span class="math notranslate nohighlight">\(h_j\)</span>) formulate a problem <span class="math notranslate nohighlight">\(D(n-1)\)</span>. Why? Check the constraints: for each of the <span class="math notranslate nohighlight">\(n-1\)</span> person, there is a hat that he cannot get. In particular, person <span class="math notranslate nohighlight">\(j\)</span> cannot get <span class="math notranslate nohighlight">\(h_i\)</span>, and person <span class="math notranslate nohighlight">\(k\)</span> cannot get <span class="math notranslate nohighlight">\(h_k\)</span> for <span class="math notranslate nohighlight">\(k\ne j\)</span>. The constraints are the same as a regular <span class="math notranslate nohighlight">\(D(n-1)\)</span> problem.</p></li>
 </ul>
-<p>Moreover, for a person $i$, there are $n-1$ ways to get a hat $h_j$, so the recurrence relation has the above form.</p>
-<p>To derive the explicit form of $D_n$, let $D_n = n ! M_{n}$, where $M_1=0, M_2=\frac{1}{2}$.</p>
+<p>Moreover, for a person <span class="math notranslate nohighlight">\(i\)</span>, there are <span class="math notranslate nohighlight">\(n-1\)</span> ways to get a hat <span class="math notranslate nohighlight">\(h_j\)</span>, so the recurrence relation has the above form.</p>
+<p>To derive the explicit form of <span class="math notranslate nohighlight">\(D_n\)</span>, let <span class="math notranslate nohighlight">\(D_n = n ! M_{n}\)</span>, where <span class="math notranslate nohighlight">\(M_1=0, M_2=\frac{1}{2}\)</span>.</p>
 <p>By the recurrence relation we have</p>
-<p>$$\begin{align}
-n ! M_{n} &amp; = (n-1)(n-1) ! M_{n-1}+(n-1)(n-2) ! M_{n-2} \
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+n ! M_{n} &amp; = (n-1)(n-1) ! M_{n-1}+(n-1)(n-2) ! M_{n-2} \\
 &amp; =n ! M_{n-1}-(n-1) ! M_{n-1}+(n-1) ! M_{n-2}
-\end{align}$$</p>
-<p>Dividing by $(n-1)!$ on both sides gives</p>
-<p>$$nM_n = nM_{n-1} - M_{n-1} + (n-1)!M_{n-2}$$</p>
+\end{align}\end{split}\]</div>
+<p>Dividing by <span class="math notranslate nohighlight">\((n-1)!\)</span> on both sides gives</p>
+<div class="math notranslate nohighlight">
+\[nM_n = nM_{n-1} - M_{n-1} + (n-1)!M_{n-2}\]</div>
 <p>Rearrangement gives</p>
-<p>$$\begin{align}
-M_{n}-M_{n-1} &amp;= -\frac{1}{n}\left(M_{n-1}-M_{n-2}\right) \
-&amp;=\ldots \
-&amp;=\left(-\frac{1}{n}\right)\left(-\frac{1}{n-1}\right) \ldots \left(-\frac{1}{3}\right)\left(M_{2}-M_{1}\right) \
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+M_{n}-M_{n-1} &amp;= -\frac{1}{n}\left(M_{n-1}-M_{n-2}\right) \\
+&amp;=\ldots \\
+&amp;=\left(-\frac{1}{n}\right)\left(-\frac{1}{n-1}\right) \ldots \left(-\frac{1}{3}\right)\left(M_{2}-M_{1}\right) \\
 &amp;=(-1)^{n} \frac{1}{n !}
-\end{align}$$</p>
+\end{align}\end{split}\]</div>
 <p>Then</p>
-<p>$$\begin{align}
-M_{n} &amp;= (M_n - M_{n-1}) + (M_{n-1} - M_{n-2}) + \ldots + (M_2 - M_1) \
-&amp; =(-1)^{2} \frac{1}{2 !}+(-1)^{3} \frac{1}{3 !} \ldots+(-1)^{n} \frac{1}{n !} \
-\end{align}$$</p>
-<p>Finally, substituting the equation into $D_n=n! M_n$ gives</p>
-<p>$$D_{n}=n!\left(\frac{1}{2 !}-\frac{1}{3 !}+\ldots+(-1)^{n} \frac{1}{n !}\right)$$</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+M_{n} &amp;= (M_n - M_{n-1}) + (M_{n-1} - M_{n-2}) + \ldots + (M_2 - M_1) \\
+&amp; =(-1)^{2} \frac{1}{2 !}+(-1)^{3} \frac{1}{3 !} \ldots+(-1)^{n} \frac{1}{n !} \\
+\end{align}\end{split}\]</div>
+<p>Finally, substituting the equation into <span class="math notranslate nohighlight">\(D_n=n! M_n\)</span> gives</p>
+<div class="math notranslate nohighlight">
+\[D_{n}=n!\left(\frac{1}{2 !}-\frac{1}{3 !}+\ldots+(-1)^{n} \frac{1}{n !}\right)\]</div>
 </div>
 <div class="section" id="sol-2-inclusion-exclusion-principle">
 <h2>Sol.2 Inclusion-Exclusion Principle<a class="headerlink" href="#sol-2-inclusion-exclusion-principle" title="Permalink to this headline">¶</a></h2>
-<p>Let $E_i$ be the event that the $i$-th person gets his hat. Then the event that at least one person get his hat is</p>
-<p>$$E_{1} \cup E_{2} \cup \cdots \cup E_{n}$$</p>
+<p>Let <span class="math notranslate nohighlight">\(E_i\)</span> be the event that the <span class="math notranslate nohighlight">\(i\)</span>-th person gets his hat. Then the event that at least one person get his hat is</p>
+<div class="math notranslate nohighlight">
+\[E_{1} \cup E_{2} \cup \cdots \cup E_{n}\]</div>
 <p>And we want to find the probability that no one get his hat, which is</p>
-<p>$$\overline{E_{1}} \cap \overline{E_{2}} \cap \ldots \cap \overline{E_{n}} = \overline{E_{1} \cup E_{2} \cup \ldots \cup E_{n}}$$</p>
+<div class="math notranslate nohighlight">
+\[\overline{E_{1}} \cap \overline{E_{2}} \cap \ldots \cap \overline{E_{n}} = \overline{E_{1} \cup E_{2} \cup \ldots \cup E_{n}}\]</div>
 <p>By the inclusion-exclusion principle,</p>
-<p>$$\begin{aligned}
-\left\vert E_{1} \cup E_{2} \cup \cdots \cup E_{n}\right\vert &amp;=\sum_{j=1}^{n}(-1)^{j+1} \sum_{i_{1}&lt;i_{2}&lt;\cdots&lt;i_{j}} \left\vert E_{i_{1}} \cap E_{i_{2}} \cap \cdots \cap E_{i <em>{j}}\right\vert \
-&amp;=\sum</em>{i=1}^{n} \left\vert E_{i}\right\vert-\sum_{i_{1}&lt;i_{2}} \left\vert E_{i_{1}} \cap E_{i_{2}}\right\vert+\cdots \
-&amp;\quad +(-1)^{j+1} \sum_{i_{1}&lt;i_{2}&lt;\cdots&lt;i_{j}} \left\vert E_{i_{1}} \cap E_{i_{2}} \cap \cdots \cap E_{i_{j}}\right\vert \
-&amp;\quad +\cdots \
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\left\vert E_{1} \cup E_{2} \cup \cdots \cup E_{n}\right\vert &amp;=\sum_{j=1}^{n}(-1)^{j+1} \sum_{i_{1}&lt;i_{2}&lt;\cdots&lt;i_{j}} \left\vert E_{i_{1}} \cap E_{i_{2}} \cap \cdots \cap E_{i _{j}}\right\vert \\
+&amp;=\sum_{i=1}^{n} \left\vert E_{i}\right\vert-\sum_{i_{1}&lt;i_{2}} \left\vert E_{i_{1}} \cap E_{i_{2}}\right\vert+\cdots \\
+&amp;\quad +(-1)^{j+1} \sum_{i_{1}&lt;i_{2}&lt;\cdots&lt;i_{j}} \left\vert E_{i_{1}} \cap E_{i_{2}} \cap \cdots \cap E_{i_{j}}\right\vert \\
+&amp;\quad +\cdots \\
 &amp;\quad +(-1)^{n+1} \sum_{i_{1}&lt;i_{2}&lt;\cdots&lt;i_{n}} \left\vert E_{i_{1}} \cap E_{i_{2}} \cap \cdots \cap E_{i_{n}}\right\vert
-\end{aligned}$$</p>
-<p>Note that the number of ways that exactly $j$ people get their hats is</p>
-<p>$$\sum_{i_{1}&lt;i_{2}&lt;\cdots&lt;i_{j}}\left\vert E_{i_{1}} \cap E_{i_{2}} \cap \cdots \cap E_{i _{j}}\right\vert=\frac{C_n^j (n-j)!}{n!} = \frac{n!}{j!} $$</p>
+\end{aligned}\end{split}\]</div>
+<p>Note that the number of ways that exactly <span class="math notranslate nohighlight">\(j\)</span> people get their hats is</p>
+<div class="math notranslate nohighlight">
+\[\sum_{i_{1}&lt;i_{2}&lt;\cdots&lt;i_{j}}\left\vert E_{i_{1}} \cap E_{i_{2}} \cap \cdots \cap E_{i _{j}}\right\vert=\frac{C_n^j (n-j)!}{n!} = \frac{n!}{j!} \]</div>
 <p>Therefore,</p>
-<p>$$\begin{align}
-\left\vert E_{1} \cup E_{2} \cup \cdots \cup E_{n} \right\vert  &amp;= \sum_{j=1}^{n}(-1)^{j+1} \sum_{i_{1}&lt;i_{2}&lt;\cdots&lt;i_{j}} \left\vert E_{i_{1}} \cap E_{i_{2}} \cap \cdots \cap E_{i <em>{j}}\right\vert \
-&amp;= n! \sum</em>{j=1}^{n}(-1)^{j+1} \frac{1}{j!} \
-\end{align}$$</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+\left\vert E_{1} \cup E_{2} \cup \cdots \cup E_{n} \right\vert  &amp;= \sum_{j=1}^{n}(-1)^{j+1} \sum_{i_{1}&lt;i_{2}&lt;\cdots&lt;i_{j}} \left\vert E_{i_{1}} \cap E_{i_{2}} \cap \cdots \cap E_{i _{j}}\right\vert \\
+&amp;= n! \sum_{j=1}^{n}(-1)^{j+1} \frac{1}{j!} \\
+\end{align}\end{split}\]</div>
 <p>and the detergent number is</p>
-<p>$$\begin{align}
-D_n &amp;=\left\vert \overline{E_{1}} \cap \overline{E_{2}} \cap \ldots \cap \overline{E_{n}}\right\vert  \
-&amp;= n! - \left\vert E_{1} \cup E_{2} \cup \ldots \cup E_{n}\right\vert \
-&amp;= n!\left(\frac{1}{2 !}-\frac{1}{3 !}+\ldots+(-1)^{n} \frac{1}{n !}\right) \
-\end{align}$$</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+D_n &amp;=\left\vert \overline{E_{1}} \cap \overline{E_{2}} \cap \ldots \cap \overline{E_{n}}\right\vert  \\
+ &amp;= n! - \left\vert E_{1} \cup E_{2} \cup \ldots \cup E_{n}\right\vert \\
+&amp;= n!\left(\frac{1}{2 !}-\frac{1}{3 !}+\ldots+(-1)^{n} \frac{1}{n !}\right) \\
+\end{align}\end{split}\]</div>
 </div>
 </div>
 

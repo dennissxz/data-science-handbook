@@ -46,6 +46,8 @@
     <script src="../_static/copybutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="../_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
     <script >
         const thebe_selector = ".thebe"
@@ -491,7 +493,11 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../33-dimensionality-reduction/31-t-SNE.html">
-     SNE and $t$-SNE
+     SNE and
+     <span class="math notranslate nohighlight">
+      \(t\)
+     </span>
+     -SNE
     </a>
    </li>
   </ul>
@@ -641,18 +647,19 @@
                 
   <div class="section" id="classification">
 <h1>Classification<a class="headerlink" href="#classification" title="Permalink to this headline">¶</a></h1>
-<p>Recall that a classification model computes per-class score $f_{y=c}(\boldsymbol{x} ; \boldsymbol{\theta} )$. If perfect separation of training data is impossible, it is intractable to learn a separator minimizing the number of mistakes. Instead, we learn classifiers by minimizing surrogate loss functions. Two popular surrogate losses are</p>
+<p>Recall that a classification model computes per-class score <span class="math notranslate nohighlight">\(f_{y=c}(\boldsymbol{x} ; \boldsymbol{\theta} )\)</span>. If perfect separation of training data is impossible, it is intractable to learn a separator minimizing the number of mistakes. Instead, we learn classifiers by minimizing surrogate loss functions. Two popular surrogate losses are</p>
 <ul>
-<li><p>log loss (aka. cross entropy): assumes that $f_y (bx
-; \boldsymbol{\theta} ) \propto \log p(y\mid bx
-)$,
-$$
-\ell\left(\boldsymbol{\theta}, \mathbf{x}<em>{i}, y</em>{i}\right)=-\log p\left(y_{i} \mid \mathbf{x}_{i} ; \boldsymbol{\theta}\right)
-$$</p></li>
+<li><p>log loss (aka. cross entropy): assumes that <span class="math notranslate nohighlight">\(f_y (bx
+  ; \boldsymbol{\theta} ) \propto \log p(y\mid bx
+    )\)</span>,
+$<span class="math notranslate nohighlight">\(
+\ell\left(\boldsymbol{\theta}, \mathbf{x}_{i}, y_{i}\right)=-\log p\left(y_{i} \mid \mathbf{x}_{i} ; \boldsymbol{\theta}\right)
+\)</span>$</p></li>
 <li><p>hinge loss (no probabilistic assumption)</p>
-<p>$$
-\ell\left(\boldsymbol{\theta}, \mathbf{x}<em>{i}, y</em>{i}\right)=\max \left{0,1+\max <em>{c \neq y</em>{i}} f_{c}\left(\mathbf{x}<em>{i} ; \boldsymbol{\theta}\right)-f</em>{y_{i}}\left(\mathbf{x}_{i} ; \boldsymbol{\theta}\right)\right}
-$$</p>
+<div class="math notranslate nohighlight">
+\[
+  \ell\left(\boldsymbol{\theta}, \mathbf{x}_{i}, y_{i}\right)=\max \left\{0,1+\max _{c \neq y_{i}} f_{c}\left(\mathbf{x}_{i} ; \boldsymbol{\theta}\right)-f_{y_{i}}\left(\mathbf{x}_{i} ; \boldsymbol{\theta}\right)\right\}
+  \]</div>
 </li>
 <li><p>metrics</p>
 <ul class="simple">

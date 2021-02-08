@@ -46,6 +46,8 @@
     <script src="../_static/copybutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="../_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
     <script >
         const thebe_selector = ".thebe"
@@ -491,7 +493,11 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../33-dimensionality-reduction/31-t-SNE.html">
-     SNE and $t$-SNE
+     SNE and
+     <span class="math notranslate nohighlight">
+      \(t\)
+     </span>
+     -SNE
     </a>
    </li>
   </ul>
@@ -702,135 +708,144 @@
 <div class="section" id="problem">
 <h2>Problem<a class="headerlink" href="#problem" title="Permalink to this headline">¶</a></h2>
 <dl class="simple myst">
-<dt>Input</dt><dd><p>There are $n$ kinds of items, each kind of item has a value $v_i$, integer weight $w_i$, and infinite number of it.</p>
+<dt>Input</dt><dd><p>There are <span class="math notranslate nohighlight">\(n\)</span> kinds of items, each kind of item has a value <span class="math notranslate nohighlight">\(v_i\)</span>, integer weight <span class="math notranslate nohighlight">\(w_i\)</span>, and infinite number of it.</p>
 </dd>
-<dt>Objective</dt><dd><p>Choose a subset of items that maximize value while adhering to knapsack weight constraint $b$.</p>
+<dt>Objective</dt><dd><p>Choose a subset of items that maximize value while adhering to knapsack weight constraint <span class="math notranslate nohighlight">\(b\)</span>.</p>
 </dd>
 </dl>
-<p>Let $x_i$ be the number of $i$-th kind of items in the knapsack, the objective is</p>
-<p>$$\begin{aligned}
-\max &amp;\ \sum _{i=1}^n  v_i x_i \
+<p>Let <span class="math notranslate nohighlight">\(x_i\)</span> be the number of <span class="math notranslate nohighlight">\(i\)</span>-th kind of items in the knapsack, the objective is</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\max &amp;\ \sum _{i=1}^n  v_i x_i \\
 \text{s.t.} &amp;\  \sum _{i=1}^n  w_i x_i \le b,\ x_i \in \mathbb{N}
-\end{aligned}$$</p>
+\end{aligned}\end{split}\]</div>
 </div>
 <div class="section" id="analysis">
 <h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
-<p>Since the objective function and constraint are both linear in $x_i$, this is a linear programming problem.</p>
+<p>Since the objective function and constraint are both linear in <span class="math notranslate nohighlight">\(x_i\)</span>, this is a linear programming problem.</p>
 <div class="section" id="subproblems">
 <h3>Subproblems<a class="headerlink" href="#subproblems" title="Permalink to this headline">¶</a></h3>
-<p>The subproblem can be defined by $k$ and $y$, where $k$ is the first $k \le n$ kinds of items, and $y\le b$ is the weight constraint. When $k=n,y=b$ then this is the original problem. The computational order can be $k=1,\ldots,n$ and for each $k$, $y=1,\ldots,b$.</p>
+<p>The subproblem can be defined by <span class="math notranslate nohighlight">\(k\)</span> and <span class="math notranslate nohighlight">\(y\)</span>, where <span class="math notranslate nohighlight">\(k\)</span> is the first <span class="math notranslate nohighlight">\(k \le n\)</span> kinds of items, and <span class="math notranslate nohighlight">\(y\le b\)</span> is the weight constraint. When <span class="math notranslate nohighlight">\(k=n,y=b\)</span> then this is the original problem. The computational order can be <span class="math notranslate nohighlight">\(k=1,\ldots,n\)</span> and for each <span class="math notranslate nohighlight">\(k\)</span>, <span class="math notranslate nohighlight">\(y=1,\ldots,b\)</span>.</p>
 </div>
 <div class="section" id="recursive-relation">
 <h3>Recursive Relation<a class="headerlink" href="#recursive-relation" title="Permalink to this headline">¶</a></h3>
-<p>Let $F_{k,y}$ the total optimized value of subproblem $(k,b)$. Consider the last category $k$. We can either select none, or select one, at each selection step. The iterative relation is</p>
-<p>$$
-F_{k,y} = \max \left{\begin{array}{ll}
-F_{k-1,y} &amp; \text { select none } \
+<p>Let <span class="math notranslate nohighlight">\(F_{k,y}\)</span> the total optimized value of subproblem <span class="math notranslate nohighlight">\((k,b)\)</span>. Consider the last category <span class="math notranslate nohighlight">\(k\)</span>. We can either select none, or select one, at each selection step. The iterative relation is</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+F_{k,y} = \max \left\{\begin{array}{ll}
+F_{k-1,y} &amp; \text { select none } \\
 F_{k,y-w_k} + v_k&amp; \text { select one }
-\end{array}\right}
-$$</p>
+\end{array}\right\}
+\end{split}\]</div>
 <p>The initialization is</p>
-<p>$$\begin{aligned}
-F_{0,y}&amp;=0, \quad 0\le y \le b \
-F_{k,0}&amp;=0, \quad 0 \le k \le n \
-F_{1,y}&amp;=\left\lfloor\frac{y}{w_{1}}\right\rfloor v_{1} \
-F_{k,y}&amp;=-\infty, \quad y &lt; 0\
-\end{aligned}$$</p>
-<p>The last line covers the situation when $y-w_k&lt;0$ in the iterative relation. Since it is not a feasible solution, we assign $-\infty$ value to it.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+F_{0,y}&amp;=0, \quad 0\le y \le b \\
+F_{k,0}&amp;=0, \quad 0 \le k \le n \\
+F_{1,y}&amp;=\left\lfloor\frac{y}{w_{1}}\right\rfloor v_{1} \\
+F_{k,y}&amp;=-\infty, \quad y &lt; 0\\
+\end{aligned}\end{split}\]</div>
+<p>The last line covers the situation when <span class="math notranslate nohighlight">\(y-w_k&lt;0\)</span> in the iterative relation. Since it is not a feasible solution, we assign <span class="math notranslate nohighlight">\(-\infty\)</span> value to it.</p>
 <p>Another way of writing the iterative relation is</p>
-<p>$$
-F_{k,y} = \max <em>{0 \le x_k \le \left\lfloor\frac{y}{w</em>{k}}\right\rfloor} \left{ F_{k-1,y-x_k w_k} + x_k v_k \right}
-$$</p>
-<p>But to compute $F_{k,y}$, this way needs $\left\lfloor\frac{y}{w_{k}}\right\rfloor$ iterations over $x_k$, which can be $O(b)$, unlike $O(1)$ two-value comparison in the previous way.</p>
+<div class="math notranslate nohighlight">
+\[
+F_{k,y} = \max _{0 \le x_k \le \left\lfloor\frac{y}{w_{k}}\right\rfloor} \left\{ F_{k-1,y-x_k w_k} + x_k v_k \right\}
+\]</div>
+<p>But to compute <span class="math notranslate nohighlight">\(F_{k,y}\)</span>, this way needs <span class="math notranslate nohighlight">\(\left\lfloor\frac{y}{w_{k}}\right\rfloor\)</span> iterations over <span class="math notranslate nohighlight">\(x_k\)</span>, which can be <span class="math notranslate nohighlight">\(O(b)\)</span>, unlike <span class="math notranslate nohighlight">\(O(1)\)</span> two-value comparison in the previous way.</p>
 </div>
 </div>
 <div class="section" id="solution">
 <h2>Solution<a class="headerlink" href="#solution" title="Permalink to this headline">¶</a></h2>
-<p>The DP table can be computed as discussed above. Here we discuss how to trace the solution $x_i, \ldots, x_n$.</p>
-<p>First we define a label function $i_{k,y}$. Let $i_{k,y}$ be the maximum label of items added in the solution of subproblem $(k,y)$. We can find that</p>
-<p>$$
-i_{k,y} = \left{\begin{array}{ll}
-i_{k-1, y}, &amp; F_{k-1,y} &gt; F_{k,y-w_k} + v_k \
+<p>The DP table can be computed as discussed above. Here we discuss how to trace the solution <span class="math notranslate nohighlight">\(x_i, \ldots, x_n\)</span>.</p>
+<p>First we define a label function <span class="math notranslate nohighlight">\(i_{k,y}\)</span>. Let <span class="math notranslate nohighlight">\(i_{k,y}\)</span> be the maximum label of items added in the solution of subproblem <span class="math notranslate nohighlight">\((k,y)\)</span>. We can find that</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+i_{k,y} = \left\{\begin{array}{ll}
+i_{k-1, y}, &amp; F_{k-1,y} &gt; F_{k,y-w_k} + v_k \\
 k, &amp; \text { otherwise }
 \end{array}\right.
-$$</p>
+\end{split}\]</div>
 <p>And the initialization is</p>
-<p>$$
-i_{1,y} = \left{\begin{array}{ll}
-0, &amp; y &lt; w_1 \
+<div class="math notranslate nohighlight">
+\[\begin{split}
+i_{1,y} = \left\{\begin{array}{ll}
+0, &amp; y &lt; w_1 \\
 1, &amp; \text { otherwise }
 \end{array}\right.
-$$</p>
+\end{split}\]</div>
 <p>For instance, for the problem</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[\begin{split}
 \begin{array}{l}
-v_{1}=1, \quad v_{2}=3, \quad v_{3}=5, v_{4}=9 \
-w_{1}=2, \quad w_{2}=3, w_{3}=4, w_{4}=7 \
+v_{1}=1, \quad v_{2}=3, \quad v_{3}=5, v_{4}=9 \\
+w_{1}=2, \quad w_{2}=3, w_{3}=4, w_{4}=7 \\
 b=10
 \end{array}
-$$</p>
-<p>The DP table $F_{k,y}$ is</p>
-<p>:::{figure} knapsack-dp-table
-<img src="../imgs/knapsack-dp-table.png" width = "50%" alt=""/></p>
-<p>DP table
-:::</p>
-<p>and the track table with values $i_{k,y}$ is</p>
-<p>:::{figure} knapsack-track-table
-<img src="../imgs/knapsack-track-table.png" width = "50%" alt=""/></p>
-<p>Track table
-:::</p>
+\end{split}\]</div>
+<p>The DP table <span class="math notranslate nohighlight">\(F_{k,y}\)</span> is</p>
+<div class="figure align-default" id="knapsack-dp-table">
+<a class="reference internal image-reference" href="../_images/knapsack-dp-table.png"><img alt="" src="../_images/knapsack-dp-table.png" style="width: 50%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 4 </span><span class="caption-text">DP table</span><a class="headerlink" href="#knapsack-dp-table" title="Permalink to this image">¶</a></p>
+</div>
+<p>and the track table with values <span class="math notranslate nohighlight">\(i_{k,y}\)</span> is</p>
+<div class="figure align-default" id="knapsack-track-table">
+<a class="reference internal image-reference" href="../_images/knapsack-track-table.png"><img alt="" src="../_images/knapsack-track-table.png" style="width: 50%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 5 </span><span class="caption-text">Track table</span><a class="headerlink" href="#knapsack-track-table" title="Permalink to this image">¶</a></p>
+</div>
 <p>To track a solution, we start from the right bottom entry,</p>
 <ul class="simple">
-<li><p>Since $i_{4,10} = 4$, this implies $x_4 \ge 1$. We then go to $i_{4,10-w_4} = i_{4,3}$, i.e. subproblem $(4,3)$</p></li>
-<li><p>Since $i_{4,3}=2$, this implies $x_3, x_4=0$, and $x_2 \ge 1$. We then go to $i_{2,3-w_2} = i_{2,0}$</p></li>
-<li><p>Since $i_{2,0}=0$, this implies $x_2=1, x_1=0$.</p></li>
+<li><p>Since <span class="math notranslate nohighlight">\(i_{4,10} = 4\)</span>, this implies <span class="math notranslate nohighlight">\(x_4 \ge 1\)</span>. We then go to <span class="math notranslate nohighlight">\(i_{4,10-w_4} = i_{4,3}\)</span>, i.e. subproblem <span class="math notranslate nohighlight">\((4,3)\)</span></p></li>
+<li><p>Since <span class="math notranslate nohighlight">\(i_{4,3}=2\)</span>, this implies <span class="math notranslate nohighlight">\(x_3, x_4=0\)</span>, and <span class="math notranslate nohighlight">\(x_2 \ge 1\)</span>. We then go to <span class="math notranslate nohighlight">\(i_{2,3-w_2} = i_{2,0}\)</span></p></li>
+<li><p>Since <span class="math notranslate nohighlight">\(i_{2,0}=0\)</span>, this implies <span class="math notranslate nohighlight">\(x_2=1, x_1=0\)</span>.</p></li>
 </ul>
-<p>Hence, the solution is $x_1=0, x_2=1, x_3=0, x_4=1$.</p>
+<p>Hence, the solution is <span class="math notranslate nohighlight">\(x_1=0, x_2=1, x_3=0, x_4=1\)</span>.</p>
 <p>The algorithm is</p>
 <hr class="docutils" />
 <p>Knapsack: Track Solution</p>
 <ul class="simple">
-<li><p>input: table $i_{j,k}$</p></li>
-<li><p>output: soluiton $x_1, \ldots, x_k$</p></li>
+<li><p>input: table <span class="math notranslate nohighlight">\(i_{j,k}\)</span></p></li>
+<li><p>output: soluiton <span class="math notranslate nohighlight">\(x_1, \ldots, x_k\)</span></p></li>
 </ul>
 <hr class="docutils" />
 <ol class="simple">
-<li><p>initialize $x_j\leftarrow 0$ for $j=1$ to $n$</p></li>
-<li><p>$y\leftarrow b, j\leftarrow n$ // start from bottom right</p></li>
-<li><p>$j \leftarrow i_{j,y}, x_j \leftarrow 1, y\leftarrow y-w_j$ // go to subproblem</p></li>
-<li><p>while $i_{j,y} = j$, // add another $j$</p>
+<li><p>initialize <span class="math notranslate nohighlight">\(x_j\leftarrow 0\)</span> for <span class="math notranslate nohighlight">\(j=1\)</span> to <span class="math notranslate nohighlight">\(n\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(y\leftarrow b, j\leftarrow n\)</span> // start from bottom right</p></li>
+<li><p><span class="math notranslate nohighlight">\(j \leftarrow i_{j,y}, x_j \leftarrow 1, y\leftarrow y-w_j\)</span> // go to subproblem</p></li>
+<li><p>while <span class="math notranslate nohighlight">\(i_{j,y} = j\)</span>, // add another <span class="math notranslate nohighlight">\(j\)</span></p>
 <ol class="simple">
-<li><p>$y \leftarrow y-w_j$</p></li>
-<li><p>$x_j \leftarrow x_j + 1$</p></li>
+<li><p><span class="math notranslate nohighlight">\(y \leftarrow y-w_j\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(x_j \leftarrow x_j + 1\)</span></p></li>
 </ol>
 </li>
-<li><p>If $i_{j,y}\ne 0$ then goto 3</p></li>
+<li><p>If <span class="math notranslate nohighlight">\(i_{j,y}\ne 0\)</span> then goto 3</p></li>
 </ol>
 </div>
 <div class="section" id="complexity">
 <h2>Complexity<a class="headerlink" href="#complexity" title="Permalink to this headline">¶</a></h2>
-<p>There are $O(nb)$ entries, and each entry takes $O(1)$ for the two-value max comparison.</p>
-<p>So total $O(nb)$.</p>
-<p>Note that this is pseudo-polynomial time, since $b$ is not a problem size.</p>
+<p>There are <span class="math notranslate nohighlight">\(O(nb)\)</span> entries, and each entry takes <span class="math notranslate nohighlight">\(O(1)\)</span> for the two-value max comparison.</p>
+<p>So total <span class="math notranslate nohighlight">\(O(nb)\)</span>.</p>
+<p>Note that this is pseudo-polynomial time, since <span class="math notranslate nohighlight">\(b\)</span> is not a problem size.</p>
 </div>
 <div class="section" id="extensions">
 <h2>Extensions<a class="headerlink" href="#extensions" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="number-constraints">
 <h3>Number Constraints<a class="headerlink" href="#number-constraints" title="Permalink to this headline">¶</a></h3>
 <p>For each kind of item, there is a maximum number to be added.</p>
-<p>$$x_i \le n_i$$</p>
-<p>One common example is $n_i=1$, i.e. we can only select none or one for a kind of item.</p>
+<div class="math notranslate nohighlight">
+\[x_i \le n_i\]</div>
+<p>One common example is <span class="math notranslate nohighlight">\(n_i=1\)</span>, i.e. we can only select none or one for a kind of item.</p>
 <p>The iterative relation becomes</p>
-<p>$$
-F_{k,y} = \max \left{\begin{array}{ll}
-F_{k-1,y} &amp; \text { select none } \
+<div class="math notranslate nohighlight">
+\[\begin{split}
+F_{k,y} = \max \left\{\begin{array}{ll}
+F_{k-1,y} &amp; \text { select none } \\
 F_{\color{red}{k-1},y-w_k} + v_k&amp; \text { select one }
-\end{array}\right}
-$$</p>
+\end{array}\right\}
+\end{split}\]</div>
 </div>
 <div class="section" id="multiple-knapsacks">
 <h3>Multiple Knapsacks<a class="headerlink" href="#multiple-knapsacks" title="Permalink to this headline">¶</a></h3>
-<p>There are multiple knapsack, each has weight constraint $b_j$.</p>
+<p>There are multiple knapsack, each has weight constraint <span class="math notranslate nohighlight">\(b_j\)</span>.</p>
 </div>
 </div>
 </div>

@@ -46,6 +46,8 @@
     <script src="../_static/copybutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="../_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
     <script >
         const thebe_selector = ".thebe"
@@ -491,7 +493,11 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../33-dimensionality-reduction/31-t-SNE.html">
-     SNE and $t$-SNE
+     SNE and
+     <span class="math notranslate nohighlight">
+      \(t\)
+     </span>
+     -SNE
     </a>
    </li>
   </ul>
@@ -661,7 +667,11 @@
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#trailing-zeros-in-n-factorial">
-   Trailing zeros in $n$ factorial
+   Trailing zeros in
+   <span class="math notranslate nohighlight">
+    \(n\)
+   </span>
+   factorial
   </a>
  </li>
 </ul>
@@ -684,56 +694,60 @@
 <p>There is a 10-digit number. From left to right, the first digit equals the number of 0’s in that number, the second digit equals the number of 1’s in that number, and so on. What is this number?</p>
 <div class="section" id="sol-1-enumeration-by-hand">
 <h3>Sol.1 Enumeration by Hand<a class="headerlink" href="#sol-1-enumeration-by-hand" title="Permalink to this headline">¶</a></h3>
-<p>Suppose this number is $\underline{d_0d_1d_2d_3d_4d_5d_6d_7d_8d_9}$, where</p>
-<p>$$d_{i} = \sum_j\mathbb{I}[d_j=i]\in {0,1,2,\dots,9}$$</p>
+<p>Suppose this number is <span class="math notranslate nohighlight">\(\underline{d_0d_1d_2d_3d_4d_5d_6d_7d_8d_9}\)</span>, where</p>
+<div class="math notranslate nohighlight">
+\[d_{i} = \sum_j\mathbb{I}[d_j=i]\in \{0,1,2,\dots,9\}\]</div>
 <p>Consider a summation of the digits,</p>
-<p>$$S_1 = \sum_{i=0}^{9} d_i$$</p>
-<p>Since each digit counts the number of appearances, the summation should be $S=10$.</p>
+<div class="math notranslate nohighlight">
+\[S_1 = \sum_{i=0}^{9} d_i\]</div>
+<p>Since each digit counts the number of appearances, the summation should be <span class="math notranslate nohighlight">\(S=10\)</span>.</p>
 <p>Note that the summation can also be written as</p>
-<p>$$S_1 = \sum_{i=0}^{9} d_i \times i :=S_2$$</p>
+<div class="math notranslate nohighlight">
+\[S_1 = \sum_{i=0}^{9} d_i \times i :=S_2\]</div>
 <p>Thus, we have</p>
-<p>$$S_1 = S_2 = 10$$</p>
-<p>Then we find $d_i$ by trial and error by applying the above constraints and the definition. We start from the first digit and follow the reasoning: suppose $d_0=k$, then $d_k\ge 1$. If $d_k = l$, then $d_l\ge 1$.</p>
+<div class="math notranslate nohighlight">
+\[S_1 = S_2 = 10\]</div>
+<p>Then we find <span class="math notranslate nohighlight">\(d_i\)</span> by trial and error by applying the above constraints and the definition. We start from the first digit and follow the reasoning: suppose <span class="math notranslate nohighlight">\(d_0=k\)</span>, then <span class="math notranslate nohighlight">\(d_k\ge 1\)</span>. If <span class="math notranslate nohighlight">\(d_k = l\)</span>, then <span class="math notranslate nohighlight">\(d_l\ge 1\)</span>.</p>
 <ul class="simple">
-<li><p>If $d_0=9$, then $d_9=1$, then $d_1\ge1$, violating the constraint $S_1=10$</p></li>
-<li><p>If $d_0=8$, then $d_8=1$, then we must have $d_1=1$ to satisfy the constraint $S_1=10$, but it violates the definition since 1 appears twice.</p></li>
-<li><p>If $d_0=7$, then $d_7=1$, then $d_1=2$, then $d_2\ge 1$, violating the constraint $S_1=10$</p></li>
-<li><p>If $d_0=6$, then $d_6=1$, then $d_1=2$ or 3</p>
+<li><p>If <span class="math notranslate nohighlight">\(d_0=9\)</span>, then <span class="math notranslate nohighlight">\(d_9=1\)</span>, then <span class="math notranslate nohighlight">\(d_1\ge1\)</span>, violating the constraint <span class="math notranslate nohighlight">\(S_1=10\)</span></p></li>
+<li><p>If <span class="math notranslate nohighlight">\(d_0=8\)</span>, then <span class="math notranslate nohighlight">\(d_8=1\)</span>, then we must have <span class="math notranslate nohighlight">\(d_1=1\)</span> to satisfy the constraint <span class="math notranslate nohighlight">\(S_1=10\)</span>, but it violates the definition since 1 appears twice.</p></li>
+<li><p>If <span class="math notranslate nohighlight">\(d_0=7\)</span>, then <span class="math notranslate nohighlight">\(d_7=1\)</span>, then <span class="math notranslate nohighlight">\(d_1=2\)</span>, then <span class="math notranslate nohighlight">\(d_2\ge 1\)</span>, violating the constraint <span class="math notranslate nohighlight">\(S_1=10\)</span></p></li>
+<li><p>If <span class="math notranslate nohighlight">\(d_0=6\)</span>, then <span class="math notranslate nohighlight">\(d_6=1\)</span>, then <span class="math notranslate nohighlight">\(d_1=2\)</span> or 3</p>
 <ul>
-<li><p>If $d_1=2$, then we have $d_2 = 1$ to satisfy $S_1=10$. Check and find that $S_2=10$, so 6210001000 is a <strong>correct</strong> number.</p></li>
-<li><p>If $d_1=3$, then $d_3\ge1$, violating $S_1=10$</p></li>
+<li><p>If <span class="math notranslate nohighlight">\(d_1=2\)</span>, then we have <span class="math notranslate nohighlight">\(d_2 = 1\)</span> to satisfy <span class="math notranslate nohighlight">\(S_1=10\)</span>. Check and find that <span class="math notranslate nohighlight">\(S_2=10\)</span>, so 6210001000 is a <strong>correct</strong> number.</p></li>
+<li><p>If <span class="math notranslate nohighlight">\(d_1=3\)</span>, then <span class="math notranslate nohighlight">\(d_3\ge1\)</span>, violating <span class="math notranslate nohighlight">\(S_1=10\)</span></p></li>
 </ul>
 </li>
-<li><p>If $d_0=5$, then $d_5=1$, then $d_1=2,3,4$</p>
+<li><p>If <span class="math notranslate nohighlight">\(d_0=5\)</span>, then <span class="math notranslate nohighlight">\(d_5=1\)</span>, then <span class="math notranslate nohighlight">\(d_1=2,3,4\)</span></p>
 <ul>
-<li><p>If $d_1=2$, then $d_2\ge1$</p>
+<li><p>If <span class="math notranslate nohighlight">\(d_1=2\)</span>, then <span class="math notranslate nohighlight">\(d_2\ge1\)</span></p>
 <ul>
-<li><p>If $d_2=1$, then the sum is 9. Increasing other $d$ to satisfy $S=10$ will make $d_1=3$, contradiction</p></li>
-<li><p>If $d_2=2$, then we need an additional $d$ to be 1, but the sum is already 10</p></li>
+<li><p>If <span class="math notranslate nohighlight">\(d_2=1\)</span>, then the sum is 9. Increasing other <span class="math notranslate nohighlight">\(d\)</span> to satisfy <span class="math notranslate nohighlight">\(S=10\)</span> will make <span class="math notranslate nohighlight">\(d_1=3\)</span>, contradiction</p></li>
+<li><p>If <span class="math notranslate nohighlight">\(d_2=2\)</span>, then we need an additional <span class="math notranslate nohighlight">\(d\)</span> to be 1, but the sum is already 10</p></li>
 </ul>
 </li>
-<li><p>If $d_1=3$, then $d_3=1$, violating $S_2=10$</p></li>
-<li><p>If $d_1=4$, then $d_4=1$, violating $S_1=10$</p></li>
+<li><p>If <span class="math notranslate nohighlight">\(d_1=3\)</span>, then <span class="math notranslate nohighlight">\(d_3=1\)</span>, violating <span class="math notranslate nohighlight">\(S_2=10\)</span></p></li>
+<li><p>If <span class="math notranslate nohighlight">\(d_1=4\)</span>, then <span class="math notranslate nohighlight">\(d_4=1\)</span>, violating <span class="math notranslate nohighlight">\(S_1=10\)</span></p></li>
 </ul>
 </li>
-<li><p>If $d_0=4$, then $d_4=1$, then $d_1=2,3,4,5$</p>
+<li><p>If <span class="math notranslate nohighlight">\(d_0=4\)</span>, then <span class="math notranslate nohighlight">\(d_4=1\)</span>, then <span class="math notranslate nohighlight">\(d_1=2,3,4,5\)</span></p>
 <ul>
-<li><p>If $d_1=2$, then $d_2 = 1, 2$</p>
+<li><p>If <span class="math notranslate nohighlight">\(d_1=2\)</span>, then <span class="math notranslate nohighlight">\(d_2 = 1, 2\)</span></p>
 <ul>
-<li><p>If $d_2=1$, then $S_1 = S_2 = 8$, it’s impossible to increase other $d$’s such that the two constraints are satisfied since $3\times d_3\ge 3$</p></li>
-<li><p>If $d_2=2$, then $S_2 = 10$, but $S_1=9$</p></li>
+<li><p>If <span class="math notranslate nohighlight">\(d_2=1\)</span>, then <span class="math notranslate nohighlight">\(S_1 = S_2 = 8\)</span>, it’s impossible to increase other <span class="math notranslate nohighlight">\(d\)</span>’s such that the two constraints are satisfied since <span class="math notranslate nohighlight">\(3\times d_3\ge 3\)</span></p></li>
+<li><p>If <span class="math notranslate nohighlight">\(d_2=2\)</span>, then <span class="math notranslate nohighlight">\(S_2 = 10\)</span>, but <span class="math notranslate nohighlight">\(S_1=9\)</span></p></li>
 </ul>
 </li>
-<li><p>If $d_1=3$, then $d_3=1$, then $S_2=10$ but $S_1=9$</p></li>
-<li><p>If $d_1=4$, then 4 appears twice, contradiction</p></li>
-<li><p>If $d_1=5$, then $S_1=10$ but $S_2=9$</p></li>
+<li><p>If <span class="math notranslate nohighlight">\(d_1=3\)</span>, then <span class="math notranslate nohighlight">\(d_3=1\)</span>, then <span class="math notranslate nohighlight">\(S_2=10\)</span> but <span class="math notranslate nohighlight">\(S_1=9\)</span></p></li>
+<li><p>If <span class="math notranslate nohighlight">\(d_1=4\)</span>, then 4 appears twice, contradiction</p></li>
+<li><p>If <span class="math notranslate nohighlight">\(d_1=5\)</span>, then <span class="math notranslate nohighlight">\(S_1=10\)</span> but <span class="math notranslate nohighlight">\(S_2=9\)</span></p></li>
 </ul>
 </li>
-<li><p>If $d_0=3$, then $d_3\ge1$, and $d_1\le 6$</p>
+<li><p>If <span class="math notranslate nohighlight">\(d_0=3\)</span>, then <span class="math notranslate nohighlight">\(d_3\ge1\)</span>, and <span class="math notranslate nohighlight">\(d_1\le 6\)</span></p>
 <ul>
-<li><p>If $d_1=6$, then $S_1=10$ but $S_2=9$</p></li>
-<li><p>If $d_1=5$, then $d_5=1$, violating $S_2=10$</p></li>
-<li><p>If $d_1\le 4$, then $\sum_{i=2}^9d_i\times i \ge 7$ and $S_2\ge11$</p></li>
+<li><p>If <span class="math notranslate nohighlight">\(d_1=6\)</span>, then <span class="math notranslate nohighlight">\(S_1=10\)</span> but <span class="math notranslate nohighlight">\(S_2=9\)</span></p></li>
+<li><p>If <span class="math notranslate nohighlight">\(d_1=5\)</span>, then <span class="math notranslate nohighlight">\(d_5=1\)</span>, violating <span class="math notranslate nohighlight">\(S_2=10\)</span></p></li>
+<li><p>If <span class="math notranslate nohighlight">\(d_1\le 4\)</span>, then <span class="math notranslate nohighlight">\(\sum_{i=2}^9d_i\times i \ge 7\)</span> and <span class="math notranslate nohighlight">\(S_2\ge11\)</span></p></li>
 </ul>
 </li>
 </ul>
@@ -742,8 +756,8 @@
 </div>
 <div class="section" id="sol-2-enumeration-by-computer">
 <h3>Sol.2 Enumeration by Computer<a class="headerlink" href="#sol-2-enumeration-by-computer" title="Permalink to this headline">¶</a></h3>
-<p>It seems that the time complexity is $O(10^{n-1})$ for a $n$-digit number, but in fact we can optimize it by adding the constraints.</p>
-<p>Since $\sum_i i\cdot d_i = 10$ we have $d_i \le \lfloor \frac{10}{i} \rfloor$ for $i \ge 1$. So the time complexity is greatly reduced to $O(\Pi_{i=1}^{n-1} \lfloor \frac{10}{i} \rfloor)$</p>
+<p>It seems that the time complexity is <span class="math notranslate nohighlight">\(O(10^{n-1})\)</span> for a <span class="math notranslate nohighlight">\(n\)</span>-digit number, but in fact we can optimize it by adding the constraints.</p>
+<p>Since <span class="math notranslate nohighlight">\(\sum_i i\cdot d_i = 10\)</span> we have <span class="math notranslate nohighlight">\(d_i \le \lfloor \frac{10}{i} \rfloor\)</span> for <span class="math notranslate nohighlight">\(i \ge 1\)</span>. So the time complexity is greatly reduced to <span class="math notranslate nohighlight">\(O(\Pi_{i=1}^{n-1} \lfloor \frac{10}{i} \rfloor)\)</span></p>
 <p>A python script can be</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">product</span>
 <span class="k">for</span> <span class="n">ds</span> <span class="ow">in</span> <span class="n">product</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="o">*</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">10</span> <span class="o">//</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">))):</span>
@@ -760,61 +774,68 @@
 <div class="section" id="sol-3-mathematical-reasoning">
 <h3>Sol.3 Mathematical Reasoning<a class="headerlink" href="#sol-3-mathematical-reasoning" title="Permalink to this headline">¶</a></h3>
 <p>In the above solutions we did partial reasoning and partial enumeration. Now we try more rigorous reasoning.</p>
-<p>Define a set $A = {d_i\vert d_i\ge 1}$. Then the cardinality is</p>
-<p>$$\vert A \vert = \sum_i \mathbb{I}[d_i \ge 1] = n - \sum_i \mathbb{I}[d_i=0] =   n - d_0$$</p>
-<p>and the sum of the elements in $A$ is</p>
-<p>$$\sum_{d_i \in A} d_i = \sum_i d_i = n$$</p>
-<p>Define another set $B = A \backslash {d_0} = {d_i\vert d_i \ge 1, i\ge 1 }$. Then</p>
-<p>$$\vert B \vert = \vert A \vert - 1 = n - d_0 - 1$$</p>
-<p>and the sum of the elements in $B$ is</p>
-<p>$$\sum_{d_i \in B} d_i = \sum_{d_i \in A}d_i - d_0 = n - d_0$$</p>
-<p>Since all the $d_i \ge 1 \ \forall \  d_i\in B$, we derive that there are $n-d_0-2\ge0$ number of $1$’s and one $2$ in $B$. Hence,</p>
-<p>$$
+<p>Define a set <span class="math notranslate nohighlight">\(A = \{d_i\vert d_i\ge 1\}\)</span>. Then the cardinality is</p>
+<div class="math notranslate nohighlight">
+\[\vert A \vert = \sum_i \mathbb{I}[d_i \ge 1] = n - \sum_i \mathbb{I}[d_i=0] =   n - d_0\]</div>
+<p>and the sum of the elements in <span class="math notranslate nohighlight">\(A\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[\sum_{d_i \in A} d_i = \sum_i d_i = n\]</div>
+<p>Define another set <span class="math notranslate nohighlight">\(B = A \backslash \{d_0\} = \{d_i\vert d_i \ge 1, i\ge 1 \}\)</span>. Then</p>
+<div class="math notranslate nohighlight">
+\[\vert B \vert = \vert A \vert - 1 = n - d_0 - 1\]</div>
+<p>and the sum of the elements in <span class="math notranslate nohighlight">\(B\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[\sum_{d_i \in B} d_i = \sum_{d_i \in A}d_i - d_0 = n - d_0\]</div>
+<p>Since all the <span class="math notranslate nohighlight">\(d_i \ge 1 \ \forall \  d_i\in B\)</span>, we derive that there are <span class="math notranslate nohighlight">\(n-d_0-2\ge0\)</span> number of <span class="math notranslate nohighlight">\(1\)</span>’s and one <span class="math notranslate nohighlight">\(2\)</span> in <span class="math notranslate nohighlight">\(B\)</span>. Hence,</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
 \begin{align}
-d_1 &amp;= n - d_0 - 2 + \mathbb{I}[d_0=1]  &amp;(1)\
-d_2 &amp;= 1 + \mathbb{I}[d_0=2] &amp;(2) \
+d_1 &amp;= n - d_0 - 2 + \mathbb{I}[d_0=1]  &amp;(1)\\
+d_2 &amp;= 1 + \mathbb{I}[d_0=2] &amp;(2) \\
 d_i &amp;\le 2 \ \  \forall \ i\ge1 &amp;(3)
 \end{align}
-$$</p>
-<p>We assuming that $n&gt;6$.</p>
+\end{split}\]</div>
+<p>We assuming that <span class="math notranslate nohighlight">\(n&gt;6\)</span>.</p>
 <ul class="simple">
-<li><p>If $d_0=1$, then by $(1)$ we have $d_1=n-2 &gt; 4$, contradicting with $(3)$.</p></li>
-<li><p>If $d_0=2$, then $d_1 = n-4 &gt; 2$, contradicting with $(3)$.</p></li>
+<li><p>If <span class="math notranslate nohighlight">\(d_0=1\)</span>, then by <span class="math notranslate nohighlight">\((1)\)</span> we have <span class="math notranslate nohighlight">\(d_1=n-2 &gt; 4\)</span>, contradicting with <span class="math notranslate nohighlight">\((3)\)</span>.</p></li>
+<li><p>If <span class="math notranslate nohighlight">\(d_0=2\)</span>, then <span class="math notranslate nohighlight">\(d_1 = n-4 &gt; 2\)</span>, contradicting with <span class="math notranslate nohighlight">\((3)\)</span>.</p></li>
 </ul>
-<p>Therefore, $d_0 \ge 3$ and $d_{d_0} = 1$. Hence,</p>
-<p>$$A = {d_0, d_1 = n-d_0-2, d_2=1, d_{d_0}=1 }$$</p>
-<p>Recall that $\vert A \vert = n-d_0$. As a result, $d_0 = n-4, d_1 = 2$, and the number is</p>
-<p>$$(n-4)210\ldots010\ldots0$$</p>
-<p>In particular, if $n=10$, the number is 6210001000.</p>
-<p>When $n\le 6$, if $d_0 \ge 3$, then $\vert A \vert =4$ and $n=d_0+4&gt;7$, contradiction. Hence $d_0 = 1$ or $2$.</p>
+<p>Therefore, <span class="math notranslate nohighlight">\(d_0 \ge 3\)</span> and <span class="math notranslate nohighlight">\(d_{d_0} = 1\)</span>. Hence,</p>
+<div class="math notranslate nohighlight">
+\[A = \{d_0, d_1 = n-d_0-2, d_2=1, d_{d_0}=1 \}\]</div>
+<p>Recall that <span class="math notranslate nohighlight">\(\vert A \vert = n-d_0\)</span>. As a result, <span class="math notranslate nohighlight">\(d_0 = n-4, d_1 = 2\)</span>, and the number is</p>
+<div class="math notranslate nohighlight">
+\[(n-4)210\ldots010\ldots0\]</div>
+<p>In particular, if <span class="math notranslate nohighlight">\(n=10\)</span>, the number is 6210001000.</p>
+<p>When <span class="math notranslate nohighlight">\(n\le 6\)</span>, if <span class="math notranslate nohighlight">\(d_0 \ge 3\)</span>, then <span class="math notranslate nohighlight">\(\vert A \vert =4\)</span> and <span class="math notranslate nohighlight">\(n=d_0+4&gt;7\)</span>, contradiction. Hence <span class="math notranslate nohighlight">\(d_0 = 1\)</span> or <span class="math notranslate nohighlight">\(2\)</span>.</p>
 <ul class="simple">
-<li><p>If $d_0=1$, then by $(1)-(2)$, $d_1 = n-2, d_2=1$.</p>
+<li><p>If <span class="math notranslate nohighlight">\(d_0=1\)</span>, then by <span class="math notranslate nohighlight">\((1)-(2)\)</span>, <span class="math notranslate nohighlight">\(d_1 = n-2, d_2=1\)</span>.</p>
 <ul>
-<li><p>When $n=4$, the number is 1210.</p></li>
-<li><p>When $n=5$, $d_1=3, d_3=1, \sum_{i\le3}=6&gt;n$, contradiction.</p></li>
-<li><p>When $n=6$, $d_1=4, d_4=1, \sum_{i\le4}=7&gt;n$, contradiction.</p></li>
+<li><p>When <span class="math notranslate nohighlight">\(n=4\)</span>, the number is 1210.</p></li>
+<li><p>When <span class="math notranslate nohighlight">\(n=5\)</span>, <span class="math notranslate nohighlight">\(d_1=3, d_3=1, \sum_{i\le3}=6&gt;n\)</span>, contradiction.</p></li>
+<li><p>When <span class="math notranslate nohighlight">\(n=6\)</span>, <span class="math notranslate nohighlight">\(d_1=4, d_4=1, \sum_{i\le4}=7&gt;n\)</span>, contradiction.</p></li>
 </ul>
 </li>
-<li><p>If $d_0=2$, then by $(1)-(2)$, $d_1 = n-4, d_2=2$.</p>
+<li><p>If <span class="math notranslate nohighlight">\(d_0=2\)</span>, then by <span class="math notranslate nohighlight">\((1)-(2)\)</span>, <span class="math notranslate nohighlight">\(d_1 = n-4, d_2=2\)</span>.</p>
 <ul>
-<li><p>When $n-4$, $d_1=0$, the number is 2020.</p></li>
-<li><p>When $n=5$, $d_1=1$, the number if 21200.</p></li>
-<li><p>When $n=6$, $d_1=2$, so $2$ appears three times but $d_2=2$, contradiction.</p></li>
+<li><p>When <span class="math notranslate nohighlight">\(n-4\)</span>, <span class="math notranslate nohighlight">\(d_1=0\)</span>, the number is 2020.</p></li>
+<li><p>When <span class="math notranslate nohighlight">\(n=5\)</span>, <span class="math notranslate nohighlight">\(d_1=1\)</span>, the number if 21200.</p></li>
+<li><p>When <span class="math notranslate nohighlight">\(n=6\)</span>, <span class="math notranslate nohighlight">\(d_1=2\)</span>, so <span class="math notranslate nohighlight">\(2\)</span> appears three times but <span class="math notranslate nohighlight">\(d_2=2\)</span>, contradiction.</p></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
 <div class="section" id="trailing-zeros-in-n-factorial">
-<h2>Trailing zeros in $n$ factorial<a class="headerlink" href="#trailing-zeros-in-n-factorial" title="Permalink to this headline">¶</a></h2>
-<p><em>Find the number of trailing zeros</em> in $n!$.</p>
-<p>It is easy to see the trailing zeros are produced by prime factors $2$ and $5$. If there are $m$ number of factor $2$ and $n$ number of factor $5$ in $n!$, then there will be $\min(m,n)$ number of trailing zeros.</p>
+<h2>Trailing zeros in <span class="math notranslate nohighlight">\(n\)</span> factorial<a class="headerlink" href="#trailing-zeros-in-n-factorial" title="Permalink to this headline">¶</a></h2>
+<p><em>Find the number of trailing zeros</em> in <span class="math notranslate nohighlight">\(n!\)</span>.</p>
+<p>It is easy to see the trailing zeros are produced by prime factors <span class="math notranslate nohighlight">\(2\)</span> and <span class="math notranslate nohighlight">\(5\)</span>. If there are <span class="math notranslate nohighlight">\(m\)</span> number of factor <span class="math notranslate nohighlight">\(2\)</span> and <span class="math notranslate nohighlight">\(n\)</span> number of factor <span class="math notranslate nohighlight">\(5\)</span> in <span class="math notranslate nohighlight">\(n!\)</span>, then there will be <span class="math notranslate nohighlight">\(\min(m,n)\)</span> number of trailing zeros.</p>
 <p>Also note that</p>
 <ul class="simple">
-<li><p>$m&gt;n$, since every $5$ numbers produce a factor $5$ and at least $3$ factors of $2$.</p></li>
-<li><p>multiples of 5 like $25, 125$ bring more than one factor of $5$.</p></li>
+<li><p><span class="math notranslate nohighlight">\(m&gt;n\)</span>, since every <span class="math notranslate nohighlight">\(5\)</span> numbers produce a factor <span class="math notranslate nohighlight">\(5\)</span> and at least <span class="math notranslate nohighlight">\(3\)</span> factors of <span class="math notranslate nohighlight">\(2\)</span>.</p></li>
+<li><p>multiples of 5 like <span class="math notranslate nohighlight">\(25, 125\)</span> bring more than one factor of <span class="math notranslate nohighlight">\(5\)</span>.</p></li>
 </ul>
-<p>Therefore, we conclude that $\min(m,n) = n$. How to count $n$? The easiest way is $\lfloor \frac{n}{5} \rfloor$. But we have to take numbers like $25, 125$ into consideration. The solution is to add $\lfloor \frac{n}{25} \rfloor, \lfloor \frac{n}{125} \rfloor$, etc.</p>
+<p>Therefore, we conclude that <span class="math notranslate nohighlight">\(\min(m,n) = n\)</span>. How to count <span class="math notranslate nohighlight">\(n\)</span>? The easiest way is <span class="math notranslate nohighlight">\(\lfloor \frac{n}{5} \rfloor\)</span>. But we have to take numbers like <span class="math notranslate nohighlight">\(25, 125\)</span> into consideration. The solution is to add <span class="math notranslate nohighlight">\(\lfloor \frac{n}{25} \rfloor, \lfloor \frac{n}{125} \rfloor\)</span>, etc.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">count_trailing_zeros</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
 
     <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>

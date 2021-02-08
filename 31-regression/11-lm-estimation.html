@@ -46,6 +46,8 @@
     <script src="../_static/copybutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="../_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
     <script >
         const thebe_selector = ".thebe"
@@ -491,7 +493,11 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../33-dimensionality-reduction/31-t-SNE.html">
-     SNE and $t$-SNE
+     SNE and
+     <span class="math notranslate nohighlight">
+      \(t\)
+     </span>
+     -SNE
     </a>
    </li>
   </ul>
@@ -706,7 +712,10 @@
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#r-squared">
-     $R$-squared
+     <span class="math notranslate nohighlight">
+      \(R\)
+     </span>
+     -squared
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
@@ -737,250 +746,281 @@
 <p>From this section we introduce linear models from a statistics’ perspective. There are three sections in total.</p>
 <ol class="simple">
 <li><p>The first section covers the model fundamentals, including assumptions, estimation, interpretation and some exercise.</p></li>
-<li><p>The next section introduce statistical inference for linear models, such as distribution of the estimated coefficients, $t$-test, $F$-test, etc. Usually machine learning community focuses more on prediction, less on inference. But inference does matters. It analyzes how important each variable is in the model from a rigorous approach.</p></li>
+<li><p>The next section introduce statistical inference for linear models, such as distribution of the estimated coefficients, <span class="math notranslate nohighlight">\(t\)</span>-test, <span class="math notranslate nohighlight">\(F\)</span>-test, etc. Usually machine learning community focuses more on prediction, less on inference. But inference does matters. It analyzes how important each variable is in the model from a rigorous approach.</p></li>
 <li><p>The third section introduce some issues in linear models, e.g. omitted variables bias, multicollinearity, heteroscedasticity, and some alternative models, e.g. Lasso, ridge regression, etc.</p></li>
 </ol>
-<p>:::{admonition,dropdown,note} Statistics’ perspective vs social science’s perspective</p>
+<div class="dropdown note admonition">
+<p class="admonition-title"> Statistics’ perspective vs social science’s perspective</p>
 <p>The introduction from econometrics’ perspective or social science’s perspective may be different. In short, the statistics’ perspective focuses on general multivariate cases and heavily rely on linear algebra for derivation, while the econometrics’ or the social science’s perspective prefers to introduce models in univariate cases by basic arithmetics (whose form can be complicated without linear algebra notations) and extend the intuitions and conclusions into multivariate cases.</p>
 <p>Personally, I involved in four courses that introduced linear models, i.e. at undergrad/grad level offered by stat/social science department. The style of the two courses offered by the stat departments were quite alike while the graduate level one covered more topics. In both undergrad/grad level courses offered by the social science departments, sometimes I got confused by the course materials that were contradictory to my statistics training , but the instructors had no clear response or even no response at all…</p>
 <p>In sum, to fully understand the most fundamental and widely used statistical model, I highly suggest to take a linear algebra course first and take the regression course offered by math/stat department.</p>
-<p>:::</p>
+</div>
 <div class="section" id="objective">
 <h2>Objective<a class="headerlink" href="#objective" title="Permalink to this headline">¶</a></h2>
 <p>Linear models aim to model the relationship between a scalar response and one or more explanatory variables in a linear format:</p>
-<p>$$Y_i  = \beta_0 + \beta_1 x_{i,1} + \ldots + \beta_{p-1} x_{i,p-1}  + \varepsilon_i $$</p>
-<p>for observations $i=1, 2, \ldots, n$.</p>
+<div class="math notranslate nohighlight">
+\[Y_i  = \beta_0 + \beta_1 x_{i,1} + \ldots + \beta_{p-1} x_{i,p-1}  + \varepsilon_i \]</div>
+<p>for observations <span class="math notranslate nohighlight">\(i=1, 2, \ldots, n\)</span>.</p>
 <p>In matrix form,</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 \boldsymbol{y} = \boldsymbol{X} \boldsymbol{\beta} + \boldsymbol{\varepsilon}.
-$$</p>
+\]</div>
 <p>where</p>
 <ul class="simple">
-<li><p>$\boldsymbol{X}<em>{n\times p}$ is called the design matrix. The first column is usually set to be $\boldsymbol{1}$, i.e., intercept. The remaining $p-1$ columns are designed values $x</em>{ij}$ where $i = 1, 2, \ldots, n$ and $j=1, \ldots, p-1$. These $p-1$ columns are called explanatory/independent variables, or covariates.</p></li>
-<li><p>$\boldsymbol{y}_{n \times 1}$ is a vector of response/dependent variables $Y_1, Y_2, \ldots, Y_n$.</p></li>
-<li><p>$\boldsymbol{\beta}_{p \times 1}$ is a vector of coefficients to be estimated.</p></li>
-<li><p>$\boldsymbol{\varepsilon}_{n \times 1}$ is a vector of unobserved random errors, which includes everything that we have not measured and included in the model.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{X}_{n\times p}\)</span> is called the design matrix. The first column is usually set to be <span class="math notranslate nohighlight">\(\boldsymbol{1}\)</span>, i.e., intercept. The remaining <span class="math notranslate nohighlight">\(p-1\)</span> columns are designed values <span class="math notranslate nohighlight">\(x_{ij}\)</span> where <span class="math notranslate nohighlight">\(i = 1, 2, \ldots, n\)</span> and <span class="math notranslate nohighlight">\(j=1, \ldots, p-1\)</span>. These <span class="math notranslate nohighlight">\(p-1\)</span> columns are called explanatory/independent variables, or covariates.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{y}_{n \times 1}\)</span> is a vector of response/dependent variables <span class="math notranslate nohighlight">\(Y_1, Y_2, \ldots, Y_n\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{\beta}_{p \times 1}\)</span> is a vector of coefficients to be estimated.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{\varepsilon}_{n \times 1}\)</span> is a vector of unobserved random errors, which includes everything that we have not measured and included in the model.</p></li>
 </ul>
-<p>When $p=2$, we have</p>
-<p>$$
+<p>When <span class="math notranslate nohighlight">\(p=2\)</span>, we have</p>
+<div class="math notranslate nohighlight">
+\[
 Y_i = \beta_0 + \beta_1 x_i + \varepsilon_i
-$$</p>
+\]</div>
 <p>which is called <strong>simple linear regression</strong>.</p>
-<p>When $p&gt;2$, it is called <strong>multiple linear regression</strong>. For instance, when $p=3$</p>
-<p>$$
+<p>When <span class="math notranslate nohighlight">\(p&gt;2\)</span>, it is called <strong>multiple linear regression</strong>. For instance, when <span class="math notranslate nohighlight">\(p=3\)</span></p>
+<div class="math notranslate nohighlight">
+\[
 Y_i = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \varepsilon_i
-$$</p>
+\]</div>
 <p>When there are multiple dependent variables, we call it <strong>multivariate regression</strong>, which will be introduced in another section.</p>
-<p>When $p=1$,</p>
+<p>When <span class="math notranslate nohighlight">\(p=1\)</span>,</p>
 <ul class="simple">
-<li><p>if we include intercept, then the regression model $y_i = \beta_0$ means that we use a single constant to predict $y_i$. The estimator, $\hat{\beta}_0$, by ordinary least square, should be the sample mean $\hat{y}$.</p></li>
-<li><p>if we do not include intercept, then the regression model $y_i = \beta x_i$ means that we expect that $y$ is proportional to $x$.</p></li>
+<li><p>if we include intercept, then the regression model <span class="math notranslate nohighlight">\(y_i = \beta_0\)</span> means that we use a single constant to predict <span class="math notranslate nohighlight">\(y_i\)</span>. The estimator, <span class="math notranslate nohighlight">\(\hat{\beta}_0\)</span>, by ordinary least square, should be the sample mean <span class="math notranslate nohighlight">\(\hat{y}\)</span>.</p></li>
+<li><p>if we do not include intercept, then the regression model <span class="math notranslate nohighlight">\(y_i = \beta x_i\)</span> means that we expect that <span class="math notranslate nohighlight">\(y\)</span> is proportional to <span class="math notranslate nohighlight">\(x\)</span>.</p></li>
 </ul>
-<p>:::{admonition,dropdown,note} Fixed or random $\boldsymbol{X}$?
-In natural science, researchers design $n\times p$ values in the design matrix $\boldsymbol{X}$ and run experiments to obtain the response $y_i$. We call this kind of data <strong>experimental data</strong>. In this sense, the explanatory variables $x_{ij}$’s are designed before the experiment, so they are also constants. The coefficients $\beta_j$’s are unknown constants. The error term $\varepsilon_i$ is random. The response variable $Y_i$ on the left hand side is random due to the randomness in the error term $\varepsilon_i$.</p>
-<p>In social science, most of data is <strong>observational data</strong>. That is, researchers obtain the values of many variables at the same time, and choose one of interest to be the response variable $y_i$ and some others to be the explanatory variables $\boldsymbol{x}_i$. In this case, $\boldsymbol{X}$ is viewed as a data set, and we can talk about descriptive statistics, such as variance of each explanatory variable, or covariance between pair of explanatory variables. This is valid since we often view the columns of a data set as random variables.</p>
-<p>However, the inference methods of the coefficients $\boldsymbol{\beta}$ are developed based on the natural science setting, i.e., the values of explanatory variables are pre-designed constants. Many social science courses frequently use descriptive statistics of the explanatory variables which assumes they are random, and apply inference methods which assumes they are constant. This is quite confusing for beginners to linear models.</p>
-<p>To be clear, we stick to the natural science setting and make the second assumption below. We use subscript $i$ in every $y_i, x_i, \varepsilon_i$ instead of $y, x, \varepsilon$ which gives a sense that $x$ is random. And we use descriptive statistics for the explanatory variables only when necessary.
-:::</p>
+<div class="dropdown note admonition">
+<p class="admonition-title"> Fixed or random <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span>?</p>
+<p>In natural science, researchers design <span class="math notranslate nohighlight">\(n\times p\)</span> values in the design matrix <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span> and run experiments to obtain the response <span class="math notranslate nohighlight">\(y_i\)</span>. We call this kind of data <strong>experimental data</strong>. In this sense, the explanatory variables <span class="math notranslate nohighlight">\(x_{ij}\)</span>’s are designed before the experiment, so they are also constants. The coefficients <span class="math notranslate nohighlight">\(\beta_j\)</span>’s are unknown constants. The error term <span class="math notranslate nohighlight">\(\varepsilon_i\)</span> is random. The response variable <span class="math notranslate nohighlight">\(Y_i\)</span> on the left hand side is random due to the randomness in the error term <span class="math notranslate nohighlight">\(\varepsilon_i\)</span>.</p>
+<p>In social science, most of data is <strong>observational data</strong>. That is, researchers obtain the values of many variables at the same time, and choose one of interest to be the response variable <span class="math notranslate nohighlight">\(y_i\)</span> and some others to be the explanatory variables <span class="math notranslate nohighlight">\(\boldsymbol{x}_i\)</span>. In this case, <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span> is viewed as a data set, and we can talk about descriptive statistics, such as variance of each explanatory variable, or covariance between pair of explanatory variables. This is valid since we often view the columns of a data set as random variables.</p>
+<p>However, the inference methods of the coefficients <span class="math notranslate nohighlight">\(\boldsymbol{\beta}\)</span> are developed based on the natural science setting, i.e., the values of explanatory variables are pre-designed constants. Many social science courses frequently use descriptive statistics of the explanatory variables which assumes they are random, and apply inference methods which assumes they are constant. This is quite confusing for beginners to linear models.</p>
+<p>To be clear, we stick to the natural science setting and make the second assumption below. We use subscript <span class="math notranslate nohighlight">\(i\)</span> in every <span class="math notranslate nohighlight">\(y_i, x_i, \varepsilon_i\)</span> instead of <span class="math notranslate nohighlight">\(y, x, \varepsilon\)</span> which gives a sense that <span class="math notranslate nohighlight">\(x\)</span> is random. And we use descriptive statistics for the explanatory variables only when necessary.</p>
+</div>
 </div>
 <div class="section" id="assumptions">
 <h2>Assumptions<a class="headerlink" href="#assumptions" title="Permalink to this headline">¶</a></h2>
 <p>Basic assumptions</p>
 <ol>
-<li><p>$\operatorname{E}\left( y_i \right) = \boldsymbol{x}_i ^\top \boldsymbol{\beta}$ is <strong>linear</strong> in covariates $X_j$.</p></li>
-<li><p>The values of explanatory variables $\boldsymbol{x}_i$ are known and fixed. Randomness only comes from $\varepsilon_i$.</p></li>
-<li><p>No $X_j$ is constant for all observations. No exact linear relationships among the explanatory variables (aka no perfect multicollinearity, or the design matrix $\boldsymbol{X}$ is of full rank).</p></li>
-<li><p>The error terms are uncorrelated $\operatorname{Cov}\left( \varepsilon_i, \varepsilon_j \right)= 0$, with common mean $\operatorname{E}\left( \varepsilon_i \right) = 0$ and variance $\operatorname{Var}\left( \varepsilon_i \right) = \sigma^2$ (homoskedasticity).</p>
-<p>As a result, $\operatorname{E}\left( \boldsymbol{y} \mid \boldsymbol{X} \right) = \boldsymbol{X} \boldsymbol{\beta}$, or $\operatorname{E}\left( y_i \mid x_i \right) = \beta_0 + \beta_1 x_i$ when $p=2$, which can be illustrated by the plots below.</p>
-<p>:::{figure} lm-distribution-of-y-given-x
-<img src="../imgs/lm-cond-distribution.png" width = "40%" alt=""/></p>
-<p>Distributions of $y$ given $x$ [Meyer 2021]
-:::</p>
-<p>:::{figure} lm-observation-of-y-given-x
-<img src="../imgs/lm-xyplane-dots.png" width = "50%" alt=""/></p>
-<p>Observations of $y$ given $x$ [Meyer 2021]
-:::</p>
-<p>To predict $\hat{y}_i$, we just use $\hat{y}_i = \boldsymbol{x}_i ^\top \hat{\boldsymbol{\beta}}$ .</p>
+<li><p><span class="math notranslate nohighlight">\(\operatorname{E}\left( y_i \right) = \boldsymbol{x}_i ^\top \boldsymbol{\beta}\)</span> is <strong>linear</strong> in covariates <span class="math notranslate nohighlight">\(X_j\)</span>.</p></li>
+<li><p>The values of explanatory variables <span class="math notranslate nohighlight">\(\boldsymbol{x}_i\)</span> are known and fixed. Randomness only comes from <span class="math notranslate nohighlight">\(\varepsilon_i\)</span>.</p></li>
+<li><p>No <span class="math notranslate nohighlight">\(X_j\)</span> is constant for all observations. No exact linear relationships among the explanatory variables (aka no perfect multicollinearity, or the design matrix <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span> is of full rank).</p></li>
+<li><p>The error terms are uncorrelated <span class="math notranslate nohighlight">\(\operatorname{Cov}\left( \varepsilon_i, \varepsilon_j \right)= 0\)</span>, with common mean <span class="math notranslate nohighlight">\(\operatorname{E}\left( \varepsilon_i \right) = 0\)</span> and variance <span class="math notranslate nohighlight">\(\operatorname{Var}\left( \varepsilon_i \right) = \sigma^2\)</span> (homoskedasticity).</p>
+<p>As a result, <span class="math notranslate nohighlight">\(\operatorname{E}\left( \boldsymbol{y} \mid \boldsymbol{X} \right) = \boldsymbol{X} \boldsymbol{\beta}\)</span>, or <span class="math notranslate nohighlight">\(\operatorname{E}\left( y_i \mid x_i \right) = \beta_0 + \beta_1 x_i\)</span> when <span class="math notranslate nohighlight">\(p=2\)</span>, which can be illustrated by the plots below.</p>
+<div class="figure align-default" id="lm-distribution-of-y-given-x">
+<a class="reference internal image-reference" href="../_images/lm-cond-distribution.png"><img alt="" src="../_images/lm-cond-distribution.png" style="width: 40%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 6 </span><span class="caption-text">Distributions of <span class="math notranslate nohighlight">\(y\)</span> given <span class="math notranslate nohighlight">\(x\)</span> [Meyer 2021]</span><a class="headerlink" href="#lm-distribution-of-y-given-x" title="Permalink to this image">¶</a></p>
+</div>
+<div class="figure align-default" id="lm-observation-of-y-given-x">
+<a class="reference internal image-reference" href="../_images/lm-xyplane-dots.png"><img alt="" src="../_images/lm-xyplane-dots.png" style="width: 50%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 7 </span><span class="caption-text">Observations of <span class="math notranslate nohighlight">\(y\)</span> given <span class="math notranslate nohighlight">\(x\)</span> [Meyer 2021]</span><a class="headerlink" href="#lm-observation-of-y-given-x" title="Permalink to this image">¶</a></p>
+</div>
+<p>To predict <span class="math notranslate nohighlight">\(\hat{y}_i\)</span>, we just use <span class="math notranslate nohighlight">\(\hat{y}_i = \boldsymbol{x}_i ^\top \hat{\boldsymbol{\beta}}\)</span> .</p>
 </li>
-<li><p>The error terms are independent and follow Gaussian distribution $\varepsilon_i \overset{\text{iid}}{\sim}N(0, \sigma^2)$, or $\boldsymbol{\varepsilon} \sim N_n (\boldsymbol{0} , \sigma^2 \boldsymbol{I} _n)$.</p>
-<p>As a result, we have $Y_i \sim N(\boldsymbol{x}_i ^\top \boldsymbol{\beta} , \sigma^2 )$ or $\boldsymbol{y} \sim N_n(\boldsymbol{X} \boldsymbol{\beta} , \sigma^2 \boldsymbol{I} _n)$</p>
+<li><p>The error terms are independent and follow Gaussian distribution <span class="math notranslate nohighlight">\(\varepsilon_i \overset{\text{iid}}{\sim}N(0, \sigma^2)\)</span>, or <span class="math notranslate nohighlight">\(\boldsymbol{\varepsilon} \sim N_n (\boldsymbol{0} , \sigma^2 \boldsymbol{I} _n)\)</span>.</p>
+<p>As a result, we have <span class="math notranslate nohighlight">\(Y_i \sim N(\boldsymbol{x}_i ^\top \boldsymbol{\beta} , \sigma^2 )\)</span> or <span class="math notranslate nohighlight">\(\boldsymbol{y} \sim N_n(\boldsymbol{X} \boldsymbol{\beta} , \sigma^2 \boldsymbol{I} _n)\)</span></p>
 </li>
 </ol>
 <p>These assumptions are used for different objectives. The first 3 assumptions are the base, and in additiona to them,</p>
 <ul class="simple">
-<li><p>derivation of $\hat{\boldsymbol{\beta}}$ by least squares uses no more assumptions.</p></li>
-<li><p>derivation of $\hat{\boldsymbol{\beta}}$ by maximal likelihood uses assumptions 4 and 5.</p></li>
-<li><p>derivation of $\operatorname{E}\left( \hat{\boldsymbol{\beta}} \right)$ uses $\operatorname{E}\left( \varepsilon_i \right) = 0$ in 4.</p></li>
-<li><p>derivation of $\operatorname{Var}\left( \hat{\boldsymbol{\beta}} \right)$ uses 1, 2, $\operatorname{Cov}\left( \varepsilon_i, \varepsilon_j \right) = 0$ and $\operatorname{Var}\left( \epsilon_i \right) = \sigma^2$ in 4.</p></li>
+<li><p>derivation of <span class="math notranslate nohighlight">\(\hat{\boldsymbol{\beta}}\)</span> by least squares uses no more assumptions.</p></li>
+<li><p>derivation of <span class="math notranslate nohighlight">\(\hat{\boldsymbol{\beta}}\)</span> by maximal likelihood uses assumptions 4 and 5.</p></li>
+<li><p>derivation of <span class="math notranslate nohighlight">\(\operatorname{E}\left( \hat{\boldsymbol{\beta}} \right)\)</span> uses <span class="math notranslate nohighlight">\(\operatorname{E}\left( \varepsilon_i \right) = 0\)</span> in 4.</p></li>
+<li><p>derivation of <span class="math notranslate nohighlight">\(\operatorname{Var}\left( \hat{\boldsymbol{\beta}} \right)\)</span> uses 1, 2, <span class="math notranslate nohighlight">\(\operatorname{Cov}\left( \varepsilon_i, \varepsilon_j \right) = 0\)</span> and <span class="math notranslate nohighlight">\(\operatorname{Var}\left( \epsilon_i \right) = \sigma^2\)</span> in 4.</p></li>
 <li><p>proof of Gaussian-Markov Theorem (BLUE) uses 4.</p></li>
-<li><p>derivation of the distribution of $\hat{\boldsymbol{\beta} }$ uses 4 and 5.</p></li>
+<li><p>derivation of the distribution of <span class="math notranslate nohighlight">\(\hat{\boldsymbol{\beta} }\)</span> uses 4 and 5.</p></li>
 </ul>
-<p>:::{admonition,dropdown,note} Zero conditional mean assumption
-In some social science or econometrics courses, they follow the “Gauss-Markov assumptions” that are roughly the same to the assumptions, but in different formats. One of them is zero conditional mean assumption.</p>
+<div class="dropdown note admonition">
+<p class="admonition-title"> Zero conditional mean assumption</p>
+<p>In some social science or econometrics courses, they follow the “Gauss-Markov assumptions” that are roughly the same to the assumptions, but in different formats. One of them is zero conditional mean assumption.</p>
 <p>In general, it says</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 \operatorname{E}\left( \varepsilon \mid x_1, x_2, \ldots, x_p\right) = 0
-$$</p>
-<p>For $p=2$, it is</p>
-<p>$$\operatorname{E}\left( \varepsilon \mid x  \right) = 0$$</p>
+\]</div>
+<p>For <span class="math notranslate nohighlight">\(p=2\)</span>, it is</p>
+<div class="math notranslate nohighlight">
+\[\operatorname{E}\left( \varepsilon \mid x  \right) = 0\]</div>
 <p>which (in their setting) implies</p>
-<p>$$\begin{align}
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
 \operatorname{E}\left( \varepsilon \right)
-&amp;= \operatorname{E}\left( \operatorname{E}\left( \varepsilon \mid x \right) \right)\
-&amp;= 0\
+&amp;= \operatorname{E}\left( \operatorname{E}\left( \varepsilon \mid x \right) \right)\\
+&amp;= 0\\
 \operatorname{Cov}\left( \varepsilon, x \right)
-&amp;= \operatorname{E}\left( \varepsilon x \right) - \operatorname{E}\left( \varepsilon \right)\operatorname{E}\left( x \right)\
-&amp;= \operatorname{E}\left( \operatorname{E}\left( \varepsilon x \mid x \right) \right)- 0 \times \operatorname{E}\left( x \right)\
-&amp;= \operatorname{E}\left( x \operatorname{E}\left( \varepsilon \mid x \right) \right) \
+&amp;= \operatorname{E}\left( \varepsilon x \right) - \operatorname{E}\left( \varepsilon \right)\operatorname{E}\left( x \right)\\
+&amp;= \operatorname{E}\left( \operatorname{E}\left( \varepsilon x \mid x \right) \right)- 0 \times \operatorname{E}\left( x \right)\\
+&amp;= \operatorname{E}\left( x \operatorname{E}\left( \varepsilon \mid x \right) \right) \\
 &amp;= 0
-\end{align}$$</p>
+\end{align}\end{split}\]</div>
 <p>Then they these two corollaries are used for <a class="reference internal" href="#lm-estimation-by-assumpation"><span class="std std-ref">estimation</span></a>.</p>
-<p>As discussed above, in their setting $x$ is random (at this stage), so they use notations such as $\operatorname{E}\left( \varepsilon \mid x \right)$ and $\operatorname{Cov}\left( x, \varepsilon \right)$. It also seems that they view $\varepsilon$ as an “overall” measure of random error, instead of $\varepsilon_i$ for specific $i$ in the natural science setting. But they can mean so by using the conditional notation $\operatorname{E}\left( \varepsilon \mid x \right)$.
-:::</p>
+<p>As discussed above, in their setting <span class="math notranslate nohighlight">\(x\)</span> is random (at this stage), so they use notations such as <span class="math notranslate nohighlight">\(\operatorname{E}\left( \varepsilon \mid x \right)\)</span> and <span class="math notranslate nohighlight">\(\operatorname{Cov}\left( x, \varepsilon \right)\)</span>. It also seems that they view <span class="math notranslate nohighlight">\(\varepsilon\)</span> as an “overall” measure of random error, instead of <span class="math notranslate nohighlight">\(\varepsilon_i\)</span> for specific <span class="math notranslate nohighlight">\(i\)</span> in the natural science setting. But they can mean so by using the conditional notation <span class="math notranslate nohighlight">\(\operatorname{E}\left( \varepsilon \mid x \right)\)</span>.</p>
+</div>
 </div>
 <div class="section" id="estimation">
 <h2>Estimation<a class="headerlink" href="#estimation" title="Permalink to this headline">¶</a></h2>
-<p>We introduce various methods to estimate the parameters $\boldsymbol{\beta}$ and $\sigma^2$.</p>
+<p>We introduce various methods to estimate the parameters <span class="math notranslate nohighlight">\(\boldsymbol{\beta}\)</span> and <span class="math notranslate nohighlight">\(\sigma^2\)</span>.</p>
 <div class="section" id="ordinary-least-squares">
 <h3>Ordinary Least Squares<a class="headerlink" href="#ordinary-least-squares" title="Permalink to this headline">¶</a></h3>
-<p>The most common way is to estimate the parameter $\hat{\boldsymbol{\beta}}$ by minimizing the sum of squared errors $\sum_i(y_i-\hat{y}_i)^2$.</p>
+<p>The most common way is to estimate the parameter <span class="math notranslate nohighlight">\(\hat{\boldsymbol{\beta}}\)</span> by minimizing the sum of squared errors <span class="math notranslate nohighlight">\(\sum_i(y_i-\hat{y}_i)^2\)</span>.</p>
 <div class="margin sidebar">
 <p class="sidebar-title">A note on substitution</p>
-<p>We substitute the predicted $\hat{\boldsymbol{y} }$ by $\boldsymbol{X} \boldsymbol{\beta}$. The $\boldsymbol{\beta}$ here just means a variable in the optimization problem, not the unknown constant coefficients in our model.</p>
+<p>We substitute the predicted <span class="math notranslate nohighlight">\(\hat{\boldsymbol{y} }\)</span> by <span class="math notranslate nohighlight">\(\boldsymbol{X} \boldsymbol{\beta}\)</span>. The <span class="math notranslate nohighlight">\(\boldsymbol{\beta}\)</span> here just means a variable in the optimization problem, not the unknown constant coefficients in our model.</p>
 </div>
-<p>$$\begin{align}
-\hat{\boldsymbol{\beta}} &amp;= \underset{\boldsymbol{\beta} }{\mathrm{argmin}} , \left\Vert \boldsymbol{y}  - \hat{\boldsymbol{y}}  \right\Vert ^2 \
-&amp;= \underset{\boldsymbol{\beta} }{\mathrm{argmin}} , \left\Vert \boldsymbol{y}  - \boldsymbol{X}  \boldsymbol{\beta}  \right\Vert ^2 \
-\end{align}$$</p>
-<p>The gradient w.r.t. $\boldsymbol{\beta}$ is</p>
-<p>$$\begin{align}
-\nabla_{\boldsymbol{\beta}} &amp;= -2 \boldsymbol{X}  ^\top (\boldsymbol{y} - \boldsymbol{X} \boldsymbol{\beta} )  \
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+\hat{\boldsymbol{\beta}} &amp;= \underset{\boldsymbol{\beta} }{\mathrm{argmin}} \, \left\Vert \boldsymbol{y}  - \hat{\boldsymbol{y}}  \right\Vert ^2 \\
+&amp;= \underset{\boldsymbol{\beta} }{\mathrm{argmin}} \, \left\Vert \boldsymbol{y}  - \boldsymbol{X}  \boldsymbol{\beta}  \right\Vert ^2 \\
+\end{align}\end{split}\]</div>
+<p>The gradient w.r.t. <span class="math notranslate nohighlight">\(\boldsymbol{\beta}\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+\nabla_{\boldsymbol{\beta}} &amp;= -2 \boldsymbol{X}  ^\top (\boldsymbol{y} - \boldsymbol{X} \boldsymbol{\beta} )  \\
 &amp;\overset{\text{set}}{=} \boldsymbol{0}
-\end{align}$$</p>
+\end{align}\end{split}\]</div>
 <p>Hence, we have</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 \boldsymbol{X} ^\top \boldsymbol{X} \boldsymbol{\beta} = \boldsymbol{X} ^\top \boldsymbol{y}
-$$</p>
+\]</div>
 <p>This linear system is called the <strong>normal equation</strong>.</p>
 <p>The closed form solution is</p>
-<p>$$\hat{\boldsymbol{\beta}} = \left( \boldsymbol{X} ^\top \boldsymbol{X}   \right)^{-1}\boldsymbol{X} ^\top  \boldsymbol{y}  $$</p>
-<p>Note that $\hat{\boldsymbol{\beta}}=(\boldsymbol{X} ^\top \boldsymbol{X} ) ^{-1} \boldsymbol{X}^\top \boldsymbol{y}$ is a random variable, since it is a linear combination of the random vector $\boldsymbol{y}$. This means that, keeping $\boldsymbol{X}$ fixed, repeat the experiment, we will probably get different response values $\boldsymbol{y}$, and hence different $\hat{\boldsymbol{\beta}}$. As a result, there is a sampling distribution of $\hat{\boldsymbol{\beta}}$, and we can find its mean, variance, and conduct hypothesis testing.</p>
-<p>::::{admonition,dropdown,tip} View least squares as projection
-Substitute the solve $\hat{\boldsymbol{\beta}}$ into the prediction $\hat{\boldsymbol{y}}$ we have</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[\hat{\boldsymbol{\beta}} = \left( \boldsymbol{X} ^\top \boldsymbol{X}   \right)^{-1}\boldsymbol{X} ^\top  \boldsymbol{y}  \]</div>
+<p>Note that <span class="math notranslate nohighlight">\(\hat{\boldsymbol{\beta}}=(\boldsymbol{X} ^\top \boldsymbol{X} ) ^{-1} \boldsymbol{X}^\top \boldsymbol{y}\)</span> is a random variable, since it is a linear combination of the random vector <span class="math notranslate nohighlight">\(\boldsymbol{y}\)</span>. This means that, keeping <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span> fixed, repeat the experiment, we will probably get different response values <span class="math notranslate nohighlight">\(\boldsymbol{y}\)</span>, and hence different <span class="math notranslate nohighlight">\(\hat{\boldsymbol{\beta}}\)</span>. As a result, there is a sampling distribution of <span class="math notranslate nohighlight">\(\hat{\boldsymbol{\beta}}\)</span>, and we can find its mean, variance, and conduct hypothesis testing.</p>
+<div class="dropdown tip admonition">
+<p class="admonition-title"> View least squares as projection</p>
+<p>Substitute the solve <span class="math notranslate nohighlight">\(\hat{\boldsymbol{\beta}}\)</span> into the prediction <span class="math notranslate nohighlight">\(\hat{\boldsymbol{y}}\)</span> we have</p>
+<div class="math notranslate nohighlight">
+\[
 \hat{\boldsymbol{y}} = \boldsymbol{X} \hat{\boldsymbol{\beta}} = \underbrace {\boldsymbol{X} (\boldsymbol{X} ^\top \boldsymbol{X} ) ^{-1} \boldsymbol{X} ^\top}_{\boldsymbol{H}} \boldsymbol{y}
-$$</p>
-<p>Here $\boldsymbol{H}$ is a projection matrix onto the column space (image) of $\boldsymbol{X}$. Recall that a projection matrix onto the column span of a matrix $\boldsymbol{X}$ has the form $\boldsymbol{P} _{\operatorname{col}(\boldsymbol{X} )} = \boldsymbol{X} \boldsymbol{X} ^\dagger$ where $\boldsymbol{X} ^\dagger =  (\boldsymbol{X} ^\top \boldsymbol{X} ) ^{-1} \boldsymbol{X} ^\top$ is the pseudo inverse of $\boldsymbol{X}$.</p>
-<p>Essentially, we are trying to find a vector $\hat{\boldsymbol{y}}$ in the column space of the data matrix $\boldsymbol{X}$ that is as close to $\boldsymbol{y}$ as possible, and the closest one is just the projection of $\boldsymbol{y}$ onto $\operatorname{col}(\boldsymbol{X})$, which is $\boldsymbol{H}\boldsymbol{y}$. The distance is measured by the norm $\left| \boldsymbol{y} - \hat{\boldsymbol{y}}  \right|$, which is the squared root of sum of squared errors. Note that $\boldsymbol{y} - \hat{\boldsymbol{y}} = (\boldsymbol{I} - \boldsymbol{H} ) \boldsymbol{y} \in \operatorname{col}(\boldsymbol{X}) ^ \bot$ since $\boldsymbol{I} - \boldsymbol{H} = \boldsymbol{I}  - \boldsymbol{P}<em>{\operatorname{col}(\boldsymbol{X}) } = \boldsymbol{P}</em>{\operatorname{col}(\boldsymbol{X}) ^ \bot}$ is the projection matrix onto the orthogonal complement $\operatorname{col}(\boldsymbol{X}) ^ \bot$.</p>
-<p>:::{figure} lm-projection
-<img src="../imgs/lm-projection.png" width = "50%" alt=""/></p>
-<p>Least squares as a projection <a class="reference external" href="https://waterprogramming.wordpress.com/2017/05/12/an-introduction-to-econometrics-part-1-classical-ordinary-least-squares-regression/">[Gold 2017]</a>
-:::</p>
-<p>::::</p>
-<p>:::{admonition,dropdown,note} Solving the linear system by software
-Computing software use specific functions to solve the normal equation $\boldsymbol{X} ^\top \boldsymbol{X} \boldsymbol{\beta} = \boldsymbol{X} ^\top \boldsymbol{y}$ for $\boldsymbol{\beta}$, instead of using the inverse $(\boldsymbol{X} ^\top \boldsymbol{X}) ^{-1}$ directly which can be slow and numerically unstable. For instance, one can use QR factorization of $X$,</p>
-<p>$$
+\]</div>
+<p>Here <span class="math notranslate nohighlight">\(\boldsymbol{H}\)</span> is a projection matrix onto the column space (image) of <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span>. Recall that a projection matrix onto the column span of a matrix <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span> has the form <span class="math notranslate nohighlight">\(\boldsymbol{P} _{\operatorname{col}(\boldsymbol{X} )} = \boldsymbol{X} \boldsymbol{X} ^\dagger\)</span> where <span class="math notranslate nohighlight">\(\boldsymbol{X} ^\dagger =  (\boldsymbol{X} ^\top \boldsymbol{X} ) ^{-1} \boldsymbol{X} ^\top\)</span> is the pseudo inverse of <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span>.</p>
+<p>Essentially, we are trying to find a vector <span class="math notranslate nohighlight">\(\hat{\boldsymbol{y}}\)</span> in the column space of the data matrix <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span> that is as close to <span class="math notranslate nohighlight">\(\boldsymbol{y}\)</span> as possible, and the closest one is just the projection of <span class="math notranslate nohighlight">\(\boldsymbol{y}\)</span> onto <span class="math notranslate nohighlight">\(\operatorname{col}(\boldsymbol{X})\)</span>, which is <span class="math notranslate nohighlight">\(\boldsymbol{H}\boldsymbol{y}\)</span>. The distance is measured by the norm <span class="math notranslate nohighlight">\(\left\| \boldsymbol{y} - \hat{\boldsymbol{y}}  \right\|\)</span>, which is the squared root of sum of squared errors. Note that <span class="math notranslate nohighlight">\(\boldsymbol{y} - \hat{\boldsymbol{y}} = (\boldsymbol{I} - \boldsymbol{H} ) \boldsymbol{y} \in \operatorname{col}(\boldsymbol{X}) ^ \bot\)</span> since <span class="math notranslate nohighlight">\(\boldsymbol{I} - \boldsymbol{H} = \boldsymbol{I}  - \boldsymbol{P}_{\operatorname{col}(\boldsymbol{X}) } = \boldsymbol{P}_{\operatorname{col}(\boldsymbol{X}) ^ \bot}\)</span> is the projection matrix onto the orthogonal complement <span class="math notranslate nohighlight">\(\operatorname{col}(\boldsymbol{X}) ^ \bot\)</span>.</p>
+<div class="figure align-default" id="lm-projection">
+<a class="reference internal image-reference" href="../_images/lm-projection.png"><img alt="" src="../_images/lm-projection.png" style="width: 50%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 8 </span><span class="caption-text">Least squares as a projection <a class="reference external" href="https://waterprogramming.wordpress.com/2017/05/12/an-introduction-to-econometrics-part-1-classical-ordinary-least-squares-regression/">[Gold 2017]</a></span><a class="headerlink" href="#lm-projection" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+<div class="dropdown note admonition">
+<p class="admonition-title"> Solving the linear system by software</p>
+<p>Computing software use specific functions to solve the normal equation <span class="math notranslate nohighlight">\(\boldsymbol{X} ^\top \boldsymbol{X} \boldsymbol{\beta} = \boldsymbol{X} ^\top \boldsymbol{y}\)</span> for <span class="math notranslate nohighlight">\(\boldsymbol{\beta}\)</span>, instead of using the inverse <span class="math notranslate nohighlight">\((\boldsymbol{X} ^\top \boldsymbol{X}) ^{-1}\)</span> directly which can be slow and numerically unstable. For instance, one can use QR factorization of <span class="math notranslate nohighlight">\(X\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
 \boldsymbol{X} = \boldsymbol{Q} \left[\begin{array}{l}
-\boldsymbol{R}<em>{p \times p}  \
-\boldsymbol{0}</em>{(n-p) \times p}
+\boldsymbol{R}_{p \times p}  \\
+\boldsymbol{0}_{(n-p) \times p}
 \end{array}\right]
-$$</p>
+\end{split}\]</div>
 <p>Hence,</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[\begin{split}
 \begin{aligned}
-| \boldsymbol{y} - \boldsymbol{X}  \boldsymbol{\beta}  |^{2}
-&amp;=\left|\boldsymbol{Q} ^{\top} \boldsymbol{y}  - \boldsymbol{Q} ^\top \boldsymbol{X} \boldsymbol{\beta}  \right|^{2} \
-&amp;=\left|\left(\begin{array}{c}
-\boldsymbol{f}  \
+\| \boldsymbol{y} - \boldsymbol{X}  \boldsymbol{\beta}  \|^{2}
+&amp;=\left\|\boldsymbol{Q} ^{\top} \boldsymbol{y}  - \boldsymbol{Q} ^\top \boldsymbol{X} \boldsymbol{\beta}  \right\|^{2} \\
+&amp;=\left\|\left(\begin{array}{c}
+\boldsymbol{f}  \\
 \boldsymbol{r}
 \end{array}\right)-\left(\begin{array}{c}
-\boldsymbol{R} \boldsymbol{\beta}  \
+\boldsymbol{R} \boldsymbol{\beta}  \\
 \boldsymbol{0}
-\end{array}\right)\right|^{2} \
-&amp;=|\boldsymbol{f} - \boldsymbol{R} \boldsymbol{\beta} |^{2}+|\boldsymbol{r} |^{2}
+\end{array}\right)\right\|^{2} \\
+&amp;=\|\boldsymbol{f} - \boldsymbol{R} \boldsymbol{\beta} \|^{2}+\|\boldsymbol{r} \|^{2}
 \end{aligned}
-$$</p>
+\end{split}\]</div>
 <p>Finally</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 \boldsymbol{\beta} = \boldsymbol{R} ^{-1} \boldsymbol{f}
-$$
-:::</p>
-<p>An unbiased estimator of the error variance $\sigma^2 = \operatorname{Var}\left( \varepsilon \right)$ is (to be discussed [later])</p>
-<p>$$
+\]</div>
+</div>
+<p>An unbiased estimator of the error variance <span class="math notranslate nohighlight">\(\sigma^2 = \operatorname{Var}\left( \varepsilon \right)\)</span> is (to be discussed [later])</p>
+<div class="math notranslate nohighlight">
+\[
 \hat{\sigma}^2 = \frac{\left\Vert \boldsymbol{y} - \boldsymbol{X} \hat{\boldsymbol{\beta}} \right\Vert ^2}{n-p}
-$$</p>
-<p>When $p=2$, we have</p>
-<p>$$\hat{\beta}_0, \hat{\beta}_1 =  \underset{\beta_0, \beta_1 }{\mathrm{argmin}} , \sum_i \left( y_i - \beta_0 - \beta_1 x_i \right)^2$$</p>
-<p>Differentiation w.r.t. $\beta_1$ gives</p>
-<p>$$</p>
-<ul class="simple">
-<li><p>2\sum_i (y_i - \beta_0 - \beta_1 x_i) x_i = 0
-$$</p></li>
-</ul>
-<p>Differentiation w.r.t. $\beta_0$ gives</p>
-<p>$$</p>
-<ul class="simple">
-<li><p>2\sum_i (y_i - \beta_0 - \beta_1 x_i) = 0
-$$</p></li>
-</ul>
+\]</div>
+<p>When <span class="math notranslate nohighlight">\(p=2\)</span>, we have</p>
+<div class="math notranslate nohighlight">
+\[\hat{\beta}_0, \hat{\beta}_1 =  \underset{\beta_0, \beta_1 }{\mathrm{argmin}} \, \sum_i \left( y_i - \beta_0 - \beta_1 x_i \right)^2\]</div>
+<p>Differentiation w.r.t. <span class="math notranslate nohighlight">\(\beta_1\)</span> gives</p>
+<div class="math notranslate nohighlight">
+\[
+- 2\sum_i (y_i - \beta_0 - \beta_1 x_i) x_i = 0
+\]</div>
+<p>Differentiation w.r.t. <span class="math notranslate nohighlight">\(\beta_0\)</span> gives</p>
+<div class="math notranslate nohighlight">
+\[
+- 2\sum_i (y_i - \beta_0 - \beta_1 x_i) = 0
+\]</div>
 <p>Solve the system of the equations, we have</p>
-<p>$$\begin{align}
-\hat{\beta}<em>{1} &amp;=\frac{\sum</em>{i=1}^{n}\left(x_{i}-\bar{x}\right)\left(y_{i}-\bar{y}\right)}{\sum_{i=1}^{n}\left(x_{i}-\bar{x}\right)^{2}} \
-\hat{\beta}<em>{0} &amp;=\bar{y}-\hat{\beta}</em>{1} \bar{x}
-\end{align}$$</p>
-<p>The expression for $\hat{\beta}_0$ implies that the fitted line cross the sample mean point $(\bar{x}, \bar{y})$.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+\hat{\beta}_{1} &amp;=\frac{\sum_{i=1}^{n}\left(x_{i}-\bar{x}\right)\left(y_{i}-\bar{y}\right)}{\sum_{i=1}^{n}\left(x_{i}-\bar{x}\right)^{2}} \\
+\hat{\beta}_{0} &amp;=\bar{y}-\hat{\beta}_{1} \bar{x}
+\end{align}\end{split}\]</div>
+<p>The expression for <span class="math notranslate nohighlight">\(\hat{\beta}_0\)</span> implies that the fitted line cross the sample mean point <span class="math notranslate nohighlight">\((\bar{x}, \bar{y})\)</span>.</p>
 <p>Moreover,</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 \hat{\sigma}^2 = \frac{1}{n-2} \sum_i \hat\varepsilon_i^2
-$$</p>
-<p>where $\hat\varepsilon_i = y_i - \hat{\beta}_0 - \hat{\beta}_1 x_i$.</p>
-<p>:::{admonition,note} Minimizing mean squared error
-The objective function, <strong>sum of squared errors</strong>,</p>
-<p>$$
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\hat\varepsilon_i = y_i - \hat{\beta}_0 - \hat{\beta}_1 x_i\)</span>.</p>
+<div class="note admonition">
+<p class="admonition-title"> Minimizing mean squared error</p>
+<p>The objective function, <strong>sum of squared errors</strong>,</p>
+<div class="math notranslate nohighlight">
+\[
 \left\Vert \boldsymbol{y}  - \boldsymbol{X}  \boldsymbol{\beta}  \right\Vert ^2 = \sum_i \left( y_i - \boldsymbol{x}_i ^\top \boldsymbol{\beta} \right)^2
-$$</p>
+\]</div>
 <p>can be replaced by <strong>mean squared error</strong>,</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 \frac{1}{n} \sum_i \left( y_i - \boldsymbol{x}_i ^\top \boldsymbol{\beta} \right)^2
-$$</p>
-<p>and the results are the same.
-:::</p>
+\]</div>
+<p>and the results are the same.</p>
+</div>
 </div>
 <div class="section" id="by-assumptions">
 <span id="lm-estimation-by-assumpation"></span><h3>By Assumptions<a class="headerlink" href="#by-assumptions" title="Permalink to this headline">¶</a></h3>
 <p>In some social science courses, the estimation is done by using the assumptions</p>
 <ul class="simple">
-<li><p>$\operatorname{E}\left( \varepsilon \right) = 0$</p></li>
-<li><p>$\operatorname{E}\left( \varepsilon \mid X \right) = 0$</p></li>
+<li><p><span class="math notranslate nohighlight">\(\operatorname{E}\left( \varepsilon \right) = 0\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\operatorname{E}\left( \varepsilon \mid X \right) = 0\)</span></p></li>
 </ul>
 <p>The first one gives</p>
-<p>$$
-\frac{1}{n}  \sum_{i=1}^{n}\left(y_{i}-\hat{\beta}<em>{0}-\hat{\beta}</em>{1} x_{i}\right)=0
-$$</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{1}{n}  \sum_{i=1}^{n}\left(y_{i}-\hat{\beta}_{0}-\hat{\beta}_{1} x_{i}\right)=0
+\]</div>
 <p>The second one gives</p>
-<p>$$\begin{align}
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
 \operatorname{Cov}\left( X, \varepsilon \right)
-&amp;= \operatorname{E}\left( X \varepsilon \right) - \operatorname{E}\left( X \right) \operatorname{E}\left( \varepsilon \right) \
-&amp;= \operatorname{E}\left[ \operatorname{E}\left( X \varepsilon \mid X \right) \right] - \operatorname{E}\left(  X \right)\operatorname{E}\left[ \operatorname{E}\left( \varepsilon \mid X\right) \right]\
-&amp;= \operatorname{E}\left[ X \operatorname{E}\left( \varepsilon \mid X \right) \right] - \operatorname{E}\left(  X \right)\operatorname{E}\left[ \operatorname{E}\left( \varepsilon \mid X\right) \right]\
+&amp;= \operatorname{E}\left( X \varepsilon \right) - \operatorname{E}\left( X \right) \operatorname{E}\left( \varepsilon \right) \\
+&amp;= \operatorname{E}\left[ \operatorname{E}\left( X \varepsilon \mid X \right) \right] - \operatorname{E}\left(  X \right)\operatorname{E}\left[ \operatorname{E}\left( \varepsilon \mid X\right) \right]\\
+&amp;= \operatorname{E}\left[ X \operatorname{E}\left( \varepsilon \mid X \right) \right] - \operatorname{E}\left(  X \right)\operatorname{E}\left[ \operatorname{E}\left( \varepsilon \mid X\right) \right]\\
 &amp;= 0
-\end{align}$$</p>
+\end{align}\end{split}\]</div>
 <p>which gives</p>
-<p>$$
-\frac{1}{n}  \sum_{i=1}^{n} x_{i}\left(y_{i}-\hat{\beta}<em>{0}-\hat{\beta}</em>{1} x_{i}\right)=0
-$$</p>
-<p>Therefore, we have the same normal equations to solve for $\hat{\beta}_0$ and $\hat{\beta}_1$.</p>
-<p>:::{admonition,warning} Warning</p>
-<p>Estimation by the two assumptions derived from the zero conditional mean assumption can be problematic. Consider a model without intercept $y_i = \beta x_i + \varepsilon_i$. Fitting by OLS, we have only ONE first order condition</p>
-<p>$$
-\sum_{i=1}^{n} x_{i}\left(y_{i}-\hat{\beta}<em>{1} x</em>{i}\right)=0
-$$</p>
-<p>If we fit by assumptions, then in addition to the condition above, the first assumption $\operatorname{E}\left( \varepsilon \right) = 0$ also gives</p>
-<p>$$
-\sum_{i=1}^{n}\left(y_{i}-\hat{\beta}<em>{1} x</em>{i}\right)=0
-$$</p>
-<p>These two conditions may not hold at the same time.
-:::</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{1}{n}  \sum_{i=1}^{n} x_{i}\left(y_{i}-\hat{\beta}_{0}-\hat{\beta}_{1} x_{i}\right)=0
+\]</div>
+<p>Therefore, we have the same normal equations to solve for <span class="math notranslate nohighlight">\(\hat{\beta}_0\)</span> and <span class="math notranslate nohighlight">\(\hat{\beta}_1\)</span>.</p>
+<div class="warning admonition">
+<p class="admonition-title"> Warning</p>
+<p>Estimation by the two assumptions derived from the zero conditional mean assumption can be problematic. Consider a model without intercept <span class="math notranslate nohighlight">\(y_i = \beta x_i + \varepsilon_i\)</span>. Fitting by OLS, we have only ONE first order condition</p>
+<div class="math notranslate nohighlight">
+\[
+\sum_{i=1}^{n} x_{i}\left(y_{i}-\hat{\beta}_{1} x_{i}\right)=0
+\]</div>
+<p>If we fit by assumptions, then in addition to the condition above, the first assumption <span class="math notranslate nohighlight">\(\operatorname{E}\left( \varepsilon \right) = 0\)</span> also gives</p>
+<div class="math notranslate nohighlight">
+\[
+ \sum_{i=1}^{n}\left(y_{i}-\hat{\beta}_{1} x_{i}\right)=0
+\]</div>
+<p>These two conditions may not hold at the same time.</p>
+</div>
 </div>
 <div class="section" id="maximum-likelihood">
 <h3>Maximum Likelihood<a class="headerlink" href="#maximum-likelihood" title="Permalink to this headline">¶</a></h3>
@@ -997,57 +1037,63 @@ $$</p>
 <h3>Value of Estimated Coefficients<a class="headerlink" href="#value-of-estimated-coefficients" title="Permalink to this headline">¶</a></h3>
 <div class="margin sidebar">
 <p class="sidebar-title">Non-linear term in linear models.</p>
-<p>“Linear” model is linear in predictors. A predictor can be a non-linear feature of inputs $x_1, \ldots, x_p$, say $x_1^2, ln^{x_1}, x_1 x_2, $ etc.</p>
+<p>“Linear” model is linear in predictors. A predictor can be a non-linear feature of inputs <span class="math notranslate nohighlight">\(x_1, \ldots, x_p\)</span>, say <span class="math notranslate nohighlight">\(x_1^2, ln^{x_1}, x_1 x_2, \)</span> etc.</p>
 </div>
 <ol>
 <li><p>For a model in a standard form,</p>
 <ul class="simple">
-<li><p>$\beta_j$ is the expected change in the value of the response variable $y$ if the value of the covariate $x_j$ increases by 1, holding other covariates fixed.</p></li>
-<li><p>$\beta_0$ is the expected value of the response variable $y$ if all covariates have values of zero.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\beta_j\)</span> is the expected change in the value of the response variable <span class="math notranslate nohighlight">\(y\)</span> if the value of the covariate <span class="math notranslate nohighlight">\(x_j\)</span> increases by 1, holding other covariates fixed.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\beta_0\)</span> is the expected value of the response variable <span class="math notranslate nohighlight">\(y\)</span> if all covariates have values of zero.</p></li>
 </ul>
 </li>
 <li><p>If the covariate is an interaction term, for instance,</p>
-<p>$$
-Y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \beta_{12} x_1 x_2 + \varepsilon
-$$</p>
-<p>Then $(\hat{\beta}<em>1 + \hat{\beta}</em>{12}x_2)$ can be interpreted as the estimated effect of one unit change in $x_1$ on $Y$ given a fixed value $x_2$. Usually $x_2$ is an dummy variable, say gender.</p>
-<p>In short, we build this model because we believe the effect of $x_1$ on $Y$ depends on $x_2$.</p>
+<div class="math notranslate nohighlight">
+\[
+    Y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \beta_{12} x_1 x_2 + \varepsilon
+    \]</div>
+<p>Then <span class="math notranslate nohighlight">\((\hat{\beta}_1 + \hat{\beta}_{12}x_2)\)</span> can be interpreted as the estimated effect of one unit change in <span class="math notranslate nohighlight">\(x_1\)</span> on <span class="math notranslate nohighlight">\(Y\)</span> given a fixed value <span class="math notranslate nohighlight">\(x_2\)</span>. Usually <span class="math notranslate nohighlight">\(x_2\)</span> is an dummy variable, say gender.</p>
+<p>In short, we build this model because we believe the effect of <span class="math notranslate nohighlight">\(x_1\)</span> on <span class="math notranslate nohighlight">\(Y\)</span> depends on <span class="math notranslate nohighlight">\(x_2\)</span>.</p>
 <p>Often higher-order interactions are added after lower-order interactions are included.</p>
 </li>
 <li><p>For polynomial covariates, say,</p>
-<p>$$
-Y = \beta_0 + \beta_1 x_1 + \beta_2 x_1^2 + \beta_{3} x_1^3 + \varepsilon
-$$</p>
-<p>the interpretation of the marginal effect of $x_1$ is simply the partial derivative $\beta_1 + 2\beta_2 x_1 + 3 \beta_3 x_1^2$. We build such model because the plot suggests a non-linear relation between $Y$ and $x_1$, or we believe the effect of $x_1$ on $Y$ depends on the value of $x_1$. Note in this case the effect can change sign.</p>
+<div class="math notranslate nohighlight">
+\[
+    Y = \beta_0 + \beta_1 x_1 + \beta_2 x_1^2 + \beta_{3} x_1^3 + \varepsilon
+    \]</div>
+<p>the interpretation of the marginal effect of <span class="math notranslate nohighlight">\(x_1\)</span> is simply the partial derivative <span class="math notranslate nohighlight">\(\beta_1 + 2\beta_2 x_1 + 3 \beta_3 x_1^2\)</span>. We build such model because the plot suggests a non-linear relation between <span class="math notranslate nohighlight">\(Y\)</span> and <span class="math notranslate nohighlight">\(x_1\)</span>, or we believe the effect of <span class="math notranslate nohighlight">\(x_1\)</span> on <span class="math notranslate nohighlight">\(Y\)</span> depends on the value of <span class="math notranslate nohighlight">\(x_1\)</span>. Note in this case the effect can change sign.</p>
 </li>
 <li><p>For a model that involves log, we need some approximation.</p>
 <ul>
-<li><p>$Y = \beta_0 + \beta_1 \ln(x) + \mu$</p>
-<p>$$\begin{aligned}
-\ln(1+0.01)&amp;\approx 0.01\
-\Rightarrow \quad \ln(x + 0.01x) &amp;\approx \ln(x)  + 0.01 \quad \forall x\
-\end{aligned}$$</p>
-<p>Hence, $0.01x$ change in $x$, or $1%$ change in $x$, is associated with $0.01\beta_1$ change in value of $Y$.</p>
+<li><p><span class="math notranslate nohighlight">\(Y = \beta_0 + \beta_1 \ln(x) + \mu\)</span></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+        \ln(1+0.01)&amp;\approx 0.01\\
+        \Rightarrow \quad \ln(x + 0.01x) &amp;\approx \ln(x)  + 0.01 \quad \forall x\\
+        \end{aligned}\end{split}\]</div>
+<p>Hence, <span class="math notranslate nohighlight">\(0.01x\)</span> change in <span class="math notranslate nohighlight">\(x\)</span>, or <span class="math notranslate nohighlight">\(1\%\)</span> change in <span class="math notranslate nohighlight">\(x\)</span>, is associated with <span class="math notranslate nohighlight">\(0.01\beta_1\)</span> change in value of <span class="math notranslate nohighlight">\(Y\)</span>.</p>
 </li>
-<li><p>$\ln(Y) = \beta_0 + \beta_1 x + \mu$</p>
-<p>$$\begin{aligned}
-Y ^\prime
-&amp;= \exp(\beta_0 + \beta_1 (x + 1) + \varepsilon)   \
-&amp;= \exp(\beta_0 + \beta_1 + \varepsilon) \exp(\beta_1)  \
-&amp;\approx Y (1 + \beta_1) \quad \text{if $\beta_1$ is close to 0}  \
-\end{aligned}$$</p>
-<p>Hence, $1$ unit change in $x$ is associated with $100\beta_1 %$ change in $Y$.</p>
+<li><p><span class="math notranslate nohighlight">\(\ln(Y) = \beta_0 + \beta_1 x + \mu\)</span></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+        Y ^\prime
+        &amp;= \exp(\beta_0 + \beta_1 (x + 1) + \varepsilon)   \\
+        &amp;= \exp(\beta_0 + \beta_1 + \varepsilon) \exp(\beta_1)  \\
+        &amp;\approx Y (1 + \beta_1) \quad \text{if $\beta_1$ is close to 0}  \\
+        \end{aligned}\end{split}\]</div>
+<p>Hence, <span class="math notranslate nohighlight">\(1\)</span> unit change in <span class="math notranslate nohighlight">\(x\)</span> is associated with <span class="math notranslate nohighlight">\(100\beta_1 \%\)</span> change in <span class="math notranslate nohighlight">\(Y\)</span>.</p>
 </li>
-<li><p>$\ln(Y) = \beta_0 + \beta_1 \ln(x) + \mu$</p>
-<p>$$\begin{aligned}
-Y ^\prime
-&amp;= \exp(\beta_0 + \beta_1 \ln(x + 0.01x) + \varepsilon)   \
-&amp;\approx \exp(\beta_0 + \beta_1 (\ln(x) + 0.01) + \varepsilon)   \
-&amp;= \exp(\beta_0 + \beta_1 \ln(x) + \varepsilon)\exp(0.01\beta_1)   \
-&amp;\approx Y (1 + 0.01\beta_1) \quad \text{if $0.01\beta_1$ is close to 0}  \
-\end{aligned}$$</p>
-<p>Hence, $1%$ change in $x$ is associated with $\beta_1 %$ change in $Y$, i.e. $\beta_1$ measures <strong>elasticity</strong>.</p>
-<p>:::{admonition,note} When to use log?</p>
+<li><p><span class="math notranslate nohighlight">\(\ln(Y) = \beta_0 + \beta_1 \ln(x) + \mu\)</span></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+        Y ^\prime
+        &amp;= \exp(\beta_0 + \beta_1 \ln(x + 0.01x) + \varepsilon)   \\
+        &amp;\approx \exp(\beta_0 + \beta_1 (\ln(x) + 0.01) + \varepsilon)   \\
+        &amp;= \exp(\beta_0 + \beta_1 \ln(x) + \varepsilon)\exp(0.01\beta_1)   \\
+        &amp;\approx Y (1 + 0.01\beta_1) \quad \text{if $0.01\beta_1$ is close to 0}  \\
+        \end{aligned}\end{split}\]</div>
+<p>Hence, <span class="math notranslate nohighlight">\(1\%\)</span> change in <span class="math notranslate nohighlight">\(x\)</span> is associated with <span class="math notranslate nohighlight">\(\beta_1 \%\)</span> change in <span class="math notranslate nohighlight">\(Y\)</span>, i.e. <span class="math notranslate nohighlight">\(\beta_1\)</span> measures <strong>elasticity</strong>.</p>
+<div class="note admonition">
+<p class="admonition-title"> When to use log?</p>
 <p>Log is often used</p>
 <ul class="simple">
 <li><p>when the variable has a right skewed distribution, e.g. wages, prices</p></li>
@@ -1059,218 +1105,250 @@ Y ^\prime
 <li><p>the variable are in percentages or proportions (hard to interpret)</p></li>
 </ul>
 <p>Also note that logging can change significance tests.</p>
-<p>:::</p>
+</div>
 </li>
 </ul>
 </li>
 </ol>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>Linear regression models only reveal linear associations between the response variable and the independent variables. But association does not imply causation. Simple example: in SLR, regress $X$ over $Y$, the coefficient has same sign and significance, but causation cannot be reversed.</p>
+<p>Linear regression models only reveal linear associations between the response variable and the independent variables. But association does not imply causation. Simple example: in SLR, regress <span class="math notranslate nohighlight">\(X\)</span> over <span class="math notranslate nohighlight">\(Y\)</span>, the coefficient has same sign and significance, but causation cannot be reversed.</p>
 <p>Only when the data is from a randomized controlled trial, correlation will imply causation.</p>
 </div>
-<p>We can measure if a coefficient is statistically significant by <a class="reference internal" href="12-lm-inference.html#lm-t-test"><span class="std std-ref">$t$-test</span></a>.</p>
+<p>We can measure if a coefficient is statistically significant by <a class="reference internal" href="12-lm-inference.html#lm-t-test"><span class="std std-ref"><span class="math notranslate nohighlight">\(t\)</span>-test</span></a>.</p>
 </div>
 <div class="section" id="r-squared">
-<h3>$R$-squared<a class="headerlink" href="#r-squared" title="Permalink to this headline">¶</a></h3>
-<p>We will introduce $R$-squared in detail in next section.</p>
+<h3><span class="math notranslate nohighlight">\(R\)</span>-squared<a class="headerlink" href="#r-squared" title="Permalink to this headline">¶</a></h3>
+<p>We will introduce <span class="math notranslate nohighlight">\(R\)</span>-squared in detail in next section.</p>
 <dl class="simple myst">
-<dt>Definition ($R$-squared)</dt><dd><p>$R$-squared is a statistical measure that represents the <strong>proportion of the variance</strong> for a dependent variable that’s <strong>explained</strong> by an independent variable or variables in a regression model.</p>
+<dt>Definition (<span class="math notranslate nohighlight">\(R\)</span>-squared)</dt><dd><p><span class="math notranslate nohighlight">\(R\)</span>-squared is a statistical measure that represents the <strong>proportion of the variance</strong> for a dependent variable that’s <strong>explained</strong> by an independent variable or variables in a regression model.</p>
 </dd>
 </dl>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 R^2 = \frac{\sum (\hat{y}_i - \bar{y})^2}{\sum (y_i - \bar{y})^2}
-$$</p>
+\]</div>
 </div>
 <div class="section" id="partialling-out-explanation-for-mlr">
 <h3>Partialling Out Explanation for MLR<a class="headerlink" href="#partialling-out-explanation-for-mlr" title="Permalink to this headline">¶</a></h3>
 <p>We can interpret the coefficients in multiple linear regression from “partialling out” perspective.</p>
-<p>When $p=3$, i.e.,</p>
-<p>$$
-\hat{y}=\hat{\beta}<em>{0}+\hat{\beta}</em>{1} x_{1}+\hat{\beta}<em>{2} x</em>{2}
-$$</p>
-<p>We can obtain $\hat{\beta}_1$ by the following three steps</p>
+<p>When <span class="math notranslate nohighlight">\(p=3\)</span>, i.e.,</p>
+<div class="math notranslate nohighlight">
+\[
+\hat{y}=\hat{\beta}_{0}+\hat{\beta}_{1} x_{1}+\hat{\beta}_{2} x_{2}
+\]</div>
+<p>We can obtain <span class="math notranslate nohighlight">\(\hat{\beta}_1\)</span> by the following three steps</p>
 <ol>
-<li><p>regress $x_1$ over $x_2$ and obtain</p>
-<p>$$\hat{x}<em>{1}=\hat{\gamma}</em>{0}+\hat{\gamma}<em>{1} x</em>{2}$$</p>
+<li><p>regress <span class="math notranslate nohighlight">\(x_1\)</span> over <span class="math notranslate nohighlight">\(x_2\)</span> and obtain</p>
+<div class="math notranslate nohighlight">
+\[\hat{x}_{1}=\hat{\gamma}_{0}+\hat{\gamma}_{1} x_{2}\]</div>
 </li>
-<li><p>compute the residuals $\hat{u}_{1}$ in the above regression</p>
-<p>$$
-\hat{u}<em>{i} = x</em>{1i} - \hat{x}_{1i}
-$$</p>
+<li><p>compute the residuals <span class="math notranslate nohighlight">\(\hat{u}_{1}\)</span> in the above regression</p>
+<div class="math notranslate nohighlight">
+\[
+     \hat{u}_{i} = x_{1i} - \hat{x}_{1i}
+     \]</div>
 </li>
-<li><p>regress $y$ on the the residuals $\hat{u}_{1}$, and the estimated coefficient equals the required coefficient.</p>
-<p>$$\begin{align}
-\hat{y}
-&amp;=\hat{\alpha}<em>{0}+\hat{\alpha}</em>{1} \hat{u} \
-\hat{\alpha}_{1}
-&amp;= \frac{\sum (\hat{u}_i - \bar{\hat{u}}_i)(y_i - \bar{y})}{\sum (\hat{u}<em>i - \bar{\hat{u}}<em>i)^2} \
-&amp;= \frac{\sum \hat{u}</em>{i}y_i}{\sum \hat{u}</em>{i}^2} \qquad \because \bar{\hat{u}}_i = 0\
-&amp;\overset{\text{claimed}}{=} \hat{\beta}_1
-\end{align}$$</p>
+<li><p>regress <span class="math notranslate nohighlight">\(y\)</span> on the the residuals <span class="math notranslate nohighlight">\(\hat{u}_{1}\)</span>, and the estimated coefficient equals the required coefficient.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+     \hat{y}
+     &amp;=\hat{\alpha}_{0}+\hat{\alpha}_{1} \hat{u} \\
+     \hat{\alpha}_{1}
+     &amp;= \frac{\sum (\hat{u}_i - \bar{\hat{u}}_i)(y_i - \bar{y})}{\sum (\hat{u}_i - \bar{\hat{u}}_i)^2} \\
+     &amp;= \frac{\sum \hat{u}_{i}y_i}{\sum \hat{u}_{i}^2} \qquad \because \bar{\hat{u}}_i = 0\\
+     &amp;\overset{\text{claimed}}{=} \hat{\beta}_1
+     \end{align}\end{split}\]</div>
 </li>
 </ol>
-<p>In this approach, $\hat{u}$ is interpreted as the part in $x_1$ that cannot be predicted by $x_2$, or is uncorrelated with $x_2$. We then regress $y$ on $\hat{u}$, to get the effect of $x_1$ on $y$ after $x_2$ has been “partialled out”.</p>
+<p>In this approach, <span class="math notranslate nohighlight">\(\hat{u}\)</span> is interpreted as the part in <span class="math notranslate nohighlight">\(x_1\)</span> that cannot be predicted by <span class="math notranslate nohighlight">\(x_2\)</span>, or is uncorrelated with <span class="math notranslate nohighlight">\(x_2\)</span>. We then regress <span class="math notranslate nohighlight">\(y\)</span> on <span class="math notranslate nohighlight">\(\hat{u}\)</span>, to get the effect of <span class="math notranslate nohighlight">\(x_1\)</span> on <span class="math notranslate nohighlight">\(y\)</span> after <span class="math notranslate nohighlight">\(x_2\)</span> has been “partialled out”.</p>
 </div>
 </div>
 <div class="section" id="exercise">
 <h2>Exercise<a class="headerlink" href="#exercise" title="Permalink to this headline">¶</a></h2>
-<p>SLR stands for simple linear regression $y_i = \beta_0 + \beta_1 x_i + \varepsilon_i $</p>
+<p>SLR stands for simple linear regression <span class="math notranslate nohighlight">\(y_i = \beta_0 + \beta_1 x_i + \varepsilon_i \)</span></p>
 <ol>
-<li><p><em>In SLR, can you compute $\hat{\beta}<em>1$ from correlation $r</em>{X,Y}$ and standard deviations $s_X$ and $s_Y$?</em></p>
-<p>:::{admonition,dropdown,seealso} <em>Solution</em></p>
+<li><p><em>In SLR, can you compute <span class="math notranslate nohighlight">\(\hat{\beta}_1\)</span> from correlation <span class="math notranslate nohighlight">\(r_{X,Y}\)</span> and standard deviations <span class="math notranslate nohighlight">\(s_X\)</span> and <span class="math notranslate nohighlight">\(s_Y\)</span>?</em></p>
+<div class="dropdown seealso admonition">
+<p class="admonition-title"> <em>Solution</em></p>
 <p>In SLR, we can see from the solution</p>
-<p>$$\begin{align}
-\hat{\beta}<em>{1} &amp;=\frac{\sum</em>{i=1}^{n}\left(x_{i}-\bar{x}\right)\left(y_{i}-\bar{y}\right)}{\sum_{i=1}^{n}\left(x_{i}-\bar{x}\right)^{2}}
-\end{align}$$</p>
+<div class="math notranslate nohighlight">
+\[\begin{align}
+    \hat{\beta}_{1} &amp;=\frac{\sum_{i=1}^{n}\left(x_{i}-\bar{x}\right)\left(y_{i}-\bar{y}\right)}{\sum_{i=1}^{n}\left(x_{i}-\bar{x}\right)^{2}}
+    \end{align}\]</div>
 <p>that</p>
-<p>$$\begin{align}
-\hat{\beta}<em>1 &amp;= \frac{\widehat{\operatorname{Cov}}\left( Y, X \right)}{\widehat{\operatorname{Var}}\left( X \right)}  \
-&amp;= r</em>{X,Y} \frac{s_Y}{s_X}
-\end{align}$$</p>
-<p>Thus, the slope has the same sign with the correlation $r_{X,Y}$, and equals to the correlation times a ratio of the sample standard deviations of the dependent variable over the independent variable.</p>
-<p>Once can see that the magnitude of $\hat\beta_1$ increases with the magnitude of $r_{X,Y}$ and $s_Y$, and decreases with $s_X$, holding others fixed.</p>
-<p>:::</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+    \hat{\beta}_1 &amp;= \frac{\widehat{\operatorname{Cov}}\left( Y, X \right)}{\widehat{\operatorname{Var}}\left( X \right)}  \\
+    &amp;= r_{X,Y} \frac{s_Y}{s_X}
+    \end{align}\end{split}\]</div>
+<p>Thus, the slope has the same sign with the correlation <span class="math notranslate nohighlight">\(r_{X,Y}\)</span>, and equals to the correlation times a ratio of the sample standard deviations of the dependent variable over the independent variable.</p>
+<p>Once can see that the magnitude of <span class="math notranslate nohighlight">\(\hat\beta_1\)</span> increases with the magnitude of <span class="math notranslate nohighlight">\(r_{X,Y}\)</span> and <span class="math notranslate nohighlight">\(s_Y\)</span>, and decreases with <span class="math notranslate nohighlight">\(s_X\)</span>, holding others fixed.</p>
+</div>
 </li>
-<li><p><em>In SLR, can you compute $\bar{y}$ given $\hat{\beta}_0,\hat{\beta}_1$ and $\bar{x}$?</em></p>
-<p>:::{admonition,dropdown,seealso} <em>Solution</em></p>
-<p>Since $\hat{\beta}<em>{0} =\bar{y}-\hat{\beta}</em>{1} \bar{x}$, we have $\bar{y} = \hat{\beta}<em>{0} + \hat{\beta}</em>{1} \bar{x}$, i.e. the regression line always goes through the mean $(\bar{x}, \bar{y})$ of the sample.</p>
-<p>This also hold for multiple regression, by the first order condition w.r.t. $\beta_0$.</p>
-<p>:::</p>
+<li><p><em>In SLR, can you compute <span class="math notranslate nohighlight">\(\bar{y}\)</span> given <span class="math notranslate nohighlight">\(\hat{\beta}_0,\hat{\beta}_1\)</span> and <span class="math notranslate nohighlight">\(\bar{x}\)</span>?</em></p>
+<div class="dropdown seealso admonition">
+<p class="admonition-title"> <em>Solution</em></p>
+<p>Since <span class="math notranslate nohighlight">\(\hat{\beta}_{0} =\bar{y}-\hat{\beta}_{1} \bar{x}\)</span>, we have <span class="math notranslate nohighlight">\(\bar{y} = \hat{\beta}_{0} + \hat{\beta}_{1} \bar{x}\)</span>, i.e. the regression line always goes through the mean <span class="math notranslate nohighlight">\((\bar{x}, \bar{y})\)</span> of the sample.</p>
+<p>This also hold for multiple regression, by the first order condition w.r.t. <span class="math notranslate nohighlight">\(\beta_0\)</span>.</p>
+</div>
 </li>
 <li><p><em>What if the mean of the error term is not zero? Can you write down an equivalent model?</em></p>
-<p>:::{admonition,dropdown,seealso} <em>Solution</em></p>
-<p>If $\operatorname{E}\left( \varepsilon \right) = \mu_\varepsilon \ne 0$, we can just denote $\varepsilon = \mu_\varepsilon + v$, where $v$ is a new error term with zero mean. Our model becomes</p>
-<p>$$
-y_i = (\beta_0 + \mu_\varepsilon) + \beta_1 x_1 + v
-$$</p>
-<p>where $(\beta_0 + \mu_\varepsilon)$ is the new intercept. We can still apply the methods above to conduct estimation and inference.</p>
-<p>:::</p>
+<div class="dropdown seealso admonition">
+<p class="admonition-title"> <em>Solution</em></p>
+<p>If <span class="math notranslate nohighlight">\(\operatorname{E}\left( \varepsilon \right) = \mu_\varepsilon \ne 0\)</span>, we can just denote <span class="math notranslate nohighlight">\(\varepsilon = \mu_\varepsilon + v\)</span>, where <span class="math notranslate nohighlight">\(v\)</span> is a new error term with zero mean. Our model becomes</p>
+<div class="math notranslate nohighlight">
+\[
+    y_i = (\beta_0 + \mu_\varepsilon) + \beta_1 x_1 + v
+    \]</div>
+<p>where <span class="math notranslate nohighlight">\((\beta_0 + \mu_\varepsilon)\)</span> is the new intercept. We can still apply the methods above to conduct estimation and inference.</p>
+</div>
 </li>
-<li><p><em>Assume the intercept $\beta_0$ in the model $y=\beta_0 + \beta_1 x + \varepsilon$ is zero. Find the OLS estimate for $\beta_1$, denoted $\tilde{\beta}$. Find its mean, variance, and compare them with those of the OLS estimate for $\beta_1$ when there is an intercept term.</em></p>
-<p>:::{admonition,dropdown,seealso} <em>Solution</em></p>
+<li><p><em>Assume the intercept <span class="math notranslate nohighlight">\(\beta_0\)</span> in the model <span class="math notranslate nohighlight">\(y=\beta_0 + \beta_1 x + \varepsilon\)</span> is zero. Find the OLS estimate for <span class="math notranslate nohighlight">\(\beta_1\)</span>, denoted <span class="math notranslate nohighlight">\(\tilde{\beta}\)</span>. Find its mean, variance, and compare them with those of the OLS estimate for <span class="math notranslate nohighlight">\(\beta_1\)</span> when there is an intercept term.</em></p>
+<div class="dropdown seealso admonition">
+<p class="admonition-title"> <em>Solution</em></p>
 <p>If there is no intercept, consider a simple case</p>
-<p>$$
-y_i = \beta x_i + \varepsilon_i
-$$</p>
+<div class="math notranslate nohighlight">
+\[
+    y_i = \beta x_i + \varepsilon_i
+    \]</div>
 <p>Then by minimizing sum of squared errors</p>
-<p>$$
-\min \sum_i (y_i - \beta x_i)^2
-$$</p>
+<div class="math notranslate nohighlight">
+\[
+    \min \sum_i (y_i - \beta x_i)^2
+    \]</div>
 <p>we have</p>
-<p>$$
--2 \sum_i (y_i - \beta x_i) x_i = 0
-$$</p>
+<div class="math notranslate nohighlight">
+\[
+    -2 \sum_i (y_i - \beta x_i) x_i = 0
+    \]</div>
 <p>and hence,</p>
-<p>$$\begin{align}
-\tilde{\beta}
-&amp;= \frac{\sum_i x_i y_i}{\sum_i x_i^2} \
-&amp;= \frac{\sum_i x_i (\beta x_i + \varepsilon_i)}{\sum_i x_i^2}\
-&amp;= \beta + \frac{\sum x_i \varepsilon_i}{\sum_i x_i^2}
-\end{align}$$</p>
-<p>Therefore, $\tilde{\beta}$ is still an unbiased estimator of $\beta$, while its variance is smaller than the variance calculated assuming the intercept is non-zero.</p>
-<p>$$
-\operatorname{Var}\left( \tilde{\beta} \right) = \frac{\sigma^2}{\sum x_i^2} \le  \frac{\sigma^2}{\sum (x_i - \bar{x})^2} = \operatorname{Var}\left( \hat{\beta}  \right)
-$$</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+    \tilde{\beta}
+    &amp;= \frac{\sum_i x_i y_i}{\sum_i x_i^2} \\
+    &amp;= \frac{\sum_i x_i (\beta x_i + \varepsilon_i)}{\sum_i x_i^2}\\
+    &amp;= \beta + \frac{\sum x_i \varepsilon_i}{\sum_i x_i^2}
+    \end{align}\end{split}\]</div>
+<p>Therefore, <span class="math notranslate nohighlight">\(\tilde{\beta}\)</span> is still an unbiased estimator of <span class="math notranslate nohighlight">\(\beta\)</span>, while its variance is smaller than the variance calculated assuming the intercept is non-zero.</p>
+<div class="math notranslate nohighlight">
+\[
+    \operatorname{Var}\left( \tilde{\beta} \right) = \frac{\sigma^2}{\sum x_i^2} \le  \frac{\sigma^2}{\sum (x_i - \bar{x})^2} = \operatorname{Var}\left( \hat{\beta}  \right)
+    \]</div>
 <p>Hence, we conclude that</p>
 <ul class="simple">
-<li><p>if the intercept is known to be zero, better use $\tilde\beta$ instead of $\hat\beta$, since the standard error of the $\tilde\beta$ is smaller, and both are unbiased.</p></li>
-<li><p>If the true model has a non-zero intercept, then $\tilde\beta$ is biased for $\beta$, but it has a smaller variance, which brings a tradeoff of bias vs variance.</p></li>
+<li><p>if the intercept is known to be zero, better use <span class="math notranslate nohighlight">\(\tilde\beta\)</span> instead of <span class="math notranslate nohighlight">\(\hat\beta\)</span>, since the standard error of the <span class="math notranslate nohighlight">\(\tilde\beta\)</span> is smaller, and both are unbiased.</p></li>
+<li><p>If the true model has a non-zero intercept, then <span class="math notranslate nohighlight">\(\tilde\beta\)</span> is biased for <span class="math notranslate nohighlight">\(\beta\)</span>, but it has a smaller variance, which brings a tradeoff of bias vs variance.</p></li>
 </ul>
-<p>:::</p>
+</div>
 </li>
-<li><p><em>What happen to $\beta$, its standard error, and its p-value, if we scale the $j$-th covariate $x_j$, or add a constant to $x_j$? How about if we change $Y$?</em></p>
-<p>:::{admonition,dropdown,seealso} <em>Proof</em></p>
-<p>In short, for an affine transformation on $x_j$ or $Y$, since the column space of $\boldsymbol{X}$ and the direction of $\boldsymbol{y}$ are unchanged, the overall fitting should be unchanged, such as $R^2$, $t$-test and $F-test$. The estimates (coefficients, residuals) may change.</p>
+<li><p><em>What happen to <span class="math notranslate nohighlight">\(\beta\)</span>, its standard error, and its p-value, if we scale the <span class="math notranslate nohighlight">\(j\)</span>-th covariate <span class="math notranslate nohighlight">\(x_j\)</span>, or add a constant to <span class="math notranslate nohighlight">\(x_j\)</span>? How about if we change <span class="math notranslate nohighlight">\(Y\)</span>?</em></p>
+<div class="dropdown seealso admonition">
+<p class="admonition-title"> <em>Proof</em></p>
+<p>In short, for an affine transformation on <span class="math notranslate nohighlight">\(x_j\)</span> or <span class="math notranslate nohighlight">\(Y\)</span>, since the column space of <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span> and the direction of <span class="math notranslate nohighlight">\(\boldsymbol{y}\)</span> are unchanged, the overall fitting should be unchanged, such as <span class="math notranslate nohighlight">\(R^2\)</span>, <span class="math notranslate nohighlight">\(t\)</span>-test and <span class="math notranslate nohighlight">\(F-test\)</span>. The estimates (coefficients, residuals) may change.</p>
 <p>One can re-write the model and compare with the original one. Suppose the original model is</p>
-<p>$$
-Y = \beta_0 + \beta_1 x_1 + \ldots + \beta_j x_j + \varepsilon
-$$</p>
-<p>Let $x_j ^\prime = ax_j + b$, and let $\gamma_j$ be the new slope, $\gamma_0$ be the new intercept, and $u$ be the new error term.</p>
-<p>$$
-Y = \gamma_0 + \gamma_1 x_1 + \ldots + \gamma_j (ax_j + b) + u
-$$</p>
+<div class="math notranslate nohighlight">
+\[
+    Y = \beta_0 + \beta_1 x_1 + \ldots + \beta_j x_j + \varepsilon
+    \]</div>
+<p>Let <span class="math notranslate nohighlight">\(x_j ^\prime = ax_j + b\)</span>, and let <span class="math notranslate nohighlight">\(\gamma_j\)</span> be the new slope, <span class="math notranslate nohighlight">\(\gamma_0\)</span> be the new intercept, and <span class="math notranslate nohighlight">\(u\)</span> be the new error term.</p>
+<div class="math notranslate nohighlight">
+\[
+    Y = \gamma_0 + \gamma_1 x_1 + \ldots + \gamma_j (ax_j + b) + u
+    \]</div>
 <p>Comparing the two models, we obtain</p>
-<p>$$\begin{aligned}
-\gamma_j &amp;= \frac{1}{a} \beta_j  \
-\gamma_0 &amp;= \beta_0 - \gamma_j b \
-&amp;= \beta_0 - \beta_j \frac{b}{a}  \
-\end{aligned}$$</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+    \gamma_j &amp;= \frac{1}{a} \beta_j  \\
+    \gamma_0 &amp;= \beta_0 - \gamma_j b \\
+    &amp;= \beta_0 - \beta_j \frac{b}{a}  \\
+    \end{aligned}\end{split}\]</div>
 <p>Others slope and the error term are unchanged.</p>
 <p>The estimated variance becomes</p>
-<p>$$
-\widehat{Var}(\hat{\gamma}_j) = \hat{\sigma}^2 \frac{1}{1-R_j^2} \frac{1}{\sum (x ^\prime - \bar{x} ^\prime)^2} = \frac{1}{a^2}  \widehat{Var}(\hat{\beta}_j)
-$$</p>
-<p>Hence, the standard error is $\operatorname{se}(\hat{\gamma}_j) = \operatorname{se}(\hat{\beta}_j)$ and the $t$-test statistic is</p>
-<p>$$
-\frac{\hat{\gamma}_j}{\operatorname{se}(\hat{\gamma}_j) } = \frac{\beta_j/a}{\operatorname{se}(\hat{\beta}_j)/a}   =  \frac{\beta_j}{\operatorname{se}(\hat{\beta}_j)}
-$$</p>
+<div class="math notranslate nohighlight">
+\[
+    \widehat{Var}(\hat{\gamma}_j) = \hat{\sigma}^2 \frac{1}{1-R_j^2} \frac{1}{\sum (x ^\prime - \bar{x} ^\prime)^2} = \frac{1}{a^2}  \widehat{Var}(\hat{\beta}_j)
+    \]</div>
+<p>Hence, the standard error is <span class="math notranslate nohighlight">\(\operatorname{se}(\hat{\gamma}_j) = \operatorname{se}(\hat{\beta}_j)\)</span> and the <span class="math notranslate nohighlight">\(t\)</span>-test statistic is</p>
+<div class="math notranslate nohighlight">
+\[
+    \frac{\hat{\gamma}_j}{\operatorname{se}(\hat{\gamma}_j) } = \frac{\beta_j/a}{\operatorname{se}(\hat{\beta}_j)/a}   =  \frac{\beta_j}{\operatorname{se}(\hat{\beta}_j)}
+    \]</div>
 <p>which is unchanged as expected.</p>
-<p>For the case $Y ^\prime = c Y + d$, it is easy to write</p>
-<p>$$
-cY + d = \gamma_0 + \gamma_1 x_1 + \ldots + \gamma_j x_j + u
-$$</p>
+<p>For the case <span class="math notranslate nohighlight">\(Y ^\prime = c Y + d\)</span>, it is easy to write</p>
+<div class="math notranslate nohighlight">
+\[
+    cY + d = \gamma_0 + \gamma_1 x_1 + \ldots + \gamma_j x_j + u
+    \]</div>
 <p>and we have</p>
-<p>$$\begin{aligned}
-\gamma_j &amp;= c \beta_j \quad \forall j\
-\gamma_0 &amp;= c \beta_0 + d\
-\end{aligned}$$</p>
-<p>The residuals are scaled by $c$ such that the standard error is scaled by $c$ too. Finally, the $t$-test statistic remains unchanged.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+    \gamma_j &amp;= c \beta_j \quad \forall j\\
+    \gamma_0 &amp;= c \beta_0 + d\\
+    \end{aligned}\end{split}\]</div>
+<p>The residuals are scaled by <span class="math notranslate nohighlight">\(c\)</span> such that the standard error is scaled by <span class="math notranslate nohighlight">\(c\)</span> too. Finally, the <span class="math notranslate nohighlight">\(t\)</span>-test statistic remains unchanged.</p>
 <p>The takeaway is that, one can scale the variable to a proper unit for better interpretation.</p>
-<p>:::</p>
+</div>
 </li>
-<li><p><em>True or False: In SLR, exchange $X$ and $Y$, the new slope estimate equals the reciprocal of the original one</em>.</p>
-<p>:::{admonition,dropdown,seealso} <em>Solution</em></p>
+<li><p><em>True or False: In SLR, exchange <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span>, the new slope estimate equals the reciprocal of the original one</em>.</p>
+<div class="dropdown seealso admonition">
+<p class="admonition-title"> <em>Solution</em></p>
 <p>False.</p>
-<p>Since $\hat{\beta}<em>1 = r</em>{X,Y}\frac{s_Y}{s_X}$, the new slope estimate is $\hat{\gamma}<em>1 = r</em>{X,Y}\frac{s_X}{s_Y}$. We only have $\hat{\beta}_1 \hat{\gamma}<em>1 = r</em>{X,Y}^2 = R^2$. The last equality holds in SLR, see <a class="reference internal" href="12-lm-inference.html#lm-rsquared"><span class="std std-ref">proof</span></a>.</p>
+<p>Since <span class="math notranslate nohighlight">\(\hat{\beta}_1 = r_{X,Y}\frac{s_Y}{s_X}\)</span>, the new slope estimate is <span class="math notranslate nohighlight">\(\hat{\gamma}_1 = r_{X,Y}\frac{s_X}{s_Y}\)</span>. We only have <span class="math notranslate nohighlight">\(\hat{\beta}_1 \hat{\gamma}_1 = r_{X,Y}^2 = R^2\)</span>. The last equality holds in SLR, see <a class="reference internal" href="12-lm-inference.html#lm-rsquared"><span class="std std-ref">proof</span></a>.</p>
 <p>More analysis:</p>
 <ul>
-<li><p>Since in this case $F$-test depends only on $R^2$ (<a class="reference internal" href="12-lm-inference.html#lm-f-test"><span class="std std-ref">proof</span></a>), then the $F$-test are the same.</p></li>
-<li><p>Since in this case $F$-test is equivalent to $t$-test (<a class="reference internal" href="12-lm-inference.html#lm-f-test"><span class="std std-ref">proof</span></a>), the $t$-test for $\hat{\beta}_1$ and $\hat{\gamma}_1$ are the same.</p></li>
+<li><p>Since in this case <span class="math notranslate nohighlight">\(F\)</span>-test depends only on <span class="math notranslate nohighlight">\(R^2\)</span> (<a class="reference internal" href="12-lm-inference.html#lm-f-test"><span class="std std-ref">proof</span></a>), then the <span class="math notranslate nohighlight">\(F\)</span>-test are the same.</p></li>
+<li><p>Since in this case <span class="math notranslate nohighlight">\(F\)</span>-test is equivalent to <span class="math notranslate nohighlight">\(t\)</span>-test (<a class="reference internal" href="12-lm-inference.html#lm-f-test"><span class="std std-ref">proof</span></a>), the <span class="math notranslate nohighlight">\(t\)</span>-test for <span class="math notranslate nohighlight">\(\hat{\beta}_1\)</span> and <span class="math notranslate nohighlight">\(\hat{\gamma}_1\)</span> are the same.</p></li>
 <li><p>Hence, we have</p>
-<p>$$
-\frac{\sqrt{\hat{\sigma}_1^2 / s_X^2}}{\sqrt{\hat{\sigma}_2^2 / s_Y^2}} =  \frac{\operatorname{se}(\hat{\beta}_1)}{\operatorname{se}(\hat{\gamma_1})} = \frac{\hat{\beta}_1}{\hat{\gamma_1}} = \frac{s_Y^2}{s_X^2}
-$$</p>
+<div class="math notranslate nohighlight">
+\[
+        \frac{\sqrt{\hat{\sigma}_1^2 / s_X^2}}{\sqrt{\hat{\sigma}_2^2 / s_Y^2}} =  \frac{\operatorname{se}(\hat{\beta}_1)}{\operatorname{se}(\hat{\gamma_1})} = \frac{\hat{\beta}_1}{\hat{\gamma_1}} = \frac{s_Y^2}{s_X^2}
+        \]</div>
 <p>then</p>
-<p>$$
-\frac{\hat{\sigma}_1}{\hat{\sigma}_2} = \frac{s_Y}{s_X} = \sqrt{\frac{\hat{\beta}_1}{\hat{\gamma_1}}}
-$$</p>
+<div class="math notranslate nohighlight">
+\[
+        \frac{\hat{\sigma}_1}{\hat{\sigma}_2} = \frac{s_Y}{s_X} = \sqrt{\frac{\hat{\beta}_1}{\hat{\gamma_1}}}
+        \]</div>
 </li>
 </ul>
-<p>:::</p>
+</div>
 </li>
-<li><p><em>True or False: if $\operatorname{Cov}\left( Y, X_j \right) = 0$ then $\beta_j= 0$?</em></p>
-<p>:::{admonition,dropdown,seealso} <em>Solution</em></p>
+<li><p><em>True or False: if <span class="math notranslate nohighlight">\(\operatorname{Cov}\left( Y, X_j \right) = 0\)</span> then <span class="math notranslate nohighlight">\(\beta_j= 0\)</span>?</em></p>
+<div class="dropdown seealso admonition">
+<p class="admonition-title"> <em>Solution</em></p>
 <p>In SLR, this is true, but in MLR, this is generally not true. See <a class="reference internal" href="12-lm-inference.html#lm-rss-nonincreasing"><span class="std std-ref">here</span></a> for explanation.</p>
-<p>:::</p>
+</div>
 </li>
 <li><p><em>What affect estimation precision?</em></p>
-<p>:::{admonition,dropdown,seealso} <em>Solution</em></p>
+<div class="dropdown seealso admonition">
+<p class="admonition-title"> <em>Solution</em></p>
 <p>Recall</p>
-<p>$$
-\begin{aligned}
-\operatorname{Var}\left(\hat{\beta}<em>{j}\right) &amp;=\sigma^{2}\left[\left(\boldsymbol{X}^{\top} \boldsymbol{X}\right)^{-1}\right]</em>{[j, j]} \
-&amp;=\sigma^{2} \frac{1}{1-R_{j}^{2}} \frac{1}{\sum_{i}\left(x_{i j}-\bar{x}_{j}\right)^{2}}
-\end{aligned}
-$$</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+    \begin{aligned}
+    \operatorname{Var}\left(\hat{\beta}_{j}\right) &amp;=\sigma^{2}\left[\left(\boldsymbol{X}^{\top} \boldsymbol{X}\right)^{-1}\right]_{[j, j]} \\
+    &amp;=\sigma^{2} \frac{1}{1-R_{j}^{2}} \frac{1}{\sum_{i}\left(x_{i j}-\bar{x}_{j}\right)^{2}}
+    \end{aligned}
+    \end{split}\]</div>
 <ul class="simple">
-<li><p>The larger the error variance, $\sigma^2$, the larger the variance of the coefficient estimates.</p></li>
-<li><p>The larger the variability in the $x_i$, the smaller the variance.</p></li>
+<li><p>The larger the error variance, <span class="math notranslate nohighlight">\(\sigma^2\)</span>, the larger the variance of the coefficient estimates.</p></li>
+<li><p>The larger the variability in the <span class="math notranslate nohighlight">\(x_i\)</span>, the smaller the variance.</p></li>
 <li><p>A larger sample size should decrease the variance.</p></li>
-<li><p>In multiple regression, reduce the relation between $X_j$ and other covariates (e.g. by orthogonal design) can decreases $R^2_{j}$, and hence decrease the variance.</p></li>
+<li><p>In multiple regression, reduce the relation between <span class="math notranslate nohighlight">\(X_j\)</span> and other covariates (e.g. by orthogonal design) can decreases <span class="math notranslate nohighlight">\(R^2_{j}\)</span>, and hence decrease the variance.</p></li>
 </ul>
-<p>:::</p>
+</div>
 </li>
-<li><p>To compare the effects of two variable $X_j, X_k$, can we say they have the same effect since the confidence interval of $\beta_j, \beta_k$ overlaps?</p>
-<p>:::{admonition,dropdown,seealso} <em>Solution</em></p>
+<li><p>To compare the effects of two variable <span class="math notranslate nohighlight">\(X_j, X_k\)</span>, can we say they have the same effect since the confidence interval of <span class="math notranslate nohighlight">\(\beta_j, \beta_k\)</span> overlaps?</p>
+<div class="dropdown seealso admonition">
+<p class="admonition-title"> <em>Solution</em></p>
 <p>No, since</p>
 <ul class="simple">
-<li><p>the two coefficients are probably correlated $\operatorname{Cov}\left( \boldsymbol{\beta} _j, \beta_k \right) \ne 0$</p></li>
-<li><p>even if they are not correlated, we still need to find a pivot quantity for $\theta = \beta_j - \beta_k$ and conduct a hypothesis testing on $\theta=0$. See the <a class="reference internal" href="12-lm-inference.html#lm-t-test"><span class="std std-ref">$t$-test section</span></a>.
-:::</p></li>
+<li><p>the two coefficients are probably correlated <span class="math notranslate nohighlight">\(\operatorname{Cov}\left( \boldsymbol{\beta} _j, \beta_k \right) \ne 0\)</span></p></li>
+<li><p>even if they are not correlated, we still need to find a pivot quantity for <span class="math notranslate nohighlight">\(\theta = \beta_j - \beta_k\)</span> and conduct a hypothesis testing on <span class="math notranslate nohighlight">\(\theta=0\)</span>. See the <a class="reference internal" href="12-lm-inference.html#lm-t-test"><span class="std std-ref"><span class="math notranslate nohighlight">\(t\)</span>-test section</span></a>.</p></li>
 </ul>
+</div>
 </li>
-<li><p><em>Does the partialling out method holds for $p \ge 3$</em>?</p></li>
+<li><p><em>Does the partialling out method holds for <span class="math notranslate nohighlight">\(p \ge 3\)</span></em>?</p></li>
 <li><p>Causal?</p>
 <p>313.qz1.q2</p>
 <p>TBD.</p>
