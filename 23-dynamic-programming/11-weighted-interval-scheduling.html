@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Weighted JISP &#8212; Data Science Handbook</title>
+    <title>Weighted Interval Scheduling &#8212; Data Science Handbook</title>
     
   <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
 
@@ -336,12 +336,27 @@
   <ul class="current collapse-ul">
    <li class="toctree-l2 current active">
     <a class="current reference internal" href="#">
-     Weighted JISP
+     Weighted Interval Scheduling
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="13-longest-common-subsequence.html">
      Longest Common Subsequence
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="15-longest-increasing-subsequence.html">
+     Longest Increasing Subsequence
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="17-largest-sum-subsequence.html">
+     Largest Sum Subsequence
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="51-chain-matrix-multiplication.html">
+     Chain Matrix Multiplication
     </a>
    </li>
   </ul>
@@ -629,48 +644,24 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#algorithms">
-   Algorithms
+  <a class="reference internal nav-link" href="#analysis">
+   Analysis
   </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#greedy-rule">
-     Greedy Rule
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#dynamic-programming">
-     Dynamic Programming
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#implementation">
-     Implementation
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#running-time-analysis">
-     Running Time Analysis
-    </a>
-   </li>
-  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#proof">
-   Proof
+  <a class="reference internal nav-link" href="#solution">
+   Solution
   </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#optimal">
-     Optimal
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#find-the-schedule">
-     Find the Schedule
-    </a>
-   </li>
-  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#complexity">
+   Complexity
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#track-solution">
+   Track Solution
+  </a>
  </li>
 </ul>
 
@@ -683,56 +674,54 @@
         
               <div>
                 
-  <div class="section" id="weighted-jisp">
-<h1>Weighted JISP<a class="headerlink" href="#weighted-jisp" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="weighted-interval-scheduling">
+<h1>Weighted Interval Scheduling<a class="headerlink" href="#weighted-interval-scheduling" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="problem">
 <h2>Problem<a class="headerlink" href="#problem" title="Permalink to this headline">¶</a></h2>
 <p>Input
-: Set <span class="math notranslate nohighlight">\(J\)</span> of <span class="math notranslate nohighlight">\(j\)</span> jobs, each with start time <span class="math notranslate nohighlight">\(s_i\)</span> and finish time <span class="math notranslate nohighlight">\(f_j\)</span>, and profit <span class="math notranslate nohighlight">\(p_j \ge 0\)</span>.</p>
+: A set of <span class="math notranslate nohighlight">\(n\)</span> jobs. For each job <span class="math notranslate nohighlight">\(j\)</span>, it has start time <span class="math notranslate nohighlight">\(s_j\)</span> and finish time <span class="math notranslate nohighlight">\(f_j\)</span>, and profit <span class="math notranslate nohighlight">\(p_j \ge 0\)</span>.</p>
 <p>Goal
-: Maximize total profit  of scheduled jobs.</p>
+: Maximize total profit of scheduled jobs.</p>
 <p>Constraint
 : No two scheduled jobs can overlap.</p>
 </div>
-<div class="section" id="algorithms">
-<h2>Algorithms<a class="headerlink" href="#algorithms" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="greedy-rule">
-<h3>Greedy Rule<a class="headerlink" href="#greedy-rule" title="Permalink to this headline">¶</a></h3>
-<p>Scheduling by <span class="math notranslate nohighlight">\(f_j\)</span> may not be optimal.</p>
-</div>
-<div class="section" id="dynamic-programming">
-<h3>Dynamic Programming<a class="headerlink" href="#dynamic-programming" title="Permalink to this headline">¶</a></h3>
-<p>Sort jobs by <span class="math notranslate nohighlight">\(f_j\)</span> from smallest to biggest.</p>
-<p><span class="math notranslate nohighlight">\(J = \left\{ j_1, \ldots, j_n \right\}\)</span> such that <span class="math notranslate nohighlight">\(f_{j_1} \le f_{j_2}, \ldots, \le f_{j_n}\)</span>.</p>
-<p>For now, we compute solution value.</p>
-<p>If <span class="math notranslate nohighlight">\(\left\vert J \right\vert = 1\)</span>, return $$</p>
-<p>Let <span class="math notranslate nohighlight">\(j_n\)</span> be the job with rightmost right endpoint.</p>
-<p>Consider two cases.</p>
+<div class="section" id="analysis">
+<h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
+<p>For now, we compute total profit of the solution.</p>
+<p>Sort jobs by <span class="math notranslate nohighlight">\(f_j\)</span> from smallest to biggest. We obtain a sorted set of job indices <span class="math notranslate nohighlight">\(J = \left\{ j_1, \ldots, j_n \right\}\)</span> such that <span class="math notranslate nohighlight">\(f_{j_1} \le f_{j_2}, \ldots, \le f_{j_n}\)</span>.</p>
+<p>The subproblem can be on <span class="math notranslate nohighlight">\(J_k = \left\{ {j_1, \ldots, j_k} \right\}\)</span>.</p>
+<p>Let <span class="math notranslate nohighlight">\(P()\)</span> be the total profit of a set of jobs. For the last job <span class="math notranslate nohighlight">\(j_k\)</span> in <span class="math notranslate nohighlight">\(J_k\)</span>, consider two cases.</p>
 <ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(j_n\)</span> is not included, then total profit is
-<span class="math notranslate nohighlight">\(S_1 = JISP(J \backslash \left\{ j_n \right\})\)</span></p></li>
-<li><p><span class="math notranslate nohighlight">\(j_n\)</span> is included. Let <span class="math notranslate nohighlight">\(J ^\prime \subseteq J\)</span> be all jobs that don’t overlap with <span class="math notranslate nohighlight">\(j_n\)</span>. Then the total profit is
-<span class="math notranslate nohighlight">\(S_2 = JISP(J^\prime) + p_n\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(j_k\)</span> is not included, then the total profit is <span class="math notranslate nohighlight">\(P(J_{k}) = P(J_{k-1})\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(j_k\)</span> is included. Let <span class="math notranslate nohighlight">\(J ^\prime _k \subseteq J_k\)</span> be all jobs that don’t overlap with <span class="math notranslate nohighlight">\(j_k\)</span>. Then the total profit is <span class="math notranslate nohighlight">\(P(J^\prime _k) + p_k\)</span></p></li>
 </ul>
-<p>Return <span class="math notranslate nohighlight">\(\max(S_1, S_2)\)</span>.</p>
+<p>Let <span class="math notranslate nohighlight">\(i_k\)</span> be the largest job index in <span class="math notranslate nohighlight">\(J_k\)</span> that does not overlap with <span class="math notranslate nohighlight">\(j_k\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[
+i_k = \underset{f_i \le s_{j_k}}{\operatorname{argmax}} \, i
+\]</div>
+<p>The iterative relation is</p>
+<div class="math notranslate nohighlight">
+\[P(J_k) = \max \left\{ P(J_{k-1}), P(J_{i_k}) + p_k \right\}\]</div>
 </div>
-<div class="section" id="implementation">
-<h3>Implementation<a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h3>
-<p>Add a job <span class="math notranslate nohighlight">\(j_0\)</span> with <span class="math notranslate nohighlight">\(s_{j_0} = 0, f_{j_0} = 0, p_{j_0} = 0\)</span>.</p>
-<p>For <span class="math notranslate nohighlight">\(0 \le i\le n\)</span>, let <span class="math notranslate nohighlight">\(\Pi(i)\)</span> be consecutive job set <span class="math notranslate nohighlight">\(\left\{ j_0, \ldots, j_i \right\}\)</span>.</p>
-<p>For <span class="math notranslate nohighlight">\(1 \le i\le n\)</span>, let <span class="math notranslate nohighlight">\(Prev(i)\)</span> be the largest job index that does not overlap with <span class="math notranslate nohighlight">\(j_i\)</span>. [detail].</p>
-<p>We have</p>
-<p><span class="math notranslate nohighlight">\(JISP(\Pi(n)) = \max \left\{ JISP(\Pi(n-1)), JISP(\Pi(Prev(n))) + p_{j_n} \right\}\)</span></p>
-<p>Let <span class="math notranslate nohighlight">\(T(i)\)</span> be the optimal solution value to problem <span class="math notranslate nohighlight">\(T(i) = JISP(\Pi(i))\)</span>.</p>
-<p>Base: <span class="math notranslate nohighlight">\(T(0) = 0\)</span>,
-Step: <span class="math notranslate nohighlight">\(T(i) \leftarrow \max \left\{ T(i-1), T(Prev(i)) + p_{j_i} \right\}\)</span></p>
-<p>The final solution is in entry <span class="math notranslate nohighlight">\(T(n)\)</span></p>
+<div class="section" id="solution">
+<h2>Solution<a class="headerlink" href="#solution" title="Permalink to this headline">¶</a></h2>
+<p>Define a DP table with <span class="math notranslate nohighlight">\(k\)</span>-th entry <span class="math notranslate nohighlight">\(T_k\)</span> being the optimal profit of to the problem on <span class="math notranslate nohighlight">\(J_k\)</span>.</p>
+<ul>
+<li><p>Initialize <span class="math notranslate nohighlight">\(T_0 = 0\)</span></p></li>
+<li><p>For <span class="math notranslate nohighlight">\(1 \le k \le n\)</span>, find <span class="math notranslate nohighlight">\(i_k\)</span></p></li>
+<li><p>For <span class="math notranslate nohighlight">\(1 \le k \le n\)</span>, compute</p>
+<div class="math notranslate nohighlight">
+\[T_k = \max \left\{ T_{k-1}, T_{i_k} + p_k \right\}\]</div>
+</li>
+<li><p>Return <span class="math notranslate nohighlight">\(T_n\)</span></p></li>
+</ul>
 </div>
-<div class="section" id="running-time-analysis">
-<h3>Running Time Analysis<a class="headerlink" href="#running-time-analysis" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="complexity">
+<h2>Complexity<a class="headerlink" href="#complexity" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Sorting: <span class="math notranslate nohighlight">\(O(n \log n)\)</span></p></li>
-<li><p>For every job <span class="math notranslate nohighlight">\(i\)</span>, compute <span class="math notranslate nohighlight">\(Prev(i)\)</span>. Total <span class="math notranslate nohighlight">\(O(n)\)</span> ??</p></li>
+<li><p>For every job <span class="math notranslate nohighlight">\(k\)</span>, compute <span class="math notranslate nohighlight">\(i_k\)</span>. Total <span class="math notranslate nohighlight">\(O(n^2)\)</span>, can be optimized to <span class="math notranslate nohighlight">\(O(n)\)</span>.</p></li>
 <li><p>Table</p>
 <ul>
 <li><p><span class="math notranslate nohighlight">\(O(n)\)</span> entries</p></li>
@@ -742,36 +731,15 @@ Step: <span class="math notranslate nohighlight">\(T(i) \leftarrow \max \left\{ 
 </ul>
 <p>Total <span class="math notranslate nohighlight">\(O(n \log n)\)</span>.</p>
 </div>
-</div>
-<div class="section" id="proof">
-<h2>Proof<a class="headerlink" href="#proof" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="optimal">
-<h3>Optimal<a class="headerlink" href="#optimal" title="Permalink to this headline">¶</a></h3>
-<p>Let <span class="math notranslate nohighlight">\(OPT(i)\)</span> be the optimal solution value of job set <span class="math notranslate nohighlight">\(\left\{ j_0, \ldots, j_i \right\}\)</span>. Want to prove <span class="math notranslate nohighlight">\(T(i) = OPT(i)\)</span>.</p>
-<p>Base: <span class="math notranslate nohighlight">\(i=0, T(0) = 0, OPT(0) = 0, correct\)</span></p>
-<p>Step: for <span class="math notranslate nohighlight">\(i &gt;0\)</span>, assume correctness for all values, i.e., <span class="math notranslate nohighlight">\(T(i) = OPT(i)\)</span>.</p>
-<p>Proof for step</p>
-<p>If <span class="math notranslate nohighlight">\(j_i \in S\)</span>, then</p>
-<div class="math notranslate nohighlight">
-\[
-OPT(i) = Profit(S) = OPT(i-1)
-\]</div>
-<p>otherwise <span class="math notranslate nohighlight">\(f_i \in S\)</span>, then</p>
-<p><span class="math notranslate nohighlight">\(S \ {i}\)</span> is an optimal solution to <span class="math notranslate nohighlight">\(\Pi(Prev(i))\)</span>.</p>
-<p>We have</p>
-<div class="math notranslate nohighlight">
-\[
-OPT(i) = Profit(S) = OPT(Prev(i)) + p_{j_i}
-\]</div>
-<p><span class="math notranslate nohighlight">\(T(i) \leftarrow \max \left\{ T(i-1), T(Prev(i)) + p_{j_i} \right\}\)</span> is lower bounded by the optimal solution.</p>
-<p><span class="math notranslate nohighlight">\(T(i) \ge OPT(i)\)</span></p>
-<p>Note <span class="math notranslate nohighlight">\(T(i) \le OPT(i)\)</span> since <span class="math notranslate nohighlight">\(T(i)\)</span> is a valid solution.</p>
-</div>
-<div class="section" id="find-the-schedule">
-<h3>Find the Schedule<a class="headerlink" href="#find-the-schedule" title="Permalink to this headline">¶</a></h3>
-<p>Trace back</p>
-<p>e.g. store the solution to <span class="math notranslate nohighlight">\(\Pi(i)\)</span> in <span class="math notranslate nohighlight">\(T(i)\)</span>. But waste space and time (copy paste).</p>
-</div>
+<div class="section" id="track-solution">
+<h2>Track Solution<a class="headerlink" href="#track-solution" title="Permalink to this headline">¶</a></h2>
+<p>One can store the solution in the algorithm. For instance, store the choice in the <span class="math notranslate nohighlight">\(\max\)</span> comparison, if choose the second one then append job <span class="math notranslate nohighlight">\(p_k\)</span> to a list, or just record <span class="math notranslate nohighlight">\(k\)</span> in every step and then do indexing on <span class="math notranslate nohighlight">\(J\)</span>.</p>
+<p>Another way is to start from <span class="math notranslate nohighlight">\(T_n\)</span>, and compare <span class="math notranslate nohighlight">\(T_{n-1}\)</span>,</p>
+<ul class="simple">
+<li><p>if same then go to entry <span class="math notranslate nohighlight">\(T_{n-1}\)</span></p></li>
+<li><p>if different, pop out <span class="math notranslate nohighlight">\(p_n\)</span>, and then go to entry <span class="math notranslate nohighlight">\(T_{i_k}\)</span></p></li>
+</ul>
+<p>Repeat until go to <span class="math notranslate nohighlight">\(T_0\)</span>.</p>
 </div>
 </div>
 

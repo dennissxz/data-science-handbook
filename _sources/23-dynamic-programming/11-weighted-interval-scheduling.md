@@ -1,111 +1,74 @@
-# Weighted JISP
+# Weighted Interval Scheduling
 
 ## Problem
 
 Input
-: Set $J$ of $j$ jobs, each with start time $s_i$ and finish time $f_j$, and profit $p_j \ge 0$.
+: A set of $n$ jobs. For each job $j$, it has start time $s_j$ and finish time $f_j$, and profit $p_j \ge 0$.
 
 Goal
-: Maximize total profit  of scheduled jobs.
+: Maximize total profit of scheduled jobs.
 
 Constraint
 : No two scheduled jobs can overlap.
 
 
-## Algorithms
+## Analysis
 
-### Greedy Rule
+For now, we compute total profit of the solution.
 
-Scheduling by $f_j$ may not be optimal.
+Sort jobs by $f_j$ from smallest to biggest. We obtain a sorted set of job indices $J = \left\{ j_1, \ldots, j_n \right\}$ such that $f_{j_1} \le f_{j_2}, \ldots, \le f_{j_n}$.
 
-### Dynamic Programming
+The subproblem can be on $J_k = \left\{ {j_1, \ldots, j_k} \right\}$.
 
-Sort jobs by $f_j$ from smallest to biggest.
+Let $P()$ be the total profit of a set of jobs. For the last job $j_k$ in $J_k$, consider two cases.
 
-$J = \left\{ j_1, \ldots, j_n \right\}$ such that $f_{j_1} \le f_{j_2}, \ldots, \le f_{j_n}$.
+- $j_k$ is not included, then the total profit is $P(J_{k}) = P(J_{k-1})$
 
-For now, we compute solution value.
+- $j_k$ is included. Let $J ^\prime _k \subseteq J_k$ be all jobs that don't overlap with $j_k$. Then the total profit is $P(J^\prime _k) + p_k$
+
+Let $i_k$ be the largest job index in $J_k$ that does not overlap with $j_k$.
+
+$$
+i_k = \underset{f_i \le s_{j_k}}{\operatorname{argmax}} \, i
+$$
+
+The iterative relation is
+
+$$P(J_k) = \max \left\{ P(J_{k-1}), P(J_{i_k}) + p_k \right\}$$
+
+## Solution
+
+Define a DP table with $k$-th entry $T_k$ being the optimal profit of to the problem on $J_k$.
+
+- Initialize $T_0 = 0$
+
+- For $1 \le k \le n$, find $i_k$
+
+- For $1 \le k \le n$, compute
+
+    $$T_k = \max \left\{ T_{k-1}, T_{i_k} + p_k \right\}$$
+
+- Return $T_n$
 
 
-If $\left\vert J \right\vert = 1$, return $$
-
-Let $j_n$ be the job with rightmost right endpoint.
-
-Consider two cases.
-
-- $j_n$ is not included, then total profit is
-  $S_1 = JISP(J \backslash \left\{ j_n \right\})$
-
-- $j_n$ is included. Let $J ^\prime \subseteq J$ be all jobs that don't overlap with $j_n$. Then the total profit is
-$S_2 = JISP(J^\prime) + p_n$
-
-Return $\max(S_1, S_2)$.
-
-### Implementation
-
-Add a job $j_0$ with $s_{j_0} = 0, f_{j_0} = 0, p_{j_0} = 0$.
-
-For $0 \le i\le n$, let $\Pi(i)$ be consecutive job set $\left\{ j_0, \ldots, j_i \right\}$.
-
-For $1 \le i\le n$, let $Prev(i)$ be the largest job index that does not overlap with $j_i$. [detail].
-
-We have
-
-$JISP(\Pi(n)) = \max \left\{ JISP(\Pi(n-1)), JISP(\Pi(Prev(n))) + p_{j_n} \right\}$
-
-Let $T(i)$ be the optimal solution value to problem $T(i) = JISP(\Pi(i))$.
-
-Base: $T(0) = 0$,
-Step: $T(i) \leftarrow \max \left\{ T(i-1), T(Prev(i)) + p_{j_i} \right\}$
-
-The final solution is in entry $T(n)$
-
-### Running Time Analysis
+## Complexity
 
 - Sorting: $O(n \log n)$
-- For every job $i$, compute $Prev(i)$. Total $O(n)$ ??
+- For every job $k$, compute $i_k$. Total $O(n^2)$, can be optimized to $O(n)$.
 - Table
   - $O(n)$ entries
   - $O(1)$ time per entry to compute the entry value
 
 Total $O(n \log n)$.
 
-## Proof
 
-### Optimal
+## Track Solution
 
-Let $OPT(i)$ be the optimal solution value of job set $\left\{ j_0, \ldots, j_i \right\}$. Want to prove $T(i) = OPT(i)$.
+One can store the solution in the algorithm. For instance, store the choice in the $\max$ comparison, if choose the second one then append job $p_k$ to a list, or just record $k$ in every step and then do indexing on $J$.
 
-Base: $i=0, T(0) = 0, OPT(0) = 0, correct$
+Another way is to start from $T_n$, and compare $T_{n-1}$,
 
-Step: for $i >0$, assume correctness for all values, i.e., $T(i) = OPT(i)$.
+- if same then go to entry $T_{n-1}$
+- if different, pop out $p_n$, and then go to entry $T_{i_k}$
 
-Proof for step
-
-If $j_i \in S$, then
-
-$$
-OPT(i) = Profit(S) = OPT(i-1)
-$$
-
-otherwise $f_i \in S$, then
-
-$S \ {i}$ is an optimal solution to $\Pi(Prev(i))$.
-
-We have
-
-$$
-OPT(i) = Profit(S) = OPT(Prev(i)) + p_{j_i}
-$$
-
-$T(i) \leftarrow \max \left\{ T(i-1), T(Prev(i)) + p_{j_i} \right\}$ is lower bounded by the optimal solution.
-
-$T(i) \ge OPT(i)$
-
-Note $T(i) \le OPT(i)$ since $T(i)$ is a valid solution.
-
-### Find the Schedule
-
-Trace back
-
-e.g. store the solution to $\Pi(i)$ in $T(i)$. But waste space and time (copy paste).
+Repeat until go to $T_0$.

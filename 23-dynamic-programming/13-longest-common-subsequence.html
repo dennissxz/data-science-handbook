@@ -57,8 +57,8 @@
     <script async="async" src="../_static/sphinx-thebe.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Graph Related" href="../25-graph-related/00-graph-related.html" />
-    <link rel="prev" title="Weighted JISP" href="11-weighted-interval-scheduling.html" />
+    <link rel="next" title="Longest Increasing Subsequence" href="15-longest-increasing-subsequence.html" />
+    <link rel="prev" title="Weighted Interval Scheduling" href="11-weighted-interval-scheduling.html" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
@@ -336,12 +336,27 @@
   <ul class="current collapse-ul">
    <li class="toctree-l2">
     <a class="reference internal" href="11-weighted-interval-scheduling.html">
-     Weighted JISP
+     Weighted Interval Scheduling
     </a>
    </li>
    <li class="toctree-l2 current active">
     <a class="current reference internal" href="#">
      Longest Common Subsequence
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="15-longest-increasing-subsequence.html">
+     Longest Increasing Subsequence
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="17-largest-sum-subsequence.html">
+     Largest Sum Subsequence
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="51-chain-matrix-multiplication.html">
+     Chain Matrix Multiplication
     </a>
    </li>
   </ul>
@@ -629,10 +644,15 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#algorithms">
-   Algorithms
+  <a class="reference internal nav-link" href="#analysis">
+   Analysis
   </a>
   <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#iterative-relation">
+     Iterative Relation
+    </a>
+   </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#dp-table">
      DP Table
@@ -644,8 +664,8 @@
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#backtrace">
-     Backtrace
+    <a class="reference internal nav-link" href="#track-solution">
+     Track Solution
     </a>
    </li>
   </ul>
@@ -682,8 +702,10 @@
 <p>Goal
 : Find the longest sequence <span class="math notranslate nohighlight">\(X\)</span> that is a subsequence of both <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span>. <span class="math notranslate nohighlight">\(X = LCS(A,B)\)</span>.</p>
 </div>
-<div class="section" id="algorithms">
-<h2>Algorithms<a class="headerlink" href="#algorithms" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="analysis">
+<h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="iterative-relation">
+<h3>Iterative Relation<a class="headerlink" href="#iterative-relation" title="Permalink to this headline">¶</a></h3>
 <p>For now, we only compute the length, not the exact LCS <span class="math notranslate nohighlight">\(X\)</span>.</p>
 <ul class="simple">
 <li><p>If the last two letters of the two sequences are the same, i.e., <span class="math notranslate nohighlight">\(A_{[-1]} = B_{[-1]} = z\)</span>, then <span class="math notranslate nohighlight">\(z\)</span> is the last letter of <span class="math notranslate nohighlight">\(LCS(A, B)\)</span> (proof by contradiction), and hence</p></li>
@@ -695,18 +717,19 @@
 </ul>
 <div class="math notranslate nohighlight">
 \[\begin{split}
-LCS(A,B) = \arg \operatorname{longer}  \left\{\begin{array}{ll}
+LCS(A,B) = \operatorname{long}  \left\{\begin{array}{ll}
 LCS(A, B_{[:-1]}) \\
 LCS(A_{[:-1]}, B)
 \end{array}\right\}
 \end{split}\]</div>
+</div>
 <div class="section" id="dp-table">
 <h3>DP Table<a class="headerlink" href="#dp-table" title="Permalink to this headline">¶</a></h3>
 <p>For all <span class="math notranslate nohighlight">\(0 \le i \le n, 0 \le j \le m\)</span>, the table entry <span class="math notranslate nohighlight">\(T_{[i,j]}\)</span> stores the length <span class="math notranslate nohighlight">\(\left\vert LCS(A_{[:i]}, B_{[:j]}) \right\vert\)</span></p>
 </div>
 <div class="section" id="order-of-computation">
 <h3>Order of computation<a class="headerlink" href="#order-of-computation" title="Permalink to this headline">¶</a></h3>
-<p>In non-decreasing order of <span class="math notranslate nohighlight">\(i+j\)</span>. Because <span class="math notranslate nohighlight">\(T_{[i,j]}\)</span> depends on three entries <span class="math notranslate nohighlight">\(T_{[i-1, j-1]}, T_{[i, j-1]}, T_{[i-1, j]}\)</span>.</p>
+<p>In non-decreasing order of <span class="math notranslate nohighlight">\(i+j\)</span>. Because <span class="math notranslate nohighlight">\(T_{[i,j]}\)</span> depends on three entries <span class="math notranslate nohighlight">\(T_{[i-1, j-1]}, T_{[i, j-1]}, T_{[i-1, j]}\)</span> that are on the left/right of it.</p>
 <p>Another order can follow fixed <span class="math notranslate nohighlight">\(i\)</span> and increasing <span class="math notranslate nohighlight">\(j\)</span>. Any order works as long as a new value is computed from existing values.</p>
 <p>Base
 : For all <span class="math notranslate nohighlight">\(0 \le i \le n, 0 \le j \le m\)</span>,
@@ -728,10 +751,9 @@ T_{[i, j-1]}
 \end{array}\right.
 \end{split}\]</div>
 </div>
-<div class="section" id="backtrace">
-<h3>Backtrace<a class="headerlink" href="#backtrace" title="Permalink to this headline">¶</a></h3>
-<p>If the condition <span class="math notranslate nohighlight">\(A_{[i]} = B_{[j]}\)</span> holds, this means we pop out <span class="math notranslate nohighlight">\(A_{[i]}\)</span>.</p>
-<p>??30:00</p>
+<div class="section" id="track-solution">
+<h3>Track Solution<a class="headerlink" href="#track-solution" title="Permalink to this headline">¶</a></h3>
+<p>If the condition <span class="math notranslate nohighlight">\(A_{[i]} = B_{[j]}\)</span> holds, this means we pop out <span class="math notranslate nohighlight">\(A_{[i]}\)</span>. Otherwise, we go to <span class="math notranslate nohighlight">\(T_{[i,j-1]}\)</span> or <span class="math notranslate nohighlight">\(T_{[i-1,j]}\)</span>.</p>
 </div>
 </div>
 <div class="section" id="running-time">
@@ -775,8 +797,8 @@ T_{[i, j-1]}
     
     <div class='prev-next-bottom'>
         
-    <a class='left-prev' id="prev-link" href="11-weighted-interval-scheduling.html" title="previous page">Weighted JISP</a>
-    <a class='right-next' id="next-link" href="../25-graph-related/00-graph-related.html" title="next page">Graph Related</a>
+    <a class='left-prev' id="prev-link" href="11-weighted-interval-scheduling.html" title="previous page">Weighted Interval Scheduling</a>
+    <a class='right-next' id="next-link" href="15-longest-increasing-subsequence.html" title="next page">Longest Increasing Subsequence</a>
 
     </div>
     <footer class="footer mt-5 mt-md-0">

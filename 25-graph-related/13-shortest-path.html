@@ -336,12 +336,27 @@
   <ul class="collapse-ul">
    <li class="toctree-l2">
     <a class="reference internal" href="../23-dynamic-programming/11-weighted-interval-scheduling.html">
-     Weighted JISP
+     Weighted Interval Scheduling
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../23-dynamic-programming/13-longest-common-subsequence.html">
      Longest Common Subsequence
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/15-longest-increasing-subsequence.html">
+     Longest Increasing Subsequence
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/17-largest-sum-subsequence.html">
+     Largest Sum Subsequence
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/51-chain-matrix-multiplication.html">
+     Chain Matrix Multiplication
     </a>
    </li>
   </ul>
@@ -629,10 +644,15 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#dijkstra-s-algorithm">
-   Dijkstra’s Algorithm
+  <a class="reference internal nav-link" href="#greedy-algorithm-dijkstra">
+   Greedy Algorithm (Dijkstra)
   </a>
   <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#solution">
+     Solution
+    </a>
+   </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#correctness">
      Correctness
@@ -656,13 +676,28 @@
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#algorithm">
-     Algorithm
+    <a class="reference internal nav-link" href="#analysis">
+     Analysis
     </a>
     <ul class="nav section-nav flex-column">
      <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#an-observation">
+       An Observation
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
       <a class="reference internal nav-link" href="#dp-table">
        DP-table
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#iterative-relation">
+       Iterative Relation
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#computational-order">
+       Computational Order
       </a>
      </li>
     </ul>
@@ -670,11 +705,6 @@
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#run-time">
      Run Time
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#id1">
-     Correctness
     </a>
    </li>
   </ul>
@@ -706,8 +736,8 @@
 <p>Goal
 : Find the shortest path <span class="math notranslate nohighlight">\(P\)</span> between <span class="math notranslate nohighlight">\(s\)</span> and all other vertices</p>
 </div>
-<div class="section" id="dijkstra-s-algorithm">
-<h2>Dijkstra’s Algorithm<a class="headerlink" href="#dijkstra-s-algorithm" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="greedy-algorithm-dijkstra">
+<h2>Greedy Algorithm (Dijkstra)<a class="headerlink" href="#greedy-algorithm-dijkstra" title="Permalink to this headline">¶</a></h2>
 <p>Dijkstra’s algorithm is a greedy algorithm, which maintains a set of vertices <span class="math notranslate nohighlight">\(S\)</span> and update it iteratively. At start, <span class="math notranslate nohighlight">\(S={s}\)</span>. If we found a shortest path between <span class="math notranslate nohighlight">\(s\)</span> to a vertex <span class="math notranslate nohighlight">\(u\)</span>, then <span class="math notranslate nohighlight">\(u\)</span> is added to <span class="math notranslate nohighlight">\(S\)</span>. If <span class="math notranslate nohighlight">\(S=V\)</span>, then the algorithm terminates.</p>
 <p>Definition (Shortest path from <span class="math notranslate nohighlight">\(s\)</span> to <span class="math notranslate nohighlight">\(u\)</span> w.r.t <span class="math notranslate nohighlight">\(S\)</span>)
 : The shortest path from <span class="math notranslate nohighlight">\(s\)</span> to <span class="math notranslate nohighlight">\(u\)</span> w.r.t. <span class="math notranslate nohighlight">\(S\)</span> is a shortest path such that all vertices along the it <span class="math notranslate nohighlight">\((s,u)\)</span> are in <span class="math notranslate nohighlight">\(S\)</span>. The distance is denoted as <span class="math notranslate nohighlight">\(d(u)\)</span>.</p>
@@ -717,7 +747,8 @@
 d(u) \ge d^{\text{opt}}(u)
 \]</div>
 <p>The algorithm add <span class="math notranslate nohighlight">\(u\)</span> to <span class="math notranslate nohighlight">\(S\)</span> if the equality is achieved.</p>
-<p>Implementation:</p>
+<div class="section" id="solution">
+<h3>Solution<a class="headerlink" href="#solution" title="Permalink to this headline">¶</a></h3>
 <hr class="docutils" />
 <p><strong>Dijkstra’s algorithm</strong></p>
 <hr class="docutils" />
@@ -753,6 +784,7 @@ d(u) \ge d^{\text{opt}}(u)
 </li>
 <li><p>For <span class="math notranslate nohighlight">\(v \in S\)</span>, the shortest path from <span class="math notranslate nohighlight">\(s\)</span> to <span class="math notranslate nohighlight">\(v\)</span> are is the collection of edges to compute <span class="math notranslate nohighlight">\(d(v)\)</span>.</p></li>
 </ul>
+</div>
 <hr class="docutils" />
 <div class="section" id="correctness">
 <h3>Correctness<a class="headerlink" href="#correctness" title="Permalink to this headline">¶</a></h3>
@@ -795,67 +827,87 @@ d(u^*) \le d(y) \le d(y)+ \ell_{P}(y,u^*) \le \ell(P_{s,u^*}^{y})
 </div>
 <div class="section" id="negative-edge">
 <h3>Negative Edge<a class="headerlink" href="#negative-edge" title="Permalink to this headline">¶</a></h3>
-<p>Definition (Negative cycle)
-: We call a cycle negative if the sum of the weights of the edges in a cycle is negative.</p>
-<p>This leads to a problem</p>
+<p>More generally, negative edge are allowed. Dijkstra’s algorithm does not work. The greedy edge may have a larger length than the sum of other two edges.</p>
 <div class="math notranslate nohighlight">
 \[
-A - negative\ cycle - B
+s \quad \overset{\quad 1 \quad }{\longrightarrow} \quad v
 \]</div>
-<p>Then the path found by Dijkstra’s algorithm goes around the negative cycle for infinite times.</p>
+<div class="math notranslate nohighlight">
+\[
+1000 \searrow \qquad \nearrow -1000
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+u
+\]</div>
 </div>
 </div>
 <div class="section" id="dp-based-algorithm-bellman-fosd">
 <h2>DP-based Algorithm (Bellman-Fosd)<a class="headerlink" href="#dp-based-algorithm-bellman-fosd" title="Permalink to this headline">¶</a></h2>
+<p>If there are negative edges but no negative cycles, then the shortest path problem is not well defined due to negative cycles.</p>
+<p>Definition (Negative cycle)
+: We call a cycle negative if the sum of the weights of the edges in a cycle is negative.</p>
+<div class="math notranslate nohighlight">
+\[
+A - \text{negative cycle}  - B
+\]</div>
+<p>Then the path can go around the negative cycle for <strong>infinite</strong> times and have infinitely small length. Hence, out goal change to find the shortest <strong>simple</strong> path.</p>
 <p>Definition (Simple Path)
 : A path is a simple path if each vertex appears only once, i.e., no cycles.</p>
-<p>Observations
+<div class="section" id="analysis">
+<h3>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="an-observation">
+<h4>An Observation<a class="headerlink" href="#an-observation" title="Permalink to this headline">¶</a></h4>
+<p>Observation
 : - If there are no negative cycles, then for every vertex <span class="math notranslate nohighlight">\(v\)</span>, there exists a shortest path <span class="math notranslate nohighlight">\(s-v\)</span> that a simple path.</p>
-<p><em>Proof</em></p>
+<p><em><strong>Proof</strong></em></p>
 <p>Let <span class="math notranslate nohighlight">\(P\)</span> be any shortest <span class="math notranslate nohighlight">\(s-v\)</span> path. If <span class="math notranslate nohighlight">\(p\)</span> is simple then done. Otherwise, some vertex <span class="math notranslate nohighlight">\(x\)</span> appears more than once on <span class="math notranslate nohighlight">\(P\)</span>. Then we can just delete all vertices between any appearances of <span class="math notranslate nohighlight">\(x\)</span> on this path. Since there are no negative cycles, the length of <span class="math notranslate nohighlight">\(P\)</span> does not increase.</p>
 <div class="math notranslate nohighlight">
 \[
 s - v_1 - x - [v_2 - \ldots - v_k - x] - v_{k+1} - v
 \]</div>
 <p>Moreover, such path can only contains at most <span class="math notranslate nohighlight">\(\left\vert V \right\vert - 1\)</span> vertices.</p>
-<div class="section" id="algorithm">
-<h3>Algorithm<a class="headerlink" href="#algorithm" title="Permalink to this headline">¶</a></h3>
+</div>
 <div class="section" id="dp-table">
 <h4>DP-table<a class="headerlink" href="#dp-table" title="Permalink to this headline">¶</a></h4>
-<p>For every <span class="math notranslate nohighlight">\(v \in V(G)\)</span> and <span class="math notranslate nohighlight">\(0 \le i \le n\)</span>, <span class="math notranslate nohighlight">\(T_{[i,v]}\)</span> will store the length of shortest <span class="math notranslate nohighlight">\(s-v\)</span> path containing at most m<span class="math notranslate nohighlight">\(i\)</span> edges.</p>
-<p>The final solution is the entry <span class="math notranslate nohighlight">\(T_{[n,t]}\)</span>.</p>
-<p>Either <span class="math notranslate nohighlight">\(P\)</span> contains less than <span class="math notranslate nohighlight">\(i-1\)</span> edges such that <span class="math notranslate nohighlight">\(T_{[i-1, v]}\)</span>, or <span class="math notranslate nohighlight">\(P\)</span> contains <span class="math notranslate nohighlight">\(i\)</span> edges, such that <span class="math notranslate nohighlight">\((u,v)\)</span> i the last edge on <span class="math notranslate nohighlight">\(P\)</span>, then <span class="math notranslate nohighlight">\(T_{[i-1,u]} + \ell(u,v)\)</span>.</p>
+<p>We want to store the length and the number of edges from <span class="math notranslate nohighlight">\(s\)</span> to any vertex <span class="math notranslate nohighlight">\(v\)</span> along the shortest path.</p>
+<p>For every <span class="math notranslate nohighlight">\(v \in V(G)\)</span> and <span class="math notranslate nohighlight">\(0 \le i \le n\)</span>, <span class="math notranslate nohighlight">\(T_{i,v}\)</span> will store the <strong>length</strong> of shortest <span class="math notranslate nohighlight">\(s-v\)</span> path containing <strong>at most</strong> <span class="math notranslate nohighlight">\(i\)</span> edges.</p>
+</div>
+<div class="section" id="iterative-relation">
+<h4>Iterative Relation<a class="headerlink" href="#iterative-relation" title="Permalink to this headline">¶</a></h4>
+<p>For <span class="math notranslate nohighlight">\(T_{i,v}\)</span>, there are two cases</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(P\)</span> contains less than <span class="math notranslate nohighlight">\(i-1\)</span> edges. Then <span class="math notranslate nohighlight">\(T_{i,v} = T_{i-1, v}\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(P\)</span> contains <span class="math notranslate nohighlight">\(i\)</span> edges. Let the last edge be <span class="math notranslate nohighlight">\((u,v)\)</span>, then <span class="math notranslate nohighlight">\(T_{i,v} = T_{i-1,u} + \ell(u,v)\)</span>.</p></li>
+</ul>
+<p>Hence, we have</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
-T_{[i,v]} = \min \left\{\begin{array}{ll}
-T_{[i-1, v]} &amp; \text { if } ??? \\
-\min_{u\ne v} \left\{ T_{[i-1, u]} + \ell(u,v) \right\} &amp; \text { otherwise }
-\end{array}\right.
+T_{i,v} = \min \left\{\begin{array}{ll}
+T_{i-1, v}  \\
+\min_{u\ne v} \left\{ T_{i-1, u} + \ell(u,v) \right\}
+\end{array}\right\}
 \end{split}\]</div>
-<p>Base
-:
-$<span class="math notranslate nohighlight">\(
-i=0 \\
-T_{[0,s]} = 0 \\
-T_{[0,v]} = \infty ??
-\)</span>$</p>
-<p>Step
-:</p>
+<p>Base cases are</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+T_{0,s} &amp;= 0 \\
+T_{0,v} &amp;= \infty \ \forall v \ne s
+\end{aligned}\end{split}\]</div>
+</div>
+<div class="section" id="computational-order">
+<h4>Computational Order<a class="headerlink" href="#computational-order" title="Permalink to this headline">¶</a></h4>
+<p>For <span class="math notranslate nohighlight">\(i=1, \ldots, n-1\)</span>, then for each vertex <span class="math notranslate nohighlight">\(v\)</span>.</p>
 </div>
 </div>
 <div class="section" id="run-time">
 <h3>Run Time<a class="headerlink" href="#run-time" title="Permalink to this headline">¶</a></h3>
-<p><span class="math notranslate nohighlight">\(O(n^2)\)</span> entries in the DP table, <span class="math notranslate nohighlight">\(O(n)\)</span> table to compute each entry.</p>
-<p>Total <span class="math notranslate nohighlight">\(O(n^2)\)</span>.</p>
-</div>
-<div class="section" id="id1">
-<h3>Correctness<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
-<p>Claim
-: For all <span class="math notranslate nohighlight">\(i, v\)</span>, entry <span class="math notranslate nohighlight">\(T_{i,v}\)</span> contains the length of shortest <span class="math notranslate nohighlight">\(s-v\)</span> path with less than <span class="math notranslate nohighlight">\(i\)</span> vertices.</p>
-<p>Base
-: <span class="math notranslate nohighlight">\(i=0\)</span></p>
-<p>Step
-: Assume correctness for all vertices below <span class="math notranslate nohighlight">\(i\)</span>…</p>
+<p><span class="math notranslate nohighlight">\(O(n^2)\)</span> entries in the DP table, <span class="math notranslate nohighlight">\(O(n)\)</span> table to compute each entry due to <span class="math notranslate nohighlight">\(\min _{u\ne v}\)</span>.</p>
+<p>Total <span class="math notranslate nohighlight">\(O(n^3)\)</span>.</p>
+<p>:::{admonition,note} If there are negative cycles</p>
+<p>If there are negative cycles, then the Bellman-Ford algorithm still works but it will not stop in <span class="math notranslate nohighlight">\(n-1\)</span> iterations.</p>
+<p>It can also be used to detect negative cycle by checking whether <span class="math notranslate nohighlight">\(T_{n,v} = T_{n+1,v}\)</span>, and can be used to find the negative cycles.</p>
+<p>:::</p>
 </div>
 </div>
 </div>
