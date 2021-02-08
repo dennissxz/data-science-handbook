@@ -16,7 +16,7 @@ The key is to fix the ending number.
 Let $S_k$ be the longest increasing subsequence **ending** at number $a_k$. Then we have the iterative relation
 
 $$
-S_k = \left\{ \underset{i:\ 1 \le i \le k-1, a_i\le a_k}{\operatorname{longest}} S_i \right\} \cup {a_k}
+S_k = \left\{ \underset{i:\ 1 \le i \le k-1, a_i\le a_k}{\operatorname{longest}} S_i \right\} \circ {a_k}
 $$
 
 The corresponding iterative relation for the length of $S_k$, denoted $L_k$, is
