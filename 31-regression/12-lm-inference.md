@@ -1,3 +1,15 @@
+---
+jupytext:
+  formats: md:myst
+  text_representation:
+    extension: .md
+    format_name: myst
+kernelspec:
+  display_name: Python 3
+  language: python
+  name: python3
+---
+
 # Linear Regression - Inference
 
 We first describe the properties of OLS estimator $\hat{\boldsymbol{\beta}}$ and the corresponding residuals $\hat{\boldsymbol{\varepsilon} }$. Then we introduce sum of squares, $R$-squared, hypothesis testing and confidence intervals. All these methods assume normality of the error terms $\varepsilon_i \overset{\text{iid}}{\sim} N(0, \sigma^2)$ unless otherwise specified.
@@ -560,31 +572,33 @@ Due to the constraint in Problem 2, the minimum value of the Problem 1 should be
 
   - Also, in general, $\not\Rightarrow$. The example below shows $\hat{\beta}_{2} \ne 0$ even if $\boldsymbol{x} ^\top _p \boldsymbol{y} =0$
 
-```python
+```{code-cell}
 import numpy as np
 
 y = np.array([[1,2,3]]).T
 x0 = np.array([[1,1,1]])
 x1 = np.array([[1,2,4]])
 
- reduced model
+# reduced model
+print("reduced model ---")
 X = np.vstack((x0, x1)).T
 XXinv = np.linalg.inv(np.dot(X.T, X))
 b = np.dot(XXinv, np.dot(X.T, y))
-print(b)
+print("coefficients: ", b.flatten())
 r = y - X.dot(b)
-print(r.T.dot(r))
+print("RSS: ", r.T.dot(r).flatten())
 
- full model
+# full model
+print("\nfull model ---")
 x2 = np.array([[1,-2,1]])
-print(x2 @ y)
+print("x2 and y are uncorrelated, dot product :", x2 @ y)
 X = np.vstack((x0, x1, x2)).T
 XXinv = np.linalg.inv(np.dot(X.T, X))
 b = np.dot(XXinv, np.dot(X.T, y))
-print(b)
+print("coefficients: ", b.flatten())
 r = y - X.dot(b)
 X.dot(b)
-print(r.T.dot(r))
+print("RSS: ", r.T.dot(r).flatten())
 ```
 
 
