@@ -32,6 +32,8 @@ The algorithm add $u$ to $S$ if the equality is achieved.
 
 ### Solution
 
+The algorithm is
+
 ---
 **Dijkstra's algorithm**
 
@@ -55,7 +57,7 @@ If we only want to find the shortest path between $s$ and a specific target vert
   - For $u \notin S$,
     - If $d(u^*) + \ell(u^*, u) < d(u)$, then update $d(u) \leftarrow d(u^*) + \ell(u^*, u)$
 
-- For $v \in S$, the shortest path from $s$ to $v$ are is the collection of edges to compute $d(v)$.
+- For $v \in S$, the shortest path from $s$ to $v$ are the collection of edges to compute $d(v)$.
 
 ---
 
@@ -173,7 +175,7 @@ For $T_{i,v}$, there are two cases
 
 - $P$ contains less than $i-1$ edges. Then $T_{i,v} = T_{i-1, v}$
 
-- $P$ contains $i$ edges. Let the last edge be $(u,v)$, then $T_{i,v} = T_{i-1,u} + \ell(u,v)$.
+- $P$ contains $i$ edges. Let the last edge be $(u,v)$, then $T_{i,v} = \min_{u\ne v} \left\{ T_{i-1, u} + \ell(u,v) \right\}$.
 
 Hence, we have
 
