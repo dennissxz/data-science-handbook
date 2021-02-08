@@ -348,9 +348,9 @@ Find an $s-t$ cut $(A,B)$ that minimizes cut capacity $c(A,B)$, called minimum c
 ### Analysis
 
 Theorem (Equivalency of maximum flow and minimum cut)
-: In any flow network $G$, the value of a maximum $s-t$ flow is equal to value of a minimum $s-t$ cut.
+: In any flow network $G$, the value of a maximum $s-t$ flow is equal to the capacity of a minimum $s-t$ cut.
 
-The proof is simply from the Corollary.
+The proof is simply from Corollary 3.
 
 Thus, FF algorithm also gives an algorithm for finding a minimum $s-t$ cut.
 
@@ -378,7 +378,7 @@ There are two inputs.
 
 Recall different running time??
 
-- strong-polynomial tim#e: $Poly(\text{size of the combinatorial part})$, e.g. $O(n)$
+- strong-polynomial time: $Poly(\text{size of the combinatorial part})$, e.g. $O(n)$
 - weak-polynomial time: $Poly(\text{sizes of both parts})$, e.g. $O(mn \times m)$
 - pseudo-polynomial time: $Poly(\text{the largest integer present in the input})$, e.g. $O(c_\max)$
 
