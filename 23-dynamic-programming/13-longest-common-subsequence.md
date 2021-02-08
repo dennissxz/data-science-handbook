@@ -15,7 +15,7 @@ Goal
 
 ## Analysis
 
-### Recursive Relation
+### Iterative Relation
 
 For now, we only compute the length, not the exact LCS $X$.
 
