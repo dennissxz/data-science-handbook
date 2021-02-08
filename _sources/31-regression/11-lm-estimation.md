@@ -411,16 +411,16 @@ TBD.
     the interpretation of the marginal effect of $x_1$ is simply the partial derivative $\beta_1 + 2\beta_2 x_1 + 3 \beta_3 x_1^2$. We build such model because the plot suggests a non-linear relation between $Y$ and $x_1$, or we believe the effect of $x_1$ on $Y$ depends on the value of $x_1$. Note in this case the effect can change sign.
 
 
-1. For a model that involes $\ln(\cdot)$, we need some approximation.
+1. For a model that involves log, we need some approximation.
 
     - $Y = \beta_0 + \beta_1 \ln(x) + \mu$
 
         $$\begin{aligned}
         \ln(1+0.01)&\approx 0.01\\
-        \Rightarrow \quad \ln(x + 0.01x) &\approx \ln(x)  + 0.01 \\
+        \Rightarrow \quad \ln(x + 0.01x) &\approx \ln(x)  + 0.01 \quad \forall x\\
         \end{aligned}$$
 
-        Hence, $0.01x$ change in $x$, or $1%$ change in $x$, is associated with $0.01\beta_1$ change in value of $Y$.
+        Hence, $0.01x$ change in $x$, or $1\%$ change in $x$, is associated with $0.01\beta_1$ change in value of $Y$.
 
     - $\ln(Y) = \beta_0 + \beta_1 x + \mu$
 
@@ -439,7 +439,7 @@ TBD.
         Y ^\prime
         &= \exp(\beta_0 + \beta_1 \ln(x + 0.01x) + \varepsilon)   \\
         &\approx \exp(\beta_0 + \beta_1 (\ln(x) + 0.01) + \varepsilon)   \\
-        &\approx \exp(\beta_0 + \beta_1 \ln(x) + \varepsilon)\exp(0.01\beta_1)   \\
+        &= \exp(\beta_0 + \beta_1 \ln(x) + \varepsilon)\exp(0.01\beta_1)   \\
         &\approx Y (1 + 0.01\beta_1) \quad \text{if $0.01\beta_1$ is close to 0}  \\
         \end{aligned}$$
 
@@ -447,23 +447,23 @@ TBD.
 
 
 
-:::{admonition,note} When to use log?
+      :::{admonition,note} When to use log?
 
-Log is often used
+      Log is often used
 
-- when the variable has a right skewed distribution, e.g. wages, prices
+      - when the variable has a right skewed distribution, e.g. wages, prices
 
-- to reduce heteroskedasticity
+      - to reduce heteroskedasticity
 
-not used when
+      not used when
 
-- the variable has negative values
+      - the variable has negative values
 
-- the variable are in percentages or proportions (hard to interpret)
+      - the variable are in percentages or proportions (hard to interpret)
 
-Also note that logging can change significance tests.
+      Also note that logging can change significance tests.
 
-:::
+      :::
 
 
 

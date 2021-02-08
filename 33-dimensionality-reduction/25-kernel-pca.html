@@ -46,8 +46,6 @@
     <script src="../_static/copybutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="../_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
     <script >
         const thebe_selector = ".thebe"
@@ -57,7 +55,7 @@
     <script async="async" src="../_static/sphinx-thebe.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="SNE and \(t\)-SNE" href="31-t-SNE.html" />
+    <link rel="next" title="SNE and $t$-SNE" href="31-t-SNE.html" />
     <link rel="prev" title="Graph-based Spectral Methods" href="23-graph-based-spectral-methods.html" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -355,6 +353,11 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/31-knapsack.html">
+     Minimum Knapsack
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="../23-dynamic-programming/51-chain-matrix-multiplication.html">
      Chain Matrix Multiplication
     </a>
@@ -488,11 +491,7 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="31-t-SNE.html">
-     SNE and
-     <span class="math notranslate nohighlight">
-      \(t\)
-     </span>
-     -SNE
+     SNE and $t$-SNE
     </a>
    </li>
   </ul>
@@ -680,33 +679,30 @@
 <div class="section" id="objective">
 <h2>Objective<a class="headerlink" href="#objective" title="Permalink to this headline">¶</a></h2>
 <p>Linear PCA only consider linear subspaces</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 \hat{\boldsymbol{x}} = \boldsymbol{W} \boldsymbol{z}
-\]</div>
-<p>To solve this, we can apply feature transformation <span class="math notranslate nohighlight">\(\boldsymbol{\phi}: \mathbb{R} ^d \rightarrow \mathbb{R} ^p\)</span> to include non-linear features, such as <span class="math notranslate nohighlight">\(\boldsymbol{\phi} ([x_1, x_2])= [x_1, x_1^2, x_1 x_2]\)</span>.</p>
-<p>Then the data matrix changes from <span class="math notranslate nohighlight">\(\boldsymbol{X}_{n \times d}\)</span> to <span class="math notranslate nohighlight">\(\boldsymbol{\Phi}_{n \times p}\)</span>. And the inner product matrix changes from <span class="math notranslate nohighlight">\(\boldsymbol{X} \boldsymbol{X} ^\top\)</span> to <span class="math notranslate nohighlight">\(\boldsymbol{\Phi} \boldsymbol{\Phi} ^\top\)</span>.</p>
-<p>, handcrafting feature transformation <span class="math notranslate nohighlight">\(\boldsymbol{\phi}\)</span> is equivalent to choosing a kernel function <span class="math notranslate nohighlight">\(k(\boldsymbol{x}_1, \boldsymbol{x} _2) = \boldsymbol{\phi}(\boldsymbol{x} _1) ^\top \boldsymbol{\phi}(\boldsymbol{x} _2)\)</span>. We can compute the new inner product matrix by <span class="math notranslate nohighlight">\(\boldsymbol{K} = \boldsymbol{\Phi} \boldsymbol{\Phi} ^\top\)</span>.</p>
-<p>Then we can run MDS on <span class="math notranslate nohighlight">\(\boldsymbol{K}\)</span>.</p>
+$$</p>
+<p>To solve this, we can apply feature transformation $\boldsymbol{\phi}: \mathbb{R} ^d \rightarrow \mathbb{R} ^p$ to include non-linear features, such as $\boldsymbol{\phi} ([x_1, x_2])= [x_1, x_1^2, x_1 x_2]$.</p>
+<p>Then the data matrix changes from $\boldsymbol{X}<em>{n \times d}$ to $\boldsymbol{\Phi}</em>{n \times p}$. And the inner product matrix changes from $\boldsymbol{X} \boldsymbol{X} ^\top$ to $\boldsymbol{\Phi} \boldsymbol{\Phi} ^\top$.</p>
+<p>, handcrafting feature transformation $\boldsymbol{\phi}$ is equivalent to choosing a kernel function $k(\boldsymbol{x}_1, \boldsymbol{x} _2) = \boldsymbol{\phi}(\boldsymbol{x} _1) ^\top \boldsymbol{\phi}(\boldsymbol{x} _2)$. We can compute the new inner product matrix by $\boldsymbol{K} = \boldsymbol{\Phi} \boldsymbol{\Phi} ^\top$.</p>
+<p>Then we can run MDS on $\boldsymbol{K}$.</p>
 <p>:::{admonition,note} Mean normalization</p>
-<p>We’ve implicitly assumed zero-mean inputs. If the inputs <span class="math notranslate nohighlight">\(\boldsymbol{K}\)</span> are not zero-mean, we center it by</p>
-<div class="math notranslate nohighlight">
-\[
-\boldsymbol{K} ^\prime = (\boldsymbol{I} - \boldsymbol{u} \boldsymbol{u} ^\top )\boldsymbol{K}(\boldsymbol{I} - \boldsymbol{u} \boldsymbol{u} ^\top)  
-\]</div>
-<p>where <span class="math notranslate nohighlight">\(\boldsymbol{u} = \frac{1}{\sqrt{n}}[1 \ldots 1]^{\top}\)</span></p>
+<p>We’ve implicitly assumed zero-mean inputs. If the inputs $\boldsymbol{K}$ are not zero-mean, we center it by</p>
+<p>$$
+\boldsymbol{K} ^\prime = (\boldsymbol{I} - \boldsymbol{u} \boldsymbol{u} ^\top )\boldsymbol{K}(\boldsymbol{I} - \boldsymbol{u} \boldsymbol{u} ^\top)<br />
+$$</p>
+<p>where $\boldsymbol{u} = \frac{1}{\sqrt{n}}[1 \ldots 1]^{\top}$</p>
 <p>:::</p>
 </div>
 <div class="section" id="choice-of-kernel">
 <h2>Choice of Kernel<a class="headerlink" href="#choice-of-kernel" title="Permalink to this headline">¶</a></h2>
-<p>As <a class="reference internal" href="../30-ml-basics/05-kernels.html#kernels-logic"><span class="std std-ref">discussed</span></a>, in practice, we don’t engineer <span class="math notranslate nohighlight">\(\phi(\cdot)\)</span>, but directly think about <span class="math notranslate nohighlight">\(k(\cdot, \cdot)\)</span>.</p>
+<p>As <a class="reference internal" href="../30-ml-basics/05-kernels.html#kernels-logic"><span class="std std-ref">discussed</span></a>, in practice, we don’t engineer $\phi(\cdot)$, but directly think about $k(\cdot, \cdot)$.</p>
 <ul>
 <li><p>One common choice of kernel is radial basis function (RBF), aka Gaussian kernel</p>
-<div class="math notranslate nohighlight">
-\[
-    k\left(\mathbf{x}_{1}, \mathbf{x}_{2}\right)=e^{\frac{-\left(\mathbf{x}_{1}-\mathbf{x}_{2}\right)^{2}}{2 \sigma^{2}}}
-    \]</div>
-<p>where the standard deviation (radius) <span class="math notranslate nohighlight">\(\sigma\)</span> is a tuning parameter.</p>
+<p>$$
+k\left(\mathbf{x}<em>{1}, \mathbf{x}</em>{2}\right)=e^{\frac{-\left(\mathbf{x}<em>{1}-\mathbf{x}</em>{2}\right)^{2}}{2 \sigma^{2}}}
+$$</p>
+<p>where the standard deviation (radius) $\sigma$ is a tuning parameter.</p>
 <p>RBF corresponds to an implicit feature space of infinite dimensionality.</p>
 </li>
 </ul>
@@ -716,11 +712,10 @@
 :::</p>
 <ul>
 <li><p>Polynomial kernel</p>
-<div class="math notranslate nohighlight">
-\[
-    k\left(\mathbf{x}_{1}, \mathbf{x}_{2}\right)=\left(1+\mathbf{x}_{1}^{T} \mathbf{x}_{2}\right)^{p}
-    \]</div>
-<p>where the polynomial degree <span class="math notranslate nohighlight">\(p\)</span> is a tuning parameter. <span class="math notranslate nohighlight">\(p=2\)</span> is common.</p>
+<p>$$
+k\left(\mathbf{x}<em>{1}, \mathbf{x}</em>{2}\right)=\left(1+\mathbf{x}<em>{1}^{T} \mathbf{x}</em>{2}\right)^{p}
+$$</p>
+<p>where the polynomial degree $p$ is a tuning parameter. $p=2$ is common.</p>
 </li>
 </ul>
 </div>
@@ -750,25 +745,23 @@
 <p>Kernel PCA with RBF kernel on a Swiss roll manifold [Livescu 2021]</p>
 <p>:::</p>
 </li>
-<li><p>Computationally expensive to compute <span class="math notranslate nohighlight">\(n \times n\)</span> pairwise kernel values when <span class="math notranslate nohighlight">\(n\)</span> is large. Remedies include</p>
+<li><p>Computationally expensive to compute $n \times n$ pairwise kernel values when $n$ is large. Remedies include</p>
 <ul>
 <li><p>use subset of the entire data set</p></li>
 <li><p>use kernel approximation techniques</p>
 <ul>
-<li><p>approximate <span class="math notranslate nohighlight">\(\boldsymbol{K} \approx \boldsymbol{F}^\top \boldsymbol{F}\)</span> where <span class="math notranslate nohighlight">\(\boldsymbol{F} \in \mathbb{R} ^{m \times n}, k \ll m \ll n\)</span>. The value of <span class="math notranslate nohighlight">\(m\)</span> should be as large as you can handle.</p></li>
-<li><p>For RBF kernels, there is one remarkable good approximation (due to Fourier transform properties) called random Fourier features (Rahimi &amp; Recht 2008), which replaces each data point <span class="math notranslate nohighlight">\(\boldsymbol{x}_i\)</span> with</p>
-<div class="math notranslate nohighlight">
-\[
-      \left[\cos \left(\boldsymbol{w}_{1}^{T} \boldsymbol{x}_{i}+b_{1}\right) \ldots \cos \left(\boldsymbol{w}_{m}^{T} \boldsymbol{x}_{i}+b_{m}\right)\right]^{T}=\boldsymbol{f} _{i}
-      \]</div>
+<li><p>approximate $\boldsymbol{K} \approx \boldsymbol{F}^\top \boldsymbol{F}$ where $\boldsymbol{F} \in \mathbb{R} ^{m \times n}, k \ll m \ll n$. The value of $m$ should be as large as you can handle.</p></li>
+<li><p>For RBF kernels, there is one remarkable good approximation (due to Fourier transform properties) called random Fourier features (Rahimi &amp; Recht 2008), which replaces each data point $\boldsymbol{x}_i$ with</p>
+<p>$$
+\left[\cos \left(\boldsymbol{w}<em>{1}^{T} \boldsymbol{x}</em>{i}+b_{1}\right) \ldots \cos \left(\boldsymbol{w}<em>{m}^{T} \boldsymbol{x}</em>{i}+b_{m}\right)\right]^{T}=\boldsymbol{f} _{i}
+$$</p>
 <p>\boldsymbol{w}here</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
-      \begin{aligned}
-      b_{1}, \ldots, b_{m} &amp; \sim \operatorname{Unif}[0,2 \pi] \\
-      \boldsymbol{w}_{1}, \ldots, \boldsymbol{w}_{m} &amp; \sim \mathcal{N}\left(0, \frac{2}{\sigma^{2}} \boldsymbol{I}_d \right)
-      \end{aligned}
-      \end{split}\]</div>
+<p>$$
+\begin{aligned}
+b_{1}, \ldots, b_{m} &amp; \sim \operatorname{Unif}[0,2 \pi] \
+\boldsymbol{w}<em>{1}, \ldots, \boldsymbol{w}</em>{m} &amp; \sim \mathcal{N}\left(0, \frac{2}{\sigma^{2}} \boldsymbol{I}_d \right)
+\end{aligned}
+$$</p>
 </li>
 </ul>
 </li>
@@ -779,61 +772,54 @@
 </div>
 <div class="section" id="relation-to-graph-based-spectral-methods">
 <h2>Relation to Graph-based Spectral Methods<a class="headerlink" href="#relation-to-graph-based-spectral-methods" title="Permalink to this headline">¶</a></h2>
-<p>Both are motivates as extensions of MDS and involves a <span class="math notranslate nohighlight">\(n \times n\)</span> matrix.</p>
+<p>Both are motivates as extensions of MDS and involves a $n \times n$ matrix.</p>
 <p>We can view kernel in kernel PCA as the edge weights in <a class="reference internal" href="23-graph-based-spectral-methods.html"><span class="doc std std-doc">graph-based spectral methods</span></a>. But the main difference is that in kernel PCA we compute the kernel value of <strong>every pair</strong> of data points (computationally demanding), but in graph-based spectral methods we only compute weights between points that are neighbors.</p>
 </div>
 <div class="section" id="projection-of-new-observations">
 <h2>Projection of New Observations<a class="headerlink" href="#projection-of-new-observations" title="Permalink to this headline">¶</a></h2>
 <p>To find a way to project observations, we first introduce an alternative formulation of the kernel PCA problem.</p>
-<p>The covariance matrix in the feature space <span class="math notranslate nohighlight">\(\frac{1}{n} \boldsymbol{\Phi} ^\top \boldsymbol{\Phi}\)</span> can be written as a sum of outer products of features over data points</p>
-<div class="math notranslate nohighlight">
-\[
+<p>The covariance matrix in the feature space $\frac{1}{n} \boldsymbol{\Phi} ^\top \boldsymbol{\Phi}$ can be written as a sum of outer products of features over data points</p>
+<p>$$
 \boldsymbol{C} = \frac{1}{n} \sum_{i=1}^n \boldsymbol{\phi}(\boldsymbol{x}_i )  \boldsymbol{\phi}(\boldsymbol{x}_i ) ^\top
-\]</div>
-<p>To solve the kernel PCA, we find the eigenvectors of <span class="math notranslate nohighlight">\(\boldsymbol{C}\)</span>. The <span class="math notranslate nohighlight">\(j\)</span>-th PCA projection vector <span class="math notranslate nohighlight">\(\boldsymbol{w}\)</span> is an eigenvector of <span class="math notranslate nohighlight">\(\boldsymbol{C}\)</span>.</p>
-<div class="math notranslate nohighlight">
-\[
+$$</p>
+<p>To solve the kernel PCA, we find the eigenvectors of $\boldsymbol{C}$. The $j$-th PCA projection vector $\boldsymbol{w}$ is an eigenvector of $\boldsymbol{C}$.</p>
+<p>$$
 \boldsymbol{C} \boldsymbol{w}_j  = \lambda_j \boldsymbol{w}_j
-\]</div>
+$$</p>
 <p>It can be shown that</p>
-<div class="math notranslate nohighlight">
-\[
-\boldsymbol{w}_j = \frac{1}{\lambda n} \sum_{i=1}^n \left( \boldsymbol{\phi}(\boldsymbol{x}_i ) ^\top  \boldsymbol{w}_j  \right) \boldsymbol{\phi}(\boldsymbol{x}_i ) = \sum_{i=1}^n \alpha_{ji} \boldsymbol{\phi}(\boldsymbol{x}_i)
-\]</div>
-<p>which implies that <span class="math notranslate nohighlight">\(\boldsymbol{w}\)</span> lies in the column span of <span class="math notranslate nohighlight">\(\boldsymbol{\Phi} ^\top\)</span>.</p>
-<p>Substituting the above expression back to <span class="math notranslate nohighlight">\(\boldsymbol{C} \boldsymbol{w}  = \lambda_j \boldsymbol{w}\)</span> gives</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{aligned}
+<p>$$
+\boldsymbol{w}<em>j = \frac{1}{\lambda n} \sum</em>{i=1}^n \left( \boldsymbol{\phi}(\boldsymbol{x}_i ) ^\top  \boldsymbol{w}<em>j  \right) \boldsymbol{\phi}(\boldsymbol{x}<em>i ) = \sum</em>{i=1}^n \alpha</em>{ji} \boldsymbol{\phi}(\boldsymbol{x}_i)
+$$</p>
+<p>which implies that $\boldsymbol{w}$ lies in the column span of $\boldsymbol{\Phi} ^\top$.</p>
+<p>Substituting the above expression back to $\boldsymbol{C} \boldsymbol{w}  = \lambda_j \boldsymbol{w}$ gives</p>
+<p>$$\begin{aligned}
 LHS
-&amp;= \boldsymbol{C} \boldsymbol{w} \\
-&amp;= \frac{1}{n} \sum_{i=1}^n \boldsymbol{\phi}(\boldsymbol{x}_i )  \boldsymbol{\phi}(\boldsymbol{x}_i ) ^\top \boldsymbol{w} \\
-&amp;= \frac{1}{n} \sum_{i=1}^n \boldsymbol{\phi}(\boldsymbol{x}_i )  \boldsymbol{\phi}(\boldsymbol{x}_i ) ^\top \left( \sum_{\ell=1}^n \alpha_{j\ell} \boldsymbol{\phi}(\boldsymbol{x}_i)  \right) \\
-&amp;= \frac{1}{n} \sum_{i=1}^n \boldsymbol{\phi}(\boldsymbol{x}_i ) \left( \sum_{\ell=1}^n \alpha_{j\ell} k(\boldsymbol{x}_{i} , \boldsymbol{x} _\ell)  \right) \\
+&amp;= \boldsymbol{C} \boldsymbol{w} \
+&amp;= \frac{1}{n} \sum_{i=1}^n \boldsymbol{\phi}(\boldsymbol{x}<em>i )  \boldsymbol{\phi}(\boldsymbol{x}<em>i ) ^\top \boldsymbol{w} \
+&amp;= \frac{1}{n} \sum</em>{i=1}^n \boldsymbol{\phi}(\boldsymbol{x}<em>i )  \boldsymbol{\phi}(\boldsymbol{x}<em>i ) ^\top \left( \sum</em>{\ell=1}^n \alpha</em>{j\ell} \boldsymbol{\phi}(\boldsymbol{x}<em>i)  \right) \
+&amp;= \frac{1}{n} \sum</em>{i=1}^n \boldsymbol{\phi}(\boldsymbol{x}<em>i ) \left( \sum</em>{\ell=1}^n \alpha</em>{j\ell} k(\boldsymbol{x}<em>{i} , \boldsymbol{x} <em>\ell)  \right) \
 RHS
-&amp;= \lambda_j \sum_{i=1}^n \alpha_{ji} \boldsymbol{\phi}(\boldsymbol{x}_i)
-\end{aligned}\end{split}\]</div>
+&amp;= \lambda_j \sum</em>{i=1}^n \alpha</em>{ji} \boldsymbol{\phi}(\boldsymbol{x}_i)
+\end{aligned}$$</p>
 <div class="margin sidebar">
 <p class="sidebar-title"></p>
 <p>For kernelized problems, the original problem formulation (primal) is in the original feature space, and the kernelized problem formulation (dual) is in the transformed space.</p>
 </div>
 <p>and finally</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 \boldsymbol{K} \boldsymbol{\alpha} _j= n \lambda_j \boldsymbol{\alpha} _j
-\]</div>
-<p>where <span class="math notranslate nohighlight">\(\boldsymbol{K} = \boldsymbol{\Phi}  \boldsymbol{\Phi}  ^\top\)</span>. So now our task changes to solve an eigenproblem of the above equation. The normalization constraint <span class="math notranslate nohighlight">\(\boldsymbol{w} _j ^\top \boldsymbol{w} _j = 1\)</span> in the original problem <span class="math notranslate nohighlight">\(\boldsymbol{C} \boldsymbol{w}_j = \lambda_j \boldsymbol{w}\)</span> becomes</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{aligned}
-&amp;&amp; \boldsymbol{w} _j ^\top \boldsymbol{w} _j &amp;= 1 \\
-&amp;\Rightarrow&amp; \sum_{k=1}^n \sum_{\ell=1}^n \alpha_{j\ell} \alpha_{jk} \boldsymbol{\phi}(\boldsymbol{x} _{\ell})^\top \boldsymbol{\phi}(\boldsymbol{x} _k)  &amp;=1 \\
-&amp;\Rightarrow&amp; \boldsymbol{\alpha} _j ^\top \boldsymbol{K} \boldsymbol{\alpha} _j &amp;= 1 \\
-\end{aligned}\end{split}\]</div>
-<p>To project a new data point <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span>, we project its feature vector onto each eigenvector (like <span class="math notranslate nohighlight">\(\boldsymbol{z} = \boldsymbol{U} ^\top \boldsymbol{x}\)</span> in standard PCA) using the kernel value with each of the <span class="math notranslate nohighlight">\(n\)</span> data points</p>
-<div class="math notranslate nohighlight">
-\[
-z_j = \boldsymbol{w}_j ^\top  \boldsymbol{\phi}(\boldsymbol{x} ) = \sum_{i=1}^n \alpha_{ji} \boldsymbol{\phi}(\boldsymbol{x}_i) ^\top \boldsymbol{\phi} (\boldsymbol{x} ) = \sum_{i=1}^n \alpha_{ji} k(\boldsymbol{x}_i ,\boldsymbol{x})
-\]</div>
-<p>which allows the kernel version of the formulation (dual) and then project a new observation <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> not in the training set, without writing out the feature vector <span class="math notranslate nohighlight">\(\boldsymbol{\phi}(\boldsymbol{x})\)</span>.</p>
+$$</p>
+<p>where $\boldsymbol{K} = \boldsymbol{\Phi}  \boldsymbol{\Phi}  ^\top$. So now our task changes to solve an eigenproblem of the above equation. The normalization constraint $\boldsymbol{w} _j ^\top \boldsymbol{w} _j = 1$ in the original problem $\boldsymbol{C} \boldsymbol{w}_j = \lambda_j \boldsymbol{w}$ becomes</p>
+<p>$$\begin{aligned}
+&amp;&amp; \boldsymbol{w} <em>j ^\top \boldsymbol{w} <em>j &amp;= 1 \
+&amp;\Rightarrow&amp; \sum</em>{k=1}^n \sum</em>{\ell=1}^n \alpha_{j\ell} \alpha_{jk} \boldsymbol{\phi}(\boldsymbol{x} _{\ell})^\top \boldsymbol{\phi}(\boldsymbol{x} _k)  &amp;=1 \
+&amp;\Rightarrow&amp; \boldsymbol{\alpha} _j ^\top \boldsymbol{K} \boldsymbol{\alpha} _j &amp;= 1 \
+\end{aligned}$$</p>
+<p>To project a new data point $\boldsymbol{x}$, we project its feature vector onto each eigenvector (like $\boldsymbol{z} = \boldsymbol{U} ^\top \boldsymbol{x}$ in standard PCA) using the kernel value with each of the $n$ data points</p>
+<p>$$
+z_j = \boldsymbol{w}<em>j ^\top  \boldsymbol{\phi}(\boldsymbol{x} ) = \sum</em>{i=1}^n \alpha_{ji} \boldsymbol{\phi}(\boldsymbol{x}<em>i) ^\top \boldsymbol{\phi} (\boldsymbol{x} ) = \sum</em>{i=1}^n \alpha_{ji} k(\boldsymbol{x}_i ,\boldsymbol{x})
+$$</p>
+<p>which allows the kernel version of the formulation (dual) and then project a new observation $\boldsymbol{x}$ not in the training set, without writing out the feature vector $\boldsymbol{\phi}(\boldsymbol{x})$.</p>
 </div>
 </div>
 
@@ -866,7 +852,7 @@ z_j = \boldsymbol{w}_j ^\top  \boldsymbol{\phi}(\boldsymbol{x} ) = \sum_{i=1}^n 
     <div class='prev-next-bottom'>
         
     <a class='left-prev' id="prev-link" href="23-graph-based-spectral-methods.html" title="previous page">Graph-based Spectral Methods</a>
-    <a class='right-next' id="next-link" href="31-t-SNE.html" title="next page">SNE and <span class="math notranslate nohighlight">\(t\)</span>-SNE</a>
+    <a class='right-next' id="next-link" href="31-t-SNE.html" title="next page">SNE and $t$-SNE</a>
 
     </div>
     <footer class="footer mt-5 mt-md-0">

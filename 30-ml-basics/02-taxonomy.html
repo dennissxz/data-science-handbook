@@ -46,8 +46,6 @@
     <script src="../_static/copybutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="../_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
     <script >
         const thebe_selector = ".thebe"
@@ -355,6 +353,11 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/31-knapsack.html">
+     Minimum Knapsack
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="../23-dynamic-programming/51-chain-matrix-multiplication.html">
      Chain Matrix Multiplication
     </a>
@@ -488,11 +491,7 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../33-dimensionality-reduction/31-t-SNE.html">
-     SNE and
-     <span class="math notranslate nohighlight">
-      \(t\)
-     </span>
-     -SNE
+     SNE and $t$-SNE
     </a>
    </li>
   </ul>
@@ -699,52 +698,56 @@
 <p>The easiest way to create a taxonomy is to look at the input and the objective of the learning tasks.</p>
 <div class="section" id="supervised-learning">
 <h3>Supervised Learning<a class="headerlink" href="#supervised-learning" title="Permalink to this headline">¶</a></h3>
-<p>In supervised learning, the input data set is <span class="math notranslate nohighlight">\(\mathcal{D} = \left\{ \left(\boldsymbol{x} _i, y_i  \right)  \right\}_{i=1}^n\)</span>, where <span class="math notranslate nohighlight">\(\boldsymbol{x_i}\)</span> is called features, and attributes or covariates <span class="math notranslate nohighlight">\(y_i\)</span> is called labels. The objective is to predict <span class="math notranslate nohighlight">\(y_i\)</span> by learning the relation between <span class="math notranslate nohighlight">\(\boldsymbol{x}_i\)</span> and <span class="math notranslate nohighlight">\(y_i\)</span>, or we say it aims to build a mapping from feature space <span class="math notranslate nohighlight">\(\mathcal{X}\)</span> to label space <span class="math notranslate nohighlight">\(\mathcal{Y}\)</span>, given training set <span class="math notranslate nohighlight">\(\mathcal{D} = \left\{ (\boldsymbol{x}_i , y_i) \right\}\)</span> with <span class="math notranslate nohighlight">\(\boldsymbol{x}_i \in \mathcal{X} , y_i \in \mathcal{Y}\)</span>.</p>
-<p>When <span class="math notranslate nohighlight">\(y_i\)</span> is a real value variable, i.e., <span class="math notranslate nohighlight">\(\mathcal{Y} = \boldsymbol{\mathbb{R}}\)</span> the learning tasks are called <strong>regression</strong>. When <span class="math notranslate nohighlight">\(y_i\)</span> is categorical, i.e., <span class="math notranslate nohighlight">\(\mathcal{Y} = \left\{ 1, \ldots, C \right\}\)</span>, the learning tasks are called <strong>classification</strong>.</p>
-<p>A model uses a function <span class="math notranslate nohighlight">\(f(\boldsymbol{x} ; \boldsymbol{\theta})\)</span> parameterized by <span class="math notranslate nohighlight">\(\boldsymbol{\theta}\)</span> to predict <span class="math notranslate nohighlight">\(\hat{y}\)</span>. In regression, this function returns the predicted value of <span class="math notranslate nohighlight">\(y\)</span>; in classification, it returns the per-class score <span class="math notranslate nohighlight">\(f_{y=c}(\boldsymbol{x}; \boldsymbol{\theta})\)</span> for each class <span class="math notranslate nohighlight">\(c\)</span>, and make prediction by choosing the class with the highest score.</p>
-<p>Learning</p>
-<p>: There is a loss function <span class="math notranslate nohighlight">\(\ell\)</span> penalizing for predicting <span class="math notranslate nohighlight">\(\hat{y}\)</span> when eh ground truth is <span class="math notranslate nohighlight">\(y\)</span>. Learning is basically minimizing the <strong>empirical loss</strong></p>
-<div class="math notranslate nohighlight">
-\[
-  \boldsymbol{\theta}^{*}=\underset{\boldsymbol{\theta}}{\operatorname{argmin}} \frac{1}{N}  \sum_{i} \ell\left(f\left(\boldsymbol{x}_i ; \boldsymbol{\theta}\right), y_{i}\right)
-  \]</div>
+<p>In supervised learning, the input data set is $\mathcal{D} = \left{ \left(\boldsymbol{x} <em>i, y_i  \right)  \right}</em>{i=1}^n$, where $\boldsymbol{x_i}$ is called features, and attributes or covariates $y_i$ is called labels. The objective is to predict $y_i$ by learning the relation between $\boldsymbol{x}_i$ and $y_i$, or we say it aims to build a mapping from feature space $\mathcal{X}$ to label space $\mathcal{Y}$, given training set $\mathcal{D} = \left{ (\boldsymbol{x}_i , y_i) \right}$ with $\boldsymbol{x}_i \in \mathcal{X} , y_i \in \mathcal{Y}$.</p>
+<p>When $y_i$ is a real value variable, i.e., $\mathcal{Y} = \boldsymbol{\mathbb{R}}$ the learning tasks are called <strong>regression</strong>. When $y_i$ is categorical, i.e., $\mathcal{Y} = \left{ 1, \ldots, C \right}$, the learning tasks are called <strong>classification</strong>.</p>
+<p>A model uses a function $f(\boldsymbol{x} ; \boldsymbol{\theta})$ parameterized by $\boldsymbol{\theta}$ to predict $\hat{y}$. In regression, this function returns the predicted value of $y$; in classification, it returns the per-class score $f_{y=c}(\boldsymbol{x}; \boldsymbol{\theta})$ for each class $c$, and make prediction by choosing the class with the highest score.</p>
+<dl class="simple myst">
+<dt>Learning</dt><dd><p>There is a loss function $\ell$ penalizing for predicting $\hat{y}$ when eh ground truth is $y$. Learning is basically minimizing the <strong>empirical loss</strong></p>
+<p>$$
+\boldsymbol{\theta}^{*}=\underset{\boldsymbol{\theta}}{\operatorname{argmin}} \frac{1}{N}  \sum_{i} \ell\left(f\left(\boldsymbol{x}<em>i ; \boldsymbol{\theta}\right), y</em>{i}\right)
+$$</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <ul class="simple">
-<li><p>The coefficient <span class="math notranslate nohighlight">\(\frac{1}{N}\)</span> is often omitted since it is a constant term and does not affect the optimization process.</p></li>
-<li><p>The loss function <span class="math notranslate nohighlight">\(\ell\)</span> is usually related to the specific task, but often is not exactly the same as the task loss (e.g., error rate, F1 score, etc.).</p></li>
+<li><p>The coefficient $\frac{1}{N}$ is often omitted since it is a constant term and does not affect the optimization process.</p></li>
+<li><p>The loss function $\ell$ is usually related to the specific task, but often is not exactly the same as the task loss (e.g., error rate, F1 score, etc.).</p></li>
 </ul>
 </div>
-<p>Assumptions
-: - observations <span class="math notranslate nohighlight">\((\boldsymbol{x}_i ,y_i)\)</span> are drawn i.i.d. from a joint probability distribution <span class="math notranslate nohighlight">\(p(\boldsymbol{x} ,y)\)</span>
-: - the joint distributions are the same in both training and test data.</p>
+</dd>
+<dt>Assumptions</dt><dd><ul class="simple">
+<li><p>observations $(\boldsymbol{x}_i ,y_i)$ are drawn i.i.d. from a joint probability distribution $p(\boldsymbol{x} ,y)$</p></li>
+</ul>
+</dd>
+<dd><ul class="simple">
+<li><p>the joint distributions are the same in both training and test data.</p></li>
+</ul>
+</dd>
+</dl>
 <p>The ultimate goal is to minimize the <strong>expected loss</strong>, aka. <strong>risk</strong>.</p>
-<div class="math notranslate nohighlight">
-\[
-\operatorname{E}_{(\boldsymbol{x} , y) \sim p(\boldsymbol{x} ,y)}\left[\ell \left(f \left( \boldsymbol{x}_i ; \boldsymbol{\theta}\right), y_{i} \right)\right]
-\]</div>
-<p>When the training set <span class="math notranslate nohighlight">\(\mathcal{D}\)</span> is a good representatie of the underlying distribution <span class="math notranslate nohighlight">\(p(\boldsymbol{x} , y)\)</span>, the empirical loss serves as a proxy for the risk.</p>
+<p>$$
+\operatorname{E}_{(\boldsymbol{x} , y) \sim p(\boldsymbol{x} ,y)}\left[\ell \left(f \left( \boldsymbol{x}<em>i ; \boldsymbol{\theta}\right), y</em>{i} \right)\right]
+$$</p>
+<p>When the training set $\mathcal{D}$ is a good representatie of the underlying distribution $p(\boldsymbol{x} , y)$, the empirical loss serves as a proxy for the risk.</p>
 </div>
 <div class="section" id="discriminative-vs-generative">
 <h3>Discriminative vs Generative<a class="headerlink" href="#discriminative-vs-generative" title="Permalink to this headline">¶</a></h3>
 <p>Models for <strong>classification</strong> can be divided into two types.</p>
 <ul class="simple">
-<li><p>generative: typically fit <strong>per-class density</strong> <span class="math notranslate nohighlight">\(p(\boldsymbol{x} \mid y)\)</span> and <strong>class prior</strong> <span class="math notranslate nohighlight">\(p(y)\)</span> to estimate the actual density or distribution <span class="math notranslate nohighlight">\(p(y, \boldsymbol{x} ; \boldsymbol{\theta} )\)</span> by</p></li>
+<li><p>generative: typically fit <strong>per-class density</strong> $p(\boldsymbol{x} \mid y)$ and <strong>class prior</strong> $p(y)$ to estimate the actual density or distribution $p(y, \boldsymbol{x} ; \boldsymbol{\theta} )$ by</p></li>
 </ul>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 p(y \mid \boldsymbol{x} ; \boldsymbol{\theta}) = \frac{p( \boldsymbol{x} ; \boldsymbol{\theta})}{p(\boldsymbol{x})}  \propto p(y, \boldsymbol{x} ; \boldsymbol{\theta} )
-\]</div>
+$$</p>
 <ul class="simple">
 <li><p>discriminative</p>
 <ul>
-<li><p>probabilistic: directly estimate the conditional probability <span class="math notranslate nohighlight">\(p(y \mid \boldsymbol{x} ; \boldsymbol{\theta} )\)</span></p></li>
-<li><p>non-probabilistic: directly optimize loss of <span class="math notranslate nohighlight">\(f(\boldsymbol{x}  ; \boldsymbol{\theta})\)</span></p></li>
+<li><p>probabilistic: directly estimate the conditional probability $p(y \mid \boldsymbol{x} ; \boldsymbol{\theta} )$</p></li>
+<li><p>non-probabilistic: directly optimize loss of $f(\boldsymbol{x}  ; \boldsymbol{\theta})$</p></li>
 </ul>
 </li>
 </ul>
-<p>When to use which? If <span class="math notranslate nohighlight">\(\operatorname{dim}(\boldsymbol{x})\)</span> is large but only a few <span class="math notranslate nohighlight">\(X_i\)</span>’s in <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> are helpful to discriminate <span class="math notranslate nohighlight">\(y\)</span>, then modeling <span class="math notranslate nohighlight">\(p(\boldsymbol{x} \mid y)\)</span> or <span class="math notranslate nohighlight">\(p(\boldsymbol{x})\)</span> may be computationally intractable and unnecessary. It’s better to directly estiamte <span class="math notranslate nohighlight">\(p(y\mid \boldsymbol{x} l \boldsymbol{\theta})\)</span></p>
-<p>On the other hand, if <span class="math notranslate nohighlight">\(p(y\mid \boldsymbol{x} ; \boldsymbol{\theta} )\)</span> is hard to estimate while <span class="math notranslate nohighlight">\(p(\boldsymbol{x} \mid y)\)</span> is easy to estimate (e.g. Gaussian), then we prefer generative models.</p>
+<p>When to use which? If $\operatorname{dim}(\boldsymbol{x})$ is large but only a few $X_i$’s in $\boldsymbol{x}$ are helpful to discriminate $y$, then modeling $p(\boldsymbol{x} \mid y)$ or $p(\boldsymbol{x})$ may be computationally intractable and unnecessary. It’s better to directly estiamte $p(y\mid \boldsymbol{x} l \boldsymbol{\theta})$</p>
+<p>On the other hand, if $p(y\mid \boldsymbol{x} ; \boldsymbol{\theta} )$ is hard to estimate while $p(\boldsymbol{x} \mid y)$ is easy to estimate (e.g. Gaussian), then we prefer generative models.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Generative classification models can be seen as unsupervised learning (density estimation) in the service of a supervised objective.</p>
@@ -752,17 +755,16 @@ p(y \mid \boldsymbol{x} ; \boldsymbol{\theta}) = \frac{p( \boldsymbol{x} ; \bold
 </div>
 <div class="section" id="unsupervised-learning">
 <h3>Unsupervised Learning<a class="headerlink" href="#unsupervised-learning" title="Permalink to this headline">¶</a></h3>
-<p>: In unsupervised learning, the input data set is <span class="math notranslate nohighlight">\(\mathcal{D} = \left\{ \boldsymbol{x} _i  \right\}_{i=1}^n\)</span>, i.e., no labels. The objective is to find interesting patterns in the data, aka knowledge discovery. There could be many tasks depending on what the patterns we are interested in. The two most common tasks are clustering and dimensionality reduction.</p>
-<p>Let the objective function to be <span class="math notranslate nohighlight">\(J(\mathcal{D}; \boldsymbol{\theta})\)</span>. We can also add a regularizer term such that the optimization becomes</p>
-<div class="math notranslate nohighlight">
-\[
-\min \left\{ J(\mathcal{D} ; \boldsymbol{\theta} ) + \lambda R(\boldsymbol{\theta} ) \right\}
-\]</div>
+<p>: In unsupervised learning, the input data set is $\mathcal{D} = \left{ \boldsymbol{x} <em>i  \right}</em>{i=1}^n$, i.e., no labels. The objective is to find interesting patterns in the data, aka knowledge discovery. There could be many tasks depending on what the patterns we are interested in. The two most common tasks are clustering and dimensionality reduction.</p>
+<p>Let the objective function to be $J(\mathcal{D}; \boldsymbol{\theta})$. We can also add a regularizer term such that the optimization becomes</p>
+<p>$$
+\min \left{ J(\mathcal{D} ; \boldsymbol{\theta} ) + \lambda R(\boldsymbol{\theta} ) \right}
+$$</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The function <span class="math notranslate nohighlight">\(J\)</span> may or may not decompose over observations <span class="math notranslate nohighlight">\(\boldsymbol{x}_i \)</span>. If yes then we can write <span class="math notranslate nohighlight">\(\sum _i J(\boldsymbol{x}_i ; \boldsymbol{\theta} )\)</span>.</p>
+<p>The function $J$ may or may not decompose over observations $\boldsymbol{x}_i $. If yes then we can write $\sum _i J(\boldsymbol{x}_i ; \boldsymbol{\theta} )$.</p>
 </div>
-<p>What is <span class="math notranslate nohighlight">\(J\)</span>? It depends on the pattern we are interested to find.</p>
+<p>What is $J$? It depends on the pattern we are interested to find.</p>
 <p>The four tasks mentioned above are summarized below.</p>
 <table class="colwidths-auto table">
 <thead>
@@ -774,22 +776,22 @@ p(y \mid \boldsymbol{x} ; \boldsymbol{\theta}) = \frac{p( \boldsymbol{x} ; \bold
 </thead>
 <tbody>
 <tr class="row-even"><td><p>Regression</p></td>
-<td><p><span class="math notranslate nohighlight">\(\mathcal{D} = \left\{ \left(\boldsymbol{x} _i, y_i  \right)  \right\}_{i=1}^N\)</span> where <span class="math notranslate nohighlight">\(y_i\in \mathbb{R}\)</span></p></td>
-<td><p>given a new <span class="math notranslate nohighlight">\(\boldsymbol{x}_i\)</span>, predict  <span class="math notranslate nohighlight">\(\hat y_i\)</span></p></td>
+<td><p>$\mathcal{D} = \left{ \left(\boldsymbol{x} <em>i, y_i  \right)  \right}</em>{i=1}^N$ where $y_i\in \mathbb{R}$</p></td>
+<td><p>given a new $\boldsymbol{x}_i$, predict  $\hat y_i$</p></td>
 <td><p>predict home price</p></td>
 </tr>
 <tr class="row-odd"><td><p>Classification</p></td>
-<td><p><span class="math notranslate nohighlight">\(\mathcal{D} = \left\{ \left(\boldsymbol{x} _i, y_i  \right)  \right\}_{i=1}^N\)</span>, where <span class="math notranslate nohighlight">\(y_i\)</span> is categorical</p></td>
-<td><p>given a new <span class="math notranslate nohighlight">\(\boldsymbol{x_i}\)</span>, predict <span class="math notranslate nohighlight">\(\hat{y_i}\)</span></p></td>
+<td><p>$\mathcal{D} = \left{ \left(\boldsymbol{x} <em>i, y_i  \right)  \right}</em>{i=1}^N$, where $y_i$ is categorical</p></td>
+<td><p>given a new $\boldsymbol{x_i}$, predict $\hat{y_i}$</p></td>
 <td><p>predict disease</p></td>
 </tr>
 <tr class="row-even"><td><p>Clustering</p></td>
-<td><p><span class="math notranslate nohighlight">\(\mathcal{D} = \left\{ \boldsymbol{x} _i  \right\}_{i=1}^N\)</span>, no labels</p></td>
-<td><p>estimate the number of clusters <span class="math notranslate nohighlight">\(C\)</span> and determine which cluster each observation <span class="math notranslate nohighlight">\(i\)</span> belongs to</p></td>
+<td><p>$\mathcal{D} = \left{ \boldsymbol{x} <em>i  \right}</em>{i=1}^N$, no labels</p></td>
+<td><p>estimate the number of clusters $C$ and determine which cluster each observation $i$ belongs to</p></td>
 <td><p>cluster users into groups</p></td>
 </tr>
 <tr class="row-odd"><td><p>Dimensionality reduction <br>  (representation learning)</p></td>
-<td><p><span class="math notranslate nohighlight">\(\mathcal{D} = \left\{ \boldsymbol{x} _i  \right\}_{i=1}^N\)</span>, no labels</p></td>
+<td><p>$\mathcal{D} = \left{ \boldsymbol{x} <em>i  \right}</em>{i=1}^N$, no labels</p></td>
 <td><p>reduce the dimensionality by projecting the data to a lower dimensional subspace which captures the <strong>essence</strong> of the data</p></td>
 <td><p>compression, visualization, downstream learning tasks</p></td>
 </tr>
@@ -804,7 +806,7 @@ p(y \mid \boldsymbol{x} ; \boldsymbol{\theta}) = \frac{p( \boldsymbol{x} ; \bold
 </div>
 <div class="section" id="semi-supervised-learning">
 <h3>Semi-supervised Learning<a class="headerlink" href="#semi-supervised-learning" title="Permalink to this headline">¶</a></h3>
-<p>Besides, there are also** semi-supervised learning** tasks, where there are lots of unlabeled data <span class="math notranslate nohighlight">\(\boldsymbol{X} _U\)</span> and a little labeled data <span class="math notranslate nohighlight">\(\boldsymbol{X}_L\)</span>. The objective is to learn representation from unlabeled data and use the learned representation to improve performance of supervised learner on labeled data.</p>
+<p>Besides, there are also** semi-supervised learning** tasks, where there are lots of unlabeled data $\boldsymbol{X} _U$ and a little labeled data $\boldsymbol{X}_L$. The objective is to learn representation from unlabeled data and use the learned representation to improve performance of supervised learner on labeled data.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <ul class="simple">
@@ -817,18 +819,20 @@ p(y \mid \boldsymbol{x} ; \boldsymbol{\theta}) = \frac{p( \boldsymbol{x} ; \bold
 <div class="section" id="parametric-vs-non-parametric">
 <h2>Parametric vs Non-parametric<a class="headerlink" href="#parametric-vs-non-parametric" title="Permalink to this headline">¶</a></h2>
 <p>Whether there is a fixed number of parameters in the model can be another criteria to create a taxonomy.</p>
-<p>Parametric
-: Parametric models have a fixed number of parameters</p>
+<dl class="simple myst">
+<dt>Parametric</dt><dd><p>Parametric models have a fixed number of parameters</p>
 <ul class="simple">
 <li><p>pros: faster to use</p></li>
 <li><p>cons: stronger assumptions</p></li>
 </ul>
-<p>Non-parametric
-: In non-parametric models, the number of parameters grow with the amount of training data.</p>
+</dd>
+<dt>Non-parametric</dt><dd><p>In non-parametric models, the number of parameters grow with the amount of training data.</p>
 <ul class="simple">
 <li><p>pros: flexible, no or few assumptions</p></li>
 <li><p>cons: computationally intractable for large datasets</p></li>
 </ul>
+</dd>
+</dl>
 <p>Table 8.1 in the book <em>Machine Learning: a Probablistic Perspective</em> summarized the models as below.</p>
 <table class="colwidths-auto table">
 <thead>
@@ -879,7 +883,7 @@ p(y \mid \boldsymbol{x} ; \boldsymbol{\theta}) = \frac{p( \boldsymbol{x} ; \bold
 <td><p>Discrim</p></td>
 <td><p>Param</p></td>
 </tr>
-<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(K\)</span> nearest neighbor classifier</p></td>
+<tr class="row-even"><td><p>$K$ nearest neighbor classifier</p></td>
 <td><p>Classif</p></td>
 <td><p>Gen</p></td>
 <td><p>Non</p></td>

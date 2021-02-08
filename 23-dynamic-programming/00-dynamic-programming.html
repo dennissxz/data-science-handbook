@@ -46,8 +46,6 @@
     <script src="../_static/copybutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="../_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
     <script >
         const thebe_selector = ".thebe"
@@ -355,6 +353,11 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="31-knapsack.html">
+     Minimum Knapsack
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="51-chain-matrix-multiplication.html">
      Chain Matrix Multiplication
     </a>
@@ -488,11 +491,7 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../33-dimensionality-reduction/31-t-SNE.html">
-     SNE and
-     <span class="math notranslate nohighlight">
-      \(t\)
-     </span>
-     -SNE
+     SNE and $t$-SNE
     </a>
    </li>
   </ul>
@@ -702,6 +701,11 @@
    Complexity
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#exercise">
+   Exercise
+  </a>
+ </li>
 </ul>
 
         </nav>
@@ -725,40 +729,38 @@
 <div class="section" id="fibonacci-example">
 <h2>Fibonacci Example<a class="headerlink" href="#fibonacci-example" title="Permalink to this headline">¶</a></h2>
 <p>We take Fibonacci numbers as an example, and compare three methods.</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{align}
-F(1) &amp;= 1\\
-F(2) &amp;= 1 \\
+<p>$$\begin{align}
+F(1) &amp;= 1\
+F(2) &amp;= 1 \
 F(i) &amp;= F(i-1) + F(i-2) \quad \text{for} \ i &gt; 2
-\end{align}\end{split}\]</div>
+\end{align}$$</p>
 <div class="section" id="recursive">
 <h3>Recursive<a class="headerlink" href="#recursive" title="Permalink to this headline">¶</a></h3>
-<p>For the function <span class="math notranslate nohighlight">\(Fib(n)\)</span></p>
-<p>If <span class="math notranslate nohighlight">\(n=1\)</span> or <span class="math notranslate nohighlight">\(n=2\)</span>, return <span class="math notranslate nohighlight">\(1\)</span></p>
-<p>Otherwise, return <span class="math notranslate nohighlight">\(Fib(n-1) + Fib(n-2)\)</span></p>
+<p>For the function $Fib(n)$</p>
+<p>If $n=1$ or $n=2$, return $1$</p>
+<p>Otherwise, return $Fib(n-1) + Fib(n-2)$</p>
 <p><strong>Running time</strong></p>
-<p>Let <span class="math notranslate nohighlight">\(N(i)\)</span> be the number of function evaluations of <span class="math notranslate nohighlight">\(Fib(i)\)</span> when we call <span class="math notranslate nohighlight">\(F(n)\)</span>.</p>
-<p><span class="math notranslate nohighlight">\(N(n)=1, N(n-2)=1, N(n-2)=2, N(i) = N(i+1) + N(i+2)\)</span></p>
-<p>It’s a Fibonacci sequence again. So the running time is at least <span class="math notranslate nohighlight">\(O(F(n))\)</span>.</p>
-<p>Since <span class="math notranslate nohighlight">\(F(i) \ge 2F(i-2)\)</span>, we get <span class="math notranslate nohighlight">\(F(n) \ge 2^ {\Omega(n)}\)</span>, i.e. exponential running time.</p>
+<p>Let $N(i)$ be the number of function evaluations of $Fib(i)$ when we call $F(n)$.</p>
+<p>$N(n)=1, N(n-2)=1, N(n-2)=2, N(i) = N(i+1) + N(i+2)$</p>
+<p>It’s a Fibonacci sequence again. So the running time is at least $O(F(n))$.</p>
+<p>Since $F(i) \ge 2F(i-2)$, we get $F(n) \ge 2^ {\Omega(n)}$, i.e. exponential running time.</p>
 </div>
 <div class="section" id="memoization">
 <h3>Memoization<a class="headerlink" href="#memoization" title="Permalink to this headline">¶</a></h3>
 <p>Memoization means we record the results and use it, so that we don’t need to re-evaluate it again when it is needed.</p>
-<p>In this case, for any <span class="math notranslate nohighlight">\(i\)</span>, after <span class="math notranslate nohighlight">\(Fib(i)\)</span> is called for the first time, we record the result. In each subsequent call, return its recorded result.</p>
-<p>As a result, <span class="math notranslate nohighlight">\(Fib(i)\)</span> is evaluated only <span class="math notranslate nohighlight">\(O(1)\)</span> time when we call <span class="math notranslate nohighlight">\(Fib(n)\)</span>. The running time for the memoization approach is <span class="math notranslate nohighlight">\(O(n)\)</span>.</p>
+<p>In this case, for any $i$, after $Fib(i)$ is called for the first time, we record the result. In each subsequent call, return its recorded result.</p>
+<p>As a result, $Fib(i)$ is evaluated only $O(1)$ time when we call $Fib(n)$. The running time for the memoization approach is $O(n)$.</p>
 </div>
 <div class="section" id="dynamic-programing">
 <h3>Dynamic Programing<a class="headerlink" href="#dynamic-programing" title="Permalink to this headline">¶</a></h3>
-<p>In DP, there is a DP table <span class="math notranslate nohighlight">\(T\)</span> that stores the computed value to avoid re-evaluation.</p>
+<p>In DP, there is a DP table $T$ that stores the computed value to avoid re-evaluation.</p>
 <p>It is <strong>iterative</strong> (use stored results), not <strong>recursive</strong> (call itself).</p>
-<p>In the Fibonacci case, the table has only one row (column) <span class="math notranslate nohighlight">\(T(i)\)</span>.</p>
-<p>It’s known that <span class="math notranslate nohighlight">\(T(1) = T(2) = 1\)</span>. Then for <span class="math notranslate nohighlight">\(i=3\)</span> to <span class="math notranslate nohighlight">\(n\)</span>, compute</p>
-<div class="math notranslate nohighlight">
-\[
+<p>In the Fibonacci case, the table has only one row (column) $T(i)$.</p>
+<p>It’s known that $T(1) = T(2) = 1$. Then for $i=3$ to $n$, compute</p>
+<p>$$
 T(i) = T(i-1) + T(i-2)
-\]</div>
-<p>with <span class="math notranslate nohighlight">\(T(1) = T(2) = 1\)</span>.</p>
+$$</p>
+<p>with $T(1) = T(2) = 1$.</p>
 <p>diff with memoization??</p>
 </div>
 </div>
@@ -776,16 +778,16 @@ T(i) = T(i-1) + T(i-2)
 </ul>
 <p>:::{admonition,tip} Tip</p>
 <ol>
-<li><p>Usually, for an input of a 1-d array <span class="math notranslate nohighlight">\(A_{1:n}\)</span>, the input to subproblem can be</p>
+<li><p>Usually, for an input of a 1-d array $A_{1:n}$, the input to subproblem can be</p>
 <ul class="simple">
-<li><p>a subarray from the beginning to entry <span class="math notranslate nohighlight">\(j&lt;n\)</span>, <span class="math notranslate nohighlight">\(A_{1:j}\)</span></p></li>
-<li><p>a subarray from entry <span class="math notranslate nohighlight">\(i\ge 1\)</span> to entry <span class="math notranslate nohighlight">\(j&lt;n\)</span>, <span class="math notranslate nohighlight">\(A_{i:j}\)</span></p></li>
+<li><p>a subarray from the beginning to entry $j&lt;n$, $A_{1:j}$</p></li>
+<li><p>a subarray from entry $i\ge 1$ to entry $j&lt;n$, $A_{i:j}$</p></li>
 </ul>
 </li>
 <li><p>For an input that is a tree, the sub-input can be a subtree.</p>
-<p>For instance, if the input to the original problem is a tree rooted at note <span class="math notranslate nohighlight">\(r\)</span>, then the input to the subproblem is a tree rooted at node <span class="math notranslate nohighlight">\(u\)</span>, which is a child of <span class="math notranslate nohighlight">\(r\)</span>.</p>
+<p>For instance, if the input to the original problem is a tree rooted at note $r$, then the input to the subproblem is a tree rooted at node $u$, which is a child of $r$.</p>
 </li>
-<li><p>If the input has two parameters <span class="math notranslate nohighlight">\(a,b\)</span>, then the subproblem may also have two parameters <span class="math notranslate nohighlight">\(c,d\)</span> where <span class="math notranslate nohighlight">\(c&lt;a, d&lt;b\)</span>.</p></li>
+<li><p>If the input has two parameters $a,b$, then the subproblem may also have two parameters $c,d$ where $c&lt;a, d&lt;b$.</p></li>
 </ol>
 <p>:::</p>
 </div>
@@ -794,7 +796,7 @@ T(i) = T(i-1) + T(i-2)
 <p>Once we define a subproblem, we can figure out the iterative relation between the optimal solution to the subproblems and that to the original problem.</p>
 <p>Also, we need to define the base cases, which are the smallest/simplest subproblems.</p>
 <p>:::{admonition,tip} Tip</p>
-<p>Usually, if the original problem involves “maximum”, “largest” or “longest”, then the iterative relation involves <span class="math notranslate nohighlight">\(\max\)</span> comparison of value, size, length, etc.</p>
+<p>Usually, if the original problem involves “maximum”, “largest” or “longest”, then the iterative relation involves $\max$ comparison of value, size, length, etc.</p>
 <p>:::</p>
 </div>
 <div class="section" id="computation">
@@ -812,7 +814,7 @@ T(i) = T(i-1) + T(i-2)
 <p>The general structure of a DP algorithm is</p>
 <p>Algorithm</p>
 <ol class="simple">
-<li><p>Define a DP table, <span class="math notranslate nohighlight">\(T_{i,j}\)</span> …</p></li>
+<li><p>Define a DP table, $T_{i,j}$ …</p></li>
 <li><p>Initialize the entries of base cases</p></li>
 <li><p>Compute other entries recursively by the iterative relation</p></li>
 <li><p>Return the required output, an entry in the table</p></li>
@@ -833,11 +835,15 @@ T(i) = T(i-1) + T(i-2)
 <li><p>How many entries in the DP table?</p></li>
 <li><p>In each entry, what’s the complexity to compute the value according to the iterative relation?</p>
 <ul>
-<li><p>Some iterative relation only require a two-value comparison, which is <span class="math notranslate nohighlight">\(O(1)\)</span></p></li>
+<li><p>Some iterative relation only require a two-value comparison, which is $O(1)$</p></li>
 <li><p>Some iterative relation involve comparison over a bunch of values, whose size depends on some input parameter.</p></li>
 </ul>
 </li>
 </ul>
+</div>
+<div class="section" id="exercise">
+<h2>Exercise<a class="headerlink" href="#exercise" title="Permalink to this headline">¶</a></h2>
+<p>https://people.cs.clemson.edu/~bcdean/dp_practice/</p>
 <div class="toctree-wrapper compound">
 </div>
 </div>

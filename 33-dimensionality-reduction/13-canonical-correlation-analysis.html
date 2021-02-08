@@ -46,8 +46,6 @@
     <script src="../_static/copybutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="../_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
     <script >
         const thebe_selector = ".thebe"
@@ -355,6 +353,11 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/31-knapsack.html">
+     Minimum Knapsack
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="../23-dynamic-programming/51-chain-matrix-multiplication.html">
      Chain Matrix Multiplication
     </a>
@@ -488,11 +491,7 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="31-t-SNE.html">
-     SNE and
-     <span class="math notranslate nohighlight">
-      \(t\)
-     </span>
-     -SNE
+     SNE and $t$-SNE
     </a>
    </li>
   </ul>
@@ -719,280 +718,255 @@
 <h1>Canonical Corerlation Analysis<a class="headerlink" href="#canonical-corerlation-analysis" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="objective">
 <h2>Objective<a class="headerlink" href="#objective" title="Permalink to this headline">¶</a></h2>
-<p>Hotelling (1936) extended the idea of multiple correlation to the problem of measuring linear association between two <strong>groups</strong> of variables, say <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{y}\)</span>. Thus we consider the simple correlation coefficient between every pair of <strong>linear combinations</strong> of elements of <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> and of <span class="math notranslate nohighlight">\(\boldsymbol{y}\)</span> and choose the maximum.</p>
-<div class="math notranslate nohighlight">
-\[
-\max _{\boldsymbol{v}, \boldsymbol{w} } \, \operatorname{Corr}\left(\boldsymbol{v}^{\top} \boldsymbol{x} , \boldsymbol{w}^{\top} \boldsymbol{y} \right)
-\]</div>
-<p>This maximum, <span class="math notranslate nohighlight">\(\rho_1\)</span>, is called the first canonical correlation and the corresponding pair of linear combinations, say <span class="math notranslate nohighlight">\((U_1, V_1)\)</span>, is called the first pair of canonical variables.</p>
-<p>Since each group has more than one variable, one single correlation coefficient may miss significant linear association in other dimensions. So we consider the subclass of <strong>all</strong> pairs of linear combinations of elements of <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{y}\)</span> whose members are <strong>uncorrelated</strong> with <span class="math notranslate nohighlight">\((U_1, V_1）\)</span>. The maximum simple correlation coefficient, <span class="math notranslate nohighlight">\(\rho _2\)</span>, of such pairs is called the second canonical correlation and the pair, say <span class="math notranslate nohighlight">\((U_2, V_2)\)</span>, achieving this maximum is called the second pair of canonical variables.</p>
-<p>Continuing this way we shall get the <span class="math notranslate nohighlight">\(k\)</span> canonical correlations and the corresponding pairs of canonical variables, where <span class="math notranslate nohighlight">\(k=\min(d_x, d_y)\)</span> is the smallest dimension of <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{y}\)</span>.</p>
+<p>Hotelling (1936) extended the idea of multiple correlation to the problem of measuring linear association between two <strong>groups</strong> of variables, say $\boldsymbol{x}$ and $\boldsymbol{y}$. Thus we consider the simple correlation coefficient between every pair of <strong>linear combinations</strong> of elements of $\boldsymbol{x}$ and of $\boldsymbol{y}$ and choose the maximum.</p>
+<p>$$
+\max _{\boldsymbol{v}, \boldsymbol{w} } , \operatorname{Corr}\left(\boldsymbol{v}^{\top} \boldsymbol{x} , \boldsymbol{w}^{\top} \boldsymbol{y} \right)
+$$</p>
+<p>This maximum, $\rho_1$, is called the first canonical correlation and the corresponding pair of linear combinations, say $(U_1, V_1)$, is called the first pair of canonical variables.</p>
+<p>Since each group has more than one variable, one single correlation coefficient may miss significant linear association in other dimensions. So we consider the subclass of <strong>all</strong> pairs of linear combinations of elements of $\boldsymbol{x}$ and $\boldsymbol{y}$ whose members are <strong>uncorrelated</strong> with $(U_1, V_1）$. The maximum simple correlation coefficient, $\rho _2$, of such pairs is called the second canonical correlation and the pair, say $(U_2, V_2)$, achieving this maximum is called the second pair of canonical variables.</p>
+<p>Continuing this way we shall get the $k$ canonical correlations and the corresponding pairs of canonical variables, where $k=\min(d_x, d_y)$ is the smallest dimension of $\boldsymbol{x}$ and $\boldsymbol{y}$.</p>
 <p>Alternative formulations include</p>
 <ul>
-<li><p>minimizing the difference between two projected spaces, i.e. we want to predict projected <span class="math notranslate nohighlight">\(\boldsymbol{y}\)</span> by projected <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span>.</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
-    \begin{equation}
-    \begin{array}{ll}
-    \min &amp; \left\| \boldsymbol{X} \boldsymbol{V} - \boldsymbol{Y}\boldsymbol{W} \right\|_{F}^{2} \\
-    \text {s.t.} &amp; \boldsymbol{V} ^\top \boldsymbol{\Sigma} _{xx} \boldsymbol{V} = \boldsymbol{W} ^\top \boldsymbol{\Sigma} _{y y} \boldsymbol{W} = \boldsymbol{I}_k  \\
-    &amp; \boldsymbol{V} \in \mathbb{R} ^{d_x \times k} \quad \boldsymbol{W} \in \mathbb{R} ^{d_y \times k} \\
-    \end{array}
-    \end{equation}
-    \end{split}\]</div>
+<li><p>minimizing the difference between two projected spaces, i.e. we want to predict projected $\boldsymbol{y}$ by projected $\boldsymbol{x}$.</p>
+<p>$$
+\begin{equation}
+\begin{array}{ll}
+\min &amp; \left| \boldsymbol{X} \boldsymbol{V} - \boldsymbol{Y}\boldsymbol{W} \right|_{F}^{2} \
+\text {s.t.} &amp; \boldsymbol{V} ^\top \boldsymbol{\Sigma} _{xx} \boldsymbol{V} = \boldsymbol{W} ^\top \boldsymbol{\Sigma} _{y y} \boldsymbol{W} = \boldsymbol{I}_k  \
+&amp; \boldsymbol{V} \in \mathbb{R} ^{d_x \times k} \quad \boldsymbol{W} \in \mathbb{R} ^{d_y \times k} \
+\end{array}
+\end{equation}
+$$</p>
 </li>
 <li><p>maximizing the trace</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
-    \begin{equation}
-    \begin{array}{ll}
-    \max &amp; \operatorname{tr} \left( \boldsymbol{V} ^\top \boldsymbol{\Sigma} _{x y} \boldsymbol{W}  \right) \\
-    \text {s.t.} &amp; \boldsymbol{V} ^\top \boldsymbol{\Sigma} _{x x} \boldsymbol{V} = \boldsymbol{W} ^\top \boldsymbol{\Sigma} _{y y} \boldsymbol{W} = \boldsymbol{I}_k \\
-    &amp; \boldsymbol{V} \in \mathbb{R} ^{d_x \times k} \quad \boldsymbol{W} \in \mathbb{R} ^{d_y \times k} \\
-    \end{array}
-    \end{equation}
-    \end{split}\]</div>
+<p>$$
+\begin{equation}
+\begin{array}{ll}
+\max &amp; \operatorname{tr} \left( \boldsymbol{V} ^\top \boldsymbol{\Sigma} _{x y} \boldsymbol{W}  \right) \
+\text {s.t.} &amp; \boldsymbol{V} ^\top \boldsymbol{\Sigma} _{x x} \boldsymbol{V} = \boldsymbol{W} ^\top \boldsymbol{\Sigma} _{y y} \boldsymbol{W} = \boldsymbol{I}_k \
+&amp; \boldsymbol{V} \in \mathbb{R} ^{d_x \times k} \quad \boldsymbol{W} \in \mathbb{R} ^{d_y \times k} \
+\end{array}
+\end{equation}
+$$</p>
 </li>
 </ul>
 </div>
 <div class="section" id="learning">
 <h2>Learning<a class="headerlink" href="#learning" title="Permalink to this headline">¶</a></h2>
 <p>Partition the covariance matrix of full rank in accordance with two groups of variables,</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
+<p>$$
 \begin{equation}
 \operatorname{Var}\left(\begin{array}{l}
-\boldsymbol{x}  \\
+\boldsymbol{x}  \
 \boldsymbol{y}
 \end{array}\right)=\left(\begin{array}{ll}
-\boldsymbol{\Sigma}_{xx} &amp; \boldsymbol{\Sigma}_{xy} \\
-\boldsymbol{\Sigma}_{yx} &amp; \boldsymbol{\Sigma}_{yy}
+\boldsymbol{\Sigma}<em>{xx} &amp; \boldsymbol{\Sigma}</em>{xy} \
+\boldsymbol{\Sigma}<em>{yx} &amp; \boldsymbol{\Sigma}</em>{yy}
 \end{array}\right)
 \end{equation}
-\end{split}\]</div>
+$$</p>
 <div class="section" id="sequential-optimization">
 <h3>Sequential Optimization<a class="headerlink" href="#sequential-optimization" title="Permalink to this headline">¶</a></h3>
-<p>The first canonical correlation, <span class="math notranslate nohighlight">\(\rho _1\)</span>, equals the maximum correlation between all pairs of linear combinations of <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{y}\)</span> with unit variance. That is,</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{align}
-\max _{\boldsymbol{v}, \boldsymbol{w} } \operatorname{Corr}\left(\boldsymbol{v}^{\top} \boldsymbol{x} , \boldsymbol{w}^{\top} \boldsymbol{y} \right)
-= \max &amp;  _{\boldsymbol{v}, \boldsymbol{w}}  \frac{\boldsymbol{v}^{\top} \boldsymbol{\Sigma}_{xy} \boldsymbol{w}}{\sqrt{\boldsymbol{v}^{\top} \boldsymbol{\Sigma}_{xx} \boldsymbol{v} \boldsymbol{w}^{\top} \boldsymbol{\Sigma}_{yy} \boldsymbol{w}}} \\
-\text{s.t.}  &amp;  \ \quad \boldsymbol{v} ^\top \boldsymbol{\Sigma} _{11} \boldsymbol{v} =1 \\
-  &amp;  \ \quad \boldsymbol{w} ^\top \boldsymbol{\Sigma} _{22} \boldsymbol{w} =1 \\
-\end{align}\end{split}\]</div>
-<p>If the maximum is achieved at <span class="math notranslate nohighlight">\(\boldsymbol{v} _1\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{w} _1\)</span>, then the first pair of canonical varibales are defined as</p>
-<div class="math notranslate nohighlight">
-\[
-U_{1}=\boldsymbol{v}_{1}^{\top} \boldsymbol{x} , \quad V_{1}=\boldsymbol{w}_{1}^{\top} \boldsymbol{y}
-\]</div>
-<p>Successively, for <span class="math notranslate nohighlight">\(i = 2, \ldots, k\)</span>, the <span class="math notranslate nohighlight">\(i\)</span>-th canonical correlation <span class="math notranslate nohighlight">\(\rho_i\)</span> is defined as</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{align}
+<p>The first canonical correlation, $\rho _1$, equals the maximum correlation between all pairs of linear combinations of $\boldsymbol{x}$ and $\boldsymbol{y}$ with unit variance. That is,</p>
+<p>$$\begin{align}
+\max <em>{\boldsymbol{v}, \boldsymbol{w} } \operatorname{Corr}\left(\boldsymbol{v}^{\top} \boldsymbol{x} , \boldsymbol{w}^{\top} \boldsymbol{y} \right)
+= \max &amp;  <em>{\boldsymbol{v}, \boldsymbol{w}}  \frac{\boldsymbol{v}^{\top} \boldsymbol{\Sigma}</em>{xy} \boldsymbol{w}}{\sqrt{\boldsymbol{v}^{\top} \boldsymbol{\Sigma}</em>{xx} \boldsymbol{v} \boldsymbol{w}^{\top} \boldsymbol{\Sigma}_{yy} \boldsymbol{w}}} \
+\text{s.t.}  &amp;  \ \quad \boldsymbol{v} ^\top \boldsymbol{\Sigma} _{11} \boldsymbol{v} =1 \
+&amp;  \ \quad \boldsymbol{w} ^\top \boldsymbol{\Sigma} _{22} \boldsymbol{w} =1 \
+\end{align}$$</p>
+<p>If the maximum is achieved at $\boldsymbol{v} _1$ and $\boldsymbol{w} _1$, then the first pair of canonical varibales are defined as</p>
+<p>$$
+U_{1}=\boldsymbol{v}<em>{1}^{\top} \boldsymbol{x} , \quad V</em>{1}=\boldsymbol{w}_{1}^{\top} \boldsymbol{y}
+$$</p>
+<p>Successively, for $i = 2, \ldots, k$, the $i$-th canonical correlation $\rho_i$ is defined as</p>
+<p>$$\begin{align}
 \rho_{i}
- =\max _{\boldsymbol{v}, \boldsymbol{w}} &amp; \quad \operatorname{corr}\left(\boldsymbol{v}^{\top} \boldsymbol{x} , \boldsymbol{w}^{\top} \boldsymbol{y} \right) \\
- \text{s.t.} &amp;  \quad (\boldsymbol{v} ^\top \boldsymbol{x} , \boldsymbol{w} ^\top \boldsymbol{y} ) \text{ uncorrelated with } (U_1, V_1), \ldots, (U_{i-1}, V_{i-1}) \\
-\end{align}\end{split}\]</div>
-<p>If the maximum is achived at <span class="math notranslate nohighlight">\(\boldsymbol{v} _i\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{w} _i\)</span>, then the first pair of canonical varibales are defined as</p>
-<div class="math notranslate nohighlight">
-\[
-U_{i}=\boldsymbol{v}_{i}^{\top} \boldsymbol{x}_{i}, \quad V_{i}=\boldsymbol{w}_{i}^{\top} \boldsymbol{y}
-\]</div>
+=\max <em>{\boldsymbol{v}, \boldsymbol{w}} &amp; \quad \operatorname{corr}\left(\boldsymbol{v}^{\top} \boldsymbol{x} , \boldsymbol{w}^{\top} \boldsymbol{y} \right) \
+\text{s.t.} &amp;  \quad (\boldsymbol{v} ^\top \boldsymbol{x} , \boldsymbol{w} ^\top \boldsymbol{y} ) \text{ uncorrelated with } (U_1, V_1), \ldots, (U</em>{i-1}, V_{i-1}) \
+\end{align}$$</p>
+<p>If the maximum is achived at $\boldsymbol{v} _i$ and $\boldsymbol{w} _i$, then the first pair of canonical varibales are defined as</p>
+<p>$$
+U_{i}=\boldsymbol{v}<em>{i}^{\top} \boldsymbol{x}</em>{i}, \quad V_{i}=\boldsymbol{w}_{i}^{\top} \boldsymbol{y}
+$$</p>
 </div>
 <div class="section" id="spectral-decomposition">
 <h3>Spectral Decomposition<a class="headerlink" href="#spectral-decomposition" title="Permalink to this headline">¶</a></h3>
-<p>Rather than obtaining pairs of canonical variables and canonical correlation sequentially, it can be shown that the canonical correlations <span class="math notranslate nohighlight">\(\rho\)</span>’s and hence pairs of canonical variables <span class="math notranslate nohighlight">\((U,V)\)</span>’s can be obtained simultaneously by solving for
-the eigenvalues <span class="math notranslate nohighlight">\(\rho^2\)</span>’s and eigenvectors <span class="math notranslate nohighlight">\(\boldsymbol{v}\)</span>’s of the matrix</p>
-<div class="math notranslate nohighlight">
-\[
-\boldsymbol{\Sigma}_{xx}^{-1} \boldsymbol{\Sigma}_{xy} \boldsymbol{\Sigma}_{yy}^{-1} \boldsymbol{\Sigma}_{yx}
-\]</div>
-<p>A difficulty of this problem is that the matrix <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}_{xx}^{-1} \boldsymbol{\Sigma}_{xy} \boldsymbol{\Sigma}_{yy}^{-1} \boldsymbol{\Sigma}_{yx}\)</span> is not symmetric. Consequently, the symmetric matrix</p>
-<div class="math notranslate nohighlight">
-\[
-\boldsymbol{\Sigma}_{xx}^{-1/2} \boldsymbol{\Sigma}_{xy} \boldsymbol{\Sigma}_{yy}^{-1} \boldsymbol{\Sigma}_{yx} \boldsymbol{\Sigma}_{xx}^{-1/2}
-\]</div>
+<p>Rather than obtaining pairs of canonical variables and canonical correlation sequentially, it can be shown that the canonical correlations $\rho$’s and hence pairs of canonical variables $(U,V)$’s can be obtained simultaneously by solving for
+the eigenvalues $\rho^2$’s and eigenvectors $\boldsymbol{v}$’s of the matrix</p>
+<p>$$
+\boldsymbol{\Sigma}<em>{xx}^{-1} \boldsymbol{\Sigma}</em>{xy} \boldsymbol{\Sigma}<em>{yy}^{-1} \boldsymbol{\Sigma}</em>{yx}
+$$</p>
+<p>A difficulty of this problem is that the matrix $\boldsymbol{\Sigma}<em>{xx}^{-1} \boldsymbol{\Sigma}</em>{xy} \boldsymbol{\Sigma}<em>{yy}^{-1} \boldsymbol{\Sigma}</em>{yx}$ is not symmetric. Consequently, the symmetric matrix</p>
+<p>$$
+\boldsymbol{\Sigma}<em>{xx}^{-1/2} \boldsymbol{\Sigma}</em>{xy} \boldsymbol{\Sigma}<em>{yy}^{-1} \boldsymbol{\Sigma}</em>{yx} \boldsymbol{\Sigma}_{xx}^{-1/2}
+$$</p>
 <p>is considered instead for the computational efficiency. Note that the two matrices possess the <strong>same</strong> eigenvalues and their eigenvectors are linearly related.</p>
-<p>It turns out that the canonical correlation <span class="math notranslate nohighlight">\(\rho_i\)</span> and the canonical variables <span class="math notranslate nohighlight">\((\boldsymbol{v} _i, \boldsymbol{w} _i), i = 1, 2, \ldots, k\)</span> are related to matrix eigen-analysis:</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
+<p>It turns out that the canonical correlation $\rho_i$ and the canonical variables $(\boldsymbol{v} _i, \boldsymbol{w} _i), i = 1, 2, \ldots, k$ are related to matrix eigen-analysis:</p>
+<p>$$
 \begin{equation}
 \begin{aligned}
-\rho_{1}^{2} \geq \rho_{2}^{2} \geq \cdots \geq \rho_{k}^{2} &amp; \quad \text {eigenvalues of } \boldsymbol{\Sigma}_{xx}^{-1 / 2} \boldsymbol{\Sigma}_{xy} \boldsymbol{\Sigma}_{yy}^{-1} \boldsymbol{\Sigma}_{yx} \boldsymbol{\Sigma}_{xx}^{-1 / 2}\\
-\boldsymbol{v}_{1}^{\star}\quad \boldsymbol{v}_{2}^{\star} \quad\cdots \quad \boldsymbol{v}_{k}^{\star} &amp; \quad \text { associated unit-norm eigenvectors,}\left(\boldsymbol{v}_{i}^{\star}\right)^{\top} \boldsymbol{v}_{i}^{\star}=1
-\\
-\boldsymbol{v}_{i}=\boldsymbol{v}_{i}^{\star} / \sqrt{\left(\boldsymbol{v}_{i}^{\star}\right)^{\top} \boldsymbol{\Sigma}_{xx} \boldsymbol{v}_{i}^{\star}} &amp; \quad \text { coefficients of } U_{i}, \boldsymbol{v}_{i}^{\top} \boldsymbol{\Sigma}_{xx} \boldsymbol{v}_{i}=1\\
-\boldsymbol{v}_{i}=\boldsymbol{\Sigma}_{xx}^{-1 / 2} \boldsymbol{v}_{i}^{\star} &amp; \quad \text { 2nd formula for coefficients of } U_{i}\\
-\boldsymbol{w}_{i}=\boldsymbol{\Sigma}_{yy}^{-1} \boldsymbol{\Sigma}_{yx} \boldsymbol{v}_{i} &amp; \quad \text { coefficients of } V_{i}, \boldsymbol{w}_{i}^{\top} \boldsymbol{\Sigma}_{yy} \boldsymbol{w}_{i}=1
+\rho_{1}^{2} \geq \rho_{2}^{2} \geq \cdots \geq \rho_{k}^{2} &amp; \quad \text {eigenvalues of } \boldsymbol{\Sigma}<em>{xx}^{-1 / 2} \boldsymbol{\Sigma}</em>{xy} \boldsymbol{\Sigma}<em>{yy}^{-1} \boldsymbol{\Sigma}</em>{yx} \boldsymbol{\Sigma}<em>{xx}^{-1 / 2}\
+\boldsymbol{v}</em>{1}^{\star}\quad \boldsymbol{v}<em>{2}^{\star} \quad\cdots \quad \boldsymbol{v}</em>{k}^{\star} &amp; \quad \text { associated unit-norm eigenvectors,}\left(\boldsymbol{v}<em>{i}^{\star}\right)^{\top} \boldsymbol{v}</em>{i}^{\star}=1
+\
+\boldsymbol{v}<em>{i}=\boldsymbol{v}</em>{i}^{\star} / \sqrt{\left(\boldsymbol{v}<em>{i}^{\star}\right)^{\top} \boldsymbol{\Sigma}</em>{xx} \boldsymbol{v}<em>{i}^{\star}} &amp; \quad \text { coefficients of } U</em>{i}, \boldsymbol{v}<em>{i}^{\top} \boldsymbol{\Sigma}</em>{xx} \boldsymbol{v}<em>{i}=1\
+\boldsymbol{v}</em>{i}=\boldsymbol{\Sigma}<em>{xx}^{-1 / 2} \boldsymbol{v}</em>{i}^{\star} &amp; \quad \text { 2nd formula for coefficients of } U_{i}\
+\boldsymbol{w}<em>{i}=\boldsymbol{\Sigma}</em>{yy}^{-1} \boldsymbol{\Sigma}<em>{yx} \boldsymbol{v}</em>{i} &amp; \quad \text { coefficients of } V_{i}, \boldsymbol{w}<em>{i}^{\top} \boldsymbol{\Sigma}</em>{yy} \boldsymbol{w}_{i}=1
 \end{aligned}
 \end{equation}
-\end{split}\]</div>
-<p>where <span class="math notranslate nohighlight">\(k = \min(d_x, d_y)\)</span></p>
+$$</p>
+<p>where $k = \min(d_x, d_y)$</p>
 <p>:::{admonition,dropdown,seealso}</p>
 <p>Recall the formula for the <a class="reference internal" href="../12-probabilities/90-multivariate-notations.html#prob-covariance-matrix-of-two-vectors"><span class="std std-ref">covariance matrix</span></a> of two vectors.</p>
 <p>We consider the following maximization problem:</p>
-<div class="math notranslate nohighlight">
-\[ \begin{align}\begin{aligned}
+<p>$$
 \begin{aligned}
-\rho^{2} \equiv \max _{\boldsymbol{v}, \boldsymbol{w}} \operatorname{Corr}^{2}\left(\boldsymbol{v}^{\top} \boldsymbol{x} , \boldsymbol{w}^{\top} \boldsymbol{y} \right)=\\\begin{split}\max &amp;\  _{\boldsymbol{v}, \boldsymbol{w}} \frac{\left(\boldsymbol{v}^{\top} \boldsymbol{\Sigma}_{xy} \boldsymbol{w}\right)^{2}}{\left(\boldsymbol{v}^{\top} \boldsymbol{\Sigma}_{xx} \boldsymbol{v}\right)\left(\boldsymbol{w}^{\top} \boldsymbol{\Sigma}_{yy} \boldsymbol{w}\right)} \quad  \\\end{split}\\\text {s.t.} &amp;\ \boldsymbol{v}^{\top} \boldsymbol{\Sigma}_{xx} \boldsymbol{v}=\boldsymbol{w}^{\top} \boldsymbol{\Sigma}_{yy} \boldsymbol{w}=1
+\rho^{2} \equiv \max _{\boldsymbol{v}, \boldsymbol{w}} \operatorname{Corr}^{2}\left(\boldsymbol{v}^{\top} \boldsymbol{x} , \boldsymbol{w}^{\top} \boldsymbol{y} \right)=</p>
+<p>\max &amp;\  <em>{\boldsymbol{v}, \boldsymbol{w}} \frac{\left(\boldsymbol{v}^{\top} \boldsymbol{\Sigma}</em>{xy} \boldsymbol{w}\right)^{2}}{\left(\boldsymbol{v}^{\top} \boldsymbol{\Sigma}<em>{xx} \boldsymbol{v}\right)\left(\boldsymbol{w}^{\top} \boldsymbol{\Sigma}</em>{yy} \boldsymbol{w}\right)} \quad  \</p>
+<p>\text {s.t.} &amp;\ \boldsymbol{v}^{\top} \boldsymbol{\Sigma}<em>{xx} \boldsymbol{v}=\boldsymbol{w}^{\top} \boldsymbol{\Sigma}</em>{yy} \boldsymbol{w}=1
 \end{aligned}
-\end{aligned}\end{align} \]</div>
+$$</p>
 <p>The Lagrangean is</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 \begin{equation}
-L(\boldsymbol{v}, \boldsymbol{w}, \lambda, \theta)=\left(\boldsymbol{v}^{\top} \boldsymbol{\Sigma}_{xy} \boldsymbol{w}\right)^{2}-\lambda\left(\boldsymbol{v}^{\top} \boldsymbol{\Sigma}_{xx} \boldsymbol{v}-1\right)-\theta\left(\boldsymbol{w}^{\top} \boldsymbol{\Sigma}_{yy} \boldsymbol{w}-1\right)
+L(\boldsymbol{v}, \boldsymbol{w}, \lambda, \theta)=\left(\boldsymbol{v}^{\top} \boldsymbol{\Sigma}<em>{xy} \boldsymbol{w}\right)^{2}-\lambda\left(\boldsymbol{v}^{\top} \boldsymbol{\Sigma}</em>{xx} \boldsymbol{v}-1\right)-\theta\left(\boldsymbol{w}^{\top} \boldsymbol{\Sigma}_{yy} \boldsymbol{w}-1\right)
 \end{equation}
-\]</div>
+$$</p>
 <p>The first order conditions are</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
+<p>$$
 \begin{equation}
 \begin{aligned}
-\frac{\partial L}{\partial \boldsymbol{v}}=&amp; 2\left(\boldsymbol{v}^{\top} \boldsymbol{\Sigma}_{xy} \boldsymbol{w}\right) \boldsymbol{\Sigma}_{xy} \boldsymbol{w}-2 \lambda \boldsymbol{\Sigma}_{xx} \boldsymbol{v}=\mathbf{0} \\
-\Rightarrow \qquad \qquad &amp;\left(\boldsymbol{v}^{\top} \boldsymbol{\Sigma}_{xy} \boldsymbol{w}\right) \boldsymbol{\Sigma}_{xy} \boldsymbol{w}=\lambda \boldsymbol{\Sigma}_{xx} \boldsymbol{v} \\
-\frac{\partial L}{\partial \boldsymbol{w}}=&amp; 2\left(\boldsymbol{v}^{\top} \boldsymbol{\Sigma}_{xy} \boldsymbol{w}\right) \boldsymbol{\Sigma}_{yx} \boldsymbol{v}-2 \theta \boldsymbol{\Sigma}_{yy} \boldsymbol{w}=\mathbf{0} \\
-\Rightarrow \qquad \qquad &amp;\left(\boldsymbol{v}^{\top} \boldsymbol{\Sigma}_{xy} \boldsymbol{w}\right) \boldsymbol{\Sigma}_{yx} \boldsymbol{v}=\theta \boldsymbol{\Sigma}_{yy} \boldsymbol{w} \\
-\quad \frac{\partial L}{\partial \lambda}=&amp; 1-\boldsymbol{v}^{\top} \boldsymbol{\Sigma}_{xx} \boldsymbol{v}=0 \\
-\Rightarrow \qquad \qquad &amp; \boldsymbol{v}^{\top} \boldsymbol{\Sigma}_{xx} \boldsymbol{v}=1 \\
-\quad \frac{\partial L}{\partial \theta}=&amp; 1-\boldsymbol{w}^{\top} \boldsymbol{\Sigma}_{yy} \boldsymbol{w}=0 \\
-\Rightarrow \qquad \qquad &amp; \boldsymbol{w}^{\top} \boldsymbol{\Sigma}_{yy} \boldsymbol{w}=1
+\frac{\partial L}{\partial \boldsymbol{v}}=&amp; 2\left(\boldsymbol{v}^{\top} \boldsymbol{\Sigma}<em>{xy} \boldsymbol{w}\right) \boldsymbol{\Sigma}</em>{xy} \boldsymbol{w}-2 \lambda \boldsymbol{\Sigma}<em>{xx} \boldsymbol{v}=\mathbf{0} \
+\Rightarrow \qquad \qquad &amp;\left(\boldsymbol{v}^{\top} \boldsymbol{\Sigma}</em>{xy} \boldsymbol{w}\right) \boldsymbol{\Sigma}<em>{xy} \boldsymbol{w}=\lambda \boldsymbol{\Sigma}</em>{xx} \boldsymbol{v} \
+\frac{\partial L}{\partial \boldsymbol{w}}=&amp; 2\left(\boldsymbol{v}^{\top} \boldsymbol{\Sigma}<em>{xy} \boldsymbol{w}\right) \boldsymbol{\Sigma}</em>{yx} \boldsymbol{v}-2 \theta \boldsymbol{\Sigma}<em>{yy} \boldsymbol{w}=\mathbf{0} \
+\Rightarrow \qquad \qquad &amp;\left(\boldsymbol{v}^{\top} \boldsymbol{\Sigma}</em>{xy} \boldsymbol{w}\right) \boldsymbol{\Sigma}<em>{yx} \boldsymbol{v}=\theta \boldsymbol{\Sigma}</em>{yy} \boldsymbol{w} \
+\quad \frac{\partial L}{\partial \lambda}=&amp; 1-\boldsymbol{v}^{\top} \boldsymbol{\Sigma}<em>{xx} \boldsymbol{v}=0 \
+\Rightarrow \qquad \qquad &amp; \boldsymbol{v}^{\top} \boldsymbol{\Sigma}</em>{xx} \boldsymbol{v}=1 \
+\quad \frac{\partial L}{\partial \theta}=&amp; 1-\boldsymbol{w}^{\top} \boldsymbol{\Sigma}<em>{yy} \boldsymbol{w}=0 \
+\Rightarrow \qquad \qquad &amp; \boldsymbol{w}^{\top} \boldsymbol{\Sigma}</em>{yy} \boldsymbol{w}=1
 \end{aligned}
 \end{equation}
-\end{split}\]</div>
-<p>Premultiply the first condition by <span class="math notranslate nohighlight">\(\boldsymbol{v} T\)</span> and the second condition by <span class="math notranslate nohighlight">\(\boldsymbol{w} ^\top\)</span>, we have</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
+$$</p>
+<p>Premultiply the first condition by $\boldsymbol{v} T$ and the second condition by $\boldsymbol{w} ^\top$, we have</p>
+<p>$$
 \begin{equation}
 \begin{array}{l}
-\left(\boldsymbol{v}^{\top} \boldsymbol{\Sigma}_{xy} \boldsymbol{w}\right)^{2}=\lambda \boldsymbol{v}^{\top} \boldsymbol{\Sigma}_{xx} \boldsymbol{v} = \lambda \\
-\left(\boldsymbol{v}^{\top} \boldsymbol{\Sigma}_{xy} \boldsymbol{w}\right)^{2}=\theta \boldsymbol{w}^{\top} \boldsymbol{\Sigma}_{yy} \boldsymbol{w} = \theta
+\left(\boldsymbol{v}^{\top} \boldsymbol{\Sigma}<em>{xy} \boldsymbol{w}\right)^{2}=\lambda \boldsymbol{v}^{\top} \boldsymbol{\Sigma}</em>{xx} \boldsymbol{v} = \lambda \
+\left(\boldsymbol{v}^{\top} \boldsymbol{\Sigma}<em>{xy} \boldsymbol{w}\right)^{2}=\theta \boldsymbol{w}^{\top} \boldsymbol{\Sigma}</em>{yy} \boldsymbol{w} = \theta
 \end{array}
 \end{equation}
-\end{split}\]</div>
+$$</p>
 <p>Hence</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 \begin{equation}
 \lambda=\theta=\left(\boldsymbol{v}^{\top} \boldsymbol{\Sigma}_{xy} \boldsymbol{w}\right)^{2}
 \end{equation}
-\]</div>
-<p>which implies that the Lagrangian multipliers are equal to the maximized value of squared correlation <span class="math notranslate nohighlight">\(\begin{equation}
+$$</p>
+<p>which implies that the Lagrangian multipliers are equal to the maximized value of squared correlation $\begin{equation}
 \operatorname{Corr}^{2}\left(\boldsymbol{v}^{\top} \boldsymbol{x} , \boldsymbol{w}^{\top} \boldsymbol{y} \right)
-\end{equation}\)</span>, i.e., <span class="math notranslate nohighlight">\(\rho^2\)</span>.</p>
-<p>Based on the above results, we can further simplify the first and second conditions by replacing <span class="math notranslate nohighlight">\(\boldsymbol{v} ^\top \boldsymbol{\Sigma} _{12} \boldsymbol{w}\)</span> by <span class="math notranslate nohighlight">\(\sqrt{\lambda}\)</span> and <span class="math notranslate nohighlight">\(\sqrt{\theta}\)</span> respectively.</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
+\end{equation}$, i.e., $\rho^2$.</p>
+<p>Based on the above results, we can further simplify the first and second conditions by replacing $\boldsymbol{v} ^\top \boldsymbol{\Sigma} _{12} \boldsymbol{w}$ by $\sqrt{\lambda}$ and $\sqrt{\theta}$ respectively.</p>
+<p>$$
 \begin{equation}
 \begin{aligned}
-\left\{\begin{array}{l}
-\boldsymbol{\Sigma}_{xy} \boldsymbol{w}-\sqrt{\lambda} \boldsymbol{\Sigma}_{xx} \boldsymbol{v} &amp; =\mathbf{0} \\
-\boldsymbol{\Sigma}_{yx} \boldsymbol{v}-\sqrt{\lambda} \boldsymbol{\Sigma}_{yy} \boldsymbol{w} &amp; =\mathbf{0}
-\end{array}\right.\\
+\left{\begin{array}{l}
+\boldsymbol{\Sigma}<em>{xy} \boldsymbol{w}-\sqrt{\lambda} \boldsymbol{\Sigma}</em>{xx} \boldsymbol{v} &amp; =\mathbf{0} \
+\boldsymbol{\Sigma}<em>{yx} \boldsymbol{v}-\sqrt{\lambda} \boldsymbol{\Sigma}</em>{yy} \boldsymbol{w} &amp; =\mathbf{0}
+\end{array}\right.\
 \Rightarrow\left(\begin{array}{cc}
--\sqrt{\lambda} \boldsymbol{\Sigma}_{xx} &amp; \boldsymbol{\Sigma}_{xy} \\
-\boldsymbol{\Sigma}_{yx} &amp; -\sqrt{\lambda} \boldsymbol{\Sigma}_{yy}
+-\sqrt{\lambda} \boldsymbol{\Sigma}<em>{xx} &amp; \boldsymbol{\Sigma}</em>{xy} \
+\boldsymbol{\Sigma}<em>{yx} &amp; -\sqrt{\lambda} \boldsymbol{\Sigma}</em>{yy}
 \end{array}\right) \left(\begin{array}{l}
-\boldsymbol{v} \\
+\boldsymbol{v} \
 \boldsymbol{w}
 \end{array}\right)&amp; =\mathbf{0}
 \end{aligned}
 \end{equation}
-\end{split}\]</div>
-<p>In order to obtain the non-trivial solutions for <span class="math notranslate nohighlight">\(\boldsymbol{v}\)</span>  and <span class="math notranslate nohighlight">\(\boldsymbol{w}\)</span>, we require</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
+$$</p>
+<p>In order to obtain the non-trivial solutions for $\boldsymbol{v}$  and $\boldsymbol{w}$, we require</p>
+<p>$$
 \begin{equation}
 \left|\begin{array}{cc}
--\sqrt{\lambda} \boldsymbol{\Sigma}_{xx} &amp; \boldsymbol{\Sigma}_{xy} \\
-\boldsymbol{\Sigma}_{yx} &amp; -\sqrt{\lambda} \boldsymbol{\Sigma}_{yy}
+-\sqrt{\lambda} \boldsymbol{\Sigma}<em>{xx} &amp; \boldsymbol{\Sigma}</em>{xy} \
+\boldsymbol{\Sigma}<em>{yx} &amp; -\sqrt{\lambda} \boldsymbol{\Sigma}</em>{yy}
 \end{array}\right|=0
 \end{equation}
-\end{split}\]</div>
+$$</p>
 <p>which gives</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
+<p>$$
 \begin{equation}
 \begin{array}{l}
 \left|\begin{array}{cc}
--\sqrt{\lambda} \boldsymbol{\Sigma}_{xx} &amp; \boldsymbol{\Sigma}_{xy} \\
-\boldsymbol{\Sigma}_{yx} &amp; -\sqrt{\lambda} \boldsymbol{\Sigma}_{yy}
-\end{array}\right|=\left|\sqrt{\lambda} \boldsymbol{\Sigma}_{yy}\right|\left|\sqrt{\lambda} \boldsymbol{\Sigma}_{xx}-\boldsymbol{\Sigma}_{xy}\left(\sqrt{\lambda} \boldsymbol{\Sigma}_{yy}\right)^{-1} \boldsymbol{\Sigma}_{yx}\right|=0 \\
-\Rightarrow\left|\sqrt{\lambda} \boldsymbol{\Sigma}_{xx}-\boldsymbol{\Sigma}_{xy}\left(\sqrt{\lambda} \boldsymbol{\Sigma}_{yy}\right)^{-1} \boldsymbol{\Sigma}_{yx}\right|=0 \quad \because\left|\boldsymbol{\Sigma}_{xx}\right|&gt;0 \\
-\Rightarrow\left|(1 / \sqrt{\lambda})\left(\lambda \boldsymbol{\Sigma}_{xx}-\boldsymbol{\Sigma}_{xy} \boldsymbol{\Sigma}_{yy}^{-1} \boldsymbol{\Sigma}_{yx}\right)\right|=0 &amp; \\
-\Rightarrow\left|\boldsymbol{\Sigma}_{xy} \boldsymbol{\Sigma}_{yy}^{-1} \boldsymbol{\Sigma}_{yx}-\lambda \boldsymbol{\Sigma}_{xx}\right|=0 \quad \because \lambda&gt;0
+-\sqrt{\lambda} \boldsymbol{\Sigma}<em>{xx} &amp; \boldsymbol{\Sigma}</em>{xy} \
+\boldsymbol{\Sigma}<em>{yx} &amp; -\sqrt{\lambda} \boldsymbol{\Sigma}</em>{yy}
+\end{array}\right|=\left|\sqrt{\lambda} \boldsymbol{\Sigma}<em>{yy}\right|\left|\sqrt{\lambda} \boldsymbol{\Sigma}</em>{xx}-\boldsymbol{\Sigma}<em>{xy}\left(\sqrt{\lambda} \boldsymbol{\Sigma}</em>{yy}\right)^{-1} \boldsymbol{\Sigma}<em>{yx}\right|=0 \
+\Rightarrow\left|\sqrt{\lambda} \boldsymbol{\Sigma}</em>{xx}-\boldsymbol{\Sigma}<em>{xy}\left(\sqrt{\lambda} \boldsymbol{\Sigma}</em>{yy}\right)^{-1} \boldsymbol{\Sigma}<em>{yx}\right|=0 \quad \because\left|\boldsymbol{\Sigma}</em>{xx}\right|&gt;0 \
+\Rightarrow\left|(1 / \sqrt{\lambda})\left(\lambda \boldsymbol{\Sigma}<em>{xx}-\boldsymbol{\Sigma}</em>{xy} \boldsymbol{\Sigma}<em>{yy}^{-1} \boldsymbol{\Sigma}</em>{yx}\right)\right|=0 &amp; \
+\Rightarrow\left|\boldsymbol{\Sigma}<em>{xy} \boldsymbol{\Sigma}</em>{yy}^{-1} \boldsymbol{\Sigma}<em>{yx}-\lambda \boldsymbol{\Sigma}</em>{xx}\right|=0 \quad \because \lambda&gt;0
 \end{array}
 \end{equation}
-\end{split}\]</div>
+$$</p>
 <p>which indeed is the eigenvalue problem of</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 \begin{equation}
-\boldsymbol{\Sigma}_{xx}^{-1} \boldsymbol{\Sigma}_{xy} \boldsymbol{\Sigma}_{yy}^{-1} \boldsymbol{\Sigma}_{yx} \boldsymbol{v}=\lambda \boldsymbol{v}
+\boldsymbol{\Sigma}<em>{xx}^{-1} \boldsymbol{\Sigma}</em>{xy} \boldsymbol{\Sigma}<em>{yy}^{-1} \boldsymbol{\Sigma}</em>{yx} \boldsymbol{v}=\lambda \boldsymbol{v}
 \end{equation}
-\]</div>
-<p>Once the solution for <span class="math notranslate nohighlight">\(\boldsymbol{v}\)</span>  is obtained, the solution for <span class="math notranslate nohighlight">\(\boldsymbol{w}\)</span>  can be obtained by</p>
-<div class="math notranslate nohighlight">
-\[
+$$</p>
+<p>Once the solution for $\boldsymbol{v}$  is obtained, the solution for $\boldsymbol{w}$  can be obtained by</p>
+<p>$$
 \begin{equation}
-\boldsymbol{w} \propto \boldsymbol{\Sigma}_{yy}^{-1} \boldsymbol{\Sigma}_{yx} \boldsymbol{v}
+\boldsymbol{w} \propto \boldsymbol{\Sigma}<em>{yy}^{-1} \boldsymbol{\Sigma}</em>{yx} \boldsymbol{v}
 \end{equation}
-\]</div>
+$$</p>
 <p>with the normalized condition</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 \begin{equation}
 \boldsymbol{w}^{\top} \boldsymbol{\Sigma}_{yy} \boldsymbol{w}=1
 \end{equation}
-\]</div>
-<p>:::</p>
+$$
+:::</p>
 </div>
 </div>
 <div class="section" id="properties">
 <h2>Properties<a class="headerlink" href="#properties" title="Permalink to this headline">¶</a></h2>
-<p><strong>Invariance property</strong>
-: Canonical corelations <span class="math notranslate nohighlight">\(\rho_i\)</span>’s between <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{y}\)</span> are the same as those between <span class="math notranslate nohighlight">\(\boldsymbol{A} _1 \boldsymbol{x}  + \boldsymbol{c}_1\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{A} _2 \boldsymbol{y}  + \boldsymbol{c} _2\)</span>, where both <span class="math notranslate nohighlight">\(\boldsymbol{A} _1\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{A} _2\)</span> are non-singular square matrices and their computation can be based on either the partitioned covariance matrix or the partitioned correlation matrix. However, the canonical coefficients contained in <span class="math notranslate nohighlight">\(\boldsymbol{v} _k\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{w} _k\)</span> are <strong>not</strong> invariant under the same transforam, nor their estimates.</p>
+<dl class="simple myst">
+<dt><strong>Invariance property</strong></dt><dd><p>Canonical corelations $\rho_i$’s between $\boldsymbol{x}$ and $\boldsymbol{y}$ are the same as those between $\boldsymbol{A} _1 \boldsymbol{x}  + \boldsymbol{c}_1$ and $\boldsymbol{A} _2 \boldsymbol{y}  + \boldsymbol{c} _2$, where both $\boldsymbol{A} _1$ and $\boldsymbol{A} _2$ are non-singular square matrices and their computation can be based on either the partitioned covariance matrix or the partitioned correlation matrix. However, the canonical coefficients contained in $\boldsymbol{v} _k$ and $\boldsymbol{w} _k$ are <strong>not</strong> invariant under the same transforam, nor their estimates.</p>
+</dd>
+</dl>
 </div>
 <div class="section" id="model-selection">
 <h2>Model Selection<a class="headerlink" href="#model-selection" title="Permalink to this headline">¶</a></h2>
-<p>Now let <span class="math notranslate nohighlight">\(\boldsymbol{S} _{11}, \boldsymbol{S} _{12}, \boldsymbol{S} _{22}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{S} _{21}\)</span> be the corresponding sub-matrices of the sample covariance matrix <span class="math notranslate nohighlight">\(\boldsymbol{S}\)</span>. For <span class="math notranslate nohighlight">\(i = 1, 2, \ldots, k\)</span>, let <span class="math notranslate nohighlight">\(r_i ^2, \boldsymbol{a} _i\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{b} _i\)</span> be respectively the sample estimators of <span class="math notranslate nohighlight">\(\rho_i^2, \boldsymbol{v} _i\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{w} _i\)</span>, all based on</p>
-<div class="math notranslate nohighlight">
-\[\boldsymbol{S}_{11}^{-1 / 2} \boldsymbol{S}_{12} \boldsymbol{S}_{22}^{-1} \boldsymbol{S}_{21} \boldsymbol{S}_{11}^{-1 / 2}\]</div>
-<p>in parallel to <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}_{xx}^{-1/2} \boldsymbol{\Sigma}_{xy} \boldsymbol{\Sigma}_{yy}^{-1} \boldsymbol{\Sigma}_{yx} \boldsymbol{\Sigma}_{xx}^{-1/2}\)</span>. Then the <span class="math notranslate nohighlight">\(i\)</span>-th pair of sample canonical variables <span class="math notranslate nohighlight">\(\widehat{U}_i, \widehat{V}_i\)</span> is</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
+<p>Now let $\boldsymbol{S} _{11}, \boldsymbol{S} _{12}, \boldsymbol{S} _{22}$ and $\boldsymbol{S} _{21}$ be the corresponding sub-matrices of the sample covariance matrix $\boldsymbol{S}$. For $i = 1, 2, \ldots, k$, let $r_i ^2, \boldsymbol{a} _i$ and $\boldsymbol{b} _i$ be respectively the sample estimators of $\rho_i^2, \boldsymbol{v} _i$ and $\boldsymbol{w} _i$, all based on</p>
+<p>$$\boldsymbol{S}<em>{11}^{-1 / 2} \boldsymbol{S}</em>{12} \boldsymbol{S}<em>{22}^{-1} \boldsymbol{S}</em>{21} \boldsymbol{S}_{11}^{-1 / 2}$$</p>
+<p>in parallel to $\boldsymbol{\Sigma}<em>{xx}^{-1/2} \boldsymbol{\Sigma}</em>{xy} \boldsymbol{\Sigma}<em>{yy}^{-1} \boldsymbol{\Sigma}</em>{yx} \boldsymbol{\Sigma}_{xx}^{-1/2}$. Then the $i$-th pair of sample canonical variables $\widehat{U}_i, \widehat{V}_i$ is</p>
+<p>$$
 \begin{equation}
-\left\{\begin{array}{l}
-\widehat{U}_{i}=\boldsymbol{a} _{i}^{\top} \boldsymbol{x}  \\
-\widehat{V}_{i}=\boldsymbol{b}_{i}^{\top} \boldsymbol{y} , \text { where } \boldsymbol{b}_{i}=\boldsymbol{S}_{22}^{-1} \boldsymbol{S}_{21} \boldsymbol{a}_{i}
+\left{\begin{array}{l}
+\widehat{U}<em>{i}=\boldsymbol{a} <em>{i}^{\top} \boldsymbol{x}  \
+\widehat{V}</em>{i}=\boldsymbol{b}</em>{i}^{\top} \boldsymbol{y} , \text { where } \boldsymbol{b}<em>{i}=\boldsymbol{S}</em>{22}^{-1} \boldsymbol{S}<em>{21} \boldsymbol{a}</em>{i}
 \end{array}\right.
 \end{equation}
-\end{split}\]</div>
+$$</p>
 <div class="section" id="hypothesis-testing">
 <h3>Hypothesis Testing<a class="headerlink" href="#hypothesis-testing" title="Permalink to this headline">¶</a></h3>
-<p>Since these are not the population quantities and we don’t know whether some <span class="math notranslate nohighlight">\(\rho_i\)</span> are zero, or equivalently how many pairs of the canonical variables based on the sample to be retained. This can be answered by testing a sequence of null hypotheses of the form</p>
-<div class="math notranslate nohighlight">
-\[
+<p>Since these are not the population quantities and we don’t know whether some $\rho_i$ are zero, or equivalently how many pairs of the canonical variables based on the sample to be retained. This can be answered by testing a sequence of null hypotheses of the form</p>
+<p>$$
 H_{0}(k): \rho_{k+1}=\cdots=\rho_{k}=0, k=0,1, \cdots, k
-\]</div>
+$$</p>
 <p>until we accept one of them. Note that the first hypothesis of retaining no pair,</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 H_{0}(k=0): \rho_{1}=\cdots=\rho_{k}=0
-\]</div>
-<p>is equivalent to independence between <span class="math notranslate nohighlight">\(\boldsymbol{x} 1\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{y}\)</span>, or <span class="math notranslate nohighlight">\(H_0: \boldsymbol{\Sigma} _{12} = 0\)</span>. If it is rejected, test</p>
-<div class="math notranslate nohighlight">
-\[H_{0}(k=1): \rho_{2}=\cdots=\rho_{k}=0\]</div>
+$$</p>
+<p>is equivalent to independence between $\boldsymbol{x} 1$ and $\boldsymbol{y}$, or $H_0: \boldsymbol{\Sigma} _{12} = 0$. If it is rejected, test</p>
+<p>$$H_{0}(k=1): \rho_{2}=\cdots=\rho_{k}=0$$</p>
 <p>i.e., retain only the first pair; if rejected, test</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 H_{0}(k=2): \rho_{3}=\cdots=\rho_{k}=0
-\]</div>
-<p>i.e., retain only the first two pairs, etc., until we obtain <span class="math notranslate nohighlight">\(k\)</span> such that</p>
-<div class="math notranslate nohighlight">
-\[
+$$</p>
+<p>i.e., retain only the first two pairs, etc., until we obtain $k$ such that</p>
+<p>$$
 H_{0}(k): \rho_{k+1}=\cdots=\rho_{k}=0
-\]</div>
-<p>is accepted. Then we shall retain only the first <span class="math notranslate nohighlight">\(k\)</span> pairs of canonical variables to describe the linear association between <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{y}\)</span>.</p>
+$$</p>
+<p>is accepted. Then we shall retain only the first $k$ pairs of canonical variables to describe the linear association between $\boldsymbol{x}$ and $\boldsymbol{y}$.</p>
 </div>
 </div>
 <div class="section" id="interpretation">
@@ -1008,7 +982,7 @@ H_{0}(k): \rho_{k+1}=\cdots=\rho_{k}=0
 <h2>Pros and Cons<a class="headerlink" href="#pros-and-cons" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="discriminative-power">
 <h3>Discriminative Power<a class="headerlink" href="#discriminative-power" title="Permalink to this headline">¶</a></h3>
-<p>Unlike PCA, CCA has discriminative power in some cases. In the comparison below, in the first scatter-plot, the principal direction is the discriminative direction, while in the second plot it is not. The 3rd (same as the 2nd) and the 4th plots corresponds to <span class="math notranslate nohighlight">\(\boldsymbol{x} \in \mathbb{R} ^2\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{y} \in \mathbb{R} ^2\)</span>. The two colors means two kinds of data points in the <span class="math notranslate nohighlight">\(n\times 4\)</span> data set, but the color labels are shown to CCA. The CCA solutions to <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> (3rd plot) is the direction <span class="math notranslate nohighlight">\((-1,1)\)</span> and to <span class="math notranslate nohighlight">\(\boldsymbol{y}\)</span> (4th plot) is the direction <span class="math notranslate nohighlight">\((-1,-1)\)</span>. Because they are the highest correlation pair of directions.</p>
+<p>Unlike PCA, CCA has discriminative power in some cases. In the comparison below, in the first scatter-plot, the principal direction is the discriminative direction, while in the second plot it is not. The 3rd (same as the 2nd) and the 4th plots corresponds to $\boldsymbol{x} \in \mathbb{R} ^2$ and $\boldsymbol{y} \in \mathbb{R} ^2$. The two colors means two kinds of data points in the $n\times 4$ data set, but the color labels are shown to CCA. The CCA solutions to $\boldsymbol{x}$ (3rd plot) is the direction $(-1,1)$ and to $\boldsymbol{y}$ (4th plot) is the direction $(-1,-1)$. Because they are the highest correlation pair of directions.</p>
 <p>:::{figure,myclass} cca-has-disc-power
 <img src="../imgs/cca-has-disc-power.png" width = "90%" alt=""/></p>
 <p>CCA has discriminative power [Livescu 2021]
@@ -1025,20 +999,18 @@ H_{0}(k): \rho_{k+1}=\cdots=\rho_{k}=0
 </div>
 <div class="section" id="extension-regularized-cca">
 <h2>Extension: Regularized CCA<a class="headerlink" href="#extension-regularized-cca" title="Permalink to this headline">¶</a></h2>
-<p>To regularize CCA, we can add small constant <span class="math notranslate nohighlight">\(r\)</span> (noise) to the covariance matrices of <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{y}\)</span>.</p>
-<div class="math notranslate nohighlight">
-\[
+<p>To regularize CCA, we can add small constant $r$ (noise) to the covariance matrices of $\boldsymbol{x}$ and $\boldsymbol{y}$.</p>
+<p>$$
 \begin{equation}
-\boldsymbol{v}_{1}, \boldsymbol{w}_{1}=\underset{\boldsymbol{v}, \boldsymbol{w}}{\operatorname{argmax}} \frac{\boldsymbol{v} ^\top  \boldsymbol{\Sigma}_{x y} \boldsymbol{w}}{\sqrt{\boldsymbol{v} ^\top \left(\boldsymbol{\Sigma}_{x x}+r_{x} I\right) \boldsymbol{v} \boldsymbol{w} ^\top \left(\boldsymbol{\Sigma}_{y y}+r_{y} I\right) \boldsymbol{w}}}
+\boldsymbol{v}<em>{1}, \boldsymbol{w}</em>{1}=\underset{\boldsymbol{v}, \boldsymbol{w}}{\operatorname{argmax}} \frac{\boldsymbol{v} ^\top  \boldsymbol{\Sigma}<em>{x y} \boldsymbol{w}}{\sqrt{\boldsymbol{v} ^\top \left(\boldsymbol{\Sigma}</em>{x x}+r_{x} I\right) \boldsymbol{v} \boldsymbol{w} ^\top \left(\boldsymbol{\Sigma}<em>{y y}+r</em>{y} I\right) \boldsymbol{w}}}
 \end{equation}
-\]</div>
+$$</p>
 <p>Then we solve for the eigenvalues’s and eigenvectors’s of the new matrix</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 \begin{equation}
-\left(\boldsymbol{\Sigma}_{x x}+r_{x} I\right)^{-1} \boldsymbol{\Sigma}_{x y}\left(\boldsymbol{\Sigma}_{y y}+r_{y} I\right)^{-1} \boldsymbol{\Sigma}_{y x}
+\left(\boldsymbol{\Sigma}<em>{x x}+r</em>{x} I\right)^{-1} \boldsymbol{\Sigma}<em>{x y}\left(\boldsymbol{\Sigma}</em>{y y}+r_{y} I\right)^{-1} \boldsymbol{\Sigma}_{y x}
 \end{equation}
-\]</div>
+$$</p>
 </div>
 </div>
 

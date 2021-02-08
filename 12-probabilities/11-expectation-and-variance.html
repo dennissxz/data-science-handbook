@@ -46,8 +46,6 @@
     <script src="../_static/copybutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="../_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
     <script >
         const thebe_selector = ".thebe"
@@ -355,6 +353,11 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/31-knapsack.html">
+     Minimum Knapsack
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="../23-dynamic-programming/51-chain-matrix-multiplication.html">
      Chain Matrix Multiplication
     </a>
@@ -488,11 +491,7 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../33-dimensionality-reduction/31-t-SNE.html">
-     SNE and
-     <span class="math notranslate nohighlight">
-      \(t\)
-     </span>
-     -SNE
+     SNE and $t$-SNE
     </a>
    </li>
   </ul>
@@ -740,28 +739,26 @@
 <div class="section" id="definitions">
 <h2>Definitions<a class="headerlink" href="#definitions" title="Permalink to this headline">¶</a></h2>
 <p>We quickly review the definitions of expectation, variance and covariance.</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{align}
-&amp;&amp;&amp;\text{Population} &amp;&amp; \text{Sample} \\
-&amp; \text{Mean} &amp; \mu &amp;= \sum_{i=1}^n x_i p(x_i) \text{ or } \int_{\mathcal{X}} x f(x) \mathrm{~d}x &amp;  \bar x &amp;= \frac{1}{n}\sum_i x_i  \\
-&amp; \text{Variance} &amp; \sigma^2 &amp;= \operatorname{E}\left[ \left( X-\mu \right)^2 \right]  &amp; s^2 &amp;= \frac{1}{n}\sum_i(x_i - \bar x)^2\\
-&amp; \text{Standard deviation}  &amp; \sigma &amp;= \sqrt{\operatorname{E}\left[ \left( X-\mu \right)^2 \right]}  &amp; s &amp;= \sqrt{\frac{1}{n}\sum_i(x_i - \bar x)^2} \\
+<p>$$\begin{align}
+&amp;&amp;&amp;\text{Population} &amp;&amp; \text{Sample} \
+&amp; \text{Mean} &amp; \mu &amp;= \sum_{i=1}^n x_i p(x_i) \text{ or } \int_{\mathcal{X}} x f(x) \mathrm{~d}x &amp;  \bar x &amp;= \frac{1}{n}\sum_i x_i  \
+&amp; \text{Variance} &amp; \sigma^2 &amp;= \operatorname{E}\left[ \left( X-\mu \right)^2 \right]  &amp; s^2 &amp;= \frac{1}{n}\sum_i(x_i - \bar x)^2\
+&amp; \text{Standard deviation}  &amp; \sigma &amp;= \sqrt{\operatorname{E}\left[ \left( X-\mu \right)^2 \right]}  &amp; s &amp;= \sqrt{\frac{1}{n}\sum_i(x_i - \bar x)^2} \
 &amp; \text{Covariance}  &amp; \sigma_{X,Y} &amp;= \operatorname{E}\left[ (X-\mu_X)(Y-\mu_Y) \right] &amp; s_{X,Y} &amp;= \frac{1}{n}\sum_i \left[ (x_i - \bar x)(y_i - \bar y) \right]
-\end{align}\end{split}\]</div>
+\end{align}$$</p>
 <p>Also recall the definitions of conditional expectation and conditional variance:</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{align}
- \operatorname{E}(X \mid Y=y)
- &amp;= \sum_{x} x P(X=x \mid Y=y) \\
- &amp;\text{or} \int_{-\infty}^{\infty} x f_{X \mid Y}(x, y) \mathrm{~d} x \\
+<p>$$\begin{align}
+\operatorname{E}(X \mid Y=y)
+&amp;= \sum_{x} x P(X=x \mid Y=y) \
+&amp;\text{or} \int_{-\infty}^{\infty} x f_{X \mid Y}(x, y) \mathrm{~d} x \
 \operatorname{Var}\left( X \mid Y=y \right)
- &amp;= \operatorname{E}\left[ (X-\mu_{X\mid Y=y})^{2} \mid Y=y \right] \\
-\end{align}\end{split}\]</div>
+&amp;= \operatorname{E}\left[ (X-\mu_{X\mid Y=y})^{2} \mid Y=y \right] \
+\end{align}$$</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <ul class="simple">
-<li><p>The notation <span class="math notranslate nohighlight">\(X \mid Y=y\)</span> means that <span class="math notranslate nohighlight">\(Y=y\)</span> is observed. In this case, the conditional expectation (variance) is a function of the observed value <span class="math notranslate nohighlight">\(y\)</span>, i.e., <span class="math notranslate nohighlight">\(\operatorname{E}(X \mid Y=y) = g(y)\)</span>, which itself is a constant.</p></li>
-<li><p>The notation <span class="math notranslate nohighlight">\(X \mid Y\)</span> means that <span class="math notranslate nohighlight">\(Y\)</span> is a random variable and has not been observed yet. In this case, the conditional expectation (variance) is a function of the random variable <span class="math notranslate nohighlight">\(Y\)</span>, i.e., <span class="math notranslate nohighlight">\(\operatorname{E}(X \mid Y) = g(Y)\)</span>, which itself is a random variable.</p></li>
+<li><p>The notation $X \mid Y=y$ means that $Y=y$ is observed. In this case, the conditional expectation (variance) is a function of the observed value $y$, i.e., $\operatorname{E}(X \mid Y=y) = g(y)$, which itself is a constant.</p></li>
+<li><p>The notation $X \mid Y$ means that $Y$ is a random variable and has not been observed yet. In this case, the conditional expectation (variance) is a function of the random variable $Y$, i.e., $\operatorname{E}(X \mid Y) = g(Y)$, which itself is a random variable.</p></li>
 </ul>
 </div>
 </div>
@@ -770,214 +767,192 @@
 <div class="section" id="basics">
 <h3>Basics<a class="headerlink" href="#basics" title="Permalink to this headline">¶</a></h3>
 <p>In general, we have</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{align}
-\operatorname{E}\left( aX + bY \right) &amp;= a \operatorname{E}\left( X \right) + b \operatorname{E}\left( Y \right) \\
-\operatorname{Var}\left( aX + bY \right) &amp;= a^2\operatorname{Var}\left( X \right) + b^2\operatorname{Var}\left( Y \right) + 2ab\operatorname{Cov}\left( X, Y \right) \\
-\operatorname{Var}\left( X \right) &amp;= \operatorname{E}\left( X^2 \right) - \left[ \operatorname{E}\left( X \right) \right]^2\\
-\operatorname{E}\left( X^2 \right) &amp;= \mu^2 + \sigma^2 \\
-\operatorname{Cov}\left( X, X \right) &amp;= \operatorname{Var}\left( X \right) \\
-\operatorname{Cov}\left( X,Y \right) &amp;= \operatorname{E}\left( XY \right) - \operatorname{E}\left( X \right)\operatorname{E}\left( Y \right) \\
-\operatorname{Cov}\left( X, a \right) &amp;= 0 \\
-\operatorname{Cov}\left( X, Y+Z \right) &amp;= \operatorname{Cov}\left( X, Y \right) + \operatorname{Cov}\left( X, Z \right) \\
+<p>$$\begin{align}
+\operatorname{E}\left( aX + bY \right) &amp;= a \operatorname{E}\left( X \right) + b \operatorname{E}\left( Y \right) \
+\operatorname{Var}\left( aX + bY \right) &amp;= a^2\operatorname{Var}\left( X \right) + b^2\operatorname{Var}\left( Y \right) + 2ab\operatorname{Cov}\left( X, Y \right) \
+\operatorname{Var}\left( X \right) &amp;= \operatorname{E}\left( X^2 \right) - \left[ \operatorname{E}\left( X \right) \right]^2\
+\operatorname{E}\left( X^2 \right) &amp;= \mu^2 + \sigma^2 \
+\operatorname{Cov}\left( X, X \right) &amp;= \operatorname{Var}\left( X \right) \
+\operatorname{Cov}\left( X,Y \right) &amp;= \operatorname{E}\left( XY \right) - \operatorname{E}\left( X \right)\operatorname{E}\left( Y \right) \
+\operatorname{Cov}\left( X, a \right) &amp;= 0 \
+\operatorname{Cov}\left( X, Y+Z \right) &amp;= \operatorname{Cov}\left( X, Y \right) + \operatorname{Cov}\left( X, Z \right) \
 \operatorname{Cov}\left( aX, bY \right) &amp;= ab \operatorname{Cov}\left( X, Y \right)
-\end{align}\end{split}\]</div>
+\end{align}$$</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Be careful about the notations <span class="math notranslate nohighlight">\(\sigma_X ^2\)</span> and <span class="math notranslate nohighlight">\(\sigma_{X,X}\)</span></p>
-<div class="math notranslate nohighlight">
-\[
+<p>Be careful about the notations $\sigma_X ^2$ and $\sigma_{X,X}$</p>
+<p>$$
 \sigma_X^2 = \operatorname{Var}\left( X \right) = \operatorname{Cov}\left( X, X \right) = \sigma_{X,X}
-\]</div>
+$$</p>
 </div>
-<p>If <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span> are independent,</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{align}
-\operatorname{E}\left( XY \right) &amp;= \operatorname{E}\left( X \right)\operatorname{E}\left( Y \right) \\
-\operatorname{Cov}\left( X, Y \right) &amp;= 0 \\
-\operatorname{Var}\left( aX + bY \right) &amp;= a^2\operatorname{Var}\left( X \right) + b^2\operatorname{Var}\left( Y \right) \\
-\end{align}\end{split}\]</div>
+<p>If $X$ and $Y$ are independent,</p>
+<p>$$\begin{align}
+\operatorname{E}\left( XY \right) &amp;= \operatorname{E}\left( X \right)\operatorname{E}\left( Y \right) \
+\operatorname{Cov}\left( X, Y \right) &amp;= 0 \
+\operatorname{Var}\left( aX + bY \right) &amp;= a^2\operatorname{Var}\left( X \right) + b^2\operatorname{Var}\left( Y \right) \
+\end{align}$$</p>
 </div>
 <div class="section" id="linear-combinations">
 <h3>Linear Combinations<a class="headerlink" href="#linear-combinations" title="Permalink to this headline">¶</a></h3>
-<p>For <span class="math notranslate nohighlight">\(n\)</span> random variables <span class="math notranslate nohighlight">\(X_1, X_2, \ldots, X_n\)</span>, consider a linear combination <span class="math notranslate nohighlight">\(\sum_i^n a_i X_i\)</span>. Though we have no information about the dependence between <span class="math notranslate nohighlight">\(X_i\)</span>’s, the expectation of the sum equals to the sum of the expectations</p>
-<div class="math notranslate nohighlight">
-\[
+<p>For $n$ random variables $X_1, X_2, \ldots, X_n$, consider a linear combination $\sum_i^n a_i X_i$. Though we have no information about the dependence between $X_i$’s, the expectation of the sum equals to the sum of the expectations</p>
+<p>$$
 \operatorname{E}\left( \sum_i^n a_i X_i \right)
- = \sum_i^n \operatorname{E}\left(a_i X_i \right)
- = \sum_i^n a_i\operatorname{E}\left( X_i \right)
-\]</div>
+= \sum_i^n \operatorname{E}\left(a_i X_i \right)
+= \sum_i^n a_i\operatorname{E}\left( X_i \right)
+$$</p>
 <p>In this sense, expectation is a linear operator.</p>
-<p>In particular, for independently and identically distributed <span class="math notranslate nohighlight">\(X_1, X_2, \ldots, X_n\)</span> with common mean <span class="math notranslate nohighlight">\(\operatorname{E}\left( X_i \right)=\mu\)</span>, the expectation of the average value is</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{align}
-\operatorname{E}\left( \bar X \right) &amp;= \operatorname{E}\left( \frac{1}{n}\sum_{i} X_i \right)\\
-&amp;= \frac{1}{n}\sum_i \operatorname{E}\left( X_i \right)\\
-&amp;= \mu \\
-\end{align}\end{split}\]</div>
+<p>In particular, for independently and identically distributed $X_1, X_2, \ldots, X_n$ with common mean $\operatorname{E}\left( X_i \right)=\mu$, the expectation of the average value is</p>
+<p>$$\begin{align}
+\operatorname{E}\left( \bar X \right) &amp;= \operatorname{E}\left( \frac{1}{n}\sum_{i} X_i \right)\
+&amp;= \frac{1}{n}\sum_i \operatorname{E}\left( X_i \right)\
+&amp;= \mu \
+\end{align}$$</p>
 <p>In general, the variance of a sum of a linear combination is</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
+<p>$$
 \begin{aligned}
 \operatorname{Var}\left(\sum_{i=1}^{n} a_{i} X_{i}\right)
-&amp;= \operatorname{Cov}\left( \sum_i a_i X_i, \sum_i a_i X_i \right)\\
-&amp;=\sum_{i, j=1}^{n}   \operatorname{Cov}\left(a_{i}X_{i}, a_{j}X_{j}\right) \\
-&amp;=\sum_{i=1}^{n}  \operatorname{Var}\left(a_{i}X_{i}\right)+\sum_{i \neq j}   \operatorname{Cov}\left(a_{i}X_{i}, a_{j}X_{j}\right) \\
+&amp;= \operatorname{Cov}\left( \sum_i a_i X_i, \sum_i a_i X_i \right)\
+&amp;=\sum_{i, j=1}^{n}   \operatorname{Cov}\left(a_{i}X_{i}, a_{j}X_{j}\right) \
+&amp;=\sum_{i=1}^{n}  \operatorname{Var}\left(a_{i}X_{i}\right)+\sum_{i \neq j}   \operatorname{Cov}\left(a_{i}X_{i}, a_{j}X_{j}\right) \
 &amp;=\sum_{i=1}^{n} a_{i}^{2} \operatorname{Var}\left(X_{i}\right)+2 \sum_{1 \leq i&lt;j \leq n} a_{i} a_{j} \operatorname{Cov}\left(X_{i}, X_{j}\right)
 \end{aligned}
-\end{split}\]</div>
+$$</p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
-<p>One can imagine that there is a <span class="math notranslate nohighlight">\(n \times n\)</span> covariance table with the <span class="math notranslate nohighlight">\(i,j\)</span>-th entry being <span class="math notranslate nohighlight">\(\operatorname{Cov}\left( a_i X_i, a_j X_j \right)\)</span>, and the required variance is the sum of all the entries, which consists of</p>
+<p>One can imagine that there is a $n \times n$ covariance table with the $i,j$-th entry being $\operatorname{Cov}\left( a_i X_i, a_j X_j \right)$, and the required variance is the sum of all the entries, which consists of</p>
 <ul class="simple">
-<li><p>the sum of the diagonal entries as <span class="math notranslate nohighlight">\(\sum_i\operatorname{Var}\left(a_{i}X_{i}\right)\)</span></p></li>
-<li><p>the sum of the off-diagonal entries as <span class="math notranslate nohighlight">\(\sum_{i\ne j}\operatorname{Cov}\left(a_{i}X_{i}, a_{j}X_{j}\right)\)</span></p></li>
+<li><p>the sum of the diagonal entries as $\sum_i\operatorname{Var}\left(a_{i}X_{i}\right)$</p></li>
+<li><p>the sum of the off-diagonal entries as $\sum_{i\ne j}\operatorname{Cov}\left(a_{i}X_{i}, a_{j}X_{j}\right)$</p></li>
 </ul>
 </div>
 <p>In particular, the variance of the average value of the IID sum is</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{align}
-\operatorname{Var}\left( \bar X \right) &amp;= \operatorname{Var}\left( \frac{1}{n}\sum_{i} X_i \right)\\
-&amp;= \frac{1}{n^2}\sum_i \operatorname{Var}\left( X_i \right)\\
-&amp;= \frac{1}{n} \sigma^2 \\
-\end{align}\end{split}\]</div>
+<p>$$\begin{align}
+\operatorname{Var}\left( \bar X \right) &amp;= \operatorname{Var}\left( \frac{1}{n}\sum_{i} X_i \right)\
+&amp;= \frac{1}{n^2}\sum_i \operatorname{Var}\left( X_i \right)\
+&amp;= \frac{1}{n} \sigma^2 \
+\end{align}$$</p>
 </div>
 <div class="section" id="expectation-of-nonnegative-random-variables">
 <h3>Expectation of Nonnegative Random Variables<a class="headerlink" href="#expectation-of-nonnegative-random-variables" title="Permalink to this headline">¶</a></h3>
-<p>For nonnegative random variables, the expectation can be computed from the complementary cumulative distribution function <span class="math notranslate nohighlight">\(1 - F(x) = \operatorname{P}\left( X &gt; x \right)\)</span>.</p>
+<p>For nonnegative random variables, the expectation can be computed from the complementary cumulative distribution function $1 - F(x) = \operatorname{P}\left( X &gt; x \right)$.</p>
 <ul class="simple">
 <li><p>discrete case</p></li>
 </ul>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 \operatorname{E}\left( X \right)=\sum_{n=0}^{\infty} \operatorname{P}\left( X&gt;n \right)
-\]</div>
+$$</p>
 <ul class="simple">
 <li><p>continuous case</p></li>
 </ul>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 \operatorname{E}\left( X \right) = \int_{0}^{\infty} \operatorname{P}(X \geq x) \mathrm{~d} x
-\]</div>
+$$</p>
 <p><em><strong>Proof</strong></em></p>
 <p>We prove by changing the <strong>order</strong> of summation/integral.</p>
 <ul>
 <li><p>discrete case</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{align}
-  \sum_{n=0}^{\infty} \operatorname{P}\left( X&gt;n \right)
-  &amp;= \sum_{n=0}^{\infty} \sum_{k=n+1}^{\infty} \operatorname{P}\left( X=k \right) \\
-  &amp;= \sum_{k=1}^{\infty} \sum_{n=1}^k \operatorname{P}\left( X=k \right) \\
-  &amp;= \sum_{k=1}^{\infty} k \operatorname{P}\left( X=k \right) \\
-  &amp;= \sum_{k=0}^{\infty} k \operatorname{P}\left( X=k \right) \\
-  &amp;= \operatorname{E}\left( X \right)
-  \end{align}\end{split}\]</div>
+<p>$$\begin{align}
+\sum_{n=0}^{\infty} \operatorname{P}\left( X&gt;n \right)
+&amp;= \sum_{n=0}^{\infty} \sum_{k=n+1}^{\infty} \operatorname{P}\left( X=k \right) \
+&amp;= \sum_{k=1}^{\infty} \sum_{n=1}^k \operatorname{P}\left( X=k \right) \
+&amp;= \sum_{k=1}^{\infty} k \operatorname{P}\left( X=k \right) \
+&amp;= \sum_{k=0}^{\infty} k \operatorname{P}\left( X=k \right) \
+&amp;= \operatorname{E}\left( X \right)
+\end{align}$$</p>
 </li>
 <li><p>continuous case</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
-  \begin{aligned}
-  \int_{0}^{\infty} \operatorname{P}(X \ge x) \mathrm{~d} x
-  &amp;=\int_{0}^{\infty} \int_{x}^{\infty} f_{X}(y) \mathrm{~d} y \mathrm{~d} x \\
-  &amp;=\int_{0}^{\infty} \int_{0}^{y} f_{X}(y) \mathrm{~d} x \mathrm{~d} y \\
-  &amp;=\int_{0}^{\infty} f_{X}(y) \int_{0}^{y} 1 \mathrm{~d} x \mathrm{~d} y \\
-  &amp;=\int_{0}^{\infty} y f_{X}(y) \mathrm{~d} y \\
-  &amp;=\operatorname{E}\left( X \right)
-  \end{aligned}
-  \end{split}\]</div>
-<p><span class="math notranslate nohighlight">\(\square\)</span></p>
+<p>$$
+\begin{aligned}
+\int_{0}^{\infty} \operatorname{P}(X \ge x) \mathrm{~d} x
+&amp;=\int_{0}^{\infty} \int_{x}^{\infty} f_{X}(y) \mathrm{~d} y \mathrm{~d} x \
+&amp;=\int_{0}^{\infty} \int_{0}^{y} f_{X}(y) \mathrm{~d} x \mathrm{~d} y \
+&amp;=\int_{0}^{\infty} f_{X}(y) \int_{0}^{y} 1 \mathrm{~d} x \mathrm{~d} y \
+&amp;=\int_{0}^{\infty} y f_{X}(y) \mathrm{~d} y \
+&amp;=\operatorname{E}\left( X \right)
+\end{aligned}
+$$</p>
+<p>$\square$</p>
 </li>
 </ul>
 </div>
 <div class="section" id="law-of-total-expectation">
 <h3>Law of Total Expectation<a class="headerlink" href="#law-of-total-expectation" title="Permalink to this headline">¶</a></h3>
 <p>Aka law of iterated expectations, tower rule, smoothing theorem.</p>
-<p>Given the conditional expectation <span class="math notranslate nohighlight">\(\operatorname{E}\left( X \mid Y \right)\)</span>, the law of total expectation states that we can obtained the unconditional expectation <span class="math notranslate nohighlight">\(\operatorname{E}\left( X \right)\)</span> by</p>
-<div class="math notranslate nohighlight">
-\[
+<p>Given the conditional expectation $\operatorname{E}\left( X \mid Y \right)$, the law of total expectation states that we can obtained the unconditional expectation $\operatorname{E}\left( X \right)$ by</p>
+<p>$$
 \operatorname{E}\left( X \right)=\operatorname{E}\left[ \operatorname{E}(X \mid Y) \right]
-\]</div>
+$$</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The inside expectation is taken w.r.t. <span class="math notranslate nohighlight">\(X\)</span> and the outside expectation is taken w.r.t. <span class="math notranslate nohighlight">\(Y\)</span>, since the conditional expectation <span class="math notranslate nohighlight">\(\operatorname{E}\left(X \mid Y \right)\)</span> is a function <span class="math notranslate nohighlight">\(g(Y)\)</span> that depends on the random variables <span class="math notranslate nohighlight">\(Y\)</span>. To emphasize this we can write</p>
-<div class="math notranslate nohighlight">
-\[
+<p>The inside expectation is taken w.r.t. $X$ and the outside expectation is taken w.r.t. $Y$, since the conditional expectation $\operatorname{E}\left(X \mid Y \right)$ is a function $g(Y)$ that depends on the random variables $Y$. To emphasize this we can write</p>
+<p>$$
 \operatorname{E}_X\left( X \right)=\operatorname{E}_Y\left[ \operatorname{E}_X(X \mid Y) \right]
-\]</div>
+$$</p>
 </div>
-<p>In general, we can partition the sample space into finite or countably infinite sets <span class="math notranslate nohighlight">\(A_i\)</span>, then</p>
-<div class="math notranslate nohighlight">
-\[
+<p>In general, we can partition the sample space into finite or countably infinite sets $A_i$, then</p>
+<p>$$
 \operatorname{E}(X)=\sum_{i} \operatorname{E}\left(X \mid A_{i}\right) \operatorname{P}\left(A_{i}\right)
-\]</div>
+$$</p>
 <p>For instance, we can compute the expectation as a weighted sum of the expectation of the positive part and the expectation of the negative part on respective probabilities.</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 \operatorname{E}(X)=\operatorname{E}\left(X \mid X&gt;0\right) \operatorname{P}\left(X&gt;0\right) + \operatorname{E}\left(X \mid X&lt;0\right) \operatorname{P}\left(X&lt;0\right)
-\]</div>
+$$</p>
 <p><em><strong>Proof</strong></em></p>
 <p>By definition</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
+<p>$$
 \begin{aligned}
-\operatorname{E}\left( \operatorname{E}\left( X \mid Y \right) \right) &amp;=\operatorname{E}\left[\sum_{x} x \cdot \operatorname{P}(X=x \mid Y)\right] \\
-&amp;=\sum_{y}\left[\sum_{x} x \cdot \operatorname{P}(X=x \mid Y=y)\right] \cdot \operatorname{P}(Y=y) \\
-&amp;=\sum_{y} \sum_{x} x \cdot \operatorname{P}(X=x, Y=y) \\
-&amp;=\sum_{x} x \sum_{y} \operatorname{P}(X=x, Y=y) \\
-&amp;=\sum_{x} x \cdot \operatorname{P}(X=x) \\
+\operatorname{E}\left( \operatorname{E}\left( X \mid Y \right) \right) &amp;=\operatorname{E}\left[\sum_{x} x \cdot \operatorname{P}(X=x \mid Y)\right] \
+&amp;=\sum_{y}\left[\sum_{x} x \cdot \operatorname{P}(X=x \mid Y=y)\right] \cdot \operatorname{P}(Y=y) \
+&amp;=\sum_{y} \sum_{x} x \cdot \operatorname{P}(X=x, Y=y) \
+&amp;=\sum_{x} x \sum_{y} \operatorname{P}(X=x, Y=y) \
+&amp;=\sum_{x} x \cdot \operatorname{P}(X=x) \
 &amp;=\operatorname{E}(X)
 \end{aligned}
-\end{split}\]</div>
-<p><span class="math notranslate nohighlight">\(\square\)</span></p>
+$$</p>
+<p>$\square$</p>
 </div>
 <div class="section" id="law-of-total-variance">
 <h3>Law of Total Variance<a class="headerlink" href="#law-of-total-variance" title="Permalink to this headline">¶</a></h3>
 <p>Aka law of iterated variances, variance decomposition formula, Eve’s law.</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 \operatorname{Var}(X)=\operatorname{E}[\operatorname{Var}(X \mid Y)]+\operatorname{Var}(\operatorname{E}[X \mid Y])
-\]</div>
+$$</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Here both <span class="math notranslate nohighlight">\(\operatorname{Var}\left( X \mid Y \right)\)</span> and <span class="math notranslate nohighlight">\(\operatorname{E}\left( X \mid Y \right)\)</span> are random. The outside expectation and variance are taken w.r.t. the conditioned variable, <span class="math notranslate nohighlight">\(Y\)</span>.</p>
+<p>Here both $\operatorname{Var}\left( X \mid Y \right)$ and $\operatorname{E}\left( X \mid Y \right)$ are random. The outside expectation and variance are taken w.r.t. the conditioned variable, $Y$.</p>
 </div>
-<p>The first and the second term can be interpreted as the unexplained and the explained components of the variance of <span class="math notranslate nohighlight">\(X\)</span> by knowing <span class="math notranslate nohighlight">\(Y\)</span>. Imagine that there is a deterministic relation <span class="math notranslate nohighlight">\(X=f(Y)\)</span>, then <span class="math notranslate nohighlight">\(\operatorname{Var}\left( X \mid Y \right) = 0\)</span> so that the first term is 0, and the second term becomes <span class="math notranslate nohighlight">\(\operatorname{Var}\left(  f(Y) \right) = \operatorname{Var}\left( X \right)\)</span>.</p>
+<p>The first and the second term can be interpreted as the unexplained and the explained components of the variance of $X$ by knowing $Y$. Imagine that there is a deterministic relation $X=f(Y)$, then $\operatorname{Var}\left( X \mid Y \right) = 0$ so that the first term is 0, and the second term becomes $\operatorname{Var}\left(  f(Y) \right) = \operatorname{Var}\left( X \right)$.</p>
 <p><em><strong>Proof</strong></em></p>
-<p>Note that the relation <span class="math notranslate nohighlight">\(\operatorname{Var}\left( X \right) = \operatorname{E}\left( X^2 \right) - \left[ \operatorname{E}\left( X \right) \right]^2\)</span> holds in a similar fashion when conditioning on <span class="math notranslate nohighlight">\(Y\)</span></p>
-<div class="math notranslate nohighlight">
-\[
+<p>Note that the relation $\operatorname{Var}\left( X \right) = \operatorname{E}\left( X^2 \right) - \left[ \operatorname{E}\left( X \right) \right]^2$ holds in a similar fashion when conditioning on $Y$</p>
+<p>$$
 \operatorname{Var}\left( X \mid Y \right) = \operatorname{E}\left( X^2 \mid Y \right) - \left[ \operatorname{E}\left( X \mid Y\right) \right]^2
-\]</div>
-<p>By the law of total expectation, we can compute <span class="math notranslate nohighlight">\(\operatorname{E}\left( X^2 \right)\)</span> by</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
+$$</p>
+<p>By the law of total expectation, we can compute $\operatorname{E}\left( X^2 \right)$ by</p>
+<p>$$
 \begin{align}
 \operatorname{E}\left( X^2 \right)
-&amp;= \operatorname{E}\left[ \operatorname{E}\left( X^2 \mid Y \right) \right] \\
-&amp;=  \operatorname{E}\left\{ \operatorname{Var}\left( X \mid Y \right) + \left[ \operatorname{E}\left( X \mid Y\right) \right]^2  \right\}
+&amp;= \operatorname{E}\left[ \operatorname{E}\left( X^2 \mid Y \right) \right] \
+&amp;=  \operatorname{E}\left{ \operatorname{Var}\left( X \mid Y \right) + \left[ \operatorname{E}\left( X \mid Y\right) \right]^2  \right}
 \end{align}
-\end{split}\]</div>
-<p>and compute <span class="math notranslate nohighlight">\(\operatorname{E}\left( X \right)\)</span> by <span class="math notranslate nohighlight">\(\operatorname{E}\left[ \operatorname{E}\left( X\mid Y \right) \right]\)</span>. Hence,</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{align}
-\operatorname{Var}\left( X \right) &amp;= \operatorname{E}\left( X^2 \right) - \left[ \operatorname{E}\left( X \right) \right]^2\\
-&amp;=  \operatorname{E}\left\{ \operatorname{Var}\left( X \mid Y \right) + \left[ \operatorname{E}\left( X \mid Y\right) \right]^2  \right\} - \left\{ \operatorname{E}\left[ \operatorname{E}\left( X\mid Y \right) \right] \right\}^2\\
+$$</p>
+<p>and compute $\operatorname{E}\left( X \right)$ by $\operatorname{E}\left[ \operatorname{E}\left( X\mid Y \right) \right]$. Hence,</p>
+<p>$$\begin{align}
+\operatorname{Var}\left( X \right) &amp;= \operatorname{E}\left( X^2 \right) - \left[ \operatorname{E}\left( X \right) \right]^2\
+&amp;=  \operatorname{E}\left{ \operatorname{Var}\left( X \mid Y \right) + \left[ \operatorname{E}\left( X \mid Y\right) \right]^2  \right} - \left{ \operatorname{E}\left[ \operatorname{E}\left( X\mid Y \right) \right] \right}^2\
 &amp;= \operatorname{E}[\operatorname{Var}(X \mid Y)]+\operatorname{Var}(\operatorname{E}[X \mid Y])
-\end{align}\end{split}\]</div>
-<p><span class="math notranslate nohighlight">\(\square\)</span></p>
+\end{align}$$</p>
+<p>$\square$</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>From above we see that the identity that holds for expectation</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 \operatorname{E}(X)=\sum_{i} \operatorname{E}\left(X \mid A_{i}\right) \operatorname{P}\left(A_{i}\right)
-\]</div>
+$$</p>
 <p>does <strong>not</strong> hold for variance</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 \operatorname{Var}(X) \ne \sum_{i} \operatorname{Var}\left(X \mid A_{i}\right) \operatorname{P}\left(A_{i}\right)
-\]</div>
-<p>unless <span class="math notranslate nohighlight">\(\operatorname{Var}(\operatorname{E}[X \mid A]) = 0\)</span>, which implies that <span class="math notranslate nohighlight">\(\operatorname{E}\left( X \mid A \right) = \text{constant}\)</span>, i.e., <span class="math notranslate nohighlight">\(X\)</span> and the partitioning <span class="math notranslate nohighlight">\(A_i\)</span> are independent.</p>
+$$</p>
+<p>unless $\operatorname{Var}(\operatorname{E}[X \mid A]) = 0$, which implies that $\operatorname{E}\left( X \mid A \right) = \text{constant}$, i.e., $X$ and the partitioning $A_i$ are independent.</p>
 </div>
 </div>
 </div>
@@ -986,96 +961,85 @@
 <p>There are two important inequalities that connect probability, expectation and variance.</p>
 <div class="section" id="markov-s-inequality">
 <h3>Markov’s Inequality<a class="headerlink" href="#markov-s-inequality" title="Permalink to this headline">¶</a></h3>
-<p>Markov’s inequality upper bounds right-tail probability <span class="math notranslate nohighlight">\(\operatorname{P}\left( X\ge a \right)\)</span> by <span class="math notranslate nohighlight">\(\frac{1}{a} \operatorname{E}\left( X \right)\)</span>.</p>
-<p>For a nonnegative random variable <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(a&gt;0\)</span>,</p>
-<div class="math notranslate nohighlight">
-\[
+<p>Markov’s inequality upper bounds right-tail probability $\operatorname{P}\left( X\ge a \right)$ by $\frac{1}{a} \operatorname{E}\left( X \right)$.</p>
+<p>For a nonnegative random variable $X$ and $a&gt;0$,</p>
+<p>$$
 \operatorname{P}(X \geq a) \leq \frac{\operatorname{E}(X)}{a}
-\]</div>
-<p>A simple way to memorize this is: <span class="math notranslate nohighlight">\(\operatorname{P}\left( \frac{X}{a} \ge 1 \right ) \le \operatorname{E}\left( \frac{X}{a}  \right)\)</span></p>
+$$</p>
+<p>A simple way to memorize this is: $\operatorname{P}\left( \frac{X}{a} \ge 1 \right ) \le \operatorname{E}\left( \frac{X}{a}  \right)$</p>
 <p><em><strong>Proof</strong></em></p>
 <ul>
-<li><p>By the law of total expectation, and since <span class="math notranslate nohighlight">\(\operatorname{E}(X \mid X&lt;a)\ge0\)</span> and <span class="math notranslate nohighlight">\(\operatorname{E}(X \mid X \geq a)\ge a\)</span>, we have</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{align}
-    \operatorname{E}(X) &amp; =  \operatorname{E}(X \mid X&lt;a) \cdot \operatorname{P}(X&lt;a) +  \operatorname{E}(X \mid X \geq a) \cdot \operatorname{P}(X \geq a)\\
-    &amp; \ge 0 \cdot \operatorname{P}(X&lt;a) +\operatorname{E}(X \mid X \geq a) \cdot \operatorname{P}(X \geq a) \\
-    &amp; \geq a \cdot \operatorname{P}(X \geq a)
-    \end{align}\end{split}\]</div>
-<p><span class="math notranslate nohighlight">\(\square\)</span></p>
+<li><p>By the law of total expectation, and since $\operatorname{E}(X \mid X&lt;a)\ge0$ and $\operatorname{E}(X \mid X \geq a)\ge a$, we have</p>
+<p>$$\begin{align}
+\operatorname{E}(X) &amp; =  \operatorname{E}(X \mid X&lt;a) \cdot \operatorname{P}(X&lt;a) +  \operatorname{E}(X \mid X \geq a) \cdot \operatorname{P}(X \geq a)\
+&amp; \ge 0 \cdot \operatorname{P}(X&lt;a) +\operatorname{E}(X \mid X \geq a) \cdot \operatorname{P}(X \geq a) \
+&amp; \geq a \cdot \operatorname{P}(X \geq a)
+\end{align}$$</p>
+<p>$\square$</p>
 </li>
 <li><p>By the definition of expectation,</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{align}
-    \operatorname{E}(X) &amp;= \int_{0}^{a} x f(x) \mathrm{~d} x+\int_{a}^{\infty} x f(x) \mathrm{~d} x \\
-    &amp; \geq \int_{a}^{\infty} x f(x) \mathrm{~d} x \\
-    &amp; \geq \int_{a}^{\infty} a f(x) \mathrm{~d} x \\
-    &amp; =a \int_{a}^{\infty} f(x) \mathrm{~d} x \\
-    &amp;=a \operatorname{P}(X \geq a)
-    \end{align}\end{split}\]</div>
-<p><span class="math notranslate nohighlight">\(\square\)</span></p>
+<p>$$\begin{align}
+\operatorname{E}(X) &amp;= \int_{0}^{a} x f(x) \mathrm{~d} x+\int_{a}^{\infty} x f(x) \mathrm{~d} x \
+&amp; \geq \int_{a}^{\infty} x f(x) \mathrm{~d} x \
+&amp; \geq \int_{a}^{\infty} a f(x) \mathrm{~d} x \
+&amp; =a \int_{a}^{\infty} f(x) \mathrm{~d} x \
+&amp;=a \operatorname{P}(X \geq a)
+\end{align}$$</p>
+<p>$\square$</p>
 </li>
 </ul>
 </div>
 <div class="section" id="chebyshev-s-inequality">
 <h3>Chebyshev’s Inequality<a class="headerlink" href="#chebyshev-s-inequality" title="Permalink to this headline">¶</a></h3>
-<p>Chebyshev’s inequality upper bounds the probability that a random variable is outside the interval <span class="math notranslate nohighlight">\(\left( \mu - k \sigma, \mu + k \sigma \right)\)</span> by <span class="math notranslate nohighlight">\(\frac{1}{k^2}\)</span>.</p>
-<p>For any <span class="math notranslate nohighlight">\(k&gt;0\)</span>,</p>
-<div class="math notranslate nohighlight">
-\[
+<p>Chebyshev’s inequality upper bounds the probability that a random variable is outside the interval $\left( \mu - k \sigma, \mu + k \sigma \right)$ by $\frac{1}{k^2}$.</p>
+<p>For any $k&gt;0$,</p>
+<p>$$
 \operatorname{P}(|X-\mu| \geq k \sigma) \leq \frac{1}{k^{2}}
-\]</div>
-<p>For instance, taking <span class="math notranslate nohighlight">\(k=\sqrt{2}\)</span> gives</p>
-<div class="math notranslate nohighlight">
-\[
+$$</p>
+<p>For instance, taking $k=\sqrt{2}$ gives</p>
+<p>$$
 \operatorname{P}\left( \mu - \sqrt{2}\sigma \le X \le \mu - \sqrt{2}\sigma \right) &gt; \frac{1}{2}
-\]</div>
+$$</p>
 <p><em><strong>Proof</strong></em></p>
 <p>By the law of total expectation,</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{align}
-\sigma^{2} &amp;=\operatorname{E}\left[(X-\mu)^{2}\right] \\
-&amp;=  \operatorname{E}\left[(X-\mu)^{2} \mid k \sigma \leq| X-\mu \mid\right] \cdot \operatorname{P}\left( k \sigma \leq|X-\mu| \right)\\
-&amp; \, +  \operatorname{E}\left[(X-\mu)^{2} \mid k \sigma&gt;| X-\mu \mid\right] \cdot \operatorname{P}\left( k \sigma&gt;|X-\mu| \right) \\
-&amp; \geq(k \sigma)^{2} \operatorname{P}\left( k \sigma \leq|X-\mu| \right)+0 \cdot \operatorname{P}\left( k \sigma&gt;|X-\mu| \right) \\
+<p>$$\begin{align}
+\sigma^{2} &amp;=\operatorname{E}\left[(X-\mu)^{2}\right] \
+&amp;=  \operatorname{E}\left[(X-\mu)^{2} \mid k \sigma \leq| X-\mu \mid\right] \cdot \operatorname{P}\left( k \sigma \leq|X-\mu| \right)\
+&amp; , +  \operatorname{E}\left[(X-\mu)^{2} \mid k \sigma&gt;| X-\mu \mid\right] \cdot \operatorname{P}\left( k \sigma&gt;|X-\mu| \right) \
+&amp; \geq(k \sigma)^{2} \operatorname{P}\left( k \sigma \leq|X-\mu| \right)+0 \cdot \operatorname{P}\left( k \sigma&gt;|X-\mu| \right) \
 &amp;=k^{2} \sigma^{2} \operatorname{P}[k \sigma \leq|X-\mu|]
-\end{align}\end{split}\]</div>
-<p><span class="math notranslate nohighlight">\(\square\)</span></p>
+\end{align}$$</p>
+<p>$\square$</p>
 </div>
 <div class="section" id="cauchy-schewarz-inequality-in-probability">
 <h3>Cauchy-Schewarz Inequality in Probability<a class="headerlink" href="#cauchy-schewarz-inequality-in-probability" title="Permalink to this headline">¶</a></h3>
-<p>For two random variables <span class="math notranslate nohighlight">\(X, Y\)</span> we have</p>
-<div class="math notranslate nohighlight">
-\[
+<p>For two random variables $X, Y$ we have</p>
+<p>$$
 \left[ \operatorname{Cov}\left( X,Y \right) \right]^2 \le \operatorname{Var}\left( X \right) \operatorname{Var}\left( Y \right)
-\]</div>
-<p>The equality holds iff there is a deterministic linear relation between <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span>, <span class="math notranslate nohighlight">\(Y = aX + b\)</span>.</p>
+$$</p>
+<p>The equality holds iff there is a deterministic linear relation between $X$ and $Y$, $Y = aX + b$.</p>
 <p><em><strong>Proof</strong></em></p>
-<p>Recall the Cauchy-Schewarz inequality for vectors <span class="math notranslate nohighlight">\(\boldsymbol{u}, \boldsymbol{v}\)</span> of an innver product space,</p>
-<div class="math notranslate nohighlight">
-\[
+<p>Recall the Cauchy-Schewarz inequality for vectors $\boldsymbol{u}, \boldsymbol{v}$ of an innver product space,</p>
+<p>$$
 |\langle\mathbf{u}, \mathbf{v}\rangle|^{2} \leq\langle\mathbf{u}, \mathbf{u}\rangle \cdot\langle\mathbf{v}, \mathbf{v}\rangle
-\]</div>
+$$</p>
 <p>Define an inner product on the set of random variables using the expectation of their product</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 \langle X, Y\rangle:=\mathrm{E}(X Y)
-\]</div>
+$$</p>
 <p>Then the Cauchy-Schewrz inequality becomes</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 |\mathrm{E}(X Y)|^{2} \leq \mathrm{E}\left(X^{2}\right) \mathrm{E}\left(Y^{2}\right)
-\]</div>
-<p>Substituting <span class="math notranslate nohighlight">\(X\)</span> by <span class="math notranslate nohighlight">\(X-\mu_X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span> by <span class="math notranslate nohighlight">\(Y-\mu_Y\)</span> gives</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
+$$</p>
+<p>Substituting $X$ by $X-\mu_X$ and $Y$ by $Y-\mu_Y$ gives</p>
+<p>$$
 \begin{aligned}
-|\operatorname{Cov}(X, Y)|^{2} &amp;=\left\vert \mathrm{E}\left[ (X-\mu_X)(Y-\mu_Y) \right] \right\vert^{2} \\
-&amp;\le \mathrm{E}\left[ (X-\mu_X)^{2} \right] \mathrm{E}\left[ (Y-\mu_Y)^2\right]\\
+|\operatorname{Cov}(X, Y)|^{2} &amp;=\left\vert \mathrm{E}\left[ (X-\mu_X)(Y-\mu_Y) \right] \right\vert^{2} \
+&amp;\le \mathrm{E}\left[ (X-\mu_X)^{2} \right] \mathrm{E}\left[ (Y-\mu_Y)^2\right]\
 &amp;=\operatorname{Var}(X) \operatorname{Var}(Y)
 \end{aligned}
-\end{split}\]</div>
-<p><span class="math notranslate nohighlight">\(\square\)</span></p>
+$$</p>
+<p>$\square$</p>
 </div>
 </div>
 <div class="section" id="exercise">
@@ -1090,18 +1054,17 @@ Solution 1: Law of Total Expectation<div class="summary-down docutils">
 <div class="summary-up docutils">
 <svg version="1.1" width="24" height="24" class="octicon octicon-chevron-up" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M18.78 15.28a.75.75 0 000-1.06l-6.25-6.25a.75.75 0 00-1.06 0l-6.25 6.25a.75.75 0 101.06 1.06L12 9.56l5.72 5.72a.75.75 0 001.06 0z"></path></svg></div>
 </summary><div class="summary-content card-body docutils">
-<p class="card-text">Denote the required number of flips by <span class="math notranslate nohighlight">\(X\)</span>. We can partition the sample space into <strong>three</strong> parts:</p>
+<p class="card-text">Denote the required number of flips by $X$. We can partition the sample space into <strong>three</strong> parts:</p>
 <ul class="simple">
-<li><p class="card-text"><span class="math notranslate nohighlight">\(A_T\)</span>: the first flip is a tail</p></li>
-<li><p class="card-text"><span class="math notranslate nohighlight">\(A_{HT}\)</span>: the first two flips are head, tail</p></li>
-<li><p class="card-text"><span class="math notranslate nohighlight">\(A_{HH}\)</span>: the first two flips are head, head</p></li>
+<li><p class="card-text">$A_T$: the first flip is a tail</p></li>
+<li><p class="card-text">$A_{HT}$: the first two flips are head, tail</p></li>
+<li><p class="card-text">$A_{HH}$: the first two flips are head, head</p></li>
 </ul>
 <p class="card-text">It’s easy to see</p>
-<div class="math notranslate nohighlight">
-\[
+<p class="card-text">$$
 \operatorname{P}\left( A_T \right) = \frac{1}{2}, \operatorname{P}\left( A_{HT} \right) = \operatorname{P}\left( A_{HH} \right) = \frac{1}{4}
-\]</div>
-<p class="card-text">But what are <span class="math notranslate nohighlight">\(\operatorname{E}\left( X \mid A_T \right), \operatorname{E}\left( X \mid A_{HT} \right), \operatorname{E}\left( X \mid A_{HH} \right)\)</span>?</p>
+$$</p>
+<p class="card-text">But what are $\operatorname{E}\left( X \mid A_T \right), \operatorname{E}\left( X \mid A_{HT} \right), \operatorname{E}\left( X \mid A_{HH} \right)$?</p>
 <ul class="simple">
 <li><p class="card-text">If the first flip is T, then we start over, and waste 1 flip</p></li>
 <li><p class="card-text">If the first two flips are HT, then we start over, and waste 2 flips</p></li>
@@ -1109,43 +1072,44 @@ Solution 1: Law of Total Expectation<div class="summary-down docutils">
 </ul>
 <p class="card-text">As a result, we have</p>
 <ul class="simple">
-<li><p class="card-text"><span class="math notranslate nohighlight">\(\operatorname{E}\left( X \mid A_T \right) = \operatorname{E}\left( X \right) + 1\)</span></p></li>
-<li><p class="card-text"><span class="math notranslate nohighlight">\(\operatorname{E}\left( X \mid A_{HT} \right) = \operatorname{E}\left( X \right)+ 2\)</span></p></li>
-<li><p class="card-text"><span class="math notranslate nohighlight">\(\operatorname{E}\left( X \mid A_{HH} \right) = 2\)</span></p></li>
+<li><p class="card-text">$\operatorname{E}\left( X \mid A_T \right) = \operatorname{E}\left( X \right) + 1$</p></li>
+<li><p class="card-text">$\operatorname{E}\left( X \mid A_{HT} \right) = \operatorname{E}\left( X \right)+ 2$</p></li>
+<li><p class="card-text">$\operatorname{E}\left( X \mid A_{HH} \right) = 2$</p></li>
 </ul>
 <p class="card-text">Then by the law of total expectation</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
+<p class="card-text">$$
 \begin{align}
 \operatorname{E}\left( X \right)
-&amp;= \operatorname{E}\left( X \mid A_T \right) \operatorname{P}\left( A_T \right)
-+  \operatorname{E}\left( X \mid A_{HT} \right) \operatorname{P}\left( A_{HT} \right)
-+  \operatorname{E}\left( X \mid A_{HH} \right) \operatorname{P}\left( A_{HH} \right) \\
-&amp;= \left[ \operatorname{E}\left( X \right)
- + 1 \right]\cdot \frac{1}{2} + \left[ \operatorname{E}\left( X \right) + 2\right] \cdot \frac{1}{4}
- + 2 \cdot \frac{1}{4} \\
+&amp;= \operatorname{E}\left( X \mid A_T \right) \operatorname{P}\left( A_T \right)</p>
+<ul class="simple">
+<li><p class="card-text">\operatorname{E}\left( X \mid A_{HT} \right) \operatorname{P}\left( A_{HT} \right)</p></li>
+<li><p class="card-text">\operatorname{E}\left( X \mid A_{HH} \right) \operatorname{P}\left( A_{HH} \right) \
+&amp;= \left[ \operatorname{E}\left( X \right)</p></li>
+<li><p class="card-text">1 \right]\cdot \frac{1}{2} + \left[ \operatorname{E}\left( X \right) + 2\right] \cdot \frac{1}{4}</p></li>
+<li><p class="card-text">2 \cdot \frac{1}{4} \
 \end{align}
-\end{split}\]</div>
-<p class="card-text">Solving the equation gives <span class="math notranslate nohighlight">\(\operatorname{E}\left( X \right) = 6\)</span></p>
+$$</p></li>
+</ul>
+<p class="card-text">Solving the equation gives $\operatorname{E}\left( X \right) = 6$</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p class="card-text">One may also partition the sample space to two parts <span class="math notranslate nohighlight">\({A_H}\)</span> and <span class="math notranslate nohighlight">\(A_T\)</span>, but to compute <span class="math notranslate nohighlight">\(\operatorname{E}\left( X \mid A_H \right)\)</span>, it requires to partition <span class="math notranslate nohighlight">\(A_H\)</span> into <span class="math notranslate nohighlight">\(A_{HT}\)</span> and <span class="math notranslate nohighlight">\(A_{HH}\)</span>, and then use the law of total expectation again, which is complicated and easy to make mistakes. So it would be better to partition <span class="math notranslate nohighlight">\(A\)</span> to three parts at the beginning.</p>
+<p class="card-text">One may also partition the sample space to two parts ${A_H}$ and $A_T$, but to compute $\operatorname{E}\left( X \mid A_H \right)$, it requires to partition $A_H$ into $A_{HT}$ and $A_{HH}$, and then use the law of total expectation again, which is complicated and easy to make mistakes. So it would be better to partition $A$ to three parts at the beginning.</p>
 </div>
-<p class="card-text">In general, what is the expected number of coin flips to get <span class="math notranslate nohighlight">\(n\)</span> heads in a row? In fact, we just need to continue to partition <span class="math notranslate nohighlight">\(A_{HH}\)</span> into <span class="math notranslate nohighlight">\(A_{HHT}\)</span> and <span class="math notranslate nohighlight">\(A_{HHH}\)</span>, and so on. By the law of total expectation the equation becomes</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
+<p class="card-text">In general, what is the expected number of coin flips to get $n$ heads in a row? In fact, we just need to continue to partition $A_{HH}$ into $A_{HHT}$ and $A_{HHH}$, and so on. By the law of total expectation the equation becomes</p>
+<p class="card-text">$$
 \operatorname{E}\left( X_n \right)
-= \left[ \operatorname{E}\left( X_n \right) + 1 \right]\cdot \frac{1}{2}
-+ \left[ \operatorname{E}\left( X_n \right) + 2\right] \cdot \frac{1}{4}
- + \ldots
- + \left[ \operatorname{E}\left( X_n \right) + n\right] \cdot \frac{1}{2^n}
- + n \cdot \frac{1}{2^n} \\
-\end{split}\]</div>
+= \left[ \operatorname{E}\left( X_n \right) + 1 \right]\cdot \frac{1}{2}</p>
+<ul class="simple">
+<li><p class="card-text">\left[ \operatorname{E}\left( X_n \right) + 2\right] \cdot \frac{1}{4}</p></li>
+<li><p class="card-text">\ldots</p></li>
+<li><p class="card-text">\left[ \operatorname{E}\left( X_n \right) + n\right] \cdot \frac{1}{2^n}</p></li>
+<li><p class="card-text">n \cdot \frac{1}{2^n} \
+$$</p></li>
+</ul>
 <p class="card-text">The solution is</p>
-<div class="math notranslate nohighlight">
-\[
+<p class="card-text">$$
 \operatorname{E}\left( X_n \right) = 2 \left( 2^n-1 \right)
-\]</div>
+$$</p>
 </div>
 </details><details class="sphinx-bs dropdown card mb-3">
 <summary class="summary-title card-header">
@@ -1154,30 +1118,27 @@ Solution 2: Recurrence Relation<div class="summary-down docutils">
 <div class="summary-up docutils">
 <svg version="1.1" width="24" height="24" class="octicon octicon-chevron-up" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M18.78 15.28a.75.75 0 000-1.06l-6.25-6.25a.75.75 0 00-1.06 0l-6.25 6.25a.75.75 0 101.06 1.06L12 9.56l5.72 5.72a.75.75 0 001.06 0z"></path></svg></div>
 </summary><div class="summary-content card-body docutils">
-<p class="card-text">One can also derive the solution from a recurrence relation between <span class="math notranslate nohighlight">\(\operatorname{E}\left( X_n \right)\)</span> and <span class="math notranslate nohighlight">\(\operatorname{E}\left( X_{n-1} \right)\)</span>.</p>
-<p class="card-text">Let <span class="math notranslate nohighlight">\(Y_{n} = X_n - X_{n-1}\)</span> be the number of additional flips required to get <span class="math notranslate nohighlight">\(n\)</span> heads in a row, given that we already got <span class="math notranslate nohighlight">\(n-1\)</span> heads in a row. Then by the law of total expectation,</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
+<p class="card-text">One can also derive the solution from a recurrence relation between $\operatorname{E}\left( X_n \right)$ and $\operatorname{E}\left( X_{n-1} \right)$.</p>
+<p class="card-text">Let $Y_{n} = X_n - X_{n-1}$ be the number of additional flips required to get $n$ heads in a row, given that we already got $n-1$ heads in a row. Then by the law of total expectation,</p>
+<p class="card-text">$$
 \begin{align}
 \operatorname{E}\left( Y_{n} \right)
-&amp;= \operatorname{E}\left( Y_n \mid \text{the $n$-th flip is H} \right) \operatorname{P}\left( \text{the $n$-th flip is H}  \right) \\
-  &amp;\ + \operatorname{E}\left( Y_n \mid \text{the $n$-th flip is T} \right) \operatorname{P}\left( \text{the $n$-th flip is T}  \right) \\
+&amp;= \operatorname{E}\left( Y_n \mid \text{the $n$-th flip is H} \right) \operatorname{P}\left( \text{the $n$-th flip is H}  \right) \
+&amp;\ + \operatorname{E}\left( Y_n \mid \text{the $n$-th flip is T} \right) \operatorname{P}\left( \text{the $n$-th flip is T}  \right) \
 &amp;= 1 \cdot \frac{1}{2} + \left[ 1 + \operatorname{E}\left( X_n \right) \right] \cdot \frac{1}{2}
- \end{align}
-\end{split}\]</div>
+\end{align}
+$$</p>
 <p class="card-text">Hence, we have the recurrence relation</p>
-<div class="math notranslate nohighlight">
-\[
+<p class="card-text">$$
 \operatorname{E}\left( X_n \right) = 2 \operatorname{E}\left( X_{n-1} \right) + 2
-\]</div>
-<p class="card-text">Let <span class="math notranslate nohighlight">\(f(n) = \operatorname{E}\left( X_n\right) + 2\)</span> then we have <span class="math notranslate nohighlight">\(f(n) = 2f(n-1)\)</span>. Since <span class="math notranslate nohighlight">\(f(1) = \operatorname{E}\left( X_1 \right)+2 = 4\)</span>, we have <span class="math notranslate nohighlight">\(f(n) = 2^{n+1}\)</span>. Therefore,</p>
-<div class="math notranslate nohighlight">
-\[\operatorname{E}\left( X_n \right) = 2^{n+1}-2\]</div>
+$$</p>
+<p class="card-text">Let $f(n) = \operatorname{E}\left( X_n\right) + 2$ then we have $f(n) = 2f(n-1)$. Since $f(1) = \operatorname{E}\left( X_1 \right)+2 = 4$, we have $f(n) = 2^{n+1}$. Therefore,</p>
+<p class="card-text">$$\operatorname{E}\left( X_n \right) = 2^{n+1}-2$$</p>
 </div>
 </details></div>
 <div class="section" id="coin-flips-count-rows">
 <h3>Coin Flips - Count Rows<a class="headerlink" href="#coin-flips-count-rows" title="Permalink to this headline">¶</a></h3>
-<p><em>What is the expected number of times to see <span class="math notranslate nohighlight">\(k\)</span> heads in a row, i.e., HH…HH, in <span class="math notranslate nohighlight">\(n\)</span> flips of a coin?</em></p>
+<p><em>What is the expected number of times to see $k$ heads in a row, i.e., HH…HH, in $n$ flips of a coin?</em></p>
 <details class="sphinx-bs dropdown card mb-3">
 <summary class="summary-title card-header">
 Solution<div class="summary-down docutils">
@@ -1185,19 +1146,17 @@ Solution<div class="summary-down docutils">
 <div class="summary-up docutils">
 <svg version="1.1" width="24" height="24" class="octicon octicon-chevron-up" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M18.78 15.28a.75.75 0 000-1.06l-6.25-6.25a.75.75 0 00-1.06 0l-6.25 6.25a.75.75 0 101.06 1.06L12 9.56l5.72 5.72a.75.75 0 001.06 0z"></path></svg></div>
 </summary><div class="summary-content card-body docutils">
-<p class="card-text">In <span class="math notranslate nohighlight">\(n\)</span> flips of a coin, there are <span class="math notranslate nohighlight">\(n-k+1\)</span> places where the string HH…HH can start to appear, each with a (non-independent) probability <span class="math notranslate nohighlight">\(\frac{1}{2^k} \)</span> of happening. Let <span class="math notranslate nohighlight">\(X\)</span> be the number of times to see the string HH…HH, and <span class="math notranslate nohighlight">\(X_i\)</span> be the indicator variable that is <span class="math notranslate nohighlight">\(1\)</span> if the string starts to appear at the <span class="math notranslate nohighlight">\(i\)</span>-th flip, then</p>
-<div class="math notranslate nohighlight">
-\[
+<p class="card-text">In $n$ flips of a coin, there are $n-k+1$ places where the string HH…HH can start to appear, each with a (non-independent) probability $\frac{1}{2^k} $ of happening. Let $X$ be the number of times to see the string HH…HH, and $X_i$ be the indicator variable that is $1$ if the string starts to appear at the $i$-th flip, then</p>
+<p class="card-text">$$
 X = \sum_{i=1}^{n-k+1} X_i
-\]</div>
+$$</p>
 <p class="card-text">and hence</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{align}
-\operatorname{E}\left( X \right) &amp;= \operatorname{E}\left( \sum_{i=1}^{n-k+1} X_i \right)\\
-&amp;= \sum_{i=1}^{n-k+1} \operatorname{E}\left( X_i \right)\\
-&amp;= \frac{n-k+1}{2^k} \\
-\end{align}\end{split}\]</div>
-<p class="card-text">The first second last line holds even if <span class="math notranslate nohighlight">\(X_i\)</span>’s are not independent.</p>
+<p class="card-text">$$\begin{align}
+\operatorname{E}\left( X \right) &amp;= \operatorname{E}\left( \sum_{i=1}^{n-k+1} X_i \right)\
+&amp;= \sum_{i=1}^{n-k+1} \operatorname{E}\left( X_i \right)\
+&amp;= \frac{n-k+1}{2^k} \
+\end{align}$$</p>
+<p class="card-text">The first second last line holds even if $X_i$’s are not independent.</p>
 </div>
 </details></div>
 <div class="section" id="coin-flips-count-runs">
@@ -1209,34 +1168,32 @@ Solution<div class="summary-down docutils">
 <div class="summary-up docutils">
 <svg version="1.1" width="24" height="24" class="octicon octicon-chevron-up" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M18.78 15.28a.75.75 0 000-1.06l-6.25-6.25a.75.75 0 00-1.06 0l-6.25 6.25a.75.75 0 101.06 1.06L12 9.56l5.72 5.72a.75.75 0 001.06 0z"></path></svg></div>
 </summary><div class="summary-content card-body docutils">
-<p class="card-text">A coin with a probability <span class="math notranslate nohighlight">\(p\)</span> to get a head is flipped <span class="math notranslate nohighlight">\(n\)</span> times. A “run” is a maximal sequence of consecutive flips that are all the same. For instance, HTHHHTTH has five runs and <span class="math notranslate nohighlight">\(n=8\)</span>. What is the expected number of runs?</p>
-<p class="card-text">Let <span class="math notranslate nohighlight">\(X_i\)</span> be the indicator for the event that a run starts at the <span class="math notranslate nohighlight">\(i-th\)</span> toss. Let <span class="math notranslate nohighlight">\(X = \sum_i X_i\)</span> be the total number of runs. It is easy to see <span class="math notranslate nohighlight">\(\operatorname{E}\left( X_1 \right) = 1\)</span>. For <span class="math notranslate nohighlight">\(i&gt;1\)</span>,</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
+<p class="card-text">A coin with a probability $p$ to get a head is flipped $n$ times. A “run” is a maximal sequence of consecutive flips that are all the same. For instance, HTHHHTTH has five runs and $n=8$. What is the expected number of runs?</p>
+<p class="card-text">Let $X_i$ be the indicator for the event that a run starts at the $i-th$ toss. Let $X = \sum_i X_i$ be the total number of runs. It is easy to see $\operatorname{E}\left( X_1 \right) = 1$. For $i&gt;1$,</p>
+<p class="card-text">$$
 \begin{aligned}
-\mathrm{E}\left(X_{i}\right)=&amp; \operatorname{P}\left(X_{i}=1\right) \\
-=&amp; \operatorname{P}\left(i \text { -th toss is } \mathrm{H} \mid(i-1) \text { -th toss is } \mathrm{T}\right) \times \operatorname{P}\left((i-1) \text { -th toss is } \mathrm{T}\right) \\
-&amp;+\operatorname{P}\left(i \text { -th toss is } \mathrm{T} \mid(i-1)\text {-th} \text { toss is } \mathrm{H}\right) \times \operatorname{P}\left((i-1)\text {-th } \text { toss is } \mathrm{H}\right) \\
-=&amp; p(1-p)+(1-p) p \\
+\mathrm{E}\left(X_{i}\right)=&amp; \operatorname{P}\left(X_{i}=1\right) \
+=&amp; \operatorname{P}\left(i \text { -th toss is } \mathrm{H} \mid(i-1) \text { -th toss is } \mathrm{T}\right) \times \operatorname{P}\left((i-1) \text { -th toss is } \mathrm{T}\right) \
+&amp;+\operatorname{P}\left(i \text { -th toss is } \mathrm{T} \mid(i-1)\text {-th} \text { toss is } \mathrm{H}\right) \times \operatorname{P}\left((i-1)\text {-th } \text { toss is } \mathrm{H}\right) \
+=&amp; p(1-p)+(1-p) p \
 =&amp; 2 p(1-p)
 \end{aligned}
-\end{split}\]</div>
+$$</p>
 <p class="card-text">Therefore,</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
+<p class="card-text">$$
 \begin{aligned}
-\mathrm{E}(X) &amp;=\mathrm{E}\left(X_{1}+X_{2}+\cdots+X_{n}\right) \\
-&amp;=\mathrm{E}\left(X_{1}\right)+\mathrm{E}\left(X_{2}\right)+\cdots+\mathrm{E}\left(X_{n}\right) \\
-&amp;=\mathrm{E}\left(X_{1}\right)+\left[\mathrm{E}\left(X_{2}\right)+\cdots+\mathrm{E}\left(X_{n}\right)\right] \\
-&amp;=1+(n-1) \times 2 p(1-p) \\
+\mathrm{E}(X) &amp;=\mathrm{E}\left(X_{1}+X_{2}+\cdots+X_{n}\right) \
+&amp;=\mathrm{E}\left(X_{1}\right)+\mathrm{E}\left(X_{2}\right)+\cdots+\mathrm{E}\left(X_{n}\right) \
+&amp;=\mathrm{E}\left(X_{1}\right)+\left[\mathrm{E}\left(X_{2}\right)+\cdots+\mathrm{E}\left(X_{n}\right)\right] \
+&amp;=1+(n-1) \times 2 p(1-p) \
 &amp;=1+2(n-1) p(1-p)
 \end{aligned}
-\end{split}\]</div>
+$$</p>
 </div>
 </details></div>
 <div class="section" id="incremental-update-of-mean-and-variance">
 <h3>Incremental Update of Mean and Variance<a class="headerlink" href="#incremental-update-of-mean-and-variance" title="Permalink to this headline">¶</a></h3>
-<p><em>Suppose you have <span class="math notranslate nohighlight">\(n\)</span> observations <span class="math notranslate nohighlight">\(x_1, x_2, \ldots, x_n\)</span>. Now a new value <span class="math notranslate nohighlight">\(x_{n+1}\)</span> is observed. Write recurrence functions to update the sample mean <span class="math notranslate nohighlight">\(\bar{x}_n\)</span> and variance <span class="math notranslate nohighlight">\(s^2_n\)</span>.</em></p>
+<p><em>Suppose you have $n$ observations $x_1, x_2, \ldots, x_n$. Now a new value $x_{n+1}$ is observed. Write recurrence functions to update the sample mean $\bar{x}_n$ and variance $s^2_n$.</em></p>
 <details class="sphinx-bs dropdown card mb-3">
 <summary class="summary-title card-header">
 Solution<div class="summary-down docutils">
@@ -1245,32 +1202,30 @@ Solution<div class="summary-down docutils">
 <svg version="1.1" width="24" height="24" class="octicon octicon-chevron-up" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M18.78 15.28a.75.75 0 000-1.06l-6.25-6.25a.75.75 0 00-1.06 0l-6.25 6.25a.75.75 0 101.06 1.06L12 9.56l5.72 5.72a.75.75 0 001.06 0z"></path></svg></div>
 </summary><div class="summary-content card-body docutils">
 <p class="card-text">To update mean,</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{align}
-\bar{x}_{n+1}
-&amp;= \frac{\sum_{i=1}^{n+1} x_i}{n+1} \\
-&amp;= \frac{x_{n+1} + \sum_{i=1}^n x_i}{n+1} \\
-&amp;= \frac{x_{n+1} + n\bar{x}_n}{n+1} \\
-&amp;= \bar{x}_n + \frac{1}{n+1}(x_{n+1} - \bar{x}_n) \quad (*)
-\end{align}\end{split}\]</div>
-<p class="card-text">The last line is to avoid computing a large number <span class="math notranslate nohighlight">\(n \bar{x}_n\)</span>.</p>
-<p class="card-text">The second last line implies that the new sample mean <span class="math notranslate nohighlight">\(\bar{x}_{n+1}\)</span> is a weighted average of the current sample mean <span class="math notranslate nohighlight">\(\bar{x}_{n+1}\)</span> and the new observed value <span class="math notranslate nohighlight">\(x_{n+1}\)</span>.</p>
-<p class="card-text">To update variance, we first find <span class="math notranslate nohighlight">\(\bar{x}_n\)</span>, then let <span class="math notranslate nohighlight">\(S_n = ns_{n}^2\)</span>,</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{align}
+<p class="card-text">$$\begin{align}
+\bar{x}<em>{n+1}
+&amp;= \frac{\sum</em>{i=1}^{n+1} x_i}{n+1} \
+&amp;= \frac{x_{n+1} + \sum_{i=1}^n x_i}{n+1} \
+&amp;= \frac{x_{n+1} + n\bar{x}_n}{n+1} \
+&amp;= \bar{x}<em>n + \frac{1}{n+1}(x</em>{n+1} - \bar{x}_n) \quad (*)
+\end{align}$$</p>
+<p class="card-text">The last line is to avoid computing a large number $n \bar{x}_n$.</p>
+<p class="card-text">The second last line implies that the new sample mean $\bar{x}<em>{n+1}$ is a weighted average of the current sample mean $\bar{x}</em>{n+1}$ and the new observed value $x_{n+1}$.</p>
+<p class="card-text">To update variance, we first find $\bar{x}<em>n$, then let $S_n = ns</em>{n}^2$,</p>
+<p class="card-text">$$\begin{align}
 S_{n+1}
-&amp;=  \sum_{i=1}^{n+1}x_i^2  - (n+1) \bar{x}_{n+1}^2  \\
-&amp;=  \sum_{i=1}^{n}x_i^2 - n\bar{x}_n^2 + n\bar{x}_n^2 + x_{n+1}^2  - (n+1) \bar{x}_{n+1}^2  \\
-&amp;=  S_{n} + n\bar{x}_n^2 + x_{n+1}^2  - (n+1) \bar{x}_{n+1}^2  \\
-&amp;=  S_{n}  + x_{n+1}^2  + (n+1)(\bar{x}_n - \bar{x}_{n+1})(\bar{x}_n + \bar{x}_{n+1}) - \bar{x}_{n}^2  \\
-&amp;=  S_{n}  + x_{n+1}^2  + (\bar{x}_n - x_{n+1} )(\bar{x}_n + \bar{x}_{n+1}) - \bar{x}_{n}^2 \quad \text{by} \ (*) \\
-&amp;=  S_{n}  + x_{n+1}^2  + \bar{x}_n \bar{x}_{n+1} - x_{n+1} (\bar{x}_n + \bar{x}_{n+1}) \\
-&amp;=  S_{n}  + (x_{n+1}  - \bar{x}_n)(x_{n+1}  - \bar{x}_{n+1})
-\end{align}\end{split}\]</div>
-<p class="card-text">Finally <span class="math notranslate nohighlight">\(s_{n+1}^2 = \frac{1}{n+1} S_{n+1}\)</span>.</p>
+&amp;=  \sum_{i=1}^{n+1}x_i^2  - (n+1) \bar{x}<em>{n+1}^2  \
+&amp;=  \sum</em>{i=1}^{n}x_i^2 - n\bar{x}<em>n^2 + n\bar{x}<em>n^2 + x</em>{n+1}^2  - (n+1) \bar{x}</em>{n+1}^2  \
+&amp;=  S_{n} + n\bar{x}<em>n^2 + x</em>{n+1}^2  - (n+1) \bar{x}<em>{n+1}^2  \
+&amp;=  S</em>{n}  + x_{n+1}^2  + (n+1)(\bar{x}<em>n - \bar{x}</em>{n+1})(\bar{x}<em>n + \bar{x}</em>{n+1}) - \bar{x}<em>{n}^2  \
+&amp;=  S</em>{n}  + x_{n+1}^2  + (\bar{x}<em>n - x</em>{n+1} )(\bar{x}<em>n + \bar{x}</em>{n+1}) - \bar{x}<em>{n}^2 \quad \text{by} \ (*) \
+&amp;=  S</em>{n}  + x_{n+1}^2  + \bar{x}<em>n \bar{x}</em>{n+1} - x_{n+1} (\bar{x}<em>n + \bar{x}</em>{n+1}) \
+&amp;=  S_{n}  + (x_{n+1}  - \bar{x}<em>n)(x</em>{n+1}  - \bar{x}_{n+1})
+\end{align}$$</p>
+<p class="card-text">Finally $s_{n+1}^2 = \frac{1}{n+1} S_{n+1}$.</p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
-<p class="card-text">The substitution <span class="math notranslate nohighlight">\(S_n = ns_n^2\)</span> avoids the computation that involves <span class="math notranslate nohighlight">\(\frac{1}{n} \)</span> and <span class="math notranslate nohighlight">\(\frac{1}{n+1} \)</span>. And the update equation of the mean is also quite useful.</p>
+<p class="card-text">The substitution $S_n = ns_n^2$ avoids the computation that involves $\frac{1}{n} $ and $\frac{1}{n+1} $. And the update equation of the mean is also quite useful.</p>
 </div>
 </div>
 </details></div>

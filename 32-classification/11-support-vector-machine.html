@@ -46,8 +46,6 @@
     <script src="../_static/copybutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="../_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
     <script >
         const thebe_selector = ".thebe"
@@ -355,6 +353,11 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/31-knapsack.html">
+     Minimum Knapsack
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="../23-dynamic-programming/51-chain-matrix-multiplication.html">
      Chain Matrix Multiplication
     </a>
@@ -488,11 +491,7 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../33-dimensionality-reduction/31-t-SNE.html">
-     SNE and
-     <span class="math notranslate nohighlight">
-      \(t\)
-     </span>
-     -SNE
+     SNE and $t$-SNE
     </a>
    </li>
   </ul>
@@ -717,52 +716,44 @@
 <h2>Prerequisite<a class="headerlink" href="#prerequisite" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="distance-from-a-point-to-a-hyperplane">
 <h3>Distance from a Point to a Hyperplane<a class="headerlink" href="#distance-from-a-point-to-a-hyperplane" title="Permalink to this headline">¶</a></h3>
-<p>Suppose there is a hyperplane in <span class="math notranslate nohighlight">\(p\)</span>-dimensional space characterized by</p>
-<div class="math notranslate nohighlight">
-\[
+<p>Suppose there is a hyperplane in $p$-dimensional space characterized by</p>
+<p>$$
 w_{1} x_{1}+w_{2} x_{2}+\cdots+w_{p} x_{p} + b = 0
-\]</div>
+$$</p>
 <p>or in vector form,</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 \boldsymbol{w} ^\top  \boldsymbol{x}  + b = 0
-\]</div>
-<p>then the distance from a point <span class="math notranslate nohighlight">\(X\)</span> with coordinates <span class="math notranslate nohighlight">\(\boldsymbol{x} = (x_1, x_2, \ldots, x_p)\)</span> to this hyperplane is</p>
-<div class="math notranslate nohighlight">
-\[
+$$</p>
+<p>then the distance from a point $X$ with coordinates $\boldsymbol{x} = (x_1, x_2, \ldots, x_p)$ to this hyperplane is</p>
+<p>$$
 \frac{1}{\left\Vert \boldsymbol{w}  \right\Vert } \left\vert \boldsymbol{w} ^\top  \boldsymbol{x}  + b  \right\vert
-\]</div>
+$$</p>
 <p>note that the distance is always positive.</p>
 <p>:::{admonition,dropdown,seealso} <em>Derivation</em></p>
-<p>For any two points <span class="math notranslate nohighlight">\(Y,Z\)</span> with coordinates <span class="math notranslate nohighlight">\(\boldsymbol{y}, \boldsymbol{z}\)</span> on the hyperplane we have</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{align}
-\boldsymbol{w} ^\top \boldsymbol{y} + b &amp;= 0 \\
+<p>For any two points $Y,Z$ with coordinates $\boldsymbol{y}, \boldsymbol{z}$ on the hyperplane we have</p>
+<p>$$\begin{align}
+\boldsymbol{w} ^\top \boldsymbol{y} + b &amp;= 0 \
 \boldsymbol{w} ^\top \boldsymbol{z} + b &amp;= 0
-\end{align}\end{split}\]</div>
+\end{align}$$</p>
 <p>Hence,</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 \boldsymbol{w} ^\top (\boldsymbol{y} - \boldsymbol{z})= 0
-\]</div>
-<p>which implies that the vector <span class="math notranslate nohighlight">\(\boldsymbol{w}\)</span> is orthogonal to the hyperplane.</p>
-<p>The distance from point <span class="math notranslate nohighlight">\(X\)</span> to the hyperplane can be formulated as</p>
-<div class="math notranslate nohighlight">
-\[
+$$</p>
+<p>which implies that the vector $\boldsymbol{w}$ is orthogonal to the hyperplane.</p>
+<p>The distance from point $X$ to the hyperplane can be formulated as</p>
+<p>$$
 d = \left\vert \left( \frac{\boldsymbol{w}}{\left\Vert \boldsymbol{w}  \right\Vert } \right)  ^\top (\boldsymbol{x} - \boldsymbol{y}) \right\vert
-\]</div>
-<p>where <span class="math notranslate nohighlight">\(\frac{\boldsymbol{w}}{\left\Vert \boldsymbol{w}  \right\Vert }\)</span> is a unit vector orthogonal to the hyperplane and <span class="math notranslate nohighlight">\(\boldsymbol{x} - \boldsymbol{y}\)</span> is a vector pointing from point <span class="math notranslate nohighlight">\(Y\)</span> (on the hyperplane) to point <span class="math notranslate nohighlight">\(X\)</span>. The absolute value of the cross product is the of the projection of vector <span class="math notranslate nohighlight">\(\boldsymbol{x} - \boldsymbol{y}\)</span> onto the direction of <span class="math notranslate nohighlight">\(\boldsymbol{w}\)</span>, i.e., <span class="math notranslate nohighlight">\(d\)</span>.</p>
-<p>Substituting <span class="math notranslate nohighlight">\(\boldsymbol{w} ^\top \boldsymbol{y} + b = 0\)</span> gives</p>
-<div class="math notranslate nohighlight">
-\[
+$$</p>
+<p>where $\frac{\boldsymbol{w}}{\left\Vert \boldsymbol{w}  \right\Vert }$ is a unit vector orthogonal to the hyperplane and $\boldsymbol{x} - \boldsymbol{y}$ is a vector pointing from point $Y$ (on the hyperplane) to point $X$. The absolute value of the cross product is the of the projection of vector $\boldsymbol{x} - \boldsymbol{y}$ onto the direction of $\boldsymbol{w}$, i.e., $d$.</p>
+<p>Substituting $\boldsymbol{w} ^\top \boldsymbol{y} + b = 0$ gives</p>
+<p>$$
 d = \frac{1}{\left\Vert \boldsymbol{w}  \right\Vert}\left\vert \boldsymbol{w} ^\top \boldsymbol{x} + \boldsymbol{b} \right\vert
-\]</div>
+$$</p>
 <p>:::</p>
-<p>note that the points on the same side of the hyperplane have the same sign of <span class="math notranslate nohighlight">\(\boldsymbol{w} ^\top  \boldsymbol{x}_i  + b\)</span>. If we label the points with positive values of <span class="math notranslate nohighlight">\(\boldsymbol{w} ^\top  \boldsymbol{x}_i  + b\)</span> by <span class="math notranslate nohighlight">\(y_i = 1\)</span> and those with negative values by <span class="math notranslate nohighlight">\(y_i = -1\)</span>, then the distance can be written as</p>
-<div class="math notranslate nohighlight">
-\[
+<p>note that the points on the same side of the hyperplane have the same sign of $\boldsymbol{w} ^\top  \boldsymbol{x}_i  + b$. If we label the points with positive values of $\boldsymbol{w} ^\top  \boldsymbol{x}_i  + b$ by $y_i = 1$ and those with negative values by $y_i = -1$, then the distance can be written as</p>
+<p>$$
 \frac{1}{\left\Vert \boldsymbol{w}  \right\Vert } y_i (\boldsymbol{w} ^\top  \boldsymbol{x}  + b )
-\]</div>
+$$</p>
 </div>
 </div>
 <div class="section" id="objective">
@@ -772,242 +763,215 @@ d = \frac{1}{\left\Vert \boldsymbol{w}  \right\Vert}\left\vert \boldsymbol{w} ^\
 <img src="../imgs/svm-hard-margin.png" width = "30%" alt=""/></p>
 <p>caption
 :::</p>
-<p>Definition (Margin)
-: The margin is defined as the shortest distance from a point to the hyperplane.</p>
-<div class="math notranslate nohighlight">
-\[
-\min _{i} \frac{1}{|\boldsymbol{w}|} y_{i}\left(\boldsymbol{w}^{\top} \boldsymbol{x}_{i}+b\right)
-\]</div>
-<p>The objective of SVM is to find a hyperplane <span class="math notranslate nohighlight">\(\boldsymbol{w}^{\top} \boldsymbol{x}_{i}+b = 0\)</span> that separates two types of points and maximizes the margin.</p>
-<div class="math notranslate nohighlight">
-\[
-\max _{\boldsymbol{w}, b}\left\{\min _i \frac{1}{\|\boldsymbol{w}\|} y_{i}\left(\boldsymbol{w}^{\top} \boldsymbol{x}_{i}+b\right)\right\}
-\]</div>
+<dl class="simple myst">
+<dt>Definition (Margin)</dt><dd><p>The margin is defined as the shortest distance from a point to the hyperplane.</p>
+</dd>
+</dl>
+<p>$$
+\min <em>{i} \frac{1}{|\boldsymbol{w}|} y</em>{i}\left(\boldsymbol{w}^{\top} \boldsymbol{x}_{i}+b\right)
+$$</p>
+<p>The objective of SVM is to find a hyperplane $\boldsymbol{w}^{\top} \boldsymbol{x}_{i}+b = 0$ that separates two types of points and maximizes the margin.</p>
+<p>$$
+\max <em>{\boldsymbol{w}, b}\left{\min <em>i \frac{1}{|\boldsymbol{w}|} y</em>{i}\left(\boldsymbol{w}^{\top} \boldsymbol{x}</em>{i}+b\right)\right}
+$$</p>
 <p>i.e.,</p>
-<div class="math notranslate nohighlight">
-\[
-\max _{\boldsymbol{w}, b} \frac{1}{\|\boldsymbol{w}\|} \left\{\min _i  y_{i}\left(\boldsymbol{w}^{\top} \boldsymbol{x}_{i}+b\right)\right\}
-\]</div>
-<p>To classify a point with coordinates <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span>, we use the solution <span class="math notranslate nohighlight">\(\boldsymbol{w}^*\)</span> and <span class="math notranslate nohighlight">\(b^*\)</span>.</p>
+<p>$$
+\max <em>{\boldsymbol{w}, b} \frac{1}{|\boldsymbol{w}|} \left{\min <em>i  y</em>{i}\left(\boldsymbol{w}^{\top} \boldsymbol{x}</em>{i}+b\right)\right}
+$$</p>
+<p>To classify a point with coordinates $\boldsymbol{x}$, we use the solution $\boldsymbol{w}^<em>$ and $b^</em>$.</p>
 <ul class="simple">
-<li><p>If <span class="math notranslate nohighlight">\(\boldsymbol{w}^{* \top} \boldsymbol{x} + b^* &gt; 0\)</span> then <span class="math notranslate nohighlight">\(\hat{y}_i = 1\)</span></p></li>
-<li><p>If <span class="math notranslate nohighlight">\(\boldsymbol{w}^{* \top} \boldsymbol{x} + b^* &lt; 0\)</span> then <span class="math notranslate nohighlight">\(\hat{y}_i = -1\)</span></p></li>
+<li><p>If $\boldsymbol{w}^{* \top} \boldsymbol{x} + b^* &gt; 0$ then $\hat{y}_i = 1$</p></li>
+<li><p>If $\boldsymbol{w}^{* \top} \boldsymbol{x} + b^* &lt; 0$ then $\hat{y}_i = -1$</p></li>
 </ul>
 </div>
 <div class="section" id="learning">
 <h2>Learning<a class="headerlink" href="#learning" title="Permalink to this headline">¶</a></h2>
 <p>We convert the optimization problem step by step such that it becomes easier to solve.</p>
-<p>Note that distance is invariant to scaling of <span class="math notranslate nohighlight">\(\boldsymbol{w}\)</span> and <span class="math notranslate nohighlight">\(b\)</span> (or note that <span class="math notranslate nohighlight">\(\boldsymbol{w} ^\top \boldsymbol{x} +b = 0\)</span> and <span class="math notranslate nohighlight">\((k\boldsymbol{w}) ^\top \boldsymbol{x} + (kb) = 0\)</span> characterize the same hyperplane), thus we can assume</p>
-<div class="math notranslate nohighlight">
-\[
-\min _{i} y_{i}\left(\boldsymbol{w}^{\top} \boldsymbol{x}_i + b\right)=1
-\]</div>
+<p>Note that distance is invariant to scaling of $\boldsymbol{w}$ and $b$ (or note that $\boldsymbol{w} ^\top \boldsymbol{x} +b = 0$ and $(k\boldsymbol{w}) ^\top \boldsymbol{x} + (kb) = 0$ characterize the same hyperplane), thus we can assume</p>
+<p>$$
+\min <em>{i} y</em>{i}\left(\boldsymbol{w}^{\top} \boldsymbol{x}_i + b\right)=1
+$$</p>
 <p>Then the maximization-minimization problem becomes a constrained maximization problem</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{align}
-\underset{\boldsymbol{w}, b}{\max }&amp;\quad \frac{1}{\|\boldsymbol{w}\|}\\
-\text {s.t.}&amp;\quad \min_{i} y_{i}\left(\boldsymbol{w}^{\top} \boldsymbol{x}_i+b\right)=1\\
-\end{align}\end{split}\]</div>
+<p>$$\begin{align}
+\underset{\boldsymbol{w}, b}{\max }&amp;\quad \frac{1}{|\boldsymbol{w}|}\
+\text {s.t.}&amp;\quad \min_{i} y_{i}\left(\boldsymbol{w}^{\top} \boldsymbol{x}_i+b\right)=1\
+\end{align}$$</p>
 <p>Or equivalently,</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{align}
-\underset{\boldsymbol{w}, b}{\min }&amp;\quad \frac{1}{2} \boldsymbol{w} ^\top \boldsymbol{w}    \\
-\text {s.t.}&amp;\quad y_{i}\left(\boldsymbol{w}^{\top} \boldsymbol{x}_i+b\right)\ge1\\
-\end{align}\end{split}\]</div>
-<p>To get rid of the constraints on <span class="math notranslate nohighlight">\(\boldsymbol{w}\)</span> and <span class="math notranslate nohighlight">\(b\)</span>, we use Lagrangian multiplier method. Let</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$\begin{align}
+\underset{\boldsymbol{w}, b}{\min }&amp;\quad \frac{1}{2} \boldsymbol{w} ^\top \boldsymbol{w}    \
+\text {s.t.}&amp;\quad y_{i}\left(\boldsymbol{w}^{\top} \boldsymbol{x}_i+b\right)\ge1\
+\end{align}$$</p>
+<p>To get rid of the constraints on $\boldsymbol{w}$ and $b$, we use Lagrangian multiplier method. Let</p>
+<p>$$
 L(\boldsymbol{w} ,b,\lambda) = \frac{1}{2} \boldsymbol{w} ^\top \boldsymbol{w}  + \sum_i ^n \lambda_i (1-y_i(\boldsymbol{w} ^\top \boldsymbol{x}_i + b))
-\]</div>
-<p>where <span class="math notranslate nohighlight">\(\lambda_i \ge 0\)</span>.</p>
+$$</p>
+<p>where $\lambda_i \ge 0$.</p>
 <p>Then the problem becomes</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{align}
-\underset{\boldsymbol{w}, b}{\min } \, \max _{\boldsymbol{\lambda}} &amp;\quad L(\boldsymbol{w} ,b, \boldsymbol{\lambda}) \\
-\text {s.t.}&amp;\quad \lambda_i \ge 0\\
-\end{align}\end{split}\]</div>
-<p>Since <span class="math notranslate nohighlight">\(\min_{\boldsymbol{w} ,b} L\)</span> is better to solve than <span class="math notranslate nohighlight">\(\max_{\boldsymbol{\lambda} } L\)</span>, we want exchange the min-max order. This step is valid since it is a quadratic minimization with <span class="math notranslate nohighlight">\(n\)</span> linear constraints, which leads to strong duality. As a result, its dual problem is</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{align}
-\max _{\boldsymbol{\lambda}} \, \underset{\boldsymbol{w}, b}{\min }  &amp;\quad L(\boldsymbol{w} ,b, \boldsymbol{\lambda}) \\
-\text {s.t.}&amp;\quad \lambda_i \ge 0\\
-\end{align}\end{split}\]</div>
-<p>which is has the same solutions <span class="math notranslate nohighlight">\(\boldsymbol{w}^*, b^*\)</span> with the primal problem.</p>
-<p>We first solve the minimization problem. Taking derivatives of <span class="math notranslate nohighlight">\(L\)</span> w.r.t. <span class="math notranslate nohighlight">\(\boldsymbol{w} ,b\)</span> and equating them to zero gives</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{align}
-&amp;&amp; \frac{\partial}{\partial \boldsymbol{w}} L\left(\boldsymbol{w}, b, \boldsymbol{\lambda}\right) &amp;= \boldsymbol{w}-\sum_{i=1}^{n} \lambda_{i} y_{i} \boldsymbol{x}_{i}\overset{\text{set}}{=} 0 \\
-&amp;\Rightarrow &amp; \boldsymbol{w} &amp;= \sum_{i=1}^{n} \lambda_{i} y_{i} \boldsymbol{x}_{i}  \\
+<p>$$\begin{align}
+\underset{\boldsymbol{w}, b}{\min } , \max _{\boldsymbol{\lambda}} &amp;\quad L(\boldsymbol{w} ,b, \boldsymbol{\lambda}) \
+\text {s.t.}&amp;\quad \lambda_i \ge 0\
+\end{align}$$</p>
+<p>Since $\min_{\boldsymbol{w} ,b} L$ is better to solve than $\max_{\boldsymbol{\lambda} } L$, we want exchange the min-max order. This step is valid since it is a quadratic minimization with $n$ linear constraints, which leads to strong duality. As a result, its dual problem is</p>
+<p>$$\begin{align}
+\max _{\boldsymbol{\lambda}} , \underset{\boldsymbol{w}, b}{\min }  &amp;\quad L(\boldsymbol{w} ,b, \boldsymbol{\lambda}) \
+\text {s.t.}&amp;\quad \lambda_i \ge 0\
+\end{align}$$</p>
+<p>which is has the same solutions $\boldsymbol{w}^<em>, b^</em>$ with the primal problem.</p>
+<p>We first solve the minimization problem. Taking derivatives of $L$ w.r.t. $\boldsymbol{w} ,b$ and equating them to zero gives</p>
+<p>$$\begin{align}
+&amp;&amp; \frac{\partial}{\partial \boldsymbol{w}} L\left(\boldsymbol{w}, b, \boldsymbol{\lambda}\right) &amp;= \boldsymbol{w}-\sum_{i=1}^{n} \lambda_{i} y_{i} \boldsymbol{x}<em>{i}\overset{\text{set}}{=} 0 \
+&amp;\Rightarrow &amp; \boldsymbol{w} &amp;= \sum</em>{i=1}^{n} \lambda_{i} y_{i} \boldsymbol{x}<em>{i}  \
 &amp;&amp; \frac{\partial}{\partial b} L\left(\boldsymbol{w}, b, \boldsymbol{\lambda}\right)
-&amp; =-\sum_{i=1}^{n} \lambda_{i} y_{i} \overset{\text{set}}{=} 0  \\
-&amp;\Rightarrow &amp;  \sum_{i=1}^{n} \lambda_{i} y_{i} &amp; = 0 \\
-\end{align}\end{split}\]</div>
+&amp; =-\sum</em>{i=1}^{n} \lambda_{i} y_{i} \overset{\text{set}}{=} 0  \
+&amp;\Rightarrow &amp;  \sum_{i=1}^{n} \lambda_{i} y_{i} &amp; = 0 \
+\end{align}$$</p>
 <p>Substituting the result back to the dual problem,</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{align}
-\max _{\boldsymbol{\lambda}} \,  &amp;\quad \sum_{i=1}^{n} \lambda_{i}-\frac{1}{2} \sum_{i=1}^{n} \sum_{j=1}^{n}\lambda_{i} \lambda_{j} y_{i} y_{j} \boldsymbol{x}_{i} \boldsymbol{x}_{j} \\
-\text {s.t.}&amp;\quad \sum_{i=1}^{n} \lambda_{i} y_{i}=0, \lambda_{i} \geq 0\\
-\end{align}\end{split}\]</div>
-<p>Solving this quadratic program with linear constraints yields <span class="math notranslate nohighlight">\(\boldsymbol{\lambda} ^*\)</span>.</p>
+<p>$$\begin{align}
+\max <em>{\boldsymbol{\lambda}} ,  &amp;\quad \sum</em>{i=1}^{n} \lambda_{i}-\frac{1}{2} \sum_{i=1}^{n} \sum_{j=1}^{n}\lambda_{i} \lambda_{j} y_{i} y_{j} \boldsymbol{x}<em>{i} \boldsymbol{x}</em>{j} \
+\text {s.t.}&amp;\quad \sum_{i=1}^{n} \lambda_{i} y_{i}=0, \lambda_{i} \geq 0\
+\end{align}$$</p>
+<p>Solving this quadratic program with linear constraints yields $\boldsymbol{\lambda} ^*$.</p>
 <p>Besides, due to strong duality, KKT conditions hold, such that</p>
-<div class="math notranslate nohighlight">
-\[
-\exists\left(x_{k}, y_{n}\right):\, 1-y_{k}\left(\boldsymbol{w} ^{*\top} \boldsymbol{x}_{k}+b\right)=0
-\]</div>
+<p>$$
+\exists\left(x_{k}, y_{n}\right):, 1-y_{k}\left(\boldsymbol{w} ^{*\top} \boldsymbol{x}_{k}+b\right)=0
+$$</p>
 <p>which gives</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 b^* = y_k - \boldsymbol{w} ^{* \top} \boldsymbol{x} _k
-\]</div>
+$$</p>
 <p>Therefore,</p>
-<div class="math notranslate nohighlight">
-\[
-\boldsymbol{w} ^{*}=\sum_{i=0}^{n} \lambda_{i} y_{i} \boldsymbol{x}_{i} \quad b^{*}=y_{k}-\sum_{i=0}^{n} \lambda_{i} y_{i} \boldsymbol{x}_{i}^{\top} \boldsymbol{x}_{k}
-\]</div>
+<p>$$
+\boldsymbol{w} ^{<em>}=\sum_{i=0}^{n} \lambda_{i} y_{i} \boldsymbol{x}_{i} \quad b^{</em>}=y_{k}-\sum_{i=0}^{n} \lambda_{i} y_{i} \boldsymbol{x}<em>{i}^{\top} \boldsymbol{x}</em>{k}
+$$</p>
 </div>
 <div class="section" id="properties">
 <h2>Properties<a class="headerlink" href="#properties" title="Permalink to this headline">¶</a></h2>
 <p>The weights is a linear combination of data vectors</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 \boldsymbol{w} ^{*}=\sum_{i=0}^{n} \lambda_{i} y_{i} \boldsymbol{x}_{i}
-\]</div>
-<p>where <span class="math notranslate nohighlight">\(\lambda_i \ne 0\)</span> for the points that lies on the margin, i.e. only the data on the margin defines <span class="math notranslate nohighlight">\(\boldsymbol{w}^*\)</span>.</p>
+$$</p>
+<p>where $\lambda_i \ne 0$ for the points that lies on the margin, i.e. only the data on the margin defines $\boldsymbol{w}^*$.</p>
 <p>Moreover,</p>
 <ul class="simple">
-<li><p>If <span class="math notranslate nohighlight">\(\boldsymbol{w}^{* \top} \boldsymbol{x} + b^* = \pm 1\)</span> then the point lie on the hyperplane <span class="math notranslate nohighlight">\(\pm\)</span> margin. The vector <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> is called a <strong>support vector</strong>.</p></li>
-<li><p>If <span class="math notranslate nohighlight">\(\boldsymbol{w}^{* \top} \boldsymbol{x} + b^* &lt; 1\)</span> then the point lie inside the two margins.</p></li>
-<li><p>If <span class="math notranslate nohighlight">\(\boldsymbol{w}^{* \top} \boldsymbol{x} + b^* &gt; 1\)</span> then the point lie outside the two margins.</p></li>
+<li><p>If $\boldsymbol{w}^{* \top} \boldsymbol{x} + b^* = \pm 1$ then the point lie on the hyperplane $\pm$ margin. The vector $\boldsymbol{x}$ is called a <strong>support vector</strong>.</p></li>
+<li><p>If $\boldsymbol{w}^{* \top} \boldsymbol{x} + b^* &lt; 1$ then the point lie inside the two margins.</p></li>
+<li><p>If $\boldsymbol{w}^{* \top} \boldsymbol{x} + b^* &gt; 1$ then the point lie outside the two margins.</p></li>
 </ul>
 </div>
 <div class="section" id="extension">
 <h2>Extension<a class="headerlink" href="#extension" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="multiclass">
 <h3>Multiclass<a class="headerlink" href="#multiclass" title="Permalink to this headline">¶</a></h3>
-<p>One-versus-rest: construct <span class="math notranslate nohighlight">\(K\)</span> separate SVMs. Using
-<span class="math notranslate nohighlight">\(k^*=\arg \max _{k} (\boldsymbol{w}_k ^\top \boldsymbol{x} + b_k)\)</span></p>
-<p>One-versus-one: construct <span class="math notranslate nohighlight">\(\frac{K(K-1)}{2}\)</span> SVMs on all pairs. Each SVM classifies a point to either <span class="math notranslate nohighlight">\(k_1\)</span> or <span class="math notranslate nohighlight">\(k_2\)</span>. For prediction, select <span class="math notranslate nohighlight">\(k\)</span> with the highest votes.</p>
+<p>One-versus-rest: construct $K$ separate SVMs. Using
+$k^*=\arg \max _{k} (\boldsymbol{w}_k ^\top \boldsymbol{x} + b_k)$</p>
+<p>One-versus-one: construct $\frac{K(K-1)}{2}$ SVMs on all pairs. Each SVM classifies a point to either $k_1$ or $k_2$. For prediction, select $k$ with the highest votes.</p>
 <p>“True” multi-class SVMs (Crammer and Singer, 2001)</p>
 </div>
 <div class="section" id="soft-margin">
 <h3>Soft Margin<a class="headerlink" href="#soft-margin" title="Permalink to this headline">¶</a></h3>
 <p>Recall the objective function for the hard margin case</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
+<p>$$
 \begin{equation}
 \begin{array}{ll}
-\min _{\boldsymbol{w}, b} &amp; \frac{1}{2} \boldsymbol{w}^{\top} \boldsymbol{w} \\
-\text { s.t. } &amp; y_{i}\left(\boldsymbol{w}^{\top} \boldsymbol{x}_{i}+b\right) \geq 1
+\min <em>{\boldsymbol{w}, b} &amp; \frac{1}{2} \boldsymbol{w}^{\top} \boldsymbol{w} \
+\text { s.t. } &amp; y</em>{i}\left(\boldsymbol{w}^{\top} \boldsymbol{x}_{i}+b\right) \geq 1
 \end{array}
 \end{equation}
-\end{split}\]</div>
+$$</p>
 <p>What if we cannot find a hyperplane that separate the two types of points? That is, the constraint</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 y_{i}\left(\boldsymbol{w}^{\top} \boldsymbol{x}_{i}+b\right) \geq 1
-\]</div>
-<p>does not hold for all <span class="math notranslate nohighlight">\(i\)</span>. Some observation will violate this constraint.</p>
+$$</p>
+<p>does not hold for all $i$. Some observation will violate this constraint.</p>
 <p>In such case, we can add a loss term to measure the extent of violation, and include this loss into the objective function. This kind of margin is called <strong>soft margin</strong>.</p>
 <p>The new objective function becomes</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 \min _{\boldsymbol{w}, b}  \frac{1}{2} \boldsymbol{w}^{\top} \boldsymbol{w} + C\sum_i^n R(\boldsymbol{w} ,b, \boldsymbol{x}_i ,y_i)
-\]</div>
+$$</p>
 <p>where</p>
 <ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(R\)</span> is some loss function.</p></li>
-<li><p><span class="math notranslate nohighlight">\(C\)</span> is a parameter to control the weight on the loss term. When <span class="math notranslate nohighlight">\(C\rightarrow \infty\)</span>, the formulation approaches separable case.</p></li>
+<li><p>$R$ is some loss function.</p></li>
+<li><p>$C$ is a parameter to control the weight on the loss term. When $C\rightarrow \infty$, the formulation approaches separable case.</p></li>
 </ul>
-<p>For instance, <span class="math notranslate nohighlight">\(R\)</span> can be an indicator function, with value <span class="math notranslate nohighlight">\(1\)</span> if the constraint is violated, i.e.</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
+<p>For instance, $R$ can be an indicator function, with value $1$ if the constraint is violated, i.e.</p>
+<p>$$
 \begin{equation}
-R(\boldsymbol{w} ,b, \boldsymbol{x}_i ,y_i) =\left\{\begin{array}{ll}
-1, &amp; \text { if } y_{i}\left(\boldsymbol{w}^{\top} \boldsymbol{x}_{i}+b\right) &lt; 1 \\
+R(\boldsymbol{w} ,b, \boldsymbol{x}<em>i ,y_i) =\left{\begin{array}{ll}
+1, &amp; \text { if } y</em>{i}\left(\boldsymbol{w}^{\top} \boldsymbol{x}_{i}+b\right) &lt; 1 \
 0, &amp; \text { otherwise }
 \end{array}\right.
 \end{equation}
-\end{split}\]</div>
-<p>A more reasonable loss is to measure the actual deviation from the constrain, i.e., <span class="math notranslate nohighlight">\(1 - y_{i}\left(\boldsymbol{w}^{\top} \boldsymbol{x}_{i}+b\right)\)</span>, for those who violates the constraint, i.e.  <span class="math notranslate nohighlight">\(y_{i}\left(\boldsymbol{w}^{\top} \boldsymbol{x}_{i}+b\right) &lt; 1\)</span>. Overall, the loss function is</p>
-<div class="math notranslate nohighlight">
-\[
-R(\boldsymbol{w} ,b, \boldsymbol{x}_i ,y_i) = \max \left\{ 0, 1 - y_{i}\left(\boldsymbol{w}^{\top} \boldsymbol{x}_{i}+b\right)  \right\}
-\]</div>
+$$</p>
+<p>A more reasonable loss is to measure the actual deviation from the constrain, i.e., $1 - y_{i}\left(\boldsymbol{w}^{\top} \boldsymbol{x}<em>{i}+b\right)$, for those who violates the constraint, i.e.  $y</em>{i}\left(\boldsymbol{w}^{\top} \boldsymbol{x}_{i}+b\right) &lt; 1$. Overall, the loss function is</p>
+<p>$$
+R(\boldsymbol{w} ,b, \boldsymbol{x}<em>i ,y_i) = \max \left{ 0, 1 - y</em>{i}\left(\boldsymbol{w}^{\top} \boldsymbol{x}_{i}+b\right)  \right}
+$$</p>
 <p>which is called <strong>Hinge loss</strong>.</p>
 <p>:::{figure,myclass} hinge-loss
 <img src="../imgs/svm-hinge-loss.png" width = "50%" alt=""/></p>
 <p>Comparison of loss functions
 :::</p>
-<p>Let <span class="math notranslate nohighlight">\(\xi_{i}=\max \left\{0,1-y_{i}\left(\boldsymbol{w}^{\top} x_{i}+w_{0}\right)\right\}\)</span>, then the objective is</p>
-<div class="math notranslate nohighlight">
-\[
+<p>Let $\xi_{i}=\max \left{0,1-y_{i}\left(\boldsymbol{w}^{\top} x_{i}+w_{0}\right)\right}$, then the objective is</p>
+<p>$$
 \min _{\boldsymbol{w}, b}  \frac{1}{2} \boldsymbol{w}^{\top} \boldsymbol{w} + C\sum_i^n \xi_i
-\]</div>
-<p>From optimization point of view <span class="math notranslate nohighlight">\(\xi_i\)</span> is called a slack variable.</p>
+$$</p>
+<p>From optimization point of view $\xi_i$ is called a slack variable.</p>
 <p>Applying similar conversion to the basic case above, we get</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{align}
-\underset{\boldsymbol{w}, b}{\min }&amp;\quad \sum_{i=1}^{n} \alpha_{i}-\frac{1}{2} \sum_{i, j=1}^{n} \alpha_{i} \alpha_{j} y_{i} y_{j} \boldsymbol{x}_{i} \boldsymbol{x}_{j}    \\
-\text {s.t.}&amp;\quad \sum_{i=1}^{n} \alpha_{i} y_{i}=0\\
+<p>$$\begin{align}
+\underset{\boldsymbol{w}, b}{\min }&amp;\quad \sum_{i=1}^{n} \alpha_{i}-\frac{1}{2} \sum_{i, j=1}^{n} \alpha_{i} \alpha_{j} y_{i} y_{j} \boldsymbol{x}<em>{i} \boldsymbol{x}</em>{j}    \
+\text {s.t.}&amp;\quad \sum_{i=1}^{n} \alpha_{i} y_{i}=0\
 &amp; \quad 0 \leq \alpha_{i} \leq C
-\end{align}\end{split}\]</div>
+\end{align}$$</p>
 <p>This can be solved by gradient descent.</p>
 </div>
 <div class="section" id="kernel-svms">
 <h3>Kernel SVMs<a class="headerlink" href="#kernel-svms" title="Permalink to this headline">¶</a></h3>
-<p>If the points are non-seperable, we consider transform them into a higher-dimensional space by a feature transformation <span class="math notranslate nohighlight">\(\boldsymbol{\boldsymbol{\phi}}(\boldsymbol{x})\)</span>, and find a hyperplane there to separate the points (hopefully).</p>
+<p>If the points are non-seperable, we consider transform them into a higher-dimensional space by a feature transformation $\boldsymbol{\boldsymbol{\phi}}(\boldsymbol{x})$, and find a hyperplane there to separate the points (hopefully).</p>
 <div class="section" id="transformed-dual">
 <h4>Transformed Dual<a class="headerlink" href="#transformed-dual" title="Permalink to this headline">¶</a></h4>
 <p>The primal problem becomes</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
+<p>$$
 \begin{aligned}
-\underset{\boldsymbol{w}, w_{0}}{\arg \min }&amp;\  \frac{1}{2}\|\boldsymbol{w}\|^{2} \\
-\text { s.t.}&amp;\  y_{i}\left(\boldsymbol{w}^{\top} \boldsymbol{x}_{i}+w_{0}\right) \geq 1-\xi_{i}, \xi_{i} \geq 0, \forall i \\
+\underset{\boldsymbol{w}, w_{0}}{\arg \min }&amp;\  \frac{1}{2}|\boldsymbol{w}|^{2} \
+\text { s.t.}&amp;\  y_{i}\left(\boldsymbol{w}^{\top} \boldsymbol{x}<em>{i}+w</em>{0}\right) \geq 1-\xi_{i}, \xi_{i} \geq 0, \forall i \
 &amp;\ \boldsymbol{w}, \boldsymbol{x}_{i} \in \mathbb{R}^{d}
 \end{aligned}
-\end{split}\]</div>
+$$</p>
 <p>and the dual problem becomes</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
+<p>$$
 \begin{aligned}
-\underset{\boldsymbol{\alpha}}{\arg \max } &amp; \ \left\{\sum_{i=1}^{n} \alpha_{i}-\frac{1}{2} \sum_{i=1}^{n} \sum_{j=1}^{n} \alpha_{i} \alpha_{j} y_{i} y_{j} \boldsymbol{\phi}\left(\boldsymbol{x}_{i}\right)^{\top} \boldsymbol{\phi}\left(\boldsymbol{x}_{j}\right)\right\} \\
+\underset{\boldsymbol{\alpha}}{\arg \max } &amp; \ \left{\sum_{i=1}^{n} \alpha_{i}-\frac{1}{2} \sum_{i=1}^{n} \sum_{j=1}^{n} \alpha_{i} \alpha_{j} y_{i} y_{j} \boldsymbol{\phi}\left(\boldsymbol{x}<em>{i}\right)^{\top} \boldsymbol{\phi}\left(\boldsymbol{x}</em>{j}\right)\right} \
 \text { s.t.}&amp;\ \sum_{i=1}^{n} \alpha_{i} y_{i}=0,0 \leq \alpha_{i} \leq C, \forall i
 \end{aligned}
-\end{split}\]</div>
-<p>We find there is a dot product in the objective function, so we can consider using a PSD kernel <span class="math notranslate nohighlight">\(k(\boldsymbol{x} , \boldsymbol{y} )=\boldsymbol{\phi}(\boldsymbol{x} )^{\top} \boldsymbol{\phi}(\boldsymbol{y} )\)</span>. The problem becomes</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
+$$</p>
+<p>We find there is a dot product in the objective function, so we can consider using a PSD kernel $k(\boldsymbol{x} , \boldsymbol{y} )=\boldsymbol{\phi}(\boldsymbol{x} )^{\top} \boldsymbol{\phi}(\boldsymbol{y} )$. The problem becomes</p>
+<p>$$
 \begin{aligned}
-\underset{\boldsymbol{\alpha}}{\arg \max }&amp;\ \left\{\sum_{i=1}^{n} \alpha_{i}-\frac{1}{2} \sum_{i=1}^{n} \sum_{j=1}^{n} \alpha_{i} \alpha_{j} y_{i} y_{j} k\left(\boldsymbol{x}_{i}, \boldsymbol{x}_{j}\right)\right\} \\
+\underset{\boldsymbol{\alpha}}{\arg \max }&amp;\ \left{\sum_{i=1}^{n} \alpha_{i}-\frac{1}{2} \sum_{i=1}^{n} \sum_{j=1}^{n} \alpha_{i} \alpha_{j} y_{i} y_{j} k\left(\boldsymbol{x}<em>{i}, \boldsymbol{x}</em>{j}\right)\right} \
 \text { s.t.} &amp;\ \sum_{i=1}^{n} \alpha_{i} y_{i}=0,0 \leq \alpha_{i} \leq C, \forall i
 \end{aligned}
-\end{split}\]</div>
-<p>and we solve the QP problem for <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}\)</span>.</p>
+$$</p>
+<p>and we solve the QP problem for $\boldsymbol{\alpha}$.</p>
 </div>
 <div class="section" id="transformed-unconstrained-original">
 <h4>Transformed Unconstrained Original<a class="headerlink" href="#transformed-unconstrained-original" title="Permalink to this headline">¶</a></h4>
 <p>For the original unconstraint problem, after transformation it becomes</p>
-<div class="math notranslate nohighlight">
-\[
-\mathcal{L}\left(\boldsymbol{w}, w_{0}\right)=\frac{1}{2}\|\boldsymbol{w}\|^{2}+C \sum_{i=1}^{n} \max \left\{0,1-y_{i}\left(\boldsymbol{w}^{\top} \boldsymbol{\phi}(\boldsymbol{x})+w_{0}\right)\right\}
-\]</div>
+<p>$$
+\mathcal{L}\left(\boldsymbol{w}, w_{0}\right)=\frac{1}{2}|\boldsymbol{w}|^{2}+C \sum_{i=1}^{n} \max \left{0,1-y_{i}\left(\boldsymbol{w}^{\top} \boldsymbol{\phi}(\boldsymbol{x})+w_{0}\right)\right}
+$$</p>
 <p>By the <a class="reference internal" href="../30-ml-basics/05-kernels.html#ml-representer-theorem"><span class="std std-ref">Representer Theorem</span></a> and some refinement, the optimal solution has the form</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 \boldsymbol{w}^{*}=\sum_{i=1}^{n} \alpha_{i} y_{i} \boldsymbol{\phi}\left(\boldsymbol{x}_{i}\right)
-\]</div>
+$$</p>
 <p>Substituting it back to the objective function gives</p>
-<div class="math notranslate nohighlight">
-\[
-\|\boldsymbol{w}\|^{2}=\left(\sum_{i=1}^{n} \alpha_{i} y_{i} \boldsymbol{\phi}\left(\boldsymbol{x}_{i}\right)\right)^{\top}\left(\sum_{i=j}^{n} \alpha_{j} y_{j} \boldsymbol{\phi}\left(\boldsymbol{x}_{j}\right)\right)=\sum_{i, j} \alpha_{i} \alpha_{j} y_{i} y_{j} k\left(\boldsymbol{x}_{i}, \boldsymbol{x}_{j}\right)
-\]</div>
+<p>$$
+|\boldsymbol{w}|^{2}=\left(\sum_{i=1}^{n} \alpha_{i} y_{i} \boldsymbol{\phi}\left(\boldsymbol{x}<em>{i}\right)\right)^{\top}\left(\sum</em>{i=j}^{n} \alpha_{j} y_{j} \boldsymbol{\phi}\left(\boldsymbol{x}<em>{j}\right)\right)=\sum</em>{i, j} \alpha_{i} \alpha_{j} y_{i} y_{j} k\left(\boldsymbol{x}<em>{i}, \boldsymbol{x}</em>{j}\right)
+$$</p>
 <p>and</p>
-<div class="math notranslate nohighlight">
-\[
-\boldsymbol{w}^{\top} \boldsymbol{\phi}(\boldsymbol{x})=\left(\sum_{i=1}^{n} \alpha_{i} y_{i} \boldsymbol{\phi}\left(\boldsymbol{x}_{i}\right)\right)^{\top} \boldsymbol{\phi}(\boldsymbol{x})=\sum_{i} \alpha_{i} y_{i} k\left(\boldsymbol{x}_{i}, \boldsymbol{x}\right)
-\]</div>
-<p>So we turn <span class="math notranslate nohighlight">\(\mathcal{L}\left(\boldsymbol{w}, w_{0}\right)\)</span> to <span class="math notranslate nohighlight">\(\mathcal{L}\left(\boldsymbol{\alpha} , w_{0}\right)\)</span> and we can then solve it by SGD.</p>
+<p>$$
+\boldsymbol{w}^{\top} \boldsymbol{\phi}(\boldsymbol{x})=\left(\sum_{i=1}^{n} \alpha_{i} y_{i} \boldsymbol{\phi}\left(\boldsymbol{x}<em>{i}\right)\right)^{\top} \boldsymbol{\phi}(\boldsymbol{x})=\sum</em>{i} \alpha_{i} y_{i} k\left(\boldsymbol{x}_{i}, \boldsymbol{x}\right)
+$$</p>
+<p>So we turn $\mathcal{L}\left(\boldsymbol{w}, w_{0}\right)$ to $\mathcal{L}\left(\boldsymbol{\alpha} , w_{0}\right)$ and we can then solve it by SGD.</p>
 </div>
 </div>
 </div>

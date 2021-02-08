@@ -46,8 +46,6 @@
     <script src="../_static/copybutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="../_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
     <script >
         const thebe_selector = ".thebe"
@@ -355,6 +353,11 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/31-knapsack.html">
+     Minimum Knapsack
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="../23-dynamic-programming/51-chain-matrix-multiplication.html">
      Chain Matrix Multiplication
     </a>
@@ -488,11 +491,7 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="31-t-SNE.html">
-     SNE and
-     <span class="math notranslate nohighlight">
-      \(t\)
-     </span>
-     -SNE
+     SNE and $t$-SNE
     </a>
    </li>
   </ul>
@@ -679,7 +678,7 @@
   <div class="section" id="multidimensional-scaling">
 <h1>Multidimensional Scaling<a class="headerlink" href="#multidimensional-scaling" title="Permalink to this headline">¶</a></h1>
 <p>In this section we introduce (metric) multidimensional scaling (MDS).</p>
-<p>Instead of a <span class="math notranslate nohighlight">\(n \times p\)</span> data matrix, MDS looks at pairwise similarity measures of data points. For instance,</p>
+<p>Instead of a $n \times p$ data matrix, MDS looks at pairwise similarity measures of data points. For instance,</p>
 <ul class="simple">
 <li><p>a matrix of Euclidean distances between points,</p></li>
 <li><p>co-occurrence counts of words between documents</p></li>
@@ -689,137 +688,117 @@
 <p>Many non-linear dimensionality reduction methods are extension to MDS. MDS is a clue to link linear and non-linear dimensionality reduction.</p>
 <div class="section" id="objective">
 <h2>Objective<a class="headerlink" href="#objective" title="Permalink to this headline">¶</a></h2>
-<p>MDS seeks a <span class="math notranslate nohighlight">\(k\)</span>-dimensional representation <span class="math notranslate nohighlight">\(\boldsymbol{z} \in \mathbb{R} ^k\)</span> of a data set that preserves inner products (or similarity/distance) between pairs of data points <span class="math notranslate nohighlight">\((\boldsymbol{x_i}, \boldsymbol{x}_j)\)</span></p>
-<div class="math notranslate nohighlight">
-\[
-\min \sum_{i, j}\left(\boldsymbol{x}_{i} \cdot \boldsymbol{x}_{j}-\boldsymbol{z}_{i} \cdot \boldsymbol{z}_{j}\right)^{2}
-\]</div>
+<p>MDS seeks a $k$-dimensional representation $\boldsymbol{z} \in \mathbb{R} ^k$ of a data set that preserves inner products (or similarity/distance) between pairs of data points $(\boldsymbol{x_i}, \boldsymbol{x}_j)$</p>
+<p>$$
+\min \sum_{i, j}\left(\boldsymbol{x}<em>{i} \cdot \boldsymbol{x}</em>{j}-\boldsymbol{z}<em>{i} \cdot \boldsymbol{z}</em>{j}\right)^{2}
+$$</p>
 <p>or equivalently</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 \min \left\Vert \boldsymbol{X} \boldsymbol{X} ^\top  - \boldsymbol{Z} \boldsymbol{Z} ^\top    \right\Vert _F^2
-\]</div>
+$$</p>
 </div>
 <div class="section" id="learning">
 <h2>Learning<a class="headerlink" href="#learning" title="Permalink to this headline">¶</a></h2>
 <div class="margin sidebar">
 <p class="sidebar-title"></p>
-<p>Note the inner product matrix <span class="math notranslate nohighlight">\(\boldsymbol{G}_{n\times n} = \boldsymbol{X} \boldsymbol{X} ^\top\)</span> is different from the data covariance matrix <span class="math notranslate nohighlight">\(\boldsymbol{S}_{d\times d} = \boldsymbol{X} ^\top \boldsymbol{X}\)</span>.</p>
+<p>Note the inner product matrix $\boldsymbol{G}<em>{n\times n} = \boldsymbol{X} \boldsymbol{X} ^\top$ is different from the data covariance matrix $\boldsymbol{S}</em>{d\times d} = \boldsymbol{X} ^\top \boldsymbol{X}$.</p>
 </div>
-<p>The solution can be obtained from the <span class="math notranslate nohighlight">\(n\times n\)</span> Gram matrix of inner products</p>
-<div class="math notranslate nohighlight">
-\[
+<p>The solution can be obtained from the $n\times n$ Gram matrix of inner products</p>
+<p>$$
 \boldsymbol{G}=\boldsymbol{X} \boldsymbol{X} ^\top
-\]</div>
+$$</p>
 <p>where</p>
-<div class="math notranslate nohighlight">
-\[
-g_{i j}=\boldsymbol{x}_{i} \cdot \boldsymbol{x}_{j}
-\]</div>
-<p>Suppose the spectral decomposition of <span class="math notranslate nohighlight">\(\boldsymbol{G}\)</span> is</p>
-<div class="math notranslate nohighlight">
-\[
-\boldsymbol{G} = \boldsymbol{V} \boldsymbol{\Lambda} \boldsymbol{V} ^\top  
-\]</div>
+<p>$$
+g_{i j}=\boldsymbol{x}<em>{i} \cdot \boldsymbol{x}</em>{j}
+$$</p>
+<p>Suppose the spectral decomposition of $\boldsymbol{G}$ is</p>
+<p>$$
+\boldsymbol{G} = \boldsymbol{V} \boldsymbol{\Lambda} \boldsymbol{V} ^\top<br />
+$$</p>
 <p>The projected data matrix is given by</p>
-<div class="math notranslate nohighlight">
-\[
-\boldsymbol{Z}_{n \times k} = \left[  \boldsymbol{V}  \boldsymbol{\Lambda} ^{1/2} \right]_{[:k]} = \boldsymbol{V}_{[: k]} \mathbf{\Lambda}_{[: k,: k]}^{1 / 2}
-\]</div>
-<p>The reconstruction of <span class="math notranslate nohighlight">\(\boldsymbol{G}\)</span> from <span class="math notranslate nohighlight">\(\boldsymbol{Z}\)</span> is then</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
+\boldsymbol{Z}<em>{n \times k} = \left[  \boldsymbol{V}  \boldsymbol{\Lambda} ^{1/2} \right]</em>{[:k]} = \boldsymbol{V}<em>{[: k]} \mathbf{\Lambda}</em>{[: k,: k]}^{1 / 2}
+$$</p>
+<p>The reconstruction of $\boldsymbol{G}$ from $\boldsymbol{Z}$ is then</p>
+<p>$$
 \widehat{\boldsymbol{G}} = \boldsymbol{Z} \boldsymbol{Z} ^\top
-\]</div>
+$$</p>
 </div>
 <div class="section" id="relation-to-pca">
 <h2>Relation to PCA<a class="headerlink" href="#relation-to-pca" title="Permalink to this headline">¶</a></h2>
-<p>A difference is that, unlike PCA which gives a projection equation <span class="math notranslate nohighlight">\(\boldsymbol{z} = \boldsymbol{U} ^\top \boldsymbol{x}\)</span>, MDS only gives a projected result for the training set. It does not give us a way to project a new data point.</p>
-<p>A connection is that, the two projected data matrices have a deterministic relation. Suppose the data matrix <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span> is centered. Let <span class="math notranslate nohighlight">\(\boldsymbol{Z} _{PCA}\)</span> be the <span class="math notranslate nohighlight">\(n\times d\)</span> projected matrix by PCA and <span class="math notranslate nohighlight">\(\boldsymbol{Z} _{MDS}\)</span> be that by MDS. Then it can be shown that</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
-\boldsymbol{Z} _{PCA} = \boldsymbol{Z} _{MDS} \boldsymbol{D} ^ {1/2}\\
-\end{split}\]</div>
-<p>where <span class="math notranslate nohighlight">\(\boldsymbol{D}_{d\times d}\)</span> is the eigenvalue matrix of <span class="math notranslate nohighlight">\(\boldsymbol{X} ^\top \boldsymbol{X}\)</span>.</p>
-<p>That is, the <span class="math notranslate nohighlight">\(j\)</span>-th projected column vector by MDS has the same direction as that by PCA, but scaled by the square root of the <span class="math notranslate nohighlight">\(j\)</span>-th eigenvalue <span class="math notranslate nohighlight">\(\sqrt{\lambda_j}\)</span> of matrix <span class="math notranslate nohighlight">\(\boldsymbol{X} ^\top \boldsymbol{X}\)</span>.</p>
+<p>A difference is that, unlike PCA which gives a projection equation $\boldsymbol{z} = \boldsymbol{U} ^\top \boldsymbol{x}$, MDS only gives a projected result for the training set. It does not give us a way to project a new data point.</p>
+<p>A connection is that, the two projected data matrices have a deterministic relation. Suppose the data matrix $\boldsymbol{X}$ is centered. Let $\boldsymbol{Z} _{PCA}$ be the $n\times d$ projected matrix by PCA and $\boldsymbol{Z} _{MDS}$ be that by MDS. Then it can be shown that</p>
+<p>$$
+\boldsymbol{Z} _{PCA} = \boldsymbol{Z} _{MDS} \boldsymbol{D} ^ {1/2}\
+$$</p>
+<p>where $\boldsymbol{D}_{d\times d}$ is the eigenvalue matrix of $\boldsymbol{X} ^\top \boldsymbol{X}$.</p>
+<p>That is, the $j$-th projected column vector by MDS has the same direction as that by PCA, but scaled by the square root of the $j$-th eigenvalue $\sqrt{\lambda_j}$ of matrix $\boldsymbol{X} ^\top \boldsymbol{X}$.</p>
 <p>:::{admonition,dropdown,seealso} <em>Proof</em></p>
 <p>Consider the SVD of the <strong>centered</strong> data matrix</p>
-<div class="math notranslate nohighlight">
-\[\boldsymbol{X}_{n\times d} = \boldsymbol{V} \boldsymbol{\Sigma} \boldsymbol{U} ^\top\]</div>
+<p>$$\boldsymbol{X}_{n\times d} = \boldsymbol{V} \boldsymbol{\Sigma} \boldsymbol{U} ^\top$$</p>
 <ul>
-<li><p>In PCA, the EVD of <span class="math notranslate nohighlight">\(n\)</span> times the data covariance matrix is</p>
-<div class="math notranslate nohighlight">
-\[n \boldsymbol{S}_{d \times d} = \boldsymbol{X} ^\top \boldsymbol{X} = \boldsymbol{U} \boldsymbol{\Sigma} ^\top \boldsymbol{\Sigma} \boldsymbol{U} = \boldsymbol{U} \boldsymbol{D} \boldsymbol{U}\]</div>
-<p>where the diagonal entries in <span class="math notranslate nohighlight">\(\boldsymbol{D}\)</span> are the squared singular values <span class="math notranslate nohighlight">\(\sigma^2 _j\)</span> for <span class="math notranslate nohighlight">\(j=1,\ldots, d\)</span>.</p>
-<p>The <span class="math notranslate nohighlight">\(n\times k\)</span> projected matrix <span class="math notranslate nohighlight">\((k\le d)\)</span> is</p>
-<div class="math notranslate nohighlight">
-\[
-    \boldsymbol{Z}_{PCA} = \boldsymbol{X} \boldsymbol{U} _{[:k]}
-    \]</div>
+<li><p>In PCA, the EVD of $n$ times the data covariance matrix is</p>
+<p>$$n \boldsymbol{S}_{d \times d} = \boldsymbol{X} ^\top \boldsymbol{X} = \boldsymbol{U} \boldsymbol{\Sigma} ^\top \boldsymbol{\Sigma} \boldsymbol{U} = \boldsymbol{U} \boldsymbol{D} \boldsymbol{U}$$</p>
+<p>where the diagonal entries in $\boldsymbol{D}$ are the squared singular values $\sigma^2 _j$ for $j=1,\ldots, d$.</p>
+<p>The $n\times k$ projected matrix $(k\le d)$ is</p>
+<p>$$
+\boldsymbol{Z}_{PCA} = \boldsymbol{X} \boldsymbol{U} _{[:k]}
+$$</p>
 </li>
-<li><p>In MDS, the EVD of the inner product matrix <span class="math notranslate nohighlight">\(\boldsymbol{G}\)</span> is</p>
-<div class="math notranslate nohighlight">
-\[
-    \boldsymbol{G}_{n \times n} = \boldsymbol{X} \boldsymbol{X} ^\top = \boldsymbol{V} \boldsymbol{\Sigma} \boldsymbol{\Sigma} ^\top \boldsymbol{V} ^\top = \boldsymbol{V} \boldsymbol{\Lambda} \boldsymbol{V} ^\top = \boldsymbol{V} _{[:d]} \boldsymbol{D} \boldsymbol{V} _{[:d]} ^\top
-    \]</div>
+<li><p>In MDS, the EVD of the inner product matrix $\boldsymbol{G}$ is</p>
+<p>$$
+\boldsymbol{G}_{n \times n} = \boldsymbol{X} \boldsymbol{X} ^\top = \boldsymbol{V} \boldsymbol{\Sigma} \boldsymbol{\Sigma} ^\top \boldsymbol{V} ^\top = \boldsymbol{V} \boldsymbol{\Lambda} \boldsymbol{V} ^\top = \boldsymbol{V} _{[:d]} \boldsymbol{D} \boldsymbol{V} _{[:d]} ^\top
+$$</p>
 <p>where</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
-    \boldsymbol{\Lambda} _{n \times n} = \left[\begin{array}{cc}
-    \boldsymbol{D} _{d \times d} &amp; \boldsymbol{0}  \\
-    \boldsymbol{0}  &amp; \boldsymbol{0}_{(n-d) \times (n-d)}
-    \end{array}\right]
-    \end{split}\]</div>
-<p>The <span class="math notranslate nohighlight">\(n\times k\)</span> projected matrix <span class="math notranslate nohighlight">\((k\le d)\)</span> is</p>
-<div class="math notranslate nohighlight">
-\[
-    \boldsymbol{Z} _{MDS} = \boldsymbol{V}_{[:k]} \boldsymbol{\Lambda} ^{1/2}_{[:k, :k]} = \boldsymbol{V}_{[:k]} \boldsymbol{D} ^{1/2}_{[:k, :k]}
-    \]</div>
+<p>$$
+\boldsymbol{\Lambda} _{n \times n} = \left[\begin{array}{cc}
+\boldsymbol{D} <em>{d \times d} &amp; \boldsymbol{0}  \
+\boldsymbol{0}  &amp; \boldsymbol{0}</em>{(n-d) \times (n-d)}
+\end{array}\right]
+$$</p>
+<p>The $n\times k$ projected matrix $(k\le d)$ is</p>
+<p>$$
+\boldsymbol{Z} <em>{MDS} = \boldsymbol{V}</em>{[:k]} \boldsymbol{\Lambda} ^{1/2}<em>{[:k, :k]} = \boldsymbol{V}</em>{[:k]} \boldsymbol{D} ^{1/2}_{[:k, :k]}
+$$</p>
 </li>
 </ul>
-<p>Let <span class="math notranslate nohighlight">\(\boldsymbol{v} _j\)</span> be an eigenvector of <span class="math notranslate nohighlight">\(\boldsymbol{G}\)</span> with eigenvalue <span class="math notranslate nohighlight">\(\sigma^2 _j\)</span>. Pre-multiplying <span class="math notranslate nohighlight">\(\boldsymbol{G} \boldsymbol{v}_j = \sigma^2 _j \boldsymbol{v} _j\)</span> by <span class="math notranslate nohighlight">\(\boldsymbol{X} ^\top\)</span> yields</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{aligned}
-\boldsymbol{X} ^\top (\boldsymbol{X} \boldsymbol{X} ^\top) \boldsymbol{v} _j &amp;= \boldsymbol{X} ^\top (\sigma^2 _j  \boldsymbol{v} _j) \\
+<p>Let $\boldsymbol{v} _j$ be an eigenvector of $\boldsymbol{G}$ with eigenvalue $\sigma^2 _j$. Pre-multiplying $\boldsymbol{G} \boldsymbol{v}_j = \sigma^2 _j \boldsymbol{v} _j$ by $\boldsymbol{X} ^\top$ yields</p>
+<p>$$\begin{aligned}
+\boldsymbol{X} ^\top (\boldsymbol{X} \boldsymbol{X} ^\top) \boldsymbol{v} _j &amp;= \boldsymbol{X} ^\top (\sigma^2 _j  \boldsymbol{v} _j) \
 \Rightarrow \qquad  n\boldsymbol{S} (\boldsymbol{X} ^\top \boldsymbol{v} _j) &amp;= \sigma^2 _j (\boldsymbol{X} ^\top \boldsymbol{v} _j)
-\end{aligned}\end{split}\]</div>
-<p>Hence, we found that <span class="math notranslate nohighlight">\(\boldsymbol{X} ^\top \boldsymbol{v} _j\)</span> is an eigenvector of <span class="math notranslate nohighlight">\(n \boldsymbol{S}\)</span> with eigenvalue <span class="math notranslate nohighlight">\(\sigma^2 _j\)</span>, denoted <span class="math notranslate nohighlight">\(\boldsymbol{u} _j\)</span>,</p>
-<div class="math notranslate nohighlight">
-\[
+\end{aligned}$$</p>
+<p>Hence, we found that $\boldsymbol{X} ^\top \boldsymbol{v} _j$ is an eigenvector of $n \boldsymbol{S}$ with eigenvalue $\sigma^2 _j$, denoted $\boldsymbol{u} _j$,</p>
+<p>$$
 \boldsymbol{u} _j = \boldsymbol{X} ^\top \boldsymbol{v} _j
-\]</div>
-<p>That is, there is a one-one correspondence between the first <span class="math notranslate nohighlight">\(d\)</span> eigenvectors of <span class="math notranslate nohighlight">\(\boldsymbol{G}\)</span> and <span class="math notranslate nohighlight">\(n \boldsymbol{S}\)</span>. More specifically, we have,</p>
-<div class="math notranslate nohighlight">
-\[
+$$</p>
+<p>That is, there is a one-one correspondence between the first $d$ eigenvectors of $\boldsymbol{G}$ and $n \boldsymbol{S}$. More specifically, we have,</p>
+<p>$$
 \boldsymbol{U} _{[:d]} = \boldsymbol{X} ^\top \boldsymbol{V} _{[:d]}
-\]</div>
-<p>Substituting this relation to the <span class="math notranslate nohighlight">\(n\times d\)</span> projected matrix by PCA gives</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{aligned}
+$$</p>
+<p>Substituting this relation to the $n\times d$ projected matrix by PCA gives</p>
+<p>$$\begin{aligned}
 \boldsymbol{Z} _{PCA}
-&amp;= \boldsymbol{X} \boldsymbol{U} _{[:d]}\\
-&amp;= \boldsymbol{X} \boldsymbol{X} ^\top \boldsymbol{V}  _{[:d]}\\
-&amp;= \boldsymbol{V} _{[:d]} \boldsymbol{D} \boldsymbol{V} ^\top _{[:d]} \boldsymbol{V}  _{[:d]}\\
-&amp;= \boldsymbol{V} _{[:d]} \boldsymbol{D} \\
-&amp;= \boldsymbol{Z} _{MDS} \boldsymbol{D} ^ {1/2}\\
-\end{aligned}\end{split}\]</div>
+&amp;= \boldsymbol{X} \boldsymbol{U} _{[:d]}\
+&amp;= \boldsymbol{X} \boldsymbol{X} ^\top \boldsymbol{V}  _{[:d]}\
+&amp;= \boldsymbol{V} _{[:d]} \boldsymbol{D} \boldsymbol{V} ^\top _{[:d]} \boldsymbol{V}  _{[:d]}\
+&amp;= \boldsymbol{V} _{[:d]} \boldsymbol{D} \
+&amp;= \boldsymbol{Z} _{MDS} \boldsymbol{D} ^ {1/2}\
+\end{aligned}$$</p>
 <p>:::</p>
 </div>
 <div class="section" id="special-cases">
 <h2>Special Cases<a class="headerlink" href="#special-cases" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="input-is-a-euclidean-distance-matrix">
 <h3>Input is a Euclidean Distance Matrix<a class="headerlink" href="#input-is-a-euclidean-distance-matrix" title="Permalink to this headline">¶</a></h3>
-<p>If the input is not a data matrix <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span> but a Euclidean distances matrix <span class="math notranslate nohighlight">\(\boldsymbol{F}\)</span></p>
-<div class="math notranslate nohighlight">
-\[
-f_{i j}=\left\|\boldsymbol{x}_{i}-\boldsymbol{x}_{j}\right\|^{2}=\left\|\boldsymbol{x}_{i}\right\|^{2}-2 \boldsymbol{x}_{i}^{\top} \boldsymbol{x}_{j}+\left\|\boldsymbol{x}_{j}\right\|^{2}
-\]</div>
-<p>If <span class="math notranslate nohighlight">\(\boldsymbol{x} _i\)</span> are <strong>centered</strong> (zero-mean), we can convert the Euclidean distance matrix <span class="math notranslate nohighlight">\(\boldsymbol{F}\)</span> to the Gram matrix <span class="math notranslate nohighlight">\(\boldsymbol{G}\)</span> of inner product by left- and right-multiplying by the centering matrix <span class="math notranslate nohighlight">\(\boldsymbol{C}  = \left(\boldsymbol{I}-\frac{1}{n} \boldsymbol{1} \boldsymbol{1}^{\top}\right)\)</span>,</p>
-<div class="math notranslate nohighlight">
-\[
+<p>If the input is not a data matrix $\boldsymbol{X}$ but a Euclidean distances matrix $\boldsymbol{F}$</p>
+<p>$$
+f_{i j}=\left|\boldsymbol{x}<em>{i}-\boldsymbol{x}</em>{j}\right|^{2}=\left|\boldsymbol{x}<em>{i}\right|^{2}-2 \boldsymbol{x}</em>{i}^{\top} \boldsymbol{x}<em>{j}+\left|\boldsymbol{x}</em>{j}\right|^{2}
+$$</p>
+<p>If $\boldsymbol{x} _i$ are <strong>centered</strong> (zero-mean), we can convert the Euclidean distance matrix $\boldsymbol{F}$ to the Gram matrix $\boldsymbol{G}$ of inner product by left- and right-multiplying by the centering matrix $\boldsymbol{C}  = \left(\boldsymbol{I}-\frac{1}{n} \boldsymbol{1} \boldsymbol{1}^{\top}\right)$,</p>
+<p>$$
 \boldsymbol{G} = - \frac{1}{2} \boldsymbol{C}  \boldsymbol{F}\boldsymbol{C} ^{\top}
-\]</div>
-<p>And then we can run MDS over <span class="math notranslate nohighlight">\(\boldsymbol{G}\)</span>.</p>
+$$</p>
+<p>And then we can run MDS over $\boldsymbol{G}$.</p>
 </div>
 </div>
 </div>

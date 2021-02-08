@@ -46,8 +46,6 @@
     <script src="../_static/copybutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="../_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
     <script >
         const thebe_selector = ".thebe"
@@ -355,6 +353,11 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="31-knapsack.html">
+     Minimum Knapsack
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="51-chain-matrix-multiplication.html">
      Chain Matrix Multiplication
     </a>
@@ -488,11 +491,7 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../33-dimensionality-reduction/31-t-SNE.html">
-     SNE and
-     <span class="math notranslate nohighlight">
-      \(t\)
-     </span>
-     -SNE
+     SNE and $t$-SNE
     </a>
    </li>
   </ul>
@@ -673,43 +672,42 @@
 <h1>Longest Increasing Subsequence<a class="headerlink" href="#longest-increasing-subsequence" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="problem">
 <h2>Problem<a class="headerlink" href="#problem" title="Permalink to this headline">¶</a></h2>
-<p>Input
-: A sequence of <span class="math notranslate nohighlight">\(n\)</span> numbers <span class="math notranslate nohighlight">\(A = (a_1, a_2, \ldots, a_n)\)</span>.</p>
-<p>Objective
-: Find the longest monotonically increasing (non-decreasing)  subsequence.</p>
+<dl class="simple myst">
+<dt>Input</dt><dd><p>A sequence of $n$ numbers $A = (a_1, a_2, \ldots, a_n)$.</p>
+</dd>
+<dt>Objective</dt><dd><p>Find the longest monotonically increasing (non-decreasing)  subsequence.</p>
+</dd>
+</dl>
 </div>
 <div class="section" id="analysis">
 <h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
 <p>The key is to fix the ending number.</p>
-<p>Let <span class="math notranslate nohighlight">\(S_k\)</span> be the longest increasing subsequence <strong>ending</strong> at number <span class="math notranslate nohighlight">\(a_k\)</span>. Then we have the iterative relation</p>
-<div class="math notranslate nohighlight">
-\[
-S_k = \left\{ \underset{i:\ 1 \le i \le k-1, a_i\le a_k}{\operatorname{longest}} S_i \right\} \circ {a_k}
-\]</div>
-<p>The corresponding iterative relation for the length of <span class="math notranslate nohighlight">\(S_k\)</span>, denoted <span class="math notranslate nohighlight">\(L_k\)</span>, is</p>
-<div class="math notranslate nohighlight">
-\[
-L_k = \left\{ \underset{i:\ 1 \le i \le k-1, a_i\le a_k}{\operatorname{max}} L_i \right\} + 1
-\]</div>
-<p>The DP table stores <span class="math notranslate nohighlight">\(L_k\)</span>.</p>
+<p>Let $S_k$ be the longest increasing subsequence <strong>ending</strong> at number $a_k$. Then we have the iterative relation</p>
+<p>$$
+S_k = \left{ \underset{i:\ 1 \le i \le k-1, a_i\le a_k}{\operatorname{longest}} S_i \right} \circ {a_k}
+$$</p>
+<p>The corresponding iterative relation for the length of $S_k$, denoted $L_k$, is</p>
+<p>$$
+L_k = \left{ \underset{i:\ 1 \le i \le k-1, a_i\le a_k}{\operatorname{max}} L_i \right} + 1
+$$</p>
+<p>The DP table stores $L_k$.</p>
 </div>
 <div class="section" id="solution">
 <h2>Solution<a class="headerlink" href="#solution" title="Permalink to this headline">¶</a></h2>
 <ul>
-<li><p>Initialize <span class="math notranslate nohighlight">\(L_1 = 1\)</span>.</p></li>
-<li><p>For <span class="math notranslate nohighlight">\(k = 2\)</span> to n, compute</p>
-<div class="math notranslate nohighlight">
-\[
-    L_k = \left\{ \underset{i:\ 1 \le i \le k-1, a_i\le a_k}{\operatorname{max}} L_i \right\} + 1
-    \]</div>
+<li><p>Initialize $L_1 = 1$.</p></li>
+<li><p>For $k = 2$ to n, compute</p>
+<p>$$
+L_k = \left{ \underset{i:\ 1 \le i \le k-1, a_i\le a_k}{\operatorname{max}} L_i \right} + 1
+$$</p>
 </li>
-<li><p>Return <span class="math notranslate nohighlight">\(L_n\)</span></p></li>
+<li><p>Return $L_n$</p></li>
 </ul>
 </div>
 <div class="section" id="running-time">
 <h2>Running Time<a class="headerlink" href="#running-time" title="Permalink to this headline">¶</a></h2>
-<p>There are <span class="math notranslate nohighlight">\(O(n)\)</span> iteration. Each iteration <span class="math notranslate nohighlight">\(O(n)\)</span>.</p>
-<p>Total <span class="math notranslate nohighlight">\(O(n^2)\)</span>.</p>
+<p>There are $O(n)$ iteration. Each iteration $O(n)$.</p>
+<p>Total $O(n^2)$.</p>
 </div>
 </div>
 

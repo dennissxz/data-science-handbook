@@ -46,8 +46,6 @@
     <script src="../_static/copybutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="../_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
     <script >
         const thebe_selector = ".thebe"
@@ -355,6 +353,11 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/31-knapsack.html">
+     Minimum Knapsack
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="../23-dynamic-programming/51-chain-matrix-multiplication.html">
      Chain Matrix Multiplication
     </a>
@@ -488,11 +491,7 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../33-dimensionality-reduction/31-t-SNE.html">
-     SNE and
-     <span class="math notranslate nohighlight">
-      \(t\)
-     </span>
-     -SNE
+     SNE and $t$-SNE
     </a>
    </li>
   </ul>
@@ -682,58 +681,55 @@
 <h2>Objective<a class="headerlink" href="#objective" title="Permalink to this headline">¶</a></h2>
 <p>An autoencoder is a type of neural networks used to learn efficient data encodings/representations in an <strong>unsupervised</strong> manner. It is constituted by two main parts:</p>
 <ul class="simple">
-<li><p>an <em>encoder</em> <span class="math notranslate nohighlight">\(\boldsymbol{\phi} (\cdot)\)</span> that maps the input into the code <span class="math notranslate nohighlight">\(\boldsymbol{z} = \boldsymbol{\phi(\boldsymbol{x} )}\)</span>, and</p></li>
-<li><p>a <em>decoder</em> <span class="math notranslate nohighlight">\(\boldsymbol{\psi} (\cdot)\)</span>} that maps the code <span class="math notranslate nohighlight">\(\boldsymbol{z}\)</span> to a reconstruction of the original input <span class="math notranslate nohighlight">\(\boldsymbol{x} ^\prime = \boldsymbol{\psi}(\boldsymbol{z})\)</span>.</p></li>
+<li><p>an <em>encoder</em> $\boldsymbol{\phi} (\cdot)$ that maps the input into the code $\boldsymbol{z} = \boldsymbol{\phi(\boldsymbol{x} )}$, and</p></li>
+<li><p>a <em>decoder</em> $\boldsymbol{\psi} (\cdot)$} that maps the code $\boldsymbol{z}$ to a reconstruction of the original input $\boldsymbol{x} ^\prime = \boldsymbol{\psi}(\boldsymbol{z})$.</p></li>
 </ul>
 <p>As a result, the output layer has the same number of nodes as the input layer. The structure is shown below</p>
 <p>:::{figure} ae-structure
 <img src="../imgs/ae-structure.png" width = "70%" alt=""/></p>
 <p>Structure of Autoencoders
 :::</p>
-<p>The objective is minimizing the difference between the input <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> and the output <span class="math notranslate nohighlight">\((\boldsymbol{\psi} \circ \boldsymbol{\phi} )\boldsymbol{x}\)</span>,</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
+<p>The objective is minimizing the difference between the input $\boldsymbol{x}$ and the output $(\boldsymbol{\psi} \circ \boldsymbol{\phi} )\boldsymbol{x}$,</p>
+<p>$$
 \begin{array}{l}
-\text{encoder}\qquad \boldsymbol{\psi} :\mathcal{X}\rightarrow\mathcal{Z}\\
-\text{decoder}\qquad \boldsymbol{\psi} :\mathcal{Z}\rightarrow\mathcal{X}\\
-\qquad\qquad \boldsymbol{\phi,\psi} =\underset{\boldsymbol{\phi,\psi} }{\arg\min}\|\boldsymbol{x} -(\boldsymbol{\psi} \circ \boldsymbol{\phi} )\boldsymbol{x} \|^{2}
+\text{encoder}\qquad \boldsymbol{\psi} :\mathcal{X}\rightarrow\mathcal{Z}\
+\text{decoder}\qquad \boldsymbol{\psi} :\mathcal{Z}\rightarrow\mathcal{X}\
+\qquad\qquad \boldsymbol{\phi,\psi} =\underset{\boldsymbol{\phi,\psi} }{\arg\min}|\boldsymbol{x} -(\boldsymbol{\psi} \circ \boldsymbol{\phi} )\boldsymbol{x} |^{2}
 \end{array}
-\end{split}\]</div>
+$$</p>
 <p><strong>Example</strong></p>
-<p>In the simplest case, given one hidden layer, the encoder stage of an autoencoder takes the input <span class="math notranslate nohighlight">\(\boldsymbol{x}\in\mathbb{R}^{d}=\mathcal{X}\)</span> and maps it to code/representation/latent variable <span class="math notranslate nohighlight">\(\boldsymbol{z}\in\mathbb{R}^{k}=\mathcal{Z}\)</span>.</p>
-<div class="math notranslate nohighlight">
-\[
+<p>In the simplest case, given one hidden layer, the encoder stage of an autoencoder takes the input $\boldsymbol{x}\in\mathbb{R}^{d}=\mathcal{X}$ and maps it to code/representation/latent variable $\boldsymbol{z}\in\mathbb{R}^{k}=\mathcal{Z}$.</p>
+<p>$$
 \boldsymbol{z}=\sigma(\boldsymbol{W}\boldsymbol{x}+\boldsymbol{b})
-\]</div>
-<p>Like other neural networks, the weights <span class="math notranslate nohighlight">\(\boldsymbol{W}\)</span> and biases <span class="math notranslate nohighlight">\(\boldsymbol{b}\)</span> are initialized randomly and updated iteratively during training through backpaopagation.</p>
-<p>The decoder stage of the antoencoder maps <span class="math notranslate nohighlight">\(\boldsymbol{h}\)</span> to the reconstruction
-<span class="math notranslate nohighlight">\(\boldsymbol{x}'\)</span> of the same shape as <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span>.
-$<span class="math notranslate nohighlight">\(
+$$</p>
+<p>Like other neural networks, the weights $\boldsymbol{W}$ and biases $\boldsymbol{b}$ are initialized randomly and updated iteratively during training through backpaopagation.</p>
+<p>The decoder stage of the antoencoder maps $\boldsymbol{h}$ to the reconstruction
+$\boldsymbol{x}’$ of the same shape as $\boldsymbol{x}$.
+$$
 \boldsymbol{x}^{\prime}=\sigma^{\prime}\left(\boldsymbol{W}^{\prime}\boldsymbol{z}+\boldsymbol{b}^{\prime}\right)
-\)</span>$</p>
+$$</p>
 <p>Autoencoders are trained to minimize reconstruction loss</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 \mathcal{L}\left(\boldsymbol{x},\boldsymbol{x}^{\prime}\right)=\left\Vert \boldsymbol{x}-\boldsymbol{x}^{\prime}\right\Vert ^{2}=\left\Vert \boldsymbol{x}-\sigma^{\prime}\left(\boldsymbol{W}^{\prime}(\sigma(\boldsymbol{W}\boldsymbol{x}+\boldsymbol{b}))+\boldsymbol{b}^{\prime}\right)\right\Vert ^{2}
-\]</div>
+$$</p>
 <p>:::{admonition,note} Number of neurons in the code layer</p>
 <p>Does the number of neurons in the code layer matters?</p>
 <ul class="simple">
-<li><p>Should the feature space <span class="math notranslate nohighlight">\({\displaystyle {\mathcal{Z}}}\)</span> have lower dimensionality than the input space <span class="math notranslate nohighlight">\({\displaystyle {\mathcal{X}}}\)</span>, the feature vector <span class="math notranslate nohighlight">\({\displaystyle \boldsymbol{z}=\boldsymbol{\phi} (\boldsymbol{x})}\)</span> can be regarded as a compressed representation of the input <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span>. This is the case of <strong>undercomplete autoencoders</strong>.</p></li>
+<li><p>Should the feature space ${\displaystyle {\mathcal{Z}}}$ have lower dimensionality than the input space ${\displaystyle {\mathcal{X}}}$, the feature vector ${\displaystyle \boldsymbol{z}=\boldsymbol{\phi} (\boldsymbol{x})}$ can be regarded as a compressed representation of the input $\boldsymbol{x}$. This is the case of <strong>undercomplete autoencoders</strong>.</p></li>
 <li><p>If the hidden layers are larger than (<strong>overcomplete autoencoders</strong>), or equal to, the input layer, or the hidden units are given enough capacity, an autoencoder can potentially learn the identity function and become useless.</p></li>
 </ul>
 <p>However, experimental results have shown that autoencoders might still learn useful features in these cases. In the ideal setting, one should be able to tailor the code dimension and the model capacity on the basis of the complexity of the data distribution to be modeled. One way to do so, is to exploit the model variants known as Regularized Autoencoders.</p>
-<p>In general, autoencoders only make sense if we constrain <span class="math notranslate nohighlight">\(\boldsymbol{\phi} (\cdot)\)</span> somehow. For instance,</p>
+<p>In general, autoencoders only make sense if we constrain $\boldsymbol{\phi} (\cdot)$ somehow. For instance,</p>
 <ul class="simple">
-<li><p>Limit dimensionality of <span class="math notranslate nohighlight">\(\boldsymbol{\phi} (\boldsymbol{x})\)</span></p></li>
+<li><p>Limit dimensionality of $\boldsymbol{\phi} (\boldsymbol{x})$</p></li>
 <li><p>Add a penalty to the loss, e.g. to induce sparsity in the learned representation</p></li>
 <li><p>Denoising autoencoders: Add noise to the input, but try to reproduce
 the <em>clean</em> input. The autoencoder learn to extract essential information of the input.
 :::</p></li>
 </ul>
 <p>:::{admonition,note} View decoder as a distribution</p>
-<p>The decoder part can be viewed as representing a distribution <span class="math notranslate nohighlight">\(p(\boldsymbol{x} \mid \boldsymbol{z})\)</span> over the encoder input <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> given the output <span class="math notranslate nohighlight">\(\boldsymbol{z} = f(\boldsymbol{x})\)</span>, like probabilistic PCA.</p>
-<p>If <span class="math notranslate nohighlight">\(p(\boldsymbol{x} \mid \boldsymbol{z})\)</span> is, say, a spherical Gaussian with mean <span class="math notranslate nohighlight">\(\boldsymbol{\psi}(\boldsymbol{z} )\)</span>, then optimizing the likelihood over a training set is equivalent to the usual squared loss.</p>
+<p>The decoder part can be viewed as representing a distribution $p(\boldsymbol{x} \mid \boldsymbol{z})$ over the encoder input $\boldsymbol{x}$ given the output $\boldsymbol{z} = f(\boldsymbol{x})$, like probabilistic PCA.</p>
+<p>If $p(\boldsymbol{x} \mid \boldsymbol{z})$ is, say, a spherical Gaussian with mean $\boldsymbol{\psi}(\boldsymbol{z} )$, then optimizing the likelihood over a training set is equivalent to the usual squared loss.</p>
 <p>Other distributions produce different losses.</p>
 <p>:::</p>
 </div>
@@ -756,43 +752,39 @@ the <em>clean</em> input. The autoencoder learn to extract essential information
 <p>Here we introduce regularized autoencoders. Variational autoencoders are introduced in a separated <a class="reference internal" href="13-variational-autoencoders.html"><span class="doc std std-doc">section</span></a>.</p>
 <div class="section" id="sparse-autoencoders">
 <h3>Sparse Autoencoders<a class="headerlink" href="#sparse-autoencoders" title="Permalink to this headline">¶</a></h3>
-<p>Sparse autoencoder may include more hidden units than inputs, but only a small number of them are active at once, determined by the input <span class="math notranslate nohighlight">\(\boldsymbol{x}_{i}\)</span>. This sparsity constraint forces the model to respond to the unique statistical features of the input data used
+<p>Sparse autoencoder may include more hidden units than inputs, but only a small number of them are active at once, determined by the input $\boldsymbol{x}_{i}$. This sparsity constraint forces the model to respond to the unique statistical features of the input data used
 for training.</p>
-<p>The objective include a sparsity penalty term <span class="math notranslate nohighlight">\(R(\boldsymbol{z})\)</span>
-on the code layer <span class="math notranslate nohighlight">\(\boldsymbol{z}\)</span>.</p>
-<div class="math notranslate nohighlight">
-\[
+<p>The objective include a sparsity penalty term $R(\boldsymbol{z})$
+on the code layer $\boldsymbol{z}$.</p>
+<p>$$
 \mathcal{L}\left(\boldsymbol{x},\boldsymbol{x}^{\prime}\right)+R(\boldsymbol{z})
-\]</div>
+$$</p>
 <p>For instance, we can use L1 or L2 regularization,</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 \mathcal{L}\left(\boldsymbol{x},\boldsymbol{x}^{\prime}\right)+\lambda\left\Vert \boldsymbol{z}\right\Vert
-\]</div>
+$$</p>
 </div>
 <div class="section" id="denoising-autoencoders">
 <h3>Denoising Autoencoders<a class="headerlink" href="#denoising-autoencoders" title="Permalink to this headline">¶</a></h3>
-<p>Instead of using the original input <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span>, we add noise and use the corrupted input <span class="math notranslate nohighlight">\(\tilde{\boldsymbol{x}}\)</span>. Denoising autoencoders take a partially correpted (noised) input <span class="math notranslate nohighlight">\(\tilde{\boldsymbol{x}}\)</span> and are trained to recover the original undistorted input. So it’s
+<p>Instead of using the original input $\boldsymbol{x}$, we add noise and use the corrupted input $\tilde{\boldsymbol{x}}$. Denoising autoencoders take a partially correpted (noised) input $\tilde{\boldsymbol{x}}$ and are trained to recover the original undistorted input. So it’s
 called <em>denoising</em>. There are two underlying assumptions</p>
 <ul class="simple">
 <li><p>Higher level representations are relatively more stable and robust to the corruption of the input</p></li>
 <li><p>To perform denoising well, the model needs to extract features that capture useful structure in the distribution of the input.</p></li>
 </ul>
 <p>Essentially, we model</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
+<p>$$
 \begin{aligned}
-\tilde{\boldsymbol{x}} &amp; \sim q_{D}(\tilde{\boldsymbol{x}}\mid\boldsymbol{x})\\
-\boldsymbol{z} &amp; =\phi(\tilde{\boldsymbol{x}})\\
+\tilde{\boldsymbol{x}} &amp; \sim q_{D}(\tilde{\boldsymbol{x}}\mid\boldsymbol{x})\
+\boldsymbol{z} &amp; =\phi(\tilde{\boldsymbol{x}})\
 \boldsymbol{x}^{\prime} &amp; =\psi(\boldsymbol{z})
 \end{aligned}
-\end{split}\]</div>
+$$</p>
 <p>The objective function is still to minimize the reconstruction error</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 \mathcal{L}\left(\boldsymbol{x},\boldsymbol{x}^{\prime}\right)
-\]</div>
-<p>The corruption process <span class="math notranslate nohighlight">\(q_{D}(\tilde{\boldsymbol{x}}\mid\boldsymbol{x})\)</span> might be</p>
+$$</p>
+<p>The corruption process $q_{D}(\tilde{\boldsymbol{x}}\mid\boldsymbol{x})$ might be</p>
 <ul class="simple">
 <li><p>Additive isotropic Gaussian noise,</p></li>
 <li><p>Masking noise: a fraction of the input chosen at random for each example is forced to 0</p></li>
@@ -805,10 +797,9 @@ original data, <strong>no</strong> corruption is added.</p>
 <h3>Contractive Autoencoders<a class="headerlink" href="#contractive-autoencoders" title="Permalink to this headline">¶</a></h3>
 <p>Contractive autoencoder (CAE) adds an explicit regularizer in their objective function that forces the model to learn a function that is robust to slight variations of input values.</p>
 <p>This regularizer corresponds to the Frobenius norm of the Jacobian matrix of the encoder activations with respect to the input. Since the penalty is applied to training examples only, this term forces the model to learn useful information about the training distribution. Theobjective function has the following form:</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 \mathcal{L}\left(\boldsymbol{x},\boldsymbol{x}^{\prime}\right)+\lambda\left\Vert \nabla_{\boldsymbol{x}}\boldsymbol{z}\right\Vert ^{2}
-\]</div>
+$$</p>
 <p>The name contractive comes from the fact that CAE is encouraged to map a neighborhood of input points to a smaller neighborhood of output points.</p>
 <p>There is a connection between the denoising autoencoder (DAE) and the contractive autoencoder (CAE): in the limit of small Gaussian input noise,</p>
 <ul class="simple">

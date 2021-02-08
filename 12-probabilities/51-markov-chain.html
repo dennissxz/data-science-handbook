@@ -46,8 +46,6 @@
     <script src="../_static/copybutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="../_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
     <script >
         const thebe_selector = ".thebe"
@@ -355,6 +353,11 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/31-knapsack.html">
+     Minimum Knapsack
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="../23-dynamic-programming/51-chain-matrix-multiplication.html">
      Chain Matrix Multiplication
     </a>
@@ -488,11 +491,7 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../33-dimensionality-reduction/31-t-SNE.html">
-     SNE and
-     <span class="math notranslate nohighlight">
-      \(t\)
-     </span>
-     -SNE
+     SNE and $t$-SNE
     </a>
    </li>
   </ul>
@@ -707,41 +706,35 @@
 <p><em>There are 1,000 people in one room. One of them carries a disease which infects 100% if one shares hands with an infected person. In each minute all the people in the room are randomly paired to share hands with each other. What is your estimate of the expected number of people infected after 10 minutes? Can you use only pen and paper to solve this?</em></p>
 <div class="section" id="sol-1-markov-chain">
 <h4>Sol.1 Markov Chain<a class="headerlink" href="#sol-1-markov-chain" title="Permalink to this headline">¶</a></h4>
-<p>Let <span class="math notranslate nohighlight">\(I_t\)</span> be the number of infected individuals after <span class="math notranslate nohighlight">\(t\)</span> minutes. Define a transition matrix <span class="math notranslate nohighlight">\(\boldsymbol{P}=\left\{ p_{i,j} \right\}\)</span>, where</p>
-<div class="math notranslate nohighlight">
-\[p_{i,j} = \mathrm{P}(I_{t+1}=j\vert I_t=i)\]</div>
+<p>Let $I_t$ be the number of infected individuals after $t$ minutes. Define a transition matrix $\boldsymbol{P}=\left{ p_{i,j} \right}$, where</p>
+<p>$$p_{i,j} = \mathrm{P}(I_{t+1}=j\vert I_t=i)$$</p>
 <p>It’s easy to see that</p>
 <ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(p_{1,2}=1\)</span></p></li>
-<li><p><span class="math notranslate nohighlight">\(p_{2,2}=\frac{1}{999}, p_{2,4}=\frac{998}{999}\)</span></p></li>
+<li><p>$p_{1,2}=1$</p></li>
+<li><p>$p_{2,2}=\frac{1}{999}, p_{2,4}=\frac{998}{999}$</p></li>
 </ul>
-<p>In general, we have, for <span class="math notranslate nohighlight">\(l=0,1,\ldots, \min(k, \frac{n}{2}-k)\)</span>,</p>
-<div class="math notranslate nohighlight">
-\[p_{2k, 2(t+l)}= \frac{C_{2k}^{2l} C_{n-2k}^{2l} P_{2l}^{2l} R_{2k-2l} R_{n-2k-2l}}{R_{n}}\]</div>
+<p>In general, we have, for $l=0,1,\ldots, \min(k, \frac{n}{2}-k)$,</p>
+<p>$$p_{2k, 2(t+l)}= \frac{C_{2k}^{2l} C_{n-2k}^{2l} P_{2l}^{2l} R_{2k-2l} R_{n-2k-2l}}{R_{n}}$$</p>
 <p>where</p>
 <ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(C_{2k}^{2l}\)</span> is the number of ways to select <span class="math notranslate nohighlight">\(2l\)</span> infected individuals from the total <span class="math notranslate nohighlight">\(2k\)</span> infected individuals, to be paired with <span class="math notranslate nohighlight">\(2l\)</span> healthy individuals</p></li>
-<li><p><span class="math notranslate nohighlight">\(C_{n-2k}^{2l}\)</span> is the number of ways to select <span class="math notranslate nohighlight">\(2l\)</span> healthy individuals from the total <span class="math notranslate nohighlight">\(n-2k\)</span> healthy individuals, to be paired with <span class="math notranslate nohighlight">\(2l\)</span> infected individuals</p></li>
-<li><p><span class="math notranslate nohighlight">\(P_{2l}^{2l}\)</span> is the number of ways to pair <span class="math notranslate nohighlight">\(2l\)</span> infected individuals and <span class="math notranslate nohighlight">\(2l\)</span> healthy individuals, such that additional <span class="math notranslate nohighlight">\(2l\)</span> individuals are infected</p></li>
-<li><p><span class="math notranslate nohighlight">\(R_m\)</span> is the number of ways to arrange a even number <span class="math notranslate nohighlight">\(m\)</span> of individuals into <span class="math notranslate nohighlight">\(\frac{m}{2}\)</span> pairs. It’s easy to find</p></li>
+<li><p>$C_{2k}^{2l}$ is the number of ways to select $2l$ infected individuals from the total $2k$ infected individuals, to be paired with $2l$ healthy individuals</p></li>
+<li><p>$C_{n-2k}^{2l}$ is the number of ways to select $2l$ healthy individuals from the total $n-2k$ healthy individuals, to be paired with $2l$ infected individuals</p></li>
+<li><p>$P_{2l}^{2l}$ is the number of ways to pair $2l$ infected individuals and $2l$ healthy individuals, such that additional $2l$ individuals are infected</p></li>
+<li><p>$R_m$ is the number of ways to arrange a even number $m$ of individuals into $\frac{m}{2}$ pairs. It’s easy to find</p></li>
 </ul>
-<div class="math notranslate nohighlight">
-\[R_m=\frac{C_m^2C_{m-2}^2\ldots C_2^2 }{\frac{m}{2}!} = \frac{m!}{(2!)^{\frac{m}{2}}(\frac{m}{2}!)}\]</div>
+<p>$$R_m=\frac{C_m^2C_{m-2}^2\ldots C_2^2 }{\frac{m}{2}!} = \frac{m!}{(2!)^{\frac{m}{2}}(\frac{m}{2}!)}$$</p>
 <ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(R_{2k-2l}\)</span> is the number of ways to arrange <span class="math notranslate nohighlight">\(2k-2l\)</span> infected individuals into pairs, who do not share hands with healthy individuals</p></li>
-<li><p><span class="math notranslate nohighlight">\(R_{n-2k-2l}\)</span> is the number of ways to arrange <span class="math notranslate nohighlight">\(n-2k-2l\)</span> healthy individuals into pairs, who do not share hands with infected individuals and keep being healthy</p></li>
-<li><p><span class="math notranslate nohighlight">\(R_n\)</span> is the total number of ways to arrange <span class="math notranslate nohighlight">\(n\)</span> people into <span class="math notranslate nohighlight">\(n/2\)</span> pairs in the room</p></li>
+<li><p>$R_{2k-2l}$ is the number of ways to arrange $2k-2l$ infected individuals into pairs, who do not share hands with healthy individuals</p></li>
+<li><p>$R_{n-2k-2l}$ is the number of ways to arrange $n-2k-2l$ healthy individuals into pairs, who do not share hands with infected individuals and keep being healthy</p></li>
+<li><p>$R_n$ is the total number of ways to arrange $n$ people into $n/2$ pairs in the room</p></li>
 </ul>
 <p>Simplification gives</p>
-<div class="math notranslate nohighlight">
-\[p_{2k, 2(k+l)} =\frac{C_{n/2}^{k+l}C_{k+l}^{2l}4^l}{C_n^{2k}}\]</div>
-<p>Then the distribution of <span class="math notranslate nohighlight">\(I_{10}\)</span> is</p>
-<div class="math notranslate nohighlight">
-\[\boldsymbol{p}_{I_{10}}^\top=\boldsymbol{e}_1^\top \boldsymbol{P}^{10}\]</div>
-<p>where <span class="math notranslate nohighlight">\(\boldsymbol{e}_1 = [1,0,\ldots,0]\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{p}_{I_{10}} = [p_{1,1}^{(10)}, \ldots, p_{1,n}^{(10)}]\)</span></p>
+<p>$$p_{2k, 2(k+l)} =\frac{C_{n/2}^{k+l}C_{k+l}^{2l}4^l}{C_n^{2k}}$$</p>
+<p>Then the distribution of $I_{10}$ is</p>
+<p>$$\boldsymbol{p}<em>{I</em>{10}}^\top=\boldsymbol{e}_1^\top \boldsymbol{P}^{10}$$</p>
+<p>where $\boldsymbol{e}<em>1 = [1,0,\ldots,0]$ and $\boldsymbol{p}</em>{I_{10}} = [p_{1,1}^{(10)}, \ldots, p_{1,n}^{(10)}]$</p>
 <p>The expected number is</p>
-<div class="math notranslate nohighlight">
-\[\mathrm{E}(I_{10}) = [1,2,3,\ldots, n]^\top\boldsymbol{p}_{I_{10}} \]</div>
+<p>$$\mathrm{E}(I_{10}) = [1,2,3,\ldots, n]^\top\boldsymbol{p}<em>{I</em>{10}} $$</p>
 <p>A python script to implement the above steps:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -778,60 +771,53 @@
 </div>
 <div class="section" id="sol-2-conditional-expectation">
 <h4>Sol.2 Conditional Expectation<a class="headerlink" href="#sol-2-conditional-expectation" title="Permalink to this headline">¶</a></h4>
-<p>Let <span class="math notranslate nohighlight">\(p_{t,j}\)</span> be the probability that infected individual <span class="math notranslate nohighlight">\(j\)</span> is paired with a <strong>healthy</strong> individual from time <span class="math notranslate nohighlight">\(t\)</span> to <span class="math notranslate nohighlight">\(t+1\)</span>, we have</p>
-<div class="math notranslate nohighlight">
-\[p_{t,j} = \frac{n-I_t} {n - 1} =: p_t\]</div>
-<p>Let <span class="math notranslate nohighlight">\(I_{t+1, j}\)</span> be the number of individuals infected by infected individual <span class="math notranslate nohighlight">\(j\)</span> from time <span class="math notranslate nohighlight">\(t\)</span> to <span class="math notranslate nohighlight">\(t+1\)</span>, we have</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
+<p>Let $p_{t,j}$ be the probability that infected individual $j$ is paired with a <strong>healthy</strong> individual from time $t$ to $t+1$, we have</p>
+<p>$$p_{t,j} = \frac{n-I_t} {n - 1} =: p_t$$</p>
+<p>Let $I_{t+1, j}$ be the number of individuals infected by infected individual $j$ from time $t$ to $t+1$, we have</p>
+<p>$$
 I_{t+1,j}=\begin{cases}
-1 &amp; p_{t}\\
+1 &amp; p_{t}\
 0 &amp; 1-p_{t}
 \end{cases}
-\end{split}\]</div>
+$$</p>
 <p>Hence,</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
+<p>$$
 \begin{align}
-\mathrm{E}\left( I_{t+1, j} \right) &amp;= p_{t} \times 1 + (1-p_{t}) \times 0  \\
-&amp; = p_{t} \\
+\mathrm{E}\left( I_{t+1, j} \right) &amp;= p_{t} \times 1 + (1-p_{t}) \times 0  \
+&amp; = p_{t} \
 \end{align}
-\end{split}\]</div>
+$$</p>
 <p>Therefore, the conditional expectation of the total number of infected individuals is given by</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
+<p>$$
 \begin{align}
-\mathrm{E}(I_{t+1}|I_t) &amp; = \mathrm{E}\left( I_t +  \sum_{j=1}^{I_t} I_{t+1,j} \right)\\
-&amp;= I_t + \sum_{j=1}^{I_t} \mathrm{E}\left( I_{t+1, j} \right) \\
-&amp; = I_t + I_t \times p_t \\
-&amp; = I_t + I_t \times \frac{n-I_t}{n - 1} \\
+\mathrm{E}(I_{t+1}|I_t) &amp; = \mathrm{E}\left( I_t +  \sum_{j=1}^{I_t} I_{t+1,j} \right)\
+&amp;= I_t + \sum_{j=1}^{I_t} \mathrm{E}\left( I_{t+1, j} \right) \
+&amp; = I_t + I_t \times p_t \
+&amp; = I_t + I_t \times \frac{n-I_t}{n - 1} \
 \end{align}
-\end{split}\]</div>
+$$</p>
 <p>How to solve it?</p>
 <p>By the law of total expectation,</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
+<p>$$
 \begin{align}
-\mathrm{E}(I_{t+1}) &amp; = \mathrm{E}\left( \mathrm{E}(I_{t+1}|I_t) \right) \\
-&amp; = \mathrm{E}\left(I_t + I_t \times \frac{n-I_t}{n - 1} \right)\\
+\mathrm{E}(I_{t+1}) &amp; = \mathrm{E}\left( \mathrm{E}(I_{t+1}|I_t) \right) \
+&amp; = \mathrm{E}\left(I_t + I_t \times \frac{n-I_t}{n - 1} \right)\
 &amp; = \frac{2n-1}{n-1}\mathrm{E}\left( I_t \right) - \frac{1}{n-1}\mathrm{E}\left( I_t^2 \right)
 \end{align}
-\end{split}\]</div>
-<p>In particular, since <span class="math notranslate nohighlight">\(\mathrm{P}(I_1=2\vert I_0=1)=1\)</span>, there is no randomness in <span class="math notranslate nohighlight">\(I_1\)</span>, such that</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
+$$</p>
+<p>In particular, since $\mathrm{P}(I_1=2\vert I_0=1)=1$, there is no randomness in $I_1$, such that</p>
+<p>$$
 \begin{align}
-\mathrm{E}(I_2) &amp;= \mathrm{E}\left( \mathrm{E}(I_2\vert I_1) \right) \\
-&amp;= \mathrm{E}\left(I_1 + I_1 \times \frac{n-I_1}{n - 1}\right)\\
-&amp; = 2 + 2 \times 998 / 999 \\
+\mathrm{E}(I_2) &amp;= \mathrm{E}\left( \mathrm{E}(I_2\vert I_1) \right) \
+&amp;= \mathrm{E}\left(I_1 + I_1 \times \frac{n-I_1}{n - 1}\right)\
+&amp; = 2 + 2 \times 998 / 999 \
 &amp; = 3994/999
 \end{align}
-\end{split}\]</div>
-<p>But when <span class="math notranslate nohighlight">\(t\ge 3\)</span>, the computation become complicated due to the second-order term <span class="math notranslate nohighlight">\(\mathrm{E}\left( I_t^2 \right)\)</span></p>
-<p>One attempt is to approximate <span class="math notranslate nohighlight">\(\mathrm{E}\left( I_t^2 \right)\)</span> by <span class="math notranslate nohighlight">\(\left[ \mathrm{E}\left( I_t \right) \right]^2\)</span> such that we have a <strong>recurrence relation</strong></p>
-<div class="math notranslate nohighlight">
-\[\mathrm{E}\left( I_{t+1} \right) \approx \frac{2n-1}{n-1}\mathrm{E}\left( I_t \right) - \frac{1}{n-1}\left[ \mathrm{E}\left( I_t \right) \right]^2\]</div>
-<p>Note that this will lead to a larger result since <span class="math notranslate nohighlight">\(\mathrm{E}\left( I_t^2 \right) - \left[ \mathrm{E}\left( I_t \right) \right]^2 = \mathrm{Var}\left( I_t \right) \ge 0\)</span>. But since <span class="math notranslate nohighlight">\(\mathrm{Var}\left( I_t \right)\)</span> is small, the positive error is also small.</p>
+$$</p>
+<p>But when $t\ge 3$, the computation become complicated due to the second-order term $\mathrm{E}\left( I_t^2 \right)$</p>
+<p>One attempt is to approximate $\mathrm{E}\left( I_t^2 \right)$ by $\left[ \mathrm{E}\left( I_t \right) \right]^2$ such that we have a <strong>recurrence relation</strong></p>
+<p>$$\mathrm{E}\left( I_{t+1} \right) \approx \frac{2n-1}{n-1}\mathrm{E}\left( I_t \right) - \frac{1}{n-1}\left[ \mathrm{E}\left( I_t \right) \right]^2$$</p>
+<p>Note that this will lead to a larger result since $\mathrm{E}\left( I_t^2 \right) - \left[ \mathrm{E}\left( I_t \right) \right]^2 = \mathrm{Var}\left( I_t \right) \ge 0$. But since $\mathrm{Var}\left( I_t \right)$ is small, the positive error is also small.</p>
 <p>A python script of the iteration is</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -854,17 +840,14 @@ I_{t+1,j}=\begin{cases}
 </div>
 </div>
 </div>
-<p>The result <span class="math notranslate nohighlight">\(642.975\)</span> is slightly larger than the result <span class="math notranslate nohighlight">\(642.347\)</span> in Solution 1.</p>
-<p>If we take a closer look at the recurrence relation, dividing <span class="math notranslate nohighlight">\(2n-1\)</span> on both sides gives</p>
-<div class="math notranslate nohighlight">
-\[\frac{\mathrm{E}\left( I_{t+1} \right)}{2n-1} \approx \frac{2n-1}{n-1} \frac{\mathrm{E}\left( I_t \right)}{2n-1} - \frac{2n-1}{n-1}\left[ \frac{\mathrm{E}\left( I_t \right)}{2n-1} \right]^2\]</div>
-<p>Let <span class="math notranslate nohighlight">\(x_t = \frac{\mathrm{E}\left( I_t \right)}{2n-1}\)</span> then it becomes</p>
-<div class="math notranslate nohighlight">
-\[x_{t+1} \approx 2x_t(1-x_t)\]</div>
-<p>when <span class="math notranslate nohighlight">\(n\)</span> is large.</p>
-<p>Given <span class="math notranslate nohighlight">\(x_0\)</span>, if the equality holds, we can solve for <span class="math notranslate nohighlight">\(x_t\)</span> by</p>
-<div class="math notranslate nohighlight">
-\[x_{t} = \frac{1}{2}\left\{1-\exp \left[2^{t} \ln \left(1-2 x_{0}\right)\right]\right\}\]</div>
+<p>The result $642.975$ is slightly larger than the result $642.347$ in Solution 1.</p>
+<p>If we take a closer look at the recurrence relation, dividing $2n-1$ on both sides gives</p>
+<p>$$\frac{\mathrm{E}\left( I_{t+1} \right)}{2n-1} \approx \frac{2n-1}{n-1} \frac{\mathrm{E}\left( I_t \right)}{2n-1} - \frac{2n-1}{n-1}\left[ \frac{\mathrm{E}\left( I_t \right)}{2n-1} \right]^2$$</p>
+<p>Let $x_t = \frac{\mathrm{E}\left( I_t \right)}{2n-1}$ then it becomes</p>
+<p>$$x_{t+1} \approx 2x_t(1-x_t)$$</p>
+<p>when $n$ is large.</p>
+<p>Given $x_0$, if the equality holds, we can solve for $x_t$ by</p>
+<p>$$x_{t} = \frac{1}{2}\left{1-\exp \left[2^{t} \ln \left(1-2 x_{0}\right)\right]\right}$$</p>
 <p>For details, see <a class="reference external" href="https://mathworld.wolfram.com/LogisticMap.html">Logistic Map</a>.</p>
 </div>
 <div class="section" id="sol-3-simulation">
@@ -918,7 +901,7 @@ I_{t+1,j}=\begin{cases}
 </div>
 </div>
 </div>
-<p>To get the expected number <span class="math notranslate nohighlight">\(E(I_{10})\)</span>, we can try to simulate <span class="math notranslate nohighlight">\(m\)</span> times and take the average.</p>
+<p>To get the expected number $E(I_{10})$, we can try to simulate $m$ times and take the average.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
@@ -938,8 +921,8 @@ I_{t+1,j}=\begin{cases}
 </div>
 </div>
 </div>
-<p>We see the simulation result <span class="math notranslate nohighlight">\(642.286\)</span> is quite close to the result <span class="math notranslate nohighlight">\(E(I_{10}) = 642.347\)</span> in Solution 1.</p>
-<p>The plot below shows <span class="math notranslate nohighlight">\(m\)</span> trajectories of <span class="math notranslate nohighlight">\(I_t\)</span> in the simulation. We can see all lines are close to each other, which verifies that the variance is quite small.</p>
+<p>We see the simulation result $642.286$ is quite close to the result $E(I_{10}) = 642.347$ in Solution 1.</p>
+<p>The plot below shows $m$ trajectories of $I_t$ in the simulation. We can see all lines are close to each other, which verifies that the variance is quite small.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>

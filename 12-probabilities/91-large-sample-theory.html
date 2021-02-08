@@ -46,8 +46,6 @@
     <script src="../_static/copybutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="../_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
     <script >
         const thebe_selector = ".thebe"
@@ -355,6 +353,11 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/31-knapsack.html">
+     Minimum Knapsack
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="../23-dynamic-programming/51-chain-matrix-multiplication.html">
      Chain Matrix Multiplication
     </a>
@@ -488,11 +491,7 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../33-dimensionality-reduction/31-t-SNE.html">
-     SNE and
-     <span class="math notranslate nohighlight">
-      \(t\)
-     </span>
-     -SNE
+     SNE and $t$-SNE
     </a>
    </li>
   </ul>
@@ -700,19 +699,20 @@
 <h1>Large Sample Theory<a class="headerlink" href="#large-sample-theory" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="convergence-in-probability">
 <h2>Convergence in Probability<a class="headerlink" href="#convergence-in-probability" title="Permalink to this headline">¶</a></h2>
-<p>Definition (Convergence in probability)
-: A sequence <span class="math notranslate nohighlight">\({X_n}\)</span> of random variables converges in probability towards the random variable <span class="math notranslate nohighlight">\(X\)</span> if for all <span class="math notranslate nohighlight">\(\varepsilon &gt; 0\)</span>,</p>
-<div class="math notranslate nohighlight">
-\[
-  \lim _{n \rightarrow \infty} \operatorname{P}\left(\left|X_{n}-X\right|&gt;\varepsilon\right)=0
-  \]</div>
-<p>In short, we write <span class="math notranslate nohighlight">\(X_{n} \stackrel{P}{\rightarrow} X\)</span> or <span class="math notranslate nohighlight">\(\operatorname{plim} X_{n}=X\)</span>.</p>
+<dl class="simple myst">
+<dt>Definition (Convergence in probability)</dt><dd><p>A sequence ${X_n}$ of random variables converges in probability towards the random variable $X$ if for all $\varepsilon &gt; 0$,</p>
+<p>$$
+\lim <em>{n \rightarrow \infty} \operatorname{P}\left(\left|X</em>{n}-X\right|&gt;\varepsilon\right)=0
+$$</p>
+</dd>
+</dl>
+<p>In short, we write $X_{n} \stackrel{P}{\rightarrow} X$ or $\operatorname{plim} X_{n}=X$.</p>
 <p><strong>Properties</strong></p>
 <ol class="simple">
-<li><p><span class="math notranslate nohighlight">\(\operatorname{plim} \frac{X_n}{Y_n}   = \frac{\operatorname{plim} X_n }{\operatorname{plim} Y_n }\)</span></p></li>
-<li><p><span class="math notranslate nohighlight">\(\operatorname{plim} X_nY_n  = \operatorname{plim} X_n  \operatorname{plim} Y_n\)</span></p></li>
-<li><p><span class="math notranslate nohighlight">\(\operatorname{plim} (X_n+Y_n)  = \operatorname{plim} X_n  + \operatorname{plim} Y_n\)</span></p></li>
-<li><p><span class="math notranslate nohighlight">\(\operatorname{plim} g(X_n)  = g(\operatorname{plim} X_n )\)</span> if <span class="math notranslate nohighlight">\(g\)</span> if is continuous at <span class="math notranslate nohighlight">\(\operatorname{plim} X_n\)</span></p></li>
+<li><p>$\operatorname{plim} \frac{X_n}{Y_n}   = \frac{\operatorname{plim} X_n }{\operatorname{plim} Y_n }$</p></li>
+<li><p>$\operatorname{plim} X_nY_n  = \operatorname{plim} X_n  \operatorname{plim} Y_n$</p></li>
+<li><p>$\operatorname{plim} (X_n+Y_n)  = \operatorname{plim} X_n  + \operatorname{plim} Y_n$</p></li>
+<li><p>$\operatorname{plim} g(X_n)  = g(\operatorname{plim} X_n )$ if $g$ if is continuous at $\operatorname{plim} X_n$</p></li>
 </ol>
 </div>
 <div class="section" id="law-of-large-numbers">
@@ -720,40 +720,35 @@
 <p>The Law of Large Numbers states that, as the number of identically distributed, randomly generated variables increases, their sample mean (average) approaches their theoretical mean.</p>
 <div class="section" id="weak-law-of-large-numbers">
 <h3>Weak Law of Large Numbers<a class="headerlink" href="#weak-law-of-large-numbers" title="Permalink to this headline">¶</a></h3>
-<p>Let <span class="math notranslate nohighlight">\(X_1, \ldots, X_n\)</span> be independently and identically distributed random variables with mean <span class="math notranslate nohighlight">\(\mu\)</span> and variance <span class="math notranslate nohighlight">\(\sigma^{2}&lt;\infty\)</span>.
-Then for every <span class="math notranslate nohighlight">\(\epsilon&gt;0\)</span>,</p>
-<div class="math notranslate nohighlight">
-\[
+<p>Let $X_1, \ldots, X_n$ be independently and identically distributed random variables with mean $\mu$ and variance $\sigma^{2}&lt;\infty$.
+Then for every $\epsilon&gt;0$,</p>
+<p>$$
 \lim_{n\rightarrow\infty}\mathrm{P}\left(\left|\bar{X}_{n}-\mu\right|&lt;\epsilon\right)=1
-\]</div>
-<p>i.e. the sample mean converge in probability to the theoretical mean <span class="math notranslate nohighlight">\(\mu\)</span>,</p>
-<div class="math notranslate nohighlight">
-\[
+$$</p>
+<p>i.e. the sample mean converge in probability to the theoretical mean $\mu$,</p>
+<p>$$
 \bar{X}_{n}\overset{\mathcal{P}}{\rightarrow}\mu \quad \text{as}\ n\rightarrow \infty
-\]</div>
-<p>It leaves open the possibility that <span class="math notranslate nohighlight">\(\left|\overline{X}_{n}-\mu \right|&gt;\epsilon\)</span>  happens an <strong>infinite</strong> number of times,</p>
+$$</p>
+<p>It leaves open the possibility that $\left|\overline{X}_{n}-\mu \right|&gt;\epsilon$  happens an <strong>infinite</strong> number of times,</p>
 <p>To prove it, by Chebychev’s Inequality,</p>
-<div class="math notranslate nohighlight">
-\[
-\mathrm{P}\left(\left|\bar{X}_{n}-\mu\right|\geq\epsilon\right)
-=\mathrm{P}\left(\left(\bar{X}_{n}-\mu\right)^{2}\geq\epsilon^{2}\right)
-\leq\frac{\mathrm{E}\left(\bar{X}_{n}-\mu\right)^{2}}{\epsilon^{2}}
-=\frac{\operatorname{Var}\bar{X}_{\mathfrak{H}}}{\epsilon^{2}}=\frac{\sigma^{2}}{n\epsilon^{2}} \rightarrow 0
-\]</div>
+<p>$$
+\mathrm{P}\left(\left|\bar{X}<em>{n}-\mu\right|\geq\epsilon\right)
+=\mathrm{P}\left(\left(\bar{X}</em>{n}-\mu\right)^{2}\geq\epsilon^{2}\right)
+\leq\frac{\mathrm{E}\left(\bar{X}<em>{n}-\mu\right)^{2}}{\epsilon^{2}}
+=\frac{\operatorname{Var}\bar{X}</em>{\mathfrak{H}}}{\epsilon^{2}}=\frac{\sigma^{2}}{n\epsilon^{2}} \rightarrow 0
+$$</p>
 </div>
 <div class="section" id="strong-law-of-large-numbers">
 <h3>Strong Law of Large Numbers<a class="headerlink" href="#strong-law-of-large-numbers" title="Permalink to this headline">¶</a></h3>
-<p>Let <span class="math notranslate nohighlight">\(X_1, \ldots, X_n\)</span> be independently and identically distributed random variables with mean <span class="math notranslate nohighlight">\(\mu\)</span> and variance <span class="math notranslate nohighlight">\(\sigma^{2}&lt;\infty\)</span>.
-Then for every <span class="math notranslate nohighlight">\(\epsilon&gt;0\)</span>,</p>
-<div class="math notranslate nohighlight">
-\[
+<p>Let $X_1, \ldots, X_n$ be independently and identically distributed random variables with mean $\mu$ and variance $\sigma^{2}&lt;\infty$.
+Then for every $\epsilon&gt;0$,</p>
+<p>$$
 \mathrm{P}\left(\lim_{n\rightarrow\infty}\left|\bar{X}_{n}-\mu\right|&lt;\epsilon\right)=1
-\]</div>
-<p>i.e. the sample mean converge to the theoretical mean <span class="math notranslate nohighlight">\(\mu\)</span> almost surely,</p>
-<div class="math notranslate nohighlight">
-\[
+$$</p>
+<p>i.e. the sample mean converge to the theoretical mean $\mu$ almost surely,</p>
+<p>$$
 \bar{X}_{n}\overset{a.s.}{\rightarrow}\mu \quad \text{as} \ n\rightarrow \infty
-\]</div>
+$$</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <ul class="simple">
@@ -767,24 +762,21 @@ Then for every <span class="math notranslate nohighlight">\(\epsilon&gt;0\)</spa
 <h2>Central Limit Theorem<a class="headerlink" href="#central-limit-theorem" title="Permalink to this headline">¶</a></h2>
 <p>The Central Limit Theorem, in probability theory, when independent random variables are added, their properly normalized sum tends toward a normal distribution (informally a “bell curve”) even if the original variables themselves are not normally distributed.</p>
 <p>There are many versions of CLT with various problem settings. Here we introduce Lindeberg–Lévy CLT.</p>
-<p>Let <span class="math notranslate nohighlight">\(X_1, \ldots, X_n\)</span> be a sequence of independently and identically distributed random variables such that
-<span class="math notranslate nohighlight">\(\mathrm{E}\left( X_{i} \right)=\mu\)</span>, <span class="math notranslate nohighlight">\(\mathrm{Var}\left( X_{i} \right)=\sigma^{2}&gt;0\)</span>. Let <span class="math notranslate nohighlight">\(G_{n}(x)\)</span> denote
-the CDF of <span class="math notranslate nohighlight">\(\frac{\sqrt{n}\left(\bar{X}_{n}-\mu\right)}{\sigma}\)</span>,
+<p>Let $X_1, \ldots, X_n$ be a sequence of independently and identically distributed random variables such that
+$\mathrm{E}\left( X_{i} \right)=\mu$, $\mathrm{Var}\left( X_{i} \right)=\sigma^{2}&gt;0$. Let $G_{n}(x)$ denote
+the CDF of $\frac{\sqrt{n}\left(\bar{X}_{n}-\mu\right)}{\sigma}$,
 then</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 \lim_{n\rightarrow\infty}G_{n}(x)=\Phi(x)
-\]</div>
+$$</p>
 <p>i.e., the normalized sample mean converge in distribution to a standard normal random variable,</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 \frac{\sqrt{n}\left(\bar{X}_{n}-\mu\right)}{\sigma}\overset{\mathcal{D}}{\rightarrow}N(0,1)
-\]</div>
-<p>The Central Limit Theorem implies that we can obtain a normal distribution from a uniform random variable generator. Let  <span class="math notranslate nohighlight">\(X\sim U(0,1)\)</span>, then <span class="math notranslate nohighlight">\(\mu = \mathrm{E}\left( X \right) =\frac{1}{2}\)</span>, <span class="math notranslate nohighlight">\(\sigma = \sqrt{\mathrm{Var}\left(X \right)} = \sqrt{\frac{1}{12}}\)</span>. Hence,</p>
-<div class="math notranslate nohighlight">
-\[
+$$</p>
+<p>The Central Limit Theorem implies that we can obtain a normal distribution from a uniform random variable generator. Let  $X\sim U(0,1)$, then $\mu = \mathrm{E}\left( X \right) =\frac{1}{2}$, $\sigma = \sqrt{\mathrm{Var}\left(X \right)} = \sqrt{\frac{1}{12}}$. Hence,</p>
+<p>$$
 Y_n=\frac{\sqrt{n}\left(\bar{X}_{n}-\mu\right)}{\sigma}\overset{\mathcal{D}}{\rightarrow}N(0,1)
-\]</div>
+$$</p>
 <p>Implementation with Python:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -811,7 +803,7 @@ Y_n=\frac{\sqrt{n}\left(\bar{X}_{n}-\mu\right)}{\sigma}\overset{\mathcal{D}}{\ri
 <img alt="../_images/91-large-sample-theory_1_0.png" src="../_images/91-large-sample-theory_1_0.png" />
 </div>
 </div>
-<p>In general, one can then sample from any normal distribution <span class="math notranslate nohighlight">\(N(a,b^2)\)</span> by the transformation <span class="math notranslate nohighlight">\(Z = bY_n+a\)</span>.</p>
+<p>In general, one can then sample from any normal distribution $N(a,b^2)$ by the transformation $Z = bY_n+a$.</p>
 </div>
 </div>
 

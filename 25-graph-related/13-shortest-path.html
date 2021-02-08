@@ -46,8 +46,6 @@
     <script src="../_static/copybutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="../_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
     <script >
         const thebe_selector = ".thebe"
@@ -355,6 +353,11 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/31-knapsack.html">
+     Minimum Knapsack
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="../23-dynamic-programming/51-chain-matrix-multiplication.html">
      Chain Matrix Multiplication
     </a>
@@ -488,11 +491,7 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../33-dimensionality-reduction/31-t-SNE.html">
-     SNE and
-     <span class="math notranslate nohighlight">
-      \(t\)
-     </span>
-     -SNE
+     SNE and $t$-SNE
     </a>
    </li>
   </ul>
@@ -728,39 +727,43 @@
 <p class="sidebar-title"></p>
 <p>If the graph is not complete, we can assign arbitrary large edge length to the non-existing edge to make the graph complete.</p>
 </div>
-<p>Input
-: - A directed complete graph with non-negative edge length <span class="math notranslate nohighlight">\(\ell(e)\)</span>.</p>
-<ul class="simple">
-<li><p>A source vertex <span class="math notranslate nohighlight">\(s\)</span>.</p></li>
+<dl class="simple myst">
+<dt>Input</dt><dd><ul class="simple">
+<li><p>A directed complete graph with non-negative edge length $\ell(e)$.</p></li>
+<li><p>A source vertex $s$.</p></li>
 </ul>
-<p>Goal
-: Find the shortest path <span class="math notranslate nohighlight">\(P\)</span> between <span class="math notranslate nohighlight">\(s\)</span> and all other vertices</p>
+</dd>
+<dt>Goal</dt><dd><p>Find the shortest path $P$ between $s$ and all other vertices</p>
+</dd>
+</dl>
 </div>
 <div class="section" id="greedy-algorithm-dijkstra">
 <h2>Greedy Algorithm (Dijkstra)<a class="headerlink" href="#greedy-algorithm-dijkstra" title="Permalink to this headline">¶</a></h2>
-<p>Dijkstra’s algorithm is a greedy algorithm, which maintains a set of vertices <span class="math notranslate nohighlight">\(S\)</span> and update it iteratively. At start, <span class="math notranslate nohighlight">\(S={s}\)</span>. If we found a shortest path between <span class="math notranslate nohighlight">\(s\)</span> to a vertex <span class="math notranslate nohighlight">\(u\)</span>, then <span class="math notranslate nohighlight">\(u\)</span> is added to <span class="math notranslate nohighlight">\(S\)</span>. If <span class="math notranslate nohighlight">\(S=V\)</span>, then the algorithm terminates.</p>
-<p>Definition (Shortest path from <span class="math notranslate nohighlight">\(s\)</span> to <span class="math notranslate nohighlight">\(u\)</span> w.r.t <span class="math notranslate nohighlight">\(S\)</span>)
-: The shortest path from <span class="math notranslate nohighlight">\(s\)</span> to <span class="math notranslate nohighlight">\(u\)</span> w.r.t. <span class="math notranslate nohighlight">\(S\)</span> is a shortest path such that all vertices along the it <span class="math notranslate nohighlight">\((s,u)\)</span> are in <span class="math notranslate nohighlight">\(S\)</span>. The distance is denoted as <span class="math notranslate nohighlight">\(d(u)\)</span>.</p>
-<p>Let <span class="math notranslate nohighlight">\(d^{\text{opt}}(u)\)</span> be the unconstrained shortest path from <span class="math notranslate nohighlight">\(s\)</span> to <span class="math notranslate nohighlight">\(u\)</span>. Then we have</p>
-<div class="math notranslate nohighlight">
-\[
+<p>Dijkstra’s algorithm is a greedy algorithm, which maintains a set of vertices $S$ and update it iteratively. At start, $S={s}$. If we found a shortest path between $s$ to a vertex $u$, then $u$ is added to $S$. If $S=V$, then the algorithm terminates.</p>
+<dl class="simple myst">
+<dt>Definition (Shortest path from $s$ to $u$ w.r.t $S$)</dt><dd><p>The shortest path from $s$ to $u$ w.r.t. $S$ is a shortest path such that all vertices along the it $(s,u)$ are in $S$. The distance is denoted as $d(u)$.</p>
+</dd>
+</dl>
+<p>Let $d^{\text{opt}}(u)$ be the unconstrained shortest path from $s$ to $u$. Then we have</p>
+<p>$$
 d(u) \ge d^{\text{opt}}(u)
-\]</div>
-<p>The algorithm add <span class="math notranslate nohighlight">\(u\)</span> to <span class="math notranslate nohighlight">\(S\)</span> if the equality is achieved.</p>
+$$</p>
+<p>The algorithm add $u$ to $S$ if the equality is achieved.</p>
 <div class="section" id="solution">
 <h3>Solution<a class="headerlink" href="#solution" title="Permalink to this headline">¶</a></h3>
+<p>The algorithm is</p>
 <hr class="docutils" />
 <p><strong>Dijkstra’s algorithm</strong></p>
 <hr class="docutils" />
 <ul class="simple">
 <li><p>Initialize</p>
 <ul>
-<li><p><span class="math notranslate nohighlight">\(S = \left\{ s \right\}\)</span></p></li>
-<li><p><span class="math notranslate nohighlight">\(d(s)=0\)</span></p></li>
-<li><p>For all other nodes <span class="math notranslate nohighlight">\(u \in V \backslash \left\{ s \right\}\)</span>,</p>
+<li><p>$S = \left{ s \right}$</p></li>
+<li><p>$d(s)=0$</p></li>
+<li><p>For all other nodes $u \in V \backslash \left{ s \right}$,</p>
 <ul>
-<li><p>if <span class="math notranslate nohighlight">\(u\)</span> is an neighbor of <span class="math notranslate nohighlight">\(s\)</span>, set <span class="math notranslate nohighlight">\(d(u) = \ell(s,u)\)</span></p></li>
-<li><p>else set <span class="math notranslate nohighlight">\(d(u) = \infty\)</span></p></li>
+<li><p>if $u$ is an neighbor of $s$, set $d(u) = \ell(s,u)$</p></li>
+<li><p>else set $d(u) = \infty$</p></li>
 </ul>
 </li>
 </ul>
@@ -768,145 +771,142 @@ d(u) \ge d^{\text{opt}}(u)
 </ul>
 <div class="margin sidebar">
 <p class="sidebar-title"></p>
-<p>If we only want to find the shortest path between <span class="math notranslate nohighlight">\(s\)</span> and a specific target vertex <span class="math notranslate nohighlight">\(t\)</span>, then the loop condition can be changed to WHILE <span class="math notranslate nohighlight">\(t \notin S\)</span>.</p>
+<p>If we only want to find the shortest path between $s$ and a specific target vertex $t$, then the loop condition can be changed to WHILE $t \notin S$.</p>
 </div>
 <ul class="simple">
-<li><p>While <span class="math notranslate nohighlight">\(S \ne V\)</span>,</p>
+<li><p>While $S \ne V$,</p>
 <ul>
-<li><p>Find <span class="math notranslate nohighlight">\(u^* = \arg\min _{u \notin S} d(u)\)</span></p></li>
-<li><p>Add <span class="math notranslate nohighlight">\(u^*\)</span> to <span class="math notranslate nohighlight">\(S\)</span></p></li>
-<li><p>For <span class="math notranslate nohighlight">\(u \notin S\)</span>,</p>
+<li><p>Find $u^* = \arg\min _{u \notin S} d(u)$</p></li>
+<li><p>Add $u^*$ to $S$</p></li>
+<li><p>For $u \notin S$,</p>
 <ul>
-<li><p>If <span class="math notranslate nohighlight">\(d(u^*) + \ell(u^*, u) &lt; d(u)\)</span>, then update <span class="math notranslate nohighlight">\(d(u) \leftarrow d(u^*) + \ell(u^*, u)\)</span></p></li>
+<li><p>If $d(u^<em>) + \ell(u^</em>, u) &lt; d(u)$, then update $d(u) \leftarrow d(u^<em>) + \ell(u^</em>, u)$</p></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><p>For <span class="math notranslate nohighlight">\(v \in S\)</span>, the shortest path from <span class="math notranslate nohighlight">\(s\)</span> to <span class="math notranslate nohighlight">\(v\)</span> are is the collection of edges to compute <span class="math notranslate nohighlight">\(d(v)\)</span>.</p></li>
+<li><p>For $v \in S$, the shortest path from $s$ to $v$ are the collection of edges to compute $d(v)$.</p></li>
 </ul>
 </div>
 <hr class="docutils" />
 <div class="section" id="correctness">
 <h3>Correctness<a class="headerlink" href="#correctness" title="Permalink to this headline">¶</a></h3>
-<p>Claim: For every <span class="math notranslate nohighlight">\(u\in S\)</span>, we have <span class="math notranslate nohighlight">\(d(u) = d^{\text{opt}}(u)\)</span></p>
+<p>Claim: For every $u\in S$, we have $d(u) = d^{\text{opt}}(u)$</p>
 <p><em><strong>Proof by induction</strong></em></p>
 <ul class="simple">
-<li><p>Base: at initialization, <span class="math notranslate nohighlight">\(S = \left\{ s \right\}, d(s) = d^{\text{opt}}(s) = 0\)</span></p></li>
-<li><p>Step: if the claim holds before adding <span class="math notranslate nohighlight">\(u^*\)</span>, then it also holds after adding <span class="math notranslate nohighlight">\(u^*\)</span></p></li>
+<li><p>Base: at initialization, $S = \left{ s \right}, d(s) = d^{\text{opt}}(s) = 0$</p></li>
+<li><p>Step: if the claim holds before adding $u^<em>$, then it also holds after adding $u^</em>$</p></li>
 </ul>
-<p>For a newly added note <span class="math notranslate nohighlight">\(u^*\)</span>, let <span class="math notranslate nohighlight">\(P_{s,u^*}^{y}\)</span> be any path from <span class="math notranslate nohighlight">\(s\)</span> to <span class="math notranslate nohighlight">\(u^*\)</span> through <span class="math notranslate nohighlight">\(y\notin S\)</span>. Since the algorithm select by <span class="math notranslate nohighlight">\(u^* = \arg\min _{u \notin S} d(u)\)</span>, we have</p>
-<div class="math notranslate nohighlight">
-\[
+<p>For a newly added note $u^<em>$, let $P_{s,u^</em>}^{y}$ be any path from $s$ to $u^<em>$ through $y\notin S$. Since the algorithm select by $u^</em> = \arg\min _{u \notin S} d(u)$, we have</p>
+<p>$$
 d(u^*) \le d(y)
-\]</div>
+$$</p>
 <p>By step assumption,</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 d(y) \le \ell(\text{any other paths from $s$ to $y$})
-\]</div>
-<p>Let <span class="math notranslate nohighlight">\(\ell_{P}(y,u^*)\)</span> be the path length from <span class="math notranslate nohighlight">\(y\)</span> to <span class="math notranslate nohighlight">\(u^*\)</span> along path <span class="math notranslate nohighlight">\(P_{s,u^*}^{y}\)</span></p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{aligned}
-d(y) + \ell_{P}(y,u^*)
-&amp;\le \ell(\text{any path from $s$ to $y$}) + \ell_{P}(y,u^*)  \\
-&amp;\le \ell(\text{any path from $s$ to $y$, then $y$ to $u^*$}) \\
-&amp;\le \ell(P_{s,u^*}^{y}) \\
-\end{aligned}\end{split}\]</div>
+$$</p>
+<p>Let $\ell_{P}(y,u^<em>)$ be the path length from $y$ to $u^</em>$ along path $P_{s,u^*}^{y}$</p>
+<p>$$\begin{aligned}
+d(y) + \ell_{P}(y,u^<em>)
+&amp;\le \ell(\text{any path from $s$ to $y$}) + \ell_{P}(y,u^</em>)  \
+&amp;\le \ell(\text{any path from $s$ to $y$, then $y$ to $u^<em>$}) \
+&amp;\le \ell(P_{s,u^</em>}^{y}) \
+\end{aligned}$$</p>
 <p>Therefore,</p>
-<div class="math notranslate nohighlight">
-\[
-d(u^*) \le d(y) \le d(y)+ \ell_{P}(y,u^*) \le \ell(P_{s,u^*}^{y})
-\]</div>
-<p>for any <span class="math notranslate nohighlight">\(P_{s,u^*}^{y}\)</span>. Hence, <span class="math notranslate nohighlight">\(d(u^*) = d^{\text{opt}}(u^*)\)</span></p>
-<p><span class="math notranslate nohighlight">\(\square\)</span></p>
+<p>$$
+d(u^<em>) \le d(y) \le d(y)+ \ell_{P}(y,u^</em>) \le \ell(P_{s,u^*}^{y})
+$$</p>
+<p>for any $P_{s,u^<em>}^{y}$. Hence, $d(u^</em>) = d^{\text{opt}}(u^*)$</p>
+<p>$\square$</p>
 </div>
 <div class="section" id="complexity">
 <h3>Complexity<a class="headerlink" href="#complexity" title="Permalink to this headline">¶</a></h3>
-<p>There are <span class="math notranslate nohighlight">\(n-1\)</span> iterations. In every iteration, the <span class="math notranslate nohighlight">\(\arg\min\)</span> step takes <span class="math notranslate nohighlight">\(O(n)\)</span>, and the update takes <span class="math notranslate nohighlight">\(O(n)\)</span>.</p>
-<p>So total <span class="math notranslate nohighlight">\(O(n^3)\)</span>.</p>
+<p>There are $n-1$ iterations. In every iteration, the $\arg\min$ step takes $O(n)$, and the update takes $O(n)$.</p>
+<p>So total $O(n^3)$.</p>
 </div>
 <div class="section" id="negative-edge">
 <h3>Negative Edge<a class="headerlink" href="#negative-edge" title="Permalink to this headline">¶</a></h3>
 <p>More generally, negative edge are allowed. Dijkstra’s algorithm does not work. The greedy edge may have a larger length than the sum of other two edges.</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 s \quad \overset{\quad 1 \quad }{\longrightarrow} \quad v
-\]</div>
-<div class="math notranslate nohighlight">
-\[
+$$</p>
+<p>$$
 1000 \searrow \qquad \nearrow -1000
-\]</div>
-<div class="math notranslate nohighlight">
-\[
+$$</p>
+<p>$$
 u
-\]</div>
+$$</p>
 </div>
 </div>
 <div class="section" id="dp-based-algorithm-bellman-fosd">
 <h2>DP-based Algorithm (Bellman-Fosd)<a class="headerlink" href="#dp-based-algorithm-bellman-fosd" title="Permalink to this headline">¶</a></h2>
 <p>If there are negative edges but no negative cycles, then the shortest path problem is not well defined due to negative cycles.</p>
-<p>Definition (Negative cycle)
-: We call a cycle negative if the sum of the weights of the edges in a cycle is negative.</p>
-<div class="math notranslate nohighlight">
-\[
+<dl class="simple myst">
+<dt>Definition (Negative cycle)</dt><dd><p>We call a cycle negative if the sum of the weights of the edges in a cycle is negative.</p>
+</dd>
+</dl>
+<p>$$
 A - \text{negative cycle}  - B
-\]</div>
+$$</p>
 <p>Then the path can go around the negative cycle for <strong>infinite</strong> times and have infinitely small length. Hence, out goal change to find the shortest <strong>simple</strong> path.</p>
-<p>Definition (Simple Path)
-: A path is a simple path if each vertex appears only once, i.e., no cycles.</p>
+<dl class="simple myst">
+<dt>Definition (Simple Path)</dt><dd><p>A path is a simple path if each vertex appears only once, i.e., no cycles.</p>
+</dd>
+</dl>
 <div class="section" id="analysis">
 <h3>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h3>
 <div class="section" id="an-observation">
 <h4>An Observation<a class="headerlink" href="#an-observation" title="Permalink to this headline">¶</a></h4>
-<p>Observation
-: - If there are no negative cycles, then for every vertex <span class="math notranslate nohighlight">\(v\)</span>, there exists a shortest path <span class="math notranslate nohighlight">\(s-v\)</span> that a simple path.</p>
+<dl class="simple myst">
+<dt>Observation</dt><dd><ul class="simple">
+<li><p>If there are no negative cycles, then for every vertex $v$, there exists a shortest path $s-v$ that a simple path.</p></li>
+</ul>
+</dd>
+</dl>
 <p><em><strong>Proof</strong></em></p>
-<p>Let <span class="math notranslate nohighlight">\(P\)</span> be any shortest <span class="math notranslate nohighlight">\(s-v\)</span> path. If <span class="math notranslate nohighlight">\(p\)</span> is simple then done. Otherwise, some vertex <span class="math notranslate nohighlight">\(x\)</span> appears more than once on <span class="math notranslate nohighlight">\(P\)</span>. Then we can just delete all vertices between any appearances of <span class="math notranslate nohighlight">\(x\)</span> on this path. Since there are no negative cycles, the length of <span class="math notranslate nohighlight">\(P\)</span> does not increase.</p>
-<div class="math notranslate nohighlight">
-\[
+<p>Let $P$ be any shortest $s-v$ path. If $p$ is simple then done. Otherwise, some vertex $x$ appears more than once on $P$. Then we can just delete all vertices between any appearances of $x$ on this path. Since there are no negative cycles, the length of $P$ does not increase.</p>
+<p>$$
 s - v_1 - x - [v_2 - \ldots - v_k - x] - v_{k+1} - v
-\]</div>
-<p>Moreover, such path can only contains at most <span class="math notranslate nohighlight">\(\left\vert V \right\vert - 1\)</span> vertices.</p>
+$$</p>
+<p>Moreover, such path can only contains at most $\left\vert V \right\vert - 1$ vertices.</p>
 </div>
 <div class="section" id="dp-table">
 <h4>DP-table<a class="headerlink" href="#dp-table" title="Permalink to this headline">¶</a></h4>
-<p>We want to store the length and the number of edges from <span class="math notranslate nohighlight">\(s\)</span> to any vertex <span class="math notranslate nohighlight">\(v\)</span> along the shortest path.</p>
-<p>For every <span class="math notranslate nohighlight">\(v \in V(G)\)</span> and <span class="math notranslate nohighlight">\(0 \le i \le n\)</span>, <span class="math notranslate nohighlight">\(T_{i,v}\)</span> will store the <strong>length</strong> of shortest <span class="math notranslate nohighlight">\(s-v\)</span> path containing <strong>at most</strong> <span class="math notranslate nohighlight">\(i\)</span> edges.</p>
+<p>We want to store the length and the number of edges from $s$ to any vertex $v$ along the shortest path.</p>
+<p>For every $v \in V(G)$ and $0 \le i \le n$, $T_{i,v}$ will store the <strong>length</strong> of shortest $s-v$ path containing <strong>at most</strong> $i$ edges.</p>
 </div>
 <div class="section" id="iterative-relation">
 <h4>Iterative Relation<a class="headerlink" href="#iterative-relation" title="Permalink to this headline">¶</a></h4>
-<p>For <span class="math notranslate nohighlight">\(T_{i,v}\)</span>, there are two cases</p>
+<p>For $T_{i,v}$, there are two cases</p>
 <ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(P\)</span> contains less than <span class="math notranslate nohighlight">\(i-1\)</span> edges. Then <span class="math notranslate nohighlight">\(T_{i,v} = T_{i-1, v}\)</span></p></li>
-<li><p><span class="math notranslate nohighlight">\(P\)</span> contains <span class="math notranslate nohighlight">\(i\)</span> edges. Let the last edge be <span class="math notranslate nohighlight">\((u,v)\)</span>, then <span class="math notranslate nohighlight">\(T_{i,v} = T_{i-1,u} + \ell(u,v)\)</span>.</p></li>
+<li><p>$P$ contains less than $i-1$ edges. Then $T_{i,v} = T_{i-1, v}$</p></li>
+<li><p>$P$ contains $i$ edges. Let the last edge be $(u,v)$, then $T_{i,v} = \min_{u\ne v} \left{ T_{i-1, u} + \ell(u,v) \right}$.</p></li>
 </ul>
 <p>Hence, we have</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
-T_{i,v} = \min \left\{\begin{array}{ll}
-T_{i-1, v}  \\
-\min_{u\ne v} \left\{ T_{i-1, u} + \ell(u,v) \right\}
-\end{array}\right\}
-\end{split}\]</div>
+<p>$$
+T_{i,v} = \min \left{\begin{array}{ll}
+T_{i-1, v}  \
+\min_{u\ne v} \left{ T_{i-1, u} + \ell(u,v) \right}
+\end{array}\right}
+$$</p>
 <p>Base cases are</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{aligned}
-T_{0,s} &amp;= 0 \\
+<p>$$\begin{aligned}
+T_{0,s} &amp;= 0 \
 T_{0,v} &amp;= \infty \ \forall v \ne s
-\end{aligned}\end{split}\]</div>
+\end{aligned}$$</p>
 </div>
 <div class="section" id="computational-order">
 <h4>Computational Order<a class="headerlink" href="#computational-order" title="Permalink to this headline">¶</a></h4>
-<p>For <span class="math notranslate nohighlight">\(i=1, \ldots, n-1\)</span>, then for each vertex <span class="math notranslate nohighlight">\(v\)</span>.</p>
+<p>For $i=1, \ldots, n-1$, then for each vertex $v$.</p>
 </div>
 </div>
 <div class="section" id="run-time">
 <h3>Run Time<a class="headerlink" href="#run-time" title="Permalink to this headline">¶</a></h3>
-<p><span class="math notranslate nohighlight">\(O(n^2)\)</span> entries in the DP table, <span class="math notranslate nohighlight">\(O(n)\)</span> table to compute each entry due to <span class="math notranslate nohighlight">\(\min _{u\ne v}\)</span>.</p>
-<p>Total <span class="math notranslate nohighlight">\(O(n^3)\)</span>.</p>
+<p>$O(n^2)$ entries in the DP table, $O(n)$ table to compute each entry due to $\min _{u\ne v}$.</p>
+<p>Total $O(n^3)$.</p>
 <p>:::{admonition,note} If there are negative cycles</p>
-<p>If there are negative cycles, then the Bellman-Ford algorithm still works but it will not stop in <span class="math notranslate nohighlight">\(n-1\)</span> iterations.</p>
-<p>It can also be used to detect negative cycle by checking whether <span class="math notranslate nohighlight">\(T_{n,v} = T_{n+1,v}\)</span>, and can be used to find the negative cycles.</p>
+<p>If there are negative cycles, then the Bellman-Ford algorithm still works but it will not stop in $n-1$ iterations.</p>
+<p>It can also be used to detect negative cycle by checking whether $T_{n,v} = T_{n+1,v}$, and can be used to find the negative cycles.</p>
 <p>:::</p>
 </div>
 </div>

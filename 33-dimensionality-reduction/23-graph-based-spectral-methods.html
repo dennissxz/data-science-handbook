@@ -46,8 +46,6 @@
     <script src="../_static/copybutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="../_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
     <script >
         const thebe_selector = ".thebe"
@@ -355,6 +353,11 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/31-knapsack.html">
+     Minimum Knapsack
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="../23-dynamic-programming/51-chain-matrix-multiplication.html">
      Chain Matrix Multiplication
     </a>
@@ -488,11 +491,7 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="31-t-SNE.html">
-     SNE and
-     <span class="math notranslate nohighlight">
-      \(t\)
-     </span>
-     -SNE
+     SNE and $t$-SNE
     </a>
    </li>
   </ul>
@@ -700,7 +699,7 @@
 <p>In general, there are three steps:</p>
 <ul class="simple">
 <li><p>Construct a graph with nodes being the data points. Define a similarity measure between neighbors. Assign the similarity measure value to edge weights.</p></li>
-<li><p>Construct a <span class="math notranslate nohighlight">\(n \times n\)</span> matrix summarization of the data set / graph, where the entries are pairwise weights (usually sparse).</p></li>
+<li><p>Construct a $n \times n$ matrix summarization of the data set / graph, where the entries are pairwise weights (usually sparse).</p></li>
 <li><p>Perform operations on the wight matrix to find the data projections (e.g. spectral decomposition).</p></li>
 </ul>
 <p>Examples: Isomap, maximum variance unfolding, locally linear embedding, Laplacian eigenmaps.</p>
@@ -713,18 +712,17 @@
 <h3>Learning<a class="headerlink" href="#learning" title="Permalink to this headline">¶</a></h3>
 <p>Isomap algorithm:</p>
 <ol class="simple">
-<li><p>Construct a graph where node <span class="math notranslate nohighlight">\(i\)</span> corresponds to input example <span class="math notranslate nohighlight">\(\boldsymbol{x}_i\)</span>, and nodes <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(j\)</span> are connected by an edge if <span class="math notranslate nohighlight">\(\boldsymbol{x}_i, \boldsymbol{x}_j\)</span> are nearest neighbors (by some definition) with edge weight being the Euclidean distance <span class="math notranslate nohighlight">\(d_{ij} = \left\| \boldsymbol{x}_i -\boldsymbol{x}_j  \right\|\)</span>.</p></li>
-<li><p>For each <span class="math notranslate nohighlight">\(i,j\)</span> in the graph, compute pairwise distance <span class="math notranslate nohighlight">\(\Delta_{i j}\)</span> along the shortest path in the graph (e.g., using Dijkstra’s shortest path algorithm) as the estimated geodesic distance.</p></li>
-<li><p>Perform MDS for some dimensionality <span class="math notranslate nohighlight">\(k\)</span>, taking the estimated geodesic distances <span class="math notranslate nohighlight">\(\Delta_{i j}\)</span> as input in place of Euclidean distances.</p></li>
+<li><p>Construct a graph where node $i$ corresponds to input example $\boldsymbol{x}_i$, and nodes $i$ and $j$ are connected by an edge if $\boldsymbol{x}_i, \boldsymbol{x}<em>j$ are nearest neighbors (by some definition) with edge weight being the Euclidean distance $d</em>{ij} = \left| \boldsymbol{x}_i -\boldsymbol{x}_j  \right|$.</p></li>
+<li><p>For each $i,j$ in the graph, compute pairwise distance $\Delta_{i j}$ along the shortest path in the graph (e.g., using Dijkstra’s shortest path algorithm) as the estimated geodesic distance.</p></li>
+<li><p>Perform MDS for some dimensionality $k$, taking the estimated geodesic distances $\Delta_{i j}$ as input in place of Euclidean distances.</p></li>
 </ol>
-<p>The output is the <span class="math notranslate nohighlight">\(k\)</span>-dimensional projections of all of the data points <span class="math notranslate nohighlight">\(\boldsymbol{z}_i\)</span> such that the Euclidean distances in the projected space approximate the geodesic distances on the manifold.</p>
-<div class="math notranslate nohighlight">
-\[
-\left\|\mathbf{z}_{i}-\mathbf{z}_{j}\right\|^{2} \approx \Delta_{i j}^{2}
-\]</div>
+<p>The output is the $k$-dimensional projections of all of the data points $\boldsymbol{z}_i$ such that the Euclidean distances in the projected space approximate the geodesic distances on the manifold.</p>
+<p>$$
+\left|\mathbf{z}<em>{i}-\mathbf{z}</em>{j}\right|^{2} \approx \Delta_{i j}^{2}
+$$</p>
 <p>:::{figure} isomap-geodesic-distance
 <img src="../imgs/gb-isomap-d3k2.png" width = "80%" alt=""/></p>
-<p>Isomap with <span class="math notranslate nohighlight">\(d=3,k=2\)</span>. The blue line is the real geodesic distance and the red line is estimated.  [Livescu 2021]
+<p>Isomap with $d=3,k=2$. The blue line is the real geodesic distance and the red line is estimated.  [Livescu 2021]
 :::</p>
 </div>
 <div class="section" id="pros-cons">
@@ -757,41 +755,38 @@
 <div class="section" id="objective">
 <h3>Objective<a class="headerlink" href="#objective" title="Permalink to this headline">¶</a></h3>
 <ol>
-<li><p>Define a weight matrix <span class="math notranslate nohighlight">\(\boldsymbol{W}\)</span> with pairwise edge weights as</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
-    w_{i j}=\left\{\begin{array}{ll}
-    \exp \left(-\left\|\mathbf{x}_{i}-\mathbf{x}_{j}\right\|^{2} / t\right), &amp; \left\|\mathbf{x}_{i}-\mathbf{x}_{j}\right\|&lt;\epsilon \\
-    0 &amp; \text { otherwise }
-    \end{array}\right.
-    \end{split}\]</div>
+<li><p>Define a weight matrix $\boldsymbol{W}$ with pairwise edge weights as</p>
+<p>$$
+w_{i j}=\left{\begin{array}{ll}
+\exp \left(-\left|\mathbf{x}<em>{i}-\mathbf{x}</em>{j}\right|^{2} / t\right), &amp; \left|\mathbf{x}<em>{i}-\mathbf{x}</em>{j}\right|&lt;\epsilon \
+0 &amp; \text { otherwise }
+\end{array}\right.
+$$</p>
 <p>where</p>
 <ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(\epsilon\)</span> is a hyperparameter used to define nearest neighbors (can also use counts)</p></li>
-<li><p><span class="math notranslate nohighlight">\(t\)</span> is a hyperparameter like temperature.</p></li>
+<li><p>$\epsilon$ is a hyperparameter used to define nearest neighbors (can also use counts)</p></li>
+<li><p>$t$ is a hyperparameter like temperature.</p></li>
 </ul>
 </li>
-<li><p>Then we define a diagonal matrix <span class="math notranslate nohighlight">\(\boldsymbol{D}\)</span> with <span class="math notranslate nohighlight">\(d_{ii} = \sum_j w_{ij}\)</span>. This can be seen as the density around the node <span class="math notranslate nohighlight">\(i\)</span>.</p></li>
-<li><p>Find centered and unit-covariance projections <span class="math notranslate nohighlight">\(\boldsymbol{z}_i\)</span> that solve the total projected pairwise distances weighted by <span class="math notranslate nohighlight">\(w_{ij}\)</span> and scaled by <span class="math notranslate nohighlight">\(d_{ii}d_{jj}\)</span></p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{aligned}
-    \min &amp;\ \sum_{i j} \frac{w_{i j}|| \mathbf{z}_{i}-\mathbf{z}_{j}||^{2}}{\sqrt{d_{i i} d_{j j}}} \\
-    \text{s.t.} &amp;\ \boldsymbol{Z} \text{ is centered and has unit covariance} \\
-    \end{aligned}\end{split}\]</div>
+<li><p>Then we define a diagonal matrix $\boldsymbol{D}$ with $d_{ii} = \sum_j w_{ij}$. This can be seen as the density around the node $i$.</p></li>
+<li><p>Find centered and unit-covariance projections $\boldsymbol{z}<em>i$ that solve the total projected pairwise distances weighted by $w</em>{ij}$ and scaled by $d_{ii}d_{jj}$</p>
+<p>$$\begin{aligned}
+\min &amp;\ \sum_{i j} \frac{w_{i j}|| \mathbf{z}<em>{i}-\mathbf{z}</em>{j}||^{2}}{\sqrt{d_{i i} d_{j j}}} \
+\text{s.t.} &amp;\ \boldsymbol{Z} \text{ is centered and has unit covariance} \
+\end{aligned}$$</p>
 </li>
 </ol>
 </div>
 <div class="section" id="id1">
 <h3>Learning<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
-<p>The solution is given by the <span class="math notranslate nohighlight">\(k\)</span> <strong>bottom</strong> eigenvectors of</p>
-<div class="math notranslate nohighlight">
-\[
+<p>The solution is given by the $k$ <strong>bottom</strong> eigenvectors of</p>
+<p>$$
 \boldsymbol{L} =\boldsymbol{I}  - \boldsymbol{D} ^{-\frac{1}{2}} \boldsymbol{W}  \boldsymbol{D} ^{-\frac{1}{2}}
-\]</div>
-<p>excluding the bottom (constant) eigenvector??. This is a symmetrized, normalized form of the graph Laplacian <span class="math notranslate nohighlight">\(\boldsymbol{D} - \boldsymbol{W}\)</span>.</p>
+$$</p>
+<p>excluding the bottom (constant) eigenvector??. This is a symmetrized, normalized form of the graph Laplacian $\boldsymbol{D} - \boldsymbol{W}$.</p>
 <p>:::{figure} gb-laplacian-eigenmap-Nt
 <img src="../imgs/gb-laplacian-eigenmap-Nt.png" width = "50%" alt=""/></p>
-<p>Laplacian eigenmap with varing N-nearest-neighbors and temperature <span class="math notranslate nohighlight">\(t\)</span> [Livescu 2021]</p>
+<p>Laplacian eigenmap with varing N-nearest-neighbors and temperature $t$ [Livescu 2021]</p>
 <p>:::</p>
 </div>
 </div>

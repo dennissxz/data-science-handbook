@@ -151,3 +151,7 @@ For time complexity, we need to consider both the DP table and the tracking step
 - In each entry, what's the complexity to compute the value according to the iterative relation?
   - Some iterative relation only require a two-value comparison, which is $O(1)$
   - Some iterative relation involve comparison over a bunch of values, whose size depends on some input parameter.
+
+## Exercise
+
+https://people.cs.clemson.edu/~bcdean/dp_practice/

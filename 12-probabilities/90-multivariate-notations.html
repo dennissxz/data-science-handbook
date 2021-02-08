@@ -46,8 +46,6 @@
     <script src="../_static/copybutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="../_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
     <script >
         const thebe_selector = ".thebe"
@@ -355,6 +353,11 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/31-knapsack.html">
+     Minimum Knapsack
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="../23-dynamic-programming/51-chain-matrix-multiplication.html">
      Chain Matrix Multiplication
     </a>
@@ -488,11 +491,7 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../33-dimensionality-reduction/31-t-SNE.html">
-     SNE and
-     <span class="math notranslate nohighlight">
-      \(t\)
-     </span>
-     -SNE
+     SNE and $t$-SNE
     </a>
    </li>
   </ul>
@@ -715,63 +714,60 @@
 <p>In machine learning models, we often deal with more than one variables at a time. Below are the notations for multivariate case, and their properties.</p>
 <div class="section" id="data-matrix">
 <h2>Data Matrix<a class="headerlink" href="#data-matrix" title="Permalink to this headline">¶</a></h2>
-<p>Suppose there are <span class="math notranslate nohighlight">\(p\)</span> random variables <span class="math notranslate nohighlight">\(X_1, X_2, \ldots, X_p\)</span> and we have <span class="math notranslate nohighlight">\(n\)</span> observed values for each of them. The data matrix is</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
-\boldsymbol{X}=\left(x_{i j}\right)_{n \times p}=\left[\begin{array}{c}
-\boldsymbol{x}_{1}^{\top} \\
-\vdots \\
-\boldsymbol{x}_{i}^{\top} \\
-\vdots \\
-\boldsymbol{x}_{n}^{\top}
+<p>Suppose there are $p$ random variables $X_1, X_2, \ldots, X_p$ and we have $n$ observed values for each of them. The data matrix is</p>
+<p>$$
+\boldsymbol{X}=\left(x_{i j}\right)<em>{n \times p}=\left[\begin{array}{c}
+\boldsymbol{x}</em>{1}^{\top} \
+\vdots \
+\boldsymbol{x}<em>{i}^{\top} \
+\vdots \
+\boldsymbol{x}</em>{n}^{\top}
 \end{array}\right]=\left[\begin{array}{ccccc}
-x_{11} &amp; \cdots &amp; x_{1 j} &amp; \cdots &amp; x_{1 p} \\
-\vdots &amp; &amp; \vdots &amp; &amp; \vdots \\
-x_{i 1} &amp; \cdots &amp; x_{i j} &amp; \cdots &amp; x_{i p} \\
-\vdots &amp; &amp; \vdots &amp; &amp; \vdots \\
+x_{11} &amp; \cdots &amp; x_{1 j} &amp; \cdots &amp; x_{1 p} \
+\vdots &amp; &amp; \vdots &amp; &amp; \vdots \
+x_{i 1} &amp; \cdots &amp; x_{i j} &amp; \cdots &amp; x_{i p} \
+\vdots &amp; &amp; \vdots &amp; &amp; \vdots \
 x_{n 1} &amp; \cdots &amp; x_{n j} &amp; \cdots &amp; x_{n p}
 \end{array}\right]
-\end{split}\]</div>
+$$</p>
 <p>where</p>
 <ul class="simple">
-<li><p>Column <span class="math notranslate nohighlight">\(j\)</span> contains observations of variable <span class="math notranslate nohighlight">\(j\)</span>.</p></li>
-<li><p>Row <span class="math notranslate nohighlight">\(i\)</span> is an observed vector <span class="math notranslate nohighlight">\(\boldsymbol{x}_i\)</span></p></li>
+<li><p>Column $j$ contains observations of variable $j$.</p></li>
+<li><p>Row $i$ is an observed vector $\boldsymbol{x}_i$</p></li>
 </ul>
 </div>
 <div class="section" id="mean-vector">
 <h2>Mean Vector<a class="headerlink" href="#mean-vector" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="population-mean-vector">
 <h3>Population Mean Vector<a class="headerlink" href="#population-mean-vector" title="Permalink to this headline">¶</a></h3>
-<p>The mean vector of a random vector <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> is defined as</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
+<p>The mean vector of a random vector $\boldsymbol{x}$ is defined as</p>
+<p>$$
 \operatorname{E}(\boldsymbol{x})=\left[\begin{array}{c}
-\operatorname{E}\left(x_{1}\right) \\
-\vdots \\
+\operatorname{E}\left(x_{1}\right) \
+\vdots \
 \operatorname{E}\left(x_{p}\right)
 \end{array}\right]=\left[\begin{array}{c}
-\mu_{1} \\
-\vdots \\
+\mu_{1} \
+\vdots \
 \mu_{p}
 \end{array}\right]=\boldsymbol{\mu}
-\end{split}\]</div>
+$$</p>
 <p><strong>Properties</strong></p>
 <ol class="simple">
-<li><p><span class="math notranslate nohighlight">\(\operatorname{E}\left( \boldsymbol{a}^{\boldsymbol{\top}} \boldsymbol{x} \right)=\boldsymbol{a}^{\boldsymbol{\top}} \boldsymbol{\mu}\)</span></p></li>
-<li><p><span class="math notranslate nohighlight">\(\operatorname{E}\left( \boldsymbol{A x} \right)=\boldsymbol{A} \boldsymbol{\mu}\)</span></p></li>
+<li><p>$\operatorname{E}\left( \boldsymbol{a}^{\boldsymbol{\top}} \boldsymbol{x} \right)=\boldsymbol{a}^{\boldsymbol{\top}} \boldsymbol{\mu}$</p></li>
+<li><p>$\operatorname{E}\left( \boldsymbol{A x} \right)=\boldsymbol{A} \boldsymbol{\mu}$</p></li>
 </ol>
 </div>
 <div class="section" id="sample-mean-vector">
 <h3>Sample Mean Vector<a class="headerlink" href="#sample-mean-vector" title="Permalink to this headline">¶</a></h3>
-<p>Let <span class="math notranslate nohighlight">\(\bar{x}_i\)</span> be the sample mean of variable <span class="math notranslate nohighlight">\(X_i\)</span>. The sample mean vector is</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
-\overline{\boldsymbol{x}}_{p \times 1}=\left[\begin{array}{c}
-\bar{x}_{1} \\
-\vdots \\
+<p>Let $\bar{x}_i$ be the sample mean of variable $X_i$. The sample mean vector is</p>
+<p>$$
+\overline{\boldsymbol{x}}<em>{p \times 1}=\left[\begin{array}{c}
+\bar{x}</em>{1} \
+\vdots \
 \bar{x}_{p}
 \end{array}\right]=\frac{1}{n} \boldsymbol{X}^{\top} \mathbf{1}
-\end{split}\]</div>
+$$</p>
 </div>
 </div>
 <div class="section" id="covariance-matrix">
@@ -779,95 +775,88 @@ x_{n 1} &amp; \cdots &amp; x_{n j} &amp; \cdots &amp; x_{n p}
 <div class="section" id="population-covariance-matrix">
 <h3>Population Covariance Matrix<a class="headerlink" href="#population-covariance-matrix" title="Permalink to this headline">¶</a></h3>
 <p>Aka variance-covariance matrix.</p>
-<p>Covariance matrix of a random vector <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> summarizes pairwise covariance,</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
+<p>Covariance matrix of a random vector $\boldsymbol{x}$ summarizes pairwise covariance,</p>
+<p>$$
 \operatorname{Var}(\boldsymbol{x}) \text { or } \boldsymbol{\Sigma}=\left[\begin{array}{cccc}
-\sigma_{11} &amp; \sigma_{12} &amp; \cdots &amp; \sigma_{1 p} \\
-\sigma_{21} &amp; \sigma_{22} &amp; \cdots &amp; \sigma_{2 p} \\
-\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+\sigma_{11} &amp; \sigma_{12} &amp; \cdots &amp; \sigma_{1 p} \
+\sigma_{21} &amp; \sigma_{22} &amp; \cdots &amp; \sigma_{2 p} \
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots \
 \sigma_{p 1} &amp; \sigma_{p 2} &amp; \cdots &amp; \sigma_{p p}
 \end{array}\right]
-\end{split}\]</div>
+$$</p>
 <p>where</p>
 <ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(\sigma_{ii} = \operatorname{Cov}\left( x_i, x_j \right) = \operatorname{Var}\left( x_i \right)\)</span></p></li>
-<li><p><span class="math notranslate nohighlight">\(\sigma_{ij} = \operatorname{Cov}\left( x_i, x_j \right) = \sigma_{ji}\)</span></p></li>
+<li><p>$\sigma_{ii} = \operatorname{Cov}\left( x_i, x_j \right) = \operatorname{Var}\left( x_i \right)$</p></li>
+<li><p>$\sigma_{ij} = \operatorname{Cov}\left( x_i, x_j \right) = \sigma_{ji}$</p></li>
 </ul>
 <p>In matrix form,</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
+<p>$$
 \begin{align}
 \operatorname{Var}(\boldsymbol{x})
-&amp;=\operatorname{E}\left[(\boldsymbol{x}-\operatorname{E}(\boldsymbol{x}))(\boldsymbol{x}-\operatorname{E}(\boldsymbol{x}))^{\top}\right] \\
-&amp;=\operatorname{E}\left(\boldsymbol{x} \boldsymbol{x}^{\top}\right)-\operatorname{E}(\boldsymbol{x}) \operatorname{E}(\boldsymbol{x}) \\
+&amp;=\operatorname{E}\left[(\boldsymbol{x}-\operatorname{E}(\boldsymbol{x}))(\boldsymbol{x}-\operatorname{E}(\boldsymbol{x}))^{\top}\right] \
+&amp;=\operatorname{E}\left(\boldsymbol{x} \boldsymbol{x}^{\top}\right)-\operatorname{E}(\boldsymbol{x}) \operatorname{E}(\boldsymbol{x}) \
 &amp;=\operatorname{E}\left(\boldsymbol{x} \boldsymbol{x}^{\top}\right)-\mu \mu ^\top
 \end{align}
-\end{split}\]</div>
+$$</p>
 <p><strong>Properties</strong></p>
 <ol>
-<li><p><span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}\)</span> is positive definite, and hence <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma} ^{-1}\)</span> exists</p>
-<p>This holds unless <span class="math notranslate nohighlight">\(x_1, x_2, \ldots, x_p\)</span> is linearly related, in which case we say that <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> is a <strong>degenerated</strong> random vector, i.e. its effective dimension is less than <span class="math notranslate nohighlight">\(p\)</span>; in other words, its joint distribution is concentrated in a subspace of lower dimension.</p>
+<li><p>$\boldsymbol{\Sigma}$ is positive definite, and hence $\boldsymbol{\Sigma} ^{-1}$ exists</p>
+<p>This holds unless $x_1, x_2, \ldots, x_p$ is linearly related, in which case we say that $\boldsymbol{x}$ is a <strong>degenerated</strong> random vector, i.e. its effective dimension is less than $p$; in other words, its joint distribution is concentrated in a subspace of lower dimension.</p>
 </li>
-<li><p><span class="math notranslate nohighlight">\(\operatorname{Var}\left( \boldsymbol{a}^\top \boldsymbol{x} + b \right) = \operatorname{Var}\left( \boldsymbol{a} ^\top \boldsymbol{x} \right) = \boldsymbol{a}^\top \boldsymbol{\Sigma} \boldsymbol{a} \ge 0\)</span></p>
-<p>The equality holds iff <span class="math notranslate nohighlight">\(\boldsymbol{a} ^\top \boldsymbol{x}
-\ne c\)</span>, a constant.</p>
+<li><p>$\operatorname{Var}\left( \boldsymbol{a}^\top \boldsymbol{x} + b \right) = \operatorname{Var}\left( \boldsymbol{a} ^\top \boldsymbol{x} \right) = \boldsymbol{a}^\top \boldsymbol{\Sigma} \boldsymbol{a} \ge 0$</p>
+<p>The equality holds iff $\boldsymbol{a} ^\top \boldsymbol{x}
+\ne c$, a constant.</p>
 </li>
-<li><p><span class="math notranslate nohighlight">\(\operatorname{Var}\left( \boldsymbol{A} \boldsymbol{x} + b \right) = \boldsymbol{A} \boldsymbol{\Sigma} \boldsymbol{A} ^\top\)</span></p></li>
+<li><p>$\operatorname{Var}\left( \boldsymbol{A} \boldsymbol{x} + b \right) = \boldsymbol{A} \boldsymbol{\Sigma} \boldsymbol{A} ^\top$</p></li>
 </ol>
 </div>
 <div class="section" id="sample-covariance-matrix-and-cssp">
 <h3>Sample Covariance Matrix and CSSP<a class="headerlink" href="#sample-covariance-matrix-and-cssp" title="Permalink to this headline">¶</a></h3>
-<p>The following sample covariance matrix <span class="math notranslate nohighlight">\(\boldsymbol{S}\)</span> is an unbiased estimate of the population covariance matrix <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}\)</span></p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
-\boldsymbol{S}_{p \times p}=\left[\begin{array}{cccc}
-s_{11} &amp; s_{12} &amp; \cdots &amp; s_{1 p} \\
-s_{21} &amp; s_{22} &amp; \cdots &amp; s_{2 p} \\
-\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+<p>The following sample covariance matrix $\boldsymbol{S}$ is an unbiased estimate of the population covariance matrix $\boldsymbol{\Sigma}$</p>
+<p>$$
+\boldsymbol{S}<em>{p \times p}=\left[\begin{array}{cccc}
+s</em>{11} &amp; s_{12} &amp; \cdots &amp; s_{1 p} \
+s_{21} &amp; s_{22} &amp; \cdots &amp; s_{2 p} \
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots \
 s_{p 1} &amp; s_{p 2} &amp; \cdots &amp; s_{p p}
 \end{array}\right]
-\end{split}\]</div>
+$$</p>
 <p>where</p>
 <ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(s_{jj} = s_j ^2\)</span> is the sample variance of <span class="math notranslate nohighlight">\(x_j\)</span></p></li>
-<li><p><span class="math notranslate nohighlight">\(s_{kj} = \frac{1}{n-1} \sum_{i=1}^{n}\left(x_{i k}-\bar{x}_{k}\right)\left(x_{i j}-\bar{x}_{j}\right)\)</span> is the sample covariance between <span class="math notranslate nohighlight">\(x_k\)</span> and <span class="math notranslate nohighlight">\(x_j\)</span></p></li>
+<li><p>$s_{jj} = s_j ^2$ is the sample variance of $x_j$</p></li>
+<li><p>$s_{kj} = \frac{1}{n-1} \sum_{i=1}^{n}\left(x_{i k}-\bar{x}<em>{k}\right)\left(x</em>{i j}-\bar{x}_{j}\right)$ is the sample covariance between $x_k$ and $x_j$</p></li>
 </ul>
 <p>In matrix form,</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
+<p>$$
 \begin{aligned}
-\boldsymbol{S} &amp;=\frac{1}{n-1}\left[\boldsymbol{X}^{\top} \boldsymbol{X}-n \overline{\boldsymbol{x}} \overline{\boldsymbol{x}}^{\top}\right] \\
-&amp;=\frac{1}{n-1} \sum_{i=1}^{n}\left(\boldsymbol{x}_{i}-\overline{\boldsymbol{x}}\right)\left(\boldsymbol{x}_{i}-\overline{\boldsymbol{x}}\right)^{\top} \\
+\boldsymbol{S} &amp;=\frac{1}{n-1}\left[\boldsymbol{X}^{\top} \boldsymbol{X}-n \overline{\boldsymbol{x}} \overline{\boldsymbol{x}}^{\top}\right] \
+&amp;=\frac{1}{n-1} \sum_{i=1}^{n}\left(\boldsymbol{x}<em>{i}-\overline{\boldsymbol{x}}\right)\left(\boldsymbol{x}</em>{i}-\overline{\boldsymbol{x}}\right)^{\top} \
 &amp;=\frac{1}{n-1} \boldsymbol{W}
 \end{aligned}
-\end{split}\]</div>
+$$</p>
 <p>where</p>
-<div class="math notranslate nohighlight">
-\[
-\boldsymbol{W}_{p \times p}=\boldsymbol{X}^{\top} \boldsymbol{X}-n \overline{\boldsymbol{x}} \overline{\boldsymbol{x}}^{\top}=\sum_{i=1}^{n}\left(\boldsymbol{x}_{i}-\overline{\boldsymbol{x}}\right)\left(\boldsymbol{x}_{i}-\overline{\boldsymbol{x}}\right)^{\top}
-\]</div>
-<p>is called the corrected (centered) sums of squares and products matrix (CSSP). One can view it as a multivariate generalization of the corrected (centered) sum of squares <span class="math notranslate nohighlight">\(\sum_i \left( x_i - \bar{x} \right)^2\)</span> in the univariate case.</p>
+<p>$$
+\boldsymbol{W}<em>{p \times p}=\boldsymbol{X}^{\top} \boldsymbol{X}-n \overline{\boldsymbol{x}} \overline{\boldsymbol{x}}^{\top}=\sum</em>{i=1}^{n}\left(\boldsymbol{x}<em>{i}-\overline{\boldsymbol{x}}\right)\left(\boldsymbol{x}</em>{i}-\overline{\boldsymbol{x}}\right)^{\top}
+$$</p>
+<p>is called the corrected (centered) sums of squares and products matrix (CSSP). One can view it as a multivariate generalization of the corrected (centered) sum of squares $\sum_i \left( x_i - \bar{x} \right)^2$ in the univariate case.</p>
 </div>
 <div class="section" id="covariance-matrix-of-two-vectors">
 <span id="prob-covariance-matrix-of-two-vectors"></span><h3>Covariance Matrix of Two Vectors<a class="headerlink" href="#covariance-matrix-of-two-vectors" title="Permalink to this headline">¶</a></h3>
-<p>The covariance matrix of two random vectors <span class="math notranslate nohighlight">\(\boldsymbol{x} _{p\times 1}, \boldsymbol{y} _{q \times 1}\)</span> is defined as</p>
-<div class="math notranslate nohighlight">
-\[
-\operatorname{Cov}\left( \boldsymbol{x} _{p \times 1}, \boldsymbol{y} _ {q \times 1} \right) = \operatorname{E}\left[(\boldsymbol{x}-\boldsymbol{\mu} _x)(\boldsymbol{y}-\boldsymbol{\mu} _y)^{\top}\right]_{p\times q}
-\]</div>
-<p>Note that the shape is <span class="math notranslate nohighlight">\(p \times q\)</span>, which implies the non-symmetry of covariance matrix</p>
-<div class="math notranslate nohighlight">
-\[
+<p>The covariance matrix of two random vectors $\boldsymbol{x} _{p\times 1}, \boldsymbol{y} _{q \times 1}$ is defined as</p>
+<p>$$
+\operatorname{Cov}\left( \boldsymbol{x} _{p \times 1}, \boldsymbol{y} _ {q \times 1} \right) = \operatorname{E}\left[(\boldsymbol{x}-\boldsymbol{\mu} _x)(\boldsymbol{y}-\boldsymbol{\mu} <em>y)^{\top}\right]</em>{p\times q}
+$$</p>
+<p>Note that the shape is $p \times q$, which implies the non-symmetry of covariance matrix</p>
+<p>$$
 \operatorname{Cov}\left( \boldsymbol{x} , \boldsymbol{y}  \right) \ne \operatorname{Cov}\left( \boldsymbol{y} , \boldsymbol{x}  \right)
-\]</div>
+$$</p>
 <p><strong>Properties</strong></p>
 <ol class="simple">
-<li><p><span class="math notranslate nohighlight">\(\operatorname{Var}\left( \boldsymbol{x}  \right) = \operatorname{Cov}\left( \boldsymbol{x} , \boldsymbol{x}  \right)\)</span></p></li>
-<li><p>If <span class="math notranslate nohighlight">\(\boldsymbol{x} _1, \boldsymbol{x} _2, \boldsymbol{y}\)</span> are <span class="math notranslate nohighlight">\(p \times 1\)</span> vectors, then <span class="math notranslate nohighlight">\(\operatorname{Var}\left( \boldsymbol{x} + \boldsymbol{y} \right) = \operatorname{Cov}\left( \boldsymbol{x} _1, \boldsymbol{y}  \right) + \operatorname{Cov}\left( \boldsymbol{x} _2 + \boldsymbol{y} \right)\)</span></p></li>
-<li><p>If <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{y}\)</span> are <span class="math notranslate nohighlight">\(p \times 1\)</span> vectors, then <span class="math notranslate nohighlight">\(\operatorname{Var}\left( \boldsymbol{x} +\boldsymbol{y}  \right) = \operatorname{Var}\left( \boldsymbol{x}  \right) + \operatorname{Var}\left( y \right) + \operatorname{Cov}\left( \boldsymbol{y} ,\boldsymbol{x} \right) + \operatorname{Cov}\left( \boldsymbol{x} , \boldsymbol{y} \right)\)</span></p></li>
-<li><p><span class="math notranslate nohighlight">\(\operatorname{Cov}\left( \boldsymbol{A} \boldsymbol{x} , \boldsymbol{B} \boldsymbol{y} \right) = \boldsymbol{A} \operatorname{Cov}\left( \boldsymbol{x} , \boldsymbol{y} \right) \boldsymbol{B} ^\top\)</span></p></li>
-<li><p>If <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{y}\)</span> are independent, then <span class="math notranslate nohighlight">\(\operatorname{Cov}\left( \boldsymbol{x} , \boldsymbol{y} \right)\)</span>. Note that the converse is not always true.</p></li>
+<li><p>$\operatorname{Var}\left( \boldsymbol{x}  \right) = \operatorname{Cov}\left( \boldsymbol{x} , \boldsymbol{x}  \right)$</p></li>
+<li><p>If $\boldsymbol{x} _1, \boldsymbol{x} _2, \boldsymbol{y}$ are $p \times 1$ vectors, then $\operatorname{Var}\left( \boldsymbol{x} + \boldsymbol{y} \right) = \operatorname{Cov}\left( \boldsymbol{x} _1, \boldsymbol{y}  \right) + \operatorname{Cov}\left( \boldsymbol{x} _2 + \boldsymbol{y} \right)$</p></li>
+<li><p>If $\boldsymbol{x}$ and $\boldsymbol{y}$ are $p \times 1$ vectors, then $\operatorname{Var}\left( \boldsymbol{x} +\boldsymbol{y}  \right) = \operatorname{Var}\left( \boldsymbol{x}  \right) + \operatorname{Var}\left( y \right) + \operatorname{Cov}\left( \boldsymbol{y} ,\boldsymbol{x} \right) + \operatorname{Cov}\left( \boldsymbol{x} , \boldsymbol{y} \right)$</p></li>
+<li><p>$\operatorname{Cov}\left( \boldsymbol{A} \boldsymbol{x} , \boldsymbol{B} \boldsymbol{y} \right) = \boldsymbol{A} \operatorname{Cov}\left( \boldsymbol{x} , \boldsymbol{y} \right) \boldsymbol{B} ^\top$</p></li>
+<li><p>If $\boldsymbol{x}$ and $\boldsymbol{y}$ are independent, then $\operatorname{Cov}\left( \boldsymbol{x} , \boldsymbol{y} \right)$. Note that the converse is not always true.</p></li>
 </ol>
 </div>
 </div>
@@ -875,92 +864,85 @@ s_{p 1} &amp; s_{p 2} &amp; \cdots &amp; s_{p p}
 <h2>Correlation Matrix<a class="headerlink" href="#correlation-matrix" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="population-correlation-matrix">
 <h3>Population Correlation Matrix<a class="headerlink" href="#population-correlation-matrix" title="Permalink to this headline">¶</a></h3>
-<p>The correlation matrix of <span class="math notranslate nohighlight">\(p\)</span> random variables <span class="math notranslate nohighlight">\(x_1, x_2, \ldots, x_p\)</span> is</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
+<p>The correlation matrix of $p$ random variables $x_1, x_2, \ldots, x_p$ is</p>
+<p>$$
 \boldsymbol{\rho}=\left[\begin{array}{cccc}
-1 &amp; \rho_{12} &amp; \cdots &amp; \rho_{1 p} \\
-\rho_{21} &amp; 1 &amp; \cdots &amp; \rho_{2 p} \\
-\vdots &amp; &amp; \ddots &amp; \vdots \\
+1 &amp; \rho_{12} &amp; \cdots &amp; \rho_{1 p} \
+\rho_{21} &amp; 1 &amp; \cdots &amp; \rho_{2 p} \
+\vdots &amp; &amp; \ddots &amp; \vdots \
 \rho_{p 1} &amp; \rho_{p 2} &amp; \cdots &amp; 1
 \end{array}\right]
-\end{split}\]</div>
-<p>where <span class="math notranslate nohighlight">\(\rho_{ij} = \operatorname{Corr}\left( x_i, x_j \right) = \frac{\sigma_{ij}}{\sqrt{\sigma_{ii} \sigma_{jj}}}\)</span></p>
+$$</p>
+<p>where $\rho_{ij} = \operatorname{Corr}\left( x_i, x_j \right) = \frac{\sigma_{ij}}{\sqrt{\sigma_{ii} \sigma_{jj}}}$</p>
 <p>In matrix form,</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
+<p>$$
 \begin{align}
 \boldsymbol{\rho} &amp;=\left[\begin{array}{cccc}
-\frac{1}{\sqrt{\sigma_{11}}}  &amp; 1 &amp; \cdots &amp; 0 \\
-0 &amp; \frac{1}{\sqrt{\sigma_{22}}}  &amp; \cdots &amp; \vdots \\
-\vdots &amp; &amp; \ddots &amp; \vdots \\
+\frac{1}{\sqrt{\sigma_{11}}}  &amp; 1 &amp; \cdots &amp; 0 \
+0 &amp; \frac{1}{\sqrt{\sigma_{22}}}  &amp; \cdots &amp; \vdots \
+\vdots &amp; &amp; \ddots &amp; \vdots \
 0 &amp; 0 &amp; \cdots &amp; \frac{1}{\sqrt{\sigma_{pp}}}
 \end{array}\right]\left[\begin{array}{cccc}
-\sigma_{11} &amp; \sigma_{12} &amp; \cdots &amp; \sigma_{1 p} \\
-\sigma_{21} &amp; \sigma_{22} &amp; \cdots &amp; \sigma_{2 p} \\
-\vdots &amp; &amp; \ddots &amp; \vdots \\
+\sigma_{11} &amp; \sigma_{12} &amp; \cdots &amp; \sigma_{1 p} \
+\sigma_{21} &amp; \sigma_{22} &amp; \cdots &amp; \sigma_{2 p} \
+\vdots &amp; &amp; \ddots &amp; \vdots \
 \sigma_{p 1} &amp; \sigma_{p 2} &amp; \cdots &amp; \sigma_{p p}
 \end{array}\right]\left[\begin{array}{cccc}
-\frac{1}{\sqrt{\sigma}_{11}}  &amp; 1 &amp; \cdots &amp; 0 \\
-0 &amp; \frac{1}{\sqrt{\sigma_{22}}}  &amp; \cdots &amp; \\
-\vdots &amp; &amp; \ddots &amp; \vdots \\
+\frac{1}{\sqrt{\sigma}<em>{11}}  &amp; 1 &amp; \cdots &amp; 0 \
+0 &amp; \frac{1}{\sqrt{\sigma</em>{22}}}  &amp; \cdots &amp; \
+\vdots &amp; &amp; \ddots &amp; \vdots \
 0 &amp; 0 &amp; \cdots &amp; \frac{1}{\sqrt{\sigma_{pp}}}
-\end{array}\right] \\
+\end{array}\right] \
 &amp;= \boldsymbol{D} ^{-1} \boldsymbol{\Sigma} \boldsymbol{D} ^{-1}
 \end{align}
-\end{split}\]</div>
+$$</p>
 <p>where</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
+<p>$$
 \boldsymbol{D} = \left[\begin{array}{cccc}
-\sqrt{\sigma}_{11} &amp; 0 &amp; \cdots &amp; 0 \\
-0 &amp; \sqrt{\sigma}_{22} &amp; \cdots &amp; 0 \\
-\vdots &amp; &amp; \ddots &amp; \vdots \\
+\sqrt{\sigma}<em>{11} &amp; 0 &amp; \cdots &amp; 0 \
+0 &amp; \sqrt{\sigma}</em>{22} &amp; \cdots &amp; 0 \
+\vdots &amp; &amp; \ddots &amp; \vdots \
 0 &amp; 0 &amp; \cdots &amp; \sqrt{\sigma}_{p p}
 \end{array}\right] = \left( \operatorname{diag}\left( \boldsymbol{\Sigma}  \right) \right) ^{\frac{1}{2}}
-\end{split}\]</div>
-<p>In short we will write <span class="math notranslate nohighlight">\(D ^{-1} = \left( \operatorname{diag}\left( \boldsymbol{\Sigma}  \right) \right) ^{-\frac{1}{2}}\)</span>.</p>
+$$</p>
+<p>In short we will write $D ^{-1} = \left( \operatorname{diag}\left( \boldsymbol{\Sigma}  \right) \right) ^{-\frac{1}{2}}$.</p>
 <p><strong>Properties</strong></p>
 <ol class="simple">
-<li><p><span class="math notranslate nohighlight">\(\rho_{ii} = 1\)</span>. <span class="math notranslate nohighlight">\(\rho_{ij} = \rho_{ji}\)</span>. <span class="math notranslate nohighlight">\(\rho_{ij} = 0\)</span> iff <span class="math notranslate nohighlight">\(\sigma_{ij} = 0\)</span></p></li>
-<li><p>Each <span class="math notranslate nohighlight">\(\rho_{ij}\)</span> does not change under re-location or rescaling of <span class="math notranslate nohighlight">\(x_i\)</span> and <span class="math notranslate nohighlight">\(x_j\)</span></p></li>
+<li><p>$\rho_{ii} = 1$. $\rho_{ij} = \rho_{ji}$. $\rho_{ij} = 0$ iff $\sigma_{ij} = 0$</p></li>
+<li><p>Each $\rho_{ij}$ does not change under re-location or rescaling of $x_i$ and $x_j$</p></li>
 </ol>
 </div>
 <div class="section" id="sample-correlation-matrix">
 <h3>Sample Correlation Matrix<a class="headerlink" href="#sample-correlation-matrix" title="Permalink to this headline">¶</a></h3>
 <p>From the sample covariance matrix, we can obtain the sample correlation matrix as an estimate of the population correlation matrix</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
-\boldsymbol{R}_{p \times p}=\left[\begin{array}{cccc}
-1 &amp; r_{12} &amp; \cdots &amp; r_{1 p} \\
-r_{21} &amp; 1 &amp; \cdots &amp; r_{2 p} \\
-\vdots &amp; &amp; \ddots &amp; \vdots \\
+<p>$$
+\boldsymbol{R}<em>{p \times p}=\left[\begin{array}{cccc}
+1 &amp; r</em>{12} &amp; \cdots &amp; r_{1 p} \
+r_{21} &amp; 1 &amp; \cdots &amp; r_{2 p} \
+\vdots &amp; &amp; \ddots &amp; \vdots \
 r_{p 1} &amp; r_{p 2} &amp; \cdots &amp; 1
 \end{array}\right]
-\end{split}\]</div>
-<p>where <span class="math notranslate nohighlight">\(r_{kj} = \frac{s_{kj}}{\sqrt{s_{kk} s_{jj}}}\)</span>, which is the sample correlation coefficient between <span class="math notranslate nohighlight">\(x_k\)</span> and <span class="math notranslate nohighlight">\(x_j\)</span>.</p>
+$$</p>
+<p>where $r_{kj} = \frac{s_{kj}}{\sqrt{s_{kk} s_{jj}}}$, which is the sample correlation coefficient between $x_k$ and $x_j$.</p>
 <p>In matrix form,</p>
-<div class="math notranslate nohighlight">
-\[
-\boldsymbol{R} = \boldsymbol{D} ^{-1}  \boldsymbol{S} \boldsymbol{D} ^{-1}    
-\]</div>
+<p>$$
+\boldsymbol{R} = \boldsymbol{D} ^{-1}  \boldsymbol{S} \boldsymbol{D} ^{-1}<br />
+$$</p>
 <p>where</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
+<p>$$
 \boldsymbol{D}=\left[\begin{array}{cccc}
-\sqrt{s}_{11} &amp; 0 &amp; \cdots &amp; 0 \\
-0 &amp; \sqrt{s}_{22} &amp; \cdots &amp; 0 \\
-\vdots &amp; &amp; \ddots &amp; \vdots \\
+\sqrt{s}<em>{11} &amp; 0 &amp; \cdots &amp; 0 \
+0 &amp; \sqrt{s}</em>{22} &amp; \cdots &amp; 0 \
+\vdots &amp; &amp; \ddots &amp; \vdots \
 0 &amp; 0 &amp; \cdots &amp; \sqrt{s}_{p p}
 \end{array}\right]
-\end{split}\]</div>
+$$</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The transform from
 covariance matrix to correlation matrix</p>
-<div class="math notranslate nohighlight">
-\[\boldsymbol{\rho} = \left( \operatorname{diag}\left( \boldsymbol{\Sigma}  \right) \right) ^{-\frac{1}{2}}  \boldsymbol{\boldsymbol{\Sigma} }  \left( \operatorname{diag}\left( \boldsymbol{\Sigma}  \right) \right) ^{-\frac{1}{2}}
-\]</div>
+<p>$$\boldsymbol{\rho} = \left( \operatorname{diag}\left( \boldsymbol{\Sigma}  \right) \right) ^{-\frac{1}{2}}  \boldsymbol{\boldsymbol{\Sigma} }  \left( \operatorname{diag}\left( \boldsymbol{\Sigma}  \right) \right) ^{-\frac{1}{2}}
+$$</p>
 <p>is just a particular application of standardizing a positive definite matrix into a standard form where the diagonal elements all equal to <strong>one</strong>. The original positive definite matrix can be
 recovered by means of the the diagonal elements and the standardized matrix.</p>
 </div>

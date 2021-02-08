@@ -55,6 +55,8 @@ $$OPT = \max _{1 \le i \le n} \left\{ S_i \right\}$$
 
 ## Solution
 
+The algorithm is
+
 ---
 **Largest Sum Subsequence**
 

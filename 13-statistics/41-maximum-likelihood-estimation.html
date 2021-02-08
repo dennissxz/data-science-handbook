@@ -46,8 +46,6 @@
     <script src="../_static/copybutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="../_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
     <script >
         const thebe_selector = ".thebe"
@@ -355,6 +353,11 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/31-knapsack.html">
+     Minimum Knapsack
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="../23-dynamic-programming/51-chain-matrix-multiplication.html">
      Chain Matrix Multiplication
     </a>
@@ -488,11 +491,7 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../33-dimensionality-reduction/31-t-SNE.html">
-     SNE and
-     <span class="math notranslate nohighlight">
-      \(t\)
-     </span>
-     -SNE
+     SNE and $t$-SNE
     </a>
    </li>
   </ul>
@@ -668,70 +667,67 @@
                 
   <div class="section" id="maximum-likelihood-estimator">
 <h1>Maximum Likelihood Estimator<a class="headerlink" href="#maximum-likelihood-estimator" title="Permalink to this headline">¶</a></h1>
-<p>We consider a distribution function <span class="math notranslate nohighlight">\(p(x; \theta)\)</span> of <span class="math notranslate nohighlight">\(x\)</span> parameterized by <span class="math notranslate nohighlight">\(\theta\)</span>. Our goal is to construct an estimator for the parameter. Maximum likelihood estimator, aka. MLE, as it name suggests, is an estimator for the parameter that is constructed by maximizing the likelihood function.</p>
+<p>We consider a distribution function $p(x; \theta)$ of $x$ parameterized by $\theta$. Our goal is to construct an estimator for the parameter. Maximum likelihood estimator, aka. MLE, as it name suggests, is an estimator for the parameter that is constructed by maximizing the likelihood function.</p>
 <p>Good example of likelihood principle: 245.ps1.q3</p>
 <div class="section" id="likelihood-function">
 <h2>Likelihood Function<a class="headerlink" href="#likelihood-function" title="Permalink to this headline">¶</a></h2>
-<p>Definition (Likelihood Function)
-: Given <span class="math notranslate nohighlight">\(n\)</span> observations <span class="math notranslate nohighlight">\(\boldsymbol{x} = (x_1, x_2, \ldots, x_n)\)</span>, the likelihood function for parameter <span class="math notranslate nohighlight">\(\theta\)</span>, denoted <span class="math notranslate nohighlight">\(L(\theta ; \boldsymbol{x})\)</span>, is defined as</p>
-<div class="math notranslate nohighlight">
-\[
-  L(\theta ; \boldsymbol{x})=p(\boldsymbol{x} ; \theta)=\prod_{x \in \boldsymbol{x}} p(x ; \theta)
-  \]</div>
-<p>Definition (Maximum Likelihood Estimator)
-: The MLE for <span class="math notranslate nohighlight">\(\theta\)</span>, denoted <span class="math notranslate nohighlight">\(\theta _ {MLE}\)</span>, is defined as</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
-  \begin{aligned}
-  \theta_{M L} &amp;=\underset{\theta}{\arg \max } L(\theta ; \boldsymbol{x}) \\
-  &amp;=\underset{\theta}{\arg \max } \prod_{x \in \mathrm{X}} p(x ; \theta)
-  \end{aligned}
-  \end{split}\]</div>
-<p>However, it is typically hard to compute the derivative of a product. We instead maximize the log-likelihood.</p>
-<p>Definition (Log-likelihood)
-: Given <span class="math notranslate nohighlight">\(n\)</span> observations <span class="math notranslate nohighlight">\(\boldsymbol{x} = (x_1, x_2, \ldots, x_n)\)</span>, the log-likelihood function for parameter <span class="math notranslate nohighlight">\(\theta\)</span>, denoted <span class="math notranslate nohighlight">\(\ell(\theta ; \boldsymbol{x})\)</span>, is defined as</p>
-<div class="math notranslate nohighlight">
-\[
-  \ell(\theta ; \boldsymbol{x})=\log \left( L(\theta ; \boldsymbol{x}) \right)
-  \]</div>
-<p>Therefore, the MLE can be defined as</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
+<dl class="simple myst">
+<dt>Definition (Likelihood Function)</dt><dd><p>Given $n$ observations $\boldsymbol{x} = (x_1, x_2, \ldots, x_n)$, the likelihood function for parameter $\theta$, denoted $L(\theta ; \boldsymbol{x})$, is defined as</p>
+<p>$$
+L(\theta ; \boldsymbol{x})=p(\boldsymbol{x} ; \theta)=\prod_{x \in \boldsymbol{x}} p(x ; \theta)
+$$</p>
+</dd>
+<dt>Definition (Maximum Likelihood Estimator)</dt><dd><p>The MLE for $\theta$, denoted $\theta _ {MLE}$, is defined as</p>
+<p>$$
 \begin{aligned}
-\theta_{MLE} &amp;=\underset{\theta}{\arg \max } \,\ell(\theta ; \boldsymbol{x}) \\
+\theta_{M L} &amp;=\underset{\theta}{\arg \max } L(\theta ; \boldsymbol{x}) \
+&amp;=\underset{\theta}{\arg \max } \prod_{x \in \mathrm{X}} p(x ; \theta)
+\end{aligned}
+$$</p>
+</dd>
+</dl>
+<p>However, it is typically hard to compute the derivative of a product. We instead maximize the log-likelihood.</p>
+<dl class="simple myst">
+<dt>Definition (Log-likelihood)</dt><dd><p>Given $n$ observations $\boldsymbol{x} = (x_1, x_2, \ldots, x_n)$, the log-likelihood function for parameter $\theta$, denoted $\ell(\theta ; \boldsymbol{x})$, is defined as</p>
+<p>$$
+\ell(\theta ; \boldsymbol{x})=\log \left( L(\theta ; \boldsymbol{x}) \right)
+$$</p>
+</dd>
+</dl>
+<p>Therefore, the MLE can be defined as</p>
+<p>$$
+\begin{aligned}
+\theta_{MLE} &amp;=\underset{\theta}{\arg \max } ,\ell(\theta ; \boldsymbol{x}) \
 &amp;=\underset{\theta}{\arg \max } \log \left( \prod_{x \in \mathrm{X}} p(x ; \theta) \right)
- \\
+\
 &amp;=\underset{\theta}{\arg \max } \sum_{x \in \mathrm{X}} \log p(x ; \theta)
 \end{aligned}
-\end{split}\]</div>
-<p>Equating the derivative of <span class="math notranslate nohighlight">\(\theta\)</span> to zero, we have</p>
-<div class="math notranslate nohighlight">
-\[
+$$</p>
+<p>Equating the derivative of $\theta$ to zero, we have</p>
+<p>$$
 \frac{\partial \ell(\theta ; \boldsymbol{x})}{\partial \theta}=\sum_{x \in \boldsymbol{x}} \frac{\partial \log p(x ; \theta)}{\partial \theta} \overset{\text{set}}{=}0
-\]</div>
-<p>and we can solve for <span class="math notranslate nohighlight">\(\theta_{MLE}\)</span>.</p>
+$$</p>
+<p>and we can solve for $\theta_{MLE}$.</p>
 </div>
 <div class="section" id="examples">
 <h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="gaussian">
 <h3>Gaussian<a class="headerlink" href="#gaussian" title="Permalink to this headline">¶</a></h3>
 <p>The log-likelihood function for multivariate Gaussian is</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 \begin{equation}
-\log \mathcal{N}(\mathbf{X} ; \boldsymbol{\mu}, \boldsymbol{\Sigma})=-\frac{n}{2} \log |\boldsymbol{\Sigma}|-\frac{1}{2} \sum_{i=1}^{n}\left(\boldsymbol{x}_{i}-\boldsymbol{\mu}\right)^{\top} \boldsymbol{\Sigma}^{-1}\left(\boldsymbol{x}_{i}-\boldsymbol{\mu}\right)+ \text{constant}
+\log \mathcal{N}(\mathbf{X} ; \boldsymbol{\mu}, \boldsymbol{\Sigma})=-\frac{n}{2} \log |\boldsymbol{\Sigma}|-\frac{1}{2} \sum_{i=1}^{n}\left(\boldsymbol{x}<em>{i}-\boldsymbol{\mu}\right)^{\top} \boldsymbol{\Sigma}^{-1}\left(\boldsymbol{x}</em>{i}-\boldsymbol{\mu}\right)+ \text{constant}
 \end{equation}
-\]</div>
-<p>The MLE for <span class="math notranslate nohighlight">\(\boldsymbol{\mu}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}\)</span> are</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
+$$</p>
+<p>The MLE for $\boldsymbol{\mu}$ and $\boldsymbol{\Sigma}$ are</p>
+<p>$$
 \begin{equation}
 \begin{array}{l}
-\widehat{\boldsymbol{\mu}}_{MLE}=\frac{1}{n} \sum_{i=1}^{n} \boldsymbol{x}_{i} \\
-\widehat{\boldsymbol{\Sigma}}_{MLE}=\frac{1}{n} \sum_{i=1}^{n}\left(\boldsymbol{x}_{i}-\hat{\boldsymbol{\mu}}_{MLE}\right)\left(\boldsymbol{x}_{i}-\hat{\boldsymbol{\mu}}_{MLE}\right)^{\top}
+\widehat{\boldsymbol{\mu}}<em>{MLE}=\frac{1}{n} \sum</em>{i=1}^{n} \boldsymbol{x}<em>{i} \
+\widehat{\boldsymbol{\Sigma}}</em>{MLE}=\frac{1}{n} \sum_{i=1}^{n}\left(\boldsymbol{x}<em>{i}-\hat{\boldsymbol{\mu}}</em>{MLE}\right)\left(\boldsymbol{x}<em>{i}-\hat{\boldsymbol{\mu}}</em>{MLE}\right)^{\top}
 \end{array}
 \end{equation}
-\end{split}\]</div>
+$$</p>
 </div>
 </div>
 </div>

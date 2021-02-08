@@ -46,8 +46,6 @@
     <script src="../_static/copybutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="../_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
     <script >
         const thebe_selector = ".thebe"
@@ -355,6 +353,11 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="31-knapsack.html">
+     Minimum Knapsack
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="51-chain-matrix-multiplication.html">
      Chain Matrix Multiplication
     </a>
@@ -488,11 +491,7 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../33-dimensionality-reduction/31-t-SNE.html">
-     SNE and
-     <span class="math notranslate nohighlight">
-      \(t\)
-     </span>
-     -SNE
+     SNE and $t$-SNE
     </a>
    </li>
   </ul>
@@ -678,68 +677,67 @@
 <h1>Weighted Interval Scheduling<a class="headerlink" href="#weighted-interval-scheduling" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="problem">
 <h2>Problem<a class="headerlink" href="#problem" title="Permalink to this headline">¶</a></h2>
-<p>Input
-: A set of <span class="math notranslate nohighlight">\(n\)</span> jobs. For each job <span class="math notranslate nohighlight">\(j\)</span>, it has start time <span class="math notranslate nohighlight">\(s_j\)</span> and finish time <span class="math notranslate nohighlight">\(f_j\)</span>, and profit <span class="math notranslate nohighlight">\(p_j \ge 0\)</span>.</p>
-<p>Goal
-: Maximize total profit of scheduled jobs.</p>
-<p>Constraint
-: No two scheduled jobs can overlap.</p>
+<dl class="simple myst">
+<dt>Input</dt><dd><p>A set of $n$ jobs. For each job $j$, it has start time $s_j$ and finish time $f_j$, and profit $p_j \ge 0$.</p>
+</dd>
+<dt>Goal</dt><dd><p>Maximize total profit of scheduled jobs.</p>
+</dd>
+<dt>Constraint</dt><dd><p>No two scheduled jobs can overlap.</p>
+</dd>
+</dl>
 </div>
 <div class="section" id="analysis">
 <h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
 <p>For now, we compute total profit of the solution.</p>
-<p>Sort jobs by <span class="math notranslate nohighlight">\(f_j\)</span> from smallest to biggest. We obtain a sorted set of job indices <span class="math notranslate nohighlight">\(J = \left\{ j_1, \ldots, j_n \right\}\)</span> such that <span class="math notranslate nohighlight">\(f_{j_1} \le f_{j_2}, \ldots, \le f_{j_n}\)</span>.</p>
-<p>The subproblem can be on <span class="math notranslate nohighlight">\(J_k = \left\{ {j_1, \ldots, j_k} \right\}\)</span>.</p>
-<p>Let <span class="math notranslate nohighlight">\(P()\)</span> be the total profit of a set of jobs. For the last job <span class="math notranslate nohighlight">\(j_k\)</span> in <span class="math notranslate nohighlight">\(J_k\)</span>, consider two cases.</p>
+<p>Sort jobs by $f_j$ from smallest to biggest. We obtain a sorted set of job indices $J = \left{ j_1, \ldots, j_n \right}$ such that $f_{j_1} \le f_{j_2}, \ldots, \le f_{j_n}$.</p>
+<p>The subproblem can be on $J_k = \left{ {j_1, \ldots, j_k} \right}$.</p>
+<p>Let $P()$ be the total profit of a set of jobs. For the last job $j_k$ in $J_k$, consider two cases.</p>
 <ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(j_k\)</span> is not included, then the total profit is <span class="math notranslate nohighlight">\(P(J_{k}) = P(J_{k-1})\)</span></p></li>
-<li><p><span class="math notranslate nohighlight">\(j_k\)</span> is included. Let <span class="math notranslate nohighlight">\(J ^\prime _k \subseteq J_k\)</span> be all jobs that don’t overlap with <span class="math notranslate nohighlight">\(j_k\)</span>. Then the total profit is <span class="math notranslate nohighlight">\(P(J^\prime _k) + p_k\)</span></p></li>
+<li><p>$j_k$ is not included, then the total profit is $P(J_{k}) = P(J_{k-1})$</p></li>
+<li><p>$j_k$ is included. Let $J ^\prime _k \subseteq J_k$ be all jobs that don’t overlap with $j_k$. Then the total profit is $P(J^\prime _k) + p_k$</p></li>
 </ul>
-<p>Let <span class="math notranslate nohighlight">\(i_k\)</span> be the largest job index in <span class="math notranslate nohighlight">\(J_k\)</span> that does not overlap with <span class="math notranslate nohighlight">\(j_k\)</span>.</p>
-<div class="math notranslate nohighlight">
-\[
-i_k = \underset{f_i \le s_{j_k}}{\operatorname{argmax}} \, i
-\]</div>
+<p>Let $i_k$ be the largest job index in $J_k$ that does not overlap with $j_k$.</p>
+<p>$$
+i_k = \underset{f_i \le s_{j_k}}{\operatorname{argmax}} , i
+$$</p>
 <p>The iterative relation is</p>
-<div class="math notranslate nohighlight">
-\[P(J_k) = \max \left\{ P(J_{k-1}), P(J_{i_k}) + p_k \right\}\]</div>
+<p>$$P(J_k) = \max \left{ P(J_{k-1}), P(J_{i_k}) + p_k \right}$$</p>
 </div>
 <div class="section" id="solution">
 <h2>Solution<a class="headerlink" href="#solution" title="Permalink to this headline">¶</a></h2>
-<p>Define a DP table with <span class="math notranslate nohighlight">\(k\)</span>-th entry <span class="math notranslate nohighlight">\(T_k\)</span> being the optimal profit of to the problem on <span class="math notranslate nohighlight">\(J_k\)</span>.</p>
+<p>Define a DP table with $k$-th entry $T_k$ being the optimal profit of to the problem on $J_k$.</p>
 <ul>
-<li><p>Initialize <span class="math notranslate nohighlight">\(T_0 = 0\)</span></p></li>
-<li><p>For <span class="math notranslate nohighlight">\(1 \le k \le n\)</span>, find <span class="math notranslate nohighlight">\(i_k\)</span></p></li>
-<li><p>For <span class="math notranslate nohighlight">\(1 \le k \le n\)</span>, compute</p>
-<div class="math notranslate nohighlight">
-\[T_k = \max \left\{ T_{k-1}, T_{i_k} + p_k \right\}\]</div>
+<li><p>Initialize $T_0 = 0$</p></li>
+<li><p>For $1 \le k \le n$, find $i_k$</p></li>
+<li><p>For $1 \le k \le n$, compute</p>
+<p>$$T_k = \max \left{ T_{k-1}, T_{i_k} + p_k \right}$$</p>
 </li>
-<li><p>Return <span class="math notranslate nohighlight">\(T_n\)</span></p></li>
+<li><p>Return $T_n$</p></li>
 </ul>
 </div>
 <div class="section" id="complexity">
 <h2>Complexity<a class="headerlink" href="#complexity" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p>Sorting: <span class="math notranslate nohighlight">\(O(n \log n)\)</span></p></li>
-<li><p>For every job <span class="math notranslate nohighlight">\(k\)</span>, compute <span class="math notranslate nohighlight">\(i_k\)</span>. Total <span class="math notranslate nohighlight">\(O(n^2)\)</span>, can be optimized to <span class="math notranslate nohighlight">\(O(n)\)</span>.</p></li>
+<li><p>Sorting: $O(n \log n)$</p></li>
+<li><p>For every job $k$, compute $i_k$. Total $O(n^2)$, can be optimized to $O(n)$.</p></li>
 <li><p>Table</p>
 <ul>
-<li><p><span class="math notranslate nohighlight">\(O(n)\)</span> entries</p></li>
-<li><p><span class="math notranslate nohighlight">\(O(1)\)</span> time per entry to compute the entry value</p></li>
+<li><p>$O(n)$ entries</p></li>
+<li><p>$O(1)$ time per entry to compute the entry value</p></li>
 </ul>
 </li>
 </ul>
-<p>Total <span class="math notranslate nohighlight">\(O(n \log n)\)</span>.</p>
+<p>Total $O(n \log n)$.</p>
 </div>
 <div class="section" id="track-solution">
 <h2>Track Solution<a class="headerlink" href="#track-solution" title="Permalink to this headline">¶</a></h2>
-<p>One can store the solution in the algorithm. For instance, store the choice in the <span class="math notranslate nohighlight">\(\max\)</span> comparison, if choose the second one then append job <span class="math notranslate nohighlight">\(p_k\)</span> to a list, or just record <span class="math notranslate nohighlight">\(k\)</span> in every step and then do indexing on <span class="math notranslate nohighlight">\(J\)</span>.</p>
-<p>Another way is to start from <span class="math notranslate nohighlight">\(T_n\)</span>, and compare <span class="math notranslate nohighlight">\(T_{n-1}\)</span>,</p>
+<p>One can store the solution in the algorithm. For instance, store the choice in the $\max$ comparison, if choose the second one then append job $p_k$ to a list, or just record $k$ in every step and then do indexing on $J$.</p>
+<p>Another way is to start from $T_n$, and compare $T_{n-1}$,</p>
 <ul class="simple">
-<li><p>if same then go to entry <span class="math notranslate nohighlight">\(T_{n-1}\)</span></p></li>
-<li><p>if different, pop out <span class="math notranslate nohighlight">\(p_n\)</span>, and then go to entry <span class="math notranslate nohighlight">\(T_{i_k}\)</span></p></li>
+<li><p>if same then go to entry $T_{n-1}$</p></li>
+<li><p>if different, pop out $p_n$, and then go to entry $T_{i_k}$</p></li>
 </ul>
-<p>Repeat until go to <span class="math notranslate nohighlight">\(T_0\)</span>.</p>
+<p>Repeat until go to $T_0$.</p>
 </div>
 </div>
 
