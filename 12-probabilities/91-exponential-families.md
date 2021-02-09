@@ -86,9 +86,18 @@ Gaussian ellipse in 2-d plane [Shi 2020]
 Pros
 - Related to CLM
 - Evaluation is convenient
-- Marginal/conditional also Gaussian
 - Can be convert to product of univariate Gaussians in some rotated space
 - Mixtures of Gaussian are sufficient to approximate a wide range of distributions
+
+- Arbitrary linear combinations of jointly Gaussian variables are also Gaussian
+- Marginals and conditionals of multivariate Gaussians are also Gaussian
+- Sums of many i.i.d. random variables converge to Gaussian variables (Central Limit Theorem)
+- Log of Gaussian looks like a weighted Euclidean distance, related to squared loss
+
+    $$
+    -\ln \sqrt{(2 \pi \sigma)}-\frac{(x-\mu)^{2}}{\left(2 \sigma^{2}\right)}
+    $$
+
 
 Cons
 - $\boldsymbol{\Sigma}$ is hard and expensive to estimate in high dimensions
