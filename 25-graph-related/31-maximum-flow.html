@@ -457,6 +457,11 @@
      Support Vector Machine
     </a>
    </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../32-classification/21-decision-tree.html">
+     Decision Tree
+    </a>
+   </li>
   </ul>
   <i class="fas fa-chevron-down">
   </i>
@@ -511,12 +516,25 @@
   <ul class="collapse-ul">
    <li class="toctree-l2">
     <a class="reference internal" href="../34-clustering/11-k-means.html">
-     K-means clustering
+     <span class="math notranslate nohighlight">
+      \(k\)
+     </span>
+     -means clustering
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../34-clustering/13-agglomerative-methods.html">
      Agglomerative Methods
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../34-clustering/31-spectral-clustering.html">
+     Spectral Clustering
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../34-clustering/41-gaussian-mixtures.html">
+     Gaussian Mixtures
     </a>
    </li>
   </ul>
@@ -809,7 +827,7 @@ f(e)\leftarrow f(e) + \Delta(p)
 <p>This assumption is not necessary for the algorithm to run, but make the algorithm easier to understand.</p>
 </div>
 <dl class="simple myst">
-<dt>Assumption (No anti-parallel edges)</dt><dd><p>Input <span class="math notranslate nohighlight">\(G\)</span> has no anti-parallel edges. If there is, say <span class="math notranslate nohighlight">\(e = (u,v)\)</span> and <span class="math notranslate nohighlight">\(e ^\prime  = (v,u)\)</span>, then add a node <span class="math notranslate nohighlight">\(x\)</span> in-between <span class="math notranslate nohighlight">\(e = (u,v)\)</span> and the new edges have the same capacity<span class="math notranslate nohighlight">\(c((u,x)) = c((x,v)) = c((u,v))\)</span>.</p>
+<dt>Assumption (No anti-parallel edges)</dt><dd><p>Input <span class="math notranslate nohighlight">\(G\)</span> has no anti-parallel edges. If there is, say <span class="math notranslate nohighlight">\(e = (u,v)\)</span> and <span class="math notranslate nohighlight">\(e ^\prime  = (v,u)\)</span>, then add a node <span class="math notranslate nohighlight">\(x\)</span> in-between <span class="math notranslate nohighlight">\(e = (u,v)\)</span> and the new edges have the same capacity <span class="math notranslate nohighlight">\(c(u,x) = c(x,v) = c(u,v)\)</span>.</p>
 </dd>
 <dt>Definition (Residual Flow Network)</dt><dd><p>Given a graph <span class="math notranslate nohighlight">\(G\)</span> and a feasible flow <span class="math notranslate nohighlight">\(f\)</span> in <span class="math notranslate nohighlight">\(G\)</span>, let <span class="math notranslate nohighlight">\(G_f\)</span> be a new graph with the same vertices but new edges.</p>
 </dd>
@@ -990,12 +1008,12 @@ f^{\text{out}}(v) =\sum_{e \in \delta^{+}(v)} f(e)
 <li><p><span class="math notranslate nohighlight">\(\operatorname{val}(f) \le c(A,B)\)</span>, with equality iff <span class="math notranslate nohighlight">\(f^{\text{in}}(A) = 0\)</span> and <span class="math notranslate nohighlight">\(f^{\text{out}}(A) = c(A,B)\)</span>.</p></li>
 </ol>
 <dl class="simple myst">
-<dt>Theorem</dt><dd><p>If <span class="math notranslate nohighlight">\(f\)</span> is any <span class="math notranslate nohighlight">\(s-t\)</span> flow and <span class="math notranslate nohighlight">\((A,B)\)</span> is any <span class="math notranslate nohighlight">\(s-t\)</span> cut, and <span class="math notranslate nohighlight">\(val(f) = c(A,B)\)</span>, then <span class="math notranslate nohighlight">\(f\)</span> is a maximum flow, by Corollary 3.</p>
+<dt>Theorem</dt><dd><p>If <span class="math notranslate nohighlight">\(f\)</span> is any <span class="math notranslate nohighlight">\(s-t\)</span> flow and <span class="math notranslate nohighlight">\((A,B)\)</span> is any <span class="math notranslate nohighlight">\(s-t\)</span> cut, and <span class="math notranslate nohighlight">\(\operatorname{val}(f) = c(A,B)\)</span>, then <span class="math notranslate nohighlight">\(f\)</span> is a maximum flow, by Corollary 3.</p>
 </dd>
 </dl>
 <p>How about existence?</p>
 <dl class="simple myst">
-<dt>Claim (Optimality)</dt><dd><p>If <span class="math notranslate nohighlight">\(f\)</span> is the flow returned by FF algorithm, then there exists an <span class="math notranslate nohighlight">\(s-t\)</span> cut <span class="math notranslate nohighlight">\((A,B)\)</span> such that <span class="math notranslate nohighlight">\(val(f) = c(A,B)\)</span>. So <span class="math notranslate nohighlight">\(f\)</span> is optimal by the above theorem.</p>
+<dt>Claim (Optimality)</dt><dd><p>If <span class="math notranslate nohighlight">\(f\)</span> is the flow returned by FF algorithm, then there exists an <span class="math notranslate nohighlight">\(s-t\)</span> cut <span class="math notranslate nohighlight">\((A,B)\)</span> such that <span class="math notranslate nohighlight">\(\operatorname{val}(f) = c(A,B)\)</span>. So <span class="math notranslate nohighlight">\(f\)</span> is optimal by the above theorem.</p>
 </dd>
 </dl>
 <p><em><strong>Proof</strong></em></p>
@@ -1003,7 +1021,7 @@ f^{\text{out}}(v) =\sum_{e \in \delta^{+}(v)} f(e)
 <p>Now, for the cut <span class="math notranslate nohighlight">\((A,B)\)</span> in <span class="math notranslate nohighlight">\(G\)</span>, we want to prove</p>
 <div class="math notranslate nohighlight">
 \[
-val(f) = c(A,B)
+\operatorname{val}(f) = c(A,B)
 \]</div>
 <p>By Corollary 3, this holds iff <span class="math notranslate nohighlight">\(f^{\text{in}}(A) = 0\)</span> and <span class="math notranslate nohighlight">\(f^{\text{out}}(A) = c(A,B)\)</span>. Equivalently,</p>
 <ol class="simple">

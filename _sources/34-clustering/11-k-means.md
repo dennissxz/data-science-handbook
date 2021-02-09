@@ -1,6 +1,6 @@
-# K-means clustering
+# $k$-means clustering
 
-K-means clustering is a iterative algorithm for clustering.
+$k$-means clustering is an iterative algorithm for clustering. It initialize $k$ cluster centers, assign each example to its closest center, and re-compute the center, until there is no changes in assignment.
 
 ---
 **K-means clustering**
@@ -11,7 +11,7 @@ K-means clustering is a iterative algorithm for clustering.
 
 - While True
 
-  - Assign each example $\boldsymbol{x} _i$ to the closest mean
+  - assign each example $\boldsymbol{x} _i$ to the closest mean
 
       $$
       y_{i}=\operatorname{argmin}_{c}\left\|\mathbf{x}_{i}-\mu_{c}\right\|

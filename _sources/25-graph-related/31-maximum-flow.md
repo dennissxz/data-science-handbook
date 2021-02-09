@@ -99,7 +99,7 @@ This assumption is not necessary for the algorithm to run, but make the algorith
 ```
 
 Assumption (No anti-parallel edges)
-: Input $G$ has no anti-parallel edges. If there is, say $e = (u,v)$ and $e ^\prime  = (v,u)$, then add a node $x$ in-between $e = (u,v)$ and the new edges have the same capacity$c((u,x)) = c((x,v)) = c((u,v))$.
+: Input $G$ has no anti-parallel edges. If there is, say $e = (u,v)$ and $e ^\prime  = (v,u)$, then add a node $x$ in-between $e = (u,v)$ and the new edges have the same capacity $c(u,x) = c(x,v) = c(u,v)$.
 
 Definition (Residual Flow Network)
 : Given a graph $G$ and a feasible flow $f$ in $G$, let $G_f$ be a new graph with the same vertices but new edges.
@@ -299,12 +299,12 @@ $\square$
 
 
 Theorem
-: If $f$ is any $s-t$ flow and $(A,B)$ is any $s-t$ cut, and $val(f) = c(A,B)$, then $f$ is a maximum flow, by Corollary 3.
+: If $f$ is any $s-t$ flow and $(A,B)$ is any $s-t$ cut, and $\operatorname{val}(f) = c(A,B)$, then $f$ is a maximum flow, by Corollary 3.
 
 How about existence?
 
 Claim (Optimality)
-: If $f$ is the flow returned by FF algorithm, then there exists an $s-t$ cut $(A,B)$ such that $val(f) = c(A,B)$. So $f$ is optimal by the above theorem.
+: If $f$ is the flow returned by FF algorithm, then there exists an $s-t$ cut $(A,B)$ such that $\operatorname{val}(f) = c(A,B)$. So $f$ is optimal by the above theorem.
 
 ***Proof***
 
@@ -313,7 +313,7 @@ Recall that FF algorithm stops if there is no $s-t$ path. After it stops, consid
 Now, for the cut $(A,B)$ in $G$, we want to prove
 
 $$
-val(f) = c(A,B)
+\operatorname{val}(f) = c(A,B)
 $$
 
 By Corollary 3, this holds iff $f^{\text{in}}(A) = 0$ and $f^{\text{out}}(A) = c(A,B)$. Equivalently,
