@@ -165,7 +165,11 @@ Then random node becomes $\boldsymbol{\varepsilon}$, and we won't need to comput
 Reparametrization trick of VAE [Kingma 2015]
 :::
 
-Q??: this trick only solve the problem for distribution that can be written in that form (from some standard distribution of that distribution class)?
+```{margin} How about non-Gaussian distributions?
+
+Essentially any distribution can be approximated arbitrarily well by a large enough Gaussian mixture. So we can simply let $\boldsymbol{z} ~ \mathcal{N}$ and the subsequent layers can help to approximate any distributions.
+
+```
 
 ## Interpretation
 
