@@ -867,13 +867,13 @@ $F$-test can be used to compare two nested models
 
 
 $$\begin{aligned}
-\text{Full model: } Y &\sim \left\{ X_j, j=1, \ldots, p-1 \right\} \\
+\text{Full model: } Y &\sim \left\{ X_j, j=1, \ldots, p-k-1, p-k, \ldots, p-1 \right\} \\
 \text{Reduced model: } Y &\sim \left\{ X_j, j=1, \ldots, p-k-1 \right\}
 \end{aligned}$$
 
 
 ```{margin} Interpretation of $F$-test
-Given it's form, we can interpret the numerator as an average reduction in $RSS$ by adding the $k$ explanatory variables. Since the denominator is fixed, if average reduction is large enough, then we reject the null hypothesis that their coefficients are 0.
+Given it's form, we can interpret the numerator as an average reduction in $RSS$ by adding the $k$ explanatory variables. Since the denominator is fixed, if the average reduction is large enough, then we reject the null hypothesis that the $k$ coefficients are 0.
 ```
 
 The test statistic is
@@ -893,7 +893,7 @@ In particular,
 - When $k=p-1$, we are comparing a full model vs. intercept only, i.e.,
 
     $$
-    \beta_1 = \ldots = \beta_p-1 = 0
+    \beta_1 = \ldots = \beta_{p-1} = 0
     $$
 
     In this case,
