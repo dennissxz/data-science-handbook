@@ -20,8 +20,11 @@ Goal
 Assume
 
 - all capacities are integers (capacity is a finite number. if not integer, scale.)
+
 - no edges enter $s$ or leave $t$ (makes no sense to use those edges)
+
 - call all edges entering $v$ by $\delta ^- (v)$
+
 - call all edges leaving $v$ by $\delta ^+ (v)$
 
 ```{margin}
@@ -89,7 +92,7 @@ This gives a feasible solution. Optimal? No, depends on the order of $s-t$ path 
 
 :::
 
-## Solution
+## Algorithm
 
 We first make an additional assumption and define residual flow networks.
 
@@ -400,8 +403,117 @@ Observation: Let $G_f$ be the residual graph at the start of iteration $i$, and 
 - $\left\vert E(G_f) \backslash E(G_f ^\prime) \right\vert \ge 1$.
 - if $e = (u,v) \in E(G_f) \backslash E(G_f ^\prime)$ then $e \in E(P)$.
 
+
+## Flow-path Perspective
+
+Theorem (Integrality of flow)
+: If all capacities are integers, then the FF algorithm finds a maximum flow where $f(e)$ is integers for all $e$.
+
+Flow-paths based definition
+: Let $\mathcal{P}$ be a set of all $s-t$ paths. Let $f(P)$ be a flow of a path $P \in \mathcal{P}$. It is valid if
+
+$$
+\forall e:\quad \sum_{P \in \mathcal{P} \text{ and } e \in E(P)} f(P) \le c(e)
+$$
+
+The value of the set $\mathcal{P}$ is $\sum_{P \in \mathcal{P}}f(P)$.
+
+Theorem (Flow-path decomposision)
+: If $\left\{ f(e) \right\}_{e \in E}$ was feasible, new flow is feasible and has some value. It can be computed efficiently. The support of the flow is $\left\{ P \mid f(P)>0 \right\}$.
+
+The two definitions of flow are equivalent.
+
+## Applications
+
+### Undirected Graphs
+
+We solve by making the graph directed. And run FF algorithm.
+
+#### Maximum Flow
+
+Convert every undirected edge to two anti-parallel directed edges with the same capacity as the undirected edge. Run the algorithm for directed graph. Finally, run flow cancelation, such that one of the two anti-parallel edges is reduced to 0.
+
+### Minimum Cut
+
+For a cut $c(A,B)$ on a undirected graph, the capacity/cost of the cut is the sum of the capacities of the edges across $A$ and $B$.
+
+$$
+\sum _{e \in E(A,B)} c(e)
+$$
+
+Likewise, we convert every undirected edge to two anti-parallel directed edges, run FF algorithm to find a $s-t$ cut.
+
+### Edge-Disjoint Paths
+
+```{margin}
+Edge-dispoint path = EDP
+```
+
+For a directed graph with two **sets** of vertices $S$ and $T$, we want to find a maximum set of $S-T$ paths that are edge-disjoint, i.e. no paths can share any edges.
+
+To solve this, for every edge $e$, set capacity $c(e)=1$. Add one node $s$ that connects to every vertex $u$ in $S$ with capacity $\infty$. Add one node $t$ that connects to every vertex $v$ in $T$ with capacity $\infty$.
+
+Run FF algorithm and obtain a flow $f$. Since $f(e)$ integer, it is 1. Run flow-path decomposition, then each path also carries flow value 1. We will get a collection of EDP from $S$ to $T$. The number of paths equals to the flow value.
+
+### $S-T$ Cut
+
+Given two sets of vertices $S$ and $T$. Find minimum set $E ^\prime$ of edges so that in $G \backslash E ^\prime$, there is **no** path from a vertex of $S$ to a vertex of $T$.
+
+Menger's Theorem
+: The maximum number of EDPs connecting $S$ to $T$ is equal to the minimum number of edges needed to disconnect $S$ from $T$.
+
+### Image Segmentation
+
+An image can be viewed as a vertex. We wan to partition image into foreground and background. For pixel/vertex $s$, let $a_v$ be how likely $v$ to be in foreground, and $b_v$ be how likely $v$ to be in background.
+
+To solve this, we define strength/similarity for every pair of pixels $(u,v)$. The ultimate task is to partition the pixels into two sets $X$ and $Y$. The similarity of two pixels from different partition should be small. The objective is
+
+$$
+\max \left\{ \sum_{v \in X} a_v  + \sum_{u \in Y} b_u  - \sum_{v \in X, u\in Y} P_{v,u}  \right\}
+$$
+
+which is equivalent to
+
+$$
+\min \left\{ \sum_{v \in X, u\in Y} P_{v,u}  - \sum_{v \in X} a_v  - \sum_{u \in Y} b_u  \right\}
+$$
+
+which is equivalent to
+
+$$
+\min \left\{ \sum_{v \in X, u\in Y} P_{v,u}  - \sum_{v \in X} a_v  - \sum_{u \in Y} b_u + \sum_{w \in V} (a_w + b_w) \right\}
+$$
+
+which is
+
+$$
+\min \left\{ \sum_{v \in X, u\in Y} P_{v,u}  + \sum_{v \in Y} a_v  + \sum_{u \in X} b_u \right\}
+$$
+
+We can solve this with minimum cut. The capacity of an edge is the strength of that edge. For every vertex, add edge $(s,v)$ with capacity $a_v$, and add edges $(t,v)$ of capacity $b_v$.
+
+Given $s-t$ cut $(A,B)$, set $X = A \backslash \left\{ s \right\}$ and $Y = B \backslash \left\{ t \right\}$.
+
 Claim
-:
+: We have
+
+$$
+c(A,B) = \sum _{e \in E(A,B)} c(e) = f(X,Y)
+$$
+
+***Proof***
+
+$E(A, B)$ has edges of 3 kinds
+
+1. $e=(u,v), u\ne s, v\ne t$,contribute $p_e$
+2. $e=(s,x), x\in B \backslash \left\{ t \right\}$ with edge capacity $a_x$. Total contribute $\sum_{x \in Y} a_x$
+1. $e=(y,t), y\in A \backslash \left\{ s \right\}$ with edge capacity $a_x$. Total contribute $\sum_{b \in X} b_y$
+
+$$
+c(A,B) = \sum_{v \in X, u\in Y} P_{v,u}  + \sum_{v \in Y} a_v  + \sum_{u \in X} b_u
+$$
+
+which is the same to the objective function.
 
 
 ## Exercise
