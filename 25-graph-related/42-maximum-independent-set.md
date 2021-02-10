@@ -36,7 +36,7 @@ Note that in the first case, the root itself is not in the set.
 
 The DP table has $n$ entries. Each entry corresponds to a node $u$, and stores the size of the maximum independent set of the tree rooted at $u$, i.e. $\left\vert S(u) \right\vert$.
 
-## Solution
+## Algorithm
 
 Let entry $A_u$ be the size of the largest independent set of subtree rooted at node $u$.
 
