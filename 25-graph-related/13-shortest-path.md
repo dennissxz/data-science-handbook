@@ -30,7 +30,7 @@ $$
 
 The algorithm add $u$ to $S$ if the equality is achieved.
 
-### Solution
+### Algorithm
 
 The algorithm is
 

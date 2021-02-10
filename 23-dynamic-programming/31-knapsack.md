@@ -23,7 +23,7 @@ Since the objective function and constraint are both linear in $x_i$, this is a 
 
 The subproblem can be defined by $k$ and $y$, where $k$ is the first $k \le n$ kinds of items, and $y\le b$ is the weight constraint. When $k=n,y=b$ then this is the original problem. The computational order can be $k=1,\ldots,n$ and for each $k$, $y=1,\ldots,b$.
 
-### Recursive Relation
+### Iterative Relation
 
 Let $F_{k,y}$ the total optimized value of subproblem $(k,b)$. Consider the last category $k$. We can either select none, or select one, at each selection step. The iterative relation is
 
@@ -56,7 +56,7 @@ But to compute $F_{k,y}$, this way needs $\left\lfloor\frac{y}{w_{k}}\right\rflo
 
 
 
-## Solution
+## Algorithm
 
 The DP table can be computed as discussed above. Here we discuss how to trace the solution $x_i, \ldots, x_n$.
 

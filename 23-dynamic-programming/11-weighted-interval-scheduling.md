@@ -16,7 +16,7 @@ Constraint
 
 For now, we compute total profit of the solution.
 
-Sort jobs by $f_j$ from smallest to biggest. We obtain a sorted set of job indices $J = \left\{ j_1, \ldots, j_n \right\}$ such that $f_{j_1} \le f_{j_2}, \ldots, \le f_{j_n}$.
+Sort jobs by finish time $f_j$ from smallest to biggest. We obtain a sorted set of job indices $J = \left\{ j_1, \ldots, j_n \right\}$ such that $f_{j_1} \le f_{j_2}, \ldots, \le f_{j_n}$.
 
 The subproblem can be on $J_k = \left\{ {j_1, \ldots, j_k} \right\}$.
 
@@ -36,7 +36,7 @@ The iterative relation is
 
 $$P(J_k) = \max \left\{ P(J_{k-1}), P(J_{i_k}) + p_k \right\}$$
 
-## Solution
+## Algorithm
 
 Define a DP table with $k$-th entry $T_k$ being the optimal profit of to the problem on $J_k$.
 
@@ -62,7 +62,7 @@ Define a DP table with $k$-th entry $T_k$ being the optimal profit of to the pro
 Total $O(n \log n)$.
 
 
-## Track Solution
+## Solution
 
 One can store the solution in the algorithm. For instance, store the choice in the $\max$ comparison, if choose the second one then append job $p_k$ to a list, or just record $k$ in every step and then do indexing on $J$.
 

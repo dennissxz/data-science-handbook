@@ -54,7 +54,7 @@ Note the computational order. To compute entry $T_{i,j}$, we must know all entri
 - start from top left $T_{1,1}$, fill by column from bottom to top, or
 - fill by diagonal, from $+1$ diagonal to $+(n-1)$ diagonal, which is equivalent to fill by length of sub-array.
 
-## Solution
+## Algorithm
 
 For each pair $i,j$ such that $1 \le i \le j \le n$, we define $T_{i,j}$ be the minimum number of multiplications for computing $A_{i} \times A_{i+1} \times \cdots \times A_{j}$.
 
