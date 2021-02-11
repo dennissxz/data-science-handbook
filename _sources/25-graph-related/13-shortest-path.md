@@ -30,7 +30,7 @@ $$
 
 The algorithm add $u$ to $S$ if the equality is achieved.
 
-### Solution
+### Algorithm
 
 The algorithm is
 
@@ -127,7 +127,7 @@ u
 $$
 
 
-## DP-based Algorithm (Bellman-Fosd)
+## DP-based Algorithm (Bellman-Ford)
 
 If there are negative edges but no negative cycles, then the shortest path problem is not well defined due to negative cycles.
 

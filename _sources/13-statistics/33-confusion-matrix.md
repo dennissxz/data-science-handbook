@@ -34,7 +34,7 @@ $$\mathrm{P}\left(- \vert \widehat{+}  \right) = \frac{FP}{\text{predicted posit
 
 $$\mathrm{P}\left(+ \vert \widehat{+}  \right) = \frac{TP}{\text{predicted positive}} $$
 
-Metrics defined by over all table
+Metrics defined by overall table
 
 - accuracy
 
@@ -45,7 +45,7 @@ Metrics defined by over all table
 - prevalence
 
   Proportion of true condition in a population
-  $$ \mathrm{P}\left( \widehat{+} \right) = \frac{TP+FP}{\text{total population}} $$
+  $$ \mathrm{P}\left( + \right) = \frac{TP+FN}{\text{total population}} $$
 
 
 

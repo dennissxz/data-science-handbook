@@ -117,15 +117,10 @@ $$
 \begin{aligned}
 \min _{\boldsymbol{c}} \operatorname{Ncut} (\boldsymbol{c})
 =\min _{\boldsymbol{c}} &\ \frac{\boldsymbol{c}^{\top}(\boldsymbol{D} -\boldsymbol{W} ) \boldsymbol{c}}{\boldsymbol{c}^{\top} \boldsymbol{D}  \boldsymbol{c}} \\
- \text { s.t. } &\ \boldsymbol{c}^{\top} \boldsymbol{D}  \boldsymbol{1}  =0
+ \text { s.t. } &\ \boldsymbol{c}^{\top} \boldsymbol{D}  \boldsymbol{1}  =0 \\
+&\ \boldsymbol{c} \in\{-1,1\}^{n}  \\
 \end{aligned}
 $$
-
-```{margin} Why binary?
-Why binary?
-```
-
-The constraint means $\boldsymbol{c}$ takes discrete values in $\left\{ -1, 1 \right\}$.
 
 
 However, solving for discrete combinatorial values is hard. The optimization problem is relaxed to solve for a continuous $\boldsymbol{c}$ vector instead:
@@ -139,7 +134,7 @@ $$
 \end{array}
 $$
 
-The first eigenvector is all ones (all data in a single cluster). We take the 2nd eigenvector as the real-valued solution. As shown below, the solved eigenvector (right picture) has values around $-0.2$ and $0.2$, which can be the labels for two clusters.
+The first eigenvector is all ones (all data in a single cluster). We take the 2nd eigenvector as the real-valued solution. As shown below, the solved eigenvector (right picture) has values around $-0.2$ and $0.2$ (why??), which can be the labels for two clusters.
 
 :::{figure} spectral-clustering-egvector
 <img src="../imgs/spectral-clustering-egvector.png" width = "80%" alt=""/>

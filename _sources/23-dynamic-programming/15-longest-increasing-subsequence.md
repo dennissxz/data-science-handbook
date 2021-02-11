@@ -25,9 +25,17 @@ $$
 L_k = \left\{ \underset{i:\ 1 \le i \le k-1, a_i\le a_k}{\operatorname{max}} L_i \right\} + 1
 $$
 
+```{margin} Takeaway
+It can be the case that the value in the iterative relation is not OPT.
+```
+
 The DP table stores $L_k$.
 
-## Solution
+The final output is NOT $L_n$. The optimal sequence can end anywhere. It should be
+
+$$OPT = \operatorname{longest}  _{1 \le k \le n} \left\{ S_k \right\}$$
+
+## Algorithm
 
 - Initialize $L_1 = 1$.
 

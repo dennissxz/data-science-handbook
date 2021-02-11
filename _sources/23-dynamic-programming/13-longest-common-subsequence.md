@@ -45,6 +45,7 @@ Another order can follow fixed $i$ and increasing $j$. Any order works as long a
 
 Base
 : For all $0 \le i \le n, 0 \le j \le m$,
+
 $$
 T_{[i,0]} = 0 \\
 T_{[0,j]} = 0
@@ -65,7 +66,7 @@ T_{[i, j-1]}
 \end{array}\right.
 $$
 
-### Track Solution
+### Solution
 
 If the condition $A_{[i]} = B_{[j]}$ holds, this means we pop out $A_{[i]}$. Otherwise, we go to $T_{[i,j-1]}$ or $T_{[i-1,j]}$.
 

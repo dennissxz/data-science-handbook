@@ -115,7 +115,7 @@ Since every edge we add according to the greedy rule is a special edge, our solu
 
 What if not all edge weights are distinct? There will be multiple optimal solutions. We'll still get an optimal solutions by this algorithm. Just choose an arbitrary edge if there are multiple smallest weight edges.
 
-### Implementation
+### Algorithm
 
 - Sort edges by their weights to $E = \left\{ e_1, e_2, \ldots, e_m \right\}$ such that $w(e_1) < w(e_2)<\dots < w(e_m)$.
 

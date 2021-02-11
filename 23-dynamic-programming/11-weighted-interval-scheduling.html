@@ -672,8 +672,8 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#solution">
-   Solution
+  <a class="reference internal nav-link" href="#algorithm">
+   Algorithm
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -682,8 +682,8 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#track-solution">
-   Track Solution
+  <a class="reference internal nav-link" href="#solution">
+   Solution
   </a>
  </li>
 </ul>
@@ -713,7 +713,7 @@
 <div class="section" id="analysis">
 <h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
 <p>For now, we compute total profit of the solution.</p>
-<p>Sort jobs by <span class="math notranslate nohighlight">\(f_j\)</span> from smallest to biggest. We obtain a sorted set of job indices <span class="math notranslate nohighlight">\(J = \left\{ j_1, \ldots, j_n \right\}\)</span> such that <span class="math notranslate nohighlight">\(f_{j_1} \le f_{j_2}, \ldots, \le f_{j_n}\)</span>.</p>
+<p>Sort jobs by finish time <span class="math notranslate nohighlight">\(f_j\)</span> from smallest to biggest. We obtain a sorted set of job indices <span class="math notranslate nohighlight">\(J = \left\{ j_1, \ldots, j_n \right\}\)</span> such that <span class="math notranslate nohighlight">\(f_{j_1} \le f_{j_2}, \ldots, \le f_{j_n}\)</span>.</p>
 <p>The subproblem can be on <span class="math notranslate nohighlight">\(J_k = \left\{ {j_1, \ldots, j_k} \right\}\)</span>.</p>
 <p>Let <span class="math notranslate nohighlight">\(P()\)</span> be the total profit of a set of jobs. For the last job <span class="math notranslate nohighlight">\(j_k\)</span> in <span class="math notranslate nohighlight">\(J_k\)</span>, consider two cases.</p>
 <ul class="simple">
@@ -729,8 +729,8 @@ i_k = \underset{f_i \le s_{j_k}}{\operatorname{argmax}} \, i
 <div class="math notranslate nohighlight">
 \[P(J_k) = \max \left\{ P(J_{k-1}), P(J_{i_k}) + p_k \right\}\]</div>
 </div>
-<div class="section" id="solution">
-<h2>Solution<a class="headerlink" href="#solution" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="algorithm">
+<h2>Algorithm<a class="headerlink" href="#algorithm" title="Permalink to this headline">¶</a></h2>
 <p>Define a DP table with <span class="math notranslate nohighlight">\(k\)</span>-th entry <span class="math notranslate nohighlight">\(T_k\)</span> being the optimal profit of to the problem on <span class="math notranslate nohighlight">\(J_k\)</span>.</p>
 <ul>
 <li><p>Initialize <span class="math notranslate nohighlight">\(T_0 = 0\)</span></p></li>
@@ -756,8 +756,8 @@ i_k = \underset{f_i \le s_{j_k}}{\operatorname{argmax}} \, i
 </ul>
 <p>Total <span class="math notranslate nohighlight">\(O(n \log n)\)</span>.</p>
 </div>
-<div class="section" id="track-solution">
-<h2>Track Solution<a class="headerlink" href="#track-solution" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="solution">
+<h2>Solution<a class="headerlink" href="#solution" title="Permalink to this headline">¶</a></h2>
 <p>One can store the solution in the algorithm. For instance, store the choice in the <span class="math notranslate nohighlight">\(\max\)</span> comparison, if choose the second one then append job <span class="math notranslate nohighlight">\(p_k\)</span> to a list, or just record <span class="math notranslate nohighlight">\(k\)</span> in every step and then do indexing on <span class="math notranslate nohighlight">\(J\)</span>.</p>
 <p>Another way is to start from <span class="math notranslate nohighlight">\(T_n\)</span>, and compare <span class="math notranslate nohighlight">\(T_{n-1}\)</span>,</p>
 <ul class="simple">

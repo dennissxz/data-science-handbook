@@ -686,6 +686,20 @@
    </li>
   </ul>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#cons">
+   Cons
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#model-selection-k">
+   Model Selection (
+   <span class="math notranslate nohighlight">
+    \(K\)
+   </span>
+   )
+  </a>
+ </li>
 </ul>
 
         </nav>
@@ -730,10 +744,10 @@ p(\boldsymbol{x})=\sum_{k=1}^{K} \pi_{k} \underbrace{\mathcal{n}\left(\boldsymbo
 </div>
 <div class="section" id="estimation">
 <h2>Estimation<a class="headerlink" href="#estimation" title="Permalink to this headline">¶</a></h2>
-<p>Given a data set and <span class="math notranslate nohighlight">\(K\)</span>, the log probability is</p>
+<p>Given a data set and <span class="math notranslate nohighlight">\(K\)</span>, let <span class="math notranslate nohighlight">\(\boldsymbol{\theta} = (\boldsymbol{\mu} _1, \ldots, \boldsymbol{\mu} _k, \boldsymbol{\Sigma} _1, \ldots, \boldsymbol{\Sigma} _k)\)</span>, the log probability is</p>
 <div class="math notranslate nohighlight">
 \[
-\ln p(\boldsymbol{X} \mid \boldsymbol{\pi} , \boldsymbol{\mu}, \boldsymbol{\Sigma}  )=\sum_{i=1}^{n} \ln \sum_{k=1}^{K} \pi_{k} \mathcal{n}\left(\boldsymbol{x}_{i} \mid \boldsymbol{\mu} _k, \boldsymbol{\Sigma} _k\right)
+\ln p(\boldsymbol{X} \mid \boldsymbol{\pi} , \boldsymbol{\theta} )=\sum_{i=1}^{n} \ln \sum_{k=1}^{K} \pi_{k} \mathcal{n}\left(\boldsymbol{x}_{i} \mid \boldsymbol{\mu} _k, \boldsymbol{\Sigma} _k\right)
 \]</div>
 <p>When <span class="math notranslate nohighlight">\(K=1\)</span>, this becomes a single multivariate Gaussian problem which has a closed-form solution. But when <span class="math notranslate nohighlight">\(K\ge 2\)</span>, there is no closed-form solution <span class="math notranslate nohighlight">\(\boldsymbol{\pi}, \boldsymbol{\mu} _1, \boldsymbol{\mu} _2, \ldots, \boldsymbol{\mu} _k, \boldsymbol{\Sigma} _1, \boldsymbol{\Sigma} _2, \ldots \boldsymbol{\Sigma} _K\)</span>.</p>
 <div class="margin sidebar">
@@ -757,7 +771,7 @@ p(\boldsymbol{x})=\sum_{k=1}^{K} \pi_{k} \underbrace{\mathcal{n}\left(\boldsymbo
 <li><p>If we known the parameters, then the posterior probability of the indicator variables is</p>
 <div class="math notranslate nohighlight">
 \[
-    \gamma_{i k}=P\left(z_{i k}=1 \mid \boldsymbol{x}_{i}, {\boldsymbol{\mu}} , {\boldsymbol{\Sigma}} \right)=\frac{{\pi}_{k} p\left(\boldsymbol{x}_{i} \mid {\boldsymbol{\mu}} _{k}, {\boldsymbol{\Sigma}} _{k}\right)}{\sum_{l=1}^{K} {\pi}_{\ell} p\left(\boldsymbol{x}_{i} \mid {\boldsymbol{\mu}} _{\ell}, {\boldsymbol{\Sigma}} _{\ell}\right)}
+    \gamma_{i k}=P\left(z_{i k}=1 \mid \boldsymbol{x}_{i}, \boldsymbol{\theta}  \right)=\frac{{\pi}_{k} p\left(\boldsymbol{x}_{i} \mid {\boldsymbol{\mu}} _{k}, {\boldsymbol{\Sigma}} _{k}\right)}{\sum_{l=1}^{K} {\pi}_{\ell} p\left(\boldsymbol{x}_{i} \mid {\boldsymbol{\mu}} _{\ell}, {\boldsymbol{\Sigma}} _{\ell}\right)}
     \]</div>
 <p>where <span class="math notranslate nohighlight">\(\gamma_{ik}\)</span> is called the <strong>responsibility</strong> of the <span class="math notranslate nohighlight">\(k\)</span>-th component for <span class="math notranslate nohighlight">\(\boldsymbol{x}_i\)</span>. Note that <span class="math notranslate nohighlight">\(\sum_{k=1}^{K} \gamma_{i k}=1\)</span></p>
 <p>Then we “pretend” that the <span class="math notranslate nohighlight">\(\gamma_{ik}\)</span> are the indicator variables themselves, and compute <span class="math notranslate nohighlight">\(n_{k}=\sum_{i=1}^{n} \gamma_{i k}\)</span> (may not be integer). We can then <strong>re-estimate</strong> the ML estiamtes by substituting <span class="math notranslate nohighlight">\(z_{ik}\)</span> by <span class="math notranslate nohighlight">\(\gamma_{ik}\)</span>.</p>
@@ -778,26 +792,26 @@ p(\boldsymbol{x})=\sum_{k=1}^{K} \pi_{k} \underbrace{\mathcal{n}\left(\boldsymbo
 <p>By introducing <span class="math notranslate nohighlight">\(z_{ik}\)</span>, we would like to maximize the <strong>complete data</strong> likelihood</p>
 <div class="math notranslate nohighlight">
 \[
-p(\boldsymbol{X}, \boldsymbol{Z} \mid \boldsymbol{\pi}, \boldsymbol{\mu} , \boldsymbol{\Sigma} ) \propto \prod_{i=1}^{n} \prod_{k=1}^{K}\left(\boldsymbol{\pi}_{k} \mathcal{n}\left(\boldsymbol{x}_{i} \mid \boldsymbol{\mu}_{k}, \boldsymbol{\Sigma}_{k}\right)\right)^{z_{i k}}
+p(\boldsymbol{X}, \boldsymbol{Z} \mid \boldsymbol{\pi}, \boldsymbol{\theta}  ) \propto \prod_{i=1}^{n} \prod_{k=1}^{K}\left(\boldsymbol{\pi}_{k} \mathcal{n}\left(\boldsymbol{x}_{i} \mid \boldsymbol{\mu}_{k}, \boldsymbol{\Sigma}_{k}\right)\right)^{z_{i k}}
 \]</div>
 <p>or its log</p>
 <div class="math notranslate nohighlight">
 \[
-\ln p(\boldsymbol{X}, \boldsymbol{Z} \mid \boldsymbol{\pi}, \boldsymbol{\mu} , \boldsymbol{\Sigma} )=\text { const }+\sum_{i=1}^{n} \sum_{k=1}^{K} z_{i k}\left(\ln \boldsymbol{\pi}_{k}+\ln \mathcal{n}\left(\boldsymbol{x}_{i} \mid \boldsymbol{\mu}_{k}, \boldsymbol{\Sigma}_{k}\right)\right)
+\ln p(\boldsymbol{X}, \boldsymbol{Z} \mid \boldsymbol{\pi}, \boldsymbol{\theta} )=\text { const }+\sum_{i=1}^{n} \sum_{k=1}^{K} z_{i k}\left(\ln \boldsymbol{\pi}_{k}+\ln \mathcal{n}\left(\boldsymbol{x}_{i} \mid \boldsymbol{\mu}_{k}, \boldsymbol{\Sigma}_{k}\right)\right)
 \]</div>
 <p>It can be shown that we are actually maximising its expectation w.r.t. <span class="math notranslate nohighlight">\(\boldsymbol{z}\)</span></p>
 <div class="math notranslate nohighlight">
 \[
-\operatorname{E}_{z_{ik} \mid \boldsymbol{X}, \boldsymbol{\pi}, \boldsymbol{\mu} ,\boldsymbol{\Sigma}  } \left[  \ln p(\boldsymbol{X}, \boldsymbol{Z} \mid \boldsymbol{\pi}, \boldsymbol{\mu} , \boldsymbol{\Sigma} )  \right]
+\operatorname{E}_{z_{ik} \mid \boldsymbol{X}, \boldsymbol{\pi}, \boldsymbol{\theta}  } \left[  \ln p(\boldsymbol{X}, \boldsymbol{Z} \mid \boldsymbol{\pi}, \boldsymbol{\theta} )  \right]
 \]</div>
 <p>Motivated from the above analysis, we can come up with the expectation-maximization algorithm.</p>
 <p>Here comes the expectation-maximization (EM) algorithm</p>
 <ul class="simple">
-<li><p>Initialization: Guess <span class="math notranslate nohighlight">\(\boldsymbol{\pi}, \boldsymbol{\mu} , \boldsymbol{\Sigma}\)</span></p></li>
+<li><p>Initialization: Guess <span class="math notranslate nohighlight">\(\boldsymbol{\pi}, \boldsymbol{\theta}\)</span></p></li>
 <li><p>Iterate:</p>
 <ul>
-<li><p>E-step: Compute <span class="math notranslate nohighlight">\(\gamma_{ik}\)</span> using current estimates of <span class="math notranslate nohighlight">\(\boldsymbol{\pi}, \boldsymbol{\mu} , \boldsymbol{\Sigma}\)</span></p></li>
-<li><p>M-step: Estimate new parameters <span class="math notranslate nohighlight">\(\boldsymbol{\pi}, \boldsymbol{\mu} , \boldsymbol{\Sigma}\)</span>, by maximizing the expected likelihood, given the current <span class="math notranslate nohighlight">\(\gamma_{ik}\)</span></p></li>
+<li><p>E-step: Compute <span class="math notranslate nohighlight">\(\gamma_{ik}\)</span> using current estimates of <span class="math notranslate nohighlight">\(\boldsymbol{\pi}, \boldsymbol{\theta}\)</span></p></li>
+<li><p>M-step: Estimate new parameters <span class="math notranslate nohighlight">\(\boldsymbol{\pi}, \boldsymbol{\theta}\)</span>, by maximizing the expected likelihood, given the current <span class="math notranslate nohighlight">\(\gamma_{ik}\)</span></p></li>
 </ul>
 </li>
 <li><p>Until log likelihood converges</p></li>
@@ -806,8 +820,64 @@ p(\boldsymbol{X}, \boldsymbol{Z} \mid \boldsymbol{\pi}, \boldsymbol{\mu} , \bold
 <a class="reference internal image-reference" href="../_images/gaumix-em-iterations.png"><img alt="" src="../_images/gaumix-em-iterations.png" style="width: 80%;" /></a>
 <p class="caption"><span class="caption-number">Fig. 50 </span><span class="caption-text">Iterations of EM algorithms [Livescue 2021]</span><a class="headerlink" href="#gaumix-em-iterations" title="Permalink to this image">¶</a></p>
 </div>
-<p>.</p>
+<div class="margin sidebar">
+<p class="sidebar-title">General EM</p>
+<p>EM applies to estimation of any density with hidden variables.</p>
 </div>
+</div>
+</div>
+<div class="section" id="cons">
+<h2>Cons<a class="headerlink" href="#cons" title="Permalink to this headline">¶</a></h2>
+<p>If an initial guess of cluster center <span class="math notranslate nohighlight">\(\boldsymbol{\mu}\)</span> happens to be close to some data point <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> and the variance is happen to be small, then the ML over <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> is very large, i.e. overfitting.</p>
+<div class="math notranslate nohighlight">
+\[
+\lim _{\sigma^{2} \rightarrow 0} \mathcal{N}\left(\mathbf{x} \mid \mu=\mathbf{x}, \Sigma=\sigma^{2} I\right)=\infty
+\]</div>
+<p>Solutions</p>
+<ul>
+<li><p>Start with large variance, and put lower bound of variance on each dimension of each component in the iterations.</p></li>
+<li><p>Try several initialization and pick the best one. Best can be measured by some metrics, e.g. entropy, purity.</p></li>
+<li><p>Held-out data</p></li>
+<li><p>Instead of maximizing the expected likelihood in the M-step,
+maximize the posterior probability of <span class="math notranslate nohighlight">\(\theta\)</span> (MAP estimate).</p>
+<div class="math notranslate nohighlight">
+\[\theta=\underset{\theta}{\operatorname{argmax}} E_{z_{i k} \mid X, \pi, \theta}[\ln p(X, Z \mid \pi, \theta)]+\ln p(\theta)\]</div>
+</li>
+</ul>
+</div>
+<div class="section" id="model-selection-k">
+<h2>Model Selection (<span class="math notranslate nohighlight">\(K\)</span>)<a class="headerlink" href="#model-selection-k" title="Permalink to this headline">¶</a></h2>
+<p>Straw man idea: Choose K to maximize the likelihood</p>
+<ul class="simple">
+<li><p>Result: A separate, tiny Gaussian for each training example • In the limit Σ → 0, this yields infinite likelihood</p></li>
+</ul>
+<p>Consider the number of parameters in a Gaussian mixture model <span class="math notranslate nohighlight">\(\mathcal{M}\)</span> with <span class="math notranslate nohighlight">\(K\)</span> components and dimensionality <span class="math notranslate nohighlight">\(D\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[
+d(\mathcal{M})=K(D+D(D+1) / 2)+K-1
+\]</div>
+<p>We need penalty on large <span class="math notranslate nohighlight">\(d(\mathcal{M})\)</span></p>
+<ul class="simple">
+<li><p>Bayesian Information Criterion (BIC): Learn a model for each K that optimizes the likelihood L(M), then choose the model that maximizes</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+B I C(\mathcal{M})=L(\mathcal{M})-\frac{d(\mathcal{M})}{2} \log N
+\]</div>
+<ul class="simple">
+<li><p>Akaike information criterion (AIC), minimum description length (MDL), etc.</p></li>
+<li><p>cross-validation</p></li>
+</ul>
+<p>In practice, most often use cross-validation to choose hyper-parameters like <span class="math notranslate nohighlight">\(K\)</span> or the minimum variance.</p>
+<p>In practice</p>
+<p>Growing:</p>
+<ul class="simple">
+<li><p>Start with a single Gaussian, do EM until convergence</p></li>
+<li><p>Repeat: Split each Gaussian into two Gaussians with slightly
+different means, run EM, test on dev set</p></li>
+<li><p>Until no performance improvement on dev set</p></li>
+</ul>
+<p>.</p>
 </div>
 </div>
 

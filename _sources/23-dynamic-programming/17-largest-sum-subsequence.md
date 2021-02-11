@@ -51,9 +51,9 @@ The base case is $S_1= \left\{ a_1 \right\}$ if $a_1 > 0$, or $0$ otherwise.
 
 The final output is NOT $S_n$. The optimal sequence can end anywhere. Thus,
 
-$$OPT = \max _{1 \le i \le n} \left\{ S_i \right\}$$
+$$OPT = \operatorname{maxsum}  _{1 \le i \le n} \left\{ S_i \right\}$$
 
-## Solution
+## Algorithm
 
 The algorithm is
 

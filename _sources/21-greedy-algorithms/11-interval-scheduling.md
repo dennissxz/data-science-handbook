@@ -18,7 +18,7 @@ Goal
 Constraint
 : - No two job intervals can overlap in time
 
-### Solution
+### Algorithm
 
 A solution by greedy algorithms is
 
@@ -108,7 +108,7 @@ Goal
 Constraint
 : - No two jobs (intervals) can overlap in time if they are scheduled to the same machine.
 
-### Solution
+### Algorithm
 
 We will schedule jobs to machines iteratively. Over the course of the algorithm, we say that a machine is *used* iff at least one job is assigned to it.
 
@@ -159,7 +159,7 @@ Goal
 Constraint
 : - No two job intervals can overlap.
 
-### Solution
+### Algorithm
 
 A greedy solution is to execute the job with the earliest deadline, like in real-life setting.
 

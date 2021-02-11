@@ -45,6 +45,16 @@ Stop when all nodes are either too small to split or have been marked as leaves 
 
 To evaluate question quality, we need some partition metrics.
 
+For unlabelled data, we can use maximum likelihood and minimum entropy.
+
+#### Purity
+
+#### Normalized Mutual Information
+
+Normalized by cluster sizes.
+
+
+
 #### Maximum Likelihood
 
 The best question at a node is the maximum likelihood one, i.e. the one that maximizes the likelihood of the two newly formed (left and right) groups of data points
