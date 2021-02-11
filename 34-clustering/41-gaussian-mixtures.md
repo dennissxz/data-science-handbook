@@ -43,10 +43,10 @@ Essentially any distribution can be approximated arbitrarily well by a large eno
 
 ## Estimation
 
-Given a data set and $K$, the log probability is
+Given a data set and $K$, let $\boldsymbol{\theta} = (\boldsymbol{\mu} _1, \ldots, \boldsymbol{\mu} _k, \boldsymbol{\Sigma} _1, \ldots, \boldsymbol{\Sigma} _k)$, the log probability is
 
 $$
-\ln p(\boldsymbol{X} \mid \boldsymbol{\pi} , \boldsymbol{\mu}, \boldsymbol{\Sigma}  )=\sum_{i=1}^{n} \ln \sum_{k=1}^{K} \pi_{k} \mathcal{n}\left(\boldsymbol{x}_{i} \mid \boldsymbol{\mu} _k, \boldsymbol{\Sigma} _k\right)
+\ln p(\boldsymbol{X} \mid \boldsymbol{\pi} , \boldsymbol{\theta} )=\sum_{i=1}^{n} \ln \sum_{k=1}^{K} \pi_{k} \mathcal{n}\left(\boldsymbol{x}_{i} \mid \boldsymbol{\mu} _k, \boldsymbol{\Sigma} _k\right)
 $$
 
 When $K=1$, this becomes a single multivariate Gaussian problem which has a closed-form solution. But when $K\ge 2$, there is no closed-form solution $\boldsymbol{\pi}, \boldsymbol{\mu} _1, \boldsymbol{\mu} _2, \ldots, \boldsymbol{\mu} _k, \boldsymbol{\Sigma} _1, \boldsymbol{\Sigma} _2, \ldots \boldsymbol{\Sigma} _K$.
@@ -75,7 +75,7 @@ For each observation $i$, we introduce a set of binary indicator variables $\bol
 - If we known the parameters, then the posterior probability of the indicator variables is
 
     $$
-    \gamma_{i k}=P\left(z_{i k}=1 \mid \boldsymbol{x}_{i}, {\boldsymbol{\mu}} , {\boldsymbol{\Sigma}} \right)=\frac{{\pi}_{k} p\left(\boldsymbol{x}_{i} \mid {\boldsymbol{\mu}} _{k}, {\boldsymbol{\Sigma}} _{k}\right)}{\sum_{l=1}^{K} {\pi}_{\ell} p\left(\boldsymbol{x}_{i} \mid {\boldsymbol{\mu}} _{\ell}, {\boldsymbol{\Sigma}} _{\ell}\right)}
+    \gamma_{i k}=P\left(z_{i k}=1 \mid \boldsymbol{x}_{i}, \boldsymbol{\theta}  \right)=\frac{{\pi}_{k} p\left(\boldsymbol{x}_{i} \mid {\boldsymbol{\mu}} _{k}, {\boldsymbol{\Sigma}} _{k}\right)}{\sum_{l=1}^{K} {\pi}_{\ell} p\left(\boldsymbol{x}_{i} \mid {\boldsymbol{\mu}} _{\ell}, {\boldsymbol{\Sigma}} _{\ell}\right)}
     $$
 
     where $\gamma_{ik}$ is called the **responsibility** of the $k$-th component for $\boldsymbol{x}_i$. Note that $\sum_{k=1}^{K} \gamma_{i k}=1$
@@ -99,31 +99,31 @@ In reality, we know neither the parameters nor the indicators
 By introducing $z_{ik}$, we would like to maximize the **complete data** likelihood
 
 $$
-p(\boldsymbol{X}, \boldsymbol{Z} \mid \boldsymbol{\pi}, \boldsymbol{\mu} , \boldsymbol{\Sigma} ) \propto \prod_{i=1}^{n} \prod_{k=1}^{K}\left(\boldsymbol{\pi}_{k} \mathcal{n}\left(\boldsymbol{x}_{i} \mid \boldsymbol{\mu}_{k}, \boldsymbol{\Sigma}_{k}\right)\right)^{z_{i k}}
+p(\boldsymbol{X}, \boldsymbol{Z} \mid \boldsymbol{\pi}, \boldsymbol{\theta}  ) \propto \prod_{i=1}^{n} \prod_{k=1}^{K}\left(\boldsymbol{\pi}_{k} \mathcal{n}\left(\boldsymbol{x}_{i} \mid \boldsymbol{\mu}_{k}, \boldsymbol{\Sigma}_{k}\right)\right)^{z_{i k}}
 $$
 
 or its log
 
 $$
-\ln p(\boldsymbol{X}, \boldsymbol{Z} \mid \boldsymbol{\pi}, \boldsymbol{\mu} , \boldsymbol{\Sigma} )=\text { const }+\sum_{i=1}^{n} \sum_{k=1}^{K} z_{i k}\left(\ln \boldsymbol{\pi}_{k}+\ln \mathcal{n}\left(\boldsymbol{x}_{i} \mid \boldsymbol{\mu}_{k}, \boldsymbol{\Sigma}_{k}\right)\right)
+\ln p(\boldsymbol{X}, \boldsymbol{Z} \mid \boldsymbol{\pi}, \boldsymbol{\theta} )=\text { const }+\sum_{i=1}^{n} \sum_{k=1}^{K} z_{i k}\left(\ln \boldsymbol{\pi}_{k}+\ln \mathcal{n}\left(\boldsymbol{x}_{i} \mid \boldsymbol{\mu}_{k}, \boldsymbol{\Sigma}_{k}\right)\right)
 $$
 
 It can be shown that we are actually maximising its expectation w.r.t. $\boldsymbol{z}$
 
 
 $$
-\operatorname{E}_{z_{ik} \mid \boldsymbol{X}, \boldsymbol{\pi}, \boldsymbol{\mu} ,\boldsymbol{\Sigma}  } \left[  \ln p(\boldsymbol{X}, \boldsymbol{Z} \mid \boldsymbol{\pi}, \boldsymbol{\mu} , \boldsymbol{\Sigma} )  \right]
+\operatorname{E}_{z_{ik} \mid \boldsymbol{X}, \boldsymbol{\pi}, \boldsymbol{\theta}  } \left[  \ln p(\boldsymbol{X}, \boldsymbol{Z} \mid \boldsymbol{\pi}, \boldsymbol{\theta} )  \right]
 $$
 
 Motivated from the above analysis, we can come up with the expectation-maximization algorithm.
 
 Here comes the expectation-maximization (EM) algorithm
 
-- Initialization: Guess $\boldsymbol{\pi}, \boldsymbol{\mu} , \boldsymbol{\Sigma}$
+- Initialization: Guess $\boldsymbol{\pi}, \boldsymbol{\theta}$
 
 - Iterate:
-  - E-step: Compute $\gamma_{ik}$ using current estimates of $\boldsymbol{\pi}, \boldsymbol{\mu} , \boldsymbol{\Sigma}$
-  - M-step: Estimate new parameters $\boldsymbol{\pi}, \boldsymbol{\mu} , \boldsymbol{\Sigma}$, by maximizing the expected likelihood, given the current $\gamma_{ik}$
+  - E-step: Compute $\gamma_{ik}$ using current estimates of $\boldsymbol{\pi}, \boldsymbol{\theta}$
+  - M-step: Estimate new parameters $\boldsymbol{\pi}, \boldsymbol{\theta}$, by maximizing the expected likelihood, given the current $\gamma_{ik}$
 
 - Until log likelihood converges
 
@@ -133,15 +133,63 @@ Here comes the expectation-maximization (EM) algorithm
 Iterations of EM algorithms [Livescue 2021]
 :::
 
+```{margin} General EM
+EM applies to estimation of any density with hidden variables.
+```
+
+## Cons
+
+If an initial guess of cluster center $\boldsymbol{\mu}$ happens to be close to some data point $\boldsymbol{x}$ and the variance is happen to be small, then the ML over $\boldsymbol{x}$ is very large, i.e. overfitting.
+
+$$
+\lim _{\sigma^{2} \rightarrow 0} \mathcal{N}\left(\mathbf{x} \mid \mu=\mathbf{x}, \Sigma=\sigma^{2} I\right)=\infty
+$$
+
+Solutions
+- Start with large variance, and put lower bound of variance on each dimension of each component in the iterations.
+- Try several initialization and pick the best one. Best can be measured by some metrics, e.g. entropy, purity.
+- Held-out data
+- Instead of maximizing the expected likelihood in the M-step,
+maximize the posterior probability of $\theta$ (MAP estimate).
+
+    $$\theta=\underset{\theta}{\operatorname{argmax}} E_{z_{i k} \mid X, \pi, \theta}[\ln p(X, Z \mid \pi, \theta)]+\ln p(\theta)$$  
+
+## Model Selection ($K$)
+
+Straw man idea: Choose K to maximize the likelihood
+- Result: A separate, tiny Gaussian for each training example • In the limit Σ → 0, this yields infinite likelihood
 
 
+Consider the number of parameters in a Gaussian mixture model $\mathcal{M}$ with $K$ components and dimensionality $D$.
 
 
+$$
+d(\mathcal{M})=K(D+D(D+1) / 2)+K-1
+$$
+
+We need penalty on large $d(\mathcal{M})$
+
+- Bayesian Information Criterion (BIC): Learn a model for each K that optimizes the likelihood L(M), then choose the model that maximizes
 
 
+$$
+B I C(\mathcal{M})=L(\mathcal{M})-\frac{d(\mathcal{M})}{2} \log N
+$$
 
+- Akaike information criterion (AIC), minimum description length (MDL), etc.
 
+- cross-validation
 
+In practice, most often use cross-validation to choose hyper-parameters like $K$ or the minimum variance.
+
+In practice
+
+Growing:
+
+- Start with a single Gaussian, do EM until convergence
+- Repeat: Split each Gaussian into two Gaussians with slightly
+different means, run EM, test on dev set
+- Until no performance improvement on dev set
 
 
 
