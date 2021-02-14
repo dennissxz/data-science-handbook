@@ -45,14 +45,53 @@ Stop when all nodes are either too small to split or have been marked as leaves 
 
 To evaluate question quality, we need some partition metrics.
 
+
+#### Maximum Purity
+
+$\operatorname{purity}(\Omega, C)=\frac{1}{N} \sum_{k} \max _{j}\left|\omega_{k} \cap c_{j}\right|$
+
+where
+- $\Omega$ is the proposed clustering,
+- $C$ is the ground-truth clustering
+- $w_k$ is the set of items assigned to cluster $k$
+- $c_j$ is the set of items with ground truth label $j$
+
+properties
+- in $(0,1)$
+- biased toward finer clusterings (purity$=1$ if each example is in its own cluster), so this measure makes sense for comparing clusterings with a given **fixed** number of clusters
+
+
+#### Maximum Normalized Mutual Information
+
+Define
+
+- $p(k, j) = \frac{\left|\omega_{k} \cap c_{j}\right|}{N}$ as the probability that a randomly chosen example belongs to proposed cluster $w_k$ **and** ground-truth cluster $c_j$.
+- $p_\Omega (k) = \frac{\left\vert w_k \right\vert}{N}$ as the probability that a randomly chosen example belongs to proposed cluster $w_k$
+- $p_C(j)= \frac{\left\vert c_j \right\vert}{N}$ likewise
+
+The mutual information of induced from the joint distribution $p(k,j)$ is
+
+$$
+\mathrm{I}(\Omega, C)=\sum_{k} \sum_{j} p(k, j) \log \frac{p(k, j)}{p_{\Omega}(k) p_{C}(j)}
+$$
+
+and we can define entropies $H(\Omega)$ and $H(C)$.
+
+Finally, the normalized mutual information is
+
+$$
+\operatorname{NMI}(\Omega, C)=\frac{I(\Omega ; C)}{[H(\Omega)+H(C)] / 2}
+$$
+
+Properties
+- Ranges from 0 and 1
+- Mutual information alone would also favor over-clustering
+- Entropies in the denominator act as penalty for over-clustering
+
+
+---
+
 For unlabelled data, we can use maximum likelihood and minimum entropy.
-
-#### Purity
-
-#### Normalized Mutual Information
-
-Normalized by cluster sizes.
-
 
 
 #### Maximum Likelihood
