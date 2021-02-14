@@ -1,4 +1,4 @@
-# SNE and $t$-SNE
+$t$-SNE# SNE and $t$-SNE
 
 $t$-Distributed Stochastic Neighborhood Embedding [van der Maaten & Hinton 2008]. Read as "tisney".
 
@@ -80,11 +80,11 @@ The objective is non-convex, need to be optimized with gradient descent (the gra
 
 Randomly initialize a $n \times k$ low-dim data matrix $\boldsymbol{Z}$ and do gradient descent to minimize the KL divergence.
 
-## SNE vs t-SNE.
+## SNE vs $t$-SNE
 
 SNE is difficult to optimize, and suffers from the “crowding problem” due to the asymmetric property as KL divergence.
 
-t-SNE makes two clever engineering improvements:
+$t$-SNE makes two clever engineering improvements:
 
 - Uses a **symmetrized** version of the SNE cost with simpler gradients that are faster to compute
 
@@ -109,11 +109,13 @@ where $p_{ii} = q_{ii} = 0$
 
 - In low-dim space, because the Gaussian distribution dies off very fast with distance from the mean, SNE only accurately represents very nearby points. Moderately distant points can’t be **differentiated** from each other. Many points end up “crushed” into the center of the map.
 
-    t-SNE's solution: use a heavy-tailed distribution in the low-dim space, e.g. t-distribution, with one-degree of freedom.
+    $t$-SNE's solution: use a heavy-tailed distribution in the low-dim space, e.g. t-distribution, with one-degree of freedom, to replace the Gaussian-like form in SNE. The joint probability becomes
 
     $$
-    q_{i j}=\frac{\left(1+\left\|\boldsymbol{z}_{i}-\boldsymbol{z}_{j}\right\|^{2}\right)^{-1}}{\sum_{k \neq l}\left(1+\left\|\boldsymbol{z}_{k}-\boldsymbol{z}_{l}\right\|^{2}\right)^{-1}}
+    q_{i j}=\frac{\left(1+\left\|\boldsymbol{z}_{i}-\boldsymbol{z}_{j}\right\|^{2}\right)^{-(df+1)/2}}{\sum_{k \neq l}\left(1+\left\|\boldsymbol{z}_{k}-\boldsymbol{z}_{l}\right\|^{2}\right)^{-(df+1)/2}}
     $$
+
+    One can also tune the $df$ hyperparameter. As the degree of freedom increases, the distribution converges to Gaussian and the points tends to crushed in to the center.
 
 
 ## Pros and Cons
@@ -148,7 +150,7 @@ How to set the hyperparameters $\sigma_i$?
 Data point-specific variances allow SNE/t-SNE to model varying densities in different parts of the high-dim space, but that’s as many hyperparameters as data points. SNE/t-SNE sets $\sigma_i$ based on a single user-provided hyperparameter, namely **perplexity**.
 
 Definition (Perplexity)
-: The perplexity of the distribution Pi is
+: The perplexity of the distribution $P_i$ is defined as
 
   $$
   \begin{aligned}
@@ -157,7 +159,7 @@ Definition (Perplexity)
   \end{aligned}
   $$
 
-Entropy is the average number of bits needed to encode the random variable. Perplexity is the “effective number of values” in the support of the domain of the random variable.
+Recall that entropy is the average number of bits needed to encode the random variable. Perplexity is the “effective number of values” in the support of the domain of the random variable.
 
 **Examples**
 
@@ -200,7 +202,7 @@ What if the degree distribution is wide, i.e. imbalance? t-SNE may fail, some la
 (parametric-t-SNE)=
 ## Extension: Parametric $t$-SNE
 
-Parametric $t$-SNE use a parametric function $f()$ to obtain the lower dimensional representation. The joint probability changes from
+Parametric $t$-SNE use a parametric function $f(\cdot)$ to obtain the lower dimensional representation. The joint probability changes from
 
 
 $$
