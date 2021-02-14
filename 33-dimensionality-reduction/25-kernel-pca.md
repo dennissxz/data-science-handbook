@@ -236,6 +236,95 @@ Gaussian kernels
 
 ## Relation to
 
+### Standard PCA
+
+Clearly, kernel PCA with linear kernel $k(\boldsymbol{x} , \boldsymbol{y} ) = \boldsymbol{x} ^\top \boldsymbol{y}$ is equivalent to a standard PCA. That is, they give the same projection.
+
+:::{admonition,dropdown,seealso} *Derivation*
+
+From the analysis above we know that the kernel PCA with linear kernel gives projection of $\boldsymbol{x}$ as
+
+$$\boldsymbol{z} = \boldsymbol{A} ^\top \boldsymbol{X} \boldsymbol{x}$$
+
+where $\boldsymbol{A}_{n \times k}$ is the matrix that stores $\alpha_{ij}$. Then it remains to prove that $\boldsymbol{A} ^\top \boldsymbol{X} = \boldsymbol{U} ^\top$ where $\boldsymbol{U}$ is the projection matrix in conventional PCA: $\boldsymbol{z} = \boldsymbol{U} ^\top \boldsymbol{x}$.
+where $\boldsymbol{A}_{n \times k}$ is the matrix that stores $\alpha_{ij}$.
+
+Note that in kernel PCA, $\boldsymbol{\alpha}_j$ are the eigenvectors of the kernel matrix $\boldsymbol{K}$ since
+
+$$
+\boldsymbol{K}  \boldsymbol{\alpha} _j = n \lambda_j \boldsymbol{\alpha} _j
+$$
+
+If we use linear kernel, then $\boldsymbol{K} = \boldsymbol{X} \boldsymbol{X} ^\top$ and the above relation becomes
+
+$$
+\boldsymbol{X} \boldsymbol{X} ^\top  \boldsymbol{\alpha} _j = n \lambda_j \boldsymbol{\alpha} _j
+$$
+
+Hence, the matrix $\boldsymbol{A}$ contains the first $k$ eigenvectors of the Gram matrix $\boldsymbol{X} \boldsymbol{X} ^\top$.
+
+Now we consider conventional PCA. The projection in $\mathbb{R} ^k$ is given by
+
+$$
+\boldsymbol{z}  = \boldsymbol{U} ^\top \boldsymbol{x}
+$$
+
+where $\boldsymbol{U} _{n \times k}$ contains the first $k$ eigenvectors of the matrix $\boldsymbol{X} ^\top \boldsymbol{X}$.
+
+Let the singular value decomposition of $\boldsymbol{X}$ be
+
+$$
+\boldsymbol{X} = \boldsymbol{A} \boldsymbol{\Sigma} \boldsymbol{U} ^\top
+$$
+
+- The EAD of $\boldsymbol{X} ^\top \boldsymbol{X}$ is
+
+    $$\boldsymbol{X} ^\top \boldsymbol{X} = \boldsymbol{U} \boldsymbol{\Sigma} ^\top \boldsymbol{\Sigma} \boldsymbol{U} = \boldsymbol{U} \boldsymbol{D} \boldsymbol{U}$$
+
+    where the diagonal entries in $\boldsymbol{D}$ are the squared singular values $\sigma^2 _j$ for $j=1,\ldots, d$.
+
+
+- The EAD for the Gram matrix $\boldsymbol{G}$
+
+    $$
+    \boldsymbol{G}_{n \times n}=\boldsymbol{X} \boldsymbol{X}^{\top}=\boldsymbol{A} \boldsymbol{\Sigma} \boldsymbol{\Sigma}^{\top} \boldsymbol{A}^{\top}=\boldsymbol{A} \boldsymbol{\Lambda} \boldsymbol{A}^{\top}=\boldsymbol{A}_{[: d]} \boldsymbol{D} \boldsymbol{A}_{[: d]}^{\top}
+    $$
+
+    where
+
+    $$
+    \boldsymbol{\Lambda}_{n \times n}=\left[\begin{array}{cc}
+    \boldsymbol{D}_{d \times d} & \mathbf{0} \\
+    \mathbf{0} & \mathbf{0}_{(n-d) \times(n-d)}
+    \end{array}\right]
+    $$
+
+Let $\boldsymbol{a} _j$ be an eigenvector of $\boldsymbol{G}$ with eigenvalue $\sigma^2 _j$. Pre-multiplying $\boldsymbol{G} \boldsymbol{a}_j = \sigma^2 _j \boldsymbol{a} _j$ by $\boldsymbol{X} ^\top$ yields
+
+$$\begin{aligned}
+\boldsymbol{X} ^\top (\boldsymbol{X} \boldsymbol{X} ^\top) \boldsymbol{a} _j &= \boldsymbol{X} ^\top (\sigma^2 _j  \boldsymbol{a} _j) \\
+\Rightarrow \qquad  \boldsymbol{X} ^\top \boldsymbol{X}  (\boldsymbol{X} ^\top \boldsymbol{a} _j) &= \sigma^2 _j (\boldsymbol{X} ^\top \boldsymbol{a} _j)
+\end{aligned}$$
+
+Hence, we found that $\boldsymbol{X} ^\top \boldsymbol{a} _j$ is an eigenvector of $\boldsymbol{X} ^\top \boldsymbol{X}$ with eigenvalue $\sigma^2 _j$, denoted $\boldsymbol{u} _j$,
+
+$$
+\boldsymbol{u} _j = \boldsymbol{X} ^\top \boldsymbol{a} _j
+$$
+
+That is, there is a one-one correspondence between the first $d$ eigenvectors of $\boldsymbol{G}$ and those of $\boldsymbol{X} ^\top \boldsymbol{X}$. More specifically, we have,
+
+$$
+\boldsymbol{U} _{[:d]} = \boldsymbol{X} ^\top \boldsymbol{A} _{[:d]}
+$$
+
+
+which completes the proof.
+
+$\square$
+
+:::
+
 
 ### Graph-based Spectral Methods
 
