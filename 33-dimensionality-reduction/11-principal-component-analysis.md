@@ -580,6 +580,55 @@ where $\boldsymbol{R}$ determines the orientation of the ellipsoid, and the eige
 
 For a classification task, we can perform PCA on the features before fitting the data to a classifier. The classifier might be more accurate since PCA reduces noise.
 
+### Autoencoders
+
+PCA can be viewed as an [autoencoder](../37-neural-networks/11-autoencoders) of one single layer with certain constraints.
+
+Let
+- $k(\boldsymbol{x}, \boldsymbol{w} )$ be a kernel node parameterized by $\boldsymbol{w}$ and output the kernel value.
+- $w_{ij}$ be the weight of the edge from the $i$-th input node to the $j$-th hidden node
+- $v_{ij}$ be the weight of the edge from the $i$-th hidden node to the $j$-th output node
+
+
+Recall that the projected vector in PCA is
+
+$$
+\boldsymbol{z} = \boldsymbol{W} ^\top \boldsymbol{x}
+$$
+
+and the reconstruction is
+
+$$
+\hat{\boldsymbol{x}} = \boldsymbol{W} \boldsymbol{z}
+$$
+
+The objective is to minimize the total reconstruction loss
+
+$$
+\begin{aligned}
+\boldsymbol{W}^{*}= \underset{\boldsymbol{W}}{\operatorname{argmin}}  &\ \sum_{i}^{n}\left\|\boldsymbol{x}_{i}-\hat{\boldsymbol{x}}_{i}\right\|^{2} \\
+=\underset{\boldsymbol{W}}{\operatorname{argmin}} &\ \sum_{i}^{n}\left\|\boldsymbol{x}_{i}-\boldsymbol{W} \boldsymbol{z}_{i}\right\|^{2} \\
+\operatorname{s.t.} &\boldsymbol{W}^{\top} \boldsymbol{W}=\boldsymbol{I} \\
+&\ \boldsymbol{W} \in \mathbb{R}_{d \times k}
+\end{aligned}
+$$
+
+Hence we can construct a neural network as follows
+
+- Input layer:
+  - $d$ nodes, which represent $\boldsymbol{x} \in \mathbb{R} ^d$
+
+- Hidden layer:
+  - $k$ nodes, which represent $\boldsymbol{z} \in \mathbb{R} ^k$
+  - The weights $w_{ij}$ are the entires in the matrix $\boldsymbol{W} \in \mathbb{R}_{d \times k}$, and $\boldsymbol{W} ^\top \boldsymbol{W} = \boldsymbol{I}$
+  - The activation function is simply the identity function
+
+- Output layer:
+  - $d$ nodes, which represent $\hat{\boldsymbol{x}} \in \mathbb{R} ^d$
+  - The weights $v_{ij} = w_{ji}$
+  - The activation function is simply the identity function
+
+
 ## Extension: Probabilistic PCA
 
 *Independently proposed by [Tipping & Bishop 1997, 1999] and [Roweis 1998]*
