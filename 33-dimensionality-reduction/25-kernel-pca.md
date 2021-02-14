@@ -242,3 +242,38 @@ Gaussian kernels
 Both are motivates as extensions of MDS and involves a $n \times n$ matrix.
 
 We can view kernel in kernel PCA as the edge weights in [graph-based spectral methods](23-graph-based-spectral-methods). But the main difference is that in kernel PCA we compute the kernel value of **every pair** of data points (computationally demanding), but in graph-based spectral methods we only compute weights between points that are neighbors, charactrized by an integer $k$ or distance $\epsilon$.
+
+### Neural Networks
+
+Kernel PCA can be viewed as a neural network of one single layer with certain constraints.
+
+Let
+- $k(\boldsymbol{x}, \boldsymbol{w} )$ be a kernel node parameterized by $\boldsymbol{w}$ and output the kernel value.
+- $w_{ij}$ be the weight of the edge from the $i$-th input node to the $j$-th hidden node
+- $v_{ij}$ be the weight of the edge from the $i$-th hidden node to the $j$-th output node
+
+Recall our objective is to find $\boldsymbol{\alpha}_1, \boldsymbol{\alpha} _2, \ldots$ such that the $j$-th entry in the embedding is
+
+$$
+z_j=\boldsymbol{\alpha}_j^{\top}\left[\begin{array}{c}
+k\left(\boldsymbol{x}_{1}, \boldsymbol{x}\right) \\
+k\left(\boldsymbol{x}_{2}, \boldsymbol{x}\right) \\
+\vdots \\
+k\left(\boldsymbol{x}_{n}, \boldsymbol{x}\right)
+\end{array}\right]
+$$
+
+So the neural network can be designed as
+
+- Input layer:
+  - $d$ nodes, which represent $\boldsymbol{x} \in \mathbb{R} ^d$
+
+- Hidden layer:
+  - $n$ kernel nodes, where the $j$-th node represents $k(\boldsymbol{x}, \boldsymbol{x}_i)$
+  - Fixed weights where $w_{ij}=1$
+  - The activation function is simply the identity function
+
+- Output layer
+  - $k$ nodes, which represent $\boldsymbol{z} \in \mathbb{R} ^k$
+  - weights $v_{ij} = \alpha_{ij}$
+  - The activation function is simply the identity function
