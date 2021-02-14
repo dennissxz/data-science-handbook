@@ -110,7 +110,7 @@ From the analysis above, the steps to train a kernel PCA are
 
 1. Choose a kernel function $k(\cdot, \cdot)$.
 2. Compute the centered kernel matrix $\boldsymbol{K} ^\prime = (\boldsymbol{I} - \boldsymbol{u} \boldsymbol{u} ^\top )\boldsymbol{K}(\boldsymbol{I} - \boldsymbol{u} \boldsymbol{u} ^\top)$
-3. Find the first $k$ eigenvectors of $\boldsymbol{K}$, denoted as $\boldsymbol{A}$.
+3. Find the first $k$ eigenvectors of $\boldsymbol{K} ^\prime$, denoted as $\boldsymbol{A}$.
 
 Then
 
@@ -149,12 +149,10 @@ As [discussed](kernels-logic), in practice, we don't engineer $\boldsymbol{\phi}
 - One common choice of kernel is radial basis function (RBF), aka Gaussian kernel
 
     $$
-    k\left(\boldsymbol{x}_{1}, \boldsymbol{x}_{2}\right)=e^{\frac{-\left(\boldsymbol{x}_{1}-\boldsymbol{x}_{2}\right)^{2}}{2 \sigma^{2}}}
+    k\left(\boldsymbol{x}_{1}, \boldsymbol{x}_{2}\right)=e^{\frac{\left\| \boldsymbol{x}_{1}-\boldsymbol{x}_{2} \right\|  ^{2}}{2 \sigma^{2}}}
     $$
 
-    where the standard deviation (radius) $\sigma$ is a tuning parameter.
-
-    RBF corresponds to an implicit feature space $\mathbb{R} ^p$ of infinite dimensionality $p\rightarrow \infty$.
+    where the standard deviation (radius) $\sigma$ is a tuning parameter. Note that RBF corresponds to an implicit feature space $\mathbb{R} ^p$ of infinite dimensionality $p\rightarrow \infty$.
 
 :::{figure} kernels-RBF
 
@@ -334,7 +332,7 @@ We can view kernel in kernel PCA as the edge weights in [graph-based spectral me
 
 ### Neural Networks
 
-Kernel PCA can be viewed as a neural network of one single layer with certain constraints.
+Kernel PCA can be viewed as a [neural network](../37-neural-networks/00-neural-networks) of one single layer with certain constraints.
 
 Let
 - $k(\boldsymbol{x}, \boldsymbol{w} )$ be a kernel node parameterized by $\boldsymbol{w}$ and output the kernel value.
@@ -364,5 +362,5 @@ So the neural network can be designed as
 
 - Output layer
   - $k$ nodes, which represent $\boldsymbol{z} \in \mathbb{R} ^k$
-  - weights $v_{ij} = \alpha_{ij}$
+  - Weights $v_{ij} = \alpha_{ij}$
   - The activation function is simply the identity function
