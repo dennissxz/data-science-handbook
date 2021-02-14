@@ -10,43 +10,154 @@ $$
 \hat{\boldsymbol{x}} = \boldsymbol{W} \boldsymbol{z}
 $$
 
-To solve this, we can apply feature transformation $\boldsymbol{\phi}: \mathbb{R} ^d \rightarrow \mathbb{R} ^p$ to include non-linear features, such as $\boldsymbol{\phi} ([x_1, x_2])= [x_1, x_1^2, x_1 x_2]$.
+To improve this, we can apply feature transformation $\boldsymbol{\phi}: \mathbb{R} ^d \rightarrow \mathbb{R} ^p$ to include non-linear features, such as $\boldsymbol{\phi} ([x_1, x_2])= [x_1, x_1^2, x_1 x_2]$.
 
-Then the data matrix changes from $\boldsymbol{X}_{n \times d}$ to $\boldsymbol{\Phi}_{n \times p}$. And the inner product matrix changes from $\boldsymbol{X} \boldsymbol{X} ^\top$ to $\boldsymbol{\Phi} \boldsymbol{\Phi} ^\top$.
+Then the data matrix changes from $\boldsymbol{X}_{n \times d}$ to $\boldsymbol{\Phi}_{n \times p}$. Then we run standard PCA on the new data covariance matrix $\frac{1}{n} \boldsymbol{\Phi} ^\top  \boldsymbol{\Phi}$.
 
-, handcrafting feature transformation $\boldsymbol{\phi}$ is equivalent to choosing a kernel function $k(\boldsymbol{x}_1, \boldsymbol{x} _2) = \boldsymbol{\phi}(\boldsymbol{x} _1) ^\top \boldsymbol{\phi}(\boldsymbol{x} _2)$. We can compute the new inner product matrix by $\boldsymbol{K} = \boldsymbol{\Phi} \boldsymbol{\Phi} ^\top$.
+```{margin}
+For kernelized problems, the original problem formulation (primal) is in the original feature space $\mathbb{R} ^d$, and the kernelized problem formulation (dual) is in the transformed space $\mathbb{R} ^p$.
+```
 
-Then we can run MDS on $\boldsymbol{K}$.
+Note that handcrafting feature transformation $\boldsymbol{\phi}$ is equivalent to choosing a kernel function $k(\boldsymbol{x}_1, \boldsymbol{x} _2) = \boldsymbol{\phi}(\boldsymbol{x} _1) ^\top \boldsymbol{\phi}(\boldsymbol{x} _2)$. And there are many advantages choosing kernels instead of handcrafting $\boldsymbol{\phi}$. After choosing $k(\cdot, \cdot)$, We can compute the new $n \times n$ inner product matrix by $\boldsymbol{K} = \boldsymbol{\Phi} \boldsymbol{\Phi} ^\top$, aka **kernel matrix**. And the $k$-dimensional embeddings for a data vector $\boldsymbol{x}$ is given by
 
+$$
+\boldsymbol{z} = \boldsymbol{A} ^\top \left[\begin{array}{c}
+k(\boldsymbol{x} _1, \boldsymbol{x}) \\
+k(\boldsymbol{x} _2, \boldsymbol{x}) \\
+\vdots \\
+k(\boldsymbol{x} _n, \boldsymbol{x}) \\
+\end{array}\right]
+$$
 
+where $\boldsymbol{A}_{n \times k}$ contains the first $k$ eigenvectors of the kernel matrix $\boldsymbol{K}$. That is, the projected data matrix is $\boldsymbol{Z}_{n \times k} = \boldsymbol{K} \boldsymbol{A}$.
 
-:::{admonition,note} Mean normalization
+:::{admonition,note} Mean normalization of $\boldsymbol{K}$
 
-We've implicitly assumed zero-mean inputs. If the inputs $\boldsymbol{K}$ are not zero-mean, we center it by
+We've implicitly assumed zero-mean in the new feature space $\mathbb{R} ^p$, but it is usually not. Hence, we should modify $\boldsymbol{K}$ by
 
 $$
 \boldsymbol{K} ^\prime = (\boldsymbol{I} - \boldsymbol{u} \boldsymbol{u} ^\top )\boldsymbol{K}(\boldsymbol{I} - \boldsymbol{u} \boldsymbol{u} ^\top)  
 $$
 
-where $\boldsymbol{u} = \frac{1}{\sqrt{n}}[1 \ldots 1]^{\top}$
+where $\boldsymbol{u} = \frac{1}{\sqrt{n}}[1 \ldots 1]^{\top}$, and solve for the eigenvectors of $\boldsymbol{K} ^\prime$
 
 :::
 
+:::{admonition,dropdown,seealso} *Derivation*
+
+Let $\boldsymbol{C} = \frac{1}{n} \boldsymbol{\Phi} ^\top \boldsymbol{\Phi}$ be the new covariance matrix. To run standard PCA, we solve the eigenproblem
+
+$$
+\boldsymbol{C} \boldsymbol{w} = \lambda \boldsymbol{w}
+$$
+
+Now we show that $\boldsymbol{w} \in \mathbb{R} ^d$ can be written as a linear combination of the transformed data vectors $\boldsymbol{\phi} (\boldsymbol{x} _1), \ldots, \boldsymbol{\phi} _1(\boldsymbol{x}_n)$, i.e.,
+
+$$\boldsymbol{w} = \sum_{i=1}^n \alpha_i \boldsymbol{\phi} (\boldsymbol{x}_i ) = \boldsymbol{\Phi} ^\top \boldsymbol{\alpha}$$
+
+To show this, substituting $\boldsymbol{C} = \boldsymbol{\Phi} ^\top \boldsymbol{\Phi} = \frac{1}{n} \sum_{i=1}^n \boldsymbol{\phi} (\boldsymbol{x}_i ) \boldsymbol{\phi} (\boldsymbol{x}_i )^\top$ to the above equality, we have
+
+
+$$\begin{aligned}
+\frac{1}{n} \sum_{i=1}^n \boldsymbol{\phi} (\boldsymbol{x}_i ) \boldsymbol{\phi} (\boldsymbol{x}_i )^\top \boldsymbol{w} &= \lambda \boldsymbol{w}  \\
+\frac{1}{n\lambda } \sum_{i=1}^n \boldsymbol{\phi} (\boldsymbol{x}_i ) \underbrace{\boldsymbol{\phi} (\boldsymbol{x}_i )^\top \boldsymbol{w}}_{\alpha_i} &= \boldsymbol{w}  \\
+\end{aligned}$$
+
+Then, to find the $j$-th eigenvector $\boldsymbol{w}_j$, it remains to find $\boldsymbol{\alpha}_j$. Substituting the linear combination back to the eigenproblem gives
+
+
+$$\begin{aligned}
+\left( \frac{1}{n} \boldsymbol{\Phi} ^\top \boldsymbol{\Phi} \right)\left(  \boldsymbol{\Phi} ^\top \boldsymbol{\alpha} _j \right) &= \lambda_j \boldsymbol{\Phi} ^\top \boldsymbol{\alpha} _j \\
+\boldsymbol{\Phi} ^\top \boldsymbol{\Phi}  \boldsymbol{\Phi} ^\top \boldsymbol{\alpha} _j  &= n\lambda_j \boldsymbol{\Phi} ^\top \boldsymbol{\alpha} _j \\
+(\boldsymbol{\Phi} \boldsymbol{\Phi} ^\top ) ^{-1} \boldsymbol{\Phi} \boldsymbol{\Phi} ^\top \boldsymbol{\Phi}  \boldsymbol{\Phi} ^\top \boldsymbol{\alpha} _j  &= n\lambda_j (\boldsymbol{\Phi} \boldsymbol{\Phi} ^\top ) ^{-1} \boldsymbol{\Phi} \boldsymbol{\Phi} ^\top \boldsymbol{\alpha} _j \quad \text{left multiply } (\boldsymbol{\Phi} \boldsymbol{\Phi} ^\top ) ^{-1} \boldsymbol{\Phi} \\
+\boldsymbol{K} \boldsymbol{\alpha} _j &= n \lambda_j \boldsymbol{\alpha} _j\\
+\end{aligned}$$
+
+Therefore, $\boldsymbol{\alpha} _j$ is the eigenvector of the kernel matrix $\boldsymbol{K}$.
+
+To find the embeddings, recall that $\boldsymbol{w} = \boldsymbol{\Phi} ^\top \boldsymbol{\alpha}$, hence to embed a data vector $\boldsymbol{x}$,
+
+$$\begin{aligned}
+\boldsymbol{z}
+&= \boldsymbol{W} ^\top \boldsymbol{\phi} (x)  \\
+&= \boldsymbol{A} ^\top \boldsymbol{\Phi}  \boldsymbol{\phi} (x) \\
+&= \boldsymbol{A} ^\top \left[\begin{array}{c}
+k(\boldsymbol{x} _1, \boldsymbol{x}) \\
+k(\boldsymbol{x} _2, \boldsymbol{x}) \\
+\vdots \\
+k(\boldsymbol{x} _n, \boldsymbol{x}) \\
+\end{array}\right]\\
+\end{aligned}$$
+
+In fact, we don't need the exact form of $\boldsymbol{\phi}$ at all.
+
+More generally, to embed a new data matrix $\boldsymbol{Y}$ of shape $m \times d$,
+
+$$
+\boldsymbol{Z} _y = \boldsymbol{A} ^\top \left[\begin{array}{ccc}
+k(\boldsymbol{x} _1, \boldsymbol{y_1}) & \ldots  &k(\boldsymbol{x} _1, \boldsymbol{y_m}) \\
+k(\boldsymbol{x} _2, \boldsymbol{y_1}) & \ldots  &k(\boldsymbol{x} _2, \boldsymbol{y_m}) \\
+\vdots &&\vdots \\
+k(\boldsymbol{x} _n, \boldsymbol{y_1}) & \ldots  &k(\boldsymbol{x} _n, \boldsymbol{y_m}) \\
+\end{array}\right]\\
+$$
+
+:::
+
+## Learning
+
+From the analysis above, the steps to train a kernel PCA are
+
+1. Choose a kernel function $k(\cdot, \cdot)$.
+2. Compute the centered kernel matrix $\boldsymbol{K} ^\prime = (\boldsymbol{I} - \boldsymbol{u} \boldsymbol{u} ^\top )\boldsymbol{K}(\boldsymbol{I} - \boldsymbol{u} \boldsymbol{u} ^\top)$
+3. Find the first $k$ eigenvectors of $\boldsymbol{K}$, denoted as $\boldsymbol{A}$.
+
+Then
+
+- to project the training data,
+
+    $$\boldsymbol{Z} ^\top  = \boldsymbol{A} ^\top \boldsymbol{K} \text{ or } \boldsymbol{Z} = \boldsymbol{K} \boldsymbol{A} $$
+
+- to project a new data vector $\boldsymbol{x}$,
+
+    $$\begin{aligned}
+    \boldsymbol{z}
+    &= \boldsymbol{A} ^\top \left[\begin{array}{c}
+    k(\boldsymbol{x} _1, \boldsymbol{x}) \\
+    k(\boldsymbol{x} _2, \boldsymbol{x}) \\
+    \vdots \\
+    k(\boldsymbol{x} _n, \boldsymbol{x}) \\
+    \end{array}\right]\\
+    \end{aligned}$$
+
+- to project a new data matrix $\boldsymbol{Y} _{m \times d}$,
+
+    $$
+    \boldsymbol{Z} _y ^\top = \boldsymbol{A} ^\top \left[\begin{array}{ccc}
+    k(\boldsymbol{x} _1, \boldsymbol{y_1}) & \ldots  &k(\boldsymbol{x} _1, \boldsymbol{y_m}) \\
+    k(\boldsymbol{x} _2, \boldsymbol{y_1}) & \ldots  &k(\boldsymbol{x} _2, \boldsymbol{y_m}) \\
+    \vdots &&\vdots \\
+    k(\boldsymbol{x} _n, \boldsymbol{y_1}) & \ldots  &k(\boldsymbol{x} _n, \boldsymbol{y_m}) \\
+    \end{array}\right]\\
+    $$
+
+
 ## Choice of Kernel
 
-As [discussed](kernels-logic), in practice, we don't engineer $\phi(\cdot)$, but directly think about $k(\cdot, \cdot)$.
+As [discussed](kernels-logic), in practice, we don't engineer $\boldsymbol{\phi}(\cdot)$, but directly think about $k(\cdot, \cdot)$.
 
 - One common choice of kernel is radial basis function (RBF), aka Gaussian kernel
 
     $$
-    k\left(\mathbf{x}_{1}, \mathbf{x}_{2}\right)=e^{\frac{-\left(\mathbf{x}_{1}-\mathbf{x}_{2}\right)^{2}}{2 \sigma^{2}}}
+    k\left(\boldsymbol{x}_{1}, \boldsymbol{x}_{2}\right)=e^{\frac{-\left(\boldsymbol{x}_{1}-\boldsymbol{x}_{2}\right)^{2}}{2 \sigma^{2}}}
     $$
 
     where the standard deviation (radius) $\sigma$ is a tuning parameter.
 
-    RBF corresponds to an implicit feature space of infinite dimensionality.
+    RBF corresponds to an implicit feature space $\mathbb{R} ^p$ of infinite dimensionality $p\rightarrow \infty$.
 
 :::{figure} kernels-RBF
+
 <img src="../imgs/kernels-RBF.png" width = "50%" alt=""/>
 
 Gaussian kernels
@@ -56,7 +167,7 @@ Gaussian kernels
 - Polynomial kernel
 
     $$
-    k\left(\mathbf{x}_{1}, \mathbf{x}_{2}\right)=\left(1+\mathbf{x}_{1}^{T} \mathbf{x}_{2}\right)^{p}
+    k\left(\boldsymbol{x}_{1}, \boldsymbol{x}_{2}\right)=\left(1+\boldsymbol{x}_{1}^{\top} \boldsymbol{x}_{2}\right)^{p}
     $$
 
     where the polynomial degree $p$ is a tuning parameter. $p=2$ is common.
@@ -65,25 +176,27 @@ Gaussian kernels
 
 **Pros**
 
-Kernel PCA works well
+- Kernel PCA can do out-of-sample projection, PCA cannot
 
-- if the data is non-linear and fit the chosen kernel.
+- Kernel PCA works well when
 
-    :::{figure} kernel-pca-ep1
-    <img src="../imgs/kernel-pca-ep1.png" width = "80%" alt=""/>
+  - the data is non-linear and fit the chosen kernel.
 
-    Kernel PCA with a RBF kernel on points [Livescu 2021].
+      :::{figure} kernel-pca-ep1
+      <img src="../imgs/kernel-pca-ep1.png" width = "80%" alt=""/>
 
-    :::
+      Kernel PCA with a RBF kernel on points [Livescu 2021].
 
-- if there is much noise in the data
+      :::
 
-    :::{figure}
-    <img src="../imgs/kernel-pca-ep2.png" width = "60%" alt=""/>
+  - there is much noise in the data
 
-    Kernel PCA on images [Livescu 2021].
+      :::{figure}
+      <img src="../imgs/kernel-pca-ep2.png" width = "60%" alt=""/>
 
-    :::
+      Kernel PCA on images [Livescu 2021].
+
+      :::
 
 **Cons**
 
@@ -96,21 +209,21 @@ Kernel PCA works well
 
     :::
 
-- Computationally expensive to compute $n \times n$ pairwise kernel values when $n$ is large. Remedies include
+- Computationally expensive to compute the $n \times n$ pairwise kernel values in $\boldsymbol{K}$ when $n$ is large. Remedies include
 
   - use subset of the entire data set
 
   - use kernel approximation techniques
 
     - approximate $\boldsymbol{K} \approx \boldsymbol{F}^\top \boldsymbol{F}$ where $\boldsymbol{F} \in \mathbb{R} ^{m \times n}, k \ll m \ll n$. The value of $m$ should be as large as you can handle.
-  
-    - For RBF kernels, there is one remarkable good approximation (due to Fourier transform properties) called random Fourier features (Rahimi & Recht 2008), which replaces each data point $\boldsymbol{x}_i$ with
+
+    - for RBF kernels, there is one remarkable good approximation (due to Fourier transform properties) called random Fourier features (Rahimi & Recht 2008), which replaces each data point $\boldsymbol{x}_i$ with
 
       $$
-      \left[\cos \left(\boldsymbol{w}_{1}^{T} \boldsymbol{x}_{i}+b_{1}\right) \ldots \cos \left(\boldsymbol{w}_{m}^{T} \boldsymbol{x}_{i}+b_{m}\right)\right]^{T}=\boldsymbol{f} _{i}
+      \left[\cos \left(\boldsymbol{w}_{1}^{\top} \boldsymbol{x}_{i}+b_{1}\right) \ldots \cos \left(\boldsymbol{w}_{m}^{\top} \boldsymbol{x}_{i}+b_{m}\right)\right]^{\top}=\boldsymbol{f} _{i}
       $$
 
-      \boldsymbol{w}here
+      where
 
       $$
       \begin{aligned}
@@ -119,74 +232,13 @@ Kernel PCA works well
       \end{aligned}
       $$
 
-  - don't use kernel methods.
+  - just don't use kernel methods if computation is an issue
 
-## Relation to Graph-based Spectral Methods
+## Relation to
+
+
+### Graph-based Spectral Methods
 
 Both are motivates as extensions of MDS and involves a $n \times n$ matrix.
 
-We can view kernel in kernel PCA as the edge weights in [graph-based spectral methods](23-graph-based-spectral-methods). But the main difference is that in kernel PCA we compute the kernel value of **every pair** of data points (computationally demanding), but in graph-based spectral methods we only compute weights between points that are neighbors.
-
-## Projection of New Observations
-
-To find a way to project observations, we first introduce an alternative formulation of the kernel PCA problem.
-
-The covariance matrix in the feature space $\frac{1}{n} \boldsymbol{\Phi} ^\top \boldsymbol{\Phi}$ can be written as a sum of outer products of features over data points
-
-$$
-\boldsymbol{C} = \frac{1}{n} \sum_{i=1}^n \boldsymbol{\phi}(\boldsymbol{x}_i )  \boldsymbol{\phi}(\boldsymbol{x}_i ) ^\top
-$$
-
-To solve the kernel PCA, we find the eigenvectors of $\boldsymbol{C}$. The $j$-th PCA projection vector $\boldsymbol{w}$ is an eigenvector of $\boldsymbol{C}$.
-
-$$
-\boldsymbol{C} \boldsymbol{w}_j  = \lambda_j \boldsymbol{w}_j
-$$
-
-It can be shown that
-
-$$
-\boldsymbol{w}_j = \frac{1}{\lambda n} \sum_{i=1}^n \left( \boldsymbol{\phi}(\boldsymbol{x}_i ) ^\top  \boldsymbol{w}_j  \right) \boldsymbol{\phi}(\boldsymbol{x}_i ) = \sum_{i=1}^n \alpha_{ji} \boldsymbol{\phi}(\boldsymbol{x}_i)
-$$
-
-which implies that $\boldsymbol{w}$ lies in the column span of $\boldsymbol{\Phi} ^\top$.
-
-Substituting the above expression back to $\boldsymbol{C} \boldsymbol{w}  = \lambda_j \boldsymbol{w}$ gives
-
-$$\begin{aligned}
-LHS
-&= \boldsymbol{C} \boldsymbol{w} \\
-&= \frac{1}{n} \sum_{i=1}^n \boldsymbol{\phi}(\boldsymbol{x}_i )  \boldsymbol{\phi}(\boldsymbol{x}_i ) ^\top \boldsymbol{w} \\
-&= \frac{1}{n} \sum_{i=1}^n \boldsymbol{\phi}(\boldsymbol{x}_i )  \boldsymbol{\phi}(\boldsymbol{x}_i ) ^\top \left( \sum_{\ell=1}^n \alpha_{j\ell} \boldsymbol{\phi}(\boldsymbol{x}_i)  \right) \\
-&= \frac{1}{n} \sum_{i=1}^n \boldsymbol{\phi}(\boldsymbol{x}_i ) \left( \sum_{\ell=1}^n \alpha_{j\ell} k(\boldsymbol{x}_{i} , \boldsymbol{x} _\ell)  \right) \\
-RHS
-&= \lambda_j \sum_{i=1}^n \alpha_{ji} \boldsymbol{\phi}(\boldsymbol{x}_i)
-\end{aligned}$$
-
-
-```{margin}
-For kernelized problems, the original problem formulation (primal) is in the original feature space, and the kernelized problem formulation (dual) is in the transformed space.
-```
-
-and finally
-
-$$
-\boldsymbol{K} \boldsymbol{\alpha} _j= n \lambda_j \boldsymbol{\alpha} _j
-$$
-
-where $\boldsymbol{K} = \boldsymbol{\Phi}  \boldsymbol{\Phi}  ^\top$. So now our task changes to solve an eigenproblem of the above equation. The normalization constraint $\boldsymbol{w} _j ^\top \boldsymbol{w} _j = 1$ in the original problem $\boldsymbol{C} \boldsymbol{w}_j = \lambda_j \boldsymbol{w}$ becomes
-
-$$\begin{aligned}
-&& \boldsymbol{w} _j ^\top \boldsymbol{w} _j &= 1 \\
-&\Rightarrow& \sum_{k=1}^n \sum_{\ell=1}^n \alpha_{j\ell} \alpha_{jk} \boldsymbol{\phi}(\boldsymbol{x} _{\ell})^\top \boldsymbol{\phi}(\boldsymbol{x} _k)  &=1 \\
-&\Rightarrow& \boldsymbol{\alpha} _j ^\top \boldsymbol{K} \boldsymbol{\alpha} _j &= 1 \\
-\end{aligned}$$
-
-
-To project a new data point $\boldsymbol{x}$, we project its feature vector onto each eigenvector (like $\boldsymbol{z} = \boldsymbol{U} ^\top \boldsymbol{x}$ in standard PCA) using the kernel value with each of the $n$ data points
-
-$$
-z_j = \boldsymbol{w}_j ^\top  \boldsymbol{\phi}(\boldsymbol{x} ) = \sum_{i=1}^n \alpha_{ji} \boldsymbol{\phi}(\boldsymbol{x}_i) ^\top \boldsymbol{\phi} (\boldsymbol{x} ) = \sum_{i=1}^n \alpha_{ji} k(\boldsymbol{x}_i ,\boldsymbol{x})
-$$
-
-which allows the kernel version of the formulation (dual) and then project a new observation $\boldsymbol{x}$ not in the training set, without writing out the feature vector $\boldsymbol{\phi}(\boldsymbol{x})$.
+We can view kernel in kernel PCA as the edge weights in [graph-based spectral methods](23-graph-based-spectral-methods). But the main difference is that in kernel PCA we compute the kernel value of **every pair** of data points (computationally demanding), but in graph-based spectral methods we only compute weights between points that are neighbors, charactrized by an integer $k$ or distance $\epsilon$.
