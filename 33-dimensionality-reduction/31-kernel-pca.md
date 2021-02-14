@@ -91,17 +91,6 @@ k(\boldsymbol{x} _n, \boldsymbol{x}) \\
 
 In fact, we don't need the exact form of $\boldsymbol{\phi}$ at all.
 
-More generally, to embed a new data matrix $\boldsymbol{Y}$ of shape $m \times d$,
-
-$$
-\boldsymbol{Z} _y = \boldsymbol{A} ^\top \left[\begin{array}{ccc}
-k(\boldsymbol{x} _1, \boldsymbol{y_1}) & \ldots  &k(\boldsymbol{x} _1, \boldsymbol{y_m}) \\
-k(\boldsymbol{x} _2, \boldsymbol{y_1}) & \ldots  &k(\boldsymbol{x} _2, \boldsymbol{y_m}) \\
-\vdots &&\vdots \\
-k(\boldsymbol{x} _n, \boldsymbol{y_1}) & \ldots  &k(\boldsymbol{x} _n, \boldsymbol{y_m}) \\
-\end{array}\right]\\
-$$
-
 :::
 
 ## Learning
@@ -110,13 +99,10 @@ From the analysis above, the steps to train a kernel PCA are
 
 1. Choose a kernel function $k(\cdot, \cdot)$.
 2. Compute the centered kernel matrix $\boldsymbol{K} ^\prime = (\boldsymbol{I} - \boldsymbol{u} \boldsymbol{u} ^\top )\boldsymbol{K}(\boldsymbol{I} - \boldsymbol{u} \boldsymbol{u} ^\top)$
-3. Find the first $k$ eigenvectors of $\boldsymbol{K} ^\prime$, denoted as $\boldsymbol{A}$.
+3. Find the first $k$ eigenvectors of $\boldsymbol{K} ^\prime$, stored as $\boldsymbol{A}$.
 
 Then
 
-- to project the training data,
-
-    $$\boldsymbol{Z} ^\top  = \boldsymbol{A} ^\top \boldsymbol{K} \text{ or } \boldsymbol{Z} = \boldsymbol{K} \boldsymbol{A} $$
 
 - to project a new data vector $\boldsymbol{x}$,
 
@@ -129,6 +115,11 @@ Then
     k(\boldsymbol{x} _n, \boldsymbol{x}) \\
     \end{array}\right]\\
     \end{aligned}$$
+
+
+- to project the training data,
+
+    $$\boldsymbol{Z} ^\top  = \boldsymbol{A} ^\top \boldsymbol{K} \text{ or } \boldsymbol{Z} = \boldsymbol{K} \boldsymbol{A} $$
 
 - to project a new data matrix $\boldsymbol{Y} _{m \times d}$,
 

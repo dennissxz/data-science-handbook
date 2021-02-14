@@ -658,6 +658,7 @@ $$
 where $\boldsymbol{W} \in \mathbb{R} ^{d \times k}$
 
 Or equivalently,
+
 $$
 \begin{equation}
 \boldsymbol{x}=\boldsymbol{W} \boldsymbol{z}+\boldsymbol{\mu} + \boldsymbol{\epsilon} , \text { where } \boldsymbol{\epsilon}  \sim \mathcal{N}\left(0, \sigma^{2} \boldsymbol{I}\right)

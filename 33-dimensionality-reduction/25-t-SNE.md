@@ -1,4 +1,4 @@
-$t$-SNE# SNE and $t$-SNE
+# SNE and $t$-SNE
 
 $t$-Distributed Stochastic Neighborhood Embedding [van der Maaten & Hinton 2008]. Read as "tisney".
 
@@ -47,7 +47,6 @@ $$
 $$
 
 It assign large cost for using widely separated $\boldsymbol{z}_i, \boldsymbol{z}_j$ (small $q_{j\mid i}$) to represent nearby $\boldsymbol{x}_i , \boldsymbol{x}_j$ (large $p_{j\mid i}$) (but not vice versa).
-
 
 
 :::{admonition,note} Interpretation of KL divergence
