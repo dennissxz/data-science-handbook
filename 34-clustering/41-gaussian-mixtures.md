@@ -137,7 +137,7 @@ Iterations of EM algorithms [Livescue 2021]
 EM applies to estimation of any density with hidden variables.
 ```
 
-## Cons
+## Regularization
 
 If an initial guess of cluster center $\boldsymbol{\mu}$ happens to be close to some data point $\boldsymbol{x}$ and the variance is happen to be small, then the ML over $\boldsymbol{x}$ is very large, i.e. overfitting.
 
@@ -145,9 +145,17 @@ $$
 \lim _{\sigma^{2} \rightarrow 0} \mathcal{N}\left(\mathbf{x} \mid \mu=\mathbf{x}, \Sigma=\sigma^{2} I\right)=\infty
 $$
 
+:::{figure} gaumix-fail
+
+<img src="../imgs/gaumix-fail.png" width = "70%" alt=""/>
+
+Gaussian mixture fails if initialized at a point
+:::
+
+
 Solutions
 - Start with large variance, and put lower bound of variance on each dimension of each component in the iterations.
-- Try several initialization and pick the best one. Best can be measured by some metrics, e.g. entropy, purity.
+- Try several initialization and pick the best one. Best can be measured by some metrics, e.g. minimum entropy, maximum purity.
 - Held-out data
 - Instead of maximizing the expected likelihood in the M-step,
 maximize the posterior probability of $\theta$ (MAP estimate).
@@ -156,8 +164,9 @@ maximize the posterior probability of $\theta$ (MAP estimate).
 
 ## Model Selection ($K$)
 
-Straw man idea: Choose K to maximize the likelihood
-- Result: A separate, tiny Gaussian for each training example • In the limit Σ → 0, this yields infinite likelihood
+Straw man idea: Choose $K$ to maximize the likelihood
+- Result: A separate, tiny Gaussian for each training example
+- In the limit $\Sigma \rightarrow 0$, this yields infinite likelihood
 
 
 Consider the number of parameters in a Gaussian mixture model $\mathcal{M}$ with $K$ components and dimensionality $D$.
@@ -167,38 +176,22 @@ $$
 d(\mathcal{M})=K(D+D(D+1) / 2)+K-1
 $$
 
-We need penalty on large $d(\mathcal{M})$
+We need penalty on large $d(\mathcal{M})$. Below are some terms often used to compare model complexity
 
 - Bayesian Information Criterion (BIC): Learn a model for each K that optimizes the likelihood L(M), then choose the model that maximizes
 
-
-$$
-B I C(\mathcal{M})=L(\mathcal{M})-\frac{d(\mathcal{M})}{2} \log N
-$$
+    $$
+    B I C(\mathcal{M})=L(\mathcal{M})-\frac{d(\mathcal{M})}{2} \log n
+    $$
 
 - Akaike information criterion (AIC), minimum description length (MDL), etc.
 
-- cross-validation
 
-In practice, most often use cross-validation to choose hyper-parameters like $K$ or the minimum variance.
+In practice,
+- most often use cross-validation to choose hyper-parameters like $K$ or the minimum variance.
+- start from small $K$ and growing
 
-In practice
-
-Growing:
-
-- Start with a single Gaussian, do EM until convergence
-- Repeat: Split each Gaussian into two Gaussians with slightly
-different means, run EM, test on dev set
-- Until no performance improvement on dev set
-
-
-
-
-
-
-
-
-
-
-
-.
+  - Start with a single Gaussian, do EM until convergence
+  - Repeat: Split each Gaussian into two Gaussians with slightly
+  different means, run EM, test on development set
+  - Until no performance improvement on development set
