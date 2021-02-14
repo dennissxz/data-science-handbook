@@ -17,7 +17,7 @@ Many non-linear dimensionality reduction methods are extension to MDS. MDS is a 
 MDS seeks a $k$-dimensional representation $\boldsymbol{z} \in \mathbb{R} ^k$ of a data set that preserves inner products (or similarity/distance) between pairs of data points $(\boldsymbol{x_i}, \boldsymbol{x}_j)$
 
 $$
-\min \sum_{i, j}\left(\boldsymbol{x}_{i} \cdot \boldsymbol{x}_{j}-\boldsymbol{z}_{i} \cdot \boldsymbol{z}_{j}\right)^{2}
+\min \sum_{i, j}\left(\boldsymbol{x}_{i} ^\top  \boldsymbol{x}_{j}-\boldsymbol{z}_{i} ^\top  \boldsymbol{z}_{j}\right)^{2}
 $$
 
 or equivalently
@@ -53,7 +53,7 @@ $$
 The projected data matrix is given by
 
 $$
-\boldsymbol{Z}_{n \times k} = \left[  \boldsymbol{V}  \boldsymbol{\Lambda} ^{1/2} \right]_{[:k]} = \boldsymbol{V}_{[: k]} \mathbf{\Lambda}_{[: k,: k]}^{1 / 2}
+\boldsymbol{Z}_{n \times k} = \left[  \boldsymbol{V}  \boldsymbol{\Lambda} ^{1/2} \right]_{[:k]} = \boldsymbol{V}_{[: k]} \boldsymbol{\Lambda}_{[: k,: k]}^{1 / 2}
 $$
 
 The reconstruction of $\boldsymbol{G}$ from $\boldsymbol{Z}$ is then

@@ -492,17 +492,22 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="25-kernel-pca.html">
-     Kernel PCA
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="31-t-SNE.html">
+    <a class="reference internal" href="25-t-SNE.html">
      SNE and
      <span class="math notranslate nohighlight">
       \(t\)
      </span>
      -SNE
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="31-kernel-pca.html">
+     Kernel PCA
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="32-kernel-cca.html">
+     Kernel CCA
     </a>
    </li>
   </ul>
@@ -685,6 +690,18 @@
   <a class="reference internal nav-link" href="#summary">
    Summary
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#objectives">
+     Objectives
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pros-and-cons">
+     Pros and Cons
+    </a>
+   </li>
+  </ul>
  </li>
 </ul>
 
@@ -729,6 +746,12 @@ P(\boldsymbol{x} ; \boldsymbol{\theta}): \mathbb{R}^{d} \rightarrow \mathbb{R}^{
 \[
     \hat{\boldsymbol{x}} = \boldsymbol{W} \boldsymbol{z} = \boldsymbol{W} \boldsymbol{W} ^\top \boldsymbol{x}
     \]</div>
+<p>For the whole data matrix</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+    \boldsymbol{Z} _{n \times k} &amp;= \boldsymbol{X} \boldsymbol{W}  \\
+    \widehat{\boldsymbol{X}} &amp;= \boldsymbol{X} \boldsymbol{W} \boldsymbol{W} ^\top  \\
+    \end{aligned}\end{split}\]</div>
 </li>
 <li><p>For non-linear dimensionality reduction models, projection <span class="math notranslate nohighlight">\(P\)</span> can be quite different.</p></li>
 </ul>
@@ -782,53 +805,149 @@ P(\boldsymbol{x} ; \boldsymbol{\theta}): \mathbb{R}^{d} \rightarrow \mathbb{R}^{
 </div>
 <div class="section" id="summary">
 <h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="objectives">
+<h3>Objectives<a class="headerlink" href="#objectives" title="Permalink to this headline">¶</a></h3>
 <table class="colwidths-auto table">
 <thead>
 <tr class="row-odd"><th class="head"><p>Model</p></th>
 <th class="head"><p>Input</p></th>
 <th class="head"><p>Objective</p></th>
 <th class="head"><p>Solution</p></th>
-<th class="head"><p>Pros</p></th>
-<th class="head"><p>Cons</p></th>
-<th class="head"><p>Remarks</p></th>
+<th class="text-align:left head"><p><span class="math notranslate nohighlight">\(\qquad \qquad \text{Remarks}\qquad \qquad\)</span></p></th>
 </tr>
 </thead>
 <tbody>
 <tr class="row-even"><td><p>PCA</p></td>
-<td><p><span class="math notranslate nohighlight">\(\boldsymbol{S} =\boldsymbol{X} ^\top \boldsymbol{X}\)</span></p></td>
-<td><p><span class="math notranslate nohighlight">\(\operatorname{Var}\left(Z_{1}\right)=\max _{\|\boldsymbol{\alpha}\|_{2}^{2}=1} \boldsymbol{\alpha}^{\top} \boldsymbol{\Sigma} \boldsymbol{\alpha}\)</span> <br> <span class="math notranslate nohighlight">\(\max_{\boldsymbol{W}} \sum_i \operatorname{Var}\left( Z_i \right)\)</span> <br> <span class="math notranslate nohighlight">\(\boldsymbol{Z} =  \boldsymbol{W} ^\top \boldsymbol{X}\)</span></p></td>
-<td><p><span class="math notranslate nohighlight">\(\boldsymbol{S} = \boldsymbol{U} \boldsymbol{\Lambda} \boldsymbol{U} ^\top\)</span> <br> <span class="math notranslate nohighlight">\(\boldsymbol{z} = \boldsymbol{U}_{[:k]} ^\top \boldsymbol{x}\)</span></p></td>
-<td><p></p></td>
-<td><p>1. Sensitive to variable scale. <br> 2. Principal direction may not be discriminative.</p></td>
-<td><p>Standardize before running</p></td>
+<td><p><span class="math notranslate nohighlight">\(\boldsymbol{X} ^\top \boldsymbol{X}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\underset{\boldsymbol{w}}{\max} \boldsymbol{w}^{\top} \boldsymbol{\Sigma} \boldsymbol{w}\)</span> <br> <span class="math notranslate nohighlight">\(\underset{\boldsymbol{W}}{\operatorname{min}} \sum_{i}^{n}\left\|\boldsymbol{x}_{i}-\boldsymbol{W} \boldsymbol{z}_{i}\right\|^{2}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\boldsymbol{X} ^\top \boldsymbol{X} = \boldsymbol{U} \boldsymbol{D} \boldsymbol{U} ^\top\)</span> <br> <span class="math notranslate nohighlight">\(\boldsymbol{z} = \boldsymbol{U}_{[:k]} ^\top \boldsymbol{x}\)</span></p></td>
+<td class="text-align:left"><p>Standardize <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span> before running</p></td>
 </tr>
-<tr class="row-odd"><td><p>Probabilistic PCA</p></td>
-<td><p><span class="math notranslate nohighlight">\(\boldsymbol{S}  = \boldsymbol{X} ^\top \boldsymbol{X}\)</span></p></td>
+<tr class="row-odd"><td><p>Kernel PCA</p></td>
+<td><p><span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span>, kernel</p></td>
+<td><p><span class="math notranslate nohighlight">\(\underset{\boldsymbol{\alpha}}{\max} \boldsymbol{\alpha}^{\top} \boldsymbol{K}^2 \boldsymbol{\alpha}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\boldsymbol{K} \boldsymbol{\alpha}_{j}=n \lambda_{j} \boldsymbol{\alpha}_{j}\)</span> <br> <span class="math notranslate nohighlight">\(\boldsymbol{z} = \boldsymbol{A} ^\top _{[:k]} \boldsymbol{\Phi} \boldsymbol{\phi} (\boldsymbol{x}),  z_j = \sum_{i=1}^n \alpha_{ji} k(\boldsymbol{x}_i , \boldsymbol{x})\)</span></p></td>
+<td class="text-align:left"><p>1. Center <span class="math notranslate nohighlight">\(\boldsymbol{K}\)</span> <br> 2. Linear kernel reduces to PCA</p></td>
+</tr>
+<tr class="row-even"><td><p>Probabilistic PCA</p></td>
+<td><p><span class="math notranslate nohighlight">\(\boldsymbol{X} ^\top \boldsymbol{X}\)</span></p></td>
 <td><p><span class="math notranslate nohighlight">\(\boldsymbol{z} \sim \mathcal{N}( \boldsymbol{0}, \boldsymbol{I})\)</span> <br> <span class="math notranslate nohighlight">\(\boldsymbol{x} \mid \boldsymbol{z} \sim \mathcal{N}\left( \boldsymbol{W} \boldsymbol{z}+\boldsymbol{\mu} , \sigma^{2} \boldsymbol{I}\right)\)</span> <br> ML <span class="math notranslate nohighlight">\(\boldsymbol{W} , \boldsymbol{\mu} , \sigma\)</span></p></td>
 <td><p><span class="math notranslate nohighlight">\(\boldsymbol{W}_{M L} =\boldsymbol{U}_{d \times k}\left(\boldsymbol{\Lambda} _{k}-\sigma^{2} \boldsymbol{I}_k\right)^{1 / 2} \boldsymbol{R}_k\)</span> <br> <span class="math notranslate nohighlight">\(\sigma_{M L}^{2} =\frac{1}{d-k} \sum_{j=k+1}^{d} \lambda_{j}\)</span> <br>  <span class="math notranslate nohighlight">\(\widehat{\operatorname{E}}\left( \boldsymbol{z} \mid \boldsymbol{x}   \right) = \boldsymbol{M}  ^{-1} _{ML} \boldsymbol{W} ^\top _{ML}(\boldsymbol{x} - \bar{\boldsymbol{x}})\)</span></p></td>
-<td><p>1. Fewer variance parameters <br> 2. Sampling</p></td>
-<td><p></p></td>
-<td><p></p></td>
+<td class="text-align:left"><p>1. <span class="math notranslate nohighlight">\(\boldsymbol{W} _{ML}\)</span> not unique <br> 2. <span class="math notranslate nohighlight">\(\sigma^2 \rightarrow 0\)</span> reduces to PCA</p></td>
 </tr>
-<tr class="row-even"><td><p>CCA</p></td>
+<tr class="row-odd"><td><p>CCA</p></td>
 <td><p><span class="math notranslate nohighlight">\(\boldsymbol{X} , \boldsymbol{Y}\)</span></p></td>
 <td><p><span class="math notranslate nohighlight">\(\max _{\boldsymbol{\alpha}, \boldsymbol{\beta} } \operatorname{Corr}\left(\boldsymbol{\alpha}^{\prime} \boldsymbol{x} , \boldsymbol{\beta}^{\prime} \boldsymbol{y} \right)\)</span></p></td>
-<td><p>solve eigenproblem <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}_{x x}^{-1} \boldsymbol{\Sigma}_{x y} \boldsymbol{\Sigma}_{y y}^{-1} \boldsymbol{\Sigma}_{y x} \boldsymbol{\alpha} = \rho^2 \boldsymbol{\alpha}\)</span> <br> <span class="math notranslate nohighlight">\(\boldsymbol{\beta} \propto \boldsymbol{\Sigma}_{y y}^{-1} \boldsymbol{\Sigma}_{y x} \boldsymbol{\alpha}\)</span></p></td>
-<td><p>Has discriminative power in some cases that PCA doesn’t</p></td>
-<td><p>Easy to overfit tiny signals</p></td>
-<td><p><span class="math notranslate nohighlight">\(\rho\)</span> is invariant of scaling of linear transformation of <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span> or <span class="math notranslate nohighlight">\(\boldsymbol{Y}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}_{x x}^{-1} \boldsymbol{\Sigma}_{x y} \boldsymbol{\Sigma}_{y y}^{-1} \boldsymbol{\Sigma}_{y x} \boldsymbol{\alpha} = \rho^2 \boldsymbol{\alpha}\)</span> <br> <span class="math notranslate nohighlight">\(\boldsymbol{\beta} \propto \boldsymbol{\Sigma}_{y y}^{-1} \boldsymbol{\Sigma}_{y x} \boldsymbol{\alpha}\)</span></p></td>
+<td class="text-align:left"><p><span class="math notranslate nohighlight">\(\rho\)</span> is invariant of scaling of linear transformation of <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span> or <span class="math notranslate nohighlight">\(\boldsymbol{Y}\)</span></p></td>
 </tr>
-<tr class="row-odd"><td><p>Regularized CCA</p></td>
-<td><p></p></td>
-<td><p></p></td>
+<tr class="row-even"><td><p>Regularized CCA</p></td>
+<td><p>‘’</p></td>
+<td><p>‘’</p></td>
 <td><p><span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}_{x x} \leftarrow\boldsymbol{\Sigma}_{x x}+r_{x} I\)</span> <br> <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}_{y y} \leftarrow \boldsymbol{\Sigma}_{y y}+r_{y} I\)</span></p></td>
+<td class="text-align:left"><p>Add spherical noise <span class="math notranslate nohighlight">\(rI\)</span> to the covariance matrices</p></td>
+</tr>
+<tr class="row-odd"><td><p>(Regularized) Kernel CCA</p></td>
+<td><p><span class="math notranslate nohighlight">\(\boldsymbol{X}, \boldsymbol{Y}\)</span>, <span class="math notranslate nohighlight">\(r\)</span>, kernel</p></td>
+<td><p><span class="math notranslate nohighlight">\(\max _{\boldsymbol{\alpha}, \boldsymbol{\beta}} \frac{\boldsymbol{\alpha} ^{\top} \boldsymbol{K} _{x} \boldsymbol{K} _{y} \boldsymbol{\beta} }{\sqrt{\boldsymbol{\alpha} ^{\top} \boldsymbol{K} _{x}^{2} \boldsymbol{\alpha} \cdot \boldsymbol{\beta} ^{\top} \boldsymbol{K} _{y}^{2} \boldsymbol{\beta} }}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\left(\boldsymbol{K}_{x}+r I\right)^{-1} \boldsymbol{K}_{y}\left(\boldsymbol{K}_{y}+r I\right)^{-1} \boldsymbol{K}_{x} \boldsymbol{\alpha}=\lambda^{2} \boldsymbol{\alpha}\)</span> <br> <span class="math notranslate nohighlight">\(\boldsymbol{\beta} = \left(\boldsymbol{K}_{y}+r I\right)^{-1} \boldsymbol{K}_{x} \boldsymbol{\alpha} /\lambda\)</span></p></td>
+<td class="text-align:left"><p>To avoid trivial solution</p></td>
+</tr>
+<tr class="row-even"><td><p>MDS</p></td>
+<td><p><span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span>, or <span class="math notranslate nohighlight">\(\boldsymbol{F}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\min \sum_{i, j}\left(\boldsymbol{x}_{i} ^\top  \boldsymbol{x}_{j}-\boldsymbol{z}_{i} ^\top\boldsymbol{z}_{j}\right)^2\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\boldsymbol{G}  = \boldsymbol{X} \boldsymbol{X} ^\top = \boldsymbol{V} \boldsymbol{\Lambda} \boldsymbol{V}\)</span> <br> <span class="math notranslate nohighlight">\(\boldsymbol{Z}=\boldsymbol{V}_{[: k]} \boldsymbol{\Lambda}_{[: k, k]}^{1 / 2}\)</span></p></td>
+<td class="text-align:left"><p>1. Retain inner product <br> 2. scaled PCA <span class="math notranslate nohighlight">\(\boldsymbol{Z}_{P C A}=\boldsymbol{Z}_{M D S} \boldsymbol{D}^{1 / 2}\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p>Isomap</p></td>
+<td><p><span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\left\|\boldsymbol{z}_{i}-\boldsymbol{z}_{j}\right\|^{2} \approx \Delta_{i j}^{2}\)</span></p></td>
+<td><p>Run MDS with geodesic distance <span class="math notranslate nohighlight">\(\Delta\)</span> matrix</p></td>
+<td class="text-align:left"><p>Unfold manifold, retain relative geodesic distance</p></td>
+</tr>
+<tr class="row-even"><td><p>Laplacian Eigenmaps</p></td>
+<td><p><span class="math notranslate nohighlight">\(\boldsymbol{X}, t, \varepsilon\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\min \sum_{i j} \frac{w_{i j} \Vert \boldsymbol{z}_{i}-\boldsymbol{z}_{j}\Vert^{2}}{\sqrt{d_{i i} d_{j j}}}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(k\)</span> bottom eigenvectors of <span class="math notranslate nohighlight">\(\boldsymbol{L}=\boldsymbol{I}-\boldsymbol{D}^{-\frac{1}{2}} \boldsymbol{W} \boldsymbol{D}^{-\frac{1}{2}}\)</span></p></td>
+<td class="text-align:left"><p>Retain weighted distance</p></td>
+</tr>
+<tr class="row-odd"><td><p>SNE</p></td>
+<td><p><span class="math notranslate nohighlight">\(\boldsymbol{X},\sigma_i\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\min \sum_{i} \mathrm{KL}\left(P_{i}, Q_{i}\right) = \sum_{i,j} p_{j \mid i} \log \frac{p_{j \mid i}}{q_{j \mid i}}\)</span></p></td>
+<td><p>gradient descent</p></td>
+<td class="text-align:left"><p>Retain neighborhood conditional probability</p></td>
+</tr>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(t\)</span>-SNE</p></td>
+<td><p><span class="math notranslate nohighlight">\(\boldsymbol{X},\sigma_i,df\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\min \operatorname{KL}(P, Q)=\sum_{i,j} p_{i j} \log \frac{p_{i j}}{q_{i j}}\)</span></p></td>
+<td><p>‘’</p></td>
+<td class="text-align:left"><p>1. Use joint probability <br> 2. Use <span class="math notranslate nohighlight">\(t\)</span>-distribution</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="pros-and-cons">
+<h3>Pros and Cons<a class="headerlink" href="#pros-and-cons" title="Permalink to this headline">¶</a></h3>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Model</p></th>
+<th class="head"><p>Pros</p></th>
+<th class="head"><p>Cons</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>PCA</p></td>
+<td><p></p></td>
+<td><p>1. Sensitive to variable scale <br> 2. Principal direction may not be discriminative</p></td>
+</tr>
+<tr class="row-odd"><td><p>Probabilistic PCA</p></td>
+<td><p>1. Fewer variance parameters <br> 2. Enable sampling</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>Kernel PCA</p></td>
+<td><p>1. Enable non-linear feature <br> 2. Enable out-of-sample projection</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>CCA</p></td>
+<td><p>Have discriminative power in some cases that PCA doesn’t</p></td>
+<td><p>Easy to overfit tiny signals</p></td>
+</tr>
+<tr class="row-even"><td><p>Regularized CCA</p></td>
+<td><p>Avoid overfitting of CCA</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>(Regularized) Kernel CCA</p></td>
+<td><p>1. Enable non-linear feature <br> 2. Enable out-of-sample projection</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>MDS</p></td>
 <td><p></p></td>
 <td><p></p></td>
-<td><p>add spherical noise <span class="math notranslate nohighlight">\(rI\)</span> to the covariance matrices</p></td>
+</tr>
+<tr class="row-odd"><td><p>Isomap</p></td>
+<td><p>Recovers the manifold</p></td>
+<td><p>1. Sensitive to neighborhood size / noise <br> 2. Can’t handle holes in the manifold</p></td>
+</tr>
+<tr class="row-even"><td><p>Laplacian Eigenmaps</p></td>
+<td><p></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>SNE</p></td>
+<td><p></p></td>
+<td><p>1. Difficult to optimize <br> 2. Suffers from the “crowding problem” due to the asymmetric property as KL divergence</p></td>
+</tr>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(t\)</span>-SNE</p></td>
+<td><p>Works especially well for data with clustering nature</p></td>
+<td><p>1. Perplexity hyperparameter is important <br> 2. Fail for if no clustering nature</p></td>
+</tr>
+<tr class="row-odd"><td><p>Parametric <span class="math notranslate nohighlight">\(t\)</span>-SNE</p></td>
+<td><p>Enable out-of-sample projection</p></td>
+<td><p></p></td>
 </tr>
 </tbody>
 </table>
 <div class="toctree-wrapper compound">
+</div>
 </div>
 </div>
 </div>

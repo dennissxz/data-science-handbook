@@ -57,7 +57,7 @@
     <script async="async" src="../_static/sphinx-thebe.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Kernel PCA" href="25-kernel-pca.html" />
+    <link rel="next" title="SNE and \(t\)-SNE" href="25-t-SNE.html" />
     <link rel="prev" title="Multidimensional Scaling" href="21-multidimensional-scaling.html" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -492,17 +492,22 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="25-kernel-pca.html">
-     Kernel PCA
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="31-t-SNE.html">
+    <a class="reference internal" href="25-t-SNE.html">
      SNE and
      <span class="math notranslate nohighlight">
       \(t\)
      </span>
      -SNE
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="31-kernel-pca.html">
+     Kernel PCA
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="32-kernel-cca.html">
+     Kernel CCA
     </a>
    </li>
   </ul>
@@ -743,7 +748,7 @@
 <p>The output is the <span class="math notranslate nohighlight">\(k\)</span>-dimensional projections of all of the data points <span class="math notranslate nohighlight">\(\boldsymbol{z}_i\)</span> such that the Euclidean distances in the projected space approximate the geodesic distances on the manifold.</p>
 <div class="math notranslate nohighlight">
 \[
-\left\|\mathbf{z}_{i}-\mathbf{z}_{j}\right\|^{2} \approx \Delta_{i j}^{2}
+\left\|\boldsymbol{z}_{i}-\boldsymbol{z}_{j}\right\|^{2} \approx \Delta_{i j}^{2}
 \]</div>
 <div class="figure align-default" id="isomap-geodesic-distance">
 <a class="reference internal image-reference" href="../_images/gb-isomap-d3k2.png"><img alt="" src="../_images/gb-isomap-d3k2.png" style="width: 80%;" /></a>
@@ -784,7 +789,7 @@
 <div class="math notranslate nohighlight">
 \[\begin{split}
     w_{i j}=\left\{\begin{array}{ll}
-    \exp \left(-\left\|\mathbf{x}_{i}-\mathbf{x}_{j}\right\|^{2} / t\right), &amp; \left\|\mathbf{x}_{i}-\mathbf{x}_{j}\right\|&lt;\epsilon \\
+    \exp \left(-\left\|\boldsymbol{x}_{i}-\boldsymbol{x}_{j}\right\|^{2} / t\right), &amp; \left\|\boldsymbol{x}_{i}-\boldsymbol{x}_{j}\right\|&lt;\epsilon \\
     0 &amp; \text { otherwise }
     \end{array}\right.
     \end{split}\]</div>
@@ -798,7 +803,7 @@
 <li><p>Find centered and unit-covariance projections <span class="math notranslate nohighlight">\(\boldsymbol{z}_i\)</span> that solve the total projected pairwise distances weighted by <span class="math notranslate nohighlight">\(w_{ij}\)</span> and scaled by <span class="math notranslate nohighlight">\(d_{ii}d_{jj}\)</span></p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{aligned}
-    \min &amp;\ \sum_{i j} \frac{w_{i j}|| \mathbf{z}_{i}-\mathbf{z}_{j}||^{2}}{\sqrt{d_{i i} d_{j j}}} \\
+    \min &amp;\ \sum_{i j} \frac{w_{i j}|| \boldsymbol{z}_{i}-\boldsymbol{z}_{j}||^{2}}{\sqrt{d_{i i} d_{j j}}} \\
     \text{s.t.} &amp;\ \boldsymbol{Z} \text{ is centered and has unit covariance} \\
     \end{aligned}\end{split}\]</div>
 </li>
@@ -811,7 +816,7 @@
 \[
 \boldsymbol{L} =\boldsymbol{I}  - \boldsymbol{D} ^{-\frac{1}{2}} \boldsymbol{W}  \boldsymbol{D} ^{-\frac{1}{2}}
 \]</div>
-<p>excluding the bottom (constant) eigenvector??. This is a symmetrized, normalized form of the graph Laplacian <span class="math notranslate nohighlight">\(\boldsymbol{D} - \boldsymbol{W}\)</span>.</p>
+<p>excluding the bottom (constant) eigenvector. This is a symmetrized, normalized form of the graph Laplacian <span class="math notranslate nohighlight">\(\boldsymbol{D} - \boldsymbol{W}\)</span>.</p>
 <div class="figure align-default" id="gb-laplacian-eigenmap-nt">
 <a class="reference internal image-reference" href="../_images/gb-laplacian-eigenmap-Nt.png"><img alt="" src="../_images/gb-laplacian-eigenmap-Nt.png" style="width: 50%;" /></a>
 <p class="caption"><span class="caption-number">Fig. 24 </span><span class="caption-text">Laplacian eigenmap with varing N-nearest-neighbors and temperature <span class="math notranslate nohighlight">\(t\)</span> [Livescu 2021]</span><a class="headerlink" href="#gb-laplacian-eigenmap-nt" title="Permalink to this image">¶</a></p>
@@ -857,7 +862,7 @@
     <div class='prev-next-bottom'>
         
     <a class='left-prev' id="prev-link" href="21-multidimensional-scaling.html" title="previous page">Multidimensional Scaling</a>
-    <a class='right-next' id="next-link" href="25-kernel-pca.html" title="next page">Kernel PCA</a>
+    <a class='right-next' id="next-link" href="25-t-SNE.html" title="next page">SNE and <span class="math notranslate nohighlight">\(t\)</span>-SNE</a>
 
     </div>
     <footer class="footer mt-5 mt-md-0">

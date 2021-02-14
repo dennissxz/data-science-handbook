@@ -492,17 +492,22 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="25-kernel-pca.html">
-     Kernel PCA
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="31-t-SNE.html">
+    <a class="reference internal" href="25-t-SNE.html">
      SNE and
      <span class="math notranslate nohighlight">
       \(t\)
      </span>
      -SNE
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="31-kernel-pca.html">
+     Kernel PCA
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="32-kernel-cca.html">
+     Kernel CCA
     </a>
    </li>
   </ul>
@@ -765,6 +770,11 @@
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#classification">
      Classification
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#autoencoders">
+     Autoencoders
     </a>
    </li>
   </ul>
@@ -1311,6 +1321,58 @@ X = \boldsymbol{U} \boldsymbol{S} \boldsymbol{V} ^\top
 <h3>Classification<a class="headerlink" href="#classification" title="Permalink to this headline">¶</a></h3>
 <p>For a classification task, we can perform PCA on the features before fitting the data to a classifier. The classifier might be more accurate since PCA reduces noise.</p>
 </div>
+<div class="section" id="autoencoders">
+<h3>Autoencoders<a class="headerlink" href="#autoencoders" title="Permalink to this headline">¶</a></h3>
+<p>PCA can be viewed as an <a class="reference internal" href="../37-neural-networks/11-autoencoders.html"><span class="doc std std-doc">autoencoder</span></a> of one single layer with certain constraints.</p>
+<p>Let</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(k(\boldsymbol{x}, \boldsymbol{w} )\)</span> be a kernel node parameterized by <span class="math notranslate nohighlight">\(\boldsymbol{w}\)</span> and output the kernel value.</p></li>
+<li><p><span class="math notranslate nohighlight">\(w_{ij}\)</span> be the weight of the edge from the <span class="math notranslate nohighlight">\(i\)</span>-th input node to the <span class="math notranslate nohighlight">\(j\)</span>-th hidden node</p></li>
+<li><p><span class="math notranslate nohighlight">\(v_{ij}\)</span> be the weight of the edge from the <span class="math notranslate nohighlight">\(i\)</span>-th hidden node to the <span class="math notranslate nohighlight">\(j\)</span>-th output node</p></li>
+</ul>
+<p>Recall that the projected vector in PCA is</p>
+<div class="math notranslate nohighlight">
+\[
+\boldsymbol{z} = \boldsymbol{W} ^\top \boldsymbol{x}
+\]</div>
+<p>and the reconstruction is</p>
+<div class="math notranslate nohighlight">
+\[
+\hat{\boldsymbol{x}} = \boldsymbol{W} \boldsymbol{z}
+\]</div>
+<p>The objective is to minimize the total reconstruction loss</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+\boldsymbol{W}^{*}= \underset{\boldsymbol{W}}{\operatorname{argmin}}  &amp;\ \sum_{i}^{n}\left\|\boldsymbol{x}_{i}-\hat{\boldsymbol{x}}_{i}\right\|^{2} \\
+=\underset{\boldsymbol{W}}{\operatorname{argmin}} &amp;\ \sum_{i}^{n}\left\|\boldsymbol{x}_{i}-\boldsymbol{W} \boldsymbol{z}_{i}\right\|^{2} \\
+\operatorname{s.t.} &amp;\boldsymbol{W}^{\top} \boldsymbol{W}=\boldsymbol{I} \\
+&amp;\ \boldsymbol{W} \in \mathbb{R}_{d \times k}
+\end{aligned}
+\end{split}\]</div>
+<p>Hence we can construct a neural network as follows</p>
+<ul class="simple">
+<li><p>Input layer:</p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(d\)</span> nodes, which represent <span class="math notranslate nohighlight">\(\boldsymbol{x} \in \mathbb{R} ^d\)</span></p></li>
+</ul>
+</li>
+<li><p>Hidden layer:</p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(k\)</span> nodes, which represent <span class="math notranslate nohighlight">\(\boldsymbol{z} \in \mathbb{R} ^k\)</span></p></li>
+<li><p>The weights <span class="math notranslate nohighlight">\(w_{ij}\)</span> are the entires in the matrix <span class="math notranslate nohighlight">\(\boldsymbol{W} \in \mathbb{R}_{d \times k}\)</span>, and <span class="math notranslate nohighlight">\(\boldsymbol{W} ^\top \boldsymbol{W} = \boldsymbol{I}\)</span></p></li>
+<li><p>The activation function is simply the identity function</p></li>
+</ul>
+</li>
+<li><p>Output layer:</p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(d\)</span> nodes, which represent <span class="math notranslate nohighlight">\(\hat{\boldsymbol{x}} \in \mathbb{R} ^d\)</span></p></li>
+<li><p>The weights <span class="math notranslate nohighlight">\(v_{ij} = w_{ji}\)</span></p></li>
+<li><p>The activation function is simply the identity function</p></li>
+</ul>
+</li>
+</ul>
+</div>
 </div>
 <div class="section" id="extension-probabilistic-pca">
 <h2>Extension: Probabilistic PCA<a class="headerlink" href="#extension-probabilistic-pca" title="Permalink to this headline">¶</a></h2>
@@ -1333,16 +1395,19 @@ p(\boldsymbol{z}) =\mathcal{N}( \boldsymbol{0}, \boldsymbol{I})
 p(\boldsymbol{x} \mid \boldsymbol{z}) =\mathcal{N}\left( \boldsymbol{W} \boldsymbol{z}+\boldsymbol{\mu} , \sigma^{2} \boldsymbol{I}\right)
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(\boldsymbol{W} \in \mathbb{R} ^{d \times k}\)</span></p>
-<p>Or equivalently,
-$$</p>
-<div class="amsmath math notranslate nohighlight" id="equation-11060dc8-5555-4fd2-a865-7abe100666f3">
-<span class="eqno">(1)<a class="headerlink" href="#equation-11060dc8-5555-4fd2-a865-7abe100666f3" title="Permalink to this equation">¶</a></span>\[\begin{equation}
-\boldsymbol{x}=\boldsymbol{W} \boldsymbol{z}+\boldsymbol{\mu} + \boldsymbol{\epsilon} , \text { where } \boldsymbol{\epsilon}  \sim \mathcal{N}\left(0, \sigma^{2} \boldsymbol{I}\right)
-\end{equation}\]</div>
+<p>Or equivalently,</p>
 <div class="math notranslate nohighlight">
-\[ \begin{align}\begin{aligned}If $\sigma = 0$ then we get standard PCA.\\By the property of multivariate Gaussian, we have\end{aligned}\end{align} \]</div>
-<p>p(\boldsymbol{x})=\mathcal{N}\left(\boldsymbol{\mu} , \boldsymbol{W} \boldsymbol{W}^{T}+\sigma^{2} \boldsymbol{I}\right)
-$$</p>
+\[
+\begin{equation}
+\boldsymbol{x}=\boldsymbol{W} \boldsymbol{z}+\boldsymbol{\mu} + \boldsymbol{\epsilon} , \text { where } \boldsymbol{\epsilon}  \sim \mathcal{N}\left(0, \sigma^{2} \boldsymbol{I}\right)
+\end{equation}
+\]</div>
+<p>If <span class="math notranslate nohighlight">\(\sigma = 0\)</span> then we get standard PCA.</p>
+<p>By the property of multivariate Gaussian, we have</p>
+<div class="math notranslate nohighlight">
+\[
+p(\boldsymbol{x})=\mathcal{N}\left(\boldsymbol{\mu} , \boldsymbol{W} \boldsymbol{W}^{T}+\sigma^{2} \boldsymbol{I}\right)
+\]</div>
 <p>The goal is to estimate the parameter <span class="math notranslate nohighlight">\(\boldsymbol{W} , \boldsymbol{\mu} , \sigma\)</span> that maximize the log likelihood <span class="math notranslate nohighlight">\(\sum_{i=1}^{n} \log p\left(\boldsymbol{x}_{i} \mid \boldsymbol{W} , \boldsymbol{\mu} , \sigma\right)\)</span>.</p>
 </div>
 <div class="section" id="learning-mle">

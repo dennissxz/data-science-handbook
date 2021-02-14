@@ -1,4 +1,4 @@
-
+{
 # Canonical Corerlation Analysis
 
 ## Objective
@@ -68,11 +68,11 @@ The first canonical correlation, $\rho _1$, equals the maximum correlation betwe
 $$\begin{align}
 \max _{\boldsymbol{v}, \boldsymbol{w} } \operatorname{Corr}\left(\boldsymbol{v}^{\top} \boldsymbol{x} , \boldsymbol{w}^{\top} \boldsymbol{y} \right)
 = \max &  _{\boldsymbol{v}, \boldsymbol{w}}  \frac{\boldsymbol{v}^{\top} \boldsymbol{\Sigma}_{xy} \boldsymbol{w}}{\sqrt{\boldsymbol{v}^{\top} \boldsymbol{\Sigma}_{xx} \boldsymbol{v} \boldsymbol{w}^{\top} \boldsymbol{\Sigma}_{yy} \boldsymbol{w}}} \\
-\text{s.t.}  &  \ \quad \boldsymbol{v} ^\top \boldsymbol{\Sigma} _{11} \boldsymbol{v} =1 \\
-  &  \ \quad \boldsymbol{w} ^\top \boldsymbol{\Sigma} _{22} \boldsymbol{w} =1 \\
+\text{s.t.}  &  \ \quad \boldsymbol{v} ^\top \boldsymbol{\Sigma} _{xx} \boldsymbol{v} =1 \\
+  &  \ \quad \boldsymbol{w} ^\top \boldsymbol{\Sigma} _{yy} \boldsymbol{w} =1 \\
 \end{align}$$
 
-If the maximum is achieved at $\boldsymbol{v} _1$ and $\boldsymbol{w} _1$, then the first pair of canonical varibales are defined as
+If the maximum is achieved at $\boldsymbol{v} _1$ and $\boldsymbol{w} _1$, then the first pair of canonical variables are defined as
 
 
 $$
@@ -88,7 +88,7 @@ $$\begin{align}
  \text{s.t.} &  \quad (\boldsymbol{v} ^\top \boldsymbol{x} , \boldsymbol{w} ^\top \boldsymbol{y} ) \text{ uncorrelated with } (U_1, V_1), \ldots, (U_{i-1}, V_{i-1}) \\
 \end{align}$$
 
-If the maximum is achived at $\boldsymbol{v} _i$ and $\boldsymbol{w} _i$, then the first pair of canonical varibales are defined as
+If the maximum is achieved at $\boldsymbol{v} _i$ and $\boldsymbol{w} _i$, then the first pair of canonical variables are defined as
 
 
 $$
@@ -99,61 +99,41 @@ $$
 
 
 Rather than obtaining pairs of canonical variables and canonical correlation sequentially, it can be shown that the canonical correlations $\rho$'s and hence pairs of canonical variables $(U,V)$’s can be obtained simultaneously by solving for
-the eigenvalues $\rho^2$'s and eigenvectors $\boldsymbol{v}$’s of the matrix
-
-
-$$
-\boldsymbol{\Sigma}_{xx}^{-1} \boldsymbol{\Sigma}_{xy} \boldsymbol{\Sigma}_{yy}^{-1} \boldsymbol{\Sigma}_{yx}
-$$
-
-A difficulty of this problem is that the matrix $\boldsymbol{\Sigma}_{xx}^{-1} \boldsymbol{\Sigma}_{xy} \boldsymbol{\Sigma}_{yy}^{-1} \boldsymbol{\Sigma}_{yx}$ is not symmetric. Consequently, the symmetric matrix
+the eigenvalues $\rho^2$'s and eigenvectors $\boldsymbol{v}$’s from
 
 $$
-\boldsymbol{\Sigma}_{xx}^{-1/2} \boldsymbol{\Sigma}_{xy} \boldsymbol{\Sigma}_{yy}^{-1} \boldsymbol{\Sigma}_{yx} \boldsymbol{\Sigma}_{xx}^{-1/2}
+\boldsymbol{\Sigma}_{xx}^{-1} \boldsymbol{\Sigma}_{xy} \boldsymbol{\Sigma}_{yy}^{-1} \boldsymbol{\Sigma}_{yx} \boldsymbol{v} = \rho^2 \boldsymbol{v}
 $$
 
-is considered instead for the computational efficiency. Note that the two matrices possess the **same** eigenvalues and their eigenvectors are linearly related.
-
-It turns out that the canonical correlation $\rho_i$ and the canonical variables $(\boldsymbol{v} _i, \boldsymbol{w} _i), i = 1, 2, \ldots, k$ are related to matrix eigen-analysis:
-
+A difficulty of this problem is that the matrix $\boldsymbol{\Sigma}_{xx}^{-1} \boldsymbol{\Sigma}_{xy} \boldsymbol{\Sigma}_{yy}^{-1} \boldsymbol{\Sigma}_{yx}$ is not symmetric. Consequently, the symmetric eigenproblem
 
 $$
-\begin{equation}
-\begin{aligned}
-\rho_{1}^{2} \geq \rho_{2}^{2} \geq \cdots \geq \rho_{k}^{2} & \quad \text {eigenvalues of } \boldsymbol{\Sigma}_{xx}^{-1 / 2} \boldsymbol{\Sigma}_{xy} \boldsymbol{\Sigma}_{yy}^{-1} \boldsymbol{\Sigma}_{yx} \boldsymbol{\Sigma}_{xx}^{-1 / 2}\\
-\boldsymbol{v}_{1}^{\star}\quad \boldsymbol{v}_{2}^{\star} \quad\cdots \quad \boldsymbol{v}_{k}^{\star} & \quad \text { associated unit-norm eigenvectors,}\left(\boldsymbol{v}_{i}^{\star}\right)^{\top} \boldsymbol{v}_{i}^{\star}=1
-\\
-\boldsymbol{v}_{i}=\boldsymbol{v}_{i}^{\star} / \sqrt{\left(\boldsymbol{v}_{i}^{\star}\right)^{\top} \boldsymbol{\Sigma}_{xx} \boldsymbol{v}_{i}^{\star}} & \quad \text { coefficients of } U_{i}, \boldsymbol{v}_{i}^{\top} \boldsymbol{\Sigma}_{xx} \boldsymbol{v}_{i}=1\\
-\boldsymbol{v}_{i}=\boldsymbol{\Sigma}_{xx}^{-1 / 2} \boldsymbol{v}_{i}^{\star} & \quad \text { 2nd formula for coefficients of } U_{i}\\
-\boldsymbol{w}_{i}=\boldsymbol{\Sigma}_{yy}^{-1} \boldsymbol{\Sigma}_{yx} \boldsymbol{v}_{i} & \quad \text { coefficients of } V_{i}, \boldsymbol{w}_{i}^{\top} \boldsymbol{\Sigma}_{yy} \boldsymbol{w}_{i}=1
-\end{aligned}
-\end{equation}
+\boldsymbol{\Sigma}_{xx}^{-1/2} \boldsymbol{\Sigma}_{xy} \boldsymbol{\Sigma}_{yy}^{-1} \boldsymbol{\Sigma}_{yx} \boldsymbol{\Sigma}_{xx}^{-1/2} \boldsymbol{u} = \rho^2 \boldsymbol{u}
 $$
 
-where $k = \min(d_x, d_y)$
+is considered instead for the computational efficiency. Note that the two matrices possess the **same** eigenvalues and their eigenvectors are linearly related by $\boldsymbol{v} = \boldsymbol{\Sigma}_{{xx}}^{-1/2} \boldsymbol{u}$.
 
-:::{admonition,dropdown,seealso}
+Then we can find $\boldsymbol{w} \propto \boldsymbol{\Sigma}_{y y}^{-1} \boldsymbol{\Sigma}_{y x} \boldsymbol{v}$ subject to the constraints.
 
-Recall the formula for the [covariance matrix](prob-covariance-matrix-of-two-vectors) of two vectors.
+Note that the maximal embedding dimension is $\max(k) = \min(d_x, d_y)$
+
+:::{admonition,dropdown,seealso} *Derivation*
 
 We consider the following maximization problem:
 
-$$
-\begin{aligned}
-\rho^{2} \equiv \max _{\boldsymbol{v}, \boldsymbol{w}} \operatorname{Corr}^{2}\left(\boldsymbol{v}^{\top} \boldsymbol{x} , \boldsymbol{w}^{\top} \boldsymbol{y} \right)=
 
-\max &\  _{\boldsymbol{v}, \boldsymbol{w}} \frac{\left(\boldsymbol{v}^{\top} \boldsymbol{\Sigma}_{xy} \boldsymbol{w}\right)^{2}}{\left(\boldsymbol{v}^{\top} \boldsymbol{\Sigma}_{xx} \boldsymbol{v}\right)\left(\boldsymbol{w}^{\top} \boldsymbol{\Sigma}_{yy} \boldsymbol{w}\right)} \quad  \\
+$$\begin{align}
+\max _{\boldsymbol{v}, \boldsymbol{w} } \operatorname{Corr}\left(\boldsymbol{v}^{\top} \boldsymbol{x} , \boldsymbol{w}^{\top} \boldsymbol{y} \right)
+= \max &  _{\boldsymbol{v}, \boldsymbol{w}}  \frac{\boldsymbol{v}^{\top} \boldsymbol{\Sigma}_{xy} \boldsymbol{w}}{\sqrt{\boldsymbol{v}^{\top} \boldsymbol{\Sigma}_{xx} \boldsymbol{v} \boldsymbol{w}^{\top} \boldsymbol{\Sigma}_{yy} \boldsymbol{w}}} \\
+\text{s.t.}  &  \ \quad \boldsymbol{v} ^\top \boldsymbol{\Sigma} _{xx} \boldsymbol{v} =1 \\
+  &  \ \quad \boldsymbol{w} ^\top \boldsymbol{\Sigma} _{yy} \boldsymbol{w} =1 \\
+\end{align}$$
 
-\text {s.t.} &\ \boldsymbol{v}^{\top} \boldsymbol{\Sigma}_{xx} \boldsymbol{v}=\boldsymbol{w}^{\top} \boldsymbol{\Sigma}_{yy} \boldsymbol{w}=1
-\end{aligned}
-$$
-
-The Lagrangean is
-
+The Lagrangian is
 
 $$
 \begin{equation}
-L(\boldsymbol{v}, \boldsymbol{w}, \lambda, \theta)=\left(\boldsymbol{v}^{\top} \boldsymbol{\Sigma}_{xy} \boldsymbol{w}\right)^{2}-\lambda\left(\boldsymbol{v}^{\top} \boldsymbol{\Sigma}_{xx} \boldsymbol{v}-1\right)-\theta\left(\boldsymbol{w}^{\top} \boldsymbol{\Sigma}_{yy} \boldsymbol{w}-1\right)
+L(\boldsymbol{v}, \boldsymbol{w}, \lambda, \theta)=\boldsymbol{v}^{\top} \boldsymbol{\Sigma}_{xy} \boldsymbol{w}-\frac{\lambda_x}{2} \left(\boldsymbol{v}^{\top} \boldsymbol{\Sigma}_{xx} \boldsymbol{v}-1\right)-\frac{\lambda_y}{2} \left(\boldsymbol{w}^{\top} \boldsymbol{\Sigma}_{yy} \boldsymbol{w}-1\right)
 \end{equation}
 $$
 
@@ -161,102 +141,45 @@ The first order conditions are
 
 
 $$
-\begin{equation}
 \begin{aligned}
-\frac{\partial L}{\partial \boldsymbol{v}}=& 2\left(\boldsymbol{v}^{\top} \boldsymbol{\Sigma}_{xy} \boldsymbol{w}\right) \boldsymbol{\Sigma}_{xy} \boldsymbol{w}-2 \lambda \boldsymbol{\Sigma}_{xx} \boldsymbol{v}=\mathbf{0} \\
-\Rightarrow \qquad \qquad &\left(\boldsymbol{v}^{\top} \boldsymbol{\Sigma}_{xy} \boldsymbol{w}\right) \boldsymbol{\Sigma}_{xy} \boldsymbol{w}=\lambda \boldsymbol{\Sigma}_{xx} \boldsymbol{v} \\
-\frac{\partial L}{\partial \boldsymbol{w}}=& 2\left(\boldsymbol{v}^{\top} \boldsymbol{\Sigma}_{xy} \boldsymbol{w}\right) \boldsymbol{\Sigma}_{yx} \boldsymbol{v}-2 \theta \boldsymbol{\Sigma}_{yy} \boldsymbol{w}=\mathbf{0} \\
-\Rightarrow \qquad \qquad &\left(\boldsymbol{v}^{\top} \boldsymbol{\Sigma}_{xy} \boldsymbol{w}\right) \boldsymbol{\Sigma}_{yx} \boldsymbol{v}=\theta \boldsymbol{\Sigma}_{yy} \boldsymbol{w} \\
-\quad \frac{\partial L}{\partial \lambda}=& 1-\boldsymbol{v}^{\top} \boldsymbol{\Sigma}_{xx} \boldsymbol{v}=0 \\
-\Rightarrow \qquad \qquad & \boldsymbol{v}^{\top} \boldsymbol{\Sigma}_{xx} \boldsymbol{v}=1 \\
-\quad \frac{\partial L}{\partial \theta}=& 1-\boldsymbol{w}^{\top} \boldsymbol{\Sigma}_{yy} \boldsymbol{w}=0 \\
-\Rightarrow \qquad \qquad & \boldsymbol{w}^{\top} \boldsymbol{\Sigma}_{yy} \boldsymbol{w}=1
+\frac{\partial f}{\partial \boldsymbol{v}} &=\boldsymbol{\Sigma}_{xy} \boldsymbol{w}-\lambda_{x} \boldsymbol{\Sigma}_{\mathbf{x} \mathbf{x}} \boldsymbol{v}=\mathbf{0} \\
+\frac{\partial f}{\partial \boldsymbol{w}} &=\boldsymbol{\Sigma}_{yx} \boldsymbol{v}-\lambda_{y} \boldsymbol{\Sigma}_{yy} \boldsymbol{w}=\mathbf{0}
 \end{aligned}
-\end{equation}
 $$
 
-Premultiply the first condition by $\boldsymbol{v} T$ and the second condition by $\boldsymbol{w} ^\top$, we have
-
-
-$$
-\begin{equation}
-\begin{array}{l}
-\left(\boldsymbol{v}^{\top} \boldsymbol{\Sigma}_{xy} \boldsymbol{w}\right)^{2}=\lambda \boldsymbol{v}^{\top} \boldsymbol{\Sigma}_{xx} \boldsymbol{v} = \lambda \\
-\left(\boldsymbol{v}^{\top} \boldsymbol{\Sigma}_{xy} \boldsymbol{w}\right)^{2}=\theta \boldsymbol{w}^{\top} \boldsymbol{\Sigma}_{yy} \boldsymbol{w} = \theta
-\end{array}
-\end{equation}
-$$
-
-Hence
+Premultiply the first condition by $\boldsymbol{v} ^\top$ and the second condition by $\boldsymbol{w} ^\top$, we have
 
 
 $$
-\begin{equation}
-\lambda=\theta=\left(\boldsymbol{v}^{\top} \boldsymbol{\Sigma}_{xy} \boldsymbol{w}\right)^{2}
-\end{equation}
-$$
-
-which implies that the Lagrangian multipliers are equal to the maximized value of squared correlation $\begin{equation}
-\operatorname{Corr}^{2}\left(\boldsymbol{v}^{\top} \boldsymbol{x} , \boldsymbol{w}^{\top} \boldsymbol{y} \right)
-\end{equation}$, i.e., $\rho^2$.
-
-Based on the above results, we can further simplify the first and second conditions by replacing $\boldsymbol{v} ^\top \boldsymbol{\Sigma} _{12} \boldsymbol{w}$ by $\sqrt{\lambda}$ and $\sqrt{\theta}$ respectively.
-
-
-$$
-\begin{equation}
 \begin{aligned}
-\left\{\begin{array}{l}
-\boldsymbol{\Sigma}_{xy} \boldsymbol{w}-\sqrt{\lambda} \boldsymbol{\Sigma}_{xx} \boldsymbol{v} & =\mathbf{0} \\
-\boldsymbol{\Sigma}_{yx} \boldsymbol{v}-\sqrt{\lambda} \boldsymbol{\Sigma}_{yy} \boldsymbol{w} & =\mathbf{0}
-\end{array}\right.\\
-\Rightarrow\left(\begin{array}{cc}
--\sqrt{\lambda} \boldsymbol{\Sigma}_{xx} & \boldsymbol{\Sigma}_{xy} \\
-\boldsymbol{\Sigma}_{yx} & -\sqrt{\lambda} \boldsymbol{\Sigma}_{yy}
-\end{array}\right) \left(\begin{array}{l}
-\boldsymbol{v} \\
-\boldsymbol{w}
-\end{array}\right)& =\mathbf{0}
+0 &=\boldsymbol{v}^{\prime} \boldsymbol{\Sigma}_{xy} \boldsymbol{w}-\boldsymbol{v}^{\prime} \lambda_{x} \boldsymbol{\Sigma}_{\mathbf{x} \mathbf{x}} \boldsymbol{v}-\boldsymbol{w}^{\prime} \boldsymbol{\Sigma}_{\mathbf{y} \mathbf{x}} \boldsymbol{v}+\boldsymbol{w}^{\prime} \lambda_{y} \boldsymbol{\Sigma}_{yy} \boldsymbol{w} \\
+&=\lambda_{y} \boldsymbol{w}^{\prime} \boldsymbol{\Sigma}_{yy} \boldsymbol{w}-\lambda_{x} \boldsymbol{v}^{\prime} \boldsymbol{\Sigma}_{\mathbf{x x}} \boldsymbol{v}
 \end{aligned}
-\end{equation}
 $$
 
-In order to obtain the non-trivial solutions for $\boldsymbol{v}$  and $\boldsymbol{w}$, we require
-
+which together with the constraints implies that $\lambda_y - \lambda_x = 0$. Let $\lambda = \lambda_x = \lambda$. Suppose $\boldsymbol{\Sigma} _{yy}$ is invertible, then
 
 $$
-\begin{equation}
-\left|\begin{array}{cc}
--\sqrt{\lambda} \boldsymbol{\Sigma}_{xx} & \boldsymbol{\Sigma}_{xy} \\
-\boldsymbol{\Sigma}_{yx} & -\sqrt{\lambda} \boldsymbol{\Sigma}_{yy}
-\end{array}\right|=0
-\end{equation}
+\boldsymbol{w}=\frac{\boldsymbol{\Sigma}_{yy}^{-1} \boldsymbol{\Sigma}_{yx} \boldsymbol{v}}{\lambda}
 $$
 
-which gives
+Substituting the the first order condition gives
 
 
 $$
-\begin{equation}
-\begin{array}{l}
-\left|\begin{array}{cc}
--\sqrt{\lambda} \boldsymbol{\Sigma}_{xx} & \boldsymbol{\Sigma}_{xy} \\
-\boldsymbol{\Sigma}_{yx} & -\sqrt{\lambda} \boldsymbol{\Sigma}_{yy}
-\end{array}\right|=\left|\sqrt{\lambda} \boldsymbol{\Sigma}_{yy}\right|\left|\sqrt{\lambda} \boldsymbol{\Sigma}_{xx}-\boldsymbol{\Sigma}_{xy}\left(\sqrt{\lambda} \boldsymbol{\Sigma}_{yy}\right)^{-1} \boldsymbol{\Sigma}_{yx}\right|=0 \\
-\Rightarrow\left|\sqrt{\lambda} \boldsymbol{\Sigma}_{xx}-\boldsymbol{\Sigma}_{xy}\left(\sqrt{\lambda} \boldsymbol{\Sigma}_{yy}\right)^{-1} \boldsymbol{\Sigma}_{yx}\right|=0 \quad \because\left|\boldsymbol{\Sigma}_{xx}\right|>0 \\
-\Rightarrow\left|(1 / \sqrt{\lambda})\left(\lambda \boldsymbol{\Sigma}_{xx}-\boldsymbol{\Sigma}_{xy} \boldsymbol{\Sigma}_{yy}^{-1} \boldsymbol{\Sigma}_{yx}\right)\right|=0 & \\
-\Rightarrow\left|\boldsymbol{\Sigma}_{xy} \boldsymbol{\Sigma}_{yy}^{-1} \boldsymbol{\Sigma}_{yx}-\lambda \boldsymbol{\Sigma}_{xx}\right|=0 \quad \because \lambda>0
-\end{array}
-\end{equation}
+\frac{\boldsymbol{\Sigma}_{xy} \boldsymbol{\Sigma}_{yy}^{-1} \boldsymbol{\Sigma}_{yx} \boldsymbol{v}}{\lambda}-\lambda \boldsymbol{\Sigma}_{xx}\boldsymbol{v}=0
 $$
 
-which indeed is the eigenvalue problem of
-
+or
 
 $$
-\begin{equation}
-\boldsymbol{\Sigma}_{xx}^{-1} \boldsymbol{\Sigma}_{xy} \boldsymbol{\Sigma}_{yy}^{-1} \boldsymbol{\Sigma}_{yx} \boldsymbol{v}=\lambda \boldsymbol{v}
-\end{equation}
+\boldsymbol{\Sigma}_{xy} \boldsymbol{\Sigma}_{yy}^{-1} \boldsymbol{\Sigma}_{yx} \boldsymbol{v}=\lambda^{2} \boldsymbol{\Sigma}_{{xx}} \boldsymbol{v}
+$$
+
+Suppose $\boldsymbol{\Sigma} _{xx}$ is invertible, then it becomes an eigenproblem
+
+$$
+\boldsymbol{\Sigma}_{{xx}} ^{-1} \boldsymbol{\Sigma}_{xy} \boldsymbol{\Sigma}_{yy}^{-1} \boldsymbol{\Sigma}_{yx} \boldsymbol{v}=\lambda^{2}  \boldsymbol{v}
 $$
 
 Once the solution for $\boldsymbol{v}$  is obtained, the solution for $\boldsymbol{w}$  can be obtained by
@@ -269,26 +192,42 @@ $$
 
 with the normalized condition
 
-
 $$
 \begin{equation}
 \boldsymbol{w}^{\top} \boldsymbol{\Sigma}_{yy} \boldsymbol{w}=1
 \end{equation}
 $$
+
+To convert the eigenproblem to be symmetric, we can write $\boldsymbol{\Sigma} _{xx} = (\boldsymbol{\Sigma} _{xx} ^{1/2}) (\boldsymbol{\Sigma} _{xx} ^{1/2})$ and let $\boldsymbol{u} = \boldsymbol{\Sigma} _{xx} ^{1/2} \boldsymbol{v}$ or $\boldsymbol{\Sigma} _{xx} ^{-1/2} \boldsymbol{u} = \boldsymbol{v}$. Substituting this into
+
+$$
+\boldsymbol{\Sigma}_{xy} \boldsymbol{\Sigma}_{yy}^{-1} \boldsymbol{\Sigma}_{yx} \boldsymbol{v}=\lambda^{2} \boldsymbol{\Sigma}_{{xx}} \boldsymbol{v}
+$$
+
+gives
+
+
+$$\begin{aligned}
+\boldsymbol{\Sigma}_{xy} \boldsymbol{\Sigma}_{yy}^{-1} \boldsymbol{\Sigma}_{yx} \boldsymbol{\Sigma}_{{xx}}^{-1/2} \boldsymbol{u} &=\lambda^{2} \boldsymbol{\Sigma}_{{xx}}^{1/2} \boldsymbol{u}  \\
+\boldsymbol{\Sigma}_{{xx}}^{-1/2}\boldsymbol{\Sigma}_{xy} \boldsymbol{\Sigma}_{yy}^{-1} \boldsymbol{\Sigma}_{yx} \boldsymbol{\Sigma}_{{xx}}^{-1/2} \boldsymbol{u} &=\lambda^{2} \boldsymbol{u}  \\
+\end{aligned}$$
+
+Then the eigenproblem becomes symmetric and easier to solve. We can find $\boldsymbol{u}$ and then find $\boldsymbol{v} = \boldsymbol{\Sigma} _{xx} ^{-1/2} \boldsymbol{u}$, and then find $\boldsymbol{w} \propto \boldsymbol{\Sigma}_{y y}^{-1} \boldsymbol{\Sigma}_{y x} \boldsymbol{v}$.
+
 :::
 
 ## Properties
 
 **Invariance property**
-: Canonical corelations $\rho_i$'s between $\boldsymbol{x}$ and $\boldsymbol{y}$ are the same as those between $\boldsymbol{A} _1 \boldsymbol{x}  + \boldsymbol{c}_1$ and $\boldsymbol{A} _2 \boldsymbol{y}  + \boldsymbol{c} _2$, where both $\boldsymbol{A} _1$ and $\boldsymbol{A} _2$ are non-singular square matrices and their computation can be based on either the partitioned covariance matrix or the partitioned correlation matrix. However, the canonical coefficients contained in $\boldsymbol{v} _k$ and $\boldsymbol{w} _k$ are **not** invariant under the same transforam, nor their estimates.
+: Canonical correlations $\rho_i$'s between $\boldsymbol{x}$ and $\boldsymbol{y}$ are the same as those between $\boldsymbol{A} _1 \boldsymbol{x}  + \boldsymbol{c}_1$ and $\boldsymbol{A} _2 \boldsymbol{y}  + \boldsymbol{c} _2$, where both $\boldsymbol{A} _1$ and $\boldsymbol{A} _2$ are non-singular square matrices and their computation can be based on either the partitioned covariance matrix or the partitioned correlation matrix. However, the canonical coefficients contained in $\boldsymbol{v} _k$ and $\boldsymbol{w} _k$ are **not** invariant under the same transform, nor their estimates.
 
 
 
 ## Model Selection
 
-Now let $\boldsymbol{S} _{11}, \boldsymbol{S} _{12}, \boldsymbol{S} _{22}$ and $\boldsymbol{S} _{21}$ be the corresponding sub-matrices of the sample covariance matrix $\boldsymbol{S}$. For $i = 1, 2, \ldots, k$, let $r_i ^2, \boldsymbol{a} _i$ and $\boldsymbol{b} _i$ be respectively the sample estimators of $\rho_i^2, \boldsymbol{v} _i$ and $\boldsymbol{w} _i$, all based on
+Given a sample of data matrix $\boldsymbol{X}$ and $\boldsymbol{Y}$, let $\boldsymbol{S} _{xx}, \boldsymbol{S} _{12}, \boldsymbol{S} _{yy}$ and $\boldsymbol{S} _{yx}$ be the corresponding sub-matrices of the sample covariance matrix $\boldsymbol{S}$. For $i = 1, 2, \ldots, k$, let $r_i ^2, \boldsymbol{a} _i$ and $\boldsymbol{b} _i$ be respectively the sample estimators of $\rho_i^2, \boldsymbol{v} _i$ and $\boldsymbol{w} _i$, all based on
 
-$$\boldsymbol{S}_{11}^{-1 / 2} \boldsymbol{S}_{12} \boldsymbol{S}_{22}^{-1} \boldsymbol{S}_{21} \boldsymbol{S}_{11}^{-1 / 2}$$
+$$\boldsymbol{S}_{xx}^{-1 / 2} \boldsymbol{S}_{12} \boldsymbol{S}_{yy}^{-1} \boldsymbol{S}_{yx} \boldsymbol{S}_{xx}^{-1 / 2}$$
 
 in parallel to $\boldsymbol{\Sigma}_{xx}^{-1/2} \boldsymbol{\Sigma}_{xy} \boldsymbol{\Sigma}_{yy}^{-1} \boldsymbol{\Sigma}_{yx} \boldsymbol{\Sigma}_{xx}^{-1/2}$. Then the $i$-th pair of sample canonical variables $\widehat{U}_i, \widehat{V}_i$ is
 
@@ -297,10 +236,12 @@ $$
 \begin{equation}
 \left\{\begin{array}{l}
 \widehat{U}_{i}=\boldsymbol{a} _{i}^{\top} \boldsymbol{x}  \\
-\widehat{V}_{i}=\boldsymbol{b}_{i}^{\top} \boldsymbol{y} , \text { where } \boldsymbol{b}_{i}=\boldsymbol{S}_{22}^{-1} \boldsymbol{S}_{21} \boldsymbol{a}_{i}
+\widehat{V}_{i}=\boldsymbol{b}_{i}^{\top} \boldsymbol{y} , \text { where } \boldsymbol{b}_{i}=\boldsymbol{S}_{yy}^{-1} \boldsymbol{S}_{yx} \boldsymbol{a}_{i}
 \end{array}\right.
 \end{equation}
 $$
+
+How to choose $k$?
 
 ### Hypothesis Testing
 
@@ -317,7 +258,7 @@ $$
 H_{0}(k=0): \rho_{1}=\cdots=\rho_{k}=0
 $$
 
-is equivalent to independence between $\boldsymbol{x} 1$ and $\boldsymbol{y}$, or $H_0: \boldsymbol{\Sigma} _{12} = 0$. If it is rejected, test
+is equivalent to independence between $\boldsymbol{x} 1$ and $\boldsymbol{y}$, or $H_0: \boldsymbol{\Sigma} _{12} = 0$. \boldsymbol{I}f it is rejected, test
 
 $$H_{0}(k=1): \rho_{2}=\cdots=\rho_{k}=0$$
 
@@ -351,7 +292,7 @@ It is an art to provide a good name to a canonical variable that represents the 
 
 ### Discriminative Power
 
-Unlike PCA, CCA has discriminative power in some cases. In the comparison below, in the first scatter-plot, the principal direction is the discriminative direction, while in the second plot it is not. The 3rd (same as the 2nd) and the 4th plots corresponds to $\boldsymbol{x} \in \mathbb{R} ^2$ and $\boldsymbol{y} \in \mathbb{R} ^2$. The two colors means two kinds of data points in the $n\times 4$ data set, but the color labels are shown to CCA. The CCA solutions to $\boldsymbol{x}$ (3rd plot) is the direction $(-1,1)$ and to $\boldsymbol{y}$ (4th plot) is the direction $(-1,-1)$. Because they are the highest correlation pair of directions.
+Unlike PCA, CCA has discriminative power in some cases. \boldsymbol{I}n the comparison below, in the first scatter-plot, the principal direction is the discriminative direction, while in the second plot it is not. The 3rd (same as the 2nd) and the 4th plots corresponds to $\boldsymbol{x} \in \mathbb{R} ^2$ and $\boldsymbol{y} \in \mathbb{R} ^2$. The two colors means two kinds of data points in the $n\times 4$ data set, but the color labels are shown to CCA. The CCA solutions to $\boldsymbol{x}$ (3rd plot) is the direction $(-1,1)$ and to $\boldsymbol{y}$ (4th plot) is the direction $(-1,-1)$. Because they are the highest correlation pair of directions.
 
 :::{figure,myclass} cca-has-disc-power
 <img src="../imgs/cca-has-disc-power.png" width = "90%" alt=""/>
@@ -374,7 +315,7 @@ To regularize CCA, we can add small constant $r$ (noise) to the covariance matri
 
 $$
 \begin{equation}
-\boldsymbol{v}_{1}, \boldsymbol{w}_{1}=\underset{\boldsymbol{v}, \boldsymbol{w}}{\operatorname{argmax}} \frac{\boldsymbol{v} ^\top  \boldsymbol{\Sigma}_{x y} \boldsymbol{w}}{\sqrt{\boldsymbol{v} ^\top \left(\boldsymbol{\Sigma}_{x x}+r_{x} I\right) \boldsymbol{v} \boldsymbol{w} ^\top \left(\boldsymbol{\Sigma}_{y y}+r_{y} I\right) \boldsymbol{w}}}
+\boldsymbol{v}_{1}, \boldsymbol{w}_{1}=\underset{\boldsymbol{v}, \boldsymbol{w}}{\operatorname{argmax}} \frac{\boldsymbol{v} ^\top  \boldsymbol{\Sigma}_{x y} \boldsymbol{w}}{\sqrt{\boldsymbol{v} ^\top \left(\boldsymbol{\Sigma}_{x x}+r_{x} \boldsymbol{I}\right) \boldsymbol{v} \boldsymbol{w} ^\top \left(\boldsymbol{\Sigma}_{y y}+r_{y} \boldsymbol{I}\right) \boldsymbol{w}}}
 \end{equation}
 $$
 
@@ -382,6 +323,6 @@ Then we solve for the eigenvalues's and eigenvectors’s of the new matrix
 
 $$
 \begin{equation}
-\left(\boldsymbol{\Sigma}_{x x}+r_{x} I\right)^{-1} \boldsymbol{\Sigma}_{x y}\left(\boldsymbol{\Sigma}_{y y}+r_{y} I\right)^{-1} \boldsymbol{\Sigma}_{y x}
+\left(\boldsymbol{\Sigma}_{x x}+r_{x} \boldsymbol{I}\right)^{-1} \boldsymbol{\Sigma}_{x y}\left(\boldsymbol{\Sigma}_{y y}+r_{y} \boldsymbol{I}\right)^{-1} \boldsymbol{\Sigma}_{y x}
 \end{equation}
 $$

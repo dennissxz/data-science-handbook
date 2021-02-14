@@ -57,8 +57,8 @@
     <script async="async" src="../_static/sphinx-thebe.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Clustering" href="../34-clustering/00-clustering.html" />
-    <link rel="prev" title="Kernel PCA" href="25-kernel-pca.html" />
+    <link rel="next" title="Kernel PCA" href="31-kernel-pca.html" />
+    <link rel="prev" title="Graph-based Spectral Methods" href="23-graph-based-spectral-methods.html" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
@@ -491,11 +491,6 @@
      Graph-based Spectral Methods
     </a>
    </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="25-kernel-pca.html">
-     Kernel PCA
-    </a>
-   </li>
    <li class="toctree-l2 current active">
     <a class="current reference internal" href="#">
      SNE and
@@ -503,6 +498,16 @@
       \(t\)
      </span>
      -SNE
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="31-kernel-pca.html">
+     Kernel PCA
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="32-kernel-cca.html">
+     Kernel CCA
     </a>
    </li>
   </ul>
@@ -615,7 +620,7 @@
         <!-- ipynb file if we had a myst markdown file -->
         
         <!-- Download raw file -->
-        <a class="dropdown-buttons" href="../_sources/33-dimensionality-reduction/31-t-SNE.md"><button type="button"
+        <a class="dropdown-buttons" href="../_sources/33-dimensionality-reduction/25-t-SNE.md"><button type="button"
                 class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
                 data-placement="left">.md</button></a>
         <!-- Download PDF via print -->
@@ -635,7 +640,7 @@
                 data-toggle="tooltip" data-placement="left" title="Source repository"><i
                     class="fab fa-github"></i>repository</button></a>
         <a class="issues-button"
-            href="https://github.com/dennissxz/data-science-handbook/issues/new?title=Issue%20on%20page%20%2F33-dimensionality-reduction/31-t-SNE.html&body=Your%20issue%20content%20here."><button
+            href="https://github.com/dennissxz/data-science-handbook/issues/new?title=Issue%20on%20page%20%2F33-dimensionality-reduction/25-t-SNE.html&body=Your%20issue%20content%20here."><button
                 type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
                 title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
         
@@ -673,7 +678,11 @@
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#sne-vs-t-sne">
-   SNE vs t-SNE.
+   SNE vs
+   <span class="math notranslate nohighlight">
+    \(t\)
+   </span>
+   -SNE
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -780,9 +789,9 @@ q_{j \mid i}=\left\{\begin{array}{ll}
 <p>Randomly initialize a <span class="math notranslate nohighlight">\(n \times k\)</span> low-dim data matrix <span class="math notranslate nohighlight">\(\boldsymbol{Z}\)</span> and do gradient descent to minimize the KL divergence.</p>
 </div>
 <div class="section" id="sne-vs-t-sne">
-<h2>SNE vs t-SNE.<a class="headerlink" href="#sne-vs-t-sne" title="Permalink to this headline">¶</a></h2>
+<h2>SNE vs <span class="math notranslate nohighlight">\(t\)</span>-SNE<a class="headerlink" href="#sne-vs-t-sne" title="Permalink to this headline">¶</a></h2>
 <p>SNE is difficult to optimize, and suffers from the “crowding problem” due to the asymmetric property as KL divergence.</p>
-<p>t-SNE makes two clever engineering improvements:</p>
+<p><span class="math notranslate nohighlight">\(t\)</span>-SNE makes two clever engineering improvements:</p>
 <ul class="simple">
 <li><p>Uses a <strong>symmetrized</strong> version of the SNE cost with simpler gradients that are faster to compute</p></li>
 <li><p>Uses a heavier-tailed Student-t distribution instead of Gaussian in the low-dimensional space</p></li>
@@ -804,11 +813,12 @@ q_{j \mid i}=\left\{\begin{array}{ll}
     \]</div>
 </li>
 <li><p>In low-dim space, because the Gaussian distribution dies off very fast with distance from the mean, SNE only accurately represents very nearby points. Moderately distant points can’t be <strong>differentiated</strong> from each other. Many points end up “crushed” into the center of the map.</p>
-<p>t-SNE’s solution: use a heavy-tailed distribution in the low-dim space, e.g. t-distribution, with one-degree of freedom.</p>
+<p><span class="math notranslate nohighlight">\(t\)</span>-SNE’s solution: use a heavy-tailed distribution in the low-dim space, e.g. t-distribution, with one-degree of freedom, to replace the Gaussian-like form in SNE. The joint probability becomes</p>
 <div class="math notranslate nohighlight">
 \[
-    q_{i j}=\frac{\left(1+\left\|\boldsymbol{z}_{i}-\boldsymbol{z}_{j}\right\|^{2}\right)^{-1}}{\sum_{k \neq l}\left(1+\left\|\boldsymbol{z}_{k}-\boldsymbol{z}_{l}\right\|^{2}\right)^{-1}}
+    q_{i j}=\frac{\left(1+\left\|\boldsymbol{z}_{i}-\boldsymbol{z}_{j}\right\|^{2}\right)^{-(df+1)/2}}{\sum_{k \neq l}\left(1+\left\|\boldsymbol{z}_{k}-\boldsymbol{z}_{l}\right\|^{2}\right)^{-(df+1)/2}}
     \]</div>
+<p>One can also tune the <span class="math notranslate nohighlight">\(df\)</span> hyperparameter. As the degree of freedom increases, the distribution converges to Gaussian and the points tends to crushed in to the center.</p>
 </li>
 </ul>
 </div>
@@ -826,7 +836,7 @@ q_{j \mid i}=\left\{\begin{array}{ll}
 <li><p>Tends to fail for Swiss roll-type toy data. t-SNE tries to find cluster structure, even if there is no cluster nature in the data.</p>
 <div class="figure align-default" id="tsne-swiss-roll">
 <a class="reference internal image-reference" href="../_images/tSNE-swiss-roll.png"><img alt="" src="../_images/tSNE-swiss-roll.png" style="width: 50%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 29 </span><span class="caption-text">Comparison of performance over a manifold data set <a class="reference external" href="http://scikit-learn.org/stable/modules/manifold.html">[scikit-learn]</a></span><a class="headerlink" href="#tsne-swiss-roll" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 25 </span><span class="caption-text">Comparison of performance over a manifold data set <a class="reference external" href="http://scikit-learn.org/stable/modules/manifold.html">[scikit-learn]</a></span><a class="headerlink" href="#tsne-swiss-roll" title="Permalink to this image">¶</a></p>
 </div>
 </li>
 <li><p><span class="math notranslate nohighlight">\(t\)</span>-SNE is non-parametric and has no natural out-of-sample extension; parametric extensions exist, e.g. <a class="reference internal" href="#parametric-t-sne"><span class="std std-ref">parametric <span class="math notranslate nohighlight">\(t\)</span>-SNE</span></a>.</p></li>
@@ -837,7 +847,7 @@ q_{j \mid i}=\left\{\begin{array}{ll}
 <p>How to set the hyperparameters <span class="math notranslate nohighlight">\(\sigma_i\)</span>?</p>
 <p>Data point-specific variances allow SNE/t-SNE to model varying densities in different parts of the high-dim space, but that’s as many hyperparameters as data points. SNE/t-SNE sets <span class="math notranslate nohighlight">\(\sigma_i\)</span> based on a single user-provided hyperparameter, namely <strong>perplexity</strong>.</p>
 <dl class="simple myst">
-<dt>Definition (Perplexity)</dt><dd><p>The perplexity of the distribution Pi is</p>
+<dt>Definition (Perplexity)</dt><dd><p>The perplexity of the distribution <span class="math notranslate nohighlight">\(P_i\)</span> is defined as</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
   \begin{aligned}
@@ -847,7 +857,7 @@ q_{j \mid i}=\left\{\begin{array}{ll}
   \end{split}\]</div>
 </dd>
 </dl>
-<p>Entropy is the average number of bits needed to encode the random variable. Perplexity is the “effective number of values” in the support of the domain of the random variable.</p>
+<p>Recall that entropy is the average number of bits needed to encode the random variable. Perplexity is the “effective number of values” in the support of the domain of the random variable.</p>
 <p><strong>Examples</strong></p>
 <ul>
 <li><p>Consider a uniform distribution P over N values:</p>
@@ -878,14 +888,14 @@ q_{j \mid i}=\left\{\begin{array}{ll}
 </ul>
 <div class="figure align-default" id="tsne-varying-perp">
 <a class="reference internal image-reference" href="../_images/tSNE-varying-perp.png"><img alt="" src="../_images/tSNE-varying-perp.png" style="width: 90%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 30 </span><span class="caption-text">t-SNE: varying perplexity (http://distill.pub/2016/misread-tsne/)</span><a class="headerlink" href="#tsne-varying-perp" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 26 </span><span class="caption-text">t-SNE: varying perplexity (http://distill.pub/2016/misread-tsne/)</span><a class="headerlink" href="#tsne-varying-perp" title="Permalink to this image">¶</a></p>
 </div>
 <p>So we should set perplexity as the average degree of each point, if we know it.</p>
 <p>What if the degree distribution is wide, i.e. imbalance? t-SNE may fail, some large-size cluster may break up to small ones.</p>
 </div>
 <div class="section" id="extension-parametric-t-sne">
 <span id="parametric-t-sne"></span><h2>Extension: Parametric <span class="math notranslate nohighlight">\(t\)</span>-SNE<a class="headerlink" href="#extension-parametric-t-sne" title="Permalink to this headline">¶</a></h2>
-<p>Parametric <span class="math notranslate nohighlight">\(t\)</span>-SNE use a parametric function <span class="math notranslate nohighlight">\(f()\)</span> to obtain the lower dimensional representation. The joint probability changes from</p>
+<p>Parametric <span class="math notranslate nohighlight">\(t\)</span>-SNE use a parametric function <span class="math notranslate nohighlight">\(f(\cdot)\)</span> to obtain the lower dimensional representation. The joint probability changes from</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 q_{i j} =\frac{\left(1+\left\|\boldsymbol{z}_{i}-\boldsymbol{z}_{j}\right\|^{2}\right)^{-1}}{\sum_{k \neq l}\left(1+\left\|\boldsymbol{z}_{k}-\boldsymbol{z}_{l}\right\|^{2}\right)^{-1}} \\
@@ -933,8 +943,8 @@ q_{i j} =\frac{\left(1+\left\|f\left(\boldsymbol{x}_{i}\right)-f\left(\boldsymbo
     
     <div class='prev-next-bottom'>
         
-    <a class='left-prev' id="prev-link" href="25-kernel-pca.html" title="previous page">Kernel PCA</a>
-    <a class='right-next' id="next-link" href="../34-clustering/00-clustering.html" title="next page">Clustering</a>
+    <a class='left-prev' id="prev-link" href="23-graph-based-spectral-methods.html" title="previous page">Graph-based Spectral Methods</a>
+    <a class='right-next' id="next-link" href="31-kernel-pca.html" title="next page">Kernel PCA</a>
 
     </div>
     <footer class="footer mt-5 mt-md-0">

@@ -34,7 +34,7 @@ Isomap algorithm:
 The output is the $k$-dimensional projections of all of the data points $\boldsymbol{z}_i$ such that the Euclidean distances in the projected space approximate the geodesic distances on the manifold.
 
 $$
-\left\|\mathbf{z}_{i}-\mathbf{z}_{j}\right\|^{2} \approx \Delta_{i j}^{2}
+\left\|\boldsymbol{z}_{i}-\boldsymbol{z}_{j}\right\|^{2} \approx \Delta_{i j}^{2}
 $$
 
 :::{figure} isomap-geodesic-distance
@@ -81,7 +81,7 @@ Unlike isomap where the edge weights are local Euclidean distances, Laplacian ei
 
     $$
     w_{i j}=\left\{\begin{array}{ll}
-    \exp \left(-\left\|\mathbf{x}_{i}-\mathbf{x}_{j}\right\|^{2} / t\right), & \left\|\mathbf{x}_{i}-\mathbf{x}_{j}\right\|<\epsilon \\
+    \exp \left(-\left\|\boldsymbol{x}_{i}-\boldsymbol{x}_{j}\right\|^{2} / t\right), & \left\|\boldsymbol{x}_{i}-\boldsymbol{x}_{j}\right\|<\epsilon \\
     0 & \text { otherwise }
     \end{array}\right.
     $$
@@ -97,7 +97,7 @@ Unlike isomap where the edge weights are local Euclidean distances, Laplacian ei
 
 
     $$\begin{aligned}
-    \min &\ \sum_{i j} \frac{w_{i j}|| \mathbf{z}_{i}-\mathbf{z}_{j}||^{2}}{\sqrt{d_{i i} d_{j j}}} \\
+    \min &\ \sum_{i j} \frac{w_{i j}|| \boldsymbol{z}_{i}-\boldsymbol{z}_{j}||^{2}}{\sqrt{d_{i i} d_{j j}}} \\
     \text{s.t.} &\ \boldsymbol{Z} \text{ is centered and has unit covariance} \\
     \end{aligned}$$
 
@@ -110,7 +110,7 @@ $$
 \boldsymbol{L} =\boldsymbol{I}  - \boldsymbol{D} ^{-\frac{1}{2}} \boldsymbol{W}  \boldsymbol{D} ^{-\frac{1}{2}}
 $$
 
-excluding the bottom (constant) eigenvector??. This is a symmetrized, normalized form of the graph Laplacian $\boldsymbol{D} - \boldsymbol{W}$.
+excluding the bottom (constant) eigenvector. This is a symmetrized, normalized form of the graph Laplacian $\boldsymbol{D} - \boldsymbol{W}$.
 
 :::{figure} gb-laplacian-eigenmap-Nt
 <img src="../imgs/gb-laplacian-eigenmap-Nt.png" width = "50%" alt=""/>
