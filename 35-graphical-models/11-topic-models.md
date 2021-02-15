@@ -67,6 +67,6 @@ The learned results are like
 
 <img src="../imgs/topic-beta-by-t.png" width = "80%" alt=""/>
 
-Learned words distribution parameters $\boldsymbol{\beta} _t$ by topics
+Learned words distribution parameters $\boldsymbol{\beta} _t$ by topics [Steyvers & Griffiths, 2007]
 
 :::

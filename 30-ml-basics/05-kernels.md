@@ -84,7 +84,7 @@ Representer Theorem (Simplified)
   $$\boldsymbol{w}^{*}=\sum_{i=1}^{n} \alpha_{i} \boldsymbol{\phi} \left(\boldsymbol{x}_i \right) = \boldsymbol{X} ^\top \boldsymbol{\alpha}$$
 
 
-**Example (Linear regression OLS)**
+Example (Linear regression OLS)
 : In linear regression, we can write $\boldsymbol{\beta}$ as a linear combination of data vectors $\boldsymbol{x}_i$ (identical transformation $\boldsymbol{\phi}$).
 
 
