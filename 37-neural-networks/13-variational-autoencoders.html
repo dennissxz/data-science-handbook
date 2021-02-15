@@ -46,8 +46,6 @@
     <script src="../_static/copybutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="../_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
     <script >
         const thebe_selector = ".thebe"
@@ -55,6 +53,8 @@
         const thebe_selector_output = ".output"
     </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="prev" title="Autoencoders" href="11-autoencoders.html" />
@@ -387,6 +387,16 @@
      Maximum Flow
     </a>
    </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/32-matching.html">
+     Matching
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/42-maximum-independent-set.html">
+     Maximum Independent Set in Trees
+    </a>
+   </li>
   </ul>
   <i class="fas fa-chevron-down">
   </i>
@@ -539,6 +549,20 @@
    <li class="toctree-l2">
     <a class="reference internal" href="../34-clustering/41-gaussian-mixtures.html">
      Gaussian Mixtures
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../35-graphical-models/00-graphical-models.html">
+   Graphical Models
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../35-graphical-models/11-topic-models.html">
+     Topic Models
     </a>
    </li>
   </ul>
@@ -735,13 +759,13 @@ p(\boldsymbol{x})=\int_{\boldsymbol{z}} p(\boldsymbol{x} \vert \boldsymbol{z}) p
 <p>Ideally, the encoder and decoder should learn the two conditional distributions (from the joint distribution of <span class="math notranslate nohighlight">\((x,z)\)</span>) parameterized by <span class="math notranslate nohighlight">\(\theta\)</span>.</p>
 <div class="figure align-default" id="vae-ideal-step">
 <a class="reference internal image-reference" href="../_images/vae-ideal-step.png"><img alt="" src="../_images/vae-ideal-step.png" style="width: 30%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 64 </span><span class="caption-text">Ideal case of VAE [Durr 2016]</span><a class="headerlink" href="#vae-ideal-step" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 70 </span><span class="caption-text">Ideal case of VAE [Durr 2016]</span><a class="headerlink" href="#vae-ideal-step" title="Permalink to this image">¶</a></p>
 </div>
 <p>But <span class="math notranslate nohighlight">\(p(\boldsymbol{z} \vert \boldsymbol{x} )\)</span> can be very costly to estimate. As a result, we approximate it with another neural function <span class="math notranslate nohighlight">\(q(\boldsymbol{z} \vert \boldsymbol{x} )\)</span>, which is the decoder.</p>
 <p>Assume w.l.o.g. that latent variable <span class="math notranslate nohighlight">\(\boldsymbol{z}\)</span> is 1-dimensional, <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> is 2-dimensional. The VAE structure can be shown as</p>
 <div class="figure align-default" id="vae-networks">
 <a class="reference internal image-reference" href="../_images/vae-networks.png"><img alt="" src="../_images/vae-networks.png" style="width: 80%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 65 </span><span class="caption-text">VAE structure (dash lines mean sampling) [Durr 2016]</span><a class="headerlink" href="#vae-networks" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 71 </span><span class="caption-text">VAE structure (dash lines mean sampling) [Durr 2016]</span><a class="headerlink" href="#vae-networks" title="Permalink to this image">¶</a></p>
 </div>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(q(\boldsymbol{x}  \vert \boldsymbol{z} )\)</span> is the distribution learned by the encoder part.</p></li>
@@ -761,7 +785,7 @@ p(\boldsymbol{x})=\int_{\boldsymbol{z}} p(\boldsymbol{x} \vert \boldsymbol{z}) p
 </ul>
 <div class="figure align-default" id="id1">
 <a class="reference internal image-reference" href="../_images/vae-decoder-generation.png"><img alt="" src="../_images/vae-decoder-generation.png" style="width: 80%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 66 </span><span class="caption-text">Use VAE to generate a handwritten digit [Durr 2016]</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 72 </span><span class="caption-text">Use VAE to generate a handwritten digit [Durr 2016]</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
 </div>
 <p>There is a theoretical foundation of generation.</p>
 <dl class="simple myst">
@@ -858,7 +882,7 @@ L^{v} &amp;=\sum_{z} q(z \vert x) \log \left(\frac{p(z, x)}{q(z \vert x)}\right)
 <p>Then random node becomes <span class="math notranslate nohighlight">\(\boldsymbol{\varepsilon}\)</span>, and we won’t need to compute its gradient during backpropagation.</p>
 <div class="figure align-default" id="vae-reparm-trick-png">
 <a class="reference internal image-reference" href="../_images/vae-reparm-trick.png"><img alt="" src="../_images/vae-reparm-trick.png" style="width: 50%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 67 </span><span class="caption-text">Reparametrization trick of VAE [Kingma 2015]</span><a class="headerlink" href="#vae-reparm-trick-png" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 73 </span><span class="caption-text">Reparametrization trick of VAE [Kingma 2015]</span><a class="headerlink" href="#vae-reparm-trick-png" title="Permalink to this image">¶</a></p>
 </div>
 <div class="margin sidebar">
 <p class="sidebar-title">How about non-Gaussian distributions?</p>
@@ -874,7 +898,7 @@ L^{v} &amp;=\sum_{z} q(z \vert x) \log \left(\frac{p(z, x)}{q(z \vert x)}\right)
 <p>In the following example (a), <span class="math notranslate nohighlight">\(k=2\)</span>, the horizontal dimension is head tile, and the vertical dimension is degree of smiling vs frowning.</p>
 <div class="figure align-default" id="vae-phase">
 <a class="reference internal image-reference" href="../_images/vae-phase.png"><img alt="" src="../_images/vae-phase.png" style="width: 80%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 68 </span><span class="caption-text">VAE phase diagram for interpretation</span><a class="headerlink" href="#vae-phase" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 74 </span><span class="caption-text">VAE phase diagram for interpretation</span><a class="headerlink" href="#vae-phase" title="Permalink to this image">¶</a></p>
 </div>
 </div>
 <div class="section" id="potential-representations">

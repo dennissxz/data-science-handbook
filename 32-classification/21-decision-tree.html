@@ -46,8 +46,6 @@
     <script src="../_static/copybutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="../_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
     <script >
         const thebe_selector = ".thebe"
@@ -55,6 +53,8 @@
         const thebe_selector_output = ".output"
     </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Dimensionality Reduction" href="../33-dimensionality-reduction/00-dimensionality-reduction.html" />
@@ -388,6 +388,16 @@
      Maximum Flow
     </a>
    </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/32-matching.html">
+     Matching
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/42-maximum-independent-set.html">
+     Maximum Independent Set in Trees
+    </a>
+   </li>
   </ul>
   <i class="fas fa-chevron-down">
   </i>
@@ -547,6 +557,20 @@
   </i>
  </li>
  <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../35-graphical-models/00-graphical-models.html">
+   Graphical Models
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../35-graphical-models/11-topic-models.html">
+     Topic Models
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
   <a class="reference internal" href="../37-neural-networks/00-neural-networks.html">
    Neural Networks
   </a>
@@ -682,13 +706,13 @@
     </a>
     <ul class="nav section-nav flex-column">
      <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#purity">
-       Purity
+      <a class="reference internal nav-link" href="#maximum-purity">
+       Maximum Purity
       </a>
      </li>
      <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#normalized-mutual-information">
-       Normalized Mutual Information
+      <a class="reference internal nav-link" href="#maximum-normalized-mutual-information">
+       Maximum Normalized Mutual Information
       </a>
      </li>
      <li class="toc-h4 nav-item toc-entry">
@@ -744,7 +768,7 @@
 </ul>
 <div class="figure align-default" id="dt-example-1">
 <a class="reference internal image-reference" href="../_images/dt-example-1.png"><img alt="" src="../_images/dt-example-1.png" style="width: 50%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 13 </span><span class="caption-text">A simple example of decision tree [Livescue 2021]</span><a class="headerlink" href="#dt-example-1" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 15 </span><span class="caption-text">A simple example of decision tree [Livescue 2021]</span><a class="headerlink" href="#dt-example-1" title="Permalink to this image">¶</a></p>
 </div>
 <p>We need to specify</p>
 <ul class="simple">
@@ -774,13 +798,49 @@ to the answer to question <span class="math notranslate nohighlight">\(Q^*\)</sp
 <div class="section" id="partition-metrics">
 <h3>Partition Metrics<a class="headerlink" href="#partition-metrics" title="Permalink to this headline">¶</a></h3>
 <p>To evaluate question quality, we need some partition metrics.</p>
-<p>For unlabelled data, we can use maximum likelihood and minimum entropy.</p>
-<div class="section" id="purity">
-<h4>Purity<a class="headerlink" href="#purity" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="maximum-purity">
+<h4>Maximum Purity<a class="headerlink" href="#maximum-purity" title="Permalink to this headline">¶</a></h4>
+<p><span class="math notranslate nohighlight">\(\operatorname{purity}(\Omega, C)=\frac{1}{N} \sum_{k} \max _{j}\left|\omega_{k} \cap c_{j}\right|\)</span></p>
+<p>where</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\Omega\)</span> is the proposed clustering,</p></li>
+<li><p><span class="math notranslate nohighlight">\(C\)</span> is the ground-truth clustering</p></li>
+<li><p><span class="math notranslate nohighlight">\(w_k\)</span> is the set of items assigned to cluster <span class="math notranslate nohighlight">\(k\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(c_j\)</span> is the set of items with ground truth label <span class="math notranslate nohighlight">\(j\)</span></p></li>
+</ul>
+<p>properties</p>
+<ul class="simple">
+<li><p>in <span class="math notranslate nohighlight">\((0,1)\)</span></p></li>
+<li><p>biased toward finer clusterings (purity<span class="math notranslate nohighlight">\(=1\)</span> if each example is in its own cluster), so this measure makes sense for comparing clusterings with a given <strong>fixed</strong> number of clusters</p></li>
+</ul>
 </div>
-<div class="section" id="normalized-mutual-information">
-<h4>Normalized Mutual Information<a class="headerlink" href="#normalized-mutual-information" title="Permalink to this headline">¶</a></h4>
-<p>Normalized by cluster sizes.</p>
+<div class="section" id="maximum-normalized-mutual-information">
+<h4>Maximum Normalized Mutual Information<a class="headerlink" href="#maximum-normalized-mutual-information" title="Permalink to this headline">¶</a></h4>
+<p>Define</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(p(k, j) = \frac{\left|\omega_{k} \cap c_{j}\right|}{N}\)</span> as the probability that a randomly chosen example belongs to proposed cluster <span class="math notranslate nohighlight">\(w_k\)</span> <strong>and</strong> ground-truth cluster <span class="math notranslate nohighlight">\(c_j\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(p_\Omega (k) = \frac{\left\vert w_k \right\vert}{N}\)</span> as the probability that a randomly chosen example belongs to proposed cluster <span class="math notranslate nohighlight">\(w_k\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(p_C(j)= \frac{\left\vert c_j \right\vert}{N}\)</span> likewise</p></li>
+</ul>
+<p>The mutual information of induced from the joint distribution <span class="math notranslate nohighlight">\(p(k,j)\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[
+\mathrm{I}(\Omega, C)=\sum_{k} \sum_{j} p(k, j) \log \frac{p(k, j)}{p_{\Omega}(k) p_{C}(j)}
+\]</div>
+<p>and we can define entropies <span class="math notranslate nohighlight">\(H(\Omega)\)</span> and <span class="math notranslate nohighlight">\(H(C)\)</span>.</p>
+<p>Finally, the normalized mutual information is</p>
+<div class="math notranslate nohighlight">
+\[
+\operatorname{NMI}(\Omega, C)=\frac{I(\Omega ; C)}{[H(\Omega)+H(C)] / 2}
+\]</div>
+<p>Properties</p>
+<ul class="simple">
+<li><p>Ranges from 0 and 1</p></li>
+<li><p>Mutual information alone would also favor over-clustering</p></li>
+<li><p>Entropies in the denominator act as penalty for over-clustering</p></li>
+</ul>
+<hr class="docutils" />
+<p>For unlabelled data, we can use maximum likelihood and minimum entropy.</p>
 </div>
 <div class="section" id="maximum-likelihood">
 <h4>Maximum Likelihood<a class="headerlink" href="#maximum-likelihood" title="Permalink to this headline">¶</a></h4>
@@ -797,7 +857,7 @@ Q^{*}=\operatorname{argmax}_{Q} p\left(\operatorname{data}_{\ell} \mid \boldsymb
 <p>Note that the best question should <strong>always</strong> improve likelihood somewhat.</p>
 <div class="figure align-default" id="dt-evaluate-q">
 <a class="reference internal image-reference" href="../_images/dt-evaluate-q.png"><img alt="" src="../_images/dt-evaluate-q.png" style="width: 50%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 14 </span><span class="caption-text">Evaluating question quality by maximum likelihood</span><a class="headerlink" href="#dt-evaluate-q" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 16 </span><span class="caption-text">Evaluating question quality by maximum likelihood</span><a class="headerlink" href="#dt-evaluate-q" title="Permalink to this image">¶</a></p>
 </div>
 </div>
 <div class="section" id="minimum-entropy">

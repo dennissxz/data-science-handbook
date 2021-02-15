@@ -46,8 +46,6 @@
     <script src="../_static/copybutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="../_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
     <script >
         const thebe_selector = ".thebe"
@@ -55,6 +53,8 @@
         const thebe_selector_output = ".output"
     </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="SNE and \(t\)-SNE" href="25-t-SNE.html" />
@@ -388,6 +388,16 @@
      Maximum Flow
     </a>
    </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/32-matching.html">
+     Matching
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/42-maximum-independent-set.html">
+     Maximum Independent Set in Trees
+    </a>
+   </li>
   </ul>
   <i class="fas fa-chevron-down">
   </i>
@@ -540,6 +550,20 @@
    <li class="toctree-l2">
     <a class="reference internal" href="../34-clustering/41-gaussian-mixtures.html">
      Gaussian Mixtures
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../35-graphical-models/00-graphical-models.html">
+   Graphical Models
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../35-graphical-models/11-topic-models.html">
+     Topic Models
     </a>
    </li>
   </ul>
@@ -723,14 +747,19 @@
                 
   <div class="section" id="graph-based-spectral-methods">
 <h1>Graph-based Spectral Methods<a class="headerlink" href="#graph-based-spectral-methods" title="Permalink to this headline">¶</a></h1>
-<p>PCA, CCA, MDS are linear dimensionality reduction methods. If out data lies on a nonlinear manifold (a topological space locally resembling Euclidean space), then we need non-linear dimensionality reduction methods. Many of them are extended from MDS.</p>
-<p>Graph-based spectral methods takes inspiration from MDS, extends to a variety of distance/similarity measures.</p>
+<p>PCA, CCA, MDS are linear dimensionality reduction methods. The lower-dimensional linear projection preserves distances between <strong>all</strong> points.</p>
+<p>If our data lies on a nonlinear manifold (a topological space locally resembling Euclidean space), then we need non-linear dimensionality reduction methods. Many of them are extended from MDS, that extends to a variety of distance/similarity measures. They only preserve <strong>local</strong> distance/neighborhood information along nonlinear manifold</p>
 <p>In general, there are three steps:</p>
+<ol class="simple">
+<li><p>Define some similarity/distance measure between data points <span class="math notranslate nohighlight">\(d(\boldsymbol{x}_i ,\boldsymbol{x}_j)\)</span>.</p></li>
+<li><p>Induce a graph from the <span class="math notranslate nohighlight">\(n \times d\)</span> data set <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span></p>
 <ul class="simple">
-<li><p>Construct a graph with nodes being the data points. Define a similarity measure between neighbors. Assign the similarity measure value to edge weights.</p></li>
-<li><p>Construct a <span class="math notranslate nohighlight">\(n \times n\)</span> matrix summarization of the data set / graph, where the entries are pairwise weights (usually sparse).</p></li>
-<li><p>Perform operations on the wight matrix to find the data projections (e.g. spectral decomposition).</p></li>
+<li><p>nodes are the data points</p></li>
+<li><p>add edge <span class="math notranslate nohighlight">\(e(i,j)\)</span> if the distance <span class="math notranslate nohighlight">\(d(\boldsymbol{x}_i,\boldsymbol{x}_j)\)</span> satisfy certain criteria, e.g.  <span class="math notranslate nohighlight">\(d&lt;\varepsilon\)</span>, <span class="math notranslate nohighlight">\(k\)</span>-NN, or mutual <span class="math notranslate nohighlight">\(k\)</span>-NN.</p></li>
 </ul>
+</li>
+<li><p>Perform spectral methods on some graph matrices, such as adjacency matrix, weights matrix, Laplacian matrix, etc, to obtain the embedding <span class="math notranslate nohighlight">\(\boldsymbol{Z} _{n \times d}\)</span> that preserve some property in the original space.</p></li>
+</ol>
 <p>Examples: Isomap, maximum variance unfolding, locally linear embedding, Laplacian eigenmaps.</p>
 <div class="section" id="isomap">
 <h2>Isomap<a class="headerlink" href="#isomap" title="Permalink to this headline">¶</a></h2>
@@ -752,7 +781,7 @@
 \]</div>
 <div class="figure align-default" id="isomap-geodesic-distance">
 <a class="reference internal image-reference" href="../_images/gb-isomap-d3k2.png"><img alt="" src="../_images/gb-isomap-d3k2.png" style="width: 80%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 21 </span><span class="caption-text">Isomap with <span class="math notranslate nohighlight">\(d=3,k=2\)</span>. The blue line is the real geodesic distance and the red line is estimated.  [Livescu 2021]</span><a class="headerlink" href="#isomap-geodesic-distance" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 23 </span><span class="caption-text">Isomap with <span class="math notranslate nohighlight">\(d=3,k=2\)</span>. The blue line is the real geodesic distance and the red line is estimated.  [Livescu 2021]</span><a class="headerlink" href="#isomap-geodesic-distance" title="Permalink to this image">¶</a></p>
 </div>
 </div>
 <div class="section" id="pros-cons">
@@ -766,13 +795,13 @@
 <li><p>Can be sensitive to the <strong>neighborhood size</strong> used in graph construction, or equivalently to the noise in the data.</p>
 <div class="figure align-default" id="isomap-noise">
 <a class="reference internal image-reference" href="../_images/gb-isomap-failure.png"><img alt="" src="../_images/gb-isomap-failure.png" style="width: 70%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 22 </span><span class="caption-text">Isomap fails when there are noises [Livescu 2021]</span><a class="headerlink" href="#isomap-noise" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 24 </span><span class="caption-text">Isomap fails when there are noises [Livescu 2021]</span><a class="headerlink" href="#isomap-noise" title="Permalink to this image">¶</a></p>
 </div>
 </li>
 <li><p>Can’t handle <strong>holes</strong> in the manifold. Geodesic distance computation can break. This is because the two points (even with the same color/label) sit in opposite to the hole have large geodesic distance on the manifold, which leads to large Euclidean distance in the projected space.</p>
 <div class="figure align-default" id="gb-isomap-holes">
 <a class="reference internal image-reference" href="../_images/gb-isomap-holes.png"><img alt="" src="../_images/gb-isomap-holes.png" style="width: 80%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 23 </span><span class="caption-text">Isomap fails when there are holes [Livescu 2021]</span><a class="headerlink" href="#gb-isomap-holes" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 25 </span><span class="caption-text">Isomap fails when there are holes [Livescu 2021]</span><a class="headerlink" href="#gb-isomap-holes" title="Permalink to this image">¶</a></p>
 </div>
 </li>
 </ul>
@@ -819,7 +848,7 @@
 <p>excluding the bottom (constant) eigenvector. This is a symmetrized, normalized form of the graph Laplacian <span class="math notranslate nohighlight">\(\boldsymbol{D} - \boldsymbol{W}\)</span>.</p>
 <div class="figure align-default" id="gb-laplacian-eigenmap-nt">
 <a class="reference internal image-reference" href="../_images/gb-laplacian-eigenmap-Nt.png"><img alt="" src="../_images/gb-laplacian-eigenmap-Nt.png" style="width: 50%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 24 </span><span class="caption-text">Laplacian eigenmap with varing N-nearest-neighbors and temperature <span class="math notranslate nohighlight">\(t\)</span> [Livescu 2021]</span><a class="headerlink" href="#gb-laplacian-eigenmap-nt" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 26 </span><span class="caption-text">Laplacian eigenmap with varing N-nearest-neighbors and temperature <span class="math notranslate nohighlight">\(t\)</span> [Livescu 2021]</span><a class="headerlink" href="#gb-laplacian-eigenmap-nt" title="Permalink to this image">¶</a></p>
 </div>
 </div>
 </div>

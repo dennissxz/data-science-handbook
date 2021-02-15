@@ -46,8 +46,6 @@
     <script src="../_static/copybutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="../_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
     <script >
         const thebe_selector = ".thebe"
@@ -55,9 +53,11 @@
         const thebe_selector_output = ".output"
     </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Neural Networks" href="../37-neural-networks/00-neural-networks.html" />
+    <link rel="next" title="Graphical Models" href="../35-graphical-models/00-graphical-models.html" />
     <link rel="prev" title="Spectral Clustering" href="31-spectral-clustering.html" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -388,6 +388,16 @@
      Maximum Flow
     </a>
    </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/32-matching.html">
+     Matching
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/42-maximum-independent-set.html">
+     Maximum Independent Set in Trees
+    </a>
+   </li>
   </ul>
   <i class="fas fa-chevron-down">
   </i>
@@ -547,6 +557,20 @@
   </i>
  </li>
  <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../35-graphical-models/00-graphical-models.html">
+   Graphical Models
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../35-graphical-models/11-topic-models.html">
+     Topic Models
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
   <a class="reference internal" href="../37-neural-networks/00-neural-networks.html">
    Neural Networks
   </a>
@@ -692,8 +716,8 @@
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#cons">
-   Cons
+  <a class="reference internal nav-link" href="#regularization">
+   Regularization
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -721,7 +745,7 @@
 <p><strong>Gaussian mixtures</strong> are mixture models that represent the density of the data as a mixture of component densities.</p>
 <div class="figure align-default" id="gaumix-2d2k-comparison">
 <a class="reference internal image-reference" href="../_images/gaumix-2d2k-comparison.png"><img alt="" src="../_images/gaumix-2d2k-comparison.png" style="width: 70%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 47 </span><span class="caption-text">Comparison of fitting with a single Gaussian and a mixture of two Gaussians.</span><a class="headerlink" href="#gaumix-2d2k-comparison" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 49 </span><span class="caption-text">Comparison of fitting with a single Gaussian and a mixture of two Gaussians.</span><a class="headerlink" href="#gaumix-2d2k-comparison" title="Permalink to this image">¶</a></p>
 </div>
 <div class="section" id="objective">
 <h2>Objective<a class="headerlink" href="#objective" title="Permalink to this headline">¶</a></h2>
@@ -738,12 +762,12 @@ p(\boldsymbol{x})=\sum_{k=1}^{K} \pi_{k} \underbrace{\mathcal{n}\left(\boldsymbo
 <p>For instance, when <span class="math notranslate nohighlight">\(K=3\)</span>, and <span class="math notranslate nohighlight">\(\boldsymbol{x} \in \mathbb{R}\)</span>, then the mixture is like</p>
 <div class="figure align-default" id="gaumix-1d3k">
 <a class="reference internal image-reference" href="../_images/gaumix-1d3k.png"><img alt="" src="../_images/gaumix-1d3k.png" style="width: 50%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 48 </span><span class="caption-text">A mixture of three univariate Gaussians</span><a class="headerlink" href="#gaumix-1d3k" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 50 </span><span class="caption-text">A mixture of three univariate Gaussians</span><a class="headerlink" href="#gaumix-1d3k" title="Permalink to this image">¶</a></p>
 </div>
 <p>For bivariate cases,</p>
 <div class="figure align-default" id="gaumix-2d3k">
 <a class="reference internal image-reference" href="../_images/gaumix-2d3k.png"><img alt="" src="../_images/gaumix-2d3k.png" style="width: 50%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 49 </span><span class="caption-text">A mixture of three bivariate Gaussians</span><a class="headerlink" href="#gaumix-2d3k" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 51 </span><span class="caption-text">A mixture of three bivariate Gaussians</span><a class="headerlink" href="#gaumix-2d3k" title="Permalink to this image">¶</a></p>
 </div>
 <p>Essentially any distribution can be approximated arbitrarily well by a large enough Gaussian mixture. But, maximum-likelihood estimation of parameters is not trivial.</p>
 </div>
@@ -823,7 +847,7 @@ p(\boldsymbol{X}, \boldsymbol{Z} \mid \boldsymbol{\pi}, \boldsymbol{\theta}  ) \
 </ul>
 <div class="figure align-default" id="gaumix-em-iterations">
 <a class="reference internal image-reference" href="../_images/gaumix-em-iterations.png"><img alt="" src="../_images/gaumix-em-iterations.png" style="width: 80%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 50 </span><span class="caption-text">Iterations of EM algorithms [Livescue 2021]</span><a class="headerlink" href="#gaumix-em-iterations" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 52 </span><span class="caption-text">Iterations of EM algorithms [Livescue 2021]</span><a class="headerlink" href="#gaumix-em-iterations" title="Permalink to this image">¶</a></p>
 </div>
 <div class="margin sidebar">
 <p class="sidebar-title">General EM</p>
@@ -831,17 +855,21 @@ p(\boldsymbol{X}, \boldsymbol{Z} \mid \boldsymbol{\pi}, \boldsymbol{\theta}  ) \
 </div>
 </div>
 </div>
-<div class="section" id="cons">
-<h2>Cons<a class="headerlink" href="#cons" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="regularization">
+<h2>Regularization<a class="headerlink" href="#regularization" title="Permalink to this headline">¶</a></h2>
 <p>If an initial guess of cluster center <span class="math notranslate nohighlight">\(\boldsymbol{\mu}\)</span> happens to be close to some data point <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> and the variance is happen to be small, then the ML over <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> is very large, i.e. overfitting.</p>
 <div class="math notranslate nohighlight">
 \[
 \lim _{\sigma^{2} \rightarrow 0} \mathcal{N}\left(\mathbf{x} \mid \mu=\mathbf{x}, \Sigma=\sigma^{2} I\right)=\infty
 \]</div>
+<div class="figure align-default" id="gaumix-fail">
+<a class="reference internal image-reference" href="../_images/gaumix-fail.png"><img alt="" src="../_images/gaumix-fail.png" style="width: 70%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 53 </span><span class="caption-text">Gaussian mixture fails if initialized at a point</span><a class="headerlink" href="#gaumix-fail" title="Permalink to this image">¶</a></p>
+</div>
 <p>Solutions</p>
 <ul>
 <li><p>Start with large variance, and put lower bound of variance on each dimension of each component in the iterations.</p></li>
-<li><p>Try several initialization and pick the best one. Best can be measured by some metrics, e.g. entropy, purity.</p></li>
+<li><p>Try several initialization and pick the best one. Best can be measured by some metrics, e.g. minimum entropy, maximum purity.</p></li>
 <li><p>Held-out data</p></li>
 <li><p>Instead of maximizing the expected likelihood in the M-step,
 maximize the posterior probability of <span class="math notranslate nohighlight">\(\theta\)</span> (MAP estimate).</p>
@@ -852,37 +880,38 @@ maximize the posterior probability of <span class="math notranslate nohighlight"
 </div>
 <div class="section" id="model-selection-k">
 <h2>Model Selection (<span class="math notranslate nohighlight">\(K\)</span>)<a class="headerlink" href="#model-selection-k" title="Permalink to this headline">¶</a></h2>
-<p>Straw man idea: Choose K to maximize the likelihood</p>
+<p>Straw man idea: Choose <span class="math notranslate nohighlight">\(K\)</span> to maximize the likelihood</p>
 <ul class="simple">
-<li><p>Result: A separate, tiny Gaussian for each training example • In the limit Σ → 0, this yields infinite likelihood</p></li>
+<li><p>Result: A separate, tiny Gaussian for each training example</p></li>
+<li><p>In the limit <span class="math notranslate nohighlight">\(\Sigma \rightarrow 0\)</span>, this yields infinite likelihood</p></li>
 </ul>
 <p>Consider the number of parameters in a Gaussian mixture model <span class="math notranslate nohighlight">\(\mathcal{M}\)</span> with <span class="math notranslate nohighlight">\(K\)</span> components and dimensionality <span class="math notranslate nohighlight">\(D\)</span>.</p>
 <div class="math notranslate nohighlight">
 \[
 d(\mathcal{M})=K(D+D(D+1) / 2)+K-1
 \]</div>
-<p>We need penalty on large <span class="math notranslate nohighlight">\(d(\mathcal{M})\)</span></p>
-<ul class="simple">
-<li><p>Bayesian Information Criterion (BIC): Learn a model for each K that optimizes the likelihood L(M), then choose the model that maximizes</p></li>
-</ul>
+<p>We need penalty on large <span class="math notranslate nohighlight">\(d(\mathcal{M})\)</span>. Below are some terms often used to compare model complexity</p>
+<ul>
+<li><p>Bayesian Information Criterion (BIC): Learn a model for each K that optimizes the likelihood L(M), then choose the model that maximizes</p>
 <div class="math notranslate nohighlight">
 \[
-B I C(\mathcal{M})=L(\mathcal{M})-\frac{d(\mathcal{M})}{2} \log N
-\]</div>
-<ul class="simple">
+    B I C(\mathcal{M})=L(\mathcal{M})-\frac{d(\mathcal{M})}{2} \log n
+    \]</div>
+</li>
 <li><p>Akaike information criterion (AIC), minimum description length (MDL), etc.</p></li>
-<li><p>cross-validation</p></li>
 </ul>
-<p>In practice, most often use cross-validation to choose hyper-parameters like <span class="math notranslate nohighlight">\(K\)</span> or the minimum variance.</p>
-<p>In practice</p>
-<p>Growing:</p>
+<p>In practice,</p>
 <ul class="simple">
+<li><p>most often use cross-validation to choose hyper-parameters like <span class="math notranslate nohighlight">\(K\)</span> or the minimum variance.</p></li>
+<li><p>start from small <span class="math notranslate nohighlight">\(K\)</span> and growing</p>
+<ul>
 <li><p>Start with a single Gaussian, do EM until convergence</p></li>
 <li><p>Repeat: Split each Gaussian into two Gaussians with slightly
-different means, run EM, test on dev set</p></li>
-<li><p>Until no performance improvement on dev set</p></li>
+different means, run EM, test on development set</p></li>
+<li><p>Until no performance improvement on development set</p></li>
 </ul>
-<p>.</p>
+</li>
+</ul>
 </div>
 </div>
 
@@ -915,7 +944,7 @@ different means, run EM, test on dev set</p></li>
     <div class='prev-next-bottom'>
         
     <a class='left-prev' id="prev-link" href="31-spectral-clustering.html" title="previous page">Spectral Clustering</a>
-    <a class='right-next' id="next-link" href="../37-neural-networks/00-neural-networks.html" title="next page">Neural Networks</a>
+    <a class='right-next' id="next-link" href="../35-graphical-models/00-graphical-models.html" title="next page">Graphical Models</a>
 
     </div>
     <footer class="footer mt-5 mt-md-0">

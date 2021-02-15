@@ -1,14 +1,17 @@
 # Graph-based Spectral Methods
 
-PCA, CCA, MDS are linear dimensionality reduction methods. If out data lies on a nonlinear manifold (a topological space locally resembling Euclidean space), then we need non-linear dimensionality reduction methods. Many of them are extended from MDS.
+PCA, CCA, MDS are linear dimensionality reduction methods. The lower-dimensional linear projection preserves distances between **all** points.
 
-Graph-based spectral methods takes inspiration from MDS, extends to a variety of distance/similarity measures.
+If our data lies on a nonlinear manifold (a topological space locally resembling Euclidean space), then we need non-linear dimensionality reduction methods. Many of them are extended from MDS, that extends to a variety of distance/similarity measures. They only preserve **local** distance/neighborhood information along nonlinear manifold
 
 In general, there are three steps:
 
-- Construct a graph with nodes being the data points. Define a similarity measure between neighbors. Assign the similarity measure value to edge weights.
-- Construct a $n \times n$ matrix summarization of the data set / graph, where the entries are pairwise weights (usually sparse).
-- Perform operations on the wight matrix to find the data projections (e.g. spectral decomposition).
+1. Define some similarity/distance measure between data points $d(\boldsymbol{x}_i ,\boldsymbol{x}_j)$.
+2. Induce a graph from the $n \times d$ data set $\boldsymbol{X}$
+   - nodes are the data points
+   - add edge $e(i,j)$ if the distance $d(\boldsymbol{x}_i,\boldsymbol{x}_j)$ satisfy certain criteria, e.g.  $d<\varepsilon$, $k$-NN, or mutual $k$-NN.
+3. Perform spectral methods on some graph matrices, such as adjacency matrix, weights matrix, Laplacian matrix, etc, to obtain the embedding $\boldsymbol{Z} _{n \times d}$ that preserve some property in the original space.
+
 
 Examples: Isomap, maximum variance unfolding, locally linear embedding, Laplacian eigenmaps.
 

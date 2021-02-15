@@ -46,8 +46,6 @@
     <script src="../_static/copybutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="../_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
     <script >
         const thebe_selector = ".thebe"
@@ -55,6 +53,8 @@
         const thebe_selector_output = ".output"
     </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Kernel CCA" href="32-kernel-cca.html" />
@@ -388,6 +388,16 @@
      Maximum Flow
     </a>
    </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/32-matching.html">
+     Matching
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/42-maximum-independent-set.html">
+     Maximum Independent Set in Trees
+    </a>
+   </li>
   </ul>
   <i class="fas fa-chevron-down">
   </i>
@@ -540,6 +550,20 @@
    <li class="toctree-l2">
     <a class="reference internal" href="../34-clustering/41-gaussian-mixtures.html">
      Gaussian Mixtures
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../35-graphical-models/00-graphical-models.html">
+   Graphical Models
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../35-graphical-models/11-topic-models.html">
+     Topic Models
     </a>
    </li>
   </ul>
@@ -849,7 +873,7 @@ k(\boldsymbol{x} _n, \boldsymbol{x}) \\
 </ul>
 <div class="figure align-default" id="kernels-rbf">
 <a class="reference internal image-reference" href="../_images/kernels-RBF.png"><img alt="" src="../_images/kernels-RBF.png" style="width: 50%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 27 </span><span class="caption-text">Gaussian kernels</span><a class="headerlink" href="#kernels-rbf" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 29 </span><span class="caption-text">Gaussian kernels</span><a class="headerlink" href="#kernels-rbf" title="Permalink to this image">¶</a></p>
 </div>
 <ul>
 <li><p>Polynomial kernel</p>
@@ -871,13 +895,13 @@ k(\boldsymbol{x} _n, \boldsymbol{x}) \\
 <li><p>the data is non-linear and fit the chosen kernel.</p>
 <div class="figure align-default" id="kernel-pca-ep1">
 <a class="reference internal image-reference" href="../_images/kernel-pca-ep1.png"><img alt="" src="../_images/kernel-pca-ep1.png" style="width: 80%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 28 </span><span class="caption-text">Kernel PCA with a RBF kernel on points [Livescu 2021].</span><a class="headerlink" href="#kernel-pca-ep1" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 30 </span><span class="caption-text">Kernel PCA with a RBF kernel on points [Livescu 2021].</span><a class="headerlink" href="#kernel-pca-ep1" title="Permalink to this image">¶</a></p>
 </div>
 </li>
 <li><p>there is much noise in the data</p>
 <div class="figure align-default" id="id1">
 <a class="reference internal image-reference" href="../_images/kernel-pca-ep2.png"><img alt="" src="../_images/kernel-pca-ep2.png" style="width: 60%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 29 </span><span class="caption-text">Kernel PCA on images [Livescu 2021].</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 31 </span><span class="caption-text">Kernel PCA on images [Livescu 2021].</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
 </div>
 </li>
 </ul>
@@ -888,7 +912,7 @@ k(\boldsymbol{x} _n, \boldsymbol{x}) \\
 <li><p>Kernel PCA works bad when the data lies a special manifold</p>
 <div class="figure align-default" id="id2">
 <a class="reference internal image-reference" href="../_images/kernel-pca-ep3.png"><img alt="" src="../_images/kernel-pca-ep3.png" style="width: 50%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 30 </span><span class="caption-text">Kernel PCA with RBF kernel on a Swiss roll manifold [Livescu 2021]</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 32 </span><span class="caption-text">Kernel PCA with RBF kernel on a Swiss roll manifold [Livescu 2021]</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
 </div>
 </li>
 <li><p>Computationally expensive to compute the <span class="math notranslate nohighlight">\(n \times n\)</span> pairwise kernel values in <span class="math notranslate nohighlight">\(\boldsymbol{K}\)</span> when <span class="math notranslate nohighlight">\(n\)</span> is large. Remedies include</p>

@@ -46,8 +46,6 @@
     <script src="../_static/copybutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="../_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
     <script >
         const thebe_selector = ".thebe"
@@ -55,6 +53,8 @@
         const thebe_selector_output = ".output"
     </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Principal Component Analysis" href="11-principal-component-analysis.html" />
@@ -388,6 +388,16 @@
      Maximum Flow
     </a>
    </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/32-matching.html">
+     Matching
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/42-maximum-independent-set.html">
+     Maximum Independent Set in Trees
+    </a>
+   </li>
   </ul>
   <i class="fas fa-chevron-down">
   </i>
@@ -547,6 +557,20 @@
   </i>
  </li>
  <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../35-graphical-models/00-graphical-models.html">
+   Graphical Models
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../35-graphical-models/11-topic-models.html">
+     Topic Models
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
   <a class="reference internal" href="../37-neural-networks/00-neural-networks.html">
    Neural Networks
   </a>
@@ -692,13 +716,13 @@
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#objectives">
-     Objectives
+    <a class="reference internal nav-link" href="#linear-models">
+     Linear Models
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#pros-and-cons">
-     Pros and Cons
+    <a class="reference internal nav-link" href="#non-linear-models">
+     Non-linear Models
     </a>
    </li>
   </ul>
@@ -805,8 +829,8 @@ P(\boldsymbol{x} ; \boldsymbol{\theta}): \mathbb{R}^{d} \rightarrow \mathbb{R}^{
 </div>
 <div class="section" id="summary">
 <h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="objectives">
-<h3>Objectives<a class="headerlink" href="#objectives" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="linear-models">
+<h3>Linear Models<a class="headerlink" href="#linear-models" title="Permalink to this headline">¶</a></h3>
 <table class="colwidths-auto table">
 <thead>
 <tr class="row-odd"><th class="head"><p>Model</p></th>
@@ -859,35 +883,9 @@ P(\boldsymbol{x} ; \boldsymbol{\theta}): \mathbb{R}^{d} \rightarrow \mathbb{R}^{
 <td><p><span class="math notranslate nohighlight">\(\boldsymbol{G}  = \boldsymbol{X} \boldsymbol{X} ^\top = \boldsymbol{V} \boldsymbol{\Lambda} \boldsymbol{V}\)</span> <br> <span class="math notranslate nohighlight">\(\boldsymbol{Z}=\boldsymbol{V}_{[: k]} \boldsymbol{\Lambda}_{[: k, k]}^{1 / 2}\)</span></p></td>
 <td class="text-align:left"><p>1. Retain inner product <br> 2. scaled PCA <span class="math notranslate nohighlight">\(\boldsymbol{Z}_{P C A}=\boldsymbol{Z}_{M D S} \boldsymbol{D}^{1 / 2}\)</span></p></td>
 </tr>
-<tr class="row-odd"><td><p>Isomap</p></td>
-<td><p><span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span></p></td>
-<td><p><span class="math notranslate nohighlight">\(\left\|\boldsymbol{z}_{i}-\boldsymbol{z}_{j}\right\|^{2} \approx \Delta_{i j}^{2}\)</span></p></td>
-<td><p>Run MDS with geodesic distance <span class="math notranslate nohighlight">\(\Delta\)</span> matrix</p></td>
-<td class="text-align:left"><p>Unfold manifold, retain relative geodesic distance</p></td>
-</tr>
-<tr class="row-even"><td><p>Laplacian Eigenmaps</p></td>
-<td><p><span class="math notranslate nohighlight">\(\boldsymbol{X}, t, \varepsilon\)</span></p></td>
-<td><p><span class="math notranslate nohighlight">\(\min \sum_{i j} \frac{w_{i j} \Vert \boldsymbol{z}_{i}-\boldsymbol{z}_{j}\Vert^{2}}{\sqrt{d_{i i} d_{j j}}}\)</span></p></td>
-<td><p><span class="math notranslate nohighlight">\(k\)</span> bottom eigenvectors of <span class="math notranslate nohighlight">\(\boldsymbol{L}=\boldsymbol{I}-\boldsymbol{D}^{-\frac{1}{2}} \boldsymbol{W} \boldsymbol{D}^{-\frac{1}{2}}\)</span></p></td>
-<td class="text-align:left"><p>Retain weighted distance</p></td>
-</tr>
-<tr class="row-odd"><td><p>SNE</p></td>
-<td><p><span class="math notranslate nohighlight">\(\boldsymbol{X},\sigma_i\)</span></p></td>
-<td><p><span class="math notranslate nohighlight">\(\min \sum_{i} \mathrm{KL}\left(P_{i}, Q_{i}\right) = \sum_{i,j} p_{j \mid i} \log \frac{p_{j \mid i}}{q_{j \mid i}}\)</span></p></td>
-<td><p>gradient descent</p></td>
-<td class="text-align:left"><p>Retain neighborhood conditional probability</p></td>
-</tr>
-<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(t\)</span>-SNE</p></td>
-<td><p><span class="math notranslate nohighlight">\(\boldsymbol{X},\sigma_i,df\)</span></p></td>
-<td><p><span class="math notranslate nohighlight">\(\min \operatorname{KL}(P, Q)=\sum_{i,j} p_{i j} \log \frac{p_{i j}}{q_{i j}}\)</span></p></td>
-<td><p>‘’</p></td>
-<td class="text-align:left"><p>1. Use joint probability <br> 2. Use <span class="math notranslate nohighlight">\(t\)</span>-distribution</p></td>
-</tr>
 </tbody>
 </table>
-</div>
-<div class="section" id="pros-and-cons">
-<h3>Pros and Cons<a class="headerlink" href="#pros-and-cons" title="Permalink to this headline">¶</a></h3>
+<p><strong>Review</strong></p>
 <table class="colwidths-auto table">
 <thead>
 <tr class="row-odd"><th class="head"><p>Model</p></th>
@@ -905,8 +903,8 @@ P(\boldsymbol{x} ; \boldsymbol{\theta}): \mathbb{R}^{d} \rightarrow \mathbb{R}^{
 <td><p></p></td>
 </tr>
 <tr class="row-even"><td><p>Kernel PCA</p></td>
-<td><p>1. Enable non-linear feature <br> 2. Enable out-of-sample projection</p></td>
-<td><p></p></td>
+<td><p>1. Enable non-linear feature <br> 2. Enable out-of-sample projection <br> 3. Work well when the distribution fits the kernel</p></td>
+<td><p>Computational issue (sol: subset, approximation <span class="math notranslate nohighlight">\(\boldsymbol{K} \approx \boldsymbol{F} ^\top \boldsymbol{F}\)</span>, random Fourier)</p></td>
 </tr>
 <tr class="row-odd"><td><p>CCA</p></td>
 <td><p>Have discriminative power in some cases that PCA doesn’t</p></td>
@@ -924,23 +922,87 @@ P(\boldsymbol{x} ; \boldsymbol{\theta}): \mathbb{R}^{d} \rightarrow \mathbb{R}^{
 <td><p></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p>Isomap</p></td>
-<td><p>Recovers the manifold</p></td>
+</tbody>
+</table>
+</div>
+<div class="section" id="non-linear-models">
+<h3>Non-linear Models<a class="headerlink" href="#non-linear-models" title="Permalink to this headline">¶</a></h3>
+<p>In previous linear models, the lower-dimensional linear projection preserves distances
+between <strong>all</strong> points. In non-linear models below, they only preserve local distance/neighborhood information along nonlinear manifold.</p>
+<p>In general, there are three steps</p>
+<ol class="simple">
+<li><p>Define some similarity/distance measure between data points <span class="math notranslate nohighlight">\(d(\boldsymbol{x}_i ,\boldsymbol{x}_j)\)</span>.</p></li>
+<li><p>Induce a graph from the <span class="math notranslate nohighlight">\(n \times d\)</span> data set <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span></p>
+<ul class="simple">
+<li><p>nodes are the data points</p></li>
+<li><p>add edge <span class="math notranslate nohighlight">\(e(i,j)\)</span> if the distance <span class="math notranslate nohighlight">\(d(\boldsymbol{x}_i,\boldsymbol{x}_j)\)</span> satisfy certain criteria, e.g.  <span class="math notranslate nohighlight">\(d&lt;\varepsilon\)</span>, <span class="math notranslate nohighlight">\(k\)</span>-NN, or mutual <span class="math notranslate nohighlight">\(k\)</span>-NN.</p></li>
+<li><p>edge weights are the distance measures <span class="math notranslate nohighlight">\(w_{ij} = d_{ij}\)</span></p></li>
+</ul>
+</li>
+<li><p>Perform spectral methods on some graph matrices, such as adjacency matrix, weights matrix, Laplacian matrix, etc, to obtain the embedding <span class="math notranslate nohighlight">\(\boldsymbol{Z} _{n \times d}\)</span> that preserve some property in the original space.</p></li>
+</ol>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Model</p></th>
+<th class="head"><p>Similarity/Distance Measure</p></th>
+<th class="head"><p>Objective</p></th>
+<th class="head"><p>Solution</p></th>
+<th class="text-align:left head"><p><span class="math notranslate nohighlight">\(\qquad \qquad \text{Remarks}\qquad \qquad\)</span></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Isomap</p></td>
+<td><p>geodesic distance along manifold</p></td>
+<td><p>retain geodesic distances <span class="math notranslate nohighlight">\(\left\|\boldsymbol{z}_{i}-\boldsymbol{z}_{j}\right\|^{2} \approx \Delta_{i j}^{2}\)</span></p></td>
+<td><p>Run MDS with geodesic distance <span class="math notranslate nohighlight">\(\Delta\)</span> matrix</p></td>
+<td class="text-align:left"><p>Unfold manifold</p></td>
+</tr>
+<tr class="row-odd"><td><p>Laplacian Eigenmaps</p></td>
+<td><p>Gaussian kernel similarity <br> <span class="math notranslate nohighlight">\(\exp \left(-\left\|\boldsymbol{x}_{i}-\boldsymbol{x}_{j}\right\|^{2} / t\right)\)</span></p></td>
+<td><p>total weights of a node <span class="math notranslate nohighlight">\(d_{ii}= \sum_j w_{ij}\)</span> <br> <span class="math notranslate nohighlight">\(\min \sum_{i j} \frac{w_{i j} \Vert \boldsymbol{z}_{i}-\boldsymbol{z}_{j}\Vert^{2}}{\sqrt{d_{i i} d_{j j}}}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(k\)</span> bottom eigenvectors of <span class="math notranslate nohighlight">\(\boldsymbol{L}=\boldsymbol{I}-\boldsymbol{D}^{-\frac{1}{2}} \boldsymbol{W} \boldsymbol{D}^{-\frac{1}{2}}\)</span></p></td>
+<td class="text-align:left"><p>Retain weighted distance</p></td>
+</tr>
+<tr class="row-even"><td><p>SNE</p></td>
+<td><p>$p_{j\mid i} = \frac{\exp \left( \left(-</p></td>
+<td><p></p></td>
+<td><p>\boldsymbol{x}<em>{i}-\boldsymbol{x}</em>{j} |^{2}\right) / 2 \sigma_{i}^{2} \right)}{\sum_{k \neq i} \exp \left( \left(-</p></td>
+<td class="text-align:left"><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(t\)</span>-SNE</p></td>
+<td><p><span class="math notranslate nohighlight">\(p_{i j}=\frac{p_{j \mid i}+p_{i \mid j}}{2 n}\)</span> <br> <span class="math notranslate nohighlight">\(q_{i j}=\frac{\left(1+\left\|\boldsymbol{z}_{i}-\boldsymbol{z}_{j}\right\|^{2}\right)^{-(df+1)/2}}{\sum_{k \neq l}\left(1+\left\|\boldsymbol{z}_{k}-\boldsymbol{z}_{l}\right\|^{2}\right)^{-(df+1)/2}}\)</span></p></td>
+<td><p>Retain neighborhood joint probability <span class="math notranslate nohighlight">\(\min \operatorname{KL}(P, Q)=\sum_{i,j} p_{i j} \log \frac{p_{i j}}{q_{i j}}\)</span></p></td>
+<td><p>‘’</p></td>
+<td class="text-align:left"><p>1. Use joint probability <br> 2. Use <span class="math notranslate nohighlight">\(t\)</span>-distribution, usually <span class="math notranslate nohighlight">\(df=1\)</span></p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Review</strong></p>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Model</p></th>
+<th class="head"><p>Pros</p></th>
+<th class="head"><p>Cons</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Isomap</p></td>
+<td><p>Recovers the manifold well</p></td>
 <td><p>1. Sensitive to neighborhood size / noise <br> 2. Can’t handle holes in the manifold</p></td>
 </tr>
-<tr class="row-even"><td><p>Laplacian Eigenmaps</p></td>
+<tr class="row-odd"><td><p>Laplacian Eigenmaps</p></td>
 <td><p></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p>SNE</p></td>
+<tr class="row-even"><td><p>SNE</p></td>
 <td><p></p></td>
 <td><p>1. Difficult to optimize <br> 2. Suffers from the “crowding problem” due to the asymmetric property as KL divergence</p></td>
 </tr>
-<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(t\)</span>-SNE</p></td>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(t\)</span>-SNE</p></td>
 <td><p>Works especially well for data with clustering nature</p></td>
-<td><p>1. Perplexity hyperparameter is important <br> 2. Fail for if no clustering nature</p></td>
+<td><p>1. Perplexity hyperparameter is important <br> 2. Fail if no clustering nature</p></td>
 </tr>
-<tr class="row-odd"><td><p>Parametric <span class="math notranslate nohighlight">\(t\)</span>-SNE</p></td>
+<tr class="row-even"><td><p>Parametric <span class="math notranslate nohighlight">\(t\)</span>-SNE</p></td>
 <td><p>Enable out-of-sample projection</p></td>
 <td><p></p></td>
 </tr>

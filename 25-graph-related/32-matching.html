@@ -1,0 +1,937 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Matching &#8212; Data Science Handbook</title>
+    
+  <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+  <link rel="stylesheet"
+    href="../_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="../_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinx-book-theme.40e2e510f6b7d1648584402491bb10fe.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/style.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.d3f166471bb80abb5163.js">
+
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
+    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Maximum Independent Set in Trees" href="42-maximum-independent-set.html" />
+    <link rel="prev" title="Maximum Flow" href="31-maximum-flow.html" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+
+
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+<a class="navbar-brand text-wrap" href="../index.html">
+  
+  
+  <h1 class="site-logo" id="site-title">Data Science Handbook</h1>
+  
+</a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form>
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+    <ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../index.html">
+   Data Science Handbook
+  </a>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Foundations
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../11-math/00-math.html">
+   Math
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/11-combinatorics.html">
+     Combinatorics
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/12-derangement.html">
+     Derangement
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/21-linear-algebra.html">
+     Linear Algebra
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/51-optimization.html">
+     Optimization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/90-puzzles.html">
+     Puzzles
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../12-probabilities/00-probabilities.html">
+   Probabilities
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/11-expectation-and-variance.html">
+     Expectation and Variance
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/13-correlation-and-dependence.html">
+     Correlation and Dependence
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/31-bayesian-theorem.html">
+     Bayesian’s Theorem
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/51-markov-chain.html">
+     Markov Chain
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/71-sampling.html">
+     Sampling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/90-multivariate-notations.html">
+     Multivariate Notations
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/91-large-sample-theory.html">
+     Large Sample Theory
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../13-statistics/00-statistics.html">
+   Statistics
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/11-sample-survey.html">
+     Sample Survey
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/13-randomized-trial.html">
+     Causality and Randomized Trial
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/21-hypothesis-testing.html">
+     Hypothesis Testing
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/25-two-sample-tests.html">
+     Two Sample Mean Tests
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/33-confusion-matrix.html">
+     Confusion Matrix
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/41-maximum-likelihood-estimation.html">
+     Maximum Likelihood Estimator
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/43-estimators-evaluation.html">
+     Estimators Evaluation
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../14-python/00-python.html">
+   Python
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../14-python/11-programming-tools.html">
+     Programmer tools
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../14-python/12-syntax.html">
+     Syntax
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../14-python/13-data-structure.html">
+     Data Structures
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../14-python/15-functional-programming.html">
+     Functional Programming
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../17-sql/00-sql.html">
+   SQL
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../17-sql/11-database.html">
+     Database
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../17-sql/12-relational-structure.html">
+     Relational Structure
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../17-sql/31-data-query.html">
+     Data Query
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../17-sql/33-data-manipulation.html">
+     Data Manipulation
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../19-miscellaneous/00-miscellaneous.html">
+   Miscellaneous
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../19-miscellaneous/11-latex.html">
+     LaTeX
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../19-miscellaneous/13-myst.html">
+     MyST Markdown
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Algorithms
+ </span>
+</p>
+<ul class="current nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../20-algorithms-basics/00-algorithms-basics.html">
+   Algorithms Basics
+  </a>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../21-greedy-algorithms/00-greedy-algorithms.html">
+   Greedy Algorithms
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../21-greedy-algorithms/11-interval-scheduling.html">
+     Interval Scheduling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../21-greedy-algorithms/31-huffman-coding.html">
+     Huffman Coding
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../23-dynamic-programming/00-dynamic-programming.html">
+   Dynamic Programming
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/11-weighted-interval-scheduling.html">
+     Weighted Interval Scheduling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/13-longest-common-subsequence.html">
+     Longest Common Subsequence
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/15-longest-increasing-subsequence.html">
+     Longest Increasing Subsequence
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/17-largest-sum-subsequence.html">
+     Largest Sum Subsequence
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/31-knapsack.html">
+     Minimum Knapsack
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/51-chain-matrix-multiplication.html">
+     Chain Matrix Multiplication
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 current active collapsible-parent">
+  <a class="reference internal" href="00-graph-related.html">
+   Graph Related
+  </a>
+  <ul class="current collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="13-shortest-path.html">
+     Shortest Path
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="21-minimum-spanning-tree.html">
+     Minimum Spanning Tree
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="31-maximum-flow.html">
+     Maximum Flow
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     Matching
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="42-maximum-independent-set.html">
+     Maximum Independent Set in Trees
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Machine Learning
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../30-ml-basics/00-ml-basics.html">
+   Machine Learning Basics
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../30-ml-basics/02-taxonomy.html">
+     Taxonomy
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../30-ml-basics/03-information-theory.html">
+     Information Theory
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../30-ml-basics/05-kernels.html">
+     Kernels
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../31-regression/00-regression.html">
+   Regression
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/11-lm-estimation.html">
+     Linear Models - Estimation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/12-lm-inference.html">
+     Linear Regression - Inference
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/13-lm-extension.html">
+     Linear Regression - Extension
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../32-classification/00-classification.html">
+   Classification
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../32-classification/11-support-vector-machine.html">
+     Support Vector Machine
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../32-classification/21-decision-tree.html">
+     Decision Tree
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../33-dimensionality-reduction/00-dimensionality-reduction.html">
+   Dimensionality Reduction
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/11-principal-component-analysis.html">
+     Principal Component Analysis
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/13-canonical-correlation-analysis.html">
+     Canonical Corerlation Analysis
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/21-multidimensional-scaling.html">
+     Multidimensional Scaling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/23-graph-based-spectral-methods.html">
+     Graph-based Spectral Methods
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/25-t-SNE.html">
+     SNE and
+     <span class="math notranslate nohighlight">
+      \(t\)
+     </span>
+     -SNE
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/31-kernel-pca.html">
+     Kernel PCA
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/32-kernel-cca.html">
+     Kernel CCA
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../34-clustering/00-clustering.html">
+   Clustering
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../34-clustering/11-k-means.html">
+     <span class="math notranslate nohighlight">
+      \(k\)
+     </span>
+     -means clustering
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../34-clustering/13-agglomerative-methods.html">
+     Agglomerative Methods
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../34-clustering/31-spectral-clustering.html">
+     Spectral Clustering
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../34-clustering/41-gaussian-mixtures.html">
+     Gaussian Mixtures
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../35-graphical-models/00-graphical-models.html">
+   Graphical Models
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../35-graphical-models/11-topic-models.html">
+     Topic Models
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../37-neural-networks/00-neural-networks.html">
+   Neural Networks
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/01-stochastic-gradient-descent.html">
+     Stochastic Gradient Descent
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/03-trainability.html">
+     Trainability
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/05-regularization.html">
+     Regularization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/11-autoencoders.html">
+     Autoencoders
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/13-variational-autoencoders.html">
+     Variational Autoencoders
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+</ul>
+
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="row topbar fixed-top container-xl">
+    <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show">
+    </div>
+    <div class="col pl-2 topbar-main">
+        
+        <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+            data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+            aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+            title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+            <i class="fas fa-bars"></i>
+            <i class="fas fa-arrow-left"></i>
+            <i class="fas fa-arrow-up"></i>
+        </button>
+        
+        
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../_sources/25-graph-related/32-matching.md"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.md</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+        <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/dennissxz/data-science-handbook"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/dennissxz/data-science-handbook/issues/new?title=Issue%20on%20page%20%2F25-graph-related/32-matching.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+
+        <!-- Full screen (wrap in <a> to have style consistency -->
+        <a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+                data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+                title="Fullscreen mode"><i
+                    class="fas fa-expand"></i></button></a>
+
+        <!-- Launch buttons -->
+
+    </div>
+
+    <!-- Table of contents -->
+    <div class="d-none d-md-block col-md-2 bd-toc show">
+        
+        <div class="tocsection onthispage pt-5 pb-3">
+            <i class="fas fa-list"></i> Contents
+        </div>
+        <nav id="bd-toc-nav">
+            <ul class="nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#maximum-bipartite-matching">
+   Maximum Bipartite Matching
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#problem">
+     Problem
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#reduction-to-bipartite-matching">
+     Reduction to Bipartite Matching
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#reduction-to-max-flow">
+     Reduction to Max-flow
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#bipartite-b-matching">
+   Bipartite
+   <span class="math notranslate nohighlight">
+    \(b\)
+   </span>
+   -matching
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id1">
+     Problem
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id2">
+     Reduction to Max-flow
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#extension">
+     Extension
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#matching-in-d-regular-bipartite-graph">
+   Matching in
+   <span class="math notranslate nohighlight">
+    \(d\)
+   </span>
+   -regular Bipartite Graph
+  </a>
+ </li>
+</ul>
+
+        </nav>
+        
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="matching">
+<h1>Matching<a class="headerlink" href="#matching" title="Permalink to this headline">¶</a></h1>
+<dl class="simple myst">
+<dt>Definition (Matching)</dt><dd><p>In graph <span class="math notranslate nohighlight">\(G=(V,E)\)</span>, an edge set <span class="math notranslate nohighlight">\(M \subseteq E\)</span> is a matching in <span class="math notranslate nohighlight">\(G\)</span>, if no two edges in <span class="math notranslate nohighlight">\(M\)</span> share a common vertex. That is, every vertex in <span class="math notranslate nohighlight">\((V, M)\)</span> can only have one edge.</p>
+</dd>
+</dl>
+<p>We call a vertex <span class="math notranslate nohighlight">\(v\in V\)</span> <strong>matched</strong> w.r.t. <span class="math notranslate nohighlight">\(M\)</span> if it is an endpoint of some edge <span class="math notranslate nohighlight">\(e\in M\)</span>.</p>
+<p>A matching <span class="math notranslate nohighlight">\(M\)</span> is called <strong>perfect</strong>, if all vertices <span class="math notranslate nohighlight">\(V\)</span> of <span class="math notranslate nohighlight">\(G\)</span> is matched. That is, every vertex <span class="math notranslate nohighlight">\(v \in V\)</span> is an endpoint of one and only one edge <span class="math notranslate nohighlight">\(e \in M\)</span>.</p>
+<dl class="simple myst">
+<dt>Definition (Maximum Matching)</dt><dd><p>A matching <span class="math notranslate nohighlight">\(M\)</span> is a maximum matching in <span class="math notranslate nohighlight">\(G\)</span>, it it contains the largest possible number of edges among all matchings of <span class="math notranslate nohighlight">\(G\)</span>.</p>
+</dd>
+</dl>
+<p>Many matching problems can reduce to max-flow problems.</p>
+<div class="section" id="maximum-bipartite-matching">
+<h2>Maximum Bipartite Matching<a class="headerlink" href="#maximum-bipartite-matching" title="Permalink to this headline">¶</a></h2>
+<dl class="simple myst">
+<dt>Definition (Bipartite graph)</dt><dd><p>A graph is called a bipartite graph if its vertices are partitioned into two subsets, and every edge has one endpoint in one subset, and on in the other.</p>
+</dd>
+</dl>
+<div class="section" id="problem">
+<h3>Problem<a class="headerlink" href="#problem" title="Permalink to this headline">¶</a></h3>
+<div class="margin sidebar">
+<p class="sidebar-title"></p>
+<p>Note this problem is different from interval scheduling. Here one machine only process one job.</p>
+</div>
+<p>Consider a job assignment problem. There are a set <span class="math notranslate nohighlight">\(J\)</span> of jobs and set <span class="math notranslate nohighlight">\(M\)</span> of machines. For each job <span class="math notranslate nohighlight">\(j \in J\)</span>, we are given a subset <span class="math notranslate nohighlight">\(M_j\subseteq M\)</span> of machines that are capable to process the job <span class="math notranslate nohighlight">\(j\)</span>. We would like to assign as many jobs as possible to machines, subject to the constraint that each machine is assigned at most one job.</p>
+</div>
+<div class="section" id="reduction-to-bipartite-matching">
+<h3>Reduction to Bipartite Matching<a class="headerlink" href="#reduction-to-bipartite-matching" title="Permalink to this headline">¶</a></h3>
+<p>We can build a graph <span class="math notranslate nohighlight">\(G=(V,E)\)</span> modeling this problem.</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(V\)</span> consists of two disjoint subsets <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span></p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(X\)</span> contains vertex <span class="math notranslate nohighlight">\(x_j\)</span> for each job <span class="math notranslate nohighlight">\(j\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(Y\)</span> contains vertex <span class="math notranslate nohighlight">\(y_i\)</span> for each machine <span class="math notranslate nohighlight">\(i\)</span></p></li>
+</ul>
+</li>
+<li><p>There is an edge <span class="math notranslate nohighlight">\(e(i,j)\)</span> if machine <span class="math notranslate nohighlight">\(i\)</span> can process job <span class="math notranslate nohighlight">\(j\)</span></p></li>
+</ul>
+<dl class="simple myst">
+<dt>Claim</dt><dd><p>An optimal assignment of jobs to machines is a maximum matching in <span class="math notranslate nohighlight">\(G\)</span></p>
+</dd>
+</dl>
+<p>Indeed, every assignment of jobs to machines assigns every job to at most one machine, and
+every machine processes at most one job, which translates the assignment directly to a matching
+of <span class="math notranslate nohighlight">\(G\)</span>. As a result, if we solve the maximum matching problem in bipartite graphs, we will solve
+the assignment problem too.</p>
+</div>
+<div class="section" id="reduction-to-max-flow">
+<h3>Reduction to Max-flow<a class="headerlink" href="#reduction-to-max-flow" title="Permalink to this headline">¶</a></h3>
+<p>We are going to solve the maximum bipartite matching problem by reducing it to an instance
+of maximum flow problem. First, construct a graph <span class="math notranslate nohighlight">\(G_2\)</span> as follows</p>
+<ul class="simple">
+<li><p>direct all edges from <span class="math notranslate nohighlight">\(X\)</span> towards <span class="math notranslate nohighlight">\(Y\)</span>, assign capacity <span class="math notranslate nohighlight">\(1\)</span></p></li>
+<li><p>add a source vertex <span class="math notranslate nohighlight">\(s\)</span>, and directed edges <span class="math notranslate nohighlight">\(e(s, x_j)\)</span> with capacity <span class="math notranslate nohighlight">\(1\)</span></p></li>
+<li><p>add a sink vertex <span class="math notranslate nohighlight">\(t\)</span>, and directed edges <span class="math notranslate nohighlight">\(e(y_i, t)\)</span> with capacity <span class="math notranslate nohighlight">\(1\)</span></p></li>
+</ul>
+<dl class="simple myst">
+<dt>Claims</dt><dd><ul class="simple">
+<li><p>Any matching of size <span class="math notranslate nohighlight">\(z\)</span> in <span class="math notranslate nohighlight">\(G\)</span> gives a flow of value <span class="math notranslate nohighlight">\(z\)</span> in <span class="math notranslate nohighlight">\(G_2\)</span></p></li>
+<li><p>Any integral flow of value <span class="math notranslate nohighlight">\(z\)</span> in <span class="math notranslate nohighlight">\(G_2\)</span> gives a matching of size <span class="math notranslate nohighlight">\(z\)</span> in <span class="math notranslate nohighlight">\(G\)</span></p></li>
+</ul>
+</dd>
+</dl>
+<p>Due to this one-one correspondence, as a corollary, a maximum integral flow in <span class="math notranslate nohighlight">\(G_2\)</span> gives a maximum bipartite matching in <span class="math notranslate nohighlight">\(G\)</span>. And, since we can compute the maximum integral flow in <span class="math notranslate nohighlight">\(G_2\)</span> efficiently, this gives us an algorithm for computing maximum bipartite matching in <span class="math notranslate nohighlight">\(G\)</span>.</p>
+</div>
+</div>
+<div class="section" id="bipartite-b-matching">
+<h2>Bipartite <span class="math notranslate nohighlight">\(b\)</span>-matching<a class="headerlink" href="#bipartite-b-matching" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id1">
+<h3>Problem<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<p>Now suppose every vertex <span class="math notranslate nohighlight">\(x \in X\)</span> can take <span class="math notranslate nohighlight">\(b(x) \ge 1\)</span> edges towards <span class="math notranslate nohighlight">\(Y\)</span>.</p>
+<dl class="simple myst">
+<dt>Definition (Bipartite <span class="math notranslate nohighlight">\(b\)</span>-matching)</dt><dd><p>Given</p>
+<ul class="simple">
+<li><p>a bipartite graph <span class="math notranslate nohighlight">\(G = (V, E)\)</span> where <span class="math notranslate nohighlight">\(V = (X,Y)\)</span></p></li>
+<li><p>a function <span class="math notranslate nohighlight">\(b: X \rightarrow \mathbb{Z} _{\ge 0}\)</span></p></li>
+</ul>
+<p>a subset <span class="math notranslate nohighlight">\(M \subseteq E\)</span> of edges is called a <span class="math notranslate nohighlight">\(b\)</span>-matching, if</p>
+<ul class="simple">
+<li><p>every vertex <span class="math notranslate nohighlight">\(y\in Y\)</span> is an endpoint of at most 1 edge in <span class="math notranslate nohighlight">\(M\)</span></p></li>
+<li><p>every vertex <span class="math notranslate nohighlight">\(x\in X\)</span> is an endpoint of at most <span class="math notranslate nohighlight">\(b(x)\)</span> edges in <span class="math notranslate nohighlight">\(M\)</span></p></li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="id2">
+<h3>Reduction to Max-flow<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<p>Likewise, we can construct a graph <span class="math notranslate nohighlight">\(G_2\)</span>, but this time we change the capacities of edges that go from source <span class="math notranslate nohighlight">\(s\)</span> to vertex <span class="math notranslate nohighlight">\(x \in X\)</span> from <span class="math notranslate nohighlight">\(1\)</span> to <span class="math notranslate nohighlight">\(b(x)\)</span>, for every <span class="math notranslate nohighlight">\(x \in X\)</span>.</p>
+<dl class="simple myst">
+<dt>Claims</dt><dd><ul class="simple">
+<li><p>Any <span class="math notranslate nohighlight">\(b\)</span>-matching of size <span class="math notranslate nohighlight">\(z\)</span> in <span class="math notranslate nohighlight">\(G\)</span> gives a flow of value <span class="math notranslate nohighlight">\(z\)</span> in <span class="math notranslate nohighlight">\(G_2\)</span></p></li>
+<li><p>Any integral flow of value <span class="math notranslate nohighlight">\(z\)</span> in <span class="math notranslate nohighlight">\(G_2\)</span> gives a <span class="math notranslate nohighlight">\(b\)</span>-matching of size <span class="math notranslate nohighlight">\(z\)</span> in <span class="math notranslate nohighlight">\(G\)</span></p></li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="extension">
+<h3>Extension<a class="headerlink" href="#extension" title="Permalink to this headline">¶</a></h3>
+<p>We can let each <span class="math notranslate nohighlight">\(y\in Y\)</span> take up to <span class="math notranslate nohighlight">\(b(y)\)</span> edges from <span class="math notranslate nohighlight">\(X\)</span>. That is, the function <span class="math notranslate nohighlight">\(b\)</span> becomes <span class="math notranslate nohighlight">\(b: V \rightarrow \mathbb{Z}_{\ge 0}\)</span>. Consequently, to solve this, in <span class="math notranslate nohighlight">\(G_2\)</span> we change the capacities of edges that go from vertex <span class="math notranslate nohighlight">\(y \in Y\)</span> to sink <span class="math notranslate nohighlight">\(t\)</span> from <span class="math notranslate nohighlight">\(1\)</span> to <span class="math notranslate nohighlight">\(b(y)\)</span>, for every <span class="math notranslate nohighlight">\(y \in Y\)</span>.</p>
+</div>
+</div>
+<div class="section" id="matching-in-d-regular-bipartite-graph">
+<h2>Matching in <span class="math notranslate nohighlight">\(d\)</span>-regular Bipartite Graph<a class="headerlink" href="#matching-in-d-regular-bipartite-graph" title="Permalink to this headline">¶</a></h2>
+<dl class="simple myst">
+<dt>Definition (<span class="math notranslate nohighlight">\(d\)</span>-regular graph)</dt><dd><p>A graph <span class="math notranslate nohighlight">\(G=(V,E)\)</span> is called <span class="math notranslate nohighlight">\(d\)</span>-regular for <span class="math notranslate nohighlight">\(d \ge 0\)</span>, if every vertex has the same degree <span class="math notranslate nohighlight">\(\operatorname{deg}(v) = d\)</span>.</p>
+</dd>
+</dl>
+<p>A <span class="math notranslate nohighlight">\(d\)</span>-regular bipartite graph is a bipartite graph where every vertex <span class="math notranslate nohighlight">\(x \in X\)</span> take <span class="math notranslate nohighlight">\(d\)</span> edges towards <span class="math notranslate nohighlight">\(Y\)</span>, and vice versa. It turns out that a <span class="math notranslate nohighlight">\(d\)</span>-regular bipartite graph has <strong>a lot of</strong> different perfect matchings.</p>
+<dl class="simple myst">
+<dt>Claim (Existence of perfect matching)</dt><dd><p>Let <span class="math notranslate nohighlight">\(G = (X, Y, E)\)</span> be a <span class="math notranslate nohighlight">\(d\)</span>-regular bipartite graph with <span class="math notranslate nohighlight">\(\left\vert X \right\vert = \left\vert Y \right\vert = n\)</span>. Then <span class="math notranslate nohighlight">\(G\)</span> contains at least one perfect matching.</p>
+</dd>
+</dl>
+<p><em>Proof</em>: A perfect matching can be obtained by constructing <span class="math notranslate nohighlight">\(G_2\)</span> with all capacities being 1. can run Ford-Fulkerson algorithm on <span class="math notranslate nohighlight">\(G_2\)</span> like in the above sections to obtain a flow of value <span class="math notranslate nohighlight">\(n\)</span>, which corresponds to a perfect matching.</p>
+<dl class="simple myst">
+<dt>Claim (Union of matchings)</dt><dd><p>Every <span class="math notranslate nohighlight">\(d\)</span>-regular bipartite graph <span class="math notranslate nohighlight">\(G=(X,Y,E)\)</span> is a union of <span class="math notranslate nohighlight">\(d\)</span> disjoint perfect matchings.</p>
+</dd>
+</dl>
+<p><em>Proof</em>: We can use the above method to find a perfect matching <span class="math notranslate nohighlight">\(M\)</span>, and delete all its edges from <span class="math notranslate nohighlight">\(G\)</span>, then obtain <span class="math notranslate nohighlight">\(G-M\)</span>. It  is easy to see that <span class="math notranslate nohighlight">\(G-M\)</span> is a <span class="math notranslate nohighlight">\((d-1)\)</span> bipartite graph. We can repeat this process until no edges are left, and then we get <span class="math notranslate nohighlight">\(d\)</span> disjoint perfect matchings in total.</p>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./25-graph-related"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        </div>
+    </div>
+    
+    
+    <div class='prev-next-bottom'>
+        
+    <a class='left-prev' id="prev-link" href="31-maximum-flow.html" title="previous page">Maximum Flow</a>
+    <a class='right-next' id="next-link" href="42-maximum-independent-set.html" title="next page">Maximum Independent Set in Trees</a>
+
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By Dennis Zheng<br/>
+        
+            &copy; Copyright 2020.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+
+    
+  <script src="../_static/js/index.d3f166471bb80abb5163.js"></script>
+
+
+    
+  </body>
+</html>

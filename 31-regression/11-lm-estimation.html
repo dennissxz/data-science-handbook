@@ -46,8 +46,6 @@
     <script src="../_static/copybutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="../_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
     <script >
         const thebe_selector = ".thebe"
@@ -55,6 +53,8 @@
         const thebe_selector_output = ".output"
     </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Linear Regression - Inference" href="12-lm-inference.html" />
@@ -388,6 +388,16 @@
      Maximum Flow
     </a>
    </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/32-matching.html">
+     Matching
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/42-maximum-independent-set.html">
+     Maximum Independent Set in Trees
+    </a>
+   </li>
   </ul>
   <i class="fas fa-chevron-down">
   </i>
@@ -540,6 +550,20 @@
    <li class="toctree-l2">
     <a class="reference internal" href="../34-clustering/41-gaussian-mixtures.html">
      Gaussian Mixtures
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../35-graphical-models/00-graphical-models.html">
+   Graphical Models
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../35-graphical-models/11-topic-models.html">
+     Topic Models
     </a>
    </li>
   </ul>
@@ -832,11 +856,11 @@ Y_i = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \varepsilon_i
 <p>As a result, <span class="math notranslate nohighlight">\(\operatorname{E}\left( \boldsymbol{y} \mid \boldsymbol{X} \right) = \boldsymbol{X} \boldsymbol{\beta}\)</span>, or <span class="math notranslate nohighlight">\(\operatorname{E}\left( y_i \mid x_i \right) = \beta_0 + \beta_1 x_i\)</span> when <span class="math notranslate nohighlight">\(p=2\)</span>, which can be illustrated by the plots below.</p>
 <div class="figure align-default" id="lm-distribution-of-y-given-x">
 <a class="reference internal image-reference" href="../_images/lm-cond-distribution.png"><img alt="" src="../_images/lm-cond-distribution.png" style="width: 40%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 6 </span><span class="caption-text">Distributions of <span class="math notranslate nohighlight">\(y\)</span> given <span class="math notranslate nohighlight">\(x\)</span> [Meyer 2021]</span><a class="headerlink" href="#lm-distribution-of-y-given-x" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 8 </span><span class="caption-text">Distributions of <span class="math notranslate nohighlight">\(y\)</span> given <span class="math notranslate nohighlight">\(x\)</span> [Meyer 2021]</span><a class="headerlink" href="#lm-distribution-of-y-given-x" title="Permalink to this image">¶</a></p>
 </div>
 <div class="figure align-default" id="lm-observation-of-y-given-x">
 <a class="reference internal image-reference" href="../_images/lm-xyplane-dots.png"><img alt="" src="../_images/lm-xyplane-dots.png" style="width: 50%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 7 </span><span class="caption-text">Observations of <span class="math notranslate nohighlight">\(y\)</span> given <span class="math notranslate nohighlight">\(x\)</span> [Meyer 2021]</span><a class="headerlink" href="#lm-observation-of-y-given-x" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 9 </span><span class="caption-text">Observations of <span class="math notranslate nohighlight">\(y\)</span> given <span class="math notranslate nohighlight">\(x\)</span> [Meyer 2021]</span><a class="headerlink" href="#lm-observation-of-y-given-x" title="Permalink to this image">¶</a></p>
 </div>
 <p>To predict <span class="math notranslate nohighlight">\(\hat{y}_i\)</span>, we just use <span class="math notranslate nohighlight">\(\hat{y}_i = \boldsymbol{x}_i ^\top \hat{\boldsymbol{\beta}}\)</span> .</p>
 </li>
@@ -922,7 +946,7 @@ Y_i = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \varepsilon_i
 <p>Essentially, we are trying to find a vector <span class="math notranslate nohighlight">\(\hat{\boldsymbol{y}}\)</span> in the column space of the data matrix <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span> that is as close to <span class="math notranslate nohighlight">\(\boldsymbol{y}\)</span> as possible, and the closest one is just the projection of <span class="math notranslate nohighlight">\(\boldsymbol{y}\)</span> onto <span class="math notranslate nohighlight">\(\operatorname{col}(\boldsymbol{X})\)</span>, which is <span class="math notranslate nohighlight">\(\boldsymbol{H}\boldsymbol{y}\)</span>. The distance is measured by the norm <span class="math notranslate nohighlight">\(\left\| \boldsymbol{y} - \hat{\boldsymbol{y}}  \right\|\)</span>, which is the squared root of sum of squared errors. Note that <span class="math notranslate nohighlight">\(\boldsymbol{y} - \hat{\boldsymbol{y}} = (\boldsymbol{I} - \boldsymbol{H} ) \boldsymbol{y} \in \operatorname{col}(\boldsymbol{X}) ^ \bot\)</span> since <span class="math notranslate nohighlight">\(\boldsymbol{I} - \boldsymbol{H} = \boldsymbol{I}  - \boldsymbol{P}_{\operatorname{col}(\boldsymbol{X}) } = \boldsymbol{P}_{\operatorname{col}(\boldsymbol{X}) ^ \bot}\)</span> is the projection matrix onto the orthogonal complement <span class="math notranslate nohighlight">\(\operatorname{col}(\boldsymbol{X}) ^ \bot\)</span>.</p>
 <div class="figure align-default" id="lm-projection">
 <a class="reference internal image-reference" href="../_images/lm-projection.png"><img alt="" src="../_images/lm-projection.png" style="width: 50%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 8 </span><span class="caption-text">Least squares as a projection <a class="reference external" href="https://waterprogramming.wordpress.com/2017/05/12/an-introduction-to-econometrics-part-1-classical-ordinary-least-squares-regression/">[Gold 2017]</a></span><a class="headerlink" href="#lm-projection" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 10 </span><span class="caption-text">Least squares as a projection <a class="reference external" href="https://waterprogramming.wordpress.com/2017/05/12/an-introduction-to-econometrics-part-1-classical-ordinary-least-squares-regression/">[Gold 2017]</a></span><a class="headerlink" href="#lm-projection" title="Permalink to this image">¶</a></p>
 </div>
 </div>
 <div class="dropdown note admonition">

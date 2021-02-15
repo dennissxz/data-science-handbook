@@ -46,8 +46,6 @@
     <script src="../_static/copybutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="../_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
     <script >
         const thebe_selector = ".thebe"
@@ -55,9 +53,11 @@
         const thebe_selector_output = ".output"
     </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Machine Learning Basics" href="../30-ml-basics/00-ml-basics.html" />
+    <link rel="next" title="Matching" href="32-matching.html" />
     <link rel="prev" title="Minimum Spanning Tree" href="21-minimum-spanning-tree.html" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -388,6 +388,16 @@
      Maximum Flow
     </a>
    </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="32-matching.html">
+     Matching
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="42-maximum-independent-set.html">
+     Maximum Independent Set in Trees
+    </a>
+   </li>
   </ul>
   <i class="fas fa-chevron-down">
   </i>
@@ -540,6 +550,20 @@
    <li class="toctree-l2">
     <a class="reference internal" href="../34-clustering/41-gaussian-mixtures.html">
      Gaussian Mixtures
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../35-graphical-models/00-graphical-models.html">
+   Graphical Models
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../35-graphical-models/11-topic-models.html">
+     Topic Models
     </a>
    </li>
   </ul>
@@ -721,50 +745,56 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#improvement">
-   Improvement
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#flow-path-perspective">
-   Flow-path Perspective
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#applications">
-   Applications
+  <a class="reference internal nav-link" href="#improvement-and-extension">
+   Improvement and Extension
   </a>
   <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#edmonds-korp-algorithm">
+     Edmonds-Korp Algorithm
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#approximation">
+     Approximation
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#other-properties">
+     Other Properties
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#flow-path-perspective">
+     Flow-path Perspective
+    </a>
+   </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#undirected-graphs">
      Undirected Graphs
     </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#id3">
-       Maximum Flow
-      </a>
-     </li>
-    </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#id4">
-     Minimum Cut
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#edge-disjoint-paths">
-     Edge-Disjoint Paths
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#s-t-cut">
+    <a class="reference internal nav-link" href="#edge-disjoint-paths-and-s-t-cut">
+     Edge-Disjoint Paths and
      <span class="math notranslate nohighlight">
       \(S-T\)
      </span>
      Cut
     </a>
    </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#vertex-capacity-max-flow">
+     Vertex-capacity Max Flow
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#applications">
+   Applications
+  </a>
+  <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#image-segmentation">
      Image Segmentation
@@ -907,15 +937,35 @@ f(e)\leftarrow f(e) + \Delta(p)
 </li>
 <li><p>For every edge <span class="math notranslate nohighlight">\(e ^\prime\)</span> in <span class="math notranslate nohighlight">\(G_f\)</span> with zero residual capacity <span class="math notranslate nohighlight">\(c_f (e ^\prime ) = 0\)</span>, delete.</p></li>
 </ul>
+<div class="figure align-default" id="max-flow-three-edges">
+<a class="reference internal image-reference" href="../_images/max-flow-three-edges.png"><img alt="" src="../_images/max-flow-three-edges.png" style="width: 40%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 6 </span><span class="caption-text">Three kinds of edge in <span class="math notranslate nohighlight">\(G\)</span> [Chuzhoy 2021]</span><a class="headerlink" href="#max-flow-three-edges" title="Permalink to this image">¶</a></p>
+</div>
 <p>Ford-Fulkerson algorithm is an iterative algorithm. In each iteration, we compute the residual floe network of the current graph and use that to improve the original graph. Note that flow <span class="math notranslate nohighlight">\(f()\)</span> only exists in the original graph.</p>
 <hr class="docutils" />
 <p><strong>Ford-Fulkerson’s algorithm</strong></p>
 <hr class="docutils" />
-<ul class="simple">
+<ul>
 <li><p>Start:</p>
 <ul>
 <li><p>For all edge <span class="math notranslate nohighlight">\(e \in E(G)\)</span>, initialize zero flow <span class="math notranslate nohighlight">\(f(e)=0\)</span>.</p></li>
-<li><p>Compute the residual flow network <span class="math notranslate nohighlight">\(G_f\)</span>.</p></li>
+<li><p>Compute the residual flow network <span class="math notranslate nohighlight">\(G_f\)</span>. For every <span class="math notranslate nohighlight">\(e(u,v) \in G\)</span>, add edges and assign capacity (called <strong>residual capacity</strong>)</p>
+<ul>
+<li><p>add a forward edge to reflect <strong>unused</strong> capacity of <span class="math notranslate nohighlight">\(e\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+          c_f (u,v) = c(e) - f(e)
+          \]</div>
+</li>
+<li><p>add a backward edge <span class="math notranslate nohighlight">\((v,u)\)</span> to reflect <strong>used</strong> capacity</p>
+<div class="math notranslate nohighlight">
+\[
+          c_f (v,u) = f(e)
+          \]</div>
+</li>
+<li><p>delete edges with zero residual capacity</p></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -953,19 +1003,22 @@ f(e)\leftarrow f(e) + \Delta(p)
 <div class="section" id="feasibility">
 <h3>Feasibility<a class="headerlink" href="#feasibility" title="Permalink to this headline">¶</a></h3>
 <dl class="simple myst">
-<dt>Claim 1 (Stops)</dt><dd><p>The FF algorithm stops after at most <span class="math notranslate nohighlight">\(\sum_{v\in \operatorname{succ}(s)} c(s, v)\)</span> iterations.</p>
+<dt>Claim (Stops in finit time)</dt><dd><p>The FF algorithm stops after at most <span class="math notranslate nohighlight">\(\sum_{v\in \operatorname{succ}(s)} c(s, v)\)</span> iterations.</p>
 </dd>
 </dl>
-<p><em><strong>Proof</strong></em></p>
+<div class="dropdown seealso admonition">
+<p class="admonition-title"> <em>Proof</em></p>
 <p>Upon initialization, <span class="math notranslate nohighlight">\(f(e)=0\)</span> are integers. In each iteration, in <span class="math notranslate nohighlight">\(G_f\)</span>, all residual capacities <span class="math notranslate nohighlight">\(c_f(e)\)</span> are integers and at least 1. The smallest residual capacity is also integer and at least 1. So the update flow of each edge in <span class="math notranslate nohighlight">\(G\)</span> is <span class="math notranslate nohighlight">\(f(e)\leftarrow f(e) \pm \Delta\)</span>.</p>
 <p>Note that along the augmenting path <span class="math notranslate nohighlight">\(P\)</span>, the first edge out from <span class="math notranslate nohighlight">\(s\)</span> is always a forward edge (by assumption). As a result, the updated flow of that edge is <span class="math notranslate nohighlight">\(f(e) \mathrel{+}= \Delta\)</span>. Hence, the updated value of the flow is <span class="math notranslate nohighlight">\(\operatorname{val}(f) \mathrel{+}= \Delta\)</span>, which is at least 1.</p>
 <p>Therefore, the algorithm stops after at most <span class="math notranslate nohighlight">\(\sum_{v\in \operatorname{succ}(s)} c(s, v)\)</span> iterations.</p>
 <p><span class="math notranslate nohighlight">\(\square\)</span></p>
+</div>
 <dl class="simple myst">
-<dt>Claim 2 (Always a valid flow)</dt><dd><p>Flow <span class="math notranslate nohighlight">\(f\)</span> always remains a valid flow.</p>
+<dt>Claim 2 (Always a valid flow)</dt><dd><p>Flow <span class="math notranslate nohighlight">\(f\)</span> always remains a valid flow. That is, the flow always satisfies the capacity constraints and the conservation constraints.</p>
 </dd>
 </dl>
-<p><em><strong>Proof by Induction</strong></em></p>
+<div class="dropdown seealso admonition">
+<p class="admonition-title"> <em>Proof by induction</em></p>
 <ul class="simple">
 <li><p>Base: <span class="math notranslate nohighlight">\(\forall e: f(e)=0\)</span> at initialization is a valid flow</p></li>
 <li><p>Step: if at the beginning of an iteration, <span class="math notranslate nohighlight">\(f\)</span> is valid, then after the iteration, it remains valid.</p></li>
@@ -1002,6 +1055,7 @@ f(e)\leftarrow f(e) + \Delta(p)
 <li><p><span class="math notranslate nohighlight">\(e_2\)</span> forward, <span class="math notranslate nohighlight">\(e_1\)</span> backward, similar to the case 3.</p></li>
 </ol>
 <p><span class="math notranslate nohighlight">\(\square\)</span></p>
+</div>
 <p>Therefore, we show that after an iteration is completed, the constraints remain to be satisfied, so the feasibility is guaranteed.</p>
 </div>
 <div class="section" id="optimality">
@@ -1042,7 +1096,8 @@ f^{\text{out}}(v) =\sum_{e \in \delta^{+}(v)} f(e)
   \]</div>
 </dd>
 </dl>
-<p><em><strong>Proof</strong></em></p>
+<div class="dropdown seealso admonition">
+<p class="admonition-title"> <em>Proof</em></p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{aligned}
 \operatorname{val}(f)
@@ -1053,14 +1108,15 @@ f^{\text{out}}(v) =\sum_{e \in \delta^{+}(v)} f(e)
 &amp;= f^{\text{out}}(A)- f^{\text{in}}(A)  \\\\
 \end{aligned}\end{split}\]</div>
 <p><span class="math notranslate nohighlight">\(\square\)</span></p>
-<p><strong>Corollary</strong></p>
-<ol class="simple">
-<li><p><span class="math notranslate nohighlight">\(\operatorname{val}(f) = f^{\text{in}}(B) - f^{\text{out}}(B)\)</span></p></li>
-<li><p><span class="math notranslate nohighlight">\(\operatorname{val}(f) = f^{\text{in}}(t)\)</span></p></li>
-<li><p><span class="math notranslate nohighlight">\(\operatorname{val}(f) \le c(A,B)\)</span>, with equality iff <span class="math notranslate nohighlight">\(f^{\text{in}}(A) = 0\)</span> and <span class="math notranslate nohighlight">\(f^{\text{out}}(A) = c(A,B)\)</span>.</p></li>
-</ol>
+</div>
+<div class="margin sidebar">
+<p class="sidebar-title"></p>
+<p>This corollary is the key for subsequent analysis</p>
+</div>
 <dl class="simple myst">
-<dt>Theorem</dt><dd><p>If <span class="math notranslate nohighlight">\(f\)</span> is any <span class="math notranslate nohighlight">\(s-t\)</span> flow and <span class="math notranslate nohighlight">\((A,B)\)</span> is any <span class="math notranslate nohighlight">\(s-t\)</span> cut, and <span class="math notranslate nohighlight">\(\operatorname{val}(f) = c(A,B)\)</span>, then <span class="math notranslate nohighlight">\(f\)</span> is a maximum flow, by Corollary 3.</p>
+<dt>Corollary</dt><dd><p><span class="math notranslate nohighlight">\(\operatorname{val}(f) \le c(A,B)\)</span>, with equality iff <span class="math notranslate nohighlight">\(f^{\text{in}}(A) = 0\)</span> and <span class="math notranslate nohighlight">\(f^{\text{out}}(A) = c(A,B)\)</span>.</p>
+</dd>
+<dt>Theorem</dt><dd><p>If <span class="math notranslate nohighlight">\(f\)</span> is any <span class="math notranslate nohighlight">\(s-t\)</span> flow and <span class="math notranslate nohighlight">\((A,B)\)</span> is any <span class="math notranslate nohighlight">\(s-t\)</span> cut, and <span class="math notranslate nohighlight">\(\operatorname{val}(f) = c(A,B)\)</span>, then <span class="math notranslate nohighlight">\(f\)</span> is a maximum flow, by Corollary.</p>
 </dd>
 </dl>
 <p>How about existence?</p>
@@ -1068,24 +1124,26 @@ f^{\text{out}}(v) =\sum_{e \in \delta^{+}(v)} f(e)
 <dt>Claim (Optimality)</dt><dd><p>If <span class="math notranslate nohighlight">\(f\)</span> is the flow returned by FF algorithm, then there exists an <span class="math notranslate nohighlight">\(s-t\)</span> cut <span class="math notranslate nohighlight">\((A,B)\)</span> such that <span class="math notranslate nohighlight">\(\operatorname{val}(f) = c(A,B)\)</span>. So <span class="math notranslate nohighlight">\(f\)</span> is optimal by the above theorem.</p>
 </dd>
 </dl>
-<p><em><strong>Proof</strong></em></p>
+<div class="dropdown seealso admonition">
+<p class="admonition-title"> <em>Proof</em></p>
 <p>Recall that FF algorithm stops if there is no <span class="math notranslate nohighlight">\(s-t\)</span> path. After it stops, consider a cut <span class="math notranslate nohighlight">\((A,B)\)</span> in <span class="math notranslate nohighlight">\(G_f\)</span>, where <span class="math notranslate nohighlight">\(A\)</span> is the set of all vertices <span class="math notranslate nohighlight">\(v \in V\)</span> such that there is an <span class="math notranslate nohighlight">\(s-v\)</span> path in <span class="math notranslate nohighlight">\(G_f\)</span>, and all other vertices (e.g., <span class="math notranslate nohighlight">\(t\)</span>) are in <span class="math notranslate nohighlight">\(B\)</span>. By this definition, there is no edge from <span class="math notranslate nohighlight">\(A\)</span> to <span class="math notranslate nohighlight">\(B\)</span>.</p>
 <p>Now, for the cut <span class="math notranslate nohighlight">\((A,B)\)</span> in <span class="math notranslate nohighlight">\(G\)</span>, we want to prove</p>
 <div class="math notranslate nohighlight">
 \[
 \operatorname{val}(f) = c(A,B)
 \]</div>
-<p>By Corollary 3, this holds iff <span class="math notranslate nohighlight">\(f^{\text{in}}(A) = 0\)</span> and <span class="math notranslate nohighlight">\(f^{\text{out}}(A) = c(A,B)\)</span>. Equivalently,</p>
+<p>By Corollary, this holds iff <span class="math notranslate nohighlight">\(f^{\text{in}}(A) = 0\)</span> and <span class="math notranslate nohighlight">\(f^{\text{out}}(A) = c(A,B)\)</span>. Equivalently,</p>
 <ol class="simple">
-<li><p><span class="math notranslate nohighlight">\(\forall e^- \in \delta^-(A), f(e^-) = 0 \\\)</span></p></li>
 <li><p><span class="math notranslate nohighlight">\(\forall e^+ \in \delta^+(A), f(e^+) = c(e^+)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\forall e^- \in \delta^-(A), f(e^-) = 0 \\\)</span></p></li>
 </ol>
 <p>These two conditions are indeed satisfied when FF algorithm stops.</p>
 <ol class="simple">
-<li><p>If there exists <span class="math notranslate nohighlight">\(e^- = (u,v): f(e^-) &gt; 0\)</span>, then there is an edge <span class="math notranslate nohighlight">\((v,u)\)</span> from <span class="math notranslate nohighlight">\(A\)</span> to <span class="math notranslate nohighlight">\(B\)</span> in <span class="math notranslate nohighlight">\(G_f\)</span> with residual capacity <span class="math notranslate nohighlight">\(c_f(v,u) &gt; 0\)</span>, contradiction to the property of <span class="math notranslate nohighlight">\(G_f\)</span>.</p></li>
-<li><p>If there exists <span class="math notranslate nohighlight">\(e^+ = (u,v): f(e^+) &lt; c(e^+)\)</span>, then there is an forward edge <span class="math notranslate nohighlight">\((u,v)\)</span> from <span class="math notranslate nohighlight">\(A\)</span> to <span class="math notranslate nohighlight">\(B\)</span> in <span class="math notranslate nohighlight">\(G_f\)</span> with residual capacity <span class="math notranslate nohighlight">\(c_f(v,u) = c(e^+) - f(e^+)\)</span>, contradiction to the property of <span class="math notranslate nohighlight">\(G_f\)</span>.</p></li>
+<li><p>If there exists <span class="math notranslate nohighlight">\(e^+ = (a,b): f(e^+) &lt; c(e^+)\)</span>, then there is an forward edge <span class="math notranslate nohighlight">\((a,b)\)</span> from <span class="math notranslate nohighlight">\(A\)</span> to <span class="math notranslate nohighlight">\(B\)</span> in <span class="math notranslate nohighlight">\(G_f\)</span> with residual capacity <span class="math notranslate nohighlight">\(c_f(a,b) = c(e^+) - f(e^+)&gt;0\)</span>, contradiction to the stoping condition of <span class="math notranslate nohighlight">\(G_f\)</span>.</p></li>
+<li><p>If there exists <span class="math notranslate nohighlight">\(e^- = (b,a): f(e^-) &gt; 0\)</span>, then there is an edge <span class="math notranslate nohighlight">\((a,b)\)</span> from <span class="math notranslate nohighlight">\(A\)</span> to <span class="math notranslate nohighlight">\(B\)</span> in <span class="math notranslate nohighlight">\(G_f\)</span> with residual capacity <span class="math notranslate nohighlight">\(c_f(a,b) &gt; 0\)</span>, contradiction to the stoping condition of <span class="math notranslate nohighlight">\(G_f\)</span>.</p></li>
 </ol>
 <p><span class="math notranslate nohighlight">\(\square\)</span></p>
+</div>
 </div>
 </div>
 <div class="section" id="minimum-cut">
@@ -1107,7 +1165,7 @@ f^{\text{out}}(v) =\sum_{e \in \delta^{+}(v)} f(e)
 <dt>Theorem (Equivalency of maximum flow and minimum cut)</dt><dd><p>In any flow network <span class="math notranslate nohighlight">\(G\)</span>, the value of a maximum <span class="math notranslate nohighlight">\(s-t\)</span> flow is equal to the capacity of a minimum <span class="math notranslate nohighlight">\(s-t\)</span> cut.</p>
 </dd>
 </dl>
-<p>The proof is simply from Corollary 3.</p>
+<p>The proof is simply from the Corollary.</p>
 <p>Thus, FF algorithm also gives an algorithm for finding a minimum <span class="math notranslate nohighlight">\(s-t\)</span> cut.</p>
 </div>
 </div>
@@ -1129,90 +1187,123 @@ f^{\text{out}}(v) =\sum_{e \in \delta^{+}(v)} f(e)
 <li><p>Graph, which is a combinatorial part of size <span class="math notranslate nohighlight">\((n,m)\)</span></p></li>
 <li><p>Capacities, which is a numerical part of size <span class="math notranslate nohighlight">\(m\)</span></p></li>
 </ul>
-<p>Recall different running time??</p>
+<p>Recall different running time</p>
 <ul class="simple">
-<li><p>strong-polynomial time: <span class="math notranslate nohighlight">\(Poly(\text{size of the combinatorial part})\)</span>, e.g. <span class="math notranslate nohighlight">\(O(n)\)</span></p></li>
-<li><p>weak-polynomial time: <span class="math notranslate nohighlight">\(Poly(\text{sizes of both parts})\)</span>, e.g. <span class="math notranslate nohighlight">\(O(mn \times m)\)</span></p></li>
+<li><p>strong-polynomial time: <span class="math notranslate nohighlight">\(Poly(\text{input size of the combinatorial part})\)</span>, e.g. <span class="math notranslate nohighlight">\(O(n)\)</span></p></li>
+<li><p>weak-polynomial time: <span class="math notranslate nohighlight">\(Poly(\text{input sizes of both parts})\)</span>, e.g. <span class="math notranslate nohighlight">\(O(n \log c_\max)\)</span></p></li>
 <li><p>pseudo-polynomial time: <span class="math notranslate nohighlight">\(Poly(\text{the largest integer present in the input})\)</span>, e.g. <span class="math notranslate nohighlight">\(O(c_\max)\)</span></p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="improvement">
-<h2>Improvement<a class="headerlink" href="#improvement" title="Permalink to this headline">¶</a></h2>
-<p>We want to bound the number of iterations in Edmonds-Korp algorithm.</p>
-<p>To find an augmenting path, use the shortest path <span class="math notranslate nohighlight">\(s-t\)</span> in <span class="math notranslate nohighlight">\(G\)</span>.</p>
-<p>Partition the algorithm’s execution into phases. Number of phase lasts as low as the lengths of augmenting paths chosen in each iteration remain the same.</p>
-<p>Number of iteration is <span class="math notranslate nohighlight">\(O(mn)\)</span>. Total run time is <span class="math notranslate nohighlight">\(O(m^2 n)\)</span>.</p>
-<p>Observation: Let <span class="math notranslate nohighlight">\(G_f\)</span> be the residual graph at the start of iteration <span class="math notranslate nohighlight">\(i\)</span>, and <span class="math notranslate nohighlight">\(G_f ^\prime\)</span> be the residual path at the end of iteration <span class="math notranslate nohighlight">\(i\)</span>,.</p>
+<div class="section" id="improvement-and-extension">
+<h2>Improvement and Extension<a class="headerlink" href="#improvement-and-extension" title="Permalink to this headline">¶</a></h2>
+<p><span class="math notranslate nohighlight">\(O(mn c_\max)\)</span> is not efficient. There are alternative algorithms to improve this.</p>
+<div class="section" id="edmonds-korp-algorithm">
+<h3>Edmonds-Korp Algorithm<a class="headerlink" href="#edmonds-korp-algorithm" title="Permalink to this headline">¶</a></h3>
+<p>Instead of using an arbitrary augmenting path, we use the <strong>shortest</strong> path <span class="math notranslate nohighlight">\(s-t\)</span> in <span class="math notranslate nohighlight">\(G\)</span> that minimizes number of edges. This work takes <span class="math notranslate nohighlight">\(O(m)\)</span> by BFS or DFS, so each iteration still takes <span class="math notranslate nohighlight">\(O(m)\)</span>. But it reduces the number of iterations from <span class="math notranslate nohighlight">\(O(nc_\max)\)</span> to <span class="math notranslate nohighlight">\(O(nm)\)</span>, this leads to the Edmonds-Korp algorithm with complexity <span class="math notranslate nohighlight">\(O(nm^2)\)</span>.</p>
+<p>To show that, we first run that algorithm, record the length of the chosen shortest path in each iteration, and then partition these the execution into phases, where each phase lasts as long as the lengths of augmenting paths chosen remains the same.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\text{iteration} &amp;\quad 1 \quad2 \ \quad 3 \  \quad4 \ \quad 5 \quad6 \quad 7\\
+\text{shortest path length} &amp;\quad \underbrace{2 \quad 2}_{\text{phase 1} } \quad \underbrace{3\quad 3}_{\text{phase 2} } \quad \underbrace{5 \quad 5 \quad 5}_{\text{phase 3} }  \\
+\end{aligned}\end{split}\]</div>
+<dl class="simple myst">
+<dt>Claim (Non-decreasing shortest path length)</dt><dd><p>From iteration to iteration, the length of the augmenting path is non-decreasing. Hence, the number of phases is at most <span class="math notranslate nohighlight">\(n\)</span>.</p>
+</dd>
+<dt>Claim (<span class="math notranslate nohighlight">\(O(m)\)</span> iterations in each phase)</dt><dd><p>Every phase covers at most <span class="math notranslate nohighlight">\(O(m)\)</span> iterations.</p>
+</dd>
+</dl>
+<div class="dropdown seealso admonition">
+<p class="admonition-title"> <em>Proof</em></p>
+<p>To prove them, let <span class="math notranslate nohighlight">\(G_f\)</span> be the residual graph at the <em>start</em> of iteration <span class="math notranslate nohighlight">\(i\)</span>, and <span class="math notranslate nohighlight">\(G_f ^\prime\)</span> be the residual path at the <em>end</em> of iteration <span class="math notranslate nohighlight">\(i\)</span>, and <span class="math notranslate nohighlight">\(P\)</span> be the augmenting path in iteration <span class="math notranslate nohighlight">\(i\)</span>. From the algorithm we observe that</p>
 <ul class="simple">
-<li><p>if <span class="math notranslate nohighlight">\(e \in E(G_f) \backslash E(G_f ^\prime)\)</span> then <span class="math notranslate nohighlight">\(e \in E(P)\)</span> where <span class="math notranslate nohighlight">\(P\)</span> is the augmenting path in iteration <span class="math notranslate nohighlight">\(i\)</span>.</p></li>
-<li><p><span class="math notranslate nohighlight">\(\left\vert E(G_f) \backslash E(G_f ^\prime) \right\vert \ge 1\)</span>.</p></li>
-<li><p>if <span class="math notranslate nohighlight">\(e = (u,v) \in E(G_f) \backslash E(G_f ^\prime)\)</span> then <span class="math notranslate nohighlight">\(e \in E(P)\)</span>.</p></li>
+<li><p>if <span class="math notranslate nohighlight">\(e \in E(G_f)\)</span> but <span class="math notranslate nohighlight">\(e \notin E(G_f ^\prime)\)</span>, then <span class="math notranslate nohighlight">\(e \in E(P)\)</span></p></li>
+<li><p>at least one edge <span class="math notranslate nohighlight">\(e\in P\)</span> has to disappear in <span class="math notranslate nohighlight">\(G ^\prime _f\)</span></p></li>
+<li><p>if <span class="math notranslate nohighlight">\(e \notin E(G_f)\)</span> but <span class="math notranslate nohighlight">\(e \in E(G_f ^\prime)\)</span> then its anti-parallel edge <span class="math notranslate nohighlight">\(e ^\prime  \in E(P)\)</span>.</p></li>
 </ul>
+<p>Now consider using BFS from to find a shortest path <span class="math notranslate nohighlight">\(s-t\)</span> in <span class="math notranslate nohighlight">\(G_f\)</span>. Suppose the path length is <span class="math notranslate nohighlight">\(d\)</span>, then there are <span class="math notranslate nohighlight">\(d+1\)</span> layers. The first layers only contains <span class="math notranslate nohighlight">\(s\)</span>, and the last layer contains <span class="math notranslate nohighlight">\(t\)</span>. In each iteration, we delete some forward-looking edge, and add a backward-looking edge or sideways-looking edge, but <strong>no</strong> shortcut edge. So the shortest path is non-decreasing. Beside, there are at most <span class="math notranslate nohighlight">\(m\)</span> layers to delete in a phase with path length <span class="math notranslate nohighlight">\(d\)</span>, so at most <span class="math notranslate nohighlight">\(O(m)\)</span> iterations in that phase.</p>
+<div class="figure align-default" id="max-flow-bfs">
+<a class="reference internal image-reference" href="../_images/max-flow-bfs.png"><img alt="" src="../_images/max-flow-bfs.png" style="width: 100%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 7 </span><span class="caption-text">BFS in <span class="math notranslate nohighlight">\(G_f\)</span> [Chuzhoy 2021]</span><a class="headerlink" href="#max-flow-bfs" title="Permalink to this image">¶</a></p>
 </div>
-<div class="section" id="flow-path-perspective">
-<h2>Flow-path Perspective<a class="headerlink" href="#flow-path-perspective" title="Permalink to this headline">¶</a></h2>
+<p><span class="math notranslate nohighlight">\(\square\)</span></p>
+</div>
+</div>
+<div class="section" id="approximation">
+<h3>Approximation<a class="headerlink" href="#approximation" title="Permalink to this headline">¶</a></h3>
+<p><span class="math notranslate nohighlight">\((1+\epsilon)\)</span>-approximation returns a flow of value at least <span class="math notranslate nohighlight">\(\frac{OPT}{1+\epsilon}\)</span>.</p>
+</div>
+<div class="section" id="other-properties">
+<h3>Other Properties<a class="headerlink" href="#other-properties" title="Permalink to this headline">¶</a></h3>
 <dl class="simple myst">
 <dt>Theorem (Integrality of flow)</dt><dd><p>If all capacities are integers, then the FF algorithm finds a maximum flow where <span class="math notranslate nohighlight">\(f(e)\)</span> is integers for all <span class="math notranslate nohighlight">\(e\)</span>.</p>
 </dd>
-<dt>Flow-paths based definition</dt><dd><p>Let <span class="math notranslate nohighlight">\(\mathcal{P}\)</span> be a set of all <span class="math notranslate nohighlight">\(s-t\)</span> paths. Let <span class="math notranslate nohighlight">\(f(P)\)</span> be a flow of a path <span class="math notranslate nohighlight">\(P \in \mathcal{P}\)</span>. It is valid if</p>
-</dd>
 </dl>
+</div>
+<div class="section" id="flow-path-perspective">
+<h3>Flow-path Perspective<a class="headerlink" href="#flow-path-perspective" title="Permalink to this headline">¶</a></h3>
+<p>Recall the flow is define for edges. We can consider a path-based flow <span class="math notranslate nohighlight">\(f^\prime : \mathcal{P}\rightarrow \mathbb{R} _{\ge 0}\)</span>. Let <span class="math notranslate nohighlight">\(\mathcal{P}\)</span> be a set of all <span class="math notranslate nohighlight">\(s-t\)</span> paths. Let <span class="math notranslate nohighlight">\(f ^\prime (P)\)</span> be a flow of a path <span class="math notranslate nohighlight">\(P \in \mathcal{P}\)</span>. It is valid iff</p>
 <div class="math notranslate nohighlight">
 \[
-\forall e:\quad \sum_{P \in \mathcal{P} \text{ and } e \in E(P)} f(P) \le c(e)
+\forall e:\quad \sum_{P: P \in \mathcal{P} \text{ and } e \in E(P)} f ^\prime (P) \le c(e)
 \]</div>
-<p>The value of the set <span class="math notranslate nohighlight">\(\mathcal{P}\)</span> is <span class="math notranslate nohighlight">\(\sum_{P \in \mathcal{P}}f(P)\)</span>.</p>
+<p>The value of the set <span class="math notranslate nohighlight">\(\mathcal{P}\)</span> is <span class="math notranslate nohighlight">\(\sum_{P \in \mathcal{P}}f ^\prime (P)\)</span>.</p>
 <dl class="simple myst">
-<dt>Theorem (Flow-path decomposision)</dt><dd><p>If <span class="math notranslate nohighlight">\(\left\{ f(e) \right\}_{e \in E}\)</span> was feasible, new flow is feasible and has some value. It can be computed efficiently. The support of the flow is <span class="math notranslate nohighlight">\(\left\{ P \mid f(P)&gt;0 \right\}\)</span>.</p>
+<dt>Theorem (Equivalence)</dt><dd><p>If the original edge-defined flow <span class="math notranslate nohighlight">\(\left\{ f(e) \right\}_{e \in E}\)</span> was feasible, then the path-defined flow <span class="math notranslate nohighlight">\(\left\{ f ^\prime (P) \right\}_{P \in \mathcal{P}}\)</span> is also feasible and has some <strong>integral</strong> value. That is, the two kinds of definition are equivalent.</p>
 </dd>
 </dl>
-<p>The two definitions of flow are equivalent.</p>
 </div>
-<div class="section" id="applications">
-<h2>Applications<a class="headerlink" href="#applications" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="undirected-graphs">
 <h3>Undirected Graphs<a class="headerlink" href="#undirected-graphs" title="Permalink to this headline">¶</a></h3>
-<p>We solve by making the graph directed. And run FF algorithm.</p>
-<div class="section" id="id3">
-<h4>Maximum Flow<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h4>
-<p>Convert every undirected edge to two anti-parallel directed edges with the same capacity as the undirected edge. Run the algorithm for directed graph. Finally, run flow cancelation, such that one of the two anti-parallel edges is reduced to 0.</p>
-</div>
-</div>
-<div class="section" id="id4">
-<h3>Minimum Cut<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
-<p>For a cut <span class="math notranslate nohighlight">\(c(A,B)\)</span> on a undirected graph, the capacity/cost of the cut is the sum of the capacities of the edges across <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span>.</p>
+<p>To find max-flow in undirected graph with capacities <span class="math notranslate nohighlight">\(c(e)&gt;0\)</span>, we can make the graph directed.</p>
+<ul class="simple">
+<li><p>Convert every undirected edge to two anti-parallel directed edges with the same capacity as the undirected edge.</p></li>
+<li><p>Run the algorithm for directed graph.</p></li>
+<li><p>Finally, run flow cancelation, such that one of the two anti-parallel edges is reduced to 0.</p></li>
+</ul>
+<p>Meanwhile, we can find a minimum cut on a undirected graph, the capacity/cost of the cut is the sum of the capacities of the edges across <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span>.</p>
 <div class="math notranslate nohighlight">
 \[
 \sum _{e \in E(A,B)} c(e)
 \]</div>
-<p>Likewise, we convert every undirected edge to two anti-parallel directed edges, run FF algorithm to find a <span class="math notranslate nohighlight">\(s-t\)</span> cut.</p>
+<p>Likewise, we convert every undirected edge to two anti-parallel directed edges, run FF algorithm to find a <span class="math notranslate nohighlight">\(s-t\)</span> cut. This gives the same value of max <span class="math notranslate nohighlight">\(s-t\)</span> flow.</p>
+<p>More efficient algorithm is under research.</p>
 </div>
-<div class="section" id="edge-disjoint-paths">
-<h3>Edge-Disjoint Paths<a class="headerlink" href="#edge-disjoint-paths" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="edge-disjoint-paths-and-s-t-cut">
+<h3>Edge-Disjoint Paths and <span class="math notranslate nohighlight">\(S-T\)</span> Cut<a class="headerlink" href="#edge-disjoint-paths-and-s-t-cut" title="Permalink to this headline">¶</a></h3>
 <div class="margin sidebar">
 <p class="sidebar-title"></p>
 <p>Edge-dispoint path = EDP</p>
 </div>
-<p>For a directed graph with two <strong>sets</strong> of vertices <span class="math notranslate nohighlight">\(S\)</span> and <span class="math notranslate nohighlight">\(T\)</span>, we want to find a maximum set of <span class="math notranslate nohighlight">\(S-T\)</span> paths that are edge-disjoint, i.e. no paths can share any edges.</p>
-<p>To solve this, for every edge <span class="math notranslate nohighlight">\(e\)</span>, set capacity <span class="math notranslate nohighlight">\(c(e)=1\)</span>. Add one node <span class="math notranslate nohighlight">\(s\)</span> that connects to every vertex <span class="math notranslate nohighlight">\(u\)</span> in <span class="math notranslate nohighlight">\(S\)</span> with capacity <span class="math notranslate nohighlight">\(\infty\)</span>. Add one node <span class="math notranslate nohighlight">\(t\)</span> that connects to every vertex <span class="math notranslate nohighlight">\(v\)</span> in <span class="math notranslate nohighlight">\(T\)</span> with capacity <span class="math notranslate nohighlight">\(\infty\)</span>.</p>
-<p>Run FF algorithm and obtain a flow <span class="math notranslate nohighlight">\(f\)</span>. Since <span class="math notranslate nohighlight">\(f(e)\)</span> integer, it is 1. Run flow-path decomposition, then each path also carries flow value 1. We will get a collection of EDP from <span class="math notranslate nohighlight">\(S\)</span> to <span class="math notranslate nohighlight">\(T\)</span>. The number of paths equals to the flow value.</p>
-</div>
-<div class="section" id="s-t-cut">
-<h3><span class="math notranslate nohighlight">\(S-T\)</span> Cut<a class="headerlink" href="#s-t-cut" title="Permalink to this headline">¶</a></h3>
-<p>Given two sets of vertices <span class="math notranslate nohighlight">\(S\)</span> and <span class="math notranslate nohighlight">\(T\)</span>. Find minimum set <span class="math notranslate nohighlight">\(E ^\prime\)</span> of edges so that in <span class="math notranslate nohighlight">\(G \backslash E ^\prime\)</span>, there is <strong>no</strong> path from a vertex of <span class="math notranslate nohighlight">\(S\)</span> to a vertex of <span class="math notranslate nohighlight">\(T\)</span>.</p>
+<p>For a directed graph with two <strong>sets</strong> of vertices <span class="math notranslate nohighlight">\(S\)</span> and <span class="math notranslate nohighlight">\(T\)</span>, we want to find a maximum set <span class="math notranslate nohighlight">\(\mathcal{P}\)</span> of <span class="math notranslate nohighlight">\(S-T\)</span> paths that are edge-disjoint, i.e. no path in <span class="math notranslate nohighlight">\(\mathcal{P}\)</span> can share any edges.</p>
+<p>To solve this,</p>
+<ol class="simple">
+<li><p>For every edge <span class="math notranslate nohighlight">\(e\)</span>, set capacity <span class="math notranslate nohighlight">\(c(e)=1\)</span>. Add one node <span class="math notranslate nohighlight">\(s\)</span> that connects to every vertex <span class="math notranslate nohighlight">\(u\)</span> in <span class="math notranslate nohighlight">\(S\)</span> with capacity <span class="math notranslate nohighlight">\(\infty\)</span>. Add one node <span class="math notranslate nohighlight">\(t\)</span> that connects to every vertex <span class="math notranslate nohighlight">\(v\)</span> in <span class="math notranslate nohighlight">\(T\)</span> with capacity <span class="math notranslate nohighlight">\(\infty\)</span>.</p></li>
+<li><p>Run FF algorithm and obtain a flow <span class="math notranslate nohighlight">\(f\)</span>. Since <span class="math notranslate nohighlight">\(f(e)\)</span> is integer, it is 1.</p></li>
+<li><p>Run flow-path decomposition, then each path also carries flow value 1. We will get a collection of EDP from <span class="math notranslate nohighlight">\(S\)</span> to <span class="math notranslate nohighlight">\(T\)</span>. The number of paths equals to the flow value.</p></li>
+</ol>
+<p><strong><span class="math notranslate nohighlight">\(S-T\)</span> Cut</strong></p>
+<p>Given two sets of vertices <span class="math notranslate nohighlight">\(S\)</span> and <span class="math notranslate nohighlight">\(T\)</span> in a directed graph <span class="math notranslate nohighlight">\(G\)</span>, what is the minimum number of edges needed to disconnect <span class="math notranslate nohighlight">\(S\)</span> from <span class="math notranslate nohighlight">\(T\)</span>? Formally, find a minimum-cardinality edge set <span class="math notranslate nohighlight">\(E ^\prime \subset E\)</span> such that in the remaining graph <span class="math notranslate nohighlight">\(G \backslash E ^\prime\)</span>, there is <strong>no</strong> path from a vertex of <span class="math notranslate nohighlight">\(S\)</span> to a vertex of <span class="math notranslate nohighlight">\(T\)</span>.</p>
 <dl class="simple myst">
 <dt>Menger’s Theorem</dt><dd><p>The maximum number of EDPs connecting <span class="math notranslate nohighlight">\(S\)</span> to <span class="math notranslate nohighlight">\(T\)</span> is equal to the minimum number of edges needed to disconnect <span class="math notranslate nohighlight">\(S\)</span> from <span class="math notranslate nohighlight">\(T\)</span>.</p>
 </dd>
 </dl>
+<p>The same can be done for undirected graphs.</p>
 </div>
+<div class="section" id="vertex-capacity-max-flow">
+<h3>Vertex-capacity Max Flow<a class="headerlink" href="#vertex-capacity-max-flow" title="Permalink to this headline">¶</a></h3>
+<p>In reality, capacities are often defined on vertices, such as computer networks. There are algorithms to solve vertex-capacity max-flow problem.</p>
+</div>
+</div>
+<div class="section" id="applications">
+<h2>Applications<a class="headerlink" href="#applications" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="image-segmentation">
 <h3>Image Segmentation<a class="headerlink" href="#image-segmentation" title="Permalink to this headline">¶</a></h3>
-<p>An image can be viewed as a vertex. We wan to partition image into foreground and background. For pixel/vertex <span class="math notranslate nohighlight">\(s\)</span>, let <span class="math notranslate nohighlight">\(a_v\)</span> be how likely <span class="math notranslate nohighlight">\(v\)</span> to be in foreground, and <span class="math notranslate nohighlight">\(b_v\)</span> be how likely <span class="math notranslate nohighlight">\(v\)</span> to be in background.</p>
-<p>To solve this, we define strength/similarity for every pair of pixels <span class="math notranslate nohighlight">\((u,v)\)</span>. The ultimate task is to partition the pixels into two sets <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span>. The similarity of two pixels from different partition should be small. The objective is</p>
+<p>An image can be viewed as a vertex. We want to partition an image into two parts, e.g. foreground and background. For pixel/vertex <span class="math notranslate nohighlight">\(s\)</span>, let <span class="math notranslate nohighlight">\(a_v\)</span> be how likely <span class="math notranslate nohighlight">\(v\)</span> to be in a part, and <span class="math notranslate nohighlight">\(b_v\)</span> be how likely <span class="math notranslate nohighlight">\(v\)</span> to be in the other part.</p>
+<p>To solve this, we define strength/similarity for every pair of pixels <span class="math notranslate nohighlight">\(s_{u,v}\)</span>. The ultimate task is to partition the pixels into two sets <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span>. The similarity of two pixels from different partition should be small. The objective is</p>
 <div class="math notranslate nohighlight">
 \[
-\max \left\{ \sum_{v \in X} a_v  + \sum_{u \in Y} b_u  - \sum_{v \in X, u\in Y} P_{v,u}  \right\}
+\max \left\{ \sum_{v \in X} a_v  + \sum_{u \in Y} b_u  - \sum_{v \in X, u\in Y} s_{v,u}  \right\}
 \]</div>
 <p>which is equivalent to</p>
 <div class="math notranslate nohighlight">
@@ -1222,17 +1313,16 @@ f^{\text{out}}(v) =\sum_{e \in \delta^{+}(v)} f(e)
 <p>which is equivalent to</p>
 <div class="math notranslate nohighlight">
 \[
-\min \left\{ \sum_{v \in X, u\in Y} P_{v,u}  - \sum_{v \in X} a_v  - \sum_{u \in Y} b_u + \sum_{w \in V} (a_w + b_w) \right\}
+\min \left\{ \sum_{v \in X, u\in Y} s_{v,u}  - \sum_{v \in X} a_v  - \sum_{u \in Y} b_u + \sum_{w \in V} (a_w + b_w) \right\}
 \]</div>
 <p>which is</p>
 <div class="math notranslate nohighlight">
 \[
-\min \left\{ \sum_{v \in X, u\in Y} P_{v,u}  + \sum_{v \in Y} a_v  + \sum_{u \in X} b_u \right\}
+\min \left\{ \sum_{v \in X, u\in Y} s_{v,u}  + \sum_{v \in Y} a_v  + \sum_{u \in X} b_u \right\}
 \]</div>
-<p>We can solve this with minimum cut. The capacity of an edge is the strength of that edge. For every vertex, add edge <span class="math notranslate nohighlight">\((s,v)\)</span> with capacity <span class="math notranslate nohighlight">\(a_v\)</span>, and add edges <span class="math notranslate nohighlight">\((t,v)\)</span> of capacity <span class="math notranslate nohighlight">\(b_v\)</span>.</p>
-<p>Given <span class="math notranslate nohighlight">\(s-t\)</span> cut <span class="math notranslate nohighlight">\((A,B)\)</span>, set <span class="math notranslate nohighlight">\(X = A \backslash \left\{ s \right\}\)</span> and <span class="math notranslate nohighlight">\(Y = B \backslash \left\{ t \right\}\)</span>.</p>
+<p>We can solve this with minimum cut on undirected graph. The capacity of an edge is the strength of that edge. For every vertex <span class="math notranslate nohighlight">\(v\)</span>, add edge <span class="math notranslate nohighlight">\((s,v)\)</span> of capacity <span class="math notranslate nohighlight">\(a_v\)</span>, and edge <span class="math notranslate nohighlight">\((v, t)\)</span> of capacity <span class="math notranslate nohighlight">\(b_v\)</span>. Also for add edge <span class="math notranslate nohighlight">\(e(v,u)\)</span> of capacity <span class="math notranslate nohighlight">\(s_{v,u}\)</span> for <span class="math notranslate nohighlight">\(u,v \ne s,t\)</span>. Consider an <span class="math notranslate nohighlight">\(s-t\)</span> cut <span class="math notranslate nohighlight">\((A,B)\)</span>, denote <span class="math notranslate nohighlight">\(X = A \backslash \left\{ s \right\}\)</span> and <span class="math notranslate nohighlight">\(Y = B \backslash \left\{ t \right\}\)</span>.</p>
 <dl class="simple myst">
-<dt>Claim</dt><dd><p>We have</p>
+<dt>Claim</dt><dd><p>The capacity of the cut equals the value of the objective function. So the optimization problem in image segmentation can be solved by the minimum cut problem.</p>
 </dd>
 </dl>
 <div class="math notranslate nohighlight">
@@ -1240,17 +1330,19 @@ f^{\text{out}}(v) =\sum_{e \in \delta^{+}(v)} f(e)
 c(A,B) = \sum _{e \in E(A,B)} c(e) = f(X,Y)
 \]</div>
 <p><em><strong>Proof</strong></em></p>
-<p><span class="math notranslate nohighlight">\(E(A, B)\)</span> has edges of 3 kinds</p>
+<p>There are 3 kinds of across-set edges in <span class="math notranslate nohighlight">\(E(A, B)\)</span></p>
 <ol class="simple">
-<li><p><span class="math notranslate nohighlight">\(e=(u,v), u\ne s, v\ne t\)</span>,contribute <span class="math notranslate nohighlight">\(p_e\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(e=(u,v), u\ne s, v\ne t\)</span>, contribute <span class="math notranslate nohighlight">\(s_e\)</span></p></li>
 <li><p><span class="math notranslate nohighlight">\(e=(s,x), x\in B \backslash \left\{ t \right\}\)</span> with edge capacity <span class="math notranslate nohighlight">\(a_x\)</span>. Total contribute <span class="math notranslate nohighlight">\(\sum_{x \in Y} a_x\)</span></p></li>
 <li><p><span class="math notranslate nohighlight">\(e=(y,t), y\in A \backslash \left\{ s \right\}\)</span> with edge capacity <span class="math notranslate nohighlight">\(a_x\)</span>. Total contribute <span class="math notranslate nohighlight">\(\sum_{b \in X} b_y\)</span></p></li>
 </ol>
+<p>Hence</p>
 <div class="math notranslate nohighlight">
 \[
-c(A,B) = \sum_{v \in X, u\in Y} P_{v,u}  + \sum_{v \in Y} a_v  + \sum_{u \in X} b_u
+c(A,B) = \sum_{v \in X, u\in Y} s_{v,u}  + \sum_{v \in Y} a_v  + \sum_{u \in X} b_u
 \]</div>
-<p>which is the same to the objective function.</p>
+<p>which is exactly the objective function.</p>
+<p><span class="math notranslate nohighlight">\(\square\)</span></p>
 </div>
 </div>
 <div class="section" id="exercise">
@@ -1290,7 +1382,7 @@ c(A,B) = \sum_{v \in X, u\in Y} P_{v,u}  + \sum_{v \in Y} a_v  + \sum_{u \in X} 
     <div class='prev-next-bottom'>
         
     <a class='left-prev' id="prev-link" href="21-minimum-spanning-tree.html" title="previous page">Minimum Spanning Tree</a>
-    <a class='right-next' id="next-link" href="../30-ml-basics/00-ml-basics.html" title="next page">Machine Learning Basics</a>
+    <a class='right-next' id="next-link" href="32-matching.html" title="next page">Matching</a>
 
     </div>
     <footer class="footer mt-5 mt-md-0">
