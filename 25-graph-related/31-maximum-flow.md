@@ -127,6 +127,12 @@ One can check if the residual capacity assigned to a pair of forward edge and ba
 
   - For every edge $e ^\prime$ in $G_f$ with zero residual capacity $c_f (e ^\prime ) = 0$, delete.
 
+:::{figure} max-flow-three-edges
+<img src="../imgs/max-flow-three-edges.png" width = "40%" alt=""/>
+
+Three kinds of edge in $G$ [Chuzhoy 2021]
+:::
+
 
 Ford-Fulkerson algorithm is an iterative algorithm. In each iteration, we compute the residual floe network of the current graph and use that to improve the original graph. Note that flow $f()$ only exists in the original graph.
 
@@ -138,7 +144,21 @@ Ford-Fulkerson algorithm is an iterative algorithm. In each iteration, we comput
 
     - For all edge $e \in E(G)$, initialize zero flow $f(e)=0$.
 
-    - Compute the residual flow network $G_f$.
+    - Compute the residual flow network $G_f$. For every $e(u,v) \in G$, add edges and assign capacity (called **residual capacity**)
+
+      - add a forward edge to reflect **unused** capacity of $e$
+
+          $$
+          c_f (u,v) = c(e) - f(e)
+          $$
+
+      - add a backward edge $(v,u)$ to reflect **used** capacity
+
+          $$
+          c_f (v,u) = f(e)
+          $$
+
+      - delete edges with zero residual capacity
 
 ```{margin}
 An augmenting path in residual graph can be found using DFS or BFS.
@@ -168,10 +188,10 @@ An augmenting path in residual graph can be found using DFS or BFS.
 
 ### Feasibility
 
-Claim 1 (Stops)
+Claim (Stops in finit time)
 : The FF algorithm stops after at most $\sum_{v\in \operatorname{succ}(s)} c(s, v)$ iterations.
 
-***Proof***
+:::{admonition,dropdown,seealso} *Proof*
 
 Upon initialization, $f(e)=0$ are integers. In each iteration, in $G_f$, all residual capacities $c_f(e)$ are integers and at least 1. The smallest residual capacity is also integer and at least 1. So the update flow of each edge in $G$ is $f(e)\leftarrow f(e) \pm \Delta$.
 
@@ -181,10 +201,13 @@ Therefore, the algorithm stops after at most $\sum_{v\in \operatorname{succ}(s)}
 
 $\square$
 
-Claim 2 (Always a valid flow)
-: Flow $f$ always remains a valid flow.
+:::
 
-***Proof by Induction***
+
+Claim 2 (Always a valid flow)
+: Flow $f$ always remains a valid flow. That is, the flow always satisfies the capacity constraints and the conservation constraints.
+
+:::{admonition,dropdown,seealso} *Proof by induction*
 
 - Base: $\forall e: f(e)=0$ at initialization is a valid flow
 
@@ -229,6 +252,9 @@ We have the following 3 possible situations for $e_1$ and $e_2$,
 1. $e_2$ forward, $e_1$ backward, similar to the case 3.
 
 $\square$
+
+:::
+
 
 Therefore, we show that after an iteration is completed, the constraints remain to be satisfied, so the feasibility is guaranteed.
 
@@ -277,8 +303,7 @@ Property (Compute flow value from a cut)
   \operatorname{val}(f) = f^{\text{out}}(A) - f^{\text{in}}(A)
   $$
 
-
-***Proof***
+:::{admonition,dropdown,seealso} *Proof*
 
 $$\begin{aligned}
 \operatorname{val}(f)
@@ -291,25 +316,27 @@ $$\begin{aligned}
 
 $\square$
 
+:::
 
-**Corollary**
 
-1. $\operatorname{val}(f) = f^{\text{in}}(B) - f^{\text{out}}(B)$
 
-1. $\operatorname{val}(f) = f^{\text{in}}(t)$
+```{margin}
+This corollary is the key for subsequent analysis
+```
 
-1. $\operatorname{val}(f) \le c(A,B)$, with equality iff $f^{\text{in}}(A) = 0$ and $f^{\text{out}}(A) = c(A,B)$.
+Corollary
+: $\operatorname{val}(f) \le c(A,B)$, with equality iff $f^{\text{in}}(A) = 0$ and $f^{\text{out}}(A) = c(A,B)$.
 
 
 Theorem
-: If $f$ is any $s-t$ flow and $(A,B)$ is any $s-t$ cut, and $\operatorname{val}(f) = c(A,B)$, then $f$ is a maximum flow, by Corollary 3.
+: If $f$ is any $s-t$ flow and $(A,B)$ is any $s-t$ cut, and $\operatorname{val}(f) = c(A,B)$, then $f$ is a maximum flow, by Corollary.
 
 How about existence?
 
 Claim (Optimality)
 : If $f$ is the flow returned by FF algorithm, then there exists an $s-t$ cut $(A,B)$ such that $\operatorname{val}(f) = c(A,B)$. So $f$ is optimal by the above theorem.
 
-***Proof***
+:::{admonition,dropdown,seealso} *Proof*
 
 Recall that FF algorithm stops if there is no $s-t$ path. After it stops, consider a cut $(A,B)$ in $G_f$, where $A$ is the set of all vertices $v \in V$ such that there is an $s-v$ path in $G_f$, and all other vertices (e.g., $t$) are in $B$. By this definition, there is no edge from $A$ to $B$.
 
@@ -319,19 +346,22 @@ $$
 \operatorname{val}(f) = c(A,B)
 $$
 
-By Corollary 3, this holds iff $f^{\text{in}}(A) = 0$ and $f^{\text{out}}(A) = c(A,B)$. Equivalently,
-
-1. $\forall e^- \in \delta^-(A), f(e^-) = 0 \\$
+By Corollary, this holds iff $f^{\text{in}}(A) = 0$ and $f^{\text{out}}(A) = c(A,B)$. Equivalently,
 
 1. $\forall e^+ \in \delta^+(A), f(e^+) = c(e^+)$
 
+1. $\forall e^- \in \delta^-(A), f(e^-) = 0 \\$
+
 These two conditions are indeed satisfied when FF algorithm stops.
 
-1. If there exists $e^- = (u,v): f(e^-) > 0$, then there is an edge $(v,u)$ from $A$ to $B$ in $G_f$ with residual capacity $c_f(v,u) > 0$, contradiction to the property of $G_f$.
+1. If there exists $e^+ = (a,b): f(e^+) < c(e^+)$, then there is an forward edge $(a,b)$ from $A$ to $B$ in $G_f$ with residual capacity $c_f(a,b) = c(e^+) - f(e^+)>0$, contradiction to the stoping condition of $G_f$.
 
-1. If there exists $e^+ = (u,v): f(e^+) < c(e^+)$, then there is an forward edge $(u,v)$ from $A$ to $B$ in $G_f$ with residual capacity $c_f(v,u) = c(e^+) - f(e^+)$, contradiction to the property of $G_f$.
+1. If there exists $e^- = (b,a): f(e^-) > 0$, then there is an edge $(a,b)$ from $A$ to $B$ in $G_f$ with residual capacity $c_f(a,b) > 0$, contradiction to the stoping condition of $G_f$.
 
 $\square$
+
+:::
+
 
 ## Minimum Cut
 
@@ -353,7 +383,7 @@ Find an $s-t$ cut $(A,B)$ that minimizes cut capacity $c(A,B)$, called minimum c
 Theorem (Equivalency of maximum flow and minimum cut)
 : In any flow network $G$, the value of a maximum $s-t$ flow is equal to the capacity of a minimum $s-t$ cut.
 
-The proof is simply from Corollary 3.
+The proof is simply from the Corollary.
 
 Thus, FF algorithm also gives an algorithm for finding a minimum $s-t$ cut.
 
@@ -379,97 +409,142 @@ There are two inputs.
 - Graph, which is a combinatorial part of size $(n,m)$
 - Capacities, which is a numerical part of size $m$
 
-Recall different running time??
+Recall different running time
 
-- strong-polynomial time: $Poly(\text{size of the combinatorial part})$, e.g. $O(n)$
-- weak-polynomial time: $Poly(\text{sizes of both parts})$, e.g. $O(mn \times m)$
+- strong-polynomial time: $Poly(\text{input size of the combinatorial part})$, e.g. $O(n)$
+- weak-polynomial time: $Poly(\text{input sizes of both parts})$, e.g. $O(n \log c_\max)$
 - pseudo-polynomial time: $Poly(\text{the largest integer present in the input})$, e.g. $O(c_\max)$
 
 :::
 
-## Improvement
-
-We want to bound the number of iterations in Edmonds-Korp algorithm.
-
-To find an augmenting path, use the shortest path $s-t$ in $G$.
-
-Partition the algorithm's execution into phases. Number of phase lasts as low as the lengths of augmenting paths chosen in each iteration remain the same.
-
-Number of iteration is $O(mn)$. Total run time is $O(m^2 n)$.
-
-Observation: Let $G_f$ be the residual graph at the start of iteration $i$, and $G_f ^\prime$ be the residual path at the end of iteration $i$,.
-
-- if $e \in E(G_f) \backslash E(G_f ^\prime)$ then $e \in E(P)$ where $P$ is the augmenting path in iteration $i$.
-- $\left\vert E(G_f) \backslash E(G_f ^\prime) \right\vert \ge 1$.
-- if $e = (u,v) \in E(G_f) \backslash E(G_f ^\prime)$ then $e \in E(P)$.
 
 
-## Flow-path Perspective
+
+## Improvement and Extension
+
+$O(mn c_\max)$ is not efficient. There are alternative algorithms to improve this.
+
+### Edmonds-Korp Algorithm
+
+Instead of using an arbitrary augmenting path, we use the **shortest** path $s-t$ in $G$ that minimizes number of edges. This work takes $O(m)$ by BFS or DFS, so each iteration still takes $O(m)$. But it reduces the number of iterations from $O(nc_\max)$ to $O(nm)$, this leads to the Edmonds-Korp algorithm with complexity $O(nm^2)$.
+
+To show that, we first run that algorithm, record the length of the chosen shortest path in each iteration, and then partition these the execution into phases, where each phase lasts as long as the lengths of augmenting paths chosen remains the same.
+
+
+$$\begin{aligned}
+\text{iteration} &\quad 1 \quad2 \ \quad 3 \  \quad4 \ \quad 5 \quad6 \quad 7\\
+\text{shortest path length} &\quad \underbrace{2 \quad 2}_{\text{phase 1} } \quad \underbrace{3\quad 3}_{\text{phase 2} } \quad \underbrace{5 \quad 5 \quad 5}_{\text{phase 3} }  \\
+\end{aligned}$$
+
+
+Claim (Non-decreasing shortest path length)
+: From iteration to iteration, the length of the augmenting path is non-decreasing. Hence, the number of phases is at most $n$.
+
+Claim ($O(m)$ iterations in each phase)
+: Every phase covers at most $O(m)$ iterations.
+
+::::{admonition,dropdown,seealso} *Proof*
+
+To prove them, let $G_f$ be the residual graph at the *start* of iteration $i$, and $G_f ^\prime$ be the residual path at the *end* of iteration $i$, and $P$ be the augmenting path in iteration $i$. From the algorithm we observe that
+
+- if $e \in E(G_f)$ but $e \notin E(G_f ^\prime)$, then $e \in E(P)$
+- at least one edge $e\in P$ has to disappear in $G ^\prime _f$
+- if $e \notin E(G_f)$ but $e \in E(G_f ^\prime)$ then its anti-parallel edge $e ^\prime  \in E(P)$.
+
+Now consider using BFS from to find a shortest path $s-t$ in $G_f$. Suppose the path length is $d$, then there are $d+1$ layers. The first layers only contains $s$, and the last layer contains $t$. In each iteration, we delete some forward-looking edge, and add a backward-looking edge or sideways-looking edge, but **no** shortcut edge. So the shortest path is non-decreasing. Beside, there are at most $m$ layers to delete in a phase with path length $d$, so at most $O(m)$ iterations in that phase.
+
+:::{figure} max-flow-bfs
+<img src="../imgs/max-flow-bfs.png" width = "100%" alt=""/>
+
+BFS in $G_f$ [Chuzhoy 2021]
+:::
+
+$\square$
+
+::::
+
+### Approximation
+
+$(1+\epsilon)$-approximation returns a flow of value at least $\frac{OPT}{1+\epsilon}$.
+
+
+### Other Properties
 
 Theorem (Integrality of flow)
 : If all capacities are integers, then the FF algorithm finds a maximum flow where $f(e)$ is integers for all $e$.
 
-Flow-paths based definition
-: Let $\mathcal{P}$ be a set of all $s-t$ paths. Let $f(P)$ be a flow of a path $P \in \mathcal{P}$. It is valid if
+### Flow-path Perspective
+
+Recall the flow is define for edges. We can consider a path-based flow $f^\prime : \mathcal{P}\rightarrow \mathbb{R} _{\ge 0}$. Let $\mathcal{P}$ be a set of all $s-t$ paths. Let $f ^\prime (P)$ be a flow of a path $P \in \mathcal{P}$. It is valid iff
 
 $$
-\forall e:\quad \sum_{P \in \mathcal{P} \text{ and } e \in E(P)} f(P) \le c(e)
+\forall e:\quad \sum_{P: P \in \mathcal{P} \text{ and } e \in E(P)} f ^\prime (P) \le c(e)
 $$
 
-The value of the set $\mathcal{P}$ is $\sum_{P \in \mathcal{P}}f(P)$.
+The value of the set $\mathcal{P}$ is $\sum_{P \in \mathcal{P}}f ^\prime (P)$.
 
-Theorem (Flow-path decomposision)
-: If $\left\{ f(e) \right\}_{e \in E}$ was feasible, new flow is feasible and has some value. It can be computed efficiently. The support of the flow is $\left\{ P \mid f(P)>0 \right\}$.
+Theorem (Equivalence)
+: If the original edge-defined flow $\left\{ f(e) \right\}_{e \in E}$ was feasible, then the path-defined flow $\left\{ f ^\prime (P) \right\}_{P \in \mathcal{P}}$ is also feasible and has some **integral** value. That is, the two kinds of definition are equivalent.
 
-The two definitions of flow are equivalent.
-
-## Applications
 
 ### Undirected Graphs
 
-We solve by making the graph directed. And run FF algorithm.
+To find max-flow in undirected graph with capacities $c(e)>0$, we can make the graph directed.
 
-#### Maximum Flow
+- Convert every undirected edge to two anti-parallel directed edges with the same capacity as the undirected edge.
+- Run the algorithm for directed graph.
+- Finally, run flow cancelation, such that one of the two anti-parallel edges is reduced to 0.
 
-Convert every undirected edge to two anti-parallel directed edges with the same capacity as the undirected edge. Run the algorithm for directed graph. Finally, run flow cancelation, such that one of the two anti-parallel edges is reduced to 0.
-
-### Minimum Cut
-
-For a cut $c(A,B)$ on a undirected graph, the capacity/cost of the cut is the sum of the capacities of the edges across $A$ and $B$.
+Meanwhile, we can find a minimum cut on a undirected graph, the capacity/cost of the cut is the sum of the capacities of the edges across $A$ and $B$.
 
 $$
 \sum _{e \in E(A,B)} c(e)
 $$
 
-Likewise, we convert every undirected edge to two anti-parallel directed edges, run FF algorithm to find a $s-t$ cut.
+Likewise, we convert every undirected edge to two anti-parallel directed edges, run FF algorithm to find a $s-t$ cut. This gives the same value of max $s-t$ flow.
 
-### Edge-Disjoint Paths
+More efficient algorithm is under research.
+
+### Edge-Disjoint Paths and $S-T$ Cut
 
 ```{margin}
 Edge-dispoint path = EDP
 ```
 
-For a directed graph with two **sets** of vertices $S$ and $T$, we want to find a maximum set of $S-T$ paths that are edge-disjoint, i.e. no paths can share any edges.
+For a directed graph with two **sets** of vertices $S$ and $T$, we want to find a maximum set $\mathcal{P}$ of $S-T$ paths that are edge-disjoint, i.e. no path in $\mathcal{P}$ can share any edges.
 
-To solve this, for every edge $e$, set capacity $c(e)=1$. Add one node $s$ that connects to every vertex $u$ in $S$ with capacity $\infty$. Add one node $t$ that connects to every vertex $v$ in $T$ with capacity $\infty$.
+To solve this,
 
-Run FF algorithm and obtain a flow $f$. Since $f(e)$ integer, it is 1. Run flow-path decomposition, then each path also carries flow value 1. We will get a collection of EDP from $S$ to $T$. The number of paths equals to the flow value.
+1. For every edge $e$, set capacity $c(e)=1$. Add one node $s$ that connects to every vertex $u$ in $S$ with capacity $\infty$. Add one node $t$ that connects to every vertex $v$ in $T$ with capacity $\infty$.
 
-### $S-T$ Cut
+1. Run FF algorithm and obtain a flow $f$. Since $f(e)$ is integer, it is 1.
 
-Given two sets of vertices $S$ and $T$. Find minimum set $E ^\prime$ of edges so that in $G \backslash E ^\prime$, there is **no** path from a vertex of $S$ to a vertex of $T$.
+1. Run flow-path decomposition, then each path also carries flow value 1. We will get a collection of EDP from $S$ to $T$. The number of paths equals to the flow value.
+
+**$S-T$ Cut**
+
+Given two sets of vertices $S$ and $T$ in a directed graph $G$, what is the minimum number of edges needed to disconnect $S$ from $T$? Formally, find a minimum-cardinality edge set $E ^\prime \subset E$ such that in the remaining graph $G \backslash E ^\prime$, there is **no** path from a vertex of $S$ to a vertex of $T$.
 
 Menger's Theorem
 : The maximum number of EDPs connecting $S$ to $T$ is equal to the minimum number of edges needed to disconnect $S$ from $T$.
 
+The same can be done for undirected graphs.
+
+### Vertex-capacity Max Flow
+
+In reality, capacities are often defined on vertices, such as computer networks. There are algorithms to solve vertex-capacity max-flow problem.
+
+## Applications
+
+
 ### Image Segmentation
 
-An image can be viewed as a vertex. We wan to partition image into foreground and background. For pixel/vertex $s$, let $a_v$ be how likely $v$ to be in foreground, and $b_v$ be how likely $v$ to be in background.
+An image can be viewed as a vertex. We want to partition an image into two parts, e.g. foreground and background. For pixel/vertex $s$, let $a_v$ be how likely $v$ to be in a part, and $b_v$ be how likely $v$ to be in the other part.
 
-To solve this, we define strength/similarity for every pair of pixels $(u,v)$. The ultimate task is to partition the pixels into two sets $X$ and $Y$. The similarity of two pixels from different partition should be small. The objective is
+To solve this, we define strength/similarity for every pair of pixels $s_{u,v}$. The ultimate task is to partition the pixels into two sets $X$ and $Y$. The similarity of two pixels from different partition should be small. The objective is
 
 $$
-\max \left\{ \sum_{v \in X} a_v  + \sum_{u \in Y} b_u  - \sum_{v \in X, u\in Y} P_{v,u}  \right\}
+\max \left\{ \sum_{v \in X} a_v  + \sum_{u \in Y} b_u  - \sum_{v \in X, u\in Y} s_{v,u}  \right\}
 $$
 
 which is equivalent to
@@ -481,21 +556,19 @@ $$
 which is equivalent to
 
 $$
-\min \left\{ \sum_{v \in X, u\in Y} P_{v,u}  - \sum_{v \in X} a_v  - \sum_{u \in Y} b_u + \sum_{w \in V} (a_w + b_w) \right\}
+\min \left\{ \sum_{v \in X, u\in Y} s_{v,u}  - \sum_{v \in X} a_v  - \sum_{u \in Y} b_u + \sum_{w \in V} (a_w + b_w) \right\}
 $$
 
 which is
 
 $$
-\min \left\{ \sum_{v \in X, u\in Y} P_{v,u}  + \sum_{v \in Y} a_v  + \sum_{u \in X} b_u \right\}
+\min \left\{ \sum_{v \in X, u\in Y} s_{v,u}  + \sum_{v \in Y} a_v  + \sum_{u \in X} b_u \right\}
 $$
 
-We can solve this with minimum cut. The capacity of an edge is the strength of that edge. For every vertex, add edge $(s,v)$ with capacity $a_v$, and add edges $(t,v)$ of capacity $b_v$.
-
-Given $s-t$ cut $(A,B)$, set $X = A \backslash \left\{ s \right\}$ and $Y = B \backslash \left\{ t \right\}$.
+We can solve this with minimum cut on undirected graph. The capacity of an edge is the strength of that edge. For every vertex $v$, add edge $(s,v)$ of capacity $a_v$, and edge $(v, t)$ of capacity $b_v$. Also for add edge $e(v,u)$ of capacity $s_{v,u}$ for $u,v \ne s,t$. Consider an $s-t$ cut $(A,B)$, denote $X = A \backslash \left\{ s \right\}$ and $Y = B \backslash \left\{ t \right\}$.
 
 Claim
-: We have
+: The capacity of the cut equals the value of the objective function. So the optimization problem in image segmentation can be solved by the minimum cut problem.
 
 $$
 c(A,B) = \sum _{e \in E(A,B)} c(e) = f(X,Y)
@@ -503,17 +576,22 @@ $$
 
 ***Proof***
 
-$E(A, B)$ has edges of 3 kinds
+There are 3 kinds of across-set edges in $E(A, B)$
 
-1. $e=(u,v), u\ne s, v\ne t$,contribute $p_e$
+1. $e=(u,v), u\ne s, v\ne t$, contribute $s_e$
 2. $e=(s,x), x\in B \backslash \left\{ t \right\}$ with edge capacity $a_x$. Total contribute $\sum_{x \in Y} a_x$
 1. $e=(y,t), y\in A \backslash \left\{ s \right\}$ with edge capacity $a_x$. Total contribute $\sum_{b \in X} b_y$
 
+Hence
+
 $$
-c(A,B) = \sum_{v \in X, u\in Y} P_{v,u}  + \sum_{v \in Y} a_v  + \sum_{u \in X} b_u
+c(A,B) = \sum_{v \in X, u\in Y} s_{v,u}  + \sum_{v \in Y} a_v  + \sum_{u \in X} b_u
 $$
 
-which is the same to the objective function.
+which is exactly the objective function.
+
+$\square$
+
 
 
 ## Exercise
