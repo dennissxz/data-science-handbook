@@ -65,7 +65,7 @@ Theorem (Mercer's, 1909)
 ### Representer Theorem
 
 Representer Theorem (Simplified)
-: Consider the optimization problem on a data set $\mathcal{D} = \left\{ \boldsymbol{x}_i ,y_i \right\} _{i=1}^n, \boldsymbol{x}_i \in \mathcal{S}$
+: Consider an optimization problem on a data set $\mathcal{D} = \left\{ \boldsymbol{x}_i ,y_i \right\} _{i=1}^n, \boldsymbol{x}_i \in \mathcal{S}$ of the following canonical form
 
   $$
   \boldsymbol{w}^{*}=\underset{\boldsymbol{w}}{\arg \min } \sum_{i=1}^{n} \mathcal{L}\left(\left\langle\boldsymbol{w}, \boldsymbol{\phi} \left(\boldsymbol{x}_i \right)\right\rangle, y_{i}\right)+\|\boldsymbol{w}\|^{2}
