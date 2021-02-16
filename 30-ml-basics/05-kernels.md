@@ -68,7 +68,7 @@ Representer Theorem (Simplified)
 : Consider an optimization problem on a data set $\mathcal{D} = \left\{ \boldsymbol{x}_i ,y_i \right\} _{i=1}^n, \boldsymbol{x}_i \in \mathcal{S}$ of the following canonical form
 
   $$
-  \boldsymbol{w}^{*}=\underset{\boldsymbol{w}}{\arg \min } \sum_{i=1}^{n} \mathcal{L}\left(\left\langle\boldsymbol{w}, \boldsymbol{\phi} \left(\boldsymbol{x}_i \right)\right\rangle, y_{i}\right)+\|\boldsymbol{w}\|^{2}
+  \boldsymbol{w}^{*}=\underset{\boldsymbol{w}}{\arg \min } \sum_{i=1}^{n} \mathcal{L}\left(\left\langle\boldsymbol{w}, \boldsymbol{\phi} \left(\boldsymbol{x}_i \right)\right\rangle, y_{i}\right) + \lambda \|\boldsymbol{w}\|^{2}
   $$
 
   where
@@ -78,6 +78,8 @@ Representer Theorem (Simplified)
   - $\boldsymbol{w} \in \mathbb{R} ^d$ is the coefficients in the model to be solved
 
   - $\mathcal{L}(\cdot, \cdot): \mathbb{R} \times \mathbb{R} \rightarrow \mathbb{R}$ on some arbitrary loss function.
+
+  - $\lambda > 0$
 
   Then there $\exists\left\{\alpha_{i} \in \mathbb{R}\right\}_{i=1}^{n}$ such that the solution $\boldsymbol{w} ^*$ is a linear combination of the $n$ transformed data vectors.
 
@@ -122,6 +124,9 @@ Now we can summarize the logic of using kernels.
 
 3. Therefore, instead of handcrafting feature transformations $\boldsymbol{\phi}$, people change to choosing (PSD) kernels to improve model performance.
 
-:::{admonition,note} Dot product in loss function
-Note that the kernel methods only apply to models with loss function that involves dot product $\boldsymbol{x}_i ^\top \boldsymbol{x}_j$, for instance, SVM, PCA. If there is no dot product, there is no corresponding kernelized version of that model, such as linear regression.
+:::{admonition,note} Kernelized model class.
+
+Some model classes have kernelized version, e.g. kernel PCA, kernel CCA, kernel SVM. But it is not easy to identity if a model class has a corresponding kernelized model class.
+
+
 :::
