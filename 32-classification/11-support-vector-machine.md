@@ -313,42 +313,9 @@ This can be solved by gradient descent.
 
 If the points are non-seperable, we consider transform them into a higher-dimensional space by a feature transformation $\boldsymbol{\boldsymbol{\phi}}(\boldsymbol{x})$, and find a hyperplane there to separate the points (hopefully).
 
-#### Transformed Dual
-
-The primal problem becomes
-
-$$
-\begin{aligned}
-\underset{\boldsymbol{w}, w_{0}}{\arg \min }&\  \frac{1}{2}\|\boldsymbol{w}\|^{2} \\
-\text { s.t.}&\  y_{i}\left(\boldsymbol{w}^{\top} \boldsymbol{x}_{i}+w_{0}\right) \geq 1-\xi_{i}, \xi_{i} \geq 0, \forall i \\
-&\ \boldsymbol{w}, \boldsymbol{x}_{i} \in \mathbb{R}^{d}
-\end{aligned}
-$$
-
-and the dual problem becomes
-
-$$
-\begin{aligned}
-\underset{\boldsymbol{\alpha}}{\arg \max } & \ \left\{\sum_{i=1}^{n} \alpha_{i}-\frac{1}{2} \sum_{i=1}^{n} \sum_{j=1}^{n} \alpha_{i} \alpha_{j} y_{i} y_{j} \boldsymbol{\phi}\left(\boldsymbol{x}_{i}\right)^{\top} \boldsymbol{\phi}\left(\boldsymbol{x}_{j}\right)\right\} \\
-\text { s.t.}&\ \sum_{i=1}^{n} \alpha_{i} y_{i}=0,0 \leq \alpha_{i} \leq C, \forall i
-\end{aligned}
-$$
-
-We find there is a dot product in the objective function, so we can consider using a PSD kernel $k(\boldsymbol{x} , \boldsymbol{y} )=\boldsymbol{\phi}(\boldsymbol{x} )^{\top} \boldsymbol{\phi}(\boldsymbol{y} )$. The problem becomes
-
-
-$$
-\begin{aligned}
-\underset{\boldsymbol{\alpha}}{\arg \max }&\ \left\{\sum_{i=1}^{n} \alpha_{i}-\frac{1}{2} \sum_{i=1}^{n} \sum_{j=1}^{n} \alpha_{i} \alpha_{j} y_{i} y_{j} k\left(\boldsymbol{x}_{i}, \boldsymbol{x}_{j}\right)\right\} \\
-\text { s.t.} &\ \sum_{i=1}^{n} \alpha_{i} y_{i}=0,0 \leq \alpha_{i} \leq C, \forall i
-\end{aligned}
-$$
-
-and we solve the QP problem for $\boldsymbol{\alpha}$.
-
 #### Transformed Unconstrained Original
 
-For the original unconstraint problem, after transformation it becomes
+For the original problem, after transformation into $\boldsymbol{\phi}(\boldsymbol{x})$ it becomes
 
 $$
 \mathcal{L}\left(\boldsymbol{w}, w_{0}\right)=\frac{1}{2}\|\boldsymbol{w}\|^{2}+C \sum_{i=1}^{n} \max \left\{0,1-y_{i}\left(\boldsymbol{w}^{\top} \boldsymbol{\phi}(\boldsymbol{x})+w_{0}\right)\right\}
@@ -374,3 +341,37 @@ $$
 $$
 
 So we turn $\mathcal{L}\left(\boldsymbol{w}, w_{0}\right)$ to $\mathcal{L}\left(\boldsymbol{\alpha} , w_{0}\right)$ and we can then solve it by SGD.
+
+
+#### Transformed Dual
+
+The primal problem becomes
+
+$$
+\begin{aligned}
+\underset{\boldsymbol{w}, w_{0}}{\min }&\  \frac{1}{2}\|\boldsymbol{w}\|^{2} \\
+\text { s.t.}&\  y_{i}\left(\boldsymbol{w}^{\top} \boldsymbol{\phi}( \boldsymbol{x}_{i})  + w_{0}\right) \geq 1-\xi_{i}, \xi_{i} \geq 0, \forall i \\
+&\ \boldsymbol{w}, \boldsymbol{\phi}(\boldsymbol{x}_{i})  \in \mathbb{R}^{d}
+\end{aligned}
+$$
+
+and the dual problem becomes
+
+$$
+\begin{aligned}
+\underset{\boldsymbol{\alpha}}{\max } & \ \left\{\sum_{i=1}^{n} \alpha_{i}-\frac{1}{2} \sum_{i=1}^{n} \sum_{j=1}^{n} \alpha_{i} \alpha_{j} y_{i} y_{j} \boldsymbol{\phi}\left(\boldsymbol{x}_{i}\right)^{\top} \boldsymbol{\phi}\left(\boldsymbol{x}_{j}\right)\right\} \\
+\text { s.t.}&\ \sum_{i=1}^{n} \alpha_{i} y_{i}=0,0 \leq \alpha_{i} \leq C, \forall i
+\end{aligned}
+$$
+
+We find there is a dot product in the objective function, so we can consider using a PSD kernel $k(\boldsymbol{x} , \boldsymbol{y} )=\boldsymbol{\phi}(\boldsymbol{x} )^{\top} \boldsymbol{\phi}(\boldsymbol{y} )$. The problem becomes
+
+
+$$
+\begin{aligned}
+\underset{\boldsymbol{\alpha}}{ \max }&\ \left\{\sum_{i=1}^{n} \alpha_{i}-\frac{1}{2} \sum_{i=1}^{n} \sum_{j=1}^{n} \alpha_{i} \alpha_{j} y_{i} y_{j} k\left(\boldsymbol{x}_{i}, \boldsymbol{x}_{j}\right)\right\} \\
+\text { s.t.} &\ \sum_{i=1}^{n} \alpha_{i} y_{i}=0,0 \leq \alpha_{i} \leq C, \forall i
+\end{aligned}
+$$
+
+and we solve the QP problem for $\boldsymbol{\alpha}$.
