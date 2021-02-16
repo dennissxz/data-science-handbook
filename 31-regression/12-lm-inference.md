@@ -679,6 +679,7 @@ we will have $RSS > TSS$, i.e. $R^2 < 0$.
 
 
 
+(adj-R-squared)=
 ### Adjusted $R$-squared
 
 
@@ -861,6 +862,8 @@ $$
 \beta_{p-k}=\ldots= \beta_{p-1} =0
 $$
 
+If two models are not nested, we can compare them by [adjusted $R$-squared](adj-R-squared).
+
 ```
 
 $F$-test can be used to compare two nested models
@@ -872,7 +875,7 @@ $$\begin{aligned}
 \end{aligned}$$
 
 
-```{margin} Interpretation of $F$-test
+```{margin} Interpretation of $F$ test statistic
 Given it's form, we can interpret the numerator as an average reduction in $RSS$ by adding the $k$ explanatory variables. Since the denominator is fixed, if the average reduction is large enough, then we reject the null hypothesis that the $k$ coefficients are 0.
 ```
 
