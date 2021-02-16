@@ -1,0 +1,1034 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Language Models &#8212; Data Science Handbook</title>
+    
+  <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+  <link rel="stylesheet"
+    href="../_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="../_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinx-book-theme.40e2e510f6b7d1648584402491bb10fe.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/style.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.d3f166471bb80abb5163.js">
+
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
+    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Neural Networks" href="../37-neural-networks/00-neural-networks.html" />
+    <link rel="prev" title="Topic Models" href="31-topic-models.html" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+
+
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+<a class="navbar-brand text-wrap" href="../index.html">
+  
+  
+  <h1 class="site-logo" id="site-title">Data Science Handbook</h1>
+  
+</a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form>
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+    <ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../index.html">
+   Data Science Handbook
+  </a>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Foundations
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../11-math/00-math.html">
+   Math
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/11-combinatorics.html">
+     Combinatorics
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/12-derangement.html">
+     Derangement
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/21-linear-algebra.html">
+     Linear Algebra
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/51-optimization.html">
+     Optimization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/61-graphs.html">
+     Graphs
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/90-puzzles.html">
+     Puzzles
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../12-probabilities/00-probabilities.html">
+   Probabilities
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/11-expectation-and-variance.html">
+     Expectation and Variance
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/13-correlation-and-dependence.html">
+     Correlation and Dependence
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/31-bayesian-theorem.html">
+     Bayesian’s Theorem
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/51-markov-chain.html">
+     Markov Chain
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/71-sampling.html">
+     Sampling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/90-multivariate-notations.html">
+     Multivariate Notations
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/91-large-sample-theory.html">
+     Large Sample Theory
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../13-statistics/00-statistics.html">
+   Statistics
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/11-sample-survey.html">
+     Sample Survey
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/13-randomized-trial.html">
+     Causality and Randomized Trial
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/21-hypothesis-testing.html">
+     Hypothesis Testing
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/25-two-sample-tests.html">
+     Two Sample Mean Tests
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/33-confusion-matrix.html">
+     Confusion Matrix
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/41-maximum-likelihood-estimation.html">
+     Maximum Likelihood Estimator
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/43-estimators-evaluation.html">
+     Estimators Evaluation
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../14-python/00-python.html">
+   Python
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../14-python/11-programming-tools.html">
+     Programmer tools
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../14-python/12-syntax.html">
+     Syntax
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../14-python/13-data-structure.html">
+     Data Structures
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../14-python/15-functional-programming.html">
+     Functional Programming
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../17-sql/00-sql.html">
+   SQL
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../17-sql/11-database.html">
+     Database
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../17-sql/12-relational-structure.html">
+     Relational Structure
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../17-sql/31-data-query.html">
+     Data Query
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../17-sql/33-data-manipulation.html">
+     Data Manipulation
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../19-miscellaneous/00-miscellaneous.html">
+   Miscellaneous
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../19-miscellaneous/11-latex.html">
+     LaTeX
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../19-miscellaneous/13-myst.html">
+     MyST Markdown
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Algorithms
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../20-algorithms-basics/00-algorithms-basics.html">
+   Algorithms Basics
+  </a>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../21-greedy-algorithms/00-greedy-algorithms.html">
+   Greedy Algorithms
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../21-greedy-algorithms/11-interval-scheduling.html">
+     Interval Scheduling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../21-greedy-algorithms/31-huffman-coding.html">
+     Huffman Coding
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../23-dynamic-programming/00-dynamic-programming.html">
+   Dynamic Programming
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/11-weighted-interval-scheduling.html">
+     Weighted Interval Scheduling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/13-longest-common-subsequence.html">
+     Longest Common Subsequence
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/15-longest-increasing-subsequence.html">
+     Longest Increasing Subsequence
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/17-largest-sum-subsequence.html">
+     Largest Sum Subsequence
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/31-knapsack.html">
+     Minimum Knapsack
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/51-chain-matrix-multiplication.html">
+     Chain Matrix Multiplication
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../25-graph-related/00-graph-related.html">
+   Graph Related
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/13-shortest-path.html">
+     Shortest Path
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/21-minimum-spanning-tree.html">
+     Minimum Spanning Tree
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/31-maximum-flow.html">
+     Maximum Flow
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/32-matching.html">
+     Matching
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/42-maximum-independent-set.html">
+     Maximum Independent Set in Trees
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Machine Learning
+ </span>
+</p>
+<ul class="current nav sidenav_l1">
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../30-ml-basics/00-ml-basics.html">
+   Machine Learning Basics
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../30-ml-basics/02-taxonomy.html">
+     Taxonomy
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../30-ml-basics/03-information-theory.html">
+     Information Theory
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../30-ml-basics/05-kernels.html">
+     Kernels
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../31-regression/00-regression.html">
+   Regression
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/11-lm-estimation.html">
+     Linear Models - Estimation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/12-lm-inference.html">
+     Linear Regression - Inference
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/13-lm-extension.html">
+     Linear Regression - Extension
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../32-classification/00-classification.html">
+   Classification
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../32-classification/11-support-vector-machine.html">
+     Support Vector Machine
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../32-classification/21-decision-tree.html">
+     Decision Tree
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../33-dimensionality-reduction/00-dimensionality-reduction.html">
+   Dimensionality Reduction
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/11-principal-component-analysis.html">
+     Principal Component Analysis
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/13-canonical-correlation-analysis.html">
+     Canonical Corerlation Analysis
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/21-multidimensional-scaling.html">
+     Multidimensional Scaling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/23-graph-based-spectral-methods.html">
+     Graph-based Spectral Methods
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/25-t-SNE.html">
+     SNE and
+     <span class="math notranslate nohighlight">
+      \(t\)
+     </span>
+     -SNE
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/31-kernel-pca.html">
+     Kernel PCA
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/32-kernel-cca.html">
+     Kernel CCA
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../34-clustering/00-clustering.html">
+   Clustering
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../34-clustering/11-k-means.html">
+     <span class="math notranslate nohighlight">
+      \(k\)
+     </span>
+     -means clustering
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../34-clustering/13-agglomerative-methods.html">
+     Agglomerative Methods
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../34-clustering/31-spectral-clustering.html">
+     Spectral Clustering
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../34-clustering/41-gaussian-mixtures.html">
+     Gaussian Mixtures
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 current active collapsible-parent">
+  <a class="reference internal" href="00-graphical-models.html">
+   Graphical Models
+  </a>
+  <ul class="current collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="11-hidden-markov-models.html">
+     Hidden Markov Models
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="31-topic-models.html">
+     Topic Models
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     Language Models
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../37-neural-networks/00-neural-networks.html">
+   Neural Networks
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/01-stochastic-gradient-descent.html">
+     Stochastic Gradient Descent
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/03-trainability.html">
+     Trainability
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/05-regularization.html">
+     Regularization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/11-autoencoders.html">
+     Autoencoders
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/13-variational-autoencoders.html">
+     Variational Autoencoders
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../38-ml-for-graph-data/00-ml-for-graph-data.html">
+   Machine Learning for Graph Data
+  </a>
+ </li>
+</ul>
+
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="row topbar fixed-top container-xl">
+    <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show">
+    </div>
+    <div class="col pl-2 topbar-main">
+        
+        <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+            data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+            aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+            title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+            <i class="fas fa-bars"></i>
+            <i class="fas fa-arrow-left"></i>
+            <i class="fas fa-arrow-up"></i>
+        </button>
+        
+        
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../_sources/35-graphical-models/33-language-models.md"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.md</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+        <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/dennissxz/data-science-handbook"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/dennissxz/data-science-handbook/issues/new?title=Issue%20on%20page%20%2F35-graphical-models/33-language-models.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+
+        <!-- Full screen (wrap in <a> to have style consistency -->
+        <a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+                data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+                title="Fullscreen mode"><i
+                    class="fas fa-expand"></i></button></a>
+
+        <!-- Launch buttons -->
+
+    </div>
+
+    <!-- Table of contents -->
+    <div class="d-none d-md-block col-md-2 bd-toc show">
+        
+        <div class="tocsection onthispage pt-5 pb-3">
+            <i class="fas fa-list"></i> Contents
+        </div>
+        <nav id="bd-toc-nav">
+            <ul class="nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#objective">
+   Objective
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#factorization">
+     Factorization
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#n-gram-models">
+     <span class="math notranslate nohighlight">
+      \(n\)
+     </span>
+     -gram Models
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#estimation">
+   Estimation
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#evaluation">
+   Evaluation
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#cross-entropy">
+     Cross-entropy
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#perplexity">
+     Perplexity
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#improvement">
+   Improvement
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#sparse-data-problem">
+     Sparse Data Problem
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#laplace-add-one-smoothing">
+     Laplace (add-one) Smoothing
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#back-off-n-grams">
+     Back-off n-grams
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#model-by-hmm">
+     Model by HMM
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+        </nav>
+        
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="language-models">
+<h1>Language Models<a class="headerlink" href="#language-models" title="Permalink to this headline">¶</a></h1>
+<p>Language models aim to model the joint distribution over words <span class="math notranslate nohighlight">\(p(\boldsymbol{w})\)</span>, where <span class="math notranslate nohighlight">\(\boldsymbol{w}\)</span> is a word sequence <span class="math notranslate nohighlight">\(\boldsymbol{w} = \left\{ w_1, \ldots, w_k \right\}\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+p( \text{&quot;And nothing but the truth&quot;} )&amp;=.0023  \\
+p( \text{&quot;And nuts sing on the roof&quot;} ) &amp;\approx 0 \\
+p(\text{&quot;I t is easy to recognize speech&quot;}  ) &amp;=.0001  \\
+p( \text{&quot;It is easy to wreck a nice beach&quot;}  ) &amp;=.00000001
+\end{aligned}\end{split}\]</div>
+<div class="section" id="objective">
+<h2>Objective<a class="headerlink" href="#objective" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="factorization">
+<h3>Factorization<a class="headerlink" href="#factorization" title="Permalink to this headline">¶</a></h3>
+<p>Recall that factorization helps to reduce the number of parameters. By the chain rule, we have</p>
+<div class="math notranslate nohighlight">
+\[
+p(\boldsymbol{w})=\prod_{i=1}^{K} p\left(w_{i} \mid w_{1}, \ldots, w_{i-1}\right)=\prod_{i=1}^{K} p(w_i \vert \boldsymbol{h} _i)
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\boldsymbol{h} _{i}=\left\{w_{1}, \ldots, w_{i-1}\right\}\)</span> is the <strong>history</strong> for word <span class="math notranslate nohighlight">\(w_i\)</span>.</p>
+<p>Note:</p>
+<ul class="simple">
+<li><p>First &amp; last words typically assumed to be a sentence boundary marker/token, <span class="math notranslate nohighlight">\(w_1 = w_k = \texttt{&lt;&gt;}\)</span>.</p></li>
+<li><p>Too many possible histories, so we want to reduce to equivalence classes <span class="math notranslate nohighlight">\(\phi(\boldsymbol{h} _i)\)</span>, such that <span class="math notranslate nohighlight">\(p(w_i|h_i) ≈ p(w_i|\phi(\boldsymbol{h} _i))\)</span></p></li>
+<li><p>Good equivalence classes maximize the information about the current
+word given the class <span class="math notranslate nohighlight">\(\psi(\boldsymbol{h} _i)\)</span>.</p></li>
+</ul>
+</div>
+<div class="section" id="n-gram-models">
+<h3><span class="math notranslate nohighlight">\(n\)</span>-gram Models<a class="headerlink" href="#n-gram-models" title="Permalink to this headline">¶</a></h3>
+<p>In <span class="math notranslate nohighlight">\(n\)</span>-gram language models,  the history equivalence class is the previous <span class="math notranslate nohighlight">\(n-1\)</span> words <span class="math notranslate nohighlight">\(\phi\left(\boldsymbol{h}_{i}\right)=\left\{w_{i-1}, \ldots, w_{i-(n-1)}\right\}\)</span>.</p>
+<p>For example</p>
+<ul class="simple">
+<li><p>bigram LM <span class="math notranslate nohighlight">\(p(w_i|w_{i−1})\)</span></p></li>
+<li><p>trigram LM <span class="math notranslate nohighlight">\(p(w_i|w_{i−1},w_{i−2})\)</span></p></li>
+</ul>
+<p>2-4 grams are most common in practical applications.</p>
+<p>Consider the following sentence: <span class="math notranslate nohighlight">\(\boldsymbol{w} =\)</span> “The quick brown fox jumped over
+the lazy dog.”</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+p\left(w_{1}, \ldots, w_{n}\right) =\
+&amp; p(\text {the} \mid&lt;&gt;) \\
+&amp; p(\text {quick} \mid \text {the},&lt;&gt;) \\
+&amp; p(\text {brown} \mid \text {quick, the})\\
+&amp; \cdots\\
+&amp; p(\text {dog} \mid \text {lazy, the}) \\
+&amp; p(&lt;&gt;\mid \text {dog, lazy})
+\end{aligned}
+\end{split}\]</div>
+</div>
+</div>
+<div class="section" id="estimation">
+<h2>Estimation<a class="headerlink" href="#estimation" title="Permalink to this headline">¶</a></h2>
+<p>Maximum-likelihood estimate of n-gram probabilities given some training set of text:</p>
+<div class="math notranslate nohighlight">
+\[
+\hat{p}(\text { quick } \mid&lt;&gt;, \text { the })=\frac{\text { count }(&lt;&gt;, \text { the, quick })}{\operatorname{count}(&lt;&gt;, \text { the })}
+\]</div>
+<p>Using ML, the model is good to predict functional words (e.g. “the”, “to”), not content word (nouns, verbs, adjectives). below example shows where the correct word is in the decreasing probability list.</p>
+<div class="figure align-default" id="lang-pred-list">
+<a class="reference internal image-reference" href="../_images/lang-pred-list.png"><img alt="" src="../_images/lang-pred-list.png" style="width: 60%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 64 </span><span class="caption-text">Trigram Prediction [Jelink 1997]</span><a class="headerlink" href="#lang-pred-list" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+<div class="section" id="evaluation">
+<h2>Evaluation<a class="headerlink" href="#evaluation" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Qualitatively (How good do random sentences generated from the LM look?)</p></li>
+<li><p>Evaluate via the task loss/performance measure</p></li>
+</ul>
+<p>Other quantitative intrinsic measure include cross-entropy and perplexity.</p>
+<div class="section" id="cross-entropy">
+<h3>Cross-entropy<a class="headerlink" href="#cross-entropy" title="Permalink to this headline">¶</a></h3>
+<p>The (empirical) cross-entropy of a model distribution <span class="math notranslate nohighlight">\(\hat{p}(x)\)</span> with respect to some data <span class="math notranslate nohighlight">\(\boldsymbol{w}=\left\{x_{1}, \ldots, x_{n}\right\}\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[
+H_{\hat{p}}(\boldsymbol{x})=-\frac{1}{n} \log _{2} \hat{p}(\boldsymbol{x})
+\]</div>
+<div class="margin sidebar">
+<p class="sidebar-title"></p>
+<p>Intuition: This is the number of bits per word needed to encode this data set using the model.</p>
+</div>
+<p>For an <span class="math notranslate nohighlight">\(n\)</span>-gram LM, to evaluate <span class="math notranslate nohighlight">\(\hat{p}(\cdot)\)</span> on a test set <span class="math notranslate nohighlight">\(\boldsymbol{w}=\left\{w_{1}, \ldots, w_{n}\right\}\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+H_{\hat{p}}(\boldsymbol{w}) &amp;=-\frac{1}{n} \log _{2} \hat{p}(\boldsymbol{w}) \\
+&amp;=-\frac{1}{n} \log _{2} \prod_{i=1}^{n} \hat{p}\left(w_{i} \mid \phi\left(\boldsymbol{h}_{i}\right)\right) \\
+&amp;=-\frac{1}{n} \sum_{i=1}^{n} \log _{2} \hat{p}\left(w_{i} \mid \phi\left(\boldsymbol{h}_{i}\right)\right)
+\end{aligned}
+\end{split}\]</div>
+</div>
+<div class="section" id="perplexity">
+<h3>Perplexity<a class="headerlink" href="#perplexity" title="Permalink to this headline">¶</a></h3>
+<p>Recall the perplexity of a distribution <span class="math notranslate nohighlight">\(P(X)\)</span> is <span class="math notranslate nohighlight">\(2^{H_{p}(X)}\)</span>.</p>
+<p>Here, we consider the empirical perplexity of a model of a distribution w.r.t. a data set</p>
+<div class="math notranslate nohighlight">
+\[
+P P_{\hat{p}}(\boldsymbol{w})=2^{H_{\hat{p}}(\boldsymbol{w})}
+\]</div>
+<p><strong>Interpretation</strong>: Perplexity is the average number of words possible after a given history (the average branching factor of the LM).</p>
+<p>Usually, as <span class="math notranslate nohighlight">\(n\)</span> increases in <span class="math notranslate nohighlight">\(n\)</span>-gram models, perplexity goes down, as we are more certain in the conditional distribution <span class="math notranslate nohighlight">\(p(w_i\vert \phi(\boldsymbol{h_i} ))\)</span></p>
+<div class="figure align-default" id="lang-perplexity">
+<a class="reference internal image-reference" href="../_images/lang-perplexity.png"><img alt="" src="../_images/lang-perplexity.png" style="width: 50%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 65 </span><span class="caption-text">Perplexity on different domains</span><a class="headerlink" href="#lang-perplexity" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+</div>
+<div class="section" id="improvement">
+<h2>Improvement<a class="headerlink" href="#improvement" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="sparse-data-problem">
+<h3>Sparse Data Problem<a class="headerlink" href="#sparse-data-problem" title="Permalink to this headline">¶</a></h3>
+<p>A vocabulary of size <span class="math notranslate nohighlight">\(V\)</span> has <span class="math notranslate nohighlight">\(V^n\)</span> possible <span class="math notranslate nohighlight">\(n\)</span>-grams <span class="math notranslate nohighlight">\(w_i \vert w_{i-(n-1)}, \ldots, w_{i-1}\)</span>. Most of <span class="math notranslate nohighlight">\(n\)</span>-grams are rare. In a training set, it’s unlikely that we will see all of them. As a result, maximum-likelihood just assign 0 probability.</p>
+<p>To alleviate this, we use <strong>smoothing</strong>: A set of techniques for re-distributing probability mass from frequently seen to unseen/rare events.</p>
+<ul class="simple">
+<li><p>Increase probability of unseen/rare <span class="math notranslate nohighlight">\(n\)</span>-grams</p></li>
+<li><p>therefore, decrease probability of frequently seen <span class="math notranslate nohighlight">\(n\)</span>-grams</p></li>
+</ul>
+<p><strong>Experimental findings</strong>: Church and Gale (1992) split a 44 million word data set into two halves. For a bigram that occurs, e.g., 5 times in the first half, how many times does it occur in the second half?</p>
+<ul class="simple">
+<li><p>Maximum-likelihood prediction: 5</p></li>
+<li><p>Actual: ∼ 4.2 &lt; 5</p></li>
+</ul>
+<p>This is because both halves are samples, not identical. There must be some bigrams in 2nd half that are unseen in 1st half, which take up some counts, such that <span class="math notranslate nohighlight">\(5\)</span> is diluted.</p>
+<p>There are several improvements to solve this problem.</p>
+</div>
+<div class="section" id="laplace-add-one-smoothing">
+<h3>Laplace (add-one) Smoothing<a class="headerlink" href="#laplace-add-one-smoothing" title="Permalink to this headline">¶</a></h3>
+<p>Simplest idea: Add count of 1 to each event (seen or unseen)</p>
+<ul class="simple">
+<li><p>Unigram</p>
+<ul>
+<li><p>Unsmoothed: <span class="math notranslate nohighlight">\(p(w_i) = \frac{C(w_i)}{N}\)</span>, where <span class="math notranslate nohighlight">\(N\)</span> is the total number of training word tokens and <span class="math notranslate nohighlight">\(C(\dot)\)</span> is the count.</p></li>
+<li><p>Smoothed: <span class="math notranslate nohighlight">\(p(w_i) = \frac{C(w_i)+1}{N+V}\)</span>, where <span class="math notranslate nohighlight">\(V\)</span> is the vocabulary size</p></li>
+</ul>
+</li>
+<li><p>Bigram</p>
+<ul>
+<li><p>Unsmoothed: <span class="math notranslate nohighlight">\(p\left(w_{i} \mid w_{i-1}\right)=\frac{C\left(w_{i-1} w_{i}\right)}{C\left(w_{i-1}\right)}\)</span></p></li>
+<li><p>Smoothed: <span class="math notranslate nohighlight">\(p\left(w_{i} \mid w_{i-1}\right)=\frac{C\left(w_{i-1} w_{i}\right)+1}{C\left(w_{i-1}\right)+V}\)</span></p></li>
+</ul>
+</li>
+</ul>
+<p>A simple extension is “delta smoothing”: Add some value <span class="math notranslate nohighlight">\(\delta\)</span> instead of <span class="math notranslate nohighlight">\(1\)</span></p>
+</div>
+<div class="section" id="back-off-n-grams">
+<h3>Back-off n-grams<a class="headerlink" href="#back-off-n-grams" title="Permalink to this headline">¶</a></h3>
+<p>Idea: reduce <span class="math notranslate nohighlight">\(n\)</span>, so the total number of probabilities to be estimated, which is <span class="math notranslate nohighlight">\(V^n\)</span>, decreases.</p>
+<ul>
+<li><p>Use maximum likelihood estimate if we have enough examples; otherwise, back off to a lower-order model:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+  p_{b o}\left(w_{i} \mid w_{i-1}\right) \left\{\begin{array}{ll}
+  p_{\boldsymbol{ML}}\left(w_{i} \mid w_{i-1}\right), &amp; \text { if } C\left(w_{i-1} w_{i}\right) \geq C_{\min } \\
+  \alpha_{w_{i-1}} p\left(w_{i}\right), &amp; \text { otherwise }
+  \end{array}\right.
+  \end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\alpha_{w_{i-1}}\)</span> is chosen such that the probability sum to 1</p>
+</li>
+<li><p>Or, interpolate between higher-order and lower-order <span class="math notranslate nohighlight">\(n\)</span>-gram probabilities</p>
+<div class="math notranslate nohighlight">
+\[
+  p_{b o}\left(w_{i} \mid w_{i-1}\right) = \lambda p_{\boldsymbol{ML}}\left(w_{i} \mid w_{i-1}\right)+ (1-\lambda) p\left(w_{i}\right)
+  \]</div>
+</li>
+</ul>
+</div>
+<div class="section" id="model-by-hmm">
+<h3>Model by HMM<a class="headerlink" href="#model-by-hmm" title="Permalink to this headline">¶</a></h3>
+<p>An HMM is like a language model where there is an <span class="math notranslate nohighlight">\(n\)</span>-gram over <strong>topics</strong>, and words are drawn independently given the topic.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+&amp; t_1 \longrightarrow &amp;&amp; t_2  \longrightarrow &amp;&amp;\ldots \longrightarrow &amp;&amp; t_t  \\
+&amp;\downarrow &amp;&amp;\downarrow &amp;&amp; &amp;&amp;\downarrow \\
+&amp; w_1 &amp;&amp; w_2 &amp;&amp; \ldots &amp;&amp; w_t \\
+\end{aligned}\end{split}\]</div>
+<div class="math notranslate nohighlight">
+\[
+w \sim p(\cdot \vert t)
+\]</div>
+<p>.</p>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./35-graphical-models"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        </div>
+    </div>
+    
+    
+    <div class='prev-next-bottom'>
+        
+    <a class='left-prev' id="prev-link" href="31-topic-models.html" title="previous page">Topic Models</a>
+    <a class='right-next' id="next-link" href="../37-neural-networks/00-neural-networks.html" title="next page">Neural Networks</a>
+
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By Dennis Zheng<br/>
+        
+            &copy; Copyright 2020.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+
+    
+  <script src="../_static/js/index.d3f166471bb80abb5163.js"></script>
+
+
+    
+  </body>
+</html>

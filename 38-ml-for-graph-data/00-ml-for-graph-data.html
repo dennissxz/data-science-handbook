@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Topic Models &#8212; Data Science Handbook</title>
+    <title>Machine Learning for Graph Data &#8212; Data Science Handbook</title>
     
   <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
 
@@ -53,12 +53,9 @@
         const thebe_selector_output = ".output"
     </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Neural Networks" href="../37-neural-networks/00-neural-networks.html" />
-    <link rel="prev" title="Graphical Models" href="00-graphical-models.html" />
+    <link rel="prev" title="Variational Autoencoders" href="../37-neural-networks/13-variational-autoencoders.html" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
@@ -122,6 +119,11 @@
    <li class="toctree-l2">
     <a class="reference internal" href="../11-math/51-optimization.html">
      Optimization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/61-graphs.html">
+     Graphs
     </a>
    </li>
    <li class="toctree-l2">
@@ -556,14 +558,24 @@
   <i class="fas fa-chevron-down">
   </i>
  </li>
- <li class="toctree-l1 current active collapsible-parent">
-  <a class="reference internal" href="00-graphical-models.html">
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../35-graphical-models/00-graphical-models.html">
    Graphical Models
   </a>
-  <ul class="current collapse-ul">
-   <li class="toctree-l2 current active">
-    <a class="current reference internal" href="#">
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../35-graphical-models/11-hidden-markov-models.html">
+     Hidden Markov Models
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../35-graphical-models/31-topic-models.html">
      Topic Models
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../35-graphical-models/33-language-models.html">
+     Language Models
     </a>
    </li>
   </ul>
@@ -603,6 +615,11 @@
   </ul>
   <i class="fas fa-chevron-down">
   </i>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Machine Learning for Graph Data
+  </a>
  </li>
 </ul>
 
@@ -644,7 +661,7 @@
         <!-- ipynb file if we had a myst markdown file -->
         
         <!-- Download raw file -->
-        <a class="dropdown-buttons" href="../_sources/35-graphical-models/11-topic-models.md"><button type="button"
+        <a class="dropdown-buttons" href="../_sources/38-ml-for-graph-data/00-ml-for-graph-data.md"><button type="button"
                 class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
                 data-placement="left">.md</button></a>
         <!-- Download PDF via print -->
@@ -664,7 +681,7 @@
                 data-toggle="tooltip" data-placement="left" title="Source repository"><i
                     class="fab fa-github"></i>repository</button></a>
         <a class="issues-button"
-            href="https://github.com/dennissxz/data-science-handbook/issues/new?title=Issue%20on%20page%20%2F35-graphical-models/11-topic-models.html&body=Your%20issue%20content%20here."><button
+            href="https://github.com/dennissxz/data-science-handbook/issues/new?title=Issue%20on%20page%20%2F38-ml-for-graph-data/00-ml-for-graph-data.html&body=Your%20issue%20content%20here."><button
                 type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
                 title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
         
@@ -691,13 +708,23 @@
         <nav id="bd-toc-nav">
             <ul class="nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#generative-process">
-   Generative Process
+  <a class="reference internal nav-link" href="#why-studying-graphs">
+   Why studying graphs?
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#estimation">
-   Estimation
+  <a class="reference internal nav-link" href="#tasks">
+   Tasks
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#toolkit-and-codebase">
+   Toolkit and Codebase:
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#reference">
+   Reference
   </a>
  </li>
 </ul>
@@ -711,67 +738,124 @@
         
               <div>
                 
-  <div class="section" id="topic-models">
-<h1>Topic Models<a class="headerlink" href="#topic-models" title="Permalink to this headline">¶</a></h1>
-<p>Topic models are generative “mixture” models for documents.</p>
-<p>The data we have in hand are <span class="math notranslate nohighlight">\(D\)</span> documents. Each document <span class="math notranslate nohighlight">\(d\)</span> has <span class="math notranslate nohighlight">\(n_d\)</span> words. Topic model assumes that there is a topic <span class="math notranslate nohighlight">\(t_d\)</span> for each document, which is latent, unobservable.</p>
-<div class="section" id="generative-process">
-<h2>Generative Process<a class="headerlink" href="#generative-process" title="Permalink to this headline">¶</a></h2>
-<p>Now we generate the <span class="math notranslate nohighlight">\(D\)</span> documents.</p>
-<p><strong>Assumptions</strong></p>
-<p>For a document <span class="math notranslate nohighlight">\(d\)</span>,</p>
+  <div class="section" id="machine-learning-for-graph-data">
+<h1>Machine Learning for Graph Data<a class="headerlink" href="#machine-learning-for-graph-data" title="Permalink to this headline">¶</a></h1>
+<p>Graphs are a general language for describing and analyzing entities with relations/interactions. Examples include social networks, biological networks, power grid, scene graphs, knowledge graphs, and similarity graph induced from a data matrix.</p>
+<div class="margin sidebar">
+<p class="sidebar-title">Networks vs Graphs</p>
+<p>Network often refers to real systems, with nodes and links. Graph is a mathematical representation of a network, with vertices and edges. Different networks can have the same graph representation.</p>
+</div>
+<div class="figure align-default" id="mlg-real-graphs">
+<a class="reference internal image-reference" href="../_images/mlg-real-graphs.png"><img alt="" src="../_images/mlg-real-graphs.png" style="width: 80%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 84 </span><span class="caption-text">Real-life graphs and networks</span><a class="headerlink" href="#mlg-real-graphs" title="Permalink to this image">¶</a></p>
+</div>
+<div class="section" id="why-studying-graphs">
+<h2>Why studying graphs?<a class="headerlink" href="#why-studying-graphs" title="Permalink to this headline">¶</a></h2>
 <ul>
-<li><p>Its topics <span class="math notranslate nohighlight">\(t_d\)</span> is unknown. Suppose there are <span class="math notranslate nohighlight">\(k_t\)</span> kinds of possible topics, then <span class="math notranslate nohighlight">\(t_d\)</span> can be drawn from a multinomial distribution parameterized by <span class="math notranslate nohighlight">\(\boldsymbol{\alpha} \in \mathbb{R} ^{k_t}\)</span>.</p>
-<div class="math notranslate nohighlight">
-\[t_d \sim \operatorname{Multinomial}(\boldsymbol{\alpha}) \]</div>
+<li><p>Necessity</p>
+<p>To model complex systems, we need to under stand how the underlying networks behind them.</p>
 </li>
-<li><p>The words <span class="math notranslate nohighlight">\(w_1, \ldots, w_{n_d}\)</span> are i.i.d. drawn from multinomial distribution of <span class="math notranslate nohighlight">\(k_w\)</span> kinds of words, parameterized by <span class="math notranslate nohighlight">\(\boldsymbol{\beta} \in \mathbb{R} ^{k_w}\)</span>. The words distribution can be determined by the document topic <span class="math notranslate nohighlight">\(t_d\)</span>, i.e. <span class="math notranslate nohighlight">\(\boldsymbol{\beta} _{t_d}\)</span>, hence</p>
-<div class="math notranslate nohighlight">
-\[w \sim \operatorname{Multinomial}(\boldsymbol{\beta}_{t_d})\]</div>
+<li><p>Advantage</p>
+<p>Complex domains (knowledge, text, images, etc) have a rich relational structure, which can be represented as a relational graph. By explicitly modeling relationships we achieve better performance!</p>
 </li>
-<li><p>We can impose prior distributions on <span class="math notranslate nohighlight">\(\boldsymbol{\beta}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}\)</span>, which are Dirichlet distributions, parameterized by <span class="math notranslate nohighlight">\(\boldsymbol{\eta}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{\theta}\)</span> respectively.</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{aligned}
-    \boldsymbol{\beta} &amp;\sim \operatorname{Dirichlet}(\boldsymbol{\eta} ) \\ \boldsymbol{\alpha} &amp;\sim \operatorname{Dirichlet}(\boldsymbol{\theta} )
-    \end{aligned}\end{split}\]</div>
-</li>
-</ul>
-<p>Hence, to generate <span class="math notranslate nohighlight">\(D\)</span> documents, each with <span class="math notranslate nohighlight">\(\sum_{d=1}^D n_d\)</span> number of random words, the steps are</p>
+<li><p>New approaches</p>
+<p>Modern ML models is designed for simple sequences &amp; grids. We need new ML models to that take graphs as input, which</p>
 <ul class="simple">
-<li><p>For each document <span class="math notranslate nohighlight">\(d=1, \ldots, D\)</span></p>
+<li><p>have arbitrary size and complex topological structure (i.e., no spatial locality like grids</p></li>
+<li><p>no fixed node ordering or reference point</p></li>
+<li><p>often dynamic and have multimodal features</p></li>
+</ul>
+<div class="figure align-default" id="mlg-modern-ml">
+<a class="reference internal image-reference" href="../_images/mlg-modern-ml.png"><img alt="" src="../_images/mlg-modern-ml.png" style="width: 50%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 85 </span><span class="caption-text">Modern ML models is designed for simple sequences &amp; grids</span><a class="headerlink" href="#mlg-modern-ml" title="Permalink to this image">¶</a></p>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="tasks">
+<h2>Tasks<a class="headerlink" href="#tasks" title="Permalink to this headline">¶</a></h2>
+<p>Tasks can lie in different level of a graph.</p>
+<div class="figure align-default" id="mlg-task-taxonomy">
+<a class="reference internal image-reference" href="../_images/mlg-task-taxonomy.png"><img alt="" src="../_images/mlg-task-taxonomy.png" style="width: 50%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 86 </span><span class="caption-text">Tasks taxonomy in ML for graphs</span><a class="headerlink" href="#mlg-task-taxonomy" title="Permalink to this image">¶</a></p>
+</div>
+<ul class="simple">
+<li><p>Node classification</p>
 <ul>
-<li><p>Draw a topic vector <span class="math notranslate nohighlight">\(\boldsymbol{\alpha} \sim \operatorname{Dirichlet}(\boldsymbol{\theta})\)</span></p></li>
-<li><p>Draw <span class="math notranslate nohighlight">\(k_t\)</span> vectors <span class="math notranslate nohighlight">\(\boldsymbol{\beta}, \ldots, \boldsymbol{\beta}_{k_t} \sim \operatorname{Dirichlet}(\boldsymbol{\eta})\)</span></p></li>
-<li><p>Generate words: for <span class="math notranslate nohighlight">\(1, \ldots, n_d\)</span></p>
+<li><p>Predict the label of a node</p></li>
+<li><p>Example: Categorize online users / items</p></li>
+</ul>
+</li>
+<li><p>Node embeddings</p>
 <ul>
-<li><p>Draw a topic <span class="math notranslate nohighlight">\(t\sim \operatorname{Multinomial}(\boldsymbol{\alpha} )\)</span></p></li>
-<li><p>Draw a word <span class="math notranslate nohighlight">\(w\sim \operatorname{Multinomial}(\boldsymbol{\beta}_{t})\)</span></p></li>
+<li><p>Similar nodes on a graph are close in the embedding space</p></li>
+<li><p>Methods: DeepWalk, Node2Vec</p></li>
+</ul>
+</li>
+<li><p>Link prediction</p>
+<ul>
+<li><p>Predict whether there are missing links between two nodes</p></li>
+<li><p>Example: Knowledge graph completion, recommender systems, adverse side effect of drugs (impossible for real experiment)</p></li>
+</ul>
+</li>
+<li><p>Clustering</p>
+<ul>
+<li><p>Detect if similar nodes form a community with densely link</p></li>
+<li><p>Example: Social circle detection</p></li>
+</ul>
+</li>
+<li><p>Graph classification</p>
+<ul>
+<li><p>Categorize different graphs</p></li>
+<li><p>Example: Molecule property prediction</p></li>
+</ul>
+</li>
+<li><p>Other tasks</p>
+<ul>
+<li><p>Graph generation: Drug discovery, nodes are atoms and edges are chemical bonds</p></li>
+<li><p>Graph evolution: Physical simulation</p></li>
+<li><p>Graph similarity: compare molecules</p></li>
+<li><p>Congestion in road networks</p></li>
+<li><p>Identify</p>
+<ul>
+<li><p>Polarization <a class="reference external" href="https://www.aaai.org/ocs/index.php/ICWSM/ICWSM11/paper/viewFile/2847/3275">[Political Polarization on Twitter]</a></p></li>
+<li><p>Misinformation <a class="reference external" href="https://cs.stanford.edu/people/jure/pubs/hoax-www16.pdf">[Disinformation on the Web]</a></p></li>
+</ul>
+</li>
+<li><p>Model process of</p>
+<ul>
+<li><p>Information cascade</p></li>
+<li><p>Product Adoption <a class="reference external" href="https://cs.stanford.edu/people/jure/pubs/linkedin-www15.pdf">[Cascading invitations]</a></p></li>
 </ul>
 </li>
 </ul>
 </li>
 </ul>
-<div class="figure align-default" id="topic-illustration">
-<a class="reference internal image-reference" href="../_images/topic-illustration.png"><img alt="" src="../_images/topic-illustration.png" style="width: 90%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 55 </span><span class="caption-text">Topic model (generation vs estimation)</span><a class="headerlink" href="#topic-illustration" title="Permalink to this image">¶</a></p>
+<div class="figure align-default" id="mlg-alphafold">
+<a class="reference internal image-reference" href="../_images/mlg-alphafold.png"><img alt="" src="../_images/mlg-alphafold.png" style="width: 80%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 87 </span><span class="caption-text">Illustration of AlphaFold</span><a class="headerlink" href="#mlg-alphafold" title="Permalink to this image">¶</a></p>
 </div>
 </div>
-<div class="section" id="estimation">
-<h2>Estimation<a class="headerlink" href="#estimation" title="Permalink to this headline">¶</a></h2>
-<p>In a document of words <span class="math notranslate nohighlight">\(w_1, \ldots, w_{n_d}\)</span>, we want to estimate the underlying word distribution <span class="math notranslate nohighlight">\(\boldsymbol{\beta} = \left[ \beta_1, \ldots, \beta_{k_w} \right]\)</span>. A simple approach is to use maximum likelihood</p>
-<div class="math notranslate nohighlight">
-\[\widehat{\boldsymbol{\beta}}=\underset{\boldsymbol{\beta}}{\operatorname{argmax}} p\left(w_{1}, \ldots, w_{n_d} ; \boldsymbol{\beta}\right)\]</div>
-<p>For some word labeled <span class="math notranslate nohighlight">\(m\)</span>, this is</p>
-<div class="math notranslate nohighlight">
-\[
-\widehat{\beta}_m = \frac{\#\left(w_{i}= m\right)}{N}
-\]</div>
-<p>Other variables include <span class="math notranslate nohighlight">\(t\)</span>’s, <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}\)</span>’s, which can be estimated by  Expectation Maximization (EM) algorithm and sampling-based methods (MCMC and Gibbs sampling)</p>
-<p>The learned results are like</p>
-<div class="figure align-default" id="topic-beta-by-t">
-<a class="reference internal image-reference" href="../_images/topic-beta-by-t.png"><img alt="" src="../_images/topic-beta-by-t.png" style="width: 80%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 56 </span><span class="caption-text">Learned words distribution parameters <span class="math notranslate nohighlight">\(\boldsymbol{\beta} _t\)</span> by topics [Steyvers &amp; Griffiths, 2007]</span><a class="headerlink" href="#topic-beta-by-t" title="Permalink to this image">¶</a></p>
+<div class="section" id="toolkit-and-codebase">
+<h2>Toolkit and Codebase:<a class="headerlink" href="#toolkit-and-codebase" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/rusty1s/pytorch_geometric">PyTorch Geometric (PyG)</a></p></li>
+<li><p><a class="reference external" href="https://github.com/snap-stanford/deepsnap">DeepSNAP</a>: Library that assists deep learning on graphs.</p>
+<ul>
+<li><p>Flexible graph manipulation, standard data split pipeline, …</p></li>
+</ul>
+</li>
+<li><p><a class="reference external" href="https://github.com/snap-stanford/GraphGym">GraphGym</a>: Platform for designing Graph Neural Networks.</p>
+<ul>
+<li><p>Modularized GNN implementation, simple hyperparameter tuning, flexible user customization</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SNAP.py</span></code>, <code class="docutils literal notranslate"><span class="pre">NetworkX</span></code></p></li>
+</ul>
 </div>
+<div class="section" id="reference">
+<h2>Reference<a class="headerlink" href="#reference" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="http://web.stanford.edu/class/cs224w/slides/01-intro.pdf">Stanford CS244W</a></p>
 </div>
 </div>
 
@@ -788,7 +872,7 @@
         },
         kernelOptions: {
             kernelName: "python3",
-            path: "./35-graphical-models"
+            path: "./38-ml-for-graph-data"
         },
         predefinedOutput: true
     }
@@ -803,8 +887,7 @@
     
     <div class='prev-next-bottom'>
         
-    <a class='left-prev' id="prev-link" href="00-graphical-models.html" title="previous page">Graphical Models</a>
-    <a class='right-next' id="next-link" href="../37-neural-networks/00-neural-networks.html" title="next page">Neural Networks</a>
+    <a class='left-prev' id="prev-link" href="../37-neural-networks/13-variational-autoencoders.html" title="previous page">Variational Autoencoders</a>
 
     </div>
     <footer class="footer mt-5 mt-md-0">

@@ -125,6 +125,11 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/61-graphs.html">
+     Graphs
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="../11-math/90-puzzles.html">
      Puzzles
     </a>
@@ -562,8 +567,18 @@
   </a>
   <ul class="collapse-ul">
    <li class="toctree-l2">
-    <a class="reference internal" href="../35-graphical-models/11-topic-models.html">
+    <a class="reference internal" href="../35-graphical-models/11-hidden-markov-models.html">
+     Hidden Markov Models
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../35-graphical-models/31-topic-models.html">
      Topic Models
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../35-graphical-models/33-language-models.html">
+     Language Models
     </a>
    </li>
   </ul>
@@ -603,6 +618,11 @@
   </ul>
   <i class="fas fa-chevron-down">
   </i>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../38-ml-for-graph-data/00-ml-for-graph-data.html">
+   Machine Learning for Graph Data
+  </a>
  </li>
 </ul>
 
@@ -801,16 +821,17 @@ k\left(x_{n}, x_{1}\right), \ldots, k\left(x_{n}, x_{n}\right)
 <div class="section" id="representer-theorem">
 <span id="ml-representer-theorem"></span><h3>Representer Theorem<a class="headerlink" href="#representer-theorem" title="Permalink to this headline">¶</a></h3>
 <dl class="simple myst">
-<dt>Representer Theorem (Simplified)</dt><dd><p>Consider the optimization problem on a data set <span class="math notranslate nohighlight">\(\mathcal{D} = \left\{ \boldsymbol{x}_i ,y_i \right\} _{i=1}^n, \boldsymbol{x}_i \in \mathcal{S}\)</span></p>
+<dt>Representer Theorem (Simplified)</dt><dd><p>Consider an optimization problem on a data set <span class="math notranslate nohighlight">\(\mathcal{D} = \left\{ \boldsymbol{x}_i ,y_i \right\} _{i=1}^n, \boldsymbol{x}_i \in \mathcal{S}\)</span> of the following canonical form</p>
 <div class="math notranslate nohighlight">
 \[
-  \boldsymbol{w}^{*}=\underset{\boldsymbol{w}}{\arg \min } \sum_{i=1}^{n} \mathcal{L}\left(\left\langle\boldsymbol{w}, \boldsymbol{\phi} \left(\boldsymbol{x}_i \right)\right\rangle, y_{i}\right)+\|\boldsymbol{w}\|^{2}
+  \boldsymbol{w}^{*}=\underset{\boldsymbol{w}}{\arg \min } \sum_{i=1}^{n} \mathcal{L}\left(\left\langle\boldsymbol{w}, \boldsymbol{\phi} \left(\boldsymbol{x}_i \right)\right\rangle, y_{i}\right) + \lambda \|\boldsymbol{w}\|^{2}
   \]</div>
 <p>where</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(\boldsymbol{\phi} : \mathcal{S} \rightarrow \mathbb{R} ^d\)</span> (or <span class="math notranslate nohighlight">\(\mathcal{S} \rightarrow \mathcal{H}\)</span> in general)</p></li>
 <li><p><span class="math notranslate nohighlight">\(\boldsymbol{w} \in \mathbb{R} ^d\)</span> is the coefficients in the model to be solved</p></li>
 <li><p><span class="math notranslate nohighlight">\(\mathcal{L}(\cdot, \cdot): \mathbb{R} \times \mathbb{R} \rightarrow \mathbb{R}\)</span> on some arbitrary loss function.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\lambda &gt; 0\)</span></p></li>
 </ul>
 <p>Then there <span class="math notranslate nohighlight">\(\exists\left\{\alpha_{i} \in \mathbb{R}\right\}_{i=1}^{n}\)</span> such that the solution <span class="math notranslate nohighlight">\(\boldsymbol{w} ^*\)</span> is a linear combination of the <span class="math notranslate nohighlight">\(n\)</span> transformed data vectors.</p>
 <div class="math notranslate nohighlight">
@@ -851,8 +872,8 @@ k\left(x_{n}, x_{1}\right), \ldots, k\left(x_{n}, x_{n}\right)
 <li><p>Therefore, instead of handcrafting feature transformations <span class="math notranslate nohighlight">\(\boldsymbol{\phi}\)</span>, people change to choosing (PSD) kernels to improve model performance.</p></li>
 </ol>
 <div class="note admonition">
-<p class="admonition-title"> Dot product in loss function</p>
-<p>Note that the kernel methods only apply to models with loss function that involves dot product <span class="math notranslate nohighlight">\(\boldsymbol{x}_i ^\top \boldsymbol{x}_j\)</span>, for instance, SVM, PCA. If there is no dot product, there is no corresponding kernelized version of that model, such as linear regression.</p>
+<p class="admonition-title"> Kernelized model class.</p>
+<p>Some model classes have kernelized version, e.g. kernel PCA, kernel CCA, kernel SVM. But it is not easy to identity if a model class has a corresponding kernelized model class.</p>
 </div>
 </div>
 </div>

@@ -125,6 +125,11 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/61-graphs.html">
+     Graphs
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="../11-math/90-puzzles.html">
      Puzzles
     </a>
@@ -562,8 +567,18 @@
   </a>
   <ul class="collapse-ul">
    <li class="toctree-l2">
-    <a class="reference internal" href="../35-graphical-models/11-topic-models.html">
+    <a class="reference internal" href="../35-graphical-models/11-hidden-markov-models.html">
+     Hidden Markov Models
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../35-graphical-models/31-topic-models.html">
      Topic Models
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../35-graphical-models/33-language-models.html">
+     Language Models
     </a>
    </li>
   </ul>
@@ -603,6 +618,11 @@
   </ul>
   <i class="fas fa-chevron-down">
   </i>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../38-ml-for-graph-data/00-ml-for-graph-data.html">
+   Machine Learning for Graph Data
+  </a>
  </li>
 </ul>
 
@@ -1388,7 +1408,7 @@ RSS:  [0.07142857]
 full model ---
 x2 and y are uncorrelated, dot product : [[0]]
 coefficients:  [ 0.44444444  0.66666667 -0.11111111]
-RSS:  [2.76101317e-30]
+RSS:  [6.27390939e-30]
 </pre></div>
 </div>
 </div>
@@ -1460,7 +1480,7 @@ R^2 = \frac{SSR}{SST}  = 1 - \frac{SSE}{SST} = 1 - \frac{\sum (y_i - \hat{y}_i)^
 </div>
 </div>
 <div class="section" id="adjusted-r-squared">
-<h3>Adjusted <span class="math notranslate nohighlight">\(R\)</span>-squared<a class="headerlink" href="#adjusted-r-squared" title="Permalink to this headline">¶</a></h3>
+<span id="adj-r-squared"></span><h3>Adjusted <span class="math notranslate nohighlight">\(R\)</span>-squared<a class="headerlink" href="#adjusted-r-squared" title="Permalink to this headline">¶</a></h3>
 <p>Due to the non-decrease property of <span class="math notranslate nohighlight">\(R\)</span>-squared, we define adjusted <span class="math notranslate nohighlight">\(R\)</span>-squared which is a better measure of goodness of fitting.</p>
 <dl class="simple myst">
 <dt>Definition</dt><dd><p>Adjusted <span class="math notranslate nohighlight">\(R\)</span>-squared, denoted by <span class="math notranslate nohighlight">\(\bar{R}^2\)</span>, is defined as</p>
@@ -1611,6 +1631,7 @@ Y_i
 \[
 \beta_{p-k}=\ldots= \beta_{p-1} =0
 \]</div>
+<p>If two models are not nested, we can compare them by <a class="reference internal" href="#adj-r-squared"><span class="std std-ref">adjusted <span class="math notranslate nohighlight">\(R\)</span>-squared</span></a>.</p>
 </div>
 <p><span class="math notranslate nohighlight">\(F\)</span>-test can be used to compare two nested models</p>
 <div class="math notranslate nohighlight">
@@ -1619,7 +1640,7 @@ Y_i
 \text{Reduced model: } Y &amp;\sim \left\{ X_j, j=1, \ldots, p-k-1 \right\}
 \end{aligned}\end{split}\]</div>
 <div class="margin sidebar">
-<p class="sidebar-title">Interpretation of <span class="math notranslate nohighlight">\(F\)</span>-test</p>
+<p class="sidebar-title">Interpretation of <span class="math notranslate nohighlight">\(F\)</span> test statistic</p>
 <p>Given it’s form, we can interpret the numerator as an average reduction in <span class="math notranslate nohighlight">\(RSS\)</span> by adding the <span class="math notranslate nohighlight">\(k\)</span> explanatory variables. Since the denominator is fixed, if the average reduction is large enough, then we reject the null hypothesis that the <span class="math notranslate nohighlight">\(k\)</span> coefficients are 0.</p>
 </div>
 <p>The test statistic is</p>
@@ -1724,7 +1745,7 @@ RSS_{\text{full} } =  \left\| \boldsymbol{U} _3 ^\top \boldsymbol{y}  \right\|  
 </ul>
 <div class="figure align-default" id="lm-chow-test">
 <a class="reference internal image-reference" href="../_images/lm-chow-test.png"><img alt="" src="../_images/lm-chow-test.png" style="width: 80%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 11 </span><span class="caption-text">Illustration of two groups of data <a class="reference external" href="https://en.wikipedia.org/wiki/Chow_test">[Wikipedia]</a></span><a class="headerlink" href="#lm-chow-test" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 18 </span><span class="caption-text">Illustration of two groups of data <a class="reference external" href="https://en.wikipedia.org/wiki/Chow_test">[Wikipedia]</a></span><a class="headerlink" href="#lm-chow-test" title="Permalink to this image">¶</a></p>
 </div>
 <p>Testing whether a regression function is different for one group <span class="math notranslate nohighlight">\((i=1,\ldots,m)\)</span> versus another <span class="math notranslate nohighlight">\((i=m+1,\ldots,n)\)</span>, we can use <span class="math notranslate nohighlight">\(F\)</span>-test. The full model is</p>
 <div class="math notranslate nohighlight">
@@ -1860,7 +1881,7 @@ y _{new} - \hat{y}_{new}
 </ul>
 <div class="figure align-default" id="id1">
 <a class="reference internal image-reference" href="../_images/pca-pc-ellipsoids.png"><img alt="" src="../_images/pca-pc-ellipsoids.png" style="width: 70%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 12 </span><span class="caption-text">Illustration of eigenvectors in bivariate Gaussian [Fung 2018]</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 19 </span><span class="caption-text">Illustration of eigenvectors in bivariate Gaussian [Fung 2018]</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
 </div>
 </div>
 </div>

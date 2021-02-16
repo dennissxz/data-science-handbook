@@ -125,6 +125,11 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/61-graphs.html">
+     Graphs
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="../11-math/90-puzzles.html">
      Puzzles
     </a>
@@ -562,8 +567,18 @@
   </a>
   <ul class="collapse-ul">
    <li class="toctree-l2">
-    <a class="reference internal" href="../35-graphical-models/11-topic-models.html">
+    <a class="reference internal" href="../35-graphical-models/11-hidden-markov-models.html">
+     Hidden Markov Models
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../35-graphical-models/31-topic-models.html">
      Topic Models
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../35-graphical-models/33-language-models.html">
+     Language Models
     </a>
    </li>
   </ul>
@@ -603,6 +618,11 @@
   </ul>
   <i class="fas fa-chevron-down">
   </i>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../38-ml-for-graph-data/00-ml-for-graph-data.html">
+   Machine Learning for Graph Data
+  </a>
  </li>
 </ul>
 
@@ -738,13 +758,13 @@
     </a>
     <ul class="nav section-nav flex-column">
      <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#transformed-dual">
-       Transformed Dual
+      <a class="reference internal nav-link" href="#transformed-unconstrained-original">
+       Transformed Unconstrained Original
       </a>
      </li>
      <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#transformed-unconstrained-original">
-       Transformed Unconstrained Original
+      <a class="reference internal nav-link" href="#transformed-dual">
+       Transformed Dual
       </a>
      </li>
     </ul>
@@ -823,7 +843,7 @@ d = \frac{1}{\left\Vert \boldsymbol{w}  \right\Vert}\left\vert \boldsymbol{w} ^\
 <p>Support vector machine is used for binary classification tasks.</p>
 <div class="myclass figure align-default" id="use-a-hyperplane-to-separate-two-types-of-points">
 <a class="reference internal image-reference" href="../_images/svm-hard-margin.png"><img alt="" src="../_images/svm-hard-margin.png" style="width: 30%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 13 </span><span class="caption-text">caption</span><a class="headerlink" href="#use-a-hyperplane-to-separate-two-types-of-points" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 20 </span><span class="caption-text">caption</span><a class="headerlink" href="#use-a-hyperplane-to-separate-two-types-of-points" title="Permalink to this image">¶</a></p>
 </div>
 <dl class="simple myst">
 <dt>Definition (Margin)</dt><dd><p>The margin is defined as the shortest distance from a point to the hyperplane.</p>
@@ -991,7 +1011,7 @@ R(\boldsymbol{w} ,b, \boldsymbol{x}_i ,y_i) = \max \left\{ 0, 1 - y_{i}\left(\bo
 <p>which is called <strong>Hinge loss</strong>.</p>
 <div class="myclass figure align-default" id="hinge-loss">
 <a class="reference internal image-reference" href="../_images/svm-hinge-loss.png"><img alt="" src="../_images/svm-hinge-loss.png" style="width: 50%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 14 </span><span class="caption-text">Comparison of loss functions</span><a class="headerlink" href="#hinge-loss" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 21 </span><span class="caption-text">Comparison of loss functions</span><a class="headerlink" href="#hinge-loss" title="Permalink to this image">¶</a></p>
 </div>
 <p>Let <span class="math notranslate nohighlight">\(\xi_{i}=\max \left\{0,1-y_{i}\left(\boldsymbol{w}^{\top} x_{i}+w_{0}\right)\right\}\)</span>, then the objective is</p>
 <div class="math notranslate nohighlight">
@@ -1011,38 +1031,9 @@ R(\boldsymbol{w} ,b, \boldsymbol{x}_i ,y_i) = \max \left\{ 0, 1 - y_{i}\left(\bo
 <div class="section" id="kernel-svms">
 <h3>Kernel SVMs<a class="headerlink" href="#kernel-svms" title="Permalink to this headline">¶</a></h3>
 <p>If the points are non-seperable, we consider transform them into a higher-dimensional space by a feature transformation <span class="math notranslate nohighlight">\(\boldsymbol{\boldsymbol{\phi}}(\boldsymbol{x})\)</span>, and find a hyperplane there to separate the points (hopefully).</p>
-<div class="section" id="transformed-dual">
-<h4>Transformed Dual<a class="headerlink" href="#transformed-dual" title="Permalink to this headline">¶</a></h4>
-<p>The primal problem becomes</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
-\begin{aligned}
-\underset{\boldsymbol{w}, w_{0}}{\arg \min }&amp;\  \frac{1}{2}\|\boldsymbol{w}\|^{2} \\
-\text { s.t.}&amp;\  y_{i}\left(\boldsymbol{w}^{\top} \boldsymbol{x}_{i}+w_{0}\right) \geq 1-\xi_{i}, \xi_{i} \geq 0, \forall i \\
-&amp;\ \boldsymbol{w}, \boldsymbol{x}_{i} \in \mathbb{R}^{d}
-\end{aligned}
-\end{split}\]</div>
-<p>and the dual problem becomes</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
-\begin{aligned}
-\underset{\boldsymbol{\alpha}}{\arg \max } &amp; \ \left\{\sum_{i=1}^{n} \alpha_{i}-\frac{1}{2} \sum_{i=1}^{n} \sum_{j=1}^{n} \alpha_{i} \alpha_{j} y_{i} y_{j} \boldsymbol{\phi}\left(\boldsymbol{x}_{i}\right)^{\top} \boldsymbol{\phi}\left(\boldsymbol{x}_{j}\right)\right\} \\
-\text { s.t.}&amp;\ \sum_{i=1}^{n} \alpha_{i} y_{i}=0,0 \leq \alpha_{i} \leq C, \forall i
-\end{aligned}
-\end{split}\]</div>
-<p>We find there is a dot product in the objective function, so we can consider using a PSD kernel <span class="math notranslate nohighlight">\(k(\boldsymbol{x} , \boldsymbol{y} )=\boldsymbol{\phi}(\boldsymbol{x} )^{\top} \boldsymbol{\phi}(\boldsymbol{y} )\)</span>. The problem becomes</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
-\begin{aligned}
-\underset{\boldsymbol{\alpha}}{\arg \max }&amp;\ \left\{\sum_{i=1}^{n} \alpha_{i}-\frac{1}{2} \sum_{i=1}^{n} \sum_{j=1}^{n} \alpha_{i} \alpha_{j} y_{i} y_{j} k\left(\boldsymbol{x}_{i}, \boldsymbol{x}_{j}\right)\right\} \\
-\text { s.t.} &amp;\ \sum_{i=1}^{n} \alpha_{i} y_{i}=0,0 \leq \alpha_{i} \leq C, \forall i
-\end{aligned}
-\end{split}\]</div>
-<p>and we solve the QP problem for <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}\)</span>.</p>
-</div>
 <div class="section" id="transformed-unconstrained-original">
 <h4>Transformed Unconstrained Original<a class="headerlink" href="#transformed-unconstrained-original" title="Permalink to this headline">¶</a></h4>
-<p>For the original unconstraint problem, after transformation it becomes</p>
+<p>For the original problem, after transformation into <span class="math notranslate nohighlight">\(\boldsymbol{\phi}(\boldsymbol{x})\)</span> it becomes</p>
 <div class="math notranslate nohighlight">
 \[
 \mathcal{L}\left(\boldsymbol{w}, w_{0}\right)=\frac{1}{2}\|\boldsymbol{w}\|^{2}+C \sum_{i=1}^{n} \max \left\{0,1-y_{i}\left(\boldsymbol{w}^{\top} \boldsymbol{\phi}(\boldsymbol{x})+w_{0}\right)\right\}
@@ -1063,6 +1054,35 @@ R(\boldsymbol{w} ,b, \boldsymbol{x}_i ,y_i) = \max \left\{ 0, 1 - y_{i}\left(\bo
 \boldsymbol{w}^{\top} \boldsymbol{\phi}(\boldsymbol{x})=\left(\sum_{i=1}^{n} \alpha_{i} y_{i} \boldsymbol{\phi}\left(\boldsymbol{x}_{i}\right)\right)^{\top} \boldsymbol{\phi}(\boldsymbol{x})=\sum_{i} \alpha_{i} y_{i} k\left(\boldsymbol{x}_{i}, \boldsymbol{x}\right)
 \]</div>
 <p>So we turn <span class="math notranslate nohighlight">\(\mathcal{L}\left(\boldsymbol{w}, w_{0}\right)\)</span> to <span class="math notranslate nohighlight">\(\mathcal{L}\left(\boldsymbol{\alpha} , w_{0}\right)\)</span> and we can then solve it by SGD.</p>
+</div>
+<div class="section" id="transformed-dual">
+<h4>Transformed Dual<a class="headerlink" href="#transformed-dual" title="Permalink to this headline">¶</a></h4>
+<p>The primal problem becomes</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+\underset{\boldsymbol{w}, w_{0}}{\min }&amp;\  \frac{1}{2}\|\boldsymbol{w}\|^{2} \\
+\text { s.t.}&amp;\  y_{i}\left(\boldsymbol{w}^{\top} \boldsymbol{\phi}( \boldsymbol{x}_{i})  + w_{0}\right) \geq 1-\xi_{i}, \xi_{i} \geq 0, \forall i \\
+&amp;\ \boldsymbol{w}, \boldsymbol{\phi}(\boldsymbol{x}_{i})  \in \mathbb{R}^{d}
+\end{aligned}
+\end{split}\]</div>
+<p>and the dual problem becomes</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+\underset{\boldsymbol{\alpha}}{\max } &amp; \ \left\{\sum_{i=1}^{n} \alpha_{i}-\frac{1}{2} \sum_{i=1}^{n} \sum_{j=1}^{n} \alpha_{i} \alpha_{j} y_{i} y_{j} \boldsymbol{\phi}\left(\boldsymbol{x}_{i}\right)^{\top} \boldsymbol{\phi}\left(\boldsymbol{x}_{j}\right)\right\} \\
+\text { s.t.}&amp;\ \sum_{i=1}^{n} \alpha_{i} y_{i}=0,0 \leq \alpha_{i} \leq C, \forall i
+\end{aligned}
+\end{split}\]</div>
+<p>We find there is a dot product in the objective function, so we can consider using a PSD kernel <span class="math notranslate nohighlight">\(k(\boldsymbol{x} , \boldsymbol{y} )=\boldsymbol{\phi}(\boldsymbol{x} )^{\top} \boldsymbol{\phi}(\boldsymbol{y} )\)</span>. The problem becomes</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+\underset{\boldsymbol{\alpha}}{ \max }&amp;\ \left\{\sum_{i=1}^{n} \alpha_{i}-\frac{1}{2} \sum_{i=1}^{n} \sum_{j=1}^{n} \alpha_{i} \alpha_{j} y_{i} y_{j} k\left(\boldsymbol{x}_{i}, \boldsymbol{x}_{j}\right)\right\} \\
+\text { s.t.} &amp;\ \sum_{i=1}^{n} \alpha_{i} y_{i}=0,0 \leq \alpha_{i} \leq C, \forall i
+\end{aligned}
+\end{split}\]</div>
+<p>and we solve the QP problem for <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}\)</span>.</p>
 </div>
 </div>
 </div>
