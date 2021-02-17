@@ -12,7 +12,74 @@ kernelspec:
 
 # Linear Regression - Extension
 
-No models are perfect. In this section we introduce what happen when our model is misspecified or when some assumptions fail. We will also introduce some alternative models, e.g. Lasso, ridge regression, etc.
+No models are perfect. In this section we introduce what happen when our model is misspecified or when some assumptions fail. We will introduce how to diagnose these problems, and corresponding remedies and alternative models, e.g. Lasso, ridge regression, etc.
+
+## Special Observations
+
+### Outliers
+
+Definition (Outliers)
+: There are many ways to define outliers. Observations $i$ is an outlier
+
+  - univariate measure: if $\left\vert x_{ji} - \mu_j \right\vert$ is larger than some threshold, say some multiples of standard deviations of $X_j$, then the $j$-th value of observation $i$ is an outlier w.r.t. other observations of variable $X_j$.
+
+  - multivariate measure: if $\left\| \boldsymbol{x}_i -\boldsymbol{\mu}  \right\|^2$ is larger than some threshold, then $\boldsymbol{x}_i$ an outlier w.r.t. other data points in $\boldsymbol{X}$.
+
+  - if its studentized residual $\left\vert t_i \right\vert$ is larger than some threshold, say $t_{n-p}^{(\alpha/2n)}$
+
+Solution
+: - If outlier is a mistake (typo) you can drop it (or correct it)
+
+  - If outlier is valid but unusual, look for robustness – does dropping it change answer?
+
+  - If it does change answer, report both versions – and argue for the approach you think more appropriate
+
+
+### Leverage Points
+
+```{margin}
+Unlike outliers which can be a univariate measure, leverage looks at the whole data vector $\boldsymbol{x}_i$ w.r.t. all data $\boldsymbol{X}$.
+```
+
+Definition (Leverages and leverage points)
+: - Leverage of an observation $i$ is defined as $h_i = \boldsymbol{x}_i ^\top (\boldsymbol{X} ^\top \boldsymbol{X} ) ^{-1} \boldsymbol{x}_i$. It is the $i$-th diagonal entry of the projection matrix $\boldsymbol{H} = \boldsymbol{X} (\boldsymbol{X} ^\top \boldsymbol{X} )^{-1} \boldsymbol{X} ^\top = \boldsymbol{P}_{\operatorname{im} (\boldsymbol{X} )}$.
+  - If $h_i$ is large than some threshold, say $2p/n$, then we say $i$ is a **leverage point**.
+
+
+Properties
+: - In particular, we have $0<h_i<1$ and $\sum_{i=1}^n h_i = p$, or $\bar{h} = p/n$
+  - Recall that $\operatorname{Var}\left( \hat{\boldsymbol{\varepsilon} } \right) = \operatorname{Var}\left( \boldsymbol{y} - \hat{\boldsymbol{y}} \right)= \sigma^2 (\boldsymbol{I} - \boldsymbol{H} )$, so $\operatorname{Var}\left( \hat{\varepsilon}_i \right) = \sigma^2 (1-h_i)$
+
+Definition (Standardized residuals)
+: Standardized residuals is defined as
+
+  $$
+  r_i = \ \frac{\hat{\varepsilon}_i}{\sigma\sqrt{1- h_i}}
+  $$
+
+  It is standardized since $\operatorname{Var}\left( r_i \right) = 1$. But in practice, we don't know $\sigma$. So we plug in its estimate $\hat{\sigma}$.
+
+### Influential Points
+
+Definition (Influential points)
+: Influential points are data points such that if we remove it, the model changes substantially. It can be quantified by Cook's distance
+
+  $$
+  D_i = \frac{r_i ^2}{p} \frac{h_i}{1-h_i}  
+  $$
+
+
+:::{admonition,note} Note
+- a influential point can be close to the fitted line. If we drop it, then there seems no linear relation in the remaining data cloud.
+
+- Two or more influential points near each other can mask each other's influence in a leave-one-out regression. That is, if remove any one of them, then the regression results do not change substantially, but if we remove both of them, then the results change substantially.
+:::
+
+
+Properties
+: - leverate $h_i$ is related to
+
+
 
 (lm-omit-variable)=
 ## Omit a Variable
@@ -133,7 +200,7 @@ print("reconstruction difference of b0, b1, b2 :", lm.coef_[0,:3] + lmx.coef_[0]
 
 
 (lm-include-variable)=
-## Include a Variable
+## Add a Variable
 
 What if we add a new variable $X_j$? What will happen to the existing estimator $\hat\beta_k$?
 
@@ -146,17 +213,7 @@ if $R_{k}^2$ increases. When will $R^2_{k}$ be unchanged? When the new variable 
 In terms of bias, if we say the model with $X_p$ is "true", then $\operatorname{E}\left( \hat{\beta}_k \right)$ is probably closer to $\beta_k$ according to the equation described in the above [section](lm-omit-variable).
 
 
-## Special Observations
 
-### Outliers
-
-What if an outlier exists?
-
-- If outlier is a mistake (typo) you can drop it (or correct it)
-
-- If outlier is valid but unusual, look for robustness – does dropping it change answer?
-
-- If it does change answer, report both versions – and argue for the approach you think more appropriate
 
 ## Multicollinearity
 
@@ -216,45 +273,47 @@ Finally, **correlation matrix** can also be used to measure multicollinearity si
 
 4.  If $\operatorname{Corr}\left( X_1, X_2 \right)$ is large, then we expect to have large $\operatorname{Var}\left( \hat{\beta}_1 \right), \operatorname{Var}\left( \hat{\beta}_2 \right), \operatorname{Var}\left( \hat{\beta}_1, \hat{\beta}_2 \right)$, but $\operatorname{Var}\left( \hat{\beta}_1 + \hat{\beta}_2 \right)$ can be small. This means we cannot distinguish the effect of $X_1 + X_2$ on $Y$ is from $X_1$ or $X_2$, i.e. **non-identifiable**.
 
-    ```{dropdown} *Proof*
+    :::{admonition,dropdown,seealso} *Proof*
+
     By the fact that, for symmetric positive definite matrix $\boldsymbol{S}$, if
 
     $$
-     \boldsymbol{a} ^\top \boldsymbol{S} \boldsymbol{a}  = \boldsymbol{a} \boldsymbol{U} \boldsymbol{\Lambda} \boldsymbol{U} ^\top \boldsymbol{a} = \boldsymbol{b} ^\top \boldsymbol{\Lambda} \boldsymbol{b} = \sum \lambda_i b_i ^2
-     $$
+    \boldsymbol{a} ^\top \boldsymbol{S} \boldsymbol{a}  = \boldsymbol{a} \boldsymbol{U} \boldsymbol{\Lambda} \boldsymbol{U} ^\top \boldsymbol{a} = \boldsymbol{b} ^\top \boldsymbol{\Lambda} \boldsymbol{b} = \sum \lambda_i b_i ^2
+    $$
 
     then
 
     $$
-     \boldsymbol{a} ^\top \boldsymbol{S} ^{-1}  \boldsymbol{a}  = \boldsymbol{a} \boldsymbol{U} \boldsymbol{\Lambda} ^{-1}  \boldsymbol{U} ^\top \boldsymbol{a} = \boldsymbol{b} ^\top \boldsymbol{\Lambda} ^{-1}  \boldsymbol{b} = \sum \frac{1}{\lambda_i}  b_i ^2
-     $$
+    \boldsymbol{a} ^\top \boldsymbol{S} ^{-1}  \boldsymbol{a}  = \boldsymbol{a} \boldsymbol{U} \boldsymbol{\Lambda} ^{-1}  \boldsymbol{U} ^\top \boldsymbol{a} = \boldsymbol{b} ^\top \boldsymbol{\Lambda} ^{-1}  \boldsymbol{b} = \sum \frac{1}{\lambda_i}  b_i ^2
+    $$
 
     we have:
 
     If
 
     $$
-     \left( \boldsymbol{x}_1 - \boldsymbol{x}_2 \right) ^\top \left( \boldsymbol{x}_1 - \boldsymbol{x}_2 \right)  = \left( \boldsymbol{e}_1 - \boldsymbol{e}_2   \right) ^\top \boldsymbol{X} ^\top \boldsymbol{X} \left( \boldsymbol{e}_1 - \boldsymbol{e} _2   \right) \approx 0
-     $$
+    \left( \boldsymbol{x}_1 - \boldsymbol{x}_2 \right) ^\top \left( \boldsymbol{x}_1 - \boldsymbol{x}_2 \right)  = \left( \boldsymbol{e}_1 - \boldsymbol{e}_2   \right) ^\top \boldsymbol{X} ^\top \boldsymbol{X} \left( \boldsymbol{e}_1 - \boldsymbol{e} _2   \right) \approx 0
+    $$
 
     then
 
     $$
-     \operatorname{Var}\left( \hat{\beta}_1 - \hat{\beta}_2 \right)  = \sigma^2  \left( \boldsymbol{e}_1 - \boldsymbol{e}_2   \right) ^\top \left( \boldsymbol{X} ^\top \boldsymbol{X} \right) ^{-1}  \left( \boldsymbol{e}_1 - \boldsymbol{e} _2   \right) \approx \infty
-     $$
+    \operatorname{Var}\left( \hat{\beta}_1 - \hat{\beta}_2 \right)  = \sigma^2  \left( \boldsymbol{e}_1 - \boldsymbol{e}_2   \right) ^\top \left( \boldsymbol{X} ^\top \boldsymbol{X} \right) ^{-1}  \left( \boldsymbol{e}_1 - \boldsymbol{e} _2   \right) \approx \infty
+    $$
 
     If
 
     $$
-     \left( \boldsymbol{x}_1 + \boldsymbol{x}_2 \right) ^\top \left( \boldsymbol{x}_1 + \boldsymbol{x}_2 \right)  = \left( \boldsymbol{e}_1 + \boldsymbol{e}_2   \right) ^\top \boldsymbol{X} ^\top \boldsymbol{X} \left( \boldsymbol{e}_1 + \boldsymbol{e} _2   \right) \approx \text{constant}
-     $$
+    \left( \boldsymbol{x}_1 + \boldsymbol{x}_2 \right) ^\top \left( \boldsymbol{x}_1 + \boldsymbol{x}_2 \right)  = \left( \boldsymbol{e}_1 + \boldsymbol{e}_2   \right) ^\top \boldsymbol{X} ^\top \boldsymbol{X} \left( \boldsymbol{e}_1 + \boldsymbol{e} _2   \right) \approx \text{constant}
+    $$
 
     then
 
     $$
-     \operatorname{Var}\left( \hat{\beta}_1 + \hat{\beta}_2 \right)  = \sigma^2  \left( \boldsymbol{e}_1 + \boldsymbol{e}_2   \right) ^\top \left( \boldsymbol{X} ^\top \boldsymbol{X} \right) ^{-1}  \left( \boldsymbol{e}_1 + \boldsymbol{e} _2   \right) \approx \text{constant}
-     $$
-    ```
+    \operatorname{Var}\left( \hat{\beta}_1 + \hat{\beta}_2 \right)  = \sigma^2  \left( \boldsymbol{e}_1 + \boldsymbol{e}_2   \right) ^\top \left( \boldsymbol{X} ^\top \boldsymbol{X} \right) ^{-1}  \left( \boldsymbol{e}_1 + \boldsymbol{e} _2   \right) \approx \text{constant}
+    $$
+
+    :::
 
 ### Implications
 
@@ -264,19 +323,28 @@ If $X_1$ and $X_2$ show high correlation, then
 2.  $X_1 - X_2$ may just be noise.
 3.  If $X_2$ is removed, $X_1$ may still be good for prediction.
 
-## Heteroscedasticity
+## Heteroskedasticity
 
-TBD
+When $\operatorname{Var}\left( \varepsilon _i \right)$ is not a constant, we say heteroskedasticity of error variance exists. This may happen because data attributes, or due to transformation of $y$, e.g. $\log(y)$. We can diagnose its existence by plots or tests.
+
+If it exists, OLS is still unbiased & consistent. But $\operatorname{Var}_{OLS}\left( \hat{\boldsymbol{\beta}}  \right)$ which uses homoskedastic assumption is incorrect now. There are problems in testing.
+
+- To fix that for testing purpose, we can use robust standard error.
+- To get more precise estimate and correct standard errors, we can try alternative models that produces homoskedastic errors.
+
+
 
 ## Categorical $X$
 
-dummy variables $X_ij$
+TBD...
+
+dummy variables $X_{ij}$
 
 when $c = 2$,
 
 interpretation
-- $\hat{\beta_1}$: difference in means between the group with $X=1$ and $X=0$.
-- $\hat{\beta_0}$: mean of the group with $X=0$.
+- $\hat{\beta}_1$: difference in means between the group with $X=1$ and $X=0$.
+- $\hat{\beta}_0$: mean of the group with $X=0$.
 
 TBD
 

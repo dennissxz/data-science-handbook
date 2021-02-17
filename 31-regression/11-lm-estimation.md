@@ -385,7 +385,14 @@ TBD.
 
 1. For a model in a standard form,
 
-    - $\beta_j$ is the expected change in the value of the response variable $y$ if the value of the covariate $x_j$ increases by 1, holding other covariates fixed.
+    - $\beta_j$ is the expected change in the value of the response variable $y$ if the value of the covariate $x_j$ increases by 1, holding other covariates fixed, aka *ceteris paribus*.
+
+        :::{admonition,warning} Warning
+        Sometimes other covariates is unlikely to be fixed as we increase $x_j$, and in these cases the *ceteris paribus* interpretation is not appropriate. So for interpretation purpose, don’t include
+
+        - multiple measures of the same economic concept,
+        - intermediate outcomes or alternative forms of the dependent variable
+        :::
 
     - $\beta_0$ is the expected value of the response variable $y$ if all covariates have values of zero.
 
@@ -756,6 +763,32 @@ SLR stands for simple linear regression $y_i = \beta_0 + \beta_1 x_i + \varepsil
     :::
 
 1. *Does the partialling out method holds for $p \ge 3$*?
+
+1. *How do you compare two linear models?*
+
+  - $F$-test if nested
+  - $R$-squared if same number of covariates (essentially comparing $RSS$)
+  - adjusted $R$-squared
+  - Log-likelihood
+  - out-of-sample prediction
+
+1.  *What happens if you exclude a relevant regressor?*
+
+    It will bias your estimates of included regressors, if the omitted variable correlated with other regressors
+
+1. *What happens if you include an irrelevant regressor?*
+
+    You lower precision, if the added variable is correlated with other regressors. So add if it is not correlated with existing regressors, and has explanatory power to the response. Then $\operatorname{Var}\left(  \right)(\beta_j)$ decreases so precision increases.
+
+
+1. *Missing data problem in linear regression*
+
+    - if completely at random, then it amounts to a smaller sample. larger standard error, but still unbiased.
+    - if missing depends on values of $x$ (Exogenous Sample Selection)
+      - if the true relation is linear, then no problem. still unbiased since the slope hyperplane is unchanged. the standard error may change if $\operatorname{Var}\left( X \right)$ changes.
+      - if the true relation is not linear, then will get quite different estimates
+    - if missing depends on $Y$ (Endogenous sample selection)
+      - if the true relation is linear may have biased estimates, say only observe $Y$ in a small range, then the scatter plot becomes rectangle.
 
 
 1. Causal?
