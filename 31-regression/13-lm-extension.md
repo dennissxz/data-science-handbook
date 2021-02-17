@@ -333,6 +333,135 @@ If it exists, OLS is still unbiased & consistent. But $\operatorname{Var}_{OLS}\
 - To get more precise estimate and correct standard errors, we can try alternative models that produces homoskedastic errors.
 
 
+### Diagnosis
+
+#### Plot
+
+:::{figure} lm-residual-plot
+<img src="../imgs/lm-residual-plot.png" width = "90%" alt=""/>
+
+Homoskedastic (left, right) and Heteroskedasticity (middle)
+:::
+
+#### Breusch-Pagan Test
+
+$$H_0: \text{homoskedasticity}$$
+
+Idea: under homoskedasticity, the covariate $X_1, X-2, \ldots, X_p$ should have no explanatory power on the error $\varepsilon$. That is, in the regression $\varepsilon \sim X_1 \ldots X_p$, the $F$-test should be insignificant.
+
+- Run regression $Y \sim X_1 \ldots X_p$, obtain $\hat{\varepsilon}$
+- Run regression $\hat{\varepsilon} \sim X_1 \ldots X_p$, run $F$-test (actually $\chi ^2$ test).
+
+#### White Test
+
+The Breusch-Pagan test will detect any linear forms of heteroskedasticity, while the White test allows for nonlinearities by using squares and crossproducts of all the covariates.
+
+- Run regression $Y \sim X_1 \ldots X_p$, obtain $\hat{y}$
+- Run regressions $\hat{\varepsilon}^2 \sim \hat{y}$ and $\hat{\varepsilon}^2 \sim \hat{y}^2$
+- Use the $R^2$ to form an $F$ test statistic
+
+
+
+### Correction by Robust Error
+
+
+
+
+
+### Alt Model: Weighted Least Squares
+
+We can use weighted least squares as an alternative model. Assume $Var(\varepsilon_i) = \sigma_i$, then we can scale the error $\varepsilon_i$ by $\frac{1}{\sigma_i}$. The new error term has the same unit variance $Var(\frac{\varepsilon_i}{\sigma_i} ) = 1$.
+
+The optimization problem is therefore
+
+$$
+\hat{\boldsymbol{\beta}} _{WLS} = \arg\min \sum_{i} (y_i - \boldsymbol{x}_i ^\top \boldsymbol{\beta} )^2 / \sigma_i ^2
+$$
+
+We will talk about how to find $\sigma_i$ later.
+
+### Estimation
+
+To find the solution, we introduce an $n\times n$ diagonal matrix $\boldsymbol{W}$, whose diagonal entries are the scaling factor $w_{ii} = \frac{1}{\sigma^2 _i}$. Hence,
+
+
+$$\begin{aligned}
+\hat{\boldsymbol{\beta}} _{WLS}
+&= \arg\min\ \sum_{i} (y_i - \boldsymbol{x}_i ^\top \boldsymbol{\beta} )^2 / \sigma_i ^2\\
+&= \arg\min\ (\boldsymbol{y} - \boldsymbol{X} \boldsymbol{\beta} )^\top \boldsymbol{W} (\boldsymbol{y} - \boldsymbol{X} \boldsymbol{\beta} )\\
+&= (\boldsymbol{X} ^\top \boldsymbol{W} \boldsymbol{X}  ) ^{-1} \boldsymbol{X} ^\top \boldsymbol{W} \boldsymbol{y}\\
+\end{aligned}$$
+
+In particular,
+- if $\boldsymbol{W} = c \boldsymbol{I}$ then $\hat{\boldsymbol{\beta}} _{WLS} = \hat{\boldsymbol{\beta}} _{OLS}$
+- if $\boldsymbol{V} = c \boldsymbol{W}$ then $\hat{\boldsymbol{\beta}} _{WLS(\boldsymbol{V})} = \hat{\boldsymbol{\beta}} _{WLS(\boldsymbol{W})}$, i.e. the solution is invariant to spherical scaling of $\boldsymbol{W}$.
+
+From its form $\hat{\boldsymbol{\beta}} _{WLS} = (\boldsymbol{X} ^\top \boldsymbol{W} \boldsymbol{X}  ) ^{-1} \boldsymbol{X} ^\top \boldsymbol{W} \boldsymbol{y}$, we can see that there is an equivalent formulation:
+
+1. Scale the data and response by error standard deviation $(\widetilde{\boldsymbol{x}}_i , \widetilde{y}_i) = \left( \frac{\boldsymbol{x}_i  }{\sigma_i}  , \frac{y_i}{\sigma_i} \right)$. in matrix form, $\widetilde{\boldsymbol{X}} = \boldsymbol{X} \boldsymbol{W} ^{1/2}, \widetilde{\boldsymbol{y} } = \boldsymbol{W} ^{1/2}\boldsymbol{y}$
+
+2. Run OLS with $\widetilde{\boldsymbol{X} }$ and $\widetilde{\boldsymbol{y} }$
+
+#### Inference
+
+Like in OLS, we want to find the distribution of $\hat{\boldsymbol{\beta}} _{WLS}$. Note that $\boldsymbol{\varepsilon} \sim N(\boldsymbol{0} , \boldsymbol{W} ^{-1})$, so
+
+
+$$\begin{aligned}
+\hat{\boldsymbol{\beta}} _{WLS}
+&= (\boldsymbol{X} ^\top \boldsymbol{W} \boldsymbol{X} ) ^{-1} \boldsymbol{X} ^\top \boldsymbol{W} (\boldsymbol{X} \boldsymbol{\beta} + \boldsymbol{\varepsilon})\\
+&= \boldsymbol{\beta}  + \left( \boldsymbol{X} ^\top \boldsymbol{W} \boldsymbol{X}  \right) ^{-1} \boldsymbol{X} ^\top \boldsymbol{W} \boldsymbol{\varepsilon} \\
+&\sim N \left( \boldsymbol{\beta} , \left( \boldsymbol{X} ^\top \boldsymbol{W} \boldsymbol{X}  \right) ^{-1}  \right)\\
+\end{aligned}$$
+
+In particular, if $\boldsymbol{W} = \frac{1}{\sigma^2 } \boldsymbol{I}$ as in OLS (homogeneity), then the $\left( \boldsymbol{X} ^\top \boldsymbol{W} \boldsymbol{X}  \right) ^{-1} = \sigma^2 (\boldsymbol{X} ^\top \boldsymbol{X} ) ^{-1}$ as in OLS.
+
+#### Find Weights
+
+The question is, how to find $\boldsymbol{W}$ in advance? Some rules of thumbs include
+
+- If $y_i$ is a **sum** from a sample of size $n_i$, then $\sigma^2 _i \propto n_i$
+- If $y_i$ is an **average** from a sample of size $n_i$, then $\sigma^2 _i \propto \frac{1}{n_i}$
+
+```{margin}
+Note $\hat{\boldsymbol{\beta}} _{WLS}$ is invariant to spherical scaling of $\boldsymbol{W}$, so we don't need to know the exact value of $\sigma^2_i$.
+```
+
+Besides, we can find weights from data adaptively.
+
+- If measurements are in blocks of size $n_1, n_2, \ldots, n_m$ such that $n = n_1+ \ldots + n_m$, and $\sigma^2 _i$ is constant within each block but differ across blocks, then the error variance matrix looks like
+
+    $$
+    \operatorname{Var}\left( \boldsymbol{\varepsilon}  \right) = \left[\begin{array}{cccc}
+    c_1 \boldsymbol{I}_{n_1} & 0 & \ldots & 0 \\
+     0 & c_2 \boldsymbol{I} _{n_2} & \ldots & 0 \\
+    \vdots & \vdots & \ddots & \vdots \\
+    0 & \ldots & \ldots & c_m \boldsymbol{I}  _{n_m}
+    \end{array}\right]
+    $$
+
+    Therefore, each block of observations satisfy the homogeneity assumption. We can run OLS to estimate $\hat{\sigma}^2_k$ in each block $k$, and set $c_k = \frac{1}{\hat{\sigma}_k ^2}$.
+
+- If $\sigma^2 _{i}$ varies with some explanatory variable, say $X_{ij}$, (which can be known in advance or revealed by diagnostic plot of $\hat{\sigma}_i$ over $x_{ij}$), then we can formulate there relation as some function.
+
+    - If we assume linear relation, then we can follow the steps
+
+      1. run original OLS and obtain $\hat{\varepsilon}$
+      2. regress $\ln (\hat{\varepsilon}^2)$ over all explanatory varibles, call the fitted value by $\hat{u}$
+      3. set $w_{ii} = 1/\exp(\hat{u})$.
+
+    - For other relations, for instance, we can assume $\sigma_i = r_0 + \left\vert x_{ij} \right\vert ^{r_1}$. Then, we can estimate $r_0$ and $r_1$ jointly with $\boldsymbol{\beta}$ by maximum likelihood
+
+      $$\begin{aligned}
+      \boldsymbol{\beta} , r_0, r_1
+      &= \arg\max \left\{ \prod_i \frac{1}{\sqrt{2 \pi \sigma^2 }} \exp
+      \left( - \frac{ \left( y_i - \boldsymbol{x}_i ^\top \boldsymbol{\beta} \right)^2 }{2 \sigma^2 } \right)   \right\}\\
+      &= \arg \min \left\{ \sum_i \frac{(\boldsymbol{y}_i - \boldsymbol{x}_i ^\top \boldsymbol{\beta} )^2}{2(r_0 + \left\vert x_{ij} \right\vert ^ {r_1})^2}  + \log \left( r_0 + \left\vert x_{ij} \right\vert ^ {r_1} \right) \right\} \\
+      \end{aligned}$$
+
+
+and use the estimated
+
 
 ## Categorical $X$
 
