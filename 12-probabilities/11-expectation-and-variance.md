@@ -25,10 +25,10 @@ $$\begin{align}
 \end{align}$$
 
 
-```{note}
+:::{admonition,note} Notations
 - The notation $X \mid Y=y$ means that $Y=y$ is observed. In this case, the conditional expectation (variance) is a function of the observed value $y$, i.e., $\operatorname{E}(X \mid Y=y) = g(y)$, which itself is a constant.
 - The notation $X \mid Y$ means that $Y$ is a random variable and has not been observed yet. In this case, the conditional expectation (variance) is a function of the random variable $Y$, i.e., $\operatorname{E}(X \mid Y) = g(Y)$, which itself is a random variable.
-```
+:::
 
 
 ## Identities
@@ -49,14 +49,14 @@ $$\begin{align}
 \operatorname{Cov}\left( aX, bY \right) &= ab \operatorname{Cov}\left( X, Y \right)
 \end{align}$$
 
-
-```{note}
+```{margin}
 Be careful about the notations $\sigma_X ^2$ and $\sigma_{X,X}$
 
 $$
 \sigma_X^2 = \operatorname{Var}\left( X \right) = \operatorname{Cov}\left( X, X \right) = \sigma_{X,X}
-$$
 ```
+
+
 
 If $X$ and $Y$ are independent,
 
@@ -103,11 +103,13 @@ $$
 \end{aligned}
 $$
 
-```{tip}
+
+:::{admonition,tip} Tip
 One can imagine that there is a $n \times n$ covariance table with the $i,j$-th entry being $\operatorname{Cov}\left( a_i X_i, a_j X_j \right)$, and the required variance is the sum of all the entries, which consists of
 - the sum of the diagonal entries as $\sum_i\operatorname{Var}\left(a_{i}X_{i}\right)$
 - the sum of the off-diagonal entries as $\sum_{i\ne j}\operatorname{Cov}\left(a_{i}X_{i}, a_{j}X_{j}\right)$
-```
+:::
+
 
 In particular, the variance of the average value of the IID sum is
 
@@ -175,13 +177,14 @@ $$
 \operatorname{E}\left( X \right)=\operatorname{E}\left[ \operatorname{E}(X \mid Y) \right]
 $$
 
-```{note}
+
+:::{admonition,note} Note
 The inside expectation is taken w.r.t. $X$ and the outside expectation is taken w.r.t. $Y$, since the conditional expectation $\operatorname{E}\left(X \mid Y \right)$ is a function $g(Y)$ that depends on the random variables $Y$. To emphasize this we can write
 
 $$
 \operatorname{E}_X\left( X \right)=\operatorname{E}_Y\left[ \operatorname{E}_X(X \mid Y) \right]
 $$
-```
+:::
 
 In general, we can partition the sample space into finite or countably infinite sets $A_i$, then
 
@@ -221,9 +224,11 @@ $$
 \operatorname{Var}(X)=\operatorname{E}[\operatorname{Var}(X \mid Y)]+\operatorname{Var}(\operatorname{E}[X \mid Y])
 $$
 
-```{note}
+
+:::{admonition,note} Note
 Here both $\operatorname{Var}\left( X \mid Y \right)$ and $\operatorname{E}\left( X \mid Y \right)$ are random. The outside expectation and variance are taken w.r.t. the conditioned variable, $Y$.
-```
+:::
+
 
 The first and the second term can be interpreted as the unexplained and the explained components of the variance of $X$ by knowing $Y$. Imagine that there is a deterministic relation $X=f(Y)$, then $\operatorname{Var}\left( X \mid Y \right) = 0$ so that the first term is 0, and the second term becomes $\operatorname{Var}\left(  f(Y) \right) = \operatorname{Var}\left( X \right)$.
 
@@ -255,7 +260,8 @@ $$\begin{align}
 
 $\square$
 
-```{warning}
+
+:::{admonition,warning} Warning
 From above we see that the identity that holds for expectation
 
 $$
@@ -269,11 +275,7 @@ $$
 $$
 
 unless $\operatorname{Var}(\operatorname{E}[X \mid A]) = 0$, which implies that $\operatorname{E}\left( X \mid A \right) = \text{constant}$, i.e., $X$ and the partitioning $A_i$ are independent.
-
-
-
-```
-
+:::
 
 ## Inequalities
 
@@ -394,7 +396,9 @@ $\square$
 
 *What is the expected number of coin flips to get two heads in a row?*
 
-````{dropdown} Solution 1: Law of Total Expectation
+{dropdown} Solution 1: Law of Total Expectation
+
+::::{admonition,dropdown,seealso} *Solution*
 
 Denote the required number of flips by $X$. We can partition the sample space into **three** parts:
 - $A_T$: the first flip is a tail
@@ -435,9 +439,10 @@ $$
 
 Solving the equation gives $\operatorname{E}\left( X \right) = 6$
 
-```{note}
+
+:::{admonition,note} Note
 One may also partition the sample space to two parts ${A_H}$ and $A_T$, but to compute $\operatorname{E}\left( X \mid A_H \right)$, it requires to partition $A_H$ into $A_{HT}$ and $A_{HH}$, and then use the law of total expectation again, which is complicated and easy to make mistakes. So it would be better to partition $A$ to three parts at the beginning.
-```
+:::
 
 In general, what is the expected number of coin flips to get $n$ heads in a row? In fact, we just need to continue to partition $A_{HH}$ into $A_{HHT}$ and $A_{HHH}$, and so on. By the law of total expectation the equation becomes
 
@@ -455,10 +460,11 @@ The solution is
 $$
 \operatorname{E}\left( X_n \right) = 2 \left( 2^n-1 \right)
 $$
-````
+::::
 
 
-```{dropdown} Solution 2: Recurrence Relation
+:::{admonition,dropdown,seealso} *Solution 2: Recurrence Relation*
+
 One can also derive the solution from a recurrence relation between $\operatorname{E}\left( X_n \right)$ and $\operatorname{E}\left( X_{n-1} \right)$.
 
 Let $Y_{n} = X_n - X_{n-1}$ be the number of additional flips required to get $n$ heads in a row, given that we already got $n-1$ heads in a row. Then by the law of total expectation,
@@ -481,14 +487,15 @@ $$
 Let $f(n) = \operatorname{E}\left( X_n\right) + 2$ then we have $f(n) = 2f(n-1)$. Since $f(1) = \operatorname{E}\left( X_1 \right)+2 = 4$, we have $f(n) = 2^{n+1}$. Therefore,  
 
 $$\operatorname{E}\left( X_n \right) = 2^{n+1}-2$$
-```
+
+:::
+
 
 ### Coin Flips - Count Rows
 
 *What is the expected number of times to see $k$ heads in a row, i.e., HH...HH, in $n$ flips of a coin?*
 
-
-```{dropdown} Solution
+:::{admonition,dropdown,seealso} *Solution*
 
 In $n$ flips of a coin, there are $n-k+1$ places where the string HH...HH can start to appear, each with a (non-independent) probability $\frac{1}{2^k} $ of happening. Let $X$ be the number of times to see the string HH...HH, and $X_i$ be the indicator variable that is $1$ if the string starts to appear at the $i$-th flip, then
 
@@ -506,14 +513,13 @@ $$\begin{align}
 
 The first second last line holds even if $X_i$'s are not independent.
 
-```
+:::
 
 
 ### Coin Flips - Count Runs
 
+::::{admonition,dropdown,seealso} *Solution*
 
-
-````{dropdown} Solution
 A coin with a probability $p$ to get a head is flipped $n$ times. A "run" is a maximal sequence of consecutive flips that are all the same. For instance, HTHHHTTH has five runs and $n=8$. What is the expected number of runs?
 
 Let $X_i$ be the indicator for the event that a run starts at the $i-th$ toss. Let $X = \sum_i X_i$ be the total number of runs. It is easy to see $\operatorname{E}\left( X_1 \right) = 1$. For $i>1$,
@@ -540,14 +546,15 @@ $$
 &=1+2(n-1) p(1-p)
 \end{aligned}
 $$
-````
+::::
+
 
 
 ### Incremental Update of Mean and Variance
 
 *Suppose you have $n$ observations $x_1, x_2, \ldots, x_n$. Now a new value $x_{n+1}$ is observed. Write recurrence functions to update the sample mean $\bar{x}_n$ and variance $s^2_n$.*
 
-````{dropdown} Solution
+::::{admonition,dropdown,seealso} *Solution*
 To update mean,
 
 $$\begin{align}
@@ -579,7 +586,38 @@ S_{n+1}
 Finally $s_{n+1}^2 = \frac{1}{n+1} S_{n+1}$.
 
 
-```{tip}
+:::{tip}
 The substitution $S_n = ns_n^2$ avoids the computation that involves $\frac{1}{n} $ and $\frac{1}{n+1} $. And the update equation of the mean is also quite useful.
-```
-````
+:::
+
+::::
+
+(exp-var-ex)=
+### Misc
+
+1. Two groups of data. In group one, sample standard deviation is $s_gamma$, in group two it is $s_2$. After merging them, it is $s_c$. Do we always have $s_3 > \max(s_1, s_2)$?
+
+Let $\lambda = \frac{n_1}{n_1 + n_2} \in (0,1)$, then $\bar{x}_3 = \lambda \bar{x}_1 + (1-\lambda)\bar{x}_2$. WLOG assume $\bar{x}_1 - \bar{x}_2 = d \ge 0$.
+
+$$\begin{aligned}
+s^2 _1 &= \frac{TSS_1}{n_1} \\
+s^2 _2 &= \frac{TSS_2}{n_2} \\
+s^2 _3 &= \frac{TSS_3}{n_3}\\
+s^2 _3 &= \frac{TSS_1 + TTS_2 + n_1 (\bar{x}_1 - \bar{x}_3)^2 + n_2 (\bar{x}_3 - \bar{x}_2)^2 }{n_1 + n_2}\\
+&= \lambda s^2 _1 + (1-\lambda) s^2 _2  + \lambda ((1-\lambda)d )^2 + (1-\lambda) (\lambda d)^2    \\
+&= \underbrace{\lambda s^2 _1 + (1-\lambda) s^2 _2}_{a}  + \underbrace{\lambda(1-\lambda)d^2}_{b}   \\
+\end{aligned}$$
+
+where
+
+- $\lambda = \frac{n_1}{n_1 + n_2} \in (0,1)$
+- $d_1 = \bar{x}_1 - \bar{x}_3 = \bar{x}_1 - (\lambda \bar{x}_1 + (1-\lambda)\bar{x}_2) = (1-\lambda)(\bar{x}_1 - \bar{x}_2) = (1-\lambda)c \in [0, c)$
+- $d_2 = \bar{x}_3 - \bar{x}_2 = \lambda \bar{x}_1 + (1-\lambda)\bar{x}_2 - \bar{x}_2 = \lambda(\bar{x}_1 - \bar{x}_2) = \lambda c \in [0, c)$
+- $d_1 + d_2 = c$
+
+We have
+
+- $\min(s^2_1, s^2_2) \le a \le \max(s^2_1, s^2_2)$ with equalities iff $s_2^2 = s_2^2$.
+- $0 \le b < d^2$ with equality iff $d=0$.
+
+Since $a$ and $b$ are independent, we can know for sure that $\min(s^2_1, s^2_2) \le s_3^2$. The other comparison $\max(s^2_1, s^2_2) \text{ vs } s_3^2$ is uncertain, depending on $d$.
