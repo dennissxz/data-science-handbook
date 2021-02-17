@@ -508,18 +508,18 @@ More efficient algorithm is under research.
 ### Edge-Disjoint Paths and $S-T$ Cut
 
 ```{margin}
-Edge-dispoint path = EDP
+Edge-disjoint path = EDP
 ```
 
-For a directed graph with two **sets** of vertices $S$ and $T$, we want to find a maximum set $\mathcal{P}$ of $S-T$ paths that are edge-disjoint, i.e. no path in $\mathcal{P}$ can share any edges.
+For a directed graph with two disjoint **sets** of vertices $S$ and $T$, we want to find a maximum set $\mathcal{P}$ of $S-T$ paths that are edge-disjoint, i.e. no path in $\mathcal{P}$ can share any edges.
 
 To solve this,
 
-1. For every edge $e$, set capacity $c(e)=1$. Add one node $s$ that connects to every vertex $u$ in $S$ with capacity $\infty$. Add one node $t$ that connects to every vertex $v$ in $T$ with capacity $\infty$.
+1. For every edge $e\in G$, set capacity $c(e)=1$. Add one node $s$ that connects to every vertex $u$ in $S$ with capacity $\infty$. Add one node $t$ that connects to every vertex $v$ in $T$ with capacity $\infty$.
 
 1. Run FF algorithm and obtain a flow $f$. Since $f(e)$ is integer, it is 1.
 
-1. Run flow-path decomposition, then each path also carries flow value 1. We will get a collection of EDP from $S$ to $T$. The number of paths equals to the flow value.
+1. Run flow-path decomposition, then each path also carries flow value 1. After we delete the path, we remove all edges along the path since $c(e)=1$. Then, the subsequent paths must be disjoint with this one. We will get a collection of EDP from $S$ to $T$. The number of paths equals to the flow value.
 
 **$S-T$ Cut**
 
@@ -596,8 +596,81 @@ $\square$
 
 ## Exercise
 
+Let $G$ be an arbitrary (directed) flow network with integral edge capacities
+
+
+
+1. T/F: Let $(A,B)$ be a minimum $s-t$ cut in G. Let $e=(u,v)$ be an edge of $G$ with $u\in A,v\in B$, and $c(e) ≥ 1$. Then **decreasing** the capacity of $e$ by 1 decreases the maximum flow value by $1$.
+
+    True, since the capacity of all other minimum $s-t$ cut **without** edge $e$ are unchanged.
+
+1. T/F: Let $(A,B)$ be a minimum $s-t$ cut in G. Let $e=(u,v)$ be an edge of $G$ with $u\in A,v\in B$, and $c(e) ≥ 1$. Then **increasing** the capacity of $e$ by 1 increases the maximum flow value by $1$.
+
+    False, there may be another minimum $s-t$ cut **without** edge $e$.
+
+1. T/F: Let $(A,B)$ be a minimum $s-t$ cut in G. If we **increase** the capacity of **each** edge in $E(G)$ by $1$, then $(A,B)$ remains a minimum $s-t$ cut in the new flow network.
+
+    False. (1) Had G contained edges of different capacities, increased capacity might have resulted in different minimum cut. (2) When all edges have same capacity then minimum cut would remain same.
+
+    Example of (1):
+
+    :::{figure} max-flow-ex-1
+    <img src="../imgs/max-flow-ex-1.png" width = "30%" alt=""/>
+
+    New min-cut becomes $S-A$ with cut capacity $5$.
+    :::
+
+    For (2), if all edges have the same capacity $c$, then the capacity of any cut is $nc$ where $n$ is the number of edges cut. So a min-cut has $n_\min$. After $c$ becomes $c+1$, it is still a min-cut since it has $n_\min$.
+
+1. If $f$ is a valid $s-t$ flow in graph $G$ of value $v_1$, and $f ^\prime$ is a valid $s-t$ flow in the residual graph $G_f$ of value $v_2$, then there is a valid $s-t$ flow in graph G of value $v_1 + v_2$.
+
+    T
+
+1. Increasing the capacity of a single edge $(u,v)$ by $1$ can result in an increase of at
+most 1 in the max flow.
+
+    If $(u, v)$ is in every min cut, then increasing the capacity of $(u, v)$ by 1 increases
+the min cut value by 1. If (u, v) is not in every min cut, then increasing the capacity of $(u, v)$ by 1 leaves the min cut value unchanged. Either way, the capacity increases by at most 1. The claim follows from the max-flow-min-cut theorem.
+
+
+1. Increasing the capacity of a single edge $(u, v)$ by a positive integer $k$ can result in
+an increase of at most $k$ in the max flow.
+
+    Increasing by $k$ is the same as increasing in $k$ steps of 1. By part 1, each such step
+increases the max flow by at most 1. So the total increase is at most $k$.
+
+    Algorithm:
+      - Repeat at most k times:
+
+        - Look for an augmenting path in the residual network by BFS/DFS
+        - If there is one, then add it to the existing flow, else return
+
+    Each pass takes $O(m)$, total $O(km)$.
+
+1. Decreasing the capacity of a single edge $(u, v)$ by 1 can result in a decrease of at most 1 in the max flow.
+
+    If $(u, v)$ is in some min cut, then decreasing the capacity of $(u, v)$ decreases the
+min cut value by 1. If $(u, v)$ is not in every min cut, then decreasing the capacity of
+$(u, v)$ by 1 leaves the min cut value unchanged. Either way, the capacity decreases
+by at most 1. The claim follows from the max-flow-min-cut theorem.
+
+    If $c(u,v) \ge f(u,v) + 1$, then the max flow remains the same. If $c(u,v) = f(u,v)$ (saturated edge), then to satisfy the constraint, we need to remove one unit of flow from $s$ to $t$ that goes through edge $(u,v)$. The algorithm is
+
+      - Find a path $s-u$ and a path $v-t$ that contain only edges of positive flow. Remove 1 unit of flow for each edge on path $s-u$, and $v-t$. This step takes $O(m)$.
+      - Run FF. There is at most one iteration since the flow will increases by at most 1. One iteration takes $O(m)$.
+
+1. Decreasing the capacity of a single edge $(u, v)$ by a positive integer $k$ can result
+in a decrease of at most $k$ in the max flow.
+
+    Decreasing by $k$ is the same as decreasing in $k$ steps of 1. Each such step
+decreases the max flow by at most 1. So the total decrease is at most $k$.
+
+
+
 http://www.cim.mcgill.ca/~langer/251/E11-networkflow-2.pdf
 
 http://web.stanford.edu/class/archive/cs/cs161/cs161.1176/maxflow_problems.pdf
 
 https://courses.engr.illinois.edu/cs573/fa2012/hw/files/hw_3_pract.pdf
+
+https://www.cs.cornell.edu/courses/cs6820/2016fa/handouts/flows.pdf

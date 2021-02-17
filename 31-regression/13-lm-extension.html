@@ -731,16 +731,6 @@
         <nav id="bd-toc-nav">
             <ul class="nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#omit-a-variable">
-   Omit a Variable
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#include-a-variable">
-   Include a Variable
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#special-observations">
    Special Observations
   </a>
@@ -750,7 +740,27 @@
      Outliers
     </a>
    </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#leverage-points">
+     Leverage Points
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#influential-points">
+     Influential Points
+    </a>
+   </li>
   </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#omit-a-variable">
+   Omit a Variable
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#add-a-variable">
+   Add a Variable
+  </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#multicollinearity">
@@ -775,9 +785,83 @@
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#heteroscedasticity">
-   Heteroscedasticity
+  <a class="reference internal nav-link" href="#heteroskedasticity">
+   Heteroskedasticity
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id1">
+     Diagnosis
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#plot">
+       Plot
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#breusch-pagan-test">
+       Breusch-Pagan Test
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#white-test">
+       White Test
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#correction-by-robust-error">
+     Correction by Robust Error
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#alt-model-weighted-least-squares">
+     Alt Model: Weighted Least Squares
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#estimation">
+     Estimation
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#inference">
+       Inference
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#find-weights">
+       Find Weights
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#measurement-error">
+   Measurement Error
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#of-y">
+     Of
+     <span class="math notranslate nohighlight">
+      \(Y\)
+     </span>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#of-x">
+     Of
+     <span class="math notranslate nohighlight">
+      \(X\)
+     </span>
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#categorical-x">
@@ -800,7 +884,78 @@
                 
   <div class="section" id="linear-regression-extension">
 <h1>Linear Regression - Extension<a class="headerlink" href="#linear-regression-extension" title="Permalink to this headline">¶</a></h1>
-<p>No models are perfect. In this section we introduce what happen when our model is misspecified or when some assumptions fail. We will also introduce some alternative models, e.g. Lasso, ridge regression, etc.</p>
+<p>No models are perfect. In this section we introduce what happen when our model is misspecified or when some assumptions fail. We will introduce how to diagnose these problems, and corresponding remedies and alternative models, e.g. Lasso, ridge regression, etc.</p>
+<div class="section" id="special-observations">
+<h2>Special Observations<a class="headerlink" href="#special-observations" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="outliers">
+<h3>Outliers<a class="headerlink" href="#outliers" title="Permalink to this headline">¶</a></h3>
+<dl class="simple myst">
+<dt>Definition (Outliers)</dt><dd><p>There are many ways to define outliers. Observations <span class="math notranslate nohighlight">\(i\)</span> is an outlier</p>
+<ul class="simple">
+<li><p>univariate measure: if <span class="math notranslate nohighlight">\(\left\vert x_{ji} - \mu_j \right\vert\)</span> is larger than some threshold, say some multiples of standard deviations of <span class="math notranslate nohighlight">\(X_j\)</span>, then the <span class="math notranslate nohighlight">\(j\)</span>-th value of observation <span class="math notranslate nohighlight">\(i\)</span> is an outlier w.r.t. other observations of variable <span class="math notranslate nohighlight">\(X_j\)</span>.</p></li>
+<li><p>multivariate measure: if <span class="math notranslate nohighlight">\(\left\| \boldsymbol{x}_i -\boldsymbol{\mu}  \right\|^2\)</span> is larger than some threshold, then <span class="math notranslate nohighlight">\(\boldsymbol{x}_i\)</span> an outlier w.r.t. other data points in <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span>.</p></li>
+<li><p>if its studentized residual <span class="math notranslate nohighlight">\(\left\vert t_i \right\vert\)</span> is larger than some threshold, say <span class="math notranslate nohighlight">\(t_{n-p}^{(\alpha/2n)}\)</span></p></li>
+</ul>
+</dd>
+<dt>Solution</dt><dd><ul class="simple">
+<li><p>If outlier is a mistake (typo) you can drop it (or correct it)</p></li>
+<li><p>If outlier is valid but unusual, look for robustness – does dropping it change answer?</p></li>
+<li><p>If it does change answer, report both versions – and argue for the approach you think more appropriate</p></li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="leverage-points">
+<h3>Leverage Points<a class="headerlink" href="#leverage-points" title="Permalink to this headline">¶</a></h3>
+<div class="margin sidebar">
+<p class="sidebar-title"></p>
+<p>Unlike outliers which can be a univariate measure, leverage looks at the whole data vector <span class="math notranslate nohighlight">\(\boldsymbol{x}_i\)</span> w.r.t. all data <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span>.</p>
+</div>
+<dl class="simple myst">
+<dt>Definition (Leverages and leverage points)</dt><dd><ul class="simple">
+<li><p>Leverage of an observation <span class="math notranslate nohighlight">\(i\)</span> is defined as <span class="math notranslate nohighlight">\(h_i = \boldsymbol{x}_i ^\top (\boldsymbol{X} ^\top \boldsymbol{X} ) ^{-1} \boldsymbol{x}_i\)</span>. It is the <span class="math notranslate nohighlight">\(i\)</span>-th diagonal entry of the projection matrix <span class="math notranslate nohighlight">\(\boldsymbol{H} = \boldsymbol{X} (\boldsymbol{X} ^\top \boldsymbol{X} )^{-1} \boldsymbol{X} ^\top = \boldsymbol{P}_{\operatorname{im} (\boldsymbol{X} )}\)</span>.</p></li>
+<li><p>If <span class="math notranslate nohighlight">\(h_i\)</span> is large than some threshold, say <span class="math notranslate nohighlight">\(2p/n\)</span>, then we say <span class="math notranslate nohighlight">\(i\)</span> is a <strong>leverage point</strong>.</p></li>
+</ul>
+</dd>
+<dt>Properties</dt><dd><ul class="simple">
+<li><p>In particular, we have <span class="math notranslate nohighlight">\(0&lt;h_i&lt;1\)</span> and <span class="math notranslate nohighlight">\(\sum_{i=1}^n h_i = p\)</span>, or <span class="math notranslate nohighlight">\(\bar{h} = p/n\)</span></p></li>
+<li><p>Recall that <span class="math notranslate nohighlight">\(\operatorname{Var}\left( \hat{\boldsymbol{\varepsilon} } \right) = \operatorname{Var}\left( \boldsymbol{y} - \hat{\boldsymbol{y}} \right)= \sigma^2 (\boldsymbol{I} - \boldsymbol{H} )\)</span>, so <span class="math notranslate nohighlight">\(\operatorname{Var}\left( \hat{\varepsilon}_i \right) = \sigma^2 (1-h_i)\)</span></p></li>
+</ul>
+</dd>
+<dt>Definition (Standardized residuals)</dt><dd><p>Standardized residuals is defined as</p>
+<div class="math notranslate nohighlight">
+\[
+  r_i = \ \frac{\hat{\varepsilon}_i}{\sigma\sqrt{1- h_i}}
+  \]</div>
+<p>It is standardized since <span class="math notranslate nohighlight">\(\operatorname{Var}\left( r_i \right) = 1\)</span>. But in practice, we don’t know <span class="math notranslate nohighlight">\(\sigma\)</span>. So we plug in its estimate <span class="math notranslate nohighlight">\(\hat{\sigma}\)</span>.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="influential-points">
+<h3>Influential Points<a class="headerlink" href="#influential-points" title="Permalink to this headline">¶</a></h3>
+<dl class="simple myst">
+<dt>Definition (Influential points)</dt><dd><p>Influential points are data points such that if we remove it, the model changes substantially. It can be quantified by Cook’s distance</p>
+<div class="math notranslate nohighlight">
+\[
+  D_i = \frac{r_i ^2}{p} \frac{h_i}{1-h_i}  
+  \]</div>
+</dd>
+</dl>
+<div class="note admonition">
+<p class="admonition-title"> Note</p>
+<ul class="simple">
+<li><p>a influential point can be close to the fitted line. If we drop it, then there seems no linear relation in the remaining data cloud.</p></li>
+<li><p>Two or more influential points near each other can mask each other’s influence in a leave-one-out regression. That is, if remove any one of them, then the regression results do not change substantially, but if we remove both of them, then the results change substantially.</p></li>
+</ul>
+</div>
+<dl class="simple myst">
+<dt>Properties</dt><dd><ul class="simple">
+<li><p>leverate <span class="math notranslate nohighlight">\(h_i\)</span> is related to</p></li>
+</ul>
+</dd>
+</dl>
+</div>
+</div>
 <div class="section" id="omit-a-variable">
 <span id="lm-omit-variable"></span><h2>Omit a Variable<a class="headerlink" href="#omit-a-variable" title="Permalink to this headline">¶</a></h2>
 <p>Suppose the true model is</p>
@@ -903,35 +1058,23 @@ X_j
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>coefficients in y ~ x1 + x2 + x3 : [[0.99934932 1.00090181 2.00091855 3.00114684]]
-coefficients in y ~ x1 + x2 : [[0.92884507 1.01932477 3.4405242 ]]
-coefficients in x3 ~ x1 + x2 : [[-0.02349243  0.00613864  0.47968518]]
-reconstruction difference of b0, b1, b2 : [1.11022302e-16 0.00000000e+00 3.55271368e-15]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>coefficients in y ~ x1 + x2 + x3 : [[0.99517483 0.9974435  1.99868821 3.00382725]]
+coefficients in y ~ x1 + x2 : [[1.10768551 0.96932838 3.48719894]]
+coefficients in x3 ~ x1 + x2 : [[ 0.03745577 -0.00935977  0.49553806]]
+reconstruction difference of b0, b1, b2 : [ 4.44089210e-16 -1.77635684e-15  1.77635684e-15]
 </pre></div>
 </div>
 </div>
 </div>
 </div>
-<div class="section" id="include-a-variable">
-<span id="lm-include-variable"></span><h2>Include a Variable<a class="headerlink" href="#include-a-variable" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="add-a-variable">
+<span id="lm-include-variable"></span><h2>Add a Variable<a class="headerlink" href="#add-a-variable" title="Permalink to this headline">¶</a></h2>
 <p>What if we add a new variable <span class="math notranslate nohighlight">\(X_j\)</span>? What will happen to the existing estimator <span class="math notranslate nohighlight">\(\hat\beta_k\)</span>?</p>
 <p>Increase</p>
 <div class="math notranslate nohighlight">
 \[\operatorname{Var}\left(\hat{\beta}_{k}\right)=\sigma^{2} \frac{1}{1-R_k^{2}} \frac{1}{\sum_{i}\left(x_{i k}-\bar{x}_{k}\right)^{2}}\]</div>
 <p>if <span class="math notranslate nohighlight">\(R_{k}^2\)</span> increases. When will <span class="math notranslate nohighlight">\(R^2_{k}\)</span> be unchanged? When the new variable <span class="math notranslate nohighlight">\(X_j\)</span> has no explanatory power to <span class="math notranslate nohighlight">\(X_k\)</span>. See the <a class="reference internal" href="12-lm-inference.html#lm-rss-nonincreasing"><span class="std std-ref">section</span></a>.</p>
 <p>In terms of bias, if we say the model with <span class="math notranslate nohighlight">\(X_p\)</span> is “true”, then <span class="math notranslate nohighlight">\(\operatorname{E}\left( \hat{\beta}_k \right)\)</span> is probably closer to <span class="math notranslate nohighlight">\(\beta_k\)</span> according to the equation described in the above <a class="reference internal" href="#lm-omit-variable"><span class="std std-ref">section</span></a>.</p>
-</div>
-<div class="section" id="special-observations">
-<h2>Special Observations<a class="headerlink" href="#special-observations" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="outliers">
-<h3>Outliers<a class="headerlink" href="#outliers" title="Permalink to this headline">¶</a></h3>
-<p>What if an outlier exists?</p>
-<ul class="simple">
-<li><p>If outlier is a mistake (typo) you can drop it (or correct it)</p></li>
-<li><p>If outlier is valid but unusual, look for robustness – does dropping it change answer?</p></li>
-<li><p>If it does change answer, report both versions – and argue for the approach you think more appropriate</p></li>
-</ul>
-</div>
 </div>
 <div class="section" id="multicollinearity">
 <h2>Multicollinearity<a class="headerlink" href="#multicollinearity" title="Permalink to this headline">¶</a></h2>
@@ -983,46 +1126,41 @@ X_{j}=\delta_{0}+\delta_{1} X_{1}+\cdots+\delta_{j-1} X_{j-1}+\delta_{i+1} X_{i+
 <li><p><span class="math notranslate nohighlight">\(t\)</span>-tests fail to reveal significant predictors, due to 1.</p></li>
 <li><p>Estimated coefficients are sensitive to randomness in <span class="math notranslate nohighlight">\(Y\)</span>, i.e. unreliable. If you run the experiment again, the coefficients can change dramatically, which is measured by <span class="math notranslate nohighlight">\(\operatorname{Var}\left( \hat{\boldsymbol{\beta} } \right)\)</span>.</p></li>
 <li><p>If <span class="math notranslate nohighlight">\(\operatorname{Corr}\left( X_1, X_2 \right)\)</span> is large, then we expect to have large <span class="math notranslate nohighlight">\(\operatorname{Var}\left( \hat{\beta}_1 \right), \operatorname{Var}\left( \hat{\beta}_2 \right), \operatorname{Var}\left( \hat{\beta}_1, \hat{\beta}_2 \right)\)</span>, but <span class="math notranslate nohighlight">\(\operatorname{Var}\left( \hat{\beta}_1 + \hat{\beta}_2 \right)\)</span> can be small. This means we cannot distinguish the effect of <span class="math notranslate nohighlight">\(X_1 + X_2\)</span> on <span class="math notranslate nohighlight">\(Y\)</span> is from <span class="math notranslate nohighlight">\(X_1\)</span> or <span class="math notranslate nohighlight">\(X_2\)</span>, i.e. <strong>non-identifiable</strong>.</p>
-<details class="sphinx-bs dropdown card mb-3">
-<summary class="summary-title card-header">
-<em>Proof</em><div class="summary-down docutils">
-<svg version="1.1" width="24" height="24" class="octicon octicon-chevron-down" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M5.22 8.72a.75.75 0 000 1.06l6.25 6.25a.75.75 0 001.06 0l6.25-6.25a.75.75 0 00-1.06-1.06L12 14.44 6.28 8.72a.75.75 0 00-1.06 0z"></path></svg></div>
-<div class="summary-up docutils">
-<svg version="1.1" width="24" height="24" class="octicon octicon-chevron-up" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M18.78 15.28a.75.75 0 000-1.06l-6.25-6.25a.75.75 0 00-1.06 0l-6.25 6.25a.75.75 0 101.06 1.06L12 9.56l5.72 5.72a.75.75 0 001.06 0z"></path></svg></div>
-</summary><div class="summary-content card-body docutils">
-<p class="card-text">By the fact that, for symmetric positive definite matrix <span class="math notranslate nohighlight">\(\boldsymbol{S}\)</span>, if</p>
+<div class="dropdown seealso admonition">
+<p class="admonition-title"> <em>Proof</em></p>
+<p>By the fact that, for symmetric positive definite matrix <span class="math notranslate nohighlight">\(\boldsymbol{S}\)</span>, if</p>
 <div class="math notranslate nohighlight">
 \[
- \boldsymbol{a} ^\top \boldsymbol{S} \boldsymbol{a}  = \boldsymbol{a} \boldsymbol{U} \boldsymbol{\Lambda} \boldsymbol{U} ^\top \boldsymbol{a} = \boldsymbol{b} ^\top \boldsymbol{\Lambda} \boldsymbol{b} = \sum \lambda_i b_i ^2
- \]</div>
-<p class="card-text">then</p>
+    \boldsymbol{a} ^\top \boldsymbol{S} \boldsymbol{a}  = \boldsymbol{a} \boldsymbol{U} \boldsymbol{\Lambda} \boldsymbol{U} ^\top \boldsymbol{a} = \boldsymbol{b} ^\top \boldsymbol{\Lambda} \boldsymbol{b} = \sum \lambda_i b_i ^2
+    \]</div>
+<p>then</p>
 <div class="math notranslate nohighlight">
 \[
- \boldsymbol{a} ^\top \boldsymbol{S} ^{-1}  \boldsymbol{a}  = \boldsymbol{a} \boldsymbol{U} \boldsymbol{\Lambda} ^{-1}  \boldsymbol{U} ^\top \boldsymbol{a} = \boldsymbol{b} ^\top \boldsymbol{\Lambda} ^{-1}  \boldsymbol{b} = \sum \frac{1}{\lambda_i}  b_i ^2
- \]</div>
-<p class="card-text">we have:</p>
-<p class="card-text">If</p>
+    \boldsymbol{a} ^\top \boldsymbol{S} ^{-1}  \boldsymbol{a}  = \boldsymbol{a} \boldsymbol{U} \boldsymbol{\Lambda} ^{-1}  \boldsymbol{U} ^\top \boldsymbol{a} = \boldsymbol{b} ^\top \boldsymbol{\Lambda} ^{-1}  \boldsymbol{b} = \sum \frac{1}{\lambda_i}  b_i ^2
+    \]</div>
+<p>we have:</p>
+<p>If</p>
 <div class="math notranslate nohighlight">
 \[
- \left( \boldsymbol{x}_1 - \boldsymbol{x}_2 \right) ^\top \left( \boldsymbol{x}_1 - \boldsymbol{x}_2 \right)  = \left( \boldsymbol{e}_1 - \boldsymbol{e}_2   \right) ^\top \boldsymbol{X} ^\top \boldsymbol{X} \left( \boldsymbol{e}_1 - \boldsymbol{e} _2   \right) \approx 0
- \]</div>
-<p class="card-text">then</p>
+    \left( \boldsymbol{x}_1 - \boldsymbol{x}_2 \right) ^\top \left( \boldsymbol{x}_1 - \boldsymbol{x}_2 \right)  = \left( \boldsymbol{e}_1 - \boldsymbol{e}_2   \right) ^\top \boldsymbol{X} ^\top \boldsymbol{X} \left( \boldsymbol{e}_1 - \boldsymbol{e} _2   \right) \approx 0
+    \]</div>
+<p>then</p>
 <div class="math notranslate nohighlight">
 \[
- \operatorname{Var}\left( \hat{\beta}_1 - \hat{\beta}_2 \right)  = \sigma^2  \left( \boldsymbol{e}_1 - \boldsymbol{e}_2   \right) ^\top \left( \boldsymbol{X} ^\top \boldsymbol{X} \right) ^{-1}  \left( \boldsymbol{e}_1 - \boldsymbol{e} _2   \right) \approx \infty
- \]</div>
-<p class="card-text">If</p>
+    \operatorname{Var}\left( \hat{\beta}_1 - \hat{\beta}_2 \right)  = \sigma^2  \left( \boldsymbol{e}_1 - \boldsymbol{e}_2   \right) ^\top \left( \boldsymbol{X} ^\top \boldsymbol{X} \right) ^{-1}  \left( \boldsymbol{e}_1 - \boldsymbol{e} _2   \right) \approx \infty
+    \]</div>
+<p>If</p>
 <div class="math notranslate nohighlight">
 \[
- \left( \boldsymbol{x}_1 + \boldsymbol{x}_2 \right) ^\top \left( \boldsymbol{x}_1 + \boldsymbol{x}_2 \right)  = \left( \boldsymbol{e}_1 + \boldsymbol{e}_2   \right) ^\top \boldsymbol{X} ^\top \boldsymbol{X} \left( \boldsymbol{e}_1 + \boldsymbol{e} _2   \right) \approx \text{constant}
- \]</div>
-<p class="card-text">then</p>
+    \left( \boldsymbol{x}_1 + \boldsymbol{x}_2 \right) ^\top \left( \boldsymbol{x}_1 + \boldsymbol{x}_2 \right)  = \left( \boldsymbol{e}_1 + \boldsymbol{e}_2   \right) ^\top \boldsymbol{X} ^\top \boldsymbol{X} \left( \boldsymbol{e}_1 + \boldsymbol{e} _2   \right) \approx \text{constant}
+    \]</div>
+<p>then</p>
 <div class="math notranslate nohighlight">
 \[
- \operatorname{Var}\left( \hat{\beta}_1 + \hat{\beta}_2 \right)  = \sigma^2  \left( \boldsymbol{e}_1 + \boldsymbol{e}_2   \right) ^\top \left( \boldsymbol{X} ^\top \boldsymbol{X} \right) ^{-1}  \left( \boldsymbol{e}_1 + \boldsymbol{e} _2   \right) \approx \text{constant}
- \]</div>
+    \operatorname{Var}\left( \hat{\beta}_1 + \hat{\beta}_2 \right)  = \sigma^2  \left( \boldsymbol{e}_1 + \boldsymbol{e}_2   \right) ^\top \left( \boldsymbol{X} ^\top \boldsymbol{X} \right) ^{-1}  \left( \boldsymbol{e}_1 + \boldsymbol{e} _2   \right) \approx \text{constant}
+    \]</div>
 </div>
-</details></li>
+</li>
 </ol>
 </div>
 <div class="section" id="implications">
@@ -1035,18 +1173,210 @@ X_{j}=\delta_{0}+\delta_{1} X_{1}+\cdots+\delta_{j-1} X_{j-1}+\delta_{i+1} X_{i+
 </ol>
 </div>
 </div>
-<div class="section" id="heteroscedasticity">
-<h2>Heteroscedasticity<a class="headerlink" href="#heteroscedasticity" title="Permalink to this headline">¶</a></h2>
-<p>TBD</p>
+<div class="section" id="heteroskedasticity">
+<h2>Heteroskedasticity<a class="headerlink" href="#heteroskedasticity" title="Permalink to this headline">¶</a></h2>
+<p>When <span class="math notranslate nohighlight">\(\operatorname{Var}\left( \varepsilon _i \right)\)</span> is not a constant, we say heteroskedasticity of error variance exists. This may happen because data attributes, or due to transformation of <span class="math notranslate nohighlight">\(y\)</span>, e.g. <span class="math notranslate nohighlight">\(\log(y)\)</span>. We can diagnose its existence by plots or tests.</p>
+<p>If it exists, OLS is still unbiased &amp; consistent. But <span class="math notranslate nohighlight">\(\operatorname{Var}_{OLS}\left( \hat{\boldsymbol{\beta}}  \right)\)</span> which uses homoskedastic assumption is incorrect now. There are problems in testing.</p>
+<ul class="simple">
+<li><p>To fix that for testing purpose, we can use robust standard error.</p></li>
+<li><p>To get more precise estimate and correct standard errors, we can try alternative models that produces homoskedastic errors.</p></li>
+</ul>
+<div class="section" id="id1">
+<h3>Diagnosis<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="plot">
+<h4>Plot<a class="headerlink" href="#plot" title="Permalink to this headline">¶</a></h4>
+<div class="figure align-default" id="lm-residual-plot">
+<a class="reference internal image-reference" href="../_images/lm-residual-plot.png"><img alt="" src="../_images/lm-residual-plot.png" style="width: 90%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 21 </span><span class="caption-text">Homoskedastic (left, right) and Heteroskedasticity (middle)</span><a class="headerlink" href="#lm-residual-plot" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+<div class="section" id="breusch-pagan-test">
+<h4>Breusch-Pagan Test<a class="headerlink" href="#breusch-pagan-test" title="Permalink to this headline">¶</a></h4>
+<div class="math notranslate nohighlight">
+\[H_0: \text{homoskedasticity}\]</div>
+<p>Idea: under homoskedasticity, the covariate <span class="math notranslate nohighlight">\(X_1, X-2, \ldots, X_p\)</span> should have no explanatory power on the error <span class="math notranslate nohighlight">\(\varepsilon\)</span>. That is, in the regression <span class="math notranslate nohighlight">\(\varepsilon \sim X_1 \ldots X_p\)</span>, the <span class="math notranslate nohighlight">\(F\)</span>-test should be insignificant.</p>
+<ul class="simple">
+<li><p>Run regression <span class="math notranslate nohighlight">\(Y \sim X_1 \ldots X_p\)</span>, obtain <span class="math notranslate nohighlight">\(\hat{\varepsilon}\)</span></p></li>
+<li><p>Run regression <span class="math notranslate nohighlight">\(\hat{\varepsilon} \sim X_1 \ldots X_p\)</span>, run <span class="math notranslate nohighlight">\(F\)</span>-test (actually <span class="math notranslate nohighlight">\(\chi ^2\)</span> test).</p></li>
+</ul>
+</div>
+<div class="section" id="white-test">
+<h4>White Test<a class="headerlink" href="#white-test" title="Permalink to this headline">¶</a></h4>
+<p>The Breusch-Pagan test will detect any linear forms of heteroskedasticity, while the White test allows for nonlinearities by using squares and crossproducts of all the covariates.</p>
+<ul class="simple">
+<li><p>Run regression <span class="math notranslate nohighlight">\(Y \sim X_1 \ldots X_p\)</span>, obtain <span class="math notranslate nohighlight">\(\hat{y}\)</span></p></li>
+<li><p>Run regressions <span class="math notranslate nohighlight">\(\hat{\varepsilon}^2 \sim \hat{y}\)</span> and <span class="math notranslate nohighlight">\(\hat{\varepsilon}^2 \sim \hat{y}^2\)</span></p></li>
+<li><p>Use the <span class="math notranslate nohighlight">\(R^2\)</span> to form an <span class="math notranslate nohighlight">\(F\)</span> test statistic</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="correction-by-robust-error">
+<h3>Correction by Robust Error<a class="headerlink" href="#correction-by-robust-error" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="alt-model-weighted-least-squares">
+<h3>Alt Model: Weighted Least Squares<a class="headerlink" href="#alt-model-weighted-least-squares" title="Permalink to this headline">¶</a></h3>
+<p>We can use weighted least squares as an alternative model. Assume <span class="math notranslate nohighlight">\(Var(\varepsilon_i) = \sigma_i\)</span>, then we can scale the error <span class="math notranslate nohighlight">\(\varepsilon_i\)</span> by <span class="math notranslate nohighlight">\(\frac{1}{\sigma_i}\)</span>. The new error term has the same unit variance <span class="math notranslate nohighlight">\(Var(\frac{\varepsilon_i}{\sigma_i} ) = 1\)</span>.</p>
+<p>The optimization problem is therefore</p>
+<div class="math notranslate nohighlight">
+\[
+\hat{\boldsymbol{\beta}} _{WLS} = \arg\min \sum_{i} (y_i - \boldsymbol{x}_i ^\top \boldsymbol{\beta} )^2 / \sigma_i ^2
+\]</div>
+<p>We will talk about how to find <span class="math notranslate nohighlight">\(\sigma_i\)</span> later.</p>
+</div>
+<div class="section" id="estimation">
+<h3>Estimation<a class="headerlink" href="#estimation" title="Permalink to this headline">¶</a></h3>
+<p>To find the solution, we introduce an <span class="math notranslate nohighlight">\(n\times n\)</span> diagonal matrix <span class="math notranslate nohighlight">\(\boldsymbol{W}\)</span>, whose diagonal entries are the scaling factor <span class="math notranslate nohighlight">\(w_{ii} = \frac{1}{\sigma^2 _i}\)</span>. Hence,</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\hat{\boldsymbol{\beta}} _{WLS}
+&amp;= \arg\min\ \sum_{i} (y_i - \boldsymbol{x}_i ^\top \boldsymbol{\beta} )^2 / \sigma_i ^2\\
+&amp;= \arg\min\ (\boldsymbol{y} - \boldsymbol{X} \boldsymbol{\beta} )^\top \boldsymbol{W} (\boldsymbol{y} - \boldsymbol{X} \boldsymbol{\beta} )\\
+&amp;= (\boldsymbol{X} ^\top \boldsymbol{W} \boldsymbol{X}  ) ^{-1} \boldsymbol{X} ^\top \boldsymbol{W} \boldsymbol{y}\\
+\end{aligned}\end{split}\]</div>
+<p>In particular,</p>
+<ul class="simple">
+<li><p>if <span class="math notranslate nohighlight">\(\boldsymbol{W} = c \boldsymbol{I}\)</span> then <span class="math notranslate nohighlight">\(\hat{\boldsymbol{\beta}} _{WLS} = \hat{\boldsymbol{\beta}} _{OLS}\)</span></p></li>
+<li><p>if <span class="math notranslate nohighlight">\(\boldsymbol{V} = c \boldsymbol{W}\)</span> then <span class="math notranslate nohighlight">\(\hat{\boldsymbol{\beta}} _{WLS(\boldsymbol{V})} = \hat{\boldsymbol{\beta}} _{WLS(\boldsymbol{W})}\)</span>, i.e. the solution is invariant to spherical scaling of <span class="math notranslate nohighlight">\(\boldsymbol{W}\)</span>.</p></li>
+</ul>
+<p>From its form <span class="math notranslate nohighlight">\(\hat{\boldsymbol{\beta}} _{WLS} = (\boldsymbol{X} ^\top \boldsymbol{W} \boldsymbol{X}  ) ^{-1} \boldsymbol{X} ^\top \boldsymbol{W} \boldsymbol{y}\)</span>, we can see that there is an equivalent formulation:</p>
+<ol class="simple">
+<li><p>Scale the data and response by error standard deviation <span class="math notranslate nohighlight">\((\widetilde{\boldsymbol{x}}_i , \widetilde{y}_i) = \left( \frac{\boldsymbol{x}_i  }{\sigma_i}  , \frac{y_i}{\sigma_i} \right)\)</span>. in matrix form, <span class="math notranslate nohighlight">\(\widetilde{\boldsymbol{X}} = \boldsymbol{X} \boldsymbol{W} ^{1/2}, \widetilde{\boldsymbol{y} } = \boldsymbol{W} ^{1/2}\boldsymbol{y}\)</span></p></li>
+<li><p>Run OLS with <span class="math notranslate nohighlight">\(\widetilde{\boldsymbol{X} }\)</span> and <span class="math notranslate nohighlight">\(\widetilde{\boldsymbol{y} }\)</span></p></li>
+</ol>
+<div class="section" id="inference">
+<h4>Inference<a class="headerlink" href="#inference" title="Permalink to this headline">¶</a></h4>
+<p>Like in OLS, we want to find the distribution of <span class="math notranslate nohighlight">\(\hat{\boldsymbol{\beta}} _{WLS}\)</span>. Note that <span class="math notranslate nohighlight">\(\boldsymbol{\varepsilon} \sim N(\boldsymbol{0} , \boldsymbol{W} ^{-1})\)</span>, so</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\hat{\boldsymbol{\beta}} _{WLS}
+&amp;= (\boldsymbol{X} ^\top \boldsymbol{W} \boldsymbol{X} ) ^{-1} \boldsymbol{X} ^\top \boldsymbol{W} (\boldsymbol{X} \boldsymbol{\beta} + \boldsymbol{\varepsilon})\\
+&amp;= \boldsymbol{\beta}  + \left( \boldsymbol{X} ^\top \boldsymbol{W} \boldsymbol{X}  \right) ^{-1} \boldsymbol{X} ^\top \boldsymbol{W} \boldsymbol{\varepsilon} \\
+&amp;\sim N \left( \boldsymbol{\beta} , \left( \boldsymbol{X} ^\top \boldsymbol{W} \boldsymbol{X}  \right) ^{-1}  \right)\\
+\end{aligned}\end{split}\]</div>
+<p>In particular, if <span class="math notranslate nohighlight">\(\boldsymbol{W} = \frac{1}{\sigma^2 } \boldsymbol{I}\)</span> as in OLS (homogeneity), then the <span class="math notranslate nohighlight">\(\left( \boldsymbol{X} ^\top \boldsymbol{W} \boldsymbol{X}  \right) ^{-1} = \sigma^2 (\boldsymbol{X} ^\top \boldsymbol{X} ) ^{-1}\)</span> as in OLS.</p>
+</div>
+<div class="section" id="find-weights">
+<h4>Find Weights<a class="headerlink" href="#find-weights" title="Permalink to this headline">¶</a></h4>
+<p>The question is, how to find <span class="math notranslate nohighlight">\(\boldsymbol{W}\)</span> in advance? Some rules of thumbs include</p>
+<ul class="simple">
+<li><p>If <span class="math notranslate nohighlight">\(y_i\)</span> is a <strong>sum</strong> from a sample of size <span class="math notranslate nohighlight">\(n_i\)</span>, then <span class="math notranslate nohighlight">\(\sigma^2 _i \propto n_i\)</span></p></li>
+<li><p>If <span class="math notranslate nohighlight">\(y_i\)</span> is an <strong>average</strong> from a sample of size <span class="math notranslate nohighlight">\(n_i\)</span>, then <span class="math notranslate nohighlight">\(\sigma^2 _i \propto \frac{1}{n_i}\)</span></p></li>
+</ul>
+<div class="margin sidebar">
+<p class="sidebar-title"></p>
+<p>Note <span class="math notranslate nohighlight">\(\hat{\boldsymbol{\beta}} _{WLS}\)</span> is invariant to spherical scaling of <span class="math notranslate nohighlight">\(\boldsymbol{W}\)</span>, so we don’t need to know the exact value of <span class="math notranslate nohighlight">\(\sigma^2_i\)</span>.</p>
+</div>
+<p>Besides, we can find weights from data adaptively.</p>
+<ul>
+<li><p>If measurements are in blocks of size <span class="math notranslate nohighlight">\(n_1, n_2, \ldots, n_m\)</span> such that <span class="math notranslate nohighlight">\(n = n_1+ \ldots + n_m\)</span>, and <span class="math notranslate nohighlight">\(\sigma^2 _i\)</span> is constant within each block but differ across blocks, then the error variance matrix looks like</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+    \operatorname{Var}\left( \boldsymbol{\varepsilon}  \right) = \left[\begin{array}{cccc}
+    c_1 \boldsymbol{I}_{n_1} &amp; 0 &amp; \ldots &amp; 0 \\
+     0 &amp; c_2 \boldsymbol{I} _{n_2} &amp; \ldots &amp; 0 \\
+    \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+    0 &amp; \ldots &amp; \ldots &amp; c_m \boldsymbol{I}  _{n_m}
+    \end{array}\right]
+    \end{split}\]</div>
+<p>Therefore, each block of observations satisfy the homogeneity assumption. We can run OLS to estimate <span class="math notranslate nohighlight">\(\hat{\sigma}^2_k\)</span> in each block <span class="math notranslate nohighlight">\(k\)</span>, and set <span class="math notranslate nohighlight">\(c_k = \frac{1}{\hat{\sigma}_k ^2}\)</span>.</p>
+</li>
+<li><p>If <span class="math notranslate nohighlight">\(\sigma^2 _{i}\)</span> varies with some explanatory variable, say <span class="math notranslate nohighlight">\(X_{ij}\)</span>, (which can be known in advance or revealed by diagnostic plot of <span class="math notranslate nohighlight">\(\hat{\sigma}_i\)</span> over <span class="math notranslate nohighlight">\(x_{ij}\)</span>), then we can formulate there relation as some function.</p>
+<ul>
+<li><p>If we assume linear relation, then we can follow the steps</p>
+<ol class="simple">
+<li><p>run original OLS and obtain <span class="math notranslate nohighlight">\(\hat{\varepsilon}\)</span></p></li>
+<li><p>regress <span class="math notranslate nohighlight">\(\ln (\hat{\varepsilon}^2)\)</span> over all explanatory varibles, call the fitted value by <span class="math notranslate nohighlight">\(\hat{u}\)</span></p></li>
+<li><p>set <span class="math notranslate nohighlight">\(w_{ii} = 1/\exp(\hat{u})\)</span>.</p></li>
+</ol>
+</li>
+<li><p>For other relations, for instance, we can assume <span class="math notranslate nohighlight">\(\sigma_i = r_0 + \left\vert x_{ij} \right\vert ^{r_1}\)</span>. Then, we can estimate <span class="math notranslate nohighlight">\(r_0\)</span> and <span class="math notranslate nohighlight">\(r_1\)</span> jointly with <span class="math notranslate nohighlight">\(\boldsymbol{\beta}\)</span> by maximum likelihood</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+      \boldsymbol{\beta} , r_0, r_1
+      &amp;= \arg\max \left\{ \prod_i \frac{1}{\sqrt{2 \pi \sigma^2 }} \exp
+      \left( - \frac{ \left( y_i - \boldsymbol{x}_i ^\top \boldsymbol{\beta} \right)^2 }{2 \sigma^2 } \right)   \right\}\\
+      &amp;= \arg \min \left\{ \sum_i \frac{(\boldsymbol{y}_i - \boldsymbol{x}_i ^\top \boldsymbol{\beta} )^2}{2(r_0 + \left\vert x_{ij} \right\vert ^ {r_1})^2}  + \log \left( r_0 + \left\vert x_{ij} \right\vert ^ {r_1} \right) \right\} \\
+      \end{aligned}\end{split}\]</div>
+</li>
+</ul>
+</li>
+</ul>
+<p>and use the estimated</p>
+</div>
+</div>
+</div>
+<div class="section" id="measurement-error">
+<h2>Measurement Error<a class="headerlink" href="#measurement-error" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="of-y">
+<h3>Of <span class="math notranslate nohighlight">\(Y\)</span><a class="headerlink" href="#of-y" title="Permalink to this headline">¶</a></h3>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{array}{c}
+Y-e=\beta_{0}+\beta_{1} X_{1}+\ldots+\beta_{k} X_{k}+u \\
+Y=\beta_{0}+\beta_{1} X_{1}+\ldots+\beta_{k} X_{k}+(e+u)
+\end{array}
+\end{split}\]</div>
+<p>Assume <span class="math notranslate nohighlight">\(E(e) = 0\)</span>.</p>
+<ul class="simple">
+<li><p>If <span class="math notranslate nohighlight">\(e\)</span> is correlated with the regressors <span class="math notranslate nohighlight">\(X\)</span>, then get bias <span class="math notranslate nohighlight">\(\beta\)</span>, like omitted variable bias</p></li>
+<li><p>Else, OLS is unbiased but variance rises, like adding an irrelevant variable.</p></li>
+</ul>
+</div>
+<div class="section" id="of-x">
+<h3>Of <span class="math notranslate nohighlight">\(X\)</span><a class="headerlink" href="#of-x" title="Permalink to this headline">¶</a></h3>
+<p>Suppose the true values of explanatory variables is <span class="math notranslate nohighlight">\(x_{ij}\)</span>. Due to some measurement error <span class="math notranslate nohighlight">\(w_{ij}\)</span>, we collect <span class="math notranslate nohighlight">\(\tilde{x}_{ij} = x_{ij} + w_{ij}\)</span>. Now we want to analyze its effect on our OLS estimates.</p>
+<p>Here are some assumptions of measurement error <span class="math notranslate nohighlight">\(w_{ij}\)</span>:</p>
+<ul class="simple">
+<li><p>common zero mean <span class="math notranslate nohighlight">\(\operatorname{E}\left( w_{ij} \right) = 0\)</span></p></li>
+<li><p>common variance <span class="math notranslate nohighlight">\(\operatorname{Var}\left( w_{ij} \right) = \sigma^2_w\)</span></p></li>
+<li><p>pairwisely uncorrelated</p></li>
+<li><p>uncorrelated with <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{y}\)</span></p></li>
+</ul>
+<p>In matrix form, we can write an error matrix <span class="math notranslate nohighlight">\(\boldsymbol{W}_{n \times p} = [\boldsymbol{w}_1 \ \ldots \ \boldsymbol{w}_p ]\)</span> where <span class="math notranslate nohighlight">\(\boldsymbol{w}_j = [w_{1j}, w_{2j}, \ldots, w_{nj}]^\top\)</span>. Then the assumption becomes</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\operatorname{E}\left( \boldsymbol{W}  \right) = \boldsymbol{0}\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\operatorname{E}\left( \boldsymbol{W} ^\top \boldsymbol{W}  \right) = n \sigma^2_w \boldsymbol{I} _p\)</span></p></li>
+</ul>
+<p>By CLM and LLN, as <span class="math notranslate nohighlight">\(n\rightarrow \infty\)</span>, we have</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{W} ^\top \boldsymbol{v} \rightarrow \boldsymbol{0}\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{W} ^\top \boldsymbol{W} \rightarrow n\sigma^2_w I_n\)</span></p></li>
+</ul>
+<p>The data matrix we collect is</p>
+<div class="math notranslate nohighlight">
+\[\widetilde{\boldsymbol{X} } = \boldsymbol{X} + \boldsymbol{W}\]</div>
+<p>We can find the OLS estimates as</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\widetilde{\boldsymbol{\beta} }
+&amp;= \left( \widetilde{\boldsymbol{X} }^\top \widetilde{\boldsymbol{X} }  \right) ^{-1} \widetilde{\boldsymbol{X} } ^\top \boldsymbol{y} \\
+&amp;= \left( \boldsymbol{X} ^\top \boldsymbol{X} + \boldsymbol{X} ^\top \boldsymbol{W}  + \boldsymbol{W} ^\top \boldsymbol{X} + \boldsymbol{W} ^\top \boldsymbol{W} \right) ^{-1}  \left( \boldsymbol{X} ^\top y + \boldsymbol{W} ^\top \boldsymbol{y}  \right)\\
+&amp;\rightarrow \left( \boldsymbol{X} ^\top \boldsymbol{X} + n \sigma^2_w \boldsymbol{I} _p \right) ^{-1} \boldsymbol{X} ^\top \boldsymbol{y} \\
+\end{aligned}\end{split}\]</div>
+<p>which is like ridge regression.</p>
+<p>As <span class="math notranslate nohighlight">\(\sigma^2\)</span> increases,</p>
+<ul class="simple">
+<li><p>the effect amounts to shrinkage in <span class="math notranslate nohighlight">\(\boldsymbol{\beta}\)</span>, i.e. <span class="math notranslate nohighlight">\(\left\vert \beta_j \right\vert\)</span> decreases</p></li>
+<li><p><span class="math notranslate nohighlight">\(\operatorname{Corr}\left( X_j, Y \right)\)</span> decreases</p></li>
+</ul>
+<p>In particular, in SLR,</p>
+<div class="math notranslate nohighlight">
+\[
+\tilde{\beta}_1 \rightarrow \beta_1 \cdot \frac{\sum_{i=1}^n (x_i - \bar{x})^2}{\sigma^2_w  + \sum_{i=1}^n (x_i - \bar{x})^2}
+\]</div>
+<p>This is called <strong>attenuation bias</strong>.</p>
+<p>if correlated, then case-by-case</p>
+</div>
 </div>
 <div class="section" id="categorical-x">
 <h2>Categorical <span class="math notranslate nohighlight">\(X\)</span><a class="headerlink" href="#categorical-x" title="Permalink to this headline">¶</a></h2>
-<p>dummy variables <span class="math notranslate nohighlight">\(X_ij\)</span></p>
+<p>TBD…</p>
+<p>dummy variables <span class="math notranslate nohighlight">\(X_{ij}\)</span></p>
 <p>when <span class="math notranslate nohighlight">\(c = 2\)</span>,</p>
 <p>interpretation</p>
 <ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(\hat{\beta_1}\)</span>: difference in means between the group with <span class="math notranslate nohighlight">\(X=1\)</span> and <span class="math notranslate nohighlight">\(X=0\)</span>.</p></li>
-<li><p><span class="math notranslate nohighlight">\(\hat{\beta_0}\)</span>: mean of the group with <span class="math notranslate nohighlight">\(X=0\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\hat{\beta}_1\)</span>: difference in means between the group with <span class="math notranslate nohighlight">\(X=1\)</span> and <span class="math notranslate nohighlight">\(X=0\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\hat{\beta}_0\)</span>: mean of the group with <span class="math notranslate nohighlight">\(X=0\)</span>.</p></li>
 </ul>
 <p>TBD</p>
 <p>https://www.1point3acres.com/bbs/thread-703302-1-1.html</p>

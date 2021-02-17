@@ -1293,14 +1293,14 @@ f^{\text{out}}(v) =\sum_{e \in \delta^{+}(v)} f(e)
 <h3>Edge-Disjoint Paths and <span class="math notranslate nohighlight">\(S-T\)</span> Cut<a class="headerlink" href="#edge-disjoint-paths-and-s-t-cut" title="Permalink to this headline">¶</a></h3>
 <div class="margin sidebar">
 <p class="sidebar-title"></p>
-<p>Edge-dispoint path = EDP</p>
+<p>Edge-disjoint path = EDP</p>
 </div>
-<p>For a directed graph with two <strong>sets</strong> of vertices <span class="math notranslate nohighlight">\(S\)</span> and <span class="math notranslate nohighlight">\(T\)</span>, we want to find a maximum set <span class="math notranslate nohighlight">\(\mathcal{P}\)</span> of <span class="math notranslate nohighlight">\(S-T\)</span> paths that are edge-disjoint, i.e. no path in <span class="math notranslate nohighlight">\(\mathcal{P}\)</span> can share any edges.</p>
+<p>For a directed graph with two disjoint <strong>sets</strong> of vertices <span class="math notranslate nohighlight">\(S\)</span> and <span class="math notranslate nohighlight">\(T\)</span>, we want to find a maximum set <span class="math notranslate nohighlight">\(\mathcal{P}\)</span> of <span class="math notranslate nohighlight">\(S-T\)</span> paths that are edge-disjoint, i.e. no path in <span class="math notranslate nohighlight">\(\mathcal{P}\)</span> can share any edges.</p>
 <p>To solve this,</p>
 <ol class="simple">
-<li><p>For every edge <span class="math notranslate nohighlight">\(e\)</span>, set capacity <span class="math notranslate nohighlight">\(c(e)=1\)</span>. Add one node <span class="math notranslate nohighlight">\(s\)</span> that connects to every vertex <span class="math notranslate nohighlight">\(u\)</span> in <span class="math notranslate nohighlight">\(S\)</span> with capacity <span class="math notranslate nohighlight">\(\infty\)</span>. Add one node <span class="math notranslate nohighlight">\(t\)</span> that connects to every vertex <span class="math notranslate nohighlight">\(v\)</span> in <span class="math notranslate nohighlight">\(T\)</span> with capacity <span class="math notranslate nohighlight">\(\infty\)</span>.</p></li>
+<li><p>For every edge <span class="math notranslate nohighlight">\(e\in G\)</span>, set capacity <span class="math notranslate nohighlight">\(c(e)=1\)</span>. Add one node <span class="math notranslate nohighlight">\(s\)</span> that connects to every vertex <span class="math notranslate nohighlight">\(u\)</span> in <span class="math notranslate nohighlight">\(S\)</span> with capacity <span class="math notranslate nohighlight">\(\infty\)</span>. Add one node <span class="math notranslate nohighlight">\(t\)</span> that connects to every vertex <span class="math notranslate nohighlight">\(v\)</span> in <span class="math notranslate nohighlight">\(T\)</span> with capacity <span class="math notranslate nohighlight">\(\infty\)</span>.</p></li>
 <li><p>Run FF algorithm and obtain a flow <span class="math notranslate nohighlight">\(f\)</span>. Since <span class="math notranslate nohighlight">\(f(e)\)</span> is integer, it is 1.</p></li>
-<li><p>Run flow-path decomposition, then each path also carries flow value 1. We will get a collection of EDP from <span class="math notranslate nohighlight">\(S\)</span> to <span class="math notranslate nohighlight">\(T\)</span>. The number of paths equals to the flow value.</p></li>
+<li><p>Run flow-path decomposition, then each path also carries flow value 1. After we delete the path, we remove all edges along the path since <span class="math notranslate nohighlight">\(c(e)=1\)</span>. Then, the subsequent paths must be disjoint with this one. We will get a collection of EDP from <span class="math notranslate nohighlight">\(S\)</span> to <span class="math notranslate nohighlight">\(T\)</span>. The number of paths equals to the flow value.</p></li>
 </ol>
 <p><strong><span class="math notranslate nohighlight">\(S-T\)</span> Cut</strong></p>
 <p>Given two sets of vertices <span class="math notranslate nohighlight">\(S\)</span> and <span class="math notranslate nohighlight">\(T\)</span> in a directed graph <span class="math notranslate nohighlight">\(G\)</span>, what is the minimum number of edges needed to disconnect <span class="math notranslate nohighlight">\(S\)</span> from <span class="math notranslate nohighlight">\(T\)</span>? Formally, find a minimum-cardinality edge set <span class="math notranslate nohighlight">\(E ^\prime \subset E\)</span> such that in the remaining graph <span class="math notranslate nohighlight">\(G \backslash E ^\prime\)</span>, there is <strong>no</strong> path from a vertex of <span class="math notranslate nohighlight">\(S\)</span> to a vertex of <span class="math notranslate nohighlight">\(T\)</span>.</p>
@@ -1367,9 +1367,67 @@ c(A,B) = \sum_{v \in X, u\in Y} s_{v,u}  + \sum_{v \in Y} a_v  + \sum_{u \in X} 
 </div>
 <div class="section" id="exercise">
 <h2>Exercise<a class="headerlink" href="#exercise" title="Permalink to this headline">¶</a></h2>
+<p>Let <span class="math notranslate nohighlight">\(G\)</span> be an arbitrary (directed) flow network with integral edge capacities</p>
+<ol>
+<li><p>T/F: Let <span class="math notranslate nohighlight">\((A,B)\)</span> be a minimum <span class="math notranslate nohighlight">\(s-t\)</span> cut in G. Let <span class="math notranslate nohighlight">\(e=(u,v)\)</span> be an edge of <span class="math notranslate nohighlight">\(G\)</span> with <span class="math notranslate nohighlight">\(u\in A,v\in B\)</span>, and <span class="math notranslate nohighlight">\(c(e) ≥ 1\)</span>. Then <strong>decreasing</strong> the capacity of <span class="math notranslate nohighlight">\(e\)</span> by 1 decreases the maximum flow value by <span class="math notranslate nohighlight">\(1\)</span>.</p>
+<p>True, since the capacity of all other minimum <span class="math notranslate nohighlight">\(s-t\)</span> cut <strong>without</strong> edge <span class="math notranslate nohighlight">\(e\)</span> are unchanged.</p>
+</li>
+<li><p>T/F: Let <span class="math notranslate nohighlight">\((A,B)\)</span> be a minimum <span class="math notranslate nohighlight">\(s-t\)</span> cut in G. Let <span class="math notranslate nohighlight">\(e=(u,v)\)</span> be an edge of <span class="math notranslate nohighlight">\(G\)</span> with <span class="math notranslate nohighlight">\(u\in A,v\in B\)</span>, and <span class="math notranslate nohighlight">\(c(e) ≥ 1\)</span>. Then <strong>increasing</strong> the capacity of <span class="math notranslate nohighlight">\(e\)</span> by 1 increases the maximum flow value by <span class="math notranslate nohighlight">\(1\)</span>.</p>
+<p>False, there may be another minimum <span class="math notranslate nohighlight">\(s-t\)</span> cut <strong>without</strong> edge <span class="math notranslate nohighlight">\(e\)</span>.</p>
+</li>
+<li><p>T/F: Let <span class="math notranslate nohighlight">\((A,B)\)</span> be a minimum <span class="math notranslate nohighlight">\(s-t\)</span> cut in G. If we <strong>increase</strong> the capacity of <strong>each</strong> edge in <span class="math notranslate nohighlight">\(E(G)\)</span> by <span class="math notranslate nohighlight">\(1\)</span>, then <span class="math notranslate nohighlight">\((A,B)\)</span> remains a minimum <span class="math notranslate nohighlight">\(s-t\)</span> cut in the new flow network.</p>
+<p>False. (1) Had G contained edges of different capacities, increased capacity might have resulted in different minimum cut. (2) When all edges have same capacity then minimum cut would remain same.</p>
+<p>Example of (1):</p>
+<div class="figure align-default" id="max-flow-ex-1">
+<a class="reference internal image-reference" href="../_images/max-flow-ex-1.png"><img alt="" src="../_images/max-flow-ex-1.png" style="width: 30%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 15 </span><span class="caption-text">New min-cut becomes <span class="math notranslate nohighlight">\(S-A\)</span> with cut capacity <span class="math notranslate nohighlight">\(5\)</span>.</span><a class="headerlink" href="#max-flow-ex-1" title="Permalink to this image">¶</a></p>
+</div>
+<p>For (2), if all edges have the same capacity <span class="math notranslate nohighlight">\(c\)</span>, then the capacity of any cut is <span class="math notranslate nohighlight">\(nc\)</span> where <span class="math notranslate nohighlight">\(n\)</span> is the number of edges cut. So a min-cut has <span class="math notranslate nohighlight">\(n_\min\)</span>. After <span class="math notranslate nohighlight">\(c\)</span> becomes <span class="math notranslate nohighlight">\(c+1\)</span>, it is still a min-cut since it has <span class="math notranslate nohighlight">\(n_\min\)</span>.</p>
+</li>
+<li><p>If <span class="math notranslate nohighlight">\(f\)</span> is a valid <span class="math notranslate nohighlight">\(s-t\)</span> flow in graph <span class="math notranslate nohighlight">\(G\)</span> of value <span class="math notranslate nohighlight">\(v_1\)</span>, and <span class="math notranslate nohighlight">\(f ^\prime\)</span> is a valid <span class="math notranslate nohighlight">\(s-t\)</span> flow in the residual graph <span class="math notranslate nohighlight">\(G_f\)</span> of value <span class="math notranslate nohighlight">\(v_2\)</span>, then there is a valid <span class="math notranslate nohighlight">\(s-t\)</span> flow in graph G of value <span class="math notranslate nohighlight">\(v_1 + v_2\)</span>.</p>
+<p>T</p>
+</li>
+<li><p>Increasing the capacity of a single edge <span class="math notranslate nohighlight">\((u,v)\)</span> by <span class="math notranslate nohighlight">\(1\)</span> can result in an increase of at
+most 1 in the max flow.</p>
+<p>If <span class="math notranslate nohighlight">\((u, v)\)</span> is in every min cut, then increasing the capacity of <span class="math notranslate nohighlight">\((u, v)\)</span> by 1 increases
+the min cut value by 1. If (u, v) is not in every min cut, then increasing the capacity of <span class="math notranslate nohighlight">\((u, v)\)</span> by 1 leaves the min cut value unchanged. Either way, the capacity increases by at most 1. The claim follows from the max-flow-min-cut theorem.</p>
+</li>
+<li><p>Increasing the capacity of a single edge <span class="math notranslate nohighlight">\((u, v)\)</span> by a positive integer <span class="math notranslate nohighlight">\(k\)</span> can result in
+an increase of at most <span class="math notranslate nohighlight">\(k\)</span> in the max flow.</p>
+<p>Increasing by <span class="math notranslate nohighlight">\(k\)</span> is the same as increasing in <span class="math notranslate nohighlight">\(k\)</span> steps of 1. By part 1, each such step
+increases the max flow by at most 1. So the total increase is at most <span class="math notranslate nohighlight">\(k\)</span>.</p>
+<p>Algorithm:</p>
+<ul class="simple">
+<li><p>Repeat at most k times:</p>
+<ul>
+<li><p>Look for an augmenting path in the residual network by BFS/DFS</p></li>
+<li><p>If there is one, then add it to the existing flow, else return</p></li>
+</ul>
+</li>
+</ul>
+<p>Each pass takes <span class="math notranslate nohighlight">\(O(m)\)</span>, total <span class="math notranslate nohighlight">\(O(km)\)</span>.</p>
+</li>
+<li><p>Decreasing the capacity of a single edge <span class="math notranslate nohighlight">\((u, v)\)</span> by 1 can result in a decrease of at most 1 in the max flow.</p>
+<p>If <span class="math notranslate nohighlight">\((u, v)\)</span> is in some min cut, then decreasing the capacity of <span class="math notranslate nohighlight">\((u, v)\)</span> decreases the
+min cut value by 1. If <span class="math notranslate nohighlight">\((u, v)\)</span> is not in every min cut, then decreasing the capacity of
+<span class="math notranslate nohighlight">\((u, v)\)</span> by 1 leaves the min cut value unchanged. Either way, the capacity decreases
+by at most 1. The claim follows from the max-flow-min-cut theorem.</p>
+<p>If <span class="math notranslate nohighlight">\(c(u,v) \ge f(u,v) + 1\)</span>, then the max flow remains the same. If <span class="math notranslate nohighlight">\(c(u,v) = f(u,v)\)</span> (saturated edge), then to satisfy the constraint, we need to remove one unit of flow from <span class="math notranslate nohighlight">\(s\)</span> to <span class="math notranslate nohighlight">\(t\)</span> that goes through edge <span class="math notranslate nohighlight">\((u,v)\)</span>. The algorithm is</p>
+<ul class="simple">
+<li><p>Find a path <span class="math notranslate nohighlight">\(s-u\)</span> and a path <span class="math notranslate nohighlight">\(v-t\)</span> that contain only edges of positive flow. Remove 1 unit of flow for each edge on path <span class="math notranslate nohighlight">\(s-u\)</span>, and <span class="math notranslate nohighlight">\(v-t\)</span>. This step takes <span class="math notranslate nohighlight">\(O(m)\)</span>.</p></li>
+<li><p>Run FF. There is at most one iteration since the flow will increases by at most 1. One iteration takes <span class="math notranslate nohighlight">\(O(m)\)</span>.</p></li>
+</ul>
+</li>
+<li><p>Decreasing the capacity of a single edge <span class="math notranslate nohighlight">\((u, v)\)</span> by a positive integer <span class="math notranslate nohighlight">\(k\)</span> can result
+in a decrease of at most <span class="math notranslate nohighlight">\(k\)</span> in the max flow.</p>
+<p>Decreasing by <span class="math notranslate nohighlight">\(k\)</span> is the same as decreasing in <span class="math notranslate nohighlight">\(k\)</span> steps of 1. Each such step
+decreases the max flow by at most 1. So the total decrease is at most <span class="math notranslate nohighlight">\(k\)</span>.</p>
+</li>
+</ol>
 <p>http://www.cim.mcgill.ca/~langer/251/E11-networkflow-2.pdf</p>
 <p>http://web.stanford.edu/class/archive/cs/cs161/cs161.1176/maxflow_problems.pdf</p>
 <p>https://courses.engr.illinois.edu/cs573/fa2012/hw/files/hw_3_pract.pdf</p>
+<p>https://www.cs.cornell.edu/courses/cs6820/2016fa/handouts/flows.pdf</p>
 </div>
 </div>
 
