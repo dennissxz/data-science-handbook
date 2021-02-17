@@ -462,6 +462,74 @@ Besides, we can find weights from data adaptively.
 
 and use the estimated
 
+## Measurement Error
+
+### Of $Y$
+
+
+$$
+\begin{array}{c}
+Y-e=\beta_{0}+\beta_{1} X_{1}+\ldots+\beta_{k} X_{k}+u \\
+Y=\beta_{0}+\beta_{1} X_{1}+\ldots+\beta_{k} X_{k}+(e+u)
+\end{array}
+$$
+
+Assume $E(e) = 0$.
+
+- If $e$ is correlated with the regressors $X$, then get bias $\beta$, like omitted variable bias
+- Else, OLS is unbiased but variance rises, like adding an irrelevant variable.
+
+### Of $X$
+
+Suppose the true values of explanatory variables is $x_{ij}$. Due to some measurement error $w_{ij}$, we collect $\tilde{x}_{ij} = x_{ij} + w_{ij}$. Now we want to analyze its effect on our OLS estimates.
+
+Here are some assumptions of measurement error $w_{ij}$:
+
+- common zero mean $\operatorname{E}\left( w_{ij} \right) = 0$
+- common variance $\operatorname{Var}\left( w_{ij} \right) = \sigma^2_w$
+- pairwisely uncorrelated
+- uncorrelated with $\boldsymbol{X}$ and $\boldsymbol{y}$
+
+In matrix form, we can write an error matrix $\boldsymbol{W}_{n \times p} = [\boldsymbol{w}_1 \ \ldots \ \boldsymbol{w}_p ]$ where $\boldsymbol{w}_j = [w_{1j}, w_{2j}, \ldots, w_{nj}]^\top$. Then the assumption becomes
+
+- $\operatorname{E}\left( \boldsymbol{W}  \right) = \boldsymbol{0}$
+- $\operatorname{E}\left( \boldsymbol{W} ^\top \boldsymbol{W}  \right) = n \sigma^2_w \boldsymbol{I} _p$
+
+
+By CLM and LLN, as $n\rightarrow \infty$, we have
+
+- $\boldsymbol{W} ^\top \boldsymbol{v} \rightarrow \boldsymbol{0}$
+- $\boldsymbol{W} ^\top \boldsymbol{W} \rightarrow n\sigma^2_w I_n$
+
+The data matrix we collect is
+
+$$\widetilde{\boldsymbol{X} } = \boldsymbol{X} + \boldsymbol{W}$$
+
+We can find the OLS estimates as
+
+$$\begin{aligned}
+\widetilde{\boldsymbol{\beta} }
+&= \left( \widetilde{\boldsymbol{X} }^\top \widetilde{\boldsymbol{X} }  \right) ^{-1} \widetilde{\boldsymbol{X} } ^\top \boldsymbol{y} \\
+&= \left( \boldsymbol{X} ^\top \boldsymbol{X} + \boldsymbol{X} ^\top \boldsymbol{W}  + \boldsymbol{W} ^\top \boldsymbol{X} + \boldsymbol{W} ^\top \boldsymbol{W} \right) ^{-1}  \left( \boldsymbol{X} ^\top y + \boldsymbol{W} ^\top \boldsymbol{y}  \right)\\
+&\rightarrow \left( \boldsymbol{X} ^\top \boldsymbol{X} + n \sigma^2_w \boldsymbol{I} _p \right) ^{-1} \boldsymbol{X} ^\top \boldsymbol{y} \\
+\end{aligned}$$
+
+which is like ridge regression.
+
+As $\sigma^2$ increases,
+
+- the effect amounts to shrinkage in $\boldsymbol{\beta}$, i.e. $\left\vert \beta_j \right\vert$ decreases
+- $\operatorname{Corr}\left( X_j, Y \right)$ decreases
+
+In particular, in SLR,
+
+$$
+\tilde{\beta}_1 \rightarrow \beta_1 \cdot \frac{\sum_{i=1}^n (x_i - \bar{x})^2}{\sigma^2_w  + \sum_{i=1}^n (x_i - \bar{x})^2}
+$$
+
+This is called **attenuation bias**.
+
+if correlated, then case-by-case
 
 ## Categorical $X$
 
