@@ -62,19 +62,36 @@ $$
 \widehat{\boldsymbol{G}} = \boldsymbol{Z} \boldsymbol{Z} ^\top
 $$
 
+## Special Cases
+
+### Input is a Euclidean Distance Matrix
+
+If the input is not a data matrix $\boldsymbol{X}$ but a Euclidean distances matrix $\boldsymbol{F}$
+
+$$
+f_{i j}=\left\|\boldsymbol{x}_{i}-\boldsymbol{x}_{j}\right\|^{2}=\left\|\boldsymbol{x}_{i}\right\|^{2}-2 \boldsymbol{x}_{i}^{\top} \boldsymbol{x}_{j}+\left\|\boldsymbol{x}_{j}\right\|^{2}
+$$
+
+If $\boldsymbol{x} _i$ are **centered** (zero-mean), we can convert the Euclidean distance matrix $\boldsymbol{F}$ to the Gram matrix $\boldsymbol{G}$ of inner product by left- and right-multiplying by the centering matrix $\boldsymbol{C}  = \left(\boldsymbol{I}-\frac{1}{n} \boldsymbol{1} \boldsymbol{1}^{\top}\right)$,
+
+$$
+\boldsymbol{G} = - \frac{1}{2} \boldsymbol{C}  \boldsymbol{F}\boldsymbol{C} ^{\top}
+$$
+
+And then we can run MDS over $\boldsymbol{G}$.
+
+
 ## Relation to PCA
 
 A difference is that, unlike PCA which gives a projection equation $\boldsymbol{z} = \boldsymbol{U} ^\top \boldsymbol{x}$, MDS only gives a projected result for the training set. It does not give us a way to project a new data point.
 
-A connection is that, the two projected data matrices have a deterministic relation. Suppose the data matrix $\boldsymbol{X}$ is centered. Let $\boldsymbol{Z} _{PCA}$ be the $n\times d$ projected matrix by PCA and $\boldsymbol{Z} _{MDS}$ be that by MDS. Then it can be shown that
+A connection is that, the two projected data matrices are exactly the **same**. Suppose the data matrix $\boldsymbol{X}$ is centered. Let $\boldsymbol{Z} _{PCA}$ be the $n\times k$ projected matrix by PCA and $\boldsymbol{Z} _{MDS}$ be that by MDS. Then it can be shown that
 
 $$
-\boldsymbol{Z} _{PCA} = \boldsymbol{Z} _{MDS} \boldsymbol{D} ^ {1/2}\\
+\boldsymbol{Z} _{PCA} = \boldsymbol{Z} _{MDS}\\
 $$
 
-where $\boldsymbol{D}_{d\times d}$ is the eigenvalue matrix of $\boldsymbol{X} ^\top \boldsymbol{X}$.
-
-That is, the $j$-th projected column vector by MDS has the same direction as that by PCA, but scaled by the square root of the $j$-th eigenvalue $\sqrt{\lambda_j}$ of matrix $\boldsymbol{X} ^\top \boldsymbol{X}$.
+This also implies that, to obtain PCA projections, we can use the covariance matrix $\boldsymbol{S}$, or the Gram matrix $\boldsymbol{G}$, or the Euclidean distances matrix $\boldsymbol{F}$.
 
 :::{admonition,dropdown,seealso} *Proof*
 
@@ -128,41 +145,22 @@ $$
 \boldsymbol{u} _j = \boldsymbol{X} ^\top \boldsymbol{v} _j
 $$
 
-That is, there is a one-one correspondence between the first $d$ eigenvectors of $\boldsymbol{G}$ and $n \boldsymbol{S}$. More specifically, we have,
+But note that $\boldsymbol{u} _j$ is not normalized, since $\left\| \boldsymbol{u} _j \right\|^2 = \boldsymbol{v} _j ^\top \boldsymbol{X} \boldsymbol{X} ^\top \boldsymbol{v} _j = \sigma^2 _j$. After normalization, we have,
 
 $$
-\boldsymbol{U} _{[:d]} = \boldsymbol{X} ^\top \boldsymbol{V} _{[:d]}
+\boldsymbol{U} _{[:d]} = \boldsymbol{X} ^\top \boldsymbol{V} _{[:d]} \boldsymbol{D} ^ {-1/2}
 $$
 
 Substituting this relation to the $n\times d$ projected matrix by PCA gives
 
-
 $$\begin{aligned}
 \boldsymbol{Z} _{PCA}
-&= \boldsymbol{X} \boldsymbol{U} _{[:d]}\\
-&= \boldsymbol{X} \boldsymbol{X} ^\top \boldsymbol{V}  _{[:d]}\\
-&= \boldsymbol{V} _{[:d]} \boldsymbol{D} \boldsymbol{V} ^\top _{[:d]} \boldsymbol{V}  _{[:d]}\\
-&= \boldsymbol{V} _{[:d]} \boldsymbol{D} \\
-&= \boldsymbol{Z} _{MDS} \boldsymbol{D} ^ {1/2}\\
+&= \boldsymbol{X} \boldsymbol{U} _{[:d]} \boldsymbol{D} ^ {-1/2}\\
+&= \boldsymbol{X} \boldsymbol{X} ^\top \boldsymbol{V}  _{[:d]} \boldsymbol{D} ^ {-1/2}\\
+&= \boldsymbol{V} _{[:d]} \boldsymbol{D} \boldsymbol{V} ^\top _{[:d]} \boldsymbol{V}  _{[:d]} \boldsymbol{D} ^ {-1/2} \quad \because \text{EVD of } \boldsymbol{X} \boldsymbol{X} ^\top  \\
+&= \boldsymbol{V} _{[:d]} \boldsymbol{D} \boldsymbol{D} ^ {-1/2} \quad \because \boldsymbol{V} \text{ is orthogonal} \\
+&= \boldsymbol{V} _{[:d]}\boldsymbol{D} ^ {1/2} \\
+&= \boldsymbol{Z} _{MDS} \\
 \end{aligned}$$
 
 :::
-
-
-## Special Cases
-
-### Input is a Euclidean Distance Matrix
-
-If the input is not a data matrix $\boldsymbol{X}$ but a Euclidean distances matrix $\boldsymbol{F}$
-
-$$
-f_{i j}=\left\|\boldsymbol{x}_{i}-\boldsymbol{x}_{j}\right\|^{2}=\left\|\boldsymbol{x}_{i}\right\|^{2}-2 \boldsymbol{x}_{i}^{\top} \boldsymbol{x}_{j}+\left\|\boldsymbol{x}_{j}\right\|^{2}
-$$
-
-If $\boldsymbol{x} _i$ are **centered** (zero-mean), we can convert the Euclidean distance matrix $\boldsymbol{F}$ to the Gram matrix $\boldsymbol{G}$ of inner product by left- and right-multiplying by the centering matrix $\boldsymbol{C}  = \left(\boldsymbol{I}-\frac{1}{n} \boldsymbol{1} \boldsymbol{1}^{\top}\right)$,
-
-$$
-\boldsymbol{G} = - \frac{1}{2} \boldsymbol{C}  \boldsymbol{F}\boldsymbol{C} ^{\top}
-$$
-
-And then we can run MDS over $\boldsymbol{G}$.

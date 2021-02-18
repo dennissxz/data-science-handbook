@@ -104,7 +104,7 @@ One example of linear multi-view representation learning is canonical correlatio
 | CCA  | $\boldsymbol{X} , \boldsymbol{Y}$  | $\max _{\boldsymbol{\alpha}, \boldsymbol{\beta} } \operatorname{Corr}\left(\boldsymbol{\alpha}^{\prime} \boldsymbol{x} , \boldsymbol{\beta}^{\prime} \boldsymbol{y} \right)$  | $\boldsymbol{\Sigma}_{x x}^{-1} \boldsymbol{\Sigma}_{x y} \boldsymbol{\Sigma}_{y y}^{-1} \boldsymbol{\Sigma}_{y x} \boldsymbol{\alpha} = \rho^2 \boldsymbol{\alpha}$ <br> $\boldsymbol{\beta} \propto \boldsymbol{\Sigma}_{y y}^{-1} \boldsymbol{\Sigma}_{y x} \boldsymbol{\alpha}$ | $\rho$ is invariant of scaling of linear transformation of $\boldsymbol{X}$ or $\boldsymbol{Y}$  |
 | Regularized CCA  | ''  |  '' | $\boldsymbol{\Sigma}_{x x} \leftarrow\boldsymbol{\Sigma}_{x x}+r_{x} I$ <br> $\boldsymbol{\Sigma}_{y y} \leftarrow \boldsymbol{\Sigma}_{y y}+r_{y} I$    | Add spherical noise $rI$ to the covariance matrices  |
 | (Regularized) Kernel CCA  | $\boldsymbol{X}, \boldsymbol{Y}$, $r$, kernel  | $\max _{\boldsymbol{\alpha}, \boldsymbol{\beta}} \frac{\boldsymbol{\alpha} ^{\top} \boldsymbol{K} _{x} \boldsymbol{K} _{y} \boldsymbol{\beta} }{\sqrt{\boldsymbol{\alpha} ^{\top} \boldsymbol{K} _{x}^{2} \boldsymbol{\alpha} \cdot \boldsymbol{\beta} ^{\top} \boldsymbol{K} _{y}^{2} \boldsymbol{\beta} }}$  |  $\left(\boldsymbol{K}_{x}+r I\right)^{-1} \boldsymbol{K}_{y}\left(\boldsymbol{K}_{y}+r I\right)^{-1} \boldsymbol{K}_{x} \boldsymbol{\alpha}=\lambda^{2} \boldsymbol{\alpha}$ <br> $\boldsymbol{\beta} = \left(\boldsymbol{K}_{y}+r I\right)^{-1} \boldsymbol{K}_{x} \boldsymbol{\alpha} /\lambda$ |   To avoid trivial solution|
-|MDS   |  $\boldsymbol{X}$, or $\boldsymbol{F}$  | $\min \sum_{i, j}\left(\boldsymbol{x}_{i} ^\top  \boldsymbol{x}_{j}-\boldsymbol{z}_{i} ^\top\boldsymbol{z}_{j}\right)^2$  | $\boldsymbol{G}  = \boldsymbol{X} \boldsymbol{X} ^\top = \boldsymbol{V} \boldsymbol{\Lambda} \boldsymbol{V}$ <br> $\boldsymbol{Z}=\boldsymbol{V}_{[: k]} \boldsymbol{\Lambda}_{[: k, k]}^{1 / 2}$  | 1. Retain inner product <br> 2. scaled PCA $\boldsymbol{Z}_{P C A}=\boldsymbol{Z}_{M D S} \boldsymbol{D}^{1 / 2}$ |
+|MDS   |  $\boldsymbol{X} \boldsymbol{X} ^\top$ or $\boldsymbol{F}$  | $\min \sum_{i, j}\left(\boldsymbol{x}_{i} ^\top  \boldsymbol{x}_{j}-\boldsymbol{z}_{i} ^\top\boldsymbol{z}_{j}\right)^2$  | $\boldsymbol{G}  = \boldsymbol{X} \boldsymbol{X} ^\top = \boldsymbol{V} \boldsymbol{\Lambda} \boldsymbol{V}$ <br> $\boldsymbol{Z}=\boldsymbol{V}_{[: k]} \boldsymbol{\Lambda}_{[: k, k]}^{1 / 2}$  | 1. Retain inner product <br> 2. Gives exactly the embeddings as PCA: $\boldsymbol{Z}_{P C A}=\boldsymbol{Z}_{M D S}$ |
 
 **Review**
 
@@ -116,7 +116,7 @@ One example of linear multi-view representation learning is canonical correlatio
 |CCA   |  Have discriminative power in some cases that PCA doesn't   | Easy to overfit tiny signals  |
 | Regularized CCA   |  Avoid overfitting of CCA |   |
 | (Regularized) Kernel CCA   |  1. Enable non-linear feature <br> 2. Enable out-of-sample projection |   |
-| MDS   |   |   |
+| MDS   | Can be obtain from Euclidean distance matrix $\boldsymbol{F}$. For instance, from a survey "how do you compare the two items?" |   |
 
 ### Non-linear Models
 
