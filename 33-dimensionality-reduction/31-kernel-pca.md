@@ -2,7 +2,7 @@
 
 Kernel PCA is a nonlinear extension of PCA where dot products are replaced with generalized dot products in feature space computed by a kernel function.
 
-## Objective
+## Kernelization
 
 Linear PCA only consider linear subspaces
 
@@ -30,18 +30,6 @@ k(\boldsymbol{x} _n, \boldsymbol{x}) \\
 $$
 
 where $\boldsymbol{A}_{n \times k}$ contains the first $k$ eigenvectors of the kernel matrix $\boldsymbol{K}$. That is, the projected data matrix is $\boldsymbol{Z}_{n \times k} = \boldsymbol{K} \boldsymbol{A}$.
-
-:::{admonition,note} Mean normalization of $\boldsymbol{K}$
-
-We've implicitly assumed zero-mean in the new feature space $\mathbb{R} ^p$, but it is usually not. Hence, we should modify $\boldsymbol{K}$ by
-
-$$
-\boldsymbol{K} ^\prime = (\boldsymbol{I} - \boldsymbol{u} \boldsymbol{u} ^\top )\boldsymbol{K}(\boldsymbol{I} - \boldsymbol{u} \boldsymbol{u} ^\top)  
-$$
-
-where $\boldsymbol{u} = \frac{1}{\sqrt{n}}[1 \ldots 1]^{\top}$, and solve for the eigenvectors of $\boldsymbol{K} ^\prime$
-
-:::
 
 :::{admonition,dropdown,seealso} *Derivation*
 
@@ -92,6 +80,21 @@ k(\boldsymbol{x} _n, \boldsymbol{x}) \\
 In fact, we don't need the exact form of $\boldsymbol{\phi}$ at all.
 
 :::
+
+
+:::{admonition,note} Mean normalization of $\boldsymbol{K}$
+
+We've implicitly assumed zero-mean in the new feature space $\mathbb{R} ^p$, but it is usually not. Hence, we should modify $\boldsymbol{K}$ by
+
+$$
+\boldsymbol{K} ^\prime = (\boldsymbol{I} - \boldsymbol{u} \boldsymbol{u} ^\top )\boldsymbol{K}(\boldsymbol{I} - \boldsymbol{u} \boldsymbol{u} ^\top)  
+$$
+
+where $\boldsymbol{u} = \frac{1}{\sqrt{n}}[1 \ldots 1]^{\top}$, and solve for the eigenvectors of $\boldsymbol{K} ^\prime$
+
+:::
+
+
 
 ## Learning
 
