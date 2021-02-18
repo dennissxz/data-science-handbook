@@ -327,7 +327,7 @@ If $X_1$ and $X_2$ show high correlation, then
 
 When $\operatorname{Var}\left( \varepsilon _i \right)$ is not a constant, we say heteroskedasticity of error variance exists. This may happen because data attributes, or due to transformation of $y$, e.g. $\log(y)$. We can diagnose its existence by plots or tests.
 
-If it exists, OLS is still unbiased & consistent. But $\operatorname{Var}_{OLS}\left( \hat{\boldsymbol{\beta}}  \right)$ which uses homoskedastic assumption is incorrect now. There are problems in testing.
+If it exists, OLS is still **unbiased** & **consistent**. But $\operatorname{Var}_{OLS}\left( \hat{\boldsymbol{\beta}}  \right) = \sigma^2 (\boldsymbol{X} ^\top \boldsymbol{X} ) ^{-1}$ which uses homoskedastic assumption is incorrect now. There are problems in **testing**.
 
 - To fix that for testing purpose, we can use robust standard error.
 - To get more precise estimate and correct standard errors, we can try alternative models that produces homoskedastic errors.
