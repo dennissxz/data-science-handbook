@@ -434,6 +434,11 @@
      Kernels
     </a>
    </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../30-ml-basics/11-missing-values.html">
+     Missing Values
+    </a>
+   </li>
   </ul>
   <i class="fas fa-chevron-down">
   </i>
@@ -861,6 +866,41 @@
      </span>
     </a>
    </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#solution">
+     Solution
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#missing-values">
+   Missing Values
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#completely-at-random">
+     Completely At Random
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#depends-on-y-endogenous">
+     Depends on
+     <span class="math notranslate nohighlight">
+      \(Y\)
+     </span>
+     (Endogenous)
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#depends-on-x-exogenous">
+     Depends on
+     <span class="math notranslate nohighlight">
+      \(X\)
+     </span>
+     (Exogenous)
+    </a>
+   </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -1058,10 +1098,10 @@ X_j
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>coefficients in y ~ x1 + x2 + x3 : [[0.99517483 0.9974435  1.99868821 3.00382725]]
-coefficients in y ~ x1 + x2 : [[1.10768551 0.96932838 3.48719894]]
-coefficients in x3 ~ x1 + x2 : [[ 0.03745577 -0.00935977  0.49553806]]
-reconstruction difference of b0, b1, b2 : [ 4.44089210e-16 -1.77635684e-15  1.77635684e-15]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>coefficients in y ~ x1 + x2 + x3 : [[0.99444125 1.00207765 1.99727479 3.00166279]]
+coefficients in y ~ x1 + x2 : [[0.867563   1.0163593  3.53968571]]
+coefficients in x3 ~ x1 + x2 : [[-0.04226932  0.00475791  0.51385216]]
+reconstruction difference of b0, b1, b2 : [-9.99200722e-16  8.88178420e-16 -4.44089210e-15]
 </pre></div>
 </div>
 </div>
@@ -1176,7 +1216,7 @@ X_{j}=\delta_{0}+\delta_{1} X_{1}+\cdots+\delta_{j-1} X_{j-1}+\delta_{i+1} X_{i+
 <div class="section" id="heteroskedasticity">
 <h2>Heteroskedasticity<a class="headerlink" href="#heteroskedasticity" title="Permalink to this headline">¶</a></h2>
 <p>When <span class="math notranslate nohighlight">\(\operatorname{Var}\left( \varepsilon _i \right)\)</span> is not a constant, we say heteroskedasticity of error variance exists. This may happen because data attributes, or due to transformation of <span class="math notranslate nohighlight">\(y\)</span>, e.g. <span class="math notranslate nohighlight">\(\log(y)\)</span>. We can diagnose its existence by plots or tests.</p>
-<p>If it exists, OLS is still unbiased &amp; consistent. But <span class="math notranslate nohighlight">\(\operatorname{Var}_{OLS}\left( \hat{\boldsymbol{\beta}}  \right)\)</span> which uses homoskedastic assumption is incorrect now. There are problems in testing.</p>
+<p>If it exists, OLS is still <strong>unbiased</strong> &amp; <strong>consistent</strong>. But <span class="math notranslate nohighlight">\(\operatorname{Var}_{OLS}\left( \hat{\boldsymbol{\beta}}  \right) = \sigma^2 (\boldsymbol{X} ^\top \boldsymbol{X} ) ^{-1}\)</span> which uses homoskedastic assumption is incorrect now. There are problems in <strong>testing</strong>.</p>
 <ul class="simple">
 <li><p>To fix that for testing purpose, we can use robust standard error.</p></li>
 <li><p>To get more precise estimate and correct standard errors, we can try alternative models that produces homoskedastic errors.</p></li>
@@ -1192,22 +1232,62 @@ X_{j}=\delta_{0}+\delta_{1} X_{1}+\cdots+\delta_{j-1} X_{j-1}+\delta_{i+1} X_{i+
 </div>
 <div class="section" id="breusch-pagan-test">
 <h4>Breusch-Pagan Test<a class="headerlink" href="#breusch-pagan-test" title="Permalink to this headline">¶</a></h4>
+<p>Idea: under the null hypothesis of homoskedasticity, the covariate <span class="math notranslate nohighlight">\(X_1, X-2, \ldots, X_p\)</span> should have no explanatory power on the error <span class="math notranslate nohighlight">\(\varepsilon\)</span>. That is, in the regression <span class="math notranslate nohighlight">\(\varepsilon \sim X_1 \ldots X_p\)</span>, the <span class="math notranslate nohighlight">\(F\)</span>-test should be insignificant.</p>
+<p>Steps are:</p>
+<ol>
+<li><p>Run the original regression</p>
 <div class="math notranslate nohighlight">
-\[H_0: \text{homoskedasticity}\]</div>
-<p>Idea: under homoskedasticity, the covariate <span class="math notranslate nohighlight">\(X_1, X-2, \ldots, X_p\)</span> should have no explanatory power on the error <span class="math notranslate nohighlight">\(\varepsilon\)</span>. That is, in the regression <span class="math notranslate nohighlight">\(\varepsilon \sim X_1 \ldots X_p\)</span>, the <span class="math notranslate nohighlight">\(F\)</span>-test should be insignificant.</p>
-<ul class="simple">
-<li><p>Run regression <span class="math notranslate nohighlight">\(Y \sim X_1 \ldots X_p\)</span>, obtain <span class="math notranslate nohighlight">\(\hat{\varepsilon}\)</span></p></li>
-<li><p>Run regression <span class="math notranslate nohighlight">\(\hat{\varepsilon} \sim X_1 \ldots X_p\)</span>, run <span class="math notranslate nohighlight">\(F\)</span>-test (actually <span class="math notranslate nohighlight">\(\chi ^2\)</span> test).</p></li>
-</ul>
+\[Y \sim X_1 + X_2 + \ldots X_j\]</div>
+<p>Obtain residuals <span class="math notranslate nohighlight">\(\hat{\varepsilon}\)</span>.</p>
+</li>
+<li><p>Run an auxiliary regression</p>
+<div class="math notranslate nohighlight">
+\[\hat{\varepsilon}^2 \sim X_1 + X_2 + \ldots X_j\]</div>
+<p>Obtain <span class="math notranslate nohighlight">\(TSS\)</span> and <span class="math notranslate nohighlight">\(RSS\)</span>.</p>
+</li>
+<li><p>Compute the Lagrange multiplier test statistic</p>
+<div class="math notranslate nohighlight">
+\[LM = \frac{1}{2}(TSS - RSS)\]</div>
+<p>Under the null hypothesis of homoskedasticity, it follows <span class="math notranslate nohighlight">\(\chi^2_{p-1}\)</span></p>
+</li>
+</ol>
 </div>
 <div class="section" id="white-test">
 <h4>White Test<a class="headerlink" href="#white-test" title="Permalink to this headline">¶</a></h4>
-<p>The Breusch-Pagan test will detect any linear forms of heteroskedasticity, while the White test allows for nonlinearities by using squares and crossproducts of all the covariates.</p>
+<p>The Breusch-Pagan test will detect any linear forms of heteroskedasticity, while the White test allows for nonlinearities by using squares and crossproducts of all the covariates. White test also tests model misspecification.</p>
+<p>Steps are:</p>
+<ol>
+<li><p>Run the original regression</p>
+<div class="math notranslate nohighlight">
+\[Y \sim X_1 + X_2 + \ldots X_j\]</div>
+<p>Obtain residuals <span class="math notranslate nohighlight">\(\hat{\varepsilon}\)</span>.</p>
+</li>
+<li><p>Run an auxiliary regression</p>
+<div class="math notranslate nohighlight">
+\[\hat{\varepsilon}^2 \sim \left\{ X_j \right\} + \left\{ X_j^2 \right\} + \left\{ X_j X_k \right\}\]</div>
+<p>where</p>
 <ul class="simple">
-<li><p>Run regression <span class="math notranslate nohighlight">\(Y \sim X_1 \ldots X_p\)</span>, obtain <span class="math notranslate nohighlight">\(\hat{y}\)</span></p></li>
-<li><p>Run regressions <span class="math notranslate nohighlight">\(\hat{\varepsilon}^2 \sim \hat{y}\)</span> and <span class="math notranslate nohighlight">\(\hat{\varepsilon}^2 \sim \hat{y}^2\)</span></p></li>
-<li><p>Use the <span class="math notranslate nohighlight">\(R^2\)</span> to form an <span class="math notranslate nohighlight">\(F\)</span> test statistic</p></li>
+<li><p><span class="math notranslate nohighlight">\(\left\{ X_j \right\}\)</span> stands for all first-order terms, <span class="math notranslate nohighlight">\(X_1, X_2, \ldots, X_p\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\left\{ X_j^2 \right\}\)</span> stands for all second-order terms, <span class="math notranslate nohighlight">\(X_1^2, X_2^2, \ldots, X_p^2\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\left\{ X_j X_k \right\}\)</span> stands for all interaction terms (aka cross-products)</p></li>
 </ul>
+<p>Obtain <span class="math notranslate nohighlight">\(R^2\)</span>.</p>
+</li>
+<li><p>Compute the Lagrange multiplier test statistic</p>
+<div class="math notranslate nohighlight">
+\[LM=n R^2\]</div>
+<p>Under the null hypothesis of homoskedasticity, it follows <span class="math notranslate nohighlight">\(\chi^2 _{q-1}\)</span> where <span class="math notranslate nohighlight">\(q\)</span> is the number of parameters in the auxiliary regression model.</p>
+</li>
+</ol>
+<p>The logic of the test is as follows. [<a class="reference external" href="https://en.wikipedia.org/wiki/White_test">Wikipedia</a>]</p>
+<ul class="simple">
+<li><p>First, the squared residuals from the original model serve as a proxy for the variance of the error term at each observation. (The error term is assumed to have a mean of zero, and the variance of a zero-mean random variable is just the expectation of its square.) The independent variables in the auxiliary regression account for the possibility that the error variance depends on the values of the original regressors in some way (linear or quadratic).</p></li>
+<li><p>If the error term in the original model is in fact homoskedastic (has a constant variance) then the coefficients in the auxiliary regression (besides the constant) should be statistically indistinguishable from zero and the R2 should be “small”. Conversely, a “large” R2 (scaled by the sample size so that it follows the chi-squared distribution) counts against the hypothesis of homoskedasticity.</p></li>
+</ul>
+<div class="warning admonition">
+<p class="admonition-title"> Warning</p>
+<p>In cases where the White test statistic is statistically significant, heteroskedasticity may not necessarily be the cause; instead the problem could be a specification error.</p>
+</div>
 </div>
 </div>
 <div class="section" id="correction-by-robust-error">
@@ -1259,12 +1339,12 @@ X_{j}=\delta_{0}+\delta_{1} X_{1}+\cdots+\delta_{j-1} X_{j-1}+\delta_{i+1} X_{i+
 <h4>Find Weights<a class="headerlink" href="#find-weights" title="Permalink to this headline">¶</a></h4>
 <p>The question is, how to find <span class="math notranslate nohighlight">\(\boldsymbol{W}\)</span> in advance? Some rules of thumbs include</p>
 <ul class="simple">
-<li><p>If <span class="math notranslate nohighlight">\(y_i\)</span> is a <strong>sum</strong> from a sample of size <span class="math notranslate nohighlight">\(n_i\)</span>, then <span class="math notranslate nohighlight">\(\sigma^2 _i \propto n_i\)</span></p></li>
-<li><p>If <span class="math notranslate nohighlight">\(y_i\)</span> is an <strong>average</strong> from a sample of size <span class="math notranslate nohighlight">\(n_i\)</span>, then <span class="math notranslate nohighlight">\(\sigma^2 _i \propto \frac{1}{n_i}\)</span></p></li>
+<li><p>If <span class="math notranslate nohighlight">\(y_i\)</span> is a <strong>sum</strong> from a sample of size <span class="math notranslate nohighlight">\(n_i\)</span>, then <span class="math notranslate nohighlight">\(\sigma^2 _i \propto n_i\)</span>, then we can set weights <span class="math notranslate nohighlight">\(w_{ii} = \frac{1}{n_i}\)</span></p></li>
+<li><p>If <span class="math notranslate nohighlight">\(y_i\)</span> is an <strong>average</strong> from a sample of size <span class="math notranslate nohighlight">\(n_i\)</span>, then <span class="math notranslate nohighlight">\(\sigma^2 _i \propto \frac{1}{n_i}\)</span>, then we can set weights <span class="math notranslate nohighlight">\(w_{ii} = n_i\)</span></p></li>
 </ul>
 <div class="margin sidebar">
 <p class="sidebar-title"></p>
-<p>Note <span class="math notranslate nohighlight">\(\hat{\boldsymbol{\beta}} _{WLS}\)</span> is invariant to spherical scaling of <span class="math notranslate nohighlight">\(\boldsymbol{W}\)</span>, so we don’t need to know the exact value of <span class="math notranslate nohighlight">\(\sigma^2_i\)</span>.</p>
+<p>Note <span class="math notranslate nohighlight">\(\hat{\boldsymbol{\beta}} _{WLS}\)</span> is invariant to spherical scaling of <span class="math notranslate nohighlight">\(\boldsymbol{W}\)</span>, so we don’t need to know the exact value of <span class="math notranslate nohighlight">\(\sigma^2_i\)</span>, we just need to know their relative ratio.</p>
 </div>
 <p>Besides, we can find weights from data adaptively.</p>
 <ul>
@@ -1309,27 +1389,47 @@ X_{j}=\delta_{0}+\delta_{1} X_{1}+\cdots+\delta_{j-1} X_{j-1}+\delta_{i+1} X_{i+
 <h2>Measurement Error<a class="headerlink" href="#measurement-error" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="of-y">
 <h3>Of <span class="math notranslate nohighlight">\(Y\)</span><a class="headerlink" href="#of-y" title="Permalink to this headline">¶</a></h3>
+<p>Suppose due to some measurement error <span class="math notranslate nohighlight">\(w\)</span>, we obtain <span class="math notranslate nohighlight">\(\widetilde{Y} = Y + w\)</span></p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
-\begin{array}{c}
-Y-e=\beta_{0}+\beta_{1} X_{1}+\ldots+\beta_{k} X_{k}+u \\
-Y=\beta_{0}+\beta_{1} X_{1}+\ldots+\beta_{k} X_{k}+(e+u)
-\end{array}
+\begin{aligned}
+\text{True response } Y&amp;=\beta_{0}+\beta_{1} X_{1}+\ldots+\beta_{k} X_{k}+\varepsilon \\
+\text{Observe } \widetilde{Y} &amp;=Y +w\\
+\widetilde{Y} &amp;=\beta_{0}+\beta_{1} X_{1}+\ldots+\beta_{k} X_{k}+ \underbrace{\varepsilon}_{\text{other variables' effect} } +  \underbrace{w}_{\text{measurement error}}
+\end{aligned}
 \end{split}\]</div>
-<p>Assume <span class="math notranslate nohighlight">\(E(e) = 0\)</span>.</p>
+<p>Then, the new estimates <span class="math notranslate nohighlight">\(\widetilde{\boldsymbol{\beta} }\)</span> and the inference are</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\widetilde{\boldsymbol{\beta}}
+&amp;= \boldsymbol{\beta} + (\boldsymbol{X} ^\top \boldsymbol{X} )^{-1} \boldsymbol{X} ^\top (\boldsymbol{\varepsilon} + \boldsymbol{w} ) \\
+\operatorname{E}\left( \widetilde{\boldsymbol{\beta}}  \right)&amp;= \boldsymbol{\beta} + (\boldsymbol{X} ^\top \boldsymbol{X} )^{-1} \boldsymbol{X} ^\top \operatorname{E}( \boldsymbol{w} ) \\
+\operatorname{Var}\left( \widetilde{\boldsymbol{\beta}}  \right)&amp;= (\boldsymbol{X} ^\top \boldsymbol{X} )^{-1} \boldsymbol{X} ^\top \operatorname{Var}( \boldsymbol{\varepsilon} + \boldsymbol{w} ) \boldsymbol{X} (\boldsymbol{X} ^\top \boldsymbol{X} )^{-1} \\
+&amp;= (\boldsymbol{X} ^\top \boldsymbol{X} )^{-1} \boldsymbol{X} ^\top (\sigma^2 _\varepsilon \boldsymbol{I} + \sigma^2 _w \boldsymbol{I}) \boldsymbol{X} (\boldsymbol{X} ^\top \boldsymbol{X} )^{-1} \text{ (assumed)} \\
+&amp;= (\sigma^2 _\varepsilon + \sigma^2 _w) (\boldsymbol{X} ^\top \boldsymbol{X} )^{-1} \\
+\end{aligned}\end{split}\]</div>
 <ul class="simple">
-<li><p>If <span class="math notranslate nohighlight">\(e\)</span> is correlated with the regressors <span class="math notranslate nohighlight">\(X\)</span>, then get bias <span class="math notranslate nohighlight">\(\beta\)</span>, like omitted variable bias</p></li>
-<li><p>Else, OLS is unbiased but variance rises, like adding an irrelevant variable.</p></li>
+<li><p>In terms of unbiasedness,  <span class="math notranslate nohighlight">\((\boldsymbol{X} ^\top \boldsymbol{X} )^{-1} \boldsymbol{X} ^\top \operatorname{E}( \boldsymbol{w} )\)</span> can be viewed as the estimates by regressing <span class="math notranslate nohighlight">\(\operatorname{E}\left( \boldsymbol{w}  \right)\)</span> over <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span>.</p>
+<ul>
+<li><p>If <span class="math notranslate nohighlight">\(\operatorname{E}\left(\boldsymbol{w}  \right) = \boldsymbol{0}\)</span>, then <span class="math notranslate nohighlight">\(\widetilde{\boldsymbol{\beta} }\)</span> is unbiased.</p></li>
+<li><p>Else, bias may appear</p></li>
+</ul>
+</li>
+<li><p>In terms of variances, assume <span class="math notranslate nohighlight">\(\boldsymbol{\varepsilon}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{w}\)</span> are independent, and assume <span class="math notranslate nohighlight">\(\operatorname{Var}\left( \boldsymbol{w}  \right) = \sigma^2 _w \boldsymbol{I}\)</span>, then the variance increases, so the standard error increases.</p></li>
 </ul>
 </div>
 <div class="section" id="of-x">
 <h3>Of <span class="math notranslate nohighlight">\(X\)</span><a class="headerlink" href="#of-x" title="Permalink to this headline">¶</a></h3>
 <p>Suppose the true values of explanatory variables is <span class="math notranslate nohighlight">\(x_{ij}\)</span>. Due to some measurement error <span class="math notranslate nohighlight">\(w_{ij}\)</span>, we collect <span class="math notranslate nohighlight">\(\tilde{x}_{ij} = x_{ij} + w_{ij}\)</span>. Now we want to analyze its effect on our OLS estimates.</p>
-<p>Here are some assumptions of measurement error <span class="math notranslate nohighlight">\(w_{ij}\)</span>:</p>
+<div class="margin sidebar">
+<p class="sidebar-title"></p>
+<p>Erros satisfying these assumptions are called classical errors</p>
+</div>
+<p>Assume</p>
 <ul class="simple">
 <li><p>common zero mean <span class="math notranslate nohighlight">\(\operatorname{E}\left( w_{ij} \right) = 0\)</span></p></li>
 <li><p>common variance <span class="math notranslate nohighlight">\(\operatorname{Var}\left( w_{ij} \right) = \sigma^2_w\)</span></p></li>
-<li><p>pairwisely uncorrelated</p></li>
+<li><p>pairwisely uncorrelated <span class="math notranslate nohighlight">\(\operatorname{Cov} (w_{ij}, w_{k\ell}) = 0\)</span></p></li>
 <li><p>uncorrelated with <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{y}\)</span></p></li>
 </ul>
 <p>In matrix form, we can write an error matrix <span class="math notranslate nohighlight">\(\boldsymbol{W}_{n \times p} = [\boldsymbol{w}_1 \ \ldots \ \boldsymbol{w}_p ]\)</span> where <span class="math notranslate nohighlight">\(\boldsymbol{w}_j = [w_{1j}, w_{2j}, \ldots, w_{nj}]^\top\)</span>. Then the assumption becomes</p>
@@ -1353,19 +1453,66 @@ Y=\beta_{0}+\beta_{1} X_{1}+\ldots+\beta_{k} X_{k}+(e+u)
 &amp;= \left( \boldsymbol{X} ^\top \boldsymbol{X} + \boldsymbol{X} ^\top \boldsymbol{W}  + \boldsymbol{W} ^\top \boldsymbol{X} + \boldsymbol{W} ^\top \boldsymbol{W} \right) ^{-1}  \left( \boldsymbol{X} ^\top y + \boldsymbol{W} ^\top \boldsymbol{y}  \right)\\
 &amp;\rightarrow \left( \boldsymbol{X} ^\top \boldsymbol{X} + n \sigma^2_w \boldsymbol{I} _p \right) ^{-1} \boldsymbol{X} ^\top \boldsymbol{y} \\
 \end{aligned}\end{split}\]</div>
-<p>which is like ridge regression.</p>
-<p>As <span class="math notranslate nohighlight">\(\sigma^2\)</span> increases,</p>
+<p>which is like the form of ridge regression.</p>
+<p>As <span class="math notranslate nohighlight">\(\sigma^2_w\)</span> increases,</p>
 <ul class="simple">
-<li><p>the effect amounts to shrinkage in <span class="math notranslate nohighlight">\(\boldsymbol{\beta}\)</span>, i.e. <span class="math notranslate nohighlight">\(\left\vert \beta_j \right\vert\)</span> decreases</p></li>
+<li><p>the effect amounts to shrinkage in <span class="math notranslate nohighlight">\(\boldsymbol{\beta}\)</span>, i.e. <span class="math notranslate nohighlight">\(\left\vert \beta_j \right\vert\)</span> decreases, which is called <strong>attenuation bias</strong>.</p></li>
 <li><p><span class="math notranslate nohighlight">\(\operatorname{Corr}\left( X_j, Y \right)\)</span> decreases</p></li>
 </ul>
 <p>In particular, in SLR,</p>
 <div class="math notranslate nohighlight">
 \[
-\tilde{\beta}_1 \rightarrow \beta_1 \cdot \frac{\sum_{i=1}^n (x_i - \bar{x})^2}{\sigma^2_w  + \sum_{i=1}^n (x_i - \bar{x})^2}
+\tilde{\beta}_1 \rightarrow \beta_1 \cdot \frac{\sum_{i=1}^n (x_i - \bar{x})^2}{n\sigma^2_w  + \sum_{i=1}^n (x_i - \bar{x})^2}
 \]</div>
-<p>This is called <strong>attenuation bias</strong>.</p>
-<p>if correlated, then case-by-case</p>
+</div>
+<div class="section" id="solution">
+<h3>Solution<a class="headerlink" href="#solution" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Use better measures</p></li>
+<li><p>Can correct estimates accordingly, if we know how the distribution of measurement error <span class="math notranslate nohighlight">\(w\)</span> given <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span></p></li>
+<li><p>Use instrumental variables</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="missing-values">
+<h2>Missing Values<a class="headerlink" href="#missing-values" title="Permalink to this headline">¶</a></h2>
+<p>For more details about missing, refer to <a class="reference internal" href="../30-ml-basics/11-missing-values.html"><span class="doc std std-doc">missing values</span></a>.</p>
+<p>Suppose the true model is <span class="math notranslate nohighlight">\(\boldsymbol{Y}  = \boldsymbol{X} \boldsymbol{\beta} + \boldsymbol{\varepsilon}\)</span>. What happen if some <span class="math notranslate nohighlight">\(Y\)</span> or <span class="math notranslate nohighlight">\(X\)</span> are not observed?</p>
+<div class="section" id="completely-at-random">
+<h3>Completely At Random<a class="headerlink" href="#completely-at-random" title="Permalink to this headline">¶</a></h3>
+<p>If missing is completely at random, then we have a smaller sample. This will increase the standard errors of <span class="math notranslate nohighlight">\(\boldsymbol{\beta}\)</span> estimators (lower precision), but it does not cause bias.</p>
+</div>
+<div class="section" id="depends-on-y-endogenous">
+<h3>Depends on <span class="math notranslate nohighlight">\(Y\)</span> (Endogenous)<a class="headerlink" href="#depends-on-y-endogenous" title="Permalink to this headline">¶</a></h3>
+<p>If missing depends on <span class="math notranslate nohighlight">\(Y\)</span>, Consider the following cases.</p>
+<ol>
+<li><p>If some upper value <span class="math notranslate nohighlight">\(y_i\ge c\)</span> is missing, then for the remaining observations with <span class="math notranslate nohighlight">\(\boldsymbol{x}_i ^\top \boldsymbol{\beta} = c\)</span>, their error must be <span class="math notranslate nohighlight">\(\varepsilon &lt; 0\)</span>, to ensure <span class="math notranslate nohighlight">\(y_i &lt; c\)</span> to be selected. Consequently, the assumption that <span class="math notranslate nohighlight">\(\operatorname{E}\left( \varepsilon_i \right) = 0\)</span> no longer hold for such <span class="math notranslate nohighlight">\(i\)</span>.</p>
+<p>Hence, the estimates <span class="math notranslate nohighlight">\(\hat{\boldsymbol{\beta}}\)</span> will be <strong>biased</strong> since <span class="math notranslate nohighlight">\(\operatorname{E}\left( \boldsymbol{\varepsilon}  \right) \ne 0\)</span>.</p>
+<p>The analysis is the same for the case of lower value missing <span class="math notranslate nohighlight">\(y_i \ge c\)</span>.</p>
+</li>
+<li><p>If some middle value <span class="math notranslate nohighlight">\(\left\vert y_i -\mu _y\right\vert \le c\)</span> is missing, will the estimates be unbiased?</p>
+<p>This depends. Consider an extreme case that <span class="math notranslate nohighlight">\(Y = 10X + \varepsilon\)</span> and we only have three kinds of covariates values <span class="math notranslate nohighlight">\(X= 1,2,3\)</span>, so there are three data clouds of equal sizes (assumed). Then dropping <span class="math notranslate nohighlight">\(\left\vert Y -20 \right\vert &lt; 1\)</span> and using the remaining two data clouds to run OLS, we will still get <span class="math notranslate nohighlight">\(E(\tilde{\beta}_1)=1\)</span>, which is unbiased.</p>
+<p>On the other hand, this selection criteria can be viewed as a combination of an upper dropping and a lower dropping, so bias is also possible under certain cases.</p>
+</li>
+</ol>
+</div>
+<div class="section" id="depends-on-x-exogenous">
+<h3>Depends on <span class="math notranslate nohighlight">\(X\)</span> (Exogenous)<a class="headerlink" href="#depends-on-x-exogenous" title="Permalink to this headline">¶</a></h3>
+<p>If missing depends on <span class="math notranslate nohighlight">\(X\)</span>, then we miss part of the data.</p>
+<div class="margin sidebar">
+<p class="sidebar-title">Non-linear true model</p>
+<p>If the true underlying model is not linear, then the estimates may or may not change. One example is <span class="math notranslate nohighlight">\(Y = X^2 + \varepsilon\)</span> where <span class="math notranslate nohighlight">\(X \sim U(-1,1)\)</span>, where we will obtain <span class="math notranslate nohighlight">\(E(\hat{\beta_1}) = 0\)</span>, and after removing <span class="math notranslate nohighlight">\(X&lt;0\)</span>, we will obtain <span class="math notranslate nohighlight">\(\operatorname{E}\left( \widetilde{\beta_1} \right) &gt; 0\)</span>.</p>
+</div>
+<ul>
+<li><p>In terms of unbiasedness, we only observe some parts of the hyperplane, with the same local slope as the overall hyperplane. Hence, the estimates are still <strong>unbiased</strong>.</p></li>
+<li><p>In terms of variance of estimates, recall that <span class="math notranslate nohighlight">\(\operatorname{Var}\left( \beta_j \right) = \sigma^{2} \frac{1}{1-R_{j}^{2}} \frac{1}{\sum_{i}\left(x_{i j}-\bar{x}_{j}\right)^{2}}\)</span>, then</p>
+<ul class="simple">
+<li><p>data TSS <span class="math notranslate nohighlight">\(\sum_{i}\left(x_{i j}-\bar{x}_{\cdot j}\right)^{2}\)</span> can only decrease (think about one-way ANOVA)</p></li>
+<li><p><span class="math notranslate nohighlight">\(R_j^2\)</span> can increase or decrease (think about leaky ReLU shape relation between <span class="math notranslate nohighlight">\(X_j\)</span> and <span class="math notranslate nohighlight">\(X_1\)</span>)</p></li>
+</ul>
+<p>Hence the how <span class="math notranslate nohighlight">\(\operatorname{Var} (\beta_j)\)</span> change is uncertain.</p>
+</li>
+</ul>
 </div>
 </div>
 <div class="section" id="categorical-x">

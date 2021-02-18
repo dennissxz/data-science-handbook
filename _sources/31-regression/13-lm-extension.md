@@ -327,7 +327,7 @@ If $X_1$ and $X_2$ show high correlation, then
 
 When $\operatorname{Var}\left( \varepsilon _i \right)$ is not a constant, we say heteroskedasticity of error variance exists. This may happen because data attributes, or due to transformation of $y$, e.g. $\log(y)$. We can diagnose its existence by plots or tests.
 
-If it exists, OLS is still unbiased & consistent. But $\operatorname{Var}_{OLS}\left( \hat{\boldsymbol{\beta}}  \right)$ which uses homoskedastic assumption is incorrect now. There are problems in testing.
+If it exists, OLS is still **unbiased** & **consistent**. But $\operatorname{Var}_{OLS}\left( \hat{\boldsymbol{\beta}}  \right) = \sigma^2 (\boldsymbol{X} ^\top \boldsymbol{X} ) ^{-1}$ which uses homoskedastic assumption is incorrect now. There are problems in **testing**.
 
 - To fix that for testing purpose, we can use robust standard error.
 - To get more precise estimate and correct standard errors, we can try alternative models that produces homoskedastic errors.
@@ -345,27 +345,72 @@ Homoskedastic (left, right) and Heteroskedasticity (middle)
 
 #### Breusch-Pagan Test
 
-$$H_0: \text{homoskedasticity}$$
+Idea: under the null hypothesis of homoskedasticity, the covariate $X_1, X-2, \ldots, X_p$ should have no explanatory power on the error $\varepsilon$. That is, in the regression $\varepsilon \sim X_1 \ldots X_p$, the $F$-test should be insignificant.
 
-Idea: under homoskedasticity, the covariate $X_1, X-2, \ldots, X_p$ should have no explanatory power on the error $\varepsilon$. That is, in the regression $\varepsilon \sim X_1 \ldots X_p$, the $F$-test should be insignificant.
 
-- Run regression $Y \sim X_1 \ldots X_p$, obtain $\hat{\varepsilon}$
-- Run regression $\hat{\varepsilon} \sim X_1 \ldots X_p$, run $F$-test (actually $\chi ^2$ test).
+Steps are:
+
+1. Run the original regression
+
+    $$Y \sim X_1 + X_2 + \ldots X_j$$
+
+    Obtain residuals $\hat{\varepsilon}$.
+
+2. Run an auxiliary regression
+
+    $$\hat{\varepsilon}^2 \sim X_1 + X_2 + \ldots X_j$$
+
+    Obtain $TSS$ and $RSS$.
+
+3. Compute the Lagrange multiplier test statistic
+
+    $$LM = \frac{1}{2}(TSS - RSS)$$
+
+    Under the null hypothesis of homoskedasticity, it follows $\chi^2_{p-1}$
 
 #### White Test
 
-The Breusch-Pagan test will detect any linear forms of heteroskedasticity, while the White test allows for nonlinearities by using squares and crossproducts of all the covariates.
+The Breusch-Pagan test will detect any linear forms of heteroskedasticity, while the White test allows for nonlinearities by using squares and crossproducts of all the covariates. White test also tests model misspecification.
 
-- Run regression $Y \sim X_1 \ldots X_p$, obtain $\hat{y}$
-- Run regressions $\hat{\varepsilon}^2 \sim \hat{y}$ and $\hat{\varepsilon}^2 \sim \hat{y}^2$
-- Use the $R^2$ to form an $F$ test statistic
+Steps are:
 
+1. Run the original regression
+
+    $$Y \sim X_1 + X_2 + \ldots X_j$$
+
+    Obtain residuals $\hat{\varepsilon}$.
+
+2. Run an auxiliary regression
+
+    $$\hat{\varepsilon}^2 \sim \left\{ X_j \right\} + \left\{ X_j^2 \right\} + \left\{ X_j X_k \right\}$$
+
+    where
+    - $\left\{ X_j \right\}$ stands for all first-order terms, $X_1, X_2, \ldots, X_p$
+    - $\left\{ X_j^2 \right\}$ stands for all second-order terms, $X_1^2, X_2^2, \ldots, X_p^2$
+    - $\left\{ X_j X_k \right\}$ stands for all interaction terms (aka cross-products)
+
+    Obtain $R^2$.
+
+3. Compute the Lagrange multiplier test statistic
+
+    $$LM=n R^2$$
+
+    Under the null hypothesis of homoskedasticity, it follows $\chi^2 _{q-1}$ where $q$ is the number of parameters in the auxiliary regression model.
+
+
+The logic of the test is as follows. [[Wikipedia](https://en.wikipedia.org/wiki/White_test)]
+
+- First, the squared residuals from the original model serve as a proxy for the variance of the error term at each observation. (The error term is assumed to have a mean of zero, and the variance of a zero-mean random variable is just the expectation of its square.) The independent variables in the auxiliary regression account for the possibility that the error variance depends on the values of the original regressors in some way (linear or quadratic).
+
+- If the error term in the original model is in fact homoskedastic (has a constant variance) then the coefficients in the auxiliary regression (besides the constant) should be statistically indistinguishable from zero and the R2 should be “small". Conversely, a “large" R2 (scaled by the sample size so that it follows the chi-squared distribution) counts against the hypothesis of homoskedasticity.
+
+
+:::{admonition,warning} Warning
+In cases where the White test statistic is statistically significant, heteroskedasticity may not necessarily be the cause; instead the problem could be a specification error.
+:::
 
 
 ### Correction by Robust Error
-
-
-
 
 
 ### Alt Model: Weighted Least Squares
@@ -383,7 +428,6 @@ We will talk about how to find $\sigma_i$ later.
 ### Estimation
 
 To find the solution, we introduce an $n\times n$ diagonal matrix $\boldsymbol{W}$, whose diagonal entries are the scaling factor $w_{ii} = \frac{1}{\sigma^2 _i}$. Hence,
-
 
 $$\begin{aligned}
 \hat{\boldsymbol{\beta}} _{WLS}
@@ -420,11 +464,11 @@ In particular, if $\boldsymbol{W} = \frac{1}{\sigma^2 } \boldsymbol{I}$ as in OL
 
 The question is, how to find $\boldsymbol{W}$ in advance? Some rules of thumbs include
 
-- If $y_i$ is a **sum** from a sample of size $n_i$, then $\sigma^2 _i \propto n_i$
-- If $y_i$ is an **average** from a sample of size $n_i$, then $\sigma^2 _i \propto \frac{1}{n_i}$
+- If $y_i$ is a **sum** from a sample of size $n_i$, then $\sigma^2 _i \propto n_i$, then we can set weights $w_{ii} = \frac{1}{n_i}$
+- If $y_i$ is an **average** from a sample of size $n_i$, then $\sigma^2 _i \propto \frac{1}{n_i}$, then we can set weights $w_{ii} = n_i$
 
 ```{margin}
-Note $\hat{\boldsymbol{\beta}} _{WLS}$ is invariant to spherical scaling of $\boldsymbol{W}$, so we don't need to know the exact value of $\sigma^2_i$.
+Note $\hat{\boldsymbol{\beta}} _{WLS}$ is invariant to spherical scaling of $\boldsymbol{W}$, so we don't need to know the exact value of $\sigma^2_i$, we just need to know their relative ratio.
 ```
 
 Besides, we can find weights from data adaptively.
@@ -466,28 +510,46 @@ and use the estimated
 
 ### Of $Y$
 
+Suppose due to some measurement error $w$, we obtain $\widetilde{Y} = Y + w$
 
 $$
-\begin{array}{c}
-Y-e=\beta_{0}+\beta_{1} X_{1}+\ldots+\beta_{k} X_{k}+u \\
-Y=\beta_{0}+\beta_{1} X_{1}+\ldots+\beta_{k} X_{k}+(e+u)
-\end{array}
+\begin{aligned}
+\text{True response } Y&=\beta_{0}+\beta_{1} X_{1}+\ldots+\beta_{k} X_{k}+\varepsilon \\
+\text{Observe } \widetilde{Y} &=Y +w\\
+\widetilde{Y} &=\beta_{0}+\beta_{1} X_{1}+\ldots+\beta_{k} X_{k}+ \underbrace{\varepsilon}_{\text{other variables' effect} } +  \underbrace{w}_{\text{measurement error}}
+\end{aligned}
 $$
 
-Assume $E(e) = 0$.
+Then, the new estimates $\widetilde{\boldsymbol{\beta} }$ and the inference are
 
-- If $e$ is correlated with the regressors $X$, then get bias $\beta$, like omitted variable bias
-- Else, OLS is unbiased but variance rises, like adding an irrelevant variable.
+$$\begin{aligned}
+\widetilde{\boldsymbol{\beta}}
+&= \boldsymbol{\beta} + (\boldsymbol{X} ^\top \boldsymbol{X} )^{-1} \boldsymbol{X} ^\top (\boldsymbol{\varepsilon} + \boldsymbol{w} ) \\
+\operatorname{E}\left( \widetilde{\boldsymbol{\beta}}  \right)&= \boldsymbol{\beta} + (\boldsymbol{X} ^\top \boldsymbol{X} )^{-1} \boldsymbol{X} ^\top \operatorname{E}( \boldsymbol{w} ) \\
+\operatorname{Var}\left( \widetilde{\boldsymbol{\beta}}  \right)&= (\boldsymbol{X} ^\top \boldsymbol{X} )^{-1} \boldsymbol{X} ^\top \operatorname{Var}( \boldsymbol{\varepsilon} + \boldsymbol{w} ) \boldsymbol{X} (\boldsymbol{X} ^\top \boldsymbol{X} )^{-1} \\
+&= (\boldsymbol{X} ^\top \boldsymbol{X} )^{-1} \boldsymbol{X} ^\top (\sigma^2 _\varepsilon \boldsymbol{I} + \sigma^2 _w \boldsymbol{I}) \boldsymbol{X} (\boldsymbol{X} ^\top \boldsymbol{X} )^{-1} \text{ (assumed)} \\
+&= (\sigma^2 _\varepsilon + \sigma^2 _w) (\boldsymbol{X} ^\top \boldsymbol{X} )^{-1} \\
+\end{aligned}$$
+
+- In terms of unbiasedness,  $(\boldsymbol{X} ^\top \boldsymbol{X} )^{-1} \boldsymbol{X} ^\top \operatorname{E}( \boldsymbol{w} )$ can be viewed as the estimates by regressing $\operatorname{E}\left( \boldsymbol{w}  \right)$ over $\boldsymbol{X}$.
+  - If $\operatorname{E}\left(\boldsymbol{w}  \right) = \boldsymbol{0}$, then $\widetilde{\boldsymbol{\beta} }$ is unbiased.
+  - Else, bias may appear
+- In terms of variances, assume $\boldsymbol{\varepsilon}$ and $\boldsymbol{w}$ are independent, and assume $\operatorname{Var}\left( \boldsymbol{w}  \right) = \sigma^2 _w \boldsymbol{I}$, then the variance increases, so the standard error increases.
+
+
 
 ### Of $X$
 
 Suppose the true values of explanatory variables is $x_{ij}$. Due to some measurement error $w_{ij}$, we collect $\tilde{x}_{ij} = x_{ij} + w_{ij}$. Now we want to analyze its effect on our OLS estimates.
 
-Here are some assumptions of measurement error $w_{ij}$:
+```{margin}
+Erros satisfying these assumptions are called classical errors
+```
+Assume
 
 - common zero mean $\operatorname{E}\left( w_{ij} \right) = 0$
 - common variance $\operatorname{Var}\left( w_{ij} \right) = \sigma^2_w$
-- pairwisely uncorrelated
+- pairwisely uncorrelated $\operatorname{Cov} (w_{ij}, w_{k\ell}) = 0$
 - uncorrelated with $\boldsymbol{X}$ and $\boldsymbol{y}$
 
 In matrix form, we can write an error matrix $\boldsymbol{W}_{n \times p} = [\boldsymbol{w}_1 \ \ldots \ \boldsymbol{w}_p ]$ where $\boldsymbol{w}_j = [w_{1j}, w_{2j}, \ldots, w_{nj}]^\top$. Then the assumption becomes
@@ -514,22 +576,71 @@ $$\begin{aligned}
 &\rightarrow \left( \boldsymbol{X} ^\top \boldsymbol{X} + n \sigma^2_w \boldsymbol{I} _p \right) ^{-1} \boldsymbol{X} ^\top \boldsymbol{y} \\
 \end{aligned}$$
 
-which is like ridge regression.
+which is like the form of ridge regression.
 
-As $\sigma^2$ increases,
+As $\sigma^2_w$ increases,
 
-- the effect amounts to shrinkage in $\boldsymbol{\beta}$, i.e. $\left\vert \beta_j \right\vert$ decreases
+- the effect amounts to shrinkage in $\boldsymbol{\beta}$, i.e. $\left\vert \beta_j \right\vert$ decreases, which is called **attenuation bias**.
 - $\operatorname{Corr}\left( X_j, Y \right)$ decreases
 
 In particular, in SLR,
 
 $$
-\tilde{\beta}_1 \rightarrow \beta_1 \cdot \frac{\sum_{i=1}^n (x_i - \bar{x})^2}{\sigma^2_w  + \sum_{i=1}^n (x_i - \bar{x})^2}
+\tilde{\beta}_1 \rightarrow \beta_1 \cdot \frac{\sum_{i=1}^n (x_i - \bar{x})^2}{n\sigma^2_w  + \sum_{i=1}^n (x_i - \bar{x})^2}
 $$
 
-This is called **attenuation bias**.
 
-if correlated, then case-by-case
+
+### Solution
+
+- Use better measures
+- Can correct estimates accordingly, if we know how the distribution of measurement error $w$ given $X$ and $Y$
+- Use instrumental variables
+
+## Missing Values
+
+For more details about missing, refer to [missing values](../30-ml-basics/11-missing-values).
+
+Suppose the true model is $\boldsymbol{Y}  = \boldsymbol{X} \boldsymbol{\beta} + \boldsymbol{\varepsilon}$. What happen if some $Y$ or $X$ are not observed?
+
+
+### Completely At Random
+
+If missing is completely at random, then we have a smaller sample. This will increase the standard errors of $\boldsymbol{\beta}$ estimators (lower precision), but it does not cause bias.
+
+### Depends on $Y$ (Endogenous)
+
+If missing depends on $Y$, Consider the following cases.
+
+1. If some upper value $y_i\ge c$ is missing, then for the remaining observations with $\boldsymbol{x}_i ^\top \boldsymbol{\beta} = c$, their error must be $\varepsilon < 0$, to ensure $y_i < c$ to be selected. Consequently, the assumption that $\operatorname{E}\left( \varepsilon_i \right) = 0$ no longer hold for such $i$.
+
+    Hence, the estimates $\hat{\boldsymbol{\beta}}$ will be **biased** since $\operatorname{E}\left( \boldsymbol{\varepsilon}  \right) \ne 0$.
+
+    The analysis is the same for the case of lower value missing $y_i \ge c$.
+
+2. If some middle value $\left\vert y_i -\mu _y\right\vert \le c$ is missing, will the estimates be unbiased?
+
+    This depends. Consider an extreme case that $Y = 10X + \varepsilon$ and we only have three kinds of covariates values $X= 1,2,3$, so there are three data clouds of equal sizes (assumed). Then dropping $\left\vert Y -20 \right\vert < 1$ and using the remaining two data clouds to run OLS, we will still get $E(\tilde{\beta}_1)=1$, which is unbiased.
+
+    On the other hand, this selection criteria can be viewed as a combination of an upper dropping and a lower dropping, so bias is also possible under certain cases.
+
+
+### Depends on $X$ (Exogenous)
+
+If missing depends on $X$, then we miss part of the data.
+
+```{margin} Non-linear true model
+If the true underlying model is not linear, then the estimates may or may not change. One example is $Y = X^2 + \varepsilon$ where $X \sim U(-1,1)$, where we will obtain $E(\hat{\beta_1}) = 0$, and after removing $X<0$, we will obtain $\operatorname{E}\left( \widetilde{\beta_1} \right) > 0$.
+```
+
+- In terms of unbiasedness, we only observe some parts of the hyperplane, with the same local slope as the overall hyperplane. Hence, the estimates are still **unbiased**.
+
+- In terms of variance of estimates, recall that $\operatorname{Var}\left( \beta_j \right) = \sigma^{2} \frac{1}{1-R_{j}^{2}} \frac{1}{\sum_{i}\left(x_{i j}-\bar{x}_{j}\right)^{2}}$, then
+  - data TSS $\sum_{i}\left(x_{i j}-\bar{x}_{\cdot j}\right)^{2}$ can only decrease (think about one-way ANOVA)
+  - $R_j^2$ can increase or decrease (think about leaky ReLU shape relation between $X_j$ and $X_1$)
+
+  Hence the how $\operatorname{Var} (\beta_j)$ change is uncertain.
+
 
 ## Categorical $X$
 

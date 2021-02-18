@@ -434,6 +434,11 @@
      Kernels
     </a>
    </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../30-ml-basics/11-missing-values.html">
+     Missing Values
+    </a>
+   </li>
   </ul>
   <i class="fas fa-chevron-down">
   </i>
@@ -705,6 +710,86 @@
     <!-- Table of contents -->
     <div class="d-none d-md-block col-md-2 bd-toc show">
         
+        <div class="tocsection onthispage pt-5 pb-3">
+            <i class="fas fa-list"></i> Contents
+        </div>
+        <nav id="bd-toc-nav">
+            <ul class="nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#problem">
+   Problem
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#diagrams">
+     Diagrams
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#scoring">
+     Scoring
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#forward-algorithm">
+       Forward Algorithm
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#backward-algorithm">
+       Backward Algorithm
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#decoding">
+     Decoding
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#training">
+     Training
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#applications">
+   Applications
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#speech">
+     Speech
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pose">
+     Pose
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#speech-tags">
+     Speech Tags
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#hidden-topic-markov-models">
+   Hidden Topic Markov Models
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#model-selection">
+   Model Selection
+  </a>
+ </li>
+</ul>
+
+        </nav>
+        
     </div>
 </div>
     <div id="main-content" class="row">
@@ -717,17 +802,98 @@
 <p>A hidden Markov model has a two sequences: state <span class="math notranslate nohighlight">\(S_t\)</span> and observation <span class="math notranslate nohighlight">\(O_t\)</span>. The hidden, unobservable states <span class="math notranslate nohighlight">\(S_t\)</span> follow a Markov chain with transition probability <span class="math notranslate nohighlight">\(P(S_t \vert S_{t-1})\)</span> and the observation follows a conditional distribution <span class="math notranslate nohighlight">\(P(O_t \vert S_t=s_t)\)</span> parameterized by <span class="math notranslate nohighlight">\(s_t\)</span>.</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{aligned}
-&amp; S_1 \longrightarrow &amp;&amp; S_2  \longrightarrow &amp;&amp;\ldots \longrightarrow &amp;&amp; S_t  \\
-&amp;\downarrow &amp;&amp;\downarrow &amp;&amp; &amp;&amp;\downarrow \\
-&amp; O_1 &amp;&amp; O_2 &amp;&amp; \ldots &amp;&amp; O_t \\
+&amp; S_1 &amp;&amp;\longrightarrow &amp;&amp; S_2  &amp;&amp;\longrightarrow &amp;&amp;\ldots&amp;&amp; \longrightarrow &amp;&amp; S_t  \\
+&amp;\downarrow&amp;&amp; &amp;&amp;\downarrow&amp;&amp; &amp;&amp;&amp;&amp; &amp;&amp;\downarrow \\
+&amp; O_1 &amp;&amp;&amp;&amp; O_2&amp;&amp; &amp;&amp; \ldots &amp;&amp; &amp;&amp;O_t \\
 \end{aligned}\end{split}\]</div>
 <p>Given a sequence of observations <span class="math notranslate nohighlight">\(o_1, \ldots, o_t\)</span>, we want to solve</p>
 <ul class="simple">
-<li><p>What is the probability of this sequence? (the scoring problem)</p></li>
-<li><p>What is your best guess of the sequence of hidden states <span class="math notranslate nohighlight">\(s_1, \ldots, s_t\)</span>? (the decoding problem)</p></li>
+<li><p>What is the probability of this sequence <span class="math notranslate nohighlight">\(o_1, \ldots, o_t\)</span>? (the <strong>scoring</strong> problem)</p></li>
+<li><p>What is your best guess of the sequence of hidden states <span class="math notranslate nohighlight">\(s_1, \ldots, s_t\)</span>? (the <strong>decoding</strong> problem)</p></li>
 <li><p>Given a large number of observations, how could you learn a
-model of the conditional distribution <span class="math notranslate nohighlight">\(P(O_t\vert S_t)\)</span>? (the training problem)</p></li>
+model of the conditional distribution <span class="math notranslate nohighlight">\(P(O_t\vert S_t)\)</span>? (the <strong>training</strong> problem)</p></li>
 </ul>
+<div class="section" id="problem">
+<h2>Problem<a class="headerlink" href="#problem" title="Permalink to this headline">¶</a></h2>
+<p>Notations:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span>: <span class="math notranslate nohighlight">\(N\times N\)</span> state transition probability matrix where <span class="math notranslate nohighlight">\(a_{ij} = P(q_{t+1} = j\vert q_t = i)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{\pi}  = \left\{ \pi_i \right\}\)</span>: initial state distribution, where <span class="math notranslate nohighlight">\(\pi_i = P(q_1 = i)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(V= \left\{ v_1, \ldots, v_M \right\}\)</span>: set of <span class="math notranslate nohighlight">\(M\)</span> possible observation labels (or vectors, in general). Obervation at time <span class="math notranslate nohighlight">\(t\)</span> is <span class="math notranslate nohighlight">\(o_t \in V\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{B}\)</span>: <span class="math notranslate nohighlight">\(N\times M\)</span> observation (emission) distribution in state <span class="math notranslate nohighlight">\(i\)</span> where <span class="math notranslate nohighlight">\(b_{i}(k) = P(o_{t} = v_k\vert q_t = i)\)</span></p></li>
+</ul>
+<p>The entire model parameters is <span class="math notranslate nohighlight">\(\lambda = \left\{ \boldsymbol{A} , \boldsymbol{B} ,\pi \right\}\)</span></p>
+<p>The problems can be formulated as</p>
+<ul class="simple">
+<li><p>Scoring problem
+Given <span class="math notranslate nohighlight">\(\boldsymbol{O_T} =\)</span> and <span class="math notranslate nohighlight">\(\lambda\)</span>, compute <span class="math notranslate nohighlight">\(P(\boldsymbol{O} \vert \lambda )\)</span>
+forward algorithm</p></li>
+<li><p>Decoding
+Given</p></li>
+<li><p>Training (learning)
+Given <span class="math notranslate nohighlight">\(\boldsymbol{o}\)</span>, find <span class="math notranslate nohighlight">\(\lambda\)</span> to maximize</p></li>
+</ul>
+<div class="section" id="diagrams">
+<h3>Diagrams<a class="headerlink" href="#diagrams" title="Permalink to this headline">¶</a></h3>
+<p>transition diagrams, trellis</p>
+</div>
+<div class="section" id="scoring">
+<h3>Scoring<a class="headerlink" href="#scoring" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="forward-algorithm">
+<h4>Forward Algorithm<a class="headerlink" href="#forward-algorithm" title="Permalink to this headline">¶</a></h4>
+<p>Enumeration over <span class="math notranslate nohighlight">\(\boldsymbol{q}\)</span> is computational expensive.</p>
+<p>Use DP.</p>
+<p>Define <span class="math notranslate nohighlight">\(a_t{i}\)</span> the probability of observing <span class="math notranslate nohighlight">\(\boldsymbol{O}_T\)</span> at time <span class="math notranslate nohighlight">\(t\)</span> in state <span class="math notranslate nohighlight">\(i\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[
+P\left(\mathbf{o}_{1} \mathbf{o}_{2} \ldots \mathbf{o}_{t}, q_{t}=i \mid \lambda\right)
+\]</div>
+<p>Then</p>
+<ul class="simple">
+<li><p>For <span class="math notranslate nohighlight">\(t=1\)</span></p></li>
+<li><p>For <span class="math notranslate nohighlight">\(t&gt;1\)</span>, for <span class="math notranslate nohighlight">\(a_t{j}\)</span>, we consider the all</p></li>
+</ul>
+<p>Marginalize The final state</p>
+</div>
+<div class="section" id="backward-algorithm">
+<h4>Backward Algorithm<a class="headerlink" href="#backward-algorithm" title="Permalink to this headline">¶</a></h4>
+<p>Define <span class="math notranslate nohighlight">\(b_t{i}\)</span> the probability of observing <span class="math notranslate nohighlight">\(\boldsymbol{O}_T\)</span> at time <span class="math notranslate nohighlight">\(t\)</span> in state <span class="math notranslate nohighlight">\(i\)</span>,</p>
+</div>
+</div>
+<div class="section" id="decoding">
+<h3>Decoding<a class="headerlink" href="#decoding" title="Permalink to this headline">¶</a></h3>
+<p>Joint probability of state sequence and observation sequence.</p>
+<p>Viterbi Algorithm</p>
+</div>
+<div class="section" id="training">
+<h3>Training<a class="headerlink" href="#training" title="Permalink to this headline">¶</a></h3>
+<p>ML to find for <span class="math notranslate nohighlight">\(\lambda\)</span>.</p>
+<p>If states is given, then ML is easy by counting. Similar like Gaussian.</p>
+<p>But the states are not given, so we provide initial guess, and iteratively update <span class="math notranslate nohighlight">\(\lambda\)</span>.</p>
+<p>Baum-Welch Algorithm: EM for HMMs</p>
+</div>
+</div>
+<div class="section" id="applications">
+<h2>Applications<a class="headerlink" href="#applications" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="speech">
+<h3>Speech<a class="headerlink" href="#speech" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="pose">
+<h3>Pose<a class="headerlink" href="#pose" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="speech-tags">
+<h3>Speech Tags<a class="headerlink" href="#speech-tags" title="Permalink to this headline">¶</a></h3>
+</div>
+</div>
+<div class="section" id="hidden-topic-markov-models">
+<h2>Hidden Topic Markov Models<a class="headerlink" href="#hidden-topic-markov-models" title="Permalink to this headline">¶</a></h2>
+<p>Topic states.</p>
+</div>
+<div class="section" id="model-selection">
+<h2>Model Selection<a class="headerlink" href="#model-selection" title="Permalink to this headline">¶</a></h2>
+<p>Perplexity</p>
+<p>.</p>
+</div>
 </div>
 
     <script type="text/x-thebe-config">

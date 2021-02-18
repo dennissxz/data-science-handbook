@@ -665,6 +665,17 @@ in a decrease of at most $k$ in the max flow.
     Decreasing by $k$ is the same as decreasing in $k$ steps of 1. Each such step
 decreases the max flow by at most 1. So the total decrease is at most $k$.
 
+1. Vertex-capacity max-flow: capacity constraints are on vertices. Each vertex has capacity constraint $c(v)$.
+
+    Sol: assign infinite capacity to all edges. Convert each vertex to two vertices connected by an edge, with edge weight $c(e) = c(v)$. Equivalent. 
+
+1. Vertex-disjoint path problem: fin maximum number of vertex-disjoint paths (no two paths share vertices) connecting $S$ to $T$.
+
+   Recall Menger’s Theorem:
+   - The maximum number of EDPs connecting $S$ to $T$ is equal to the minimum number of edges needed to disconnect $S$ from $T$.
+
+   The corresponding version in this setting is:
+   - The maximum number of **VDPs** connecting $S$ to $T$ is equal to the minimum number of **vertices** needed to disconnect $S$ from $T$.
 
 
 http://www.cim.mcgill.ca/~langer/251/E11-networkflow-2.pdf
