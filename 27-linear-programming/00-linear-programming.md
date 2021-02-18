@@ -217,3 +217,92 @@ with variables $\left\{ \boldsymbol{a} ,b , \boldsymbol{e}  \right\}$.
 If the two kinds of points are non-linearly separable, we can consider feature transformation $\boldsymbol{x}  \rightarrow \boldsymbol{\phi}(\boldsymbol{x} )$ and then solve the LP problem.
 
 The feature transformation can involve non-linear terms such as $x_1^2, x_1 x_2$ etc.
+
+## Duality
+
+For an LP minimization problem of the form
+
+$$
+\begin{array}{cr}
+\min & f(\boldsymbol{x} ) = \boldsymbol{c}^{\top} \boldsymbol{x} \\
+\text { s.t. } & \boldsymbol{A} \boldsymbol{x} \ge \boldsymbol{b} \\
+& \boldsymbol{x} \geq \mathbf{0}
+\end{array}
+$$
+
+Before solving it, we consider a lower bound $\ell$ for $f(\boldsymbol{x} ^*)$, by linearly combine the constraints $\boldsymbol{a} _1 ^\top \boldsymbol{x} \ge b_1$, $\boldsymbol{a} _2 ^\top \boldsymbol{x} \ge b_2$, etc, where $\boldsymbol{a} _i$ is $i$-th row of $\boldsymbol{A}$. Let $y_1, y_2, \ldots$ be the corresponding non-negative multipliers. The linear combination of the constraints is
+
+$$
+y_1(\boldsymbol{a} _1 ^\top \boldsymbol{x} ) + y_2(\boldsymbol{a} _2 ^\top \boldsymbol{x} ) + \ldots \ge y_1 b_1 + y_2 b_2 + \ldots
+$$
+
+If the LHS's coefficients of $x_j$ is **smaller** than $c_j$, then due to non-negativity of $x_j$, we always have $\boldsymbol{c}  ^\top \boldsymbol{x} \ge LHS \ge \boldsymbol{b} ^\top \boldsymbol{y}$. So $\boldsymbol{b} ^\top \boldsymbol{y}$ is always a lower bound of $f(\boldsymbol{x})$. Moreover, we want the lower bound to be as larger as possible. To sum up, we want to find $\boldsymbol{y}$ from the following maximization problem
+
+$$
+\begin{array}{cr}
+\max & g(\boldsymbol{y} ) = \boldsymbol{b}^{\top} \boldsymbol{y} \\
+\text { s.t. } & \boldsymbol{A} ^\top  \boldsymbol{y} \le \boldsymbol{c} \\
+& \boldsymbol{y} \geq \mathbf{0}
+\end{array}
+$$
+
+Any solution to this $\max g(\boldsymbol{y})$ problem provides a lower bound of $f(\boldsymbol{x} ^*)$.
+
+$$
+g(\boldsymbol{y}) \le f(\boldsymbol{x}^*)
+$$
+
+The problem $\max f(\boldsymbol{x} )$ is called **primal**, the problem $\min g(\boldsymbol{y} )$ is called **dual**.
+
+Likewise, we can find an upper bound of $g(\boldsymbol{y} )$ by similar operation. Denote the multipliers by $\boldsymbol{z}$,
+
+$$
+\begin{array}{cr}
+\min & h(\boldsymbol{z} ) = \boldsymbol{c}^{\top} \boldsymbol{z} \\
+\text { s.t. } & \boldsymbol{A} \boldsymbol{z} \ge \boldsymbol{b} \\
+& \boldsymbol{z} \geq \mathbf{0}
+\end{array}
+$$
+
+Then, any solution to this $\min h(\boldsymbol{z})$ problem gives an upper bound of $g(\boldsymbol{y} )$, hence
+
+$$
+g(\boldsymbol{y} ^*) \le h(\boldsymbol{z})
+$$
+
+Note that $g(\boldsymbol{z} )$ has exactly the same form with $f(\boldsymbol{x} )$. Hence, the dual of dual is primal.
+
+### LP Max-flow
+
+Consider the path-defined flow. We can view each $f(p)$ as a variable. Then the problem is
+
+$$
+\begin{array}{cr}
+\max & \sum _{P \in \mathcal{P}} f(P) && \\
+\text { s.t. } & \sum_{P: e \in e(P)} f(P) &&\le c(e) \ \forall e \\
+ & f(P) &&\geq 0 \ \forall P
+\end{array}
+$$
+
+
+But the number of paths is exponential to the graph size.
+
+Let's consider the dual. Let the multipliers be $\boldsymbol{y}$. Then
+
+### LP Cut
+
+No integer, but relaxation.
+
+Definition (Relaxation)
+
+min-cut vs LP cut. WTS equality
+
+Integrality Gap
+- min
+- max
+
+Claim: LP-cut has integrality gap 1, i.e., $OPT  = OPT_{LP}$.
+
+Prove by providing an efficient algo that given any fractional solution to $OPT_{LP}$, it returns an integral feasible solution whose cost is not higher than $OPT_{LP}$. (LP-rounding algorithm).
+
+View $y_e$ as length of edge $e$. The distance $d(u,v)$ is the length of shortest $u-v$ path under $y_e$ edge length.
