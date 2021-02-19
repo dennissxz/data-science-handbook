@@ -90,22 +90,12 @@ $$
 \boldsymbol{y} = \boldsymbol{X}_{n \times p} \boldsymbol{\beta} + \boldsymbol{\varepsilon}  
 $$
 
-And we omit one explanatory variable $X_j$. Thus, our new design matrix has size $n \times (p-1)$, denoted by $\boldsymbol{X}_{-j}$. Without loss of generality, let it be in the last column of the original design matrix, i.e. $\boldsymbol{X} = \left[ \boldsymbol{X} _{-j} \quad \boldsymbol{x}_j \right]$. The new estimated coefficients vector is denoted by $\hat{\boldsymbol{\beta}}_{-j}$. The coefficient for $\boldsymbol{x}_j$ in the true model is denoted by $\beta_j$, and the vector of coefficients for other explanatory variables is denoted by $\boldsymbol{\beta} _{-j}$. Hence, $\boldsymbol{\beta} ^\top = \left[ \boldsymbol{\beta} _{-j} \quad \beta_j \right] ^\top$.
+And we omit one explanatory variable $X_j$. Thus, our new design matrix has size $n \times (p-1)$, denoted by $\boldsymbol{X}_{-j}$. Without loss of generality, let it be in the last column of the original design matrix, i.e. $\boldsymbol{X} = \left[ \boldsymbol{X} _{-j} \quad \boldsymbol{x}_j \right]$. The new estimated coefficients vector is denoted by $\widetilde{\boldsymbol{\beta}}_{-j}$. The coefficient for $\boldsymbol{x}_j$ in the true model is denoted by $\beta_j$, and the vector of coefficients for other explanatory variables is denoted by $\boldsymbol{\beta} _{-j}$. Hence, $\boldsymbol{\beta} ^\top = \left[ \boldsymbol{\beta} _{-j} \quad \beta_j \right] ^\top$.
 
-``` {margin}
-Though the common focus is on bias, omitting a variable probably decreases variance. See the relevant section [below](lm-include-variable), or the variance expression [above](lm-inference-variance).
-```
-
-*Question: Is $\hat{\boldsymbol{\beta}}_{-j}$ unbised for $\boldsymbol{\beta}_{-j}$?*
-
-*Answer: No. Omitting a relevant variable increases bias. There is a deterministic identity for the bias.*
-
-We will see the meaning of “relevant” later.
-
-We first find the expression of the new estimator $\hat{\boldsymbol{\beta}}_{-j}$
+We first find the expression of the new estimator $\hat{\boldsymbol{\beta}}_{-j}$ of the regression where the design matrix is $\boldsymbol{X} _{-j}$.
 
 $$\begin{align}
- \hat{\boldsymbol{\beta} }_{-j}
+ \widetilde{\boldsymbol{\beta} }_{-j}
 &= \left( \boldsymbol{X} ^\top _{-j} \boldsymbol{X}  _{-j} \right) ^{-1} \boldsymbol{X} ^\top _{-j} \boldsymbol{y} \\
 &= \left( \boldsymbol{X} ^\top _{-j} \boldsymbol{X}  _{-j} \right) ^{-1} \boldsymbol{X} ^\top _{-j} \left\{ \left[ \boldsymbol{X} _{-j} \quad \boldsymbol{x}_j \right]\left[\begin{array}{l}
 \boldsymbol{\beta} _{-j}  \\
@@ -118,21 +108,21 @@ $$\begin{align}
 The expectation, therefore, is
 
 $$
-\operatorname{E}\left( \hat{\boldsymbol{\beta} }_{-j} \right) =  \boldsymbol{\beta} _{-j} + \left[ \left( \boldsymbol{X} ^\top _{-j} \boldsymbol{X}  _{-j} \right) ^{-1} \boldsymbol{X} ^\top _{-j} \boldsymbol{x}_j \right]\beta _j\\
+\operatorname{E}\left( \widetilde{\boldsymbol{\beta} }_{-j} \right) =  \boldsymbol{\beta} _{-j} + \left[ \left( \boldsymbol{X} ^\top _{-j} \boldsymbol{X}  _{-j} \right) ^{-1} \boldsymbol{X} ^\top _{-j} \boldsymbol{x}_j \right]\beta _j\\
 $$
 
-What is $\left( \boldsymbol{X} ^\top _{-j} \boldsymbol{X} _{-j} \right) ^{-1} \boldsymbol{X} ^\top _{-j} \boldsymbol{x}_j$? You may recognize this form. It is actually the vector of estimated coefficients when we regress the omitted variable $X_j$ on all other explanatory variables $\boldsymbol{X} _{-j}$. Let it be $\boldsymbol{\alpha}_{(p-1) \times 1}$.
+What is $\left( \boldsymbol{X} ^\top _{-j} \boldsymbol{X} _{-j} \right) ^{-1} \boldsymbol{X} ^\top _{-j} \boldsymbol{x}_j$? You may recognize this form. It is actually the vector of estimated coefficients when we regress the omitted variable $X_j$ on all other explanatory variables $\boldsymbol{X} _{-j}$. Let it be $\boldsymbol{\alpha}_{(p-1) \times 1}$. Note that $\boldsymbol{\alpha}$ is not random, since $\boldsymbol{X}$ is fixed.
 
 Therefore, we have, for the $k$-th explanatory variable in the new model,
 
 $$
-\operatorname{E}\left( \hat{\beta} _{-j,k} \right) = \beta_{k} + \alpha_k \beta_j
+\operatorname{E}\left( \widetilde{\beta}_{k} \right) = \beta_{k} + \alpha_k \beta_j
 $$
 
 
 So the bias is $\alpha_k \beta_j$. The sign can be positive or negative.
 
-This identity can be converted to the following diagram. The explanatory variable $X_k$ is associated with the response $Y$ in two ways. First is directly by itself with strength is $\beta_k$, and second is through the omitted variable $X_j$, with a “compound” strength $\alpha_k \beta_j$.
+This identity can be illustrated by the following diagram. The explanatory variable $X_k$ is associated with the response $Y$ in two ways. The first way is directly by itself with strength is $\beta_k$, and the second is through the omitted variable $X_j$, with a “compound” strength $\alpha_k \beta_j$.
 
 $$
 X_k \quad \overset{\quad \beta_{k} \quad }{\longrightarrow} \quad Y
@@ -148,19 +138,17 @@ $$
 
 When will the bias be zero?
 
--   If $\alpha_k = 0$, that is, the omitted variable $X_j$ and the concerned explanatory variable $X_k$ is uncorrelated, i.e., $\boldsymbol{x}_j ^\top \boldsymbol{x}_k = 0$ in the design matrix.
--   If $\beta_j = 0$, that is, the omitted variable $X_j$ and the response $Y$ is uncorrelated, i.e., $\boldsymbol{x}_j ^\top \boldsymbol{y} = 0$.
+-   If $\alpha_k = 0$, which can be checked by running a regression $X_j$ over other all other covariates. Note that this does NOT implies $X_j$ and $X_k$ are uncorrelated in the design matrix: $\boldsymbol{x}_j ^\top \boldsymbol{x}_k = 0$, see related [discussion](lm-rss-nonincreasing).
+-   If $\beta_j = 0$ in the full model, but this is never known. Note that this does NOT mean $X_j$ and $Y$ are uncorrelated in the data set: $\boldsymbol{x}_j ^\top \boldsymbol{y} = 0$ since $\boldsymbol{y}$ is random.
 
 ```{margin}
 The takeaway here is that we should include all relevant omitted factors to reduce bias. But in practice, we can never know what all relevant factors are, and rarely can we measure all relevant factors.
 ```
 
-That’s how we define “relevant”.
-
 What is the relation between the sample estimates? The relation has a similar form.
 
 $$
-\hat{\beta }_{-j,k} =  \hat{\beta}_k + \hat{\alpha}_k\hat{\beta}_j
+\widetilde{\beta}_{k} =  \hat{\beta}_k + \alpha_k\hat{\beta}_j
 $$
 
 Proof: TBD. Need linear algebra about inverse.
@@ -168,6 +156,8 @@ Proof: TBD. Need linear algebra about inverse.
 Verify:
 
 ```{code-cell}
+:tags: [hide-input]
+
 import numpy as np
 from sklearn.linear_model import LinearRegression
 
@@ -197,22 +187,40 @@ rx = y - lmx.predict(X[:, :-1])
 print("reconstruction difference of b0, b1, b2 :", lm.coef_[0,:3] + lmx.coef_[0] * lm.coef_[0, -1] - lmo.coef_[0])
 ```
 
+To sum up, omitting a variable $X_j$ from the true model introduces bias of the remaining estimates of size $\alpha_k \beta_j$. The magnitude is 0 if
+
+- $\alpha_k = 0$: the variable $X_k$ has no explanatory power to $X_j$ given other covariates
+- $\beta_j = 0$: the variable $X_j$ has no effect in the data generating process of $Y$.
 
 
-(lm-include-variable)=
+(lm-add-variable)=
 ## Add a Variable
 
-What if we add a new variable $X_j$? What will happen to the existing estimator $\hat\beta_k$?
+What if we add a new variable $X_j$? What will happen to the standard error of an existing estimator $\hat\beta_k$?
 
-Increase
+Recall that the estimated variance of $\hat{\beta}_k$,
 
-$$\operatorname{Var}\left(\hat{\beta}_{k}\right)=\sigma^{2} \frac{1}{1-R_k^{2}} \frac{1}{\sum_{i}\left(x_{i k}-\bar{x}_{k}\right)^{2}}$$
+$$\begin{aligned}
+\widehat{\operatorname{Var}}\left(\hat{\beta}_{k}\right) &= \frac{1}{\sum_{i}\left(x_{i k}-\bar{x}_{k}\right)^{2}}  \frac{\hat{\sigma}^{2}}{1-R_k^{2}} \\
+&= \frac{1}{\sum_{i}\left(x_{i k}-\bar{x}_{k}\right)^{2}} \frac{1}{1-R_k^{2}}  \frac{RSS}{n-p} \\
+&= \frac{\sum_{i}\left(y_{i}-\bar{y}\right)^{2}/(n-1)}{\sum_{i}\left(x_{i k}-\bar{x}_{k}\right)^{2}} \frac{1- \operatorname{adj}R^2}{1-R_k^{2}}  \\
+\end{aligned}$$
 
-if $R_{k}^2$ increases. When will $R^2_{k}$ be unchanged? When the new variable $X_j$ has no explanatory power to $X_k$. See the [section](lm-rss-nonincreasing).
+In short,
 
-In terms of bias, if we say the model with $X_p$ is "true", then $\operatorname{E}\left( \hat{\beta}_k \right)$ is probably closer to $\beta_k$ according to the equation described in the above [section](lm-omit-variable).
+- Adding a variable $X_j$ increases $R_k^2$ unless $X_j$ has no explanatory power to $X_k$ given other covariates. Hence the factor $\frac{1}{1-R_k^{2}}$ usually increases.
 
+- If $X_j$ has good explanatory power to $Y$ given other covariates and hence leads to a large reduction in $RSS$, then the term $\frac{RSS}{n-p}$ decreases (though $n-p$ decreases too).
 
+Hence, the overall effect is uncertain. To sum up,
+
+- If $X_j$ has SMALL explanatory power to $X_k$ given other covariates, and has GOOD explanatory power to $Y$ given other covariates, say, providing a new relevant dimension in $Y$ and is nearly orthogonal to existing dimensions, then the standard error **decreases**. This is the optimal new variable we want to add.
+
+  Example: add a variable $PriorScore$ to the regression $NewScore \sim Treatment$ can reduce the standard error of $\hat{\beta}_{Treatment}$ if the treatment assignment is random.
+
+- If $X_j$ has GOOD explanatory power to $X_k$ given other covariates, and has SMALL explanatory power to $Y$ given other covariates, say, nearly a linear combination of the existing covariates, then the standard error **increases**. This is the kind of new variable we want to avoid.
+
+  Hence, if our model is already a good (or close to true) model, adding more covariates increases standard error. This gives a stopping criteria when adding more covariates.
 
 
 ## Multicollinearity
@@ -245,7 +253,7 @@ $$
 \operatorname{VIF}_j = \frac{1}{1-R_j^2}
 $$
 
-where $R_j^2$ is the value of $R^2$ when we regress $X_j$ over all other explanatory variables excluding $X_j$. The value of $\operatorname{VIF}_j$ can be interpreted as: the standard error $\operatorname{se}(\beta)$ is $\sqrt{\operatorname{VIF}_j}$ times larger than it would have been without multicollinearity.
+where $R_j^2$ is the value of $R^2$ when we regress $X_j$ over all other explanatory variables excluding $X_j$. The value of $\operatorname{VIF}_j$ can be interpreted as: the standard error $\operatorname{se}(\hat{\beta})$ is $\sqrt{\operatorname{VIF}_j}$ times larger than it would have been without multicollinearity.
 
 A second way of measurement is the **condition number** of $\boldsymbol{X} ^\top \boldsymbol{X}$. If it is greater than $30$, then we can conclude that the multicollinearity problem cannot be ignored.
 
@@ -597,6 +605,7 @@ $$
 - Can correct estimates accordingly, if we know how the distribution of measurement error $w$ given $X$ and $Y$
 - Use instrumental variables
 
+(lm-missing-values)=
 ## Missing Values
 
 For more details about missing, refer to [missing values](../30-ml-basics/11-missing-values).
