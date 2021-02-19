@@ -1415,7 +1415,7 @@ R^2 = \frac{\sum (\hat{y}_i - \bar{y})^2}{\sum (y_i - \bar{y})^2}
 <li><p>The larger the error variance, <span class="math notranslate nohighlight">\(\sigma^2\)</span>, the larger the variance of the coefficient estimates.</p></li>
 <li><p>The larger the variability in the <span class="math notranslate nohighlight">\(x_i\)</span>, the smaller the variance.</p></li>
 <li><p>A larger sample size should decrease the variance.</p></li>
-<li><p>In multiple regression, reduce the relation between <span class="math notranslate nohighlight">\(X_j\)</span> and other covariates (e.g. by orthogonal design) can decreases <span class="math notranslate nohighlight">\(R^2_{j}\)</span>, and hence decrease the variance.</p></li>
+<li><p>In multiple regression, reduce the linear relation between <span class="math notranslate nohighlight">\(X_j\)</span> and other covariates (e.g. by orthogonal design) can decreases <span class="math notranslate nohighlight">\(R^2_{j}\)</span>, and hence decrease the variance.</p></li>
 </ul>
 </div>
 </li>
@@ -1430,8 +1430,9 @@ R^2 = \frac{\sum (\hat{y}_i - \bar{y})^2}{\sum (y_i - \bar{y})^2}
 </div>
 </li>
 <li><p><em>Does the partialling out method holds for <span class="math notranslate nohighlight">\(p \ge 3\)</span></em>?</p></li>
-<li><p><em>How do you compare two linear models?</em></p></li>
-</ol>
+<li><p><em>How do you compare two linear models?</em></p>
+<div class="dropdown seealso admonition">
+<p class="admonition-title"> <em>Solution</em></p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(F\)</span>-test if nested</p></li>
 <li><p><span class="math notranslate nohighlight">\(R\)</span>-squared if same number of covariates (essentially comparing <span class="math notranslate nohighlight">\(RSS\)</span>)</p></li>
@@ -1439,28 +1440,59 @@ R^2 = \frac{\sum (\hat{y}_i - \bar{y})^2}{\sum (y_i - \bar{y})^2}
 <li><p>Log-likelihood</p></li>
 <li><p>out-of-sample prediction</p></li>
 </ul>
-<ol>
-<li><p><em>What happens if you exclude a relevant regressor?</em></p>
-<p>It will bias your estimates of included regressors, if the omitted variable correlated with other regressors</p>
+</div>
 </li>
-<li><p><em>What happens if you include an irrelevant regressor?</em></p>
-<p>You lower precision, if the added variable is correlated with other regressors. So add if it is not correlated with existing regressors, and has explanatory power to the response. Then <span class="math notranslate nohighlight">\(\operatorname{Var}\left(  \right)(\beta_j)\)</span> decreases so precision increases.</p>
+<li><p><em>What happens if you exclude a relevant regressor <span class="math notranslate nohighlight">\(X_j\)</span>?</em></p>
+<div class="dropdown seealso admonition">
+<p class="admonition-title"> <em>Solution</em></p>
+<p>Assumes the word “relevant” here means <span class="math notranslate nohighlight">\(\hat{\beta}_j\)</span> is significant.</p>
+<ul class="simple">
+<li><p>lower fitting performance, i.e. RSS increases,</p></li>
+<li><p>lower predicting performance since we exclude a good predictor</p></li>
+<li><p>probably higher standard error <span class="math notranslate nohighlight">\(\operatorname{se}(\hat{\beta}_k)\)</span> since <span class="math notranslate nohighlight">\(RSS\)</span> increases (also need to look at how <span class="math notranslate nohighlight">\(1-R_k^2\)</span> increases)</p></li>
+<li><p>bias estimates of other covariates <span class="math notranslate nohighlight">\(\operatorname{E}\left( \hat{\beta}_k \right)\)</span>, if the omitted variable has linear relation with them (<span class="math notranslate nohighlight">\(\alpha_k \ne 0\)</span>)</p></li>
+</ul>
+<p>See detailed <a class="reference internal" href="13-lm-extension.html#lm-omit-variable"><span class="std std-ref">discussion</span></a>.</p>
+</div>
 </li>
-<li><p><em>Missing data problem in linear regression</em></p>
+<li><p><em>What happens if you include an irrelevant regressor <span class="math notranslate nohighlight">\(X_j\)</span>?</em></p>
+<div class="dropdown seealso admonition">
+<p class="admonition-title"> <em>Slution</em></p>
+<p>Assume the word “irrelevant” means <span class="math notranslate nohighlight">\(\beta_j=0\)</span>.</p>
+<ul class="simple">
+<li><p>slightly higher fitting performance since <span class="math notranslate nohighlight">\(RSS\)</span> decreases</p></li>
+<li><p>lower predicting performance, since we fit noise as a variable</p></li>
+<li><p>probably higher standard error <span class="math notranslate nohighlight">\(\operatorname{se}(\hat{\beta}_k)\)</span> since <span class="math notranslate nohighlight">\((1-R_k^2)\)</span> decreases (also need to look at how <span class="math notranslate nohighlight">\(RSS\)</span> decreases)</p></li>
+<li><p>will NOT bias estimates of other covariates <span class="math notranslate nohighlight">\(\operatorname{E}\left( \hat{\beta}_k \right)\)</span>, since <span class="math notranslate nohighlight">\(\beta_j=0\)</span>.</p></li>
+</ul>
+<p>See detailed <a class="reference internal" href="13-lm-extension.html#lm-add-variable"><span class="std std-ref">discussion</span></a>.</p>
+</div>
+</li>
+<li><p><em>Describe missing data problems in linear regression</em></p>
+<div class="dropdown seealso admonition">
+<p class="admonition-title"> <em>Solution</em></p>
 <ul class="simple">
 <li><p>if completely at random, then it amounts to a smaller sample. larger standard error, but still unbiased.</p></li>
 <li><p>if missing depends on values of <span class="math notranslate nohighlight">\(x\)</span> (Exogenous Sample Selection)</p>
 <ul>
-<li><p>if the true relation is linear, then no problem. still unbiased since the slope hyperplane is unchanged. the standard error may change if <span class="math notranslate nohighlight">\(\operatorname{Var}\left( X \right)\)</span> changes.</p></li>
-<li><p>if the true relation is not linear, then will get quite different estimates</p></li>
+<li><p>if the true relation is linear, then no problem. still unbiased since the slope of the hyperplane is unchanged. the standard error changes inversely according to how <span class="math notranslate nohighlight">\(\operatorname{Var}\left( X \right)\)</span> change.</p></li>
+<li><p>if the true relation is not linear, then we will get quite different estimates</p></li>
 </ul>
 </li>
 <li><p>if missing depends on <span class="math notranslate nohighlight">\(Y\)</span> (Endogenous sample selection)</p>
 <ul>
-<li><p>if the true relation is linear may have biased estimates, say only observe <span class="math notranslate nohighlight">\(Y\)</span> in a small range, then the scatter plot becomes rectangle.</p></li>
+<li><p>if the true relation is linear, then we may have biased estimates.</p></li>
 </ul>
 </li>
 </ul>
+<p>See detailed <a class="reference internal" href="13-lm-extension.html#lm-missing-values"><span class="std std-ref">discussion</span></a></p>
+</div>
+</li>
+<li><p><em>Does <span class="math notranslate nohighlight">\(\boldsymbol{x}_{p} ^\top \boldsymbol{y} = 0 \Leftrightarrow \hat{\beta}_{p}=0\)</span>?</em></p>
+<div class="dropdown seealso admonition">
+<p class="admonition-title"> <em>Solution</em></p>
+<p>In general NO. <span class="math notranslate nohighlight">\(\hat{\beta}_p = 0\)</span> can be interpreted as <span class="math notranslate nohighlight">\(X_p\)</span> has no explanatory power to <span class="math notranslate nohighlight">\(Y\)</span> <strong>given</strong> other covariates. See detailed <a class="reference internal" href="12-lm-inference.html#lm-rss-nonincreasing"><span class="std std-ref">discussion</span></a>.</p>
+</div>
 </li>
 <li><p>Causal?</p>
 <p>313.qz1.q2</p>

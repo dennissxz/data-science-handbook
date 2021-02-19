@@ -726,11 +726,6 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#relation-to-pca">
-   Relation to PCA
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#special-cases">
    Special Cases
   </a>
@@ -741,6 +736,11 @@
     </a>
    </li>
   </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#relation-to-pca">
+   Relation to PCA
+  </a>
  </li>
 </ul>
 
@@ -809,16 +809,32 @@ g_{i j}=\boldsymbol{x}_{i} \cdot \boldsymbol{x}_{j}
 \widehat{\boldsymbol{G}} = \boldsymbol{Z} \boldsymbol{Z} ^\top
 \]</div>
 </div>
+<div class="section" id="special-cases">
+<h2>Special Cases<a class="headerlink" href="#special-cases" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="input-is-a-euclidean-distance-matrix">
+<h3>Input is a Euclidean Distance Matrix<a class="headerlink" href="#input-is-a-euclidean-distance-matrix" title="Permalink to this headline">¶</a></h3>
+<p>If the input is not a data matrix <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span> but a Euclidean distances matrix <span class="math notranslate nohighlight">\(\boldsymbol{F}\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+f_{i j}=\left\|\boldsymbol{x}_{i}-\boldsymbol{x}_{j}\right\|^{2}=\left\|\boldsymbol{x}_{i}\right\|^{2}-2 \boldsymbol{x}_{i}^{\top} \boldsymbol{x}_{j}+\left\|\boldsymbol{x}_{j}\right\|^{2}
+\]</div>
+<p>If <span class="math notranslate nohighlight">\(\boldsymbol{x} _i\)</span> are <strong>centered</strong> (zero-mean), we can convert the Euclidean distance matrix <span class="math notranslate nohighlight">\(\boldsymbol{F}\)</span> to the Gram matrix <span class="math notranslate nohighlight">\(\boldsymbol{G}\)</span> of inner product by left- and right-multiplying by the centering matrix <span class="math notranslate nohighlight">\(\boldsymbol{C}  = \left(\boldsymbol{I}-\frac{1}{n} \boldsymbol{1} \boldsymbol{1}^{\top}\right)\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[
+\boldsymbol{G} = - \frac{1}{2} \boldsymbol{C}  \boldsymbol{F}\boldsymbol{C} ^{\top}
+\]</div>
+<p>And then we can run MDS over <span class="math notranslate nohighlight">\(\boldsymbol{G}\)</span>.</p>
+</div>
+</div>
 <div class="section" id="relation-to-pca">
 <h2>Relation to PCA<a class="headerlink" href="#relation-to-pca" title="Permalink to this headline">¶</a></h2>
 <p>A difference is that, unlike PCA which gives a projection equation <span class="math notranslate nohighlight">\(\boldsymbol{z} = \boldsymbol{U} ^\top \boldsymbol{x}\)</span>, MDS only gives a projected result for the training set. It does not give us a way to project a new data point.</p>
-<p>A connection is that, the two projected data matrices have a deterministic relation. Suppose the data matrix <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span> is centered. Let <span class="math notranslate nohighlight">\(\boldsymbol{Z} _{PCA}\)</span> be the <span class="math notranslate nohighlight">\(n\times d\)</span> projected matrix by PCA and <span class="math notranslate nohighlight">\(\boldsymbol{Z} _{MDS}\)</span> be that by MDS. Then it can be shown that</p>
+<p>A connection is that, the two projected data matrices are exactly the <strong>same</strong>. Suppose the data matrix <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span> is centered. Let <span class="math notranslate nohighlight">\(\boldsymbol{Z} _{PCA}\)</span> be the <span class="math notranslate nohighlight">\(n\times k\)</span> projected matrix by PCA and <span class="math notranslate nohighlight">\(\boldsymbol{Z} _{MDS}\)</span> be that by MDS. Then it can be shown that</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
-\boldsymbol{Z} _{PCA} = \boldsymbol{Z} _{MDS} \boldsymbol{D} ^ {1/2}\\
+\boldsymbol{Z} _{PCA} = \boldsymbol{Z} _{MDS}\\
 \end{split}\]</div>
-<p>where <span class="math notranslate nohighlight">\(\boldsymbol{D}_{d\times d}\)</span> is the eigenvalue matrix of <span class="math notranslate nohighlight">\(\boldsymbol{X} ^\top \boldsymbol{X}\)</span>.</p>
-<p>That is, the <span class="math notranslate nohighlight">\(j\)</span>-th projected column vector by MDS has the same direction as that by PCA, but scaled by the square root of the <span class="math notranslate nohighlight">\(j\)</span>-th eigenvalue <span class="math notranslate nohighlight">\(\sqrt{\lambda_j}\)</span> of matrix <span class="math notranslate nohighlight">\(\boldsymbol{X} ^\top \boldsymbol{X}\)</span>.</p>
+<p>This also implies that, to obtain PCA projections, we can use the covariance matrix <span class="math notranslate nohighlight">\(\boldsymbol{S}\)</span>, or the Gram matrix <span class="math notranslate nohighlight">\(\boldsymbol{G}\)</span>, or the Euclidean distances matrix <span class="math notranslate nohighlight">\(\boldsymbol{F}\)</span>.</p>
 <div class="dropdown seealso admonition">
 <p class="admonition-title"> <em>Proof</em></p>
 <p>Consider the SVD of the <strong>centered</strong> data matrix</p>
@@ -866,38 +882,22 @@ g_{i j}=\boldsymbol{x}_{i} \cdot \boldsymbol{x}_{j}
 \[
 \boldsymbol{u} _j = \boldsymbol{X} ^\top \boldsymbol{v} _j
 \]</div>
-<p>That is, there is a one-one correspondence between the first <span class="math notranslate nohighlight">\(d\)</span> eigenvectors of <span class="math notranslate nohighlight">\(\boldsymbol{G}\)</span> and <span class="math notranslate nohighlight">\(n \boldsymbol{S}\)</span>. More specifically, we have,</p>
+<p>But note that <span class="math notranslate nohighlight">\(\boldsymbol{u} _j\)</span> is not normalized, since <span class="math notranslate nohighlight">\(\left\| \boldsymbol{u} _j \right\|^2 = \boldsymbol{v} _j ^\top \boldsymbol{X} \boldsymbol{X} ^\top \boldsymbol{v} _j = \sigma^2 _j\)</span>. After normalization, we have,</p>
 <div class="math notranslate nohighlight">
 \[
-\boldsymbol{U} _{[:d]} = \boldsymbol{X} ^\top \boldsymbol{V} _{[:d]}
+\boldsymbol{U} _{[:d]} = \boldsymbol{X} ^\top \boldsymbol{V} _{[:d]} \boldsymbol{D} ^ {-1/2}
 \]</div>
 <p>Substituting this relation to the <span class="math notranslate nohighlight">\(n\times d\)</span> projected matrix by PCA gives</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{aligned}
 \boldsymbol{Z} _{PCA}
-&amp;= \boldsymbol{X} \boldsymbol{U} _{[:d]}\\
-&amp;= \boldsymbol{X} \boldsymbol{X} ^\top \boldsymbol{V}  _{[:d]}\\
-&amp;= \boldsymbol{V} _{[:d]} \boldsymbol{D} \boldsymbol{V} ^\top _{[:d]} \boldsymbol{V}  _{[:d]}\\
-&amp;= \boldsymbol{V} _{[:d]} \boldsymbol{D} \\
-&amp;= \boldsymbol{Z} _{MDS} \boldsymbol{D} ^ {1/2}\\
+&amp;= \boldsymbol{X} \boldsymbol{U} _{[:d]} \boldsymbol{D} ^ {-1/2}\\
+&amp;= \boldsymbol{X} \boldsymbol{X} ^\top \boldsymbol{V}  _{[:d]} \boldsymbol{D} ^ {-1/2}\\
+&amp;= \boldsymbol{V} _{[:d]} \boldsymbol{D} \boldsymbol{V} ^\top _{[:d]} \boldsymbol{V}  _{[:d]} \boldsymbol{D} ^ {-1/2} \quad \because \text{EVD of } \boldsymbol{X} \boldsymbol{X} ^\top  \\
+&amp;= \boldsymbol{V} _{[:d]} \boldsymbol{D} \boldsymbol{D} ^ {-1/2} \quad \because \boldsymbol{V} \text{ is orthogonal} \\
+&amp;= \boldsymbol{V} _{[:d]}\boldsymbol{D} ^ {1/2} \\
+&amp;= \boldsymbol{Z} _{MDS} \\
 \end{aligned}\end{split}\]</div>
-</div>
-</div>
-<div class="section" id="special-cases">
-<h2>Special Cases<a class="headerlink" href="#special-cases" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="input-is-a-euclidean-distance-matrix">
-<h3>Input is a Euclidean Distance Matrix<a class="headerlink" href="#input-is-a-euclidean-distance-matrix" title="Permalink to this headline">¶</a></h3>
-<p>If the input is not a data matrix <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span> but a Euclidean distances matrix <span class="math notranslate nohighlight">\(\boldsymbol{F}\)</span></p>
-<div class="math notranslate nohighlight">
-\[
-f_{i j}=\left\|\boldsymbol{x}_{i}-\boldsymbol{x}_{j}\right\|^{2}=\left\|\boldsymbol{x}_{i}\right\|^{2}-2 \boldsymbol{x}_{i}^{\top} \boldsymbol{x}_{j}+\left\|\boldsymbol{x}_{j}\right\|^{2}
-\]</div>
-<p>If <span class="math notranslate nohighlight">\(\boldsymbol{x} _i\)</span> are <strong>centered</strong> (zero-mean), we can convert the Euclidean distance matrix <span class="math notranslate nohighlight">\(\boldsymbol{F}\)</span> to the Gram matrix <span class="math notranslate nohighlight">\(\boldsymbol{G}\)</span> of inner product by left- and right-multiplying by the centering matrix <span class="math notranslate nohighlight">\(\boldsymbol{C}  = \left(\boldsymbol{I}-\frac{1}{n} \boldsymbol{1} \boldsymbol{1}^{\top}\right)\)</span>,</p>
-<div class="math notranslate nohighlight">
-\[
-\boldsymbol{G} = - \frac{1}{2} \boldsymbol{C}  \boldsymbol{F}\boldsymbol{C} ^{\top}
-\]</div>
-<p>And then we can run MDS over <span class="math notranslate nohighlight">\(\boldsymbol{G}\)</span>.</p>
 </div>
 </div>
 </div>

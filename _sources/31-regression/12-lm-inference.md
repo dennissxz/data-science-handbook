@@ -543,36 +543,91 @@ since $\boldsymbol{1} _n \in \operatorname{col}(\boldsymbol{X})$, if an intercep
 ### Non-increasing RSS
 
 ```{margin}
-This is equivalent to say [$R$-squared](lm-rsquared) is always increasing or unchanged, if an intercept term in included in the model.
+This is equivalent to say [$R$-squared](lm-rsquared) is non-decreasing, if an intercept term in included in the model.
 ```
 
 Given a data set, when we add an new explanatory variable into a regression model, $RSS$ is non-increasing.
 
-Since we are comparing two nested minimization problems
+This can be better understood if we view the linear regression problem as an approximation problem: Given a target vector $\boldsymbol{y} \in \mathbb{R} ^n$ and candidate vectors $\boldsymbol{x} _1, \boldsymbol{x} _2,  \ldots, \boldsymbol{x} _p \in \mathbb{R} ^n$, where $\boldsymbol{x} _1 = \boldsymbol{1}_n$ and $\boldsymbol{x} _1, \ldots, \boldsymbol{x} _{p+1}$ are linearly independent, we want to find a linear combination of $\boldsymbol{x}$'s to approximate $\boldsymbol{y}$.
 
-$$\begin{aligned}
-&\text{Problem 1 / Full model / with } X_{p}  \ &\min &\ \left\Vert  \boldsymbol{y} - \boldsymbol{X} \boldsymbol{\beta} _{(p+1)\times 1} \right\Vert ^2   = \min \ RSS_1 \\
-&\text{Problem 2 / Reduced model / without } X_{p} \ &\min &\ \left\Vert  \boldsymbol{y} - \boldsymbol{X} \boldsymbol{\beta} _{(p+1)\times 1} \right\Vert ^2  = \min \ RSS_2 \\
-&&\text{s.t.}  &\ \beta_{p} = 0
-\end{aligned}$$
+$$
+\min \left\| \boldsymbol{y}  - (\beta_1 \boldsymbol{x} _1 +  \ldots + \beta_p \boldsymbol{x} _p) \right\|  ^2
+$$
 
-Due to the constraint in Problem 2, the minimum value of the Problem 1 should be no larger than the minimum value of the Problem 2, i.e. $RSS_1^* \le RSS_2^*$ , When will they be equal?
+The question is, what happen to the approximation performance if we add another candidate vector $\boldsymbol{x} _{p+1} \in \mathbb{R} ^n$, where $\boldsymbol{x} _{p+1} \notin \operatorname{span}(\boldsymbol{x} _1, \ldots, \boldsymbol{x} _p)$?
 
-- From projection's perspective, they are equal iff the additional orthogonal basis vector of the design matrix $\boldsymbol{X}$ introduced by the new column $X_p$ is orthogonal to the response vector $\boldsymbol{y}$. See the derivation of [$F$-test](lm-F-test) for details. Note that this is different from $\boldsymbol{x} _p ^\top \boldsymbol{y} =0$. The example below shows reduction in RSS even if $\boldsymbol{x} _p ^\top \boldsymbol{y} =0$.
+For any $\boldsymbol{x} _{p+1}$, we can decompose it into three parts
 
-- From optimization's perspective, they are equal iff $\hat{\beta}_{p}=0$ in Problem 1's solution. When will $\hat{\beta}_{p}=0$? No clear condition.
+$$
+\boldsymbol{x} _{p+1} = (a_1 \boldsymbol{x} _1 + \ldots + a _p \boldsymbol{x} _p) + a_y \boldsymbol{y}+ a_w\boldsymbol{w}
+$$
 
-  - If $\boldsymbol{x}_i$'s are orthogonal such that $\boldsymbol{X} ^\top \boldsymbol{X} = I_{p}$, then
+where
 
-    $$
-    \boldsymbol{x}_{p} ^\top \boldsymbol{y} = 0 \Leftrightarrow \hat{\beta}_{p}=0
-    $$
+- $\boldsymbol{w}$ is orthogonal to target $\boldsymbol{y}$ and candidates $\boldsymbol{x} _1, \ldots, \boldsymbol{x} _p$
 
-  - Note that in general, $\not\Leftarrow$. An simple example can be a data set of two points $(1,0), (1,1)$. The fitted line is $y=0.5$.
+- $a_y, a_w$ are not simultaneously zero to ensure $\boldsymbol{x} _{p+1}\notin \operatorname{span}(\boldsymbol{x} _1, \ldots, \boldsymbol{x} _p)$
 
-  - Also, in general, $\not\Rightarrow$. The example below shows $\hat{\beta}_{2} \ne 0$ even if $\boldsymbol{x} ^\top _p \boldsymbol{y} =0$
+Now consider different values of $a_y$ and $a_w$
+
+1. If $a_y \ne 0$ and $a_w=0$, then we should obtain a perfect fit with $RSS=0$, $\hat{\beta}_j  = - \frac{a_j}{a_y}$ and $\hat{\beta}_{p+1} = \frac{1}{a_y}$.
+
+1. If $a_y = 0$ and $a_w\ne 0$, then adding $x_{p+1}$ has no improvement in approximating $\boldsymbol{y}$, since the existing candidates already capture the variation in $\boldsymbol{y}$ and $\boldsymbol{w}$ is irrelevant/orthogonal/uncorrelated to $\boldsymbol{y}$. We should obtain $\hat{\beta}_{p+1}=0$ and the same $RSS$. Note that this does NOT imply the new candidate $\boldsymbol{x} _{p+1}$ and target $\boldsymbol{y}$ are uncorrelated: $\boldsymbol{x} _{p+1}^\top \boldsymbol{y} = 0$, as shown in the experiment below. We can only say there is a part in $\boldsymbol{x}$ that is uncorrealted with $\boldsymbol{y}$, or sometimes people interpret this as "$X_{p+1}$ has no explanatory power in $Y$ given other covariates."
+
+    ```{margin} Does $\boldsymbol{x}_{p} ^\top \boldsymbol{y} = 0 \Leftrightarrow \hat{\beta}_{p}=0$?
+    In general NO, as described on the left. One special case is that, if $\boldsymbol{x}_i$'s are orthogonal such that $\boldsymbol{X} ^\top \boldsymbol{X} = \boldsymbol{I} _{p}$, then $\boldsymbol{x}_{p} ^\top \boldsymbol{y} = 0 \Leftrightarrow \hat{\beta}_{p}=0$.
+    ```
+
+3. if $a_y \ne 0$ and $a_w\ne 0$, this is the general case, where $x_{p+1}$ contains some relevant information about $\boldsymbol{y}$ (measured by $a_y$) in addition to other candidates', and also some irrelevant information $\boldsymbol{w}$ (measured by $a_w$). $RSS$ decreases since we have an additional relevant candidate $\boldsymbol{x} _{p+1}$, and we obtain $\hat{\beta}_{p+1}\ne0$. Also note that this does NOT imply the new candidate $\boldsymbol{x} _{p+1}$ and $\boldsymbol{y}$ must be correlated: $\boldsymbol{x} _{p+1} ^\top \boldsymbol{y} \ne 0$. See the example below.
+
+To sum up, $RSS$ either decreases or stays unchanged. It is unchanged iff $\boldsymbol{x} _{p+1} = (a_1 \boldsymbol{x} _1 + \ldots + a _p \boldsymbol{x} _p) + a_w\boldsymbol{w}$, where $a_w \ne 0$ and $\boldsymbol{w}$ is orthogonal to $\boldsymbol{y} , \boldsymbol{x}_1, \boldsymbol{x} _1, \ldots, \boldsymbol{x} _p$. To check if this condition holds, we can regress $X_{p+1}$ over the existing $p$ candidates. If $\hat{\boldsymbol{u}}\ne \boldsymbol{0}$, then $a_w a_y\ne 0$, further if $\hat{\boldsymbol{u}}^\top \boldsymbol{y} =0$, then $a_y=0, a_w\ne 0, \boldsymbol{w} = \hat{\boldsymbol{u}}$.
 
 ```{code-cell}
+:tags: [hide-input]
+
+print("Experiment: \nDifferent values of a_y and a_w in x_3\n")
+import numpy as np
+
+y = np.vstack((np.array([1,1,1,1]).reshape(4,1), np.zeros((1,1))))
+x1 = np.ones((5,1))
+x2 = np.vstack((np.array([1,2,1]).reshape(3,1), np.zeros((2,1))))
+w = np.vstack((np.array([1,-1,1,-1]).reshape(4,1), np.zeros((1,1))))
+
+print(f"y: {y.T.flatten()}")
+print(f"x1: {x1.T.flatten()}")
+print(f"x2: {x2.T.flatten()}")
+print(f"w: {w.T.flatten()}")
+print(f"a1 = 0, a2 = 2")
+
+def reg(ay=0, aw=0):
+
+    if ay != 0 or aw != 0:
+        print(f"\nay = {ay}, aw = {aw} " + "-"*50)
+        x3 = 2*x2 + ay*y + aw*w
+        X = np.hstack((x1, x2, x3))
+    else:
+        print("\nBase case " + "-"*50)
+        X = np.hstack((x1, x2))
+    XXinv = np.linalg.inv(np.dot(X.T, X))
+    print("X^T y: ", np.dot(X.T, y).T.flatten())
+    b = np.dot(XXinv, np.dot(X.T, y))
+    print("coefficients: ", b.flatten())
+    r = y - X.dot(b)
+    print("RSS: ", r.T.dot(r).flatten())
+
+reg()
+reg(ay=0, aw=1)
+reg(ay=1, aw=0)
+reg(ay=1, aw=1)
+```
+
+
+
+```{code-cell}
+:tags: [hide-input]
+
+print("Example: \nAdding an variable that is uncorrelated with y, \nbut gives non-zero coefficient estimate.")
+
 import numpy as np
 
 y = np.array([[1,2,3]]).T
@@ -580,7 +635,7 @@ x0 = np.array([[1,1,1]])
 x1 = np.array([[1,2,4]])
 
 # reduced model
-print("reduced model ---")
+print("\nREDUCED MODEL " + "-"*50)
 X = np.vstack((x0, x1)).T
 XXinv = np.linalg.inv(np.dot(X.T, X))
 b = np.dot(XXinv, np.dot(X.T, y))
@@ -589,9 +644,9 @@ r = y - X.dot(b)
 print("RSS: ", r.T.dot(r).flatten())
 
 # full model
-print("\nfull model ---")
+print("\nFULL MODEl " + "-"*50)
 x2 = np.array([[1,-2,1]])
-print("x2 and y are uncorrelated, dot product :", x2 @ y)
+print("x2 and y are uncorrelated, dot product is:", np.dot(x2, y))
 X = np.vstack((x0, x1, x2)).T
 XXinv = np.linalg.inv(np.dot(X.T, X))
 b = np.dot(XXinv, np.dot(X.T, y))

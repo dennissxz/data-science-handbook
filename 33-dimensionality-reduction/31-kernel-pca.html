@@ -716,8 +716,8 @@
         <nav id="bd-toc-nav">
             <ul class="nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#objective">
-   Objective
+  <a class="reference internal nav-link" href="#kernelization">
+   Kernelization
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -771,8 +771,8 @@
   <div class="section" id="kernel-pca">
 <h1>Kernel PCA<a class="headerlink" href="#kernel-pca" title="Permalink to this headline">¶</a></h1>
 <p>Kernel PCA is a nonlinear extension of PCA where dot products are replaced with generalized dot products in feature space computed by a kernel function.</p>
-<div class="section" id="objective">
-<h2>Objective<a class="headerlink" href="#objective" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="kernelization">
+<h2>Kernelization<a class="headerlink" href="#kernelization" title="Permalink to this headline">¶</a></h2>
 <p>Linear PCA only consider linear subspaces</p>
 <div class="math notranslate nohighlight">
 \[
@@ -795,15 +795,6 @@ k(\boldsymbol{x} _n, \boldsymbol{x}) \\
 \end{array}\right]
 \end{split}\]</div>
 <p>where <span class="math notranslate nohighlight">\(\boldsymbol{A}_{n \times k}\)</span> contains the first <span class="math notranslate nohighlight">\(k\)</span> eigenvectors of the kernel matrix <span class="math notranslate nohighlight">\(\boldsymbol{K}\)</span>. That is, the projected data matrix is <span class="math notranslate nohighlight">\(\boldsymbol{Z}_{n \times k} = \boldsymbol{K} \boldsymbol{A}\)</span>.</p>
-<div class="note admonition">
-<p class="admonition-title"> Mean normalization of <span class="math notranslate nohighlight">\(\boldsymbol{K}\)</span></p>
-<p>We’ve implicitly assumed zero-mean in the new feature space <span class="math notranslate nohighlight">\(\mathbb{R} ^p\)</span>, but it is usually not. Hence, we should modify <span class="math notranslate nohighlight">\(\boldsymbol{K}\)</span> by</p>
-<div class="math notranslate nohighlight">
-\[
-\boldsymbol{K} ^\prime = (\boldsymbol{I} - \boldsymbol{u} \boldsymbol{u} ^\top )\boldsymbol{K}(\boldsymbol{I} - \boldsymbol{u} \boldsymbol{u} ^\top)  
-\]</div>
-<p>where <span class="math notranslate nohighlight">\(\boldsymbol{u} = \frac{1}{\sqrt{n}}[1 \ldots 1]^{\top}\)</span>, and solve for the eigenvectors of <span class="math notranslate nohighlight">\(\boldsymbol{K} ^\prime\)</span></p>
-</div>
 <div class="dropdown seealso admonition">
 <p class="admonition-title"> <em>Derivation</em></p>
 <p>Let <span class="math notranslate nohighlight">\(\boldsymbol{C} = \frac{1}{n} \boldsymbol{\Phi} ^\top \boldsymbol{\Phi}\)</span> be the new covariance matrix. To run standard PCA, we solve the eigenproblem</p>
@@ -843,6 +834,15 @@ k(\boldsymbol{x} _n, \boldsymbol{x}) \\
 \end{array}\right]\\
 \end{aligned}\end{split}\]</div>
 <p>In fact, we don’t need the exact form of <span class="math notranslate nohighlight">\(\boldsymbol{\phi}\)</span> at all.</p>
+</div>
+<div class="note admonition">
+<p class="admonition-title"> Mean normalization of <span class="math notranslate nohighlight">\(\boldsymbol{K}\)</span></p>
+<p>We’ve implicitly assumed zero-mean in the new feature space <span class="math notranslate nohighlight">\(\mathbb{R} ^p\)</span>, but it is usually not. Hence, we should modify <span class="math notranslate nohighlight">\(\boldsymbol{K}\)</span> by</p>
+<div class="math notranslate nohighlight">
+\[
+\boldsymbol{K} ^\prime = (\boldsymbol{I} - \boldsymbol{u} \boldsymbol{u} ^\top )\boldsymbol{K}(\boldsymbol{I} - \boldsymbol{u} \boldsymbol{u} ^\top)  
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\boldsymbol{u} = \frac{1}{\sqrt{n}}[1 \ldots 1]^{\top}\)</span>, and solve for the eigenvectors of <span class="math notranslate nohighlight">\(\boldsymbol{K} ^\prime\)</span></p>
 </div>
 </div>
 <div class="section" id="learning">

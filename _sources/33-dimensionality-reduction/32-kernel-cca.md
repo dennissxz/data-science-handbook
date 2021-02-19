@@ -2,7 +2,7 @@
 
 Like Kernel PCA, we can generalize CCA with kernels.
 
-## Objective
+## Kernelization
 
 Recall the original optimization problem of CCA
 
@@ -114,7 +114,7 @@ Therefore, $\boldsymbol{\alpha}$ can be any unit vector $\boldsymbol{e} _j$, and
 
 This is a trivial solution. It is therefore clear that a naive application of CCA in kernel defined feature space will not provide useful results. Regularization is necessary.
 
-## Regularized Kernel CCA
+## Regularization
 
 To obtain non-trivial solution, we add regularization term, which is typically the norm of the weights $\boldsymbol{v}$ and $\boldsymbol{w}$.
 

@@ -747,7 +747,7 @@ SLR stands for simple linear regression $y_i = \beta_0 + \beta_1 x_i + \varepsil
     -   The larger the error variance, $\sigma^2$, the larger the variance of the coefficient estimates.
     -   The larger the variability in the $x_i$, the smaller the variance.
     -   A larger sample size should decrease the variance.
-    -   In multiple regression, reduce the relation between $X_j$ and other covariates (e.g. by orthogonal design) can decreases $R^2_{j}$, and hence decrease the variance.
+    -   In multiple regression, reduce the linear relation between $X_j$ and other covariates (e.g. by orthogonal design) can decreases $R^2_{j}$, and hence decrease the variance.
 
     :::
 
@@ -766,30 +766,61 @@ SLR stands for simple linear regression $y_i = \beta_0 + \beta_1 x_i + \varepsil
 
 1. *How do you compare two linear models?*
 
-  - $F$-test if nested
-  - $R$-squared if same number of covariates (essentially comparing $RSS$)
-  - adjusted $R$-squared
-  - Log-likelihood
-  - out-of-sample prediction
+    :::{admonition,dropdown,seealso} *Solution*
+    - $F$-test if nested
+    - $R$-squared if same number of covariates (essentially comparing $RSS$)
+    - adjusted $R$-squared
+    - Log-likelihood
+    - out-of-sample prediction
 
-1.  *What happens if you exclude a relevant regressor?*
+    :::
 
-    It will bias your estimates of included regressors, if the omitted variable correlated with other regressors
+1.  *What happens if you exclude a relevant regressor $X_j$?*
 
-1. *What happens if you include an irrelevant regressor?*
+    :::{admonition,dropdown,seealso} *Solution*
+    Assumes the word "relevant" here means $\hat{\beta}_j$ is significant.
+    - lower fitting performance, i.e. RSS increases,
+    - lower predicting performance since we exclude a good predictor
+    - probably higher standard error $\operatorname{se}(\hat{\beta}_k)$ since $RSS$ increases (also need to look at how $1-R_k^2$ increases)
+    - bias estimates of other covariates $\operatorname{E}\left( \hat{\beta}_k \right)$, if the omitted variable has linear relation with them ($\alpha_k \ne 0$)
 
-    You lower precision, if the added variable is correlated with other regressors. So add if it is not correlated with existing regressors, and has explanatory power to the response. Then $\operatorname{Var}\left(  \right)(\beta_j)$ decreases so precision increases.
+    See detailed [discussion](lm-omit-variable).
+    :::
 
+1. *What happens if you include an irrelevant regressor $X_j$?*
 
-1. *Missing data problem in linear regression*
+    :::{admonition,dropdown,seealso} *Slution*
+    Assume the word "irrelevant" means $\beta_j=0$.
+    - slightly higher fitting performance since $RSS$ decreases
+    - lower predicting performance, since we fit noise as a variable
+    - probably higher standard error $\operatorname{se}(\hat{\beta}_k)$ since $(1-R_k^2)$ decreases (also need to look at how $RSS$ decreases)
+    - will NOT bias estimates of other covariates $\operatorname{E}\left( \hat{\beta}_k \right)$, since $\beta_j=0$.
+
+    See detailed [discussion](lm-add-variable).
+    :::
+
+1. *Describe missing data problems in linear regression*
+
+    :::{admonition,dropdown,seealso} *Solution*
 
     - if completely at random, then it amounts to a smaller sample. larger standard error, but still unbiased.
     - if missing depends on values of $x$ (Exogenous Sample Selection)
-      - if the true relation is linear, then no problem. still unbiased since the slope hyperplane is unchanged. the standard error may change if $\operatorname{Var}\left( X \right)$ changes.
-      - if the true relation is not linear, then will get quite different estimates
+      - if the true relation is linear, then no problem. still unbiased since the slope of the hyperplane is unchanged. the standard error changes inversely according to how $\operatorname{Var}\left( X \right)$ change.
+      - if the true relation is not linear, then we will get quite different estimates
     - if missing depends on $Y$ (Endogenous sample selection)
-      - if the true relation is linear may have biased estimates, say only observe $Y$ in a small range, then the scatter plot becomes rectangle.
+      - if the true relation is linear, then we may have biased estimates.
 
+    See detailed [discussion](lm-missing-values)
+
+    :::
+
+1. *Does $\boldsymbol{x}_{p} ^\top \boldsymbol{y} = 0 \Leftrightarrow \hat{\beta}_{p}=0$?*
+
+    :::{admonition,dropdown,seealso} *Solution*
+
+    In general NO. $\hat{\beta}_p = 0$ can be interpreted as $X_p$ has no explanatory power to $Y$ **given** other covariates. See detailed [discussion](lm-rss-nonincreasing).
+
+    :::
 
 1. Causal?
 

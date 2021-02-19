@@ -1348,42 +1348,121 @@ TSS
 <span id="lm-rss-nonincreasing"></span><h3>Non-increasing RSS<a class="headerlink" href="#non-increasing-rss" title="Permalink to this headline">¶</a></h3>
 <div class="margin sidebar">
 <p class="sidebar-title"></p>
-<p>This is equivalent to say <a class="reference internal" href="#lm-rsquared"><span class="std std-ref"><span class="math notranslate nohighlight">\(R\)</span>-squared</span></a> is always increasing or unchanged, if an intercept term in included in the model.</p>
+<p>This is equivalent to say <a class="reference internal" href="#lm-rsquared"><span class="std std-ref"><span class="math notranslate nohighlight">\(R\)</span>-squared</span></a> is non-decreasing, if an intercept term in included in the model.</p>
 </div>
 <p>Given a data set, when we add an new explanatory variable into a regression model, <span class="math notranslate nohighlight">\(RSS\)</span> is non-increasing.</p>
-<p>Since we are comparing two nested minimization problems</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{aligned}
-&amp;\text{Problem 1 / Full model / with } X_{p}  \ &amp;\min &amp;\ \left\Vert  \boldsymbol{y} - \boldsymbol{X} \boldsymbol{\beta} _{(p+1)\times 1} \right\Vert ^2   = \min \ RSS_1 \\
-&amp;\text{Problem 2 / Reduced model / without } X_{p} \ &amp;\min &amp;\ \left\Vert  \boldsymbol{y} - \boldsymbol{X} \boldsymbol{\beta} _{(p+1)\times 1} \right\Vert ^2  = \min \ RSS_2 \\
-&amp;&amp;\text{s.t.}  &amp;\ \beta_{p} = 0
-\end{aligned}\end{split}\]</div>
-<p>Due to the constraint in Problem 2, the minimum value of the Problem 1 should be no larger than the minimum value of the Problem 2, i.e. <span class="math notranslate nohighlight">\(RSS_1^* \le RSS_2^*\)</span> , When will they be equal?</p>
-<ul>
-<li><p>From projection’s perspective, they are equal iff the additional orthogonal basis vector of the design matrix <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span> introduced by the new column <span class="math notranslate nohighlight">\(X_p\)</span> is orthogonal to the response vector <span class="math notranslate nohighlight">\(\boldsymbol{y}\)</span>. See the derivation of <a class="reference internal" href="#lm-f-test"><span class="std std-ref"><span class="math notranslate nohighlight">\(F\)</span>-test</span></a> for details. Note that this is different from <span class="math notranslate nohighlight">\(\boldsymbol{x} _p ^\top \boldsymbol{y} =0\)</span>. The example below shows reduction in RSS even if <span class="math notranslate nohighlight">\(\boldsymbol{x} _p ^\top \boldsymbol{y} =0\)</span>.</p></li>
-<li><p>From optimization’s perspective, they are equal iff <span class="math notranslate nohighlight">\(\hat{\beta}_{p}=0\)</span> in Problem 1’s solution. When will <span class="math notranslate nohighlight">\(\hat{\beta}_{p}=0\)</span>? No clear condition.</p>
-<ul>
-<li><p>If <span class="math notranslate nohighlight">\(\boldsymbol{x}_i\)</span>’s are orthogonal such that <span class="math notranslate nohighlight">\(\boldsymbol{X} ^\top \boldsymbol{X} = I_{p}\)</span>, then</p>
+<p>This can be better understood if we view the linear regression problem as an approximation problem: Given a target vector <span class="math notranslate nohighlight">\(\boldsymbol{y} \in \mathbb{R} ^n\)</span> and candidate vectors <span class="math notranslate nohighlight">\(\boldsymbol{x} _1, \boldsymbol{x} _2,  \ldots, \boldsymbol{x} _p \in \mathbb{R} ^n\)</span>, where <span class="math notranslate nohighlight">\(\boldsymbol{x} _1 = \boldsymbol{1}_n\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{x} _1, \ldots, \boldsymbol{x} _{p+1}\)</span> are linearly independent, we want to find a linear combination of <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span>’s to approximate <span class="math notranslate nohighlight">\(\boldsymbol{y}\)</span>.</p>
 <div class="math notranslate nohighlight">
 \[
-    \boldsymbol{x}_{p} ^\top \boldsymbol{y} = 0 \Leftrightarrow \hat{\beta}_{p}=0
-    \]</div>
-</li>
-<li><p>Note that in general, <span class="math notranslate nohighlight">\(\not\Leftarrow\)</span>. An simple example can be a data set of two points <span class="math notranslate nohighlight">\((1,0), (1,1)\)</span>. The fitted line is <span class="math notranslate nohighlight">\(y=0.5\)</span>.</p></li>
-<li><p>Also, in general, <span class="math notranslate nohighlight">\(\not\Rightarrow\)</span>. The example below shows <span class="math notranslate nohighlight">\(\hat{\beta}_{2} \ne 0\)</span> even if <span class="math notranslate nohighlight">\(\boldsymbol{x} ^\top _p \boldsymbol{y} =0\)</span></p></li>
+\min \left\| \boldsymbol{y}  - (\beta_1 \boldsymbol{x} _1 +  \ldots + \beta_p \boldsymbol{x} _p) \right\|  ^2
+\]</div>
+<p>The question is, what happen to the approximation performance if we add another candidate vector <span class="math notranslate nohighlight">\(\boldsymbol{x} _{p+1} \in \mathbb{R} ^n\)</span>, where <span class="math notranslate nohighlight">\(\boldsymbol{x} _{p+1} \notin \operatorname{span}(\boldsymbol{x} _1, \ldots, \boldsymbol{x} _p)\)</span>?</p>
+<p>For any <span class="math notranslate nohighlight">\(\boldsymbol{x} _{p+1}\)</span>, we can decompose it into three parts</p>
+<div class="math notranslate nohighlight">
+\[
+\boldsymbol{x} _{p+1} = (a_1 \boldsymbol{x} _1 + \ldots + a _p \boldsymbol{x} _p) + a_y \boldsymbol{y}+ a_w\boldsymbol{w}
+\]</div>
+<p>where</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{w}\)</span> is orthogonal to target <span class="math notranslate nohighlight">\(\boldsymbol{y}\)</span> and candidates <span class="math notranslate nohighlight">\(\boldsymbol{x} _1, \ldots, \boldsymbol{x} _p\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(a_y, a_w\)</span> are not simultaneously zero to ensure <span class="math notranslate nohighlight">\(\boldsymbol{x} _{p+1}\notin \operatorname{span}(\boldsymbol{x} _1, \ldots, \boldsymbol{x} _p)\)</span></p></li>
 </ul>
+<p>Now consider different values of <span class="math notranslate nohighlight">\(a_y\)</span> and <span class="math notranslate nohighlight">\(a_w\)</span></p>
+<ol>
+<li><p>If <span class="math notranslate nohighlight">\(a_y \ne 0\)</span> and <span class="math notranslate nohighlight">\(a_w=0\)</span>, then we should obtain a perfect fit with <span class="math notranslate nohighlight">\(RSS=0\)</span>, <span class="math notranslate nohighlight">\(\hat{\beta}_j  = - \frac{a_j}{a_y}\)</span> and <span class="math notranslate nohighlight">\(\hat{\beta}_{p+1} = \frac{1}{a_y}\)</span>.</p></li>
+<li><p>If <span class="math notranslate nohighlight">\(a_y = 0\)</span> and <span class="math notranslate nohighlight">\(a_w\ne 0\)</span>, then adding <span class="math notranslate nohighlight">\(x_{p+1}\)</span> has no improvement in approximating <span class="math notranslate nohighlight">\(\boldsymbol{y}\)</span>, since the existing candidates already capture the variation in <span class="math notranslate nohighlight">\(\boldsymbol{y}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{w}\)</span> is irrelevant/orthogonal/uncorrelated to <span class="math notranslate nohighlight">\(\boldsymbol{y}\)</span>. We should obtain <span class="math notranslate nohighlight">\(\hat{\beta}_{p+1}=0\)</span> and the same <span class="math notranslate nohighlight">\(RSS\)</span>. Note that this does NOT imply the new candidate <span class="math notranslate nohighlight">\(\boldsymbol{x} _{p+1}\)</span> and target <span class="math notranslate nohighlight">\(\boldsymbol{y}\)</span> are uncorrelated: <span class="math notranslate nohighlight">\(\boldsymbol{x} _{p+1}^\top \boldsymbol{y} = 0\)</span>, as shown in the experiment below. We can only say there is a part in <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> that is uncorrealted with <span class="math notranslate nohighlight">\(\boldsymbol{y}\)</span>, or sometimes people interpret this as “<span class="math notranslate nohighlight">\(X_{p+1}\)</span> has no explanatory power in <span class="math notranslate nohighlight">\(Y\)</span> given other covariates.”</p>
+<div class="margin sidebar">
+<p class="sidebar-title">Does <span class="math notranslate nohighlight">\(\boldsymbol{x}_{p} ^\top \boldsymbol{y} = 0 \Leftrightarrow \hat{\beta}_{p}=0\)</span>?</p>
+<p>In general NO, as described on the left. One special case is that, if <span class="math notranslate nohighlight">\(\boldsymbol{x}_i\)</span>’s are orthogonal such that <span class="math notranslate nohighlight">\(\boldsymbol{X} ^\top \boldsymbol{X} = \boldsymbol{I} _{p}\)</span>, then <span class="math notranslate nohighlight">\(\boldsymbol{x}_{p} ^\top \boldsymbol{y} = 0 \Leftrightarrow \hat{\beta}_{p}=0\)</span>.</p>
+</div>
 </li>
-</ul>
-<div class="cell docutils container">
+<li><p>if <span class="math notranslate nohighlight">\(a_y \ne 0\)</span> and <span class="math notranslate nohighlight">\(a_w\ne 0\)</span>, this is the general case, where <span class="math notranslate nohighlight">\(x_{p+1}\)</span> contains some relevant information about <span class="math notranslate nohighlight">\(\boldsymbol{y}\)</span> (measured by <span class="math notranslate nohighlight">\(a_y\)</span>) in addition to other candidates’, and also some irrelevant information <span class="math notranslate nohighlight">\(\boldsymbol{w}\)</span> (measured by <span class="math notranslate nohighlight">\(a_w\)</span>). <span class="math notranslate nohighlight">\(RSS\)</span> decreases since we have an additional relevant candidate <span class="math notranslate nohighlight">\(\boldsymbol{x} _{p+1}\)</span>, and we obtain <span class="math notranslate nohighlight">\(\hat{\beta}_{p+1}\ne0\)</span>. Also note that this does NOT imply the new candidate <span class="math notranslate nohighlight">\(\boldsymbol{x} _{p+1}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{y}\)</span> must be correlated: <span class="math notranslate nohighlight">\(\boldsymbol{x} _{p+1} ^\top \boldsymbol{y} \ne 0\)</span>. See the example below.</p></li>
+</ol>
+<p>To sum up, <span class="math notranslate nohighlight">\(RSS\)</span> either decreases or stays unchanged. It is unchanged iff <span class="math notranslate nohighlight">\(\boldsymbol{x} _{p+1} = (a_1 \boldsymbol{x} _1 + \ldots + a _p \boldsymbol{x} _p) + a_w\boldsymbol{w}\)</span>, where <span class="math notranslate nohighlight">\(a_w \ne 0\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{w}\)</span> is orthogonal to <span class="math notranslate nohighlight">\(\boldsymbol{y} , \boldsymbol{x}_1, \boldsymbol{x} _1, \ldots, \boldsymbol{x} _p\)</span>. To check if this condition holds, we can regress <span class="math notranslate nohighlight">\(X_{p+1}\)</span> over the existing <span class="math notranslate nohighlight">\(p\)</span> candidates. If <span class="math notranslate nohighlight">\(\hat{\boldsymbol{u}}\ne \boldsymbol{0}\)</span>, then <span class="math notranslate nohighlight">\(a_w a_y\ne 0\)</span>, further if <span class="math notranslate nohighlight">\(\hat{\boldsymbol{u}}^\top \boldsymbol{y} =0\)</span>, then <span class="math notranslate nohighlight">\(a_y=0, a_w\ne 0, \boldsymbol{w} = \hat{\boldsymbol{u}}\)</span>.</p>
+<div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Experiment: </span><span class="se">\n</span><span class="s2">Different values of a_y and a_w in x_3</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">))))</span>
+<span class="n">x1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">5</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">x2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">))))</span>
+<span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">))))</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;y: </span><span class="si">{</span><span class="n">y</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;x1: </span><span class="si">{</span><span class="n">x1</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;x2: </span><span class="si">{</span><span class="n">x2</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;w: </span><span class="si">{</span><span class="n">w</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;a1 = 0, a2 = 2&quot;</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">reg</span><span class="p">(</span><span class="n">ay</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">aw</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+
+    <span class="k">if</span> <span class="n">ay</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">aw</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">ay = </span><span class="si">{</span><span class="n">ay</span><span class="si">}</span><span class="s2">, aw = </span><span class="si">{</span><span class="n">aw</span><span class="si">}</span><span class="s2"> &quot;</span> <span class="o">+</span> <span class="s2">&quot;-&quot;</span><span class="o">*</span><span class="mi">50</span><span class="p">)</span>
+        <span class="n">x3</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">x2</span> <span class="o">+</span> <span class="n">ay</span><span class="o">*</span><span class="n">y</span> <span class="o">+</span> <span class="n">aw</span><span class="o">*</span><span class="n">w</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">x3</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Base case &quot;</span> <span class="o">+</span> <span class="s2">&quot;-&quot;</span><span class="o">*</span><span class="mi">50</span><span class="p">)</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">))</span>
+    <span class="n">XXinv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">X</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;X^T y: &quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">flatten</span><span class="p">())</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">XXinv</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;coefficients: &quot;</span><span class="p">,</span> <span class="n">b</span><span class="o">.</span><span class="n">flatten</span><span class="p">())</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">y</span> <span class="o">-</span> <span class="n">X</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;RSS: &quot;</span><span class="p">,</span> <span class="n">r</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">r</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">())</span>
+
+<span class="n">reg</span><span class="p">()</span>
+<span class="n">reg</span><span class="p">(</span><span class="n">ay</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">aw</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">reg</span><span class="p">(</span><span class="n">ay</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">aw</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">reg</span><span class="p">(</span><span class="n">ay</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">aw</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Experiment: 
+Different values of a_y and a_w in x_3
+
+y: [1. 1. 1. 1. 0.]
+x1: [1. 1. 1. 1. 1.]
+x2: [1. 2. 1. 0. 0.]
+w: [ 1. -1.  1. -1.  0.]
+a1 = 0, a2 = 2
+
+Base case --------------------------------------------------
+X^T y:  [4. 4.]
+coefficients:  [0.57142857 0.28571429]
+RSS:  [0.57142857]
+
+ay = 0, aw = 1 --------------------------------------------------
+X^T y:  [4. 4. 8.]
+coefficients:  [0.57142857 0.28571429 0.        ]
+RSS:  [0.57142857]
+
+ay = 1, aw = 0 --------------------------------------------------
+X^T y:  [ 4.  4. 12.]
+coefficients:  [-1.0658141e-14 -2.0000000e+00  1.0000000e+00]
+RSS:  [5.67979852e-28]
+
+ay = 1, aw = 1 --------------------------------------------------
+X^T y:  [ 4.  4. 12.]
+coefficients:  [0.5   0.    0.125]
+RSS:  [0.5]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Example: </span><span class="se">\n</span><span class="s2">Adding an variable that is uncorrelated with y, </span><span class="se">\n</span><span class="s2">but gives non-zero coefficient estimate.&quot;</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]])</span><span class="o">.</span><span class="n">T</span>
 <span class="n">x0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]])</span>
 <span class="n">x1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">]])</span>
 
 <span class="c1"># reduced model</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;reduced model ---&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">REDUCED MODEL &quot;</span> <span class="o">+</span> <span class="s2">&quot;-&quot;</span><span class="o">*</span><span class="mi">50</span><span class="p">)</span>
 <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">x0</span><span class="p">,</span> <span class="n">x1</span><span class="p">))</span><span class="o">.</span><span class="n">T</span>
 <span class="n">XXinv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">X</span><span class="p">))</span>
 <span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">XXinv</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
@@ -1392,9 +1471,9 @@ TSS
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;RSS: &quot;</span><span class="p">,</span> <span class="n">r</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">r</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">())</span>
 
 <span class="c1"># full model</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">full model ---&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">FULL MODEl &quot;</span> <span class="o">+</span> <span class="s2">&quot;-&quot;</span><span class="o">*</span><span class="mi">50</span><span class="p">)</span>
 <span class="n">x2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">]])</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;x2 and y are uncorrelated, dot product :&quot;</span><span class="p">,</span> <span class="n">x2</span> <span class="o">@</span> <span class="n">y</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;x2 and y are uncorrelated, dot product is:&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">x2</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
 <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">x0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">))</span><span class="o">.</span><span class="n">T</span>
 <span class="n">XXinv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">X</span><span class="p">))</span>
 <span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">XXinv</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
@@ -1406,12 +1485,16 @@ TSS
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>reduced model ---
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Example: 
+Adding an variable that is uncorrelated with y, 
+but gives non-zero coefficient estimate.
+
+REDUCED MODEL --------------------------------------------------
 coefficients:  [0.5        0.64285714]
 RSS:  [0.07142857]
 
-full model ---
-x2 and y are uncorrelated, dot product : [[0]]
+FULL MODEl --------------------------------------------------
+x2 and y are uncorrelated, dot product is: [[0]]
 coefficients:  [ 0.44444444  0.66666667 -0.11111111]
 RSS:  [2.76101317e-30]
 </pre></div>

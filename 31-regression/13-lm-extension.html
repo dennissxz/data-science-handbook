@@ -1003,18 +1003,11 @@
 \[
 \boldsymbol{y} = \boldsymbol{X}_{n \times p} \boldsymbol{\beta} + \boldsymbol{\varepsilon}  
 \]</div>
-<p>And we omit one explanatory variable <span class="math notranslate nohighlight">\(X_j\)</span>. Thus, our new design matrix has size <span class="math notranslate nohighlight">\(n \times (p-1)\)</span>, denoted by <span class="math notranslate nohighlight">\(\boldsymbol{X}_{-j}\)</span>. Without loss of generality, let it be in the last column of the original design matrix, i.e. <span class="math notranslate nohighlight">\(\boldsymbol{X} = \left[ \boldsymbol{X} _{-j} \quad \boldsymbol{x}_j \right]\)</span>. The new estimated coefficients vector is denoted by <span class="math notranslate nohighlight">\(\hat{\boldsymbol{\beta}}_{-j}\)</span>. The coefficient for <span class="math notranslate nohighlight">\(\boldsymbol{x}_j\)</span> in the true model is denoted by <span class="math notranslate nohighlight">\(\beta_j\)</span>, and the vector of coefficients for other explanatory variables is denoted by <span class="math notranslate nohighlight">\(\boldsymbol{\beta} _{-j}\)</span>. Hence, <span class="math notranslate nohighlight">\(\boldsymbol{\beta} ^\top = \left[ \boldsymbol{\beta} _{-j} \quad \beta_j \right] ^\top\)</span>.</p>
-<div class="margin sidebar">
-<p class="sidebar-title"></p>
-<p>Though the common focus is on bias, omitting a variable probably decreases variance. See the relevant section <a class="reference internal" href="#lm-include-variable"><span class="std std-ref">below</span></a>, or the variance expression <a class="reference internal" href="12-lm-inference.html#lm-inference-variance"><span class="std std-ref">above</span></a>.</p>
-</div>
-<p><em>Question: Is <span class="math notranslate nohighlight">\(\hat{\boldsymbol{\beta}}_{-j}\)</span> unbised for <span class="math notranslate nohighlight">\(\boldsymbol{\beta}_{-j}\)</span>?</em></p>
-<p><em>Answer: No. Omitting a relevant variable increases bias. There is a deterministic identity for the bias.</em></p>
-<p>We will see the meaning of “relevant” later.</p>
-<p>We first find the expression of the new estimator <span class="math notranslate nohighlight">\(\hat{\boldsymbol{\beta}}_{-j}\)</span></p>
+<p>And we omit one explanatory variable <span class="math notranslate nohighlight">\(X_j\)</span>. Thus, our new design matrix has size <span class="math notranslate nohighlight">\(n \times (p-1)\)</span>, denoted by <span class="math notranslate nohighlight">\(\boldsymbol{X}_{-j}\)</span>. Without loss of generality, let it be in the last column of the original design matrix, i.e. <span class="math notranslate nohighlight">\(\boldsymbol{X} = \left[ \boldsymbol{X} _{-j} \quad \boldsymbol{x}_j \right]\)</span>. The new estimated coefficients vector is denoted by <span class="math notranslate nohighlight">\(\widetilde{\boldsymbol{\beta}}_{-j}\)</span>. The coefficient for <span class="math notranslate nohighlight">\(\boldsymbol{x}_j\)</span> in the true model is denoted by <span class="math notranslate nohighlight">\(\beta_j\)</span>, and the vector of coefficients for other explanatory variables is denoted by <span class="math notranslate nohighlight">\(\boldsymbol{\beta} _{-j}\)</span>. Hence, <span class="math notranslate nohighlight">\(\boldsymbol{\beta} ^\top = \left[ \boldsymbol{\beta} _{-j} \quad \beta_j \right] ^\top\)</span>.</p>
+<p>We first find the expression of the new estimator <span class="math notranslate nohighlight">\(\hat{\boldsymbol{\beta}}_{-j}\)</span> of the regression where the design matrix is <span class="math notranslate nohighlight">\(\boldsymbol{X} _{-j}\)</span>.</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
- \hat{\boldsymbol{\beta} }_{-j}
+ \widetilde{\boldsymbol{\beta} }_{-j}
 &amp;= \left( \boldsymbol{X} ^\top _{-j} \boldsymbol{X}  _{-j} \right) ^{-1} \boldsymbol{X} ^\top _{-j} \boldsymbol{y} \\
 &amp;= \left( \boldsymbol{X} ^\top _{-j} \boldsymbol{X}  _{-j} \right) ^{-1} \boldsymbol{X} ^\top _{-j} \left\{ \left[ \boldsymbol{X} _{-j} \quad \boldsymbol{x}_j \right]\left[\begin{array}{l}
 \boldsymbol{\beta} _{-j}  \\
@@ -1026,16 +1019,16 @@
 <p>The expectation, therefore, is</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
-\operatorname{E}\left( \hat{\boldsymbol{\beta} }_{-j} \right) =  \boldsymbol{\beta} _{-j} + \left[ \left( \boldsymbol{X} ^\top _{-j} \boldsymbol{X}  _{-j} \right) ^{-1} \boldsymbol{X} ^\top _{-j} \boldsymbol{x}_j \right]\beta _j\\
+\operatorname{E}\left( \widetilde{\boldsymbol{\beta} }_{-j} \right) =  \boldsymbol{\beta} _{-j} + \left[ \left( \boldsymbol{X} ^\top _{-j} \boldsymbol{X}  _{-j} \right) ^{-1} \boldsymbol{X} ^\top _{-j} \boldsymbol{x}_j \right]\beta _j\\
 \end{split}\]</div>
-<p>What is <span class="math notranslate nohighlight">\(\left( \boldsymbol{X} ^\top _{-j} \boldsymbol{X} _{-j} \right) ^{-1} \boldsymbol{X} ^\top _{-j} \boldsymbol{x}_j\)</span>? You may recognize this form. It is actually the vector of estimated coefficients when we regress the omitted variable <span class="math notranslate nohighlight">\(X_j\)</span> on all other explanatory variables <span class="math notranslate nohighlight">\(\boldsymbol{X} _{-j}\)</span>. Let it be <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}_{(p-1) \times 1}\)</span>.</p>
+<p>What is <span class="math notranslate nohighlight">\(\left( \boldsymbol{X} ^\top _{-j} \boldsymbol{X} _{-j} \right) ^{-1} \boldsymbol{X} ^\top _{-j} \boldsymbol{x}_j\)</span>? You may recognize this form. It is actually the vector of estimated coefficients when we regress the omitted variable <span class="math notranslate nohighlight">\(X_j\)</span> on all other explanatory variables <span class="math notranslate nohighlight">\(\boldsymbol{X} _{-j}\)</span>. Let it be <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}_{(p-1) \times 1}\)</span>. Note that <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}\)</span> is not random, since <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span> is fixed.</p>
 <p>Therefore, we have, for the <span class="math notranslate nohighlight">\(k\)</span>-th explanatory variable in the new model,</p>
 <div class="math notranslate nohighlight">
 \[
-\operatorname{E}\left( \hat{\beta} _{-j,k} \right) = \beta_{k} + \alpha_k \beta_j
+\operatorname{E}\left( \widetilde{\beta}_{k} \right) = \beta_{k} + \alpha_k \beta_j
 \]</div>
 <p>So the bias is <span class="math notranslate nohighlight">\(\alpha_k \beta_j\)</span>. The sign can be positive or negative.</p>
-<p>This identity can be converted to the following diagram. The explanatory variable <span class="math notranslate nohighlight">\(X_k\)</span> is associated with the response <span class="math notranslate nohighlight">\(Y\)</span> in two ways. First is directly by itself with strength is <span class="math notranslate nohighlight">\(\beta_k\)</span>, and second is through the omitted variable <span class="math notranslate nohighlight">\(X_j\)</span>, with a “compound” strength <span class="math notranslate nohighlight">\(\alpha_k \beta_j\)</span>.</p>
+<p>This identity can be illustrated by the following diagram. The explanatory variable <span class="math notranslate nohighlight">\(X_k\)</span> is associated with the response <span class="math notranslate nohighlight">\(Y\)</span> in two ways. The first way is directly by itself with strength is <span class="math notranslate nohighlight">\(\beta_k\)</span>, and the second is through the omitted variable <span class="math notranslate nohighlight">\(X_j\)</span>, with a “compound” strength <span class="math notranslate nohighlight">\(\alpha_k \beta_j\)</span>.</p>
 <div class="math notranslate nohighlight">
 \[
 X_k \quad \overset{\quad \beta_{k} \quad }{\longrightarrow} \quad Y
@@ -1050,22 +1043,21 @@ X_j
 \]</div>
 <p>When will the bias be zero?</p>
 <ul class="simple">
-<li><p>If <span class="math notranslate nohighlight">\(\alpha_k = 0\)</span>, that is, the omitted variable <span class="math notranslate nohighlight">\(X_j\)</span> and the concerned explanatory variable <span class="math notranslate nohighlight">\(X_k\)</span> is uncorrelated, i.e., <span class="math notranslate nohighlight">\(\boldsymbol{x}_j ^\top \boldsymbol{x}_k = 0\)</span> in the design matrix.</p></li>
-<li><p>If <span class="math notranslate nohighlight">\(\beta_j = 0\)</span>, that is, the omitted variable <span class="math notranslate nohighlight">\(X_j\)</span> and the response <span class="math notranslate nohighlight">\(Y\)</span> is uncorrelated, i.e., <span class="math notranslate nohighlight">\(\boldsymbol{x}_j ^\top \boldsymbol{y} = 0\)</span>.</p></li>
+<li><p>If <span class="math notranslate nohighlight">\(\alpha_k = 0\)</span>, which can be checked by running a regression <span class="math notranslate nohighlight">\(X_j\)</span> over other all other covariates. Note that this does NOT implies <span class="math notranslate nohighlight">\(X_j\)</span> and <span class="math notranslate nohighlight">\(X_k\)</span> are uncorrelated in the design matrix: <span class="math notranslate nohighlight">\(\boldsymbol{x}_j ^\top \boldsymbol{x}_k = 0\)</span>, see related <a class="reference internal" href="12-lm-inference.html#lm-rss-nonincreasing"><span class="std std-ref">discussion</span></a>.</p></li>
+<li><p>If <span class="math notranslate nohighlight">\(\beta_j = 0\)</span> in the full model, but this is never known. Note that this does NOT mean <span class="math notranslate nohighlight">\(X_j\)</span> and <span class="math notranslate nohighlight">\(Y\)</span> are uncorrelated in the data set: <span class="math notranslate nohighlight">\(\boldsymbol{x}_j ^\top \boldsymbol{y} = 0\)</span> since <span class="math notranslate nohighlight">\(\boldsymbol{y}\)</span> is random.</p></li>
 </ul>
 <div class="margin sidebar">
 <p class="sidebar-title"></p>
 <p>The takeaway here is that we should include all relevant omitted factors to reduce bias. But in practice, we can never know what all relevant factors are, and rarely can we measure all relevant factors.</p>
 </div>
-<p>That’s how we define “relevant”.</p>
 <p>What is the relation between the sample estimates? The relation has a similar form.</p>
 <div class="math notranslate nohighlight">
 \[
-\hat{\beta }_{-j,k} =  \hat{\beta}_k + \hat{\alpha}_k\hat{\beta}_j
+\widetilde{\beta}_{k} =  \hat{\beta}_k + \alpha_k\hat{\beta}_j
 \]</div>
 <p>Proof: TBD. Need linear algebra about inverse.</p>
 <p>Verify:</p>
-<div class="cell docutils container">
+<div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LinearRegression</span>
@@ -1098,23 +1090,44 @@ X_j
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>coefficients in y ~ x1 + x2 + x3 : [[0.99444125 1.00207765 1.99727479 3.00166279]]
-coefficients in y ~ x1 + x2 : [[0.867563   1.0163593  3.53968571]]
-coefficients in x3 ~ x1 + x2 : [[-0.04226932  0.00475791  0.51385216]]
-reconstruction difference of b0, b1, b2 : [-9.99200722e-16  8.88178420e-16 -4.44089210e-15]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>coefficients in y ~ x1 + x2 + x3 : [[0.99922238 0.99795148 2.00292981 2.99722903]]
+coefficients in y ~ x1 + x2 : [[0.79937352 0.91691936 3.46229753]]
+coefficients in x3 ~ x1 + x2 : [[-0.06667788 -0.02703568  0.48690564]]
+reconstruction difference of b0, b1, b2 : [8.88178420e-16 9.99200722e-16 4.44089210e-15]
 </pre></div>
 </div>
 </div>
 </div>
+<p>To sum up, omitting a variable <span class="math notranslate nohighlight">\(X_j\)</span> from the true model introduces bias of the remaining estimates of size <span class="math notranslate nohighlight">\(\alpha_k \beta_j\)</span>. The magnitude is 0 if</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\alpha_k = 0\)</span>: the variable <span class="math notranslate nohighlight">\(X_k\)</span> has no explanatory power to <span class="math notranslate nohighlight">\(X_j\)</span> given other covariates</p></li>
+<li><p><span class="math notranslate nohighlight">\(\beta_j = 0\)</span>: the variable <span class="math notranslate nohighlight">\(X_j\)</span> has no effect in the data generating process of <span class="math notranslate nohighlight">\(Y\)</span>.</p></li>
+</ul>
 </div>
 <div class="section" id="add-a-variable">
-<span id="lm-include-variable"></span><h2>Add a Variable<a class="headerlink" href="#add-a-variable" title="Permalink to this headline">¶</a></h2>
-<p>What if we add a new variable <span class="math notranslate nohighlight">\(X_j\)</span>? What will happen to the existing estimator <span class="math notranslate nohighlight">\(\hat\beta_k\)</span>?</p>
-<p>Increase</p>
+<span id="lm-add-variable"></span><h2>Add a Variable<a class="headerlink" href="#add-a-variable" title="Permalink to this headline">¶</a></h2>
+<p>What if we add a new variable <span class="math notranslate nohighlight">\(X_j\)</span>? What will happen to the standard error of an existing estimator <span class="math notranslate nohighlight">\(\hat\beta_k\)</span>?</p>
+<p>Recall that the estimated variance of <span class="math notranslate nohighlight">\(\hat{\beta}_k\)</span>,</p>
 <div class="math notranslate nohighlight">
-\[\operatorname{Var}\left(\hat{\beta}_{k}\right)=\sigma^{2} \frac{1}{1-R_k^{2}} \frac{1}{\sum_{i}\left(x_{i k}-\bar{x}_{k}\right)^{2}}\]</div>
-<p>if <span class="math notranslate nohighlight">\(R_{k}^2\)</span> increases. When will <span class="math notranslate nohighlight">\(R^2_{k}\)</span> be unchanged? When the new variable <span class="math notranslate nohighlight">\(X_j\)</span> has no explanatory power to <span class="math notranslate nohighlight">\(X_k\)</span>. See the <a class="reference internal" href="12-lm-inference.html#lm-rss-nonincreasing"><span class="std std-ref">section</span></a>.</p>
-<p>In terms of bias, if we say the model with <span class="math notranslate nohighlight">\(X_p\)</span> is “true”, then <span class="math notranslate nohighlight">\(\operatorname{E}\left( \hat{\beta}_k \right)\)</span> is probably closer to <span class="math notranslate nohighlight">\(\beta_k\)</span> according to the equation described in the above <a class="reference internal" href="#lm-omit-variable"><span class="std std-ref">section</span></a>.</p>
+\[\begin{split}\begin{aligned}
+\widehat{\operatorname{Var}}\left(\hat{\beta}_{k}\right) &amp;= \frac{1}{\sum_{i}\left(x_{i k}-\bar{x}_{k}\right)^{2}}  \frac{\hat{\sigma}^{2}}{1-R_k^{2}} \\
+&amp;= \frac{1}{\sum_{i}\left(x_{i k}-\bar{x}_{k}\right)^{2}} \frac{1}{1-R_k^{2}}  \frac{RSS}{n-p} \\
+&amp;= \frac{\sum_{i}\left(y_{i}-\bar{y}\right)^{2}/(n-1)}{\sum_{i}\left(x_{i k}-\bar{x}_{k}\right)^{2}} \frac{1- \operatorname{adj}R^2}{1-R_k^{2}}  \\
+\end{aligned}\end{split}\]</div>
+<p>In short,</p>
+<ul class="simple">
+<li><p>Adding a variable <span class="math notranslate nohighlight">\(X_j\)</span> increases <span class="math notranslate nohighlight">\(R_k^2\)</span> unless <span class="math notranslate nohighlight">\(X_j\)</span> has no explanatory power to <span class="math notranslate nohighlight">\(X_k\)</span> given other covariates. Hence the factor <span class="math notranslate nohighlight">\(\frac{1}{1-R_k^{2}}\)</span> usually increases.</p></li>
+<li><p>If <span class="math notranslate nohighlight">\(X_j\)</span> has good explanatory power to <span class="math notranslate nohighlight">\(Y\)</span> given other covariates and hence leads to a large reduction in <span class="math notranslate nohighlight">\(RSS\)</span>, then the term <span class="math notranslate nohighlight">\(\frac{RSS}{n-p}\)</span> decreases (though <span class="math notranslate nohighlight">\(n-p\)</span> decreases too).</p></li>
+</ul>
+<p>Hence, the overall effect is uncertain. To sum up,</p>
+<ul>
+<li><p>If <span class="math notranslate nohighlight">\(X_j\)</span> has SMALL explanatory power to <span class="math notranslate nohighlight">\(X_k\)</span> given other covariates, and has GOOD explanatory power to <span class="math notranslate nohighlight">\(Y\)</span> given other covariates, say, providing a new relevant dimension in <span class="math notranslate nohighlight">\(Y\)</span> and is nearly orthogonal to existing dimensions, then the standard error <strong>decreases</strong>. This is the optimal new variable we want to add.</p>
+<p>Example: add a variable <span class="math notranslate nohighlight">\(PriorScore\)</span> to the regression <span class="math notranslate nohighlight">\(NewScore \sim Treatment\)</span> can reduce the standard error of <span class="math notranslate nohighlight">\(\hat{\beta}_{Treatment}\)</span> if the treatment assignment is random.</p>
+</li>
+<li><p>If <span class="math notranslate nohighlight">\(X_j\)</span> has GOOD explanatory power to <span class="math notranslate nohighlight">\(X_k\)</span> given other covariates, and has SMALL explanatory power to <span class="math notranslate nohighlight">\(Y\)</span> given other covariates, say, nearly a linear combination of the existing covariates, then the standard error <strong>increases</strong>. This is the kind of new variable we want to avoid.</p>
+<p>Hence, if our model is already a good (or close to true) model, adding more covariates increases standard error. This gives a stopping criteria when adding more covariates.</p>
+</li>
+</ul>
 </div>
 <div class="section" id="multicollinearity">
 <h2>Multicollinearity<a class="headerlink" href="#multicollinearity" title="Permalink to this headline">¶</a></h2>
@@ -1143,7 +1156,7 @@ X_{j}=\delta_{0}+\delta_{1} X_{1}+\cdots+\delta_{j-1} X_{j-1}+\delta_{i+1} X_{i+
 \[
 \operatorname{VIF}_j = \frac{1}{1-R_j^2}
 \]</div>
-<p>where <span class="math notranslate nohighlight">\(R_j^2\)</span> is the value of <span class="math notranslate nohighlight">\(R^2\)</span> when we regress <span class="math notranslate nohighlight">\(X_j\)</span> over all other explanatory variables excluding <span class="math notranslate nohighlight">\(X_j\)</span>. The value of <span class="math notranslate nohighlight">\(\operatorname{VIF}_j\)</span> can be interpreted as: the standard error <span class="math notranslate nohighlight">\(\operatorname{se}(\beta)\)</span> is <span class="math notranslate nohighlight">\(\sqrt{\operatorname{VIF}_j}\)</span> times larger than it would have been without multicollinearity.</p>
+<p>where <span class="math notranslate nohighlight">\(R_j^2\)</span> is the value of <span class="math notranslate nohighlight">\(R^2\)</span> when we regress <span class="math notranslate nohighlight">\(X_j\)</span> over all other explanatory variables excluding <span class="math notranslate nohighlight">\(X_j\)</span>. The value of <span class="math notranslate nohighlight">\(\operatorname{VIF}_j\)</span> can be interpreted as: the standard error <span class="math notranslate nohighlight">\(\operatorname{se}(\hat{\beta})\)</span> is <span class="math notranslate nohighlight">\(\sqrt{\operatorname{VIF}_j}\)</span> times larger than it would have been without multicollinearity.</p>
 <p>A second way of measurement is the <strong>condition number</strong> of <span class="math notranslate nohighlight">\(\boldsymbol{X} ^\top \boldsymbol{X}\)</span>. If it is greater than <span class="math notranslate nohighlight">\(30\)</span>, then we can conclude that the multicollinearity problem cannot be ignored.</p>
 <div class="math notranslate nohighlight">
 \[
@@ -1475,7 +1488,7 @@ X_{j}=\delta_{0}+\delta_{1} X_{1}+\cdots+\delta_{j-1} X_{j-1}+\delta_{i+1} X_{i+
 </div>
 </div>
 <div class="section" id="missing-values">
-<h2>Missing Values<a class="headerlink" href="#missing-values" title="Permalink to this headline">¶</a></h2>
+<span id="lm-missing-values"></span><h2>Missing Values<a class="headerlink" href="#missing-values" title="Permalink to this headline">¶</a></h2>
 <p>For more details about missing, refer to <a class="reference internal" href="../30-ml-basics/11-missing-values.html"><span class="doc std std-doc">missing values</span></a>.</p>
 <p>Suppose the true model is <span class="math notranslate nohighlight">\(\boldsymbol{Y}  = \boldsymbol{X} \boldsymbol{\beta} + \boldsymbol{\varepsilon}\)</span>. What happen if some <span class="math notranslate nohighlight">\(Y\)</span> or <span class="math notranslate nohighlight">\(X\)</span> are not observed?</p>
 <div class="section" id="completely-at-random">
