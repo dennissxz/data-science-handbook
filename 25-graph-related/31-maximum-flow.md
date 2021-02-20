@@ -376,7 +376,13 @@ $\square$
 
 **Goal**
 
-Find an $s-t$ cut $(A,B)$ that minimizes cut capacity $c(A,B)$, called minimum cut.
+Find an $s-t$ cut $(A,B)$ where $s \in A, t \in B$, with minimal cut capacity $c(A,B)$, which is the sum of capacities of edge from $A$ to $B$, $c(A, B) = \sum_{u\in A, v\in B} c(u,v)$.
+
+In other words, we want to remove some edges to disconnect $s$ and $t$, and minimize the total capacities of these removed edges.
+
+The vertex partition's perspective and edge removal's perspective are actually equivalent.
+
+
 
 ### Analysis
 
