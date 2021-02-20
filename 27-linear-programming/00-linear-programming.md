@@ -220,31 +220,42 @@ The feature transformation can involve non-linear terms such as $x_1^2, x_1 x_2$
 
 ## Duality
 
-For an LP minimization problem of the form
+### Primal and Dual
+
+Consider an LP minimization problem of the form
+
+$$\begin{aligned}
+\min && f(\boldsymbol{x} ) &= \boldsymbol{c}^{\top} \boldsymbol{x} \\
+\text { s.t.} && \boldsymbol{A} \boldsymbol{x} &\ge \boldsymbol{b} \\
+&& \boldsymbol{x} &\geq \mathbf{0}
+\end{aligned}$$
+
+where $\boldsymbol{A} \in \mathbb{R} ^{m \times n}, \boldsymbol{b} \in \mathbb{R} ^{m}$.
+
+Before solving it, we consider a lower bound $\ell$ for $f(\boldsymbol{x} ^*)$, by linearly combine the constraints $\boldsymbol{a} _{1 \cdot} ^\top \boldsymbol{x} \ge b_1$, $\boldsymbol{a} _{2 \cdot} ^\top \boldsymbol{x} \ge b_2$, etc, where $\boldsymbol{a} _{i\cdot}$ is $i$-th row of $\boldsymbol{A}$. Let $y_1, y_2, \ldots$ be the corresponding non-negative multipliers. The linear combination of the constraints is
 
 $$
-\begin{array}{cr}
-\min & f(\boldsymbol{x} ) = \boldsymbol{c}^{\top} \boldsymbol{x} \\
-\text { s.t. } & \boldsymbol{A} \boldsymbol{x} \ge \boldsymbol{b} \\
-& \boldsymbol{x} \geq \mathbf{0}
-\end{array}
+y_1(\boldsymbol{a} _{1 \cdot} ^\top \boldsymbol{x} ) + y_2(\boldsymbol{a} _{2 \cdot} ^\top \boldsymbol{x} ) + \ldots + y_m (\boldsymbol{a} _{m \cdot} ^\top \boldsymbol{x}) \ge y_1 b_1 + y_2 b_2 + \ldots + y_m b_m
 $$
 
-Before solving it, we consider a lower bound $\ell$ for $f(\boldsymbol{x} ^*)$, by linearly combine the constraints $\boldsymbol{a} _1 ^\top \boldsymbol{x} \ge b_1$, $\boldsymbol{a} _2 ^\top \boldsymbol{x} \ge b_2$, etc, where $\boldsymbol{a} _i$ is $i$-th row of $\boldsymbol{A}$. Let $y_1, y_2, \ldots$ be the corresponding non-negative multipliers. The linear combination of the constraints is
+or
 
 $$
-y_1(\boldsymbol{a} _1 ^\top \boldsymbol{x} ) + y_2(\boldsymbol{a} _2 ^\top \boldsymbol{x} ) + \ldots \ge y_1 b_1 + y_2 b_2 + \ldots
+\boldsymbol{y} ^\top \boldsymbol{A} \boldsymbol{x} \ge \boldsymbol{y} ^\top \boldsymbol{b}
 $$
 
-If the LHS's coefficients of $x_j$ is **smaller** than $c_j$, then due to non-negativity of $x_j$, we always have $\boldsymbol{c}  ^\top \boldsymbol{x} \ge LHS \ge \boldsymbol{b} ^\top \boldsymbol{y}$. So $\boldsymbol{b} ^\top \boldsymbol{y}$ is always a lower bound of $f(\boldsymbol{x})$. Moreover, we want the lower bound to be as larger as possible. To sum up, we want to find $\boldsymbol{y}$ from the following maximization problem
+If the LHS's coefficients of $x_i$ is **smaller** than $c_i$, i.e., $\sum_{j=1}^m y_j a_{ji} = \boldsymbol{a} _{\cdot i} ^\top \boldsymbol{y} < c_i$ where $\boldsymbol{a} _{\cdot j}$ is the $j$-th column of $\boldsymbol{A}$, then due to non-negativity of $x_i$, we always have
 
-$$
-\begin{array}{cr}
-\max & g(\boldsymbol{y} ) = \boldsymbol{b}^{\top} \boldsymbol{y} \\
-\text { s.t. } & \boldsymbol{A} ^\top  \boldsymbol{y} \le \boldsymbol{c} \\
-& \boldsymbol{y} \geq \mathbf{0}
-\end{array}
-$$
+$$\boldsymbol{c}  ^\top \boldsymbol{x} \ge [\boldsymbol{a} _{\cdot 1} ^\top \boldsymbol{y} \quad \boldsymbol{a} _{\cdot 2} ^\top \boldsymbol{y} \quad \ldots \quad \boldsymbol{a} _{\cdot m} ^\top \boldsymbol{y}] \ \boldsymbol{x} = \boldsymbol{y} ^\top \boldsymbol{A} \boldsymbol{x}  \ge \boldsymbol{b} ^\top \boldsymbol{y}$$
+
+So $\boldsymbol{b} ^\top \boldsymbol{y}$ is always a lower bound of $f(\boldsymbol{x})$. Moreover, we want the lower bound to be as larger as possible so that we can have a good estimate of the minimum value  $\min _ \boldsymbol{c} \boldsymbol{c} ^\top \boldsymbol{x}$. To sum up, we want to find $\boldsymbol{y}$ of the following maximization problem
+
+
+$$\begin{aligned}
+\max && g(\boldsymbol{y} ) &= \boldsymbol{b}^{\top} \boldsymbol{y} \\
+\text { s.t. } && \boldsymbol{A} ^\top  \boldsymbol{y} &\le \boldsymbol{c} \\
+&& \boldsymbol{y} &\geq \mathbf{0}
+\end{aligned}$$
 
 Any solution to this $\max g(\boldsymbol{y})$ problem provides a lower bound of $f(\boldsymbol{x} ^*)$.
 
@@ -256,53 +267,136 @@ The problem $\max f(\boldsymbol{x} )$ is called **primal**, the problem $\min g(
 
 Likewise, we can find an upper bound of $g(\boldsymbol{y} )$ by similar operation. Denote the multipliers by $\boldsymbol{z}$,
 
-$$
-\begin{array}{cr}
-\min & h(\boldsymbol{z} ) = \boldsymbol{c}^{\top} \boldsymbol{z} \\
-\text { s.t. } & \boldsymbol{A} \boldsymbol{z} \ge \boldsymbol{b} \\
-& \boldsymbol{z} \geq \mathbf{0}
-\end{array}
-$$
+$$\begin{aligned}
+\min && h(\boldsymbol{z} ) &= \boldsymbol{c}^{\top} \boldsymbol{z} \\
+\text { s.t. } && \boldsymbol{A} \boldsymbol{z} &\ge \boldsymbol{b} \\
+&& \boldsymbol{z} &\geq \mathbf{0}
+\end{aligned}$$
 
-Then, any solution to this $\min h(\boldsymbol{z})$ problem gives an upper bound of $g(\boldsymbol{y} )$, hence
+Note that $h(\boldsymbol{z} )$ has exactly the same form with $f(\boldsymbol{x} )$. Hence, the dual of dual is primal.
 
-$$
-g(\boldsymbol{y} ^*) \le h(\boldsymbol{z})
-$$
+### Duality Theorem
 
-Note that $g(\boldsymbol{z} )$ has exactly the same form with $f(\boldsymbol{x} )$. Hence, the dual of dual is primal.
+The inequality $g(\boldsymbol{y}) \le f(\boldsymbol{x})$ is called weak duality theorem.
 
-### LP Max-flow
+The equality $g(\boldsymbol{y}^*) = f(\boldsymbol{x}^*)$ is called the strong duality theorem.
 
-Consider the path-defined flow. We can view each $f(p)$ as a variable. Then the problem is
+## Max-flow and Min-Cut from LP
 
-$$
-\begin{array}{cr}
-\max & \sum _{P \in \mathcal{P}} f(P) && \\
-\text { s.t. } & \sum_{P: e \in e(P)} f(P) &&\le c(e) \ \forall e \\
- & f(P) &&\geq 0 \ \forall P
-\end{array}
-$$
+### LP-max and Dual
+
+Consider the path-defined flow. We can view each $f(P)$ as a variable. Then the optimization problem
+
+$$\begin{aligned}
+\max && \sum _{P \in \mathcal{P}} f(P) &&& \\
+\text { s.t. }
+&& \sum_{P: e \in e(P)} f(P) &\le c(e)  &&\forall e \\
+&& f(P) &\geq 0  &&\forall P
+\end{aligned}$$
+
+is equivalent to the max-flow problem. Call this LP-flow problem.
+
+Note the number of paths $\left\vert \mathcal{P} \right\vert$ is exponential to the graph size. Let's consider the dual.
+
+Let the multipliers be $\boldsymbol{y}$, where $y_e$ is the multiplier for constraint of edge $e$. Note that in the primal, the coefficients of $f(P)$ in the objective function and each constraint are $1$. Hence, the dual is
+
+$$\begin{aligned}
+\min && \sum _{e} c(e) y_e &&& \\
+\text { s.t. }
+&& \sum_{e: e \in e(P)} y_e &\ge 1  &&\forall P \in \mathcal{P} \\
+&& y_e &\geq 0  &&\forall e
+\end{aligned}$$
+
+One can image there is a matrix $\boldsymbol{A}$ with $\left\vert E \right\vert = m$ rows and $\left\vert \mathcal{P} \right\vert = p$ columns. Each entry $a_{ij}=\mathbb{I} [e_i \in e(P_j)]$. Let $\boldsymbol{f} \in \mathbb{R} ^{p}$ be the path flow vector, $\boldsymbol{c} \in \mathbb{R} ^ m$ be the edge capacity vector, then the primal is,
+
+$$\begin{aligned}
+\max && \boldsymbol{1}_p ^\top \boldsymbol{f}   &&& \\
+\text { s.t. }
+&& \boldsymbol{A} \boldsymbol{f}  &\le \boldsymbol{c}\\
+&& \boldsymbol{f}  &\geq \boldsymbol{0}  &&
+\end{aligned}$$
+
+Let $\boldsymbol{y} \in \mathbb{R} ^{m}$ be the vector of $y_e$'s, then the dual is
+
+$$\begin{aligned}
+\min && \boldsymbol{c}^\top  \boldsymbol{y} &&& \\
+\text { s.t. }
+&& \boldsymbol{A} ^\top \boldsymbol{y}  &\ge \boldsymbol{1}_p   &&\\
+&& \boldsymbol{y}  &\geq \boldsymbol{0}   &&
+\end{aligned}$$
+
+which is consistent with our notation in the last section.
 
 
-But the number of paths is exponential to the graph size.
+### Relaxation
 
-Let's consider the dual. Let the multipliers be $\boldsymbol{y}$. Then
+If we add integer constraint $y_e \in \left\{ 0,1 \right\}$, then the objective $\sum _{e} c(e) y_e$ is a edge selection problem to minimize the total capacity, and the constraints $\sum_{e: e \in e(P)} y_e \le 1$ implies that at least one edge is selected along every $s-t$ path. In other words, we want to find minimum number of edges to disconnect $s$ and $t$, which is exactly the min-cut problem.
 
-### LP Cut
-
-No integer, but relaxation.
+If $y_e \in \mathbb{R}$, then it is a relaxation to the integer constraint $y_e \in \left\{ 0, 1 \right\}$. Call this problem LP-cut, we say LP-cut is a relaxation of min-cut.
 
 Definition (Relaxation)
+: Consider two problem $P$ and $P_r$, if any solution to $P$ corresponds to a solution to $P_r$ with the **same** value of the objective function in $P$, then we say problem $P_r$ is a relaxation to problem $P$. In this sense, $OPT_r$ is always better than or equal to $OPT$.
 
-min-cut vs LP cut. WTS equality
+Since the feasible solutions to min-cut are integers, we call them integral solutions. The solutions to the LP-cut are called fractional solutions.
 
-Integrality Gap
-- min
-- max
+By the strong duality theorem, we have $OPT(\text{LP-flow} ) = OPT(\text{LP-cut})$. To sum up, we have
 
-Claim: LP-cut has integrality gap 1, i.e., $OPT  = OPT_{LP}$.
+$$
+OPT(\text{max-flow} ) = OPT(\text{LP-flow} ) = OPT(\text{LP-cut}) \le OPT(\text{min-cut} )
+$$
 
-Prove by providing an efficient algo that given any fractional solution to $OPT_{LP}$, it returns an integral feasible solution whose cost is not higher than $OPT_{LP}$. (LP-rounding algorithm).
+We have shown that $OPT(\text{max-flow} ) = OPT(\text{min-cut} )$ in the [max-flow](../25-graph-related/31-maximum-flow) section. Hence the inequality $\le$ above should be equality $=$. Let's not use this fact, but just analyze this inequality itself.
 
-View $y_e$ as length of edge $e$. The distance $d(u,v)$ is the length of shortest $u-v$ path under $y_e$ edge length.
+### Integrality Gap
+
+Definition (Integrality Gap)
+: Integrality gap measures the largest deviation between the objective value of a fractional solution and that of a integral solution.
+
+  - For minimization problem, its is $\frac{OPT}{OPT_{LP}} \ge 1$,
+  - For maximization problem, its is $\frac{OPT_{LP}}{OPT} \ge 1$,
+
+  If the gap is one, then an optimal integral solution and an optimal fractional solution gives the same objective value.
+
+Claim: The integrality gap between min-cut and LP-cut is 1
+
+Prove by providing an efficient algo that given any optimal fractional solution to $OPT_{LP}$, it returns an integral feasible solution whose cost is **not** higher than $OPT_{LP}$. (LP-rounding algorithm).
+
+View $y_e \in \mathbb{R}$ as the length of edge $e$. The distance $d(u,v)$ is the length of shortest $u-v$ path under $y_e$ edge length. Recall the LP-cut problem
+
+$$\begin{aligned}
+\min && \sum _{e} c(e) y_e &&& \\
+\text { s.t. }
+&& \sum_{e: e \in e(P)} y_e &\ge 1  &&\forall P \in \mathcal{P} \\
+&& y_e &\geq 0  &&\forall e
+\end{aligned}$$
+
+The constraints says that the distance of any $s-t$ path is at least one.
+
+Consider a value $\rho \in (0,1)$, which defines a cut $(A_\rho, B_\rho)$, such that
+- $A_\rho = \left\{ v \mid d(s,v) \le \rho \right\}$
+- $B_\rho = \left\{ v \mid d(s,v) > \rho \right\} = V \backslash A_\rho$
+
+Since $d(s,t) \ge 1 > \rho$, then $t \in B_\rho$.
+
+Define
+- $v(\rho) = c(A_\rho, B_\rho) = \sum _{u \in A_\rho, v\in B_\rho} c(u,v)$.
+- $\rho^* = \arg\min _\rho v(\rho)$
+- $(A^*, B^*) = (A_{\rho ^*}, B_{\rho ^*})$
+
+Question: how to find $\rho^*$ efficiently? Note that most of the cuts are the same, though they corresponds to different $\rho$ values. We can sort vertices by $d(s,v)$ such that
+
+$$
+d(s,v_1) \le d(s,v_2) \le \ldots \le d(s, v_n)
+$$
+
+The number of different cuts is actually $n-1$. We can set cutoffs to be $\rho_i = d(s,v_i)$ where $i = 1, 2, \ldots, n-1$. Then any $\rho \in [\rho_i, \rho_{i+1})$ always gives the same cut.
+
+
+
+
+
+
+
+
+
+.
