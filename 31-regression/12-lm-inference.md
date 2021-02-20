@@ -626,7 +626,7 @@ reg(ay=1, aw=1)
 ```{code-cell}
 :tags: [hide-input]
 
-print("Example: \nAdding an variable that is uncorrelated with y, \nbut gives non-zero coefficient estimate.")
+print("Example: \nAdding a variable that is uncorrelated with y, \nbut gives non-zero coefficient estimate.")
 
 import numpy as np
 
@@ -646,7 +646,7 @@ print("RSS: ", r.T.dot(r).flatten())
 # full model
 print("\nFULL MODEl " + "-"*50)
 x2 = np.array([[1,-2,1]])
-print("x2 and y are uncorrelated, dot product is:", np.dot(x2, y))
+print("x2 and y are uncorrelated, dot product is:", np.dot(x2, y).flatten())
 X = np.vstack((x0, x1, x2)).T
 XXinv = np.linalg.inv(np.dot(X.T, X))
 b = np.dot(XXinv, np.dot(X.T, y))
@@ -654,6 +654,7 @@ print("coefficients: ", b.flatten())
 r = y - X.dot(b)
 X.dot(b)
 print("RSS: ", r.T.dot(r).flatten())
+
 ```
 
 
