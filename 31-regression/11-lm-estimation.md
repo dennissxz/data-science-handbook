@@ -12,7 +12,7 @@ kernelspec:
   name: python3
 ---
 
-# Linear Models - Estimation
+# Linear Regression - Estimation
 
 From this section we introduce linear models from a statistics’ perspective. There are three sections in total.
 
