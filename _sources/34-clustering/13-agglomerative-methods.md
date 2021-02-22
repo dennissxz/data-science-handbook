@@ -34,9 +34,9 @@ Let $A$ and $B$ be two clusters and let $a,b$ be individual data points.
 
     :::{admonition,note} Wald's method vs $k$-means
 
-    At each merge step, Ward’s method minimizes the same sum-of-squares criterion as k-means, but constrained by choices in previous iterations, so the total sum-of-squares for a given k is normally larger for Ward’s method than for k-means.
+    - At each merge step, Ward’s method minimizes the same sum-of-squares criterion as k-means, but constrained by choices in previous iterations, so the total sum-of-squares for a given k is normally larger for Ward’s method than for k-means.
 
-    A common trick: Use Ward’s method to pick k, then run k-means starting from the Ward cluster
+    - A common trick: Use Ward’s method to pick k, then run k-means starting from the Ward cluster
 
     :::
 
