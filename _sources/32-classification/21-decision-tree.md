@@ -48,17 +48,22 @@ To evaluate question quality, we need some partition metrics.
 
 #### Maximum Purity
 
-$\operatorname{purity}(\Omega, C)=\frac{1}{N} \sum_{k} \max _{j}\left|\omega_{k} \cap c_{j}\right|$
+Suppose
 
-where
 - $\Omega$ is the proposed clustering,
 - $C$ is the ground-truth clustering
-- $w_k$ is the set of items assigned to cluster $k$
-- $c_j$ is the set of items with ground truth label $j$
+- $w_k$ is a proposed cluster with label $k$
+- $c_j$ is a ground-truth cluster with ground truth label $j$
 
-properties
-- in $(0,1)$
-- biased toward finer clusterings (purity$=1$ if each example is in its own cluster), so this measure makes sense for comparing clusterings with a given **fixed** number of clusters
+Then the purity of the proposed clustering $\Omega$ and the ground-truth $C$ is defined as
+
+$$\operatorname{purity}(\Omega, C)=\frac{1}{n} \sum_{k} \max _{j}\left|\omega_{k} \cap c_{j}\right|$$
+
+That is, for each proposed cluster $w_k$, we find a true cluster $c_j$ that has the maximum-cardinality intersection with $w_k$. We can view $w_k$ has a "predicted" label $k\leftarrow j$. (??)
+
+Properties
+: - in $(0,1)$
+  - biased toward finer clusterings (purity $=1$ if each example is in its own cluster), so this measure makes sense for comparing clusterings with a given **fixed** number of clusters
 
 
 #### Maximum Normalized Mutual Information

@@ -450,7 +450,7 @@
   <ul class="collapse-ul">
    <li class="toctree-l2">
     <a class="reference internal" href="../31-regression/11-lm-estimation.html">
-     Linear Models - Estimation
+     Linear Regression - Estimation
     </a>
    </li>
    <li class="toctree-l2">
@@ -620,6 +620,11 @@
      Variational Autoencoders
     </a>
    </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/31-sequential-models.html">
+     Sequential Models
+    </a>
+   </li>
   </ul>
   <i class="fas fa-chevron-down">
   </i>
@@ -716,15 +721,10 @@
         <nav id="bd-toc-nav">
             <ul class="nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#problem">
-   Problem
+  <a class="reference internal nav-link" href="#problems">
+   Problems
   </a>
   <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#diagrams">
-     Diagrams
-    </a>
-   </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#scoring">
      Scoring
@@ -746,10 +746,46 @@
     <a class="reference internal nav-link" href="#decoding">
      Decoding
     </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#viterbi-algorithm">
+       Viterbi Algorithm
+      </a>
+     </li>
+    </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#training">
      Training
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#counting">
+       Counting
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#baum-welch-algorithm">
+       Baum-Welch algorithm
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#properties">
+   Properties
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#independence">
+     Independence
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#state-duration-distribution">
+     State Duration Distribution
     </a>
    </li>
   </ul>
@@ -757,33 +793,6 @@
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#applications">
    Applications
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#speech">
-     Speech
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#pose">
-     Pose
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#speech-tags">
-     Speech Tags
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#hidden-topic-markov-models">
-   Hidden Topic Markov Models
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#model-selection">
-   Model Selection
   </a>
  </li>
 </ul>
@@ -799,100 +808,341 @@
                 
   <div class="section" id="hidden-markov-models">
 <h1>Hidden Markov Models<a class="headerlink" href="#hidden-markov-models" title="Permalink to this headline">¶</a></h1>
-<p>A hidden Markov model has a two sequences: state <span class="math notranslate nohighlight">\(S_t\)</span> and observation <span class="math notranslate nohighlight">\(O_t\)</span>. The hidden, unobservable states <span class="math notranslate nohighlight">\(S_t\)</span> follow a Markov chain with transition probability <span class="math notranslate nohighlight">\(P(S_t \vert S_{t-1})\)</span> and the observation follows a conditional distribution <span class="math notranslate nohighlight">\(P(O_t \vert S_t=s_t)\)</span> parameterized by <span class="math notranslate nohighlight">\(s_t\)</span>.</p>
+<p>A hidden Markov model has a two sequences: state <span class="math notranslate nohighlight">\(S_t\)</span> and observation <span class="math notranslate nohighlight">\(O_t\)</span>. The hidden, unobservable states <span class="math notranslate nohighlight">\(S_t\)</span> follow a Markov chain with transition probability <span class="math notranslate nohighlight">\(P(S_t \vert S_{t-1})\)</span> and the observation follows a conditional distribution <span class="math notranslate nohighlight">\(P(X_t \vert S_t=s_t)\)</span> parameterized by <span class="math notranslate nohighlight">\(s_t\)</span>.</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{aligned}
 &amp; S_1 &amp;&amp;\longrightarrow &amp;&amp; S_2  &amp;&amp;\longrightarrow &amp;&amp;\ldots&amp;&amp; \longrightarrow &amp;&amp; S_t  \\
 &amp;\downarrow&amp;&amp; &amp;&amp;\downarrow&amp;&amp; &amp;&amp;&amp;&amp; &amp;&amp;\downarrow \\
-&amp; O_1 &amp;&amp;&amp;&amp; O_2&amp;&amp; &amp;&amp; \ldots &amp;&amp; &amp;&amp;O_t \\
+&amp; X_1 &amp;&amp;&amp;&amp; X_2&amp;&amp; &amp;&amp; \ldots &amp;&amp; &amp;&amp;X_t \\
 \end{aligned}\end{split}\]</div>
-<p>Given a sequence of observations <span class="math notranslate nohighlight">\(o_1, \ldots, o_t\)</span>, we want to solve</p>
+<p>Given a sequence of observations <span class="math notranslate nohighlight">\(x_1, \ldots, x_t\)</span>, we want to solve</p>
 <ul class="simple">
-<li><p>What is the probability of this sequence <span class="math notranslate nohighlight">\(o_1, \ldots, o_t\)</span>? (the <strong>scoring</strong> problem)</p></li>
+<li><p>What is the probability of this sequence <span class="math notranslate nohighlight">\(x_1, \ldots, x_t\)</span>? (the <strong>scoring</strong> problem)</p></li>
 <li><p>What is your best guess of the sequence of hidden states <span class="math notranslate nohighlight">\(s_1, \ldots, s_t\)</span>? (the <strong>decoding</strong> problem)</p></li>
 <li><p>Given a large number of observations, how could you learn a
-model of the conditional distribution <span class="math notranslate nohighlight">\(P(O_t\vert S_t)\)</span>? (the <strong>training</strong> problem)</p></li>
+model of the conditional distribution <span class="math notranslate nohighlight">\(P(X_t\vert S_t)\)</span>? (the <strong>training</strong> problem)</p></li>
 </ul>
-<div class="section" id="problem">
-<h2>Problem<a class="headerlink" href="#problem" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="problems">
+<h2>Problems<a class="headerlink" href="#problems" title="Permalink to this headline">¶</a></h2>
 <p>Notations:</p>
 <ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span>: <span class="math notranslate nohighlight">\(N\times N\)</span> state transition probability matrix where <span class="math notranslate nohighlight">\(a_{ij} = P(q_{t+1} = j\vert q_t = i)\)</span></p></li>
-<li><p><span class="math notranslate nohighlight">\(\boldsymbol{\pi}  = \left\{ \pi_i \right\}\)</span>: initial state distribution, where <span class="math notranslate nohighlight">\(\pi_i = P(q_1 = i)\)</span></p></li>
-<li><p><span class="math notranslate nohighlight">\(V= \left\{ v_1, \ldots, v_M \right\}\)</span>: set of <span class="math notranslate nohighlight">\(M\)</span> possible observation labels (or vectors, in general). Obervation at time <span class="math notranslate nohighlight">\(t\)</span> is <span class="math notranslate nohighlight">\(o_t \in V\)</span></p></li>
-<li><p><span class="math notranslate nohighlight">\(\boldsymbol{B}\)</span>: <span class="math notranslate nohighlight">\(N\times M\)</span> observation (emission) distribution in state <span class="math notranslate nohighlight">\(i\)</span> where <span class="math notranslate nohighlight">\(b_{i}(k) = P(o_{t} = v_k\vert q_t = i)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{P}\)</span>: <span class="math notranslate nohighlight">\(n\times n\)</span> state transition probability matrix, where <span class="math notranslate nohighlight">\(p_{ij} = P(S_{t+1} = j\vert S_t = i)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{\pi}  = (\pi_1, \ldots, \pi_n)\)</span>: initial state distribution, where <span class="math notranslate nohighlight">\(\pi_s = P(S_1 = s)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(e _s(x)\)</span>: emission distribution in state <span class="math notranslate nohighlight">\(i\)</span>. <span class="math notranslate nohighlight">\(e_{i}(x) = P(X_{t} = x\vert S_t = s)\)</span>. Note that <span class="math notranslate nohighlight">\(x\)</span> can be a vector. For simplicity, we use unbold symbol.</p></li>
 </ul>
-<p>The entire model parameters is <span class="math notranslate nohighlight">\(\lambda = \left\{ \boldsymbol{A} , \boldsymbol{B} ,\pi \right\}\)</span></p>
-<p>The problems can be formulated as</p>
+<p>The entire model parameters is <span class="math notranslate nohighlight">\(\boldsymbol{\theta} = \left\{ \boldsymbol{P} , \boldsymbol{e} ,\pi \right\}\)</span></p>
+<p>Given an observed sequence <span class="math notranslate nohighlight">\(\boldsymbol{x_T} = (x_1, x_2, \ldots, x_T)\)</span>, the problems are</p>
 <ul class="simple">
-<li><p>Scoring problem
-Given <span class="math notranslate nohighlight">\(\boldsymbol{O_T} =\)</span> and <span class="math notranslate nohighlight">\(\lambda\)</span>, compute <span class="math notranslate nohighlight">\(P(\boldsymbol{O} \vert \lambda )\)</span>
-forward algorithm</p></li>
-<li><p>Decoding
-Given</p></li>
-<li><p>Training (learning)
-Given <span class="math notranslate nohighlight">\(\boldsymbol{o}\)</span>, find <span class="math notranslate nohighlight">\(\lambda\)</span> to maximize</p></li>
+<li><p>Scoring problem: Suppose we know <span class="math notranslate nohighlight">\(\boldsymbol{\theta}\)</span>, then how to compute the probability of this sequence of observation <span class="math notranslate nohighlight">\(P(\boldsymbol{x}_T \vert \boldsymbol{\theta} )\)</span>? This can be solved by forward or backward algorithm</p></li>
+<li><p>Decoding: What is the most probable underlying state sequence <span class="math notranslate nohighlight">\(\boldsymbol{s} = (s_1, \ldots, s_T)\)</span>? This can be solved by Viterbi algorithm</p></li>
+<li><p>Training (learning): How to estimate the parameters <span class="math notranslate nohighlight">\(\boldsymbol{\theta} = \left\{ \boldsymbol{P} , \boldsymbol{e} ,\pi \right\}\)</span>? Baum-Welch algorithm (EM applied to HMMs)</p></li>
 </ul>
-<div class="section" id="diagrams">
-<h3>Diagrams<a class="headerlink" href="#diagrams" title="Permalink to this headline">¶</a></h3>
-<p>transition diagrams, trellis</p>
+<p>To better understand the algorithms above, we introduce two diagrams of state transition. The left graph encodes the transition matrix <span class="math notranslate nohighlight">\(\boldsymbol{P}\)</span>, and the right trellis shows state transition along time.</p>
+<div class="figure align-default" id="markov-transition">
+<a class="reference internal image-reference" href="../_images/markov-transition.png"><img alt="" src="../_images/markov-transition.png" style="width: 80%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 64 </span><span class="caption-text">Markov transition illustration</span><a class="headerlink" href="#markov-transition" title="Permalink to this image">¶</a></p>
 </div>
 <div class="section" id="scoring">
 <h3>Scoring<a class="headerlink" href="#scoring" title="Permalink to this headline">¶</a></h3>
+<p>Given <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span>, to compute <span class="math notranslate nohighlight">\(p(\boldsymbol{x} \vert \boldsymbol{\theta} )\)</span>, on may attempt to enumerate all possible transitions <span class="math notranslate nohighlight">\(\boldsymbol{s}\)</span></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+p(\boldsymbol{x} \vert \boldsymbol{\theta})
+&amp;= \sum _ \boldsymbol{s} p( \boldsymbol{x} ,\boldsymbol{s} \vert \boldsymbol{\theta} ) \\
+&amp;= \sum _ \boldsymbol{s} p( \boldsymbol{x} \vert \boldsymbol{s} , \boldsymbol{\theta} )p(\boldsymbol{s} \vert  \boldsymbol{\theta} ) \\
+&amp;= \sum _ \boldsymbol{s} \left[ e_{s_1}(x_1)e_{s_2}(x_2)\ldots e_{s_T}(x_T) \right] \left[ \pi_{s_1} p_{s_1 s_2} \ldots p_{s_{T-1} s_T} \right]\\
+\end{aligned}\end{split}\]</div>
+<p>Clearly, the computation is intractable, since the number of possible state sequences <span class="math notranslate nohighlight">\(\boldsymbol{s}\)</span> is <span class="math notranslate nohighlight">\(n^T\)</span>.</p>
 <div class="section" id="forward-algorithm">
 <h4>Forward Algorithm<a class="headerlink" href="#forward-algorithm" title="Permalink to this headline">¶</a></h4>
-<p>Enumeration over <span class="math notranslate nohighlight">\(\boldsymbol{q}\)</span> is computational expensive.</p>
-<p>Use DP.</p>
-<p>Define <span class="math notranslate nohighlight">\(a_t{i}\)</span> the probability of observing <span class="math notranslate nohighlight">\(\boldsymbol{O}_T\)</span> at time <span class="math notranslate nohighlight">\(t\)</span> in state <span class="math notranslate nohighlight">\(i\)</span>,</p>
+<p>Forward algorithm is a dynamic programming algorithm to compute <span class="math notranslate nohighlight">\(p(\boldsymbol{x} \vert \boldsymbol{\theta})\)</span>.</p>
+<p>Define a forward probability, for time <span class="math notranslate nohighlight">\(1\le t \le T\)</span>, state <span class="math notranslate nohighlight">\(1\le s \le n\)</span>,</p>
 <div class="math notranslate nohighlight">
 \[
-P\left(\mathbf{o}_{1} \mathbf{o}_{2} \ldots \mathbf{o}_{t}, q_{t}=i \mid \lambda\right)
+f_t(s) = \operatorname{P}  \left\{ \boldsymbol{x} _{[:t]} = (x_1, \ldots , x_t), S_t = s \vert \boldsymbol{\theta} \right\}
 \]</div>
-<p>Then</p>
+<p>which is the probability of emitting sequence <span class="math notranslate nohighlight">\(x_1, \ldots, x_t\)</span> and eventually reaching the state <span class="math notranslate nohighlight">\(s\)</span> at time <span class="math notranslate nohighlight">\(t\)</span>.</p>
+<p>We now figure out the iterative relation. At time <span class="math notranslate nohighlight">\(t-1\)</span>, the sequence is <span class="math notranslate nohighlight">\((x_1, \ldots , x_t)\)</span>, and reaches at some state <span class="math notranslate nohighlight">\(k\)</span>. To arrive <span class="math notranslate nohighlight">\(s\)</span> at time <span class="math notranslate nohighlight">\(t\)</span>, the transition probability is <span class="math notranslate nohighlight">\(p_{ks}\)</span>. To emit <span class="math notranslate nohighlight">\(x_t\)</span>, the emission probability is <span class="math notranslate nohighlight">\(e_s(x_t)\)</span>. Hence, the total probability is <span class="math notranslate nohighlight">\(p_{ks} e_s(x_t)\)</span>. There are <span class="math notranslate nohighlight">\(n\)</span> number of possible states <span class="math notranslate nohighlight">\(k\)</span> at time <span class="math notranslate nohighlight">\(t-1\)</span>. Therefore, the iteration relation is</p>
+<div class="math notranslate nohighlight">
+\[
+f_t(s) = \sum_{k=1}^n f_{t-1}(k) p_{ks} e_s(x_t)
+\]</div>
+<p>Finally, to compute <span class="math notranslate nohighlight">\(p(\boldsymbol{x} \vert \boldsymbol{\theta} )\)</span>, we look at time <span class="math notranslate nohighlight">\(T\)</span>, and sum over all states,</p>
+<div class="math notranslate nohighlight">
+\[
+p(\boldsymbol{x} \vert \boldsymbol{\theta}) = \sum_ {s=1}^n f_T(s)
+\]</div>
+<p>In matrix form,</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\boldsymbol{f}_{t+1} &amp;=  (\boldsymbol{P} ^\top \boldsymbol{f}_t) * \boldsymbol{e}(x_t) \\
+p(\boldsymbol{x} \vert \boldsymbol{\theta} )&amp;= \boldsymbol{1} _n ^\top \boldsymbol{f}_T \\
+\end{aligned}\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\boldsymbol{f}_t = [f_t(1), \ldots, f_t(n)]^\top , \boldsymbol{e} (x_t) = [e_1(x_t), \ldots, e_n(x_t)] ^\top\)</span> and <span class="math notranslate nohighlight">\(*\)</span> stands for element-wise dot product.</p>
+<hr class="docutils" />
+<hr class="docutils" />
+<p><strong>Forward Algorithm</strong></p>
+<hr class="docutils" />
+<p>Construct a DP table of size <span class="math notranslate nohighlight">\(n\times T\)</span> to store <span class="math notranslate nohighlight">\(f_t(s)\)</span>. Fill the entries column by column from left to right.</p>
 <ul class="simple">
-<li><p>For <span class="math notranslate nohighlight">\(t=1\)</span></p></li>
-<li><p>For <span class="math notranslate nohighlight">\(t&gt;1\)</span>, for <span class="math notranslate nohighlight">\(a_t{j}\)</span>, we consider the all</p></li>
+<li><p>For <span class="math notranslate nohighlight">\(t=1\)</span>,</p>
+<ul>
+<li><p>for <span class="math notranslate nohighlight">\(s = 1, \ldots, n\)</span>, compute <span class="math notranslate nohighlight">\(f_1(s) = \pi_s e_s (x_1)\)</span></p></li>
 </ul>
-<p>Marginalize The final state</p>
+</li>
+<li><p>For <span class="math notranslate nohighlight">\(t = 2,\ldots, T\)</span>,</p>
+<ul>
+<li><p>for <span class="math notranslate nohighlight">\(s = 1, \ldots, n\)</span>, compute <span class="math notranslate nohighlight">\(f_t(s) = \sum_{k=1}^n f_{t-1}(k) p_{ks} e_s(x_t)\)</span></p></li>
+</ul>
+</li>
+<li><p>Return <span class="math notranslate nohighlight">\(p(\boldsymbol{x} \vert \boldsymbol{\theta}) = \sum_ {s=1}^n f_T(s)\)</span></p></li>
+</ul>
+<hr class="docutils" />
+<hr class="docutils" />
+<p>There are <span class="math notranslate nohighlight">\(n\times T\)</span> entries, and each entry takes <span class="math notranslate nohighlight">\(O(n)\)</span> to compute. So the total complexity is <span class="math notranslate nohighlight">\(O(n^2 T)\)</span>, much smaller than the brute force’s <span class="math notranslate nohighlight">\(O(n^T)\)</span>.</p>
 </div>
 <div class="section" id="backward-algorithm">
 <h4>Backward Algorithm<a class="headerlink" href="#backward-algorithm" title="Permalink to this headline">¶</a></h4>
-<p>Define <span class="math notranslate nohighlight">\(b_t{i}\)</span> the probability of observing <span class="math notranslate nohighlight">\(\boldsymbol{O}_T\)</span> at time <span class="math notranslate nohighlight">\(t\)</span> in state <span class="math notranslate nohighlight">\(i\)</span>,</p>
+<p>Backward algorithm is a dynamic programming algorithm to compute <span class="math notranslate nohighlight">\(p(\boldsymbol{x} \vert \boldsymbol{\theta})\)</span>.</p>
+<p>Define a backward probability, for time <span class="math notranslate nohighlight">\(1\le t \le T-1\)</span>, state <span class="math notranslate nohighlight">\(1\le s \le n\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[
+b_t(s) = \operatorname{P}  \left\{ \boldsymbol{x} _{[t+1:]} = (x_{t+1}, \ldots , x_T), S_t = s \vert \boldsymbol{\theta} \right\}
+\]</div>
+<p>which is the probability of emitting future sequence <span class="math notranslate nohighlight">\(x_{t+1}, \ldots, x_T\)</span> and from current state <span class="math notranslate nohighlight">\(s\)</span> at time <span class="math notranslate nohighlight">\(t\)</span>.</p>
+<p>We now figure out the iterative relation. At time <span class="math notranslate nohighlight">\(t+1\)</span>, it reaches some state <span class="math notranslate nohighlight">\(k\)</span>, and emits <span class="math notranslate nohighlight">\(x_{t+1}\)</span>. To arrive <span class="math notranslate nohighlight">\(k\)</span> at time <span class="math notranslate nohighlight">\(t+1\)</span>, the transition probability is <span class="math notranslate nohighlight">\(p_{sk}\)</span>. To emit <span class="math notranslate nohighlight">\(x_t\)</span>, the emission probability is <span class="math notranslate nohighlight">\(e_k(x_{t+1})\)</span>. Hence, the total probability is <span class="math notranslate nohighlight">\(p_{ks} e_k(x_{t+1})\)</span>. There are <span class="math notranslate nohighlight">\(n\)</span> number of possible states <span class="math notranslate nohighlight">\(k\)</span> at time <span class="math notranslate nohighlight">\(t+1\)</span>. Therefore, the iteration relation is</p>
+<div class="math notranslate nohighlight">
+\[
+b_t(s) = \sum_{k=1}^n p_{sk} e_k(x_{t+1}) b_{t+1}(k)
+\]</div>
+<p>Finally, to compute <span class="math notranslate nohighlight">\(p(\boldsymbol{x} \vert \boldsymbol{\theta} )\)</span>, we look at time <span class="math notranslate nohighlight">\(1\)</span>. The probability of starting from state <span class="math notranslate nohighlight">\(s\)</span> is <span class="math notranslate nohighlight">\(\pi_s\)</span>, and the probability of emitting the first observation <span class="math notranslate nohighlight">\(x_1\)</span> is <span class="math notranslate nohighlight">\(e_s(x_1)\)</span>. Then the probability of emitting the remaining observations <span class="math notranslate nohighlight">\(x_2, \ldots, x_T\)</span> given we start from state <span class="math notranslate nohighlight">\(s\)</span> is <span class="math notranslate nohighlight">\(b_1(s)\)</span>. Finally, we sum over all possible starting states <span class="math notranslate nohighlight">\(s\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[
+p(\boldsymbol{x} \vert \boldsymbol{\theta}) = \sum_ {s=1}^n \pi_s e_{s}(x_1) b_1(s)
+\]</div>
+<p>In matrix form,</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\boldsymbol{b}_{t} &amp;=  \boldsymbol{P} ( \boldsymbol{e}(x_t) * \boldsymbol{b}_{t+1}) \\
+p(\boldsymbol{x} \vert \boldsymbol{\theta} )&amp;=
+\boldsymbol{\pi} ^\top  (\boldsymbol{e} (x_1) * \boldsymbol{b} _1) \\
+\end{aligned}\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\boldsymbol{b}_t = [b_t(1), \ldots, b_t(n)]^\top , \boldsymbol{e} (x_t) = [e_1(x_t), \ldots, e_n(x_t)] ^\top\)</span> and <span class="math notranslate nohighlight">\(*\)</span> stands for element-wise dot product.</p>
+<hr class="docutils" />
+<hr class="docutils" />
+<p><strong>Backward Algorithm</strong></p>
+<hr class="docutils" />
+<p>Construct a DP table of size <span class="math notranslate nohighlight">\(n \times (T-1)\)</span> to store <span class="math notranslate nohighlight">\(b_t(s)\)</span>. Fill the entries column by column <strong>from right to left</strong>.</p>
+<ul class="simple">
+<li><p>For <span class="math notranslate nohighlight">\(t=T\)</span>,</p>
+<ul>
+<li><p>for <span class="math notranslate nohighlight">\(s = 1, \ldots, n\)</span>, initialize <span class="math notranslate nohighlight">\(b_t(s) = 1\)</span></p></li>
+</ul>
+</li>
+<li><p>For <span class="math notranslate nohighlight">\(t = T-1, T-2, \ldots, 1\)</span>,</p>
+<ul>
+<li><p>for <span class="math notranslate nohighlight">\(s = 1, \ldots, n\)</span>, compute <span class="math notranslate nohighlight">\(b_t(s) = \sum_{k=1}^n p_{sk} e_k(x_{t+1}) b_{t+1}(k)\)</span></p></li>
+</ul>
+</li>
+<li><p>Return <span class="math notranslate nohighlight">\(p(\boldsymbol{x} \vert \boldsymbol{\theta}) = \sum_ {s=1}^n \pi_s e_{s}(x_1) b_1(s)\)</span></p></li>
+</ul>
+<hr class="docutils" />
+<hr class="docutils" />
+<p>As in forward algorithm, the complexity is <span class="math notranslate nohighlight">\(O(n^2 T)\)</span>.</p>
+<div class="note admonition">
+<p class="admonition-title"> Forward and Backward algorithms</p>
+<ul class="simple">
+<li><p>Either algorithm alone can be used to compute <span class="math notranslate nohighlight">\(p(\boldsymbol{x} \vert \boldsymbol{\theta})\)</span>, but both <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(b\)</span> will be necessary for solving the training problem.</p></li>
+<li><p>The name “forward” and “backward” refer to the order of filling the entries in the DP table. In forward algorithm, we fill the entries by increasing order of <span class="math notranslate nohighlight">\(t\)</span>, so we call it “forward”. In backward algorithm, we fill the entries by decreasing order of <span class="math notranslate nohighlight">\(t\)</span>, so we call it “backward”.</p></li>
+</ul>
+</div>
 </div>
 </div>
 <div class="section" id="decoding">
 <h3>Decoding<a class="headerlink" href="#decoding" title="Permalink to this headline">¶</a></h3>
-<p>Joint probability of state sequence and observation sequence.</p>
-<p>Viterbi Algorithm</p>
+<p>Recall the problem: given an observation sequence <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span>, what is the most probable underlying state sequence <span class="math notranslate nohighlight">\(\boldsymbol{s} = (s_1, \ldots, s_T)\)</span>?</p>
+<p>One attempt is to choose the individually most probable state by</p>
+<div class="math notranslate nohighlight">
+\[s^*_t = \arg\max_s P(S_t = s \vert \boldsymbol{x} , \boldsymbol{\theta} )\]</div>
+<p>where <span class="math notranslate nohighlight">\(P(S_t = s \vert \boldsymbol{x} , \boldsymbol{\theta} ) = \frac{f_t(s)b_t(s)}{p(\boldsymbol{x} \vert \boldsymbol{\theta} )}\)</span>, and return <span class="math notranslate nohighlight">\(\boldsymbol{s} ^* = (s^*_1, \ldots, s^*_T)\)</span>. This “individually most likely” criterion maximizes the expected number of correct states. But clearly it does not consider the dependence among sequence from time to time, and may give a sequence that is totally impossible.</p>
+<p>We should consider the sequence jointly. The correct criterion should be</p>
+<div class="math notranslate nohighlight">
+\[
+\boldsymbol{s} ^* = \underset{\boldsymbol{s} }{\operatorname{argmax}}\, p(\boldsymbol{s} \vert \boldsymbol{x} , \boldsymbol{\theta} )
+\]</div>
+<p>Viterbi Algorithm can solve this problem.</p>
+<div class="section" id="viterbi-algorithm">
+<h4>Viterbi Algorithm<a class="headerlink" href="#viterbi-algorithm" title="Permalink to this headline">¶</a></h4>
+<p>Define probability <span class="math notranslate nohighlight">\(v_t(s)\)</span> as the probability of the most probable state path for the observation sequence <span class="math notranslate nohighlight">\((x_1, x_2, \ldots, x_t)\)</span> ending in state <span class="math notranslate nohighlight">\(s\)</span> at time <span class="math notranslate nohighlight">\(t\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[
+v_t(s) = \max _{s_1, \ldots, s_{t-1}} \operatorname{P} \left\{ \boldsymbol{x} _{[:t]} =  (x_1, x_2, \ldots, x_t), S_t = s \vert \boldsymbol{\theta} \right\}
+\]</div>
+<p>We now figure out the iterative relation. This is like a coin-collection problem in dynamic programming. At time <span class="math notranslate nohighlight">\(t\)</span>, we look back to check <span class="math notranslate nohighlight">\(v_{t-1}(k)\)</span>, which is the probability of the most probable path at time <span class="math notranslate nohighlight">\(t-1\)</span>. Then we consider the transition <span class="math notranslate nohighlight">\(p_{ks}\)</span>. Finally, to emit <span class="math notranslate nohighlight">\(x_t\)</span>, we need the emission probability <span class="math notranslate nohighlight">\(e_s(x_t)\)</span>. In sum, we find to find the maximum</p>
+<div class="math notranslate nohighlight">
+\[
+v_t(s) = e_s(x_t) \max _{1 \le k \le n } v_{t-1}(k) p_{ks}
+\]</div>
+<p>It’s analogous to the reasoning in forward probability, but we take sum their and take maximum here.</p>
+<hr class="docutils" />
+<hr class="docutils" />
+<p><strong>Viterbi Algorithm</strong></p>
+<hr class="docutils" />
+<p>Construct a DP table of size <span class="math notranslate nohighlight">\(n\times T\)</span> to store <span class="math notranslate nohighlight">\(v_t(s)\)</span>. Fill the entries column by column from left to right.</p>
+<ul class="simple">
+<li><p>For <span class="math notranslate nohighlight">\(t=1\)</span>,</p>
+<ul>
+<li><p>for <span class="math notranslate nohighlight">\(s = 1, \ldots, n\)</span>, compute <span class="math notranslate nohighlight">\(v_1(s) = \pi_s e_s(x_1)\)</span> (which is <span class="math notranslate nohighlight">\(f_1(s)\)</span>)</p></li>
+</ul>
+</li>
+<li><p>For <span class="math notranslate nohighlight">\(t = 2,\ldots, T\)</span>,</p>
+<ul>
+<li><p>for <span class="math notranslate nohighlight">\(s = 1, \ldots, n\)</span>, compute <span class="math notranslate nohighlight">\(v_t(s) = e_s(x_t) \max _{1 \le k \le n } v_{t-1}(k) p_{ks}\)</span></p></li>
+</ul>
+</li>
+</ul>
+<hr class="docutils" />
+<hr class="docutils" />
+<p>As in forward algorithm, complexity is <span class="math notranslate nohighlight">\(n^2 T\)</span>.</p>
+</div>
 </div>
 <div class="section" id="training">
 <h3>Training<a class="headerlink" href="#training" title="Permalink to this headline">¶</a></h3>
-<p>ML to find for <span class="math notranslate nohighlight">\(\lambda\)</span>.</p>
-<p>If states is given, then ML is easy by counting. Similar like Gaussian.</p>
-<p>But the states are not given, so we provide initial guess, and iteratively update <span class="math notranslate nohighlight">\(\lambda\)</span>.</p>
-<p>Baum-Welch Algorithm: EM for HMMs</p>
+<p>Given an observation sequence <span class="math notranslate nohighlight">\(\boldsymbol{x} _t\)</span>, we to find parameters <span class="math notranslate nohighlight">\(\boldsymbol{\theta} = \left\{ \boldsymbol{P}, \boldsymbol{e} , \boldsymbol{\pi}   \right\}\)</span> that maximize the probability of the observations</p>
+<div class="math notranslate nohighlight">
+\[
+\boldsymbol{\theta} ^* = \underset{\boldsymbol{\theta} }{\operatorname{argmax}} \, p(\boldsymbol{x} \vert \boldsymbol{\theta} )
+\]</div>
+<div class="section" id="counting">
+<h4>Counting<a class="headerlink" href="#counting" title="Permalink to this headline">¶</a></h4>
+<p>If the state sequence is given, then maximum likelihood for <span class="math notranslate nohighlight">\(p_{ij}\)</span> and <span class="math notranslate nohighlight">\(e_s(x)\)</span> is easy by counting.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+c(i,j) &amp;= \text{number of $(i\rightarrow j)$ transitions}  &amp; p(i,j) &amp;= \frac{c(i,j)}{\sum _k c(i,k)}\\
+n_s(x) &amp;= \text{number of $x$ emitted from state $s$}  &amp; e_s(x) &amp;= \frac{n_s(x)}{\sum _y n_s(y)}\\
+\end{aligned}\end{split}\]</div>
+<p>Note that state <span class="math notranslate nohighlight">\(i\)</span> may not appear in any of the training sequences, resulting into undefined estimation equations (divide by zero). To solve this, we add pseudocounts to <span class="math notranslate nohighlight">\(c(i,j)\)</span> and <span class="math notranslate nohighlight">\(n_s(x)\)</span>, which reflect our prior biases about the probability values, which is in fact corresponding to the setting of a Dirichlet prior distribution.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\tilde{c}(i,j) &amp;= c(i,j) + r(i,j)  \\
+\tilde{n}_s(x) &amp;= n_s(x)  + r_s(x)
+\end{aligned}\end{split}\]</div>
+</div>
+<div class="section" id="baum-welch-algorithm">
+<h4>Baum-Welch algorithm<a class="headerlink" href="#baum-welch-algorithm" title="Permalink to this headline">¶</a></h4>
+<p>Usually the states are not given, so we provide initial guess, and iteratively update <span class="math notranslate nohighlight">\(\boldsymbol{\theta}\)</span>. Similar like Gaussian Mixture, we use an EM algorithm, and Baum-Welch algorithm does so.</p>
+<p>Consider a transition probability <span class="math notranslate nohighlight">\(p_t (i,j)\)</span> <strong>defined</strong> at time <span class="math notranslate nohighlight">\(t\)</span>. It can be found as</p>
+<div class="math notranslate nohighlight">
+\[
+p_t(i,j):= \operatorname{P} \left\{ S_t = i, S_{t+1}=j \vert \boldsymbol{x} _t, \boldsymbol{\theta} \right\} = \frac{f_t(i) \cdot p_{ij}  \cdot e_j (x_{t+1}) \cdot b_{t+1}(j)}{p(\boldsymbol{x} _t \vert \boldsymbol{\theta} )}
+\]</div>
+<p>Define a <span class="math notranslate nohighlight">\(p_t(i)\)</span> as the probability in state <span class="math notranslate nohighlight">\(i\)</span> at time <span class="math notranslate nohighlight">\(t\)</span>. It can be found as</p>
+<div class="math notranslate nohighlight">
+\[
+p_t(i) := \operatorname{P} \left\{ S_t = i \vert \boldsymbol{x} _t, \boldsymbol{\theta}  \right\}  = \frac{f_t(s)b_t(s)}{p(\boldsymbol{x} \vert \boldsymbol{\theta} )} = \sum _{j=1}^n p_t(i,j)
+\]</div>
+<p>Given <strong>multiple</strong> sequences of length <span class="math notranslate nohighlight">\(T: \boldsymbol{x} _T = (x_1, \ldots, x_T)\)</span>, if we know <span class="math notranslate nohighlight">\(\boldsymbol{\theta}\)</span>, then we can compute <span class="math notranslate nohighlight">\(p_t(i,j)\)</span> and <span class="math notranslate nohighlight">\(p_t(i)\)</span>. Hence we can compute the following expectations.</p>
+<ul>
+<li><p>the expected count of appearance of state <span class="math notranslate nohighlight">\(i\)</span>, denoted as <span class="math notranslate nohighlight">\(c(i)\)</span>, is</p>
+<div class="math notranslate nohighlight">
+\[\operatorname{E} \left[ c(i) \right] = \sum _{t=1} ^T \mathbb{I} \left\{ S_t = i \right\} = \sum _{t=1} ^T p_t(i)\]</div>
+</li>
+<li><p>the expected count of transitions from <span class="math notranslate nohighlight">\(i\)</span> to <span class="math notranslate nohighlight">\(j\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[\operatorname{E} \left[ c(i,j) \right] = \sum _{t=1} ^T \mathbb{I} \left\{ S_t = i, S_t = j \right\} = \sum _{t=1} ^T p_t(i,j)\]</div>
+</li>
+<li><p>the expected number of emission of <span class="math notranslate nohighlight">\(x\)</span> from state <span class="math notranslate nohighlight">\(i\)</span></p>
+<div class="math notranslate nohighlight">
+\[\operatorname{E} \left[ n_i (x) \right] = \sum _{t=1} ^T \mathbb{I} \left\{ S_t = i, X_t = x \right\} = \sum _{t=1} ^T p_t(i) \ \mathbb{I} \left\{ X_t = x \right\} \]</div>
+</li>
+</ul>
+<p>Then we can use these expectations to re-estimate the parameters.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\hat{p}_{ij}&amp;= \frac{\operatorname{E} \left[ c(i) \right] }{ \operatorname{E} \left[ c(i,j) \right] } \\
+\hat{e}_i(x)&amp;= \frac{\operatorname{E} \left[ n_i(x) \right] }{\operatorname{E} \left[ c(i) \right]} \\
+\hat{\pi}_i&amp;= p_1(i)\\
+\end{aligned}\end{split}\]</div>
+<p>So we obtain new estimate <span class="math notranslate nohighlight">\(\hat{\boldsymbol{\theta} }\)</span>.</p>
+<p>It can be shown that <span class="math notranslate nohighlight">\(p(\boldsymbol{x} _t \vert \hat{\boldsymbol{\theta} }) \ge p(\boldsymbol{x} _t \vert \boldsymbol{\theta} )\)</span>, i.e. the likelihood is increased after re-estimation. Therefore, we can iterate the re-estimation formulas until some convergence threshold is reached. This algorithm is guaranteed to find a local maximum of the likelihood, but not a global one</p>
+</div>
+</div>
+</div>
+<div class="section" id="properties">
+<h2>Properties<a class="headerlink" href="#properties" title="Permalink to this headline">¶</a></h2>
+<p>An HMM is a model of the joint distribution of observation sequence <span class="math notranslate nohighlight">\(\boldsymbol{x} _T\)</span> and state sequence <span class="math notranslate nohighlight">\(\boldsymbol{s}_T\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+p(\boldsymbol{x} _T, \boldsymbol{s} _T)
+&amp;= p(s_1) p(x_1 \vert s_1) \prod _{t=2}^T p(s_t \vert s_{t-1}) p(x_t \vert s_t) \\
+&amp;= \pi_{s_1} e_{s_1}(x_1) \prod _{t=2}^T p_{s_{t-1} s_t} e_{s_t}(x_t) \\
+\end{aligned}\end{split}\]</div>
+<p>We can deduce many properties of HMM. We should note whether the data we want to model with satisfy these properties.</p>
+<div class="section" id="independence">
+<h3>Independence<a class="headerlink" href="#independence" title="Permalink to this headline">¶</a></h3>
+<p>Given the state at time <span class="math notranslate nohighlight">\(t\)</span>,</p>
+<ul>
+<li><p>the observation at time <span class="math notranslate nohighlight">\(t\)</span> is independent of the states and other observations at other time</p>
+<div class="math notranslate nohighlight">
+\[x_t \perp \left\{ \boldsymbol{x} _{-t}, \boldsymbol{s} _{-t} \right\} \mid s_t\]</div>
+</li>
+<li><p>the future is independent of the past.</p>
+<div class="math notranslate nohighlight">
+\[\left\{ \boldsymbol{x} _{[:t-1]}, \boldsymbol{s} _{[:t-1]} \right\} \perp \left\{ \boldsymbol{x} _{[t+1:]}, \boldsymbol{s} _{t+1:} \right\}  \mid s_t\]</div>
+</li>
+</ul>
+<p>Question: do natural languages satisfy these properties?</p>
+</div>
+<div class="section" id="state-duration-distribution">
+<h3>State Duration Distribution<a class="headerlink" href="#state-duration-distribution" title="Permalink to this headline">¶</a></h3>
+<p>The probability of staying in state <span class="math notranslate nohighlight">\(i\)</span> for <span class="math notranslate nohighlight">\(d\)</span> consecutive time steps and leave is <span class="math notranslate nohighlight">\(p_{ii}^{d-1} \times (1-p_{ii})\)</span>, which is a geometric distribution with monotonically decreasing density. In contrast, in real-life data, durations of “states” we want to to model often look nothing like that – example of phoneme durations.</p>
+<div class="figure align-default" id="hmm-state-duration">
+<a class="reference internal image-reference" href="../_images/hmm-state-duration.png"><img alt="" src="../_images/hmm-state-duration.png" style="width: 70%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 65 </span><span class="caption-text">State Duration Modeling</span><a class="headerlink" href="#hmm-state-duration" title="Permalink to this image">¶</a></p>
+</div>
+<p>Possible solutions:</p>
+<ul class="simple">
+<li><p>Replace transition probabilities with explicit duration distributions [Ostendorf ’96]</p>
+<ul>
+<li><p>Most general approach</p></li>
+<li><p>Breaks dynamic programming algorithms</p></li>
+</ul>
+</li>
+<li><p>Replace single state with multiple tied states with identical observation distribution, and some desired transition structure</p>
+<ul>
+<li><p>Simplest option: Set a minimum duration</p></li>
+<li><p>Can simulate other duration distributions with alternative
+transition structures</p></li>
+</ul>
+</li>
+</ul>
 </div>
 </div>
 <div class="section" id="applications">
 <h2>Applications<a class="headerlink" href="#applications" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="speech">
-<h3>Speech<a class="headerlink" href="#speech" title="Permalink to this headline">¶</a></h3>
+<p>HMM can be applied to anything that has “state” and “sequence” attributes.</p>
+<p><strong>Automatic speech recognition</strong></p>
+<ul class="simple">
+<li><p>One HMM per word or phoneme</p></li>
+<li><p>Time index corresponds to a 10ms “frame”</p></li>
+<li><p>Observation is a vector of spectral (frequency) measurements</p></li>
+<li><p>Can think of HMM state as corresponding to a state of the speaker’s vocal tract</p></li>
+</ul>
+<p><strong>Unsupervised speech unit (Word/Phoneme) Discovery</strong></p>
+<ul class="simple">
+<li><p>Learn an HMM to model a collection of unlabelled speech</p></li>
+<li><p>Group together frequently occurring sequences of states to define units</p></li>
+</ul>
+<p><strong>Activity recognition in video or biometrics</strong></p>
+<ul class="simple">
+<li><p>States corresponds to pose</p></li>
+<li><p>As in speech recognition, the “activity” can be labeled or unlabeled</p></li>
+</ul>
+<p><strong>Speech Tagging</strong></p>
+<div class="figure align-default" id="hmm-speech-tagging">
+<a class="reference internal image-reference" href="../_images/hmm-speech-tagging.png"><img alt="" src="../_images/hmm-speech-tagging.png" style="width: 50%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 66 </span><span class="caption-text">HMM in part-of-speech tagging [Julia Hockenmeyer]</span><a class="headerlink" href="#hmm-speech-tagging" title="Permalink to this image">¶</a></p>
 </div>
-<div class="section" id="pose">
-<h3>Pose<a class="headerlink" href="#pose" title="Permalink to this headline">¶</a></h3>
-</div>
-<div class="section" id="speech-tags">
-<h3>Speech Tags<a class="headerlink" href="#speech-tags" title="Permalink to this headline">¶</a></h3>
-</div>
-</div>
-<div class="section" id="hidden-topic-markov-models">
-<h2>Hidden Topic Markov Models<a class="headerlink" href="#hidden-topic-markov-models" title="Permalink to this headline">¶</a></h2>
-<p>Topic states.</p>
-</div>
-<div class="section" id="model-selection">
-<h2>Model Selection<a class="headerlink" href="#model-selection" title="Permalink to this headline">¶</a></h2>
-<p>Perplexity</p>
-<p>.</p>
 </div>
 </div>
 

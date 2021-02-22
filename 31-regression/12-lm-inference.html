@@ -58,7 +58,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Linear Regression - Extension" href="13-lm-extension.html" />
-    <link rel="prev" title="Linear Models - Estimation" href="11-lm-estimation.html" />
+    <link rel="prev" title="Linear Regression - Estimation" href="11-lm-estimation.html" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
@@ -450,7 +450,7 @@
   <ul class="current collapse-ul">
    <li class="toctree-l2">
     <a class="reference internal" href="11-lm-estimation.html">
-     Linear Models - Estimation
+     Linear Regression - Estimation
     </a>
    </li>
    <li class="toctree-l2 current active">
@@ -618,6 +618,11 @@
    <li class="toctree-l2">
     <a class="reference internal" href="../37-neural-networks/13-variational-autoencoders.html">
      Variational Autoencoders
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/31-sequential-models.html">
+     Sequential Models
     </a>
    </li>
   </ul>
@@ -1441,7 +1446,7 @@ RSS:  [0.57142857]
 ay = 1, aw = 0 --------------------------------------------------
 X^T y:  [ 4.  4. 12.]
 coefficients:  [-1.0658141e-14 -2.0000000e+00  1.0000000e+00]
-RSS:  [5.67979852e-28]
+RSS:  [5.01715536e-28]
 
 ay = 1, aw = 1 --------------------------------------------------
 X^T y:  [ 4.  4. 12.]
@@ -1453,7 +1458,7 @@ RSS:  [0.5]
 </div>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Example: </span><span class="se">\n</span><span class="s2">Adding an variable that is uncorrelated with y, </span><span class="se">\n</span><span class="s2">but gives non-zero coefficient estimate.&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Example: </span><span class="se">\n</span><span class="s2">Adding a variable that is uncorrelated with y, </span><span class="se">\n</span><span class="s2">but gives non-zero coefficient estimate.&quot;</span><span class="p">)</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
@@ -1473,7 +1478,7 @@ RSS:  [0.5]
 <span class="c1"># full model</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">FULL MODEl &quot;</span> <span class="o">+</span> <span class="s2">&quot;-&quot;</span><span class="o">*</span><span class="mi">50</span><span class="p">)</span>
 <span class="n">x2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">]])</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;x2 and y are uncorrelated, dot product is:&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">x2</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;x2 and y are uncorrelated, dot product is:&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">x2</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">())</span>
 <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">x0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">))</span><span class="o">.</span><span class="n">T</span>
 <span class="n">XXinv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">X</span><span class="p">))</span>
 <span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">XXinv</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
@@ -1486,7 +1491,7 @@ RSS:  [0.5]
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Example: 
-Adding an variable that is uncorrelated with y, 
+Adding a variable that is uncorrelated with y, 
 but gives non-zero coefficient estimate.
 
 REDUCED MODEL --------------------------------------------------
@@ -1494,9 +1499,9 @@ coefficients:  [0.5        0.64285714]
 RSS:  [0.07142857]
 
 FULL MODEl --------------------------------------------------
-x2 and y are uncorrelated, dot product is: [[0]]
+x2 and y are uncorrelated, dot product is: [0]
 coefficients:  [ 0.44444444  0.66666667 -0.11111111]
-RSS:  [2.76101317e-30]
+RSS:  [6.27390939e-30]
 </pre></div>
 </div>
 </div>
@@ -2003,7 +2008,7 @@ y _{new} - \hat{y}_{new}
     
     <div class='prev-next-bottom'>
         
-    <a class='left-prev' id="prev-link" href="11-lm-estimation.html" title="previous page">Linear Models - Estimation</a>
+    <a class='left-prev' id="prev-link" href="11-lm-estimation.html" title="previous page">Linear Regression - Estimation</a>
     <a class='right-next' id="next-link" href="13-lm-extension.html" title="next page">Linear Regression - Extension</a>
 
     </div>

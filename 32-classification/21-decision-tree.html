@@ -450,7 +450,7 @@
   <ul class="collapse-ul">
    <li class="toctree-l2">
     <a class="reference internal" href="../31-regression/11-lm-estimation.html">
-     Linear Models - Estimation
+     Linear Regression - Estimation
     </a>
    </li>
    <li class="toctree-l2">
@@ -618,6 +618,11 @@
    <li class="toctree-l2">
     <a class="reference internal" href="../37-neural-networks/13-variational-autoencoders.html">
      Variational Autoencoders
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/31-sequential-models.html">
+     Sequential Models
     </a>
    </li>
   </ul>
@@ -825,19 +830,24 @@ to the answer to question <span class="math notranslate nohighlight">\(Q^*\)</sp
 <p>To evaluate question quality, we need some partition metrics.</p>
 <div class="section" id="maximum-purity">
 <h4>Maximum Purity<a class="headerlink" href="#maximum-purity" title="Permalink to this headline">¶</a></h4>
-<p><span class="math notranslate nohighlight">\(\operatorname{purity}(\Omega, C)=\frac{1}{N} \sum_{k} \max _{j}\left|\omega_{k} \cap c_{j}\right|\)</span></p>
-<p>where</p>
+<p>Suppose</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(\Omega\)</span> is the proposed clustering,</p></li>
 <li><p><span class="math notranslate nohighlight">\(C\)</span> is the ground-truth clustering</p></li>
-<li><p><span class="math notranslate nohighlight">\(w_k\)</span> is the set of items assigned to cluster <span class="math notranslate nohighlight">\(k\)</span></p></li>
-<li><p><span class="math notranslate nohighlight">\(c_j\)</span> is the set of items with ground truth label <span class="math notranslate nohighlight">\(j\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(w_k\)</span> is a proposed cluster with label <span class="math notranslate nohighlight">\(k\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(c_j\)</span> is a ground-truth cluster with ground truth label <span class="math notranslate nohighlight">\(j\)</span></p></li>
 </ul>
-<p>properties</p>
-<ul class="simple">
+<p>Then the purity of the proposed clustering <span class="math notranslate nohighlight">\(\Omega\)</span> and the ground-truth <span class="math notranslate nohighlight">\(C\)</span> is defined as</p>
+<div class="math notranslate nohighlight">
+\[\operatorname{purity}(\Omega, C)=\frac{1}{n} \sum_{k} \max _{j}\left|\omega_{k} \cap c_{j}\right|\]</div>
+<p>That is, for each proposed cluster <span class="math notranslate nohighlight">\(w_k\)</span>, we find a true cluster <span class="math notranslate nohighlight">\(c_j\)</span> that has the maximum-cardinality intersection with <span class="math notranslate nohighlight">\(w_k\)</span>. We can view <span class="math notranslate nohighlight">\(w_k\)</span> has a “predicted” label <span class="math notranslate nohighlight">\(k\leftarrow j\)</span>. (??)</p>
+<dl class="simple myst">
+<dt>Properties</dt><dd><ul class="simple">
 <li><p>in <span class="math notranslate nohighlight">\((0,1)\)</span></p></li>
-<li><p>biased toward finer clusterings (purity<span class="math notranslate nohighlight">\(=1\)</span> if each example is in its own cluster), so this measure makes sense for comparing clusterings with a given <strong>fixed</strong> number of clusters</p></li>
+<li><p>biased toward finer clusterings (purity <span class="math notranslate nohighlight">\(=1\)</span> if each example is in its own cluster), so this measure makes sense for comparing clusterings with a given <strong>fixed</strong> number of clusters</p></li>
 </ul>
+</dd>
+</dl>
 </div>
 <div class="section" id="maximum-normalized-mutual-information">
 <h4>Maximum Normalized Mutual Information<a class="headerlink" href="#maximum-normalized-mutual-information" title="Permalink to this headline">¶</a></h4>

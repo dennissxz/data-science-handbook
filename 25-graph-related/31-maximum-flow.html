@@ -450,7 +450,7 @@
   <ul class="collapse-ul">
    <li class="toctree-l2">
     <a class="reference internal" href="../31-regression/11-lm-estimation.html">
-     Linear Models - Estimation
+     Linear Regression - Estimation
     </a>
    </li>
    <li class="toctree-l2">
@@ -618,6 +618,11 @@
    <li class="toctree-l2">
     <a class="reference internal" href="../37-neural-networks/13-variational-autoencoders.html">
      Variational Autoencoders
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/31-sequential-models.html">
+     Sequential Models
     </a>
    </li>
   </ul>
@@ -1182,7 +1187,9 @@ f^{\text{out}}(v) =\sum_{e \in \delta^{+}(v)} f(e)
 <li><p>Two special vertices <span class="math notranslate nohighlight">\(s\)</span> and <span class="math notranslate nohighlight">\(t\)</span>.</p></li>
 </ul>
 <p><strong>Goal</strong></p>
-<p>Find an <span class="math notranslate nohighlight">\(s-t\)</span> cut <span class="math notranslate nohighlight">\((A,B)\)</span> that minimizes cut capacity <span class="math notranslate nohighlight">\(c(A,B)\)</span>, called minimum cut.</p>
+<p>Find an <span class="math notranslate nohighlight">\(s-t\)</span> cut <span class="math notranslate nohighlight">\((A,B)\)</span> where <span class="math notranslate nohighlight">\(s \in A, t \in B\)</span>, with minimal cut capacity <span class="math notranslate nohighlight">\(c(A,B)\)</span>, which is the sum of capacities of edge from <span class="math notranslate nohighlight">\(A\)</span> to <span class="math notranslate nohighlight">\(B\)</span>, <span class="math notranslate nohighlight">\(c(A, B) = \sum_{u\in A, v\in B} c(u,v)\)</span>.</p>
+<p>In other words, we want to remove some edges to disconnect <span class="math notranslate nohighlight">\(s\)</span> and <span class="math notranslate nohighlight">\(t\)</span>, and minimize the total capacities of these removed edges.</p>
+<p>The vertex partition’s perspective and edge removal’s perspective are actually equivalent.</p>
 </div>
 <div class="section" id="id2">
 <h3>Analysis<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
@@ -1389,8 +1396,8 @@ c(A,B) = \sum_{v \in X, u\in Y} s_{v,u}  + \sum_{v \in Y} a_v  + \sum_{u \in X} 
 </div>
 <p>For (2), if all edges have the same capacity <span class="math notranslate nohighlight">\(c\)</span>, then the capacity of any cut is <span class="math notranslate nohighlight">\(nc\)</span> where <span class="math notranslate nohighlight">\(n\)</span> is the number of edges cut. So a min-cut has <span class="math notranslate nohighlight">\(n_\min\)</span>. After <span class="math notranslate nohighlight">\(c\)</span> becomes <span class="math notranslate nohighlight">\(c+1\)</span>, it is still a min-cut since it has <span class="math notranslate nohighlight">\(n_\min\)</span>.</p>
 </li>
-<li><p>If <span class="math notranslate nohighlight">\(f\)</span> is a valid <span class="math notranslate nohighlight">\(s-t\)</span> flow in graph <span class="math notranslate nohighlight">\(G\)</span> of value <span class="math notranslate nohighlight">\(v_1\)</span>, and <span class="math notranslate nohighlight">\(f ^\prime\)</span> is a valid <span class="math notranslate nohighlight">\(s-t\)</span> flow in the residual graph <span class="math notranslate nohighlight">\(G_f\)</span> of value <span class="math notranslate nohighlight">\(v_2\)</span>, then there is a valid <span class="math notranslate nohighlight">\(s-t\)</span> flow in graph G of value <span class="math notranslate nohighlight">\(v_1 + v_2\)</span>.</p>
-<p>T</p>
+<li><p>If <span class="math notranslate nohighlight">\(f\)</span> is a valid <span class="math notranslate nohighlight">\(s-t\)</span> flow in graph <span class="math notranslate nohighlight">\(G\)</span> of value <span class="math notranslate nohighlight">\(v_f\)</span>, and <span class="math notranslate nohighlight">\(f ^\prime\)</span> is a valid <span class="math notranslate nohighlight">\(s-t\)</span> flow in the residual graph <span class="math notranslate nohighlight">\(G_f\)</span> of value <span class="math notranslate nohighlight">\(v(f ^\prime)\)</span>, then there is a valid <span class="math notranslate nohighlight">\(s-t\)</span> flow in graph G of value <span class="math notranslate nohighlight">\(v(f) + v(f ^\prime)\)</span>.</p>
+<p>True. Moreover, let <span class="math notranslate nohighlight">\(v (f_\max)\)</span> be the value of a max-flow in <span class="math notranslate nohighlight">\(G\)</span> and <span class="math notranslate nohighlight">\(v (f ^\prime _\max)\)</span> be the value of a max-flow in residual graph <span class="math notranslate nohighlight">\(G_f\)</span>, then we have <span class="math notranslate nohighlight">\(v(f) + v(f ^\prime) \le v (f_\max)\)</span> with equality iff <span class="math notranslate nohighlight">\(v(f ^\prime) = v(f ^\prime _\max)\)</span>.</p>
 </li>
 <li><p>Increasing the capacity of a single edge <span class="math notranslate nohighlight">\((u,v)\)</span> by <span class="math notranslate nohighlight">\(1\)</span> can result in an increase of at
 most 1 in the max flow.</p>

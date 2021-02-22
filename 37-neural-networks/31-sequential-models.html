@@ -1,0 +1,1091 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sequential Models &#8212; Data Science Handbook</title>
+    
+  <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+  <link rel="stylesheet"
+    href="../_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="../_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinx-book-theme.40e2e510f6b7d1648584402491bb10fe.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/style.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.d3f166471bb80abb5163.js">
+
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
+    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Machine Learning for Graph Data" href="../38-ml-for-graph-data/00-ml-for-graph-data.html" />
+    <link rel="prev" title="Variational Autoencoders" href="13-variational-autoencoders.html" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+
+
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+<a class="navbar-brand text-wrap" href="../index.html">
+  
+  
+  <h1 class="site-logo" id="site-title">Data Science Handbook</h1>
+  
+</a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form>
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+    <ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../index.html">
+   Data Science Handbook
+  </a>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Foundations
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../11-math/00-math.html">
+   Math
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/11-combinatorics.html">
+     Combinatorics
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/12-derangement.html">
+     Derangement
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/21-linear-algebra.html">
+     Linear Algebra
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/51-optimization.html">
+     Optimization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/61-graphs.html">
+     Graphs
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/90-puzzles.html">
+     Puzzles
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../12-probabilities/00-probabilities.html">
+   Probabilities
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/11-expectation-and-variance.html">
+     Expectation and Variance
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/13-correlation-and-dependence.html">
+     Correlation and Dependence
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/31-bayesian-theorem.html">
+     Bayesian’s Theorem
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/51-markov-chain.html">
+     Markov Chain
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/71-sampling.html">
+     Sampling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/90-multivariate-notations.html">
+     Multivariate Notations
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/91-large-sample-theory.html">
+     Large Sample Theory
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../13-statistics/00-statistics.html">
+   Statistics
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/11-sample-survey.html">
+     Sample Survey
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/13-randomized-trial.html">
+     Causality and Randomized Trial
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/21-hypothesis-testing.html">
+     Hypothesis Testing
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/25-two-sample-tests.html">
+     Two Sample Mean Tests
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/33-confusion-matrix.html">
+     Confusion Matrix
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/41-maximum-likelihood-estimation.html">
+     Maximum Likelihood Estimator
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/43-estimators-evaluation.html">
+     Estimators Evaluation
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../14-python/00-python.html">
+   Python
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../14-python/11-programming-tools.html">
+     Programmer tools
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../14-python/12-syntax.html">
+     Syntax
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../14-python/13-data-structure.html">
+     Data Structures
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../14-python/15-functional-programming.html">
+     Functional Programming
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../17-sql/00-sql.html">
+   SQL
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../17-sql/11-database.html">
+     Database
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../17-sql/12-relational-structure.html">
+     Relational Structure
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../17-sql/31-data-query.html">
+     Data Query
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../17-sql/33-data-manipulation.html">
+     Data Manipulation
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../19-miscellaneous/00-miscellaneous.html">
+   Miscellaneous
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../19-miscellaneous/11-latex.html">
+     LaTeX
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../19-miscellaneous/13-myst.html">
+     MyST Markdown
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Algorithms
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../20-algorithms-basics/00-algorithms-basics.html">
+   Algorithms Basics
+  </a>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../21-greedy-algorithms/00-greedy-algorithms.html">
+   Greedy Algorithms
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../21-greedy-algorithms/11-interval-scheduling.html">
+     Interval Scheduling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../21-greedy-algorithms/31-huffman-coding.html">
+     Huffman Coding
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../23-dynamic-programming/00-dynamic-programming.html">
+   Dynamic Programming
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/11-weighted-interval-scheduling.html">
+     Weighted Interval Scheduling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/13-longest-common-subsequence.html">
+     Longest Common Subsequence
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/15-longest-increasing-subsequence.html">
+     Longest Increasing Subsequence
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/17-largest-sum-subsequence.html">
+     Largest Sum Subsequence
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/31-knapsack.html">
+     Minimum Knapsack
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/51-chain-matrix-multiplication.html">
+     Chain Matrix Multiplication
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../25-graph-related/00-graph-related.html">
+   Graph Related
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/13-shortest-path.html">
+     Shortest Path
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/21-minimum-spanning-tree.html">
+     Minimum Spanning Tree
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/31-maximum-flow.html">
+     Maximum Flow
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/32-matching.html">
+     Matching
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/42-maximum-independent-set.html">
+     Maximum Independent Set in Trees
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Machine Learning
+ </span>
+</p>
+<ul class="current nav sidenav_l1">
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../30-ml-basics/00-ml-basics.html">
+   Machine Learning Basics
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../30-ml-basics/02-taxonomy.html">
+     Taxonomy
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../30-ml-basics/03-information-theory.html">
+     Information Theory
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../30-ml-basics/05-kernels.html">
+     Kernels
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../30-ml-basics/11-missing-values.html">
+     Missing Values
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../31-regression/00-regression.html">
+   Regression
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/11-lm-estimation.html">
+     Linear Regression - Estimation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/12-lm-inference.html">
+     Linear Regression - Inference
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/13-lm-extension.html">
+     Linear Regression - Extension
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../32-classification/00-classification.html">
+   Classification
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../32-classification/11-support-vector-machine.html">
+     Support Vector Machine
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../32-classification/21-decision-tree.html">
+     Decision Tree
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../33-dimensionality-reduction/00-dimensionality-reduction.html">
+   Dimensionality Reduction
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/11-principal-component-analysis.html">
+     Principal Component Analysis
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/13-canonical-correlation-analysis.html">
+     Canonical Corerlation Analysis
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/21-multidimensional-scaling.html">
+     Multidimensional Scaling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/23-graph-based-spectral-methods.html">
+     Graph-based Spectral Methods
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/25-t-SNE.html">
+     SNE and
+     <span class="math notranslate nohighlight">
+      \(t\)
+     </span>
+     -SNE
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/31-kernel-pca.html">
+     Kernel PCA
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/32-kernel-cca.html">
+     Kernel CCA
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../34-clustering/00-clustering.html">
+   Clustering
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../34-clustering/11-k-means.html">
+     <span class="math notranslate nohighlight">
+      \(k\)
+     </span>
+     -means clustering
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../34-clustering/13-agglomerative-methods.html">
+     Agglomerative Methods
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../34-clustering/31-spectral-clustering.html">
+     Spectral Clustering
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../34-clustering/41-gaussian-mixtures.html">
+     Gaussian Mixtures
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../35-graphical-models/00-graphical-models.html">
+   Graphical Models
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../35-graphical-models/11-hidden-markov-models.html">
+     Hidden Markov Models
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../35-graphical-models/31-topic-models.html">
+     Topic Models
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../35-graphical-models/33-language-models.html">
+     Language Models
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 current active collapsible-parent">
+  <a class="reference internal" href="00-neural-networks.html">
+   Neural Networks
+  </a>
+  <ul class="current collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="01-stochastic-gradient-descent.html">
+     Stochastic Gradient Descent
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="03-trainability.html">
+     Trainability
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="05-regularization.html">
+     Regularization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="11-autoencoders.html">
+     Autoencoders
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="13-variational-autoencoders.html">
+     Variational Autoencoders
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     Sequential Models
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../38-ml-for-graph-data/00-ml-for-graph-data.html">
+   Machine Learning for Graph Data
+  </a>
+ </li>
+</ul>
+
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="row topbar fixed-top container-xl">
+    <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show">
+    </div>
+    <div class="col pl-2 topbar-main">
+        
+        <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+            data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+            aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+            title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+            <i class="fas fa-bars"></i>
+            <i class="fas fa-arrow-left"></i>
+            <i class="fas fa-arrow-up"></i>
+        </button>
+        
+        
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../_sources/37-neural-networks/31-sequential-models.md"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.md</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+        <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/dennissxz/data-science-handbook"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/dennissxz/data-science-handbook/issues/new?title=Issue%20on%20page%20%2F37-neural-networks/31-sequential-models.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+
+        <!-- Full screen (wrap in <a> to have style consistency -->
+        <a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+                data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+                title="Fullscreen mode"><i
+                    class="fas fa-expand"></i></button></a>
+
+        <!-- Launch buttons -->
+
+    </div>
+
+    <!-- Table of contents -->
+    <div class="d-none d-md-block col-md-2 bd-toc show">
+        
+        <div class="tocsection onthispage pt-5 pb-3">
+            <i class="fas fa-list"></i> Contents
+        </div>
+        <nav id="bd-toc-nav">
+            <ul class="nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#recurrent-neural-networks">
+   Recurrent Neural Networks
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#i-o">
+     I/O
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#forward-propagation">
+     Forward Propagation
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#backward-propagation">
+     Backward Propagation
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#exploding-gradient">
+     Exploding Gradient
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#other-structure">
+     Other Structure
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#bidirectional-rnns">
+   Bidirectional RNNs
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#multi-layer-rnn">
+   Multi-layer RNN
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#truncated-bptt">
+   Truncated BPTT
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#long-short-term-memory">
+   Long Short-term Memory
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#gated-recurrent-units">
+   Gated Recurrent Units
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#sequence-to-sequence">
+   Sequence to Sequence
+  </a>
+ </li>
+</ul>
+
+        </nav>
+        
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="sequential-models">
+<h1>Sequential Models<a class="headerlink" href="#sequential-models" title="Permalink to this headline">¶</a></h1>
+<p>In this section we introduce neural networks for sequential data, like text or speech. First we introduce RNN in detail, and then briefly introduce other models.</p>
+<div class="section" id="recurrent-neural-networks">
+<h2>Recurrent Neural Networks<a class="headerlink" href="#recurrent-neural-networks" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="i-o">
+<h3>I/O<a class="headerlink" href="#i-o" title="Permalink to this headline">¶</a></h3>
+<p>The main idea is parameter sharing through time.</p>
+<ul class="simple">
+<li><p>Input:</p>
+<ul>
+<li><p>a sequence of vectors <span class="math notranslate nohighlight">\(\boldsymbol{X}_i = (\boldsymbol{x} _1, \ldots, \boldsymbol{x} _t), \boldsymbol{x}_j \in \mathbb{R} ^d\)</span>, while <span class="math notranslate nohighlight">\(t\)</span> is NOT fixed for each observation <span class="math notranslate nohighlight">\(i\)</span>.</p></li>
+<li><p>For instance <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span> is a sentence of <span class="math notranslate nohighlight">\(t\)</span> words, <span class="math notranslate nohighlight">\(\boldsymbol{x} _j\)</span> are the word embeddings, or tokens.</p></li>
+</ul>
+</li>
+<li><p>Parameters</p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{W}_x ^{d \times d}\)</span> weight matrix for new element <span class="math notranslate nohighlight">\(\boldsymbol{x} _t\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{W}_h \in \mathbb{R} ^{d \times d}\)</span> weight matrix for extraction <span class="math notranslate nohighlight">\(\boldsymbol{h}\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{b} \in \mathbb{R} ^d\)</span> bias vector</p></li>
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{h} _0 \in \mathbb{R} ^d\)</span> initial hidden state, e.g. <span class="math notranslate nohighlight">\(\texttt{&lt;START&gt;}\)</span> token in language modeling.</p></li>
+</ul>
+</li>
+<li><p>Output</p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{h} _t \in \mathbb{R} ^d\)</span>, where <span class="math notranslate nohighlight">\(t\)</span> is the length of input <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span>.</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="forward-propagation">
+<h3>Forward Propagation<a class="headerlink" href="#forward-propagation" title="Permalink to this headline">¶</a></h3>
+<p>Different tasks have different RNN structure. Here we start from a simple task of sequence classification. For instance, given a sentence, we want to classify its sentiment as “positive/negative”.</p>
+<p>The forward propagation is</p>
+<ul class="simple">
+<li><p>For <span class="math notranslate nohighlight">\(j=1, \ldots, t\)</span>:</p>
+<ul>
+<li><p>update initial state <span class="math notranslate nohighlight">\(\boldsymbol{h} _i = \operatorname{tanh}\left(\boldsymbol{W} _h \boldsymbol{h} _{j-1} + \boldsymbol{W} _x \boldsymbol{x} _j +  \boldsymbol{b}\right)\)</span></p></li>
+</ul>
+</li>
+</ul>
+<p>Pictorially, RNN can be illustrated in either recurrent format (left) or unfold/unrolled format (right). In the unfold format, we call each iteration unit <span class="math notranslate nohighlight">\(A\)</span> a <strong>block</strong>. Note that each block shares the same parameters <span class="math notranslate nohighlight">\((\boldsymbol{W} _h, \boldsymbol{W} _x, \boldsymbol{b} )\)</span>.</p>
+<div class="figure align-default" id="rnn-structure-revised">
+<a class="reference internal image-reference" href="../_images/rnn-structure-revised.png"><img alt="" src="../_images/rnn-structure-revised.png" style="width: 70%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 93 </span><span class="caption-text">Illustration of RNN structure [Chris Olah, revised]</span><a class="headerlink" href="#rnn-structure-revised" title="Permalink to this image">¶</a></p>
+</div>
+<p>Note that</p>
+<ul class="simple">
+<li><p>The same weight matrices <span class="math notranslate nohighlight">\(\boldsymbol{W}_x\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{W} _h\)</span> are used in every iteration, i.e. parameter sharing. One can write <span class="math notranslate nohighlight">\(\boldsymbol{W} = [\boldsymbol{W} _h\quad \boldsymbol{W} _x] \in \mathbb{R} ^{d \times 2d}\)</span> and hence <span class="math notranslate nohighlight">\(\boldsymbol{h} _j = \boldsymbol{W} \left[\begin{array}{c}
+\boldsymbol{h} _{j-1}  \\
+\boldsymbol{x} _j
+\end{array}\right] = \boldsymbol{W} [\boldsymbol{h} _{j-1}; \boldsymbol{x} _j ]\)</span> where <span class="math notranslate nohighlight">\([\boldsymbol{a} ; \boldsymbol{b} ] \in \mathbb{R} ^{(n+m)\times 1}\)</span> stands for vertical stack of two column vectors <span class="math notranslate nohighlight">\(\boldsymbol{a} \in \mathbb{R} ^n\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{b} \in \mathbb{R} ^m\)</span>, as used in MATLAB. From now on to be concise, we will adapt this symbol.</p></li>
+<li><p>There is no “layer” concept in RNN, but one can understand RNN as a <span class="math notranslate nohighlight">\(t\)</span>-layer neural network with the same parameter <span class="math notranslate nohighlight">\(\boldsymbol{W}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{b}\)</span> across each layer, and the <span class="math notranslate nohighlight">\(j\)</span>-th layer takes the activated output <span class="math notranslate nohighlight">\(\boldsymbol{h} _{j-1}\)</span> from last layer <strong>and</strong> a new input <span class="math notranslate nohighlight">\(\boldsymbol{x} _j\)</span> as its inputs. Note that the number of layers, <span class="math notranslate nohighlight">\(t\)</span>, is not fixed.</p></li>
+<li><p>The vector <span class="math notranslate nohighlight">\(\boldsymbol{h}_j\)</span> can be interpreted as the extracted information from <span class="math notranslate nohighlight">\(\boldsymbol{x} _1\)</span> to <span class="math notranslate nohighlight">\(\boldsymbol{x} _j\)</span>. It is then passed to the next iteration.</p></li>
+</ul>
+<p>So what is the loss? The final output <span class="math notranslate nohighlight">\(\boldsymbol{h} _t\)</span> can be feed into downstream models for regression, classification, etc. For a data point <span class="math notranslate nohighlight">\(i\)</span>, the loss function is then <span class="math notranslate nohighlight">\(\ell(\boldsymbol{h} _t^{(i)}, y_i)\)</span>, where <span class="math notranslate nohighlight">\(y_i\)</span> is the label.</p>
+<p>For instance, if we want to do classification task of the sequence <span class="math notranslate nohighlight">\(\boldsymbol{X} _i\)</span> to <span class="math notranslate nohighlight">\(c\)</span> classes, then we pass <span class="math notranslate nohighlight">\(\boldsymbol{h} _t \in \mathbb{R} ^d\)</span> to a multiplayer perceptron as below, where <span class="math notranslate nohighlight">\(\boldsymbol{W} _{MLP} \in \mathbb{R} ^{c \times d}, \boldsymbol{b} \in \mathbb{R} ^c\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+  \begin{aligned}
+  \boldsymbol{h}_{t} &amp;=\operatorname{RNN}\left(\boldsymbol{x}_{1}, \ldots, \boldsymbol{x}_{t}\right) \\
+  \operatorname{score}\left(y \mid \boldsymbol{h}_{t}\right) &amp;=\boldsymbol{W}_{\mathrm{MLP}} \boldsymbol{h}_{t}+\boldsymbol{b}_{\mathrm{MLP}} \\
+  P\left(y \mid \boldsymbol{h}_{t}\right) &amp;=\frac{\exp \left(\operatorname{score}\left(y \mid \boldsymbol{h}_{t}\right)\right)}{\sum_{j} \exp \left(\operatorname{score}\left(j \mid \boldsymbol{h}_{t}\right)\right)} \\
+  \mathcal{L}\left(\boldsymbol{X} _i, \hat{y}\right) &amp;=-\log P\left(\hat{y} \mid \boldsymbol{h}_{t}\right)
+  \end{aligned}
+  \end{split}\]</div>
+<p>Recall in for language modeling, the task is to model <span class="math notranslate nohighlight">\(P\left(w_{i} \mid w_{1}, \ldots, w_{i-1}\right)\)</span>. We can view <span class="math notranslate nohighlight">\(\boldsymbol{h} _{i-1} = \operatorname{info} (w_{1}, \ldots, w_{i-1})\)</span>, with gold label <span class="math notranslate nohighlight">\(w_i\)</span>.</p>
+</div>
+<div class="section" id="backward-propagation">
+<h3>Backward Propagation<a class="headerlink" href="#backward-propagation" title="Permalink to this headline">¶</a></h3>
+<p>Consider the case without activation function,</p>
+<div class="math notranslate nohighlight">
+\[
+\boldsymbol{h} _t = \boldsymbol{W} [\boldsymbol{h} _{t-1}; \boldsymbol{x} _t]
+\]</div>
+<p>Note the output is <span class="math notranslate nohighlight">\(\boldsymbol{h} _t\)</span>. Suppose the loss is <span class="math notranslate nohighlight">\(\mathcal{L}(\boldsymbol{h}_t, y )\)</span>.</p>
+<p>To compute the gradient of <span class="math notranslate nohighlight">\(\boldsymbol{W}\)</span>, we use the cumulative method: look back from the computational graph.</p>
+<p>For <span class="math notranslate nohighlight">\(j\)</span> in <span class="math notranslate nohighlight">\(t-1\)</span> to <span class="math notranslate nohighlight">\(1\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+\frac{\partial \mathcal{L}}{\partial \boldsymbol{W}_{j}} &amp;=\frac{\partial \mathcal{L}}{\partial \boldsymbol{h}_{j}} \frac{\partial \boldsymbol{h}_{j}}{\partial \boldsymbol{W}_{j}} \\
+&amp;=\frac{\partial \mathcal{L}}{\partial \boldsymbol{h}_{j}}\left[\boldsymbol{h}_{j-1}; \boldsymbol{x}_{j}\right]^{\top} \\
+\boldsymbol{W}\texttt{.grad}&amp;\mathrel{+}=\frac{\partial \mathcal{L}}{\partial \boldsymbol{W}_{j}} \\
+\frac{\partial \mathcal{L}}{\partial \boldsymbol{h}_{j-1}} &amp;=\frac{\partial \mathcal{L}}{\partial \boldsymbol{h}_{j}} \frac{\partial \boldsymbol{h}_{j}}{\partial \boldsymbol{h}_{j-1}} \\
+&amp;=\left(\frac{\partial \mathcal{L}}{\partial \boldsymbol{h}_{j}} \boldsymbol{W}^{\top}\right)[: d]
+\end{aligned}
+\end{split}\]</div>
+<p>Note that above equations implies that we need to store <span class="math notranslate nohighlight">\(\boldsymbol{h} _j\)</span> at every intermediate steps. This leads to a memory problem, see <a class="reference internal" href="#rnn-truncated-bptt"><span class="std std-ref">Truncated BPTT</span></a> for solution.</p>
+</div>
+<div class="section" id="exploding-gradient">
+<h3>Exploding Gradient<a class="headerlink" href="#exploding-gradient" title="Permalink to this headline">¶</a></h3>
+<p>From the toy case above, we see that there the accumulative gradient leads to</p>
+<div class="math notranslate nohighlight">
+\[
+\boldsymbol{W}\texttt{.grad} = \sum _{j=t-1} ^1\frac{\partial \mathcal{L}}{\partial \boldsymbol{h}_{j}}\left[\boldsymbol{h}_{j-1}; \boldsymbol{x}_{j}\right]^{\top}
+\]</div>
+<p>which can explode. In practice, people use gradient clip: if <span class="math notranslate nohighlight">\(\left\| \boldsymbol{W}\texttt{.grad} \right\|   &gt; \delta\)</span>, then set</p>
+<div class="math notranslate nohighlight">
+\[
+\boldsymbol{W}\texttt{.grad} = \frac{\delta \boldsymbol{W}\texttt{.grad}}{\left\| \boldsymbol{W}\texttt{.grad} \right\|  }
+\]</div>
+<p>to ensure the gradient norm is at most <span class="math notranslate nohighlight">\(\delta\)</span>.</p>
+</div>
+<div class="section" id="other-structure">
+<h3>Other Structure<a class="headerlink" href="#other-structure" title="Permalink to this headline">¶</a></h3>
+<p>As said, we only introduce RNN for sequence classification. There are many other RNN structures to other tasks.</p>
+<div class="figure align-default" id="rnn-tasks">
+<a class="reference internal image-reference" href="../_images/rnn-tasks.png"><img alt="" src="../_images/rnn-tasks.png" style="width: 100%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 94 </span><span class="caption-text">Different RNN structures to different tasks [<a class="reference external" href="https://subscription.packtpub.com/book/big_data_and_business_intelligence/9781789536089/5/ch05lvl1sec86/summarizing-different-types-of-sequence-processing-tasks">figure link</a>]</span><a class="headerlink" href="#rnn-tasks" title="Permalink to this image">¶</a></p>
+</div>
+<p>More <a class="reference external" href="https://calvinfeng.gitbook.io/machine-learning-notebook/supervised-learning/recurrent-neural-network/recurrent_neural_networks">reference</a>.</p>
+</div>
+</div>
+<div class="section" id="bidirectional-rnns">
+<h2>Bidirectional RNNs<a class="headerlink" href="#bidirectional-rnns" title="Permalink to this headline">¶</a></h2>
+<p>In RNN, when we see a word <span class="math notranslate nohighlight">\(\boldsymbol{x} _t\)</span>, we look up <span class="math notranslate nohighlight">\(\boldsymbol{h} _{t-1}\)</span> which contains information from the past words. But in natural language, in a sentence, to understand a word, we may need a word in the future (e.g. postpositive adjective). Hence, can we extract information from <span class="math notranslate nohighlight">\(\boldsymbol{x} _t\)</span> and understand <span class="math notranslate nohighlight">\(\boldsymbol{x} _{t-1}, \boldsymbol{x} _{t-2}, \ldots\)</span> and so on?</p>
+<p>Given an input sequence <span class="math notranslate nohighlight">\(\boldsymbol{X}_i = (\boldsymbol{x} _1, \ldots, \boldsymbol{x} _t)\)</span>, we can build two RNNs,</p>
+<ul class="simple">
+<li><p>one produces <span class="math notranslate nohighlight">\(\boldsymbol{h} ^{\text{fwd} }\)</span> from input <span class="math notranslate nohighlight">\((\boldsymbol{x} _1, \ldots, \boldsymbol{x} _t)\)</span> with parameters <span class="math notranslate nohighlight">\((\boldsymbol{W} ^{\text{fwd} }, \boldsymbol{b} ^{\text{fwd} })\)</span></p></li>
+<li><p>the other produces <span class="math notranslate nohighlight">\(\boldsymbol{h} ^{\text{bwd} }\)</span> from input <span class="math notranslate nohighlight">\((\boldsymbol{x} _t, \ldots, \boldsymbol{x} _1)\)</span> with parameters <span class="math notranslate nohighlight">\((\boldsymbol{W} ^{\text{bwd} }, \boldsymbol{b} ^{\text{bwd} })\)</span></p></li>
+</ul>
+<p>Note that the two RNNs are completely independent. The output feature for downstream task is <span class="math notranslate nohighlight">\([\boldsymbol{h} ^{\text{fwd} }_t;\boldsymbol{h} ^{\text{bwd} }_1]\)</span></p>
+<div class="figure align-default" id="rnn-bidirectional">
+<a class="reference internal image-reference" href="../_images/rnn-bidirectional.png"><img alt="" src="../_images/rnn-bidirectional.png" style="width: 60%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 95 </span><span class="caption-text">Bidirectional RNN [Chris Olah]</span><a class="headerlink" href="#rnn-bidirectional" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+<div class="section" id="multi-layer-rnn">
+<h2>Multi-layer RNN<a class="headerlink" href="#multi-layer-rnn" title="Permalink to this headline">¶</a></h2>
+<p>In RNNs, the hidden states of each block <span class="math notranslate nohighlight">\(\boldsymbol{h} _j\)</span> can be used as input vector “<span class="math notranslate nohighlight">\(\boldsymbol{x} _j\)</span>” to another RNN. Following this idea, we can build multi-layer RNN.</p>
+<div class="figure align-default" id="rnn-multi-layer">
+<a class="reference internal image-reference" href="../_images/rnn-multi-layer.png"><img alt="" src="../_images/rnn-multi-layer.png" style="width: 70%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 96 </span><span class="caption-text">Multi-layer RNNs [<a class="reference external" href="https://www.kaggle.com/andradaolteanu/pytorch-rnns-and-lstms-explained-acc-0-99">figure link</a>]</span><a class="headerlink" href="#rnn-multi-layer" title="Permalink to this image">¶</a></p>
+</div>
+<p>Note that the computation time for <span class="math notranslate nohighlight">\(1\)</span>-layer RNN is <span class="math notranslate nohighlight">\(O(t)\)</span>, and for <span class="math notranslate nohighlight">\(L\)</span>-layer RNN is <span class="math notranslate nohighlight">\(O(L+t)\)</span>, not <span class="math notranslate nohighlight">\(O(L\times t)\)</span>. Think about forward propagation, when processing the <span class="math notranslate nohighlight">\(j\)</span>-th block in the first layer, we can simultaneously process the <span class="math notranslate nohighlight">\((j-1)\)</span>-th block in the 2nd layer, and <span class="math notranslate nohighlight">\((j-2)\)</span>-th block in the 3rd layer, etc.. That is, the blocks along a diagonal can be computed simultaneously. Hence, the computation progress from bottom left to top right of the <span class="math notranslate nohighlight">\(L \times t\)</span> grid, and the maximum length of a diagonal is <span class="math notranslate nohighlight">\(O(L+t)\)</span></p>
+</div>
+<div class="section" id="truncated-bptt">
+<span id="rnn-truncated-bptt"></span><h2>Truncated BPTT<a class="headerlink" href="#truncated-bptt" title="Permalink to this headline">¶</a></h2>
+<p>In RNNs, we must store every <span class="math notranslate nohighlight">\(\boldsymbol{h} _j\)</span> in order to compute the gradient in the backward propagation. If <span class="math notranslate nohighlight">\(t\)</span> is large, then there is no enough memory. To solve this, we do Truncated Backpropagation Through Time. The main idea is that we run forward propagation and backward propagation w.r.t. each segment, instead of w.r.t. a whole sequence.</p>
+<p>We chop a sequence into chunks of vectors. In a segment covering time <span class="math notranslate nohighlight">\(j+1, \ldots, k\)</span>, suppose the last vector is <span class="math notranslate nohighlight">\(\boldsymbol{x} _{k}\)</span>, and the hidden vector from last segment is <span class="math notranslate nohighlight">\(h_{j}\)</span>, we do</p>
+<ul class="simple">
+<li><p>Run forward propagation using <span class="math notranslate nohighlight">\(\boldsymbol{h} _j\)</span> and <span class="math notranslate nohighlight">\((\boldsymbol{x} _{j+1}, \ldots, \boldsymbol{x} _k)\)</span> to compute <span class="math notranslate nohighlight">\(\boldsymbol{h} _k\)</span>, also stores <span class="math notranslate nohighlight">\((\boldsymbol{h} _{j+1}, \ldots, \boldsymbol{h} _{k-1})\)</span>.</p></li>
+<li><p>Use <span class="math notranslate nohighlight">\(\boldsymbol{h} _k\)</span> to compute loss</p></li>
+<li><p>Run backpropagation from <span class="math notranslate nohighlight">\(k\)</span> to <span class="math notranslate nohighlight">\(j+1\)</span>, where we will use <span class="math notranslate nohighlight">\((\boldsymbol{h} _{j+1}, \ldots, \boldsymbol{h} _{k-1})\)</span>. After the gradient of <span class="math notranslate nohighlight">\(\boldsymbol{W}, \boldsymbol{b}\)</span> is updated, we can <strong>drop</strong> <span class="math notranslate nohighlight">\((\boldsymbol{h} _{j+1}, \ldots, \boldsymbol{h} _{k-1})\)</span>.</p></li>
+<li><p>Feed <span class="math notranslate nohighlight">\(\boldsymbol{h} _k\)</span> to the next segment.</p></li>
+</ul>
+<div class="margin sidebar">
+<p class="sidebar-title">Analogy</p>
+<p>If you are familiar with biology, these segments are analogous to <a class="reference external" href="https://en.wikipedia.org/wiki/Okazaki_fragments">Okazaki fragments</a> in DNA replication!</p>
+</div>
+<div class="figure align-default" id="rnn-truncated-bptt-fig">
+<a class="reference internal image-reference" href="../_images/rnn-truncated-bptt.png"><img alt="" src="../_images/rnn-truncated-bptt.png" style="width: 70%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 97 </span><span class="caption-text">RNN with Truncated BPTT [Varma and Das, 2018]</span><a class="headerlink" href="#rnn-truncated-bptt-fig" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+<div class="section" id="long-short-term-memory">
+<h2>Long Short-term Memory<a class="headerlink" href="#long-short-term-memory" title="Permalink to this headline">¶</a></h2>
+<p>LSTM (Hochreiter and Schmidhuber, 1997) is an effective variation of RNN. It has more operations in each iteration.</p>
+<div class="margin sidebar">
+<p class="sidebar-title">Why don’t use <span class="math notranslate nohighlight">\(\operatorname{ReLU}\)</span>?</p>
+<p>Probably since <span class="math notranslate nohighlight">\(\operatorname{ReLU}\)</span> hasn’t been proposed by 1997.</p>
+</div>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{array}{ll}
+\boldsymbol{f}_{t}=\sigma\left(\boldsymbol{W}_{f}\left[\boldsymbol{h}_{t-1}; \boldsymbol{x}_{t}\right]+\boldsymbol{b}_{f}\right) &amp; \boldsymbol{c}_{t}=\boldsymbol{f}_{t} * \boldsymbol{c}_{t-1}+\boldsymbol{i}_{t} * \tilde{\boldsymbol{c}}_{t} \\
+\boldsymbol{i}_{t}=\sigma\left(\boldsymbol{W}_{i}\left[\boldsymbol{h}_{t-1}; \boldsymbol{x}_{t}\right]+\boldsymbol{b}_{i}\right) &amp; \boldsymbol{o}_{t}=\sigma\left(\boldsymbol{W}_{o}\left[\boldsymbol{h}_{t-1}; \boldsymbol{x}_{t}\right]+\boldsymbol{b}_{o}\right) \\
+\tilde{\boldsymbol{c}}_{t}=\tanh \left(\boldsymbol{W}_{c}\left[\boldsymbol{h}_{t-1}; \boldsymbol{x}_{t}\right]+\boldsymbol{b}_{c}\right) &amp; \boldsymbol{h}_{t}=\boldsymbol{o}_{t} * \tanh \left(\boldsymbol{c}_{t}\right)
+\end{array}
+\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(*\)</span> stands for element-wise product.</p>
+<p>Pictorially, it can be shown below. Each green rectangle (block) stands for an iteration to process <span class="math notranslate nohighlight">\(\boldsymbol{x} _j\)</span>.</p>
+<div class="figure align-default" id="lstm-structure">
+<a class="reference internal image-reference" href="../_images/lstm-structure.png"><img alt="" src="../_images/lstm-structure.png" style="width: 70%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 98 </span><span class="caption-text">Illustration of LSTM structure [Chris Olah]</span><a class="headerlink" href="#lstm-structure" title="Permalink to this image">¶</a></p>
+</div>
+<p>Compared to RNN, LSTM</p>
+<ul>
+<li><p>Stores the information in a <strong>cell</strong> vector <span class="math notranslate nohighlight">\(\boldsymbol{c}_t\)</span>, which corresponds to the hidden state <span class="math notranslate nohighlight">\(\boldsymbol{h} _t\)</span> in RNN but is improved. It first computes a temporary cell <span class="math notranslate nohighlight">\(\tilde{\boldsymbol{c} }_t\)</span> by the same formula in RNN <span class="math notranslate nohighlight">\(\tilde{\boldsymbol{c} }_t = \operatorname{tanh} (\boldsymbol{W}_c [\boldsymbol{h}_{t-1}; \boldsymbol{x} _t] + \boldsymbol{b}_c )\)</span>, where the parameters <span class="math notranslate nohighlight">\((\boldsymbol{W} _c, \boldsymbol{b} _c)\)</span> are specific to this computation for <span class="math notranslate nohighlight">\(\tilde{\boldsymbol{c} }_t\)</span>.</p></li>
+<li><p>Then, it replaces the <span class="math notranslate nohighlight">\(\operatorname{tanh}\)</span> function by <span class="math notranslate nohighlight">\(\sigma\)</span>, and the computed vectors by <span class="math notranslate nohighlight">\(\sigma (\boldsymbol{W} [\boldsymbol{h}_{t-1}; \boldsymbol{x} _t] + \boldsymbol{b} )\)</span></p>
+<ul class="simple">
+<li><p>with parameters <span class="math notranslate nohighlight">\((\boldsymbol{W} _i, \boldsymbol{b} _i)\)</span>, it is called <strong>input</strong> gate <span class="math notranslate nohighlight">\(\boldsymbol{i}\)</span></p></li>
+<li><p>with parameters <span class="math notranslate nohighlight">\((\boldsymbol{W} _f, \boldsymbol{b} _f)\)</span> it is called called <strong>forget</strong> gate <span class="math notranslate nohighlight">\(\boldsymbol{f}\)</span>.</p></li>
+</ul>
+</li>
+<li><p>The cell vector <span class="math notranslate nohighlight">\(\boldsymbol{c} _t\)</span> is a combination of the previous cell vector <span class="math notranslate nohighlight">\(\boldsymbol{c} _{t-1}\)</span> and the new extracted information <span class="math notranslate nohighlight">\(\tilde{\boldsymbol{c} }_t\)</span>, with weights <span class="math notranslate nohighlight">\(\boldsymbol{f}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{i}\)</span>. Essentially, it forget some previous info, and input some new info.</p>
+<div class="math notranslate nohighlight">
+\[ \boldsymbol{c}_{t}=\boldsymbol{f}_{t} * \boldsymbol{c}_{t-1}+\boldsymbol{i}_{t} * \tilde{\boldsymbol{c}}_{t}\]</div>
+</li>
+<li><p>Finally, it updates and output <span class="math notranslate nohighlight">\(\boldsymbol{h} _{t}\)</span> by</p>
+<div class="math notranslate nohighlight">
+\[\boldsymbol{h}_{t}=\boldsymbol{o}_{t} * \tanh(\boldsymbol{c}_{t})\]</div>
+<p>where <span class="math notranslate nohighlight">\(\boldsymbol{o} _t = \operatorname{tanh} (\boldsymbol{W}_o [\boldsymbol{h}_{t-1}; \boldsymbol{x} _t] + \boldsymbol{b}_o )\)</span></p>
+<p>Note that each entry in <span class="math notranslate nohighlight">\(\boldsymbol{o} _t\)</span> stays in <span class="math notranslate nohighlight">\((0,1)\)</span> and each entry in <span class="math notranslate nohighlight">\(\tanh(\boldsymbol{c}_{t})\)</span> is in <span class="math notranslate nohighlight">\((-1,1)\)</span>, the value of each entry in <span class="math notranslate nohighlight">\(\boldsymbol{h}\)</span> is therefore <span class="math notranslate nohighlight">\((-1,1)\)</span>.</p>
+</li>
+</ul>
+<p>The name “Long Short-term” does not mean long-term and short-term memory, but means LSTM tries to make the memory in RNN, which is short, <strong>longer</strong>. But actually, LSTM (language models) still only maintain the information from very recent history, i.e., less than 20 tokens, well [Khandelwal et al. 2019]. The next improvement is adding attention mechanism on top of hidden states [Lin et al. 2017]. More recent models are transformers.</p>
+</div>
+<div class="section" id="gated-recurrent-units">
+<h2>Gated Recurrent Units<a class="headerlink" href="#gated-recurrent-units" title="Permalink to this headline">¶</a></h2>
+<p>GRU is another variation of RNN.</p>
+<p>One can understand GRU as a variation from LSTM that combines forget gate <span class="math notranslate nohighlight">\(\boldsymbol{f}\)</span> with input gate <span class="math notranslate nohighlight">\(\boldsymbol{i}\)</span>, and remove output gate <span class="math notranslate nohighlight">\(\boldsymbol{o}\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+\boldsymbol{z}_{t} &amp;=\sigma\left(\boldsymbol{W}_{z}\left[\boldsymbol{h}_{t-1}, \boldsymbol{x}_{t}\right]+\boldsymbol{b}_{z}\right) \\
+\boldsymbol{r}_{t} &amp;=\sigma\left(\boldsymbol{W}_{r}\left[\boldsymbol{h}_{t-1}, \boldsymbol{x}_{t}\right]+\boldsymbol{b}_{r}\right) \\
+\tilde{\boldsymbol{h}}_{t} &amp;=\tanh \left(\boldsymbol{W}\left[\boldsymbol{r} * \boldsymbol{h}_{t-1}, \boldsymbol{x}_{t}\right]+\boldsymbol{b}\right) \\
+\boldsymbol{h}_{t} &amp;=\left(1-\boldsymbol{z}_{t}\right) * \boldsymbol{h}_{t-1}+\boldsymbol{z}_{t} * \tilde{\boldsymbol{h}}_{t}
+\end{aligned}
+\end{split}\]</div>
+<p>Note the <span class="math notranslate nohighlight">\(\boldsymbol{r}\)</span> vector which is used for element-wise dot product with <span class="math notranslate nohighlight">\(\boldsymbol{h} _{t-1}\)</span> in computing <span class="math notranslate nohighlight">\(\tilde{\boldsymbol{h} }_t\)</span>.</p>
+<div class="figure align-default" id="gru-structure">
+<a class="reference internal image-reference" href="../_images/gru-structure.png"><img alt="" src="../_images/gru-structure.png" style="width: 70%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 99 </span><span class="caption-text">Illustration of GRU structure [Chris Olah]</span><a class="headerlink" href="#gru-structure" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+<div class="section" id="sequence-to-sequence">
+<h2>Sequence to Sequence<a class="headerlink" href="#sequence-to-sequence" title="Permalink to this headline">¶</a></h2>
+<p>Consider a sequence to sequence task, e.g. translation, email auto-response. Given an input sentence <span class="math notranslate nohighlight">\(\boldsymbol{s} = (s_1, \ldots, s_t)\)</span>, we want an output <span class="math notranslate nohighlight">\((w_1, \ldots, w_k)\)</span>, where <span class="math notranslate nohighlight">\(k\)</span> is not known. To model the next word <span class="math notranslate nohighlight">\(w_i\)</span>, we use</p>
+<div class="math notranslate nohighlight">
+\[P\left(w_{i} \mid s_{1}, \ldots, s_{t}, w_{1}, \ldots, w_{i-1}\right)\]</div>
+<p>To solve this, we can use one sequential NN block as encoder, and the other sequential NN as decoder. The steps are</p>
+<ul class="simple">
+<li><p>Compute <span class="math notranslate nohighlight">\(\boldsymbol{h} _t = \operatorname{Encoder} (s_1, \ldots, s_t)\)</span>, which is called the <strong>thought vector</strong></p></li>
+<li><p>While <span class="math notranslate nohighlight">\(w_{i-1} \ne \texttt{&lt;END&gt;}\)</span></p>
+<ul>
+<li><p>generate <span class="math notranslate nohighlight">\(w_i = \operatorname{Decoder} (\boldsymbol{h} _t, w_1, \ldots, w_{i-1})\)</span></p></li>
+</ul>
+</li>
+</ul>
+<div class="figure align-default" id="seq2seq-structure">
+<a class="reference internal image-reference" href="../_images/seq2seq-structure.png"><img alt="" src="../_images/seq2seq-structure.png" style="width: 80%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 100 </span><span class="caption-text">Sequence to sequence model illustration [Sachin Abeywardana]</span><a class="headerlink" href="#seq2seq-structure" title="Permalink to this image">¶</a></p>
+</div>
+<p>To use the gold sentence in training, in the decoder, we use every gold word as input to each block of decoder, instead of using the generated word from last block, which may be nonsensical. This is called <strong>teacher-forcing</strong>.</p>
+<p>.</p>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./37-neural-networks"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        </div>
+    </div>
+    
+    
+    <div class='prev-next-bottom'>
+        
+    <a class='left-prev' id="prev-link" href="13-variational-autoencoders.html" title="previous page">Variational Autoencoders</a>
+    <a class='right-next' id="next-link" href="../38-ml-for-graph-data/00-ml-for-graph-data.html" title="next page">Machine Learning for Graph Data</a>
+
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By Dennis Zheng<br/>
+        
+            &copy; Copyright 2020.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+
+    
+  <script src="../_static/js/index.d3f166471bb80abb5163.js"></script>
+
+
+    
+  </body>
+</html>

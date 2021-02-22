@@ -376,7 +376,13 @@ $\square$
 
 **Goal**
 
-Find an $s-t$ cut $(A,B)$ that minimizes cut capacity $c(A,B)$, called minimum cut.
+Find an $s-t$ cut $(A,B)$ where $s \in A, t \in B$, with minimal cut capacity $c(A,B)$, which is the sum of capacities of edge from $A$ to $B$, $c(A, B) = \sum_{u\in A, v\in B} c(u,v)$.
+
+In other words, we want to remove some edges to disconnect $s$ and $t$, and minimize the total capacities of these removed edges.
+
+The vertex partition's perspective and edge removal's perspective are actually equivalent.
+
+
 
 ### Analysis
 
@@ -622,9 +628,9 @@ Let $G$ be an arbitrary (directed) flow network with integral edge capacities
 
     For (2), if all edges have the same capacity $c$, then the capacity of any cut is $nc$ where $n$ is the number of edges cut. So a min-cut has $n_\min$. After $c$ becomes $c+1$, it is still a min-cut since it has $n_\min$.
 
-1. If $f$ is a valid $s-t$ flow in graph $G$ of value $v_1$, and $f ^\prime$ is a valid $s-t$ flow in the residual graph $G_f$ of value $v_2$, then there is a valid $s-t$ flow in graph G of value $v_1 + v_2$.
+1. If $f$ is a valid $s-t$ flow in graph $G$ of value $v_f$, and $f ^\prime$ is a valid $s-t$ flow in the residual graph $G_f$ of value $v(f ^\prime)$, then there is a valid $s-t$ flow in graph G of value $v(f) + v(f ^\prime)$.
 
-    T
+    True. Moreover, let $v (f_\max)$ be the value of a max-flow in $G$ and $v (f ^\prime _\max)$ be the value of a max-flow in residual graph $G_f$, then we have $v(f) + v(f ^\prime) \le v (f_\max)$ with equality iff $v(f ^\prime) = v(f ^\prime _\max)$.
 
 1. Increasing the capacity of a single edge $(u,v)$ by $1$ can result in an increase of at
 most 1 in the max flow.
@@ -667,7 +673,7 @@ decreases the max flow by at most 1. So the total decrease is at most $k$.
 
 1. Vertex-capacity max-flow: capacity constraints are on vertices. Each vertex has capacity constraint $c(v)$.
 
-    Sol: assign infinite capacity to all edges. Convert each vertex to two vertices connected by an edge, with edge weight $c(e) = c(v)$. Equivalent. 
+    Sol: assign infinite capacity to all edges. Convert each vertex to two vertices connected by an edge, with edge weight $c(e) = c(v)$. Equivalent.
 
 1. Vertex-disjoint path problem: fin maximum number of vertex-disjoint paths (no two paths share vertices) connecting $S$ to $T$.
 

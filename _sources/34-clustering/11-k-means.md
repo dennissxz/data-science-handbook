@@ -7,23 +7,23 @@ $k$-means clustering is an iterative algorithm for clustering. It initialize $k$
 
 ---
 
-- Initialize $k$ menas $\mu_1, \ldots, \mu_k$ to random locations.
+- Initialize $k$ cluster centers $\boldsymbol{\mu} _1, \ldots, \boldsymbol{\mu} _k$ at random locations.
 
 - While True
 
   - assign each example $\boldsymbol{x} _i$ to the closest mean
 
       $$
-      y_{i}=\operatorname{argmin}_{c}\left\|\mathbf{x}_{i}-\mu_{c}\right\|
+      y_{i}=\operatorname{argmin}_{c}\left\|\boldsymbol{x}_{i}- \boldsymbol{\mu} _{c}\right\|
       $$
 
   - re-estimate each mean based on examples assigned to it
 
       $$
-      \mu_{c}=\frac{1}{N_{c}} \sum_{y_{i}=c} \mathbf{x}_{i}
+      \mu_{c}=\frac{1}{n_{c}} \sum_{y_{i}=c} \boldsymbol{x}_{i}
       $$
 
-      where $N_{c}= \left\vert \left\{\mathbf{x}_{i}: y_{i}=c\right\} \right\vert$
+      where $n_{c}= \left\vert \left\{\boldsymbol{x}_{i}: y_{i}=c\right\} \right\vert$
 
   - repeat until there are no changes in assignment
 
@@ -32,7 +32,7 @@ $k$-means clustering is an iterative algorithm for clustering. It initialize $k$
 :::{figure} k-means-example
 <img src="../imgs/k-means-example.png" width = "70%" alt=""/>
 
-Iterations in $k$-means example [Livescue 2021]
+Iterations in $k$-means example [Livescu 2021]
 :::
 
 ## Objective
@@ -40,7 +40,7 @@ Iterations in $k$-means example [Livescue 2021]
 We can define an objective for $k$-means. It minimizes the total distortion
 
 $$
-D=\sum_{c=1}^{k} \sum_{\mathbf{x} \in \text { cluster } c}\left\|\mathbf{x}-\mu_{c}\right\|^{2}
+D=\sum_{c=1}^{k} \sum_{\boldsymbol{x} \in \text { cluster } c}\left\|\boldsymbol{x}-\mu_{c}\right\|^{2}
 $$
 
 It often converges to a local minimum, rather than global minimum. The results are affected by initialization.
