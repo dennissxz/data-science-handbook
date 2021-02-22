@@ -211,13 +211,15 @@ Or, the representation just learn signal and get rid of noise.
 
 ## Generation
 
-- Option 1. Draw z from the prior, feed through decoder to generate. [[Details](https://blog.openai.com/generative-models/)]
+- Option 1. Draw $\boldsymbol{z}$ from the prior $p(\boldsymbol{z})$, feed through decoder to generate $\hat{\boldsymbol{x}}$. [[Details](https://blog.openai.com/generative-models/)]
 
 - Option 2: Generation based on one or more examples $\boldsymbol{x}$
 
   - Draw $\boldsymbol{z}$ from $q(\boldsymbol{z} |\boldsymbol{x})$
-  - Optionally, adjust $\boldsymbol{z}$ (e.g. interpolate between multiple samples $\boldsymbol{x} $)
-  - Feed through the decoder to generate more examples
+
+  - Optionally, adjust $\boldsymbol{z}$ (e.g. interpolate $\boldsymbol{z} _1, \boldsymbol{z} _2$ between multiple samples $\boldsymbol{x}_1, \boldsymbol{x} _2$)
+
+  - Feed through the decoder to generate more examples $\hat{\boldsymbol{x}}$
 
 :::{figure} vae-generation
 <img src="../imgs/vae-generation.png" width = "60%" alt=""/>
@@ -225,10 +227,14 @@ Or, the representation just learn signal and get rid of noise.
 VAE for generation
 :::
 
-Compared to autoregressive models ??:
-- All outputs are generated jointly from the latent variables $\boldsymbol{z}$, so it can model arbitrary dependencies
+Compared to autoregressive models:
+
+- In autoregressive models, e.g. RNN or PixelRNN, we need to define the order/dependency of generated text/pixels. While in VAE, all outputs are generated jointly from the latent variables $\boldsymbol{z}$, so it can model **arbitrary** dependencies.
+
 - More flexible: Can tweak $\boldsymbol{z}$ to control generation
+
 - Usually, more efficient to sample from distribution
-- Tend to produce blurrier outputs
+
+- Tend to produce blurrier outputs, since we are sampling from distribution and look at mean (averaging the details)
 
 ## Extension: VQ-VAE
