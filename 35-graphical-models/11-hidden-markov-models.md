@@ -23,7 +23,12 @@ Notations:
 
 - $\boldsymbol{P}$: $n\times n$ state transition probability matrix, where $p_{ij} = P(S_{t+1} = j\vert S_t = i)$
 - $\boldsymbol{\pi}  = (\pi_1, \ldots, \pi_n)$: initial state distribution, where $\pi_s = P(S_1 = s)$
-- $e _s(x)$: emission distribution in state $i$. $e_{i}(x) = P(X_{t} = x\vert S_t = s)$. Note that $x$ can be a vector. For simplicity, we use unbold symbol.
+
+```{margin}
+Note that $x$ can be a vector. For simplicity, we use unbold symbol.
+```
+
+- $e _s(x)$: emission distribution in state $i$. $e_{i}(x) = P(X_{t} = x\vert S_t = s)$, where $x$ is discrete, e.g. Poisson. If we want to model continuous observation, we can use continuous-density HMM, where $e_s(x)$ can be a Gaussian or mixture of Gaussian (or neural networks), whose parameters depend on state $s$.
 
 The entire model parameters is $\boldsymbol{\theta} = \left\{ \boldsymbol{P} , \boldsymbol{e} ,\pi \right\}$
 
