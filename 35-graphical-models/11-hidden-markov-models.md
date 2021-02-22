@@ -94,7 +94,9 @@ p(\boldsymbol{x} \vert \boldsymbol{\theta} )&= \boldsymbol{1} _n ^\top \boldsymb
 where $\boldsymbol{f}_t = [f_t(1), \ldots, f_t(n)]^\top , \boldsymbol{e} (x_t) = [e_1(x_t), \ldots, e_n(x_t)] ^\top$ and $*$ stands for element-wise dot product.
 
 ---
-Forward Algorithm
+---
+
+**Forward Algorithm**
 
 ---
 
@@ -109,6 +111,7 @@ Construct a DP table of size $n\times T$ to store $f_t(s)$. Fill the entries col
 - Return $p(\boldsymbol{x} \vert \boldsymbol{\theta}) = \sum_ {s=1}^n f_T(s)$
 
 ---
+---
 
 There are $n\times T$ entries, and each entry takes $O(n)$ to compute. So the total complexity is $O(n^2 T)$, much smaller than the brute force's $O(n^T)$.
 
@@ -119,7 +122,7 @@ Backward algorithm is a dynamic programming algorithm to compute $p(\boldsymbol{
 Define a backward probability, for time $1\le t \le T-1$, state $1\le s \le n$,
 
 $$
-b_t(s) = \operatorname{P}  \left\{ \boldsymbol{x} _{[-(T-t):]} = (x_{t+1}, \ldots , x_T), S_t = s \vert \boldsymbol{\theta} \right\}
+b_t(s) = \operatorname{P}  \left\{ \boldsymbol{x} _{[t+1:]} = (x_{t+1}, \ldots , x_T), S_t = s \vert \boldsymbol{\theta} \right\}
 $$
 
 which is the probability of emitting future sequence $x_{t+1}, \ldots, x_T$ and from current state $s$ at time $t$.
@@ -148,7 +151,8 @@ p(\boldsymbol{x} \vert \boldsymbol{\theta} )&=
 where $\boldsymbol{b}_t = [b_t(1), \ldots, b_t(n)]^\top , \boldsymbol{e} (x_t) = [e_1(x_t), \ldots, e_n(x_t)] ^\top$ and $*$ stands for element-wise dot product.
 
 ---
-Backward Algorithm
+---
+**Backward Algorithm**
 
 ---
 
@@ -162,6 +166,7 @@ Construct a DP table of size $n \times (T-1)$ to store $b_t(s)$. Fill the entrie
 
 - Return $p(\boldsymbol{x} \vert \boldsymbol{\theta}) = \sum_ {s=1}^n \pi_s e_{s}(x_1) b_1(s)$
 
+---
 ---
 
 As in forward algorithm, the complexity is $O(n^2 T)$.
@@ -204,26 +209,147 @@ $$
 v_t(s) = \max _{s_1, \ldots, s_{t-1}} \operatorname{P} \left\{ \boldsymbol{x} _{[:t]} =  (x_1, x_2, \ldots, x_t), S_t = s \vert \boldsymbol{\theta} \right\}
 $$
 
-We now figure out the iterative relation. 
+We now figure out the iterative relation. This is like a coin-collection problem in dynamic programming. At time $t$, we look back to check $v_{t-1}(k)$, which is the probability of the most probable path at time $t-1$. Then we consider the transition $p_{ks}$. Finally, to emit $x_t$, we need the emission probability $e_s(x_t)$. In sum, we find to find the maximum
 
 $$
 v_t(s) = e_s(x_t) \max _{1 \le k \le n } v_{t-1}(k) p_{ks}
 $$
 
+It's analogous to the reasoning in forward probability, but we take sum their and take maximum here.
+
+---
+---
+**Viterbi Algorithm**
+
+---
+
+Construct a DP table of size $n\times T$ to store $v_t(s)$. Fill the entries column by column from left to right.
+
+- For $t=1$,
+  - for $s = 1, \ldots, n$, compute $v_1(s) = \pi_s e_s(x_1)$ (which is $f_1(s)$)
+
+- For $t = 2,\ldots, T$,
+  - for $s = 1, \ldots, n$, compute $v_t(s) = e_s(x_t) \max _{1 \le k \le n } v_{t-1}(k) p_{ks}$
+
+---
+---
+
+As in forward algorithm, complexity is $n^2 T$.
 
 ### Training
 
-ML to find for $\lambda$.
+Given an observation sequence $\boldsymbol{x} _t$, we to find parameters $\boldsymbol{\theta} = \left\{ \boldsymbol{P}, \boldsymbol{e} , \boldsymbol{\pi}   \right\}$ that maximize the probability of the observations
 
-If states is given, then ML is easy by counting. Similar like Gaussian.
+$$
+\boldsymbol{\theta} ^* = \underset{\boldsymbol{\theta} }{\operatorname{argmax}} \, p(\boldsymbol{x} \vert \boldsymbol{\theta} )
+$$
 
-But the states are not given, so we provide initial guess, and iteratively update $\lambda$.
+#### Counting
 
-Baum-Welch Algorithm: EM for HMMs
+If the state sequence is given, then maximum likelihood for $p_{ij}$ and $e_s(x)$ is easy by counting.
+
+$$\begin{aligned}
+c(i,j) &= \text{number of $(i\rightarrow j)$ transitions}  & p(i,j) &= \frac{c(i,j)}{\sum _k c(i,k)}\\
+n_s(x) &= \text{number of $x$ emitted from state $s$}  & e_s(x) &= \frac{n_s(x)}{\sum _y n_s(y)}\\
+\end{aligned}$$
+
+Note that state $i$ may not appear in any of the training sequences, resulting into undefined estimation equations (divide by zero). To solve this, we add pseudocounts to $c(i,j)$ and $n_s(x)$, which reflect our prior biases about the probability values, which is in fact corresponding to the setting of a Dirichlet prior distribution.
+
+$$\begin{aligned}
+\tilde{c}(i,j) &= c(i,j) + r(i,j)  \\
+\tilde{n}_s(x) &= n_s(x)  + r_s(x)
+\end{aligned}$$
+
+#### Baum-Welch algorithm
+
+Usually the states are not given, so we provide initial guess, and iteratively update $\boldsymbol{\theta}$. Similar like Gaussian Mixture, we use an EM algorithm, and Baum-Welch algorithm does so.
+
+Consider a transition probability $p_t (i,j)$ **defined** at time $t$. It can be found as
+
+$$
+p_t(i,j):= \operatorname{P} \left\{ S_t = i, S_{t+1}=j \vert \boldsymbol{x} _t, \boldsymbol{\theta} \right\} = \frac{f_t(i) \cdot p_{ij}  \cdot e_j (x_{t+1}) \cdot b_{t+1}(j)}{p(\boldsymbol{x} _t \vert \boldsymbol{\theta} )}
+$$
+
+Define a $p_t(i)$ as the probability in state $i$ at time $t$. It can be found as
+
+$$
+p_t(i) := \operatorname{P} \left\{ S_t = i \vert \boldsymbol{x} _t, \boldsymbol{\theta}  \right\}  = \frac{f_t(s)b_t(s)}{p(\boldsymbol{x} \vert \boldsymbol{\theta} )} = \sum _{j=1}^n p_t(i,j)
+$$
+
+Given **multiple** sequences of length $T: \boldsymbol{x} _T = (x_1, \ldots, x_T)$, if we know $\boldsymbol{\theta}$, then we can compute $p_t(i,j)$ and $p_t(i)$. Hence we can compute the following expectations.
+
+- the expected count of appearance of state $i$, denoted as $c(i)$, is
+
+  $$\operatorname{E} \left[ c(i) \right] = \sum _{t=1} ^T \mathbb{I} \left\{ S_t = i \right\} = \sum _{t=1} ^T p_t(i)$$
+
+- the expected count of transitions from $i$ to $j$ is
+
+  $$\operatorname{E} \left[ c(i,j) \right] = \sum _{t=1} ^T \mathbb{I} \left\{ S_t = i, S_t = j \right\} = \sum _{t=1} ^T p_t(i,j)$$
+
+- the expected number of emission of $x$ from state $i$
+
+  $$\operatorname{E} \left[ n_i (x) \right] = \sum _{t=1} ^T \mathbb{I} \left\{ S_t = i, X_t = x \right\} = \sum _{t=1} ^T p_t(i) \ \mathbb{I} \left\{ X_t = x \right\} $$
+
+Then we can use these expectations to re-estimate the parameters.
+
+$$\begin{aligned}
+\hat{p}_{ij}&= \frac{\operatorname{E} \left[ c(i) \right] }{ \operatorname{E} \left[ c(i,j) \right] } \\
+\hat{e}_i(x)&= \frac{\operatorname{E} \left[ n_i(x) \right] }{\operatorname{E} \left[ c(i) \right]} \\
+\hat{\pi}_i&= p_1(i)\\
+\end{aligned}$$
+
+So we obtain new estimate $\hat{\boldsymbol{\theta} }$.
+
+It can be shown that $p(\boldsymbol{x} _t \vert \hat{\boldsymbol{\theta} }) \ge p(\boldsymbol{x} _t \vert \boldsymbol{\theta} )$, i.e. the likelihood is increased after re-estimation. Therefore, we can iterate the re-estimation formulas until some convergence threshold is reached. This algorithm is guaranteed to find a local maximum of the likelihood, but not a global one
+
+## Properties
+
+An HMM is a model of the joint distribution of observation sequence $\boldsymbol{x} _T$ and state sequence $\boldsymbol{s}_T$.
+
+$$\begin{aligned}
+p(\boldsymbol{x} _T, \boldsymbol{s} _T)
+&= p(s_1) p(x_1 \vert s_1) \prod _{t=2}^T p(s_t \vert s_{t-1}) p(x_t \vert s_t) \\
+&= \pi_{s_1} e_{s_1}(x_1) \prod _{t=2}^T p_{s_{t-1} s_t} e_{s_t}(x_t) \\
+\end{aligned}$$
+
+We can deduce many properties of HMM. We should note whether the data we want to model with satisfy these properties.
+
+### Independence
+
+Given the state at time $t$,
+
+- the observation at time $t$ is independent of the states and other observations at other time
+
+  $$x_t \perp \left\{ \boldsymbol{x} _{-t}, \boldsymbol{s} _{-t} \right\} \mid s_t$$
+
+- the future is independent of the past.
+
+  $$\left\{ \boldsymbol{x} _{[:t-1]}, \boldsymbol{s} _{[:t-1]} \right\} \perp \left\{ \boldsymbol{x} _{[t+1:]}, \boldsymbol{s} _{t+1:} \right\}  \mid s_t$$
 
 
 
+Question: do natural languages satisfy these properties?
 
+### State Duration Distribution
+
+The probability of staying in state $i$ for $d$ consecutive time steps and leave is $p_{ii}^{d-1} \times (1-p_{ii})$, which is a geometric distribution with monotonically decreasing density. In contrast, in real-life data, durations of “states” we want to to model often look nothing like that – example of phoneme durations.
+
+:::{figure} hmm-state-duration
+<img src="../imgs/hmm-state-duration.png" width = "70%" alt=""/>
+
+State Duration Modeling
+:::
+
+Possible solutions:
+
+- Replace transition probabilities with explicit duration distributions [Ostendorf ’96]
+  - Most general approach
+  - Breaks dynamic programming algorithms
+
+- Replace single state with multiple tied states with identical observation distribution, and some desired transition structure
+  - Simplest option: Set a minimum duration
+  - Can simulate other duration distributions with alternative
+transition structures
 
 
 ## Applications
@@ -250,29 +376,7 @@ HMM can be applied to anything that has "state" and "sequence" attributes.
 **Speech Tagging**
 
 :::{figure} hmm-speech-tagging
-<img src="../imgs/hmm-speech-tagging.png" width = "70%" alt=""/>
+<img src="../imgs/hmm-speech-tagging.png" width = "50%" alt=""/>
 
 HMM in part-of-speech tagging [Julia Hockenmeyer]
 :::
-
-
-## Hidden Topic Markov Models
-
-Topic states.
-
-## Model Selection
-
-Perplexity
-
-
-
-
-
-
-
-
-
-
-
-
-.
