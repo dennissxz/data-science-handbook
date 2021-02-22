@@ -93,7 +93,7 @@ p(\boldsymbol{x} \vert \boldsymbol{\theta} )&= \boldsymbol{1} _n ^\top \boldsymb
 
 where $\boldsymbol{f}_t = [f_t(1), \ldots, f_t(n)]^\top , \boldsymbol{e} (x_t) = [e_1(x_t), \ldots, e_n(x_t)] ^\top$ and $*$ stands for element-wise dot product.
 
----
+
 ---
 
 **Forward Algorithm**
@@ -111,7 +111,7 @@ Construct a DP table of size $n\times T$ to store $f_t(s)$. Fill the entries col
 - Return $p(\boldsymbol{x} \vert \boldsymbol{\theta}) = \sum_ {s=1}^n f_T(s)$
 
 ---
----
+
 
 There are $n\times T$ entries, and each entry takes $O(n)$ to compute. So the total complexity is $O(n^2 T)$, much smaller than the brute force's $O(n^T)$.
 
@@ -151,7 +151,6 @@ p(\boldsymbol{x} \vert \boldsymbol{\theta} )&=
 where $\boldsymbol{b}_t = [b_t(1), \ldots, b_t(n)]^\top , \boldsymbol{e} (x_t) = [e_1(x_t), \ldots, e_n(x_t)] ^\top$ and $*$ stands for element-wise dot product.
 
 ---
----
 **Backward Algorithm**
 
 ---
@@ -166,7 +165,6 @@ Construct a DP table of size $n \times (T-1)$ to store $b_t(s)$. Fill the entrie
 
 - Return $p(\boldsymbol{x} \vert \boldsymbol{\theta}) = \sum_ {s=1}^n \pi_s e_{s}(x_1) b_1(s)$
 
----
 ---
 
 As in forward algorithm, the complexity is $O(n^2 T)$.
@@ -218,7 +216,6 @@ $$
 It's analogous to the reasoning in forward probability, but we take sum their and take maximum here.
 
 ---
----
 **Viterbi Algorithm**
 
 ---
@@ -231,7 +228,6 @@ Construct a DP table of size $n\times T$ to store $v_t(s)$. Fill the entries col
 - For $t = 2,\ldots, T$,
   - for $s = 1, \ldots, n$, compute $v_t(s) = e_s(x_t) \max _{1 \le k \le n } v_{t-1}(k) p_{ks}$
 
----
 ---
 
 As in forward algorithm, complexity is $n^2 T$.
