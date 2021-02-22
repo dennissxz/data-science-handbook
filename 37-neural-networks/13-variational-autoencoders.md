@@ -208,4 +208,27 @@ Interpretable dimensions of discrete variation dimensions can be
 
 Or, the representation just learn signal and get rid of noise.
 
+
+## Generation
+
+- Option 1. Draw z from the prior, feed through decoder to generate. [[Details](https://blog.openai.com/generative-models/)]
+
+- Option 2: Generation based on one or more examples $\boldsymbol{x}$
+
+  - Draw $\boldsymbol{z}$ from $q(\boldsymbol{z} |\boldsymbol{x})$
+  - Optionally, adjust $\boldsymbol{z}$ (e.g. interpolate between multiple samples $\boldsymbol{x} $)
+  - Feed through the decoder to generate more examples
+
+:::{figure} vae-generation
+<img src="../imgs/vae-generation.png" width = "60%" alt=""/>
+
+VAE for generation
+:::
+
+Compared to autoregressive models ??:
+- All outputs are generated jointly from the latent variables $\boldsymbol{z}$, so it can model arbitrary dependencies
+- More flexible: Can tweak $\boldsymbol{z}$ to control generation
+- Usually, more efficient to sample from distribution
+- Tend to produce blurrier outputs
+
 ## Extension: VQ-VAE
