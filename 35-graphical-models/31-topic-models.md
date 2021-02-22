@@ -70,3 +70,40 @@ The learned results are like
 Learned words distribution parameters $\boldsymbol{\beta} _t$ by topics [Steyvers & Griffiths, 2007]
 
 :::
+
+## Hidden Topic Markov Models
+
+Recall that in topic models, we do not consider the dependency of topics between a sequence of words.
+
+Hidden topic Markov model improve this. It view the topic behind a word as a hidden state. Let $\epsilon$ be the probability of ending sentence and drawing a new topic. Clearly, as $\epsilon$ increases, we switch topic mode frequently, and the number of topics should increases.
+
+:::{figure} htmm-epsilon
+<img src="../imgs/htmm-epsilon.png" width = "50%" alt=""/>
+
+How $\epsilon$ affect number of topics in a sentence.
+:::
+
+HTMM can decrease perplexity too.
+
+:::{figure} htmm-perplexity
+<img src="../imgs/htmm-perplexity.png" width = "50%" alt=""/>
+
+HTMM decreases perplexity as number of topics increases
+:::
+
+Example
+: Consider two paragraphs. If we use topic mixture model (smoother LDA), the topics seems random. For the word "support", all appearances are all from the same topic.
+
+  :::{figure} topic-model-results
+  <img src="../imgs/topic-model-results.png" width = "70%" alt=""/>
+
+  Topic mixture model (smoothed LDA) results, colors are topic labels [Livescu 2021]
+  :::
+
+: Using HTMM, the results are much better. It distinguish "support" from support vector and support in research.
+
+  :::{figure} htmm-results
+  <img src="../imgs/htmm-results.png" width = "70%" alt=""/>
+
+  HTMM results, colors are topic labels [Livescu 2021]
+  :::

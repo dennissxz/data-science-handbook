@@ -183,37 +183,3 @@ Idea: reduce $n$, so the total number of probabilities to be estimated, which is
   $$
   p_{b o}\left(w_{i} \mid w_{i-1}\right) = \lambda p_{\boldsymbol{ML}}\left(w_{i} \mid w_{i-1}\right)+ (1-\lambda) p\left(w_{i}\right)
   $$
-
-### Model by HMM
-
-An HMM is like a language model where there is an $n$-gram over **topics**, and words are drawn independently given the topic.
-
-$$\begin{aligned}
-& t_1 \longrightarrow && t_2  \longrightarrow &&\ldots \longrightarrow && t_t  \\
-&\downarrow &&\downarrow && &&\downarrow \\
-& w_1 && w_2 && \ldots && w_t \\
-\end{aligned}$$
-
-$$
-w \sim p(\cdot \vert t)
-$$
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-.
