@@ -1,9 +1,27 @@
 # Regression
 
-Typical approach of regression:
+In this section we introduce traditional statistical regression models. Depending on the type of data, we may use different models.
 
-- design a feature mapping / representation $\boldsymbol{\phi} : \mathcal{X} \rightarrow \mathbb{R} ^d$
+- Continuous
 
-- minimize squared loss for a linear model $y = \boldsymbol{w} \cdot \boldsymbol{\phi} (\boldsymbol{x})$  
+  - ordinary least squares
 
-The model complexity is driven by choice of $\boldsymbol{\phi}$. 
+  - survival time, e.g. time
+    - proportional hazard model
+
+- Discrete
+
+  - non-negative integer, e.g. count
+    - Poisson log-linear model
+
+  - binary
+    - logistic regression
+
+  - multi-class
+    - multinomial logit model
+    - ordinal logit model
+    - nested logit model
+
+- Censored
+
+  - Tobit model
