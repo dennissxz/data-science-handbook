@@ -463,6 +463,31 @@
      Linear Regression - Extension
     </a>
    </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/21-generalized-linear-models.html">
+     Generalized Linear Models
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/22-logistic-regression.html">
+     Logistic Regression
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/23-multinomial-logitsitc.html">
+     Multinomial Logistic Regression
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/24-ordinal-logistic.html">
+     Ordinal Logistic Regression
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/25-poisson-regression.html">
+     Poisson Regression
+    </a>
+   </li>
   </ul>
   <i class="fas fa-chevron-down">
   </i>
@@ -623,6 +648,11 @@
    <li class="toctree-l2">
     <a class="reference internal" href="../37-neural-networks/31-sequential-models.html">
      Sequential Models
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/41-GAN.html">
+     Generative Adversarial Networks
     </a>
    </li>
   </ul>
@@ -828,7 +858,13 @@ model of the conditional distribution <span class="math notranslate nohighlight"
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(\boldsymbol{P}\)</span>: <span class="math notranslate nohighlight">\(n\times n\)</span> state transition probability matrix, where <span class="math notranslate nohighlight">\(p_{ij} = P(S_{t+1} = j\vert S_t = i)\)</span></p></li>
 <li><p><span class="math notranslate nohighlight">\(\boldsymbol{\pi}  = (\pi_1, \ldots, \pi_n)\)</span>: initial state distribution, where <span class="math notranslate nohighlight">\(\pi_s = P(S_1 = s)\)</span></p></li>
-<li><p><span class="math notranslate nohighlight">\(e _s(x)\)</span>: emission distribution in state <span class="math notranslate nohighlight">\(i\)</span>. <span class="math notranslate nohighlight">\(e_{i}(x) = P(X_{t} = x\vert S_t = s)\)</span>. Note that <span class="math notranslate nohighlight">\(x\)</span> can be a vector. For simplicity, we use unbold symbol.</p></li>
+</ul>
+<div class="margin sidebar">
+<p class="sidebar-title"></p>
+<p>Note that <span class="math notranslate nohighlight">\(x\)</span> can be a vector. For simplicity, we use unbold symbol.</p>
+</div>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(e _s(x)\)</span>: emission distribution in state <span class="math notranslate nohighlight">\(i\)</span>. <span class="math notranslate nohighlight">\(e_{i}(x) = P(X_{t} = x\vert S_t = s)\)</span>, where <span class="math notranslate nohighlight">\(x\)</span> is discrete, e.g. Poisson. If we want to model continuous observation, we can use continuous-density HMM, where <span class="math notranslate nohighlight">\(e_s(x)\)</span> can be a Gaussian or mixture of Gaussian (or neural networks), whose parameters depend on state <span class="math notranslate nohighlight">\(s\)</span>.</p></li>
 </ul>
 <p>The entire model parameters is <span class="math notranslate nohighlight">\(\boldsymbol{\theta} = \left\{ \boldsymbol{P} , \boldsymbol{e} ,\pi \right\}\)</span></p>
 <p>Given an observed sequence <span class="math notranslate nohighlight">\(\boldsymbol{x_T} = (x_1, x_2, \ldots, x_T)\)</span>, the problems are</p>
@@ -840,7 +876,7 @@ model of the conditional distribution <span class="math notranslate nohighlight"
 <p>To better understand the algorithms above, we introduce two diagrams of state transition. The left graph encodes the transition matrix <span class="math notranslate nohighlight">\(\boldsymbol{P}\)</span>, and the right trellis shows state transition along time.</p>
 <div class="figure align-default" id="markov-transition">
 <a class="reference internal image-reference" href="../_images/markov-transition.png"><img alt="" src="../_images/markov-transition.png" style="width: 80%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 64 </span><span class="caption-text">Markov transition illustration</span><a class="headerlink" href="#markov-transition" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 66 </span><span class="caption-text">Markov transition illustration</span><a class="headerlink" href="#markov-transition" title="Permalink to this image">¶</a></p>
 </div>
 <div class="section" id="scoring">
 <h3>Scoring<a class="headerlink" href="#scoring" title="Permalink to this headline">¶</a></h3>
@@ -880,7 +916,6 @@ p(\boldsymbol{x} \vert \boldsymbol{\theta} )&amp;= \boldsymbol{1} _n ^\top \bold
 \end{aligned}\end{split}\]</div>
 <p>where <span class="math notranslate nohighlight">\(\boldsymbol{f}_t = [f_t(1), \ldots, f_t(n)]^\top , \boldsymbol{e} (x_t) = [e_1(x_t), \ldots, e_n(x_t)] ^\top\)</span> and <span class="math notranslate nohighlight">\(*\)</span> stands for element-wise dot product.</p>
 <hr class="docutils" />
-<hr class="docutils" />
 <p><strong>Forward Algorithm</strong></p>
 <hr class="docutils" />
 <p>Construct a DP table of size <span class="math notranslate nohighlight">\(n\times T\)</span> to store <span class="math notranslate nohighlight">\(f_t(s)\)</span>. Fill the entries column by column from left to right.</p>
@@ -897,7 +932,6 @@ p(\boldsymbol{x} \vert \boldsymbol{\theta} )&amp;= \boldsymbol{1} _n ^\top \bold
 </li>
 <li><p>Return <span class="math notranslate nohighlight">\(p(\boldsymbol{x} \vert \boldsymbol{\theta}) = \sum_ {s=1}^n f_T(s)\)</span></p></li>
 </ul>
-<hr class="docutils" />
 <hr class="docutils" />
 <p>There are <span class="math notranslate nohighlight">\(n\times T\)</span> entries, and each entry takes <span class="math notranslate nohighlight">\(O(n)\)</span> to compute. So the total complexity is <span class="math notranslate nohighlight">\(O(n^2 T)\)</span>, much smaller than the brute force’s <span class="math notranslate nohighlight">\(O(n^T)\)</span>.</p>
 </div>
@@ -929,7 +963,6 @@ p(\boldsymbol{x} \vert \boldsymbol{\theta} )&amp;=
 \end{aligned}\end{split}\]</div>
 <p>where <span class="math notranslate nohighlight">\(\boldsymbol{b}_t = [b_t(1), \ldots, b_t(n)]^\top , \boldsymbol{e} (x_t) = [e_1(x_t), \ldots, e_n(x_t)] ^\top\)</span> and <span class="math notranslate nohighlight">\(*\)</span> stands for element-wise dot product.</p>
 <hr class="docutils" />
-<hr class="docutils" />
 <p><strong>Backward Algorithm</strong></p>
 <hr class="docutils" />
 <p>Construct a DP table of size <span class="math notranslate nohighlight">\(n \times (T-1)\)</span> to store <span class="math notranslate nohighlight">\(b_t(s)\)</span>. Fill the entries column by column <strong>from right to left</strong>.</p>
@@ -946,7 +979,6 @@ p(\boldsymbol{x} \vert \boldsymbol{\theta} )&amp;=
 </li>
 <li><p>Return <span class="math notranslate nohighlight">\(p(\boldsymbol{x} \vert \boldsymbol{\theta}) = \sum_ {s=1}^n \pi_s e_{s}(x_1) b_1(s)\)</span></p></li>
 </ul>
-<hr class="docutils" />
 <hr class="docutils" />
 <p>As in forward algorithm, the complexity is <span class="math notranslate nohighlight">\(O(n^2 T)\)</span>.</p>
 <div class="note admonition">
@@ -985,7 +1017,6 @@ v_t(s) = e_s(x_t) \max _{1 \le k \le n } v_{t-1}(k) p_{ks}
 \]</div>
 <p>It’s analogous to the reasoning in forward probability, but we take sum their and take maximum here.</p>
 <hr class="docutils" />
-<hr class="docutils" />
 <p><strong>Viterbi Algorithm</strong></p>
 <hr class="docutils" />
 <p>Construct a DP table of size <span class="math notranslate nohighlight">\(n\times T\)</span> to store <span class="math notranslate nohighlight">\(v_t(s)\)</span>. Fill the entries column by column from left to right.</p>
@@ -1001,7 +1032,6 @@ v_t(s) = e_s(x_t) \max _{1 \le k \le n } v_{t-1}(k) p_{ks}
 </ul>
 </li>
 </ul>
-<hr class="docutils" />
 <hr class="docutils" />
 <p>As in forward algorithm, complexity is <span class="math notranslate nohighlight">\(n^2 T\)</span>.</p>
 </div>
@@ -1098,7 +1128,7 @@ p(\boldsymbol{x} _T, \boldsymbol{s} _T)
 <p>The probability of staying in state <span class="math notranslate nohighlight">\(i\)</span> for <span class="math notranslate nohighlight">\(d\)</span> consecutive time steps and leave is <span class="math notranslate nohighlight">\(p_{ii}^{d-1} \times (1-p_{ii})\)</span>, which is a geometric distribution with monotonically decreasing density. In contrast, in real-life data, durations of “states” we want to to model often look nothing like that – example of phoneme durations.</p>
 <div class="figure align-default" id="hmm-state-duration">
 <a class="reference internal image-reference" href="../_images/hmm-state-duration.png"><img alt="" src="../_images/hmm-state-duration.png" style="width: 70%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 65 </span><span class="caption-text">State Duration Modeling</span><a class="headerlink" href="#hmm-state-duration" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 67 </span><span class="caption-text">State Duration Modeling</span><a class="headerlink" href="#hmm-state-duration" title="Permalink to this image">¶</a></p>
 </div>
 <p>Possible solutions:</p>
 <ul class="simple">
@@ -1141,7 +1171,7 @@ transition structures</p></li>
 <p><strong>Speech Tagging</strong></p>
 <div class="figure align-default" id="hmm-speech-tagging">
 <a class="reference internal image-reference" href="../_images/hmm-speech-tagging.png"><img alt="" src="../_images/hmm-speech-tagging.png" style="width: 50%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 66 </span><span class="caption-text">HMM in part-of-speech tagging [Julia Hockenmeyer]</span><a class="headerlink" href="#hmm-speech-tagging" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 68 </span><span class="caption-text">HMM in part-of-speech tagging [Julia Hockenmeyer]</span><a class="headerlink" href="#hmm-speech-tagging" title="Permalink to this image">¶</a></p>
 </div>
 </div>
 </div>

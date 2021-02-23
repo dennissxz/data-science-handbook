@@ -1,0 +1,1098 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Multinomial Logistic Regression &#8212; Data Science Handbook</title>
+    
+  <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+  <link rel="stylesheet"
+    href="../_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="../_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinx-book-theme.40e2e510f6b7d1648584402491bb10fe.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/style.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.d3f166471bb80abb5163.js">
+
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
+    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Ordinal Logistic Regression" href="24-ordinal-logistic.html" />
+    <link rel="prev" title="Logistic Regression" href="22-logistic-regression.html" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+
+
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+<a class="navbar-brand text-wrap" href="../index.html">
+  
+  
+  <h1 class="site-logo" id="site-title">Data Science Handbook</h1>
+  
+</a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form>
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+    <ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../index.html">
+   Data Science Handbook
+  </a>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Foundations
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../11-math/00-math.html">
+   Math
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/11-combinatorics.html">
+     Combinatorics
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/12-derangement.html">
+     Derangement
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/21-linear-algebra.html">
+     Linear Algebra
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/51-optimization.html">
+     Optimization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/61-graphs.html">
+     Graphs
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/90-puzzles.html">
+     Puzzles
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../12-probabilities/00-probabilities.html">
+   Probabilities
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/11-expectation-and-variance.html">
+     Expectation and Variance
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/13-correlation-and-dependence.html">
+     Correlation and Dependence
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/31-bayesian-theorem.html">
+     Bayesian’s Theorem
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/51-markov-chain.html">
+     Markov Chain
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/71-sampling.html">
+     Sampling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/90-multivariate-notations.html">
+     Multivariate Notations
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/91-large-sample-theory.html">
+     Large Sample Theory
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../13-statistics/00-statistics.html">
+   Statistics
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/11-sample-survey.html">
+     Sample Survey
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/13-randomized-trial.html">
+     Causality and Randomized Trial
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/21-hypothesis-testing.html">
+     Hypothesis Testing
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/25-two-sample-tests.html">
+     Two Sample Mean Tests
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/33-confusion-matrix.html">
+     Confusion Matrix
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/41-maximum-likelihood-estimation.html">
+     Maximum Likelihood Estimator
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/43-estimators-evaluation.html">
+     Estimators Evaluation
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../14-python/00-python.html">
+   Python
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../14-python/11-programming-tools.html">
+     Programmer tools
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../14-python/12-syntax.html">
+     Syntax
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../14-python/13-data-structure.html">
+     Data Structures
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../14-python/15-functional-programming.html">
+     Functional Programming
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../17-sql/00-sql.html">
+   SQL
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../17-sql/11-database.html">
+     Database
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../17-sql/12-relational-structure.html">
+     Relational Structure
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../17-sql/31-data-query.html">
+     Data Query
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../17-sql/33-data-manipulation.html">
+     Data Manipulation
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../19-miscellaneous/00-miscellaneous.html">
+   Miscellaneous
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../19-miscellaneous/11-latex.html">
+     LaTeX
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../19-miscellaneous/13-myst.html">
+     MyST Markdown
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Algorithms
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../20-algorithms-basics/00-algorithms-basics.html">
+   Algorithms Basics
+  </a>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../21-greedy-algorithms/00-greedy-algorithms.html">
+   Greedy Algorithms
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../21-greedy-algorithms/11-interval-scheduling.html">
+     Interval Scheduling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../21-greedy-algorithms/31-huffman-coding.html">
+     Huffman Coding
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../23-dynamic-programming/00-dynamic-programming.html">
+   Dynamic Programming
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/11-weighted-interval-scheduling.html">
+     Weighted Interval Scheduling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/13-longest-common-subsequence.html">
+     Longest Common Subsequence
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/15-longest-increasing-subsequence.html">
+     Longest Increasing Subsequence
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/17-largest-sum-subsequence.html">
+     Largest Sum Subsequence
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/31-knapsack.html">
+     Minimum Knapsack
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/51-chain-matrix-multiplication.html">
+     Chain Matrix Multiplication
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../25-graph-related/00-graph-related.html">
+   Graph Related
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/13-shortest-path.html">
+     Shortest Path
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/21-minimum-spanning-tree.html">
+     Minimum Spanning Tree
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/31-maximum-flow.html">
+     Maximum Flow
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/32-matching.html">
+     Matching
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/42-maximum-independent-set.html">
+     Maximum Independent Set in Trees
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Machine Learning
+ </span>
+</p>
+<ul class="current nav sidenav_l1">
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../30-ml-basics/00-ml-basics.html">
+   Machine Learning Basics
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../30-ml-basics/02-taxonomy.html">
+     Taxonomy
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../30-ml-basics/03-information-theory.html">
+     Information Theory
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../30-ml-basics/05-kernels.html">
+     Kernels
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../30-ml-basics/11-missing-values.html">
+     Missing Values
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 current active collapsible-parent">
+  <a class="reference internal" href="00-regression.html">
+   Regression
+  </a>
+  <ul class="current collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="11-lm-estimation.html">
+     Linear Regression - Estimation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="12-lm-inference.html">
+     Linear Regression - Inference
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="13-lm-extension.html">
+     Linear Regression - Extension
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="21-generalized-linear-models.html">
+     Generalized Linear Models
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="22-logistic-regression.html">
+     Logistic Regression
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     Multinomial Logistic Regression
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="24-ordinal-logistic.html">
+     Ordinal Logistic Regression
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="25-poisson-regression.html">
+     Poisson Regression
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../32-classification/00-classification.html">
+   Classification
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../32-classification/11-support-vector-machine.html">
+     Support Vector Machine
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../32-classification/21-decision-tree.html">
+     Decision Tree
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../33-dimensionality-reduction/00-dimensionality-reduction.html">
+   Dimensionality Reduction
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/11-principal-component-analysis.html">
+     Principal Component Analysis
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/13-canonical-correlation-analysis.html">
+     Canonical Corerlation Analysis
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/21-multidimensional-scaling.html">
+     Multidimensional Scaling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/23-graph-based-spectral-methods.html">
+     Graph-based Spectral Methods
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/25-t-SNE.html">
+     SNE and
+     <span class="math notranslate nohighlight">
+      \(t\)
+     </span>
+     -SNE
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/31-kernel-pca.html">
+     Kernel PCA
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/32-kernel-cca.html">
+     Kernel CCA
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../34-clustering/00-clustering.html">
+   Clustering
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../34-clustering/11-k-means.html">
+     <span class="math notranslate nohighlight">
+      \(k\)
+     </span>
+     -means clustering
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../34-clustering/13-agglomerative-methods.html">
+     Agglomerative Methods
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../34-clustering/31-spectral-clustering.html">
+     Spectral Clustering
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../34-clustering/41-gaussian-mixtures.html">
+     Gaussian Mixtures
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../35-graphical-models/00-graphical-models.html">
+   Graphical Models
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../35-graphical-models/11-hidden-markov-models.html">
+     Hidden Markov Models
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../35-graphical-models/31-topic-models.html">
+     Topic Models
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../35-graphical-models/33-language-models.html">
+     Language Models
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../37-neural-networks/00-neural-networks.html">
+   Neural Networks
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/01-stochastic-gradient-descent.html">
+     Stochastic Gradient Descent
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/03-trainability.html">
+     Trainability
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/05-regularization.html">
+     Regularization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/11-autoencoders.html">
+     Autoencoders
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/13-variational-autoencoders.html">
+     Variational Autoencoders
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/31-sequential-models.html">
+     Sequential Models
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/41-GAN.html">
+     Generative Adversarial Networks
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../38-ml-for-graph-data/00-ml-for-graph-data.html">
+   Machine Learning for Graph Data
+  </a>
+ </li>
+</ul>
+
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="row topbar fixed-top container-xl">
+    <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show">
+    </div>
+    <div class="col pl-2 topbar-main">
+        
+        <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+            data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+            aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+            title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+            <i class="fas fa-bars"></i>
+            <i class="fas fa-arrow-left"></i>
+            <i class="fas fa-arrow-up"></i>
+        </button>
+        
+        
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../_sources/31-regression/23-multinomial-logitsitc.md"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.md</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+        <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/dennissxz/data-science-handbook"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/dennissxz/data-science-handbook/issues/new?title=Issue%20on%20page%20%2F31-regression/23-multinomial-logitsitc.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+
+        <!-- Full screen (wrap in <a> to have style consistency -->
+        <a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+                data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+                title="Fullscreen mode"><i
+                    class="fas fa-expand"></i></button></a>
+
+        <!-- Launch buttons -->
+
+    </div>
+
+    <!-- Table of contents -->
+    <div class="d-none d-md-block col-md-2 bd-toc show">
+        
+        <div class="tocsection onthispage pt-5 pb-3">
+            <i class="fas fa-list"></i> Contents
+        </div>
+        <nav id="bd-toc-nav">
+            <ul class="nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#data-structure">
+   Data Structure
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#baseline-category-logit-model">
+   Baseline-Category Logit Model
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#link-function">
+     Link Function
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#interpretation">
+     Interpretation
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#multivariate-exponential-families">
+     Multivariate Exponential Families
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#estimation">
+   Estimation
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#score-equations">
+     Score Equations
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#computation">
+     Computation
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#hypothesis-testing">
+   Hypothesis Testing
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#test-the-effect-of-x-k">
+     Test the Effect of
+     <span class="math notranslate nohighlight">
+      \(x_{k}\)
+     </span>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#deviance">
+     Deviance
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pearson-statistic">
+     Pearson Statistic
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+        </nav>
+        
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="multinomial-logistic-regression">
+<h1>Multinomial Logistic Regression<a class="headerlink" href="#multinomial-logistic-regression" title="Permalink to this headline">¶</a></h1>
+<p>Aka multinomial GLM, or multinomial logit in short.</p>
+<p>A generalization of binomial GLM is multinomial GLM, where we have <span class="math notranslate nohighlight">\(c\)</span> categories. In particular,</p>
+<ul class="simple">
+<li><p>if the categories have internal order, we use <a class="reference internal" href="24-ordinal-logistic.html"><span class="doc std std-doc">ordinal</span></a> logistic regression</p></li>
+<li><p>if the categories are nested (train/car/bus and then red/blue bus), we use nested logit models.</p></li>
+</ul>
+<div class="section" id="data-structure">
+<h2>Data Structure<a class="headerlink" href="#data-structure" title="Permalink to this headline">¶</a></h2>
+<p>In this chapter we express models in terms of such ungrouped data. As with binary data, however, with discrete explanatory variables it is better to group the <span class="math notranslate nohighlight">\(N\)</span> observations according to their multicategory trial indices <span class="math notranslate nohighlight">\(\left\{ n_{i}\right\}\)</span> before forming the deviance and other goodness-of-fit statistics and residuals.</p>
+<p>For subject <span class="math notranslate nohighlight">\(i\)</span>, let <span class="math notranslate nohighlight">\(\pi_{ij}\)</span> denote the probability of response in category <span class="math notranslate nohighlight">\(j\)</span>, with <span class="math notranslate nohighlight">\({\sum_{j=1}^{c}\pi_{ij}=1}\)</span>. The observation is a vector of binary entries <span class="math notranslate nohighlight">\({\boldsymbol{y}_{i}=\left(y_{i1},\ldots,y_{ic}\right)}\)</span>, where <span class="math notranslate nohighlight">\(y_{ij}=1\)</span> when the response is in category <span class="math notranslate nohighlight">\(j\)</span> and <span class="math notranslate nohighlight">\(y_{ij}=0\)</span> otherwise, then <span class="math notranslate nohighlight">\({\sum_{j}y_{ij}=1}\)</span>. The probability distribution is</p>
+<div class="math notranslate nohighlight">
+\[
+{p\left(y_{i1},\ldots, y_{ic}\right)=\pi_{i1}^{y_{i1}}\cdots\pi_{ic}^{y_{i}}}
+\]</div>
+<p>If there is no order in the categories, the response is called nominal response. Otherwise, it’s called ordinal response.</p>
+</div>
+<div class="section" id="baseline-category-logit-model">
+<h2>Baseline-Category Logit Model<a class="headerlink" href="#baseline-category-logit-model" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="link-function">
+<h3>Link Function<a class="headerlink" href="#link-function" title="Permalink to this headline">¶</a></h3>
+<p>We construct a multinomial logistic model by pairing each response category with a baseline category, such as the last category <span class="math notranslate nohighlight">\(c\)</span>. Like in logistic regression We use a linear predictor to model the log odds:</p>
+<div class="math notranslate nohighlight">
+\[
+g_{j}(\boldsymbol{\pi}_{i})=\log\frac{\pi_{ij}}{\pi_{ic}}=\boldsymbol{x}_i ^\top \boldsymbol{\beta} _{j}\quad j=1,2,\ldots,{c-1}
+\]</div>
+<p>Note for each category <span class="math notranslate nohighlight">\(j\)</span>, there is a separate <span class="math notranslate nohighlight">\(\boldsymbol{\beta}_{j}\)</span>, so there are <span class="math notranslate nohighlight">\((c-1)\times p\)</span> parameters in total.</p>
+<p>Suppose <span class="math notranslate nohighlight">\(\boldsymbol{\beta} _c = \boldsymbol{0}\)</span>. We can obtain</p>
+<div class="math notranslate nohighlight">
+\[
+\pi_{ij}=\frac{\exp(\boldsymbol{x} ^\top \boldsymbol{\beta} _{j})}{\sum_{h=1}^{c}\exp(\boldsymbol{x}_{i}^{\top}\boldsymbol{\beta}_{h})}=\frac{\exp(\boldsymbol{x} ^\top \boldsymbol{\beta} _{j})}{1+\sum_{h=1}^{c-1}\exp(\boldsymbol{x}_{i}^{\top}\boldsymbol{\beta}_{h})},\ j=1,2,\ldots,{c-1}
+\]</div>
+<p>If <span class="math notranslate nohighlight">\(c=2\)</span>, this formula simplifies to the probability for logistic regression.</p>
+<p>By convention <span class="math notranslate nohighlight">\(\boldsymbol{\beta}_{c}=\boldsymbol{0}\)</span> and <span class="math notranslate nohighlight">\(\pi_{ic}=\frac{1}{1+\sum_{h=1}^{c-1}\exp(\boldsymbol{x}_{i}^{\top}\boldsymbol{\beta}_{h})}\)</span>.</p>
+</div>
+<div class="section" id="interpretation">
+<h3>Interpretation<a class="headerlink" href="#interpretation" title="Permalink to this headline">¶</a></h3>
+<p>Recall there are <span class="math notranslate nohighlight">\((c-1)\times p\)</span> number of <span class="math notranslate nohighlight">\(\beta\)</span>’s. Interpretation of the overall effects for <span class="math notranslate nohighlight">\(\boldsymbol{\beta}_{j}\)</span> is not simple, since in the above formula we see <span class="math notranslate nohighlight">\(\pi_{ij}\)</span> also depends on other <span class="math notranslate nohighlight">\(\boldsymbol{\beta}_{h}\)</span>. The derivative of <span class="math notranslate nohighlight">\(\pi_{ij}\)</span> w.r.t. the <span class="math notranslate nohighlight">\(k\)</span>-th covariate <span class="math notranslate nohighlight">\(x_{ik}\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[
+{\frac{\partial\pi_{ij}}{\partial x_{ik}}=\pi_{ij}\left(\beta_{jk}-\sum_{h}\pi_{ih}\beta_{hk}\right)}
+\]</div>
+<p>which depends on <span class="math notranslate nohighlight">\(\beta_{hk}\)</span> in other <span class="math notranslate nohighlight">\(\boldsymbol{\beta}_{h}\)</span>. So the derivative need not have the same sign as <span class="math notranslate nohighlight">\(\beta_{jk}\)</span>.</p>
+<p>Note that <span class="math notranslate nohighlight">\(\pi_{ij}\)</span> is a function of <span class="math notranslate nohighlight">\(\boldsymbol{x}_{i}\)</span>. In fact, the derivative may change sign as <span class="math notranslate nohighlight">\(x_{ik}\)</span> increases (Exercise 6.4).</p>
+<p>However, we can interpret the effect of <span class="math notranslate nohighlight">\(\beta_{jk}\)</span> on the odds <span class="math notranslate nohighlight">\(\frac{\pi_{ij}}{\pi_{ic}}\)</span> for setting <span class="math notranslate nohighlight">\(i\)</span>. By the link function,</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{\pi_{ij}}{\pi_{ic}}=\exp\left(\boldsymbol{x}_i ^\top \boldsymbol{\beta} _{j}\right)
+\]</div>
+<p>If <span class="math notranslate nohighlight">\(x_{ik}\)</span> increases 1 unit, the odds is multiplied by <span class="math notranslate nohighlight">\(\exp(\beta_{jk})\)</span>, similar to the meaning in logistic regression.</p>
+</div>
+<div class="section" id="multivariate-exponential-families">
+<h3>Multivariate Exponential Families<a class="headerlink" href="#multivariate-exponential-families" title="Permalink to this headline">¶</a></h3>
+<p>Multivariate here means <span class="math notranslate nohighlight">\(\boldsymbol{y}\)</span> is a vector. The PDF is</p>
+<div class="math notranslate nohighlight">
+\[
+f(\boldsymbol{y}\vert\boldsymbol{\theta})=\exp(\boldsymbol{y}^{\top}\boldsymbol{\theta}-b(\boldsymbol{\theta}))f_{0}(\boldsymbol{y})
+\]</div>
+<p>Let <span class="math notranslate nohighlight">\(\boldsymbol{g}\)</span> be a vector of link functions, the multivariate GLM has the form</p>
+<div class="math notranslate nohighlight">
+\[
+\boldsymbol{g}(\boldsymbol{\mu}_{i})= \boldsymbol{X} _{i}^{\top}\boldsymbol{\beta}
+\]</div>
+<p>or equivalently,</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\left(\begin{array}{c}
+g_{1}(\boldsymbol{\mu}_{i})\\
+g_{2}(\boldsymbol{\mu}_{i})\\
+\vdots\\
+g_{c-1}(\boldsymbol{\mu}_{i})
+\end{array}\right)=\left(\begin{array}{cccc}
+\boldsymbol{x}_{i}^{\top} &amp; \boldsymbol{0} &amp; \dots &amp; \boldsymbol{0}\\
+\boldsymbol{0} &amp; \boldsymbol{x}_{i}^{\top} &amp; \dots &amp; \boldsymbol{0}\\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots\\
+\boldsymbol{0} &amp; \boldsymbol{0} &amp; \dots &amp; \boldsymbol{x}_{i}^{\top}
+\end{array}\right)\left(\begin{array}{c}
+\boldsymbol{\beta}_{1}\\
+\boldsymbol{\beta}_{2}\\
+\vdots\\
+\boldsymbol{\beta}_{c-1}
+\end{array}\right)_{(c-1)p\times1}
+\end{split}\]</div>
+<p>Note the <span class="math notranslate nohighlight">\(c\)</span>-th category is redundant.</p>
+<p>The baseline-category logit model is a multivariate GLM with</p>
+<div class="math notranslate nohighlight">
+\[
+\boldsymbol{\mu}_{i}={\left(\pi_{i1},\dots,\pi_{i,c-1}\right)}^{\top}
+\]</div>
+<p>and <strong>canonical</strong> link functions</p>
+<div class="math notranslate nohighlight">
+\[
+g_{j}(\boldsymbol{\mu}_{i})=\log\left(\frac{\pi_{ij}}{\pi_{ic}}\right),\ j=1,2,\ldots,{c-1}
+\]</div>
+</div>
+</div>
+<div class="section" id="estimation">
+<h2>Estimation<a class="headerlink" href="#estimation" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="score-equations">
+<h3>Score Equations<a class="headerlink" href="#score-equations" title="Permalink to this headline">¶</a></h3>
+<p>The log-likelihood for subject <span class="math notranslate nohighlight">\(i\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+{\begin{aligned}\log\left(\prod_{j=1}^{c}\pi_{ij}^{y_{ij}}\right) &amp; =\sum_{j=1}^{c-1}y_{ij}\log\pi_{ij}+\left(1-\sum_{j=1}^{c-1}y_{ij}\right)\log\pi_{ic}\\
+ &amp; =\sum_{j=1}^{c-1}y_{ij}\log\frac{\pi_{ij}}{\pi_{ic}}+\log\pi_{ic}
+\end{aligned}
+}
+\end{split}\]</div>
+<p>Substituting <span class="math notranslate nohighlight">\(\log\left(\frac{\pi_{ij}}{\pi_{ic}}\right)=\boldsymbol{x}_i ^\top \boldsymbol{\beta} _{j}\)</span>, the total log-likelihood is</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}\ell(\boldsymbol{\beta};\boldsymbol{y}) &amp; =\sum_{i=1}^{N}\left\{ \sum_{j=1}^{c-1}y_{ij}\left(\boldsymbol{x}_i ^\top \boldsymbol{\beta} _{j}\right)-\log\left[1+\sum_{j=1}^{c-1}\exp\left(\boldsymbol{x} _i ^{\top} \boldsymbol{\beta} _{j}\right)\right]\right\} \\
+ &amp; =\sum_{j=1}^{c-1}\left[\sum_{k=1}^{p}\beta_{jk}\left(\sum_{i=1}^{N}x_{ik}y_{ij}\right)\right]-\sum_{i=1}^{N}\log\left[1+\sum_{j=1}^{c-1}\exp\left(\boldsymbol{x} ^\top \boldsymbol{\beta} _{j}\right)\right]
+\end{aligned}
+\end{split}\]</div>
+<p>The sufficient statistic for <span class="math notranslate nohighlight">\(\beta_{jk}\)</span> is <span class="math notranslate nohighlight">\(\sum_{i=1}^{N}x_{ik}y_{ij}\)</span>. In particular, for the intercept <span class="math notranslate nohighlight">\(\beta_{j1}\)</span>, it is <span class="math notranslate nohighlight">\(\sum_{i=1}^{N}y_{ij}\)</span>, which is the total number of observations in category <span class="math notranslate nohighlight">\(j\)</span>.</p>
+<p>The partial derivatives are</p>
+<div class="math notranslate nohighlight">
+\[
+{\frac{\partial\ell(\boldsymbol{\beta},\boldsymbol{y})}{\partial\beta_{jk}}=\sum_{i=1}^{N}x_{ik}y_{ij}-\sum_{i=1}^{N}\left[\frac{x_{ik}\exp\left(\boldsymbol{x}_i ^\top \boldsymbol{\beta} _{j}\right)}{1+\sum_{h=1}^{c-1}\exp\left(\boldsymbol{x} _i^\top \boldsymbol{\beta} _{h}\right)}\right]=\sum_{i=1}^{N}x_{ik}\left(y_{ij}-\pi_{ij}\right)}
+\]</div>
+<p>for <span class="math notranslate nohighlight">\(j=1, \ldots, c-1\)</span> and <span class="math notranslate nohighlight">\(k=1\ldots,p\)</span></p>
+<p>So the score equations are</p>
+<div class="math notranslate nohighlight">
+\[
+\sum_{i=1}^{N}x_{ik}y_{ij}=\sum_{i=1}^{N}x_{ik}\pi_{ij}
+\]</div>
+<p>for <span class="math notranslate nohighlight">\(j=1, \ldots, c-1\)</span> and <span class="math notranslate nohighlight">\(k=1\ldots,p\)</span>.</p>
+<p>Again, the score equations equate the sufficient statistics to their expected value.</p>
+</div>
+<div class="section" id="computation">
+<h3>Computation<a class="headerlink" href="#computation" title="Permalink to this headline">¶</a></h3>
+<p>We derive the Hessian matrix.</p>
+<p>Note that for two coefficients <span class="math notranslate nohighlight">\(\beta_{jk}\)</span> and <span class="math notranslate nohighlight">\(\beta_{jh}\)</span> in <span class="math notranslate nohighlight">\(\boldsymbol{\beta}_{j}\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[
+{\frac{\partial^{2}\ell(\boldsymbol{\beta},\boldsymbol{y})}{\partial\beta_{jk}\partial\beta_{jl}}=-\sum_{i=1}^{N}x_{ik}x_{il}\pi_{ij}\left(1-\pi_{ij}\right)}
+\]</div>
+<p>for categories <span class="math notranslate nohighlight">\(j\ne h\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[
+{\frac{\partial^{2}\ell(\boldsymbol{\beta},\boldsymbol{y})}{\partial\beta_{jk}\partial\beta_{hl}}=\sum_{i=1}^{N}x_{ik}x_{il}\pi_{ij}\pi_{ih}}
+\]</div>
+<p>So the Fisher Information matrix consists of <span class="math notranslate nohighlight">\((c-1)^{2}\)</span> blocks of size <span class="math notranslate nohighlight">\(p\times p\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[
+{-\frac{\partial^{2}\ell(\boldsymbol{\beta},\boldsymbol{y})}{\partial\boldsymbol{\beta}_{j}\partial\boldsymbol{\beta}_{h}^{\mathrm{\top}}}=\sum_{i=1}^{N}\pi_{ij}\left[\mathbb{I}\left\{ j=h\right\} -\pi_{ij^{\prime}}\right]\boldsymbol{x}_{i}^{\top}\boldsymbol{x}_{i}}
+\]</div>
+<p>The Hessian is negative-definite, so the log-likelihood function is concave and has a unique maximum. The observed and expected information are identical, so the Newton-Raphson method is equivalent to Fisher scoring for finding the ML parameter estimates, a consequence of the link function being the canonical one. Convergence is usually fast unless at least one estimate is infinite or does not exist (see Note 6.2).</p>
+</div>
+</div>
+<div class="section" id="hypothesis-testing">
+<h2>Hypothesis Testing<a class="headerlink" href="#hypothesis-testing" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="test-the-effect-of-x-k">
+<h3>Test the Effect of <span class="math notranslate nohighlight">\(x_{k}\)</span><a class="headerlink" href="#test-the-effect-of-x-k" title="Permalink to this headline">¶</a></h3>
+<p>To test the effect of the <span class="math notranslate nohighlight">\(k\)</span>-th covariate is to test all the coefficients
+of it, namely <span class="math notranslate nohighlight">\(\beta_{jk}\)</span> for category <span class="math notranslate nohighlight">\(j=1,2,\ldots,{c-1}\)</span>. There are <span class="math notranslate nohighlight">\(k\)</span> constraints</p>
+<div class="math notranslate nohighlight">
+\[
+{H_{0}:\beta_{1k}=\beta_{2k}=\cdots=\beta_{c-1,k}=0}
+\]</div>
+<p>The likelihood ratio test can be applied, with <span class="math notranslate nohighlight">\(df=c-1\)</span>. The likelihood-ratio
+test statistic equals the difference in the deviance values for comparing
+the models.</p>
+</div>
+<div class="section" id="deviance">
+<h3>Deviance<a class="headerlink" href="#deviance" title="Permalink to this headline">¶</a></h3>
+<p>We will use grouped data for summary of goodness-of-fit. Now <span class="math notranslate nohighlight">\(\boldsymbol{y}_{i}\sim\frac{1}{n_{i}} \operatorname{Multinomial} (n_{i},\boldsymbol{\pi}_{i})\)</span>. That is, <span class="math notranslate nohighlight">\(y_{ij}\)</span> is the proportion of the observations in category <span class="math notranslate nohighlight">\(j\)</span>.</p>
+<p>The deviance compares log-likelihood of a fit <span class="math notranslate nohighlight">\(\left\{ \hat{\pi}_{ij}\right\}\)</span>
+and the saturated model <span class="math notranslate nohighlight">\(\left\{ \tilde{\pi}_{ij}=y_{ij}\right\}\)</span>,
+which is</p>
+<div class="math notranslate nohighlight">
+\[
+{D(\boldsymbol{y},\hat{\boldsymbol{\mu}})=2\sum_{i=1}^{N}\sum_{j=1}^{c}n_{i}y_{ij}\log\frac{n_{i}y_{ij}}{n_{i}\hat{\pi}_{ij}}}\sim\chi^2_{df}
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(df=\#\text{probabilities}-\#\text{parameters}\)</span>. Usually <span class="math notranslate nohighlight">\(\#\text{probabilities}=N(c-1)\)</span> and <span class="math notranslate nohighlight">\(\#\text{parameters}=p(c-1)\)</span>.</p>
+<p>It satisfies the general form</p>
+<div class="math notranslate nohighlight">
+\[
+{D(\boldsymbol{y},\hat{\boldsymbol{\mu}})=2\sum}\text{observed}\times{\log\left(\frac{\text{ observed }}{\text{ fitted }}\right)}
+\]</div>
+<p>For ungrouped data, the above formula remains valid and is used to
+compare nested unsaturated models.</p>
+</div>
+<div class="section" id="pearson-statistic">
+<h3>Pearson Statistic<a class="headerlink" href="#pearson-statistic" title="Permalink to this headline">¶</a></h3>
+<p>The Pearson statistic is</p>
+<div class="math notranslate nohighlight">
+\[
+{X^{2}=\sum_{i=1}^{N}\sum_{j=1}^{c}\frac{\left(n_{i}y_{ij}-n_{i}\hat{\pi}_{ij}\right)^{2}}{n_{i}\hat{\pi}_{ij}}}\sim\chi^2_{df}
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(df=\#\text{probabilities}-\#\text{parameters}\)</span>. Normally <span class="math notranslate nohighlight">\(\#\text{probabilities}=N(c-1)\)</span>
+and <span class="math notranslate nohighlight">\(\#\text{parameters}=p(c-1)\)</span>.</p>
+<p>It satisfies the general form</p>
+<div class="math notranslate nohighlight">
+\[
+{X^{2}=\sum\frac{(\text{ observed }-\text{ fitted })^{2}}{\text{ fitted }}}
+\]</div>
+<div class="note admonition">
+<p class="admonition-title"> Note</p>
+<p>For both deviance and Pearson statistic</p>
+<ul class="simple">
+<li><p>they have approximate chi-squared null distributions when the expected cell counts mostly exceed about 5.</p></li>
+<li><p>the sums are taken over all observed counts <span class="math notranslate nohighlight">\({\left\{ n_{i}y_{ij}\right\} }\)</span>. This explains why the sums are taken over <span class="math notranslate nohighlight">\(2N\)</span> success and failures in the deviance and Pearson statistic for logistic regression.</p></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./31-regression"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        </div>
+    </div>
+    
+    
+    <div class='prev-next-bottom'>
+        
+    <a class='left-prev' id="prev-link" href="22-logistic-regression.html" title="previous page">Logistic Regression</a>
+    <a class='right-next' id="next-link" href="24-ordinal-logistic.html" title="next page">Ordinal Logistic Regression</a>
+
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By Dennis Zheng<br/>
+        
+            &copy; Copyright 2020.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+
+    
+  <script src="../_static/js/index.d3f166471bb80abb5163.js"></script>
+
+
+    
+  </body>
+</html>

@@ -183,3 +183,54 @@ Idea: reduce $n$, so the total number of probabilities to be estimated, which is
   $$
   p_{b o}\left(w_{i} \mid w_{i-1}\right) = \lambda p_{\boldsymbol{ML}}\left(w_{i} \mid w_{i-1}\right)+ (1-\lambda) p\left(w_{i}\right)
   $$
+
+## Neural Language Model
+
+### Word Embeddings + MLP
+
+To alleviate the sparse data problem in $n$-gram model, instead of smoothing, neural language models (multi-layer perceptron) represent each **word** as a continuous-valued vector (word embedding) given by matrix $\boldsymbol{C}$, where each row is a word embedding. The embedding is trained.
+
+:::{figure} nlm-structure
+<img src="../imgs/nlm-structure.png" width = "70%" alt=""/>
+
+Neural language models [Bengio 2003]. Dash lines are optional concatenation
+:::
+
+The perplexity is reduced from smoothing method's 312 to 252.
+
+:::{figure} nlm-perplexity
+<img src="../imgs/nlm-perplexity.png" width = "60%" alt=""/>
+
+NLM perplexity
+:::
+
+### Character Embedding + RNN
+
+Consider a basic RNN language model, that take a character as input, and predict the next character.
+
+Forward propagation:
+
+$$
+\begin{aligned}
+\boldsymbol{h}_{t} &=\sigma\left(\boldsymbol{W} _{hx} \boldsymbol{x} _{t}+\boldsymbol{W} _{hh} \boldsymbol{h} _{t-1}+\boldsymbol{b} _{h}\right) \\
+\boldsymbol{y} _{t} &=\operatorname{softmax}\left(\boldsymbol{W} _{h y} \boldsymbol{h} _{t}+\boldsymbol{b} _{y}\right)
+\end{aligned}
+$$
+
+
+Objective:
+
+$$
+\prod_{t} p\left(\boldsymbol{x} _{t} \vert \boldsymbol{x} _{<t}\right)
+$$
+
+:::{figure} nlm-rnn
+<img src="../imgs/nlm-rnn.png" width = "60%" alt=""/>
+
+A basic RNN language model
+:::
+
+
+This is a many-to-many RNN. For details of RNN, see [sequential models](../37-neural-networks/31-sequential-models),
+
+Most recent work based on transformers, trained on much more data, with many more parameters. Example: GPT-3 from OpenAI with 100s of billions of training text tokens + 175 billion parameters

@@ -23,7 +23,12 @@ Notations:
 
 - $\boldsymbol{P}$: $n\times n$ state transition probability matrix, where $p_{ij} = P(S_{t+1} = j\vert S_t = i)$
 - $\boldsymbol{\pi}  = (\pi_1, \ldots, \pi_n)$: initial state distribution, where $\pi_s = P(S_1 = s)$
-- $e _s(x)$: emission distribution in state $i$. $e_{i}(x) = P(X_{t} = x\vert S_t = s)$. Note that $x$ can be a vector. For simplicity, we use unbold symbol.
+
+```{margin}
+Note that $x$ can be a vector. For simplicity, we use unbold symbol.
+```
+
+- $e _s(x)$: emission distribution in state $i$. $e_{i}(x) = P(X_{t} = x\vert S_t = s)$, where $x$ is discrete, e.g. Poisson. If we want to model continuous observation, we can use continuous-density HMM, where $e_s(x)$ can be a Gaussian or mixture of Gaussian (or neural networks), whose parameters depend on state $s$.
 
 The entire model parameters is $\boldsymbol{\theta} = \left\{ \boldsymbol{P} , \boldsymbol{e} ,\pi \right\}$
 
@@ -93,7 +98,7 @@ p(\boldsymbol{x} \vert \boldsymbol{\theta} )&= \boldsymbol{1} _n ^\top \boldsymb
 
 where $\boldsymbol{f}_t = [f_t(1), \ldots, f_t(n)]^\top , \boldsymbol{e} (x_t) = [e_1(x_t), \ldots, e_n(x_t)] ^\top$ and $*$ stands for element-wise dot product.
 
----
+
 ---
 
 **Forward Algorithm**
@@ -111,7 +116,7 @@ Construct a DP table of size $n\times T$ to store $f_t(s)$. Fill the entries col
 - Return $p(\boldsymbol{x} \vert \boldsymbol{\theta}) = \sum_ {s=1}^n f_T(s)$
 
 ---
----
+
 
 There are $n\times T$ entries, and each entry takes $O(n)$ to compute. So the total complexity is $O(n^2 T)$, much smaller than the brute force's $O(n^T)$.
 
@@ -151,7 +156,6 @@ p(\boldsymbol{x} \vert \boldsymbol{\theta} )&=
 where $\boldsymbol{b}_t = [b_t(1), \ldots, b_t(n)]^\top , \boldsymbol{e} (x_t) = [e_1(x_t), \ldots, e_n(x_t)] ^\top$ and $*$ stands for element-wise dot product.
 
 ---
----
 **Backward Algorithm**
 
 ---
@@ -166,7 +170,6 @@ Construct a DP table of size $n \times (T-1)$ to store $b_t(s)$. Fill the entrie
 
 - Return $p(\boldsymbol{x} \vert \boldsymbol{\theta}) = \sum_ {s=1}^n \pi_s e_{s}(x_1) b_1(s)$
 
----
 ---
 
 As in forward algorithm, the complexity is $O(n^2 T)$.
@@ -218,7 +221,6 @@ $$
 It's analogous to the reasoning in forward probability, but we take sum their and take maximum here.
 
 ---
----
 **Viterbi Algorithm**
 
 ---
@@ -231,7 +233,6 @@ Construct a DP table of size $n\times T$ to store $v_t(s)$. Fill the entries col
 - For $t = 2,\ldots, T$,
   - for $s = 1, \ldots, n$, compute $v_t(s) = e_s(x_t) \max _{1 \le k \le n } v_{t-1}(k) p_{ks}$
 
----
 ---
 
 As in forward algorithm, complexity is $n^2 T$.

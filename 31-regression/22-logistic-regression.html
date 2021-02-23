@@ -1,0 +1,1332 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Logistic Regression &#8212; Data Science Handbook</title>
+    
+  <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+  <link rel="stylesheet"
+    href="../_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="../_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinx-book-theme.40e2e510f6b7d1648584402491bb10fe.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/style.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.d3f166471bb80abb5163.js">
+
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
+    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Multinomial Logistic Regression" href="23-multinomial-logitsitc.html" />
+    <link rel="prev" title="Generalized Linear Models" href="21-generalized-linear-models.html" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+
+
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+<a class="navbar-brand text-wrap" href="../index.html">
+  
+  
+  <h1 class="site-logo" id="site-title">Data Science Handbook</h1>
+  
+</a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form>
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+    <ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../index.html">
+   Data Science Handbook
+  </a>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Foundations
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../11-math/00-math.html">
+   Math
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/11-combinatorics.html">
+     Combinatorics
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/12-derangement.html">
+     Derangement
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/21-linear-algebra.html">
+     Linear Algebra
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/51-optimization.html">
+     Optimization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/61-graphs.html">
+     Graphs
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/90-puzzles.html">
+     Puzzles
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../12-probabilities/00-probabilities.html">
+   Probabilities
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/11-expectation-and-variance.html">
+     Expectation and Variance
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/13-correlation-and-dependence.html">
+     Correlation and Dependence
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/31-bayesian-theorem.html">
+     Bayesian’s Theorem
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/51-markov-chain.html">
+     Markov Chain
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/71-sampling.html">
+     Sampling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/90-multivariate-notations.html">
+     Multivariate Notations
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/91-large-sample-theory.html">
+     Large Sample Theory
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../13-statistics/00-statistics.html">
+   Statistics
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/11-sample-survey.html">
+     Sample Survey
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/13-randomized-trial.html">
+     Causality and Randomized Trial
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/21-hypothesis-testing.html">
+     Hypothesis Testing
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/25-two-sample-tests.html">
+     Two Sample Mean Tests
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/33-confusion-matrix.html">
+     Confusion Matrix
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/41-maximum-likelihood-estimation.html">
+     Maximum Likelihood Estimator
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/43-estimators-evaluation.html">
+     Estimators Evaluation
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../14-python/00-python.html">
+   Python
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../14-python/11-programming-tools.html">
+     Programmer tools
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../14-python/12-syntax.html">
+     Syntax
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../14-python/13-data-structure.html">
+     Data Structures
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../14-python/15-functional-programming.html">
+     Functional Programming
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../17-sql/00-sql.html">
+   SQL
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../17-sql/11-database.html">
+     Database
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../17-sql/12-relational-structure.html">
+     Relational Structure
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../17-sql/31-data-query.html">
+     Data Query
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../17-sql/33-data-manipulation.html">
+     Data Manipulation
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../19-miscellaneous/00-miscellaneous.html">
+   Miscellaneous
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../19-miscellaneous/11-latex.html">
+     LaTeX
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../19-miscellaneous/13-myst.html">
+     MyST Markdown
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Algorithms
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../20-algorithms-basics/00-algorithms-basics.html">
+   Algorithms Basics
+  </a>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../21-greedy-algorithms/00-greedy-algorithms.html">
+   Greedy Algorithms
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../21-greedy-algorithms/11-interval-scheduling.html">
+     Interval Scheduling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../21-greedy-algorithms/31-huffman-coding.html">
+     Huffman Coding
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../23-dynamic-programming/00-dynamic-programming.html">
+   Dynamic Programming
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/11-weighted-interval-scheduling.html">
+     Weighted Interval Scheduling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/13-longest-common-subsequence.html">
+     Longest Common Subsequence
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/15-longest-increasing-subsequence.html">
+     Longest Increasing Subsequence
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/17-largest-sum-subsequence.html">
+     Largest Sum Subsequence
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/31-knapsack.html">
+     Minimum Knapsack
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/51-chain-matrix-multiplication.html">
+     Chain Matrix Multiplication
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../25-graph-related/00-graph-related.html">
+   Graph Related
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/13-shortest-path.html">
+     Shortest Path
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/21-minimum-spanning-tree.html">
+     Minimum Spanning Tree
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/31-maximum-flow.html">
+     Maximum Flow
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/32-matching.html">
+     Matching
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/42-maximum-independent-set.html">
+     Maximum Independent Set in Trees
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Machine Learning
+ </span>
+</p>
+<ul class="current nav sidenav_l1">
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../30-ml-basics/00-ml-basics.html">
+   Machine Learning Basics
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../30-ml-basics/02-taxonomy.html">
+     Taxonomy
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../30-ml-basics/03-information-theory.html">
+     Information Theory
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../30-ml-basics/05-kernels.html">
+     Kernels
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../30-ml-basics/11-missing-values.html">
+     Missing Values
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 current active collapsible-parent">
+  <a class="reference internal" href="00-regression.html">
+   Regression
+  </a>
+  <ul class="current collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="11-lm-estimation.html">
+     Linear Regression - Estimation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="12-lm-inference.html">
+     Linear Regression - Inference
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="13-lm-extension.html">
+     Linear Regression - Extension
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="21-generalized-linear-models.html">
+     Generalized Linear Models
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     Logistic Regression
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="23-multinomial-logitsitc.html">
+     Multinomial Logistic Regression
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="24-ordinal-logistic.html">
+     Ordinal Logistic Regression
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="25-poisson-regression.html">
+     Poisson Regression
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../32-classification/00-classification.html">
+   Classification
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../32-classification/11-support-vector-machine.html">
+     Support Vector Machine
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../32-classification/21-decision-tree.html">
+     Decision Tree
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../33-dimensionality-reduction/00-dimensionality-reduction.html">
+   Dimensionality Reduction
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/11-principal-component-analysis.html">
+     Principal Component Analysis
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/13-canonical-correlation-analysis.html">
+     Canonical Corerlation Analysis
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/21-multidimensional-scaling.html">
+     Multidimensional Scaling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/23-graph-based-spectral-methods.html">
+     Graph-based Spectral Methods
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/25-t-SNE.html">
+     SNE and
+     <span class="math notranslate nohighlight">
+      \(t\)
+     </span>
+     -SNE
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/31-kernel-pca.html">
+     Kernel PCA
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/32-kernel-cca.html">
+     Kernel CCA
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../34-clustering/00-clustering.html">
+   Clustering
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../34-clustering/11-k-means.html">
+     <span class="math notranslate nohighlight">
+      \(k\)
+     </span>
+     -means clustering
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../34-clustering/13-agglomerative-methods.html">
+     Agglomerative Methods
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../34-clustering/31-spectral-clustering.html">
+     Spectral Clustering
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../34-clustering/41-gaussian-mixtures.html">
+     Gaussian Mixtures
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../35-graphical-models/00-graphical-models.html">
+   Graphical Models
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../35-graphical-models/11-hidden-markov-models.html">
+     Hidden Markov Models
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../35-graphical-models/31-topic-models.html">
+     Topic Models
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../35-graphical-models/33-language-models.html">
+     Language Models
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../37-neural-networks/00-neural-networks.html">
+   Neural Networks
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/01-stochastic-gradient-descent.html">
+     Stochastic Gradient Descent
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/03-trainability.html">
+     Trainability
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/05-regularization.html">
+     Regularization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/11-autoencoders.html">
+     Autoencoders
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/13-variational-autoencoders.html">
+     Variational Autoencoders
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/31-sequential-models.html">
+     Sequential Models
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/41-GAN.html">
+     Generative Adversarial Networks
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../38-ml-for-graph-data/00-ml-for-graph-data.html">
+   Machine Learning for Graph Data
+  </a>
+ </li>
+</ul>
+
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="row topbar fixed-top container-xl">
+    <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show">
+    </div>
+    <div class="col pl-2 topbar-main">
+        
+        <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+            data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+            aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+            title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+            <i class="fas fa-bars"></i>
+            <i class="fas fa-arrow-left"></i>
+            <i class="fas fa-arrow-up"></i>
+        </button>
+        
+        
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../_sources/31-regression/22-logistic-regression.md"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.md</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+        <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/dennissxz/data-science-handbook"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/dennissxz/data-science-handbook/issues/new?title=Issue%20on%20page%20%2F31-regression/22-logistic-regression.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+
+        <!-- Full screen (wrap in <a> to have style consistency -->
+        <a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+                data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+                title="Fullscreen mode"><i
+                    class="fas fa-expand"></i></button></a>
+
+        <!-- Launch buttons -->
+
+    </div>
+
+    <!-- Table of contents -->
+    <div class="d-none d-md-block col-md-2 bd-toc show">
+        
+        <div class="tocsection onthispage pt-5 pb-3">
+            <i class="fas fa-list"></i> Contents
+        </div>
+        <nav id="bd-toc-nav">
+            <ul class="nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#data-structure">
+   Data Structure
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ungrouped-data">
+     Ungrouped Data
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#grouped-data">
+     Grouped Data
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#model-structure">
+   Model Structure
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#derivation-of-link-function">
+     Derivation of Link Function
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#interpretation-of-boldsymbol-beta-as-odds-ratio">
+     Interpretation of
+     <span class="math notranslate nohighlight">
+      \(\boldsymbol{\beta}\)
+     </span>
+     as Odds Ratio
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#estimation">
+   Estimation
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#score-equations">
+     Score Equations
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#covariance-of-mle">
+     Covariance of MLE
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#computation">
+     Computation
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#hypothesis-testing">
+   Hypothesis Testing
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#wald-test-disadvantages">
+     Wald Test Disadvantages
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#deviance">
+     Deviance
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pearson-statistic">
+     Pearson Statistic
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#infinite-parameter-estimate">
+   Infinite Parameter Estimate
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#complete-separation-perfect-discrimination">
+     Complete Separation / Perfect Discrimination
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#quasi-complete-separation">
+     Quasi-complete Separation
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#remedy">
+     Remedy
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#application-case-control-study">
+   Application: Case-Control Study
+  </a>
+ </li>
+</ul>
+
+        </nav>
+        
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="logistic-regression">
+<h1>Logistic Regression<a class="headerlink" href="#logistic-regression" title="Permalink to this headline">¶</a></h1>
+<p>Aka binomial GLM.</p>
+<p>Logistic regression is used to model binary response <span class="math notranslate nohighlight">\(Y_i \sim \operatorname{Ber}(p_i)\)</span>.</p>
+<p>If we use OLS to model the binary response, we call this linear probability model (LPM)</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+Y_i &amp;= \boldsymbol{x}_i ^\top \boldsymbol{\beta} + \varepsilon_i \\
+\operatorname{E}\left( Y_i \right) &amp;= \boldsymbol{x}_i ^\top \boldsymbol{\beta}
+\end{aligned}\end{split}\]</div>
+<p>It is not appropriate since</p>
+<ul class="simple">
+<li><p>Heteroskedasticity: <span class="math notranslate nohighlight">\(\operatorname{Var}\left( Y_i \right) = p_i (1-p_i)\)</span> where <span class="math notranslate nohighlight">\(p_i\)</span> depends on <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span></p></li>
+<li><p>Range: LHS is either <span class="math notranslate nohighlight">\(1\)</span> or <span class="math notranslate nohighlight">\(0\)</span>, while RHS is in <span class="math notranslate nohighlight">\(\mathbb{R}\)</span>.</p></li>
+<li><p>Error and <span class="math notranslate nohighlight">\(Y\)</span> are negatively correlated.</p></li>
+<li><p>Prediction: to predict a binary outcome, if predicted probability is larger than <span class="math notranslate nohighlight">\(0.5\)</span>, then output 1, else 0</p></li>
+</ul>
+<div class="figure align-default" id="logistic-data-plot">
+<a class="reference internal image-reference" href="../_images/logistic-data-plot.png"><img alt="" src="../_images/logistic-data-plot.png" style="width: 90%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 22 </span><span class="caption-text">Scatter plot (left) of binary <span class="math notranslate nohighlight">\(Y\)</span>, fitted line with 0.5 cutoff for prediction (middle) and residual plot (right) if we fit OLS [Meyer 2021]</span><a class="headerlink" href="#logistic-data-plot" title="Permalink to this image">¶</a></p>
+</div>
+<p>But rather than <span class="math notranslate nohighlight">\(Y_i \sim \operatorname{Bin}(n_i, p_i)\)</span>, the book views <span class="math notranslate nohighlight">\(n_{i}Y_{i}\sim\operatorname{Bin}(n_i, \pi_i)\)</span>, or <span class="math notranslate nohighlight">\(Y_{i}\sim \frac{1}{n_i} \operatorname{Bin}(n_i, \pi_i)\)</span> as random component, where <span class="math notranslate nohighlight">\(Y_{i}\)</span> is the proportion of success and <span class="math notranslate nohighlight">\(\operatorname{E}(Y_i)=\pi_{i}\)</span>. It’s easier to define a link function as a function of <span class="math notranslate nohighlight">\(\operatorname{E}(Y_i)\)</span>.</p>
+<div class="section" id="data-structure">
+<h2>Data Structure<a class="headerlink" href="#data-structure" title="Permalink to this headline">¶</a></h2>
+<p>Logistic regression can take two types of data structure as input.</p>
+<div class="section" id="ungrouped-data">
+<h3>Ungrouped Data<a class="headerlink" href="#ungrouped-data" title="Permalink to this headline">¶</a></h3>
+<p>For ungrouped data, suppose there are <span class="math notranslate nohighlight">\(N\)</span> observations, each observation <span class="math notranslate nohighlight">\(y_{i}\)</span> results from a single Bernoulli trial <span class="math notranslate nohighlight">\(Y_{i}\sim\operatorname{Ber}(p_i)\)</span> and equals 0 or 1.</p>
+<p>A large-sample means <span class="math notranslate nohighlight">\(N\rightarrow\infty\)</span>.</p>
+<p>Note that for different <span class="math notranslate nohighlight">\(i_{1}\ne i_{2}\)</span>, they may share the same
+covariates <span class="math notranslate nohighlight">\(\boldsymbol{x}_{i_{1}}=\boldsymbol{x}_{i_{2}}\)</span>. So they share
+the same underlying expectation <span class="math notranslate nohighlight">\(\pi_{i}\)</span>. Thus, we may consider group
+them together to obtain grouped data.</p>
+</div>
+<div class="section" id="grouped-data">
+<h3>Grouped Data<a class="headerlink" href="#grouped-data" title="Permalink to this headline">¶</a></h3>
+<p>Suppose there are <span class="math notranslate nohighlight">\(n_{i}\)</span> is the number of observations at setting
+<span class="math notranslate nohighlight">\(i\)</span> of the covariates, <span class="math notranslate nohighlight">\(i=1, 2, \ldots, N\)</span>.</p>
+<p>A large-sample means <span class="math notranslate nohighlight">\(n_{i}\rightarrow\infty\)</span> for every <span class="math notranslate nohighlight">\(i\)</span>.</p>
+<div class="warning admonition">
+<p class="admonition-title"> Warning</p>
+<ul class="simple">
+<li><p>The two data types can be converted to each other. The MLE and the
+asymptotic distribution are the same since the log-likelihood differ
+by a constant.</p></li>
+<li><p>However, the summary of fit, such as deviance, are <strong>not</strong> the same, since
+the saturated models are different.</p></li>
+<li><p>The goodness-of-fit test for ungrouped data is invalid, since the
+saturated model for ungrouped data requires <span class="math notranslate nohighlight">\(p=n\)</span>, but the distribution
+of test statistic is derived when <span class="math notranslate nohighlight">\(p\)</span> is fixed and <span class="math notranslate nohighlight">\(n\rightarrow\infty\)</span>.</p></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="section" id="model-structure">
+<h2>Model Structure<a class="headerlink" href="#model-structure" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="derivation-of-link-function">
+<h3>Derivation of Link Function<a class="headerlink" href="#derivation-of-link-function" title="Permalink to this headline">¶</a></h3>
+<p>We have the random component <span class="math notranslate nohighlight">\(Y_{i}\sim\frac{1}{n_{i}} \operatorname{Bin}( {n_{i}}, {\pi_{i}})\)</span>
+and <span class="math notranslate nohighlight">\(\operatorname{E}(Y_i)=\pi_{i}\)</span>. Now we want to find a link function <span class="math notranslate nohighlight">\(g\)</span>
+such that</p>
+<div class="math notranslate nohighlight">
+\[
+g(\pi_{i})=\boldsymbol{x}_{i}^{\top}\boldsymbol{\beta}
+\]</div>
+<p>i.e.</p>
+<div class="math notranslate nohighlight">
+\[
+\pi_{i}=g^{-1}(\boldsymbol{x}_{i}^{\top}\boldsymbol{\beta})
+\]</div>
+<p>Thus <span class="math notranslate nohighlight">\(g^{-1}\)</span> is a function mapping from <span class="math notranslate nohighlight">\(\mathbb{R}\)</span> to <span class="math notranslate nohighlight">\((0,1)\)</span>. Hence,
+it’s intuitive to consider a CDF.</p>
+<p>Let <span class="math notranslate nohighlight">\(g^{-1}=F\)</span>, where <span class="math notranslate nohighlight">\(F\)</span> is some CDF. Assume <span class="math notranslate nohighlight">\(\epsilon_{i} \overset{\text{iid}}{\sim} F\)</span>.
+Then</p>
+<div class="math notranslate nohighlight">
+\[
+\pi_{i}=F(\boldsymbol{x}_{i}^{\top}\boldsymbol{\beta})=\operatorname{P} (\epsilon_{i}\le\boldsymbol{x}_{i}^{\top}\boldsymbol{\beta})=\operatorname{P}(0\le\boldsymbol{x}_{i}^{\top}\boldsymbol{\beta}-\epsilon_{i})
+\]</div>
+<p>We can define a <strong>latent variable</strong> <span class="math notranslate nohighlight">\(Y_{i}^{*}=\boldsymbol{x}_{i}^{\top}\boldsymbol{\beta}-\epsilon_{i}\)</span>. Hence</p>
+<div class="math notranslate nohighlight">
+\[
+\pi_{i}=\operatorname{P}(Y_{i}^{*}\ge0)
+\]</div>
+<p>If <span class="math notranslate nohighlight">\(n_{i}=1\)</span>, then <span class="math notranslate nohighlight">\(Y_{i}\)</span> follows a binomial distribution</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+Y_{i}=\begin{cases}
+1 &amp; Y_{i}^{*}\ge0\\
+0 &amp; Y_{i}^{*}&lt;0
+\end{cases}
+\end{split}\]</div>
+<p>which means the observation of <span class="math notranslate nohighlight">\(Y_{i}\)</span> depends on the latent variable
+<span class="math notranslate nohighlight">\(Y_{i}^{*}\)</span>. This kind of model is called a <strong>threshold model</strong>.</p>
+<p>Some common choices of <span class="math notranslate nohighlight">\(F\)</span> are</p>
+<ul>
+<li><p><strong>Probit</strong> link: <span class="math notranslate nohighlight">\(F\)</span> is the CDF of <span class="math notranslate nohighlight">\(N(0,1)\)</span>. That is, <span class="math notranslate nohighlight">\(\pi_i = \Phi (\boldsymbol{x} _i ^\top \boldsymbol{\beta})\)</span></p>
+<p>But the interpretation of <span class="math notranslate nohighlight">\(\beta\)</span> is not straightforward: One unit increase in <span class="math notranslate nohighlight">\(X_j\)</span> leads to <span class="math notranslate nohighlight">\(\phi(\boldsymbol{x}_i ^\top \boldsymbol{\beta} )\beta_j\)</span> increase in <span class="math notranslate nohighlight">\(\pi_i\)</span>. We need to take derivative to compute the effect, and the effect also depends on values of current <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span>.</p>
+<ul class="simple">
+<li><p>If we fix <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> at sample mean <span class="math notranslate nohighlight">\(\boldsymbol{\mu} _x\)</span>, then the computed effect is called partial effect at the average (PEA).</p></li>
+<li><p>If we compute the effect for each observation <span class="math notranslate nohighlight">\(\boldsymbol{x}_i\)</span>, and take the average, the computed effect is called average partial effect (APE).</p></li>
+</ul>
+</li>
+<li><p><strong>Logit</strong> link: <span class="math notranslate nohighlight">\(F\)</span> is the CDF of a logistic distribution</p>
+<div class="math notranslate nohighlight">
+\[F(z)=\frac{1}{1+e^{-z}}\]</div>
+<p>and <span class="math notranslate nohighlight">\(g=F^{-1}\)</span> is called a logit function</p>
+<div class="math notranslate nohighlight">
+\[
+  g(\pi_{i})=\log\left(\frac{\pi_{i}}{1-\pi_{i}}\right)=\text{logit}(\pi_{i})=\boldsymbol{x}_{i}^{\top}\boldsymbol{\beta}
+  \]</div>
+<p>The logit link is the canonical link of the Binomial distribution</p>
+</li>
+<li><p><strong>Log-log</strong> link: see book Section 5.6.3</p></li>
+</ul>
+<p>Therefore, choosing logit link, our model is</p>
+<div class="math notranslate nohighlight">
+\[\log\left(\frac{\pi_{i}}{1-\pi_{i}}\right)=\boldsymbol{x}_{i}^{\top}\boldsymbol{\beta}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\pi_i = \operatorname{E}\left( Y_i \right)\)</span>.</p>
+</div>
+<div class="section" id="interpretation-of-boldsymbol-beta-as-odds-ratio">
+<h3>Interpretation of <span class="math notranslate nohighlight">\(\boldsymbol{\beta}\)</span> as Odds Ratio<a class="headerlink" href="#interpretation-of-boldsymbol-beta-as-odds-ratio" title="Permalink to this headline">¶</a></h3>
+<p>Suppose we use logit link and <span class="math notranslate nohighlight">\(x_{j}\)</span> increases 1 unit. Let <span class="math notranslate nohighlight">\(p_{0}\)</span>
+be the original probability and <span class="math notranslate nohighlight">\(p_{1}\)</span> be the updated probability,
+then</p>
+<div class="math notranslate nohighlight">
+\[
+\log\left(\frac{p_{1}}{1-p_{1}}\right)-\log\left(\frac{p_{0}}{1-p_{0}}\right)=\Delta\boldsymbol{x}_{i}^{\top}\boldsymbol{\beta}=\beta_{j}
+\]</div>
+<p>i.e.</p>
+<div class="math notranslate nohighlight">
+\[
+e^{\beta_{j}}=\frac{p_{1}/(1-p_{1})}{p_{0}/(1-p_{0})}
+\]</div>
+<p>The quantity <span class="math notranslate nohighlight">\(p_{1}/(1-p_{1})\)</span> is called an <strong>odds</strong>. And the
+ratio of two odds is called an <strong>odds ratio</strong>.</p>
+<p>Thus, the interpretation is: the odds multiplies by <span class="math notranslate nohighlight">\(e^{\beta_{j}}\)</span>
+per unit increase in <span class="math notranslate nohighlight">\(x_{j}\)</span>.</p>
+</div>
+</div>
+<div class="section" id="estimation">
+<h2>Estimation<a class="headerlink" href="#estimation" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="score-equations">
+<h3>Score Equations<a class="headerlink" href="#score-equations" title="Permalink to this headline">¶</a></h3>
+<p>Recall the general score equations are</p>
+<div class="math notranslate nohighlight">
+\[
+\sum_{i=1}^{N}\frac{\left(y_{i}-\mu_{i}\right)x_{ij}}{\operatorname{Var}\left(Y_{i}\right)}\frac{\partial\mu_{i}}{\partial\eta_{i}}=0,\quad j=1,2,\dots,p
+\]</div>
+<p>Now in binary GLM, <span class="math notranslate nohighlight">\(Y_{i}\sim\frac{1}{n_{i}}\operatorname{Bin} ({n_{i}},{\pi_{i}})\)</span></p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\operatorname{Var} (Y_{i})=\pi_{i}\left(1-\pi_{i}\right)/n_{i}\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\operatorname{E}(Y_i)=\pi_{i}=\mu_{i}=F(\eta_{i})\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\frac{\partial\mu_{i}}{\partial\eta_{i}}=\frac{\partial F(\eta_{i})}{\partial\eta_{i}}=f(\eta_{i})\)</span></p></li>
+</ul>
+<p>The equations become</p>
+<div class="math notranslate nohighlight">
+\[
+{\sum_{i=1}^{N}\frac{n_{i}\left(y_{i}-\pi_{i}\right)x_{ij}}{\pi_{i}\left(1-\pi_{i}\right)}f\left(\eta_{i}\right)=0,\quad j=1,2,\ldots,p}
+\]</div>
+<p>If we use canonical link, then</p>
+<div class="math notranslate nohighlight">
+\[
+{F(z)=\frac{e^{z}}{1+e^{z}},\quad f(z)=\frac{e^{z}}{\left(1+e^{z}\right)^{2}}=F(z)[1-F(z)]}
+\]</div>
+<p>In addition, we have <span class="math notranslate nohighlight">\(\pi_{i}=F(\eta_i)\)</span>. Hence, <span class="math notranslate nohighlight">\(f(\eta_i) = \pi_i (1-\pi_i)\)</span>, and the equations simplify to</p>
+<div class="math notranslate nohighlight">
+\[
+{\sum_{i=1}^{N}n_{i}\left(y_{i}-\pi_{i}\right)x_{ij}=0,\quad j=1,\ldots,p}
+\]</div>
+<p>which is</p>
+<div class="math notranslate nohighlight">
+\[
+\sum_{i=1}^{N}n_{i}y_{i}x_{ij}=\sum_{i=1}^{N}n_{i}\pi_{i}x_{ij}
+\]</div>
+<p>That is, the score equations equate the sufficient statistics to their
+expected values.</p>
+</div>
+<div class="section" id="covariance-of-mle">
+<h3>Covariance of MLE<a class="headerlink" href="#covariance-of-mle" title="Permalink to this headline">¶</a></h3>
+<p>Applying the general formula,</p>
+<div class="math notranslate nohighlight">
+\[
+\text{Var}(\hat{\boldsymbol{\beta}})=\left[\boldsymbol{X}^{\top} \boldsymbol{W} \boldsymbol{X} \right]^{-1}=\left[\boldsymbol{X}^{\top}\boldsymbol{V} \boldsymbol{X} \right]^{-1}=\left[\boldsymbol{X}^{\top}\text{diag}(n_{i}\pi_{i}(1-\pi_{i})) \boldsymbol{X} \right]^{-1}
+\]</div>
+<p>To estimate it, plug in <span class="math notranslate nohighlight">\(\hat{\pi}_{i}\)</span>.</p>
+</div>
+<div class="section" id="computation">
+<h3>Computation<a class="headerlink" href="#computation" title="Permalink to this headline">¶</a></h3>
+<p>For logistic regression, Newton’s method = Fisher scoring = IRLS.
+(Section 5.4.1)</p>
+<p>Note that some or all ML estimates may be infinite or may not even exist. See <a class="reference internal" href="#logistic-infinite"><span class="std std-ref">infinite parameter estimate</span></a></p>
+</div>
+</div>
+<div class="section" id="hypothesis-testing">
+<h2>Hypothesis Testing<a class="headerlink" href="#hypothesis-testing" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="wald-test-disadvantages">
+<h3>Wald Test Disadvantages<a class="headerlink" href="#wald-test-disadvantages" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>First, its results depend on the scale for parameterization. Logit-scale
+statistic is too conservative and the proportion-scale statistic is
+too liberal.</p></li>
+<li><p>Second, when a true probability in a binary regression model is very
+large, the Wald test is less powerful than the other methods and can
+show aberrant behavior, e.g. smaller p-value for stronger evidence.</p></li>
+</ul>
+<p>Better use likelihood ratio test or score test.</p>
+</div>
+<div class="section" id="deviance">
+<h3>Deviance<a class="headerlink" href="#deviance" title="Permalink to this headline">¶</a></h3>
+<p>Note again that the goodness-of-fit test for ungrouped data is invalid,
+since the saturated model for ungrouped data requires <span class="math notranslate nohighlight">\(p=n\)</span> but
+the distribution of test statistic is derived when <span class="math notranslate nohighlight">\(p\)</span> is fixed and
+<span class="math notranslate nohighlight">\(n\rightarrow\infty\)</span>.</p>
+<p>The deviance comparing a fit <span class="math notranslate nohighlight">\(\hat{\boldsymbol{\pi}}\)</span> v.s. the saturated
+model is</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+D(\boldsymbol{y},\hat{\boldsymbol{\pi}})
+&amp; = - 2\left[\ell(\hat{\boldsymbol{\mu}}\vert\boldsymbol{y})-\ell(\tilde{\boldsymbol{\mu}}\vert\boldsymbol{y})\right] \\
+&amp;= -2\log\left\{ \left[\prod_{i=1}^{N}\hat{\pi}_{i}^{n_iy_i}\left(1-\hat{\pi}_{i}\right)^{n_{i}-n_{i}y_{i}}\right]/\left[\prod_{i=1}^{N}y_{i}^{n_{i}y_{i}}\left(1-y_{i}\right)^{n_{i}-n_{i}y_{i}}\right]\right\} \\
+&amp;=2\sum_{i}n_{i}y_{i}\log\frac{n_{i}y_{i}}{n_{i}\hat{\pi}_{i}}+2\sum_{i}\left(n_{i}-n_{i}y_{i}\right)\log\frac{n_{i}-n_{i}y_{i}}{n_{i}-n_{i}\hat{\pi}_{i}}
+\end{aligned}\end{split}\]</div>
+<p>Thus, the deviance is a sum over the <span class="math notranslate nohighlight">\(2N\)</span> success and failure totals
+at the <span class="math notranslate nohighlight">\(N\)</span> settings, which satisfies the general form</p>
+<div class="math notranslate nohighlight">
+\[
+{D(\boldsymbol{y},\hat{\boldsymbol{\mu}})=2\sum}\text{observed}{\times\log\left(\frac{\text{ observed }}{\text{fitted }}\right)}
+\]</div>
+<div class="note admonition">
+<p class="admonition-title"> Note</p>
+<ul class="simple">
+<li><p>The words <em>observed</em> and <em>fitted</em> here means counts, not proportion.</p></li>
+<li><p>For grouped data, the saturated model has a parameter at each <span class="math notranslate nohighlight">\(\boldsymbol{x}_i\)</span> setting for the explanatory variables. For ungrouped data, by contrast, it has a parameter for each subject <span class="math notranslate nohighlight">\(i\)</span>.</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="pearson-statistic">
+<h3>Pearson Statistic<a class="headerlink" href="#pearson-statistic" title="Permalink to this headline">¶</a></h3>
+<p>It is also the sum over <span class="math notranslate nohighlight">\(2N\)</span> cells of successes and failures.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+{\begin{aligned}X^{2} &amp; =\sum_{i=1}^{N}\frac{\left(n_{i}y_{i}-n_{i}\hat{\pi}_{i}\right)^{2}}{n_{i}\hat{\pi}_{i}}+\sum_{i=1}^{N}\frac{\left[\left(n_{i}-n_{i}y_{i}\right)-\left(n_{i}-n_{i}\hat{\pi}_{i}\right)\right]^{2}}{n_{i}\left(1-\hat{\pi}_{i}\right)}\\
+ &amp; =\sum_{i=1}^{N}\frac{\left(n_{i}y_{i}-n_{i}\hat{\pi}_{i}\right)^{2}}{n_{i}\hat{\pi}_{i}\left(1-\hat{\pi}_{i}\right)}\\
+ &amp; =\sum_{i=1}^{N}\frac{\left(y_{i}-\hat{\pi}_{i}\right)^{2}}{\hat{\pi}_{i}\left(1-\hat{\pi}_{i}\right)/n_{i}}
+\end{aligned}
+}
+\end{split}\]</div>
+<p>It satisfies the general form</p>
+<div class="math notranslate nohighlight">
+\[
+X^{2}=\sum\frac{(\text{ observed }-\text{ fitted })^{2}}{\text{ fitted }}
+\]</div>
+<div class="note admonition">
+<p class="admonition-title"> Note</p>
+<ul class="simple">
+<li><p>The words <em>observed</em> and <em>fitted</em> here means counts <span class="math notranslate nohighlight">\(n_{i}y_{i}\)</span>, not proportion <span class="math notranslate nohighlight">\(y_{i}\)</span>. If you substitute observed value of <span class="math notranslate nohighlight">\(y_{i}\)</span> and fitted value <span class="math notranslate nohighlight">\(\hat{y}_{i}\)</span>, like Poisson GLM, then you are wrong. However, in the last equality satisfying the form <span class="math notranslate nohighlight">\(\sum\frac{(y_{i}-\mu_{i})^{2}}{v(\mu_{i})}\)</span>, <span class="math notranslate nohighlight">\(y_{i}\)</span> is proportion, not counts. So we see the notation <span class="math notranslate nohighlight">\(Y_{i}\sim\frac{1}{n_{i}}\operatorname{Bin} ({n_{i}},{\pi_{i}})\)</span> is very disgusting.</p></li>
+<li><p>Though the form <span class="math notranslate nohighlight">\(\sum\frac{(\text{ observed }-\text{ fitted })^{2}}{\text{ fitted }}\)</span> is very succinct, the support of the summation is not specified. One may think the support is <span class="math notranslate nohighlight">\(1, 2, \ldots, N\)</span>, but here the summation is over <span class="math notranslate nohighlight">\(2N\)</span> cells of successes and failures. It will be more easy to understand
+this if we regard binomial distribution as a multinomial distribution
+with <span class="math notranslate nohighlight">\(c=2\)</span>.</p></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="section" id="infinite-parameter-estimate">
+<span id="logistic-infinite"></span><h2>Infinite Parameter Estimate<a class="headerlink" href="#infinite-parameter-estimate" title="Permalink to this headline">¶</a></h2>
+<p>One may sometimes see this warning message using R to solve the logistic
+regression:</p>
+<div class="math notranslate nohighlight">
+\[
+\texttt{Warning message: glm.fit: fitted probabilities numerically 0 or 1 occurred}
+\]</div>
+<p>You may see very large estimates of <span class="math notranslate nohighlight">\(\boldsymbol{\beta}\)</span>. What happened?</p>
+<p>Suppose the data is ungrouped, where <span class="math notranslate nohighlight">\(y_{i}=0\)</span> or <span class="math notranslate nohighlight">\(1\)</span>.</p>
+<div class="section" id="complete-separation-perfect-discrimination">
+<h3>Complete Separation / Perfect Discrimination<a class="headerlink" href="#complete-separation-perfect-discrimination" title="Permalink to this headline">¶</a></h3>
+<p>Suppose there exists <span class="math notranslate nohighlight">\(\boldsymbol{\beta}_{s}\)</span> such that if <span class="math notranslate nohighlight">\(\boldsymbol{x}_{i}^{\top}\boldsymbol{\beta}_{s}&gt;0\)</span> then <span class="math notranslate nohighlight">\(y_{i}=1\)</span> otherwise <span class="math notranslate nohighlight">\(y_{i}=0\)</span>, i.e. a hyperplane perfectly separate two types of points.</p>
+<p>If we let <span class="math notranslate nohighlight">\(\boldsymbol{\beta}=k\boldsymbol{\beta}_{s}\)</span>, as <span class="math notranslate nohighlight">\(k\rightarrow\infty\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\pi_{i}=\frac{1}{1+e^{-\boldsymbol{x}_{i}^{\top}\boldsymbol{\beta}}}\rightarrow\begin{cases}
+1 &amp; \boldsymbol{x}_{i}^{\top}\boldsymbol{\beta}_{s}&gt;0, \text{i.e.}, y_i = 1 \\
+0 &amp; \boldsymbol{x}_{i}^{\top}\boldsymbol{\beta}_{s}&lt;0, \text{i.e.}, y_i = 0
+\end{cases}
+\end{split}\]</div>
+<p>Substituting this <span class="math notranslate nohighlight">\(\pi_{i}\)</span> into the score function gives</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{\partial\ell}{\partial\beta_{j}}=\sum_{i}(y_{i}-\pi_{i})x_{ij}\rightarrow 0\text{ for all }j
+\]</div>
+<p>which means the infinite estimate <span class="math notranslate nohighlight">\(\boldsymbol{\beta}=k\boldsymbol{\beta}_{s}\rightarrow\infty\)</span> is a solution to the score function.</p>
+<p>Indications include</p>
+<ul class="simple">
+<li><p>The reported log-likelihood value is 0 to any decimal places</p></li>
+<li><p>standard errors are unnaturally large.</p></li>
+</ul>
+</div>
+<div class="section" id="quasi-complete-separation">
+<h3>Quasi-complete Separation<a class="headerlink" href="#quasi-complete-separation" title="Permalink to this headline">¶</a></h3>
+<p>Suppose there exists <span class="math notranslate nohighlight">\(\boldsymbol{\beta}_{s}\)</span> such that</p>
+<ul class="simple">
+<li><p>if <span class="math notranslate nohighlight">\(\boldsymbol{x}_{i}^{\top}\boldsymbol{\beta}_{s}&gt;0\)</span> then <span class="math notranslate nohighlight">\(y_{i}=1\)</span></p></li>
+<li><p>if <span class="math notranslate nohighlight">\(\boldsymbol{x}_{i}^{\top}\boldsymbol{\beta}_{s}&lt;0\)</span> then <span class="math notranslate nohighlight">\(y_{i}=0\)</span></p></li>
+<li><p>if <span class="math notranslate nohighlight">\(\boldsymbol{x}_{i}^{\top}\boldsymbol{\beta}_{s}=0\)</span> then <span class="math notranslate nohighlight">\(y_{i}=0\)</span>
+or <span class="math notranslate nohighlight">\(1\)</span></p></li>
+</ul>
+<p>i.e. we allow both types of data points lie on the separation hyperplane.
+Then at least one estimate is infinite.</p>
+<p>Let <span class="math notranslate nohighlight">\(\boldsymbol{\beta}=k\boldsymbol{\beta}_{s}+\left(\begin{array}{c}
+\beta_{0}\\
+\boldsymbol{0}
+\end{array}\right)\)</span>, where <span class="math notranslate nohighlight">\(\beta_{0}\)</span> is a scalar added to the intercept. Then as <span class="math notranslate nohighlight">\(k\rightarrow\infty\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[\boldsymbol{x}_{i}^{\top}\boldsymbol{\beta}=\boldsymbol{x}_{i}^{\top}(k\boldsymbol{\beta}_{s})+\beta_{0}\rightarrow\infty\]</div>
+<p>for <span class="math notranslate nohighlight">\(\boldsymbol{x}_{i}^{\top}\boldsymbol{\beta}_{s}\ne 0\)</span>. Hence</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+{\pi_{i}=\frac{1}{1+e^{-\boldsymbol{x}_{i}^{\top}\boldsymbol{\beta}}}\rightarrow\left\{ \begin{array}{ll}
+1 &amp; \text{ if }\boldsymbol{x}_{i}^{\top}\boldsymbol{\beta}_{s}&gt;0\\
+0 &amp; \text{ if }\boldsymbol{x}_{i}^{\top}\boldsymbol{\beta}_{s}&lt;0\\
+\frac{e^{\beta_{0}}}{1+e^{\beta_{0}}} &amp; \text{ if }\boldsymbol{x}_{i}^{\top}\boldsymbol{\beta}_{s}=0
+\end{array}\right.}
+\end{split}\]</div>
+<p>The score function for <span class="math notranslate nohighlight">\(\beta_{j}\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{\partial\ell}{\partial\beta_{j}}=\sum_{i}(y_{i}-\pi_{i})x_{ij}\rightarrow\sum_{i\vert\boldsymbol{x}_{i}^{\top}\boldsymbol{\beta}_{s}=0}\left(y_{i}-\frac{e^{\beta_{0}}}{1+e^{\beta_{0}}}\right)x_{ij}
+\]</div>
+<p>Equating it to 0 gives</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{\sum_{i\vert\boldsymbol{x}_{i}^{\top}\boldsymbol{\beta}_{s}=0}y_{i}x_{ij}}{\sum_{i\vert\boldsymbol{x}_{i}^{\top}\boldsymbol{\beta}_{s}=0}x_{ij}}=\frac{e^{\beta_{0}}}{1+e^{\beta_{0}}}
+\]</div>
+<p>so we can solve for <span class="math notranslate nohighlight">\(\beta_{0}\)</span>.</p>
+<p>This means that, <span class="math notranslate nohighlight">\(\beta_{j}\rightarrow\infty\)</span> is a solution to the
+<span class="math notranslate nohighlight">\(j\)</span>-th score equation. How about other score equations?</p>
+<p>Indications include</p>
+<ul class="simple">
+<li><p>The reported log-likelihood value is less than 0</p></li>
+<li><p>standard errors are unnaturally large.</p></li>
+</ul>
+</div>
+<div class="section" id="remedy">
+<h3>Remedy<a class="headerlink" href="#remedy" title="Permalink to this headline">¶</a></h3>
+<p>Inference such as likelihood ratio test, confidence interval are possible.
+With quasi-complete separation, some parameter estimates and SE values
+may be unaffected, and even Wald inference methods are available with
+them.</p>
+<p>To make estimtes finite, approches include smoothing the data, and
+maximizes a penalized likelihood function.</p>
+</div>
+</div>
+<div class="section" id="application-case-control-study">
+<h2>Application: Case-Control Study<a class="headerlink" href="#application-case-control-study" title="Permalink to this headline">¶</a></h2>
+<p>In some study, researchers want to find the effect of <span class="math notranslate nohighlight">\(X\)</span> on <span class="math notranslate nohighlight">\(Y\)</span>.
+Say, <span class="math notranslate nohighlight">\(Y\)</span> is lung cancer and <span class="math notranslate nohighlight">\(X\)</span> is smoking. There are two kinds
+of study design</p>
+<ul class="simple">
+<li><p><strong>Prospective</strong> design: randomized experiment. Randomly select smokers
+and non-smokers from the population and observe whether they will
+develop cancer in the future.</p>
+<ul>
+<li><p>We can compare <span class="math notranslate nohighlight">\({\mathbb{E}(Y=1|X=1)}\text{ with }{\mathbb{E}(Y=1|X=0)}\)</span></p></li>
+<li><p>Cons: takes time; lung cancer is a rare disease, may observe very
+few cancer</p></li>
+</ul>
+</li>
+<li><p>Case-control study (<strong>retrospective</strong>): We randomly select some samples
+from patients who develop cancer and some samples from healthy controls.
+Then, we check whether the person has been a smoker or not</p>
+<ul>
+<li><p>Now we can only compare <span class="math notranslate nohighlight">\({\mathbb{E}(X=1|Y=1)}\)</span> with <span class="math notranslate nohighlight">\({\mathbb{E}(X=1|Y=0)}\)</span></p></li>
+<li><p>The study takes a shorter time, and we can obtain enough cancer cases</p></li>
+</ul>
+</li>
+</ul>
+<p>Can we do case-control study to estimate some quantities in prospective
+study? Note that from the formula of conditional probability, we have</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+{\begin{aligned}\mathrm{OR} &amp; =\frac{\mathbb{P}(Y=1|X=1)/\mathbb{P}(Y=0|X=1)}{\mathbb{P}(Y=1|X=0)/\mathbb{P}(Y=0|X=0)}\\
+ &amp; =\frac{\mathbb{P}(X=1|Y=1)/\mathbb{P}(X=0|Y=1)}{\mathbb{P}(X=1|Y=0)/\mathbb{P}(X=0|Y=0)}
+\end{aligned}
+}
+\end{split}\]</div>
+<p>Even if we include other covariates, this also holds</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+{OR\vert_{\tilde{X}=x}} &amp; =\frac{\mathbb{P}(Y=1|X=1,\tilde{X}=x)/\mathbb{P}(Y=0|X=1,\tilde{X}=x)}{\mathbb{P}(Y=1|X=0,\tilde{X}=x)/\mathbb{P}(Y=0|X=0,\tilde{X}=x)}\\
+ &amp; =\frac{\mathbb{P}(X=1|Y=1,\tilde{X}=x)/\mathbb{P}(X=0|Y=1,\tilde{X}=x)}{\mathbb{P}(X=1|Y=0,\tilde{X}=x)/\mathbb{P}(X=0|Y=0,\tilde{X}=x)}\\
+ &amp; =e^{\beta_{X}}
+\end{aligned}
+\end{split}\]</div>
+<p>Thus, building the logistic regression using case-control study samples
+is the <strong>same</strong> as building the model using prospective samples.</p>
+<div class="warning admonition">
+<p class="admonition-title"> Warning</p>
+<p>The above reasoning only says estimating the odds ratio is equivalent
+in two kinds of study. It does not say estimating other quantities
+is also equivalent, say probability.</p>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./31-regression"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        </div>
+    </div>
+    
+    
+    <div class='prev-next-bottom'>
+        
+    <a class='left-prev' id="prev-link" href="21-generalized-linear-models.html" title="previous page">Generalized Linear Models</a>
+    <a class='right-next' id="next-link" href="23-multinomial-logitsitc.html" title="next page">Multinomial Logistic Regression</a>
+
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By Dennis Zheng<br/>
+        
+            &copy; Copyright 2020.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+
+    
+  <script src="../_static/js/index.d3f166471bb80abb5163.js"></script>
+
+
+    
+  </body>
+</html>

@@ -1,0 +1,1471 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Generalized Linear Models &#8212; Data Science Handbook</title>
+    
+  <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+  <link rel="stylesheet"
+    href="../_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="../_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinx-book-theme.40e2e510f6b7d1648584402491bb10fe.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/style.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.d3f166471bb80abb5163.js">
+
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
+    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Logistic Regression" href="22-logistic-regression.html" />
+    <link rel="prev" title="Linear Regression - Extension" href="13-lm-extension.html" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+
+
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+<a class="navbar-brand text-wrap" href="../index.html">
+  
+  
+  <h1 class="site-logo" id="site-title">Data Science Handbook</h1>
+  
+</a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form>
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+    <ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../index.html">
+   Data Science Handbook
+  </a>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Foundations
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../11-math/00-math.html">
+   Math
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/11-combinatorics.html">
+     Combinatorics
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/12-derangement.html">
+     Derangement
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/21-linear-algebra.html">
+     Linear Algebra
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/51-optimization.html">
+     Optimization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/61-graphs.html">
+     Graphs
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/90-puzzles.html">
+     Puzzles
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../12-probabilities/00-probabilities.html">
+   Probabilities
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/11-expectation-and-variance.html">
+     Expectation and Variance
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/13-correlation-and-dependence.html">
+     Correlation and Dependence
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/31-bayesian-theorem.html">
+     Bayesian’s Theorem
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/51-markov-chain.html">
+     Markov Chain
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/71-sampling.html">
+     Sampling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/90-multivariate-notations.html">
+     Multivariate Notations
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/91-large-sample-theory.html">
+     Large Sample Theory
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../13-statistics/00-statistics.html">
+   Statistics
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/11-sample-survey.html">
+     Sample Survey
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/13-randomized-trial.html">
+     Causality and Randomized Trial
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/21-hypothesis-testing.html">
+     Hypothesis Testing
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/25-two-sample-tests.html">
+     Two Sample Mean Tests
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/33-confusion-matrix.html">
+     Confusion Matrix
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/41-maximum-likelihood-estimation.html">
+     Maximum Likelihood Estimator
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/43-estimators-evaluation.html">
+     Estimators Evaluation
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../14-python/00-python.html">
+   Python
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../14-python/11-programming-tools.html">
+     Programmer tools
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../14-python/12-syntax.html">
+     Syntax
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../14-python/13-data-structure.html">
+     Data Structures
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../14-python/15-functional-programming.html">
+     Functional Programming
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../17-sql/00-sql.html">
+   SQL
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../17-sql/11-database.html">
+     Database
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../17-sql/12-relational-structure.html">
+     Relational Structure
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../17-sql/31-data-query.html">
+     Data Query
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../17-sql/33-data-manipulation.html">
+     Data Manipulation
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../19-miscellaneous/00-miscellaneous.html">
+   Miscellaneous
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../19-miscellaneous/11-latex.html">
+     LaTeX
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../19-miscellaneous/13-myst.html">
+     MyST Markdown
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Algorithms
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../20-algorithms-basics/00-algorithms-basics.html">
+   Algorithms Basics
+  </a>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../21-greedy-algorithms/00-greedy-algorithms.html">
+   Greedy Algorithms
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../21-greedy-algorithms/11-interval-scheduling.html">
+     Interval Scheduling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../21-greedy-algorithms/31-huffman-coding.html">
+     Huffman Coding
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../23-dynamic-programming/00-dynamic-programming.html">
+   Dynamic Programming
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/11-weighted-interval-scheduling.html">
+     Weighted Interval Scheduling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/13-longest-common-subsequence.html">
+     Longest Common Subsequence
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/15-longest-increasing-subsequence.html">
+     Longest Increasing Subsequence
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/17-largest-sum-subsequence.html">
+     Largest Sum Subsequence
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/31-knapsack.html">
+     Minimum Knapsack
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/51-chain-matrix-multiplication.html">
+     Chain Matrix Multiplication
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../25-graph-related/00-graph-related.html">
+   Graph Related
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/13-shortest-path.html">
+     Shortest Path
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/21-minimum-spanning-tree.html">
+     Minimum Spanning Tree
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/31-maximum-flow.html">
+     Maximum Flow
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/32-matching.html">
+     Matching
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/42-maximum-independent-set.html">
+     Maximum Independent Set in Trees
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Machine Learning
+ </span>
+</p>
+<ul class="current nav sidenav_l1">
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../30-ml-basics/00-ml-basics.html">
+   Machine Learning Basics
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../30-ml-basics/02-taxonomy.html">
+     Taxonomy
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../30-ml-basics/03-information-theory.html">
+     Information Theory
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../30-ml-basics/05-kernels.html">
+     Kernels
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../30-ml-basics/11-missing-values.html">
+     Missing Values
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 current active collapsible-parent">
+  <a class="reference internal" href="00-regression.html">
+   Regression
+  </a>
+  <ul class="current collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="11-lm-estimation.html">
+     Linear Regression - Estimation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="12-lm-inference.html">
+     Linear Regression - Inference
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="13-lm-extension.html">
+     Linear Regression - Extension
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     Generalized Linear Models
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="22-logistic-regression.html">
+     Logistic Regression
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="23-multinomial-logitsitc.html">
+     Multinomial Logistic Regression
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="24-ordinal-logistic.html">
+     Ordinal Logistic Regression
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="25-poisson-regression.html">
+     Poisson Regression
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../32-classification/00-classification.html">
+   Classification
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../32-classification/11-support-vector-machine.html">
+     Support Vector Machine
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../32-classification/21-decision-tree.html">
+     Decision Tree
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../33-dimensionality-reduction/00-dimensionality-reduction.html">
+   Dimensionality Reduction
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/11-principal-component-analysis.html">
+     Principal Component Analysis
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/13-canonical-correlation-analysis.html">
+     Canonical Corerlation Analysis
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/21-multidimensional-scaling.html">
+     Multidimensional Scaling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/23-graph-based-spectral-methods.html">
+     Graph-based Spectral Methods
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/25-t-SNE.html">
+     SNE and
+     <span class="math notranslate nohighlight">
+      \(t\)
+     </span>
+     -SNE
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/31-kernel-pca.html">
+     Kernel PCA
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/32-kernel-cca.html">
+     Kernel CCA
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../34-clustering/00-clustering.html">
+   Clustering
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../34-clustering/11-k-means.html">
+     <span class="math notranslate nohighlight">
+      \(k\)
+     </span>
+     -means clustering
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../34-clustering/13-agglomerative-methods.html">
+     Agglomerative Methods
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../34-clustering/31-spectral-clustering.html">
+     Spectral Clustering
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../34-clustering/41-gaussian-mixtures.html">
+     Gaussian Mixtures
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../35-graphical-models/00-graphical-models.html">
+   Graphical Models
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../35-graphical-models/11-hidden-markov-models.html">
+     Hidden Markov Models
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../35-graphical-models/31-topic-models.html">
+     Topic Models
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../35-graphical-models/33-language-models.html">
+     Language Models
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../37-neural-networks/00-neural-networks.html">
+   Neural Networks
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/01-stochastic-gradient-descent.html">
+     Stochastic Gradient Descent
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/03-trainability.html">
+     Trainability
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/05-regularization.html">
+     Regularization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/11-autoencoders.html">
+     Autoencoders
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/13-variational-autoencoders.html">
+     Variational Autoencoders
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/31-sequential-models.html">
+     Sequential Models
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/41-GAN.html">
+     Generative Adversarial Networks
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../38-ml-for-graph-data/00-ml-for-graph-data.html">
+   Machine Learning for Graph Data
+  </a>
+ </li>
+</ul>
+
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="row topbar fixed-top container-xl">
+    <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show">
+    </div>
+    <div class="col pl-2 topbar-main">
+        
+        <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+            data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+            aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+            title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+            <i class="fas fa-bars"></i>
+            <i class="fas fa-arrow-left"></i>
+            <i class="fas fa-arrow-up"></i>
+        </button>
+        
+        
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../_sources/31-regression/21-generalized-linear-models.md"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.md</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+        <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/dennissxz/data-science-handbook"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/dennissxz/data-science-handbook/issues/new?title=Issue%20on%20page%20%2F31-regression/21-generalized-linear-models.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+
+        <!-- Full screen (wrap in <a> to have style consistency -->
+        <a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+                data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+                title="Fullscreen mode"><i
+                    class="fas fa-expand"></i></button></a>
+
+        <!-- Launch buttons -->
+
+    </div>
+
+    <!-- Table of contents -->
+    <div class="d-none d-md-block col-md-2 bd-toc show">
+        
+        <div class="tocsection onthispage pt-5 pb-3">
+            <i class="fas fa-list"></i> Contents
+        </div>
+        <nav id="bd-toc-nav">
+            <ul class="nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#from-lm-to-glm">
+   From LM to GLM
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#one-parameter-exponential-family">
+     One-parameter Exponential Family
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#definition">
+       Definition
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#moments-relations">
+       Moments Relations
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#likelihood">
+       Likelihood
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#limitation-of-linear-models">
+     Limitation of Linear Models
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#model-form">
+     Model Form
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#estimation">
+   Estimation
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#score-function">
+     Score Function
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#canonical-link">
+       Canonical Link
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#general-link">
+       General Link
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#computation">
+     Computation
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#inference">
+   Inference
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#asymptotic-distribution-of-mle">
+     Asymptotic Distribution of MLE
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#test-boldsymbol-beta-boldsymbol-beta-0">
+     Test
+     <span class="math notranslate nohighlight">
+      \(\boldsymbol{\beta} = \boldsymbol{\beta} _0\)
+     </span>
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#wald-test">
+       Wald Test
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#likelihood-ratio-test">
+       Likelihood Ratio Test
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#score-test">
+       Score Test
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#deviance">
+     Deviance
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#saturated-models">
+       Saturated Models
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#goodness-of-fit-by-deviance">
+       Goodness-of-fit by Deviance
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#compare-two-nested-models-by-deviance">
+       Compare Two Nested Models by Deviance
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#generalized-pearson-statistic">
+     Generalized Pearson Statistic
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#residuals">
+     Residuals
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#asymptotically-uncorrelated-with-hat-boldsymbol-mu">
+       Asymptotically Uncorrelated with
+       <span class="math notranslate nohighlight">
+        \(\hat{\boldsymbol{\mu} }\)
+       </span>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#pearson-residuals">
+       Pearson Residuals
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#deviance-residual">
+       Deviance Residual
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#standardized-residuals">
+       Standardized Residuals
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+        </nav>
+        
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="generalized-linear-models">
+<h1>Generalized Linear Models<a class="headerlink" href="#generalized-linear-models" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="from-lm-to-glm">
+<h2>From LM to GLM<a class="headerlink" href="#from-lm-to-glm" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="one-parameter-exponential-family">
+<h3>One-parameter Exponential Family<a class="headerlink" href="#one-parameter-exponential-family" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="definition">
+<h4>Definition<a class="headerlink" href="#definition" title="Permalink to this headline">¶</a></h4>
+<p>Consider a random variable <span class="math notranslate nohighlight">\(Y\)</span> with probability density function parameterized by <span class="math notranslate nohighlight">\(\theta \in \mathbb{R}\)</span>. If its PDF can be written in the form</p>
+<div class="math notranslate nohighlight">
+\[f(y;\theta) = e^{y\theta - b(\theta)} f_0 (y)\]</div>
+<p>where</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(b(\theta)\)</span> is some function of <span class="math notranslate nohighlight">\(\theta\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(f_0(y)\)</span> involves only <span class="math notranslate nohighlight">\(y\)</span>, no <span class="math notranslate nohighlight">\(\theta\)</span></p></li>
+</ul>
+<p>then we call there PDF from one-parameter exponential family, where “one” means <span class="math notranslate nohighlight">\(\theta \in \mathbb{R} ^1\)</span>.</p>
+<p>Some examples include</p>
+<ul class="simple">
+<li><p>Normal with known variance <span class="math notranslate nohighlight">\(\sigma^2\)</span></p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+  f(y)=\frac{1}{\sqrt{2\pi\sigma^{2}}}\exp(-\frac{1}{2\sigma^{2}}(y^{2}-2\mu y+\mu^{2}))=\underbrace{\frac{1}{\sqrt{2\pi\sigma^{2}}}\exp\left(-\frac{y^{2}}{2\sigma^{2}}\right)}_{\theta}{f_{0}(y)}\exp\left(y\underbrace{\frac{\mu}{\sigma^{2}}}_{\theta}-\frac{\mu^{2}}{2\sigma^{2}}\right)
+  \]</div>
+<ul class="simple">
+<li><p>Bernoulli</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+  P(y)=p^{y}(1-p)^{1-y}=\exp(y\underbrace{\ln\frac{p}{1-p}}_{\theta}+\ln(1-p))
+  \]</div>
+<ul class="simple">
+<li><p>Binomial</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+  P(y)=\left(\begin{array}{c}
+  n\\
+  y
+  \end{array}\right)p^{y}(1-p)^{n-y}=\left(\begin{array}{c}
+  n\\
+  y
+  \end{array}\right)\exp(y\underbrace{\ln\frac{p}{1-p}}_{\theta}+n\ln(1-p))
+  \end{split}\]</div>
+<ul class="simple">
+<li><p>Poisson</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+  P(y)=\frac{e^{-\mu}\mu^{y}}{y!}=\frac{1}{y!}\exp(y\underbrace{\ln\mu}_{\theta}-\mu)
+  \]</div>
+<p>Moreover, we call</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(y\)</span>: sufficient statistics</p></li>
+<li><p><span class="math notranslate nohighlight">\(b(\theta)\)</span>: normalizing or cumulant function</p></li>
+</ul>
+</div>
+<div class="section" id="moments-relations">
+<h4>Moments Relations<a class="headerlink" href="#moments-relations" title="Permalink to this headline">¶</a></h4>
+<p>Distributions in one-parameter exponential family has some nice properties</p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(\mu = \operatorname{E}\left( Y \right) = b ^\prime (\theta)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\operatorname{Var}\left( Y \right) = b ^{\prime\prime}  (\theta) = v(\mu)\)</span></p>
+<p>This variance-mean relation uniquely characterize a distribution class (normal/binomial//Poisson) from exponential family.</p>
+</li>
+<li><p><span class="math notranslate nohighlight">\(\frac{\partial \mu}{\partial \theta} = b ^{\prime\prime}  (\theta) = \operatorname{Var}\left( Y \right) &gt; 0\)</span>.</p></li>
+</ul>
+<div class="dropdown seealso admonition">
+<p class="admonition-title"> <em>Proof</em></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+1 &amp;= \int f(y; \theta) \boldsymbol{~d}y \\
+&amp;= e ^{-b(\theta)} \int e^{y\theta} f_0(y) \boldsymbol{~d} y\\
+\Rightarrow \quad e ^{b(\theta)}&amp;=  \int e^{y\theta} f_0(y) \boldsymbol{~d} y \\
+\end{aligned}\end{split}\]</div>
+<p>Taking derivative w.r.t. <span class="math notranslate nohighlight">\(\theta\)</span> on both sides, we have</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+b ^\prime (\theta) e ^{b(\theta)}
+&amp;=  \int y e^{y\theta} f_0(y) \boldsymbol{~d} y \\
+&amp;= e ^{b(\theta)} \int y e^{y\theta - b(\theta)} f_0(y) \boldsymbol{~d} y \\
+&amp;= e ^{b(\theta)} \int y f(y;\theta) \boldsymbol{~d} y \\
+&amp;= e ^{b(\theta)} \operatorname{E}\left( Y \right)\\
+\Rightarrow \quad b ^\prime (\theta) &amp;= \operatorname{E}\left( Y \right) \\
+\end{aligned}\end{split}\]</div>
+<p>With a similar approach we can find <span class="math notranslate nohighlight">\(b ^{\prime \prime }(\theta) = \operatorname{Var}\left( Y \right)\)</span></p>
+</div>
+</div>
+<div class="section" id="likelihood">
+<h4>Likelihood<a class="headerlink" href="#likelihood" title="Permalink to this headline">¶</a></h4>
+<p>Consider observations <span class="math notranslate nohighlight">\(y_1, y_2, \ldots, y_n\)</span>, each from a one-parameter exponential distribution parameterized by <span class="math notranslate nohighlight">\(\theta_i\)</span>. The log-likelihood of <span class="math notranslate nohighlight">\(\theta_1, \theta_2, \ldots \theta_n\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\ell(\theta)
+&amp;= \log \prod_{i=1}^n f(y_i ;\theta)\\
+&amp;= \sum_{i=1}^n \left\{ y_i \theta_i - b(\theta_i) + \ln f_0 (y_i) \right\}\\
+\end{aligned}\end{split}\]</div>
+</div>
+</div>
+<div class="section" id="limitation-of-linear-models">
+<h3>Limitation of Linear Models<a class="headerlink" href="#limitation-of-linear-models" title="Permalink to this headline">¶</a></h3>
+<p>Recall a linear model is</p>
+<div class="math notranslate nohighlight">
+\[Y_i = \boldsymbol{x} _i^\top \boldsymbol{\beta} + \varepsilon\]</div>
+<p>and the linear predictor <span class="math notranslate nohighlight">\(\boldsymbol{x}_i ^\top \boldsymbol{\beta}\)</span> aimes to predict the mean response</p>
+<div class="math notranslate nohighlight">
+\[\operatorname{E}\left( Y_i \right) = \boldsymbol{x}_i ^\top \boldsymbol{\beta}\]</div>
+<p>Clearly, the range of RHS is <span class="math notranslate nohighlight">\(\mathbb{R}\)</span>, while our LHS response may not be so. It can be binary, discrete non-negatives, or other form. Thus, we need more capable models to model these particular data types.</p>
+</div>
+<div class="section" id="model-form">
+<h3>Model Form<a class="headerlink" href="#model-form" title="Permalink to this headline">¶</a></h3>
+<p>A generalized linear model has the form</p>
+<div class="math notranslate nohighlight">
+\[
+g\left( \operatorname{E}\left( Y_{i} \right) \right) =\boldsymbol{x}_i ^\top \boldsymbol{\beta}
+\]</div>
+<p>where</p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(Y_{i}\)</span> is response, aka random component.</p>
+<p>We assume <span class="math notranslate nohighlight">\(Y_i \overset{  \text{iid}}{\sim} F\)</span> where <span class="math notranslate nohighlight">\(F\)</span> is some distribution, such as normal, binomial, poisson. Thus, we generalize the response <span class="math notranslate nohighlight">\(y_i\)</span> from continuous real values in ordinary linear models, to binary response, counts, categories etc. Usually <span class="math notranslate nohighlight">\(F\)</span> is from an exponential family.</p>
+</li>
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{x}_i ^\top \boldsymbol{\beta}\)</span> is a linear predictor, often denoted <span class="math notranslate nohighlight">\(\eta_i\)</span>.</p>
+<p>As in ordinary least squared models, <span class="math notranslate nohighlight">\(\boldsymbol{x}_{i}\)</span> can include interactions, non-linear transformations of the observed covariates and the constant term.</p>
+</li>
+<li><p><span class="math notranslate nohighlight">\(g(\cdot)\)</span> is a link function</p>
+<p>Unlike linear model which use a linear predictor <span class="math notranslate nohighlight">\(\boldsymbol{x}_i ^\top \boldsymbol{\beta}\)</span> to predict the mean response <span class="math notranslate nohighlight">\(\operatorname{E}\left( Y_i \right)\)</span>, GLM use the linear predictor to predict a function <span class="math notranslate nohighlight">\(g(\cdot)\)</span> of the mean response. The link function connects the linear predictor with the random components: <span class="math notranslate nohighlight">\(g(\mu_i) = \eta_i\)</span>.</p>
+</li>
+</ul>
+<p>There are many ways to choose the link function. Note that if <span class="math notranslate nohighlight">\(Y_i \sim f(y_i; \theta)\)</span> then <span class="math notranslate nohighlight">\(b ^\prime (\theta) = \operatorname{E}\left( Y \right) = \mu\)</span>, i.e. <span class="math notranslate nohighlight">\(\theta\)</span> can be rewritten as a function of <span class="math notranslate nohighlight">\(\mu\)</span>: <span class="math notranslate nohighlight">\(\theta = (b ^\prime ) ^{-1} (\mu)\)</span> (this form can usually be found in the PDF). If we choose this <span class="math notranslate nohighlight">\((b ^\prime ) ^{-1}\)</span> as the link function <span class="math notranslate nohighlight">\(g = (b ^\prime ) ^{-1}\)</span>, then it is called the <strong>canonical link function</strong>, and we will have <span class="math notranslate nohighlight">\(\theta_i = \boldsymbol{x}_i ^\top \boldsymbol{\beta}\)</span>.</p>
+<p>Some examples at a glance</p>
+<ul class="simple">
+<li><p>For linear models, <span class="math notranslate nohighlight">\(g(\mu)=\mu\)</span>, such that <span class="math notranslate nohighlight">\(\operatorname{E}\left( Y_i \right) = \boldsymbol{x} _i ^\top \boldsymbol{\beta}\)</span></p></li>
+<li><p>For logistics regression, <span class="math notranslate nohighlight">\(Y_i \in \operatorname{Ber}(p)\)</span> where <span class="math notranslate nohighlight">\(p=\mu\)</span>, then <span class="math notranslate nohighlight">\(\theta = \ln \frac{\mu}{1-\mu}\)</span>, hence <span class="math notranslate nohighlight">\(g(\mu) = \ln \frac{\mu}{1-\mu}\)</span>, and <span class="math notranslate nohighlight">\(\ln \frac{\boldsymbol{P}\left( Y_i=1\vert \boldsymbol{x} _i \right) }{\boldsymbol{P}\left( Y_i=0 \vert \boldsymbol{x} _i\right) } = \boldsymbol{x} _i^\top \boldsymbol{\beta}\)</span></p></li>
+<li><p>For poisson regression, <span class="math notranslate nohighlight">\(\theta = \ln(\mu)\)</span>, hence <span class="math notranslate nohighlight">\(g(\mu) = \ln \mu\)</span>, and <span class="math notranslate nohighlight">\(\ln \operatorname{E}\left( Y_i \right)  = \boldsymbol{x} _i^\top \boldsymbol{\beta}\)</span></p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="estimation">
+<h2>Estimation<a class="headerlink" href="#estimation" title="Permalink to this headline">¶</a></h2>
+<p>Usually, we estimate the parameters by maximum likelihood.</p>
+<p>First, we consider using the canonical link, such that <span class="math notranslate nohighlight">\(\theta_i = \boldsymbol{x}_i ^\top \boldsymbol{\beta}\)</span>.</p>
+<div class="section" id="score-function">
+<h3>Score Function<a class="headerlink" href="#score-function" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="canonical-link">
+<h4>Canonical Link<a class="headerlink" href="#canonical-link" title="Permalink to this headline">¶</a></h4>
+<p>As discussed above, the log-likelihood of parameter <span class="math notranslate nohighlight">\(\theta\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\ell(\theta_1, \theta_2, \ldots, \theta_n)
+&amp;= \log \prod_{i=1}^n f(y_i ;\theta_i)\\
+&amp;= \sum_{i=1}^n \left\{ y_i \theta_i - b(\theta_i) + \ln f_0 (y_i) \right\}\\
+\end{aligned}\end{split}\]</div>
+<p>Since <span class="math notranslate nohighlight">\(\theta = \boldsymbol{x}_i ^\top \boldsymbol{\beta}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{x} _i\)</span>’s are known, the log-likelihood of coefficients <span class="math notranslate nohighlight">\(\boldsymbol{\beta}\)</span> can be written in the same way by substituting <span class="math notranslate nohighlight">\(\theta_i = \boldsymbol{x}_i ^\top \boldsymbol{\beta}\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\ell(\boldsymbol{\beta}) = \sum_{i=1}^n \left\{ y_i \boldsymbol{x}_i ^\top \boldsymbol{\beta}  - b(\boldsymbol{x}_i ^\top \boldsymbol{\beta} ) \right\} + c\\\end{split}\]</div>
+<p>Taking derivative w.r.t. to <span class="math notranslate nohighlight">\(\beta_j\)</span> gives</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\frac{\partial \ell(\boldsymbol{\beta})}{\partial \beta_j}
+&amp;= \sum_{i=1}^n \left\{ y_i x_{ij}  - b ^\prime (\boldsymbol{x}_i ^\top \boldsymbol{\beta} ) x_{ij}  \right\} \\
+&amp;= \sum_{i=1}^n \left\{ y_i x_{ij}  - b ^\prime (\theta)   x_{ij}\right\} \\
+&amp;= \sum_{i=1}^n (y_i -\mu_i)x_{ij} \\
+\end{aligned}\end{split}\]</div>
+<p>In matrix, form, we have</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{\partial \ell(\boldsymbol{\beta})}{\partial \boldsymbol{\beta}} = \boldsymbol{X} ^\top (\boldsymbol{y} - \boldsymbol{\mu} )
+\]</div>
+<p>The score equation is, therefore,</p>
+<div class="math notranslate nohighlight">
+\[\boldsymbol{X}  ^\top (\boldsymbol{y} - \boldsymbol{\mu} ) = \boldsymbol{0}\]</div>
+<div class="note admonition">
+<p class="admonition-title"> Note</p>
+<ul>
+<li><p>Note that</p>
+<div class="math notranslate nohighlight">
+\[
+  \frac{\partial^{2}\ell(\boldsymbol{\beta})}{\partial\beta_{h}\partial\beta_{j}}=-\sum_{i}b^{\prime\prime}\left(\boldsymbol{x}_{i}^\top\boldsymbol{\beta}\right)x_{ih}x_{ij}=-\text{Var}(Y_{i})x_{ih}x_{ij}
+  \]</div>
+<p>So the Hessian is</p>
+<div class="math notranslate nohighlight">
+\[
+  \frac{\partial^{2}\ell(\boldsymbol{\beta})}{\partial\boldsymbol{\beta}\partial\boldsymbol{\beta}^{\top}}=-\boldsymbol{X} ^\top \boldsymbol{V} \boldsymbol{X} \preceq \boldsymbol{0} \quad \text{where }  \boldsymbol{V} =\text{diag}(\operatorname{Var}\left(Y_{i}\right))
+  \]</div>
+<p>with equality iff <span class="math notranslate nohighlight">\(X\)</span> has full rank.</p>
+<p>That is, the likelihood function <span class="math notranslate nohighlight">\(\ell(\boldsymbol{\beta})\)</span> is concave in <span class="math notranslate nohighlight">\(\boldsymbol{\beta}\)</span>.</p>
+</li>
+<li><p>There is no randomness in the Hessian matrix since it does not involve <span class="math notranslate nohighlight">\(y\)</span>. This holds for all exponential families</p></li>
+<li><p>For the log-likelihood, when <span class="math notranslate nohighlight">\(\boldsymbol{\beta}\)</span> is the parameter, we see the
+part involving both data and parameter is</p>
+<div class="math notranslate nohighlight">
+\[
+  \sum_{j}\left(\sum_{i}y_{i}x_{ij}\right)\beta_{j}
+  \]</div>
+<p>So the sufficient statistics for <span class="math notranslate nohighlight">\(\beta_{j}\)</span> is <span class="math notranslate nohighlight">\(\sum_{i}y_{i}x_{ij}=\boldsymbol{x}_{j}^\top\boldsymbol{y}\)</span>.</p>
+<p>The overall score equations <span class="math notranslate nohighlight">\(\boldsymbol{X} ^\top\boldsymbol{y}= \boldsymbol{X} ^\top\boldsymbol{\mu}\)</span> equate the sufficient statistics to their expected values.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="general-link">
+<h4>General Link<a class="headerlink" href="#general-link" title="Permalink to this headline">¶</a></h4>
+<div class="margin sidebar">
+<p class="sidebar-title"></p>
+<p>The likelihood \ell(\boldsymbol{\beta}) may not be concave if we use non-canonical link.</p>
+</div>
+<p>If we use general link, then the score function is</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{\partial\ell(\boldsymbol{\beta})}{\partial\boldsymbol{\beta}}=\boldsymbol{X} \boldsymbol{D} \boldsymbol{V} ^{-1}(\boldsymbol{y}-\boldsymbol{\mu})=0
+\]</div>
+<p>where</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\boldsymbol{D} &amp;=\operatorname{diag}\left(\frac{\partial\mu_{i}}{\partial\eta_{i}}\right) \\
+\boldsymbol{V} &amp;=\operatorname{diag}(\operatorname{Var}\left(Y_{i}\right)) \\
+\end{aligned}\end{split}\]</div>
+<div class="dropdown seealso admonition">
+<p class="admonition-title"> <em>Derivation</em></p>
+<p>By the chain rule, we have</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{\partial\ell_{i}}{\partial\beta_{j}}=\frac{\partial\ell_{i}}{\partial\theta_{i}}\frac{\partial\theta_{i}}{\partial\mu_{i}}\frac{\partial\mu_{i}}{\partial\eta_{i}}\frac{\partial\eta_{i}}{\partial\beta_{j}}
+\]</div>
+<p>Since</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align*}
+\frac{\partial\ell_{i}}{\partial\theta_{i}} &amp; =y_{i}-b^{\prime}\left(\theta_{i}\right)=y_{i}-\mu_{i}\\
+\frac{\partial\theta_{i}}{\partial\mu_{i}} &amp; =\frac{1}{b^{\prime\prime}\left(\theta_{i}\right)}=\frac{1}{\operatorname{Var}\left(Y_{i}\right)}\\
+\frac{\partial\eta_{i}}{\partial\beta_{j}} &amp; =x_{ij}
+\end{align*}
+\end{split}\]</div>
+<p>Then</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{\partial\ell_{i}}{\partial\beta_{j}}=\frac{\left(y_{i}-\mu_{i}\right)x_{ij}}{\operatorname{Var}\left(Y_{i}\right)}\frac{\partial\mu_{i}}{\partial\eta_{i}}
+\]</div>
+<p>where
+$<span class="math notranslate nohighlight">\(
+\frac{\partial\mu_{i}}{\partial\eta_{i}}{=\frac{\partial\mu_{i}}{\partial g\left(\mu_{i}\right)}=\frac{1}{g^{\prime}\left(\mu_{i}\right)}}
+\)</span>$</p>
+<p>Hence in matrix form, the score equations are</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{\partial\ell(\boldsymbol{\beta})}{\partial\beta_{j}}=\sum_{i}\frac{\partial\ell_{i}}{\partial\beta_{j}}=\sum_{i}\frac{\left(y_{i}-\mu_{i}\right)x_{ij}}{\operatorname{Var}\left(y_{i}\right)}\frac{\partial\mu_{i}}{\partial\eta_{i}}
+\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{\partial\ell(\boldsymbol{\beta})}{\partial\boldsymbol{\beta}}=\boldsymbol{X} \boldsymbol{D} \boldsymbol{V} ^{-1}(\boldsymbol{y}-\boldsymbol{\mu})=0
+\]</div>
+<p>where</p>
+<div class="math notranslate nohighlight">
+\[
+\boldsymbol{D} =\text{diag}\left(\frac{\partial\mu_{i}}{\partial\eta_{i}}\right)
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+\boldsymbol{V} =\text{diag}(\operatorname{Var}\left(Y_{i}\right))
+\]</div>
+<p>Note that if <span class="math notranslate nohighlight">\(g\)</span> is the canonical link then</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{\partial\mu_{i}}{\partial\eta_{i}}=\frac{\partial\mu_{i}}{\partial\theta_{i}}=b^{\prime\prime}(\theta_{i})=\operatorname{Var}\left(y_{i}\right)
+\]</div>
+<p>hence <span class="math notranslate nohighlight">\(\boldsymbol{D} =\boldsymbol{V}\)</span> and the score equations reduce to</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{\partial\ell(\boldsymbol{\beta})}{\partial\boldsymbol{\beta}}=X(\boldsymbol{y}-\boldsymbol{\mu})=0
+\]</div>
+</div>
+<div class="note admonition">
+<p class="admonition-title"> More on <span class="math notranslate nohighlight">\(\operatorname{Var}\left( Y_i \right)\)</span></p>
+<p>That is, the variance is a function of <span class="math notranslate nohighlight">\(\mu\)</span>. The relation <span class="math notranslate nohighlight">\(v(\cdot)\)</span> uniquely characterized an exponential family distribution. For instance <span class="math notranslate nohighlight">\(v(\mu_{i})=\mu\)</span> for Poisson and <span class="math notranslate nohighlight">\(v(\mu_{i})=\sigma^{2}\)</span> (constant) for the normal. If we do not assume <span class="math notranslate nohighlight">\(Y_{i}\)</span> is from the exponential families, can we specify our own mean-variance relation? We will see the answer in Quasi-Likelihood section.</p>
+</div>
+</div>
+</div>
+<div class="section" id="computation">
+<h3>Computation<a class="headerlink" href="#computation" title="Permalink to this headline">¶</a></h3>
+<p>There are several ways to solve the score equations for <span class="math notranslate nohighlight">\(\widehat{\boldsymbol{\beta}} _{ML}\)</span>: Newton’s Method, Fisher Scoring, Iterative Reweighted Least Squares.</p>
+</div>
+</div>
+<div class="section" id="inference">
+<h2>Inference<a class="headerlink" href="#inference" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="asymptotic-distribution-of-mle">
+<h3>Asymptotic Distribution of MLE<a class="headerlink" href="#asymptotic-distribution-of-mle" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="test-boldsymbol-beta-boldsymbol-beta-0">
+<h3>Test <span class="math notranslate nohighlight">\(\boldsymbol{\beta} = \boldsymbol{\beta} _0\)</span><a class="headerlink" href="#test-boldsymbol-beta-boldsymbol-beta-0" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="wald-test">
+<h4>Wald Test<a class="headerlink" href="#wald-test" title="Permalink to this headline">¶</a></h4>
+</div>
+<div class="section" id="likelihood-ratio-test">
+<h4>Likelihood Ratio Test<a class="headerlink" href="#likelihood-ratio-test" title="Permalink to this headline">¶</a></h4>
+</div>
+<div class="section" id="score-test">
+<h4>Score Test<a class="headerlink" href="#score-test" title="Permalink to this headline">¶</a></h4>
+</div>
+</div>
+<div class="section" id="deviance">
+<h3>Deviance<a class="headerlink" href="#deviance" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="saturated-models">
+<h4>Saturated Models<a class="headerlink" href="#saturated-models" title="Permalink to this headline">¶</a></h4>
+<p>First we define saturated models.</p>
+<dl class="simple myst">
+<dt>Definition (Saturated models)</dt><dd><p>For a particular GLM with three components specified, we want to
+fit means <span class="math notranslate nohighlight">\(\mu_{i}\)</span>. A saturated model fits <span class="math notranslate nohighlight">\(\mu_{i}\)</span> by the
+observation itself, i.e.,</p>
+<div class="math notranslate nohighlight">
+\[\tilde{\mu}_{i}=y_{i}\]</div>
+<p>which yields a perfect fit without parsimony. The number of parameter is
+<span class="math notranslate nohighlight">\(p=n\)</span>. It is often use as a baseline for comparison with other models.</p>
+</dd>
+</dl>
+<div class="note admonition">
+<p class="admonition-title"> Note</p>
+<p>In principle, if two observations <span class="math notranslate nohighlight">\(i_{1}\)</span> and <span class="math notranslate nohighlight">\(i_{2}\)</span> share the same
+covariates values <span class="math notranslate nohighlight">\(\boldsymbol{x}_{i_{1}}=\boldsymbol{x}_{i_{2}}\)</span> then their
+prediction value <span class="math notranslate nohighlight">\(\hat{y}_{i_{1}},\hat{y}_{i_{2}}\)</span> should be the
+same. But in the saturated model for GLM, we allow them to be different, i.e. <span class="math notranslate nohighlight">\(\hat{y}_{i_{1}} = y_{i_1},\hat{y}_{i_{2}} = y_{i_{2}}\)</span>.</p>
+</div>
+<p>Recall that <span class="math notranslate nohighlight">\(g(\mu_i) = \boldsymbol{x}_i ^\top \boldsymbol{\beta}\)</span>. If we write the log-likelihood in terms of <span class="math notranslate nohighlight">\(\boldsymbol{\mu}\)</span>, we
+get</p>
+<div class="math notranslate nohighlight">
+\[
+\ell(\boldsymbol{\beta}\vert\boldsymbol{y})=\ell(\boldsymbol{\mu}\vert\boldsymbol{y})
+\]</div>
+<p>In a saturated model, the value <span class="math notranslate nohighlight">\(\boldsymbol{\mu}\)</span> is estimated by data <span class="math notranslate nohighlight">\(\tilde{\boldsymbol{\mu} } = \boldsymbol{y}\)</span>. The likelihood for the saturated model is</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\ell(\tilde{\boldsymbol{\mu} } \vert\boldsymbol{y}) &amp; =\sum_{i}\ell(\tilde{\mu}_i \vert y_{i})\\
+ &amp; =\sum_{i}\left[y_{i}\tilde{\theta}_{i}-b(\tilde{\theta}_{i})+\log f_{0}(y_{i})\right]
+\end{aligned}\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\tilde{\theta}_{i}\)</span> is a function of <span class="math notranslate nohighlight">\(\tilde{\mu}_{i}\)</span>.</p>
+<p>The saturated model achieves the maximum achievable log-likelihood.
+So for any other fit <span class="math notranslate nohighlight">\(\hat{\boldsymbol{\mu}}\)</span>, we have</p>
+<div class="math notranslate nohighlight">
+\[
+\ell(\tilde{\boldsymbol{\mu} } \vert\boldsymbol{y})\ge\ell( \hat{\boldsymbol{\mu}}\vert\boldsymbol{y})
+\]</div>
+</div>
+<div class="section" id="goodness-of-fit-by-deviance">
+<h4>Goodness-of-fit by Deviance<a class="headerlink" href="#goodness-of-fit-by-deviance" title="Permalink to this headline">¶</a></h4>
+<p>As its name suggests, goodness-of-fit measures the goodness of fit
+of a chosen model. In the test, the null hypothesis is</p>
+<div class="math notranslate nohighlight">
+\[
+H_{0}:\text{ the chosen model truly holds}
+\]</div>
+<p>The alternative hypothesis is</p>
+<div class="math notranslate nohighlight">
+\[
+H_{1}:\text{ other models are better}
+\]</div>
+<p>Defined in this way, sometimes it’s called <strong>global alternatives</strong>.</p>
+<dl class="simple myst">
+<dt>Definition (Deviance)</dt><dd><p>We want to measure the difference between a chosen model with fit
+<span class="math notranslate nohighlight">\(\hat{\boldsymbol{\mu}}\)</span>, and the sacturated model with fit <span class="math notranslate nohighlight">\(\tilde{\boldsymbol{\mu}}=\boldsymbol{y}\)</span>.
+Deviance is a statistic defined as</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+  \begin{aligned}
+  D(\tilde{\boldsymbol{\mu}},\hat{\boldsymbol{\mu}}) &amp; =-2\left[\ell(\hat{\boldsymbol{\mu}}\vert\boldsymbol{y})-\ell(\tilde{\boldsymbol{\mu}}\vert\boldsymbol{y})\right]\\
+   &amp; =-2\sum_{i}\log\frac{f(y_{i}\vert\hat{\mu})}{f(y_{i}\vert\tilde{\mu}_{i})}\\
+   &amp; \sim\chi_{n-p}^2
+  \end{aligned}\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(p\)</span> is the number of parameters in the fit <span class="math notranslate nohighlight">\(\hat{\boldsymbol{\mu}}\)</span>.
+Note that in gerneral <span class="math notranslate nohighlight">\(D(\boldsymbol{\mu}_{1},\boldsymbol{\mu}_{2})\ne D(\boldsymbol{\mu}_{2},\boldsymbol{\mu}_{1})\)</span>.</p>
+</dd>
+</dl>
+<p>We can denote deviance by <span class="math notranslate nohighlight">\(G^{2}\)</span>. In this course, it has the form</p>
+<div class="math notranslate nohighlight">
+\[
+G^2 := {D(\boldsymbol{y},\hat{\boldsymbol{\mu}})={\color{red}2}\sum}\text{observed}{\times\log \left( \frac{\text{observed}}{\text{fitted}} \right)}
+\]</div>
+<p>Since the saturated model is the perfect fit, the <strong>larger</strong> the deviance
+<span class="math notranslate nohighlight">\(D(\boldsymbol{y},\hat{\boldsymbol{\mu}})\)</span>, the <strong>poor</strong> the fit <span class="math notranslate nohighlight">\(\hat{\boldsymbol{\mu}}\)</span>.</p>
+<p>To maximize log-likelihood <span class="math notranslate nohighlight">\(\ell(\hat{\boldsymbol{\beta}})\)</span> is equivalent to minimize deviance <span class="math notranslate nohighlight">\(D(\boldsymbol{y},\hat{\boldsymbol{\mu}})\)</span>.</p>
+<dl class="simple myst">
+<dt>Definition (Null deviance)</dt><dd><p>Null deviance is defined as</p>
+<div class="math notranslate nohighlight">
+\[
+  D(\boldsymbol{y},\bar{\boldsymbol{y}})=-2\left[\ell(\bar{\boldsymbol{y}}\vert\boldsymbol{y})-\ell(\boldsymbol{y}\vert\boldsymbol{y})\right]
+  \]</div>
+<p>That is, all mean estimates has the same value <span class="math notranslate nohighlight">\(\hat{\mu}_i = \bar{y}\)</span>.</p>
+</dd>
+<dt>Example (Deviance for Normal with <span class="math notranslate nohighlight">\(\sigma=1\)</span>)</dt><dd><p>The deviance for normal distribution is</p>
+<div class="math notranslate nohighlight">
+\[
+  D(\boldsymbol{\mu}_{1},\boldsymbol{\mu}_{2})=\sum_{i}(\mu_{1i}-\mu_{2i})^{2}
+  \]</div>
+<p>So for an OLS model, the deviance is</p>
+<div class="math notranslate nohighlight">
+\[
+  D(\boldsymbol{y}, \hat{\boldsymbol{\mu}})=\sum_{i}(y_{i}-\hat{\mu}_{i})^{2}=\sum_{i}(y_{i}-\hat{y})^{2}=RSS
+  \]</div>
+<p>Thus we see deviance can be interpreted as a <strong>generalization of sum of squared residuals</strong> in OLS.</p>
+<p>Moreover, the null deviance is</p>
+<div class="math notranslate nohighlight">
+\[
+  D(\boldsymbol{y},\bar{\boldsymbol{y} })=\sum_{i}(y_{i}-\bar{y}_{i})^{2}=TSS
+  \]</div>
+</dd>
+</dl>
+<p>As suggested by the example, we can define the generalized <span class="math notranslate nohighlight">\(R^{2}\)</span> in GLM as</p>
+<div class="math notranslate nohighlight">
+\[
+R^{2}=1-\frac{RSS}{TSS}=1-\frac{D(\boldsymbol{y},\hat{\boldsymbol{\mu}})}{D(\boldsymbol{y},\bar{\boldsymbol{y}})}
+\]</div>
+</div>
+<div class="section" id="compare-two-nested-models-by-deviance">
+<h4>Compare Two Nested Models by Deviance<a class="headerlink" href="#compare-two-nested-models-by-deviance" title="Permalink to this headline">¶</a></h4>
+<p>To compare two nested models <span class="math notranslate nohighlight">\(M_{\text{reduced} }:\boldsymbol{\beta}=\boldsymbol{\beta}_{\text{reduced} }\)</span>
+v.s. <span class="math notranslate nohighlight">\(M_{\text{full} }:\boldsymbol{\beta}=\boldsymbol{\beta}_{\text{full} }\)</span>, in linear models we use <span class="math notranslate nohighlight">\(F\)</span>-test, in GLM we can can compare their deviances.</p>
+<p>Suppose the corresponding fits are <span class="math notranslate nohighlight">\(\hat{\boldsymbol{\mu}}_{r}\)</span> and <span class="math notranslate nohighlight">\(\hat{\boldsymbol{\mu}}_{f}\)</span>, and the numbers of parameters are <span class="math notranslate nohighlight">\(p_{r}\)</span> and <span class="math notranslate nohighlight">\(p_{f}\)</span>, then the test statistic is essentially a likelihood-ratio statistic, defined as</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+G^{2}(M_{r}\vert M_f) &amp; =D(\boldsymbol{y},\hat{\boldsymbol{\mu}}_{r})-D(\boldsymbol{y},\hat{\boldsymbol{\mu}}_f)\\
+ &amp; =-2\left[\ell(\hat{\boldsymbol{\mu}}_r\vert\boldsymbol{y})-\ell(\hat{\boldsymbol{\mu}}_f\vert\boldsymbol{y})\right]\\
+ &amp; =-2\sum_{i}\log\frac{f(y_{i}\vert\hat{\mu}_{r ,i})}{f(y_{i}\vert\hat{\mu}_{f,i})}\\
+ &amp; \sim\chi_{p_f-p_r}^2
+\end{aligned}\end{split}\]</div>
+<p>Note the <strong>reduced</strong> model has a <strong>larger</strong> deviance so <span class="math notranslate nohighlight">\(D(\boldsymbol{y},\hat{\boldsymbol{\mu}}_{r})&gt;D(\boldsymbol{y},\hat{\boldsymbol{\mu}}_{f})\)</span>. This is analogous to the fact that a reduced model has a larger <span class="math notranslate nohighlight">\(RSS\)</span> in <a class="reference internal" href="12-lm-inference.html#lm-rss-nonincreasing"><span class="std std-ref">linear models</span></a>.</p>
+<p>When we want to compare multiple models, in linear models we use ANOVA. In GLM, we can use deviance analysis table.</p>
+</div>
+</div>
+<div class="section" id="generalized-pearson-statistic">
+<h3>Generalized Pearson Statistic<a class="headerlink" href="#generalized-pearson-statistic" title="Permalink to this headline">¶</a></h3>
+<p>In addition to deviance, generalized Pearson statistic is another quantity used to check goodness-of-fit.</p>
+<dl class="simple myst">
+<dt>Definition (Generalized Pearson statistic)</dt><dd><p>A useful statistic to check goodness-of-fit is the generalized Pearson
+statistic, which is defined as</p>
+<div class="math notranslate nohighlight">
+\[X^{2}:=\sum_{i}\frac{(y_{i}-\hat{\mu}_{i})^{2}}{v(\hat{\mu}_{i})}\]</div>
+<p>In some GLM,  it has the form</p>
+<div class="math notranslate nohighlight">
+\[
+  X^2 = \sum\frac{(\text{observed}-\text{fitted})^{2}}{\text{fitted}}
+  \]</div>
+<p>It is an alternative to the deviance for testing the fit of certain
+GLMs.</p>
+</dd>
+</dl>
+<div class="margin sidebar">
+<p class="sidebar-title"></p>
+<p>In the book, this generalized Pearson statistic is often called <em>Pearson statistic</em> in short, which is quite confusing with <em>Pearson’s Chi-square statistic</em> for testing independence of categorical variables in contingency tables.</p>
+</div>
+</div>
+<div class="section" id="residuals">
+<h3>Residuals<a class="headerlink" href="#residuals" title="Permalink to this headline">¶</a></h3>
+<p>To detect a model’s lack of fit, any particular type of residual <span class="math notranslate nohighlight">\(\hat{\boldsymbol{\varepsilon}}\)</span> below
+can be plotted against the fitted values <span class="math notranslate nohighlight">\(\hat{\boldsymbol{\mu}}\)</span>
+and against each explanatory variables.</p>
+<div class="section" id="asymptotically-uncorrelated-with-hat-boldsymbol-mu">
+<h4>Asymptotically Uncorrelated with <span class="math notranslate nohighlight">\(\hat{\boldsymbol{\mu} }\)</span><a class="headerlink" href="#asymptotically-uncorrelated-with-hat-boldsymbol-mu" title="Permalink to this headline">¶</a></h4>
+<p>In LM, residuals <span class="math notranslate nohighlight">\(\hat{\boldsymbol{\varepsilon}}  =\boldsymbol{y}-\hat{\boldsymbol{y}}\)</span> and fitted values <span class="math notranslate nohighlight">\(\hat{\boldsymbol{y}}\)</span> are orthogonal, or uncorrelated, regardless of sample size <span class="math notranslate nohighlight">\(n\)</span>.</p>
+<p>But in GLM, <span class="math notranslate nohighlight">\(\hat{\boldsymbol{\varepsilon}} = \boldsymbol{y}-\hat{\boldsymbol{\boldsymbol{\mu}}}\)</span> and
+<span class="math notranslate nohighlight">\(\hat{\boldsymbol{\boldsymbol{\mu}}}\)</span> are <strong>asymptotically</strong> uncorrelated. See Section 4.4.5 for details.</p>
+</div>
+<div class="section" id="pearson-residuals">
+<h4>Pearson Residuals<a class="headerlink" href="#pearson-residuals" title="Permalink to this headline">¶</a></h4>
+<p>The Pearson residual for observation <span class="math notranslate nohighlight">\(i\)</span> is defined as</p>
+<div class="math notranslate nohighlight">
+\[e_{i}=\frac{y_{i}-\hat{\mu}_{i}}{\sqrt{v(\hat{\mu}_{i})}}\]</div>
+<p>Their squared values sum to the generalized Pearson statistic.</p>
+</div>
+<div class="section" id="deviance-residual">
+<h4>Deviance Residual<a class="headerlink" href="#deviance-residual" title="Permalink to this headline">¶</a></h4>
+<p>Let <span class="math notranslate nohighlight">\(D(\boldsymbol{y},\boldsymbol{\hat{\boldsymbol{\mu}}})=\sum_{i}d_{i}\)</span>. The deviance residual for observation <span class="math notranslate nohighlight">\(i\)</span> is defined as</p>
+<div class="math notranslate nohighlight">
+\[e_{i}=\sqrt{d_{i}} \operatorname{sign} (y_{i}-\hat{\mu}_{i})\]</div>
+<p>Their squared values sum to the deviance.</p>
+</div>
+<div class="section" id="standardized-residuals">
+<h4>Standardized Residuals<a class="headerlink" href="#standardized-residuals" title="Permalink to this headline">¶</a></h4>
+<p>The standardized residual divides each raw residual <span class="math notranslate nohighlight">\((y_{i}-\hat{\mu}_{i})\)</span>
+by its standard error. Let <span class="math notranslate nohighlight">\(h_{ii}\)</span> be the diagonal element of the
+generalized hat matrix for observation <span class="math notranslate nohighlight">\(i\)</span>, which is called its <em>leverage</em>.
+Then, the standardized residual for observation <span class="math notranslate nohighlight">\(i\)</span> is defined as</p>
+<div class="math notranslate nohighlight">
+\[
+r_{i}=\frac{y_{i}-\hat{\mu}_{i}}{\sqrt{v(\hat{\mu}_{i})(1-\hat{h}_{ii})}}=\frac{e_{i}}{\sqrt{1-\hat{h}_{ii}}}
+\]</div>
+<p>Their squared values sum to the deviance.</p>
+</div>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./31-regression"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        </div>
+    </div>
+    
+    
+    <div class='prev-next-bottom'>
+        
+    <a class='left-prev' id="prev-link" href="13-lm-extension.html" title="previous page">Linear Regression - Extension</a>
+    <a class='right-next' id="next-link" href="22-logistic-regression.html" title="next page">Logistic Regression</a>
+
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By Dennis Zheng<br/>
+        
+            &copy; Copyright 2020.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+
+    
+  <script src="../_static/js/index.d3f166471bb80abb5163.js"></script>
+
+
+    
+  </body>
+</html>
