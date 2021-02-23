@@ -231,6 +231,6 @@ A basic RNN language model
 :::
 
 
-This is a many-to-many RNN. For details of RNN, see [sequential models](../37-neural-networks/sequential-models),
+This is a many-to-many RNN. For details of RNN, see [sequential models](../37-neural-networks/31-sequential-models),
 
 Most recent work based on transformers, trained on much more data, with many more parameters. Example: GPT-3 from OpenAI with 100s of billions of training text tokens + 175 billion parameters

@@ -123,7 +123,7 @@ Clearly, the range of RHS is $\mathbb{R}$, while our LHS response may not be so.
 A generalized linear model has the form
 
 $$
-g\left( \operatorname{E}\left( Y_{i} \right) \right) =\boldsymbol{x}_i ^\top \boldsymbol{\beta} 
+g\left( \operatorname{E}\left( Y_{i} \right) \right) =\boldsymbol{x}_i ^\top \boldsymbol{\beta}
 $$
 
 where
@@ -469,23 +469,19 @@ $$
 
 #### Compare Two Nested Models by Deviance
 
-To compare two nested models $M_{0}:\boldsymbol{\beta}=\boldsymbol{\beta}_{0}$
-v.s. $M_{1}:\boldsymbol{\beta}=\boldsymbol{\beta}_{1}$, in linear
-models we use $F$-test, in GLM we can can compare their deviances.
+To compare two nested models $M_{\text{reduced} }:\boldsymbol{\beta}=\boldsymbol{\beta}_{\text{reduced} }$
+v.s. $M_{\text{full} }:\boldsymbol{\beta}=\boldsymbol{\beta}_{\text{full} }$, in linear models we use $F$-test, in GLM we can can compare their deviances.
 
-Suppose the corresponding fits are $\hat{\boldsymbol{\mu}}_{0}$ and
-$\hat{\boldsymbol{\mu}}_{1}$, and the numbers of parameters are $p_{0}$
-and $p_{1}$, then the test statistic is essentially a likelihood-ratio
-statistic, defined as
+Suppose the corresponding fits are $\hat{\boldsymbol{\mu}}_{r}$ and $\hat{\boldsymbol{\mu}}_{f}$, and the numbers of parameters are $p_{r}$ and $p_{f}$, then the test statistic is essentially a likelihood-ratio statistic, defined as
 
 $$\begin{aligned}
-G^{2}(M_{0}\vert M_{1}) & =D(\boldsymbol{y},\hat{\boldsymbol{\mu}}_{0})-D(\boldsymbol{y},\hat{\boldsymbol{\mu}}_{1})\\
- & =-2\left[\ell(\hat{\boldsymbol{\mu}}_{0}\vert\boldsymbol{y})-\ell(\hat{\boldsymbol{\mu}}_{1}\vert\boldsymbol{y})\right]\\
- & =-2\sum_{i}\log\frac{f(y_{i}\vert\hat{\mu}_{0,i})}{f(y_{i}\vert\hat{\mu}_{1,i})}\\
- & \sim\chi_{p_{1}-p_{0}}^2
+G^{2}(M_{r}\vert M_f) & =D(\boldsymbol{y},\hat{\boldsymbol{\mu}}_{r})-D(\boldsymbol{y},\hat{\boldsymbol{\mu}}_f)\\
+ & =-2\left[\ell(\hat{\boldsymbol{\mu}}_r\vert\boldsymbol{y})-\ell(\hat{\boldsymbol{\mu}}_f\vert\boldsymbol{y})\right]\\
+ & =-2\sum_{i}\log\frac{f(y_{i}\vert\hat{\mu}_{r ,i})}{f(y_{i}\vert\hat{\mu}_{f,i})}\\
+ & \sim\chi_{p_f-p_r}^2
 \end{aligned}$$
 
-Note the **simpler** model has a **larger** deviance so $D(\boldsymbol{y},\hat{\boldsymbol{\mu}}_{0})>D(\boldsymbol{y},\hat{\boldsymbol{\mu}}_{1})$. This is analogous to the fact that a simple model has a larger $RSS$ in linear models.
+Note the **reduced** model has a **larger** deviance so $D(\boldsymbol{y},\hat{\boldsymbol{\mu}}_{r})>D(\boldsymbol{y},\hat{\boldsymbol{\mu}}_{f})$. This is analogous to the fact that a reduced model has a larger $RSS$ in [linear models](lm-rss-nonincreasing).
 
 When we want to compare multiple models, in linear models we use ANOVA. In GLM, we can use deviance analysis table.
 
@@ -536,7 +532,7 @@ $$e_{i}=\frac{y_{i}-\hat{\mu}_{i}}{\sqrt{v(\hat{\mu}_{i})}}$$
 Their squared values sum to the generalized Pearson statistic.
 
 
-#### Deviance residual
+#### Deviance Residual
 
 Let $D(\boldsymbol{y},\boldsymbol{\hat{\boldsymbol{\mu}}})=\sum_{i}d_{i}$. The deviance residual for observation $i$ is defined as
 
