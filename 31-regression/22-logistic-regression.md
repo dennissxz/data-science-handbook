@@ -224,7 +224,22 @@ To estimate it, plug in $\hat{\pi}_{i}$.
 For logistic regression, Newton's method = Fisher scoring = IRLS.
 (Section 5.4.1)
 
-Note that some or all ML estimates may be infinite or may not even exist. See [infinite parameter estimate](logistic-infinite)
+Note that some or all ML estimates may be infinite or may not even exist. See [infinite parameter estimate](logistic-infinite).
+
+### Comparison
+
+We can compare linear probability model, probit, and logit: how do the estimate the effect of a variable $X$ on the binary response $Y$? Of course, the coefficient values are different, but,
+
+- Same sign
+- Roughly same significance
+- Roughly same out-of-sample prediction accuracy
+
+
+:::{figure} logistic-effect-comparison
+<img src="../imgs/logistic-effect-comparison.png" width = "30%" alt=""/>
+
+Comparison of estimate in different models for binary response
+:::
 
 
 ## Hypothesis Testing
