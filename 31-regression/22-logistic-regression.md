@@ -120,7 +120,7 @@ Some common choices of $F$ are
 
   - If we fix $\boldsymbol{x}$ at sample mean $\boldsymbol{\mu} _x$, then the computed effect is called partial effect at the average (PEA).
 
-  - If we compute the effect for each observation $\boldsymbol{x}_i$, and take the average, the computed effect is called average partial effect (APE).
+  - If we compute the effect for each observation $\boldsymbol{x}_i$, and take the average, the computed effect is called average partial effect (APE), which is preferred over PEA.
 
 - **Logit** link: $F$ is the CDF of a logistic distribution
 
