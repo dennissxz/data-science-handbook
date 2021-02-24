@@ -56,21 +56,7 @@ From geometry's perspective, every constraint is a hyperplane that partitions th
 :::
 
 
-## Algorithm
 
-In every LP, one of the following holds
-
-1. no feasible solution
-1. finite optimal solutions
-1. optimal solution is unbounded
-
-There are many algorithms to find a solution.
-
-Let $L$ be the maximal coefficients.
-
-Ellipsoid method $O(n^b L)$. Slow but useful.
-
-Interior point method $O(n^{3.5}L)$.
 
 ## Examples
 
@@ -281,122 +267,77 @@ The inequality $g(\boldsymbol{y}) \le f(\boldsymbol{x})$ is called weak duality 
 
 The equality $g(\boldsymbol{y}^*) = f(\boldsymbol{x}^*)$ is called the strong duality theorem.
 
-## Max-flow and Min-Cut from LP
 
-### LP-max and Dual
-
-Consider the path-defined flow. We can view each $f(P)$ as a variable. Then the optimization problem
-
-$$\begin{aligned}
-\max && \sum _{P \in \mathcal{P}} f(P) &&& \\
-\text { s.t. }
-&& \sum_{P: e \in e(P)} f(P) &\le c(e)  &&\forall e \\
-&& f(P) &\geq 0  &&\forall P
-\end{aligned}$$
-
-is equivalent to the max-flow problem. Call this LP-flow problem.
-
-Note the number of paths $\left\vert \mathcal{P} \right\vert$ is exponential to the graph size. Let's consider the dual.
-
-Let the multipliers be $\boldsymbol{y}$, where $y_e$ is the multiplier for constraint of edge $e$. Note that in the primal, the coefficients of $f(P)$ in the objective function and each constraint are $1$. Hence, the dual is
-
-$$\begin{aligned}
-\min && \sum _{e} c(e) y_e &&& \\
-\text { s.t. }
-&& \sum_{e: e \in e(P)} y_e &\ge 1  &&\forall P \in \mathcal{P} \\
-&& y_e &\geq 0  &&\forall e
-\end{aligned}$$
-
-One can image there is a matrix $\boldsymbol{A}$ with $\left\vert E \right\vert = m$ rows and $\left\vert \mathcal{P} \right\vert = p$ columns. Each entry $a_{ij}=\mathbb{I} [e_i \in e(P_j)]$. Let $\boldsymbol{f} \in \mathbb{R} ^{p}$ be the path flow vector, $\boldsymbol{c} \in \mathbb{R} ^ m$ be the edge capacity vector, then the primal is,
-
-$$\begin{aligned}
-\max && \boldsymbol{1}_p ^\top \boldsymbol{f}   &&& \\
-\text { s.t. }
-&& \boldsymbol{A} \boldsymbol{f}  &\le \boldsymbol{c}\\
-&& \boldsymbol{f}  &\geq \boldsymbol{0}  &&
-\end{aligned}$$
-
-Let $\boldsymbol{y} \in \mathbb{R} ^{m}$ be the vector of $y_e$'s, then the dual is
-
-$$\begin{aligned}
-\min && \boldsymbol{c}^\top  \boldsymbol{y} &&& \\
-\text { s.t. }
-&& \boldsymbol{A} ^\top \boldsymbol{y}  &\ge \boldsymbol{1}_p   &&\\
-&& \boldsymbol{y}  &\geq \boldsymbol{0}   &&
-\end{aligned}$$
-
-which is consistent with our notation in the last section.
-
-
-### Relaxation
-
-If we add integer constraint $y_e \in \left\{ 0,1 \right\}$, then the objective $\sum _{e} c(e) y_e$ is a edge selection problem to minimize the total capacity, and the constraints $\sum_{e: e \in e(P)} y_e \le 1$ implies that at least one edge is selected along every $s-t$ path. In other words, we want to find minimum number of edges to disconnect $s$ and $t$, which is exactly the min-cut problem.
-
-If $y_e \in \mathbb{R}$, then it is a relaxation to the integer constraint $y_e \in \left\{ 0, 1 \right\}$. Call this problem LP-cut, we say LP-cut is a relaxation of min-cut.
+## Relaxation
 
 Definition (Relaxation)
 : Consider two problem $P$ and $P_r$, if any solution to $P$ corresponds to a solution to $P_r$ with the **same** value of the objective function in $P$, then we say problem $P_r$ is a relaxation to problem $P$. In this sense, $OPT_r$ is always better than or equal to $OPT$.
 
-Since the feasible solutions to min-cut are integers, we call them integral solutions. The solutions to the LP-cut are called fractional solutions.
-
-By the strong duality theorem, we have $OPT(\text{LP-flow} ) = OPT(\text{LP-cut})$. To sum up, we have
-
-$$
-OPT(\text{max-flow} ) = OPT(\text{LP-flow} ) = OPT(\text{LP-cut}) \le OPT(\text{min-cut} )
-$$
-
-We have shown that $OPT(\text{max-flow} ) = OPT(\text{min-cut} )$ in the [max-flow](../25-graph-related/31-maximum-flow) section. Hence the inequality $\le$ above should be equality $=$. Let's not use this fact, but just analyze this inequality itself.
 
 ### Integrality Gap
 
 Definition (Integrality Gap)
 : Integrality gap measures the largest deviation between the objective value of a fractional solution and that of a integral solution.
 
-  - For minimization problem, its is $\frac{OPT}{OPT_{LP}} \ge 1$,
-  - For maximization problem, its is $\frac{OPT_{LP}}{OPT} \ge 1$,
+  - For minimization problem, it is $\frac{OPT}{OPT_{LP}} \ge 1$,
+  - For maximization problem, it is $\frac{OPT_{LP}}{OPT} \ge 1$,
 
   If the gap is one, then an optimal integral solution and an optimal fractional solution gives the same objective value.
 
-Claim: The integrality gap between min-cut and LP-cut is 1
 
-Prove by providing an efficient algo that given any optimal fractional solution to $OPT_{LP}$, it returns an integral feasible solution whose cost is **not** higher than $OPT_{LP}$. (LP-rounding algorithm).
 
-View $y_e \in \mathbb{R}$ as the length of edge $e$. The distance $d(u,v)$ is the length of shortest $u-v$ path under $y_e$ edge length. Recall the LP-cut problem
+## Algorithms
+
+In every LP, one of the following holds
+
+- no feasible solution
+
+- finite optimal solutions
+
+- optimal solution is unbounded
+
+There are many algorithms to find a solution.
+
+Let $L$ be the maximal coefficients.
+
+Ellipsoid method $O(n^b L)$. Slow but useful.
+
+Interior point method $O(n^{3.5}L)$.
+
+
+### Ellipsoid Methods
+
+Produces a feasible solution to the LP if it exists (not optimal), else return "no feasible solution".
+
+To find an optimal solution, we can add a constraint $f^*$ on the objective function $f \le f^*$, and see when will it finds a feasible solution.
+
+$1 \ge y_e$?
+
+- Start:
+  - Ellipsoid $E_0$ containing the feasible region
+
+- Iterations:
+  - Let $E_i$ be current ellipsoid containing the feasible region.
+  - Let $x_i$ be the center of the ellipsoid
+  - If $\boldsymbol{x}_i$ is not a feasible solution, and if the algorithm is given LP-constraint $x_i$ violate, the algorithm produces ellipsoid $E_{i+1}$ containing the feasible region. Note that $\operatorname{vol}(E_{i+1}) \le \operatorname{vol}(E_i) \left( 1 - \frac{1}{\operatorname{poly}(n) }  \right)$ where $n$ is the number of variables.
+
+
+
+### Separation oracle
+
+Separation oracle for an LP is an efficient algorithm that, given a point $\boldsymbol{x} \in \mathbb{R} ^n$, either
+- return True if it is a feasible solution
+- or produces an LP-constraint that $\boldsymbol{x}$ violates
+
+If $\operatorname{vol}(\operatorname{E}\left( _0 \right)) \le 2 ^{\operatorname{poly} (n)}$ and feasible region has volume $\ge \frac{1}{2^{\operatorname{poly}(n)}}$. After $\operatorname{poly}(n)}$ iterations ellipsoids terminates with a solution.
+
+The constraints are
+
 
 $$\begin{aligned}
-\min && \sum _{e} c(e) y_e &&& \\
-\text { s.t. }
-&& \sum_{e: e \in e(P)} y_e &\ge 1  &&\forall P \in \mathcal{P} \\
-&& y_e &\geq 0  &&\forall e
+\sum_{e} c(e) y_e &\le c^* \\
+y_e &\in [0,1]\quad \forall e \in E \\
+\sum_{e \in E(P)} y_e &\ge 1 \quad \forall P \in \mathcal{P}\\
 \end{aligned}$$
 
-The constraints says that the distance of any $s-t$ path is at least one.
-
-Consider a value $\rho \in (0,1)$, which defines a cut $(A_\rho, B_\rho)$, such that
-- $A_\rho = \left\{ v \mid d(s,v) \le \rho \right\}$
-- $B_\rho = \left\{ v \mid d(s,v) > \rho \right\} = V \backslash A_\rho$
-
-Since $d(s,t) \ge 1 > \rho$, then $t \in B_\rho$.
-
-Define
-- $v(\rho) = c(A_\rho, B_\rho) = \sum _{u \in A_\rho, v\in B_\rho} c(u,v)$.
-- $\rho^* = \arg\min _\rho v(\rho)$
-- $(A^*, B^*) = (A_{\rho ^*}, B_{\rho ^*})$
-
-Question: how to find $\rho^*$ efficiently? Note that most of the cuts are the same, though they corresponds to different $\rho$ values. We can sort vertices by $d(s,v)$ such that
-
-$$
-d(s,v_1) \le d(s,v_2) \le \ldots \le d(s, v_n)
-$$
-
-The number of different cuts is actually $n-1$. We can set cutoffs to be $\rho_i = d(s,v_i)$ where $i = 1, 2, \ldots, n-1$. Then any $\rho \in [\rho_i, \rho_{i+1})$ always gives the same cut.
-
-
-
-
-
-
-
-
-
-.
+where $\mathcal{P}$ is the collection of $s-t$ paths. To check $\sum_{e \in E(P)} y_e \ge 1$ for all $P \in \mathcal{P}$, we can check the shortest path length, by running Dijkstra algorithm.
