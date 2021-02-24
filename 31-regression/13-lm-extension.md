@@ -149,7 +149,36 @@ $$
 \widetilde{\beta}_{k} =  \hat{\beta}_k + \alpha_k\hat{\beta}_j
 $$
 
-Proof: TBD. Need linear algebra about inverse.
+:::{admonition,dropdown,seealso} *Proof*
+
+Need linear algebra about inverse. We want to show
+
+$$
+\left( \boldsymbol{X} ^{\top} _{-j} \boldsymbol{X} _{-j} \right) ^{-1} \boldsymbol{X} ^{\top} _{-j} \boldsymbol{y}  = \left[ \left( \boldsymbol{X} ^{\top}  \boldsymbol{X}  \right) ^{-1} \boldsymbol{X} ^{\top}  \boldsymbol{y}  \right]_{[:k]} + \left( \boldsymbol{X} ^{\top} _{-j} \boldsymbol{X} _{-j} \right) ^{-1} \boldsymbol{X} ^{\top} _{-j} \boldsymbol{x}_j \hat{\beta}_j
+$$
+
+Let $\boldsymbol{A} = \boldsymbol{X} ^{\top} _{-j} \boldsymbol{X} _{-j}$ and $\boldsymbol{b} = \boldsymbol{X} ^\top _{-j} \boldsymbol{x}_j$. By some block matrix inverse formula,
+
+$$\begin{aligned}
+RHS - LHS &= \left[\begin{array}{cc}
+\boldsymbol{A} ^{-1} +\frac{1}{k} \boldsymbol{A} ^{-1}\boldsymbol{b} \boldsymbol{b} ^{\top}  \boldsymbol{A} ^{-1} & -\frac{1}{k} \boldsymbol{A} ^{-1} \boldsymbol{b}  \\
+\cdot & \cdot
+\end{array}\right] \left[\begin{array}{cc}
+\boldsymbol{X} ^{\top} _{-j}\boldsymbol{y}  \\
+\boldsymbol{x}_j ^{\top} \boldsymbol{y}
+\end{array}\right] + \boldsymbol{A} ^{-1} \boldsymbol{b} \hat{\beta}_j - \boldsymbol{A} ^{-1} \boldsymbol{X} ^{\top} _{-j} \boldsymbol{y}  \\
+&= \boldsymbol{A} ^{-1} \boldsymbol{X} ^{\top} _{-j}\boldsymbol{y}  + \frac{1}{k} \boldsymbol{A} ^{-1}\boldsymbol{b} \boldsymbol{b} ^{\top}  \boldsymbol{A} ^{-1} \boldsymbol{X} ^{\top} _{-j} \boldsymbol{y} -\frac{1}{k} \boldsymbol{A} ^{-1} \boldsymbol{b} \boldsymbol{x} _j ^{\top} \boldsymbol{y} + \boldsymbol{A} ^{-1} \boldsymbol{b} \hat{\beta}_j - \boldsymbol{A} ^{-1} \boldsymbol{X} ^{\top} _{-j} \boldsymbol{y}  \\
+&= \boldsymbol{A} ^{-1} \boldsymbol{b} \left( \frac{1}{k} \left( \boldsymbol{b} ^{\top} \boldsymbol{A} ^{-1} \boldsymbol{X} ^{\top} _{-j} \boldsymbol{y} - \boldsymbol{x} ^{\top} _j \boldsymbol{y} \right) - \hat{\beta}_j \right) \\
+&= \boldsymbol{A} ^{-1} \boldsymbol{b} \left( \hat{\beta}_j - \hat{\beta}_j \right) \\
+&= \boldsymbol{0}  \\
+\end{aligned}$$
+
+$\square$
+
+For derivation of $\hat{\beta}_j = \frac{1}{k} \left( \boldsymbol{b} ^{\top} \boldsymbol{A} ^{-1} \boldsymbol{X} ^{\top} _{-j} \boldsymbol{y} - \boldsymbol{x} ^{\top} _j \boldsymbol{y} \right)$ see [partialling out](lm-partialling-out) section.
+
+
+:::
 
 Verify:
 
