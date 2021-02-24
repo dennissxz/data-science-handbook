@@ -13,7 +13,7 @@ Let $y_{i}$ denote the response outcome category for subject $i$. That is, $y_{i
 From the assumption above, we can model the cumulative probabilities
 
 $$
-{P\left(y_{i}\leq j\right)=\pi_{i1}+\cdots+\pi_{ij},\quad j=1,\ldots,c}
+{\operatorname{P}\left(y_{i}\leq j\right)=\pi_{i1}+\cdots+\pi_{ij},\quad j=1,\ldots,c}
 $$
 
 
@@ -25,20 +25,20 @@ $$
 The cumulative logits are logits of these **cumulative** probabilities:
 
 $$
-{\begin{aligned}\operatorname{logit}\left[P\left(Y_{i}\leq j\right)\right] & =\log\frac{P\left(Y_{i}\leq j\right)}{1-P\left(Y_{i}\leq j\right)}\\
+{\begin{aligned}\operatorname{logit}\left[\operatorname{P}\left(Y_{i}\leq j\right)\right] & =\log\frac{\operatorname{P}\left(Y_{i}\leq j\right)}{1-\operatorname{P}\left(Y_{i}\leq j\right)}\\
  & =\log\frac{\pi_{i1}+\cdots+\pi_{ij}}{\pi_{i,j+1}+\cdots+\pi_{ic}},\quad j=1,\ldots,c-1
 \end{aligned}
 }
 $$
 
-We see that $\log\frac{P\left(Y_{i}\leq j\right)}{1-P\left(Y_{i}\leq j\right)}$
+We see that $\log\frac{\operatorname{P}\left(Y_{i}\leq j\right)}{1-\operatorname{P}\left(Y_{i}\leq j\right)}$
 can be interpreted as an ordinary logistic model for a binary response
 in which success means $Y_{i}\leq j$.
 
 The link function is
 
 $$
-{\operatorname{logit}\left[P\left(Y_{i}\leq j\right)\right]=\alpha_{j}+\boldsymbol{x}_{i}^{\top}\boldsymbol{\beta},\quad j=1,\ldots,c-1}
+{\operatorname{logit}\left[\operatorname{P}\left(Y_{i}\leq j\right)\right]=\alpha_{j}+\boldsymbol{x}_{i}^{\top}\boldsymbol{\beta},\quad j=1,\ldots,c-1}
 $$
 
 
@@ -87,13 +87,13 @@ $$
 then the probability is
 
 $$
-{P\left(Y_{i}\leq k\right)=P\left(Y_{i}^{*}\leq\alpha_{k}\right)=F\left(\alpha_{k}-\boldsymbol{x}_{i}^{\top}\boldsymbol{\beta}\right)}
+{\operatorname{P}\left(Y_{i}\leq k\right)=\operatorname{P}\left(Y_{i}^{*}\leq\alpha_{k}\right)=F\left(\alpha_{k}-\boldsymbol{x}_{i}^{\top}\boldsymbol{\beta}\right)}
 $$
 
 When we take $F$ as the CDR of standard logistic/Gaussian distribution, we get the cumulative logit/probit models.
 
 If we let ${Y_{i}^{*}=-\boldsymbol{x}_{i}^{\top}\boldsymbol{\beta}+\epsilon_{i}}$
-then we can write $P\left(Y_{i}\leq k\right)=F\left(\alpha_{k}+\boldsymbol{x}_{i}^{\top}\boldsymbol{\beta}\right)$.
+then we can write $\operatorname{P}\left(Y_{i}\leq k\right)=F\left(\alpha_{k}+\boldsymbol{x}_{i}^{\top}\boldsymbol{\beta}\right)$.
 
 ### Interpretation and Proportional Odds
 
@@ -102,7 +102,7 @@ changes from $\boldsymbol{v}$ to $\boldsymbol{u}$, then
 
 $$
 \begin{aligned}
-{{\operatorname{logit}\left[P\left(Y_{i}\leq j|\boldsymbol{x}_{i}=\boldsymbol{u}\right)\right]-\operatorname{logit}\left[P\left(Y_{i}\leq j|\boldsymbol{x}_{i}=\boldsymbol{v}\right)\right]}} & =\log\frac{P\left(Y_{i}\leq j|\boldsymbol{x}_{i}=\boldsymbol{u}\right)/P\left(Y_{i}>j|x_{i}=\boldsymbol{u}\right)}{P\left(Y_{i}\leq j|\boldsymbol{x}_{i}=\boldsymbol{v}\right)/P\left(Y_{i}>j|x_{i}=\boldsymbol{v}\right)}\\
+{{\operatorname{logit}\left[\operatorname{P}\left(Y_{i}\leq j|\boldsymbol{x}_{i}=\boldsymbol{u}\right)\right]-\operatorname{logit}\left[\operatorname{P}\left(Y_{i}\leq j|\boldsymbol{x}_{i}=\boldsymbol{v}\right)\right]}} & =\log\frac{\operatorname{P}\left(Y_{i}\leq j|\boldsymbol{x}_{i}=\boldsymbol{u}\right)/\operatorname{P}\left(Y_{i}>j|x_{i}=\boldsymbol{u}\right)}{\operatorname{P}\left(Y_{i}\leq j|\boldsymbol{x}_{i}=\boldsymbol{v}\right)/\operatorname{P}\left(Y_{i}>j|x_{i}=\boldsymbol{v}\right)}\\
  & =(\boldsymbol{u}-\boldsymbol{v})^{\top}\boldsymbol{\beta}
 \end{aligned}$$
 
@@ -111,7 +111,7 @@ The RHS is called a **cumulative odds ratio**, which is proportional to $(\bolds
 We can interpret the effect of $\beta_{k}$ on the odds since
 
 $$
-\frac{P\left(Y_{i}\leq j\right)}{1-P\left(Y_{i}\leq j\right)}=\exp(\alpha_{j}+\boldsymbol{x}_{i}^{\top}\boldsymbol{\beta})
+\frac{\operatorname{P}\left(Y_{i}\leq j\right)}{1-\operatorname{P}\left(Y_{i}\leq j\right)}=\exp(\alpha_{j}+\boldsymbol{x}_{i}^{\top}\boldsymbol{\beta})
 $$
 
 If $x_{ik}$ increases 1 unit, the odds of $Y_{i}<j$ is multiplied by $\exp(\beta_{k})$. We can construct confidence interval for this multiplier.
@@ -122,13 +122,13 @@ If $x_{ik}$ increases 1 unit, the odds of $Y_{i}<j$ is multiplied by $\exp(\beta
 From the equation above we can for two different values $\boldsymbol{u},\boldsymbol{v}$ of $\boldsymbol{x}_{i}$, then either
 
 $$
-P\left(Y_{i}\leq j|\boldsymbol{x}_{i}=\boldsymbol{u}\right)\ge P\left(Y_{i}\leq j|\boldsymbol{x}_{i}=\boldsymbol{v}\right),\ \forall\ j
+\operatorname{P}\left(Y_{i}\leq j|\boldsymbol{x}_{i}=\boldsymbol{u}\right)\ge \operatorname{P}\left(Y_{i}\leq j|\boldsymbol{x}_{i}=\boldsymbol{v}\right),\ \forall\ j
 $$
 
 or
 
 $$
-P\left(Y_{i}\leq j|\boldsymbol{x}_{i}=\boldsymbol{u}\right)\le P\left(Y_{i}\leq j|\boldsymbol{x}_{i}=\boldsymbol{v}\right),\ \forall\ j
+\operatorname{P}\left(Y_{i}\leq j|\boldsymbol{x}_{i}=\boldsymbol{u}\right)\le \operatorname{P}\left(Y_{i}\leq j|\boldsymbol{x}_{i}=\boldsymbol{v}\right),\ \forall\ j
 $$
 
 This can also be seen from the plot [above](ordinal-cum-plot).
@@ -151,10 +151,10 @@ of effects.
 
 ### Score Equations
 
-Since ${P\left(Y_{i}\leq j\right) = F\left(\alpha_{j} + \boldsymbol{x}_{i} ^{\top}\boldsymbol{\beta}\right)}$, the likelihood for ungrouped data is
+Since ${\operatorname{P}\left(Y_{i}\leq j\right) = F\left(\alpha_{j} + \boldsymbol{x}_{i} ^{\top}\boldsymbol{\beta}\right)}$, the likelihood for ungrouped data is
 
 $$
-{\prod_{i=1}^{N}\left(\prod_{j=1}^{c}p_{ij}^{y_{ij}}\right)=\prod_{i=1}^{N}\left\{ \prod_{j=1}^{c}\left[P\left(Y_{i}\leq j\right)-P\left(Y_{i}\leq j-1\right)\right]^{y_{ij}}\right\} }
+{\prod_{i=1}^{N}\left(\prod_{j=1}^{c}p_{ij}^{y_{ij}}\right)=\prod_{i=1}^{N}\left\{ \prod_{j=1}^{c}\left[\operatorname{P}\left(Y_{i}\leq j\right)-\operatorname{P}\left(Y_{i}\leq j-1\right)\right]^{y_{ij}}\right\} }
 $$
 
 and the log-likelihood is
