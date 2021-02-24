@@ -496,6 +496,7 @@ $$
 R^2 = \frac{\sum (\hat{y}_i - \bar{y})^2}{\sum (y_i - \bar{y})^2}
 $$
 
+(lm-partialling-out)=
 ### Partialling Out Explanation for MLR
 
 We can interpret the coefficients in multiple linear regression from “partialling out” perspective.
@@ -512,7 +513,7 @@ We can obtain $\hat{\beta}_1$ by the following three steps
 
     $$\hat{x}_{1}=\hat{\gamma}_{0}+\hat{\gamma}_{1} x_{2}$$
 
-2.  compute the residuals $\hat{u}_{1}$ in the above regression
+2.  compute the residuals $\hat{u}_{i}$ in the above regression
 
     $$
      \hat{u}_{i} = x_{1i} - \hat{x}_{1i}
@@ -521,15 +522,109 @@ We can obtain $\hat{\beta}_1$ by the following three steps
 3.  regress $y$ on the the residuals $\hat{u}_{1}$, and the estimated coefficient equals the required coefficient.
 
     $$\begin{align}
-     \hat{y}
-     &=\hat{\alpha}_{0}+\hat{\alpha}_{1} \hat{u} \\
-     \hat{\alpha}_{1}
-     &= \frac{\sum (\hat{u}_i - \bar{\hat{u}}_i)(y_i - \bar{y})}{\sum (\hat{u}_i - \bar{\hat{u}}_i)^2} \\
-     &= \frac{\sum \hat{u}_{i}y_i}{\sum \hat{u}_{i}^2} \qquad \because \bar{\hat{u}}_i = 0\\
-     &\overset{\text{claimed}}{=} \hat{\beta}_1
-     \end{align}$$
+    \text{Regress}\quad y_i
+    &\sim \alpha_{0}+\alpha_{1} \hat{u}_i \\
+    \text{Obtain}\quad\hat{\alpha}_{1}
+    &= \frac{\sum (\hat{u}_i - \bar{\hat{u}}_i)(y_i - \bar{y})}{\sum (\hat{u}_i - \bar{\hat{u}}_i)^2} \\
+    &= \frac{\sum \hat{u}_{i}y_i}{\sum \hat{u}_{i}^2} \qquad \because \bar{\hat{u}}_i = 0\\
+    &\overset{\text{claimed}}{=} \hat{\beta}_1
+    \end{align}$$
 
 In this approach, $\hat{u}$ is interpreted as the part in $x_1$ that cannot be predicted by $x_2$, or is uncorrelated with $x_2$. We then regress $y$ on $\hat{u}$, to get the effect of $x_1$ on $y$ after $x_2$ has been “partialled out”.
+
+It can be proved that the above method hold for any $p$.
+
+:::{admonition,dropdown,seealso} *Proof*
+
+Let's consider the last variable $X_j$ and its coefficient $\beta_j$. First we find a formula for $\hat{\beta}_j$.
+
+Recall the matrix inverse formula: if
+
+
+$$
+\boldsymbol{M}=\left[\begin{array}{cc}
+\boldsymbol{A} & \boldsymbol{b} \\
+\boldsymbol{b}^{\top} & c
+\end{array}\right]
+$$
+
+Then
+
+$$
+\boldsymbol{M}^{-1}=\left[\begin{array}{cc}
+\left(\boldsymbol{A}-\frac{1}{c} \boldsymbol{b} \boldsymbol{b}^{\top}\right)^{-1} & -\frac{1}{k} \boldsymbol{A}^{-1} \boldsymbol{b} \\
+-\frac{1}{k} \boldsymbol{b}^{\top} \boldsymbol{A}^{-1} & \frac{1}{k}
+\end{array}\right]=\left[\begin{array}{cc}
+\boldsymbol{A}^{-1}+\frac{1}{k} \boldsymbol{A}^{-1} \boldsymbol{b} \boldsymbol{b}^{\top} \boldsymbol{A}^{-1} & -\frac{1}{k} \boldsymbol{A}^{-1} \boldsymbol{b} \\
+-\frac{1}{k} \boldsymbol{b}^{\top} \boldsymbol{A}^{-1} & \frac{1}{k}
+\end{array}\right]
+$$
+
+where $k = c- \boldsymbol{b} ^\top \boldsymbol{A} ^{-1} \boldsymbol{b}$.
+
+In this case,
+
+- $\boldsymbol{A} = \boldsymbol{X} ^\top _{-j} \boldsymbol{X} _{-j}$
+
+- $\boldsymbol{b} = \boldsymbol{X} ^\top _{-j} \boldsymbol{x}_j$
+- $c = \boldsymbol{x}_j ^\top \boldsymbol{x}_j = \left\| \boldsymbol{x}_j  \right\|^2$
+- $k = \boldsymbol{x}_j ^\top \boldsymbol{x}_j  - \boldsymbol{x}_j ^\top \boldsymbol{X} _{-j} \left( \boldsymbol{X} ^\top _{-j} \boldsymbol{X} _{-j} \right) ^{-1} \boldsymbol{X} ^\top _{-j} \boldsymbol{x}_j = \boldsymbol{x}_j ^\top (\boldsymbol{I} - \boldsymbol{H} _{-j}) \boldsymbol{x}_j$
+
+Substituting the above expression to the formula gives
+
+$$
+\boldsymbol{\boldsymbol{X} ^\top \boldsymbol{X}}^{-1}=\left[\begin{array}{cc}
+\left(\boldsymbol{X} ^\top _{-j} \boldsymbol{X} _{-j}-\frac{1}{c} \boldsymbol{X} ^\top _{-j} \boldsymbol{x}_j \boldsymbol{x}_j ^\top \boldsymbol{X} _{-j} \right)^{-1} & -\frac{1}{k} \left( \boldsymbol{X} ^\top _{-j} \boldsymbol{X} _{-j} \right)^{-1} \boldsymbol{X} ^\top _{-j} \boldsymbol{x}_j \\
+-\frac{1}{k} \boldsymbol{x}_j^{\top} \boldsymbol{X} _{-j}  \left( \boldsymbol{X} ^\top _{-j} \boldsymbol{X} _{-j} \right)^{-1} & \frac{1}{k}
+\end{array}\right]
+$$
+
+Hence
+
+
+$$\begin{aligned}
+\hat{\beta}_j &=\hat{\boldsymbol{\beta}} _{[j]} \\
+&= \left[ \left( \boldsymbol{X} ^\top \boldsymbol{X}  \right) ^{-1} \boldsymbol{X} ^\top \boldsymbol{y} \right]_j \\
+&= \frac{1}{k} \left[\begin{array}{cc}
+- \boldsymbol{x}_j^{\top} \boldsymbol{X} _{-j}  \left( \boldsymbol{X} ^\top _{-j} \boldsymbol{X} _{-j} \right)^{-1} & 1 \\
+\end{array}\right] \left[\begin{array}{cc}
+\boldsymbol{X} ^\top _{-j} \boldsymbol{y} \\
+\boldsymbol{x}_j ^\top \boldsymbol{y}
+\end{array}\right] \\
+&= \frac{1}{k} \left( - \boldsymbol{x}_j^{\top} \boldsymbol{X} _{-j}  \left( \boldsymbol{X} ^\top _{-j} \boldsymbol{X} _{-j} \right)^{-1} \boldsymbol{X} ^\top _{-j} \boldsymbol{y}  + \boldsymbol{x} ^\top _j \boldsymbol{y}   \right) \\
+&= \frac{1}{k} \left(- \boldsymbol{x}_j^{\top}\boldsymbol{H} _{-j} \boldsymbol{y}  + \boldsymbol{x} ^\top _j \boldsymbol{y}   \right) \\
+&= \frac{1}{k} \boldsymbol{y} ^\top \left(\boldsymbol{I}_{n} - \boldsymbol{H} _{-j}   \right) \boldsymbol{x}_j \\
+&= \frac{1}{k} \boldsymbol{y} ^\top \hat{\boldsymbol{u}}\\
+\end{aligned}$$
+
+The partialling out formula says
+
+
+$$\begin{aligned}
+\hat{\alpha}_1
+&= \frac{\sum (\hat{u}_i - \bar{\hat{u}}_i)(y_i - \bar{y})}{\sum (\hat{u}_i - \bar{\hat{u}}_i)^2} \\
+&= \frac{\sum \hat{u}_{i}y_i}{\sum \hat{u}_{i}^2} \qquad \because \bar{\hat{u}}_i = 0 \\
+&= \frac{\hat{\boldsymbol{u} }^\top \boldsymbol{y} }{\hat{\boldsymbol{u} }^\top \hat{\boldsymbol{u} }} \\
+\end{aligned}$$
+
+Note that $\hat{\boldsymbol{u} }^\top \hat{\boldsymbol{u} }= \boldsymbol{x}_j ^\top (\boldsymbol{I}  - \boldsymbol{H} _{-j})^2 \boldsymbol{x}_j = \boldsymbol{x}_j ^\top (\boldsymbol{I} -\boldsymbol{H} _{-j})\boldsymbol{x}_j = k$
+
+Therefore, $\hat{\beta}_j = \hat{\alpha}_1$.
+
+$\square$
+
+Byproduct: since $\hat{u}_i$ is actually constant (obtained from constant design matrix $\boldsymbol{X}$), we can obtain a convenient formula for $\hat{\beta}_j$:
+
+$$\begin{aligned}
+\operatorname{Var}\left( \hat{\beta}_j \right)
+&= \operatorname{Var}\left( \frac{\sum \hat{u}_{i}y_i}{\sum \hat{u}_{i}^2} \right)\\
+&= \frac{\sum \operatorname{Var} \left( \hat{u}_{i} y_i \right)}{SSR_j^2}\\
+&= \frac{\sum \hat{u}_{i}^2 \operatorname{Var}\left( \varepsilon_i \right)}{SSR_j^2}\\
+\end{aligned}$$
+
+
+
+:::
 
 
 
@@ -752,7 +847,7 @@ SLR stands for simple linear regression $y_i = \beta_0 + \beta_1 x_i + \varepsil
     :::
 
 
-1. To compare the effects of two variable $X_j, X_k$, can we say they have the same effect since the confidence interval of $\beta_j, \beta_k$ overlaps?
+1. *To compare the effects of two variable $X_j, X_k$, can we say they have the same effect since the confidence interval of $\beta_j, \beta_k$ overlaps?*
 
     :::{admonition,dropdown,seealso} *Solution*
 
@@ -762,7 +857,8 @@ SLR stands for simple linear regression $y_i = \beta_0 + \beta_1 x_i + \varepsil
     - even if they are not correlated, we still need to find a pivot quantity for $\theta = \beta_j - \beta_k$ and conduct a hypothesis testing on $\theta=0$. See the [$t$-test section](lm-t-test).
     :::
 
-1. *Does the partialling out method holds for $p \ge 3$*?
+1. *Does the partialling out method holds for $p \ge 3$?* Yes.
+
 
 1. *How do you compare two linear models?*
 
