@@ -516,8 +516,8 @@ We can obtain $\hat{\beta}_1$ by the following three steps
 2.  compute the residuals $\hat{u}_{i}$ in the above regression
 
     $$
-     \hat{u}_{i} = x_{1i} - \hat{x}_{1i}
-     $$
+    \hat{u}_{i} = x_{1i} - \hat{x}_{1i}
+    $$
 
 3.  regress $y$ on the the residuals $\hat{u}_{1}$, and the estimated coefficient equals the required coefficient.
 
@@ -573,14 +573,13 @@ In this case,
 Substituting the above expression to the formula gives
 
 $$
-\boldsymbol{\boldsymbol{X} ^\top \boldsymbol{X}}^{-1}=\left[\begin{array}{cc}
+\left( \boldsymbol{X} ^\top \boldsymbol{X} \right)^{-1}=\left[\begin{array}{cc}
 \left(\boldsymbol{X} ^\top _{-j} \boldsymbol{X} _{-j}-\frac{1}{c} \boldsymbol{X} ^\top _{-j} \boldsymbol{x}_j \boldsymbol{x}_j ^\top \boldsymbol{X} _{-j} \right)^{-1} & -\frac{1}{k} \left( \boldsymbol{X} ^\top _{-j} \boldsymbol{X} _{-j} \right)^{-1} \boldsymbol{X} ^\top _{-j} \boldsymbol{x}_j \\
 -\frac{1}{k} \boldsymbol{x}_j^{\top} \boldsymbol{X} _{-j}  \left( \boldsymbol{X} ^\top _{-j} \boldsymbol{X} _{-j} \right)^{-1} & \frac{1}{k}
 \end{array}\right]
 $$
 
 Hence
-
 
 $$\begin{aligned}
 \hat{\beta}_j &=\hat{\boldsymbol{\beta}} _{[j]} \\
@@ -593,8 +592,8 @@ $$\begin{aligned}
 \end{array}\right] \\
 &= \frac{1}{k} \left( - \boldsymbol{x}_j^{\top} \boldsymbol{X} _{-j}  \left( \boldsymbol{X} ^\top _{-j} \boldsymbol{X} _{-j} \right)^{-1} \boldsymbol{X} ^\top _{-j} \boldsymbol{y}  + \boldsymbol{x} ^\top _j \boldsymbol{y}   \right) \\
 &= \frac{1}{k} \left(- \boldsymbol{x}_j^{\top}\boldsymbol{H} _{-j} \boldsymbol{y}  + \boldsymbol{x} ^\top _j \boldsymbol{y}   \right) \\
-&= \frac{1}{k} \boldsymbol{y} ^\top \left(\boldsymbol{I}_{n} - \boldsymbol{H} _{-j}   \right) \boldsymbol{x}_j \\
-&= \frac{1}{k} \boldsymbol{y} ^\top \hat{\boldsymbol{u}}\\
+&= \frac{1}{k} \boldsymbol{x}_j ^\top \left(\boldsymbol{I}_{n} - \boldsymbol{H} _{-j}   \right) \boldsymbol{y} \\
+&= \frac{1}{k}  \hat{\boldsymbol{u}} ^\top \boldsymbol{y} \\
 \end{aligned}$$
 
 The partialling out formula says
