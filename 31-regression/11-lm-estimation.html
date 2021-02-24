@@ -120,8 +120,8 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../11-math/51-optimization.html">
-     Optimization
+    <a class="reference internal" href="../11-math/51-linear-programming.html">
+     Linear Programming
     </a>
    </li>
    <li class="toctree-l2">
@@ -401,6 +401,11 @@
    <li class="toctree-l2">
     <a class="reference internal" href="../25-graph-related/42-maximum-independent-set.html">
      Maximum Independent Set in Trees
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/91-LP-max-flow-min-cut.html">
+     LP on Max-flow and Min-cut
     </a>
    </li>
   </ul>
@@ -1246,7 +1251,7 @@ R^2 = \frac{\sum (\hat{y}_i - \bar{y})^2}{\sum (y_i - \bar{y})^2}
 \]</div>
 </div>
 <div class="section" id="partialling-out-explanation-for-mlr">
-<h3>Partialling Out Explanation for MLR<a class="headerlink" href="#partialling-out-explanation-for-mlr" title="Permalink to this headline">¶</a></h3>
+<span id="lm-partialling-out"></span><h3>Partialling Out Explanation for MLR<a class="headerlink" href="#partialling-out-explanation-for-mlr" title="Permalink to this headline">¶</a></h3>
 <p>We can interpret the coefficients in multiple linear regression from “partialling out” perspective.</p>
 <p>When <span class="math notranslate nohighlight">\(p=3\)</span>, i.e.,</p>
 <div class="math notranslate nohighlight">
@@ -1259,25 +1264,100 @@ R^2 = \frac{\sum (\hat{y}_i - \bar{y})^2}{\sum (y_i - \bar{y})^2}
 <div class="math notranslate nohighlight">
 \[\hat{x}_{1}=\hat{\gamma}_{0}+\hat{\gamma}_{1} x_{2}\]</div>
 </li>
-<li><p>compute the residuals <span class="math notranslate nohighlight">\(\hat{u}_{1}\)</span> in the above regression</p>
+<li><p>compute the residuals <span class="math notranslate nohighlight">\(\hat{u}_{i}\)</span> in the above regression</p>
 <div class="math notranslate nohighlight">
 \[
-     \hat{u}_{i} = x_{1i} - \hat{x}_{1i}
-     \]</div>
+    \hat{u}_{i} = x_{1i} - \hat{x}_{1i}
+    \]</div>
 </li>
 <li><p>regress <span class="math notranslate nohighlight">\(y\)</span> on the the residuals <span class="math notranslate nohighlight">\(\hat{u}_{1}\)</span>, and the estimated coefficient equals the required coefficient.</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
-     \hat{y}
-     &amp;=\hat{\alpha}_{0}+\hat{\alpha}_{1} \hat{u} \\
-     \hat{\alpha}_{1}
-     &amp;= \frac{\sum (\hat{u}_i - \bar{\hat{u}}_i)(y_i - \bar{y})}{\sum (\hat{u}_i - \bar{\hat{u}}_i)^2} \\
-     &amp;= \frac{\sum \hat{u}_{i}y_i}{\sum \hat{u}_{i}^2} \qquad \because \bar{\hat{u}}_i = 0\\
-     &amp;\overset{\text{claimed}}{=} \hat{\beta}_1
-     \end{align}\end{split}\]</div>
+    \text{Regress}\quad y_i
+    &amp;\sim \alpha_{0}+\alpha_{1} \hat{u}_i \\
+    \text{Obtain}\quad\hat{\alpha}_{1}
+    &amp;= \frac{\sum (\hat{u}_i - \bar{\hat{u}}_i)(y_i - \bar{y})}{\sum (\hat{u}_i - \bar{\hat{u}}_i)^2} \\
+    &amp;= \frac{\sum \hat{u}_{i}y_i}{\sum \hat{u}_{i}^2} \qquad \because \bar{\hat{u}}_i = 0\\
+    &amp;\overset{\text{claimed}}{=} \hat{\beta}_1
+    \end{align}\end{split}\]</div>
 </li>
 </ol>
 <p>In this approach, <span class="math notranslate nohighlight">\(\hat{u}\)</span> is interpreted as the part in <span class="math notranslate nohighlight">\(x_1\)</span> that cannot be predicted by <span class="math notranslate nohighlight">\(x_2\)</span>, or is uncorrelated with <span class="math notranslate nohighlight">\(x_2\)</span>. We then regress <span class="math notranslate nohighlight">\(y\)</span> on <span class="math notranslate nohighlight">\(\hat{u}\)</span>, to get the effect of <span class="math notranslate nohighlight">\(x_1\)</span> on <span class="math notranslate nohighlight">\(y\)</span> after <span class="math notranslate nohighlight">\(x_2\)</span> has been “partialled out”.</p>
+<p>It can be proved that the above method hold for any <span class="math notranslate nohighlight">\(p\)</span>.</p>
+<div class="dropdown seealso admonition">
+<p class="admonition-title"> <em>Proof</em></p>
+<p>Let’s consider the last variable <span class="math notranslate nohighlight">\(X_j\)</span> and its coefficient <span class="math notranslate nohighlight">\(\beta_j\)</span>. First we find a formula for <span class="math notranslate nohighlight">\(\hat{\beta}_j\)</span>.</p>
+<p>Recall the matrix inverse formula: if</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\boldsymbol{M}=\left[\begin{array}{cc}
+\boldsymbol{A} &amp; \boldsymbol{b} \\
+\boldsymbol{b}^{\top} &amp; c
+\end{array}\right]
+\end{split}\]</div>
+<p>Then</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\boldsymbol{M}^{-1}=\left[\begin{array}{cc}
+\left(\boldsymbol{A}-\frac{1}{c} \boldsymbol{b} \boldsymbol{b}^{\top}\right)^{-1} &amp; -\frac{1}{k} \boldsymbol{A}^{-1} \boldsymbol{b} \\
+-\frac{1}{k} \boldsymbol{b}^{\top} \boldsymbol{A}^{-1} &amp; \frac{1}{k}
+\end{array}\right]=\left[\begin{array}{cc}
+\boldsymbol{A}^{-1}+\frac{1}{k} \boldsymbol{A}^{-1} \boldsymbol{b} \boldsymbol{b}^{\top} \boldsymbol{A}^{-1} &amp; -\frac{1}{k} \boldsymbol{A}^{-1} \boldsymbol{b} \\
+-\frac{1}{k} \boldsymbol{b}^{\top} \boldsymbol{A}^{-1} &amp; \frac{1}{k}
+\end{array}\right]
+\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(k = c- \boldsymbol{b} ^\top \boldsymbol{A} ^{-1} \boldsymbol{b}\)</span>.</p>
+<p>In this case,</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{A} = \boldsymbol{X} ^\top _{-j} \boldsymbol{X} _{-j}\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{b} = \boldsymbol{X} ^\top _{-j} \boldsymbol{x}_j\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(c = \boldsymbol{x}_j ^\top \boldsymbol{x}_j = \left\| \boldsymbol{x}_j  \right\|^2\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(k = \boldsymbol{x}_j ^\top \boldsymbol{x}_j  - \boldsymbol{x}_j ^\top \boldsymbol{X} _{-j} \left( \boldsymbol{X} ^\top _{-j} \boldsymbol{X} _{-j} \right) ^{-1} \boldsymbol{X} ^\top _{-j} \boldsymbol{x}_j = \boldsymbol{x}_j ^\top (\boldsymbol{I} - \boldsymbol{H} _{-j}) \boldsymbol{x}_j\)</span></p></li>
+</ul>
+<p>Substituting the above expression to the formula gives</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\left( \boldsymbol{X} ^\top \boldsymbol{X} \right)^{-1}=\left[\begin{array}{cc}
+\left(\boldsymbol{X} ^\top _{-j} \boldsymbol{X} _{-j}-\frac{1}{c} \boldsymbol{X} ^\top _{-j} \boldsymbol{x}_j \boldsymbol{x}_j ^\top \boldsymbol{X} _{-j} \right)^{-1} &amp; -\frac{1}{k} \left( \boldsymbol{X} ^\top _{-j} \boldsymbol{X} _{-j} \right)^{-1} \boldsymbol{X} ^\top _{-j} \boldsymbol{x}_j \\
+-\frac{1}{k} \boldsymbol{x}_j^{\top} \boldsymbol{X} _{-j}  \left( \boldsymbol{X} ^\top _{-j} \boldsymbol{X} _{-j} \right)^{-1} &amp; \frac{1}{k}
+\end{array}\right]
+\end{split}\]</div>
+<p>Hence</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\hat{\beta}_j &amp;=\hat{\boldsymbol{\beta}} _{[j]} \\
+&amp;= \left[ \left( \boldsymbol{X} ^\top \boldsymbol{X}  \right) ^{-1} \boldsymbol{X} ^\top \boldsymbol{y} \right]_j \\
+&amp;= \frac{1}{k} \left[\begin{array}{cc}
+- \boldsymbol{x}_j^{\top} \boldsymbol{X} _{-j}  \left( \boldsymbol{X} ^\top _{-j} \boldsymbol{X} _{-j} \right)^{-1} &amp; 1 \\
+\end{array}\right] \left[\begin{array}{cc}
+\boldsymbol{X} ^\top _{-j} \boldsymbol{y} \\
+\boldsymbol{x}_j ^\top \boldsymbol{y}
+\end{array}\right] \\
+&amp;= \frac{1}{k} \left( - \boldsymbol{x}_j^{\top} \boldsymbol{X} _{-j}  \left( \boldsymbol{X} ^\top _{-j} \boldsymbol{X} _{-j} \right)^{-1} \boldsymbol{X} ^\top _{-j} \boldsymbol{y}  + \boldsymbol{x} ^\top _j \boldsymbol{y}   \right) \\
+&amp;= \frac{1}{k} \left(- \boldsymbol{x}_j^{\top}\boldsymbol{H} _{-j} \boldsymbol{y}  + \boldsymbol{x} ^\top _j \boldsymbol{y}   \right) \\
+&amp;= \frac{1}{k} \boldsymbol{x}_j ^\top \left(\boldsymbol{I}_{n} - \boldsymbol{H} _{-j}   \right) \boldsymbol{y} \\
+&amp;= \frac{1}{k}  \hat{\boldsymbol{u}} ^\top \boldsymbol{y} \\
+\end{aligned}\end{split}\]</div>
+<p>The partialling out formula says</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\hat{\alpha}_1
+&amp;= \frac{\sum (\hat{u}_i - \bar{\hat{u}}_i)(y_i - \bar{y})}{\sum (\hat{u}_i - \bar{\hat{u}}_i)^2} \\
+&amp;= \frac{\sum \hat{u}_{i}y_i}{\sum \hat{u}_{i}^2} \qquad \because \bar{\hat{u}}_i = 0 \\
+&amp;= \frac{\hat{\boldsymbol{u} }^\top \boldsymbol{y} }{\hat{\boldsymbol{u} }^\top \hat{\boldsymbol{u} }} \\
+\end{aligned}\end{split}\]</div>
+<p>Note that <span class="math notranslate nohighlight">\(\hat{\boldsymbol{u} }^\top \hat{\boldsymbol{u} }= \boldsymbol{x}_j ^\top (\boldsymbol{I}  - \boldsymbol{H} _{-j})^2 \boldsymbol{x}_j = \boldsymbol{x}_j ^\top (\boldsymbol{I} -\boldsymbol{H} _{-j})\boldsymbol{x}_j = k\)</span></p>
+<p>Therefore, <span class="math notranslate nohighlight">\(\hat{\beta}_j = \hat{\alpha}_1\)</span>.</p>
+<p><span class="math notranslate nohighlight">\(\square\)</span></p>
+<p>Byproduct: since <span class="math notranslate nohighlight">\(\hat{u}_i\)</span> is actually constant (obtained from constant design matrix <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span>), we can obtain a convenient formula for <span class="math notranslate nohighlight">\(\hat{\beta}_j\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\operatorname{Var}\left( \hat{\beta}_j \right)
+&amp;= \operatorname{Var}\left( \frac{\sum \hat{u}_{i}y_i}{\sum \hat{u}_{i}^2} \right)\\
+&amp;= \frac{\sum \operatorname{Var} \left( \hat{u}_{i} y_i \right)}{SSR_j^2}\\
+&amp;= \frac{\sum \hat{u}_{i}^2 \operatorname{Var}\left( \varepsilon_i \right)}{SSR_j^2}\\
+\end{aligned}\end{split}\]</div>
+</div>
 </div>
 </div>
 <div class="section" id="exercise">
@@ -1454,7 +1534,7 @@ R^2 = \frac{\sum (\hat{y}_i - \bar{y})^2}{\sum (y_i - \bar{y})^2}
 </ul>
 </div>
 </li>
-<li><p>To compare the effects of two variable <span class="math notranslate nohighlight">\(X_j, X_k\)</span>, can we say they have the same effect since the confidence interval of <span class="math notranslate nohighlight">\(\beta_j, \beta_k\)</span> overlaps?</p>
+<li><p><em>To compare the effects of two variable <span class="math notranslate nohighlight">\(X_j, X_k\)</span>, can we say they have the same effect since the confidence interval of <span class="math notranslate nohighlight">\(\beta_j, \beta_k\)</span> overlaps?</em></p>
 <div class="dropdown seealso admonition">
 <p class="admonition-title"> <em>Solution</em></p>
 <p>No, since</p>
@@ -1464,7 +1544,7 @@ R^2 = \frac{\sum (\hat{y}_i - \bar{y})^2}{\sum (y_i - \bar{y})^2}
 </ul>
 </div>
 </li>
-<li><p><em>Does the partialling out method holds for <span class="math notranslate nohighlight">\(p \ge 3\)</span></em>?</p></li>
+<li><p><em>Does the partialling out method holds for <span class="math notranslate nohighlight">\(p \ge 3\)</span>?</em> Yes.</p></li>
 <li><p><em>How do you compare two linear models?</em></p>
 <div class="dropdown seealso admonition">
 <p class="admonition-title"> <em>Solution</em></p>

@@ -1,0 +1,1212 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Linear Programming &#8212; Data Science Handbook</title>
+    
+  <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+  <link rel="stylesheet"
+    href="../_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="../_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinx-book-theme.40e2e510f6b7d1648584402491bb10fe.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/style.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.d3f166471bb80abb5163.js">
+
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
+    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Graphs" href="61-graphs.html" />
+    <link rel="prev" title="Linear Algebra" href="21-linear-algebra.html" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+
+
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+<a class="navbar-brand text-wrap" href="../index.html">
+  
+  
+  <h1 class="site-logo" id="site-title">Data Science Handbook</h1>
+  
+</a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form>
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+    <ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../index.html">
+   Data Science Handbook
+  </a>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Foundations
+ </span>
+</p>
+<ul class="current nav sidenav_l1">
+ <li class="toctree-l1 current active collapsible-parent">
+  <a class="reference internal" href="00-math.html">
+   Math
+  </a>
+  <ul class="current collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="11-combinatorics.html">
+     Combinatorics
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="12-derangement.html">
+     Derangement
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="21-linear-algebra.html">
+     Linear Algebra
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     Linear Programming
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="61-graphs.html">
+     Graphs
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="90-puzzles.html">
+     Puzzles
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../12-probabilities/00-probabilities.html">
+   Probabilities
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/11-expectation-and-variance.html">
+     Expectation and Variance
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/13-correlation-and-dependence.html">
+     Correlation and Dependence
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/31-bayesian-theorem.html">
+     Bayesian’s Theorem
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/51-markov-chain.html">
+     Markov Chain
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/71-sampling.html">
+     Sampling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/90-multivariate-notations.html">
+     Multivariate Notations
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/91-large-sample-theory.html">
+     Large Sample Theory
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../13-statistics/00-statistics.html">
+   Statistics
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/11-sample-survey.html">
+     Sample Survey
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/13-randomized-trial.html">
+     Causality and Randomized Trial
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/21-hypothesis-testing.html">
+     Hypothesis Testing
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/25-two-sample-tests.html">
+     Two Sample Mean Tests
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/33-confusion-matrix.html">
+     Confusion Matrix
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/41-maximum-likelihood-estimation.html">
+     Maximum Likelihood Estimator
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/43-estimators-evaluation.html">
+     Estimators Evaluation
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../14-python/00-python.html">
+   Python
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../14-python/11-programming-tools.html">
+     Programmer tools
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../14-python/12-syntax.html">
+     Syntax
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../14-python/13-data-structure.html">
+     Data Structures
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../14-python/15-functional-programming.html">
+     Functional Programming
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../17-sql/00-sql.html">
+   SQL
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../17-sql/11-database.html">
+     Database
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../17-sql/12-relational-structure.html">
+     Relational Structure
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../17-sql/31-data-query.html">
+     Data Query
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../17-sql/33-data-manipulation.html">
+     Data Manipulation
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../19-miscellaneous/00-miscellaneous.html">
+   Miscellaneous
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../19-miscellaneous/11-latex.html">
+     LaTeX
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../19-miscellaneous/13-myst.html">
+     MyST Markdown
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Algorithms
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../20-algorithms-basics/00-algorithms-basics.html">
+   Algorithms Basics
+  </a>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../21-greedy-algorithms/00-greedy-algorithms.html">
+   Greedy Algorithms
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../21-greedy-algorithms/11-interval-scheduling.html">
+     Interval Scheduling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../21-greedy-algorithms/31-huffman-coding.html">
+     Huffman Coding
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../23-dynamic-programming/00-dynamic-programming.html">
+   Dynamic Programming
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/11-weighted-interval-scheduling.html">
+     Weighted Interval Scheduling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/13-longest-common-subsequence.html">
+     Longest Common Subsequence
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/15-longest-increasing-subsequence.html">
+     Longest Increasing Subsequence
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/17-largest-sum-subsequence.html">
+     Largest Sum Subsequence
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/31-knapsack.html">
+     Minimum Knapsack
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/51-chain-matrix-multiplication.html">
+     Chain Matrix Multiplication
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../25-graph-related/00-graph-related.html">
+   Graph Related
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/13-shortest-path.html">
+     Shortest Path
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/21-minimum-spanning-tree.html">
+     Minimum Spanning Tree
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/31-maximum-flow.html">
+     Maximum Flow
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/32-matching.html">
+     Matching
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/42-maximum-independent-set.html">
+     Maximum Independent Set in Trees
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/91-LP-max-flow-min-cut.html">
+     LP on Max-flow and Min-cut
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Machine Learning
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../30-ml-basics/00-ml-basics.html">
+   Machine Learning Basics
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../30-ml-basics/02-taxonomy.html">
+     Taxonomy
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../30-ml-basics/03-information-theory.html">
+     Information Theory
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../30-ml-basics/05-kernels.html">
+     Kernels
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../30-ml-basics/11-missing-values.html">
+     Missing Values
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../31-regression/00-regression.html">
+   Regression
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/11-lm-estimation.html">
+     Linear Regression - Estimation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/12-lm-inference.html">
+     Linear Regression - Inference
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/13-lm-extension.html">
+     Linear Regression - Extension
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/21-generalized-linear-models.html">
+     Generalized Linear Models
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/22-logistic-regression.html">
+     Logistic Regression
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/23-multinomial-logitsitc.html">
+     Multinomial Logistic Regression
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/24-ordinal-logistic.html">
+     Ordinal Logistic Regression
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/25-poisson-regression.html">
+     Poisson Regression
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../32-classification/00-classification.html">
+   Classification
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../32-classification/11-support-vector-machine.html">
+     Support Vector Machine
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../32-classification/21-decision-tree.html">
+     Decision Tree
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../33-dimensionality-reduction/00-dimensionality-reduction.html">
+   Dimensionality Reduction
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/11-principal-component-analysis.html">
+     Principal Component Analysis
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/13-canonical-correlation-analysis.html">
+     Canonical Corerlation Analysis
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/21-multidimensional-scaling.html">
+     Multidimensional Scaling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/23-graph-based-spectral-methods.html">
+     Graph-based Spectral Methods
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/25-t-SNE.html">
+     SNE and
+     <span class="math notranslate nohighlight">
+      \(t\)
+     </span>
+     -SNE
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/31-kernel-pca.html">
+     Kernel PCA
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/32-kernel-cca.html">
+     Kernel CCA
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../34-clustering/00-clustering.html">
+   Clustering
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../34-clustering/11-k-means.html">
+     <span class="math notranslate nohighlight">
+      \(k\)
+     </span>
+     -means clustering
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../34-clustering/13-agglomerative-methods.html">
+     Agglomerative Methods
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../34-clustering/31-spectral-clustering.html">
+     Spectral Clustering
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../34-clustering/41-gaussian-mixtures.html">
+     Gaussian Mixtures
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../35-graphical-models/00-graphical-models.html">
+   Graphical Models
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../35-graphical-models/11-hidden-markov-models.html">
+     Hidden Markov Models
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../35-graphical-models/31-topic-models.html">
+     Topic Models
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../35-graphical-models/33-language-models.html">
+     Language Models
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../37-neural-networks/00-neural-networks.html">
+   Neural Networks
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/01-stochastic-gradient-descent.html">
+     Stochastic Gradient Descent
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/03-trainability.html">
+     Trainability
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/05-regularization.html">
+     Regularization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/11-autoencoders.html">
+     Autoencoders
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/13-variational-autoencoders.html">
+     Variational Autoencoders
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/31-sequential-models.html">
+     Sequential Models
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/41-GAN.html">
+     Generative Adversarial Networks
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../38-ml-for-graph-data/00-ml-for-graph-data.html">
+   Machine Learning for Graph Data
+  </a>
+ </li>
+</ul>
+
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="row topbar fixed-top container-xl">
+    <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show">
+    </div>
+    <div class="col pl-2 topbar-main">
+        
+        <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+            data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+            aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+            title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+            <i class="fas fa-bars"></i>
+            <i class="fas fa-arrow-left"></i>
+            <i class="fas fa-arrow-up"></i>
+        </button>
+        
+        
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../_sources/11-math/51-linear-programming.md"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.md</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+        <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/dennissxz/data-science-handbook"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/dennissxz/data-science-handbook/issues/new?title=Issue%20on%20page%20%2F11-math/51-linear-programming.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+
+        <!-- Full screen (wrap in <a> to have style consistency -->
+        <a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+                data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+                title="Fullscreen mode"><i
+                    class="fas fa-expand"></i></button></a>
+
+        <!-- Launch buttons -->
+
+    </div>
+
+    <!-- Table of contents -->
+    <div class="d-none d-md-block col-md-2 bd-toc show">
+        
+        <div class="tocsection onthispage pt-5 pb-3">
+            <i class="fas fa-list"></i> Contents
+        </div>
+        <nav id="bd-toc-nav">
+            <ul class="nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#canonical-form">
+   Canonical Form
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#examples">
+   Examples
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#line-fitting">
+     Line Fitting
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#binary-classifier">
+     Binary Classifier
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#separable">
+       Separable
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#non-separable">
+       Non-Separable
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#non-linear-separable">
+       Non-linear Separable
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#duality">
+   Duality
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#primal-and-dual">
+     Primal and Dual
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#duality-theorem">
+     Duality Theorem
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#relaxation">
+   Relaxation
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#integrality-gap">
+     Integrality Gap
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#algorithms">
+   Algorithms
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ellipsoid-methods">
+     Ellipsoid Methods
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#separation-oracle">
+     Separation oracle
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+        </nav>
+        
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="linear-programming">
+<h1>Linear Programming<a class="headerlink" href="#linear-programming" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="canonical-form">
+<h2>Canonical Form<a class="headerlink" href="#canonical-form" title="Permalink to this headline">¶</a></h2>
+<p>A linear programming problem consists of three elements</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(n\)</span> variables <span class="math notranslate nohighlight">\(x_1, x_2, \ldots, x_n\)</span></p></li>
+<li><p>one objective function that is linear in variables</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+\max/\min \ c_1 x_1 + c_2 x_2 \ldots c_n x_n
+\]</div>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(m\)</span> constraints that are linear in variables, for <span class="math notranslate nohighlight">\(j = 1, 2, \ldots, m\)</span></p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[a_{j1}x_1 + a_{j2}x_2 \ldots + a_{jn}x_n \ (\ge \text{or}  \le \text{or}  =) \ b_j\]</div>
+<div class="margin sidebar">
+<p class="sidebar-title">Integer programming</p>
+<p>Sometimes we want <span class="math notranslate nohighlight">\(x_i\)</span> to have integer value, then it’s called integer programming. But we cannot solve this kind of problem efficiently.</p>
+</div>
+<p>The canonical form of a linear programming is</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\max &amp;&amp; \sum_{i=1}^n c_i x_i &amp;&amp;&amp; \\
+\text{s.t.} &amp;&amp; \sum_{i=1}^n a_{ji} x_i &amp;\le b_j &amp;&amp;\forall\ 1 \le j \le m\\
+&amp;&amp; x_i &amp;\ge 0 &amp;&amp;\forall\ 1 \le i \le n \\
+\end{aligned}\end{split}\]</div>
+<p>Or in matrix form,</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\max
+&amp;&amp; \boldsymbol{c} ^\top \boldsymbol{x} &amp;&amp; \\
+\text{s.t.}
+&amp;&amp;\boldsymbol{A} \boldsymbol{x} &amp;\le \boldsymbol{b} &amp;\\
+&amp;&amp; \boldsymbol{x} &amp;\ge \boldsymbol{0} &amp;
+\end{aligned}\end{split}\]</div>
+<p>To convert a problem into the canonical form,</p>
+<ol class="simple">
+<li><p>if it’s <span class="math notranslate nohighlight">\(\min\)</span>, negate the objective function to get <span class="math notranslate nohighlight">\(\max\)</span></p></li>
+<li><p>replace <span class="math notranslate nohighlight">\(=\)</span> with simultaneous <span class="math notranslate nohighlight">\(\ge\)</span> and <span class="math notranslate nohighlight">\(\le\)</span>.</p></li>
+<li><p>replace <span class="math notranslate nohighlight">\(\ge\)</span> with <span class="math notranslate nohighlight">\(\le\)</span> by negation.</p></li>
+<li><p>if some variable <span class="math notranslate nohighlight">\(x_i\)</span> is unconstrained, replace <span class="math notranslate nohighlight">\(x_i\)</span> with by <span class="math notranslate nohighlight">\(x_i^+ - x_i^-\)</span>, where the two variables <span class="math notranslate nohighlight">\(x_i^+,x_i^- \ge 0\)</span>.</p></li>
+</ol>
+<div class="note admonition">
+<p class="admonition-title"> Geometry’s perspective</p>
+<p>From geometry’s perspective, every constraint is a hyperplane that partitions the space into half-spaces. The intersection of half-spaces defined by the constraints is called a feasible region, usually it is a polyhedron. If the feasible region is bounded, then it’s a polytope.</p>
+</div>
+</div>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="line-fitting">
+<h3>Line Fitting<a class="headerlink" href="#line-fitting" title="Permalink to this headline">¶</a></h3>
+<dl class="simple myst">
+<dt>Input</dt><dd><p><span class="math notranslate nohighlight">\(n\)</span> points <span class="math notranslate nohighlight">\(\boldsymbol{x}_i \in \mathbb{R}^d\)</span> with label <span class="math notranslate nohighlight">\(y_i \in \mathbb{R}\)</span>.</p>
+</dd>
+</dl>
+<div class="margin sidebar">
+<p class="sidebar-title">Mind the notation</p>
+<p>Here <span class="math notranslate nohighlight">\(\boldsymbol{x}_i\)</span> are constant data, while <span class="math notranslate nohighlight">\(a_j\)</span>’s and <span class="math notranslate nohighlight">\(b\)</span> are variables.</p>
+</div>
+<dl class="simple myst">
+<dt>Objective</dt><dd><p>Find a linear function <span class="math notranslate nohighlight">\(h: \mathbb{R} ^d \rightarrow \mathbb{R}\)</span> parameterized by <span class="math notranslate nohighlight">\(\boldsymbol{a} \in \mathbb{R}^d\)</span> and <span class="math notranslate nohighlight">\(b \in \mathbb{R}\)</span>, such that the value <span class="math notranslate nohighlight">\(h(\boldsymbol{x}_i) = \boldsymbol{a} ^\top \boldsymbol{x}_i + b\)</span> is close to the label <span class="math notranslate nohighlight">\(y_i\)</span>.</p>
+</dd>
+</dl>
+<p>In other words, we want <span class="math notranslate nohighlight">\(h\)</span> to minimize the total error</p>
+<div class="math notranslate nohighlight">
+\[
+\sum_{i=1}^n \left\vert h(\boldsymbol{x}_i ) - y_i \right\vert
+\]</div>
+<p>To convert this problem into the canonical form of LP, we need to get rid of the absolute value operation. We introduce LP variables <span class="math notranslate nohighlight">\(\boldsymbol{z}_i\)</span> to represent the error terms.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+z_i &amp;\ge \boldsymbol{a} ^\top \boldsymbol{x}_i + b - y_i  \\
+z_i &amp;\ge - (\boldsymbol{a} ^\top  \boldsymbol{x}_i + b - y_i)
+\end{aligned}\end{split}\]</div>
+<p>The objective is to minimize <span class="math notranslate nohighlight">\(\sum_{i=1}^n z_i\)</span>.</p>
+<p>In all, the LP problem in the canonical form is</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\max
+&amp;&amp;- \sum_{i=1}^n z_i &amp;&amp; \\
+\text{s.t.}
+&amp;&amp;  z_i - \boldsymbol{a} ^\top \boldsymbol{x}_i - b &amp;\ge -y_i &amp;\forall\ 1 \le i \le n\\
+&amp;&amp;  z_i + \boldsymbol{a} ^\top \boldsymbol{x}_i + b &amp;\ge y_i &amp;\forall\ 1 \le i \le n\\
+\end{aligned}\end{split}\]</div>
+<p>with variables <span class="math notranslate nohighlight">\(\left\{ \boldsymbol{a} ,b , \boldsymbol{z}  \right\}\)</span>.</p>
+</div>
+<div class="section" id="binary-classifier">
+<h3>Binary Classifier<a class="headerlink" href="#binary-classifier" title="Permalink to this headline">¶</a></h3>
+<p>Now suppose the label is binary.</p>
+<dl class="simple myst">
+<dt>Input</dt><dd><p><span class="math notranslate nohighlight">\(n\)</span> points <span class="math notranslate nohighlight">\(\boldsymbol{x}_i \in \mathbb{R}^d\)</span> with label <span class="math notranslate nohighlight">\(y_i \in \left\{ -1, 1 \right\}\)</span>.</p>
+</dd>
+<dt>Objective</dt><dd><p>Find a linear function <span class="math notranslate nohighlight">\(h: \mathbb{R} ^d \rightarrow \mathbb{R}\)</span> parameterized by <span class="math notranslate nohighlight">\(\boldsymbol{a} \in \mathbb{R}^d\)</span> and <span class="math notranslate nohighlight">\(b \in \mathbb{R}\)</span>, such that the value <span class="math notranslate nohighlight">\(h(\boldsymbol{x}_i) = \boldsymbol{a} ^\top \boldsymbol{x}_i + b\)</span> has the same sign with <span class="math notranslate nohighlight">\(y_i\)</span>.</p>
+</dd>
+</dl>
+<p>Let <span class="math notranslate nohighlight">\(i^+\)</span> be the index of points with positive label <span class="math notranslate nohighlight">\(y_i = 1\)</span> and let <span class="math notranslate nohighlight">\(i^-\)</span> be the index of points with negative label <span class="math notranslate nohighlight">\(y_i = -1\)</span>. The objective is</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+h(\boldsymbol{x}_{i^+}) &amp;&gt; 0 &amp;&amp;\forall \ i^+\\
+h(\boldsymbol{x}_{i^-}) &amp;&lt; 0 &amp;&amp;\forall \ i^-\\
+\end{aligned}\end{split}\]</div>
+<div class="section" id="separable">
+<h4>Separable<a class="headerlink" href="#separable" title="Permalink to this headline">¶</a></h4>
+<p>We first assume such hyperplane exists, i.e. the two kinds of points are separable.</p>
+<p>To convert this to problem into the canonical form, we need to get rid of the <span class="math notranslate nohighlight">\(&gt;\)</span> and <span class="math notranslate nohighlight">\(&lt;\)</span> signs. We introduce a <strong>slack</strong> variable <span class="math notranslate nohighlight">\(\delta\)</span>. The new problem is</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\max &amp;&amp;\delta &amp;&amp; \\
+\text{s.t.}
+&amp;&amp;\  h(\boldsymbol{x}_{i^+}) - \delta &amp;\ge 0 &amp;&amp;\forall \ i^+\\
+&amp;&amp;\  h(\boldsymbol{x}_{i^-}) + \delta &amp;\le 0 &amp;&amp;\forall \ i^-\\
+\end{aligned}\end{split}\]</div>
+<p>with variables <span class="math notranslate nohighlight">\(\left\{ \boldsymbol{a} , b, \delta \right\}\)</span>.</p>
+<p>Actually the <span class="math notranslate nohighlight">\(\max\)</span> does not matter. If we can find a LP solution with <span class="math notranslate nohighlight">\(\delta &gt; 0\)</span>, then the original <span class="math notranslate nohighlight">\(&gt;\)</span> and <span class="math notranslate nohighlight">\(&lt;\)</span> conditions must hold.</p>
+</div>
+<div class="section" id="non-separable">
+<h4>Non-Separable<a class="headerlink" href="#non-separable" title="Permalink to this headline">¶</a></h4>
+<p>If there is no hyperplane to perfectly separate the points, we introduce buffer, say <span class="math notranslate nohighlight">\(d&gt;0\)</span>, such that beyond the buffer region all points are correctly classified. That is, the following conditions always holds</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+i \in \left\{ i^+ \right\} \quad \forall \ i: h(\boldsymbol{x}_{i}) &amp;\ge d \\
+i \in \left\{ i^- \right\} \quad \forall \ i: h(\boldsymbol{x}_{i}) &amp;\le -d \\
+\end{aligned}\end{split}\]</div>
+<p>Note that if there exists a solution <span class="math notranslate nohighlight">\(\left\{ \boldsymbol{a} ,b \right\}\)</span>, then we can scale the solution down by <span class="math notranslate nohighlight">\(\frac{1}{d}\)</span> so the solution remains valid. So w.l.o.g., the buffer can simply be <span class="math notranslate nohighlight">\(d=1\)</span>.</p>
+<p>Then, we introduce an error term to quantify the mis-classification error. It measures the absolute deviation between the value <span class="math notranslate nohighlight">\(h(\boldsymbol{x}_i )\)</span> to the buffer line <span class="math notranslate nohighlight">\((1/-1)\)</span> in its correct region.</p>
+<ul class="simple">
+<li><p>If a data point with index <span class="math notranslate nohighlight">\(i^+\)</span> is mis-classified, the absolute deviation is <span class="math notranslate nohighlight">\(1-h(\boldsymbol{x}_i)\)</span>.</p></li>
+<li><p>If a data point with index <span class="math notranslate nohighlight">\(i^-\)</span> is mis-classified, the absolute deviation is <span class="math notranslate nohighlight">\(h(\boldsymbol{x}_i) - (-1) = 1+ h(\boldsymbol{x}_i)\)</span>.</p></li>
+</ul>
+<p>In sum, we have</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+e_i = \left\{\begin{array}{ll}
+1 - h(\boldsymbol{x}_i) &amp; \text { for } i \in \left\{ i^+ \right\} \text{ but } h(\boldsymbol{x}_i) &lt; -1 \\
+1 + h(\boldsymbol{x}_i) &amp; \text { for } i \in \left\{ i^- \right\} \text{ but } h(\boldsymbol{x}_i) &gt; 1 \\
+\end{array}\right.
+\end{split}\]</div>
+<p>To incorporate the correctly classified points into account, the error is</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+e_i = \left\{\begin{array}{ll}
+\max \left\{ 1 - h(\boldsymbol{x}_i), 0 \right\} &amp; \text { for } i \in \left\{ i^+ \right\} \\
+\max \left\{ 1 + h(\boldsymbol{x}_i), 0 \right\} &amp; \text { for } i \in \left\{ i^- \right\} \\
+\end{array}\right.
+\end{split}\]</div>
+<p>The objective is to minimize the total mis-classification error <span class="math notranslate nohighlight">\(\sum {e_i}\)</span>.</p>
+<p>The original conditions for the correctly classified points</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+i \in \left\{ i^+ \right\} \quad \forall \ i: h(\boldsymbol{x}_{i}) &amp;\ge 1 \\
+i \in \left\{ i^- \right\} \quad \forall \ i: h(\boldsymbol{x}_{i}) &amp;\le -1 \\
+\end{aligned}\end{split}\]</div>
+<p>now can be rewritten as</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+e_{i^+} + h(\boldsymbol{x}_{i^+}) &amp;\ge 1 \quad &amp;&amp;\forall \ i^+\\
+e_{i^-} - h(\boldsymbol{x}_{i^+}) &amp;\le -1 \quad &amp;&amp;\forall \ i^-\\
+\end{aligned}\end{split}\]</div>
+<p>which can be interpreted as we pull the mis-classified points back into their correct region.</p>
+<p>Therefore, the LP problem is</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\max &amp;&amp; -\sum_{i} e_i &amp;&amp; \\
+\text{s.t.}
+&amp;&amp; e_{i^+} +  h(\boldsymbol{x}_{i^+}) &amp;\ge 1 &amp;&amp;\forall \ i^+\\
+&amp;&amp; e_{i^-} - h(\boldsymbol{x}_{i^+}) &amp;\le -1 &amp;&amp;\forall \ i^-\\
+&amp;&amp; e_i &amp;\ge 0 &amp;&amp;\forall \ i\\
+\end{aligned}\end{split}\]</div>
+<p>with variables <span class="math notranslate nohighlight">\(\left\{ \boldsymbol{a} ,b , \boldsymbol{e}  \right\}\)</span>.</p>
+</div>
+<div class="section" id="non-linear-separable">
+<h4>Non-linear Separable<a class="headerlink" href="#non-linear-separable" title="Permalink to this headline">¶</a></h4>
+<p>If the two kinds of points are non-linearly separable, we can consider feature transformation <span class="math notranslate nohighlight">\(\boldsymbol{x}  \rightarrow \boldsymbol{\phi}(\boldsymbol{x} )\)</span> and then solve the LP problem.</p>
+<p>The feature transformation can involve non-linear terms such as <span class="math notranslate nohighlight">\(x_1^2, x_1 x_2\)</span> etc.</p>
+</div>
+</div>
+</div>
+<div class="section" id="duality">
+<h2>Duality<a class="headerlink" href="#duality" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="primal-and-dual">
+<h3>Primal and Dual<a class="headerlink" href="#primal-and-dual" title="Permalink to this headline">¶</a></h3>
+<p>Consider an LP minimization problem of the form</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\min &amp;&amp; f(\boldsymbol{x} ) &amp;= \boldsymbol{c}^{\top} \boldsymbol{x} \\
+\text { s.t.} &amp;&amp; \boldsymbol{A} \boldsymbol{x} &amp;\ge \boldsymbol{b} \\
+&amp;&amp; \boldsymbol{x} &amp;\geq \mathbf{0}
+\end{aligned}\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\boldsymbol{A} \in \mathbb{R} ^{m \times n}, \boldsymbol{b} \in \mathbb{R} ^{m}\)</span>.</p>
+<p>Before solving it, we consider a lower bound <span class="math notranslate nohighlight">\(\ell\)</span> for <span class="math notranslate nohighlight">\(f(\boldsymbol{x} ^*)\)</span>, by linearly combine the constraints <span class="math notranslate nohighlight">\(\boldsymbol{a} _{1 \cdot} ^\top \boldsymbol{x} \ge b_1\)</span>, <span class="math notranslate nohighlight">\(\boldsymbol{a} _{2 \cdot} ^\top \boldsymbol{x} \ge b_2\)</span>, etc, where <span class="math notranslate nohighlight">\(\boldsymbol{a} _{i\cdot}\)</span> is <span class="math notranslate nohighlight">\(i\)</span>-th row of <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span>. Let <span class="math notranslate nohighlight">\(y_1, y_2, \ldots\)</span> be the corresponding non-negative multipliers. The linear combination of the constraints is</p>
+<div class="math notranslate nohighlight">
+\[
+y_1(\boldsymbol{a} _{1 \cdot} ^\top \boldsymbol{x} ) + y_2(\boldsymbol{a} _{2 \cdot} ^\top \boldsymbol{x} ) + \ldots + y_m (\boldsymbol{a} _{m \cdot} ^\top \boldsymbol{x}) \ge y_1 b_1 + y_2 b_2 + \ldots + y_m b_m
+\]</div>
+<p>or</p>
+<div class="math notranslate nohighlight">
+\[
+\boldsymbol{y} ^\top \boldsymbol{A} \boldsymbol{x} \ge \boldsymbol{y} ^\top \boldsymbol{b}
+\]</div>
+<p>If the LHS’s coefficients of <span class="math notranslate nohighlight">\(x_i\)</span> is <strong>smaller</strong> than <span class="math notranslate nohighlight">\(c_i\)</span>, i.e., <span class="math notranslate nohighlight">\(\sum_{j=1}^m y_j a_{ji} = \boldsymbol{a} _{\cdot i} ^\top \boldsymbol{y} &lt; c_i\)</span> where <span class="math notranslate nohighlight">\(\boldsymbol{a} _{\cdot j}\)</span> is the <span class="math notranslate nohighlight">\(j\)</span>-th column of <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span>, then due to non-negativity of <span class="math notranslate nohighlight">\(x_i\)</span>, we always have</p>
+<div class="math notranslate nohighlight">
+\[\boldsymbol{c}  ^\top \boldsymbol{x} \ge [\boldsymbol{a} _{\cdot 1} ^\top \boldsymbol{y} \quad \boldsymbol{a} _{\cdot 2} ^\top \boldsymbol{y} \quad \ldots \quad \boldsymbol{a} _{\cdot m} ^\top \boldsymbol{y}] \ \boldsymbol{x} = \boldsymbol{y} ^\top \boldsymbol{A} \boldsymbol{x}  \ge \boldsymbol{b} ^\top \boldsymbol{y}\]</div>
+<p>So <span class="math notranslate nohighlight">\(\boldsymbol{b} ^\top \boldsymbol{y}\)</span> is always a lower bound of <span class="math notranslate nohighlight">\(f(\boldsymbol{x})\)</span>. Moreover, we want the lower bound to be as larger as possible so that we can have a good estimate of the minimum value  <span class="math notranslate nohighlight">\(\min _ \boldsymbol{c} \boldsymbol{c} ^\top \boldsymbol{x}\)</span>. To sum up, we want to find <span class="math notranslate nohighlight">\(\boldsymbol{y}\)</span> of the following maximization problem</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\max &amp;&amp; g(\boldsymbol{y} ) &amp;= \boldsymbol{b}^{\top} \boldsymbol{y} \\
+\text { s.t. } &amp;&amp; \boldsymbol{A} ^\top  \boldsymbol{y} &amp;\le \boldsymbol{c} \\
+&amp;&amp; \boldsymbol{y} &amp;\geq \mathbf{0}
+\end{aligned}\end{split}\]</div>
+<p>Any solution to this <span class="math notranslate nohighlight">\(\max g(\boldsymbol{y})\)</span> problem provides a lower bound of <span class="math notranslate nohighlight">\(f(\boldsymbol{x} ^*)\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[
+g(\boldsymbol{y}) \le f(\boldsymbol{x}^*)
+\]</div>
+<p>The problem <span class="math notranslate nohighlight">\(\max f(\boldsymbol{x} )\)</span> is called <strong>primal</strong>, the problem <span class="math notranslate nohighlight">\(\min g(\boldsymbol{y} )\)</span> is called <strong>dual</strong>.</p>
+<p>Likewise, we can find an upper bound of <span class="math notranslate nohighlight">\(g(\boldsymbol{y} )\)</span> by similar operation. Denote the multipliers by <span class="math notranslate nohighlight">\(\boldsymbol{z}\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\min &amp;&amp; h(\boldsymbol{z} ) &amp;= \boldsymbol{c}^{\top} \boldsymbol{z} \\
+\text { s.t. } &amp;&amp; \boldsymbol{A} \boldsymbol{z} &amp;\ge \boldsymbol{b} \\
+&amp;&amp; \boldsymbol{z} &amp;\geq \mathbf{0}
+\end{aligned}\end{split}\]</div>
+<p>Note that <span class="math notranslate nohighlight">\(h(\boldsymbol{z} )\)</span> has exactly the same form with <span class="math notranslate nohighlight">\(f(\boldsymbol{x} )\)</span>. Hence, the dual of dual is primal.</p>
+</div>
+<div class="section" id="duality-theorem">
+<h3>Duality Theorem<a class="headerlink" href="#duality-theorem" title="Permalink to this headline">¶</a></h3>
+<p>The inequality <span class="math notranslate nohighlight">\(g(\boldsymbol{y}) \le f(\boldsymbol{x})\)</span> is called weak duality theorem.</p>
+<p>The equality <span class="math notranslate nohighlight">\(g(\boldsymbol{y}^*) = f(\boldsymbol{x}^*)\)</span> is called the strong duality theorem.</p>
+</div>
+</div>
+<div class="section" id="relaxation">
+<h2>Relaxation<a class="headerlink" href="#relaxation" title="Permalink to this headline">¶</a></h2>
+<dl class="simple myst">
+<dt>Definition (Relaxation)</dt><dd><p>Consider two problem <span class="math notranslate nohighlight">\(P\)</span> and <span class="math notranslate nohighlight">\(P_r\)</span>, if any solution to <span class="math notranslate nohighlight">\(P\)</span> corresponds to a solution to <span class="math notranslate nohighlight">\(P_r\)</span> with the <strong>same</strong> value of the objective function in <span class="math notranslate nohighlight">\(P\)</span>, then we say problem <span class="math notranslate nohighlight">\(P_r\)</span> is a relaxation to problem <span class="math notranslate nohighlight">\(P\)</span>. In this sense, <span class="math notranslate nohighlight">\(OPT_r\)</span> is always better than or equal to <span class="math notranslate nohighlight">\(OPT\)</span>.</p>
+</dd>
+</dl>
+<div class="section" id="integrality-gap">
+<h3>Integrality Gap<a class="headerlink" href="#integrality-gap" title="Permalink to this headline">¶</a></h3>
+<dl class="simple myst">
+<dt>Definition (Integrality Gap)</dt><dd><p>Integrality gap measures the largest deviation between the objective value of a fractional solution and that of a integral solution.</p>
+<ul class="simple">
+<li><p>For minimization problem, it is <span class="math notranslate nohighlight">\(\frac{OPT}{OPT_{LP}} \ge 1\)</span>,</p></li>
+<li><p>For maximization problem, it is <span class="math notranslate nohighlight">\(\frac{OPT_{LP}}{OPT} \ge 1\)</span>,</p></li>
+</ul>
+<p>If the gap is one, then an optimal integral solution and an optimal fractional solution gives the same objective value.</p>
+</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="algorithms">
+<h2>Algorithms<a class="headerlink" href="#algorithms" title="Permalink to this headline">¶</a></h2>
+<p>In every LP, one of the following holds</p>
+<ul class="simple">
+<li><p>no feasible solution</p></li>
+<li><p>finite optimal solutions</p></li>
+<li><p>optimal solution is unbounded</p></li>
+</ul>
+<p>There are many algorithms to find a solution.</p>
+<p>Let <span class="math notranslate nohighlight">\(L\)</span> be the maximal coefficients.</p>
+<p>Ellipsoid method <span class="math notranslate nohighlight">\(O(n^b L)\)</span>. Slow but useful.</p>
+<p>Interior point method <span class="math notranslate nohighlight">\(O(n^{3.5}L)\)</span>.</p>
+<div class="section" id="ellipsoid-methods">
+<h3>Ellipsoid Methods<a class="headerlink" href="#ellipsoid-methods" title="Permalink to this headline">¶</a></h3>
+<p>Produces a feasible solution to the LP if it exists (not optimal), else return “no feasible solution”.</p>
+<p>To find an optimal solution, we can add a constraint <span class="math notranslate nohighlight">\(f^*\)</span> on the objective function <span class="math notranslate nohighlight">\(f \le f^*\)</span>, and see when will it finds a feasible solution.</p>
+<p><span class="math notranslate nohighlight">\(1 \ge y_e\)</span>?</p>
+<ul class="simple">
+<li><p>Start:</p>
+<ul>
+<li><p>Ellipsoid <span class="math notranslate nohighlight">\(E_0\)</span> containing the feasible region</p></li>
+</ul>
+</li>
+<li><p>Iterations:</p>
+<ul>
+<li><p>Let <span class="math notranslate nohighlight">\(E_i\)</span> be current ellipsoid containing the feasible region.</p></li>
+<li><p>Let <span class="math notranslate nohighlight">\(x_i\)</span> be the center of the ellipsoid</p></li>
+<li><p>If <span class="math notranslate nohighlight">\(\boldsymbol{x}_i\)</span> is not a feasible solution, and if the algorithm is given LP-constraint <span class="math notranslate nohighlight">\(x_i\)</span> violate, the algorithm produces ellipsoid <span class="math notranslate nohighlight">\(E_{i+1}\)</span> containing the feasible region. Note that <span class="math notranslate nohighlight">\(\operatorname{vol}(E_{i+1}) \le \operatorname{vol}(E_i) \left( 1 - \frac{1}{\operatorname{poly}(n) }  \right)\)</span> where <span class="math notranslate nohighlight">\(n\)</span> is the number of variables.</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="separation-oracle">
+<h3>Separation oracle<a class="headerlink" href="#separation-oracle" title="Permalink to this headline">¶</a></h3>
+<p>Separation oracle for an LP is an efficient algorithm that, given a point <span class="math notranslate nohighlight">\(\boldsymbol{x} \in \mathbb{R} ^n\)</span>, either</p>
+<ul class="simple">
+<li><p>return True if it is a feasible solution</p></li>
+<li><p>or produces an LP-constraint that <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> violates</p></li>
+</ul>
+<p>If <span class="math notranslate nohighlight">\(\operatorname{vol}(\operatorname{E}\left( _0 \right)) \le 2 ^{\operatorname{poly} (n)}\)</span> and feasible region has volume <span class="math notranslate nohighlight">\(\ge \frac{1}{2^{\operatorname{poly}(n)}}\)</span>. After <span class="math notranslate nohighlight">\(\operatorname{poly}(n)}\)</span> iterations ellipsoids terminates with a solution.</p>
+<p>The constraints are</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\sum_{e} c(e) y_e &amp;\le c^* \\
+y_e &amp;\in [0,1]\quad \forall e \in E \\
+\sum_{e \in E(P)} y_e &amp;\ge 1 \quad \forall P \in \mathcal{P}\\
+\end{aligned}\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathcal{P}\)</span> is the collection of <span class="math notranslate nohighlight">\(s-t\)</span> paths. To check <span class="math notranslate nohighlight">\(\sum_{e \in E(P)} y_e \ge 1\)</span> for all <span class="math notranslate nohighlight">\(P \in \mathcal{P}\)</span>, we can check the shortest path length, by running Dijkstra algorithm.</p>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./11-math"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        </div>
+    </div>
+    
+    
+    <div class='prev-next-bottom'>
+        
+    <a class='left-prev' id="prev-link" href="21-linear-algebra.html" title="previous page">Linear Algebra</a>
+    <a class='right-next' id="next-link" href="61-graphs.html" title="next page">Graphs</a>
+
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By Dennis Zheng<br/>
+        
+            &copy; Copyright 2020.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+
+    
+  <script src="../_static/js/index.d3f166471bb80abb5163.js"></script>
+
+
+    
+  </body>
+</html>

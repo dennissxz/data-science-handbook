@@ -120,8 +120,8 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../11-math/51-optimization.html">
-     Optimization
+    <a class="reference internal" href="../11-math/51-linear-programming.html">
+     Linear Programming
     </a>
    </li>
    <li class="toctree-l2">
@@ -401,6 +401,11 @@
    <li class="toctree-l2">
     <a class="reference internal" href="../25-graph-related/42-maximum-independent-set.html">
      Maximum Independent Set in Trees
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/91-LP-max-flow-min-cut.html">
+     LP on Max-flow and Min-cut
     </a>
    </li>
   </ul>
@@ -1005,10 +1010,19 @@
 &amp;= \sigma^2 \left[ (\boldsymbol{X} ^\top \boldsymbol{X} )^{-1} \right]_{[j,j]} \\
 &amp;= \sigma^2 \frac{1}{1- R^2_{j}} \frac{1}{\sum_i (x_{ij} - \bar{x}_j)^2} \\
 &amp;= \sigma^2 \frac{TSS_j}{RSS_j} \frac{1}{TSS_j} \\
-&amp;= \sigma^2 \frac{1}{\sum_i(\hat{x}_{ij} - x_{ij})} \\
+&amp;= \sigma^2 \frac{1}{\sum_i(\hat{x}_{ij} - x_{ij})^2} \\
 \end{align}\end{split}\]</div>
 <p>where <span class="math notranslate nohighlight">\(R_j^2\)</span>, <span class="math notranslate nohighlight">\(RSS_j\)</span>, <span class="math notranslate nohighlight">\(TSS_j\)</span>, and <span class="math notranslate nohighlight">\(\hat{x}_{ij}\)</span> are the corresponding representatives when we regress <span class="math notranslate nohighlight">\(X_j\)</span> over all other explanatory variables.</p>
-<p>Note that the value of <span class="math notranslate nohighlight">\(R^2\)</span> when we regressing <span class="math notranslate nohighlight">\(X_1\)</span> to an constant intercept is 0. So we have the particular result below.</p>
+<p>Note that the value of <span class="math notranslate nohighlight">\(R^2\)</span> when we regressing <span class="math notranslate nohighlight">\(X_1\)</span> to an constant intercept is 0. So we have the particular result for simple linear regression.</p>
+<p>More generally, for the heteroscedasticity case, let <span class="math notranslate nohighlight">\(\hat{u}_i = \hat{x}_{ij} - x_{ij}\)</span></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\operatorname{Var}\left( \hat{\beta}_j \right)
+&amp;= \operatorname{Var}\left( \frac{\sum \hat{u}_{i}y_i}{\sum \hat{u}_{i}^2} \right)\\
+&amp;= \frac{\sum \operatorname{Var} \left( \hat{u}_{i} y_i \right)}{SSR_j^2}\\
+&amp;= \frac{\sum \hat{u}_{i}^2 \operatorname{Var}\left( \varepsilon_i \right)}{SSR_j^2}\\
+\end{aligned}\end{split}\]</div>
+<p>For derivation, see <a class="reference internal" href="11-lm-estimation.html#lm-partialling-out"><span class="std std-ref">partialling out</span></a>.</p>
 </div>
 <p>When <span class="math notranslate nohighlight">\(p=2\)</span>, the inverse <span class="math notranslate nohighlight">\((\boldsymbol{X} ^\top \boldsymbol{X} )^\top\)</span> is</p>
 <div class="math notranslate nohighlight">

@@ -85,12 +85,26 @@ $$\begin{align}
 &= \sigma^2 \left[ (\boldsymbol{X} ^\top \boldsymbol{X} )^{-1} \right]_{[j,j]} \\
 &= \sigma^2 \frac{1}{1- R^2_{j}} \frac{1}{\sum_i (x_{ij} - \bar{x}_j)^2} \\
 &= \sigma^2 \frac{TSS_j}{RSS_j} \frac{1}{TSS_j} \\
-&= \sigma^2 \frac{1}{\sum_i(\hat{x}_{ij} - x_{ij})} \\
+&= \sigma^2 \frac{1}{\sum_i(\hat{x}_{ij} - x_{ij})^2} \\
 \end{align}$$
 
 where $R_j^2$, $RSS_j$, $TSS_j$, and $\hat{x}_{ij}$ are the corresponding representatives when we regress $X_j$ over all other explanatory variables.
 
-Note that the value of $R^2$ when we regressing $X_1$ to an constant intercept is 0. So we have the particular result below.
+Note that the value of $R^2$ when we regressing $X_1$ to an constant intercept is 0. So we have the particular result for simple linear regression.
+
+More generally, for the heteroscedasticity case, let $\hat{u}_i = \hat{x}_{ij} - x_{ij}$
+
+$$\begin{aligned}
+\operatorname{Var}\left( \hat{\beta}_j \right)
+&= \operatorname{Var}\left( \frac{\sum \hat{u}_{i}y_i}{\sum \hat{u}_{i}^2} \right)\\
+&= \frac{\sum \operatorname{Var} \left( \hat{u}_{i} y_i \right)}{SSR_j^2}\\
+&= \frac{\sum \hat{u}_{i}^2 \operatorname{Var}\left( \varepsilon_i \right)}{SSR_j^2}\\
+\end{aligned}$$
+
+For derivation, see [partialling out](lm-partialling-out).
+
+
+
 :::
 
 

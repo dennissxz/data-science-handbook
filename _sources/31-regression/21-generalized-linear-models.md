@@ -434,10 +434,20 @@ Definition (Null deviance)
 : Null deviance is defined as
 
   $$
-  D(\boldsymbol{y},\bar{\boldsymbol{y}})=-2\left[\ell(\bar{\boldsymbol{y}}\vert\boldsymbol{y})-\ell(\boldsymbol{y}\vert\boldsymbol{y})\right]
+  D(\tilde{\boldsymbol{u}},\bar{\boldsymbol{y}})=-2\left[\ell(\bar{\boldsymbol{y}}\vert\boldsymbol{y})-\ell(\tilde{\boldsymbol{\mu} }\vert\boldsymbol{y})\right]
   $$
 
   That is, all mean estimates has the same value $\hat{\mu}_i = \bar{y}$.
+
+In sum, deviance is the $2$ times the distance from log-likelihood of some estimate $\hat{\boldsymbol{\mu}}$ to the log-likelihood of the saturated estimate $\tilde{\boldsymbol{\mu} } = \boldsymbol{y}$, as illustrated below.
+
+:::{figure} glm-deviance-likelihood
+<img src="../imgs/glm-deviance-likelihood.png" width = "50%" alt=""/>
+
+Likelihood curve and deviance computation for saturated model $\boldsymbol{\mu}_{\text{saturated} } = \tilde{\boldsymbol{\mu}} = \boldsymbol{y}$, some model $\hat{\boldsymbol{\mu} }$, and null model $\boldsymbol{\mu}_{\text{null} } = \bar{\boldsymbol{y}}$
+:::
+
+
 
 Example (Deviance for Normal with $\sigma=1$)
 : The deviance for normal distribution is
@@ -482,6 +492,14 @@ G^{2}(M_{r}\vert M_f) & =D(\boldsymbol{y},\hat{\boldsymbol{\mu}}_{r})-D(\boldsym
 \end{aligned}$$
 
 Note the **reduced** model has a **larger** deviance so $D(\boldsymbol{y},\hat{\boldsymbol{\mu}}_{r})>D(\boldsymbol{y},\hat{\boldsymbol{\mu}}_{f})$. This is analogous to the fact that a reduced model has a larger $RSS$ in [linear models](lm-rss-nonincreasing).
+
+:::{figure} glm-deviance-test
+<img src="../imgs/glm-deviance-test.png" width = "50%" alt=""/>
+
+The likelihood test statistic $G^{2}(M_{r}\vert M_f)$ is the difference in log-likelihood, or deviance.
+:::
+
+
 
 When we want to compare multiple models, in linear models we use ANOVA. In GLM, we can use deviance analysis table.
 

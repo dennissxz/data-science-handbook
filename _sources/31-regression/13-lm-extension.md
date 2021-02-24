@@ -68,21 +68,19 @@ Definition (Influential points)
   D_i = \frac{r_i ^2}{p} \frac{h_i}{1-h_i}  
   $$
 
+  where $r_i$ is standardized residual.
+
 
 :::{admonition,note} Note
-- a influential point can be close to the fitted line. If we drop it, then there seems no linear relation in the remaining data cloud.
+- A influential point can be close to the fitted line. If we drop it, then there seems no linear relation in the remaining data cloud.
 
 - Two or more influential points near each other can mask each other's influence in a leave-one-out regression. That is, if remove any one of them, then the regression results do not change substantially, but if we remove both of them, then the results change substantially.
 :::
 
 
-Properties
-: - leverate $h_i$ is related to
-
-
 
 (lm-omit-variable)=
-## Omit a Variable
+## Omitting a Variable Affects Bias
 
 Suppose the true model is
 
@@ -151,7 +149,36 @@ $$
 \widetilde{\beta}_{k} =  \hat{\beta}_k + \alpha_k\hat{\beta}_j
 $$
 
-Proof: TBD. Need linear algebra about inverse.
+:::{admonition,dropdown,seealso} *Proof*
+
+Need linear algebra about inverse. We want to show
+
+$$
+\left( \boldsymbol{X} ^{\top} _{-j} \boldsymbol{X} _{-j} \right) ^{-1} \boldsymbol{X} ^{\top} _{-j} \boldsymbol{y}  = \left[ \left( \boldsymbol{X} ^{\top}  \boldsymbol{X}  \right) ^{-1} \boldsymbol{X} ^{\top}  \boldsymbol{y}  \right]_{[:k]} + \left( \boldsymbol{X} ^{\top} _{-j} \boldsymbol{X} _{-j} \right) ^{-1} \boldsymbol{X} ^{\top} _{-j} \boldsymbol{x}_j \hat{\beta}_j
+$$
+
+Let $\boldsymbol{A} = \boldsymbol{X} ^{\top} _{-j} \boldsymbol{X} _{-j}$ and $\boldsymbol{b} = \boldsymbol{X} ^\top _{-j} \boldsymbol{x}_j$. By some block matrix inverse formula,
+
+$$\begin{aligned}
+RHS - LHS &= \left[\begin{array}{cc}
+\boldsymbol{A} ^{-1} +\frac{1}{k} \boldsymbol{A} ^{-1}\boldsymbol{b} \boldsymbol{b} ^{\top}  \boldsymbol{A} ^{-1} & -\frac{1}{k} \boldsymbol{A} ^{-1} \boldsymbol{b}  \\
+\cdot & \cdot
+\end{array}\right] \left[\begin{array}{cc}
+\boldsymbol{X} ^{\top} _{-j}\boldsymbol{y}  \\
+\boldsymbol{x}_j ^{\top} \boldsymbol{y}
+\end{array}\right] + \boldsymbol{A} ^{-1} \boldsymbol{b} \hat{\beta}_j - \boldsymbol{A} ^{-1} \boldsymbol{X} ^{\top} _{-j} \boldsymbol{y}  \\
+&= \boldsymbol{A} ^{-1} \boldsymbol{X} ^{\top} _{-j}\boldsymbol{y}  + \frac{1}{k} \boldsymbol{A} ^{-1}\boldsymbol{b} \boldsymbol{b} ^{\top}  \boldsymbol{A} ^{-1} \boldsymbol{X} ^{\top} _{-j} \boldsymbol{y} -\frac{1}{k} \boldsymbol{A} ^{-1} \boldsymbol{b} \boldsymbol{x} _j ^{\top} \boldsymbol{y} + \boldsymbol{A} ^{-1} \boldsymbol{b} \hat{\beta}_j - \boldsymbol{A} ^{-1} \boldsymbol{X} ^{\top} _{-j} \boldsymbol{y}  \\
+&= \boldsymbol{A} ^{-1} \boldsymbol{b} \left( \frac{1}{k} \left( \boldsymbol{b} ^{\top} \boldsymbol{A} ^{-1} \boldsymbol{X} ^{\top} _{-j} \boldsymbol{y} - \boldsymbol{x} ^{\top} _j \boldsymbol{y} \right) - \hat{\beta}_j \right) \\
+&= \boldsymbol{A} ^{-1} \boldsymbol{b} \left( \hat{\beta}_j - \hat{\beta}_j \right) \\
+&= \boldsymbol{0}  \\
+\end{aligned}$$
+
+$\square$
+
+For derivation of $\hat{\beta}_j = \frac{1}{k} \left( \boldsymbol{b} ^{\top} \boldsymbol{A} ^{-1} \boldsymbol{X} ^{\top} _{-j} \boldsymbol{y} - \boldsymbol{x} ^{\top} _j \boldsymbol{y} \right)$ see [partialling out](lm-partialling-out) section.
+
+
+:::
 
 Verify:
 
@@ -194,9 +221,50 @@ To sum up, omitting a variable $X_j$ from the true model introduces bias of the 
 
 
 (lm-add-variable)=
-## Add a Variable
+## Adding a Variable Affects Variance
 
-What if we add a new variable $X_j$? What will happen to the standard error of an existing estimator $\hat\beta_k$?
+What if we add a new variable $X_j$? What will happen to the variance and standard error of an existing estimator $\hat\beta_k$? Assuming homoskedasticity.
+
+### Variance usually Increases
+
+Let $\hat{\beta}_k$ be the estimate obtained by using full design matrix $\boldsymbol{X}$, let $\hat{\beta}_k ^{(-j)}$ be the estimate obtained by using the design matrix excluding the last column $\boldsymbol{x}_j$, denoted $\boldsymbol{X} _{-j}$.
+
+We want to compare
+
+
+$$\begin{aligned}
+\operatorname{Var}\left( \hat{\beta}_k \right)&= \sigma^2 \left[ \left( \boldsymbol{X} ^\top \boldsymbol{X}  \right) ^{-1} \right] _{kk}\\
+\operatorname{Var}\left( \hat{\beta}_k ^{(-j)} \right)&= \sigma^2 \left[ \left( \boldsymbol{X}_{-j} ^\top \boldsymbol{X}_{-j}  \right) ^{-1}  \right]_{kk}\\
+\end{aligned}$$
+
+By the formula of matrix inverse, we have
+
+$$\begin{aligned}
+\left( \boldsymbol{X} ^\top \boldsymbol{X}  \right) ^{-1}
+&= \left[\begin{array}{cc}
+\left( \boldsymbol{X} ^\top _{-j} \boldsymbol{X} _{-j} - \boldsymbol{A} \right) ^{-1} & \cdot \\
+\cdot & \cdot
+\end{array}\right]\\
+\end{aligned}$$
+
+where $\boldsymbol{A} = \frac{1}{\left\| \boldsymbol{x}_j  \right\|^2}   \boldsymbol{X} ^\top _{-j} \boldsymbol{x}_j \boldsymbol{x}_j ^\top \boldsymbol{X} _{-j} \succeq 0$.
+
+Hence we have
+
+
+$$\begin{aligned}
+\operatorname{Var}\left( \hat{\beta}_k \right)&= \sigma^2 \left[ \left( \boldsymbol{X} ^\top \boldsymbol{X}  \right) ^{-1} \right] _{kk}\\
+&= \sigma^2 \left[ \left( \boldsymbol{X} ^\top _{-j} \boldsymbol{X} _{-j} - \boldsymbol{A} \right) ^{-1}  \right] _{kk}\\
+&\ge \sigma^2 \left[ \left( \boldsymbol{X}_{-j} ^\top \boldsymbol{X}_{-j}  \right) ^{-1} \right] _{kk}\\
+&= \operatorname{Var}\left( \hat{\beta}_k ^{(-j)} \right)
+\end{aligned}$$
+
+with equality iff $\boldsymbol{A} = \boldsymbol{0} \Leftrightarrow \boldsymbol{X} ^\top _{-j} \boldsymbol{x}_j = \boldsymbol{0}$.
+
+In conclusion, unless the new variable $X_j$ is uncorrelated with all existing variable, the variance of existing $\hat{\beta}_k$ will increase.
+
+### Standard Error Uncertain
+
 
 Recall that the estimated variance of $\hat{\beta}_k$,
 

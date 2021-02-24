@@ -120,8 +120,8 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../11-math/51-optimization.html">
-     Optimization
+    <a class="reference internal" href="../11-math/51-linear-programming.html">
+     Linear Programming
     </a>
    </li>
    <li class="toctree-l2">
@@ -401,6 +401,11 @@
    <li class="toctree-l2">
     <a class="reference internal" href="../25-graph-related/42-maximum-independent-set.html">
      Maximum Independent Set in Trees
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/91-LP-max-flow-min-cut.html">
+     LP on Max-flow and Min-cut
     </a>
    </li>
   </ul>
@@ -1307,10 +1312,17 @@ G^2 := {D(\boldsymbol{y},\hat{\boldsymbol{\mu}})={\color{red}2}\sum}\text{observ
 <dt>Definition (Null deviance)</dt><dd><p>Null deviance is defined as</p>
 <div class="math notranslate nohighlight">
 \[
-  D(\boldsymbol{y},\bar{\boldsymbol{y}})=-2\left[\ell(\bar{\boldsymbol{y}}\vert\boldsymbol{y})-\ell(\boldsymbol{y}\vert\boldsymbol{y})\right]
+  D(\tilde{\boldsymbol{u}},\bar{\boldsymbol{y}})=-2\left[\ell(\bar{\boldsymbol{y}}\vert\boldsymbol{y})-\ell(\tilde{\boldsymbol{\mu} }\vert\boldsymbol{y})\right]
   \]</div>
 <p>That is, all mean estimates has the same value <span class="math notranslate nohighlight">\(\hat{\mu}_i = \bar{y}\)</span>.</p>
 </dd>
+</dl>
+<p>In sum, deviance is the <span class="math notranslate nohighlight">\(2\)</span> times the distance from log-likelihood of some estimate <span class="math notranslate nohighlight">\(\hat{\boldsymbol{\mu}}\)</span> to the log-likelihood of the saturated estimate <span class="math notranslate nohighlight">\(\tilde{\boldsymbol{\mu} } = \boldsymbol{y}\)</span>, as illustrated below.</p>
+<div class="figure align-default" id="glm-deviance-likelihood">
+<a class="reference internal image-reference" href="../_images/glm-deviance-likelihood.png"><img alt="" src="../_images/glm-deviance-likelihood.png" style="width: 50%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 22 </span><span class="caption-text">Likelihood curve and deviance computation for saturated model <span class="math notranslate nohighlight">\(\boldsymbol{\mu}_{\text{saturated} } = \tilde{\boldsymbol{\mu}} = \boldsymbol{y}\)</span>, some model <span class="math notranslate nohighlight">\(\hat{\boldsymbol{\mu} }\)</span>, and null model <span class="math notranslate nohighlight">\(\boldsymbol{\mu}_{\text{null} } = \bar{\boldsymbol{y}}\)</span></span><a class="headerlink" href="#glm-deviance-likelihood" title="Permalink to this image">¶</a></p>
+</div>
+<dl class="simple myst">
 <dt>Example (Deviance for Normal with <span class="math notranslate nohighlight">\(\sigma=1\)</span>)</dt><dd><p>The deviance for normal distribution is</p>
 <div class="math notranslate nohighlight">
 \[
@@ -1348,6 +1360,10 @@ G^{2}(M_{r}\vert M_f) &amp; =D(\boldsymbol{y},\hat{\boldsymbol{\mu}}_{r})-D(\bol
  &amp; \sim\chi_{p_f-p_r}^2
 \end{aligned}\end{split}\]</div>
 <p>Note the <strong>reduced</strong> model has a <strong>larger</strong> deviance so <span class="math notranslate nohighlight">\(D(\boldsymbol{y},\hat{\boldsymbol{\mu}}_{r})&gt;D(\boldsymbol{y},\hat{\boldsymbol{\mu}}_{f})\)</span>. This is analogous to the fact that a reduced model has a larger <span class="math notranslate nohighlight">\(RSS\)</span> in <a class="reference internal" href="12-lm-inference.html#lm-rss-nonincreasing"><span class="std std-ref">linear models</span></a>.</p>
+<div class="figure align-default" id="glm-deviance-test">
+<a class="reference internal image-reference" href="../_images/glm-deviance-test.png"><img alt="" src="../_images/glm-deviance-test.png" style="width: 50%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 23 </span><span class="caption-text">The likelihood test statistic <span class="math notranslate nohighlight">\(G^{2}(M_{r}\vert M_f)\)</span> is the difference in log-likelihood, or deviance.</span><a class="headerlink" href="#glm-deviance-test" title="Permalink to this image">¶</a></p>
+</div>
 <p>When we want to compare multiple models, in linear models we use ANOVA. In GLM, we can use deviance analysis table.</p>
 </div>
 </div>

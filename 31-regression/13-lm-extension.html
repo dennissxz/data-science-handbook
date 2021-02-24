@@ -120,8 +120,8 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../11-math/51-optimization.html">
-     Optimization
+    <a class="reference internal" href="../11-math/51-linear-programming.html">
+     Linear Programming
     </a>
    </li>
    <li class="toctree-l2">
@@ -401,6 +401,11 @@
    <li class="toctree-l2">
     <a class="reference internal" href="../25-graph-related/42-maximum-independent-set.html">
      Maximum Independent Set in Trees
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/91-LP-max-flow-min-cut.html">
+     LP on Max-flow and Min-cut
     </a>
    </li>
   </ul>
@@ -793,14 +798,26 @@
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#omit-a-variable">
-   Omit a Variable
+  <a class="reference internal nav-link" href="#omitting-a-variable-affects-bias">
+   Omitting a Variable Affects Bias
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#add-a-variable">
-   Add a Variable
+  <a class="reference internal nav-link" href="#adding-a-variable-affects-variance">
+   Adding a Variable Affects Variance
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#variance-usually-increases">
+     Variance usually Increases
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#standard-error-uncertain">
+     Standard Error Uncertain
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#multicollinearity">
@@ -1014,25 +1031,20 @@
 \[
   D_i = \frac{r_i ^2}{p} \frac{h_i}{1-h_i}  
   \]</div>
+<p>where <span class="math notranslate nohighlight">\(r_i\)</span> is standardized residual.</p>
 </dd>
 </dl>
 <div class="note admonition">
 <p class="admonition-title"> Note</p>
 <ul class="simple">
-<li><p>a influential point can be close to the fitted line. If we drop it, then there seems no linear relation in the remaining data cloud.</p></li>
+<li><p>A influential point can be close to the fitted line. If we drop it, then there seems no linear relation in the remaining data cloud.</p></li>
 <li><p>Two or more influential points near each other can mask each other’s influence in a leave-one-out regression. That is, if remove any one of them, then the regression results do not change substantially, but if we remove both of them, then the results change substantially.</p></li>
 </ul>
 </div>
-<dl class="simple myst">
-<dt>Properties</dt><dd><ul class="simple">
-<li><p>leverate <span class="math notranslate nohighlight">\(h_i\)</span> is related to</p></li>
-</ul>
-</dd>
-</dl>
 </div>
 </div>
-<div class="section" id="omit-a-variable">
-<span id="lm-omit-variable"></span><h2>Omit a Variable<a class="headerlink" href="#omit-a-variable" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="omitting-a-variable-affects-bias">
+<span id="lm-omit-variable"></span><h2>Omitting a Variable Affects Bias<a class="headerlink" href="#omitting-a-variable-affects-bias" title="Permalink to this headline">¶</a></h2>
 <p>Suppose the true model is</p>
 <div class="math notranslate nohighlight">
 \[
@@ -1090,7 +1102,31 @@ X_j
 \[
 \widetilde{\beta}_{k} =  \hat{\beta}_k + \alpha_k\hat{\beta}_j
 \]</div>
-<p>Proof: TBD. Need linear algebra about inverse.</p>
+<div class="dropdown seealso admonition">
+<p class="admonition-title"> <em>Proof</em></p>
+<p>Need linear algebra about inverse. We want to show</p>
+<div class="math notranslate nohighlight">
+\[
+\left( \boldsymbol{X} ^{\top} _{-j} \boldsymbol{X} _{-j} \right) ^{-1} \boldsymbol{X} ^{\top} _{-j} \boldsymbol{y}  = \left[ \left( \boldsymbol{X} ^{\top}  \boldsymbol{X}  \right) ^{-1} \boldsymbol{X} ^{\top}  \boldsymbol{y}  \right]_{[:k]} + \left( \boldsymbol{X} ^{\top} _{-j} \boldsymbol{X} _{-j} \right) ^{-1} \boldsymbol{X} ^{\top} _{-j} \boldsymbol{x}_j \hat{\beta}_j
+\]</div>
+<p>Let <span class="math notranslate nohighlight">\(\boldsymbol{A} = \boldsymbol{X} ^{\top} _{-j} \boldsymbol{X} _{-j}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{b} = \boldsymbol{X} ^\top _{-j} \boldsymbol{x}_j\)</span>. By some block matrix inverse formula,</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+RHS - LHS &amp;= \left[\begin{array}{cc}
+\boldsymbol{A} ^{-1} +\frac{1}{k} \boldsymbol{A} ^{-1}\boldsymbol{b} \boldsymbol{b} ^{\top}  \boldsymbol{A} ^{-1} &amp; -\frac{1}{k} \boldsymbol{A} ^{-1} \boldsymbol{b}  \\
+\cdot &amp; \cdot
+\end{array}\right] \left[\begin{array}{cc}
+\boldsymbol{X} ^{\top} _{-j}\boldsymbol{y}  \\
+\boldsymbol{x}_j ^{\top} \boldsymbol{y}
+\end{array}\right] + \boldsymbol{A} ^{-1} \boldsymbol{b} \hat{\beta}_j - \boldsymbol{A} ^{-1} \boldsymbol{X} ^{\top} _{-j} \boldsymbol{y}  \\
+&amp;= \boldsymbol{A} ^{-1} \boldsymbol{X} ^{\top} _{-j}\boldsymbol{y}  + \frac{1}{k} \boldsymbol{A} ^{-1}\boldsymbol{b} \boldsymbol{b} ^{\top}  \boldsymbol{A} ^{-1} \boldsymbol{X} ^{\top} _{-j} \boldsymbol{y} -\frac{1}{k} \boldsymbol{A} ^{-1} \boldsymbol{b} \boldsymbol{x} _j ^{\top} \boldsymbol{y} + \boldsymbol{A} ^{-1} \boldsymbol{b} \hat{\beta}_j - \boldsymbol{A} ^{-1} \boldsymbol{X} ^{\top} _{-j} \boldsymbol{y}  \\
+&amp;= \boldsymbol{A} ^{-1} \boldsymbol{b} \left( \frac{1}{k} \left( \boldsymbol{b} ^{\top} \boldsymbol{A} ^{-1} \boldsymbol{X} ^{\top} _{-j} \boldsymbol{y} - \boldsymbol{x} ^{\top} _j \boldsymbol{y} \right) - \hat{\beta}_j \right) \\
+&amp;= \boldsymbol{A} ^{-1} \boldsymbol{b} \left( \hat{\beta}_j - \hat{\beta}_j \right) \\
+&amp;= \boldsymbol{0}  \\
+\end{aligned}\end{split}\]</div>
+<p><span class="math notranslate nohighlight">\(\square\)</span></p>
+<p>For derivation of <span class="math notranslate nohighlight">\(\hat{\beta}_j = \frac{1}{k} \left( \boldsymbol{b} ^{\top} \boldsymbol{A} ^{-1} \boldsymbol{X} ^{\top} _{-j} \boldsymbol{y} - \boldsymbol{x} ^{\top} _j \boldsymbol{y} \right)\)</span> see <a class="reference internal" href="11-lm-estimation.html#lm-partialling-out"><span class="std std-ref">partialling out</span></a> section.</p>
+</div>
 <p>Verify:</p>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
@@ -1125,10 +1161,10 @@ X_j
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>coefficients in y ~ x1 + x2 + x3 : [[1.00307173 0.99784117 1.99678639 3.00345305]]
-coefficients in y ~ x1 + x2 : [[1.02245153 1.1593758  3.46066753]]
-coefficients in x3 ~ x1 + x2 : [[0.00645251 0.05378297 0.48739937]]
-reconstruction difference of b0, b1, b2 : [ 2.22044605e-16 -1.11022302e-15  2.22044605e-15]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>coefficients in y ~ x1 + x2 + x3 : [[1.0026757  1.00089499 1.99511729 3.00541803]]
+coefficients in y ~ x1 + x2 : [[1.06150243 1.0427141  3.39091515]]
+coefficients in x3 ~ x1 + x2 : [[0.01957356 0.01391458 0.46442719]]
+reconstruction difference of b0, b1, b2 : [1.55431223e-15 0.00000000e+00 4.44089210e-16]
 </pre></div>
 </div>
 </div>
@@ -1139,9 +1175,41 @@ reconstruction difference of b0, b1, b2 : [ 2.22044605e-16 -1.11022302e-15  2.22
 <li><p><span class="math notranslate nohighlight">\(\beta_j = 0\)</span>: the variable <span class="math notranslate nohighlight">\(X_j\)</span> has no effect in the data generating process of <span class="math notranslate nohighlight">\(Y\)</span>.</p></li>
 </ul>
 </div>
-<div class="section" id="add-a-variable">
-<span id="lm-add-variable"></span><h2>Add a Variable<a class="headerlink" href="#add-a-variable" title="Permalink to this headline">¶</a></h2>
-<p>What if we add a new variable <span class="math notranslate nohighlight">\(X_j\)</span>? What will happen to the standard error of an existing estimator <span class="math notranslate nohighlight">\(\hat\beta_k\)</span>?</p>
+<div class="section" id="adding-a-variable-affects-variance">
+<span id="lm-add-variable"></span><h2>Adding a Variable Affects Variance<a class="headerlink" href="#adding-a-variable-affects-variance" title="Permalink to this headline">¶</a></h2>
+<p>What if we add a new variable <span class="math notranslate nohighlight">\(X_j\)</span>? What will happen to the variance and standard error of an existing estimator <span class="math notranslate nohighlight">\(\hat\beta_k\)</span>? Assuming homoskedasticity.</p>
+<div class="section" id="variance-usually-increases">
+<h3>Variance usually Increases<a class="headerlink" href="#variance-usually-increases" title="Permalink to this headline">¶</a></h3>
+<p>Let <span class="math notranslate nohighlight">\(\hat{\beta}_k\)</span> be the estimate obtained by using full design matrix <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span>, let <span class="math notranslate nohighlight">\(\hat{\beta}_k ^{(-j)}\)</span> be the estimate obtained by using the design matrix excluding the last column <span class="math notranslate nohighlight">\(\boldsymbol{x}_j\)</span>, denoted <span class="math notranslate nohighlight">\(\boldsymbol{X} _{-j}\)</span>.</p>
+<p>We want to compare</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\operatorname{Var}\left( \hat{\beta}_k \right)&amp;= \sigma^2 \left[ \left( \boldsymbol{X} ^\top \boldsymbol{X}  \right) ^{-1} \right] _{kk}\\
+\operatorname{Var}\left( \hat{\beta}_k ^{(-j)} \right)&amp;= \sigma^2 \left[ \left( \boldsymbol{X}_{-j} ^\top \boldsymbol{X}_{-j}  \right) ^{-1}  \right]_{kk}\\
+\end{aligned}\end{split}\]</div>
+<p>By the formula of matrix inverse, we have</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\left( \boldsymbol{X} ^\top \boldsymbol{X}  \right) ^{-1}
+&amp;= \left[\begin{array}{cc}
+\left( \boldsymbol{X} ^\top _{-j} \boldsymbol{X} _{-j} - \boldsymbol{A} \right) ^{-1} &amp; \cdot \\
+\cdot &amp; \cdot
+\end{array}\right]\\
+\end{aligned}\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\boldsymbol{A} = \frac{1}{\left\| \boldsymbol{x}_j  \right\|^2}   \boldsymbol{X} ^\top _{-j} \boldsymbol{x}_j \boldsymbol{x}_j ^\top \boldsymbol{X} _{-j} \succeq 0\)</span>.</p>
+<p>Hence we have</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\operatorname{Var}\left( \hat{\beta}_k \right)&amp;= \sigma^2 \left[ \left( \boldsymbol{X} ^\top \boldsymbol{X}  \right) ^{-1} \right] _{kk}\\
+&amp;= \sigma^2 \left[ \left( \boldsymbol{X} ^\top _{-j} \boldsymbol{X} _{-j} - \boldsymbol{A} \right) ^{-1}  \right] _{kk}\\
+&amp;\ge \sigma^2 \left[ \left( \boldsymbol{X}_{-j} ^\top \boldsymbol{X}_{-j}  \right) ^{-1} \right] _{kk}\\
+&amp;= \operatorname{Var}\left( \hat{\beta}_k ^{(-j)} \right)
+\end{aligned}\end{split}\]</div>
+<p>with equality iff <span class="math notranslate nohighlight">\(\boldsymbol{A} = \boldsymbol{0} \Leftrightarrow \boldsymbol{X} ^\top _{-j} \boldsymbol{x}_j = \boldsymbol{0}\)</span>.</p>
+<p>In conclusion, unless the new variable <span class="math notranslate nohighlight">\(X_j\)</span> is uncorrelated with all existing variable, the variance of existing <span class="math notranslate nohighlight">\(\hat{\beta}_k\)</span> will increase.</p>
+</div>
+<div class="section" id="standard-error-uncertain">
+<h3>Standard Error Uncertain<a class="headerlink" href="#standard-error-uncertain" title="Permalink to this headline">¶</a></h3>
 <p>Recall that the estimated variance of <span class="math notranslate nohighlight">\(\hat{\beta}_k\)</span>,</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{aligned}
@@ -1163,6 +1231,7 @@ reconstruction difference of b0, b1, b2 : [ 2.22044605e-16 -1.11022302e-15  2.22
 <p>Hence, if our model is already a good (or close to true) model, adding more covariates increases standard error. This gives a stopping criteria when adding more covariates.</p>
 </li>
 </ul>
+</div>
 </div>
 <div class="section" id="multicollinearity">
 <h2>Multicollinearity<a class="headerlink" href="#multicollinearity" title="Permalink to this headline">¶</a></h2>
