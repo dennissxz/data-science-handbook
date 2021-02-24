@@ -570,3 +570,49 @@ r_{i}=\frac{y_{i}-\hat{\mu}_{i}}{\sqrt{v(\hat{\mu}_{i})(1-\hat{h}_{ii})}}=\frac{
 $$
 
 Their squared values sum to the deviance.
+
+## Summary
+
+Recall definitions
+
+- **Link function**
+
+
+  $$
+  g\left(\mu_i\right)=\boldsymbol{x}_{i}^{\top} \boldsymbol{\beta}
+  $$
+
+
+- **Deviance**
+
+  $$D(\tilde{\boldsymbol{\mu}}, \hat{\boldsymbol{\mu}})=-2[\ell(\hat{\boldsymbol{\mu}} \mid \boldsymbol{y})-\ell(\tilde{\boldsymbol{\mu}} \mid \boldsymbol{y})] \sim \chi ^2 _{n-\#p}$$
+
+  Usual form
+
+  $$
+  G^{2}:=D(\boldsymbol{y}, \hat{\boldsymbol{\mu}})=2 \sum \text { observed } \times \log \left(\frac{\text { observed }}{\text { fitted }}\right)
+  $$
+
+- **Generalized Pearson Statistic** (for some GLM)
+
+
+  $$
+  X^{2}:=\sum_{i} \frac{\left(y_{i}-\hat{\mu}_{i}\right)^{2}}{v\left(\hat{\mu}_{i}\right)}
+  $$
+
+  Usual form
+
+
+  $$
+  X^{2}=\sum \frac{(\text { observed }-\text { fitted })^{2}}{\text { fitted }}
+  $$
+
+Summary of common models
+
+| Data and assumption | Model | Form | #Parm | $\quad \text{Interpretation} \quad$ <br> if $x_{ik}$ increases 1| $\qquad \qquad \text{Remarks}\qquad \qquad$ |
+| - | - | - | - | - | - | - | - | - |
+| Normal with $\sigma^2 =1$ | OLS  |  $\mu_i = \boldsymbol{x} ^{\top} _i \boldsymbol{\beta}$  | $p$  | $Y_i$ increases $\beta_j$  | Deviance $=RSS$ |
+|Binary <br> $Y_{i} \sim \frac{1}{n i} \operatorname{Bin}\left(n_{i}, \pi_{i}\right)$| Logistic  | $\log \left(\frac{\pi_{i}}{1-\pi_{i}}\right)=\boldsymbol{x}_{i}^{\top} \boldsymbol{\beta}$  | $p$  | Odds of $Y_{i}=1$ is multiplied by $e^{\beta_k}$| $\operatorname{logit}(\pi_i) = \log \left(\frac{\pi_{i}}{1-\pi_{i}}\right)$ <br> $\pi_i = \operatorname{CDF}  (\boldsymbol{x}_i ^{\top} \boldsymbol{\beta} )$
+| Multinomial <br> $Y_{ij} \sim \operatorname{M}(\pi_{i1}, \ldots, \pi_{ic})$| Baseline-category logit  | $\log \left( \frac{\pi_{i j}}{\pi_{i c}} \right) =\boldsymbol{x}_{i}^{\top} \boldsymbol{\beta}_{j}$ <br> $j=1,2, \ldots, c-1$  | $(c-1)\times p$  | Ratio of probabilities $\frac{\operatorname{P}\left( Y_i = k \right)}{\operatorname{P}\left( Y_i = c \right)}$ is multiplied by $e^{\beta_k}$ | When $c=2$, reduces to logistic.  |  
+| Ordinal <br> $\operatorname{P}\left(Y_{i} \leq j\right)=\pi_{i 1}+\cdots+\pi_{i j}$ | Cumulative logit | $\log \left(  \frac{\operatorname{P} \left(Y_{i} \leq j\right)}{1- \operatorname{P} \left(Y_{i} \leq j\right)} \right) = \alpha_j + \boldsymbol{x}_i ^{\top} \boldsymbol{\beta}$ <br> $j=1,2, \ldots, c-1$  | $(c-1) + p$  |  Odds of $Y_{i}<k$ is multiplied by $e^{\beta_k}$ | No intercept in $\boldsymbol{\beta}$.  <br> $\alpha_j$ acts as class-specific intercept |  
+| Count <br> $Y_i \sim \operatorname{Poi}(\mu_i)$ | Poisson log-linear  | $\log \left( \mu_i \right) = \boldsymbol{x}_i ^{\top} \boldsymbol{\beta}$  |  $p$ | $\mu_i$ is multiplied by $e^{\beta_k}$  | Multiplicative effect. <br> Mean = variance  |
