@@ -36,7 +36,7 @@ $$
 The canonical link is $\log\mu$.
 
 $$
-\log\mu_{i}=\boldsymbol{x} ^\top \boldsymbol{\beta}
+\log\mu_{i}=\boldsymbol{x}_i ^\top \boldsymbol{\beta}
 $$
 
 Or equivalently

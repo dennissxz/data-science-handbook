@@ -36,21 +36,29 @@ $k$-means for image compression [Livescue 2021]
 
 ## Comparison
 
+In general, we have two types of clustering algorithms.
+
+- flat: specify the number of clusters at the beginnings, and the output are the assignment of data points to clusters.
+
+- hierarchical: do not specify the number of cluster at the beginnings.
+  - bottom-up: view each single data point as a cluster, iteratively merge two smaller clusters to a larger cluster by some rule.
+  - top-down: start from a single cluster consisting all data points, iteratively split a large clusters into two smaller clusters by some rule.
+
 We will introduce several methods.
 
-- **$k$-means clustering** is an iterative algorithm for clustering. It initializes $k$ cluster centers, assign each example to its **closest** center, and re-compute the center, until there is no changes in assignment.
+- **$k$-means clustering** is an iterative algorithm for flat clustering. It initializes $k$ cluster centers, assign each example to its **closest** center, and re-compute the center, until there is no changes in assignment.
 
-- **Agglomerative methods** view each data point as a cluster, and then iteratively merge two **closest** clusters according to some distance measure, until some convergence criterion is achieved. They do not get to see all data points at once – might miss some important pattern,
+- **Agglomerative methods** are bottom-up hierarchical clustering methods. The methods view each data point as a cluster, and then iteratively merge two **closest** clusters according to some distance measure, until some convergence criterion is achieved. They do not get to see all data points at once – might miss some important pattern,
 
-- **Decision tree** can also be used in clustering. It is a top-down approach that start from one cluster and iteratively partition every cluster to two smaller clusters until come convergence criterion is achieved.
+- **Decision tree** is a top-down hierarchical clustering method. can also be used in clustering. It is a top-down approach that start from one cluster and iteratively partition every cluster to two smaller clusters until come convergence criterion is achieved.
 
-- **Spectral clustering** methods analyze the $n\times n$ similarity matrix of a data set and use spectral (eigenvector-based) methods to divide the graph into connected sub-graphs.
+- **Spectral clustering** is also a top-down approach. It analyzes the $n\times n$ similarity matrix of a data set and use spectral (eigenvector-based) methods to divide the graph into connected sub-graphs.
 
 Most of the above clustering methods have some weakness:
 
-- make a "hard" (discrete) decision about cluster membership for each data point, like SVM.
+- make a "hard" (discrete) decision about cluster membership for each data point, rather than probability, like SVM.
 
-- can’t always do out-of-sample extension
+- can’t always do out-of-sample extension ()
   - K-means: Can map new points to cluster with nearest cluster mean
   - No obvious way to do this for hierarchical clustering, spectral clustering
 

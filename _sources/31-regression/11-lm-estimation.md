@@ -20,7 +20,7 @@ From this section we introduce linear models from a statistics’ perspective. T
 
 2. The next section introduce statistical inference for linear models, such as distribution of the estimated coefficients, $t$-test, $F$-test, etc. Usually machine learning community focuses more on prediction, less on inference. But inference does matters. It analyzes how important each variable is in the model from a rigorous approach.
 
-3. The third section introduce some issues in linear models, e.g. omitted variables bias, multicollinearity, heteroscedasticity, and some alternative models, e.g. Lasso, ridge regression, etc.
+3. The third section introduce some issues in linear models, e.g. omitted variables bias, multicollinearity, heteroskedasticity, and some alternative models, e.g. Lasso, ridge regression, etc.
 
 
 :::{admonition,dropdown,note} Statistics’ perspective vs social science’s perspective
@@ -612,7 +612,7 @@ Therefore, $\hat{\beta}_j = \hat{\alpha}_1$.
 
 $\square$
 
-Byproduct: since $\hat{u}_i$ is actually constant (obtained from constant design matrix $\boldsymbol{X}$), we can obtain a convenient formula for $\hat{\beta}_j$:
+Byproduct: since $\hat{u}_i$ is actually constant (obtained from constant design matrix $\boldsymbol{X}$), we can obtain a convenient formula for individual $\hat{\beta}_j$ (rather than the vector $\hat{\boldsymbol{\beta} }$). Moreover, it can be used to compute individual variance:
 
 $$\begin{aligned}
 \operatorname{Var}\left( \hat{\beta}_j \right)
@@ -621,6 +621,7 @@ $$\begin{aligned}
 &= \frac{\sum \hat{u}_{i}^2 \operatorname{Var}\left( \varepsilon_i \right)}{SSR_j^2}\\
 \end{aligned}$$
 
+This holds for any type of $\operatorname{Var}\left( \varepsilon_i \right)$, i.e. heteroskedasticity. For more details see [variance](lm-inference-variance) section.
 
 
 :::

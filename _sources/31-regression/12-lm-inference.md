@@ -103,7 +103,7 @@ $$\begin{aligned}
 
 For derivation, see [partialling out](lm-partialling-out).
 
-
+In particular, if homoskedasticity is assumed $\operatorname{Var}\left( \varepsilon_i \right) = \sigma^2$, then it reduces to the formula above. In general, if heteroskedasticity exists but zero mean $\operatorname{E}\left( \varepsilon_i \right)=0$ is assumed, one can estimate $\operatorname{Var}\left( \varepsilon_i \right)$ by $\hat{\varepsilon}_i^2$, and obtain standard error.
 
 :::
 

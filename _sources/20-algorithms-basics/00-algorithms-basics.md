@@ -25,4 +25,4 @@ If the optimal solution under the new setting corresponds to an optimal solution
 - Forest: a graph that is not connected and have no cycles
 
 
-## Charing Scheme
+## Charging Scheme

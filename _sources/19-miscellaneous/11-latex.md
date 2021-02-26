@@ -1,5 +1,16 @@
-
 # LaTeX
+
+## Symbols
+
+Note the difference between
+
+- $v\quad$ v
+- $\nu\quad$ \nu
+- $\upsilon\quad$ \upsilon
+
+
+Greeks, arrows, symbols, see [here](https://www.overleaf.com/learn/latex/List_of_Greek_letters_and_math_symbols).
+
 
 
 ## Alignment

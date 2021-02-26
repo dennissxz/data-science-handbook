@@ -23,5 +23,5 @@ In this section we introduce traditional statistical regression models. Dependin
     - nested logit model
 
 - Censored
-
+  - e.g. earnings (minimum wage, survival)
   - Tobit model

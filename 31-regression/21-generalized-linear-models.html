@@ -917,6 +917,11 @@
    </li>
   </ul>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#summary">
+   Summary
+  </a>
+ </li>
 </ul>
 
         </nav>
@@ -1427,6 +1432,87 @@ r_{i}=\frac{y_{i}-\hat{\mu}_{i}}{\sqrt{v(\hat{\mu}_{i})(1-\hat{h}_{ii})}}=\frac{
 <p>Their squared values sum to the deviance.</p>
 </div>
 </div>
+</div>
+<div class="section" id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
+<p>Recall definitions</p>
+<ul>
+<li><p><strong>Link function</strong></p>
+<div class="math notranslate nohighlight">
+\[
+  g\left(\mu_i\right)=\boldsymbol{x}_{i}^{\top} \boldsymbol{\beta}
+  \]</div>
+</li>
+<li><p><strong>Deviance</strong></p>
+<div class="math notranslate nohighlight">
+\[D(\tilde{\boldsymbol{\mu}}, \hat{\boldsymbol{\mu}})=-2[\ell(\hat{\boldsymbol{\mu}} \mid \boldsymbol{y})-\ell(\tilde{\boldsymbol{\mu}} \mid \boldsymbol{y})] \sim \chi ^2 _{n-\#p}\]</div>
+<p>Usual form</p>
+<div class="math notranslate nohighlight">
+\[
+  G^{2}:=D(\boldsymbol{y}, \hat{\boldsymbol{\mu}})=2 \sum \text { observed } \times \log \left(\frac{\text { observed }}{\text { fitted }}\right)
+  \]</div>
+</li>
+<li><p><strong>Generalized Pearson Statistic</strong> (for some GLM)</p>
+<div class="math notranslate nohighlight">
+\[
+  X^{2}:=\sum_{i} \frac{\left(y_{i}-\hat{\mu}_{i}\right)^{2}}{v\left(\hat{\mu}_{i}\right)}
+  \]</div>
+<p>Usual form</p>
+<div class="math notranslate nohighlight">
+\[
+  X^{2}=\sum \frac{(\text { observed }-\text { fitted })^{2}}{\text { fitted }}
+  \]</div>
+</li>
+</ul>
+<p>Summary of common models</p>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Data and assumption</p></th>
+<th class="head"><p>Model</p></th>
+<th class="head"><p>Form</p></th>
+<th class="head"><p>#Parm</p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(\quad \text{Interpretation} \quad\)</span> <br> if <span class="math notranslate nohighlight">\(x_{ik}\)</span> increases 1</p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(\qquad \qquad \text{Remarks}\qquad \qquad\)</span></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Normal with <span class="math notranslate nohighlight">\(\sigma^2 =1\)</span></p></td>
+<td><p>OLS</p></td>
+<td><p><span class="math notranslate nohighlight">\(\mu_i = \boldsymbol{x} ^{\top} _i \boldsymbol{\beta}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(p\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(Y_i\)</span> increases <span class="math notranslate nohighlight">\(\beta_j\)</span></p></td>
+<td><p>Deviance <span class="math notranslate nohighlight">\(=RSS\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p>Binary <br> <span class="math notranslate nohighlight">\(Y_{i} \sim \frac{1}{n i} \operatorname{Bin}\left(n_{i}, \pi_{i}\right)\)</span></p></td>
+<td><p>Logistic</p></td>
+<td><p><span class="math notranslate nohighlight">\(\log \left(\frac{\pi_{i}}{1-\pi_{i}}\right)=\boldsymbol{x}_{i}^{\top} \boldsymbol{\beta}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(p\)</span></p></td>
+<td><p>Odds of <span class="math notranslate nohighlight">\(Y_{i}=1\)</span> is multiplied by <span class="math notranslate nohighlight">\(e^{\beta_k}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\operatorname{logit}(\pi_i) = \log \left(\frac{\pi_{i}}{1-\pi_{i}}\right)\)</span> <br> <span class="math notranslate nohighlight">\(\pi_i = \operatorname{CDF}  (\boldsymbol{x}_i ^{\top} \boldsymbol{\beta} )\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p>Multinomial <br> <span class="math notranslate nohighlight">\(Y_{ij} \sim \operatorname{M}(\pi_{i1}, \ldots, \pi_{ic})\)</span></p></td>
+<td><p>Baseline-category logit</p></td>
+<td><p><span class="math notranslate nohighlight">\(\log \left( \frac{\pi_{i j}}{\pi_{i c}} \right) =\boldsymbol{x}_{i}^{\top} \boldsymbol{\beta}_{j}\)</span> <br> <span class="math notranslate nohighlight">\(j=1,2, \ldots, c-1\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\((c-1)\times p\)</span></p></td>
+<td><p>Ratio of probabilities <span class="math notranslate nohighlight">\(\frac{\operatorname{P}\left( Y_i = k \right)}{\operatorname{P}\left( Y_i = c \right)}\)</span> is multiplied by <span class="math notranslate nohighlight">\(e^{\beta_k}\)</span></p></td>
+<td><p>When <span class="math notranslate nohighlight">\(c=2\)</span>, reduces to logistic.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Ordinal <br> <span class="math notranslate nohighlight">\(\operatorname{P}\left(Y_{i} \leq j\right)=\pi_{i 1}+\cdots+\pi_{i j}\)</span></p></td>
+<td><p>Cumulative logit</p></td>
+<td><p><span class="math notranslate nohighlight">\(\log \left(  \frac{\operatorname{P} \left(Y_{i} \leq j\right)}{1- \operatorname{P} \left(Y_{i} \leq j\right)} \right) = \alpha_j + \boldsymbol{x}_i ^{\top} \boldsymbol{\beta}\)</span> <br> <span class="math notranslate nohighlight">\(j=1,2, \ldots, c-1\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\((c-1) + p\)</span></p></td>
+<td><p>Odds of <span class="math notranslate nohighlight">\(Y_{i}&lt;k\)</span> is multiplied by <span class="math notranslate nohighlight">\(e^{\beta_k}\)</span></p></td>
+<td><p>No intercept in <span class="math notranslate nohighlight">\(\boldsymbol{\beta}\)</span>.  <br> <span class="math notranslate nohighlight">\(\alpha_j\)</span> acts as class-specific intercept</p></td>
+</tr>
+<tr class="row-even"><td><p>Count <br> <span class="math notranslate nohighlight">\(Y_i \sim \operatorname{Poi}(\mu_i)\)</span></p></td>
+<td><p>Poisson log-linear</p></td>
+<td><p><span class="math notranslate nohighlight">\(\log \left( \mu_i \right) = \boldsymbol{x}_i ^{\top} \boldsymbol{\beta}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(p\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\mu_i\)</span> is multiplied by <span class="math notranslate nohighlight">\(e^{\beta_k}\)</span></p></td>
+<td><p>Multiplicative effect. <br> Mean = variance</p></td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 
