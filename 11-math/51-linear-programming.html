@@ -26,7 +26,7 @@
 
     
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/sphinx-book-theme.40e2e510f6b7d1648584402491bb10fe.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinx-book-theme.37f24b989f4638ff9c27c22dc7559d4f.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
@@ -45,7 +45,7 @@
     <script src="../_static/clipboard.min.js"></script>
     <script src="../_static/copybutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="../_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
+    <script src="../_static/sphinx-book-theme.7d483ff0a819d6edff12ce0b1ead3928.js"></script>
     <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
     <script >
         const thebe_selector = ".thebe"
@@ -686,21 +686,21 @@
           
 <main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
     
-    <div class="row topbar fixed-top container-xl">
-    <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show">
-    </div>
-    <div class="col pl-2 topbar-main">
-        
-        <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
-            data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
-            aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
-            title="Toggle navigation" data-toggle="tooltip" data-placement="left">
-            <i class="fas fa-bars"></i>
-            <i class="fas fa-arrow-left"></i>
-            <i class="fas fa-arrow-up"></i>
-        </button>
-        
-        
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
 <div class="dropdown-buttons-trigger">
     <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
             class="fas fa-download"></i></button>
@@ -718,7 +718,7 @@
     </div>
 </div>
 
-        <!-- Source interaction buttons -->
+            <!-- Source interaction buttons -->
 
 <div class="dropdown-buttons-trigger">
     <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
@@ -737,19 +737,19 @@
 </div>
 
 
-        <!-- Full screen (wrap in <a> to have style consistency -->
-        <a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
-                data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
-                title="Fullscreen mode"><i
-                    class="fas fa-expand"></i></button></a>
+            <!-- Full screen (wrap in <a> to have style consistency -->
+            <a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+                    data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+                    title="Fullscreen mode"><i
+                        class="fas fa-expand"></i></button></a>
 
-        <!-- Launch buttons -->
+            <!-- Launch buttons -->
 
-    </div>
+        </div>
 
-    <!-- Table of contents -->
-    <div class="d-none d-md-block col-md-2 bd-toc show">
-        
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
         <div class="tocsection onthispage pt-5 pb-3">
             <i class="fas fa-list"></i> Contents
         </div>
@@ -832,11 +832,23 @@
     <a class="reference internal nav-link" href="#ellipsoid-methods">
      Ellipsoid Methods
     </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#separation-oracle">
-     Separation oracle
-    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#to-identify-non-empty-polyhedron">
+       To Identify Non-empty Polyhedron
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#to-solve-lp">
+       To Solve LP
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#separation-oracle">
+       Separation Oracle
+      </a>
+     </li>
+    </ul>
    </li>
   </ul>
  </li>
@@ -844,6 +856,7 @@
 
         </nav>
         
+        </div>
     </div>
 </div>
     <div id="main-content" class="row">
@@ -1111,46 +1124,145 @@ g(\boldsymbol{y}) \le f(\boldsymbol{x}^*)
 <li><p>finite optimal solutions</p></li>
 <li><p>optimal solution is unbounded</p></li>
 </ul>
-<p>There are many algorithms to find a solution.</p>
-<p>Let <span class="math notranslate nohighlight">\(L\)</span> be the maximal coefficients.</p>
-<p>Ellipsoid method <span class="math notranslate nohighlight">\(O(n^b L)\)</span>. Slow but useful.</p>
-<p>Interior point method <span class="math notranslate nohighlight">\(O(n^{3.5}L)\)</span>.</p>
+<p>There are many algorithms to find a solution. Let <span class="math notranslate nohighlight">\(L\)</span> be the maximal coefficients.</p>
+<ul class="simple">
+<li><p>Ellipsoid method <span class="math notranslate nohighlight">\(O(n^6 L)\)</span>. Slow but useful.</p></li>
+<li><p>Interior point method <span class="math notranslate nohighlight">\(O(n^{3.5}L)\)</span>.</p></li>
+</ul>
 <div class="section" id="ellipsoid-methods">
 <h3>Ellipsoid Methods<a class="headerlink" href="#ellipsoid-methods" title="Permalink to this headline">¶</a></h3>
-<p>Produces a feasible solution to the LP if it exists (not optimal), else return “no feasible solution”.</p>
-<p>To find an optimal solution, we can add a constraint <span class="math notranslate nohighlight">\(f^*\)</span> on the objective function <span class="math notranslate nohighlight">\(f \le f^*\)</span>, and see when will it finds a feasible solution.</p>
-<p><span class="math notranslate nohighlight">\(1 \ge y_e\)</span>?</p>
+<p>Originally, the ellipsoid method can be used to identify whether a polyhedron <span class="math notranslate nohighlight">\(P=\left\{\boldsymbol{x}  \in \mathbb{R}^{n} \mid \boldsymbol{A}  \boldsymbol{x}  \geq \boldsymbol{b} \right\}\)</span> is empty or not. It also can be used to solve LP.</p>
+<div class="section" id="to-identify-non-empty-polyhedron">
+<h4>To Identify Non-empty Polyhedron<a class="headerlink" href="#to-identify-non-empty-polyhedron" title="Permalink to this headline">¶</a></h4>
+<div class="margin sidebar">
+<p class="sidebar-title"></p>
+<p>We can modify the input to the ellipsoid method if <span class="math notranslate nohighlight">\(P\)</span> does not necessarily satisfy these two assumptions.</p>
+</div>
+<p><strong>Assumptions</strong></p>
 <ul class="simple">
-<li><p>Start:</p>
+<li><p>The polyhedron <span class="math notranslate nohighlight">\(P\)</span> is bounded: there exists a ball <span class="math notranslate nohighlight">\(E_0 = E(\boldsymbol{x} _0, r^2 \boldsymbol{I} )\)</span> with volume <span class="math notranslate nohighlight">\(V\)</span>, that contains <span class="math notranslate nohighlight">\(P\)</span></p></li>
+<li><p>The polyhedron <span class="math notranslate nohighlight">\(P\)</span> is either empty <span class="math notranslate nohighlight">\((\operatorname{Vol}(P) =0)\)</span> or full-dimensional (i.e., it has some positive volume <span class="math notranslate nohighlight">\(\operatorname{Vol}(P) &gt; v\)</span> for some <span class="math notranslate nohighlight">\(v &gt; 0\)</span>.)</p></li>
+</ul>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>A matrix <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> and a vector <span class="math notranslate nohighlight">\(\boldsymbol{b}\)</span> that define the polyhedron <span class="math notranslate nohighlight">\(P=\left\{\boldsymbol{x}  \in \mathbb{R}^{n} \mid \boldsymbol{A}  \boldsymbol{x}  \geq \boldsymbol{b} \right\}\)</span></p></li>
+<li><p>A number <span class="math notranslate nohighlight">\(v&gt;0\)</span>, such that either <span class="math notranslate nohighlight">\(P\)</span> is empty or <span class="math notranslate nohighlight">\(\operatorname{Vol}(P) &gt; v\)</span></p></li>
+<li><p>A ball <span class="math notranslate nohighlight">\(E_0 = E(\boldsymbol{x} _0, r^2 \boldsymbol{I} )\)</span> with volume at most <span class="math notranslate nohighlight">\(V\)</span> such that <span class="math notranslate nohighlight">\(P \subset E_0\)</span>.</p></li>
+</ul>
+<p><strong>Output</strong></p>
+<ul class="simple">
+<li><p>A feasible point <span class="math notranslate nohighlight">\(\boldsymbol{x} ^* \in P\)</span> if <span class="math notranslate nohighlight">\(P\)</span> is non-empty, or</p></li>
+<li><p>A statement that <span class="math notranslate nohighlight">\(P\)</span> is empty.</p></li>
+</ul>
+<p>We know introduce the algorithm details.</p>
+<p>Given a polyhedron <span class="math notranslate nohighlight">\(P=\left\{\boldsymbol{x}  \in \mathbb{R}^{n} \mid \boldsymbol{A}  \boldsymbol{x}  \geq \boldsymbol{b} \right\}\)</span>, the algorithm generates a sequence of ellipsoids <span class="math notranslate nohighlight">\(E_t\)</span> with centers <span class="math notranslate nohighlight">\(\boldsymbol{x} _t\)</span>, such that <span class="math notranslate nohighlight">\(P\)</span> is contained in <span class="math notranslate nohighlight">\(E_t\)</span>. It then check if the center <span class="math notranslate nohighlight">\(\boldsymbol{x} _t \in P\)</span>.</p>
+<ul class="simple">
+<li><p>If yes, then <span class="math notranslate nohighlight">\(P\)</span> is nonempty and then the algorithm terminates.</p></li>
+<li><p>Else, there exists a constraint <span class="math notranslate nohighlight">\(\boldsymbol{a}_i ^{\top} \boldsymbol{x} &lt; b_i\)</span>, and any element <span class="math notranslate nohighlight">\(\boldsymbol{x} \in P\)</span> satisfies <span class="math notranslate nohighlight">\(\boldsymbol{a} _i ^{\top} \boldsymbol{x} \ge b_i \ge \boldsymbol{a} _i ^{\top} \boldsymbol{x} _t\)</span>.</p></li>
+</ul>
+<p>More specifically, <span class="math notranslate nohighlight">\(P\)</span> is contained in the intersection of the ellipsoid and the half-space</p>
+<div class="math notranslate nohighlight">
+\[E_t \cap \left\{ \boldsymbol{x} \in \mathbb{R} ^n \vert \boldsymbol{a} _i ^{\top} \boldsymbol{x}  \ge \boldsymbol{a} _i ^{\top} \boldsymbol{x} _t \right\}\]</div>
+<p>Since the half-space passes through the center of the ellipsoid, we call this intersection <strong>half-ellipsoid</strong>.</p>
+<p>Then we can find a new ellipsoid <span class="math notranslate nohighlight">\(E_{t+1}\)</span> that covers the half-ellipsoid and whose volume is only a fraction of the volume of the previous ellipsoid <span class="math notranslate nohighlight">\(E_t\)</span> (by the theorem below).</p>
+<p>Repeat the above process to obtain a sequence of smaller and smaller ellipsoids. Since a non-empty full-dimensional polyhedron cannot be smaller than a certain threshold. If eventually the volume of <span class="math notranslate nohighlight">\(E_t\)</span> is small than this threshold, we conclude that <span class="math notranslate nohighlight">\(P\)</span> is empty.</p>
+<div class="figure align-default" id="lp-ellipsoid-illustration">
+<a class="reference internal image-reference" href="../_images/lp-ellipsoid-illustration.png"><img alt="" src="../_images/lp-ellipsoid-illustration.png" style="width: 90%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 1 </span><span class="caption-text">One iterations in ellipsoid method</span><a class="headerlink" href="#lp-ellipsoid-illustration" title="Permalink to this image">¶</a></p>
+</div>
+<dl class="simple myst">
+<dt>Theorem (Strictly decreasing ellipsoid volume)</dt><dd><p>Let <span class="math notranslate nohighlight">\(E = E(\boldsymbol{z} , \boldsymbol{D} )\)</span> be an ellipsoid in <span class="math notranslate nohighlight">\(\mathbb{R} ^n\)</span>, and let <span class="math notranslate nohighlight">\(\boldsymbol{a}\)</span> be a nonzero <span class="math notranslate nohighlight">\(n\)</span>-vector. Consider the half-space <span class="math notranslate nohighlight">\(H = \left\{ \boldsymbol{x} \in \mathbb{R} ^n \vert \boldsymbol{a} ^{\top} \boldsymbol{x} \ge \boldsymbol{a} ^{\top} \boldsymbol{z} \right\}\)</span> and let</p>
+</dd>
+</dl>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\boldsymbol{z} ^\prime &amp;= \boldsymbol{z} + \frac{1}{n+1} \frac{\boldsymbol{D} \boldsymbol{a} }{\sqrt{\boldsymbol{a} ^{\top} \boldsymbol{D} \boldsymbol{a} }}   \\
+\boldsymbol{D} ^\prime &amp;= \frac{n^2}{n^2 - 1} \left( \boldsymbol{D} - \frac{2}{n+1} \frac{\boldsymbol{D} \boldsymbol{a} \boldsymbol{a} ^{\top} \boldsymbol{D}}{\boldsymbol{a} ^{\top} \boldsymbol{D} \boldsymbol{a} } \right) \\
+\end{aligned}\end{split}\]</div>
+<p>Then</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{D} ^\prime\)</span> is symmetric and p.d., hence <span class="math notranslate nohighlight">\(E ^\prime = E(\boldsymbol{z} ^\prime , \boldsymbol{D} ^\prime )\)</span> is an ellipsoid</p></li>
+<li><p><span class="math notranslate nohighlight">\(E \cap H \subset E ^\prime\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\operatorname{Vol}(E ^\prime ) &lt; \exp(-\frac{1}{2(n+1)} ) \operatorname{Vol}(E)\)</span></p></li>
+</ul>
+<p>To sum up, the algorithm is</p>
+<hr class="docutils" />
+<p>Ellipsoid Method</p>
+<hr class="docutils" />
+<ul class="simple">
+<li><p>Initialization</p>
 <ul>
-<li><p>Ellipsoid <span class="math notranslate nohighlight">\(E_0\)</span> containing the feasible region</p></li>
+<li><p><span class="math notranslate nohighlight">\(t^* = \lceil 2(n+1) \ln \frac{V}{v} \rceil\)</span>, maximum number of iterations</p></li>
+<li><p><span class="math notranslate nohighlight">\(E_0 = E(\boldsymbol{x} _i, r^2 \boldsymbol{I})\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(t=0\)</span></p></li>
 </ul>
 </li>
-<li><p>Iterations:</p>
+<li><p>Iteration</p>
 <ul>
-<li><p>Let <span class="math notranslate nohighlight">\(E_i\)</span> be current ellipsoid containing the feasible region.</p></li>
-<li><p>Let <span class="math notranslate nohighlight">\(x_i\)</span> be the center of the ellipsoid</p></li>
-<li><p>If <span class="math notranslate nohighlight">\(\boldsymbol{x}_i\)</span> is not a feasible solution, and if the algorithm is given LP-constraint <span class="math notranslate nohighlight">\(x_i\)</span> violate, the algorithm produces ellipsoid <span class="math notranslate nohighlight">\(E_{i+1}\)</span> containing the feasible region. Note that <span class="math notranslate nohighlight">\(\operatorname{vol}(E_{i+1}) \le \operatorname{vol}(E_i) \left( 1 - \frac{1}{\operatorname{poly}(n) }  \right)\)</span> where <span class="math notranslate nohighlight">\(n\)</span> is the number of variables.</p></li>
+<li><p>If <span class="math notranslate nohighlight">\(t=t^*\)</span> then stop, return <span class="math notranslate nohighlight">\(P\)</span> is empty</p></li>
+<li><p>If <span class="math notranslate nohighlight">\(\boldsymbol{x} _t \in P\)</span> then stop, return <span class="math notranslate nohighlight">\(P\)</span> is non-empty</p></li>
+<li><p>If <span class="math notranslate nohighlight">\(\boldsymbol{x} _t \notin P\)</span>, find a a violated constrain <span class="math notranslate nohighlight">\(i\)</span> such that <span class="math notranslate nohighlight">\(\boldsymbol{a} ^{\top} _i \boldsymbol{x} &lt; b_i\)</span>.</p>
+<ul>
+<li><p>Let <span class="math notranslate nohighlight">\(H_t= \left\{ \boldsymbol{x} \in \mathbb{R} ^n \vert \boldsymbol{a}_i ^{\top} \boldsymbol{x} \ge \boldsymbol{a} ^{\top}_i \boldsymbol{x}_t \right\}\)</span>. Find an ellipsoid <span class="math notranslate nohighlight">\(E_{t+1}\)</span> containing <span class="math notranslate nohighlight">\(E_t \cap H_t\)</span> by applying the Theorem above.</p></li>
+</ul>
+</li>
+<li><p><span class="math notranslate nohighlight">\(t \mathrel{+}= 1\)</span></p></li>
 </ul>
 </li>
 </ul>
+<p><strong>Correctness</strong></p>
+<div class="dropdown seealso admonition">
+<p class="admonition-title"> <em>Proof</em></p>
+<p>Let’s look at the <span class="math notranslate nohighlight">\(\operatorname{Vol}\left(E_{t^{*}}\right)\)</span> when <span class="math notranslate nohighlight">\(t = t^*\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\operatorname{Vol}\left(E_{t^{*}}\right)
+&amp;&lt; \operatorname{Vol}\left(E_{0}\right) e^{-t^{*} /(2(n+1))} \quad \because \text{Theorem} \\
+&amp;\leq V e^{-\left\lceil 2(n+1) \log \frac{V}{v}\right\rceil /(2(n+1))} \quad \because \text{definition of } t^* \\
+&amp;\leq V e^{-\log \frac{V}{v}} \\
+&amp;=V e^{\log \frac{v}{V}} \\
+&amp;= v\\
+\end{aligned}\end{split}\]</div>
+<p>That is, <span class="math notranslate nohighlight">\(\operatorname{Vol}(P) \leq \operatorname{Vol}\left(E_{t^{*}}\right) \leq v\)</span>. By assumption either <span class="math notranslate nohighlight">\((\operatorname{Vol}(P) =0)\)</span> or <span class="math notranslate nohighlight">\(\operatorname{Vol}(P) &gt; v\)</span>. Hence, this implies that <span class="math notranslate nohighlight">\(P\)</span> is empty.</p>
+</div>
+<div class="note admonition">
+<p class="admonition-title"> 1-d case</p>
+<p>In one-dimensional case, e.g.</p>
+<div class="math notranslate nohighlight">
+\[
+P=\left\{x \in \mathbb{R}^{1} \mid x \geq 0, x \geq 1, x \leq 2, x \leq 3\right\}
+\]</div>
+<p>the ellipsoid method is used to determine if there is an intersection of half-lines.</p>
+</div>
+<p><strong>Complexity</strong></p>
+<p>If <span class="math notranslate nohighlight">\(V\)</span> and <span class="math notranslate nohighlight">\(v\)</span> is given, we’ve shown that the number of iterations is at most <span class="math notranslate nohighlight">\(O(n \log (V/v))\)</span>.</p>
+</div>
+<div class="section" id="to-solve-lp">
+<h4>To Solve LP<a class="headerlink" href="#to-solve-lp" title="Permalink to this headline">¶</a></h4>
+<p>To find an optimal solution in LP, we can add a constraint <span class="math notranslate nohighlight">\(f^*\)</span> on the objective function <span class="math notranslate nohighlight">\(f \le f^*\)</span> and replace the objective function by a constant, then use binary search and ellipsoid method to find the optimum value.</p>
+<p>The question is, some LP problem have exponential constraints, e.g. <a class="reference internal" href="../25-graph-related/91-LP-max-flow-min-cut.html#lp-flow-cut"><span class="std std-ref">LP-cut</span></a>. The ellipsoid methods are still efficient if we have a separation oracle.</p>
 </div>
 <div class="section" id="separation-oracle">
-<h3>Separation oracle<a class="headerlink" href="#separation-oracle" title="Permalink to this headline">¶</a></h3>
-<p>Separation oracle for an LP is an efficient algorithm that, given a point <span class="math notranslate nohighlight">\(\boldsymbol{x} \in \mathbb{R} ^n\)</span>, either</p>
+<h4>Separation Oracle<a class="headerlink" href="#separation-oracle" title="Permalink to this headline">¶</a></h4>
+<p>Separation oracle for an LP is an <strong>efficient</strong> <span class="math notranslate nohighlight">\((\operatorname{Poly}(n) )\)</span> algorithm that, given a point <span class="math notranslate nohighlight">\(\boldsymbol{x} \in \mathbb{R} ^n\)</span> and a polytope <span class="math notranslate nohighlight">\(P = \left\{\boldsymbol{x} \in \mathbb{R}^{n} \mid \boldsymbol{A} \boldsymbol{x} \geq \boldsymbol{b}\right\}\)</span>, it either</p>
 <ul class="simple">
-<li><p>return True if it is a feasible solution</p></li>
-<li><p>or produces an LP-constraint that <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> violates</p></li>
+<li><p>return True if <span class="math notranslate nohighlight">\(\boldsymbol{x} \in P\)</span>, or</p></li>
+<li><p>produces an LP-constraint that <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> violates</p></li>
 </ul>
-<p>If <span class="math notranslate nohighlight">\(\operatorname{vol}(\operatorname{E}\left( _0 \right)) \le 2 ^{\operatorname{poly} (n)}\)</span> and feasible region has volume <span class="math notranslate nohighlight">\(\ge \frac{1}{2^{\operatorname{poly}(n)}}\)</span>. After <span class="math notranslate nohighlight">\(\operatorname{poly}(n)}\)</span> iterations ellipsoids terminates with a solution.</p>
-<p>The constraints are</p>
+<p>Usually, even though the number of constraints is exponential, one can still write a custom separation oracle that works in polynomial time</p>
+<p>Recall the constraints in LP-cut are</p>
+<div class="margin sidebar">
+<p class="sidebar-title"></p>
+<p>In an optimal solution, we always have <span class="math notranslate nohighlight">\(y_e \le 1\)</span>, so adding this constraint is fine.</p>
+</div>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{aligned}
 \sum_{e} c(e) y_e &amp;\le c^* \\
 y_e &amp;\in [0,1]\quad \forall e \in E \\
 \sum_{e \in E(P)} y_e &amp;\ge 1 \quad \forall P \in \mathcal{P}\\
 \end{aligned}\end{split}\]</div>
-<p>where <span class="math notranslate nohighlight">\(\mathcal{P}\)</span> is the collection of <span class="math notranslate nohighlight">\(s-t\)</span> paths. To check <span class="math notranslate nohighlight">\(\sum_{e \in E(P)} y_e \ge 1\)</span> for all <span class="math notranslate nohighlight">\(P \in \mathcal{P}\)</span>, we can check the shortest path length, by running Dijkstra algorithm.</p>
+<p>where <span class="math notranslate nohighlight">\(\mathcal{P}\)</span> is the collection of <span class="math notranslate nohighlight">\(s-t\)</span> paths. To check <span class="math notranslate nohighlight">\(\sum_{e \in E(P)} y_e \ge 1\)</span> for all path <span class="math notranslate nohighlight">\(P \in \mathcal{P}\)</span>, we can simply check the <strong>shortest</strong> path length, by running Dijkstra algorithm, which is <span class="math notranslate nohighlight">\(\operatorname{Poly}(n)\)</span>. If it is larger than <span class="math notranslate nohighlight">\(1\)</span>, then all constraints hold; otherwise the path defines a violated constraint.</p>
+</div>
 </div>
 </div>
 </div>
@@ -1177,15 +1289,15 @@ y_e &amp;\in [0,1]\quad \forall e \in E \\
 
               </div>
               
-        </div>
-    </div>
-    
-    
-    <div class='prev-next-bottom'>
         
+        <div class='prev-next-bottom'>
+            
     <a class='left-prev' id="prev-link" href="21-linear-algebra.html" title="previous page">Linear Algebra</a>
     <a class='right-next' id="next-link" href="61-graphs.html" title="next page">Graphs</a>
 
+        </div>
+        
+        </div>
     </div>
     <footer class="footer mt-5 mt-md-0">
     <div class="container">
