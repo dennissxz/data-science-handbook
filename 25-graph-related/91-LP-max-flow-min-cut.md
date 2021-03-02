@@ -2,8 +2,8 @@
 
 ## Duality
 
-
-### LP-max and Dual
+(LP-flow-cut)=
+### LP-flow and LP-cut
 
 Consider the path-defined flow. We can view each $f(P)$ as a variable. Then the optimization problem
 
@@ -73,9 +73,9 @@ We have shown that $OPT(\text{max-flow} ) = OPT(\text{min-cut} )$ in the [max-fl
 
 Claim: The integrality gap between min-cut and LP-cut is 1
 
-Prove by providing an efficient algo that given any optimal fractional solution to $OPT_{LP}$, it returns an integral feasible solution whose cost is **not** higher than $OPT_{LP}$. (LP-rounding algorithm).
+We can prove a stronger condition: there exists an efficient algo that given any optimal fractional solution to $OPT_{LP}$, it returns an **integral** feasible solution whose cost is **not** higher than $OPT_{LP}$ (i.e., LP-rounding algorithm).
 
-:::{admonition,dropdown,seealso} *Proof*
+:::{admonition, dropdown, seealso} *Proof*
 
 View $y_e \in \mathbb{R}$ as the length of edge $e$. The distance $d(u,v)$ is the length of shortest $u-v$ path under $y_e$ edge length. Recall the LP-cut problem
 
@@ -88,7 +88,7 @@ $$\begin{aligned}
 
 The constraints says that the distance of any $s-t$ path is at least one.
 
-Consider a value $\rho \in (0,1)$, which defines a cut $(A_\rho, B_\rho)$, such that
+To find an efficient algorithm, consider a value $\rho \in (0,1)$, which defines a cut $(A_\rho, B_\rho)$, such that
 - $A_\rho = \left\{ v \mid d(s,v) \le \rho \right\}$
 - $B_\rho = \left\{ v \mid d(s,v) > \rho \right\} = V \backslash A_\rho$
 
@@ -107,27 +107,27 @@ $$
 
 The number of different cuts is actually $n-1$. We can set cutoffs to be $\rho_i = d(s,v_i)$ where $i = 1, 2, \ldots$ until it is closest to 1. Then any $\rho \in [\rho_i, \rho_{i+1})$ always gives the same cut.
 
-We want to prove $c(A^*, B^*) \le \sum_{e} c(e)y_e$. A sufficient condition is
+We want to prove $v(\rho^*) = c(A^*, B^*) \le \sum_{e} c(e)y_e$. A sufficient condition is
 
 $$
-\operatorname{E} [v(\rho) ]\le \sum_{e} c(e)y_e
+\operatorname{\mathbb{E}} [v(\rho) ]\le \sum_{e} c(e)y_e
 $$
 
-where $\rho$ is chosen uniformly at random from $(0,1)$. Now we prove this sufficient condition.
+where $\rho$ is chosen uniformly at random from $(0,1)$. Note the LHS is
 
 
 $$\begin{aligned}
-\operatorname{E}_\rho \left[ v(\rho) \right]
-&= \operatorname{E}\left[ \sum _{u \in A_\rho, v\in B_\rho} c(u,v) \right]\\
-&= \sum_e c(e) \operatorname{E} \left\{ \mathbb{I}\left[ e \in E(A_\rho, B_\rho) \right] \right\}\\
-&= \sum_e c(e) \operatorname{P} \left\{ e \in E(A_\rho, B_\rho)  \right\}\\
+\operatorname{\mathbb{E}}_\rho \left[ v(\rho) \right]
+&= \operatorname{\mathbb{E}}\left[ \sum _{u \in A_\rho, v\in B_\rho} c(u,v) \right]\\
+&= \sum_{e \in E(G)} c(e) \operatorname{\mathbb{E}} \left\{ \mathbb{I}\left[ e \in E(A_\rho, B_\rho) \right] \right\}\\
+&= \sum_{e \in E(G)} c(e) \operatorname{\mathbb{P}} \left\{ e \in E(A_\rho, B_\rho)  \right\}\\
 \end{aligned}$$
 
-Thus, it remains to show $\operatorname{P} \left\{ e \in E(A_\rho, B_\rho)  \right\}\le y_e$. Suppose $e=(u,v)$, consider the probability.
+Thus, it remains to show $\operatorname{\mathbb{P}} \left\{ e \in E(A_\rho, B_\rho)  \right\}\le y_e$. Suppose $e=(u, v)$, consider the probability.
 
-- If $d(s,u) < d(s,v)$, then it contributes to the cut iff $d(s,u)\le \rho < d(s,v)$, with probability $d(s,v)-d(s,u)$, which is less than or equal to the edge length $y_e$.
-- If $d(s,u) \ge d(s,v)$, then it cannot contribute to the cut, i.e. $\operatorname{P} \left\{ e \in E(A_\rho, B_\rho)  \right\}=0$
+- If $d(s, u) < d(s, v)$, then the event $\left\{ e \in E(A_\rho, B_\rho)  \right\}$ happens iff $d(s,u)\le \rho < d(s,v)$, with probability $d(s, v)-d(s, u)$, which is less than or equal to the edge length $y_e$.
+- If $d(s, u) \ge d(s, v)$, then the event $\left\{ e \in E(A_\rho, B_\rho)  \right\}$ is impossible, i.e. $\operatorname{P} \left\{ e \in E(A_\rho, B_\rho)  \right\}=0$
 
-Hence, the probability is always less than $y_e$, and it completes proof of integrality gap > 1.
+Hence, the probability is always less than $y_e$, which proves that we can find $\rho^*$ efficiently such that the resulting cut $c(A^*, B^*)$ (integral solution) gives value no larger than the LP-cut value.
 
 :::
