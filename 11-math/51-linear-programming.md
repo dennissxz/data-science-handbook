@@ -291,48 +291,156 @@ Definition (Integrality Gap)
 In every LP, one of the following holds
 
 - no feasible solution
-
 - finite optimal solutions
-
 - optimal solution is unbounded
 
-There are many algorithms to find a solution.
+There are many algorithms to find a solution. Let $L$ be the maximal coefficients.
 
-Let $L$ be the maximal coefficients.
-
-Ellipsoid method $O(n^b L)$. Slow but useful.
-
-Interior point method $O(n^{3.5}L)$.
+- Ellipsoid method $O(n^6 L)$. Slow but useful.
+- Interior point method $O(n^{3.5}L)$.
 
 
 ### Ellipsoid Methods
 
-Produces a feasible solution to the LP if it exists (not optimal), else return "no feasible solution".
+Originally, the ellipsoid method can be used to identify whether a polyhedron $P=\left\{\boldsymbol{x}  \in \mathbb{R}^{n} \mid \boldsymbol{A}  \boldsymbol{x}  \geq \boldsymbol{b} \right\}$ is empty or not. It also can be used to solve LP.
 
-To find an optimal solution, we can add a constraint $f^*$ on the objective function $f \le f^*$, and see when will it finds a feasible solution.
+#### To Identify Non-empty Polyhedron
 
-$1 \ge y_e$?
+```{margin}
+We can modify the input to the ellipsoid method if $P$ does not necessarily satisfy these two assumptions.
+```
 
-- Start:
-  - Ellipsoid $E_0$ containing the feasible region
+**Assumptions**
 
-- Iterations:
-  - Let $E_i$ be current ellipsoid containing the feasible region.
-  - Let $x_i$ be the center of the ellipsoid
-  - If $\boldsymbol{x}_i$ is not a feasible solution, and if the algorithm is given LP-constraint $x_i$ violate, the algorithm produces ellipsoid $E_{i+1}$ containing the feasible region. Note that $\operatorname{vol}(E_{i+1}) \le \operatorname{vol}(E_i) \left( 1 - \frac{1}{\operatorname{poly}(n) }  \right)$ where $n$ is the number of variables.
+- The polyhedron $P$ is bounded: there exists a ball $E_0 = E(\boldsymbol{x} _0, r^2 \boldsymbol{I} )$ with volume $V$, that contains $P$
+- The polyhedron $P$ is either empty $(\operatorname{Vol}(P) =0)$ or full-dimensional (i.e., it has some positive volume $\operatorname{Vol}(P) > v$ for some $v > 0$.)
+
+**Inputs**
+
+- A matrix $\boldsymbol{A}$ and a vector $\boldsymbol{b}$ that define the polyhedron $P=\left\{\boldsymbol{x}  \in \mathbb{R}^{n} \mid \boldsymbol{A}  \boldsymbol{x}  \geq \boldsymbol{b} \right\}$
+- A number $v>0$, such that either $P$ is empty or $\operatorname{Vol}(P) > v$
+- A ball $E_0 = E(\boldsymbol{x} _0, r^2 \boldsymbol{I} )$ with volume at most $V$ such that $P \subset E_0$.
+
+**Output**
+
+- A feasible point $\boldsymbol{x} ^* \in P$ if $P$ is non-empty, or
+- A statement that $P$ is empty.
+
+We know introduce the algorithm details.
+
+Given a polyhedron $P=\left\{\boldsymbol{x}  \in \mathbb{R}^{n} \mid \boldsymbol{A}  \boldsymbol{x}  \geq \boldsymbol{b} \right\}$, the algorithm generates a sequence of ellipsoids $E_t$ with centers $\boldsymbol{x} _t$, such that $P$ is contained in $E_t$. It then check if the center $\boldsymbol{x} _t \in P$.
+- If yes, then $P$ is nonempty and then the algorithm terminates.
+- Else, there exists a constraint $\boldsymbol{a}_i ^{\top} \boldsymbol{x} < b_i$, and any element $\boldsymbol{x} \in P$ satisfies $\boldsymbol{a} _i ^{\top} \boldsymbol{x} \ge b_i \ge \boldsymbol{a} _i ^{\top} \boldsymbol{x} _t$.
+
+More specifically, $P$ is contained in the intersection of the ellipsoid and the half-space
+
+$$E_t \cap \left\{ \boldsymbol{x} \in \mathbb{R} ^n \vert \boldsymbol{a} _i ^{\top} \boldsymbol{x}  \ge \boldsymbol{a} _i ^{\top} \boldsymbol{x} _t \right\}$$
+
+Since the half-space passes through the center of the ellipsoid, we call this intersection **half-ellipsoid**.
+
+Then we can find a new ellipsoid $E_{t+1}$ that covers the half-ellipsoid and whose volume is only a fraction of the volume of the previous ellipsoid $E_t$ (by the theorem below).
+
+Repeat the above process to obtain a sequence of smaller and smaller ellipsoids. Since a non-empty full-dimensional polyhedron cannot be smaller than a certain threshold. If eventually the volume of $E_t$ is small than this threshold, we conclude that $P$ is empty.
+
+:::{figure} lp-ellipsoid-illustration
+<img src="../imgs/lp-ellipsoid-illustration.png" width = "90%" alt=""/>
+
+One iterations in ellipsoid method
+:::
 
 
+Theorem (Strictly decreasing ellipsoid volume)
+: Let $E = E(\boldsymbol{z} , \boldsymbol{D} )$ be an ellipsoid in $\mathbb{R} ^n$, and let $\boldsymbol{a}$ be a nonzero $n$-vector. Consider the half-space $H = \left\{ \boldsymbol{x} \in \mathbb{R} ^n \vert \boldsymbol{a} ^{\top} \boldsymbol{x} \ge \boldsymbol{a} ^{\top} \boldsymbol{z} \right\}$ and let
 
-### Separation oracle
 
-Separation oracle for an LP is an efficient algorithm that, given a point $\boldsymbol{x} \in \mathbb{R} ^n$, either
-- return True if it is a feasible solution
-- or produces an LP-constraint that $\boldsymbol{x}$ violates
+$$\begin{aligned}
+\boldsymbol{z} ^\prime &= \boldsymbol{z} + \frac{1}{n+1} \frac{\boldsymbol{D} \boldsymbol{a} }{\sqrt{\boldsymbol{a} ^{\top} \boldsymbol{D} \boldsymbol{a} }}   \\
+\boldsymbol{D} ^\prime &= \frac{n^2}{n^2 - 1} \left( \boldsymbol{D} - \frac{2}{n+1} \frac{\boldsymbol{D} \boldsymbol{a} \boldsymbol{a} ^{\top} \boldsymbol{D}}{\boldsymbol{a} ^{\top} \boldsymbol{D} \boldsymbol{a} } \right) \\
+\end{aligned}$$
 
-If $\operatorname{vol}(\operatorname{E}\left( _0 \right)) \le 2 ^{\operatorname{poly} (n)}$ and feasible region has volume $\ge \frac{1}{2^{\operatorname{poly}(n)}}$. After $\operatorname{poly}(n)}$ iterations ellipsoids terminates with a solution.
+Then
 
-The constraints are
+- $\boldsymbol{D} ^\prime$ is symmetric and p.d., hence $E ^\prime = E(\boldsymbol{z} ^\prime , \boldsymbol{D} ^\prime )$ is an ellipsoid
+- $E \cap H \subset E ^\prime$
+- $\operatorname{Vol}(E ^\prime ) < \exp(-\frac{1}{2(n+1)} ) \operatorname{Vol}(E)$
 
+
+To sum up, the algorithm is
+
+
+---
+Ellipsoid Method
+
+---
+
+- Initialization
+  - $t^* = \lceil 2(n+1) \ln \frac{V}{v} \rceil$, maximum number of iterations
+  - $E_0 = E(\boldsymbol{x} _i, r^2 \boldsymbol{I})$
+  - $t=0$
+
+- Iteration
+  - If $t=t^*$ then stop, return $P$ is empty
+  - If $\boldsymbol{x} _t \in P$ then stop, return $P$ is non-empty
+  - If $\boldsymbol{x} _t \notin P$, find a a violated constrain $i$ such that $\boldsymbol{a} ^{\top} _i \boldsymbol{x} < b_i$.
+    - Let $H_t= \left\{ \boldsymbol{x} \in \mathbb{R} ^n \vert \boldsymbol{a}_i ^{\top} \boldsymbol{x} \ge \boldsymbol{a} ^{\top}_i \boldsymbol{x}_t \right\}$. Find an ellipsoid $E_{t+1}$ containing $E_t \cap H_t$ by applying the Theorem above.
+  - $t \mathrel{+}= 1$
+
+**Correctness**
+
+:::{admonition,dropdown,seealso} *Proof*
+
+Let's look at the $\operatorname{Vol}\left(E_{t^{*}}\right)$ when $t = t^*$.
+
+$$\begin{aligned}
+\operatorname{Vol}\left(E_{t^{*}}\right)
+&< \operatorname{Vol}\left(E_{0}\right) e^{-t^{*} /(2(n+1))} \quad \because \text{Theorem} \\
+&\leq V e^{-\left\lceil 2(n+1) \log \frac{V}{v}\right\rceil /(2(n+1))} \quad \because \text{definition of } t^* \\
+&\leq V e^{-\log \frac{V}{v}} \\
+&=V e^{\log \frac{v}{V}} \\
+&= v\\
+\end{aligned}$$
+
+That is, $\operatorname{Vol}(P) \leq \operatorname{Vol}\left(E_{t^{*}}\right) \leq v$. By assumption either $(\operatorname{Vol}(P) =0)$ or $\operatorname{Vol}(P) > v$. Hence, this implies that $P$ is empty.
+
+:::
+
+
+:::{admonition,note} 1-d case
+
+In one-dimensional case, e.g.
+
+$$
+P=\left\{x \in \mathbb{R}^{1} \mid x \geq 0, x \geq 1, x \leq 2, x \leq 3\right\}
+$$
+
+the ellipsoid method is used to determine if there is an intersection of half-lines.
+
+:::
+
+**Complexity**
+
+If $V$ and $v$ is given, we've shown that the number of iterations is at most $O(n \log (V/v))$.
+
+
+#### To Solve LP
+
+To find an optimal solution in LP, we can add a constraint $f^*$ on the objective function $f \le f^*$ and replace the objective function by a constant, then use binary search and ellipsoid method to find the optimum value.
+
+The question is, some LP problem have exponential constraints, e.g. [LP-cut](LP-flow-cut). The ellipsoid methods are still efficient if we have a separation oracle.
+
+#### Separation Oracle
+
+Separation oracle for an LP is an **efficient** $(\operatorname{Poly}(n) )$ algorithm that, given a point $\boldsymbol{x} \in \mathbb{R} ^n$ and a polytope $P = \left\{\boldsymbol{x} \in \mathbb{R}^{n} \mid \boldsymbol{A} \boldsymbol{x} \geq \boldsymbol{b}\right\}$, it either
+- return True if $\boldsymbol{x} \in P$, or
+- produces an LP-constraint that $\boldsymbol{x}$ violates
+
+Usually, even though the number of constraints is exponential, one can still write a custom separation oracle that works in polynomial time
+
+Recall the constraints in LP-cut are
+
+```{margin}
+In an optimal solution, we always have $y_e \le 1$, so adding this constraint is fine.
+```
 
 $$\begin{aligned}
 \sum_{e} c(e) y_e &\le c^* \\
@@ -340,4 +448,4 @@ y_e &\in [0,1]\quad \forall e \in E \\
 \sum_{e \in E(P)} y_e &\ge 1 \quad \forall P \in \mathcal{P}\\
 \end{aligned}$$
 
-where $\mathcal{P}$ is the collection of $s-t$ paths. To check $\sum_{e \in E(P)} y_e \ge 1$ for all $P \in \mathcal{P}$, we can check the shortest path length, by running Dijkstra algorithm.
+where $\mathcal{P}$ is the collection of $s-t$ paths. To check $\sum_{e \in E(P)} y_e \ge 1$ for all path $P \in \mathcal{P}$, we can simply check the **shortest** path length, by running Dijkstra algorithm, which is $\operatorname{Poly}(n)$. If it is larger than $1$, then all constraints hold; otherwise the path defines a violated constraint.
