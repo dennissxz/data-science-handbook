@@ -719,6 +719,103 @@ If the true underlying model is not linear, then the estimates may or may not ch
   Hence the how $\operatorname{Var} (\beta_j)$ change is uncertain.
 
 
+
+## Natural Experiments
+
+In natural experiments, we use observed data, but it is reasonable to suspect treatment uncorrelated with error without an actual experiment, i.e. it is "as if" there had been randomization.
+
+
+- A **cross-section** of data is a sample drawn from a population at a single point in time
+- **Repeated cross-sections** are samples drawn from the same **population** at several points in time
+- If we have information on the same **individuals** at more than one point in time, we have **panel data**
+
+We often use the “difference-in-differences” estimator to study repeated cross-sections or panel data when we have a natural experiment.
+
+### Difference-in-difference
+
+In DiD, we uses a control group to net out any trends over time.
+
+| | Treatment | Control
+| - | - |- |
+|Before   |  $A$ | $B$  |
+|After   |  $C$ | $D$  |
+|Difference | $C-A$  | $D-B$  |
+
+```{margin}
+Other statistic of interest or more robust e.g. median, percentiles, log, can also be used.
+```
+
+Let $\bar{y}_A, \bar{y}_B, \bar{y}_C, \bar{y}_D$ be the corresponding means of each group. DiD is computed as
+
+$$
+DiD = (\bar{y}_C - \bar{y}_A) - (\bar{y}_D- \bar{y}_B)
+$$
+
+Then we can conduct a two-sample $t$-test. We can also use regression with two categorial variables (After, Treat) and one interaction term.
+
+$$
+Y=\beta_{0}+\beta_{1} \text {Treated} * \text {After}+\beta_{2} \text {Treated}+\beta_{3} \text {After}+\varepsilon
+$$
+
+where
+
+- $\hat{\beta}_0 = \bar{y}_B$
+- $\hat{\beta}_2 = \bar{y}_A - \bar{y}_B$
+- $\hat{\beta}_3 = \bar{y}_D - \bar{y}_B$
+- $\hat{\beta}_1 = (\bar{y}_C - \bar{y}_A) - (\bar{y}_D - \bar{y}_B) = DiD$
+
+and we can test $\hat{\beta}_1 = 0$.
+
+To control other variables, we add them into the model (note about over controlling)
+
+$$
+Y=\beta_{0}+\beta_{1} \text { Treated } * \text { After }+\beta_{2} \text { Treated }+\beta_{3} \text { After }+\sum_k \gamma_k X_k+\varepsilon
+$$
+
+
+### Choice of Control Group
+
+It is often hard to choose control group. One criteria is the common trends assumption.
+
+Assumption (Common trends):
+: In a before/after study, whatever factors change with time must affect the treatment and control group the **same**.
+  - Use both theory and data to assess common trends
+    - theory: logical reasoning
+    - data: plot $y$ for the two groups along time before the treatment, see if they have similar ups and downs.
+  - If some unobserved factor changes more for treated group than for control, then we have bias.
+
+A control group must enable you to approximate the counterfactual for the treated group – what would have happened to them if they had not received treatment?
+
+For instance, in the project *Taxes on the Rich* (Feldstein (1995), Goolsbee (2000)). The tax policy impose a decrease in marginal tax rates for high income earners in 1986. Goolsbee examines increase in marginal rates in 1993 for high income earners. Lower (but still high) earners are control.
+
+
+### Internal Validity
+
+Internal validity refers to whether one can validly draw the inference that within the context of the study, to conclude that the differences in the dependent variables were caused by the differences in the relevant explanatory variables.
+
+Some issues are
+
+1. Omitted Variables: events, other than the experimental treatment, occurring between pre-intervention and post- intervention observations that provide alternative explanations for the results.
+
+2. Trends in Outcomes: processes within the units of observation producing changes as a function of the passage of time per se, such as inflation, aging, and wage growth.
+
+3. Misspecified Variances: omission of group error terms. Bertrand (2004) et al.
+
+4. Mismeasurement: changes in definitions or survey methods that may produce changes in the measured variables. NHIS, CPS.
+
+5. Political Economy: endogeneity of policy changes due to governmental responses to variables associated with past or expected future outcomes. Campbell and drunk driving.
+
+6. Simultaneity: endogeneity of explanatory variables due to their joint determination with outcomes. Think price and quantity.
+
+7. Selection: assignment of observations to treatment groups in a manner that leads to correlation between assignment and outcomes in the absence of treatment. Selection can take many forms. Trainees often do well relative to their recent past...
+
+8. Attrition: the differential loss of respondents from treatment and comparison groups.
+
+9. Omitted Interactions: differential trends in treatment and control groups or omitted variables that change in different ways for treatment and control groups. For example, a time trend in a treatment group that is not present in a comparison group. The exclusion of such interactions is a common identifying assumption in the designs of natural experiments. This is the common trends assumption.
+
+
+
+
 ## Categorical $X$
 
 TBD...
