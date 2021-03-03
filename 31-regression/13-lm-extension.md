@@ -813,6 +813,42 @@ Some issues are
 
 9. Omitted Interactions: differential trends in treatment and control groups or omitted variables that change in different ways for treatment and control groups. For example, a time trend in a treatment group that is not present in a comparison group. The exclusion of such interactions is a common identifying assumption in the designs of natural experiments. This is the common trends assumption.
 
+## Regression Discontinuity
+
+[[Wiki](https://en.wikipedia.org/wiki/Regression_discontinuity_design)]
+
+We want to analyze an policy effect to different group of people. For instance,
+
+- effect of extended unemployment insurance benefits on willingness to work (measured by actual unemployment period), where the benefits are different for different age group, characterized by age cutoffs.
+- effect of medicaid on health (measured by mortality or hospitalization rate), where the medicaid are different for different age group, characterized by birth date cutoffs
+- in loan application, a rule of thumb is that applicants with credit score greater than 620 have low delinquency probability and hence more likely to get accepted.
+
+There are other cutoffs, like earnings.
+
+In sum, there is a sharp policy at cutoff point $a^*$, while other characteristics that influence outcome ($y$) are very similar around $a^*$. It should be as if we **randomized** and those just above $a^*$ are the treatment group and just below a* are the control group. To analyze the policy effect at this cutoff, the regression discontinuity equation is
+
+
+$$
+Y_{i a}=\beta_{0}+\beta_{1} D_{a \geq a *}+f(a)+\varepsilon_{i a}
+$$
+
+where
+
+- $i$ is individual, $a$ is so called **running variable** (e.g. age, score, time)
+- $y_{ia}$ is an outcome variable of interest
+- $D_{a \ge a^*}$ is an indicator for an individual being above the cutoff $a^*$
+- $f(a)$ is a function of $a$, often linear or quadratic, and often with different slopes above and below $a^*$
+- The observations used to run this regression are those around $a^*$, e.g. there is a bandwidth/window width.
+- We can run this equation at each cutoff points in the policy.
+
+We are interested in $\beta_1$.
+
+Note
+
+- RD requires a large sample
+- wider window (larger sample) increase precision as well as bias, precision v. bias tradeoff
+- In some cases the cutoff is "hard" (unemployment benefit), and some times it is soft (credit score). If it is soft we call this fuzzy RD
+
 
 
 
