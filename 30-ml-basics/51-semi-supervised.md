@@ -131,8 +131,8 @@ Train a Gaussian for each class
 
 Suppose now we have unlabeled data as below. Clearly, the classifier boundaries above are not accurate.
 
-:::{figure} semisup-gen-cluster
-<img src="../imgs/semisup-gen-cluster.png" width = "30%" alt=""/>
+:::{figure} semisup-gen-comparison
+<img src="../imgs/semisup-gen-comparison.png" width = "50%" alt=""/>
 
 Labeled and unlabeled data.
 :::
@@ -153,12 +153,6 @@ where on RHS
 
 Now we have hidden variables (labels of $x_u$), so we can use EM. Same as EM for general Gaussian mixture learning, but some of the latent variables (component assignments) are hard labels while the rest are posteriors (as usual).
 
-:::{figure} semisup-gen-comparison
-<img src="../imgs/semisup-gen-comparison.png" width = "50%" alt=""/>
-
-Comparison of fitted Gaussian with labeled data only (left) and both data (right).
-:::
-
 This method
 
 - Can be applied to other generative models, e.g. hidden Markov models (speech, text, video, other time series)
@@ -166,7 +160,7 @@ This method
 
 ### cf. Gaussian Mixtures
 
-[Gaussian mixtures](../34-clustering-41-gaussian-mixtures) are clustering models. Given $\mathcal{X} _u$, and number of class, say $k$, then we can train Gaussian mixtures to learn $k$ distribution functions for $\mathcal{X} _u$. However, we don't know the **mapping** from cluster index to the class index -- given a new data point $x_{\text{test} }$, we cannot do classification.
+[Gaussian mixtures](../34-clustering/41-gaussian-mixtures) are clustering models. Given $\mathcal{X} _u$, and number of class, say $k$, then we can train Gaussian mixtures to learn $k$ distribution functions for $\mathcal{X} _u$. However, we don't know the **mapping** from cluster index to the class index -- given a new data point $x_{\text{test} }$, we cannot do classification.
 
 Labeled data help to find such mapping.
 
