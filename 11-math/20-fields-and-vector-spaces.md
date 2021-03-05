@@ -78,7 +78,7 @@ $$\langle\mathbf{x}, \mathbf{y}\rangle=\overline{\langle\mathbf{y}, \mathbf{x}\r
 
 1. Positive definite
 
-$$\langle\mathbf{x}, \mathbf{x}\rangle>0 \quad$ if $\mathbf{x} \neq \mathbf{0} \quad$ o.w. $\langle\mathbf{x}, \mathbf{x}\rangle=0$$
+$\langle\mathbf{x}, \mathbf{x}\rangle>0 \quad$ if $\mathbf{x} \neq \mathbf{0} \quad$ o.w. $\langle\mathbf{x}, \mathbf{x}\rangle=0$$
 
 Note that $2$ and $3$ imply that $\langle\mathbf{x}, \mathbf{x}\rangle \in \mathbb{R}_{\geq 0}$.
 
