@@ -552,7 +552,7 @@ $$
 
 ### Incremental Update of Mean and Variance
 
-*Suppose you have $n$ observations $x_1, x_2, \ldots, x_n$. Now a new value $x_{n+1}$ is observed. Write recurrence functions to update the sample mean $\bar{x}_n$ and variance $s^2_n$.*
+*Suppose you have $n$ observations $x_1, x_2, \ldots, x_n$. Now a new value $x_{n+1}$ is observed. Write down recurrence functions for $\bar{x}_n$ and $s^2_n$, and use them to obtain $\bar{x}_{n+1}$ and $s^2_{n+1}$.*
 
 ::::{admonition,dropdown,seealso} *Solution*
 To update mean,
@@ -569,7 +569,7 @@ The last line is to avoid computing a large number $n \bar{x}_n$.
 
 The second last line implies that the new sample mean $\bar{x}_{n+1}$ is a weighted average of the current sample mean $\bar{x}_{n+1}$ and the new observed value $x_{n+1}$.
 
-To update variance, we first find $\bar{x}_n$, then let $S_n = ns_{n}^2$,
+To update variance, we first use the above method to obtain $\bar{x}_{n+1}$, and let $S_n = ns_{n}^2$, then
 
 
 $$\begin{align}
@@ -595,29 +595,34 @@ The substitution $S_n = ns_n^2$ avoids the computation that involves $\frac{1}{n
 (exp-var-ex)=
 ### Misc
 
-1. Two groups of data. In group one, sample standard deviation is $s_gamma$, in group two it is $s_2$. After merging them, it is $s_c$. Do we always have $s_3 > \max(s_1, s_2)$?
+1. Two groups of data. In group one, sample standard deviation is $s_1$, in group two it is $s_2$. After merging them, it is $s_3$. Do we always have $s_3 > \max(s_1, s_2)$?
 
-Let $\lambda = \frac{n_1}{n_1 + n_2} \in (0,1)$, then $\bar{x}_3 = \lambda \bar{x}_1 + (1-\lambda)\bar{x}_2$. WLOG assume $\bar{x}_1 - \bar{x}_2 = d \ge 0$.
+  :::{admonition,dropdown,seealso} *Solution*
 
-$$\begin{aligned}
-s^2 _1 &= \frac{TSS_1}{n_1} \\
-s^2 _2 &= \frac{TSS_2}{n_2} \\
-s^2 _3 &= \frac{TSS_3}{n_3}\\
-s^2 _3 &= \frac{TSS_1 + TTS_2 + n_1 (\bar{x}_1 - \bar{x}_3)^2 + n_2 (\bar{x}_3 - \bar{x}_2)^2 }{n_1 + n_2}\\
-&= \lambda s^2 _1 + (1-\lambda) s^2 _2  + \lambda ((1-\lambda)d )^2 + (1-\lambda) (\lambda d)^2    \\
-&= \underbrace{\lambda s^2 _1 + (1-\lambda) s^2 _2}_{a}  + \underbrace{\lambda(1-\lambda)d^2}_{b}   \\
-\end{aligned}$$
 
-where
+  Let $\lambda = \frac{n_1}{n_1 + n_2} \in (0,1)$, then $\bar{x}_3 = \lambda \bar{x}_1 + (1-\lambda)\bar{x}_2$. WLOG assume $\bar{x}_1 - \bar{x}_2 = d \ge 0$.
 
-- $\lambda = \frac{n_1}{n_1 + n_2} \in (0,1)$
-- $d_1 = \bar{x}_1 - \bar{x}_3 = \bar{x}_1 - (\lambda \bar{x}_1 + (1-\lambda)\bar{x}_2) = (1-\lambda)(\bar{x}_1 - \bar{x}_2) = (1-\lambda)c \in [0, c)$
-- $d_2 = \bar{x}_3 - \bar{x}_2 = \lambda \bar{x}_1 + (1-\lambda)\bar{x}_2 - \bar{x}_2 = \lambda(\bar{x}_1 - \bar{x}_2) = \lambda c \in [0, c)$
-- $d_1 + d_2 = c$
+  $$\begin{aligned}
+  s^2 _1 &= \frac{TSS_1}{n_1} \\
+  s^2 _2 &= \frac{TSS_2}{n_2} \\
+  s^2 _3 &= \frac{TSS_3}{n_3}\\
+  s^2 _3 &= \frac{TSS_1 + TTS_2 + n_1 (\bar{x}_1 - \bar{x}_3)^2 + n_2 (\bar{x}_3 - \bar{x}_2)^2 }{n_1 + n_2}\\
+  &= \lambda s^2 _1 + (1-\lambda) s^2 _2  + \lambda ((1-\lambda)d )^2 + (1-\lambda) (\lambda d)^2    \\
+  &= \underbrace{\lambda s^2 _1 + (1-\lambda) s^2 _2}_{a}  + \underbrace{\lambda(1-\lambda)d^2}_{b}   \\
+  \end{aligned}$$
 
-We have
+  where
 
-- $\min(s^2_1, s^2_2) \le a \le \max(s^2_1, s^2_2)$ with equalities iff $s_2^2 = s_2^2$.
-- $0 \le b < d^2$ with equality iff $d=0$.
+  - $\lambda = \frac{n_1}{n_1 + n_2} \in (0,1)$
+  - $d_1 = \bar{x}_1 - \bar{x}_3 = \bar{x}_1 - (\lambda \bar{x}_1 + (1-\lambda)\bar{x}_2) = (1-\lambda)(\bar{x}_1 - \bar{x}_2) = (1-\lambda)c \in [0, c)$
+  - $d_2 = \bar{x}_3 - \bar{x}_2 = \lambda \bar{x}_1 + (1-\lambda)\bar{x}_2 - \bar{x}_2 = \lambda(\bar{x}_1 - \bar{x}_2) = \lambda c \in [0, c)$
+  - $d_1 + d_2 = c$
 
-Since $a$ and $b$ are independent, we can know for sure that $\min(s^2_1, s^2_2) \le s_3^2$. The other comparison $\max(s^2_1, s^2_2) \text{ vs } s_3^2$ is uncertain, depending on $d$.
+  We have
+
+  - $\min(s^2_1, s^2_2) \le a \le \max(s^2_1, s^2_2)$ with equalities iff $s_2^2 = s_2^2$.
+  - $0 \le b < d^2$ with equality iff $d=0$.
+
+  Since $a$ and $b$ are independent, we can know for sure that $\min(s^2_1, s^2_2) \le s_3^2$. The other comparison $\max(s^2_1, s^2_2) \text{ vs } s_3^2$ is uncertain, depending on $d$.
+
+  :::

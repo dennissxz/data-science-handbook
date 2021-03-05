@@ -1,0 +1,1221 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Semi-supervised Learning &#8212; Data Science Handbook</title>
+    
+  <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+  <link rel="stylesheet"
+    href="../_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="../_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinx-book-theme.37f24b989f4638ff9c27c22dc7559d4f.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/style.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.d3f166471bb80abb5163.js">
+
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/sphinx-book-theme.7d483ff0a819d6edff12ce0b1ead3928.js"></script>
+    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Self-supervised Learning" href="53-self-supervised.html" />
+    <link rel="prev" title="Missing Values" href="11-missing-values.html" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+
+
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+<a class="navbar-brand text-wrap" href="../index.html">
+  
+  
+  <h1 class="site-logo" id="site-title">Data Science Handbook</h1>
+  
+</a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form>
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+    <ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../index.html">
+   Data Science Handbook
+  </a>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Foundations
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../11-math/00-math.html">
+   Math
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/11-combinatorics.html">
+     Combinatorics
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/12-derangement.html">
+     Derangement
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/20-fields-and-vector-spaces.html">
+     Fields and Vector Spaces
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/21-linear-algebra.html">
+     Linear Algebra
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/51-linear-programming.html">
+     Linear Programming
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/61-graphs.html">
+     Graphs
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/90-puzzles.html">
+     Puzzles
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../12-probabilities/00-probabilities.html">
+   Probabilities
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/11-expectation-and-variance.html">
+     Expectation and Variance
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/13-correlation-and-dependence.html">
+     Correlation and Dependence
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/31-bayesian-theorem.html">
+     Bayesian’s Theorem
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/51-markov-chain.html">
+     Markov Chain
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/71-sampling.html">
+     Sampling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/90-multivariate-notations.html">
+     Multivariate Notations
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/91-large-sample-theory.html">
+     Large Sample Theory
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../13-statistics/00-statistics.html">
+   Statistics
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/11-sample-survey.html">
+     Sample Survey
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/13-randomized-trial.html">
+     Causality and Randomized Trial
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/21-hypothesis-testing.html">
+     Hypothesis Testing
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/25-two-sample-tests.html">
+     Two Sample Mean Tests
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/33-confusion-matrix.html">
+     Confusion Matrix
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/41-maximum-likelihood-estimation.html">
+     Maximum Likelihood Estimator
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/43-estimators-evaluation.html">
+     Estimators Evaluation
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../14-python/00-python.html">
+   Python
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../14-python/11-programming-tools.html">
+     Programmer tools
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../14-python/12-syntax.html">
+     Syntax
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../14-python/13-data-structure.html">
+     Data Structures
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../14-python/15-functional-programming.html">
+     Functional Programming
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../17-sql/00-sql.html">
+   SQL
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../17-sql/11-database.html">
+     Database
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../17-sql/12-relational-structure.html">
+     Relational Structure
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../17-sql/31-data-query.html">
+     Data Query
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../17-sql/33-data-manipulation.html">
+     Data Manipulation
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../19-miscellaneous/00-miscellaneous.html">
+   Miscellaneous
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../19-miscellaneous/11-latex.html">
+     LaTeX
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../19-miscellaneous/13-myst.html">
+     MyST Markdown
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Algorithms
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../20-algorithms-basics/00-algorithms-basics.html">
+   Algorithms Basics
+  </a>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../21-greedy-algorithms/00-greedy-algorithms.html">
+   Greedy Algorithms
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../21-greedy-algorithms/11-interval-scheduling.html">
+     Interval Scheduling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../21-greedy-algorithms/31-huffman-coding.html">
+     Huffman Coding
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../23-dynamic-programming/00-dynamic-programming.html">
+   Dynamic Programming
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/11-weighted-interval-scheduling.html">
+     Weighted Interval Scheduling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/13-longest-common-subsequence.html">
+     Longest Common Subsequence
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/15-longest-increasing-subsequence.html">
+     Longest Increasing Subsequence
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/17-largest-sum-subsequence.html">
+     Largest Sum Subsequence
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/31-knapsack.html">
+     Minimum Knapsack
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/51-chain-matrix-multiplication.html">
+     Chain Matrix Multiplication
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../25-graph-related/00-graph-related.html">
+   Graph Related
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/13-shortest-path.html">
+     Shortest Path
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/21-minimum-spanning-tree.html">
+     Minimum Spanning Tree
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/31-maximum-flow.html">
+     Maximum Flow
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/32-matching.html">
+     Matching
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/42-maximum-independent-set.html">
+     Maximum Independent Set in Trees
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/91-LP-max-flow-min-cut.html">
+     LP on Max-flow and Min-cut
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Machine Learning
+ </span>
+</p>
+<ul class="current nav sidenav_l1">
+ <li class="toctree-l1 current active collapsible-parent">
+  <a class="reference internal" href="00-ml-basics.html">
+   Machine Learning Basics
+  </a>
+  <ul class="current collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="02-taxonomy.html">
+     Taxonomy
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="03-information-theory.html">
+     Information Theory
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="05-kernels.html">
+     Kernels
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="11-missing-values.html">
+     Missing Values
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     Semi-supervised Learning
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="53-self-supervised.html">
+     Self-supervised Learning
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="61-fourier-transform.html">
+     Fourier Transform-based Representations
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../31-regression/00-regression.html">
+   Regression
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/11-lm-estimation.html">
+     Linear Regression - Estimation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/12-lm-inference.html">
+     Linear Regression - Inference
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/13-lm-extension.html">
+     Linear Regression - Extension
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/21-generalized-linear-models.html">
+     Generalized Linear Models
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/22-logistic-regression.html">
+     Logistic Regression
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/23-multinomial-logitsitc.html">
+     Multinomial Logistic Regression
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/24-ordinal-logistic.html">
+     Ordinal Logistic Regression
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/25-poisson-regression.html">
+     Poisson Regression
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../32-classification/00-classification.html">
+   Classification
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../32-classification/11-support-vector-machine.html">
+     Support Vector Machine
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../32-classification/21-decision-tree.html">
+     Decision Tree
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../33-dimensionality-reduction/00-dimensionality-reduction.html">
+   Dimensionality Reduction
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/11-principal-component-analysis.html">
+     Principal Component Analysis
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/13-canonical-correlation-analysis.html">
+     Canonical Corerlation Analysis
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/21-multidimensional-scaling.html">
+     Multidimensional Scaling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/23-graph-based-spectral-methods.html">
+     Graph-based Spectral Methods
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/25-t-SNE.html">
+     SNE and
+     <span class="math notranslate nohighlight">
+      \(t\)
+     </span>
+     -SNE
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/31-kernel-pca.html">
+     Kernel PCA
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/32-kernel-cca.html">
+     Kernel CCA
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../34-clustering/00-clustering.html">
+   Clustering
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../34-clustering/11-k-means.html">
+     <span class="math notranslate nohighlight">
+      \(k\)
+     </span>
+     -means clustering
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../34-clustering/13-agglomerative-methods.html">
+     Agglomerative Methods
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../34-clustering/31-spectral-clustering.html">
+     Spectral Clustering
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../34-clustering/41-gaussian-mixtures.html">
+     Gaussian Mixtures
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../35-graphical-models/00-graphical-models.html">
+   Graphical Models
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../35-graphical-models/11-hidden-markov-models.html">
+     Hidden Markov Models
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../35-graphical-models/31-topic-models.html">
+     Topic Models
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../35-graphical-models/33-language-models.html">
+     Language Models
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../37-neural-networks/00-neural-networks.html">
+   Neural Networks
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/01-stochastic-gradient-descent.html">
+     Stochastic Gradient Descent
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/03-trainability.html">
+     Trainability
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/05-regularization.html">
+     Regularization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/11-autoencoders.html">
+     Autoencoders
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/13-variational-autoencoders.html">
+     Variational Autoencoders
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/31-sequential-models.html">
+     Sequential Models
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/41-GAN.html">
+     Generative Adversarial Networks
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../38-ml-for-graph-data/00-ml-for-graph-data.html">
+   Machine Learning for Graph Data
+  </a>
+ </li>
+</ul>
+
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../_sources/30-ml-basics/51-semi-supervised.md"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.md</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/dennissxz/data-science-handbook"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/dennissxz/data-science-handbook/issues/new?title=Issue%20on%20page%20%2F30-ml-basics/51-semi-supervised.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+            <a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+                    data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+                    title="Fullscreen mode"><i
+                        class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+        <div class="tocsection onthispage pt-5 pb-3">
+            <i class="fas fa-list"></i> Contents
+        </div>
+        <nav id="bd-toc-nav">
+            <ul class="nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#types-of-semi-sup-learning">
+   Types of Semi-sup Learning
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#pre-training">
+   Pre-training
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#multi-task-learning">
+   Multi-task learning
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#self-training">
+   Self-training
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#algorithm">
+     Algorithm
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pros-and-cons">
+     Pros and Cons
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#semi-supervised-generative-models">
+   Semi-supervised Generative Models
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#labeled-data-only">
+     Labeled Data Only
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#available-unlabeled-data">
+     Available Unlabeled Data
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#cf-gaussian-mixtures">
+     cf. Gaussian Mixtures
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id1">
+     Pros and Cons
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#cluster-then-label">
+   Cluster-then-label
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#graph-based-algorithms">
+   Graph-based Algorithms
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id2">
+     Pros and Cons
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#multi-view-algorithms-co-training">
+   Multi-view Algorithms: Co-Training
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#assumptions">
+     Assumptions
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id3">
+     Algorithm
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#variants">
+     Variants
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id4">
+     Pros and Cons
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#others">
+   Others
+  </a>
+ </li>
+</ul>
+
+        </nav>
+        
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="semi-supervised-learning">
+<h1>Semi-supervised Learning<a class="headerlink" href="#semi-supervised-learning" title="Permalink to this headline">¶</a></h1>
+<p>(Figure credits: Jerry Zhu ICML 2007 tutorial unless otherwise indicated)</p>
+<p>We often have access to a small amount of labeled data plus a large amount of unlabeled data.</p>
+<p>Why not just get more labeled data?</p>
+<ul class="simple">
+<li><p>Some labeled data is easy to get more of, e.g. tagged images</p></li>
+<li><p>Some is expensive/time consuming/difficult/unethical to get:</p>
+<ul>
+<li><p>Medical measurements (e.g. scans, neural recordings)</p></li>
+<li><p>Phonetic transcription of speech: roughly 400x real time, requires
+experts</p></li>
+<li><p>Text parsing: takes years to collect a few 1000 sentences’ worth</p></li>
+</ul>
+</li>
+</ul>
+<p>We introduce semi-supervised learning techniques for classification tasks.</p>
+<p>Notions:</p>
+<ul class="simple">
+<li><p>Input <span class="math notranslate nohighlight">\(x\)</span>, label <span class="math notranslate nohighlight">\(y\)</span></p></li>
+<li><p>Function to be learned: <span class="math notranslate nohighlight">\(f:\mathcal{X} \rightarrow \mathcal{Y}\)</span></p></li>
+<li><p>Labeled data of size <span class="math notranslate nohighlight">\(\ell\)</span>: <span class="math notranslate nohighlight">\((\mathcal{X}_\ell, \mathcal{Y}_\ell) = \left\{ (x_{1:\ell}, y_{1:\ell}) \right\}\)</span></p></li>
+<li><p>Unlabeled data <span class="math notranslate nohighlight">\(\mathcal{X}_u = \left\{ x_{\ell + 1:n} \right\}\)</span>, where <span class="math notranslate nohighlight">\(\ell \ll n\)</span></p></li>
+<li><p>Test data <span class="math notranslate nohighlight">\(\mathcal{X}_{test} = \left\{ x_{n+1:} \right\}\)</span></p></li>
+</ul>
+<p>If we have labeled data, how can unlabeled data help?</p>
+<p>Unlabeled data tells us something about the distribution of the data, and therefore where “reasonable” class boundaries may be.</p>
+<div class="figure align-default" id="semisup-gen-cluster">
+<a class="reference internal image-reference" href="../_images/semisup-gen-cluster.png"><img alt="" src="../_images/semisup-gen-cluster.png" style="width: 30%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 18 </span><span class="caption-text">Unlabeled data tells us about the “true” boundary.</span><a class="headerlink" href="#semisup-gen-cluster" title="Permalink to this image">¶</a></p>
+</div>
+<div class="section" id="types-of-semi-sup-learning">
+<h2>Types of Semi-sup Learning<a class="headerlink" href="#types-of-semi-sup-learning" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p><strong>Transductive learning</strong></p>
+<p>Goal is to label the unlabeled training data (only. not necessary learn a labeling function). Aka label propagation.</p>
+</li>
+<li><p><strong>Inductive learning</strong> (semi-supervised learning)</p>
+<p>Goal is to learn a function that can be applied to new test data.</p>
+</li>
+<li><p><strong>Weak labels/distant supervision</strong></p>
+<p>We have labels, but they are not exactly for the target task.</p>
+<ul class="simple">
+<li><p>pairs from “Same/different” class, instead of class labels</p></li>
+<li><p>subset of latent variables labeled but not all (e.g. object category
+in an image, but not boundaries of that object)</p></li>
+<li><p>“downstream” labels (e.g. click-through counts instead of search
+result correctness)</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="pre-training">
+<h2>Pre-training<a class="headerlink" href="#pre-training" title="Permalink to this headline">¶</a></h2>
+<p>Pre-train representation of unlabeled data, and use that representation along with the labeled data to learn a predictor.</p>
+<p>For instance,</p>
+<ol class="simple">
+<li><p>train PCA using unlabeled data <span class="math notranslate nohighlight">\(\mathcal{X}_u\)</span></p></li>
+<li><p>use the trained PCA to obtain representation <span class="math notranslate nohighlight">\(\mathcal{Z}_\ell\)</span> of labeled data <span class="math notranslate nohighlight">\(\mathcal{X} _\ell\)</span></p></li>
+<li><p>use <span class="math notranslate nohighlight">\(\mathcal{Z}_\ell\)</span> and <span class="math notranslate nohighlight">\(\mathcal{Y}_\ell\)</span> to train SVM.</p></li>
+</ol>
+</div>
+<div class="section" id="multi-task-learning">
+<h2>Multi-task learning<a class="headerlink" href="#multi-task-learning" title="Permalink to this headline">¶</a></h2>
+<p>Add an unlabeled loss term to a labeled loss.</p>
+</div>
+<div class="section" id="self-training">
+<h2>Self-training<a class="headerlink" href="#self-training" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="algorithm">
+<h3>Algorithm<a class="headerlink" href="#algorithm" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Train classifier <span class="math notranslate nohighlight">\(f\)</span> over labeled data <span class="math notranslate nohighlight">\(\left( \mathcal{X} _\ell, \mathcal{Y} _\ell \right)\)</span></p></li>
+<li><p>Predict on some unlabeled data <span class="math notranslate nohighlight">\(x_u \in \mathcal{X}_u\)</span></p></li>
+<li><p>Augmentation: Add some <span class="math notranslate nohighlight">\((x_u, f(x_u))\)</span> to labeled data set such that <span class="math notranslate nohighlight">\(\left( \mathcal{X}_\ell \cup \left\{ x_u \right\} _\ell, \mathcal{Y} _\ell \cup \left\{ f(x_u) \right\} \right)\)</span>.</p></li>
+<li><p>Repeat</p></li>
+</ul>
+<p>Note that</p>
+<ul class="simple">
+<li><p>This is a type of “wrapper” technique: can be used with any type of learning algorithm for <span class="math notranslate nohighlight">\(f\)</span>.</p></li>
+<li><p>Typically, only <span class="math notranslate nohighlight">\((x_u, f(x_u))\)</span> pairs with high confidence (e.g. probability) are used.</p></li>
+</ul>
+</div>
+<div class="section" id="pros-and-cons">
+<h3>Pros and Cons<a class="headerlink" href="#pros-and-cons" title="Permalink to this headline">¶</a></h3>
+<p>Pros</p>
+<ul class="simple">
+<li><p>Very simple</p></li>
+<li><p>A “wrapper” method: Can be applied with any existing classifier</p></li>
+<li><p>Has had some real-world successes (e.g. in speech recognition)</p></li>
+</ul>
+<p>Cons</p>
+<ul class="simple">
+<li><p>Very risky: Can easily diverge if some early mistakes are made such that the augmented labeled set is contaminated.</p></li>
+<li><p>Little theoretical understanding</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="semi-supervised-generative-models">
+<h2>Semi-supervised Generative Models<a class="headerlink" href="#semi-supervised-generative-models" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="labeled-data-only">
+<h3>Labeled Data Only<a class="headerlink" href="#labeled-data-only" title="Permalink to this headline">¶</a></h3>
+<p>Suppose the labeled data are categorical. We can then train a generative model, with one Gaussian per class. That is, for each class, the generative model is</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+p(x, y \mid \theta) &amp;=p(y \mid \theta) p(x \mid y, \theta) \\
+&amp;=w_{y} \mathcal{N}\left(x ; \mu_{y}, \Sigma_{y}\right)
+\end{aligned}
+\end{split}\]</div>
+<p>Which can be trained by maximum likelihood (closed-form solution).</p>
+<p>In prediction, for a new data point <span class="math notranslate nohighlight">\(x_{\text{test} }\)</span>, we classify by finding the label with maximum probability <span class="math notranslate nohighlight">\(p(y \mid x_{\text{test} }, \theta)=\frac{p(x_{\text{test} }, y \mid \theta)}{\sum_{y^{\prime}} p\left(x_{\text{test} }, y^{\prime} \mid \theta\right)}\)</span>.</p>
+<div class="figure align-default" id="semisup-gen-gau">
+<a class="reference internal image-reference" href="../_images/semisup-gen-gau.png"><img alt="" src="../_images/semisup-gen-gau.png" style="width: 30%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 19 </span><span class="caption-text">Train a Gaussian for each class</span><a class="headerlink" href="#semisup-gen-gau" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+<div class="section" id="available-unlabeled-data">
+<h3>Available Unlabeled Data<a class="headerlink" href="#available-unlabeled-data" title="Permalink to this headline">¶</a></h3>
+<p>Suppose now we have unlabeled data as below. Clearly, the classifier boundaries above are not accurate.</p>
+<div class="figure align-default" id="semisup-gen-comparison">
+<a class="reference internal image-reference" href="../_images/semisup-gen-comparison.png"><img alt="" src="../_images/semisup-gen-comparison.png" style="width: 50%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 20 </span><span class="caption-text">Labeled and unlabeled data.</span><a class="headerlink" href="#semisup-gen-comparison" title="Permalink to this image">¶</a></p>
+</div>
+<p>To improve it, we can do MLE using both labeled and unlabeled data. The joint log-likelihood is</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+\log p\left(\mathcal{X} _{\ell}, \mathcal{Y} _{\ell}, \mathcal{X} _{u} \mid \theta\right) &amp;=\sum_{i=1}^{\ell} \log p\left(y_{i} \mid \theta\right) p\left(x_{i} \mid y_{i}, \theta\right) \\
+&amp;+\sum_{j=\ell+1}^{\ell+u} \log \left(\sum_{y} p(y \mid \theta) p\left(x_{j} \mid y, \theta\right)\right)
+\end{aligned}
+\end{split}\]</div>
+<p>where on RHS</p>
+<ul class="simple">
+<li><p>the first term is log-likelihood for labeled data</p></li>
+<li><p>the second term is log-likelihood for unlabeled data, assume it from mixtures Gaussian.</p></li>
+</ul>
+<p>Now we have hidden variables (labels of <span class="math notranslate nohighlight">\(x_u\)</span>), so we can use EM. Same as EM for general Gaussian mixture learning, but some of the latent variables (component assignments) are hard labels while the rest are posteriors (as usual).</p>
+<p>This method</p>
+<ul class="simple">
+<li><p>Can be applied to other generative models, e.g. hidden Markov models (speech, text, video, other time series)</p></li>
+<li><p>Amounts to doing EM for the appropriate model, <strong>treating unseen labels as latent variables</strong>.</p></li>
+</ul>
+</div>
+<div class="section" id="cf-gaussian-mixtures">
+<h3>cf. Gaussian Mixtures<a class="headerlink" href="#cf-gaussian-mixtures" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference internal" href="../34-clustering/41-gaussian-mixtures.html"><span class="doc std std-doc">Gaussian mixtures</span></a> are clustering models. Given <span class="math notranslate nohighlight">\(\mathcal{X} _u\)</span>, and number of class, say <span class="math notranslate nohighlight">\(k\)</span>, then we can train Gaussian mixtures to learn <span class="math notranslate nohighlight">\(k\)</span> distribution functions for <span class="math notranslate nohighlight">\(\mathcal{X} _u\)</span>. However, we don’t know the <strong>mapping</strong> from cluster index to the class index – given a new data point <span class="math notranslate nohighlight">\(x_{\text{test} }\)</span>, we cannot do classification.</p>
+<p>Labeled data help to find such mapping.</p>
+</div>
+<div class="section" id="id1">
+<h3>Pros and Cons<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<p>Semi-supervised generative models inherit many of the qualities of generative models</p>
+<ul class="simple">
+<li><p>If the model is a good fit to the data, can be very effective</p></li>
+<li><p>Provides an intuitive, clear probabilistic interpretation</p></li>
+<li><p>But, doesn’t work well if we don’t have an accurate generative model for the unlabeled data</p></li>
+<li><p>And, sometimes we’d rather classify with a non-generative model</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="cluster-then-label">
+<h2>Cluster-then-label<a class="headerlink" href="#cluster-then-label" title="Permalink to this headline">¶</a></h2>
+<p>Clustering techniques can be used for classification. Suppose there are <span class="math notranslate nohighlight">\(k\)</span> categories. Algorithms are:</p>
+<ol class="simple">
+<li><p>Cluster all labeled and unlabeled features <span class="math notranslate nohighlight">\(\mathcal{X} _\ell \cup \mathcal{X} _u\)</span> to <span class="math notranslate nohighlight">\(k\)</span> clusters.</p></li>
+<li><p>For each proposed cluster, we need to find a mapping to the true class. One greedy method is to find the majority label in that cluster.</p></li>
+</ol>
+<p>This makes fewer assumptions about the data distribution (unlike generative models), but also more unstable.</p>
+</div>
+<div class="section" id="graph-based-algorithms">
+<h2>Graph-based Algorithms<a class="headerlink" href="#graph-based-algorithms" title="Permalink to this headline">¶</a></h2>
+<p>Some data don’t fit simple generative models, and more complex generative models are hard to learn. We can use graph-based algorithms. Here we introduce a label propagation algorithm via random walk.</p>
+<div class="figure align-default" id="semisup-gb-data">
+<a class="reference internal image-reference" href="../_images/semisup-gb-data.png"><img alt="" src="../_images/semisup-gb-data.png" style="width: 30%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 21 </span><span class="caption-text">An example of graph-based labeled and unlabeled data.</span><a class="headerlink" href="#semisup-gb-data" title="Permalink to this image">¶</a></p>
+</div>
+<p>Like graph-based dimensionality reduction methods, we create an induced graph from the data set. Assume binary data. The algorithm is</p>
+<ol class="simple">
+<li><p>Start from any node <span class="math notranslate nohighlight">\(i\)</span> and walk to node <span class="math notranslate nohighlight">\(j\)</span> with probability <span class="math notranslate nohighlight">\(\frac{w_{ij}}{\sum _{k \in N(i)} w_{ik}}\)</span></p></li>
+<li><p>Repeat until walk to a labeled node</p></li>
+<li><p>Repeat many times, and the probability of hitting a label-1 node is regarded as the posterior probability of class 1 for node <span class="math notranslate nohighlight">\(i\)</span>.</p></li>
+</ol>
+<p>Another method to compute this probability value is</p>
+<ol class="simple">
+<li><p>Initialize <span class="math notranslate nohighlight">\(f(x_i)=y_i\)</span> for labeled nodes, and 0 for unlabeled nodes</p></li>
+<li><p>For all unlabeled nodes <span class="math notranslate nohighlight">\(i\)</span>, update <span class="math notranslate nohighlight">\(f(x_{i})=\frac{\sum_{j \in N(i)} w_{i j} f\left(x_{j}\right)}{\sum_{j \in N(i)} w_{i j}}\)</span>. Repeat until convergence.</p></li>
+</ol>
+<p>Essentially, at each iteration, we take the weighted average over the neighbors.</p>
+<p>The <span class="math notranslate nohighlight">\(f(\cdot)\)</span> values can alternatively be computed via an eigenproblem on the graph Laplacian.</p>
+<div class="section" id="id2">
+<h3>Pros and Cons<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<p>Pros</p>
+<ul class="simple">
+<li><p>Better than graph-based cluster-then-label method since it consider labels into the loss function.</p></li>
+</ul>
+<p>Cons</p>
+<ul class="simple">
+<li><p>Transductive method, no out-of-sample prediction.</p></li>
+<li><p>Some original labels might be wrong, or we might be dealing with outliers</p></li>
+</ul>
+<p>Sols:</p>
+<ul class="simple">
+<li><p>Allow labeled points to be “relabeled” with some penalty</p></li>
+<li><p>Define a kernel that approximates the graph similarity</p></li>
+<li><p>Taken together, these extensions are referred to as “manifold regularization”</p></li>
+</ul>
+<p>For more details, see Zhu’s tutorial.</p>
+</div>
+</div>
+<div class="section" id="multi-view-algorithms-co-training">
+<h2>Multi-view Algorithms: Co-Training<a class="headerlink" href="#multi-view-algorithms-co-training" title="Permalink to this headline">¶</a></h2>
+<p>[Blum &amp; Mitchell 1998]</p>
+<p>The feature vector can be naturally split into two views <span class="math notranslate nohighlight">\(x = [x^{(1)} x^{(2)}]\)</span>. E.g., <span class="math notranslate nohighlight">\(x^{(1)}=\)</span> image pixels, <span class="math notranslate nohighlight">\(x^{(2)} =\)</span> text description. We train two classifiers, one for each view. The idea is: The two classifiers “supervise” each other; when one is unconfident, hopefully the other one is.</p>
+<div class="section" id="assumptions">
+<h3>Assumptions<a class="headerlink" href="#assumptions" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(x^{(1)}\)</span> or <span class="math notranslate nohighlight">\(x^{(2)}\)</span> alone suffices for good classification, given enough data</p></li>
+<li><p><span class="math notranslate nohighlight">\(x^{(1)}\)</span> and <span class="math notranslate nohighlight">\(x^{(2)}\)</span> are <strong>independent</strong> given the class label</p></li>
+</ul>
+<div class="figure align-default" id="semisup-co-training">
+<a class="reference internal image-reference" href="../_images/semisup-co-training.png"><img alt="" src="../_images/semisup-co-training.png" style="width: 50%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 22 </span><span class="caption-text">Two views, each suffices for good classification, and independent of each other given the class label</span><a class="headerlink" href="#semisup-co-training" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+<div class="section" id="id3">
+<h3>Algorithm<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Train two classifiers, <span class="math notranslate nohighlight">\(f^{(1)}\)</span> from <span class="math notranslate nohighlight">\((\mathcal{X} ^{(1)}_\ell,\mathcal{Y} _\ell)\)</span> and <span class="math notranslate nohighlight">\(f^{(2)}\)</span> from <span class="math notranslate nohighlight">\((\mathcal{X} ^{(2)},\mathcal{Y} _\ell)\)</span>.</p></li>
+<li><p>Classify two views of <span class="math notranslate nohighlight">\(\mathcal{X} _u\)</span> with each <span class="math notranslate nohighlight">\(f^{(i)}\)</span> separately</p></li>
+<li><p>Add the <span class="math notranslate nohighlight">\(k\)</span> most-confident <span class="math notranslate nohighlight">\((x_u,f^{(1)}(x_u))\)</span> pairs to <span class="math notranslate nohighlight">\(f^{(2)}\)</span>’s labeled data</p></li>
+<li><p>Add the <span class="math notranslate nohighlight">\(k\)</span> most-confident <span class="math notranslate nohighlight">\((x_u,f^{(2)}(x_u))\)</span> pairs to <span class="math notranslate nohighlight">\(f^{(1)}\)</span>’s labeled data</p></li>
+<li><p>Repeat</p></li>
+</ul>
+</div>
+<div class="section" id="variants">
+<h3>Variants<a class="headerlink" href="#variants" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Co-EM: Add all unlabeled data at each step, not just the top k, with some probability based on the confidence</p></li>
+<li><p>Create multiple random (fake) feature splits (features are relevant but redundant)</p></li>
+<li><p>Generalized multi-view</p>
+<ul>
+<li><p>No feature split at all</p></li>
+<li><p>Just train multiple classifiers of different types</p></li>
+<li><p>Classify the unlabeled data with all of the classifiers</p></li>
+<li><p>Add majority vote label</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="id4">
+<h3>Pros and Cons<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<p>Advantage</p>
+<ul class="simple">
+<li><p>Wrapper method: Can be wrapped around any existing classifier and learning algorithm</p></li>
+<li><p>If the assumptions holds, it works very well</p></li>
+<li><p>Has theoretical proof</p></li>
+</ul>
+<p>Disadvantages</p>
+<ul class="simple">
+<li><p>The assumptions are not often satisfied</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="others">
+<h2>Others<a class="headerlink" href="#others" title="Permalink to this headline">¶</a></h2>
+<p>Semi-supervised variants of specific methods</p>
+<p>e.g. semi-supervised SVM (S3VM)</p>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./30-ml-basics"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        
+        <div class='prev-next-bottom'>
+            
+    <a class='left-prev' id="prev-link" href="11-missing-values.html" title="previous page">Missing Values</a>
+    <a class='right-next' id="next-link" href="53-self-supervised.html" title="next page">Self-supervised Learning</a>
+
+        </div>
+        
+        </div>
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By Dennis Zheng<br/>
+        
+            &copy; Copyright 2020.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+
+    
+  <script src="../_static/js/index.d3f166471bb80abb5163.js"></script>
+
+
+    
+  </body>
+</html>

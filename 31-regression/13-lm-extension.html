@@ -115,6 +115,11 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/20-fields-and-vector-spaces.html">
+     Fields and Vector Spaces
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="../11-math/21-linear-algebra.html">
      Linear Algebra
     </a>
@@ -442,6 +447,21 @@
    <li class="toctree-l2">
     <a class="reference internal" href="../30-ml-basics/11-missing-values.html">
      Missing Values
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../30-ml-basics/51-semi-supervised.html">
+     Semi-supervised Learning
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../30-ml-basics/53-self-supervised.html">
+     Self-supervised Learning
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../30-ml-basics/61-fourier-transform.html">
+     Fourier Transform-based Representations
     </a>
    </li>
   </ul>
@@ -956,6 +976,33 @@
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#natural-experiments">
+   Natural Experiments
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#difference-in-difference">
+     Difference-in-difference
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#choice-of-control-group">
+     Choice of Control Group
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#internal-validity">
+     Internal Validity
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#regression-discontinuity">
+   Regression Discontinuity
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#categorical-x">
    Categorical
    <span class="math notranslate nohighlight">
@@ -1162,10 +1209,10 @@ RHS - LHS &amp;= \left[\begin{array}{cc}
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>coefficients in y ~ x1 + x2 + x3 : [[0.99645704 1.00090106 1.99836857 2.99760232]]
-coefficients in y ~ x1 + x2 : [[1.0162239  0.98673676 3.42605184]]
-coefficients in x3 ~ x1 + x2 : [[ 0.00659422 -0.00472521  0.47627507]]
-reconstruction difference of b0, b1, b2 : [-1.11022302e-15  3.33066907e-16  5.77315973e-15]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>coefficients in y ~ x1 + x2 + x3 : [[0.99911472 1.00183013 2.00333663 2.99980314]]
+coefficients in y ~ x1 + x2 : [[0.9284209  1.0654286  3.74940762]]
+coefficients in x3 ~ x1 + x2 : [[-0.02356615  0.02120088  0.58206186]]
+reconstruction difference of b0, b1, b2 : [ 0.00000000e+00 -1.11022302e-15  0.00000000e+00]
 </pre></div>
 </div>
 </div>
@@ -1345,7 +1392,7 @@ X_{j}=\delta_{0}+\delta_{1} X_{1}+\cdots+\delta_{j-1} X_{j-1}+\delta_{i+1} X_{i+
 <h4>Plot<a class="headerlink" href="#plot" title="Permalink to this headline">¶</a></h4>
 <div class="figure align-default" id="lm-residual-plot">
 <a class="reference internal image-reference" href="../_images/lm-residual-plot.png"><img alt="" src="../_images/lm-residual-plot.png" style="width: 90%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 22 </span><span class="caption-text">Homoskedastic (left, right) and Heteroskedasticity (middle)</span><a class="headerlink" href="#lm-residual-plot" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 40 </span><span class="caption-text">Homoskedastic (left, right) and Heteroskedasticity (middle)</span><a class="headerlink" href="#lm-residual-plot" title="Permalink to this image">¶</a></p>
 </div>
 </div>
 <div class="section" id="breusch-pagan-test">
@@ -1632,6 +1679,136 @@ X_{j}=\delta_{0}+\delta_{1} X_{1}+\cdots+\delta_{j-1} X_{j-1}+\delta_{i+1} X_{i+
 </li>
 </ul>
 </div>
+</div>
+<div class="section" id="natural-experiments">
+<h2>Natural Experiments<a class="headerlink" href="#natural-experiments" title="Permalink to this headline">¶</a></h2>
+<p>In natural experiments, we use observed data, but it is reasonable to suspect treatment uncorrelated with error without an actual experiment, i.e. it is “as if” there had been randomization.</p>
+<ul class="simple">
+<li><p>A <strong>cross-section</strong> of data is a sample drawn from a population at a single point in time</p></li>
+<li><p><strong>Repeated cross-sections</strong> are samples drawn from the same <strong>population</strong> at several points in time</p></li>
+<li><p>If we have information on the same <strong>individuals</strong> at more than one point in time, we have <strong>panel data</strong></p></li>
+</ul>
+<p>We often use the “difference-in-differences” estimator to study repeated cross-sections or panel data when we have a natural experiment.</p>
+<div class="section" id="difference-in-difference">
+<h3>Difference-in-difference<a class="headerlink" href="#difference-in-difference" title="Permalink to this headline">¶</a></h3>
+<p>In DiD, we uses a control group to net out any trends over time.</p>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p></p></th>
+<th class="head"><p>Treatment</p></th>
+<th class="head"><p>Control</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Before</p></td>
+<td><p><span class="math notranslate nohighlight">\(A\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(B\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p>After</p></td>
+<td><p><span class="math notranslate nohighlight">\(C\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(D\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p>Difference</p></td>
+<td><p><span class="math notranslate nohighlight">\(C-A\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(D-B\)</span></p></td>
+</tr>
+</tbody>
+</table>
+<div class="margin sidebar">
+<p class="sidebar-title"></p>
+<p>Other statistic of interest or more robust e.g. median, percentiles, log, can also be used.</p>
+</div>
+<p>Let <span class="math notranslate nohighlight">\(\bar{y}_A, \bar{y}_B, \bar{y}_C, \bar{y}_D\)</span> be the corresponding means of each group. DiD is computed as</p>
+<div class="math notranslate nohighlight">
+\[
+DiD = (\bar{y}_C - \bar{y}_A) - (\bar{y}_D- \bar{y}_B)
+\]</div>
+<p>Then we can conduct a two-sample <span class="math notranslate nohighlight">\(t\)</span>-test. We can also use regression with two categorial variables (After, Treat) and one interaction term.</p>
+<div class="math notranslate nohighlight">
+\[
+Y=\beta_{0}+\beta_{1} \text {Treated} * \text {After}+\beta_{2} \text {Treated}+\beta_{3} \text {After}+\varepsilon
+\]</div>
+<p>where</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\hat{\beta}_0 = \bar{y}_B\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\hat{\beta}_2 = \bar{y}_A - \bar{y}_B\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\hat{\beta}_3 = \bar{y}_D - \bar{y}_B\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\hat{\beta}_1 = (\bar{y}_C - \bar{y}_A) - (\bar{y}_D - \bar{y}_B) = DiD\)</span></p></li>
+</ul>
+<p>and we can test <span class="math notranslate nohighlight">\(\hat{\beta}_1 = 0\)</span>.</p>
+<p>To control other variables, we add them into the model (note about over controlling)</p>
+<div class="math notranslate nohighlight">
+\[
+Y=\beta_{0}+\beta_{1} \text { Treated } * \text { After }+\beta_{2} \text { Treated }+\beta_{3} \text { After }+\sum_k \gamma_k X_k+\varepsilon
+\]</div>
+</div>
+<div class="section" id="choice-of-control-group">
+<h3>Choice of Control Group<a class="headerlink" href="#choice-of-control-group" title="Permalink to this headline">¶</a></h3>
+<p>It is often hard to choose control group. One criteria is the common trends assumption.</p>
+<dl class="simple myst">
+<dt>Assumption (Common trends):</dt><dd><p>In a before/after study, whatever factors change with time must affect the treatment and control group the <strong>same</strong>.</p>
+<ul class="simple">
+<li><p>Use both theory and data to assess common trends</p>
+<ul>
+<li><p>theory: logical reasoning</p></li>
+<li><p>data: plot <span class="math notranslate nohighlight">\(y\)</span> for the two groups along time before the treatment, see if they have similar ups and downs.</p></li>
+</ul>
+</li>
+<li><p>If some unobserved factor changes more for treated group than for control, then we have bias.</p></li>
+</ul>
+</dd>
+</dl>
+<p>A control group must enable you to approximate the counterfactual for the treated group – what would have happened to them if they had not received treatment?</p>
+<p>For instance, in the project <em>Taxes on the Rich</em> (Feldstein (1995), Goolsbee (2000)). The tax policy impose a decrease in marginal tax rates for high income earners in 1986. Goolsbee examines increase in marginal rates in 1993 for high income earners. Lower (but still high) earners are control.</p>
+</div>
+<div class="section" id="internal-validity">
+<h3>Internal Validity<a class="headerlink" href="#internal-validity" title="Permalink to this headline">¶</a></h3>
+<p>Internal validity refers to whether one can validly draw the inference that within the context of the study, to conclude that the differences in the dependent variables were caused by the differences in the relevant explanatory variables.</p>
+<p>Some issues are</p>
+<ol class="simple">
+<li><p>Omitted Variables: events, other than the experimental treatment, occurring between pre-intervention and post- intervention observations that provide alternative explanations for the results.</p></li>
+<li><p>Trends in Outcomes: processes within the units of observation producing changes as a function of the passage of time per se, such as inflation, aging, and wage growth.</p></li>
+<li><p>Misspecified Variances: omission of group error terms. Bertrand (2004) et al.</p></li>
+<li><p>Mismeasurement: changes in definitions or survey methods that may produce changes in the measured variables. NHIS, CPS.</p></li>
+<li><p>Political Economy: endogeneity of policy changes due to governmental responses to variables associated with past or expected future outcomes. Campbell and drunk driving.</p></li>
+<li><p>Simultaneity: endogeneity of explanatory variables due to their joint determination with outcomes. Think price and quantity.</p></li>
+<li><p>Selection: assignment of observations to treatment groups in a manner that leads to correlation between assignment and outcomes in the absence of treatment. Selection can take many forms. Trainees often do well relative to their recent past…</p></li>
+<li><p>Attrition: the differential loss of respondents from treatment and comparison groups.</p></li>
+<li><p>Omitted Interactions: differential trends in treatment and control groups or omitted variables that change in different ways for treatment and control groups. For example, a time trend in a treatment group that is not present in a comparison group. The exclusion of such interactions is a common identifying assumption in the designs of natural experiments. This is the common trends assumption.</p></li>
+</ol>
+</div>
+</div>
+<div class="section" id="regression-discontinuity">
+<h2>Regression Discontinuity<a class="headerlink" href="#regression-discontinuity" title="Permalink to this headline">¶</a></h2>
+<p>[<a class="reference external" href="https://en.wikipedia.org/wiki/Regression_discontinuity_design">Wiki</a>]</p>
+<p>We want to analyze an policy effect to different group of people. For instance,</p>
+<ul class="simple">
+<li><p>effect of extended unemployment insurance benefits on willingness to work (measured by actual unemployment period), where the benefits are different for different age group, characterized by age cutoffs.</p></li>
+<li><p>effect of medicaid on health (measured by mortality or hospitalization rate), where the medicaid are different for different age group, characterized by birth date cutoffs</p></li>
+<li><p>in loan application, a rule of thumb is that applicants with credit score greater than 620 have low delinquency probability and hence more likely to get accepted.</p></li>
+</ul>
+<p>There are other cutoffs, like earnings.</p>
+<p>In sum, there is a sharp policy at cutoff point <span class="math notranslate nohighlight">\(a^*\)</span>, while other characteristics that influence outcome (<span class="math notranslate nohighlight">\(y\)</span>) are very similar around <span class="math notranslate nohighlight">\(a^*\)</span>. It should be as if we <strong>randomized</strong> and those just above <span class="math notranslate nohighlight">\(a^*\)</span> are the treatment group and just below a* are the control group. To analyze the policy effect at this cutoff, the regression discontinuity equation is</p>
+<div class="math notranslate nohighlight">
+\[
+Y_{i a}=\beta_{0}+\beta_{1} D_{a \geq a *}+f(a)+\varepsilon_{i a}
+\]</div>
+<p>where</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(i\)</span> is individual, <span class="math notranslate nohighlight">\(a\)</span> is so called <strong>running variable</strong> (e.g. age, score, time)</p></li>
+<li><p><span class="math notranslate nohighlight">\(y_{ia}\)</span> is an outcome variable of interest</p></li>
+<li><p><span class="math notranslate nohighlight">\(D_{a \ge a^*}\)</span> is an indicator for an individual being above the cutoff <span class="math notranslate nohighlight">\(a^*\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(f(a)\)</span> is a function of <span class="math notranslate nohighlight">\(a\)</span>, often linear or quadratic, and often with different slopes above and below <span class="math notranslate nohighlight">\(a^*\)</span></p></li>
+<li><p>The observations used to run this regression are those around <span class="math notranslate nohighlight">\(a^*\)</span>, e.g. there is a bandwidth/window width.</p></li>
+<li><p>We can run this equation at each cutoff points in the policy.</p></li>
+</ul>
+<p>We are interested in <span class="math notranslate nohighlight">\(\beta_1\)</span>.</p>
+<p>Note</p>
+<ul class="simple">
+<li><p>RD requires a large sample</p></li>
+<li><p>wider window (larger sample) increase precision as well as bias, precision v. bias tradeoff</p></li>
+<li><p>In some cases the cutoff is “hard” (unemployment benefit), and some times it is soft (credit score). If it is soft we call this fuzzy RD</p></li>
+</ul>
 </div>
 <div class="section" id="categorical-x">
 <h2>Categorical <span class="math notranslate nohighlight">\(X\)</span><a class="headerlink" href="#categorical-x" title="Permalink to this headline">¶</a></h2>

@@ -115,6 +115,11 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/20-fields-and-vector-spaces.html">
+     Fields and Vector Spaces
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="../11-math/21-linear-algebra.html">
      Linear Algebra
     </a>
@@ -442,6 +447,21 @@
    <li class="toctree-l2">
     <a class="reference internal" href="../30-ml-basics/11-missing-values.html">
      Missing Values
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../30-ml-basics/51-semi-supervised.html">
+     Semi-supervised Learning
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../30-ml-basics/53-self-supervised.html">
+     Self-supervised Learning
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../30-ml-basics/61-fourier-transform.html">
+     Fourier Transform-based Representations
     </a>
    </li>
   </ul>
@@ -1338,7 +1358,7 @@ X = \sum_{i=1}^{n-k+1} X_i
 </div>
 <div class="section" id="incremental-update-of-mean-and-variance">
 <h3>Incremental Update of Mean and Variance<a class="headerlink" href="#incremental-update-of-mean-and-variance" title="Permalink to this headline">¶</a></h3>
-<p><em>Suppose you have <span class="math notranslate nohighlight">\(n\)</span> observations <span class="math notranslate nohighlight">\(x_1, x_2, \ldots, x_n\)</span>. Now a new value <span class="math notranslate nohighlight">\(x_{n+1}\)</span> is observed. Write recurrence functions to update the sample mean <span class="math notranslate nohighlight">\(\bar{x}_n\)</span> and variance <span class="math notranslate nohighlight">\(s^2_n\)</span>.</em></p>
+<p><em>Suppose you have <span class="math notranslate nohighlight">\(n\)</span> observations <span class="math notranslate nohighlight">\(x_1, x_2, \ldots, x_n\)</span>. Now a new value <span class="math notranslate nohighlight">\(x_{n+1}\)</span> is observed. Write down recurrence functions for <span class="math notranslate nohighlight">\(\bar{x}_n\)</span> and <span class="math notranslate nohighlight">\(s^2_n\)</span>, and use them to obtain <span class="math notranslate nohighlight">\(\bar{x}_{n+1}\)</span> and <span class="math notranslate nohighlight">\(s^2_{n+1}\)</span>.</em></p>
 <div class="dropdown seealso admonition">
 <p class="admonition-title"> <em>Solution</em></p>
 <p>To update mean,</p>
@@ -1352,7 +1372,7 @@ X = \sum_{i=1}^{n-k+1} X_i
 \end{align}\end{split}\]</div>
 <p>The last line is to avoid computing a large number <span class="math notranslate nohighlight">\(n \bar{x}_n\)</span>.</p>
 <p>The second last line implies that the new sample mean <span class="math notranslate nohighlight">\(\bar{x}_{n+1}\)</span> is a weighted average of the current sample mean <span class="math notranslate nohighlight">\(\bar{x}_{n+1}\)</span> and the new observed value <span class="math notranslate nohighlight">\(x_{n+1}\)</span>.</p>
-<p>To update variance, we first find <span class="math notranslate nohighlight">\(\bar{x}_n\)</span>, then let <span class="math notranslate nohighlight">\(S_n = ns_{n}^2\)</span>,</p>
+<p>To update variance, we first use the above method to obtain <span class="math notranslate nohighlight">\(\bar{x}_{n+1}\)</span>, and let <span class="math notranslate nohighlight">\(S_n = ns_{n}^2\)</span>, then</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
 S_{n+1}
@@ -1374,18 +1394,20 @@ S_{n+1}
 <div class="section" id="misc">
 <span id="exp-var-ex"></span><h3>Misc<a class="headerlink" href="#misc" title="Permalink to this headline">¶</a></h3>
 <ol class="simple">
-<li><p>Two groups of data. In group one, sample standard deviation is <span class="math notranslate nohighlight">\(s_gamma\)</span>, in group two it is <span class="math notranslate nohighlight">\(s_2\)</span>. After merging them, it is <span class="math notranslate nohighlight">\(s_c\)</span>. Do we always have <span class="math notranslate nohighlight">\(s_3 &gt; \max(s_1, s_2)\)</span>?</p></li>
+<li><p>Two groups of data. In group one, sample standard deviation is <span class="math notranslate nohighlight">\(s_1\)</span>, in group two it is <span class="math notranslate nohighlight">\(s_2\)</span>. After merging them, it is <span class="math notranslate nohighlight">\(s_3\)</span>. Do we always have <span class="math notranslate nohighlight">\(s_3 &gt; \max(s_1, s_2)\)</span>?</p></li>
 </ol>
+<div class="dropdown seealso admonition">
+<p class="admonition-title"> <em>Solution</em></p>
 <p>Let <span class="math notranslate nohighlight">\(\lambda = \frac{n_1}{n_1 + n_2} \in (0,1)\)</span>, then <span class="math notranslate nohighlight">\(\bar{x}_3 = \lambda \bar{x}_1 + (1-\lambda)\bar{x}_2\)</span>. WLOG assume <span class="math notranslate nohighlight">\(\bar{x}_1 - \bar{x}_2 = d \ge 0\)</span>.</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{aligned}
-s^2 _1 &amp;= \frac{TSS_1}{n_1} \\
-s^2 _2 &amp;= \frac{TSS_2}{n_2} \\
-s^2 _3 &amp;= \frac{TSS_3}{n_3}\\
-s^2 _3 &amp;= \frac{TSS_1 + TTS_2 + n_1 (\bar{x}_1 - \bar{x}_3)^2 + n_2 (\bar{x}_3 - \bar{x}_2)^2 }{n_1 + n_2}\\
-&amp;= \lambda s^2 _1 + (1-\lambda) s^2 _2  + \lambda ((1-\lambda)d )^2 + (1-\lambda) (\lambda d)^2    \\
-&amp;= \underbrace{\lambda s^2 _1 + (1-\lambda) s^2 _2}_{a}  + \underbrace{\lambda(1-\lambda)d^2}_{b}   \\
-\end{aligned}\end{split}\]</div>
+  s^2 _1 &amp;= \frac{TSS_1}{n_1} \\
+  s^2 _2 &amp;= \frac{TSS_2}{n_2} \\
+  s^2 _3 &amp;= \frac{TSS_3}{n_3}\\
+  s^2 _3 &amp;= \frac{TSS_1 + TTS_2 + n_1 (\bar{x}_1 - \bar{x}_3)^2 + n_2 (\bar{x}_3 - \bar{x}_2)^2 }{n_1 + n_2}\\
+  &amp;= \lambda s^2 _1 + (1-\lambda) s^2 _2  + \lambda ((1-\lambda)d )^2 + (1-\lambda) (\lambda d)^2    \\
+  &amp;= \underbrace{\lambda s^2 _1 + (1-\lambda) s^2 _2}_{a}  + \underbrace{\lambda(1-\lambda)d^2}_{b}   \\
+  \end{aligned}\end{split}\]</div>
 <p>where</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(\lambda = \frac{n_1}{n_1 + n_2} \in (0,1)\)</span></p></li>
@@ -1399,6 +1421,7 @@ s^2 _3 &amp;= \frac{TSS_1 + TTS_2 + n_1 (\bar{x}_1 - \bar{x}_3)^2 + n_2 (\bar{x}
 <li><p><span class="math notranslate nohighlight">\(0 \le b &lt; d^2\)</span> with equality iff <span class="math notranslate nohighlight">\(d=0\)</span>.</p></li>
 </ul>
 <p>Since <span class="math notranslate nohighlight">\(a\)</span> and <span class="math notranslate nohighlight">\(b\)</span> are independent, we can know for sure that <span class="math notranslate nohighlight">\(\min(s^2_1, s^2_2) \le s_3^2\)</span>. The other comparison <span class="math notranslate nohighlight">\(\max(s^2_1, s^2_2) \text{ vs } s_3^2\)</span> is uncertain, depending on <span class="math notranslate nohighlight">\(d\)</span>.</p>
+</div>
 </div>
 </div>
 </div>

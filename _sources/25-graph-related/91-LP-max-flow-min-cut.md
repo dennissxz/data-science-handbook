@@ -75,7 +75,7 @@ Claim: The integrality gap between min-cut and LP-cut is 1
 
 We can prove a stronger condition: there exists an efficient algo that given any optimal fractional solution to $OPT_{LP}$, it returns an **integral** feasible solution whose cost is **not** higher than $OPT_{LP}$ (i.e., LP-rounding algorithm).
 
-:::{admonition, dropdown, seealso} *Proof*
+:::{admonition,dropdown,seealso} *Proof*
 
 View $y_e \in \mathbb{R}$ as the length of edge $e$. The distance $d(u,v)$ is the length of shortest $u-v$ path under $y_e$ edge length. Recall the LP-cut problem
 
