@@ -47,3 +47,58 @@ Proof
 
 
 ## NP-completeness
+
+:::{figure} np-p-and-np
+<img src="../imgs/np-p-and-np.png" width = "50%" alt=""/>
+
+
+:::
+
+Let $\phi$ be an instance of SAT formula, $\phi = c_1 \wedge c_2 \wedge \ldots \wedge c_m$.
+
+
+### $k$-coloring
+
+Given a graph $G$, assign to each vertex one of $k$ colors, such that no adjoint vertices are assigned different colors.
+
+Decision version: Given a graph, is it $k$-colorable?
+
+For instance, bipartite graph is 2-colorable. To find whether a graph is 2-colorable, ...
+
+Claim
+: 3-coloring is NP-complete.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.
