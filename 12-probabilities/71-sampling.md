@@ -16,15 +16,40 @@ kernelspec:
 
 # Sampling
 
+In this section we introduce some some sampling methods for various problem settings. Suppose we generate a sample $\left\{ x_1, x_2, \ldots, x_n \right\}$ from some distribution $p(x)$.
+
+If the exact functional form of $p(x)$ is unknown or hard to obtain, but we know some function $f(x)$ that is proportional to $p(x)$ up to some normalizing constant, then we can use $f(x)$ to obtain the sample. Some methods include
+- Rejection sampling
+- Markov Chain Monte Carlo
+  - Metropolis Hastings
+
+For multivariate distributions, e.g. $d=2$, if we want to generate a sample $\left\{ (x_1, y_1), \ldots, (x_n, y_n) \right\}$ from unknown $p(x,y)$, and $f(x \vert y )\prop p(x\vert y)$ and $f(y \vert x )\prop p(x\vert y)$ are known, then we can use $f(x \vert y)$ and $f(y \vert x)$ to obtain the sample. Gibbs sampling solve this problem setting.
+
+
+
+
 ## Rejection Sampling
 
-## Finite Population Sampling
+## Markov Chain Monte Carlo
+
+### General Setting
+
+
+### Metropolis Hastings
+
+MH is a particular case of MCMC.
+
+## Gibbs Sampling
+
+## Others
+
+Finite Population Sampling
 
 ### Poisson Sampling
 
 ### Bernoulli Sampling
 
-+++
+
 
 ## Exercise
 
