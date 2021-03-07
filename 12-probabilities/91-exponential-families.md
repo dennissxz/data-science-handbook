@@ -1,6 +1,23 @@
 # Exponential Families
 
 
+## Univariate Gaussian
+
+Test normality:
+
+- QQ-plots (quantile-quantile plot)
+- Kolmogorov–Smirnov test
+- Jarque–Bera test
+- Shapiro–Wilk test
+
+### Transformation
+
+Power transform
+
+Box-Cox transformation
+
+## Weibull Distribution
+
 ## Multivariate Gaussian
 
 
