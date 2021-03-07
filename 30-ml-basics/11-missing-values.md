@@ -66,3 +66,13 @@ In general, after imputation
 - $\hat{\sigma}^2$ increases
 
 :::
+
+
+other data issues:
+
+imbalanced data?
+- un/down sampling to make them balance
+- up/down weighting
+- smote
+
+non-normal?
