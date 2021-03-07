@@ -16,8 +16,9 @@ $$IS = \left\{ s \mid s \text{ encodes an integer $k$ and a graph $G$ who has an
 
 Definition (Efficient algorithm for problem $X$)
 : We say $A$ is an efficient algorithm for problem $X$ iff there is a function $f:\mathbb{R} ^+ \rightarrow \mathbb{R} ^+$,  $f(n)\le \operatorname{Poly}(n)$, such that on input $s$ of length $n_s$, algorithm $A$
-- runs for at most $f(n_s)$ time steps, and
-- returns "yes" iff $s$ is a valid encoding of a problem instance of $X$, i.e. $s\in X$.
+
+  - runs for at most $f(n_s)$ time steps, and
+  - returns "yes" iff $s$ is a valid encoding of a problem instance of $X$, i.e. $s\in X$.
 
 Definition (Class $P$)
 : Class $P$ is all problems that have efficient algorithms.
@@ -64,7 +65,7 @@ There are many $NP$ problems, 3SAT, IS, VC and $SC$ are some of them.
 
   This leads to the definition of $NP$-hard problems and $NP$-complete problems.
 
-# $NP$-hard and $NP$-complete
+## $NP$-hard and $NP$-complete
 
 Definition (Class $NP$-hard)
 : A problem $X$ is in class $NP$-hard if for any $Y\in NP$, it reduces to $X$. Formally, $\forall\, Y \in NP, Y \le_p X$.

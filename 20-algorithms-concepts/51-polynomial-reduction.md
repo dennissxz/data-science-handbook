@@ -7,11 +7,11 @@ We first introduce polynomial reduction between problems, then define NP-hardnes
 ## Definition
 
 ```{margin}
-Sometimes people say "$y$ is easier than x" or "x is harder than $y$".
+Sometimes people say "$y$ is easier than $x$" or "$x$ is harder than $y$".
 ```
 
 Definition (Polynomial reduction)
-: We say there exists a polynomial-reduction from problem $y$ to $x$, denoted $y \le _p x$, if there exists an algorithm for problem $y$ that solves it efficiently (time for writing inputs to $x$ + time for obtaining solution to $x$), given a black-box access to problem $x$.
+: We say there exists a polynomial-reduction from problem $y$ to problem $x$, denoted $y \le _p x$, if there exists an algorithm for problem $y$ that solves it efficiently (time for writing inputs to $x$ + time for obtaining solution to $x$), given a black-box access to problem $x$.
 
 Note that to solve $y$, suppose there is a black-box that solves problem $x$.
 
@@ -31,6 +31,7 @@ Let $A$ be an efficient algorithm for $y$, given black-box access to $x$. Let $f
 Let $A ^\prime$ be an efficient algorithm for $x$, with running time $g(N)$ of input length $N$. We have $g(N)\le \operatorname{Poly}(N)$.
 
 To solve $y$, we run $A$, and whenever $A$ queries the black-box, we run algorithm $A ^\prime$ instead. Let this algorithm be $A^*$.
+
 - By definition of $A$, we call black-box at most $f(n)$ times, hence in $A^*$ we call $A ^\prime$ at most $f(n)$ times.
 - In each time, the length of input is also at most $f(n)$, so the running time of a single call to $A ^\prime$ is at most $g(f(n))$.
 - Total time of all calls to $A ^\prime$ is at most $f(n)\times g(f(n))$.
@@ -48,7 +49,7 @@ Reduction can be used to solve problems (e.g. solve bipartite matching by max-fl
 
 ## Examples
 
-We introduce some problems. All are NP-hard. And their reductions are one-shot reductions.
+We introduce some problems. Their reductions are all one-shot reductions.
 
 ### Independent Set $=_p$ Vertex Cover
 
@@ -102,7 +103,7 @@ $(\Leftarrow)$ If $C$ is a vertex cover, then for any two vertices $u,v$ in $V \
 
 Therefore, once we find an independent set, we can find a vertex cover as its complement, and vice versa. Hence, they are polynomial reduction of each other.
 
-For instance, if we want to answer the decision problem: "Given a graph $G=(V,E)$ and an integer $k$, is there an independent set of size $k$?", suppose we have a black-box for vertex cover, we just ask it "Is there a vertex cover of size $n-k$?". The answer from the black-box is the answer to the original decision problem.
+For instance, if we want to answer the decision problem: *"Given a graph $G=(V,E)$ and an integer $k$, is there an independent set of size $k$?"*, suppose we have a black-box for vertex cover, we just ask it *"Is there a vertex cover of size $n-k$?"*. The answer from the black-box is the answer to the original decision problem.
 
 
 ### 3SAT $\le_p$ Independent Set
@@ -154,7 +155,7 @@ $(\Leftarrow)$ If there is an independent set of size $m$ in $G(\phi)$, since th
 
 :::
 
-Therefore, to answer the question "Is an 3SAT problem $\phi$ satisfiable?", we can query the black-box "Is there an independent set of size $m$ in graph $G(\phi)$?", where $m$ is the size of clauses in $\phi$. Hence, 3SAT $\le _p$ IS.
+Therefore, to answer the question *"Is an 3SAT problem $\phi$ satisfiable?"*, we can query the black-box *"Is there an independent set of size $m$ in graph $G(\phi)$?"*, where $m$ is the size of clauses in $\phi$. Hence, 3SAT $\le _p$ IS.
 
 
 ###  Vertex Cover $\le_p$ Set Cover
@@ -187,7 +188,7 @@ For an instance of vertex cover problem, we can build an instance of set cover p
 
 :::
 
-Therefore, to answer the question "Given graph $G$, is an vertex cover of size $k$", we can query the black-box "Given universe $U$ and an integer $k$, is there a set cover of size $k$?", where $U$ and $F$ are induced from $G$. Hence, VC $\le _p$ SC.
+Therefore, to answer the question *"Given graph $G$, is an vertex cover of size $k$"*, we can query the black-box *"Given universe $U$ and an integer $k$, is there a set cover of size $k$?"*, where $U$ and $F$ are induced from $G$. Hence, VC $\le _p$ SC.
 
 
 ## Transitivity
