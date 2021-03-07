@@ -1,0 +1,1181 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Polynomial Reduction &#8212; Data Science Handbook</title>
+    
+  <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+  <link rel="stylesheet"
+    href="../_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="../_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinx-book-theme.37f24b989f4638ff9c27c22dc7559d4f.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/style.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.d3f166471bb80abb5163.js">
+
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/sphinx-book-theme.7d483ff0a819d6edff12ce0b1ead3928.js"></script>
+    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="\(P\) and \(NP\)" href="53-P-and-NP.html" />
+    <link rel="prev" title="Algorithms Concepts" href="00-algorithms-concepts.html" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+
+
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+<a class="navbar-brand text-wrap" href="../index.html">
+  
+  
+  <h1 class="site-logo" id="site-title">Data Science Handbook</h1>
+  
+</a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form>
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+    <ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../index.html">
+   Data Science Handbook
+  </a>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Foundations
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../11-math/00-math.html">
+   Math
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/11-combinatorics.html">
+     Combinatorics
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/12-derangement.html">
+     Derangement
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/20-fields-and-vector-spaces.html">
+     Fields and Vector Spaces
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/21-linear-algebra.html">
+     Linear Algebra
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/51-linear-programming.html">
+     Linear Programming
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/61-graphs.html">
+     Graphs
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/90-puzzles.html">
+     Puzzles
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../12-probabilities/00-probabilities.html">
+   Probabilities
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/11-expectation-and-variance.html">
+     Expectation and Variance
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/13-correlation-and-dependence.html">
+     Correlation and Dependence
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/31-bayesian-theorem.html">
+     Bayesian’s Theorem
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/51-markov-chain.html">
+     Markov Chain
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/71-sampling.html">
+     Sampling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/90-multivariate-notations.html">
+     Multivariate Notations
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/91-large-sample-theory.html">
+     Large Sample Theory
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../13-statistics/00-statistics.html">
+   Statistics
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/11-sample-survey.html">
+     Sample Survey
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/13-randomized-trial.html">
+     Causality and Randomized Trial
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/21-hypothesis-testing.html">
+     Hypothesis Testing
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/25-two-sample-tests.html">
+     Two Sample Mean Tests
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/33-confusion-matrix.html">
+     Confusion Matrix
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/41-maximum-likelihood-estimation.html">
+     Maximum Likelihood Estimator
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/43-estimators-evaluation.html">
+     Estimators Evaluation
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../14-python/00-python.html">
+   Python
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../14-python/11-programming-tools.html">
+     Programmer tools
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../14-python/12-syntax.html">
+     Syntax
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../14-python/13-data-structure.html">
+     Data Structures
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../14-python/15-functional-programming.html">
+     Functional Programming
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../17-sql/00-sql.html">
+   SQL
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../17-sql/11-database.html">
+     Database
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../17-sql/12-relational-structure.html">
+     Relational Structure
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../17-sql/31-data-query.html">
+     Data Query
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../17-sql/33-data-manipulation.html">
+     Data Manipulation
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../19-miscellaneous/00-miscellaneous.html">
+   Miscellaneous
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../19-miscellaneous/11-latex.html">
+     LaTeX
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../19-miscellaneous/13-myst.html">
+     MyST Markdown
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Algorithms
+ </span>
+</p>
+<ul class="current nav sidenav_l1">
+ <li class="toctree-l1 current active collapsible-parent">
+  <a class="reference internal" href="00-algorithms-concepts.html">
+   Algorithms Concepts
+  </a>
+  <ul class="current collapse-ul">
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     Polynomial Reduction
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="53-P-and-NP.html">
+     <span class="math notranslate nohighlight">
+      \(P\)
+     </span>
+     and
+     <span class="math notranslate nohighlight">
+      \(NP\)
+     </span>
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="61-randomized-algo.html">
+     Randomized Algorithms
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../21-greedy-algorithms/00-greedy-algorithms.html">
+   Greedy Algorithms
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../21-greedy-algorithms/11-interval-scheduling.html">
+     Interval Scheduling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../21-greedy-algorithms/31-huffman-coding.html">
+     Huffman Coding
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../23-dynamic-programming/00-dynamic-programming.html">
+   Dynamic Programming
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/11-weighted-interval-scheduling.html">
+     Weighted Interval Scheduling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/13-longest-common-subsequence.html">
+     Longest Common Subsequence
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/15-longest-increasing-subsequence.html">
+     Longest Increasing Subsequence
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/17-largest-sum-subsequence.html">
+     Largest Sum Subsequence
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/31-knapsack.html">
+     Minimum Knapsack
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/51-chain-matrix-multiplication.html">
+     Chain Matrix Multiplication
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../25-graph-related/00-graph-related.html">
+   Graph Related
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/13-shortest-path.html">
+     Shortest Path
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/21-minimum-spanning-tree.html">
+     Minimum Spanning Tree
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/31-maximum-flow.html">
+     Maximum Flow
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/32-matching.html">
+     Matching
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/42-maximum-independent-set.html">
+     Maximum Independent Set in Trees
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/91-LP-max-flow-min-cut.html">
+     LP on Max-flow and Min-cut
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Machine Learning
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../30-ml-basics/00-ml-basics.html">
+   Machine Learning Basics
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../30-ml-basics/02-taxonomy.html">
+     Taxonomy
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../30-ml-basics/03-information-theory.html">
+     Information Theory
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../30-ml-basics/05-kernels.html">
+     Kernels
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../30-ml-basics/11-missing-values.html">
+     Missing Values
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../30-ml-basics/51-semi-supervised.html">
+     Semi-supervised Learning
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../30-ml-basics/53-self-supervised.html">
+     Self-supervised Learning
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../30-ml-basics/61-fourier-transform.html">
+     Fourier Transform-based Representations
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../31-regression/00-regression.html">
+   Regression
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/11-lm-estimation.html">
+     Linear Regression - Estimation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/12-lm-inference.html">
+     Linear Regression - Inference
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/13-lm-extension.html">
+     Linear Regression - Extension
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/21-generalized-linear-models.html">
+     Generalized Linear Models
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/22-logistic-regression.html">
+     Logistic Regression
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/23-multinomial-logitsitc.html">
+     Multinomial Logistic Regression
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/24-ordinal-logistic.html">
+     Ordinal Logistic Regression
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/25-poisson-regression.html">
+     Poisson Regression
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../32-classification/00-classification.html">
+   Classification
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../32-classification/11-support-vector-machine.html">
+     Support Vector Machine
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../32-classification/21-decision-tree.html">
+     Decision Tree
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../33-dimensionality-reduction/00-dimensionality-reduction.html">
+   Dimensionality Reduction
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/11-principal-component-analysis.html">
+     Principal Component Analysis
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/13-canonical-correlation-analysis.html">
+     Canonical Corerlation Analysis
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/21-multidimensional-scaling.html">
+     Multidimensional Scaling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/23-graph-based-spectral-methods.html">
+     Graph-based Spectral Methods
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/25-t-SNE.html">
+     SNE and
+     <span class="math notranslate nohighlight">
+      \(t\)
+     </span>
+     -SNE
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/31-kernel-pca.html">
+     Kernel PCA
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/32-kernel-cca.html">
+     Kernel CCA
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../34-clustering/00-clustering.html">
+   Clustering
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../34-clustering/11-k-means.html">
+     <span class="math notranslate nohighlight">
+      \(k\)
+     </span>
+     -means clustering
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../34-clustering/13-agglomerative-methods.html">
+     Agglomerative Methods
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../34-clustering/31-spectral-clustering.html">
+     Spectral Clustering
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../34-clustering/41-gaussian-mixtures.html">
+     Gaussian Mixtures
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../35-graphical-models/00-graphical-models.html">
+   Graphical Models
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../35-graphical-models/11-hidden-markov-models.html">
+     Hidden Markov Models
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../35-graphical-models/31-topic-models.html">
+     Topic Models
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../35-graphical-models/33-language-models.html">
+     Language Models
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../37-neural-networks/00-neural-networks.html">
+   Neural Networks
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/01-stochastic-gradient-descent.html">
+     Stochastic Gradient Descent
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/03-trainability.html">
+     Trainability
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/05-regularization.html">
+     Regularization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/11-autoencoders.html">
+     Autoencoders
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/13-variational-autoencoders.html">
+     Variational Autoencoders
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/31-sequential-models.html">
+     Sequential Models
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/41-GAN.html">
+     Generative Adversarial Networks
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../38-ml-for-graph-data/00-ml-for-graph-data.html">
+   Machine Learning for Graph Data
+  </a>
+ </li>
+</ul>
+
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../_sources/20-algorithms-concepts/51-polynomial-reduction.md"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.md</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/dennissxz/data-science-handbook"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/dennissxz/data-science-handbook/issues/new?title=Issue%20on%20page%20%2F20-algorithms-concepts/51-polynomial-reduction.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+            <a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+                    data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+                    title="Fullscreen mode"><i
+                        class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+        <div class="tocsection onthispage pt-5 pb-3">
+            <i class="fas fa-list"></i> Contents
+        </div>
+        <nav id="bd-toc-nav">
+            <ul class="nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#definition">
+   Definition
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#examples">
+   Examples
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#independent-set-p-vertex-cover">
+     Independent Set
+     <span class="math notranslate nohighlight">
+      \(=_p\)
+     </span>
+     Vertex Cover
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#independent-set">
+       Independent Set
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#vertex-cover">
+       Vertex Cover
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#equivalency">
+       Equivalency
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#sat-le-p-independent-set">
+     3SAT
+     <span class="math notranslate nohighlight">
+      \(\le_p\)
+     </span>
+     Independent Set
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#sat">
+       3SAT
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#reduction-to-is">
+       Reduction to IS
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#vertex-cover-le-p-set-cover">
+     Vertex Cover
+     <span class="math notranslate nohighlight">
+      \(\le_p\)
+     </span>
+     Set Cover
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#set-cover">
+       Set Cover
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#reduction-to-vc">
+       Reduction to VC
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#transitivity">
+   Transitivity
+  </a>
+ </li>
+</ul>
+
+        </nav>
+        
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="polynomial-reduction">
+<h1>Polynomial Reduction<a class="headerlink" href="#polynomial-reduction" title="Permalink to this headline">¶</a></h1>
+<p>In reality, we have a huge class of problems from various areas. If we solve one of them, we solve all of them. If we prove one of them does not have an efficient algorithm, then all of them do not. This is the class of NP-hard problems.</p>
+<p>We first introduce polynomial reduction between problems, then define NP-hardness and NP-completeness.</p>
+<div class="section" id="definition">
+<h2>Definition<a class="headerlink" href="#definition" title="Permalink to this headline">¶</a></h2>
+<div class="margin sidebar">
+<p class="sidebar-title"></p>
+<p>Sometimes people say “<span class="math notranslate nohighlight">\(y\)</span> is easier than <span class="math notranslate nohighlight">\(x\)</span>” or “<span class="math notranslate nohighlight">\(x\)</span> is harder than <span class="math notranslate nohighlight">\(y\)</span>”.</p>
+</div>
+<dl class="simple myst">
+<dt>Definition (Polynomial reduction)</dt><dd><p>We say there exists a polynomial-reduction from problem <span class="math notranslate nohighlight">\(y\)</span> to problem <span class="math notranslate nohighlight">\(x\)</span>, denoted <span class="math notranslate nohighlight">\(y \le _p x\)</span>, if there exists an algorithm for problem <span class="math notranslate nohighlight">\(y\)</span> that solves it efficiently (time for writing inputs to <span class="math notranslate nohighlight">\(x\)</span> + time for obtaining solution to <span class="math notranslate nohighlight">\(x\)</span>), given a black-box access to problem <span class="math notranslate nohighlight">\(x\)</span>.</p>
+</dd>
+</dl>
+<p>Note that to solve <span class="math notranslate nohighlight">\(y\)</span>, suppose there is a black-box that solves problem <span class="math notranslate nohighlight">\(x\)</span>.</p>
+<ul class="simple">
+<li><p>Algorithm for problem <span class="math notranslate nohighlight">\(y\)</span> can write inputs to problem <span class="math notranslate nohighlight">\(x\)</span>. For each such input, it query the black-box, the black-box provides a solution to problem <span class="math notranslate nohighlight">\(x\)</span> in 1 time unit. Note that it may query many times, but polynomial.</p>
+<ul>
+<li><p>If it query just one time, we call one-shot reduction (most cases)</p></li>
+<li><p>Otherwise, we call multi-shot reduction (few, but used to find approximation hardness)</p></li>
+</ul>
+</li>
+<li><p>Time to write down input to problem <span class="math notranslate nohighlight">\(x\)</span> is counted in the run time for problem <span class="math notranslate nohighlight">\(y\)</span></p></li>
+</ul>
+<dl class="simple myst">
+<dt>Claim</dt><dd><p>If <span class="math notranslate nohighlight">\(y \le _p x\)</span> and there exists an efficient algorithm for <span class="math notranslate nohighlight">\(x\)</span> (not black-box), then there exists an efficient algorithm for <span class="math notranslate nohighlight">\(y\)</span>.</p>
+</dd>
+</dl>
+<div class="dropdown seealso admonition">
+<p class="admonition-title"> <em>Proof</em></p>
+<p>Let <span class="math notranslate nohighlight">\(A\)</span> be an efficient algorithm for <span class="math notranslate nohighlight">\(y\)</span>, given black-box access to <span class="math notranslate nohighlight">\(x\)</span>. Let <span class="math notranslate nohighlight">\(f(n)\)</span> be its running time on input of length <span class="math notranslate nohighlight">\(n\)</span>. Since <span class="math notranslate nohighlight">\(A\)</span> is efficient, we have <span class="math notranslate nohighlight">\(f(n)\le \operatorname{Poly}(n)\)</span>.</p>
+<p>Let <span class="math notranslate nohighlight">\(A ^\prime\)</span> be an efficient algorithm for <span class="math notranslate nohighlight">\(x\)</span>, with running time <span class="math notranslate nohighlight">\(g(N)\)</span> of input length <span class="math notranslate nohighlight">\(N\)</span>. We have <span class="math notranslate nohighlight">\(g(N)\le \operatorname{Poly}(N)\)</span>.</p>
+<p>To solve <span class="math notranslate nohighlight">\(y\)</span>, we run <span class="math notranslate nohighlight">\(A\)</span>, and whenever <span class="math notranslate nohighlight">\(A\)</span> queries the black-box, we run algorithm <span class="math notranslate nohighlight">\(A ^\prime\)</span> instead. Let this algorithm be <span class="math notranslate nohighlight">\(A^*\)</span>.</p>
+<ul class="simple">
+<li><p>By definition of <span class="math notranslate nohighlight">\(A\)</span>, we call black-box at most <span class="math notranslate nohighlight">\(f(n)\)</span> times, hence in <span class="math notranslate nohighlight">\(A^*\)</span> we call <span class="math notranslate nohighlight">\(A ^\prime\)</span> at most <span class="math notranslate nohighlight">\(f(n)\)</span> times.</p></li>
+<li><p>In each time, the length of input is also at most <span class="math notranslate nohighlight">\(f(n)\)</span>, so the running time of a single call to <span class="math notranslate nohighlight">\(A ^\prime\)</span> is at most <span class="math notranslate nohighlight">\(g(f(n))\)</span>.</p></li>
+<li><p>Total time of all calls to <span class="math notranslate nohighlight">\(A ^\prime\)</span> is at most <span class="math notranslate nohighlight">\(f(n)\times g(f(n))\)</span>.</p></li>
+</ul>
+<p>The total runtime is <span class="math notranslate nohighlight">\(f(n)+f(n)\times g(f(n))\)</span>, which is also polynomial.</p>
+<p>??plus</p>
+</div>
+<dl class="simple myst">
+<dt>Corollary (contrapositive to the claim)</dt><dd><p>If <span class="math notranslate nohighlight">\(y \le _p x\)</span> and there is no efficient algorithm for <span class="math notranslate nohighlight">\(y\)</span>, then there is no efficient algorithm for <span class="math notranslate nohighlight">\(x\)</span>.</p>
+</dd>
+</dl>
+<p>Reduction can be used to solve problems (e.g. solve bipartite matching by max-flow), or used to prove hardness.</p>
+</div>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<p>We introduce some problems. Their reductions are all one-shot reductions.</p>
+<div class="section" id="independent-set-p-vertex-cover">
+<h3>Independent Set <span class="math notranslate nohighlight">\(=_p\)</span> Vertex Cover<a class="headerlink" href="#independent-set-p-vertex-cover" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="independent-set">
+<h4>Independent Set<a class="headerlink" href="#independent-set" title="Permalink to this headline">¶</a></h4>
+<dl class="simple myst">
+<dt>Definition (Independent set)</dt><dd><p>A set <span class="math notranslate nohighlight">\(S \subseteq V\)</span> is an independent set of graph <span class="math notranslate nohighlight">\(G=(V,E)\)</span> if no two vertices in <span class="math notranslate nohighlight">\(S\)</span> are adjacent.</p>
+</dd>
+</dl>
+<p>From this definition, there are two problems.</p>
+<ul class="simple">
+<li><p>Optimization version: Given a graph <span class="math notranslate nohighlight">\(G=(V,E)\)</span>, find its max-cardinality independent set.</p></li>
+<li><p>Decision version: Given a graph <span class="math notranslate nohighlight">\(G=(V,E)\)</span> and an integer <span class="math notranslate nohighlight">\(k\)</span>, is there an independent set of size <span class="math notranslate nohighlight">\(k\)</span>?</p></li>
+</ul>
+<p>Note that if we can solve one of them then we can solve the other.</p>
+<ul class="simple">
+<li><p>If there is an algorithm to solve the optimization version, then we can use it for the decision version. Since once <span class="math notranslate nohighlight">\(k_\max\)</span> is find, all <span class="math notranslate nohighlight">\(k \le k_\max\)</span> is possible.</p></li>
+<li><p>If there is an algorithm to solve the decision version, then we can use it for the optimization version efficiently. First, use it to find the <span class="math notranslate nohighlight">\(k_\max\)</span> (e.g. by binary search), then to find the IS of size <span class="math notranslate nohighlight">\(k_\max\)</span>, for each vertex</p>
+<ul>
+<li><p>Remove it and its neighbors, ask the algorithm if there is an IS of size <span class="math notranslate nohighlight">\(k_\max-1\)</span> in the remaining graph</p>
+<ul>
+<li><p>If yes, then this vertex is in an IS of size <span class="math notranslate nohighlight">\(k_\max\)</span>, add it. Repeat this operation in the remaining graph.</p></li>
+<li><p>Otherwise, some neighbors of this vertex are both in an IS of size <span class="math notranslate nohighlight">\(k_\max\)</span>. Go to next vertex.</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="vertex-cover">
+<h4>Vertex Cover<a class="headerlink" href="#vertex-cover" title="Permalink to this headline">¶</a></h4>
+<dl class="simple myst">
+<dt>Definition (Vertex cover)</dt><dd><p>In an undirected graph <span class="math notranslate nohighlight">\(G=(V,E)\)</span>, a set <span class="math notranslate nohighlight">\(S\subseteq V\)</span> is a vertex cover if for any edge in graph <span class="math notranslate nohighlight">\(G\)</span>, at least one of its endpoint is in <span class="math notranslate nohighlight">\(S\)</span>. Formally,  <span class="math notranslate nohighlight">\(\forall e = (u,v)\in E: u\in S\)</span> or <span class="math notranslate nohighlight">\(v\in S\)</span> or both.</p>
+</dd>
+</dl>
+<p>From this definition, there are two problems.</p>
+<ul class="simple">
+<li><p>Optimization version: Given a graph <span class="math notranslate nohighlight">\(G=(V,E)\)</span>, find its min-cardinality vertex cover.</p></li>
+<li><p>Decision version: Given a graph <span class="math notranslate nohighlight">\(G=(V,E)\)</span> and an integer <span class="math notranslate nohighlight">\(k\)</span>, is there an vertex cover of size <span class="math notranslate nohighlight">\(k\)</span>?</p></li>
+</ul>
+<p>Likewise, if we can solve one of them then we can solve the other.</p>
+</div>
+<div class="section" id="equivalency">
+<h4>Equivalency<a class="headerlink" href="#equivalency" title="Permalink to this headline">¶</a></h4>
+<p>Now we show that the independent set problem and the vertex cover problem are polynomial reduction of each other.</p>
+<dl class="simple myst">
+<dt>Claim (Connection between IS and VC)</dt><dd><p>In any graph <span class="math notranslate nohighlight">\(G\)</span>, a set <span class="math notranslate nohighlight">\(S \subseteq V\)</span> is an independent set iff <span class="math notranslate nohighlight">\(V\backslash S\)</span> is a vertex cover. Moreover, for an max-cardinality independent set, its complement is the min-cardinality vertex cover.</p>
+</dd>
+</dl>
+<div class="dropdown seealso admonition">
+<p class="admonition-title"> <em>Proof from detinitions</em></p>
+<p><span class="math notranslate nohighlight">\((\Rightarrow)\)</span> If <span class="math notranslate nohighlight">\(S\)</span> is an independent set, then for any edge <span class="math notranslate nohighlight">\(e=(u,v)\)</span> in graph <span class="math notranslate nohighlight">\(G\)</span>, we must have <span class="math notranslate nohighlight">\(u \in V \backslash S\)</span> or <span class="math notranslate nohighlight">\(v \in V \backslash S\)</span>. Otherwise, <span class="math notranslate nohighlight">\(u,v \in S\)</span> and they are adjacent, which contradicts to the fact that <span class="math notranslate nohighlight">\(S\)</span> is an independent set. Hence, <span class="math notranslate nohighlight">\(V\backslash S\)</span> is a vertex cover.</p>
+<p><span class="math notranslate nohighlight">\((\Leftarrow)\)</span> If <span class="math notranslate nohighlight">\(C\)</span> is a vertex cover, then for any two vertices <span class="math notranslate nohighlight">\(u,v\)</span> in <span class="math notranslate nohighlight">\(V \backslash C\)</span>, they cannot be adjacent. Otherwise, <span class="math notranslate nohighlight">\(e=(u,v)\)</span> but <span class="math notranslate nohighlight">\(u,v \notin C\)</span>, which contradicts to the fact that <span class="math notranslate nohighlight">\(C\)</span> is a vertex cover. Hence, <span class="math notranslate nohighlight">\(V\backslash C\)</span> is an independent set.</p>
+</div>
+<p>Therefore, once we find an independent set, we can find a vertex cover as its complement, and vice versa. Hence, they are polynomial reduction of each other.</p>
+<p>For instance, if we want to answer the decision problem: <em>“Given a graph <span class="math notranslate nohighlight">\(G=(V,E)\)</span> and an integer <span class="math notranslate nohighlight">\(k\)</span>, is there an independent set of size <span class="math notranslate nohighlight">\(k\)</span>?”</em>, suppose we have a black-box for vertex cover, we just ask it <em>“Is there a vertex cover of size <span class="math notranslate nohighlight">\(n-k\)</span>?”</em>. The answer from the black-box is the answer to the original decision problem.</p>
+</div>
+</div>
+<div class="section" id="sat-le-p-independent-set">
+<h3>3SAT <span class="math notranslate nohighlight">\(\le_p\)</span> Independent Set<a class="headerlink" href="#sat-le-p-independent-set" title="Permalink to this headline">¶</a></h3>
+<p>SAT and 3SAT are Boolean constraint satisfaction problems.</p>
+<div class="section" id="sat">
+<h4>3SAT<a class="headerlink" href="#sat" title="Permalink to this headline">¶</a></h4>
+<dl class="simple myst">
+<dt>Definitions</dt><dd><ul>
+<li><p>A <strong>Boolean variable</strong> <span class="math notranslate nohighlight">\(x\)</span> can only take one of the two values, TRUE or FALSE</p></li>
+<li><p>A <strong>literal</strong> <span class="math notranslate nohighlight">\(l\)</span> is either a Boolean variable <span class="math notranslate nohighlight">\(x\)</span>, called positive literal, or the negation of a variable <span class="math notranslate nohighlight">\(\neg x\)</span>, called negative literal.</p></li>
+<li><p>A <strong>clause</strong> <span class="math notranslate nohighlight">\(c\)</span> is a disjunction (OR) of one or several literals.</p>
+<p>For instance, <span class="math notranslate nohighlight">\(x_1\)</span> is a positive literal, <span class="math notranslate nohighlight">\(\neg x_2\)</span> is a negative literal, <span class="math notranslate nohighlight">\(x_1 \lor \neg x_2\)</span> is a clause of two literals.</p>
+</li>
+<li><p>A propositional logic <strong>formula</strong>, also called Boolean expression, is built from variables <span class="math notranslate nohighlight">\(x\)</span>, operators AND (conjunction, also denoted by <span class="math notranslate nohighlight">\(\land\)</span>), OR (disjunction, <span class="math notranslate nohighlight">\(\lor\)</span>), NOT (negation, <span class="math notranslate nohighlight">\(\neg\)</span>), and parentheses <span class="math notranslate nohighlight">\(()\)</span>.</p></li>
+<li><p>A formula is said to be <strong>satisfiable</strong> if it can be made TRUE by assigning appropriate logical values (i.e. TRUE, FALSE) to its variables.</p>
+<p>For instance, the formula <span class="math notranslate nohighlight">\(x \land \neg x\)</span> consisting of two clauses of one literal, is unsatisfiable.</p>
+</li>
+<li><p>A <strong>SAT formula</strong> <span class="math notranslate nohighlight">\(\phi\)</span> is a conjunction (AND) of one or more clauses <span class="math notranslate nohighlight">\(c_1 \land c_2 \land \ldots \land c_m\)</span>.</p></li>
+<li><p>The Boolean satisfiability problem (<strong>SAT</strong>) is, given an SAT formula <span class="math notranslate nohighlight">\(\phi = c_1 \land c_2 \land \ldots \land c_m\)</span>, determine whether there is an assignment to the variables satisfying the formula. Note that every clause need to be satisfied.</p>
+<ul class="simple">
+<li><p>If every clause consists of at most 3 variables, we say it is a <strong>3SAT</strong> problem.</p></li>
+<li><p>If every clause consists of exactly 3 variables, we say it is a <strong>E3SAT</strong> problem.</p></li>
+</ul>
+</li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="reduction-to-is">
+<h4>Reduction to IS<a class="headerlink" href="#reduction-to-is" title="Permalink to this headline">¶</a></h4>
+<p>Though 3SAT is an boolean satisfaction problem and independent set is a graph problem, they are related and 3SAT <span class="math notranslate nohighlight">\(\le _p\)</span> IS.</p>
+<p>Suppose <span class="math notranslate nohighlight">\(\phi = c_1 \land \ldots \land c_m\)</span>, and <span class="math notranslate nohighlight">\(c_1 = x_1 \lor x_2 \lor \neg x_3\)</span>. If <span class="math notranslate nohighlight">\(\phi\)</span> is satisfiable, then one of the literals in <span class="math notranslate nohighlight">\(c_1\)</span> must be true. Hence, one method of assignment is, for every clause <span class="math notranslate nohighlight">\(c\)</span>, assign one literal to be true, without conflicts (e.g. <span class="math notranslate nohighlight">\(x_3 = 1\)</span> in <span class="math notranslate nohighlight">\(c_2\)</span> and <span class="math notranslate nohighlight">\(\neg x_3=1\)</span> in <span class="math notranslate nohighlight">\(c_3\)</span>). In other words, if one literal is chosen in some clause, never choose its negation in other clauses.</p>
+<p>Now, we build a graph <span class="math notranslate nohighlight">\(G(\phi)\)</span> induced from <span class="math notranslate nohighlight">\(\phi\)</span>. For each clause <span class="math notranslate nohighlight">\(c_i\)</span> in <span class="math notranslate nohighlight">\(\phi\)</span></p>
+<ul class="simple">
+<li><p>Add a vertex <span class="math notranslate nohighlight">\(v_{ij}\)</span> where <span class="math notranslate nohighlight">\(1\le j \le 3\)</span> to represent each literal <span class="math notranslate nohighlight">\(l_{ij}\)</span> in <span class="math notranslate nohighlight">\(c_i\)</span></p></li>
+<li><p>Add an edge between every pair of vertices <span class="math notranslate nohighlight">\(v_{ij}\)</span>. We call this object a gadget.</p></li>
+<li><p>If one vertex <span class="math notranslate nohighlight">\(v_{i_1 j_1}\)</span> represents a literal that is the negation of a literal represented by another vertex <span class="math notranslate nohighlight">\(v_{i_2 j_2}\)</span>, add an edge between them <span class="math notranslate nohighlight">\(e = (v_{i_1 j_1}, v_{i_2 j_2})\)</span>.</p></li>
+</ul>
+<p>In sum, for each clause, we build a gadget, and connect pairs of vertices across gadget if their literals are negation of each other.</p>
+<dl class="simple myst">
+<dt>Claim</dt><dd><p><span class="math notranslate nohighlight">\(\phi = c_1 \land \ldots \land c_m\)</span> is satisfiable iff <span class="math notranslate nohighlight">\(G(\phi)\)</span> has an independent set of size <span class="math notranslate nohighlight">\(m\)</span>.</p>
+</dd>
+</dl>
+<div class="dropdown seealso admonition">
+<p class="admonition-title"> <em>Proof</em></p>
+<p><span class="math notranslate nohighlight">\((\Rightarrow)\)</span> If <span class="math notranslate nohighlight">\(\phi\)</span> is satisfiable, then we do not choose any two literals that are negation of each other, hence the corresponding vertices are not adjacent, i.e. we find an independent set of size <span class="math notranslate nohighlight">\(m\)</span> in <span class="math notranslate nohighlight">\(G(\phi)\)</span>.</p>
+<p><span class="math notranslate nohighlight">\((\Leftarrow)\)</span> If there is an independent set of size <span class="math notranslate nohighlight">\(m\)</span> in <span class="math notranslate nohighlight">\(G(\phi)\)</span>, since the vertices in a gadget are adjacent and there are <span class="math notranslate nohighlight">\(m\)</span> gadgets, then exactly one vertices in a gadget is in an independent set. Moreover, their corresponding literals are not negations.</p>
+</div>
+<p>Therefore, to answer the question <em>“Is an 3SAT problem <span class="math notranslate nohighlight">\(\phi\)</span> satisfiable?”</em>, we can query the black-box <em>“Is there an independent set of size <span class="math notranslate nohighlight">\(m\)</span> in graph <span class="math notranslate nohighlight">\(G(\phi)\)</span>?”</em>, where <span class="math notranslate nohighlight">\(m\)</span> is the size of clauses in <span class="math notranslate nohighlight">\(\phi\)</span>. Hence, 3SAT <span class="math notranslate nohighlight">\(\le _p\)</span> IS.</p>
+</div>
+</div>
+<div class="section" id="vertex-cover-le-p-set-cover">
+<h3>Vertex Cover <span class="math notranslate nohighlight">\(\le_p\)</span> Set Cover<a class="headerlink" href="#vertex-cover-le-p-set-cover" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="set-cover">
+<h4>Set Cover<a class="headerlink" href="#set-cover" title="Permalink to this headline">¶</a></h4>
+<p>Set cover is a general problem.</p>
+<ul class="simple">
+<li><p>Input</p>
+<ul>
+<li><p>A collection of element <span class="math notranslate nohighlight">\(U = \left\{ 1, 2, \ldots, n \right\}\)</span> (aka universe)</p></li>
+<li><p>A set of its subsets <span class="math notranslate nohighlight">\(F = \left\{ S_1, S_2, \ldots, S_m \right\}\)</span> such that <span class="math notranslate nohighlight">\(S_i \subseteq U\)</span>.</p></li>
+</ul>
+</li>
+<li><p>Goal</p>
+<ul>
+<li><p>Select minimum-cardinality <span class="math notranslate nohighlight">\(F ^\prime \subseteq F\)</span> such that <span class="math notranslate nohighlight">\(F ^\prime\)</span> covers all elements in <span class="math notranslate nohighlight">\(U\)</span>, i.e. <span class="math notranslate nohighlight">\(\cup _{S \in F} = U\)</span>.</p></li>
+</ul>
+</li>
+</ul>
+<p>In other words, any element <span class="math notranslate nohighlight">\(u \in U\)</span> must be in at least one set <span class="math notranslate nohighlight">\(S \in F ^\prime\)</span>.</p>
+<p>Decision version: Given universe <span class="math notranslate nohighlight">\(U\)</span> and an integer <span class="math notranslate nohighlight">\(k\)</span>, is there a set cover of size <span class="math notranslate nohighlight">\(k\)</span>?</p>
+</div>
+<div class="section" id="reduction-to-vc">
+<h4>Reduction to VC<a class="headerlink" href="#reduction-to-vc" title="Permalink to this headline">¶</a></h4>
+<dl class="simple myst">
+<dt>Claim</dt><dd><p>In graph <span class="math notranslate nohighlight">\(G\)</span>, there exists a vertex cover of size <span class="math notranslate nohighlight">\(k\)</span> iff there exists a set cover <span class="math notranslate nohighlight">\(F ^\prime\)</span> of size <span class="math notranslate nohighlight">\(k\)</span> for problem <span class="math notranslate nohighlight">\((U, F)\)</span>.</p>
+</dd>
+</dl>
+<div class="dropdown seealso admonition">
+<p class="admonition-title"> <em>Proof</em></p>
+<p>For an instance of vertex cover problem, we can build an instance of set cover problem. Given <span class="math notranslate nohighlight">\(G=(V,E)\)</span>,</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(U\)</span> is the set of all edges in <span class="math notranslate nohighlight">\(G\)</span>, i.e. <span class="math notranslate nohighlight">\(U = E\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(S_i\)</span> is the set of all edges that incident to <span class="math notranslate nohighlight">\(v_i\)</span>, such that <span class="math notranslate nohighlight">\(\left\vert F \right\vert = \left\vert V \right\vert\)</span>.</p></li>
+</ul>
+</div>
+<p>Therefore, to answer the question <em>“Given graph <span class="math notranslate nohighlight">\(G\)</span>, is an vertex cover of size <span class="math notranslate nohighlight">\(k\)</span>”</em>, we can query the black-box <em>“Given universe <span class="math notranslate nohighlight">\(U\)</span> and an integer <span class="math notranslate nohighlight">\(k\)</span>, is there a set cover of size <span class="math notranslate nohighlight">\(k\)</span>?”</em>, where <span class="math notranslate nohighlight">\(U\)</span> and <span class="math notranslate nohighlight">\(F\)</span> are induced from <span class="math notranslate nohighlight">\(G\)</span>. Hence, VC <span class="math notranslate nohighlight">\(\le _p\)</span> SC.</p>
+</div>
+</div>
+</div>
+<div class="section" id="transitivity">
+<h2>Transitivity<a class="headerlink" href="#transitivity" title="Permalink to this headline">¶</a></h2>
+<dl class="simple myst">
+<dt>Claim (Transitivity of reduction)</dt><dd><p>If <span class="math notranslate nohighlight">\(z \le _p y\)</span> and <span class="math notranslate nohighlight">\(y \le _p x\)</span>, then <span class="math notranslate nohighlight">\(z \le_p x\)</span>.</p>
+</dd>
+</dl>
+<div class="dropdown seealso admonition">
+<p class="admonition-title"> <em>Proof</em></p>
+<p>Short: polynomial of polynomial is still polynomial.</p>
+<p>Long:</p>
+<p>Since <span class="math notranslate nohighlight">\(y \le_p x\)</span>, there exists an efficient algorithm <span class="math notranslate nohighlight">\(A_1\)</span> for problem <span class="math notranslate nohighlight">\(y\)</span>, given access to a black-box <span class="math notranslate nohighlight">\(BB(x)\)</span>. Let the running time of <span class="math notranslate nohighlight">\(A_1\)</span> be <span class="math notranslate nohighlight">\(f_1(n_y)\)</span> where <span class="math notranslate nohighlight">\(n_y\)</span> is the input size of problem <span class="math notranslate nohighlight">\(y\)</span>. Since <span class="math notranslate nohighlight">\(z \le_p y\)</span>, there exists an efficient algorithm <span class="math notranslate nohighlight">\(A_2\)</span> for problem <span class="math notranslate nohighlight">\(z\)</span>, given access to a black-box <span class="math notranslate nohighlight">\(BB(y)\)</span>. Let the running time of <span class="math notranslate nohighlight">\(A_2\)</span> be <span class="math notranslate nohighlight">\(f_2(n_z)\)</span>.</p>
+<p>Now we want to show there is an efficient algorithm <span class="math notranslate nohighlight">\(A^*\)</span> for <span class="math notranslate nohighlight">\(z\)</span>, given access to the black-box <span class="math notranslate nohighlight">\(BB(x)\)</span>. Given a instance of <span class="math notranslate nohighlight">\(z\)</span> of size <span class="math notranslate nohighlight">\(n_z\)</span>, we run <span class="math notranslate nohighlight">\(A_2\)</span>, and whenever it queries <span class="math notranslate nohighlight">\(BB(y)\)</span>, we run <span class="math notranslate nohighlight">\(A_1\)</span> instead, which queries <span class="math notranslate nohighlight">\(BB(x)\)</span>. It is efficient since</p>
+<ul class="simple">
+<li><p>Running time of <span class="math notranslate nohighlight">\(A_2\)</span> is <span class="math notranslate nohighlight">\(f_2(n_z)\)</span></p></li>
+<li><p>Number of runs of <span class="math notranslate nohighlight">\(A_1\)</span> is at most <span class="math notranslate nohighlight">\(f_2(n_z)\)</span>.</p>
+<ul>
+<li><p>Each run takes <span class="math notranslate nohighlight">\(f_1(n_y)\)</span>.</p></li>
+<li><p>To convert input <span class="math notranslate nohighlight">\(z\)</span> to <span class="math notranslate nohighlight">\(y\)</span>, the conversion time is at most <span class="math notranslate nohighlight">\(f_2(n)\)</span>, hence <span class="math notranslate nohighlight">\(n_y = O(f_2(n_z))\)</span>.</p></li>
+</ul>
+</li>
+</ul>
+<p>In sum, the total run time is <span class="math notranslate nohighlight">\(f_2(n_z) + f_2(n_z) \cdot f_1 (f_2(n_z))\)</span>, which is polynomial since <span class="math notranslate nohighlight">\(f_1, f_2\)</span> are polynomials.</p>
+</div>
+<p>Applying the claim gives a chain of reduction</p>
+<div class="math notranslate nohighlight">
+\[
+\text{3SAT}  \le_p \text{Independent Set}  \le_p \text{Vertex Cover}  \le_p \text{Set Cover}  
+\]</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./20-algorithms-concepts"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        
+        <div class='prev-next-bottom'>
+            
+    <a class='left-prev' id="prev-link" href="00-algorithms-concepts.html" title="previous page">Algorithms Concepts</a>
+    <a class='right-next' id="next-link" href="53-P-and-NP.html" title="next page"><span class="math notranslate nohighlight">\(P\)</span> and <span class="math notranslate nohighlight">\(NP\)</span></a>
+
+        </div>
+        
+        </div>
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By Dennis Zheng<br/>
+        
+            &copy; Copyright 2020.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+
+    
+  <script src="../_static/js/index.d3f166471bb80abb5163.js"></script>
+
+
+    
+  </body>
+</html>
