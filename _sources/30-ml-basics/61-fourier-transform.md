@@ -60,7 +60,7 @@ Hairs in the cochlea (3) have different frequency responses [[image link](http:/
   :::{figure} fourier-speech
   <img src="../imgs/spectral-clustering-speech-sep.png" width = "50%" alt=""/>
 
-  Separate components from a speech
+  Separate components from a speech (apply FT to rolling windows)
   :::
 
 - Financial market data
@@ -190,7 +190,7 @@ $$
 
 - 2-D fast Fourier transform requires $M N (\log _{2} M) (\log _{2} N)$ operations.
 
-### 2-D Discrete-"time" convolution
+## 2-D Discrete-"time" convolution
 
 $$
 y\left[n_{1}, n_{2}\right]=x\left[n_{1}, n_{2}\right] * h\left[n_{1}, n_{2}\right]=\sum_{k_{1}=-\infty}^{\infty} \sum_{k_{2}=-\infty}^{\infty} x\left[k_{1}, k_{2}\right] h\left[n_{1}-k_{1}, n_{2}-k_{2}\right]
@@ -199,3 +199,89 @@ $$
 - This is the operation being done in convolutional neural networks, on the image $x$ and the filter $h$.
 - But we typically don’t bother with flipping the filter and state it as a dot product
 - The properties of convolution tell us $Y_{k l}=X_{k l} H_{k l}$
+
+## Applications to Machine Learning
+
+### Faster CNN Training
+
+Today there are other methods that speed up CNN training.
+
+### Random Fourier Features
+
+We introduced that computing kernel matrix is computationally expensive. We can approximate $\phi(x)$ corresponding to a given kernel.
+
+Theorem (Bochner’s)
+: Shift-invariant kernels (only depends on the difference $x-y$) are n-dimensional continuous Fourier transforms of some probability distribution $p(w)$,
+
+
+$$
+k(x, y)=k(x-y)=\int p(w) e^{j w ^{\top} (x-y)} \mathrm{~d} w=\mathbb{E}_{w}\left[\xi_{w}(x) \xi_{w}(y)^{*}\right]
+$$
+
+where $\xi_{w}(x)=e^{j w ^{\top}  x}$.
+
+So, we can estimate the kernel by **averaging** a bunch of such products for various random drawn values of $w$.
+
+Idea: Use a feature map $φ(x)$ that is a concatenation of a bunch of $\xi$’s. Then we have an explicit nonlinear map, and no need to do large kernel computations!
+
+For Gaussian, Laplacian and Cauchy kernel, $p(w)$ is easy to find.
+
+
+$$
+\begin{array}{lll}
+\text { Kernel Name } & k(\Delta) & p(\omega) \\
+\hline \text { Gaussian } & e^{-\frac{\|\Delta\|_{2}^{2}}{2}} & (2 \pi)^{-\frac{D}{2}} e^{-\frac{\|\omega\|_{2}^{2}}{2}} \\
+\text { Laplacian } & e^{-\|\Delta\|_{1}} & \prod_{d} \frac{1}{\pi\left(1+\omega_{d}^{2}\right)} \\
+\text { Cauchy } & \prod_{d} \frac{2}{1+\Delta_{d}^{2}} & e^{-\|\Delta\|_{1}}
+\end{array}
+$$
+
+:::{figure} fourier-kernel-algo
+<img src="../imgs/fourier-kernel-algo.png" width = "50%" alt=""/>
+
+fourier-kernel-algo
+:::
+
+
+$$
+\begin{array}{l}
+\text { Algorithm 1 Random Fourier Features. } \\
+\hline \text { Require: A positive definite shift-invariant kernel } k(\mathbf{x}, \mathbf{y})=k(\mathbf{x}-\mathbf{y}) . \\
+\text { Ensure: A randomized feature map } \mathbf{z}(\mathbf{x}): \mathcal{R}^{d} \rightarrow \mathcal{R}^{2 D} \text { so that } \mathbf{z}(\mathbf{x})^{\prime} \mathbf{z}(\mathbf{y}) \approx k(\mathbf{x}-\mathbf{y}) . \\
+\text { Compute the Fourier transform } p \text { of the kernel } k: p(\omega)=\frac{1}{2 \pi} \int e^{-j \omega^{\prime} \Delta} k(\Delta) d \Delta . \\
+\text { Draw } D \text { iid samples } \omega_{1}, \cdots, \omega_{D} \in \mathcal{R}^{d} \text { from } p . \\
+\text { Let } \mathbf{z}(\mathbf{x}) \equiv \sqrt{\frac{1}{D}}\left[\cos \left(\omega_{1}^{\prime} \mathbf{x}\right) \cdots \cos \left(\omega_{D}^{\prime} \mathbf{x}\right) \sin \left(\omega_{1}^{\prime} \mathbf{x}\right) \cdots \sin \left(\omega_{D}^{\prime} \mathbf{x}\right)\right]^{\prime} \\
+\hline
+\end{array}
+$$
+
+...
+
+
+
+### Regularizing Neural Networks
+
+where is FT used?
+
+.
+
+
+.
+
+
+.
+
+
+.
+
+
+.
+
+
+.
+
+
+.
+
+
+.
