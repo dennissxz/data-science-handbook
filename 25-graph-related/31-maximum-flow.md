@@ -391,7 +391,9 @@ Theorem (Equivalency of maximum flow and minimum cut)
 
 The proof is simply from the Corollary.
 
-Thus, FF algorithm also gives an algorithm for finding a minimum $s-t$ cut.
+Thus, FF algorithm also gives an algorithm for finding a minimum $s-t$ cut: after the algorithm stops, in the residual graph $G_f$, find the set of vertices reachable from $s$, then $(A, V\setminus B)$ is a minimum $s-t$ cut.
+
+
 
 ## Complexity
 
