@@ -12,7 +12,7 @@ kernelspec:
   name: python3
 ---
 
-# Linear Regression - Estimation
+# Linear Models - Estimation
 
 From this section we introduce linear models from a statistics’ perspective. There are three sections in total.
 
@@ -757,7 +757,7 @@ SLR stands for simple linear regression $y_i = \beta_0 + \beta_1 x_i + \varepsil
     The estimated variance becomes
 
     $$
-    \widehat{Var}(\hat{\gamma}_j) = \hat{\sigma}^2 \frac{1}{1-R_j^2} \frac{1}{\sum (x ^\prime - \bar{x} ^\prime)^2} = \frac{1}{a^2}  \widehat{Var}(\hat{\beta}_j)
+    \widehat{\operatorname{Var}}(\hat{\gamma}_j) = \hat{\sigma}^2 \frac{1}{1-R_j^2} \frac{1}{\sum (x ^\prime - \bar{x} ^\prime)^2} = \frac{1}{a^2}  \widehat{\operatorname{Var} }(\hat{\beta}_j)
     $$
 
     Hence, the standard error is $\operatorname{se}(\hat{\gamma}_j) = \operatorname{se}(\hat{\beta}_j)$ and the $t$-test statistic is
@@ -839,10 +839,10 @@ SLR stands for simple linear regression $y_i = \beta_0 + \beta_1 x_i + \varepsil
     \end{aligned}
     $$
 
-    -   The larger the error variance, $\sigma^2$, the larger the variance of the coefficient estimates.
-    -   The larger the variability in the $x_i$, the smaller the variance.
-    -   A larger sample size should decrease the variance.
-    -   In multiple regression, reduce the linear relation between $X_j$ and other covariates (e.g. by orthogonal design) can decreases $R^2_{j}$, and hence decrease the variance.
+    - The larger the error variance, $\sigma^2$, the larger the variance of the coefficient estimates.
+    - The larger the variability in the $x_i$, the smaller the variance.
+    - A larger sample size should decrease the variance.
+    - In multiple regression, reduce the linear relation between $X_j$ and other covariates (e.g. by orthogonal design) can decreases $R^2_{j}$, and hence decrease the variance.
 
     :::
 
@@ -914,7 +914,7 @@ SLR stands for simple linear regression $y_i = \beta_0 + \beta_1 x_i + \varepsil
 
     :::{admonition,dropdown,seealso} *Solution*
 
-    In general NO. $\hat{\beta}_p = 0$ can be interpreted as $X_p$ has no explanatory power to $Y$ **given** other covariates. See detailed [discussion](lm-rss-nonincreasing).
+    In general, NO. Whether $\boldsymbol{x}_{p} ^\top \boldsymbol{y} = 0$ depends only on these two vectors, but whether $\hat{\beta}_{p}=0$ depends on existing covariates in the model. See detailed [discussion](lm-rss-nonincreasing).
 
     :::
 
@@ -924,10 +924,6 @@ SLR stands for simple linear regression $y_i = \beta_0 + \beta_1 x_i + \varepsil
 
     TBD.
 
-1. Add/Remove a Variable/Observation
+1. Add/Remove an observation
 
-    TBD
-
-    Table summary.
-
-    Rows: E(b), Var(b), RSS, TSS, R^2
+    E(b), Var(b), RSS, TSS, R^2

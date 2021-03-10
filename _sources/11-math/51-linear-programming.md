@@ -277,12 +277,12 @@ Definition (Relaxation)
 ### Integrality Gap
 
 Definition (Integrality Gap)
-: Integrality gap measures the largest deviation between the objective value of a fractional solution and that of a integral solution.
+: Integrality gap $IG$ measures the goodness of an LP relaxation to an integer program problem. It is defined as the largest ratio between the objective value of an optimal integral solution to problem P, and that of an optimal fractional solution to its relaxed LP problem, over all instances of problem P.
 
-  - For minimization problem, it is $\frac{OPT}{OPT_{LP}} \ge 1$,
-  - For maximization problem, it is $\frac{OPT_{LP}}{OPT} \ge 1$,
+  - For minimization problem, $IG = \max \frac{OPT_P}{OPT_{LP}}$
+  - For maximization problem, $IG = \max \frac{OPT_{LP}}{OPT_P}$
 
-  If the gap is one, then an optimal integral solution and an optimal fractional solution gives the same objective value.
+  It is easy to see $IG \ge 1$. If $IG=1$, then an optimal integral solution and an optimal fractional solution gives the same objective value.
 
 
 

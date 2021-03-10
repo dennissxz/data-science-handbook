@@ -10,7 +10,7 @@ kernelspec:
   name: python3
 ---
 
-# Linear Regression - Inference
+# Linear Models - Inference
 
 We first describe the properties of OLS estimator $\hat{\boldsymbol{\beta}}$ and the corresponding residuals $\hat{\boldsymbol{\varepsilon} }$. Then we introduce sum of squares, $R$-squared, hypothesis testing and confidence intervals. All these methods assume normality of the error terms $\varepsilon_i \overset{\text{iid}}{\sim} N(0, \sigma^2)$ unless otherwise specified.
 

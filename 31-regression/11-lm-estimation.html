@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Linear Regression - Estimation &#8212; Data Science Handbook</title>
+    <title>Linear Models - Estimation &#8212; Data Science Handbook</title>
     
   <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
 
@@ -57,7 +57,7 @@
     <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Linear Regression - Inference" href="12-lm-inference.html" />
+    <link rel="next" title="Linear Models - Inference" href="12-lm-inference.html" />
     <link rel="prev" title="Regression" href="00-regression.html" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -500,17 +500,22 @@
   <ul class="current collapse-ul">
    <li class="toctree-l2 current active">
     <a class="current reference internal" href="#">
-     Linear Regression - Estimation
+     Linear Models - Estimation
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="12-lm-inference.html">
-     Linear Regression - Inference
+     Linear Models - Inference
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="13-lm-extension.html">
-     Linear Regression - Extension
+    <a class="reference internal" href="13-lm-diagnosis.html">
+     Linear Models - Diagnosis
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="14-lm-advanced.html">
+     Linear Models - Advanced Topics
     </a>
    </li>
    <li class="toctree-l2">
@@ -900,8 +905,8 @@
         
               <div>
                 
-  <div class="section" id="linear-regression-estimation">
-<h1>Linear Regression - Estimation<a class="headerlink" href="#linear-regression-estimation" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="linear-models-estimation">
+<h1>Linear Models - Estimation<a class="headerlink" href="#linear-models-estimation" title="Permalink to this headline">¶</a></h1>
 <p>From this section we introduce linear models from a statistics’ perspective. There are three sections in total.</p>
 <ol class="simple">
 <li><p>The first section covers the model fundamentals, including assumptions, estimation, interpretation and some exercise.</p></li>
@@ -1511,7 +1516,7 @@ R^2 = \frac{\sum (\hat{y}_i - \bar{y})^2}{\sum (y_i - \bar{y})^2}
 <p>The estimated variance becomes</p>
 <div class="math notranslate nohighlight">
 \[
-    \widehat{Var}(\hat{\gamma}_j) = \hat{\sigma}^2 \frac{1}{1-R_j^2} \frac{1}{\sum (x ^\prime - \bar{x} ^\prime)^2} = \frac{1}{a^2}  \widehat{Var}(\hat{\beta}_j)
+    \widehat{\operatorname{Var}}(\hat{\gamma}_j) = \hat{\sigma}^2 \frac{1}{1-R_j^2} \frac{1}{\sum (x ^\prime - \bar{x} ^\prime)^2} = \frac{1}{a^2}  \widehat{\operatorname{Var} }(\hat{\beta}_j)
     \]</div>
 <p>Hence, the standard error is <span class="math notranslate nohighlight">\(\operatorname{se}(\hat{\gamma}_j) = \operatorname{se}(\hat{\beta}_j)\)</span> and the <span class="math notranslate nohighlight">\(t\)</span>-test statistic is</p>
 <div class="math notranslate nohighlight">
@@ -1615,7 +1620,7 @@ R^2 = \frac{\sum (\hat{y}_i - \bar{y})^2}{\sum (y_i - \bar{y})^2}
 <li><p>probably higher standard error <span class="math notranslate nohighlight">\(\operatorname{se}(\hat{\beta}_k)\)</span> since <span class="math notranslate nohighlight">\(RSS\)</span> increases (also need to look at how <span class="math notranslate nohighlight">\(1-R_k^2\)</span> increases)</p></li>
 <li><p>bias estimates of other covariates <span class="math notranslate nohighlight">\(\operatorname{E}\left( \hat{\beta}_k \right)\)</span>, if the omitted variable has linear relation with them (<span class="math notranslate nohighlight">\(\alpha_k \ne 0\)</span>)</p></li>
 </ul>
-<p>See detailed <a class="reference internal" href="13-lm-extension.html#lm-omit-variable"><span class="std std-ref">discussion</span></a>.</p>
+<p>See detailed <a class="reference internal" href="13-lm-diagnosis.html#lm-omit-variable"><span class="std std-ref">discussion</span></a>.</p>
 </div>
 </li>
 <li><p><em>What happens if you include an irrelevant regressor <span class="math notranslate nohighlight">\(X_j\)</span>?</em></p>
@@ -1628,7 +1633,7 @@ R^2 = \frac{\sum (\hat{y}_i - \bar{y})^2}{\sum (y_i - \bar{y})^2}
 <li><p>probably higher standard error <span class="math notranslate nohighlight">\(\operatorname{se}(\hat{\beta}_k)\)</span> since <span class="math notranslate nohighlight">\((1-R_k^2)\)</span> decreases (also need to look at how <span class="math notranslate nohighlight">\(RSS\)</span> decreases)</p></li>
 <li><p>will NOT bias estimates of other covariates <span class="math notranslate nohighlight">\(\operatorname{E}\left( \hat{\beta}_k \right)\)</span>, since <span class="math notranslate nohighlight">\(\beta_j=0\)</span>.</p></li>
 </ul>
-<p>See detailed <a class="reference internal" href="13-lm-extension.html#lm-add-variable"><span class="std std-ref">discussion</span></a>.</p>
+<p>See detailed <a class="reference internal" href="13-lm-diagnosis.html#lm-add-variable"><span class="std std-ref">discussion</span></a>.</p>
 </div>
 </li>
 <li><p><em>Describe missing data problems in linear regression</em></p>
@@ -1648,23 +1653,21 @@ R^2 = \frac{\sum (\hat{y}_i - \bar{y})^2}{\sum (y_i - \bar{y})^2}
 </ul>
 </li>
 </ul>
-<p>See detailed <a class="reference internal" href="13-lm-extension.html#lm-missing-values"><span class="std std-ref">discussion</span></a></p>
+<p>See detailed <a class="reference internal" href="13-lm-diagnosis.html#lm-missing-values"><span class="std std-ref">discussion</span></a></p>
 </div>
 </li>
 <li><p><em>Does <span class="math notranslate nohighlight">\(\boldsymbol{x}_{p} ^\top \boldsymbol{y} = 0 \Leftrightarrow \hat{\beta}_{p}=0\)</span>?</em></p>
 <div class="dropdown seealso admonition">
 <p class="admonition-title"> <em>Solution</em></p>
-<p>In general NO. <span class="math notranslate nohighlight">\(\hat{\beta}_p = 0\)</span> can be interpreted as <span class="math notranslate nohighlight">\(X_p\)</span> has no explanatory power to <span class="math notranslate nohighlight">\(Y\)</span> <strong>given</strong> other covariates. See detailed <a class="reference internal" href="12-lm-inference.html#lm-rss-nonincreasing"><span class="std std-ref">discussion</span></a>.</p>
+<p>In general, NO. Whether <span class="math notranslate nohighlight">\(\boldsymbol{x}_{p} ^\top \boldsymbol{y} = 0\)</span> depends only on these two vectors, but whether <span class="math notranslate nohighlight">\(\hat{\beta}_{p}=0\)</span> depends on existing covariates in the model. See detailed <a class="reference internal" href="12-lm-inference.html#lm-rss-nonincreasing"><span class="std std-ref">discussion</span></a>.</p>
 </div>
 </li>
 <li><p>Causal?</p>
 <p>313.qz1.q2</p>
 <p>TBD.</p>
 </li>
-<li><p>Add/Remove a Variable/Observation</p>
-<p>TBD</p>
-<p>Table summary.</p>
-<p>Rows: E(b), Var(b), RSS, TSS, R^2</p>
+<li><p>Add/Remove an observation</p>
+<p>E(b), Var(b), RSS, TSS, R^2</p>
 </li>
 </ol>
 </div>
@@ -1696,7 +1699,7 @@ R^2 = \frac{\sum (\hat{y}_i - \bar{y})^2}{\sum (y_i - \bar{y})^2}
         <div class='prev-next-bottom'>
             
     <a class='left-prev' id="prev-link" href="00-regression.html" title="previous page">Regression</a>
-    <a class='right-next' id="next-link" href="12-lm-inference.html" title="next page">Linear Regression - Inference</a>
+    <a class='right-next' id="next-link" href="12-lm-inference.html" title="next page">Linear Models - Inference</a>
 
         </div>
         
