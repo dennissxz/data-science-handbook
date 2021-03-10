@@ -14,7 +14,7 @@ Comparison of fitting with a single Gaussian and a mixture of two Gaussians.
 We assume there are $K$ latent Gaussian components.
 
 $$
-p(\boldsymbol{x})=\sum_{k=1}^{K} \pi_{k} \underbrace{\mathcal{n}\left(\boldsymbol{x} \mid \boldsymbol{\mu}_{k}, \boldsymbol{\Sigma}_{k}\right)}_{\text {component }}
+p(\boldsymbol{x})=\sum_{k=1}^{K} \pi_{k} \underbrace{\operatorname{\mathcal{N}} \left(\boldsymbol{x} \mid \boldsymbol{\mu}_{k}, \boldsymbol{\Sigma}_{k}\right)}_{\text {component }}
 $$
 
 where $\pi_k$ are mixing coefficients,
@@ -46,7 +46,7 @@ Essentially any distribution can be approximated arbitrarily well by a large eno
 Given a data set and $K$, let $\boldsymbol{\theta} = (\boldsymbol{\mu} _1, \ldots, \boldsymbol{\mu} _k, \boldsymbol{\Sigma} _1, \ldots, \boldsymbol{\Sigma} _k)$, the log probability is
 
 $$
-\ln p(\boldsymbol{X} \mid \boldsymbol{\pi} , \boldsymbol{\theta} )=\sum_{i=1}^{n} \ln \sum_{k=1}^{K} \pi_{k} \mathcal{n}\left(\boldsymbol{x}_{i} \mid \boldsymbol{\mu} _k, \boldsymbol{\Sigma} _k\right)
+\ln p(\boldsymbol{X} \mid \boldsymbol{\pi} , \boldsymbol{\theta} )=\sum_{i=1}^{n} \ln \sum_{k=1}^{K} \pi_{k} \operatorname{\mathcal{N}} \left(\boldsymbol{x}_{i} \mid \boldsymbol{\mu} _k, \boldsymbol{\Sigma} _k\right)
 $$
 
 When $K=1$, this becomes a single multivariate Gaussian problem which has a closed-form solution. But when $K\ge 2$, there is no closed-form solution $\boldsymbol{\pi}, \boldsymbol{\mu} _1, \boldsymbol{\mu} _2, \ldots, \boldsymbol{\mu} _k, \boldsymbol{\Sigma} _1, \boldsymbol{\Sigma} _2, \ldots \boldsymbol{\Sigma} _K$.
@@ -75,7 +75,7 @@ For each observation $i$, we introduce a set of binary indicator variables $\bol
 - If we known the parameters, then the posterior probability of the indicator variables is
 
     $$
-    \gamma_{i k}=P\left(z_{i k}=1 \mid \boldsymbol{x}_{i}, \boldsymbol{\theta}  \right)=\frac{{\pi}_{k} p\left(\boldsymbol{x}_{i} \mid {\boldsymbol{\mu}} _{k}, {\boldsymbol{\Sigma}} _{k}\right)}{\sum_{l=1}^{K} {\pi}_{\ell} p\left(\boldsymbol{x}_{i} \mid {\boldsymbol{\mu}} _{\ell}, {\boldsymbol{\Sigma}} _{\ell}\right)}
+    \gamma_{i k}=\mathbb{P} \left(z_{i k}=1 \mid \boldsymbol{x}_{i}, \boldsymbol{\theta}  \right)=\frac{{\pi}_{k} \operatorname{\mathcal{N}}  \left(\boldsymbol{x}_{i} \mid {\boldsymbol{\mu}} _{k}, {\boldsymbol{\Sigma}} _{k}\right)}{\sum_{l=1}^{K} {\pi}_{\ell} \operatorname{\mathcal{N}}  \left(\boldsymbol{x}_{i} \mid {\boldsymbol{\mu}} _{\ell}, {\boldsymbol{\Sigma}} _{\ell}\right)}
     $$
 
     where $\gamma_{ik}$ is called the **responsibility** of the $k$-th component for $\boldsymbol{x}_i$. Note that $\sum_{k=1}^{K} \gamma_{i k}=1$
@@ -99,13 +99,13 @@ In reality, we know neither the parameters nor the indicators
 By introducing $z_{ik}$, we would like to maximize the **complete data** likelihood
 
 $$
-p(\boldsymbol{X}, \boldsymbol{Z} \mid \boldsymbol{\pi}, \boldsymbol{\theta}  ) \propto \prod_{i=1}^{n} \prod_{k=1}^{K}\left(\boldsymbol{\pi}_{k} \mathcal{n}\left(\boldsymbol{x}_{i} \mid \boldsymbol{\mu}_{k}, \boldsymbol{\Sigma}_{k}\right)\right)^{z_{i k}}
+p(\boldsymbol{X}, \boldsymbol{Z} \mid \boldsymbol{\pi}, \boldsymbol{\theta}  ) \propto \prod_{i=1}^{n} \prod_{k=1}^{K}\left(\boldsymbol{\pi}_{k} \operatorname{\mathcal{N}} \left(\boldsymbol{x}_{i} \mid \boldsymbol{\mu}_{k}, \boldsymbol{\Sigma}_{k}\right)\right)^{z_{i k}}
 $$
 
 or its log
 
 $$
-\ln p(\boldsymbol{X}, \boldsymbol{Z} \mid \boldsymbol{\pi}, \boldsymbol{\theta} )=\text { const }+\sum_{i=1}^{n} \sum_{k=1}^{K} z_{i k}\left(\ln \boldsymbol{\pi}_{k}+\ln \mathcal{n}\left(\boldsymbol{x}_{i} \mid \boldsymbol{\mu}_{k}, \boldsymbol{\Sigma}_{k}\right)\right)
+\ln p(\boldsymbol{X}, \boldsymbol{Z} \mid \boldsymbol{\pi}, \boldsymbol{\theta} )=\text { const }+\sum_{i=1}^{n} \sum_{k=1}^{K} z_{i k}\left(\ln \boldsymbol{\pi}_{k}+\ln \operatorname{\mathcal{N}} \left(\boldsymbol{x}_{i} \mid \boldsymbol{\mu}_{k}, \boldsymbol{\Sigma}_{k}\right)\right)
 $$
 
 It can be shown that we are actually maximising its expectation w.r.t. $\boldsymbol{z}$
@@ -142,7 +142,7 @@ EM applies to estimation of any density with hidden variables.
 If an initial guess of cluster center $\boldsymbol{\mu}$ happens to be close to some data point $\boldsymbol{x}$ and the variance is happen to be small, then the ML over $\boldsymbol{x}$ is very large, i.e. overfitting.
 
 $$
-\lim _{\sigma^{2} \rightarrow 0} \mathcal{N}\left(\mathbf{x} \mid \mu=\mathbf{x}, \Sigma=\sigma^{2} I\right)=\infty
+\lim _{\sigma^{2} \rightarrow 0} \operatorname{\mathcal{N}} \left(\mathbf{x} \mid \mu=\mathbf{x}, \Sigma=\sigma^{2} I\right)=\infty
 $$
 
 :::{figure} gaumix-fail

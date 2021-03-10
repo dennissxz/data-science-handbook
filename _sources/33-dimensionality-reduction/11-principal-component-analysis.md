@@ -570,7 +570,7 @@ $$
 \lambda_{1} & & \\
 & \ddots & \\
 & & \lambda_{d}
-\end{array}\right] \boldsymbol{R}^{T}
+\end{array}\right] \boldsymbol{R}^{\top}
 $$
 
 where $\boldsymbol{R}$ determines the orientation of the ellipsoid, and the eigenvalues specifies the scaling along the principal directions. The PCA solution $\boldsymbol{U}$ from the sample covariance matrix $\boldsymbol{S}$ should be close to $\boldsymbol{R}$.

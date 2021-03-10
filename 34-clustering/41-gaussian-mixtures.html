@@ -869,7 +869,7 @@
 <p>We assume there are <span class="math notranslate nohighlight">\(K\)</span> latent Gaussian components.</p>
 <div class="math notranslate nohighlight">
 \[
-p(\boldsymbol{x})=\sum_{k=1}^{K} \pi_{k} \underbrace{\mathcal{n}\left(\boldsymbol{x} \mid \boldsymbol{\mu}_{k}, \boldsymbol{\Sigma}_{k}\right)}_{\text {component }}
+p(\boldsymbol{x})=\sum_{k=1}^{K} \pi_{k} \underbrace{\operatorname{\mathcal{N}} \left(\boldsymbol{x} \mid \boldsymbol{\mu}_{k}, \boldsymbol{\Sigma}_{k}\right)}_{\text {component }}
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(\pi_k\)</span> are mixing coefficients,</p>
 <div class="math notranslate nohighlight">
@@ -893,7 +893,7 @@ p(\boldsymbol{x})=\sum_{k=1}^{K} \pi_{k} \underbrace{\mathcal{n}\left(\boldsymbo
 <p>Given a data set and <span class="math notranslate nohighlight">\(K\)</span>, let <span class="math notranslate nohighlight">\(\boldsymbol{\theta} = (\boldsymbol{\mu} _1, \ldots, \boldsymbol{\mu} _k, \boldsymbol{\Sigma} _1, \ldots, \boldsymbol{\Sigma} _k)\)</span>, the log probability is</p>
 <div class="math notranslate nohighlight">
 \[
-\ln p(\boldsymbol{X} \mid \boldsymbol{\pi} , \boldsymbol{\theta} )=\sum_{i=1}^{n} \ln \sum_{k=1}^{K} \pi_{k} \mathcal{n}\left(\boldsymbol{x}_{i} \mid \boldsymbol{\mu} _k, \boldsymbol{\Sigma} _k\right)
+\ln p(\boldsymbol{X} \mid \boldsymbol{\pi} , \boldsymbol{\theta} )=\sum_{i=1}^{n} \ln \sum_{k=1}^{K} \pi_{k} \operatorname{\mathcal{N}} \left(\boldsymbol{x}_{i} \mid \boldsymbol{\mu} _k, \boldsymbol{\Sigma} _k\right)
 \]</div>
 <p>When <span class="math notranslate nohighlight">\(K=1\)</span>, this becomes a single multivariate Gaussian problem which has a closed-form solution. But when <span class="math notranslate nohighlight">\(K\ge 2\)</span>, there is no closed-form solution <span class="math notranslate nohighlight">\(\boldsymbol{\pi}, \boldsymbol{\mu} _1, \boldsymbol{\mu} _2, \ldots, \boldsymbol{\mu} _k, \boldsymbol{\Sigma} _1, \boldsymbol{\Sigma} _2, \ldots \boldsymbol{\Sigma} _K\)</span>.</p>
 <div class="margin sidebar">
@@ -917,7 +917,7 @@ p(\boldsymbol{x})=\sum_{k=1}^{K} \pi_{k} \underbrace{\mathcal{n}\left(\boldsymbo
 <li><p>If we known the parameters, then the posterior probability of the indicator variables is</p>
 <div class="math notranslate nohighlight">
 \[
-    \gamma_{i k}=P\left(z_{i k}=1 \mid \boldsymbol{x}_{i}, \boldsymbol{\theta}  \right)=\frac{{\pi}_{k} p\left(\boldsymbol{x}_{i} \mid {\boldsymbol{\mu}} _{k}, {\boldsymbol{\Sigma}} _{k}\right)}{\sum_{l=1}^{K} {\pi}_{\ell} p\left(\boldsymbol{x}_{i} \mid {\boldsymbol{\mu}} _{\ell}, {\boldsymbol{\Sigma}} _{\ell}\right)}
+    \gamma_{i k}=\mathbb{P} \left(z_{i k}=1 \mid \boldsymbol{x}_{i}, \boldsymbol{\theta}  \right)=\frac{{\pi}_{k} \operatorname{\mathcal{N}}  \left(\boldsymbol{x}_{i} \mid {\boldsymbol{\mu}} _{k}, {\boldsymbol{\Sigma}} _{k}\right)}{\sum_{l=1}^{K} {\pi}_{\ell} \operatorname{\mathcal{N}}  \left(\boldsymbol{x}_{i} \mid {\boldsymbol{\mu}} _{\ell}, {\boldsymbol{\Sigma}} _{\ell}\right)}
     \]</div>
 <p>where <span class="math notranslate nohighlight">\(\gamma_{ik}\)</span> is called the <strong>responsibility</strong> of the <span class="math notranslate nohighlight">\(k\)</span>-th component for <span class="math notranslate nohighlight">\(\boldsymbol{x}_i\)</span>. Note that <span class="math notranslate nohighlight">\(\sum_{k=1}^{K} \gamma_{i k}=1\)</span></p>
 <p>Then we “pretend” that the <span class="math notranslate nohighlight">\(\gamma_{ik}\)</span> are the indicator variables themselves, and compute <span class="math notranslate nohighlight">\(n_{k}=\sum_{i=1}^{n} \gamma_{i k}\)</span> (may not be integer). We can then <strong>re-estimate</strong> the ML estiamtes by substituting <span class="math notranslate nohighlight">\(z_{ik}\)</span> by <span class="math notranslate nohighlight">\(\gamma_{ik}\)</span>.</p>
@@ -938,12 +938,12 @@ p(\boldsymbol{x})=\sum_{k=1}^{K} \pi_{k} \underbrace{\mathcal{n}\left(\boldsymbo
 <p>By introducing <span class="math notranslate nohighlight">\(z_{ik}\)</span>, we would like to maximize the <strong>complete data</strong> likelihood</p>
 <div class="math notranslate nohighlight">
 \[
-p(\boldsymbol{X}, \boldsymbol{Z} \mid \boldsymbol{\pi}, \boldsymbol{\theta}  ) \propto \prod_{i=1}^{n} \prod_{k=1}^{K}\left(\boldsymbol{\pi}_{k} \mathcal{n}\left(\boldsymbol{x}_{i} \mid \boldsymbol{\mu}_{k}, \boldsymbol{\Sigma}_{k}\right)\right)^{z_{i k}}
+p(\boldsymbol{X}, \boldsymbol{Z} \mid \boldsymbol{\pi}, \boldsymbol{\theta}  ) \propto \prod_{i=1}^{n} \prod_{k=1}^{K}\left(\boldsymbol{\pi}_{k} \operatorname{\mathcal{N}} \left(\boldsymbol{x}_{i} \mid \boldsymbol{\mu}_{k}, \boldsymbol{\Sigma}_{k}\right)\right)^{z_{i k}}
 \]</div>
 <p>or its log</p>
 <div class="math notranslate nohighlight">
 \[
-\ln p(\boldsymbol{X}, \boldsymbol{Z} \mid \boldsymbol{\pi}, \boldsymbol{\theta} )=\text { const }+\sum_{i=1}^{n} \sum_{k=1}^{K} z_{i k}\left(\ln \boldsymbol{\pi}_{k}+\ln \mathcal{n}\left(\boldsymbol{x}_{i} \mid \boldsymbol{\mu}_{k}, \boldsymbol{\Sigma}_{k}\right)\right)
+\ln p(\boldsymbol{X}, \boldsymbol{Z} \mid \boldsymbol{\pi}, \boldsymbol{\theta} )=\text { const }+\sum_{i=1}^{n} \sum_{k=1}^{K} z_{i k}\left(\ln \boldsymbol{\pi}_{k}+\ln \operatorname{\mathcal{N}} \left(\boldsymbol{x}_{i} \mid \boldsymbol{\mu}_{k}, \boldsymbol{\Sigma}_{k}\right)\right)
 \]</div>
 <p>It can be shown that we are actually maximising its expectation w.r.t. <span class="math notranslate nohighlight">\(\boldsymbol{z}\)</span></p>
 <div class="math notranslate nohighlight">
@@ -977,7 +977,7 @@ p(\boldsymbol{X}, \boldsymbol{Z} \mid \boldsymbol{\pi}, \boldsymbol{\theta}  ) \
 <p>If an initial guess of cluster center <span class="math notranslate nohighlight">\(\boldsymbol{\mu}\)</span> happens to be close to some data point <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> and the variance is happen to be small, then the ML over <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> is very large, i.e. overfitting.</p>
 <div class="math notranslate nohighlight">
 \[
-\lim _{\sigma^{2} \rightarrow 0} \mathcal{N}\left(\mathbf{x} \mid \mu=\mathbf{x}, \Sigma=\sigma^{2} I\right)=\infty
+\lim _{\sigma^{2} \rightarrow 0} \operatorname{\mathcal{N}} \left(\mathbf{x} \mid \mu=\mathbf{x}, \Sigma=\sigma^{2} I\right)=\infty
 \]</div>
 <div class="figure align-default" id="gaumix-fail">
 <a class="reference internal image-reference" href="../_images/gaumix-fail.png"><img alt="" src="../_images/gaumix-fail.png" style="width: 70%;" /></a>

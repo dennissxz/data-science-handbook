@@ -20,6 +20,10 @@ Note the number of paths $\left\vert \mathcal{P} \right\vert$ is exponential to 
 
 Let the multipliers be $\boldsymbol{y}$, where $y_e$ is the multiplier for constraint of edge $e$. Note that in the primal, the coefficients of $f(P)$ in the objective function and each constraint are $1$. Hence, the dual is
 
+```{margin}
+In the optimal solution, we must have $1 \ge y_e$, otherwise $\sum y_e > 1$ and we can down scale it to have a smaller objective value. Hence, we can add $1 \ge y_e$ into the constraints.
+```
+
 $$\begin{aligned}
 \min && \sum _{e} c(e) y_e &&& \\
 \text { s.t. }
