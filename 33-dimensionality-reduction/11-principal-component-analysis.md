@@ -671,7 +671,7 @@ By the property of multivariate Gaussian, we have
 
 
 $$
-p(\boldsymbol{x})=\mathcal{N}\left(\boldsymbol{\mu} , \boldsymbol{W} \boldsymbol{W}^{T}+\sigma^{2} \boldsymbol{I}\right)
+p(\boldsymbol{x})=\mathcal{N}\left(\boldsymbol{\mu} , \boldsymbol{W} \boldsymbol{W}^+\sigma^{2} \boldsymbol{I}\right)
 $$
 
 The goal is to estimate the parameter $\boldsymbol{W} , \boldsymbol{\mu} , \sigma$ that maximize the log likelihood $\sum_{i=1}^{n} \log p\left(\boldsymbol{x}_{i} \mid \boldsymbol{W} , \boldsymbol{\mu} , \sigma\right)$.
@@ -684,7 +684,7 @@ The goal is to estimate the parameter $\boldsymbol{W} , \boldsymbol{\mu} , \sigm
 Before seeking the ML solution, notice that the solution is not unique: if $\boldsymbol{R}$ is an orthogonal matrix, then $\widetilde{\boldsymbol{W}} = \boldsymbol{W} \boldsymbol{\boldsymbol{R}}$ is indistinguishable from $\boldsymbol{W}$
 
 $$
-\widetilde{\boldsymbol{W}} \widetilde{\boldsymbol{W}}^{T}=\boldsymbol{W} \boldsymbol{R} \boldsymbol{R}^{T} \boldsymbol{W}^{T}=\boldsymbol{W} \boldsymbol{W}^{T}
+\widetilde{\boldsymbol{W}} \widetilde{\boldsymbol{W}}^=\boldsymbol{W} \boldsymbol{R} \boldsymbol{R}^ \boldsymbol{W}^=\boldsymbol{W} \boldsymbol{W}^
 $$
 
 So we will find a solution $W _{ML}$ up to a rotation $\boldsymbol{R}$.
@@ -695,7 +695,7 @@ Let $\boldsymbol{C}  = \boldsymbol{W} \boldsymbol{W} ^\top + \sigma^2 \boldsymbo
 $$
 \begin{equation}
 \sum_{i=1}^{n} \log p\left(\boldsymbol{x}_{i} ; \boldsymbol{W}, \mu, \sigma^{2}\right) =
--\frac{n d}{2} \log (2 \pi)-\frac{n}{2} \log |\boldsymbol{C}|-\frac{1}{2} \sum_{i=1}^{n}\left(\boldsymbol{x}_{i}-\boldsymbol{\mu} \right)^{T} \boldsymbol{C}^{-1}\left(\boldsymbol{x}_{i}-\boldsymbol{\mu} \right)
+-\frac{n d}{2} \log (2 \pi)-\frac{n}{2} \log |\boldsymbol{C}|-\frac{1}{2} \sum_{i=1}^{n}\left(\boldsymbol{x}_{i}-\boldsymbol{\mu} \right)^ \boldsymbol{C}^{-1}\left(\boldsymbol{x}_{i}-\boldsymbol{\mu} \right)
 \end{equation}
 $$
 
@@ -750,7 +750,7 @@ $$
 The conditional distribution of $\boldsymbol{z}$ given $\boldsymbol{x}$ is
 
 $$
-p(\boldsymbol{z} \mid \boldsymbol{x})=\mathcal{N}\left(\boldsymbol{M}^{-1} \boldsymbol{W}^{T}(\boldsymbol{x}- \boldsymbol{\mu} ), \sigma^{2} \boldsymbol{M}^{-1}\right)
+p(\boldsymbol{z} \mid \boldsymbol{x})=\mathcal{N}\left(\boldsymbol{M}^{-1} \boldsymbol{W}^(\boldsymbol{x}- \boldsymbol{\mu} ), \sigma^{2} \boldsymbol{M}^{-1}\right)
 $$
 
 where $\boldsymbol{M} = \boldsymbol{W} ^\top \boldsymbol{W}  + \sigma^2 \boldsymbol{I}_k$.
