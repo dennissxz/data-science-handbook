@@ -272,7 +272,7 @@ Properties
 
 Summary table
 
-
+(eigen-decomposition)=
 ### Eigenvalue Decomposition
 
 [detail] If $\boldsymbol{A}$  has $n$ independent eigenvectors, then is has EVD.

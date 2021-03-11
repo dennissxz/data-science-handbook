@@ -261,6 +261,7 @@ $$\begin{aligned}
 
 Note that $h(\boldsymbol{z} )$ has exactly the same form with $f(\boldsymbol{x} )$. Hence, the dual of dual is primal.
 
+(duality)=
 ### Duality Theorem
 
 The inequality $g(\boldsymbol{y}) \le f(\boldsymbol{x})$ is called weak duality theorem.
