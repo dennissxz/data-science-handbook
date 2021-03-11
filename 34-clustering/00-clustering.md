@@ -34,13 +34,13 @@ VQ codebooks for 2 dimensional vectors [Livescue 2021]
 $k$-means for image compression [Livescue 2021]
 :::
 
-## Comparison
+## Flat vs Hierarchical
 
 In general, we have two types of clustering algorithms.
 
-- flat: specify the number of clusters at the beginnings, and the output are the assignment of data points to clusters.
+- **flat**: specify the number of clusters at the beginnings, and the output are the assignment of data points to clusters.
 
-- hierarchical: do not specify the number of cluster at the beginnings.
+- **hierarchical**: do not specify the number of cluster at the beginnings.
   - bottom-up: view each single data point as a cluster, iteratively merge two smaller clusters to a larger cluster by some rule.
   - top-down: start from a single cluster consisting all data points, iteratively split a large clusters into two smaller clusters by some rule.
 
@@ -58,12 +58,19 @@ Most of the above clustering methods have some weakness:
 
 - make a "hard" (discrete) decision about cluster membership for each data point, rather than probability, like SVM.
 
-- can’t always do out-of-sample extension ()
-  - K-means: Can map new points to cluster with nearest cluster mean
-  - No obvious way to do this for hierarchical clustering, spectral clustering
+- can’t always do out-of-sample extension
+  - $k$-means: can map new points to cluster with nearest cluster mean
+  - No obvious way to do this for hierarchical clustering, spectral clustering, etc
 
 - need assumptions that the data points are separable
 
 As a result, rather than clustering, we can view such label-assignment problems are density estimation, which can improve the above weakness ("soft clustering"). The basic one is Gaussian mixture.
 
 - **Gaussian mixtures** are mixture models that represent the density of the data as a mixture of component densities.
+
+
+
+
+## Clustering for Classification
+
+Clustering can be used for classification in the sense of label propagation. See [cluster-then-label](cluster-then-label).
