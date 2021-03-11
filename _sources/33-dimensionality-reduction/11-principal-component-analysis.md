@@ -31,7 +31,7 @@ Consider a $d$-dimensional random vector $\boldsymbol{x} = \left( X_1, X_2, \ldo
 - The linear combinations $Z_i$ and $Z_j$ are **uncorrelated** for $i\ne j$. This imply that each variable in $\boldsymbol{z} = \left( Z_1, Z_2, \ldots, Z_k \right)^\top$ can be analyzed by using **univariate** techniques.
 
 
-Other formulations: Find a linear mapping $\mathbb{R} ^d \rightarrow \mathbb{R} ^k$ (assume $\boldsymbol{X}$  is centered) from to project the data matrix $\boldsymbol{X}$ to a lower dimensional embedding matrix $\boldsymbol{Z}$.
+Other formulations of PCA based on sample data matrix $\boldsymbol{X}$: Find a linear mapping $\mathbb{R} ^d \rightarrow \mathbb{R} ^k$ (assume $\boldsymbol{X}$  is centered) from to project the data matrix $\boldsymbol{X}$ to a lower dimensional embedding matrix $\boldsymbol{Z}$.
 
 
 $$\begin{aligned}
@@ -39,6 +39,14 @@ $$\begin{aligned}
 \boldsymbol{Z}_{n \times k} &= \boldsymbol{X}_{n \times d}  \boldsymbol{W} _{d \times k} \\
 \end{aligned}$$
 
+- Maximize the total variances $\sum_i \operatorname{Var}\left( Z_i \right)$ of the projected data $\boldsymbol{Z} =  \boldsymbol{X}  \boldsymbol{W}$ (similar to the population formulation above)
+
+    $$\begin{align}
+    \boldsymbol{W}^*  = \underset{\boldsymbol{\boldsymbol{W} } }{\operatorname{argmax}} \, & \operatorname{tr}\left( \boldsymbol{Z} ^\top \boldsymbol{Z}  \right)   \\
+     = \underset{\boldsymbol{\boldsymbol{W} } }{\operatorname{argmax}} \, & \operatorname{tr}\left( \boldsymbol{W} ^\top \boldsymbol{X} ^\top \boldsymbol{X} \boldsymbol{W} \right)   \\
+     \text{s.t.}  & \ \boldsymbol{W} ^\top \boldsymbol{W} = \boldsymbol{I}  \\
+       &\ \boldsymbol{W} \in \mathbb{R} _{d \times k}
+    \end{align}$$
 
 - Minimize total reconstruction loss
 
@@ -49,14 +57,6 @@ $$\begin{aligned}
        &\ \boldsymbol{W} \in \mathbb{R} _{d \times k}
     \end{align}$$
 
-- Maximize the total variances $\sum_i \operatorname{Var}\left( Z_i \right)$ of the projected data $\boldsymbol{Z} =  \boldsymbol{X}  \boldsymbol{W}$
-
-    $$\begin{align}
-    \boldsymbol{W}^*  = \underset{\boldsymbol{\boldsymbol{W} } }{\operatorname{argmax}} \, & \operatorname{tr}\left( \boldsymbol{Z} ^\top \boldsymbol{Z}  \right)   \\
-     = \underset{\boldsymbol{\boldsymbol{W} } }{\operatorname{argmax}} \, & \operatorname{tr}\left( \boldsymbol{W} ^\top \boldsymbol{X} ^\top \boldsymbol{X} \boldsymbol{W} \right)   \\
-     \text{s.t.}  & \ \boldsymbol{W} ^\top \boldsymbol{W} = \boldsymbol{I}  \\
-       &\ \boldsymbol{W} \in \mathbb{R} _{d \times k}
-    \end{align}$$
 
 ## Learning
 
@@ -65,14 +65,14 @@ $$\begin{aligned}
 The first variable in $\boldsymbol{z}$, i.e. $Z_1 = \boldsymbol{u} \boldsymbol{x}$ is obtained to maximize its variance, i.e.,
 
 $$
-\lambda_{1} \equiv \operatorname{Var}\left(Z_{1}\right)=\max _{\left\Vert \boldsymbol{u}  \right\Vert _2^2 = 1 } \boldsymbol{u}^{\top} \boldsymbol{\Sigma} \boldsymbol{u}
+\operatorname{Var}\left(Z_{1}\right)=\max _{\left\Vert \boldsymbol{u}  \right\Vert _2^2 = 1 } \boldsymbol{u}^{\top} \boldsymbol{\Sigma} \boldsymbol{u}
 $$
 
-Suppose the maximum is achieved at $\boldsymbol{u} = \boldsymbol{u} _1$ and we call $Z_1$ given below the first population principal component
+Suppose the maximum is achieved at $\boldsymbol{u} = \boldsymbol{u} _1$ and we call $Z_1$ given below the **first population principal component**
 
 
 $$
-Z_1 = \boldsymbol{u} _1^T \boldsymbol{x}
+Z_1 = \boldsymbol{u} _1^{\top} \boldsymbol{x}
 $$
 
 Successively for $i=2, \ldots, m$ the variance of $Z_i$ can be obtained by the following maximization
@@ -80,9 +80,9 @@ Successively for $i=2, \ldots, m$ the variance of $Z_i$ can be obtained by the f
 
 $$
 \begin{aligned}
-&&&\lambda_{i} \equiv \operatorname{Var}\left(Z_{i}\right)=\max _{u} \boldsymbol{u}^{\top} \boldsymbol{\Sigma} \boldsymbol{u}\\
-& &\mathrm{s.t.}  \quad &\boldsymbol{u}^{\top} \boldsymbol{u}=1 \\
-& & & \ \boldsymbol{u}^{\top} \boldsymbol{x} \text { being uncorrelated with } Z_{1}, \ldots, Z_{i-1}  
+\operatorname{Var}\left(Z_{i}\right)&=\max _{u} \boldsymbol{u}^{\top} \boldsymbol{\Sigma} \boldsymbol{u}\\
+\mathrm{s.t.}  \quad \boldsymbol{u}^{\top} \boldsymbol{u}&=1 \\
+\boldsymbol{u}^{\top} \boldsymbol{x} &\text { being uncorrelated with } Z_{1}, \ldots, Z_{i-1}  
 \end{aligned}
 $$
 
@@ -108,7 +108,7 @@ The Lagrangean is
 
 $$
 \begin{equation}
-L(\boldsymbol{u}, \theta)=\boldsymbol{u}^{\top} \boldsymbol{\Sigma} \boldsymbol{u}-\lambda\left(\boldsymbol{u}^{\top} \boldsymbol{u}-1\right)
+\mathcal{L}(\boldsymbol{u}, \theta)=\boldsymbol{u}^{\top} \boldsymbol{\Sigma} \boldsymbol{u}-\lambda\left(\boldsymbol{u}^{\top} \boldsymbol{u}-1\right)
 \end{equation}
 $$
 
@@ -160,9 +160,7 @@ Therefore, the maximized variance $\boldsymbol{u} ^\top \boldsymbol{\Sigma} \bol
 
 ### Spectral Decomposition
 
-Rather than obtaining the principal components sequentially, the principal components and their variances can be obtained simultaneously by solving for the eigenvectors and eigenvalues of $\boldsymbol{\Sigma}$. Using the Spectral Decomposition Theorem,
-
-
+Rather than obtaining the principal components sequentially, the principal components and their variances can be obtained simultaneously by solving for the eigenvectors and eigenvalues of $\boldsymbol{\Sigma}$. Its [spectral decomposition](eigen-decomposition) is,
 
 $$
 \boldsymbol{\Sigma}  = \boldsymbol{U} \boldsymbol{\Lambda} \boldsymbol{U} ^\top = \sum_i^p \lambda_i \boldsymbol{u} _i \boldsymbol{u} _i ^\top
@@ -538,22 +536,21 @@ If we knew the labels, we could use a supervised dimensionality reduction, e.g. 
 Recall the SVD of the data matrix
 
 $$
-X = \boldsymbol{U} \boldsymbol{S} \boldsymbol{V} ^\top
+\boldsymbol{X}  = \boldsymbol{U} \boldsymbol{D} \boldsymbol{V} ^\top
 $$
 
-Suppose $X$ is centered, then
-
+Suppose $X$ is centered, then $n$ times the sample covariance matrix $\boldsymbol{S}$ is
 
 $$
-\boldsymbol{\Sigma} = \boldsymbol{X} ^\top \boldsymbol{X} = \boldsymbol{V} \boldsymbol{S} ^\top \boldsymbol{S} \boldsymbol{V} ^\top
+n\boldsymbol{S} = \boldsymbol{X} ^\top \boldsymbol{X} = \boldsymbol{V} \boldsymbol{D} ^\top \boldsymbol{D} \boldsymbol{V} ^\top
 $$
 
-Thus,
+Thus $\boldsymbol{S} = \boldsymbol{V} \left( \frac{1}{n} \boldsymbol{D} ^{\top} \boldsymbol{D}  \right) \boldsymbol{V} ^{\top}$,
 
-- the right singular vectors $\boldsymbol{V}$ are the eigenvectors of $\boldsymbol{X} ^\top \boldsymbol{X}$,
-- the eigenvalues of $\boldsymbol{X} ^\top \boldsymbol{X}$ are proportional to the squared singular values of $\sigma_i$.
+- the eigenvectors of $\boldsymbol{S}$ are the right singular vectors $\boldsymbol{V}$ of $\boldsymbol{X}$,
+- the eigenvalues of $\boldsymbol{S}$ are proportional to the squared singular values of $\sigma_i$.
 
-So we can compute the PCA solutions via an SVD.
+So we can compute the PCA solutions via an SVD of data matrix $\boldsymbol{X}$.
 
 ### Compression
 
@@ -671,7 +668,7 @@ By the property of multivariate Gaussian, we have
 
 
 $$
-p(\boldsymbol{x})=\mathcal{N}\left(\boldsymbol{\mu} , \boldsymbol{W} \boldsymbol{W}^{T}+\sigma^{2} \boldsymbol{I}\right)
+p(\boldsymbol{x})=\mathcal{N}\left(\boldsymbol{\mu} , \boldsymbol{W} \boldsymbol{W}^+\sigma^{2} \boldsymbol{I}\right)
 $$
 
 The goal is to estimate the parameter $\boldsymbol{W} , \boldsymbol{\mu} , \sigma$ that maximize the log likelihood $\sum_{i=1}^{n} \log p\left(\boldsymbol{x}_{i} \mid \boldsymbol{W} , \boldsymbol{\mu} , \sigma\right)$.
@@ -684,7 +681,7 @@ The goal is to estimate the parameter $\boldsymbol{W} , \boldsymbol{\mu} , \sigm
 Before seeking the ML solution, notice that the solution is not unique: if $\boldsymbol{R}$ is an orthogonal matrix, then $\widetilde{\boldsymbol{W}} = \boldsymbol{W} \boldsymbol{\boldsymbol{R}}$ is indistinguishable from $\boldsymbol{W}$
 
 $$
-\widetilde{\boldsymbol{W}} \widetilde{\boldsymbol{W}}^{T}=\boldsymbol{W} \boldsymbol{R} \boldsymbol{R}^{T} \boldsymbol{W}^{T}=\boldsymbol{W} \boldsymbol{W}^{T}
+\widetilde{\boldsymbol{W}} \widetilde{\boldsymbol{W}}^=\boldsymbol{W} \boldsymbol{R} \boldsymbol{R}^ \boldsymbol{W}^=\boldsymbol{W} \boldsymbol{W}^
 $$
 
 So we will find a solution $W _{ML}$ up to a rotation $\boldsymbol{R}$.
@@ -695,7 +692,7 @@ Let $\boldsymbol{C}  = \boldsymbol{W} \boldsymbol{W} ^\top + \sigma^2 \boldsymbo
 $$
 \begin{equation}
 \sum_{i=1}^{n} \log p\left(\boldsymbol{x}_{i} ; \boldsymbol{W}, \mu, \sigma^{2}\right) =
--\frac{n d}{2} \log (2 \pi)-\frac{n}{2} \log |\boldsymbol{C}|-\frac{1}{2} \sum_{i=1}^{n}\left(\boldsymbol{x}_{i}-\boldsymbol{\mu} \right)^{T} \boldsymbol{C}^{-1}\left(\boldsymbol{x}_{i}-\boldsymbol{\mu} \right)
+-\frac{n d}{2} \log (2 \pi)-\frac{n}{2} \log |\boldsymbol{C}|-\frac{1}{2} \sum_{i=1}^{n}\left(\boldsymbol{x}_{i}-\boldsymbol{\mu} \right)^ \boldsymbol{C}^{-1}\left(\boldsymbol{x}_{i}-\boldsymbol{\mu} \right)
 \end{equation}
 $$
 
@@ -750,7 +747,7 @@ $$
 The conditional distribution of $\boldsymbol{z}$ given $\boldsymbol{x}$ is
 
 $$
-p(\boldsymbol{z} \mid \boldsymbol{x})=\mathcal{N}\left(\boldsymbol{M}^{-1} \boldsymbol{W}^{T}(\boldsymbol{x}- \boldsymbol{\mu} ), \sigma^{2} \boldsymbol{M}^{-1}\right)
+p(\boldsymbol{z} \mid \boldsymbol{x})=\mathcal{N}\left(\boldsymbol{M}^{-1} \boldsymbol{W}^(\boldsymbol{x}- \boldsymbol{\mu} ), \sigma^{2} \boldsymbol{M}^{-1}\right)
 $$
 
 where $\boldsymbol{M} = \boldsymbol{W} ^\top \boldsymbol{W}  + \sigma^2 \boldsymbol{I}_k$.

@@ -470,8 +470,8 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../30-ml-basics/11-missing-values.html">
-     Missing Values
+    <a class="reference internal" href="../30-ml-basics/11-data-issues.html">
+     Data Issues
     </a>
    </li>
    <li class="toctree-l2">
@@ -985,28 +985,28 @@ social behavioral sciences.</p></li>
 </li>
 <li><p>The linear combinations <span class="math notranslate nohighlight">\(Z_i\)</span> and <span class="math notranslate nohighlight">\(Z_j\)</span> are <strong>uncorrelated</strong> for <span class="math notranslate nohighlight">\(i\ne j\)</span>. This imply that each variable in <span class="math notranslate nohighlight">\(\boldsymbol{z} = \left( Z_1, Z_2, \ldots, Z_k \right)^\top\)</span> can be analyzed by using <strong>univariate</strong> techniques.</p></li>
 </ul>
-<p>Other formulations: Find a linear mapping <span class="math notranslate nohighlight">\(\mathbb{R} ^d \rightarrow \mathbb{R} ^k\)</span> (assume <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span>  is centered) from to project the data matrix <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span> to a lower dimensional embedding matrix <span class="math notranslate nohighlight">\(\boldsymbol{Z}\)</span>.</p>
+<p>Other formulations of PCA based on sample data matrix <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span>: Find a linear mapping <span class="math notranslate nohighlight">\(\mathbb{R} ^d \rightarrow \mathbb{R} ^k\)</span> (assume <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span>  is centered) from to project the data matrix <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span> to a lower dimensional embedding matrix <span class="math notranslate nohighlight">\(\boldsymbol{Z}\)</span>.</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{aligned}
 \boldsymbol{z}_i &amp;= \boldsymbol{W}_{d \times k} ^\top \boldsymbol{x}_i \\
 \boldsymbol{Z}_{n \times k} &amp;= \boldsymbol{X}_{n \times d}  \boldsymbol{W} _{d \times k} \\
 \end{aligned}\end{split}\]</div>
 <ul>
+<li><p>Maximize the total variances <span class="math notranslate nohighlight">\(\sum_i \operatorname{Var}\left( Z_i \right)\)</span> of the projected data <span class="math notranslate nohighlight">\(\boldsymbol{Z} =  \boldsymbol{X}  \boldsymbol{W}\)</span> (similar to the population formulation above)</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+    \boldsymbol{W}^*  = \underset{\boldsymbol{\boldsymbol{W} } }{\operatorname{argmax}} \, &amp; \operatorname{tr}\left( \boldsymbol{Z} ^\top \boldsymbol{Z}  \right)   \\
+     = \underset{\boldsymbol{\boldsymbol{W} } }{\operatorname{argmax}} \, &amp; \operatorname{tr}\left( \boldsymbol{W} ^\top \boldsymbol{X} ^\top \boldsymbol{X} \boldsymbol{W} \right)   \\
+     \text{s.t.}  &amp; \ \boldsymbol{W} ^\top \boldsymbol{W} = \boldsymbol{I}  \\
+       &amp;\ \boldsymbol{W} \in \mathbb{R} _{d \times k}
+    \end{align}\end{split}\]</div>
+</li>
 <li><p>Minimize total reconstruction loss</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
     \boldsymbol{W}^*  = \underset{\boldsymbol{\boldsymbol{W} } }{\operatorname{argmin}} \, &amp; \sum_i^n \left\Vert \boldsymbol{x}_i - \hat{\boldsymbol{x} }_i \right\Vert ^2    \\
      = \underset{\boldsymbol{\boldsymbol{W} } }{\operatorname{argmin}} \, &amp; \sum_i^n \left\Vert \boldsymbol{x}_i - \boldsymbol{W} \boldsymbol{z}  _i \right\Vert ^2    \\
      \text{s.t.}  &amp; \boldsymbol{W} ^\top \boldsymbol{W} = \boldsymbol{I}  \\
-       &amp;\ \boldsymbol{W} \in \mathbb{R} _{d \times k}
-    \end{align}\end{split}\]</div>
-</li>
-<li><p>Maximize the total variances <span class="math notranslate nohighlight">\(\sum_i \operatorname{Var}\left( Z_i \right)\)</span> of the projected data <span class="math notranslate nohighlight">\(\boldsymbol{Z} =  \boldsymbol{X}  \boldsymbol{W}\)</span></p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{align}
-    \boldsymbol{W}^*  = \underset{\boldsymbol{\boldsymbol{W} } }{\operatorname{argmax}} \, &amp; \operatorname{tr}\left( \boldsymbol{Z} ^\top \boldsymbol{Z}  \right)   \\
-     = \underset{\boldsymbol{\boldsymbol{W} } }{\operatorname{argmax}} \, &amp; \operatorname{tr}\left( \boldsymbol{W} ^\top \boldsymbol{X} ^\top \boldsymbol{X} \boldsymbol{W} \right)   \\
-     \text{s.t.}  &amp; \ \boldsymbol{W} ^\top \boldsymbol{W} = \boldsymbol{I}  \\
        &amp;\ \boldsymbol{W} \in \mathbb{R} _{d \times k}
     \end{align}\end{split}\]</div>
 </li>
@@ -1019,20 +1019,20 @@ social behavioral sciences.</p></li>
 <p>The first variable in <span class="math notranslate nohighlight">\(\boldsymbol{z}\)</span>, i.e. <span class="math notranslate nohighlight">\(Z_1 = \boldsymbol{u} \boldsymbol{x}\)</span> is obtained to maximize its variance, i.e.,</p>
 <div class="math notranslate nohighlight">
 \[
-\lambda_{1} \equiv \operatorname{Var}\left(Z_{1}\right)=\max _{\left\Vert \boldsymbol{u}  \right\Vert _2^2 = 1 } \boldsymbol{u}^{\top} \boldsymbol{\Sigma} \boldsymbol{u}
+\operatorname{Var}\left(Z_{1}\right)=\max _{\left\Vert \boldsymbol{u}  \right\Vert _2^2 = 1 } \boldsymbol{u}^{\top} \boldsymbol{\Sigma} \boldsymbol{u}
 \]</div>
-<p>Suppose the maximum is achieved at <span class="math notranslate nohighlight">\(\boldsymbol{u} = \boldsymbol{u} _1\)</span> and we call <span class="math notranslate nohighlight">\(Z_1\)</span> given below the first population principal component</p>
+<p>Suppose the maximum is achieved at <span class="math notranslate nohighlight">\(\boldsymbol{u} = \boldsymbol{u} _1\)</span> and we call <span class="math notranslate nohighlight">\(Z_1\)</span> given below the <strong>first population principal component</strong></p>
 <div class="math notranslate nohighlight">
 \[
-Z_1 = \boldsymbol{u} _1^T \boldsymbol{x}
+Z_1 = \boldsymbol{u} _1^{\top} \boldsymbol{x}
 \]</div>
 <p>Successively for <span class="math notranslate nohighlight">\(i=2, \ldots, m\)</span> the variance of <span class="math notranslate nohighlight">\(Z_i\)</span> can be obtained by the following maximization</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{aligned}
-&amp;&amp;&amp;\lambda_{i} \equiv \operatorname{Var}\left(Z_{i}\right)=\max _{u} \boldsymbol{u}^{\top} \boldsymbol{\Sigma} \boldsymbol{u}\\
-&amp; &amp;\mathrm{s.t.}  \quad &amp;\boldsymbol{u}^{\top} \boldsymbol{u}=1 \\
-&amp; &amp; &amp; \ \boldsymbol{u}^{\top} \boldsymbol{x} \text { being uncorrelated with } Z_{1}, \ldots, Z_{i-1}  
+\operatorname{Var}\left(Z_{i}\right)&amp;=\max _{u} \boldsymbol{u}^{\top} \boldsymbol{\Sigma} \boldsymbol{u}\\
+\mathrm{s.t.}  \quad \boldsymbol{u}^{\top} \boldsymbol{u}&amp;=1 \\
+\boldsymbol{u}^{\top} \boldsymbol{x} &amp;\text { being uncorrelated with } Z_{1}, \ldots, Z_{i-1}  
 \end{aligned}
 \end{split}\]</div>
 <p>The maximum is achieved at <span class="math notranslate nohighlight">\(\boldsymbol{u} = \boldsymbol{u} _i\)</span> and the <span class="math notranslate nohighlight">\(i\)</span>-th population principal component is</p>
@@ -1056,7 +1056,7 @@ Z_i = \boldsymbol{u} _i^\top \boldsymbol{x}
 <div class="math notranslate nohighlight">
 \[
 \begin{equation}
-L(\boldsymbol{u}, \theta)=\boldsymbol{u}^{\top} \boldsymbol{\Sigma} \boldsymbol{u}-\lambda\left(\boldsymbol{u}^{\top} \boldsymbol{u}-1\right)
+\mathcal{L}(\boldsymbol{u}, \theta)=\boldsymbol{u}^{\top} \boldsymbol{\Sigma} \boldsymbol{u}-\lambda\left(\boldsymbol{u}^{\top} \boldsymbol{u}-1\right)
 \end{equation}
 \]</div>
 <p>The first order conditions are</p>
@@ -1100,7 +1100,7 @@ $<span class="math notranslate nohighlight">\(
 </div>
 <div class="section" id="spectral-decomposition">
 <h3>Spectral Decomposition<a class="headerlink" href="#spectral-decomposition" title="Permalink to this headline">¶</a></h3>
-<p>Rather than obtaining the principal components sequentially, the principal components and their variances can be obtained simultaneously by solving for the eigenvectors and eigenvalues of <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}\)</span>. Using the Spectral Decomposition Theorem,</p>
+<p>Rather than obtaining the principal components sequentially, the principal components and their variances can be obtained simultaneously by solving for the eigenvectors and eigenvalues of <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}\)</span>. Its <a class="reference internal" href="../11-math/21-linear-algebra.html#eigen-decomposition"><span class="std std-ref">spectral decomposition</span></a> is,</p>
 <div class="math notranslate nohighlight">
 \[
 \boldsymbol{\Sigma}  = \boldsymbol{U} \boldsymbol{\Lambda} \boldsymbol{U} ^\top = \sum_i^p \lambda_i \boldsymbol{u} _i \boldsymbol{u} _i ^\top
@@ -1426,19 +1426,19 @@ natural sciences. However, when the units of measurement are of artificial natur
 <p>Recall the SVD of the data matrix</p>
 <div class="math notranslate nohighlight">
 \[
-X = \boldsymbol{U} \boldsymbol{S} \boldsymbol{V} ^\top
+\boldsymbol{X}  = \boldsymbol{U} \boldsymbol{D} \boldsymbol{V} ^\top
 \]</div>
-<p>Suppose <span class="math notranslate nohighlight">\(X\)</span> is centered, then</p>
+<p>Suppose <span class="math notranslate nohighlight">\(X\)</span> is centered, then <span class="math notranslate nohighlight">\(n\)</span> times the sample covariance matrix <span class="math notranslate nohighlight">\(\boldsymbol{S}\)</span> is</p>
 <div class="math notranslate nohighlight">
 \[
-\boldsymbol{\Sigma} = \boldsymbol{X} ^\top \boldsymbol{X} = \boldsymbol{V} \boldsymbol{S} ^\top \boldsymbol{S} \boldsymbol{V} ^\top
+n\boldsymbol{S} = \boldsymbol{X} ^\top \boldsymbol{X} = \boldsymbol{V} \boldsymbol{D} ^\top \boldsymbol{D} \boldsymbol{V} ^\top
 \]</div>
-<p>Thus,</p>
+<p>Thus <span class="math notranslate nohighlight">\(\boldsymbol{S} = \boldsymbol{V} \left( \frac{1}{n} \boldsymbol{D} ^{\top} \boldsymbol{D}  \right) \boldsymbol{V} ^{\top}\)</span>,</p>
 <ul class="simple">
-<li><p>the right singular vectors <span class="math notranslate nohighlight">\(\boldsymbol{V}\)</span> are the eigenvectors of <span class="math notranslate nohighlight">\(\boldsymbol{X} ^\top \boldsymbol{X}\)</span>,</p></li>
-<li><p>the eigenvalues of <span class="math notranslate nohighlight">\(\boldsymbol{X} ^\top \boldsymbol{X}\)</span> are proportional to the squared singular values of <span class="math notranslate nohighlight">\(\sigma_i\)</span>.</p></li>
+<li><p>the eigenvectors of <span class="math notranslate nohighlight">\(\boldsymbol{S}\)</span> are the right singular vectors <span class="math notranslate nohighlight">\(\boldsymbol{V}\)</span> of <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span>,</p></li>
+<li><p>the eigenvalues of <span class="math notranslate nohighlight">\(\boldsymbol{S}\)</span> are proportional to the squared singular values of <span class="math notranslate nohighlight">\(\sigma_i\)</span>.</p></li>
 </ul>
-<p>So we can compute the PCA solutions via an SVD.</p>
+<p>So we can compute the PCA solutions via an SVD of data matrix <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span>.</p>
 </div>
 <div class="section" id="compression">
 <h3>Compression<a class="headerlink" href="#compression" title="Permalink to this headline">¶</a></h3>
@@ -1547,7 +1547,7 @@ p(\boldsymbol{x} \mid \boldsymbol{z}) =\mathcal{N}\left( \boldsymbol{W} \boldsym
 <p>By the property of multivariate Gaussian, we have</p>
 <div class="math notranslate nohighlight">
 \[
-p(\boldsymbol{x})=\mathcal{N}\left(\boldsymbol{\mu} , \boldsymbol{W} \boldsymbol{W}^{T}+\sigma^{2} \boldsymbol{I}\right)
+p(\boldsymbol{x})=\mathcal{N}\left(\boldsymbol{\mu} , \boldsymbol{W} \boldsymbol{W}^+\sigma^{2} \boldsymbol{I}\right)
 \]</div>
 <p>The goal is to estimate the parameter <span class="math notranslate nohighlight">\(\boldsymbol{W} , \boldsymbol{\mu} , \sigma\)</span> that maximize the log likelihood <span class="math notranslate nohighlight">\(\sum_{i=1}^{n} \log p\left(\boldsymbol{x}_{i} \mid \boldsymbol{W} , \boldsymbol{\mu} , \sigma\right)\)</span>.</p>
 </div>
@@ -1558,7 +1558,7 @@ p(\boldsymbol{x})=\mathcal{N}\left(\boldsymbol{\mu} , \boldsymbol{W} \boldsymbol
 <p>Before seeking the ML solution, notice that the solution is not unique: if <span class="math notranslate nohighlight">\(\boldsymbol{R}\)</span> is an orthogonal matrix, then <span class="math notranslate nohighlight">\(\widetilde{\boldsymbol{W}} = \boldsymbol{W} \boldsymbol{\boldsymbol{R}}\)</span> is indistinguishable from <span class="math notranslate nohighlight">\(\boldsymbol{W}\)</span></p>
 <div class="math notranslate nohighlight">
 \[
-\widetilde{\boldsymbol{W}} \widetilde{\boldsymbol{W}}^{T}=\boldsymbol{W} \boldsymbol{R} \boldsymbol{R}^{T} \boldsymbol{W}^{T}=\boldsymbol{W} \boldsymbol{W}^{T}
+\widetilde{\boldsymbol{W}} \widetilde{\boldsymbol{W}}^=\boldsymbol{W} \boldsymbol{R} \boldsymbol{R}^ \boldsymbol{W}^=\boldsymbol{W} \boldsymbol{W}^
 \]</div>
 <p>So we will find a solution <span class="math notranslate nohighlight">\(W _{ML}\)</span> up to a rotation <span class="math notranslate nohighlight">\(\boldsymbol{R}\)</span>.</p>
 </div>
@@ -1567,7 +1567,7 @@ p(\boldsymbol{x})=\mathcal{N}\left(\boldsymbol{\mu} , \boldsymbol{W} \boldsymbol
 \[
 \begin{equation}
 \sum_{i=1}^{n} \log p\left(\boldsymbol{x}_{i} ; \boldsymbol{W}, \mu, \sigma^{2}\right) =
--\frac{n d}{2} \log (2 \pi)-\frac{n}{2} \log |\boldsymbol{C}|-\frac{1}{2} \sum_{i=1}^{n}\left(\boldsymbol{x}_{i}-\boldsymbol{\mu} \right)^{T} \boldsymbol{C}^{-1}\left(\boldsymbol{x}_{i}-\boldsymbol{\mu} \right)
+-\frac{n d}{2} \log (2 \pi)-\frac{n}{2} \log |\boldsymbol{C}|-\frac{1}{2} \sum_{i=1}^{n}\left(\boldsymbol{x}_{i}-\boldsymbol{\mu} \right)^ \boldsymbol{C}^{-1}\left(\boldsymbol{x}_{i}-\boldsymbol{\mu} \right)
 \end{equation}
 \]</div>
 <p>Setting the derivative w.r.t. <span class="math notranslate nohighlight">\(\boldsymbol{\mu}\)</span> to <span class="math notranslate nohighlight">\(\boldsymbol{0} \)</span> we have</p>
@@ -1623,7 +1623,7 @@ p(\boldsymbol{x})=\mathcal{N}\left(\boldsymbol{\mu} , \boldsymbol{W} \boldsymbol
 <p>The conditional distribution of <span class="math notranslate nohighlight">\(\boldsymbol{z}\)</span> given <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> is</p>
 <div class="math notranslate nohighlight">
 \[
-p(\boldsymbol{z} \mid \boldsymbol{x})=\mathcal{N}\left(\boldsymbol{M}^{-1} \boldsymbol{W}^{T}(\boldsymbol{x}- \boldsymbol{\mu} ), \sigma^{2} \boldsymbol{M}^{-1}\right)
+p(\boldsymbol{z} \mid \boldsymbol{x})=\mathcal{N}\left(\boldsymbol{M}^{-1} \boldsymbol{W}^(\boldsymbol{x}- \boldsymbol{\mu} ), \sigma^{2} \boldsymbol{M}^{-1}\right)
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(\boldsymbol{M} = \boldsymbol{W} ^\top \boldsymbol{W}  + \sigma^2 \boldsymbol{I}_k\)</span>.</p>
 <p>A reduced-dimansionality representation of <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> is given by the estimated conditional mean</p>

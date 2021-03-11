@@ -676,7 +676,7 @@ $$
 (lm-missing-values)=
 ## Missing Values
 
-For more details about missing, refer to [missing values](../30-ml-basics/11-missing-values).
+For more details about missing, refer to [missing values](missing-values).
 
 Suppose the true model is $\boldsymbol{Y}  = \boldsymbol{X} \boldsymbol{\beta} + \boldsymbol{\varepsilon}$. What happen if some $Y$ or $X$ are not observed?
 

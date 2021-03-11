@@ -15,8 +15,9 @@ Greeks, arrows, symbols, see [here](https://www.overleaf.com/learn/latex/List_of
 
 ## Alignment
 
+In short, odd-indexed `&` are used before `=` to align them, and even-indexed `&` are necessary to separate the columns.
 
-- One column, with one `&` in each line
+- 1 column, with 1 `&` in each line before `=`.
 
   ```latex
   \begin{align}
@@ -32,27 +33,23 @@ Greeks, arrows, symbols, see [here](https://www.overleaf.com/learn/latex/List_of
   \end{align}
   $$
 
-- Two column-pairs, with three `&` in each line
+- 2 columns of equations, with 3 `&` in each line: 2 before `=` and 1 in-between columns.
 
   ```latex
   \begin{align}    \text{Compare}
-    x^2 + y^2 &= 1               &
-    x^3 + y^3 &= 1               \\
-    x         &= \sqrt   {1-y^2} &
-    x         &= \sqrt[3]{1-y^3}
+    x^2 + y^2 &= 1              &    x^3 + y^3 &= 1               \\
+    x         &= \sqrt{1-y^2}   &            x &= \sqrt[3]{1-y^3}
   \end{align}
   ```
 
   $$
-  \begin{align}    \text{Compare }
-    x^2 + y^2 &= 1               &
-    x^3 + y^3 &= 1               \\
-    x         &= \sqrt   {1-y^2} &
-    x         &= \sqrt[3]{1-y^3}
+  \begin{align}    \text{Compare}
+    x^2 + y^2 &= 1              &    x^3 + y^3 &= 1               \\
+    x         &= \sqrt{1-y^2}   &            x &= \sqrt[3]{1-y^3}
   \end{align}
   $$
 
-- Another example of two column-pairs
+- 1 column of equation and 1 column of text, use `&&`.
 
 
   ```latex
@@ -72,14 +69,13 @@ Greeks, arrows, symbols, see [here](https://www.overleaf.com/learn/latex/List_of
   \end{align}
   $$
 
-- Three column-pairs, with four `&` in each line
-
+- 3 columns of equations, 5 `&` in each line: 3  before `=` and 2 in-between columns.
 
   ```latex
   \begin{align}
-      x    &= y      & X  &= Y  &     a  &= b+c                 \\
-      x'   &= y'     & X' &= Y' &     a' &= b                   \\
-    x + x' &= y + y'            & X + X' &= Y + Y' & a'b &= c'b
+      x    &= y      &     X  &= Y      &   a  &= b+c      \\
+      x'   &= y'     &     X' &= Y'     &   a' &= b        \\
+    x + x' &= y + y' & X + X' &= Y + Y' &  a'b &= c'b
   \end{align}
   ```
 
@@ -91,7 +87,7 @@ Greeks, arrows, symbols, see [here](https://www.overleaf.com/learn/latex/List_of
   \end{align}
   $$
 
-- This example has two column-pairs, different number of rows
+- 2 columns, but different number of rows
 
 
   ```latex
@@ -124,7 +120,7 @@ Greeks, arrows, symbols, see [here](https://www.overleaf.com/learn/latex/List_of
   \end{equation}
   $$
 
-- Two columns, with `[b]` (move upward) and `[t]` (move downward)
+- Similar example as above, with `[b]` (move upward) and `[t]` (move downward)
 
 
   ```latex

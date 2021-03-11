@@ -470,8 +470,8 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="11-missing-values.html">
-     Missing Values
+    <a class="reference internal" href="11-data-issues.html">
+     Data Issues
     </a>
    </li>
    <li class="toctree-l2">
@@ -904,22 +904,24 @@
 <div class="section" id="discriminative-vs-generative">
 <h3>Discriminative vs Generative<a class="headerlink" href="#discriminative-vs-generative" title="Permalink to this headline">¶</a></h3>
 <p>Models for <strong>classification</strong> can be divided into two types.</p>
-<ul class="simple">
-<li><p>generative: typically fit <strong>per-class density</strong> <span class="math notranslate nohighlight">\(p(\boldsymbol{x} \mid y)\)</span> and <strong>class prior</strong> <span class="math notranslate nohighlight">\(p(y)\)</span> to estimate the actual density or distribution <span class="math notranslate nohighlight">\(p(y, \boldsymbol{x} ; \boldsymbol{\theta} )\)</span> by</p></li>
-</ul>
-<div class="math notranslate nohighlight">
-\[
-p(y \mid \boldsymbol{x} ; \boldsymbol{\theta}) = \frac{p( \boldsymbol{x} ; \boldsymbol{\theta})}{p(\boldsymbol{x})}  \propto p(y, \boldsymbol{x} ; \boldsymbol{\theta} )
-\]</div>
-<ul class="simple">
-<li><p>discriminative</p>
 <ul>
-<li><p>probabilistic: directly estimate the conditional probability <span class="math notranslate nohighlight">\(p(y \mid \boldsymbol{x} ; \boldsymbol{\theta} )\)</span></p></li>
+<li><p>discriminative</p>
+<ul class="simple">
+<li><p>probabilistic: directly estimate the class probability <span class="math notranslate nohighlight">\(p(y \mid \boldsymbol{x} ; \boldsymbol{\theta} )\)</span></p></li>
 <li><p>non-probabilistic: directly optimize loss of <span class="math notranslate nohighlight">\(f(\boldsymbol{x}  ; \boldsymbol{\theta})\)</span></p></li>
 </ul>
 </li>
+<li><p>generative</p>
+<ul class="simple">
+<li><p>estimate joint density <span class="math notranslate nohighlight">\(p(y, \boldsymbol{x} ; \boldsymbol{\theta} )\)</span> by estimating <strong>per-class density</strong> <span class="math notranslate nohighlight">\(p(\boldsymbol{x} \mid y)\)</span> and <strong>class prior</strong> <span class="math notranslate nohighlight">\(p(y)\)</span>, then estimate the class probability as</p></li>
 </ul>
-<p>When to use which? If <span class="math notranslate nohighlight">\(\operatorname{dim}(\boldsymbol{x})\)</span> is large but only a few <span class="math notranslate nohighlight">\(X_i\)</span>’s in <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> are helpful to discriminate <span class="math notranslate nohighlight">\(y\)</span>, then modeling <span class="math notranslate nohighlight">\(p(\boldsymbol{x} \mid y)\)</span> or <span class="math notranslate nohighlight">\(p(\boldsymbol{x})\)</span> may be computationally intractable and unnecessary. It’s better to directly estiamte <span class="math notranslate nohighlight">\(p(y\mid \boldsymbol{x} l \boldsymbol{\theta})\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+  p(y \mid \boldsymbol{x} ; \boldsymbol{\theta}) = \frac{p( y, \boldsymbol{x} ; \boldsymbol{\theta})}{p(\boldsymbol{x})}  \propto p(y, \boldsymbol{x} ; \boldsymbol{\theta} )
+  \]</div>
+</li>
+</ul>
+<p>When to use which? If <span class="math notranslate nohighlight">\(\operatorname{dim}(\boldsymbol{x})\)</span> is large but only a few <span class="math notranslate nohighlight">\(X_i\)</span>’s in <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> are helpful to discriminate <span class="math notranslate nohighlight">\(y\)</span> (sparse signal), then modeling <span class="math notranslate nohighlight">\(p(\boldsymbol{x} \mid y)\)</span> or <span class="math notranslate nohighlight">\(p(\boldsymbol{x})\)</span> may be computationally intractable and unnecessary. It’s better to use discriminative models to directly estimate <span class="math notranslate nohighlight">\(p(y\mid \boldsymbol{x}, \boldsymbol{\theta})\)</span></p>
 <p>On the other hand, if <span class="math notranslate nohighlight">\(p(y\mid \boldsymbol{x} ; \boldsymbol{\theta} )\)</span> is hard to estimate while <span class="math notranslate nohighlight">\(p(\boldsymbol{x} \mid y)\)</span> is easy to estimate (e.g. Gaussian), then we prefer generative models.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>

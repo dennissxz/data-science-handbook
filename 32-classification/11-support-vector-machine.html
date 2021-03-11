@@ -470,8 +470,8 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../30-ml-basics/11-missing-values.html">
-     Missing Values
+    <a class="reference internal" href="../30-ml-basics/11-data-issues.html">
+     Data Issues
     </a>
    </li>
    <li class="toctree-l2">
@@ -969,11 +969,7 @@ d = \frac{1}{\left\Vert \boldsymbol{w}  \right\Vert}\left\vert \boldsymbol{w} ^\
 <div class="section" id="learning">
 <h2>Learning<a class="headerlink" href="#learning" title="Permalink to this headline">¶</a></h2>
 <p>We convert the optimization problem step by step such that it becomes easier to solve.</p>
-<p>Note that distance is invariant to scaling of <span class="math notranslate nohighlight">\(\boldsymbol{w}\)</span> and <span class="math notranslate nohighlight">\(b\)</span> (or note that <span class="math notranslate nohighlight">\(\boldsymbol{w} ^\top \boldsymbol{x} +b = 0\)</span> and <span class="math notranslate nohighlight">\((k\boldsymbol{w}) ^\top \boldsymbol{x} + (kb) = 0\)</span> characterize the same hyperplane), thus we can assume</p>
-<div class="math notranslate nohighlight">
-\[
-\min _{i} y_{i}\left(\boldsymbol{w}^{\top} \boldsymbol{x}_i + b\right)=1
-\]</div>
+<p>Note that distance is invariant to scaling of <span class="math notranslate nohighlight">\(\boldsymbol{w}\)</span> and <span class="math notranslate nohighlight">\(b\)</span> (or note that <span class="math notranslate nohighlight">\(\boldsymbol{w} ^\top \boldsymbol{x} +b = 0\)</span> and <span class="math notranslate nohighlight">\((k\boldsymbol{w}) ^\top \boldsymbol{x} + (kb) = 0\)</span> characterize the same hyperplane), thus we can assume <span class="math notranslate nohighlight">\(\min _{i} y_{i}\left(\boldsymbol{w}^{\top} \boldsymbol{x}_i + b\right)=1\)</span></p>
 <p>Then the maximization-minimization problem becomes a constrained maximization problem</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
@@ -989,32 +985,32 @@ d = \frac{1}{\left\Vert \boldsymbol{w}  \right\Vert}\left\vert \boldsymbol{w} ^\
 <p>To get rid of the constraints on <span class="math notranslate nohighlight">\(\boldsymbol{w}\)</span> and <span class="math notranslate nohighlight">\(b\)</span>, we use Lagrangian multiplier method. Let</p>
 <div class="math notranslate nohighlight">
 \[
-L(\boldsymbol{w} ,b,\lambda) = \frac{1}{2} \boldsymbol{w} ^\top \boldsymbol{w}  + \sum_i ^n \lambda_i (1-y_i(\boldsymbol{w} ^\top \boldsymbol{x}_i + b))
+\mathcal{L}(\boldsymbol{w} ,b,\lambda) = \frac{1}{2} \boldsymbol{w} ^\top \boldsymbol{w}  + \sum_i ^n \lambda_i (1-y_i(\boldsymbol{w} ^\top \boldsymbol{x}_i + b))
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(\lambda_i \ge 0\)</span>.</p>
 <p>Then the problem becomes</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
-\underset{\boldsymbol{w}, b}{\min } \, \max _{\boldsymbol{\lambda}} &amp;\quad L(\boldsymbol{w} ,b, \boldsymbol{\lambda}) \\
+\underset{\boldsymbol{w}, b}{\min } \, \max _{\boldsymbol{\lambda}} &amp;\quad \mathcal{L}(\boldsymbol{w} ,b, \boldsymbol{\lambda}) \\
 \text {s.t.}&amp;\quad \lambda_i \ge 0\\
 \end{align}\end{split}\]</div>
-<p>Since <span class="math notranslate nohighlight">\(\min_{\boldsymbol{w} ,b} L\)</span> is better to solve than <span class="math notranslate nohighlight">\(\max_{\boldsymbol{\lambda} } L\)</span>, we want exchange the min-max order. This step is valid since it is a quadratic minimization with <span class="math notranslate nohighlight">\(n\)</span> linear constraints, which leads to strong duality. As a result, its dual problem is</p>
+<p>Since <span class="math notranslate nohighlight">\(\min_{\boldsymbol{w} ,b} L\)</span> is better to solve than <span class="math notranslate nohighlight">\(\max_{\boldsymbol{\lambda} } L\)</span>, we want to exchange the min-max order. This step is valid since it is a quadratic minimization with <span class="math notranslate nohighlight">\(n\)</span> linear constraints, where <a class="reference internal" href="../11-math/51-linear-programming.html#id1"><span class="std std-ref">strong duality</span></a> holds. As a result, its dual problem is</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
-\max _{\boldsymbol{\lambda}} \, \underset{\boldsymbol{w}, b}{\min }  &amp;\quad L(\boldsymbol{w} ,b, \boldsymbol{\lambda}) \\
+\max _{\boldsymbol{\lambda}} \, \underset{\boldsymbol{w}, b}{\min }  &amp;\quad \mathcal{L}(\boldsymbol{w} ,b, \boldsymbol{\lambda}) \\
 \text {s.t.}&amp;\quad \lambda_i \ge 0\\
 \end{align}\end{split}\]</div>
 <p>which is has the same solutions <span class="math notranslate nohighlight">\(\boldsymbol{w}^*, b^*\)</span> with the primal problem.</p>
-<p>We first solve the minimization problem. Taking derivatives of <span class="math notranslate nohighlight">\(L\)</span> w.r.t. <span class="math notranslate nohighlight">\(\boldsymbol{w} ,b\)</span> and equating them to zero gives</p>
+<p>We first solve the minimization problem. Taking derivatives of <span class="math notranslate nohighlight">\(\mathcal{L}\)</span> w.r.t. <span class="math notranslate nohighlight">\(\boldsymbol{w} ,b\)</span> and equating them to zero gives</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
-&amp;&amp; \frac{\partial}{\partial \boldsymbol{w}} L\left(\boldsymbol{w}, b, \boldsymbol{\lambda}\right) &amp;= \boldsymbol{w}-\sum_{i=1}^{n} \lambda_{i} y_{i} \boldsymbol{x}_{i}\overset{\text{set}}{=} 0 \\
+&amp;&amp; \frac{\partial}{\partial \boldsymbol{w}} \mathcal{L} \left(\boldsymbol{w}, b, \boldsymbol{\lambda}\right) &amp;= \boldsymbol{w}-\sum_{i=1}^{n} \lambda_{i} y_{i} \boldsymbol{x}_{i}\overset{\text{set}}{=} 0 \\
 &amp;\Rightarrow &amp; \boldsymbol{w} &amp;= \sum_{i=1}^{n} \lambda_{i} y_{i} \boldsymbol{x}_{i}  \\
-&amp;&amp; \frac{\partial}{\partial b} L\left(\boldsymbol{w}, b, \boldsymbol{\lambda}\right)
+&amp;&amp; \frac{\partial}{\partial b} \mathcal{L} \left(\boldsymbol{w}, b, \boldsymbol{\lambda}\right)
 &amp; =-\sum_{i=1}^{n} \lambda_{i} y_{i} \overset{\text{set}}{=} 0  \\
 &amp;\Rightarrow &amp;  \sum_{i=1}^{n} \lambda_{i} y_{i} &amp; = 0 \\
 \end{align}\end{split}\]</div>
-<p>Substituting the result back to the dual problem,</p>
+<p>Substituting the result back to the dual problem gives</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
 \max _{\boldsymbol{\lambda}} \,  &amp;\quad \sum_{i=1}^{n} \lambda_{i}-\frac{1}{2} \sum_{i=1}^{n} \sum_{j=1}^{n}\lambda_{i} \lambda_{j} y_{i} y_{j} \boldsymbol{x}_{i} \boldsymbol{x}_{j} \\
@@ -1026,12 +1022,7 @@ L(\boldsymbol{w} ,b,\lambda) = \frac{1}{2} \boldsymbol{w} ^\top \boldsymbol{w}  
 \[
 \exists\left(x_{k}, y_{n}\right):\, 1-y_{k}\left(\boldsymbol{w} ^{*\top} \boldsymbol{x}_{k}+b\right)=0
 \]</div>
-<p>which gives</p>
-<div class="math notranslate nohighlight">
-\[
-b^* = y_k - \boldsymbol{w} ^{* \top} \boldsymbol{x} _k
-\]</div>
-<p>Therefore,</p>
+<p>which gives <span class="math notranslate nohighlight">\(b^* = y_k - \boldsymbol{w} ^{* \top} \boldsymbol{x} _k\)</span>. Therefore,</p>
 <div class="math notranslate nohighlight">
 \[
 \boldsymbol{w} ^{*}=\sum_{i=0}^{n} \lambda_{i} y_{i} \boldsymbol{x}_{i} \quad b^{*}=y_{k}-\sum_{i=0}^{n} \lambda_{i} y_{i} \boldsymbol{x}_{i}^{\top} \boldsymbol{x}_{k}
@@ -1065,14 +1056,10 @@ b^* = y_k - \boldsymbol{w} ^{* \top} \boldsymbol{x} _k
 <h3>Soft Margin<a class="headerlink" href="#soft-margin" title="Permalink to this headline">¶</a></h3>
 <p>Recall the objective function for the hard margin case</p>
 <div class="math notranslate nohighlight">
-\[\begin{split}
-\begin{equation}
-\begin{array}{ll}
-\min _{\boldsymbol{w}, b} &amp; \frac{1}{2} \boldsymbol{w}^{\top} \boldsymbol{w} \\
-\text { s.t. } &amp; y_{i}\left(\boldsymbol{w}^{\top} \boldsymbol{x}_{i}+b\right) \geq 1
-\end{array}
-\end{equation}
-\end{split}\]</div>
+\[\begin{split}\begin{aligned}
+\min _{\boldsymbol{w}, b} &amp;\ \frac{1}{2} \boldsymbol{w}^{\top} \boldsymbol{w} \\
+\text { s.t. } &amp;\ y_{i}\left(\boldsymbol{w}^{\top} \boldsymbol{x}_{i}+b\right) \geq 1
+\end{aligned}\end{split}\]</div>
 <p>What if we cannot find a hyperplane that separate the two types of points? That is, the constraint</p>
 <div class="math notranslate nohighlight">
 \[

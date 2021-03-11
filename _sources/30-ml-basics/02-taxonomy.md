@@ -50,18 +50,20 @@ When the training set $\mathcal{D}$ is a good representatie of the underlying di
 
 Models for **classification** can be divided into two types.
 
-- generative: typically fit **per-class density** $p(\boldsymbol{x} \mid y)$ and **class prior** $p(y)$ to estimate the actual density or distribution $p(y, \boldsymbol{x} ; \boldsymbol{\theta} )$ by
-
-
-$$
-p(y \mid \boldsymbol{x} ; \boldsymbol{\theta}) = \frac{p( \boldsymbol{x} ; \boldsymbol{\theta})}{p(\boldsymbol{x})}  \propto p(y, \boldsymbol{x} ; \boldsymbol{\theta} )
-$$
-
 - discriminative
-  - probabilistic: directly estimate the conditional probability $p(y \mid \boldsymbol{x} ; \boldsymbol{\theta} )$
+  - probabilistic: directly estimate the class probability $p(y \mid \boldsymbol{x} ; \boldsymbol{\theta} )$
   - non-probabilistic: directly optimize loss of $f(\boldsymbol{x}  ; \boldsymbol{\theta})$
 
-When to use which? If $\operatorname{dim}(\boldsymbol{x})$ is large but only a few $X_i$'s in $\boldsymbol{x}$ are helpful to discriminate $y$, then modeling $p(\boldsymbol{x} \mid y)$ or $p(\boldsymbol{x})$ may be computationally intractable and unnecessary. It's better to directly estiamte $p(y\mid \boldsymbol{x} l \boldsymbol{\theta})$
+
+- generative
+  - estimate joint density $p(y, \boldsymbol{x} ; \boldsymbol{\theta} )$ by estimating **per-class density** $p(\boldsymbol{x} \mid y)$ and **class prior** $p(y)$, then estimate the class probability as
+
+  $$
+  p(y \mid \boldsymbol{x} ; \boldsymbol{\theta}) = \frac{p( y, \boldsymbol{x} ; \boldsymbol{\theta})}{p(\boldsymbol{x})}  \propto p(y, \boldsymbol{x} ; \boldsymbol{\theta} )
+  $$
+
+
+When to use which? If $\operatorname{dim}(\boldsymbol{x})$ is large but only a few $X_i$'s in $\boldsymbol{x}$ are helpful to discriminate $y$ (sparse signal), then modeling $p(\boldsymbol{x} \mid y)$ or $p(\boldsymbol{x})$ may be computationally intractable and unnecessary. It's better to use discriminative models to directly estimate $p(y\mid \boldsymbol{x}, \boldsymbol{\theta})$
 
 On the other hand, if $p(y\mid \boldsymbol{x} ; \boldsymbol{\theta} )$ is hard to estimate while $p(\boldsymbol{x} \mid y)$ is easy to estimate (e.g. Gaussian), then we prefer generative models.
 

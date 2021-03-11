@@ -110,14 +110,9 @@ To classify a point with coordinates $\boldsymbol{x}$, we use the solution $\bol
 
 We convert the optimization problem step by step such that it becomes easier to solve.
 
-Note that distance is invariant to scaling of $\boldsymbol{w}$ and $b$ (or note that $\boldsymbol{w} ^\top \boldsymbol{x} +b = 0$ and $(k\boldsymbol{w}) ^\top \boldsymbol{x} + (kb) = 0$ characterize the same hyperplane), thus we can assume
-
-$$
-\min _{i} y_{i}\left(\boldsymbol{w}^{\top} \boldsymbol{x}_i + b\right)=1
-$$
+Note that distance is invariant to scaling of $\boldsymbol{w}$ and $b$ (or note that $\boldsymbol{w} ^\top \boldsymbol{x} +b = 0$ and $(k\boldsymbol{w}) ^\top \boldsymbol{x} + (kb) = 0$ characterize the same hyperplane), thus we can assume $\min _{i} y_{i}\left(\boldsymbol{w}^{\top} \boldsymbol{x}_i + b\right)=1$
 
 Then the maximization-minimization problem becomes a constrained maximization problem
-
 
 $$\begin{align}
 \underset{\boldsymbol{w}, b}{\max }&\quad \frac{1}{\|\boldsymbol{w}\|}\\
@@ -135,7 +130,7 @@ $$\begin{align}
 To get rid of the constraints on $\boldsymbol{w}$ and $b$, we use Lagrangian multiplier method. Let
 
 $$
-L(\boldsymbol{w} ,b,\lambda) = \frac{1}{2} \boldsymbol{w} ^\top \boldsymbol{w}  + \sum_i ^n \lambda_i (1-y_i(\boldsymbol{w} ^\top \boldsymbol{x}_i + b))
+\mathcal{L}(\boldsymbol{w} ,b,\lambda) = \frac{1}{2} \boldsymbol{w} ^\top \boldsymbol{w}  + \sum_i ^n \lambda_i (1-y_i(\boldsymbol{w} ^\top \boldsymbol{x}_i + b))
 $$
 
 where $\lambda_i \ge 0$.
@@ -143,32 +138,32 @@ where $\lambda_i \ge 0$.
 Then the problem becomes
 
 $$\begin{align}
-\underset{\boldsymbol{w}, b}{\min } \, \max _{\boldsymbol{\lambda}} &\quad L(\boldsymbol{w} ,b, \boldsymbol{\lambda}) \\
+\underset{\boldsymbol{w}, b}{\min } \, \max _{\boldsymbol{\lambda}} &\quad \mathcal{L}(\boldsymbol{w} ,b, \boldsymbol{\lambda}) \\
 \text {s.t.}&\quad \lambda_i \ge 0\\
 \end{align}$$
 
-Since $\min_{\boldsymbol{w} ,b} L$ is better to solve than $\max_{\boldsymbol{\lambda} } L$, we want exchange the min-max order. This step is valid since it is a quadratic minimization with $n$ linear constraints, which leads to strong duality. As a result, its dual problem is
+Since $\min_{\boldsymbol{w} ,b} L$ is better to solve than $\max_{\boldsymbol{\lambda} } L$, we want to exchange the min-max order. This step is valid since it is a quadratic minimization with $n$ linear constraints, where [strong duality](duality) holds. As a result, its dual problem is
 
 $$\begin{align}
-\max _{\boldsymbol{\lambda}} \, \underset{\boldsymbol{w}, b}{\min }  &\quad L(\boldsymbol{w} ,b, \boldsymbol{\lambda}) \\
+\max _{\boldsymbol{\lambda}} \, \underset{\boldsymbol{w}, b}{\min }  &\quad \mathcal{L}(\boldsymbol{w} ,b, \boldsymbol{\lambda}) \\
 \text {s.t.}&\quad \lambda_i \ge 0\\
 \end{align}$$
 
 which is has the same solutions $\boldsymbol{w}^*, b^*$ with the primal problem.
 
-We first solve the minimization problem. Taking derivatives of $L$ w.r.t. $\boldsymbol{w} ,b$ and equating them to zero gives
+We first solve the minimization problem. Taking derivatives of $\mathcal{L}$ w.r.t. $\boldsymbol{w} ,b$ and equating them to zero gives
 
 
 $$\begin{align}
-&& \frac{\partial}{\partial \boldsymbol{w}} L\left(\boldsymbol{w}, b, \boldsymbol{\lambda}\right) &= \boldsymbol{w}-\sum_{i=1}^{n} \lambda_{i} y_{i} \boldsymbol{x}_{i}\overset{\text{set}}{=} 0 \\
+&& \frac{\partial}{\partial \boldsymbol{w}} \mathcal{L} \left(\boldsymbol{w}, b, \boldsymbol{\lambda}\right) &= \boldsymbol{w}-\sum_{i=1}^{n} \lambda_{i} y_{i} \boldsymbol{x}_{i}\overset{\text{set}}{=} 0 \\
 &\Rightarrow & \boldsymbol{w} &= \sum_{i=1}^{n} \lambda_{i} y_{i} \boldsymbol{x}_{i}  \\
-&& \frac{\partial}{\partial b} L\left(\boldsymbol{w}, b, \boldsymbol{\lambda}\right)
+&& \frac{\partial}{\partial b} \mathcal{L} \left(\boldsymbol{w}, b, \boldsymbol{\lambda}\right)
 & =-\sum_{i=1}^{n} \lambda_{i} y_{i} \overset{\text{set}}{=} 0  \\
 &\Rightarrow &  \sum_{i=1}^{n} \lambda_{i} y_{i} & = 0 \\
 \end{align}$$
 
 
-Substituting the result back to the dual problem,
+Substituting the result back to the dual problem gives
 
 
 $$\begin{align}
@@ -186,13 +181,7 @@ $$
 \exists\left(x_{k}, y_{n}\right):\, 1-y_{k}\left(\boldsymbol{w} ^{*\top} \boldsymbol{x}_{k}+b\right)=0
 $$
 
-which gives
-
-$$
-b^* = y_k - \boldsymbol{w} ^{* \top} \boldsymbol{x} _k
-$$
-
-Therefore,
+which gives $b^* = y_k - \boldsymbol{w} ^{* \top} \boldsymbol{x} _k$. Therefore,
 
 $$
 \boldsymbol{w} ^{*}=\sum_{i=0}^{n} \lambda_{i} y_{i} \boldsymbol{x}_{i} \quad b^{*}=y_{k}-\sum_{i=0}^{n} \lambda_{i} y_{i} \boldsymbol{x}_{i}^{\top} \boldsymbol{x}_{k}
@@ -231,14 +220,10 @@ One-versus-one: construct $\frac{K(K-1)}{2}$ SVMs on all pairs. Each SVM classif
 
 Recall the objective function for the hard margin case
 
-$$
-\begin{equation}
-\begin{array}{ll}
-\min _{\boldsymbol{w}, b} & \frac{1}{2} \boldsymbol{w}^{\top} \boldsymbol{w} \\
-\text { s.t. } & y_{i}\left(\boldsymbol{w}^{\top} \boldsymbol{x}_{i}+b\right) \geq 1
-\end{array}
-\end{equation}
-$$
+$$\begin{aligned}
+\min _{\boldsymbol{w}, b} &\ \frac{1}{2} \boldsymbol{w}^{\top} \boldsymbol{w} \\
+\text { s.t. } &\ y_{i}\left(\boldsymbol{w}^{\top} \boldsymbol{x}_{i}+b\right) \geq 1
+\end{aligned}$$
 
 What if we cannot find a hyperplane that separate the two types of points? That is, the constraint
 

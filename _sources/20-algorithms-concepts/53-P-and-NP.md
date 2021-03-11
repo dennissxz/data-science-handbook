@@ -43,7 +43,7 @@ Definition (Valid verifier for problem $X$)
 
 
 Definition (Class $NP$)
-: Non-deterministic polynomial, denoted $NP$, is a class of all problems for which an **valid** verifier exists. The name "non-deterministic" means a non-deterministic Turing machine can describe this class of problems in polynomial time.
+: Non-deterministic polynomial, denoted $NP$, is a class of all problems for which a **valid** verifier exists. The name "non-deterministic" means a non-deterministic Turing machine can describe this class of problems in polynomial time.
 
 For instance, 3SAT, IS, VC, and SC are in class $NP$.
 

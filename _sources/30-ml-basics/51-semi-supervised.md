@@ -173,6 +173,7 @@ Semi-supervised generative models inherit many of the qualities of generative mo
 - But, doesn’t work well if we don’t have an accurate generative model for the unlabeled data
 - And, sometimes we’d rather classify with a non-generative model
 
+(cluster-then-label)=
 ## Cluster-then-label
 
 Clustering techniques can be used for classification. Suppose there are $k$ categories. Algorithms are:

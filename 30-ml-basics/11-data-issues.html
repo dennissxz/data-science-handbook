@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Missing Values &#8212; Data Science Handbook</title>
+    <title>Data Issues &#8212; Data Science Handbook</title>
     
   <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
 
@@ -471,7 +471,7 @@
    </li>
    <li class="toctree-l2 current active">
     <a class="current reference internal" href="#">
-     Missing Values
+     Data Issues
     </a>
    </li>
    <li class="toctree-l2">
@@ -759,7 +759,7 @@
         <!-- ipynb file if we had a myst markdown file -->
         
         <!-- Download raw file -->
-        <a class="dropdown-buttons" href="../_sources/30-ml-basics/11-missing-values.md"><button type="button"
+        <a class="dropdown-buttons" href="../_sources/30-ml-basics/11-data-issues.md"><button type="button"
                 class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
                 data-placement="left">.md</button></a>
         <!-- Download PDF via print -->
@@ -779,7 +779,7 @@
                 data-toggle="tooltip" data-placement="left" title="Source repository"><i
                     class="fab fa-github"></i>repository</button></a>
         <a class="issues-button"
-            href="https://github.com/dennissxz/data-science-handbook/issues/new?title=Issue%20on%20page%20%2F30-ml-basics/11-missing-values.html&body=Your%20issue%20content%20here."><button
+            href="https://github.com/dennissxz/data-science-handbook/issues/new?title=Issue%20on%20page%20%2F30-ml-basics/11-data-issues.html&body=Your%20issue%20content%20here."><button
                 type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
                 title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
         
@@ -807,53 +807,70 @@
         <nav id="bd-toc-nav">
             <ul class="nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#types">
-   Types
+  <a class="reference internal nav-link" href="#missing-values">
+   Missing Values
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#completely-at-random">
-     Completely at Random
+    <a class="reference internal nav-link" href="#types">
+     Types
     </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#completely-at-random">
+       Completely at Random
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#at-random">
+       At Random
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#not-at-random">
+       Not at Random
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#depends-on-response">
+       Depends on Response
+      </a>
+     </li>
+    </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#at-random">
-     At Random
+    <a class="reference internal nav-link" href="#imputation">
+     Imputation
     </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#not-at-random">
-     Not at Random
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#depends-on-response">
-     Depends on Response
-    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#drop">
+       Drop
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#by-mean">
+       By Mean
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#by-regression">
+       By Regression
+      </a>
+     </li>
+    </ul>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#imputation">
-   Imputation
+  <a class="reference internal nav-link" href="#imbalanced-data">
+   Imbalanced Data
   </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#drop">
-     Drop
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#by-mean">
-     By Mean
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#by-regression">
-     By Regression
-    </a>
-   </li>
-  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#normality">
+   Normality
+  </a>
  </li>
 </ul>
 
@@ -867,13 +884,15 @@
         
               <div>
                 
-  <div class="section" id="missing-values">
-<h1>Missing Values<a class="headerlink" href="#missing-values" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="data-issues">
+<h1>Data Issues<a class="headerlink" href="#data-issues" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="missing-values">
+<span id="id1"></span><h2>Missing Values<a class="headerlink" href="#missing-values" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="types">
-<h2>Types<a class="headerlink" href="#types" title="Permalink to this headline">¶</a></h2>
+<h3>Types<a class="headerlink" href="#types" title="Permalink to this headline">¶</a></h3>
 <p>An entry <span class="math notranslate nohighlight">\(x_{ij}\)</span> can be missing due to various reasons.</p>
 <div class="section" id="completely-at-random">
-<h3>Completely at Random<a class="headerlink" href="#completely-at-random" title="Permalink to this headline">¶</a></h3>
+<h4>Completely at Random<a class="headerlink" href="#completely-at-random" title="Permalink to this headline">¶</a></h4>
 <p>Missing completely at random (MCAR) means for each variable <span class="math notranslate nohighlight">\(j\)</span>, every entry is equally likely to be missing</p>
 <div class="math notranslate nohighlight">
 \[
@@ -882,7 +901,7 @@
 <p>Then we have a smaller sample. This will increase the standard errors of estimators (lower precision), but it does not cause bias.</p>
 </div>
 <div class="section" id="at-random">
-<h3>At Random<a class="headerlink" href="#at-random" title="Permalink to this headline">¶</a></h3>
+<h4>At Random<a class="headerlink" href="#at-random" title="Permalink to this headline">¶</a></h4>
 <p>Missing at random (MAR) means that the probability of missing can also depend on some attributes of the subject, say other values <span class="math notranslate nohighlight">\(x_{i, -j}\)</span></p>
 <div class="math notranslate nohighlight">
 \[
@@ -890,7 +909,7 @@
 \]</div>
 </div>
 <div class="section" id="not-at-random">
-<h3>Not at Random<a class="headerlink" href="#not-at-random" title="Permalink to this headline">¶</a></h3>
+<h4>Not at Random<a class="headerlink" href="#not-at-random" title="Permalink to this headline">¶</a></h4>
 <p>Missing not at random (MNAR) means that the probability of missing can depends on some unobservable variables <span class="math notranslate nohighlight">\(Z_{ij}\)</span></p>
 <div class="math notranslate nohighlight">
 \[
@@ -898,24 +917,24 @@
 \]</div>
 </div>
 <div class="section" id="depends-on-response">
-<h3>Depends on Response<a class="headerlink" href="#depends-on-response" title="Permalink to this headline">¶</a></h3>
+<h4>Depends on Response<a class="headerlink" href="#depends-on-response" title="Permalink to this headline">¶</a></h4>
 <p>The probability of missing depends on the value of <span class="math notranslate nohighlight">\(y\)</span>.</p>
 <p>In this case, in the missing data, the relation estimated from the observed data may not hold.</p>
 </div>
 </div>
 <div class="section" id="imputation">
-<h2>Imputation<a class="headerlink" href="#imputation" title="Permalink to this headline">¶</a></h2>
+<h3>Imputation<a class="headerlink" href="#imputation" title="Permalink to this headline">¶</a></h3>
 <p>Imputation means how we fill the missing entries.</p>
 <div class="section" id="drop">
-<h3>Drop<a class="headerlink" href="#drop" title="Permalink to this headline">¶</a></h3>
+<h4>Drop<a class="headerlink" href="#drop" title="Permalink to this headline">¶</a></h4>
 <p>Simple drop observation <span class="math notranslate nohighlight">\(i\)</span> if any entry <span class="math notranslate nohighlight">\(x_{ij}\)</span> is missing. This is acceptable when in MAR, MCAR and when the missing is infrequent.</p>
 </div>
 <div class="section" id="by-mean">
-<h3>By Mean<a class="headerlink" href="#by-mean" title="Permalink to this headline">¶</a></h3>
+<h4>By Mean<a class="headerlink" href="#by-mean" title="Permalink to this headline">¶</a></h4>
 <p>We can impute <span class="math notranslate nohighlight">\(x_{ij}\)</span> by the column mean <span class="math notranslate nohighlight">\(\bar{x}_{\cdot j}\)</span>. But if <span class="math notranslate nohighlight">\(x_{ij}\)</span> is deterministic on other variables, then after imputation this dependent relation does not hold.</p>
 </div>
 <div class="section" id="by-regression">
-<h3>By Regression<a class="headerlink" href="#by-regression" title="Permalink to this headline">¶</a></h3>
+<h4>By Regression<a class="headerlink" href="#by-regression" title="Permalink to this headline">¶</a></h4>
 <p>Suppose <span class="math notranslate nohighlight">\(X_j\)</span> is deterministic on other explanatory variables <span class="math notranslate nohighlight">\(X_{-j}\)</span>, we can estimate this relation by regression <span class="math notranslate nohighlight">\(x_j\)</span> over all other explanatory variables to maintain this dependent relation in the imputed data.</p>
 <div class="note admonition">
 <p class="admonition-title"> In linear regression</p>
@@ -926,15 +945,23 @@
 <li><p><span class="math notranslate nohighlight">\(\hat{\sigma}^2\)</span> increases</p></li>
 </ul>
 </div>
-<p>other data issues:</p>
-<p>imbalanced data?</p>
-<ul class="simple">
-<li><p>un/down sampling to make them balance</p></li>
-<li><p>up/down weighting</p></li>
-<li><p>smote</p></li>
-</ul>
-<p>non-normal?</p>
 </div>
+</div>
+</div>
+<div class="section" id="imbalanced-data">
+<h2>Imbalanced Data<a class="headerlink" href="#imbalanced-data" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>un/down sampling to make them balance in the data set</p>
+<ul>
+<li><p>Synthetic Minority Oversampling Technique (SMOTE)</p></li>
+</ul>
+</li>
+<li><p>up/down weighting in the loss function</p></li>
+</ul>
+</div>
+<div class="section" id="normality">
+<h2>Normality<a class="headerlink" href="#normality" title="Permalink to this headline">¶</a></h2>
+<p>Some model or methods assume normality of data. If some variables are not from normal distribution, we can try to transform them to normal, e.g. Box-Cox transformation.</p>
 </div>
 </div>
 
