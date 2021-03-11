@@ -68,7 +68,7 @@ The corresponding Lagrangian is
 
 
 $$
-L(\lambda, \boldsymbol{\alpha}, \boldsymbol{\beta})=\boldsymbol{\alpha}^{\prime} \boldsymbol{K}_{x} \boldsymbol{K}_{y} \boldsymbol{\beta}-\frac{\lambda_{\boldsymbol{\alpha}}}{2}\left(\boldsymbol{\alpha}^{\prime} \boldsymbol{K}_{x}^{2} \boldsymbol{\alpha}-1\right)-\frac{\lambda_{\boldsymbol{\beta}}}{2}\left(\boldsymbol{\beta}^{\prime} \boldsymbol{K}_{y}^{2} \boldsymbol{\beta}-1\right)
+\mathcal{L}(\lambda, \boldsymbol{\alpha}, \boldsymbol{\beta})=\boldsymbol{\alpha}^{\prime} \boldsymbol{K}_{x} \boldsymbol{K}_{y} \boldsymbol{\beta}-\frac{\lambda_{\boldsymbol{\alpha}}}{2}\left(\boldsymbol{\alpha}^{\prime} \boldsymbol{K}_{x}^{2} \boldsymbol{\alpha}-1\right)-\frac{\lambda_{\boldsymbol{\beta}}}{2}\left(\boldsymbol{\beta}^{\prime} \boldsymbol{K}_{y}^{2} \boldsymbol{\beta}-1\right)
 $$
 
 Taking derivatives w.r.t. $\boldsymbol{\boldsymbol{\alpha}}$ and $\boldsymbol{\boldsymbol{\beta}}$ gives
@@ -138,7 +138,7 @@ The resulting Lagrangian is
 
 $$
 \begin{aligned}
-L\left(\lambda_{\boldsymbol{\alpha}}, \lambda_{\boldsymbol{\beta}}, \boldsymbol{\alpha}, \boldsymbol{\beta}\right)=& \boldsymbol{\alpha}^{\prime} \boldsymbol{K}_{x} \boldsymbol{K}_{y} \boldsymbol{\beta} \\
+\mathcal{L}\left(\lambda_{\boldsymbol{\alpha}}, \lambda_{\boldsymbol{\beta}}, \boldsymbol{\alpha}, \boldsymbol{\beta}\right)=& \boldsymbol{\alpha}^{\prime} \boldsymbol{K}_{x} \boldsymbol{K}_{y} \boldsymbol{\beta} \\
 &-\frac{\lambda_{\boldsymbol{\alpha}}}{2}\left(\boldsymbol{\alpha}^{\prime} \boldsymbol{K}_{x}^{2} \boldsymbol{\alpha}+r \boldsymbol{\alpha}^{\prime} \boldsymbol{K}_{x} \boldsymbol{\alpha}-1\right) \\
 &-\frac{\lambda_{\boldsymbol{\beta}}}{2}\left(\boldsymbol{\beta}^{\prime} \boldsymbol{K}_{y}^{2} \boldsymbol{\beta}+r \boldsymbol{\beta}^{\prime} \boldsymbol{K}_{y} \boldsymbol{\beta}-1\right)
 \end{aligned}
