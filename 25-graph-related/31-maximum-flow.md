@@ -397,9 +397,9 @@ Recall different running time
 :::
 
 
-### Improvement: Edmonds-Korp Algorithm
+### Improvement: Edmonds-Karp Algorithm
 
-Instead of using an arbitrary augmenting path, we use the **shortest** path $s$-$t$ in $G$ that minimizes number of edges. This work takes $O(m)$ by BFS or DFS, so each iteration still takes $O(m)$. But it reduces the number of iterations from $O(nc_\max)$ to $O(nm)$, this leads to the Edmonds-Korp algorithm with complexity $O(nm^2)$.
+Instead of using an arbitrary augmenting path, we use the **shortest** path $s$-$t$ in $G$ that minimizes number of edges. This work takes $O(m)$ by BFS or DFS, so each iteration still takes $O(m)$. But it reduces the number of iterations from $O(nc_\max)$ to $O(nm)$, this leads to the Edmonds-Karp algorithm with complexity $O(nm^2)$.
 
 To show that, we first run that algorithm, record the length of the chosen shortest path in each iteration, and then partition these the execution into phases, where each phase lasts as long as the lengths of augmenting paths chosen remains the same.
 
@@ -444,7 +444,7 @@ $(1+\epsilon)$-approximation returns a flow of value at least $\frac{OPT}{1+\eps
 ### Other Properties
 
 Theorem (Integrality of flow)
-: If all capacities are integers, then the FF algorithm finds a maximum flow where $f(e)$ is integers for all $e$.
+: If all capacities are integrals, then the Ford-Fulkerson algorithm finds a maximum flow where $f(e)$ is integral for all $e$.
 
 
 
@@ -510,13 +510,17 @@ Since in the directed graph we have max-flow $=$ min-cut, in the undirected grap
 
 ### Path-based Flow
 
-Recall the flow $f: V\rightarrow \mathbb{R} _{\ge 0}$ is defined for edges. We can consider a path-based flow $f_{p} : \mathcal{P}\rightarrow \mathbb{R} _{\ge 0}$, where $\mathcal{P}$ is the set of all $s$-$t$ paths. Let $f _{p} (P)$ be the flow of a path $P \in \mathcal{P}$. It is valid if the edge capacity constraint holds.
+```{margin}
+Aka flow-paths.
+```
+
+Recall the flow $f: V\rightarrow \mathbb{R} _{\ge 0}$ is defined for edges. We can consider a path-based flow $f_{p} : \mathcal{P}\rightarrow \mathbb{R} _{\ge 0}$, where $\mathcal{P}$ is the set of some $s$-$t$ paths. Let $f _{p} (P)$ be the flow of a path $P \in \mathcal{P}$. It is valid if the edge capacity constraint holds.
 
 $$
 \forall e:\quad \sum_{P: P \in \mathcal{P} \text{ and } E(P) \ni e} f _{p} (P) \le c(e)
 $$
 
-The value of the set $\mathcal{P}$ is $\sum_{P \in \mathcal{P}}f _{p} (P)$, and we maximize it. But the number of such paths are exponential.
+The set $\mathcal{P}$ and the flow assignment $f_p$ together are called a flow-paths solution, with value $\sum_{P \in \mathcal{P}}f _{p} (P)$.
 
 Theorem (Equivalence of edge-flow and path-flow)
 : Given an edge-based flow $\left\{ f(e) \right\}_{e \in E}$, we can compute the path-based flow $\left\{ f _{p} (P) \right\}_{P \in \mathcal{P}}$ efficiently, and
@@ -527,6 +531,30 @@ Theorem (Equivalence of edge-flow and path-flow)
 
   And the reverse also hold.
 
+Theorem (Flow decomposition)
+: Any $s$-$t$ flow can decompose into at most $m$ number of cycles and $s$-$t$ paths.
+
+:::{admonition,dropdown,seealso} *Proof*
+
+We provide an efficient algorithm for such decomposition.
+
+Let $(a,b)$ be an edge with $f(a,b)>0$. Then trace backward from $a$, and trace forward from $b$, along edges with positive flow $f(e)>0$.
+
+$$\cdots a \rightarrow b \cdots$$
+
+Until we reach
+- a cycle (along $a$, along $b$, or involve edge $(a,b)$), or
+- both $s$ and $t$
+
+Let $W$ be the edges in cycle or $s$-$t$ path. Compute $\Delta = \min_{e \in E(W)} f(e)$. Subtract $\Delta$ from all flow of edges in $W$. The resulted flow is also valid, and the flow value remains unchanged.
+
+We repeat this process until there is no cycle or path. Each iteration reduces flow to one edge to 0, so the number of iterations is at most $m$. Each iteration gives a cycle or $s$-$t$ path with flow $\Delta$. Hence, the number of cycles and $s$-$t$ paths is at most $m$.
+
+Each iteration takes $O(m)$, so total running time is $O(m^2)$.
+
+:::
+
+Note that dropping the cycles does not affect the flow value. So the paths obtained from this algorithm together with their $\Delta$ form a valid flow-paths solution.
 
 ### Edge-Disjoint Paths
 
@@ -565,6 +593,18 @@ The same can be done for undirected graphs.
 In reality, capacities are often defined on vertices, such as computer networks. There are algorithms to solve vertex-capacity max-flow problem.
 
 
+Vertex-capacity max-flow: capacity constraints are on vertices. Each vertex has capacity constraint $c(v)$.
+
+Assign infinite capacity to all edges. Convert each vertex to two vertices connected by an edge, with edge weight $c(e) = c(v)$. Equivalent.
+
+
+Vertex-disjoint path problem: find maximum number of vertex-disjoint paths (no two paths share vertices) connecting $S$ to $T$.
+
+Recall Menger’s Theorem:
+- The maximum number of EDPs connecting $S$ to $T$ is equal to the minimum number of edges needed to disconnect $S$ from $T$.
+
+The corresponding version in this setting is:
+- The maximum number of **VDPs** connecting $S$ to $T$ is equal to the minimum number of **vertices** needed to disconnect $S$ from $T$.
 
 
 ## Applications
@@ -633,32 +673,58 @@ Let $G$ be an arbitrary (directed) flow network with integral edge capacities
 
 
 
-1. T/F: Let $(A,B)$ be a minimum $s$-$t$ cut in G. Let $e=(u,v)$ be an edge of $G$ with $u\in A,v\in B$, and $c(e) ≥ 1$. Then **decreasing** the capacity of $e$ by 1 decreases the maximum flow value by $1$.
+1. [**Change of capacity**] Prove or disapprove:
+
+    1. Let $e=(u,v)$ be an edge of $G$ with capacity $c(e) ≥ 1$. **Decreasing** the capacity of an edge $e$ by $1$ decreases the maximum flow value by at most $1$.
+
+    2. Let $e=(u,v)$ be an edge of $G$ with capacity $c(e) ≥ k$ where $k$ is a positive integer. **Decreasing** the capacity of an edge $e$ by $k$ decreases the maximum flow value by at most $k$.
+
+    3. **Increasing** the capacity of an edge $e$ by $1$ increases the maximum flow value by at most $1$.
+
+    4. **Increasing** the capacity of an edge $e$ by a positive integer $k$ increases  the maximum flow value by at most $k$.
+
+    5. Let $(A,B)$ be a minimum $s$-$t$ cut in G. If we **increase** the capacity of **each** edge in $E(G)$ by $1$, then $(A,B)$ remains a minimum $s$-$t$ cut in the new flow network.
 
     :::{admonition,dropdown,seealso} *Solution*
-    True, since the capacity of all other minimum $s$-$t$ cut **without** edge $e$ are unchanged.
-    :::
 
-1. T/F: Let $(A,B)$ be a minimum $s$-$t$ cut in G. Let $e=(u,v)$ be an edge of $G$ with $u\in A,v\in B$, and $c(e) ≥ 1$. Then **increasing** the capacity of $e$ by 1 increases the maximum flow value by $1$.
+    1. True.
+        - If $e$ is in some minimum cut, then decreasing the capacity of $e$ decreases the min cut value by 1.
+        - Else, $e$ is not in every min cut, then decreasing the capacity of $e$ by 1 leaves the min cut value unchanged. Either way, the capacity decreases by at most 1. The claim follows from the max-flow-min-cut theorem.
 
-    :::{admonition,dropdown,seealso} *Solution*
-    False, there may be another minimum $s$-$t$ cut **without** edge $e$.
-    :::
+        Algorithm to update the flow:  
 
-1. T/F: Let $(A,B)$ be a minimum $s$-$t$ cut in G. If we **increase** the capacity of **each** edge in $E(G)$ by $1$, then $(A,B)$ remains a minimum $s$-$t$ cut in the new flow network.
+        - If $c(e) \ge f(e) + 1$, then the max flow remains the same.
+        - Else $c(e) = f(e)$ (saturated edge), then to satisfy the constraint, we need to remove one unit of flow from $s$ to $t$ that goes through edge $e$. The algorithm is
 
-    ::::{admonition,dropdown,seealso} *Solution*
-    False. (1) Had G contained edges of different capacities, increased capacity might have resulted in different minimum cut. (2) When all edges have same capacity then minimum cut would remain same.
+          - Find a path $s$-$u$ and a path $v$-$t$ that contain only edges of positive flow. Remove $1$ unit of flow for each edge on path $s-u$, and $v-t$. This step takes $O(m)$.
+          - Run Ford-Fulkerson. There is at most one iteration since the flow will increases by at most $1$. One iteration takes $O(m)$.
 
-    Example of (1):
+    2. True.
+        Decreasing by $k$ is the same as decreasing in $k$ steps of 1. Each such step decreases the max flow by at most 1. So the total decrease is at most $k$.
 
-    :::{figure} max-flow-ex-1
-    <img src="../imgs/max-flow-ex-1.png" width = "30%" alt=""/>
+    3. True.    
+        - If edge $e$ is in every min cut, then increasing the capacity of $e$ by $1$ increases the min cut value by $1$.
+        - Else, edge $e$ is not in every min cut, then increasing the capacity of $e$ by $1$ leaves the min cut value unchanged.
 
-    New min-cut becomes $S$-$A$ with cut capacity $5$.
-    :::
+    4. True. Increasing by $k$ is the same as increasing in $k$ steps of 1. By the previous solution, each such step increases the max flow by at most $1$. So the total increase is at most $k$.
 
-    For (2), if all edges have the same capacity $c$, then the capacity of any cut is $nc$ where $n$ is the number of edges cut. So a min-cut has $n_\min$. After $c$ becomes $c+1$, it is still a min-cut since it has $n_\min$.
+        Algorithm to update the flow
+
+        - Repeat at most $k$ times:
+          - Look for an augmenting path in the residual network by BFS/DFS.
+          - If there is one, then update the existing flow, else terminate.
+
+        Each pass takes $O(m)$, total $O(km)$.
+
+    5. False. More specifically,
+        - If some edge has different capacity, increasing capacity might have resulted in different minimum cut, as the graph below.
+        - Else all edges have same capacity then minimum cut would remain same. To see this, if all edges have the same capacity $c$, then the capacity of any cut is $xc$ where $x$ is the number of edges cut. So a min-cut has $x_\min$. After $c$ becomes $c+1$, it is still a min-cut since it has $x_\min$.
+
+        :::{figure} max-flow-ex-1
+        <img src="../imgs/max-flow-ex-1.png" width = "30%" alt=""/>
+
+        New min-cut becomes $S$-$A$ with cut capacity $5$.
+        :::
 
     ::::
 
@@ -671,76 +737,49 @@ Let $G$ be an arbitrary (directed) flow network with integral edge capacities
 
     :::
 
-1. Increasing the capacity of a single edge $(u,v)$ by $1$ can result in an increase of at
-most 1 in the max flow.
+
+
+1. [**Acyclic flow**] Show an efficient algorithm to find a maximum $s$-$t$ flow in $G$ which is integral and acyclic.
 
     :::{admonition,dropdown,seealso} *Solution*
+    Algorithm (Eliminating flow cycles)
 
-    If $(u, v)$ is in every min cut, then increasing the capacity of $(u, v)$ by 1 increases the min cut value by 1. If (u, v) is not in every min cut, then increasing the capacity of $(u, v)$ by 1 leaves the min cut value unchanged. Either way, the capacity increases by at most 1. The claim follows from the max-flow-min-cut theorem.
+    1. Use Edmonds-Karp algorithm to compute a maximum flow $f$
+    2. Delete every edge $e$ with $f(e)=0$ in $G$ and obtain a new flow network $H$.
+    3. While True:
+        - Find a simple cycle $C$ in $H$, or correctly establishes that no such cycle exists. To to so, for each vertex $v \in V(H)$, perform BFS from $v$. If BFS ever discovers a vertex $u$, such that an edge $(u,v)\in E(H)$, then we can use the BFS to compute a simple path connecting $v$ to $u$ in $H$, which, together with edge $(u,v)$ provides a simple cycle in $C$ containing $v$.
+          - If the BFS never discovers a vertex $u$ for which edge $(u,v)$ exists, then no simple cycle in $H$ may contain $v$. Terminate.
+        - Otherwise, $C$ exists. Select an edge $e\in E(C)$ that carries the smallest amount of flow among all edges in $C$; denote this flow amount by $\Delta$. We then decrease the flow on every edge of $C$ by $\Delta$, and recompute $H$. This is guaranteed to produce a feasible flow, whose value is exactly the same as the value of the original flow (since vertex $s$ may not lie on cycle $C$).
+
+    Running Time $O(m^2 n)$
+
+    1. $O(m^2 n)$
+    2. $O(m)$
+    3. $O(m\cdot mn)$
+       - In every iteration of the algorithm, the flow on at least one edge decreases to $0$, and we never increase the flow on any edge. Therefore, the total number of iterations is $O(m)$.
+       - Finding a simple cycle takes $O(n\cdot m)$
+       - Updating flow and recomputing graph $H$ takes $O(m)$
 
     :::
 
-
-1. Increasing the capacity of a single edge $(u, v)$ by a positive integer $k$ can result in
-an increase of at most $k$ in the max flow.
+1. [**Incoming edges to source and outgoing edge from sink**] Assume now that vertex $s$ may have incoming edges and $t$ may have outgoing edges. Recall that in such a case, the value of a flow $f$ is dened to be $\sum_{e \in \delta^{+}(s)} f(e)-\sum_{e \in \delta^{-}(s)} f(e)$. Prove that there exists a maximum flow $f$, such that $f(e)=0$ for every edge $e \in \delta^{-}(s) \cup \delta^{+}(t)$.
 
     :::{admonition,dropdown,seealso} *Solution*
 
-    Increasing by $k$ is the same as increasing in $k$ steps of 1. By part 1, each such step increases the max flow by at most 1. So the total increase is at most $k$.
+    First, we run Edmonds-Karp algorithm to obtain a maximum $s$-$t$ flow $f$.
 
-    Algorithm:
-      - Repeat at most k times:
+    In $f$, if there is an edge $e \in \delta^- (s)$ such that $f(e)>0$, then $s$ must be in a cycle that every edge contains positive flow (why??). For each of such cycle $C$, we subtract $\Delta = \min _{e \in C} f(e)$ from all flows of edges in $C$ to eliminate it. At most $m$ iterations, we will have $f(e)=0$ for all $e \in \delta^- (s)$. Note that by the flow conservation constraints, the resulting flow is also a maximum flow and the flow value is unchanged.
 
-        - Look for an augmenting path in the residual network by BFS/DFS
-        - If there is one, then add it to the existing flow, else return
+    The operation to the outgoing edges from $t$ is similar. Finally, we obtain a required maximum flow.
 
-    Each pass takes $O(m)$, total $O(km)$.
+    $\square$
 
-    :::
+    An alternative approach is to prove the output graph in the previous question has no positive flow for edges entering $s$ and leaving $t$.
 
-1. Decreasing the capacity of a single edge $(u, v)$ by 1 can result in a decrease of at most 1 in the max flow.
-
-    :::{admonition,dropdown,seealso} *Solution*
-
-
-    If $(u, v)$ is in some min cut, then decreasing the capacity of $(u, v)$ decreases the min cut value by 1. If $(u, v)$ is not in every min cut, then decreasing the capacity of $(u, v)$ by 1 leaves the min cut value unchanged. Either way, the capacity decreases by at most 1. The claim follows from the max-flow-min-cut theorem.
-
-    If $c(u,v) \ge f(u,v) + 1$, then the max flow remains the same. If $c(u,v) = f(u,v)$ (saturated edge), then to satisfy the constraint, we need to remove one unit of flow from $s$ to $t$ that goes through edge $(u,v)$. The algorithm is
-
-      - Find a path $s-u$ and a path $v-t$ that contain only edges of positive flow. Remove 1 unit of flow for each edge on path $s-u$, and $v-t$. This step takes $O(m)$.
-      - Run FF. There is at most one iteration since the flow will increases by at most 1. One iteration takes $O(m)$.
+    Note that this proves that in the maximum flow problem, we can assume without loss of generality that no edge enters s and no edge leaves t, as deleting all such edges does not change the maximum flow value.
 
     :::
 
-1. Decreasing the capacity of a single edge $(u, v)$ by a positive integer $k$ can result
-in a decrease of at most $k$ in the max flow.
-
-    :::{admonition,dropdown,seealso} *Solution*
-
-    Decreasing by $k$ is the same as decreasing in $k$ steps of 1. Each such step decreases the max flow by at most 1. So the total decrease is at most $k$.
-
-    :::
-
-1. Vertex-capacity max-flow: capacity constraints are on vertices. Each vertex has capacity constraint $c(v)$.
-
-    :::{admonition,dropdown,seealso} *Solution*
-
-    Sol: assign infinite capacity to all edges. Convert each vertex to two vertices connected by an edge, with edge weight $c(e) = c(v)$. Equivalent.
-
-    :::
-
-1. Vertex-disjoint path problem: find maximum number of vertex-disjoint paths (no two paths share vertices) connecting $S$ to $T$.
-
-
-    :::{admonition,dropdown,seealso} *Solution*
-
-    Recall Menger’s Theorem:
-    - The maximum number of EDPs connecting $S$ to $T$ is equal to the minimum number of edges needed to disconnect $S$ from $T$.
-
-    The corresponding version in this setting is:
-    - The maximum number of **VDPs** connecting $S$ to $T$ is equal to the minimum number of **vertices** needed to disconnect $S$ from $T$.
-    -
-    :::
 
 ### More
 
