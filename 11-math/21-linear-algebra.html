@@ -949,7 +949,7 @@
   \boldsymbol{A} &amp; \boldsymbol{B} \\
   \boldsymbol{C} &amp; \boldsymbol{D}
   \end{array}\right)^{\top} &amp;=\left(\begin{array}{l}
-  \boldsymbol{A}^{\top} \boldsymbol{C}^{\top} \\
+  \boldsymbol{A}^{\top} &amp; \boldsymbol{C}^{\top} \\
   \boldsymbol{B}^{\top} &amp; \boldsymbol{D}^{\top}
   \end{array}\right)
   \end{aligned}
@@ -1069,11 +1069,10 @@
 </dd>
 <dt>Properties</dt><dd><p>Transformation by <span class="math notranslate nohighlight">\(\boldsymbol{U}\)</span> preserves vector length an angle.</p>
 <div class="math notranslate nohighlight">
-\[
-  \begin{equation}
-  \|\mathbf{U x}\|=\|\mathbf{x}\|,(\mathbf{U x})^{T} \mathbf{U} \mathbf{y}=\mathbf{x}^{T} \mathbf{y}
-  \end{equation}
-  \]</div>
+\[\begin{split}\begin{aligned}
+  \|\boldsymbol{U x}\| &amp;=\|\boldsymbol{x}\| \\
+  (\boldsymbol{U x})^{\top} \boldsymbol{U} \boldsymbol{y} &amp;=\boldsymbol{x}^{\top} \boldsymbol{y}
+  \end{aligned}\end{split}\]</div>
 </dd>
 </dl>
 </div>
@@ -1224,20 +1223,21 @@
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(\lambda_1, \lambda_2, \ldots, \lambda_n\)</span> are eigenvalues of <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{u}  _i\)</span> are their corresponding eigenvectors.</p>
 <dl class="simple myst">
-<dt>Corollary</dt><dd><p>the eigenvalues of symmetric matrices are real.
-Proof:</p>
-</dd>
-</dl>
+<dt>Corollary</dt><dd><p>The eigenvalues of real symmetric matrices are real.</p>
+<div class="dropdown seealso admonition">
+<p class="admonition-title"> <em>Proof</em></p>
+<p>Suppose that <span class="math notranslate nohighlight">\((\lambda, \boldsymbol{v})\)</span> is a (possibly complex) eigenvalue and eigenvector pair of the a symmetric matrix <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span>. Using the fact that <span class="math notranslate nohighlight">\(\overline{\boldsymbol{A}  \boldsymbol{v}} = \overline{\lambda \boldsymbol{v}} \Rightarrow \boldsymbol{A}  \overline{\boldsymbol{v}} = \overline{\lambda} \overline{\boldsymbol{v}}\)</span> and  <span class="math notranslate nohighlight">\(\boldsymbol{A} ^{\top} = \boldsymbol{A}\)</span>, we have</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
-\begin{equation}
-\begin{array}{l}
-\mathbf{A} \mathbf{u}=\lambda \mathbf{u} \Rightarrow \mathbf{u}^{\star T} \mathbf{A} \mathbf{u}=\lambda \mathbf{u}^{\star T} \mathbf{u} \\
-\mathbf{A} \mathbf{u}^{\star}=\lambda^{\star} \mathbf{u}^{\star} \Rightarrow \mathbf{u}^{T} \mathbf{A} \mathbf{u}^{\star}=\lambda^{\star} \mathbf{u}^{T} \mathbf{u}^{\star} \Rightarrow \mathbf{u}^{\star T} \mathbf{A}^{T} \mathbf{u}=\lambda^{\star} \mathbf{u}^{\star T} \mathbf{u} \\
-\mathbf{A}=\mathbf{A}^{T} \Rightarrow\left(\lambda-\lambda^{\star}\right) \mathbf{u}^{\star T} \mathbf{u}=0 \Rightarrow \lambda=\lambda^{\star}
-\end{array}
-\end{equation}
-\end{split}\]</div>
+  \begin{aligned}
+  \overline{\boldsymbol{v}}^{\top} \boldsymbol{A} \boldsymbol{v}=\overline{\boldsymbol{v}}^{\top}(\boldsymbol{A} \boldsymbol{v})=\overline{\boldsymbol{v}}^{\top}(\lambda \boldsymbol{v})=\lambda(\overline{\boldsymbol{v}} \cdot \boldsymbol{v}) \\
+  \overline{\boldsymbol{v}}^{\top} \boldsymbol{A} \boldsymbol{v}=(\boldsymbol{A} \overline{\boldsymbol{v}})^{\top} \boldsymbol{v}=(\bar{\lambda} \overline{\boldsymbol{v}})^{\top} \boldsymbol{v}=\bar{\lambda}(\overline{\boldsymbol{v}} \cdot \boldsymbol{v})
+  \end{aligned}
+  \end{split}\]</div>
+<p>Since <span class="math notranslate nohighlight">\(\boldsymbol{v} \neq \boldsymbol{0}\)</span>, we have <span class="math notranslate nohighlight">\(\overline{\boldsymbol{v}} \cdot \boldsymbol{v} \neq 0\)</span>. Thus <span class="math notranslate nohighlight">\(\lambda=\bar{\lambda}\)</span>, which means <span class="math notranslate nohighlight">\(\lambda \in \mathbb{R}\)</span>.</p>
+</div>
+</dd>
+</dl>
 </div>
 <div class="section" id="cholesky-decomposition">
 <h3>Cholesky Decomposition<a class="headerlink" href="#cholesky-decomposition" title="Permalink to this headline">¶</a></h3>
@@ -1263,18 +1263,17 @@ Proof:</p>
 </dl>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(\boldsymbol{U} \in \mathbb{R} ^{n \times n}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{V} \in \mathbb{R} ^{p\times p}\)</span> are orthogonal matrices.</p></li>
-<li><p><span class="math notranslate nohighlight">\(\\boldsymbol{\Sigma}\)</span> is a diagonal matrix.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}\)</span> is a diagonal matrix.</p></li>
 </ul>
 <dl class="simple myst">
 <dt>Properties</dt><dd><p>We can also write SVD as</p>
-</dd>
-</dl>
 <div class="math notranslate nohighlight">
 \[
-\mathbf{A}=\sigma_{1} \mathbf{u}_{1} \mathbf{v}_{1}^{T}+\sigma_{2} \mathbf{u}_{2} \mathbf{v}_{2}^{T}+\ldots+\sigma_{r} \mathbf{u}_{r} \mathbf{v}_{r}^{T}
-\]</div>
-<dl class="simple myst">
-<dt>where <span class="math notranslate nohighlight">\(r = \operatorname{rank}\left( \boldsymbol{A}  \right)\)</span>.</dt><dd><p>As a result, <span class="math notranslate nohighlight">\(\mathbf{A} \mathbf{v}=\sigma \mathbf{u}, \mathbf{A}^{T} \mathbf{u}=\sigma \mathbf{v}\)</span>.</p>
+  \boldsymbol{A}=\sigma_{1} \boldsymbol{u}_{1} \boldsymbol{v}_{1}^{\top}+\sigma_{2} \boldsymbol{u}_{2} \boldsymbol{v}_{2}^{\top}+\ldots+\sigma_{r} \boldsymbol{u}_{r} \boldsymbol{v}_{r}^{\top}
+  \]</div>
+<p>where <span class="math notranslate nohighlight">\(r = \operatorname{rank}\left( \boldsymbol{A}  \right)\)</span>.</p>
+</dd>
+<dd><p>As a result, <span class="math notranslate nohighlight">\(\boldsymbol{A} \boldsymbol{v}=\sigma \boldsymbol{u}, \boldsymbol{A}^{\top} \boldsymbol{u}=\sigma \boldsymbol{v}\)</span>.</p>
 </dd>
 <dt>Theorem</dt><dd><p>Every matrix has SVD.</p>
 </dd>

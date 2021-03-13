@@ -577,6 +577,7 @@ where $\boldsymbol{R}$ determines the orientation of the ellipsoid, and the eige
 
 For a classification task, we can perform PCA on the features before fitting the data to a classifier. The classifier might be more accurate since PCA reduces noise.
 
+(pca-autoencoder)=
 ### Autoencoders
 
 PCA can be viewed as an [autoencoder](../37-neural-networks/11-autoencoders) of one single layer with certain constraints.

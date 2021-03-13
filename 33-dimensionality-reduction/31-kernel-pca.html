@@ -868,7 +868,7 @@
 <p>Linear PCA only consider linear subspaces</p>
 <div class="math notranslate nohighlight">
 \[
-\hat{\boldsymbol{x}} = \boldsymbol{W} \boldsymbol{z}
+\boldsymbol{z} = \boldsymbol{W} \boldsymbol{x}
 \]</div>
 <p>To improve this, we can apply feature transformation <span class="math notranslate nohighlight">\(\boldsymbol{\phi}: \mathbb{R} ^d \rightarrow \mathbb{R} ^p\)</span> to include non-linear features, such as <span class="math notranslate nohighlight">\(\boldsymbol{\phi} ([x_1, x_2])= [x_1, x_1^2, x_1 x_2]\)</span>.</p>
 <p>Then the data matrix changes from <span class="math notranslate nohighlight">\(\boldsymbol{X}_{n \times d}\)</span> to <span class="math notranslate nohighlight">\(\boldsymbol{\Phi}_{n \times p}\)</span>. Then we run standard PCA on the new data covariance matrix <span class="math notranslate nohighlight">\(\frac{1}{n} \boldsymbol{\Phi} ^\top  \boldsymbol{\Phi}\)</span>.</p>
@@ -876,7 +876,7 @@
 <p class="sidebar-title"></p>
 <p>For kernelized problems, the original problem formulation (primal) is in the original feature space <span class="math notranslate nohighlight">\(\mathbb{R} ^d\)</span>, and the kernelized problem formulation (dual) is in the transformed space <span class="math notranslate nohighlight">\(\mathbb{R} ^p\)</span>.</p>
 </div>
-<p>Note that handcrafting feature transformation <span class="math notranslate nohighlight">\(\boldsymbol{\phi}\)</span> is equivalent to choosing a kernel function <span class="math notranslate nohighlight">\(k(\boldsymbol{x}_1, \boldsymbol{x} _2) = \boldsymbol{\phi}(\boldsymbol{x} _1) ^\top \boldsymbol{\phi}(\boldsymbol{x} _2)\)</span>. And there are many advantages choosing kernels instead of handcrafting <span class="math notranslate nohighlight">\(\boldsymbol{\phi}\)</span>. After choosing <span class="math notranslate nohighlight">\(k(\cdot, \cdot)\)</span>, We can compute the new <span class="math notranslate nohighlight">\(n \times n\)</span> inner product matrix by <span class="math notranslate nohighlight">\(\boldsymbol{K} = \boldsymbol{\Phi} \boldsymbol{\Phi} ^\top\)</span>, aka <strong>kernel matrix</strong>. And the <span class="math notranslate nohighlight">\(k\)</span>-dimensional embeddings for a data vector <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> is given by</p>
+<p>Note that handcrafting feature transformation <span class="math notranslate nohighlight">\(\boldsymbol{\phi}\)</span> is <a class="reference internal" href="../30-ml-basics/05-kernels.html#kernels-logic"><span class="std std-ref">equivalent</span></a> to choosing a kernel function <span class="math notranslate nohighlight">\(k(\boldsymbol{x}_1, \boldsymbol{x} _2) = \boldsymbol{\phi}(\boldsymbol{x} _1) ^\top \boldsymbol{\phi}(\boldsymbol{x} _2)\)</span>. And there are many advantages choosing kernels instead of handcrafting <span class="math notranslate nohighlight">\(\boldsymbol{\phi}\)</span>. After choosing <span class="math notranslate nohighlight">\(k(\cdot, \cdot)\)</span>, We can compute the new <span class="math notranslate nohighlight">\(n \times n\)</span> inner product matrix by <span class="math notranslate nohighlight">\(\boldsymbol{K} = \boldsymbol{\Phi} \boldsymbol{\Phi} ^\top\)</span>, aka <strong>kernel matrix</strong>. And the <span class="math notranslate nohighlight">\(k\)</span>-dimensional embeddings for a data vector <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> is given by</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \boldsymbol{z} = \boldsymbol{A} ^\top \left[\begin{array}{c}
@@ -1165,21 +1165,30 @@ k\left(\boldsymbol{x}_{n}, \boldsymbol{x}\right)
 <li><p><span class="math notranslate nohighlight">\(d\)</span> nodes, which represent <span class="math notranslate nohighlight">\(\boldsymbol{x} \in \mathbb{R} ^d\)</span></p></li>
 </ul>
 </li>
-<li><p>Hidden layer:</p>
+<li><p>Kernel layer:</p>
 <ul>
 <li><p><span class="math notranslate nohighlight">\(n\)</span> kernel nodes, where the <span class="math notranslate nohighlight">\(j\)</span>-th node represents <span class="math notranslate nohighlight">\(k(\boldsymbol{x}, \boldsymbol{x}_i)\)</span></p></li>
 <li><p>Fixed weights where <span class="math notranslate nohighlight">\(w_{ij}=1\)</span></p></li>
 <li><p>The activation function is simply the identity function</p></li>
 </ul>
 </li>
-<li><p>Output layer</p>
+<li><p>Hidden layer</p>
 <ul>
 <li><p><span class="math notranslate nohighlight">\(k\)</span> nodes, which represent <span class="math notranslate nohighlight">\(\boldsymbol{z} \in \mathbb{R} ^k\)</span></p></li>
 <li><p>Weights <span class="math notranslate nohighlight">\(v_{ij} = \alpha_{ij}\)</span></p></li>
 <li><p>The activation function is simply the identity function</p></li>
 </ul>
 </li>
+<li><p>Output layer</p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(n\)</span> nodes, which represents reconstruction of kernel layer (similar to <a class="reference internal" href="11-principal-component-analysis.html#pca-autoencoder"><span class="std std-ref">PCA as autoencoders</span></a>)</p></li>
+<li><p>Weights <span class="math notranslate nohighlight">\(\alpha_{ji}\)</span></p></li>
+<li><p>The activation function is simply the identity function</p></li>
+<li><p>Loss: reconstruction loss</p></li>
 </ul>
+</li>
+</ul>
+<p>In short, we transform the input from <span class="math notranslate nohighlight">\(n\times d\)</span> data matrix <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span> to <span class="math notranslate nohighlight">\(n\times n\)</span> kernel matrix <span class="math notranslate nohighlight">\(\boldsymbol{K}\)</span>, and run PCA. In this way, the learned weights <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> are the eigenvectors of <span class="math notranslate nohighlight">\(\boldsymbol{K} ^{\top} \boldsymbol{K}\)</span> (analogous to \boldsymbol{X} ^{\top} \boldsymbol{X} in PCA), which are the same as <span class="math notranslate nohighlight">\(\boldsymbol{K}\)</span>, i.e. what we want for.</p>
 </div>
 </div>
 </div>

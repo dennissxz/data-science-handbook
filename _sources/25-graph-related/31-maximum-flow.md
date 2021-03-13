@@ -94,6 +94,9 @@ This gives a feasible solution. Optimal? No, depends on the order of $s$-$t$ pat
 
 ## Algorithm
 
+
+### Algorithm
+
 We first make an additional assumption and define residual flow networks.
 
 
@@ -183,8 +186,6 @@ An augmenting path in residual graph can be found using DFS or BFS.
   - Re-compute $G_f$.
 ---
 
-
-## Correctness
 
 ### Feasibility
 
@@ -276,7 +277,7 @@ Definition (In- and out-flow of a set of vertices)
 
   $$\begin{aligned}
   f^{\text{in}}(S) &= \sum_{u\notin S, v \in S} f(u, v) \\
-  f^{\text{out}}(S) = \sum_{u\in S, v \notin S} f(u, v)
+  f^{\text{out}}(S) &= \sum_{u\in S, v \notin S} f(u, v)
   \end{aligned}$$
 
 Definition ($s$-$t$ cut)
@@ -284,7 +285,7 @@ Definition ($s$-$t$ cut)
 
   $$\begin{aligned}
   f^{\text{in}}(A) &= f^{\text{out}}(B) \\
-  f^{\text{out}}(A) = f^{\text{in}}(B)
+  f^{\text{out}}(A) &= f^{\text{in}}(B)
   \end{aligned}$$
 
 
@@ -304,9 +305,7 @@ Property (Compute flow value from a cut)
 
 :::{admonition,dropdown,seealso} *Proof*
 
-```{margin}
-If there is no edge between two vertices $u$ and $v$, then $f(u,v)=0$
-```
+Let $f(u,v)=0$ if there is no edge between two vertices $u$ and $v$.
 
 $$\begin{aligned}
 \operatorname{val}(f)
@@ -367,39 +366,7 @@ $\square$
 :::
 
 
-## Minimum Cut
-
-
-### Problem
-
-**Input**
-
-- A directed graph $G=(V,E)$.
-- Capacity $c(e)$.
-- Two special vertices $s$ and $t$.
-
-**Goal**
-
-Find an $s$-$t$ cut $(A,B)$ where $s \in A, t \in B$, with minimal cut capacity $c(A,B)$, which is the sum of capacities of edge from $A$ to $B$, $c(A, B) = \sum_{u\in A, v\in B} c(u,v)$.
-
-In other words, we want to remove some edges to disconnect $s$ and $t$, and minimize the total capacities of these removed edges.
-
-The vertex partition's perspective and edge removal's perspective are actually equivalent.
-
-
-
-### Analysis
-
-Theorem (Equivalency of maximum flow and minimum cut)
-: In any flow network $G$, the value of a maximum $s$-$t$ flow is equal to the capacity of a minimum $s$-$t$ cut.
-
-The proof is simply from the Corollary.
-
-Thus, FF algorithm also gives an algorithm for finding a minimum $s$-$t$ cut: after the algorithm stops, in the residual graph $G_f$, find the set of vertices reachable from $s$, then $(A, V\setminus B)$ is a minimum $s$-$t$ cut.
-
-
-
-## Complexity
+### Complexity
 
 Let $m$ be the number of edges in the graph $G$.
 
@@ -430,13 +397,7 @@ Recall different running time
 :::
 
 
-
-
-## Improvement and Extension
-
-$O(mn c_\max)$ is not efficient. There are alternative algorithms to improve this.
-
-### Edmonds-Korp Algorithm
+### Improvement: Edmonds-Korp Algorithm
 
 Instead of using an arbitrary augmenting path, we use the **shortest** path $s$-$t$ in $G$ that minimizes number of edges. This work takes $O(m)$ by BFS or DFS, so each iteration still takes $O(m)$. But it reduces the number of iterations from $O(nc_\max)$ to $O(nm)$, this leads to the Edmonds-Korp algorithm with complexity $O(nm^2)$.
 
@@ -485,27 +446,57 @@ $(1+\epsilon)$-approximation returns a flow of value at least $\frac{OPT}{1+\eps
 Theorem (Integrality of flow)
 : If all capacities are integers, then the FF algorithm finds a maximum flow where $f(e)$ is integers for all $e$.
 
-### Flow-path Perspective
-
-Recall the flow is define for edges. We can consider a path-based flow $f^\prime : \mathcal{P}\rightarrow \mathbb{R} _{\ge 0}$. Let $\mathcal{P}$ be a set of all $s$-$t$ paths. Let $f ^\prime (P)$ be a flow of a path $P \in \mathcal{P}$. It is valid iff
-
-$$
-\forall e:\quad \sum_{P: P \in \mathcal{P} \text{ and } e \in E(P)} f ^\prime (P) \le c(e)
-$$
-
-The value of the set $\mathcal{P}$ is $\sum_{P \in \mathcal{P}}f ^\prime (P)$.
-
-Theorem (Equivalence)
-: If the original edge-defined flow $\left\{ f(e) \right\}_{e \in E}$ was feasible, then the path-defined flow $\left\{ f ^\prime (P) \right\}_{P \in \mathcal{P}}$ is also feasible and has some **integral** value. That is, the two kinds of definition are equivalent.
 
 
-### Undirected Graphs
+## Minimum Cut
 
-To find max-flow in undirected graph with capacities $c(e)>0$, we can make the graph directed.
+### Problem
+
+**Input**
+
+- A directed graph $G=(V,E)$.
+- Capacity $c(e)$.
+- Two special vertices $s$ and $t$.
+
+**Goal**
+
+Find an $s$-$t$ cut $(A,B)$ where $s \in A, t \in B$, with minimal cut capacity $c(A,B)$, which is the sum of capacities of edge from $A$ to $B$, $c(A, B) = \sum_{u\in A, v\in B} c(u,v)$.
+
+In other words, we want to remove some edges to **disconnect** $s$ and $t$, and minimize the total capacities of these removed edges. The vertex partition's perspective and edge removal's perspective are equivalent.
+
+
+
+### Analysis
+
+Theorem (Equivalency of maximum flow and minimum cut)
+: In any flow network $G$, the value of a maximum $s$-$t$ flow is equal to the capacity of a minimum $s$-$t$ cut.
+
+The proof is simply from the Corollary.
+
+Thus, FF algorithm also gives an algorithm for finding a minimum $s$-$t$ cut: after the algorithm stops, in the residual graph $G_f$, find the set of vertices reachable from $s$, then $(A, V\setminus B)$ is a minimum $s$-$t$ cut.
+
+
+
+
+
+## Extension
+
+$O(m n c_\max)$ is not efficient. There are alternative algorithms to improve this.
+
+### Max-flow and Min-cut in Undirected Graphs
+
+To find maximum $s-t$ flow in undirected graph with capacities $c(e)>0$, we can make the graph directed, and run Ford-Fulkerson algorithm on the directed counterpart.
 
 - Convert every undirected edge to two anti-parallel directed edges with the same capacity as the undirected edge.
-- Run the algorithm for directed graph.
-- Finally, run flow cancelation, such that one of the two anti-parallel edges is reduced to 0.
+
+  $$u - v \quad \Rightarrow \quad  u \leftrightarrows v$$
+
+- Run the Ford-Fulkerson algorithm for directed graph.
+- Finally, run flow cancelation for two anti-parallel edges, such that one of the two anti-parallel edges is reduced to 0.
+
+  $$u \leftrightarrows v \quad \Rightarrow \quad  u \rightarrow v \text{ or } u \leftarrow v$$
+
+The direction of an edge indicates the direction of flow (e.g. pipeline) in the undirected graph. The final flow value are the same, and the integrality of max-flow also holds.
 
 Meanwhile, we can find a minimum cut on a undirected graph, the capacity/cost of the cut is the sum of the capacities of the edges across $A$ and $B$.
 
@@ -513,29 +504,56 @@ $$
 \sum _{e \in E(A,B)} c(e)
 $$
 
-Likewise, we convert every undirected edge to two anti-parallel directed edges, run FF algorithm to find a $s$-$t$ cut. This gives the same value of max $s$-$t$ flow.
+Likewise, we convert every undirected edge to two anti-parallel directed edges, run Ford-Fulkerson algorithm to find a $s$-$t$ cut $(A,B)$. The cut values are the same.
 
-More efficient algorithm is under research.
+Since in the directed graph we have max-flow $=$ min-cut, in the undirected graph we have max-flow $=$ min-cut.
 
-### Edge-Disjoint Paths and $S$-$T$ Cut
+### Path-based Flow
+
+Recall the flow $f: V\rightarrow \mathbb{R} _{\ge 0}$ is defined for edges. We can consider a path-based flow $f_{p} : \mathcal{P}\rightarrow \mathbb{R} _{\ge 0}$, where $\mathcal{P}$ is the set of all $s$-$t$ paths. Let $f _{p} (P)$ be the flow of a path $P \in \mathcal{P}$. It is valid if the edge capacity constraint holds.
+
+$$
+\forall e:\quad \sum_{P: P \in \mathcal{P} \text{ and } E(P) \ni e} f _{p} (P) \le c(e)
+$$
+
+The value of the set $\mathcal{P}$ is $\sum_{P \in \mathcal{P}}f _{p} (P)$, and we maximize it. But the number of such paths are exponential.
+
+Theorem (Equivalence of edge-flow and path-flow)
+: Given an edge-based flow $\left\{ f(e) \right\}_{e \in E}$, we can compute the path-based flow $\left\{ f _{p} (P) \right\}_{P \in \mathcal{P}}$ efficiently, and
+
+  - They have the same flow values $\sum_{e \in \delta^+(s)} f(e)=\sum_{P \in \mathcal{P}}f _{p} (P)$
+  - If $f$ is feasible, then , and $f _{p}$ is also feasible.
+  - If $f$ is integral, then $f _{p}$ is also integral.
+
+  And the reverse also hold.
+
+
+### Edge-Disjoint Paths
+
+Ford-Fulkerson algorithm is an efficient algorithm for finding edge-disjoint paths problem in directed graph.
 
 ```{margin}
 Edge-disjoint path = EDP
 ```
 
-For a directed graph with two disjoint **sets** of vertices $S$ and $T$, we want to find a maximum set $\mathcal{P}$ of $S$-$T$ paths that are edge-disjoint, i.e. no path in $\mathcal{P}$ can share any edges.
+**Problem**: For a directed graph with two disjoint **sets** of vertices $S$ and $T$, we want to find a maximum-cardinality set $\mathcal{P}$ of $S$-$T$ paths that are edge-disjoint, i.e. no path in $\mathcal{P}$ can share any edges.
 
 To solve this,
 
-1. For every edge $e\in G$, set capacity $c(e)=1$. Add one node $s$ that connects to every vertex $u$ in $S$ with capacity $\infty$. Add one node $t$ that connects to every vertex $v$ in $T$ with capacity $\infty$.
+1. For every edge $e\in G$, set capacity $c(e)=1$. Add one node $s$ that connects to every vertex $u$ in $S$ with capacity $\infty$. Add one node $t$ that connects to every vertex $v$ in $T$ with capacity $\infty$. Call this flow network $H$.
 
-1. Run FF algorithm and obtain a flow $f$. Since $f(e)$ is integer, it is 1.
+    $$
+    s \overset{\infty}{-} S \cdots T \overset{\infty}{-} t
+    $$
 
-1. Run flow-path decomposition, then each path also carries flow value 1. After we delete the path, we remove all edges along the path since $c(e)=1$. Then, the subsequent paths must be disjoint with this one. We will get a collection of EDP from $S$ to $T$. The number of paths equals to the flow value.
+1. Run Ford-Fulkerson algorithm on $H$ to obtain a flow $f$. Since $f(e)\le c(e)=1$ and is integral, it is 1.
 
-**$S$-$T$ Cut**
+1. Run flow-path decomposition, then each path also carries path-flow value 1. When we delete the path, we actually remove all edges along the path since $c(e)=1$. Moreover, the subsequent paths must be disjoint with this one since $c(e)=1$. We will get a collection of EDP from $S$ to $T$. The number of paths equals to the flow value.
 
-Given two sets of vertices $S$ and $T$ in a directed graph $G$, what is the minimum number of edges needed to disconnect $S$ from $T$? Formally, find a minimum-cardinality edge set $E ^\prime \subset E$ such that in the remaining graph $G \backslash E ^\prime$, there is **no** path from a vertex of $S$ to a vertex of $T$.
+
+### $S$-$T$ Cut
+
+**Problem**: Given two sets of vertices $S$ and $T$ in a directed graph $G$, what is the minimum number of edges needed to disconnect $S$ from $T$? Formally, find a minimum-cardinality edge set $E ^\prime \subseteq E$ such that in the remaining graph $G \setminus E ^\prime$, there is **no** path from a vertex of $S$ to a vertex of $T$.
 
 Menger's Theorem
 : The maximum number of EDPs connecting $S$ to $T$ is equal to the minimum number of edges needed to disconnect $S$ from $T$.
@@ -545,6 +563,9 @@ The same can be done for undirected graphs.
 ### Vertex-capacity Max Flow
 
 In reality, capacities are often defined on vertices, such as computer networks. There are algorithms to solve vertex-capacity max-flow problem.
+
+
+
 
 ## Applications
 
@@ -614,14 +635,19 @@ Let $G$ be an arbitrary (directed) flow network with integral edge capacities
 
 1. T/F: Let $(A,B)$ be a minimum $s$-$t$ cut in G. Let $e=(u,v)$ be an edge of $G$ with $u\in A,v\in B$, and $c(e) ≥ 1$. Then **decreasing** the capacity of $e$ by 1 decreases the maximum flow value by $1$.
 
+    :::{admonition,dropdown,seealso} *Solution*
     True, since the capacity of all other minimum $s$-$t$ cut **without** edge $e$ are unchanged.
+    :::
 
 1. T/F: Let $(A,B)$ be a minimum $s$-$t$ cut in G. Let $e=(u,v)$ be an edge of $G$ with $u\in A,v\in B$, and $c(e) ≥ 1$. Then **increasing** the capacity of $e$ by 1 increases the maximum flow value by $1$.
 
+    :::{admonition,dropdown,seealso} *Solution*
     False, there may be another minimum $s$-$t$ cut **without** edge $e$.
+    :::
 
 1. T/F: Let $(A,B)$ be a minimum $s$-$t$ cut in G. If we **increase** the capacity of **each** edge in $E(G)$ by $1$, then $(A,B)$ remains a minimum $s$-$t$ cut in the new flow network.
 
+    ::::{admonition,dropdown,seealso} *Solution*
     False. (1) Had G contained edges of different capacities, increased capacity might have resulted in different minimum cut. (2) When all edges have same capacity then minimum cut would remain same.
 
     Example of (1):
@@ -629,27 +655,38 @@ Let $G$ be an arbitrary (directed) flow network with integral edge capacities
     :::{figure} max-flow-ex-1
     <img src="../imgs/max-flow-ex-1.png" width = "30%" alt=""/>
 
-    New min-cut becomes $S-A$ with cut capacity $5$.
+    New min-cut becomes $S$-$A$ with cut capacity $5$.
     :::
 
     For (2), if all edges have the same capacity $c$, then the capacity of any cut is $nc$ where $n$ is the number of edges cut. So a min-cut has $n_\min$. After $c$ becomes $c+1$, it is still a min-cut since it has $n_\min$.
 
+    ::::
+
+
 1. If $f$ is a valid $s$-$t$ flow in graph $G$ of value $v_f$, and $f ^\prime$ is a valid $s$-$t$ flow in the residual graph $G_f$ of value $v(f ^\prime)$, then there is a valid $s$-$t$ flow in graph G of value $v(f) + v(f ^\prime)$.
 
+    :::{admonition,dropdown,seealso} *Solution*
+
     True. Moreover, let $v (f_\max)$ be the value of a max-flow in $G$ and $v (f ^\prime _\max)$ be the value of a max-flow in residual graph $G_f$, then we have $v(f) + v(f ^\prime) \le v (f_\max)$ with equality iff $v(f ^\prime) = v(f ^\prime _\max)$.
+
+    :::
 
 1. Increasing the capacity of a single edge $(u,v)$ by $1$ can result in an increase of at
 most 1 in the max flow.
 
-    If $(u, v)$ is in every min cut, then increasing the capacity of $(u, v)$ by 1 increases
-the min cut value by 1. If (u, v) is not in every min cut, then increasing the capacity of $(u, v)$ by 1 leaves the min cut value unchanged. Either way, the capacity increases by at most 1. The claim follows from the max-flow-min-cut theorem.
+    :::{admonition,dropdown,seealso} *Solution*
+
+    If $(u, v)$ is in every min cut, then increasing the capacity of $(u, v)$ by 1 increases the min cut value by 1. If (u, v) is not in every min cut, then increasing the capacity of $(u, v)$ by 1 leaves the min cut value unchanged. Either way, the capacity increases by at most 1. The claim follows from the max-flow-min-cut theorem.
+
+    :::
 
 
 1. Increasing the capacity of a single edge $(u, v)$ by a positive integer $k$ can result in
 an increase of at most $k$ in the max flow.
 
-    Increasing by $k$ is the same as increasing in $k$ steps of 1. By part 1, each such step
-increases the max flow by at most 1. So the total increase is at most $k$.
+    :::{admonition,dropdown,seealso} *Solution*
+
+    Increasing by $k$ is the same as increasing in $k$ steps of 1. By part 1, each such step increases the max flow by at most 1. So the total increase is at most $k$.
 
     Algorithm:
       - Repeat at most k times:
@@ -659,36 +696,53 @@ increases the max flow by at most 1. So the total increase is at most $k$.
 
     Each pass takes $O(m)$, total $O(km)$.
 
+    :::
+
 1. Decreasing the capacity of a single edge $(u, v)$ by 1 can result in a decrease of at most 1 in the max flow.
 
-    If $(u, v)$ is in some min cut, then decreasing the capacity of $(u, v)$ decreases the
-min cut value by 1. If $(u, v)$ is not in every min cut, then decreasing the capacity of
-$(u, v)$ by 1 leaves the min cut value unchanged. Either way, the capacity decreases
-by at most 1. The claim follows from the max-flow-min-cut theorem.
+    :::{admonition,dropdown,seealso} *Solution*
+
+
+    If $(u, v)$ is in some min cut, then decreasing the capacity of $(u, v)$ decreases the min cut value by 1. If $(u, v)$ is not in every min cut, then decreasing the capacity of $(u, v)$ by 1 leaves the min cut value unchanged. Either way, the capacity decreases by at most 1. The claim follows from the max-flow-min-cut theorem.
 
     If $c(u,v) \ge f(u,v) + 1$, then the max flow remains the same. If $c(u,v) = f(u,v)$ (saturated edge), then to satisfy the constraint, we need to remove one unit of flow from $s$ to $t$ that goes through edge $(u,v)$. The algorithm is
 
       - Find a path $s-u$ and a path $v-t$ that contain only edges of positive flow. Remove 1 unit of flow for each edge on path $s-u$, and $v-t$. This step takes $O(m)$.
       - Run FF. There is at most one iteration since the flow will increases by at most 1. One iteration takes $O(m)$.
 
+    :::
+
 1. Decreasing the capacity of a single edge $(u, v)$ by a positive integer $k$ can result
 in a decrease of at most $k$ in the max flow.
 
-    Decreasing by $k$ is the same as decreasing in $k$ steps of 1. Each such step
-decreases the max flow by at most 1. So the total decrease is at most $k$.
+    :::{admonition,dropdown,seealso} *Solution*
+
+    Decreasing by $k$ is the same as decreasing in $k$ steps of 1. Each such step decreases the max flow by at most 1. So the total decrease is at most $k$.
+
+    :::
 
 1. Vertex-capacity max-flow: capacity constraints are on vertices. Each vertex has capacity constraint $c(v)$.
 
+    :::{admonition,dropdown,seealso} *Solution*
+
     Sol: assign infinite capacity to all edges. Convert each vertex to two vertices connected by an edge, with edge weight $c(e) = c(v)$. Equivalent.
 
-1. Vertex-disjoint path problem: fin maximum number of vertex-disjoint paths (no two paths share vertices) connecting $S$ to $T$.
+    :::
 
-   Recall Menger’s Theorem:
-   - The maximum number of EDPs connecting $S$ to $T$ is equal to the minimum number of edges needed to disconnect $S$ from $T$.
+1. Vertex-disjoint path problem: find maximum number of vertex-disjoint paths (no two paths share vertices) connecting $S$ to $T$.
 
-   The corresponding version in this setting is:
-   - The maximum number of **VDPs** connecting $S$ to $T$ is equal to the minimum number of **vertices** needed to disconnect $S$ from $T$.
 
+    :::{admonition,dropdown,seealso} *Solution*
+
+    Recall Menger’s Theorem:
+    - The maximum number of EDPs connecting $S$ to $T$ is equal to the minimum number of edges needed to disconnect $S$ from $T$.
+
+    The corresponding version in this setting is:
+    - The maximum number of **VDPs** connecting $S$ to $T$ is equal to the minimum number of **vertices** needed to disconnect $S$ from $T$.
+    -
+    :::
+
+### More
 
 http://www.cim.mcgill.ca/~langer/251/E11-networkflow-2.pdf
 
