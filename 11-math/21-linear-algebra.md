@@ -21,7 +21,7 @@ Properties
   \boldsymbol{A} & \boldsymbol{B} \\
   \boldsymbol{C} & \boldsymbol{D}
   \end{array}\right)^{\top} &=\left(\begin{array}{l}
-  \boldsymbol{A}^{\top} \boldsymbol{C}^{\top} \\
+  \boldsymbol{A}^{\top} & \boldsymbol{C}^{\top} \\
   \boldsymbol{B}^{\top} & \boldsymbol{D}^{\top}
   \end{array}\right)
   \end{aligned}
@@ -137,11 +137,10 @@ Definition
 Properties
 : Transformation by $\boldsymbol{U}$ preserves vector length an angle.
 
-  $$
-  \begin{equation}
-  \|\mathbf{U x}\|=\|\mathbf{x}\|,(\mathbf{U x})^{T} \mathbf{U} \mathbf{y}=\mathbf{x}^{T} \mathbf{y}
-  \end{equation}
-  $$
+  $$\begin{aligned}
+  \|\boldsymbol{U x}\| &=\|\boldsymbol{x}\| \\
+  (\boldsymbol{U x})^{\top} \boldsymbol{U} \boldsymbol{y} &=\boldsymbol{x}^{\top} \boldsymbol{y}
+  \end{aligned}$$
 
 
 ### Idempotent Matrices
@@ -297,18 +296,22 @@ $$
 where $\lambda_1, \lambda_2, \ldots, \lambda_n$ are eigenvalues of $\boldsymbol{A}$ and $\boldsymbol{u}  _i$ are their corresponding eigenvectors.
 
 Corollary
-: the eigenvalues of symmetric matrices are real.
-Proof:
+: The eigenvalues of real symmetric matrices are real.
 
-$$
-\begin{equation}
-\begin{array}{l}
-\mathbf{A} \mathbf{u}=\lambda \mathbf{u} \Rightarrow \mathbf{u}^{\star T} \mathbf{A} \mathbf{u}=\lambda \mathbf{u}^{\star T} \mathbf{u} \\
-\mathbf{A} \mathbf{u}^{\star}=\lambda^{\star} \mathbf{u}^{\star} \Rightarrow \mathbf{u}^{T} \mathbf{A} \mathbf{u}^{\star}=\lambda^{\star} \mathbf{u}^{T} \mathbf{u}^{\star} \Rightarrow \mathbf{u}^{\star T} \mathbf{A}^{T} \mathbf{u}=\lambda^{\star} \mathbf{u}^{\star T} \mathbf{u} \\
-\mathbf{A}=\mathbf{A}^{T} \Rightarrow\left(\lambda-\lambda^{\star}\right) \mathbf{u}^{\star T} \mathbf{u}=0 \Rightarrow \lambda=\lambda^{\star}
-\end{array}
-\end{equation}
-$$
+  :::{admonition,dropdown,seealso} *Proof*
+
+  Suppose that $(\lambda, \boldsymbol{v})$ is a (possibly complex) eigenvalue and eigenvector pair of the a symmetric matrix $\boldsymbol{A}$. Using the fact that $\overline{\boldsymbol{A}  \boldsymbol{v}} = \overline{\lambda \boldsymbol{v}} \Rightarrow \boldsymbol{A}  \overline{\boldsymbol{v}} = \overline{\lambda} \overline{\boldsymbol{v}}$ and  $\boldsymbol{A} ^{\top} = \boldsymbol{A}$, we have
+
+  $$
+  \begin{aligned}
+  \overline{\boldsymbol{v}}^{\top} \boldsymbol{A} \boldsymbol{v}=\overline{\boldsymbol{v}}^{\top}(\boldsymbol{A} \boldsymbol{v})=\overline{\boldsymbol{v}}^{\top}(\lambda \boldsymbol{v})=\lambda(\overline{\boldsymbol{v}} \cdot \boldsymbol{v}) \\
+  \overline{\boldsymbol{v}}^{\top} \boldsymbol{A} \boldsymbol{v}=(\boldsymbol{A} \overline{\boldsymbol{v}})^{\top} \boldsymbol{v}=(\bar{\lambda} \overline{\boldsymbol{v}})^{\top} \boldsymbol{v}=\bar{\lambda}(\overline{\boldsymbol{v}} \cdot \boldsymbol{v})
+  \end{aligned}
+  $$
+
+  Since $\boldsymbol{v} \neq \boldsymbol{0}$, we have $\overline{\boldsymbol{v}} \cdot \boldsymbol{v} \neq 0$. Thus $\lambda=\bar{\lambda}$, which means $\lambda \in \mathbb{R}$.
+
+  :::
 
 ### Cholesky Decomposition
 
@@ -333,20 +336,19 @@ where $\boldsymbol{\Lambda} =\operatorname{diag}\left( \lambda_1, \lambda_2, \ld
 Definition
 : For any matrix $\boldsymbol{A} \in \mathbb{R} ^{n \times p}$, we can write $\boldsymbol{A} = \boldsymbol{U} \boldsymbol{\Sigma} \boldsymbol{V} ^\top$. where
 - $\boldsymbol{U} \in \mathbb{R} ^{n \times n}$ and $\boldsymbol{V} \in \mathbb{R} ^{p\times p}$ are orthogonal matrices.
-- $\\boldsymbol{\Sigma}$ is a diagonal matrix.
+- $\boldsymbol{\Sigma}$ is a diagonal matrix.
 
 
 Properties
 : We can also write SVD as
 
+  $$
+  \boldsymbol{A}=\sigma_{1} \boldsymbol{u}_{1} \boldsymbol{v}_{1}^{\top}+\sigma_{2} \boldsymbol{u}_{2} \boldsymbol{v}_{2}^{\top}+\ldots+\sigma_{r} \boldsymbol{u}_{r} \boldsymbol{v}_{r}^{\top}
+  $$
 
-$$
-\mathbf{A}=\sigma_{1} \mathbf{u}_{1} \mathbf{v}_{1}^{T}+\sigma_{2} \mathbf{u}_{2} \mathbf{v}_{2}^{T}+\ldots+\sigma_{r} \mathbf{u}_{r} \mathbf{v}_{r}^{T}
-$$
+  where $r = \operatorname{rank}\left( \boldsymbol{A}  \right)$.
 
-where $r = \operatorname{rank}\left( \boldsymbol{A}  \right)$.
-
-: As a result, $\mathbf{A} \mathbf{v}=\sigma \mathbf{u}, \mathbf{A}^{T} \mathbf{u}=\sigma \mathbf{v}$.
+: As a result, $\boldsymbol{A} \boldsymbol{v}=\sigma \boldsymbol{u}, \boldsymbol{A}^{\top} \boldsymbol{u}=\sigma \boldsymbol{v}$.
 
 Theorem
 : Every matrix has SVD.
