@@ -7,7 +7,7 @@ Kernel PCA is a nonlinear extension of PCA where dot products are replaced with 
 Linear PCA only consider linear subspaces
 
 $$
-\hat{\boldsymbol{x}} = \boldsymbol{W} \boldsymbol{z}
+\boldsymbol{z} = \boldsymbol{W} \boldsymbol{x}
 $$
 
 To improve this, we can apply feature transformation $\boldsymbol{\phi}: \mathbb{R} ^d \rightarrow \mathbb{R} ^p$ to include non-linear features, such as $\boldsymbol{\phi} ([x_1, x_2])= [x_1, x_1^2, x_1 x_2]$.
@@ -18,7 +18,7 @@ Then the data matrix changes from $\boldsymbol{X}_{n \times d}$ to $\boldsymbol{
 For kernelized problems, the original problem formulation (primal) is in the original feature space $\mathbb{R} ^d$, and the kernelized problem formulation (dual) is in the transformed space $\mathbb{R} ^p$.
 ```
 
-Note that handcrafting feature transformation $\boldsymbol{\phi}$ is equivalent to choosing a kernel function $k(\boldsymbol{x}_1, \boldsymbol{x} _2) = \boldsymbol{\phi}(\boldsymbol{x} _1) ^\top \boldsymbol{\phi}(\boldsymbol{x} _2)$. And there are many advantages choosing kernels instead of handcrafting $\boldsymbol{\phi}$. After choosing $k(\cdot, \cdot)$, We can compute the new $n \times n$ inner product matrix by $\boldsymbol{K} = \boldsymbol{\Phi} \boldsymbol{\Phi} ^\top$, aka **kernel matrix**. And the $k$-dimensional embeddings for a data vector $\boldsymbol{x}$ is given by
+Note that handcrafting feature transformation $\boldsymbol{\phi}$ is [equivalent](kernels-logic) to choosing a kernel function $k(\boldsymbol{x}_1, \boldsymbol{x} _2) = \boldsymbol{\phi}(\boldsymbol{x} _1) ^\top \boldsymbol{\phi}(\boldsymbol{x} _2)$. And there are many advantages choosing kernels instead of handcrafting $\boldsymbol{\phi}$. After choosing $k(\cdot, \cdot)$, We can compute the new $n \times n$ inner product matrix by $\boldsymbol{K} = \boldsymbol{\Phi} \boldsymbol{\Phi} ^\top$, aka **kernel matrix**. And the $k$-dimensional embeddings for a data vector $\boldsymbol{x}$ is given by
 
 $$
 \boldsymbol{z} = \boldsymbol{A} ^\top \left[\begin{array}{c}
@@ -349,12 +349,20 @@ So the neural network can be designed as
 - Input layer:
   - $d$ nodes, which represent $\boldsymbol{x} \in \mathbb{R} ^d$
 
-- Hidden layer:
+- Kernel layer:
   - $n$ kernel nodes, where the $j$-th node represents $k(\boldsymbol{x}, \boldsymbol{x}_i)$
   - Fixed weights where $w_{ij}=1$
   - The activation function is simply the identity function
 
-- Output layer
+- Hidden layer
   - $k$ nodes, which represent $\boldsymbol{z} \in \mathbb{R} ^k$
   - Weights $v_{ij} = \alpha_{ij}$
   - The activation function is simply the identity function
+
+- Output layer
+  - $n$ nodes, which represents reconstruction of kernel layer (similar to [PCA as autoencoders](pca-autoencoder))
+  - Weights $\alpha_{ji}$
+  - The activation function is simply the identity function
+  - Loss: reconstruction loss
+
+In short, we transform the input from $n\times d$ data matrix $\boldsymbol{X}$ to $n\times n$ kernel matrix $\boldsymbol{K}$, and run PCA. In this way, the learned weights $\boldsymbol{A}$ are the eigenvectors of $\boldsymbol{K} ^{\top} \boldsymbol{K}$ (analogous to \boldsymbol{X} ^{\top} \boldsymbol{X} in PCA), which are the same as $\boldsymbol{K}$, i.e. what we want for.
