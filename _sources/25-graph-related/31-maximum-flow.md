@@ -74,7 +74,7 @@ Observation (Flow cancelation operation on anti-parallel edges)
 
 :::{admonition,dropdown,note} Greedy algorithms not optimal
 
-Given a simple $s-t$ path $P$ and a flow $f$, how much available capacity left?
+Given a simple $s$-$t$ path $P$ and a flow $f$, how much available capacity left?
 
 $$
 \Delta(P) = \min _{e \in E(P)} \left\{ c(e) - f(e) \right\}
@@ -82,13 +82,13 @@ $$
 
 - Start: $\forall e \in E, f(e) = 0$
 
-- While there is a simple $s-t$ path $P$ with $\Delta(P)>0$, set for every $e \in E(P)$.
+- While there is a simple $s$-$t$ path $P$ with $\Delta(P)>0$, set for every $e \in E(P)$.
 
 $$
 f(e)\leftarrow f(e) + \Delta(p)
 $$
 
-This gives a feasible solution. Optimal? No, depends on the order of $s-t$ path in `WHILE`.
+This gives a feasible solution. Optimal? No, depends on the order of $s$-$t$ path in `WHILE`.
 
 :::
 
@@ -164,7 +164,7 @@ Ford-Fulkerson algorithm is an iterative algorithm. In each iteration, we comput
 An augmenting path in residual graph can be found using DFS or BFS.
 ```
 
-- While $\exists$ a simple path $s-t$ path $P$ in the residual flow network $G_f$, we "push" flow along this path (aka *augmenting path*).
+- While $\exists$ a simple path $s$-$t$ path $P$ in the residual flow network $G_f$, we "push" flow along this path (aka *augmenting path*).
 
   - Compute the smallest residual capacity along that path
 
@@ -274,30 +274,29 @@ We define similar quantities for a set of vertices.
 Definition (In- and out-flow of a set of vertices)
 : For a set of vertices $S \subseteq V$, ,
 
-  $$
-  f^{\text{in}}(S) = \sum_{u\notin S, v \in S} f(u, v) \\
-  f^{\text{out}}(S) = \sum_{u\in S, v \notin S} f(u, v) \\
-  $$
+  $$\begin{aligned}
+  f^{\text{in}}(S) &= \sum_{u\notin S, v \in S} f(u, v) \\
+  f^{\text{out}}(S) = \sum_{u\in S, v \notin S} f(u, v)
+  \end{aligned}$$
 
+Definition ($s$-$t$ cut)
+: An $s$-$t$ cut $(A,B)$ is a cut in $G$ such that the source node $s\in A$ and the destination node $t\in B$. The in- and out-flow of $A$ and $B$ have the relations
 
-Definition ($s-t$ cut)
-: An $s-t$ cut $(A,B)$ is a cut in $G$ such that the source node $s\in A$ and the destination node $t\in B$. The in- and out-flow of $A$ and $B$ have the relations
-
-  $$
-  f^{\text{in}}(A) = f^{\text{out}}(B) \\
+  $$\begin{aligned}
+  f^{\text{in}}(A) &= f^{\text{out}}(B) \\
   f^{\text{out}}(A) = f^{\text{in}}(B)
-  $$
+  \end{aligned}$$
 
 
-Definition (Capacity of an $s-t$ cut)
-: The capacity of an $s-t$ cut $(A,B)$ is defined as the sum of capacities of the edges from $A$ to $B$
+Definition (Capacity of an $s$-$t$ cut)
+: The capacity of an $s$-$t$ cut $(A,B)$ is defined as the sum of capacities of the edges from $A$ to $B$
 
   $$
   c(A,B) = \sum _{u\in A, v \in B} c(u, v)
   $$
 
 Property (Compute flow value from a cut)
-: Let $f$ be any flow in $G$, recall that the definition of flow value $\operatorname{val}(f)=f^{\text{out}}(s)$. For any $s-t$ cut $c(A,B)$ in $G$, the value of the flow $f$ can be computed as
+: Let $f$ be any flow in $G$, recall that the definition of flow value $\operatorname{val}(f)=f^{\text{out}}(s)$. For any $s$-$t$ cut $c(A,B)$ in $G$, the value of the flow $f$ can be computed as
 
   $$
   \operatorname{val}(f) = f^{\text{out}}(A) - f^{\text{in}}(A)
@@ -305,8 +304,13 @@ Property (Compute flow value from a cut)
 
 :::{admonition,dropdown,seealso} *Proof*
 
+```{margin}
+If there is no edge between two vertices $u$ and $v$, then $f(u,v)=0$
+```
+
 $$\begin{aligned}
 \operatorname{val}(f)
+& = f^{\text{out} }(s) \\
 &= \sum_{u \in A} \left[ f^{\text{out}}(u) - f^{\text{in}}(u) \right] \\
 &= \sum_{u \in A} \left[ \sum_{v} f(u,v) - \sum_{v} f(v,u) \right] \\\\
 &= \sum_{u \in A, v \in A}  f(u,v) + \sum_{u \in A, v \in B}  f(u,v) - \sum_{u \in A, v \in A} f(v,u) - \sum_{u \in A, v \in B} f(v,u)  \\\\
@@ -329,16 +333,16 @@ Corollary
 
 
 Theorem
-: If $f$ is any $s-t$ flow and $(A,B)$ is any $s-t$ cut, and $\operatorname{val}(f) = c(A,B)$, then $f$ is a maximum flow, by Corollary.
+: If $f$ is any $s$-$t$ flow and $(A,B)$ is any $s$-$t$ cut, and $\operatorname{val}(f) = c(A,B)$, then $f$ is a maximum flow, by Corollary.
 
 How about existence?
 
 Claim (Optimality)
-: If $f$ is the flow returned by FF algorithm, then there exists an $s-t$ cut $(A,B)$ such that $\operatorname{val}(f) = c(A,B)$. So $f$ is optimal by the above theorem.
+: If $f$ is the flow returned by FF algorithm, then there exists an $s$-$t$ cut $(A,B)$ such that $\operatorname{val}(f) = c(A,B)$. So $f$ is optimal by the above theorem.
 
 :::{admonition,dropdown,seealso} *Proof*
 
-Recall that FF algorithm stops if there is no $s-t$ path. After it stops, consider a cut $(A,B)$ in $G_f$, where $A$ is the set of all vertices $v \in V$ such that there is an $s-v$ path in $G_f$, and all other vertices (e.g., $t$) are in $B$. By this definition, there is no edge from $A$ to $B$.
+Recall that FF algorithm stops if there is no $s$-$t$ path. After it stops, consider a cut $(A,B)$ in $G_f$, where $A$ is the set of all vertices $v \in V$ such that there is an $s-v$ path in $G_f$, and all other vertices (e.g., $t$) are in $B$. By this definition, there is no edge from $A$ to $B$.
 
 Now, for the cut $(A,B)$ in $G$, we want to prove
 
@@ -376,7 +380,7 @@ $\square$
 
 **Goal**
 
-Find an $s-t$ cut $(A,B)$ where $s \in A, t \in B$, with minimal cut capacity $c(A,B)$, which is the sum of capacities of edge from $A$ to $B$, $c(A, B) = \sum_{u\in A, v\in B} c(u,v)$.
+Find an $s$-$t$ cut $(A,B)$ where $s \in A, t \in B$, with minimal cut capacity $c(A,B)$, which is the sum of capacities of edge from $A$ to $B$, $c(A, B) = \sum_{u\in A, v\in B} c(u,v)$.
 
 In other words, we want to remove some edges to disconnect $s$ and $t$, and minimize the total capacities of these removed edges.
 
@@ -387,11 +391,11 @@ The vertex partition's perspective and edge removal's perspective are actually e
 ### Analysis
 
 Theorem (Equivalency of maximum flow and minimum cut)
-: In any flow network $G$, the value of a maximum $s-t$ flow is equal to the capacity of a minimum $s-t$ cut.
+: In any flow network $G$, the value of a maximum $s$-$t$ flow is equal to the capacity of a minimum $s$-$t$ cut.
 
 The proof is simply from the Corollary.
 
-Thus, FF algorithm also gives an algorithm for finding a minimum $s-t$ cut: after the algorithm stops, in the residual graph $G_f$, find the set of vertices reachable from $s$, then $(A, V\setminus B)$ is a minimum $s-t$ cut.
+Thus, FF algorithm also gives an algorithm for finding a minimum $s$-$t$ cut: after the algorithm stops, in the residual graph $G_f$, find the set of vertices reachable from $s$, then $(A, V\setminus B)$ is a minimum $s$-$t$ cut.
 
 
 
@@ -434,7 +438,7 @@ $O(mn c_\max)$ is not efficient. There are alternative algorithms to improve thi
 
 ### Edmonds-Korp Algorithm
 
-Instead of using an arbitrary augmenting path, we use the **shortest** path $s-t$ in $G$ that minimizes number of edges. This work takes $O(m)$ by BFS or DFS, so each iteration still takes $O(m)$. But it reduces the number of iterations from $O(nc_\max)$ to $O(nm)$, this leads to the Edmonds-Korp algorithm with complexity $O(nm^2)$.
+Instead of using an arbitrary augmenting path, we use the **shortest** path $s$-$t$ in $G$ that minimizes number of edges. This work takes $O(m)$ by BFS or DFS, so each iteration still takes $O(m)$. But it reduces the number of iterations from $O(nc_\max)$ to $O(nm)$, this leads to the Edmonds-Korp algorithm with complexity $O(nm^2)$.
 
 To show that, we first run that algorithm, record the length of the chosen shortest path in each iteration, and then partition these the execution into phases, where each phase lasts as long as the lengths of augmenting paths chosen remains the same.
 
@@ -459,7 +463,7 @@ To prove them, let $G_f$ be the residual graph at the *start* of iteration $i$, 
 - at least one edge $e\in P$ has to disappear in $G ^\prime _f$
 - if $e \notin E(G_f)$ but $e \in E(G_f ^\prime)$ then its anti-parallel edge $e ^\prime  \in E(P)$.
 
-Now consider using BFS from to find a shortest path $s-t$ in $G_f$. Suppose the path length is $d$, then there are $d+1$ layers. The first layers only contains $s$, and the last layer contains $t$. In each iteration, we delete some forward-looking edge, and add a backward-looking edge or sideways-looking edge, but **no** shortcut edge. So the shortest path is non-decreasing. Beside, there are at most $m$ layers to delete in a phase with path length $d$, so at most $O(m)$ iterations in that phase.
+Now consider using BFS from to find a shortest path $s$-$t$ in $G_f$. Suppose the path length is $d$, then there are $d+1$ layers. The first layers only contains $s$, and the last layer contains $t$. In each iteration, we delete some forward-looking edge, and add a backward-looking edge or sideways-looking edge, but **no** shortcut edge. So the shortest path is non-decreasing. Beside, there are at most $m$ layers to delete in a phase with path length $d$, so at most $O(m)$ iterations in that phase.
 
 :::{figure} max-flow-bfs
 <img src="../imgs/max-flow-bfs.png" width = "100%" alt=""/>
@@ -483,7 +487,7 @@ Theorem (Integrality of flow)
 
 ### Flow-path Perspective
 
-Recall the flow is define for edges. We can consider a path-based flow $f^\prime : \mathcal{P}\rightarrow \mathbb{R} _{\ge 0}$. Let $\mathcal{P}$ be a set of all $s-t$ paths. Let $f ^\prime (P)$ be a flow of a path $P \in \mathcal{P}$. It is valid iff
+Recall the flow is define for edges. We can consider a path-based flow $f^\prime : \mathcal{P}\rightarrow \mathbb{R} _{\ge 0}$. Let $\mathcal{P}$ be a set of all $s$-$t$ paths. Let $f ^\prime (P)$ be a flow of a path $P \in \mathcal{P}$. It is valid iff
 
 $$
 \forall e:\quad \sum_{P: P \in \mathcal{P} \text{ and } e \in E(P)} f ^\prime (P) \le c(e)
@@ -509,17 +513,17 @@ $$
 \sum _{e \in E(A,B)} c(e)
 $$
 
-Likewise, we convert every undirected edge to two anti-parallel directed edges, run FF algorithm to find a $s-t$ cut. This gives the same value of max $s-t$ flow.
+Likewise, we convert every undirected edge to two anti-parallel directed edges, run FF algorithm to find a $s$-$t$ cut. This gives the same value of max $s$-$t$ flow.
 
 More efficient algorithm is under research.
 
-### Edge-Disjoint Paths and $S-T$ Cut
+### Edge-Disjoint Paths and $S$-$T$ Cut
 
 ```{margin}
 Edge-disjoint path = EDP
 ```
 
-For a directed graph with two disjoint **sets** of vertices $S$ and $T$, we want to find a maximum set $\mathcal{P}$ of $S-T$ paths that are edge-disjoint, i.e. no path in $\mathcal{P}$ can share any edges.
+For a directed graph with two disjoint **sets** of vertices $S$ and $T$, we want to find a maximum set $\mathcal{P}$ of $S$-$T$ paths that are edge-disjoint, i.e. no path in $\mathcal{P}$ can share any edges.
 
 To solve this,
 
@@ -529,7 +533,7 @@ To solve this,
 
 1. Run flow-path decomposition, then each path also carries flow value 1. After we delete the path, we remove all edges along the path since $c(e)=1$. Then, the subsequent paths must be disjoint with this one. We will get a collection of EDP from $S$ to $T$. The number of paths equals to the flow value.
 
-**$S-T$ Cut**
+**$S$-$T$ Cut**
 
 Given two sets of vertices $S$ and $T$ in a directed graph $G$, what is the minimum number of edges needed to disconnect $S$ from $T$? Formally, find a minimum-cardinality edge set $E ^\prime \subset E$ such that in the remaining graph $G \backslash E ^\prime$, there is **no** path from a vertex of $S$ to a vertex of $T$.
 
@@ -573,7 +577,7 @@ $$
 \min \left\{ \sum_{v \in X, u\in Y} s_{v,u}  + \sum_{v \in Y} a_v  + \sum_{u \in X} b_u \right\}
 $$
 
-We can solve this with minimum cut on undirected graph. The capacity of an edge is the strength of that edge. For every vertex $v$, add edge $(s,v)$ of capacity $a_v$, and edge $(v, t)$ of capacity $b_v$. Also for add edge $e(v,u)$ of capacity $s_{v,u}$ for $u,v \ne s,t$. Consider an $s-t$ cut $(A,B)$, denote $X = A \backslash \left\{ s \right\}$ and $Y = B \backslash \left\{ t \right\}$.
+We can solve this with minimum cut on undirected graph. The capacity of an edge is the strength of that edge. For every vertex $v$, add edge $(s,v)$ of capacity $a_v$, and edge $(v, t)$ of capacity $b_v$. Also for add edge $e(v,u)$ of capacity $s_{v,u}$ for $u,v \ne s,t$. Consider an $s$-$t$ cut $(A,B)$, denote $X = A \backslash \left\{ s \right\}$ and $Y = B \backslash \left\{ t \right\}$.
 
 Claim
 : The capacity of the cut equals the value of the objective function. So the optimization problem in image segmentation can be solved by the minimum cut problem.
@@ -608,15 +612,15 @@ Let $G$ be an arbitrary (directed) flow network with integral edge capacities
 
 
 
-1. T/F: Let $(A,B)$ be a minimum $s-t$ cut in G. Let $e=(u,v)$ be an edge of $G$ with $u\in A,v\in B$, and $c(e) ≥ 1$. Then **decreasing** the capacity of $e$ by 1 decreases the maximum flow value by $1$.
+1. T/F: Let $(A,B)$ be a minimum $s$-$t$ cut in G. Let $e=(u,v)$ be an edge of $G$ with $u\in A,v\in B$, and $c(e) ≥ 1$. Then **decreasing** the capacity of $e$ by 1 decreases the maximum flow value by $1$.
 
-    True, since the capacity of all other minimum $s-t$ cut **without** edge $e$ are unchanged.
+    True, since the capacity of all other minimum $s$-$t$ cut **without** edge $e$ are unchanged.
 
-1. T/F: Let $(A,B)$ be a minimum $s-t$ cut in G. Let $e=(u,v)$ be an edge of $G$ with $u\in A,v\in B$, and $c(e) ≥ 1$. Then **increasing** the capacity of $e$ by 1 increases the maximum flow value by $1$.
+1. T/F: Let $(A,B)$ be a minimum $s$-$t$ cut in G. Let $e=(u,v)$ be an edge of $G$ with $u\in A,v\in B$, and $c(e) ≥ 1$. Then **increasing** the capacity of $e$ by 1 increases the maximum flow value by $1$.
 
-    False, there may be another minimum $s-t$ cut **without** edge $e$.
+    False, there may be another minimum $s$-$t$ cut **without** edge $e$.
 
-1. T/F: Let $(A,B)$ be a minimum $s-t$ cut in G. If we **increase** the capacity of **each** edge in $E(G)$ by $1$, then $(A,B)$ remains a minimum $s-t$ cut in the new flow network.
+1. T/F: Let $(A,B)$ be a minimum $s$-$t$ cut in G. If we **increase** the capacity of **each** edge in $E(G)$ by $1$, then $(A,B)$ remains a minimum $s$-$t$ cut in the new flow network.
 
     False. (1) Had G contained edges of different capacities, increased capacity might have resulted in different minimum cut. (2) When all edges have same capacity then minimum cut would remain same.
 
@@ -630,7 +634,7 @@ Let $G$ be an arbitrary (directed) flow network with integral edge capacities
 
     For (2), if all edges have the same capacity $c$, then the capacity of any cut is $nc$ where $n$ is the number of edges cut. So a min-cut has $n_\min$. After $c$ becomes $c+1$, it is still a min-cut since it has $n_\min$.
 
-1. If $f$ is a valid $s-t$ flow in graph $G$ of value $v_f$, and $f ^\prime$ is a valid $s-t$ flow in the residual graph $G_f$ of value $v(f ^\prime)$, then there is a valid $s-t$ flow in graph G of value $v(f) + v(f ^\prime)$.
+1. If $f$ is a valid $s$-$t$ flow in graph $G$ of value $v_f$, and $f ^\prime$ is a valid $s$-$t$ flow in the residual graph $G_f$ of value $v(f ^\prime)$, then there is a valid $s$-$t$ flow in graph G of value $v(f) + v(f ^\prime)$.
 
     True. Moreover, let $v (f_\max)$ be the value of a max-flow in $G$ and $v (f ^\prime _\max)$ be the value of a max-flow in residual graph $G_f$, then we have $v(f) + v(f ^\prime) \le v (f_\max)$ with equality iff $v(f ^\prime) = v(f ^\prime _\max)$.
 
