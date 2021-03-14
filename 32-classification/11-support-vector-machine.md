@@ -76,7 +76,7 @@ Support vector machine is used for binary classification tasks.
 :::{figure,myclass} Use a hyperplane to separate two types of points
 <img src="../imgs/svm-hard-margin.png" width = "30%" alt=""/>
 
-caption
+Draw a line to separate two clusters
 :::
 
 Definition (Margin)
@@ -201,8 +201,9 @@ where $\lambda_i \ne 0$ for the points that lies on the margin, i.e. only the da
 Moreover,
 
 - If $\boldsymbol{w}^{* \top} \boldsymbol{x} + b^* = \pm 1$ then the point lie on the hyperplane $\pm$ margin. The vector $\boldsymbol{x}$ is called a **support vector**.
-- If $\boldsymbol{w}^{* \top} \boldsymbol{x} + b^* < 1$ then the point lie inside the two margins.
-- If $\boldsymbol{w}^{* \top} \boldsymbol{x} + b^* > 1$ then the point lie outside the two margins.
+- If $\left\vert \boldsymbol{w}^{* \top} \boldsymbol{x} + b^* \right\vert < 1$ then the point lie inside the two margins.
+- If $\left\vert \boldsymbol{w}^{* \top} \boldsymbol{x} + b^* \right\vert > 1$ then the point lie outside the two margins.
+  - If we add more such points to the data set (with correct labels) and re-run SVM, then the solution is the same, since they do not affect $\min _{i} \frac{1}{|\boldsymbol{w}|} y_{i} \left( \boldsymbol{w} ^ {\top} \boldsymbol{x}_{i}+b\right)$ in the objective function.
 
 
 ## Extension
