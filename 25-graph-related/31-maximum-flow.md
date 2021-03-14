@@ -588,12 +588,11 @@ Menger's Theorem
 
 The same can be done for undirected graphs.
 
-### Vertex-capacity Max Flow
+### Vertex-capacitated Max Flow
 
-In reality, capacities are often defined on vertices, such as computer networks. There are algorithms to solve vertex-capacity max-flow problem.
+In reality, capacities are often defined on vertices, such as computer networks. Each vertex has capacity constraint $c(v)$. The capacity constraints are on vertices: the total inflow into any vertex $v$ is at most $c(v)$. The conservation becomes: for each vertex, outflow = inflow. How to find a maximum flow?
 
-
-Vertex-capacity max-flow: capacity constraints are on vertices. Each vertex has capacity constraint $c(v)$.
+We reduce this problem to the usual max flow problem buy convert an vertex-capacitated max flow problem instance $I_V$ into an edge-capacitated problem instance $I_E$, and show that we can solve $I_V$ by solving $I_E$.
 
 Assign infinite capacity to all edges. Convert each vertex to two vertices connected by an edge, with edge weight $c(e) = c(v)$. Equivalent.
 
@@ -728,8 +727,32 @@ Let $G$ be an arbitrary (directed) flow network with integral edge capacities
 
     ::::
 
+1. [**Edges in residual graph**] Suppose we are given a flow network $G$, and a valid flow $f$ in that network. Let $G_f$ be the corresponding residual graph, $P$ a shortest $s$-$t$ path in $G_f$, and $f ^\prime$ a new flow obtained from $f$ after performing a single iteration of the Ford-Fulkerson algorithm, with $P$ as the augmenting path. Prove each one of the following statements.
 
-1. If $f$ is a valid $s$-$t$ flow in graph $G$ of value $v_f$, and $f ^\prime$ is a valid $s$-$t$ flow in the residual graph $G_f$ of value $v(f ^\prime)$, then there is a valid $s$-$t$ flow in graph G of value $v(f) + v(f ^\prime)$.
+    1. If $e \in G_f$ but $e \notin G _{f ^\prime}$, then $e\in P$.
+
+    2. At least one edge of $P$ does not belong to $G_{f ^\prime}$.
+
+    3. If $e=(u,v) \in G_{f ^\prime }$ but $e \notin G_f$, then edge $(v,u)$ belongs to path $P$.
+
+    :::{admonition,dropdown,seealso} *Solution*
+
+    1. - If $e$ is a forward edge in $G_f$, it disappears in $G_{f ^\prime }$ iff we increase the flow $f(e) < c(e)$ to $c(e)$ in $G$, such that in $G_{f ^\prime }: c_{f ^\prime }(e) = c(e)-f(e) = 0$ and hence $e$ disappears. According to the algorithm, if we increases $f(e)$ in $G$, then $e\in P$ in that iteration.
+       - If $e$ is a backward edge in $G_f$, it disappears in $G_{f ^\prime }$ iff we decrease the flow $f(e ^\prime)>0$ to 0, such that in $G_{f ^\prime }: c_{f ^\prime }(e) = f(e) = 0$ and hence $e$ disappears. According to the algorithm, if we decrease $f(e ^\prime )$ in $G$, then $e\in P$ in that iteration.
+
+
+    2. Since we increase of decrease $\Delta = \min _{e \in E(P)}\left\{c_{f}(e)\right\}$ for all corresponding edges in $G$, one edge's flow $f(e)$ must be increased to $c(e)$ or decreased to $0$.
+
+        - If $f(e)$ is increased to $c(e)$, then the forward edge $e$ disappears in $G_{f ^\prime }$ since $c_{f ^\prime } (e) = c(e) - f(e)$ changes from positive to $0$.
+        - If $f(e)$ is decreased to $0$, then the backward edge $e ^\prime$ disappears in $G_{f ^\prime }$ since $c_{f ^\prime } (e ^\prime ) = f(e)$ changes from positive to $0$.
+
+    3. - If $e$ is a forward edge, then we must decrease $f(e)$ from $c(e)$ in $G$. According to the algorithm, if we decrease $f(e)$ in $G$, then the backward edge $e ^\prime  = (v,u)\in P$ in that iteration.
+       - If $e$ is a backward edge, then we must increase $f(e ^\prime)$ from $0$ in $G$. According to the algorithm, if we increase $f(e ^\prime)$ in $G$, then the forward edge $e ^\prime  = (v,u)\in P$ in that iteration.
+
+    :::
+
+
+1. T/F: If $f$ is a valid $s$-$t$ flow in graph $G$ of value $v_f$, and $f ^\prime$ is a valid $s$-$t$ flow in the residual graph $G_f$ of value $v(f ^\prime)$, then there is a valid $s$-$t$ flow in graph G of value $v(f) + v(f ^\prime)$.
 
     :::{admonition,dropdown,seealso} *Solution*
 
