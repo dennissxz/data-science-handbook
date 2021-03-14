@@ -26,7 +26,7 @@
 
     
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/sphinx-book-theme.c441f2ba0852f4cabcb80105e3a46ae6.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinx-book-theme.e7340bb3dbd8dde6db86f25597f54a1b.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
@@ -842,8 +842,8 @@
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#improvement-edmonds-korp-algorithm">
-     Improvement: Edmonds-Korp Algorithm
+    <a class="reference internal nav-link" href="#improvement-edmonds-karp-algorithm">
+     Improvement: Edmonds-Karp Algorithm
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
@@ -908,8 +908,8 @@
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#vertex-capacity-max-flow">
-     Vertex-capacity Max Flow
+    <a class="reference internal nav-link" href="#vertex-capacitated-max-flow">
+     Vertex-capacitated Max Flow
     </a>
    </li>
   </ul>
@@ -1305,9 +1305,9 @@ f^{\text{out}}(v) =\sum_{e \in \delta^{+}(v)} f(e)
 </ul>
 </div>
 </div>
-<div class="section" id="improvement-edmonds-korp-algorithm">
-<h3>Improvement: Edmonds-Korp Algorithm<a class="headerlink" href="#improvement-edmonds-korp-algorithm" title="Permalink to this headline">¶</a></h3>
-<p>Instead of using an arbitrary augmenting path, we use the <strong>shortest</strong> path <span class="math notranslate nohighlight">\(s\)</span>-<span class="math notranslate nohighlight">\(t\)</span> in <span class="math notranslate nohighlight">\(G\)</span> that minimizes number of edges. This work takes <span class="math notranslate nohighlight">\(O(m)\)</span> by BFS or DFS, so each iteration still takes <span class="math notranslate nohighlight">\(O(m)\)</span>. But it reduces the number of iterations from <span class="math notranslate nohighlight">\(O(nc_\max)\)</span> to <span class="math notranslate nohighlight">\(O(nm)\)</span>, this leads to the Edmonds-Korp algorithm with complexity <span class="math notranslate nohighlight">\(O(nm^2)\)</span>.</p>
+<div class="section" id="improvement-edmonds-karp-algorithm">
+<h3>Improvement: Edmonds-Karp Algorithm<a class="headerlink" href="#improvement-edmonds-karp-algorithm" title="Permalink to this headline">¶</a></h3>
+<p>Instead of using an arbitrary augmenting path, we use the <strong>shortest</strong> path <span class="math notranslate nohighlight">\(s\)</span>-<span class="math notranslate nohighlight">\(t\)</span> in <span class="math notranslate nohighlight">\(G\)</span> that minimizes number of edges. This work takes <span class="math notranslate nohighlight">\(O(m)\)</span> by BFS or DFS, so each iteration still takes <span class="math notranslate nohighlight">\(O(m)\)</span>. But it reduces the number of iterations from <span class="math notranslate nohighlight">\(O(nc_\max)\)</span> to <span class="math notranslate nohighlight">\(O(nm)\)</span>, this leads to the Edmonds-Karp algorithm with complexity <span class="math notranslate nohighlight">\(O(nm^2)\)</span>.</p>
 <p>To show that, we first run that algorithm, record the length of the chosen shortest path in each iteration, and then partition these the execution into phases, where each phase lasts as long as the lengths of augmenting paths chosen remains the same.</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{aligned}
@@ -1343,7 +1343,7 @@ f^{\text{out}}(v) =\sum_{e \in \delta^{+}(v)} f(e)
 <div class="section" id="other-properties">
 <h3>Other Properties<a class="headerlink" href="#other-properties" title="Permalink to this headline">¶</a></h3>
 <dl class="simple myst">
-<dt>Theorem (Integrality of flow)</dt><dd><p>If all capacities are integers, then the FF algorithm finds a maximum flow where <span class="math notranslate nohighlight">\(f(e)\)</span> is integers for all <span class="math notranslate nohighlight">\(e\)</span>.</p>
+<dt>Theorem (Integrality of flow)</dt><dd><p>If all capacities are integrals, then the Ford-Fulkerson algorithm finds a maximum flow where <span class="math notranslate nohighlight">\(f(e)\)</span> is integral for all <span class="math notranslate nohighlight">\(e\)</span>.</p>
 </dd>
 </dl>
 </div>
@@ -1400,12 +1400,16 @@ f^{\text{out}}(v) =\sum_{e \in \delta^{+}(v)} f(e)
 </div>
 <div class="section" id="path-based-flow">
 <h3>Path-based Flow<a class="headerlink" href="#path-based-flow" title="Permalink to this headline">¶</a></h3>
-<p>Recall the flow <span class="math notranslate nohighlight">\(f: V\rightarrow \mathbb{R} _{\ge 0}\)</span> is defined for edges. We can consider a path-based flow <span class="math notranslate nohighlight">\(f_{p} : \mathcal{P}\rightarrow \mathbb{R} _{\ge 0}\)</span>, where <span class="math notranslate nohighlight">\(\mathcal{P}\)</span> is the set of all <span class="math notranslate nohighlight">\(s\)</span>-<span class="math notranslate nohighlight">\(t\)</span> paths. Let <span class="math notranslate nohighlight">\(f _{p} (P)\)</span> be the flow of a path <span class="math notranslate nohighlight">\(P \in \mathcal{P}\)</span>. It is valid if the edge capacity constraint holds.</p>
+<div class="margin sidebar">
+<p class="sidebar-title"></p>
+<p>Aka flow-paths.</p>
+</div>
+<p>Recall the flow <span class="math notranslate nohighlight">\(f: V\rightarrow \mathbb{R} _{\ge 0}\)</span> is defined for edges. We can consider a path-based flow <span class="math notranslate nohighlight">\(f_{p} : \mathcal{P}\rightarrow \mathbb{R} _{\ge 0}\)</span>, where <span class="math notranslate nohighlight">\(\mathcal{P}\)</span> is the set of some <span class="math notranslate nohighlight">\(s\)</span>-<span class="math notranslate nohighlight">\(t\)</span> paths. Let <span class="math notranslate nohighlight">\(f _{p} (P)\)</span> be the flow of a path <span class="math notranslate nohighlight">\(P \in \mathcal{P}\)</span>. It is valid if the edge capacity constraint holds.</p>
 <div class="math notranslate nohighlight">
 \[
 \forall e:\quad \sum_{P: P \in \mathcal{P} \text{ and } E(P) \ni e} f _{p} (P) \le c(e)
 \]</div>
-<p>The value of the set <span class="math notranslate nohighlight">\(\mathcal{P}\)</span> is <span class="math notranslate nohighlight">\(\sum_{P \in \mathcal{P}}f _{p} (P)\)</span>, and we maximize it. But the number of such paths are exponential.</p>
+<p>The set <span class="math notranslate nohighlight">\(\mathcal{P}\)</span> and the flow assignment <span class="math notranslate nohighlight">\(f_p\)</span> together are called a flow-paths solution, with value <span class="math notranslate nohighlight">\(\sum_{P \in \mathcal{P}}f _{p} (P)\)</span>.</p>
 <dl class="simple myst">
 <dt>Theorem (Equivalence of edge-flow and path-flow)</dt><dd><p>Given an edge-based flow <span class="math notranslate nohighlight">\(\left\{ f(e) \right\}_{e \in E}\)</span>, we can compute the path-based flow <span class="math notranslate nohighlight">\(\left\{ f _{p} (P) \right\}_{P \in \mathcal{P}}\)</span> efficiently, and</p>
 <ul class="simple">
@@ -1415,7 +1419,25 @@ f^{\text{out}}(v) =\sum_{e \in \delta^{+}(v)} f(e)
 </ul>
 <p>And the reverse also hold.</p>
 </dd>
+<dt>Theorem (Flow decomposition)</dt><dd><p>Any <span class="math notranslate nohighlight">\(s\)</span>-<span class="math notranslate nohighlight">\(t\)</span> flow can decompose into at most <span class="math notranslate nohighlight">\(m\)</span> number of cycles and <span class="math notranslate nohighlight">\(s\)</span>-<span class="math notranslate nohighlight">\(t\)</span> paths.</p>
+</dd>
 </dl>
+<div class="dropdown seealso admonition">
+<p class="admonition-title"> <em>Proof</em></p>
+<p>We provide an efficient algorithm for such decomposition.</p>
+<p>Let <span class="math notranslate nohighlight">\((a,b)\)</span> be an edge with <span class="math notranslate nohighlight">\(f(a,b)&gt;0\)</span>. Then trace backward from <span class="math notranslate nohighlight">\(a\)</span>, and trace forward from <span class="math notranslate nohighlight">\(b\)</span>, along edges with positive flow <span class="math notranslate nohighlight">\(f(e)&gt;0\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[\cdots a \rightarrow b \cdots\]</div>
+<p>Until we reach</p>
+<ul class="simple">
+<li><p>a cycle (along <span class="math notranslate nohighlight">\(a\)</span>, along <span class="math notranslate nohighlight">\(b\)</span>, or involve edge <span class="math notranslate nohighlight">\((a,b)\)</span>), or</p></li>
+<li><p>both <span class="math notranslate nohighlight">\(s\)</span> and <span class="math notranslate nohighlight">\(t\)</span></p></li>
+</ul>
+<p>Let <span class="math notranslate nohighlight">\(W\)</span> be the edges in cycle or <span class="math notranslate nohighlight">\(s\)</span>-<span class="math notranslate nohighlight">\(t\)</span> path. Compute <span class="math notranslate nohighlight">\(\Delta = \min_{e \in E(W)} f(e)\)</span>. Subtract <span class="math notranslate nohighlight">\(\Delta\)</span> from all flow of edges in <span class="math notranslate nohighlight">\(W\)</span>. The resulted flow is also valid, and the flow value remains unchanged.</p>
+<p>We repeat this process until there is no cycle or path. Each iteration reduces flow to one edge to 0, so the number of iterations is at most <span class="math notranslate nohighlight">\(m\)</span>. Each iteration gives a cycle or <span class="math notranslate nohighlight">\(s\)</span>-<span class="math notranslate nohighlight">\(t\)</span> path with flow <span class="math notranslate nohighlight">\(\Delta\)</span>. Hence, the number of cycles and <span class="math notranslate nohighlight">\(s\)</span>-<span class="math notranslate nohighlight">\(t\)</span> paths is at most <span class="math notranslate nohighlight">\(m\)</span>.</p>
+<p>Each iteration takes <span class="math notranslate nohighlight">\(O(m)\)</span>, so total running time is <span class="math notranslate nohighlight">\(O(m^2)\)</span>.</p>
+</div>
+<p>Note that dropping the cycles does not affect the flow value. So the paths obtained from this algorithm together with their <span class="math notranslate nohighlight">\(\Delta\)</span> form a valid flow-paths solution.</p>
 </div>
 <div class="section" id="edge-disjoint-paths">
 <h3>Edge-Disjoint Paths<a class="headerlink" href="#edge-disjoint-paths" title="Permalink to this headline">¶</a></h3>
@@ -1446,9 +1468,20 @@ f^{\text{out}}(v) =\sum_{e \in \delta^{+}(v)} f(e)
 </dl>
 <p>The same can be done for undirected graphs.</p>
 </div>
-<div class="section" id="vertex-capacity-max-flow">
-<h3>Vertex-capacity Max Flow<a class="headerlink" href="#vertex-capacity-max-flow" title="Permalink to this headline">¶</a></h3>
-<p>In reality, capacities are often defined on vertices, such as computer networks. There are algorithms to solve vertex-capacity max-flow problem.</p>
+<div class="section" id="vertex-capacitated-max-flow">
+<h3>Vertex-capacitated Max Flow<a class="headerlink" href="#vertex-capacitated-max-flow" title="Permalink to this headline">¶</a></h3>
+<p>In reality, capacities are often defined on vertices, such as computer networks. Each vertex has capacity constraint <span class="math notranslate nohighlight">\(c(v)\)</span>. The capacity constraints are on vertices: the total inflow into any vertex <span class="math notranslate nohighlight">\(v\)</span> is at most <span class="math notranslate nohighlight">\(c(v)\)</span>. The conservation becomes: for each vertex, outflow = inflow. How to find a maximum flow?</p>
+<p>We reduce this problem to the usual max flow problem buy convert an vertex-capacitated max flow problem instance <span class="math notranslate nohighlight">\(I_V\)</span> into an edge-capacitated problem instance <span class="math notranslate nohighlight">\(I_E\)</span>, and show that we can solve <span class="math notranslate nohighlight">\(I_V\)</span> by solving <span class="math notranslate nohighlight">\(I_E\)</span>.</p>
+<p>Assign infinite capacity to all edges. Convert each vertex to two vertices connected by an edge, with edge weight <span class="math notranslate nohighlight">\(c(e) = c(v)\)</span>. Equivalent.</p>
+<p>Vertex-disjoint path problem: find maximum number of vertex-disjoint paths (no two paths share vertices) connecting <span class="math notranslate nohighlight">\(S\)</span> to <span class="math notranslate nohighlight">\(T\)</span>.</p>
+<p>Recall Menger’s Theorem:</p>
+<ul class="simple">
+<li><p>The maximum number of EDPs connecting <span class="math notranslate nohighlight">\(S\)</span> to <span class="math notranslate nohighlight">\(T\)</span> is equal to the minimum number of edges needed to disconnect <span class="math notranslate nohighlight">\(S\)</span> from <span class="math notranslate nohighlight">\(T\)</span>.</p></li>
+</ul>
+<p>The corresponding version in this setting is:</p>
+<ul class="simple">
+<li><p>The maximum number of <strong>VDPs</strong> connecting <span class="math notranslate nohighlight">\(S\)</span> to <span class="math notranslate nohighlight">\(T\)</span> is equal to the minimum number of <strong>vertices</strong> needed to disconnect <span class="math notranslate nohighlight">\(S\)</span> from <span class="math notranslate nohighlight">\(T\)</span>.</p></li>
+</ul>
 </div>
 </div>
 <div class="section" id="applications">
@@ -1505,96 +1538,141 @@ c(A,B) = \sum_{v \in X, u\in Y} s_{v,u}  + \sum_{v \in Y} a_v  + \sum_{u \in X} 
 <h2>Exercise<a class="headerlink" href="#exercise" title="Permalink to this headline">¶</a></h2>
 <p>Let <span class="math notranslate nohighlight">\(G\)</span> be an arbitrary (directed) flow network with integral edge capacities</p>
 <ol>
-<li><p>T/F: Let <span class="math notranslate nohighlight">\((A,B)\)</span> be a minimum <span class="math notranslate nohighlight">\(s\)</span>-<span class="math notranslate nohighlight">\(t\)</span> cut in G. Let <span class="math notranslate nohighlight">\(e=(u,v)\)</span> be an edge of <span class="math notranslate nohighlight">\(G\)</span> with <span class="math notranslate nohighlight">\(u\in A,v\in B\)</span>, and <span class="math notranslate nohighlight">\(c(e) ≥ 1\)</span>. Then <strong>decreasing</strong> the capacity of <span class="math notranslate nohighlight">\(e\)</span> by 1 decreases the maximum flow value by <span class="math notranslate nohighlight">\(1\)</span>.</p>
+<li><p>[<strong>Change of capacity</strong>] Prove or disapprove:</p>
+<ol class="simple">
+<li><p>Let <span class="math notranslate nohighlight">\(e=(u,v)\)</span> be an edge of <span class="math notranslate nohighlight">\(G\)</span> with capacity <span class="math notranslate nohighlight">\(c(e) ≥ 1\)</span>. <strong>Decreasing</strong> the capacity of an edge <span class="math notranslate nohighlight">\(e\)</span> by <span class="math notranslate nohighlight">\(1\)</span> decreases the maximum flow value by at most <span class="math notranslate nohighlight">\(1\)</span>.</p></li>
+<li><p>Let <span class="math notranslate nohighlight">\(e=(u,v)\)</span> be an edge of <span class="math notranslate nohighlight">\(G\)</span> with capacity <span class="math notranslate nohighlight">\(c(e) ≥ k\)</span> where <span class="math notranslate nohighlight">\(k\)</span> is a positive integer. <strong>Decreasing</strong> the capacity of an edge <span class="math notranslate nohighlight">\(e\)</span> by <span class="math notranslate nohighlight">\(k\)</span> decreases the maximum flow value by at most <span class="math notranslate nohighlight">\(k\)</span>.</p></li>
+<li><p><strong>Increasing</strong> the capacity of an edge <span class="math notranslate nohighlight">\(e\)</span> by <span class="math notranslate nohighlight">\(1\)</span> increases the maximum flow value by at most <span class="math notranslate nohighlight">\(1\)</span>.</p></li>
+<li><p><strong>Increasing</strong> the capacity of an edge <span class="math notranslate nohighlight">\(e\)</span> by a positive integer <span class="math notranslate nohighlight">\(k\)</span> increases  the maximum flow value by at most <span class="math notranslate nohighlight">\(k\)</span>.</p></li>
+<li><p>Let <span class="math notranslate nohighlight">\((A,B)\)</span> be a minimum <span class="math notranslate nohighlight">\(s\)</span>-<span class="math notranslate nohighlight">\(t\)</span> cut in G. If we <strong>increase</strong> the capacity of <strong>each</strong> edge in <span class="math notranslate nohighlight">\(E(G)\)</span> by <span class="math notranslate nohighlight">\(1\)</span>, then <span class="math notranslate nohighlight">\((A,B)\)</span> remains a minimum <span class="math notranslate nohighlight">\(s\)</span>-<span class="math notranslate nohighlight">\(t\)</span> cut in the new flow network.</p></li>
+</ol>
 <div class="dropdown seealso admonition">
 <p class="admonition-title"> <em>Solution</em></p>
-<p>True, since the capacity of all other minimum <span class="math notranslate nohighlight">\(s\)</span>-<span class="math notranslate nohighlight">\(t\)</span> cut <strong>without</strong> edge <span class="math notranslate nohighlight">\(e\)</span> are unchanged.</p>
-</div>
+<ol>
+<li><p>True.</p>
+<ul class="simple">
+<li><p>If <span class="math notranslate nohighlight">\(e\)</span> is in some minimum cut, then decreasing the capacity of <span class="math notranslate nohighlight">\(e\)</span> decreases the min cut value by 1.</p></li>
+<li><p>Else, <span class="math notranslate nohighlight">\(e\)</span> is not in every min cut, then decreasing the capacity of <span class="math notranslate nohighlight">\(e\)</span> by 1 leaves the min cut value unchanged. Either way, the capacity decreases by at most 1. The claim follows from the max-flow-min-cut theorem.</p></li>
+</ul>
+<p>Algorithm to update the flow:</p>
+<ul class="simple">
+<li><p>If <span class="math notranslate nohighlight">\(c(e) \ge f(e) + 1\)</span>, then the max flow remains the same.</p></li>
+<li><p>Else <span class="math notranslate nohighlight">\(c(e) = f(e)\)</span> (saturated edge), then to satisfy the constraint, we need to remove one unit of flow from <span class="math notranslate nohighlight">\(s\)</span> to <span class="math notranslate nohighlight">\(t\)</span> that goes through edge <span class="math notranslate nohighlight">\(e\)</span>. The algorithm is</p>
+<ul>
+<li><p>Find a path <span class="math notranslate nohighlight">\(s\)</span>-<span class="math notranslate nohighlight">\(u\)</span> and a path <span class="math notranslate nohighlight">\(v\)</span>-<span class="math notranslate nohighlight">\(t\)</span> that contain only edges of positive flow. Remove <span class="math notranslate nohighlight">\(1\)</span> unit of flow for each edge on path <span class="math notranslate nohighlight">\(s-u\)</span>, and <span class="math notranslate nohighlight">\(v-t\)</span>. This step takes <span class="math notranslate nohighlight">\(O(m)\)</span>.</p></li>
+<li><p>Run Ford-Fulkerson. There is at most one iteration since the flow will increases by at most <span class="math notranslate nohighlight">\(1\)</span>. One iteration takes <span class="math notranslate nohighlight">\(O(m)\)</span>.</p></li>
+</ul>
 </li>
-<li><p>T/F: Let <span class="math notranslate nohighlight">\((A,B)\)</span> be a minimum <span class="math notranslate nohighlight">\(s\)</span>-<span class="math notranslate nohighlight">\(t\)</span> cut in G. Let <span class="math notranslate nohighlight">\(e=(u,v)\)</span> be an edge of <span class="math notranslate nohighlight">\(G\)</span> with <span class="math notranslate nohighlight">\(u\in A,v\in B\)</span>, and <span class="math notranslate nohighlight">\(c(e) ≥ 1\)</span>. Then <strong>increasing</strong> the capacity of <span class="math notranslate nohighlight">\(e\)</span> by 1 increases the maximum flow value by <span class="math notranslate nohighlight">\(1\)</span>.</p>
-<div class="dropdown seealso admonition">
-<p class="admonition-title"> <em>Solution</em></p>
-<p>False, there may be another minimum <span class="math notranslate nohighlight">\(s\)</span>-<span class="math notranslate nohighlight">\(t\)</span> cut <strong>without</strong> edge <span class="math notranslate nohighlight">\(e\)</span>.</p>
-</div>
+</ul>
 </li>
-<li><p>T/F: Let <span class="math notranslate nohighlight">\((A,B)\)</span> be a minimum <span class="math notranslate nohighlight">\(s\)</span>-<span class="math notranslate nohighlight">\(t\)</span> cut in G. If we <strong>increase</strong> the capacity of <strong>each</strong> edge in <span class="math notranslate nohighlight">\(E(G)\)</span> by <span class="math notranslate nohighlight">\(1\)</span>, then <span class="math notranslate nohighlight">\((A,B)\)</span> remains a minimum <span class="math notranslate nohighlight">\(s\)</span>-<span class="math notranslate nohighlight">\(t\)</span> cut in the new flow network.</p>
-<div class="dropdown seealso admonition">
-<p class="admonition-title"> <em>Solution</em></p>
-<p>False. (1) Had G contained edges of different capacities, increased capacity might have resulted in different minimum cut. (2) When all edges have same capacity then minimum cut would remain same.</p>
-<p>Example of (1):</p>
+<li><p>True.
+Decreasing by <span class="math notranslate nohighlight">\(k\)</span> is the same as decreasing in <span class="math notranslate nohighlight">\(k\)</span> steps of 1. Each such step decreases the max flow by at most 1. So the total decrease is at most <span class="math notranslate nohighlight">\(k\)</span>.</p></li>
+<li><p>True.</p>
+<ul class="simple">
+<li><p>If edge <span class="math notranslate nohighlight">\(e\)</span> is in every min cut, then increasing the capacity of <span class="math notranslate nohighlight">\(e\)</span> by <span class="math notranslate nohighlight">\(1\)</span> increases the min cut value by <span class="math notranslate nohighlight">\(1\)</span>.</p></li>
+<li><p>Else, edge <span class="math notranslate nohighlight">\(e\)</span> is not in every min cut, then increasing the capacity of <span class="math notranslate nohighlight">\(e\)</span> by <span class="math notranslate nohighlight">\(1\)</span> leaves the min cut value unchanged.</p></li>
+</ul>
+</li>
+<li><p>True. Increasing by <span class="math notranslate nohighlight">\(k\)</span> is the same as increasing in <span class="math notranslate nohighlight">\(k\)</span> steps of 1. By the previous solution, each such step increases the max flow by at most <span class="math notranslate nohighlight">\(1\)</span>. So the total increase is at most <span class="math notranslate nohighlight">\(k\)</span>.</p>
+<p>Algorithm to update the flow</p>
+<ul class="simple">
+<li><p>Repeat at most <span class="math notranslate nohighlight">\(k\)</span> times:</p>
+<ul>
+<li><p>Look for an augmenting path in the residual network by BFS/DFS.</p></li>
+<li><p>If there is one, then update the existing flow, else terminate.</p></li>
+</ul>
+</li>
+</ul>
+<p>Each pass takes <span class="math notranslate nohighlight">\(O(m)\)</span>, total <span class="math notranslate nohighlight">\(O(km)\)</span>.</p>
+</li>
+<li><p>False. More specifically,</p>
+<ul class="simple">
+<li><p>If some edge has different capacity, increasing capacity might have resulted in different minimum cut, as the graph below.</p></li>
+<li><p>Else all edges have same capacity then minimum cut would remain same. To see this, if all edges have the same capacity <span class="math notranslate nohighlight">\(c\)</span>, then the capacity of any cut is <span class="math notranslate nohighlight">\(xc\)</span> where <span class="math notranslate nohighlight">\(x\)</span> is the number of edges cut. So a min-cut has <span class="math notranslate nohighlight">\(x_\min\)</span>. After <span class="math notranslate nohighlight">\(c\)</span> becomes <span class="math notranslate nohighlight">\(c+1\)</span>, it is still a min-cut since it has <span class="math notranslate nohighlight">\(x_\min\)</span>.</p></li>
+</ul>
 <div class="figure align-default" id="max-flow-ex-1">
 <a class="reference internal image-reference" href="../_images/max-flow-ex-1.png"><img alt="" src="../_images/max-flow-ex-1.png" style="width: 30%;" /></a>
 <p class="caption"><span class="caption-number">Fig. 17 </span><span class="caption-text">New min-cut becomes <span class="math notranslate nohighlight">\(S\)</span>-<span class="math notranslate nohighlight">\(A\)</span> with cut capacity <span class="math notranslate nohighlight">\(5\)</span>.</span><a class="headerlink" href="#max-flow-ex-1" title="Permalink to this image">¶</a></p>
 </div>
-<p>For (2), if all edges have the same capacity <span class="math notranslate nohighlight">\(c\)</span>, then the capacity of any cut is <span class="math notranslate nohighlight">\(nc\)</span> where <span class="math notranslate nohighlight">\(n\)</span> is the number of edges cut. So a min-cut has <span class="math notranslate nohighlight">\(n_\min\)</span>. After <span class="math notranslate nohighlight">\(c\)</span> becomes <span class="math notranslate nohighlight">\(c+1\)</span>, it is still a min-cut since it has <span class="math notranslate nohighlight">\(n_\min\)</span>.</p>
+</li>
+</ol>
 </div>
 </li>
-<li><p>If <span class="math notranslate nohighlight">\(f\)</span> is a valid <span class="math notranslate nohighlight">\(s\)</span>-<span class="math notranslate nohighlight">\(t\)</span> flow in graph <span class="math notranslate nohighlight">\(G\)</span> of value <span class="math notranslate nohighlight">\(v_f\)</span>, and <span class="math notranslate nohighlight">\(f ^\prime\)</span> is a valid <span class="math notranslate nohighlight">\(s\)</span>-<span class="math notranslate nohighlight">\(t\)</span> flow in the residual graph <span class="math notranslate nohighlight">\(G_f\)</span> of value <span class="math notranslate nohighlight">\(v(f ^\prime)\)</span>, then there is a valid <span class="math notranslate nohighlight">\(s\)</span>-<span class="math notranslate nohighlight">\(t\)</span> flow in graph G of value <span class="math notranslate nohighlight">\(v(f) + v(f ^\prime)\)</span>.</p>
+<li><p>[<strong>Edges in residual graph</strong>] Suppose we are given a flow network <span class="math notranslate nohighlight">\(G\)</span>, and a valid flow <span class="math notranslate nohighlight">\(f\)</span> in that network. Let <span class="math notranslate nohighlight">\(G_f\)</span> be the corresponding residual graph, <span class="math notranslate nohighlight">\(P\)</span> a shortest <span class="math notranslate nohighlight">\(s\)</span>-<span class="math notranslate nohighlight">\(t\)</span> path in <span class="math notranslate nohighlight">\(G_f\)</span>, and <span class="math notranslate nohighlight">\(f ^\prime\)</span> a new flow obtained from <span class="math notranslate nohighlight">\(f\)</span> after performing a single iteration of the Ford-Fulkerson algorithm, with <span class="math notranslate nohighlight">\(P\)</span> as the augmenting path. Prove each one of the following statements.</p>
+<ol class="simple">
+<li><p>If <span class="math notranslate nohighlight">\(e \in G_f\)</span> but <span class="math notranslate nohighlight">\(e \notin G _{f ^\prime}\)</span>, then <span class="math notranslate nohighlight">\(e\in P\)</span>.</p></li>
+<li><p>At least one edge of <span class="math notranslate nohighlight">\(P\)</span> does not belong to <span class="math notranslate nohighlight">\(G_{f ^\prime}\)</span>.</p></li>
+<li><p>If <span class="math notranslate nohighlight">\(e=(u,v) \in G_{f ^\prime }\)</span> but <span class="math notranslate nohighlight">\(e \notin G_f\)</span>, then edge <span class="math notranslate nohighlight">\((v,u)\)</span> belongs to path <span class="math notranslate nohighlight">\(P\)</span>.</p></li>
+</ol>
+<div class="dropdown seealso admonition">
+<p class="admonition-title"> <em>Solution</em></p>
+<ol class="simple">
+<li><ul class="simple">
+<li><p>If <span class="math notranslate nohighlight">\(e\)</span> is a forward edge in <span class="math notranslate nohighlight">\(G_f\)</span>, it disappears in <span class="math notranslate nohighlight">\(G_{f ^\prime }\)</span> iff we increase the flow <span class="math notranslate nohighlight">\(f(e) &lt; c(e)\)</span> to <span class="math notranslate nohighlight">\(c(e)\)</span> in <span class="math notranslate nohighlight">\(G\)</span>, such that in <span class="math notranslate nohighlight">\(G_{f ^\prime }: c_{f ^\prime }(e) = c(e)-f(e) = 0\)</span> and hence <span class="math notranslate nohighlight">\(e\)</span> disappears. According to the algorithm, if we increases <span class="math notranslate nohighlight">\(f(e)\)</span> in <span class="math notranslate nohighlight">\(G\)</span>, then <span class="math notranslate nohighlight">\(e\in P\)</span> in that iteration.</p></li>
+<li><p>If <span class="math notranslate nohighlight">\(e\)</span> is a backward edge in <span class="math notranslate nohighlight">\(G_f\)</span>, it disappears in <span class="math notranslate nohighlight">\(G_{f ^\prime }\)</span> iff we decrease the flow <span class="math notranslate nohighlight">\(f(e ^\prime)&gt;0\)</span> to 0, such that in <span class="math notranslate nohighlight">\(G_{f ^\prime }: c_{f ^\prime }(e) = f(e) = 0\)</span> and hence <span class="math notranslate nohighlight">\(e\)</span> disappears. According to the algorithm, if we decrease <span class="math notranslate nohighlight">\(f(e ^\prime )\)</span> in <span class="math notranslate nohighlight">\(G\)</span>, then <span class="math notranslate nohighlight">\(e\in P\)</span> in that iteration.</p></li>
+</ul>
+</li>
+<li><p>Since we increase of decrease <span class="math notranslate nohighlight">\(\Delta = \min _{e \in E(P)}\left\{c_{f}(e)\right\}\)</span> for all corresponding edges in <span class="math notranslate nohighlight">\(G\)</span>, one edge’s flow <span class="math notranslate nohighlight">\(f(e)\)</span> must be increased to <span class="math notranslate nohighlight">\(c(e)\)</span> or decreased to <span class="math notranslate nohighlight">\(0\)</span>.</p>
+<ul class="simple">
+<li><p>If <span class="math notranslate nohighlight">\(f(e)\)</span> is increased to <span class="math notranslate nohighlight">\(c(e)\)</span>, then the forward edge <span class="math notranslate nohighlight">\(e\)</span> disappears in <span class="math notranslate nohighlight">\(G_{f ^\prime }\)</span> since <span class="math notranslate nohighlight">\(c_{f ^\prime } (e) = c(e) - f(e)\)</span> changes from positive to <span class="math notranslate nohighlight">\(0\)</span>.</p></li>
+<li><p>If <span class="math notranslate nohighlight">\(f(e)\)</span> is decreased to <span class="math notranslate nohighlight">\(0\)</span>, then the backward edge <span class="math notranslate nohighlight">\(e ^\prime\)</span> disappears in <span class="math notranslate nohighlight">\(G_{f ^\prime }\)</span> since <span class="math notranslate nohighlight">\(c_{f ^\prime } (e ^\prime ) = f(e)\)</span> changes from positive to <span class="math notranslate nohighlight">\(0\)</span>.</p></li>
+</ul>
+</li>
+<li><ul class="simple">
+<li><p>If <span class="math notranslate nohighlight">\(e\)</span> is a forward edge, then we must decrease <span class="math notranslate nohighlight">\(f(e)\)</span> from <span class="math notranslate nohighlight">\(c(e)\)</span> in <span class="math notranslate nohighlight">\(G\)</span>. According to the algorithm, if we decrease <span class="math notranslate nohighlight">\(f(e)\)</span> in <span class="math notranslate nohighlight">\(G\)</span>, then the backward edge <span class="math notranslate nohighlight">\(e ^\prime  = (v,u)\in P\)</span> in that iteration.</p></li>
+<li><p>If <span class="math notranslate nohighlight">\(e\)</span> is a backward edge, then we must increase <span class="math notranslate nohighlight">\(f(e ^\prime)\)</span> from <span class="math notranslate nohighlight">\(0\)</span> in <span class="math notranslate nohighlight">\(G\)</span>. According to the algorithm, if we increase <span class="math notranslate nohighlight">\(f(e ^\prime)\)</span> in <span class="math notranslate nohighlight">\(G\)</span>, then the forward edge <span class="math notranslate nohighlight">\(e ^\prime  = (v,u)\in P\)</span> in that iteration.</p></li>
+</ul>
+</li>
+</ol>
+</div>
+</li>
+<li><p>T/F: If <span class="math notranslate nohighlight">\(f\)</span> is a valid <span class="math notranslate nohighlight">\(s\)</span>-<span class="math notranslate nohighlight">\(t\)</span> flow in graph <span class="math notranslate nohighlight">\(G\)</span> of value <span class="math notranslate nohighlight">\(v_f\)</span>, and <span class="math notranslate nohighlight">\(f ^\prime\)</span> is a valid <span class="math notranslate nohighlight">\(s\)</span>-<span class="math notranslate nohighlight">\(t\)</span> flow in the residual graph <span class="math notranslate nohighlight">\(G_f\)</span> of value <span class="math notranslate nohighlight">\(v(f ^\prime)\)</span>, then there is a valid <span class="math notranslate nohighlight">\(s\)</span>-<span class="math notranslate nohighlight">\(t\)</span> flow in graph G of value <span class="math notranslate nohighlight">\(v(f) + v(f ^\prime)\)</span>.</p>
 <div class="dropdown seealso admonition">
 <p class="admonition-title"> <em>Solution</em></p>
 <p>True. Moreover, let <span class="math notranslate nohighlight">\(v (f_\max)\)</span> be the value of a max-flow in <span class="math notranslate nohighlight">\(G\)</span> and <span class="math notranslate nohighlight">\(v (f ^\prime _\max)\)</span> be the value of a max-flow in residual graph <span class="math notranslate nohighlight">\(G_f\)</span>, then we have <span class="math notranslate nohighlight">\(v(f) + v(f ^\prime) \le v (f_\max)\)</span> with equality iff <span class="math notranslate nohighlight">\(v(f ^\prime) = v(f ^\prime _\max)\)</span>.</p>
 </div>
 </li>
-<li><p>Increasing the capacity of a single edge <span class="math notranslate nohighlight">\((u,v)\)</span> by <span class="math notranslate nohighlight">\(1\)</span> can result in an increase of at
-most 1 in the max flow.</p>
+<li><p>[<strong>Acyclic flow</strong>] Show an efficient algorithm to find a maximum <span class="math notranslate nohighlight">\(s\)</span>-<span class="math notranslate nohighlight">\(t\)</span> flow in <span class="math notranslate nohighlight">\(G\)</span> which is integral and acyclic.</p>
 <div class="dropdown seealso admonition">
 <p class="admonition-title"> <em>Solution</em></p>
-<p>If <span class="math notranslate nohighlight">\((u, v)\)</span> is in every min cut, then increasing the capacity of <span class="math notranslate nohighlight">\((u, v)\)</span> by 1 increases the min cut value by 1. If (u, v) is not in every min cut, then increasing the capacity of <span class="math notranslate nohighlight">\((u, v)\)</span> by 1 leaves the min cut value unchanged. Either way, the capacity increases by at most 1. The claim follows from the max-flow-min-cut theorem.</p>
-</div>
-</li>
-<li><p>Increasing the capacity of a single edge <span class="math notranslate nohighlight">\((u, v)\)</span> by a positive integer <span class="math notranslate nohighlight">\(k\)</span> can result in
-an increase of at most <span class="math notranslate nohighlight">\(k\)</span> in the max flow.</p>
-<div class="dropdown seealso admonition">
-<p class="admonition-title"> <em>Solution</em></p>
-<p>Increasing by <span class="math notranslate nohighlight">\(k\)</span> is the same as increasing in <span class="math notranslate nohighlight">\(k\)</span> steps of 1. By part 1, each such step increases the max flow by at most 1. So the total increase is at most <span class="math notranslate nohighlight">\(k\)</span>.</p>
-<p>Algorithm:</p>
+<p>Algorithm (Eliminating flow cycles)</p>
+<ol class="simple">
+<li><p>Use Edmonds-Karp algorithm to compute a maximum flow <span class="math notranslate nohighlight">\(f\)</span></p></li>
+<li><p>Delete every edge <span class="math notranslate nohighlight">\(e\)</span> with <span class="math notranslate nohighlight">\(f(e)=0\)</span> in <span class="math notranslate nohighlight">\(G\)</span> and obtain a new flow network <span class="math notranslate nohighlight">\(H\)</span>.</p></li>
+<li><p>While True:</p>
 <ul class="simple">
-<li><p>Repeat at most k times:</p>
+<li><p>Find a simple cycle <span class="math notranslate nohighlight">\(C\)</span> in <span class="math notranslate nohighlight">\(H\)</span>, or correctly establishes that no such cycle exists. To to so, for each vertex <span class="math notranslate nohighlight">\(v \in V(H)\)</span>, perform BFS from <span class="math notranslate nohighlight">\(v\)</span>. If BFS ever discovers a vertex <span class="math notranslate nohighlight">\(u\)</span>, such that an edge <span class="math notranslate nohighlight">\((u,v)\in E(H)\)</span>, then we can use the BFS to compute a simple path connecting <span class="math notranslate nohighlight">\(v\)</span> to <span class="math notranslate nohighlight">\(u\)</span> in <span class="math notranslate nohighlight">\(H\)</span>, which, together with edge <span class="math notranslate nohighlight">\((u,v)\)</span> provides a simple cycle in <span class="math notranslate nohighlight">\(C\)</span> containing <span class="math notranslate nohighlight">\(v\)</span>.</p>
 <ul>
-<li><p>Look for an augmenting path in the residual network by BFS/DFS</p></li>
-<li><p>If there is one, then add it to the existing flow, else return</p></li>
+<li><p>If the BFS never discovers a vertex <span class="math notranslate nohighlight">\(u\)</span> for which edge <span class="math notranslate nohighlight">\((u,v)\)</span> exists, then no simple cycle in <span class="math notranslate nohighlight">\(H\)</span> may contain <span class="math notranslate nohighlight">\(v\)</span>. Terminate.</p></li>
 </ul>
 </li>
+<li><p>Otherwise, <span class="math notranslate nohighlight">\(C\)</span> exists. Select an edge <span class="math notranslate nohighlight">\(e\in E(C)\)</span> that carries the smallest amount of flow among all edges in <span class="math notranslate nohighlight">\(C\)</span>; denote this flow amount by <span class="math notranslate nohighlight">\(\Delta\)</span>. We then decrease the flow on every edge of <span class="math notranslate nohighlight">\(C\)</span> by <span class="math notranslate nohighlight">\(\Delta\)</span>, and recompute <span class="math notranslate nohighlight">\(H\)</span>. This is guaranteed to produce a feasible flow, whose value is exactly the same as the value of the original flow (since vertex <span class="math notranslate nohighlight">\(s\)</span> may not lie on cycle <span class="math notranslate nohighlight">\(C\)</span>).</p></li>
 </ul>
-<p>Each pass takes <span class="math notranslate nohighlight">\(O(m)\)</span>, total <span class="math notranslate nohighlight">\(O(km)\)</span>.</p>
-</div>
 </li>
-<li><p>Decreasing the capacity of a single edge <span class="math notranslate nohighlight">\((u, v)\)</span> by 1 can result in a decrease of at most 1 in the max flow.</p>
-<div class="dropdown seealso admonition">
-<p class="admonition-title"> <em>Solution</em></p>
-<p>If <span class="math notranslate nohighlight">\((u, v)\)</span> is in some min cut, then decreasing the capacity of <span class="math notranslate nohighlight">\((u, v)\)</span> decreases the min cut value by 1. If <span class="math notranslate nohighlight">\((u, v)\)</span> is not in every min cut, then decreasing the capacity of <span class="math notranslate nohighlight">\((u, v)\)</span> by 1 leaves the min cut value unchanged. Either way, the capacity decreases by at most 1. The claim follows from the max-flow-min-cut theorem.</p>
-<p>If <span class="math notranslate nohighlight">\(c(u,v) \ge f(u,v) + 1\)</span>, then the max flow remains the same. If <span class="math notranslate nohighlight">\(c(u,v) = f(u,v)\)</span> (saturated edge), then to satisfy the constraint, we need to remove one unit of flow from <span class="math notranslate nohighlight">\(s\)</span> to <span class="math notranslate nohighlight">\(t\)</span> that goes through edge <span class="math notranslate nohighlight">\((u,v)\)</span>. The algorithm is</p>
+</ol>
+<p>Running Time <span class="math notranslate nohighlight">\(O(m^2 n)\)</span></p>
+<ol class="simple">
+<li><p><span class="math notranslate nohighlight">\(O(m^2 n)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(O(m)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(O(m\cdot mn)\)</span></p>
 <ul class="simple">
-<li><p>Find a path <span class="math notranslate nohighlight">\(s-u\)</span> and a path <span class="math notranslate nohighlight">\(v-t\)</span> that contain only edges of positive flow. Remove 1 unit of flow for each edge on path <span class="math notranslate nohighlight">\(s-u\)</span>, and <span class="math notranslate nohighlight">\(v-t\)</span>. This step takes <span class="math notranslate nohighlight">\(O(m)\)</span>.</p></li>
-<li><p>Run FF. There is at most one iteration since the flow will increases by at most 1. One iteration takes <span class="math notranslate nohighlight">\(O(m)\)</span>.</p></li>
+<li><p>In every iteration of the algorithm, the flow on at least one edge decreases to <span class="math notranslate nohighlight">\(0\)</span>, and we never increase the flow on any edge. Therefore, the total number of iterations is <span class="math notranslate nohighlight">\(O(m)\)</span>.</p></li>
+<li><p>Finding a simple cycle takes <span class="math notranslate nohighlight">\(O(n\cdot m)\)</span></p></li>
+<li><p>Updating flow and recomputing graph <span class="math notranslate nohighlight">\(H\)</span> takes <span class="math notranslate nohighlight">\(O(m)\)</span></p></li>
 </ul>
+</li>
+</ol>
 </div>
 </li>
-<li><p>Decreasing the capacity of a single edge <span class="math notranslate nohighlight">\((u, v)\)</span> by a positive integer <span class="math notranslate nohighlight">\(k\)</span> can result
-in a decrease of at most <span class="math notranslate nohighlight">\(k\)</span> in the max flow.</p>
+<li><p>[<strong>Incoming edges to source and outgoing edge from sink</strong>] Assume now that vertex <span class="math notranslate nohighlight">\(s\)</span> may have incoming edges and <span class="math notranslate nohighlight">\(t\)</span> may have outgoing edges. Recall that in such a case, the value of a flow <span class="math notranslate nohighlight">\(f\)</span> is dened to be <span class="math notranslate nohighlight">\(\sum_{e \in \delta^{+}(s)} f(e)-\sum_{e \in \delta^{-}(s)} f(e)\)</span>. Prove that there exists a maximum flow <span class="math notranslate nohighlight">\(f\)</span>, such that <span class="math notranslate nohighlight">\(f(e)=0\)</span> for every edge <span class="math notranslate nohighlight">\(e \in \delta^{-}(s) \cup \delta^{+}(t)\)</span>.</p>
 <div class="dropdown seealso admonition">
 <p class="admonition-title"> <em>Solution</em></p>
-<p>Decreasing by <span class="math notranslate nohighlight">\(k\)</span> is the same as decreasing in <span class="math notranslate nohighlight">\(k\)</span> steps of 1. Each such step decreases the max flow by at most 1. So the total decrease is at most <span class="math notranslate nohighlight">\(k\)</span>.</p>
-</div>
-</li>
-<li><p>Vertex-capacity max-flow: capacity constraints are on vertices. Each vertex has capacity constraint <span class="math notranslate nohighlight">\(c(v)\)</span>.</p>
-<div class="dropdown seealso admonition">
-<p class="admonition-title"> <em>Solution</em></p>
-<p>Sol: assign infinite capacity to all edges. Convert each vertex to two vertices connected by an edge, with edge weight <span class="math notranslate nohighlight">\(c(e) = c(v)\)</span>. Equivalent.</p>
-</div>
-</li>
-<li><p>Vertex-disjoint path problem: find maximum number of vertex-disjoint paths (no two paths share vertices) connecting <span class="math notranslate nohighlight">\(S\)</span> to <span class="math notranslate nohighlight">\(T\)</span>.</p>
-<div class="dropdown seealso admonition">
-<p class="admonition-title"> <em>Solution</em></p>
-<p>Recall Menger’s Theorem:</p>
-<ul class="simple">
-<li><p>The maximum number of EDPs connecting <span class="math notranslate nohighlight">\(S\)</span> to <span class="math notranslate nohighlight">\(T\)</span> is equal to the minimum number of edges needed to disconnect <span class="math notranslate nohighlight">\(S\)</span> from <span class="math notranslate nohighlight">\(T\)</span>.</p></li>
-</ul>
-<p>The corresponding version in this setting is:</p>
-<ul class="simple">
-<li><p>The maximum number of <strong>VDPs</strong> connecting <span class="math notranslate nohighlight">\(S\)</span> to <span class="math notranslate nohighlight">\(T\)</span> is equal to the minimum number of <strong>vertices</strong> needed to disconnect <span class="math notranslate nohighlight">\(S\)</span> from <span class="math notranslate nohighlight">\(T\)</span>.</p></li>
-<li></li>
-</ul>
+<p>First, we run Edmonds-Karp algorithm to obtain a maximum <span class="math notranslate nohighlight">\(s\)</span>-<span class="math notranslate nohighlight">\(t\)</span> flow <span class="math notranslate nohighlight">\(f\)</span>.</p>
+<p>In <span class="math notranslate nohighlight">\(f\)</span>, if there is an edge <span class="math notranslate nohighlight">\(e \in \delta^- (s)\)</span> such that <span class="math notranslate nohighlight">\(f(e)&gt;0\)</span>, then <span class="math notranslate nohighlight">\(s\)</span> must be in a cycle that every edge contains positive flow (why??). For each of such cycle <span class="math notranslate nohighlight">\(C\)</span>, we subtract <span class="math notranslate nohighlight">\(\Delta = \min _{e \in C} f(e)\)</span> from all flows of edges in <span class="math notranslate nohighlight">\(C\)</span> to eliminate it. At most <span class="math notranslate nohighlight">\(m\)</span> iterations, we will have <span class="math notranslate nohighlight">\(f(e)=0\)</span> for all <span class="math notranslate nohighlight">\(e \in \delta^- (s)\)</span>. Note that by the flow conservation constraints, the resulting flow is also a maximum flow and the flow value is unchanged.</p>
+<p>The operation to the outgoing edges from <span class="math notranslate nohighlight">\(t\)</span> is similar. Finally, we obtain a required maximum flow.</p>
+<p><span class="math notranslate nohighlight">\(\square\)</span></p>
+<p>An alternative approach is to prove the output graph in the previous question has no positive flow for edges entering <span class="math notranslate nohighlight">\(s\)</span> and leaving <span class="math notranslate nohighlight">\(t\)</span>.</p>
+<p>Note that this proves that in the maximum flow problem, we can assume without loss of generality that no edge enters s and no edge leaves t, as deleting all such edges does not change the maximum flow value.</p>
 </div>
 </li>
 </ol>
