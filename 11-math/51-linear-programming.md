@@ -204,6 +204,104 @@ If the two kinds of points are non-linearly separable, we can consider feature t
 
 The feature transformation can involve non-linear terms such as $x_1^2, x_1 x_2$ etc.
 
+### Independent Set
+
+$x_v=1$ if vertex $v$ is chosen into the independent set and 0 otherwise.
+
+$$\begin{aligned}
+\max && \sum_v x_v & &&\\
+\mathrm{s.t.}
+&& x_u + x_v &\leq 1 && \forall e=(u,v) \in E \\
+&& x_v &\in \left\{ 0,1 \right\}  && \forall v \in V \\
+\end{aligned}$$
+
+### Vertex Cover
+
+In an undirected graph $G=(V,E)$, a set $S\subseteq V$ is a vertex cover if for any edge in graph $G$, at least one of its endpoint is in $S$. Formally,  $\forall e = (u, v)\in E: u\in S$ or $v\in S$ or both. We want to find a minimum-cardinality vertex cover.
+
+Let $x_v = 1$ if $x_v \in S$ and 0 otherwise.
+
+$$\begin{aligned}
+\min && \sum _{v \in V} x_v & &&\\
+\mathrm{s.t.}
+&& x_u + x_v &\ge 1 && \forall e=(u,v) \in E\\
+&& x_v &\in \left\{ 0,1 \right\}  && \forall v \in V  \\
+\end{aligned}$$
+
+Dual
+
+$$\begin{aligned}
+\max && \sum_{e \in E} y_e  & &&\\
+\mathrm{s.t.}
+&& \sum_{e\in d(v)} y_e  &\leq 1 && \forall v \in V \\
+&& y_e &\ge 0 && \forall e \in E  \\
+\end{aligned}$$
+
+
+### Edge Cover
+
+An edge cover of a graph is a set $S$ of edges such that every vertex of the graph is incident to at least one edge of the set.
+
+Let $x_e = 1$ if $x_e \in S$ and 0 otherwise.
+
+$$\begin{aligned}
+\min && \sum _{e \in E} x_e & &&\\
+\mathrm{s.t.}
+&& \sum_{e \in d(v)} x_e &\ge 1 && \forall v \in V\\
+&& x_e &\in \left\{ 0,1 \right\}  && \forall e \in E  \\
+\end{aligned}$$
+
+Dual:
+
+$$\begin{aligned}
+\max && \sum _{v \in V} y_v & &&\\
+\mathrm{s.t.}
+&& y_u + y_v &\leq 1 && \forall e=(u,v) \in E \\
+&& y_v &\ge 0 && \forall v \in V  \\
+\end{aligned}$$
+
+
+
+### Set Cover
+
+We are given a universe $U=\left\{ e_1, \ldots, e_n \right\}$ of $n$ elements and a family of $m$ subsets $\mathcal{F} = \left\{ S_1, \ldots, S_m \right\}$, where each $S_i \subseteq U$. Further, each set $S \in F$ has an associated cost $w_S \ge 0$. The goal is to choose a sub-collection of $\mathcal{F}$, called a set cover, of minimum total cost such that the union of all sets in this sub-collection is $U$. In other words, every element $e \in U$ must belong to
+some subset in the set cover.
+
+LP formulation: we have an indicator variable $x_S$ which is 1 if the set $S$ is included in the set cover, and 0 otherwise.
+
+
+$$
+\begin{array}{ll}
+\min & \sum_{S \in \mathcal{F}} w_{S} x_{S} & \\
+\text { s.t. } & \sum_{S: e \in S} x_{S} \geq 1 & \forall e \in U \\
+& x_{S} \in\{0,1\} &\forall S \in \mathcal{F}
+\end{array}
+$$
+
+To obtain an LP, we will relax the integrality constraint $x_S \in \left\{ 0,1 \right\}$ to $x_S \in [0,1]$. We can additionally relax $x_S \in [0,1]$ to $x_S \ge 0$, sin in the optimal solution, if $x^*_S>1$, we can set $x_S^* = 1$ without violating any constraints, and the total weight can only decrease.
+
+A natural LP relaxation is,
+
+$$
+\begin{array}{ll}
+\min & \sum_{S \in \mathcal{F}} w_{S} x_{S} & \\
+\text { s.t. } & \sum_{S: e \in S} x_{S} \geq 1 & \forall e \in U \\
+& x_{S} \geq 0 & \forall S \in \mathcal{F}
+\end{array}
+$$
+
+Dual is
+
+
+$$
+\begin{array}{ll}
+\text { max } & \sum_{e \in U} y_{e} &\\
+\text { s.t. } & \sum_{e \in U: S \ni e} y_{e} \leq w_{S} & \forall S \in \mathcal{F} \\
+& y_{e} \geq 0 & \forall e \in U
+\end{array}
+$$
+
+
 ## Duality
 
 ### Primal and Dual
@@ -264,9 +362,16 @@ Note that $h(\boldsymbol{z} )$ has exactly the same form with $f(\boldsymbol{x} 
 (duality)=
 ### Duality Theorem
 
-The inequality $g(\boldsymbol{y}) \le f(\boldsymbol{x})$ is called weak duality theorem.
+Theorem (Weak duality)
+: If $P$ is a primal linear program in maximization standard form, $D$ is its dual, then
+  - If one of them is unbounded, then the other is infeasible;
+  - If $P$ and $D$ are both feasible and bounded, then $\operatorname{OPT}(P) \le \operatorname{OPT} (D)$.
 
-The equality $g(\boldsymbol{y}^*) = f(\boldsymbol{x}^*)$ is called the strong duality theorem.
+Theorem (Strong duality)
+: If either $P$ or $D$ is feasible and bounded, then so is the other, and $\operatorname{OPT}(P) = \operatorname{OPT} (D)$.
+
+
+To summarize, dual is bounded and feasible $\Leftrightarrow$ dual has a finite optimal solution $\Leftrightarrow$ primal has a finite optimal solution $\Leftrightarrow$ primal is bounded and feasible. Sometimes to the first two is hard, we can prove the last two in lieu.
 
 
 ## Relaxation
