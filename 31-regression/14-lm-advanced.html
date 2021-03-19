@@ -842,6 +842,40 @@
   <a class="reference internal nav-link" href="#panel-data">
    Panel Data
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#first-difference">
+     First Difference
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#fixed-effect">
+     Fixed Effect
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#entity-fixed-effect">
+       Entity Fixed Effect
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#time-fixed-effect">
+       Time Fixed Effect
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#both">
+       Both
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#time-series">
+   Time Series
+  </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#categorical-data">
@@ -999,6 +1033,126 @@ Y_{i a}=\beta_{0}+\beta_{1} D_{a \geq a *}+f(a)+\varepsilon_{i a}
 </div>
 <div class="section" id="panel-data">
 <h2>Panel Data<a class="headerlink" href="#panel-data" title="Permalink to this headline">¶</a></h2>
+<p>Recall the common trends assumption. Can we generalize it? What if there are more than 2 periods and more than 2 groups? We introduce first difference and fixed effect, for more than s.</p>
+<p>Panel data, aka. longitudinal data, are data constructed from repeated samples of the same entities/individuals <span class="math notranslate nohighlight">\(i\)</span> at different points <span class="math notranslate nohighlight">\(t\)</span> in time.</p>
+<div class="math notranslate nohighlight">
+\[
+Y_{i t}=\beta_{0}+\beta_{1} X_{1 i t}+\ldots+\beta_{k} X_{k i t}+u_{i t}
+\]</div>
+<p>where entities <span class="math notranslate nohighlight">\(i=1, \ldots, N\)</span> and time <span class="math notranslate nohighlight">\(t=1, \ldots T\)</span>, if balanced. There can also be unbalanced panel data such that the total number of observations is less than <span class="math notranslate nohighlight">\(NT\)</span>.</p>
+<p>For instance,</p>
+<ul class="simple">
+<li><p>Graduation rate at each school in Chicago over last 10 years</p></li>
+<li><p>Poverty rate for each state over several years</p></li>
+<li><p>Earnings of workers over time before and after disability</p></li>
+</ul>
+<div class="note admonition">
+<p class="admonition-title"> Note</p>
+<p>Panel data is different from repeated cross-section data that have multiple observations per sample in multiple time periods.</p>
+<p>Whether an analysis uses repeated cross-section or panel data sometimes depends on how raw data are manipulated. Consider a random sample of 100 people from each state, taken every year.</p>
+<ul class="simple">
+<li><p>Different people each year – so it is repeated cross-section if <span class="math notranslate nohighlight">\(i\)</span> indexes people</p></li>
+<li><p>If the individuals from a state are aggregated into a state average, then since we have the same states year after year it is panel — now <span class="math notranslate nohighlight">\(i\)</span> indexes states</p></li>
+</ul>
+</div>
+<p>Panel data enable us to remove bias from certain types of omitted variables.</p>
+<ul class="simple">
+<li><p>If omitted variables for entity <span class="math notranslate nohighlight">\(i\)</span> do not change over time,</p></li>
+<li><p>Or if omitted variables for time period <span class="math notranslate nohighlight">\(t\)</span> do not differ across entity,</p></li>
+</ul>
+<p>Then panel data gives unbiased estimates.</p>
+<div class="section" id="first-difference">
+<h3>First Difference<a class="headerlink" href="#first-difference" title="Permalink to this headline">¶</a></h3>
+<p>Suppose we have a panel data set at two time points <span class="math notranslate nohighlight">\(t_1\)</span> and <span class="math notranslate nohighlight">\(t_2\)</span>. Suppose the true model is</p>
+<div class="math notranslate nohighlight">
+\[Y_{it} = \beta_0 + \beta_1 X_{1it} + \beta_2 X_{2it} + u_{it}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbb{E}(u_{it} \vert X_{1it}, X_{2it})=0\)</span>. But we only observe <span class="math notranslate nohighlight">\(X_{1}\)</span> and omit <span class="math notranslate nohighlight">\(X_2\)</span>. Then running a regression model <span class="math notranslate nohighlight">\(Y_i \sim X_{1i}\)</span> at each time point leads to a biased estimate of <span class="math notranslate nohighlight">\(\beta_1\)</span>. However, the difference is</p>
+<div class="math notranslate nohighlight">
+\[\Delta Y_{i} = \beta_1 \Delta X_{1i} + \beta_2 \Delta X_{2i} + \Delta u_{i}\]</div>
+<p>If <span class="math notranslate nohighlight">\(\Delta X_{2i}=0\)</span> for each <span class="math notranslate nohighlight">\(i\)</span>, i.e., for <span class="math notranslate nohighlight">\(X_{2it}\)</span> does not change over time <span class="math notranslate nohighlight">\(t\)</span> for entity <span class="math notranslate nohighlight">\(i\)</span>, then we can run regression <span class="math notranslate nohighlight">\(\Delta Y_i \sim \Delta X_{1i}\)</span> (include intercept) and obtain an unbiased estimate of <span class="math notranslate nohighlight">\(\beta_1\)</span>. The intercept estimate <span class="math notranslate nohighlight">\(\tilde{\beta}_0\)</span> can be interpreted as the change of <span class="math notranslate nohighlight">\(\beta_0\)</span> over time.</p>
+<p>addimg *3</p>
+<p>Rationales of FD</p>
+<ul class="simple">
+<li><p>FD regress the change in <span class="math notranslate nohighlight">\(Y\)</span> against the change in <span class="math notranslate nohighlight">\(X\)</span></p></li>
+<li><p>If omitted variables are constant over time (time invariant), then they will be unrelated to changes in <span class="math notranslate nohighlight">\(Y\)</span> and <span class="math notranslate nohighlight">\(X\)</span> for a given <span class="math notranslate nohighlight">\(i\)</span>.</p></li>
+<li><p>Differencing gets rid of time invariant unobservables, as well as time invariant observables.</p></li>
+</ul>
+<p>For <span class="math notranslate nohighlight">\(T &gt; 2\)</span> case.</p>
+<p>We can run compute <span class="math notranslate nohighlight">\(\Delta Y_{it} = Y_{i(t+1)} - Y_{it}\)</span> and <span class="math notranslate nohighlight">\(\Delta X_{1it}\)</span>, for each <span class="math notranslate nohighlight">\(t=1,\ldots, T-1\)</span>, and use all these <span class="math notranslate nohighlight">\((T-1)n\)</span> number of <span class="math notranslate nohighlight">\((\Delta Y, \Delta X)\)</span> pairs to run a regression to obtain <span class="math notranslate nohighlight">\(\hat{\beta}_1\)</span>.</p>
+<p>Pros</p>
+<ul class="simple">
+<li><p>Solve bias caused by time invariant variables.</p></li>
+</ul>
+<p>Cons</p>
+<ul class="simple">
+<li><p>Cannot solve bias caused by time varying variables, if they are correlated with <span class="math notranslate nohighlight">\(\Delta X\)</span>. It’s like we omit <span class="math notranslate nohighlight">\(\Delta X_{2i} \ne 0\)</span> in <span class="math notranslate nohighlight">\(\Delta Y_{i} = \beta_1 \Delta X_{1i} + \beta_2 \Delta X_{2i} + \Delta u_{i}\)</span></p></li>
+<li><p>Cannot estimate coefficient for time invariant variables (<span class="math notranslate nohighlight">\(\beta_2\)</span> in the above case)</p></li>
+<li><p>Lower variation in independent variable sine <span class="math notranslate nohighlight">\(\sigma_{\Delta X}^{2} \ll \sigma_{X}^{2}\)</span>. Higher standard error of estimate</p></li>
+<li><p>May exaggerate measurement error since signal is reduced but noise variance is larger.</p></li>
+</ul>
+</div>
+<div class="section" id="fixed-effect">
+<h3>Fixed Effect<a class="headerlink" href="#fixed-effect" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="entity-fixed-effect">
+<h4>Entity Fixed Effect<a class="headerlink" href="#entity-fixed-effect" title="Permalink to this headline">¶</a></h4>
+<p>In FD we drop time invariant variable <span class="math notranslate nohighlight">\(\beta_2 X_{2it} = \beta_2 X_{2i}\)</span> to estimate <span class="math notranslate nohighlight">\(\beta_1\)</span>, but in fixed effect model we estimate these <span class="math notranslate nohighlight">\(\beta_2 X_{2i}\)</span>. Suppose again the true model is</p>
+<div class="math notranslate nohighlight">
+\[Y_{it} = \beta_0 + \beta_1 X_{1it} + \beta_2 X_{2it} + u_{it}\]</div>
+<p>If <span class="math notranslate nohighlight">\(X_{2it}\)</span> is time invariant, then we can write</p>
+<div class="math notranslate nohighlight">
+\[Y_{it} = (\underbrace{\beta_0 + \beta_2 X_{2i}}_{\alpha_i}) + \beta_1 X_{1it} + u_{it}\]</div>
+<p>which suggests that each entity <span class="math notranslate nohighlight">\(i\)</span> has a different intercept <span class="math notranslate nohighlight">\(\alpha_i\)</span>. Hence, the new equation can be estimated by letting each entity <span class="math notranslate nohighlight">\(i\)</span> have a unique intercept. This is called fixed effects regression.</p>
+<div class="math notranslate nohighlight">
+\[Y_{i t}=\beta_{1} X_{i t}+\sum_{i=1}^{N} \alpha_{i} d_{i}+u_{i t}\]</div>
+<p>where <span class="math notranslate nohighlight">\(d_i\)</span> is a dummy variable indicating if an observation is in group <span class="math notranslate nohighlight">\(i\)</span>. The total number of observations in this regression is <span class="math notranslate nohighlight">\(NT\)</span>, and number of parameters is <span class="math notranslate nohighlight">\(N+1\)</span>.</p>
+<p>Note that</p>
+<ul class="simple">
+<li><p>If <span class="math notranslate nohighlight">\(T=2\)</span> then FD=FE.</p></li>
+<li><p>If there is autocorrelation of errors within an entity, use clustered standard error.</p></li>
+<li><p>de-mean interpretation</p></li>
+<li><p>precision of <span class="math notranslate nohighlight">\(a_i\)</span> depends on the number of observations in entity <span class="math notranslate nohighlight">\(i\)</span>.</p></li>
+</ul>
+</div>
+<div class="section" id="time-fixed-effect">
+<h4>Time Fixed Effect<a class="headerlink" href="#time-fixed-effect" title="Permalink to this headline">¶</a></h4>
+<p>Some omitted variables very over time but are the same across entities within a time period.</p>
+<div class="math notranslate nohighlight">
+\[Y_{i t}=\beta_{1} X_{i t}+\sum_{t=1}^{T} \alpha^{t} d^{t}+u_{i t}\]</div>
+<p>Examples:</p>
+<ul class="simple">
+<li><p>Federal policy may affect all states the same</p></li>
+<li><p>Macroeconomic shocks may affect many workers the same</p></li>
+<li><p>Technological change may affect all firms the same</p></li>
+<li><p>Quarterly seasonal effect</p></li>
+<li><p>Fall/summer effect for agricultural data</p></li>
+</ul>
+<p>The total number of observations in this regression is <span class="math notranslate nohighlight">\(NT\)</span>, and number of parameters is <span class="math notranslate nohighlight">\(T+1\)</span>.</p>
+</div>
+<div class="section" id="both">
+<h4>Both<a class="headerlink" href="#both" title="Permalink to this headline">¶</a></h4>
+<p>We can include both entity and time fixed effect. This will eliminate both time invariant unobservables within each entity, and entity invariant unobservables within each time period.</p>
+<div class="math notranslate nohighlight">
+\[Y_{i t}=\beta_{1} X_{i t}+\sum_{i=1}^{N} \alpha_{i} d_{i}+\sum_{t=1}^{T} \alpha^{t} d^{t}+u_{i t}\]</div>
+<p>The total number of observations in this regression is <span class="math notranslate nohighlight">\(NT\)</span>, and number of parameters is <span class="math notranslate nohighlight">\(N + T+1\)</span>.</p>
+<p>Example:</p>
+<ul class="simple">
+<li><p>Drinking culture fixed within states (<span class="math notranslate nohighlight">\(a_i\)</span>)</p></li>
+<li><p>Federal policy changes affect all states the same (<span class="math notranslate nohighlight">\(a_t\)</span>)</p></li>
+</ul>
+<p>Pros</p>
+<ul class="simple">
+<li><p>Can eliminate bias due to time invariant unobservable factors or entity invariant unobservable factors</p></li>
+</ul>
+<p>Cons</p>
+<ul class="simple">
+<li><p>Time varying unobservables that are unique to each state (not a common shock) can still cause bias.</p></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="section" id="time-series">
+<h2>Time Series<a class="headerlink" href="#time-series" title="Permalink to this headline">¶</a></h2>
+<p>Time series data are data that are temporally ordered.</p>
 </div>
 <div class="section" id="categorical-data">
 <h2>Categorical Data<a class="headerlink" href="#categorical-data" title="Permalink to this headline">¶</a></h2>

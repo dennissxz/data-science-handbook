@@ -508,6 +508,29 @@ Likewise, we convert every undirected edge to two anti-parallel directed edges, 
 
 Since in the directed graph we have max-flow $=$ min-cut, in the undirected graph we have max-flow $=$ min-cut.
 
+
+### Minimum Cost Flow
+
+Input: a directed graph $G=(V,E)$, vertices $s, t \in V$, capacities $c(e)$ and weights $w(e)$.
+
+Goal: send maximum amount of flow from $s$ to $t$ in $G$, with minimum possible cost, where for each edge $e$, we need to pay $w(e)$ for every unit of flow sent over edge $e$.
+
+Solution: First find the value $d$ of an $s$-$t$ max-flow in $G$ (using Ford-Fulkerson algorithm or LP). Then solve the following LP. The variables are $f(e)$
+
+
+$$\begin{aligned}
+\operatorname{minimize} && \sum_{e \in E} w(e) f(e) & &&\\
+\mathrm{s.t.} && f(e) &\leq c(e) && \forall e \in E \\
+&& \sum_{e \in \delta^{+}(v)} f(e)-\sum_{e \in \delta^{-}(v)} f(e)&=0 && \forall v \in V \backslash\{s, t\} \\
+&&\sum_{e \in \delta^{+}(s)} f(e)& =d && \\
+&& f(e) &\geq 0 && \forall e \in E
+\end{aligned}$$
+
+Can you solve the problem by solving a single LP (instead of first computing the value $d$
+and then solving an LP that depends on the value $d$)??
+
+### $s$-$t$ Shortest Path
+
 ### Path-based Flow
 
 ```{margin}
@@ -554,7 +577,16 @@ Each iteration takes $O(m)$, so total running time is $O(m^2)$.
 
 :::
 
-Note that dropping the cycles does not affect the flow value. So the paths obtained from this algorithm together with their $\Delta$ form a valid flow-paths solution.
+Note that dropping the cycles does not affect the flow value. Thus, the paths obtained from this algorithm together with their $\Delta$ form a valid flow-paths solution, which means we can solve path-based max-flow by solving edge-based max-flow, and then converting it. The original path-based flow has exponential number of variables and constraints in $n$, but it can be solved by the Ellipsoid Algorithm together with a separation oracle.
+
+$$
+\begin{array}{rcc}
+\operatorname{maximize} & \sum_{P \in \mathcal{P}} f_p(P) & \\
+\text { s.t. } & \sum_{P: e \in P} f_p(P) \leq c(e) & \forall e \in E \\
+& f_p(P) \geq 0 & \forall P \in \mathcal{P}
+\end{array}
+$$
+
 
 ### Edge-Disjoint Paths
 
@@ -594,16 +626,43 @@ In reality, capacities are often defined on vertices, such as computer networks.
 
 We reduce this problem to the usual max flow problem buy convert an vertex-capacitated max flow problem instance $I_V$ into an edge-capacitated problem instance $I_E$, and show that we can solve $I_V$ by solving $I_E$.
 
-Assign infinite capacity to all edges. Convert each vertex to two vertices connected by an edge, with edge weight $c(e) = c(v)$. Equivalent.
+- replace node $v \in V \setminus \left\{ s,t \right\}$ by two nodes $v_{in}$ and $v_{out}$
+- replace edge $(u,v)$ by $(u_{out}, v_{in})$
+  - replace edge $(s,v)$ by $(s, v_{in})$
+  - replace edge $(v,t)$ by $(v_{out}, t)$
+  - assign these edge infinite capacities
+- add edge $(v_{in}, v_{out})$ with capacity $c(v)$
 
+Given a flow $f_V$ on $I_V$, transform it into a flow $f_E$ for $I_E$ by
 
-Vertex-disjoint path problem: find maximum number of vertex-disjoint paths (no two paths share vertices) connecting $S$ to $T$.
+$$\begin{aligned}
+f _E (u_{out}, v_{in}) &= f_V(u, v) \\
+f _E (v_{out}, t) &= f_V(v, t) \\
+f _E (s, v_{in}) &= f_V(s, v) \\
+f _E (v_{in}, v_{out}) &= \sum_{u:(u,v) \in E} f_V(u, v) \\
+\end{aligned}$$
 
-Recall Menger’s Theorem:
-- The maximum number of EDPs connecting $S$ to $T$ is equal to the minimum number of edges needed to disconnect $S$ from $T$.
+In this way, $f _E$ is a valid flow, and values of flow for $f_V$ and $f_E$ are $\sum_{v:(s, v) \in E\left(I_{V}\right)} f_V(s, v)$ and $\sum_{v_{i n}:\left(s, v_{i n}\right) \in E\left(I_{E}\right)} f_E\left(s, v_{i n}\right)$ respectively.
 
-The corresponding version in this setting is:
-- The maximum number of **VDPs** connecting $S$ to $T$ is equal to the minimum number of **vertices** needed to disconnect $S$ from $T$.
+In the other direction, given $f_E$, we can construct $f$ by similar rules as above. Vertex capacity constraints will be satisfied by inflow into a vertex $v$, which must be at most $c(v)$ as $f_E$ is valid.
+
+Algorithmically, given $I_V$, we construct instance $I_E$, run Fold-Fulkerson algorithm on $I_E$ to obtain optimal flow $f_E$, and convert the flow $f_E$ into an optimal $f_V$ for $I_V$ as described above.
+
+Other problems under this setting:
+
+- $s$-$t$ cut:
+
+  Find a minimum cardinality subet $V ^\prime \subseteq V \setminus \left\{ s,t \right\}$ such that $G \setminus V ^\prime$ hs no $s$-$t$ path. Proof: show that any edge cut in $I_E$ corresponds to a vertex cut in $I_V$ of the same value, and vice versa.
+
+- max-flow min-cut:
+
+  $\operatorname{Max}$-$\operatorname{flow}\left(I_{V}\right)=\operatorname{Max}$-$\operatorname{Mow}\left(I_{E}\right)=\operatorname{Min}$-$\operatorname{cut}\left(I_{E}\right)=\operatorname{Min}$-$\operatorname{cut}\left(I_{V}\right)$
+
+- Menger's Theorem
+
+  The maximum number of vertex-disjoint path connecting $S$ to $T$ is equal to the minimum number of vertices needed to remove to disconnect $S$ from $T$.
+
+  Create a super-source $s$ and a super sink $t$ connected respectively to all vertices of $S$ and $T$. Give every other vertex (except $s$ and $t$) a capacity of 1. Then max-fow equals maximum number of node disjoint paths between $S$ and $T$ and min-cut equals minimum cardinality subset we remove to disconnect $S,T$.
 
 
 ## Applications

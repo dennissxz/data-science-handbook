@@ -52,10 +52,8 @@ If we only want to find the shortest path between $s$ and a specific target vert
 
 - While $S \ne V$,
 
-  - Find $u^* = \arg\min _{u \notin S} d(u)$
-  - Add $u^*$ to $S$
-  - For $u \notin S$,
-    - If $d(u^*) + \ell(u^*, u) < d(u)$, then update $d(u) \leftarrow d(u^*) + \ell(u^*, u)$
+  - Find the nearest vertex not in $S$, i.e., $u^* = \arg\min _{u \notin S} d(u)$. Add $u^*$ to $S$.
+  - For each neighbor of $u^*$ that is not in $S$, update $d(u) = \min  \left\{ d(u), d(u^*) + \ell(u^*, u) \right\}$
 
 - For $v \in S$, the shortest path from $s$ to $v$ are the collection of edges to compute $d(v)$.
 

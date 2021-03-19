@@ -828,6 +828,33 @@
    </li>
   </ul>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#monte-carlo-and-las-vegas">
+   Monte Carlo and Las Vegas
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#monte-carlo-algorithms">
+     Monte Carlo Algorithms
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#las-vegas-algorithm">
+     Las Vegas Algorithm
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#global-minimum-cut">
+   Global Minimum Cut
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#polynomial-identity-testing">
+   Polynomial Identity Testing
+  </a>
+ </li>
 </ul>
 
         </nav>
@@ -881,9 +908,10 @@
 </div>
 <div class="section" id="expected-number-of-iterations">
 <h3>Expected Number of Iterations<a class="headerlink" href="#expected-number-of-iterations" title="Permalink to this headline">¶</a></h3>
-<p>What is the expected number of iterations?</p>
+<p>If a random assignment satisfies at least <span class="math notranslate nohighlight">\(\frac{7}{8} m\)</span> clauses, we call it a success.</p>
+<p>What is the expected number of iterations to obtain a success?</p>
 <dl class="simple myst">
-<dt>Claim</dt><dd><p>Let <span class="math notranslate nohighlight">\(p^*\)</span> be the probability that a random assignment satisfies at least <span class="math notranslate nohighlight">\(\frac{7}{8} m\)</span> clauses, then <span class="math notranslate nohighlight">\(p^* \ge \frac{1}{8m}\)</span>.</p>
+<dt>Claim</dt><dd><p>Let <span class="math notranslate nohighlight">\(p^*\)</span> be the probability of success, then <span class="math notranslate nohighlight">\(p^* \ge \frac{1}{8m}\)</span>.</p>
 </dd>
 </dl>
 <div class="dropdown seealso admonition">
@@ -904,15 +932,158 @@
 \end{aligned}\end{split}\]</div>
 <p>Hence <span class="math notranslate nohighlight">\(k+mp^* \ge \operatorname{E}\left( \# \text{satisfied clauses}  \right) = \frac{7}{8}m\)</span>, and then <span class="math notranslate nohighlight">\(p^* \ge \frac{1}{m} \left( \frac{7}{8}m - k  \right)\)</span>. Since <span class="math notranslate nohighlight">\(\frac{7}{8}m - k &gt; 0\)</span>, then the integer <span class="math notranslate nohighlight">\(7m-8k \ge 1\)</span>, then <span class="math notranslate nohighlight">\(\frac{7}{8}m - k \ge \frac{1}{8}\)</span> and <span class="math notranslate nohighlight">\(p^* \ge \frac{1}{8m}\)</span>.</p>
 </div>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
+<p>Therefore, the number of random runs until a success follows a geometric distribution with probability <span class="math notranslate nohighlight">\(p^*\)</span>. Hence, to obtain a success the expected number of runs is <span class="math notranslate nohighlight">\(\frac{1}{p^*}\)</span> which is smaller than <span class="math notranslate nohighlight">\(8m\)</span>. But it may happen that there is no success solution after many runs, so make sure there is some appropriate stoping criteria.</p>
 </div>
+</div>
+<div class="section" id="monte-carlo-and-las-vegas">
+<h2>Monte Carlo and Las Vegas<a class="headerlink" href="#monte-carlo-and-las-vegas" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="monte-carlo-algorithms">
+<h3>Monte Carlo Algorithms<a class="headerlink" href="#monte-carlo-algorithms" title="Permalink to this headline">¶</a></h3>
+<div class="margin sidebar">
+<p class="sidebar-title"></p>
+<p>w.h.p. = with high probability
+w.p.1 = with probability 1</p>
+</div>
+<p>Monte Carlo algorithms are a family of algorithms that</p>
+<ul class="simple">
+<li><p>provide a good (optimal, near-optimal, etc.) solution w.h.p., or</p></li>
+<li><p>the expected solution value is close to <span class="math notranslate nohighlight">\(OPT\)</span>.</p></li>
+</ul>
+<p>In the first case w.h.p., if we obtain a unsatisfactory solution, then we can repeat running until find a satisfactory solution, like what we did in the previous example.</p>
+</div>
+<div class="section" id="las-vegas-algorithm">
+<h3>Las Vegas Algorithm<a class="headerlink" href="#las-vegas-algorithm" title="Permalink to this headline">¶</a></h3>
+<p>Las Vegas algorithms always produce a good solution with polynomial expected run time.</p>
+<p>Generally, if we have a Las Vegas algorithm then we can get a Monte Carlo algorithm: run LV , if there is no optimal solution in some polynomial time, then output some random solution and then re-run.</p>
+<p>The reverse does not always work. Cannot know whether optimal in MC??</p>
+<p>Question: If there is an efficient randomized algorithm for a problem, is there always an efficient deterministic algorithm for it? i.e., <span class="math notranslate nohighlight">\(RP = P\)</span>? Believed to be true, no proof yet.</p>
+</div>
+</div>
+<div class="section" id="global-minimum-cut">
+<h2>Global Minimum Cut<a class="headerlink" href="#global-minimum-cut" title="Permalink to this headline">¶</a></h2>
+<p>A global minimum cut is a partition of vertices <span class="math notranslate nohighlight">\((A,B)\)</span> of <span class="math notranslate nohighlight">\(V\)</span> that minimizes the number of across-set edges <span class="math notranslate nohighlight">\(\left\vert E(A,B) \right\vert\)</span>.</p>
+<p>We’ve introduced minimum <span class="math notranslate nohighlight">\(s-t\)</span> cuts. Apply it to this problem: assign every edge the same capacity, and go over all vertices pairs <span class="math notranslate nohighlight">\((u,v)\)</span>, find the global minimum <span class="math notranslate nohighlight">\(u\)</span>-<span class="math notranslate nohighlight">\(v\)</span> cut. This takes <span class="math notranslate nohighlight">\(O(n^2)\)</span> time which is slow.</p>
+<p>There is a randomized algorithm to solve this in <span class="math notranslate nohighlight">\(O(n)\)</span>. The idea is: iteratively contraction of an edge <span class="math notranslate nohighlight">\(e=(u,v)\)</span>, i.e., merge two adjacent vertices <span class="math notranslate nohighlight">\(u,v\)</span> into one new vertex <span class="math notranslate nohighlight">\(w\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[
+&gt; u - v &lt; \quad \Longrightarrow \quad &gt; w &lt;
+\]</div>
+<ul class="simple">
+<li><p>Delete edge <span class="math notranslate nohighlight">\(e=(u,v)\)</span></p></li>
+<li><p>All edges that are adjacent to <span class="math notranslate nohighlight">\(u,v\)</span> now becomes adjacent to <span class="math notranslate nohighlight">\(w\)</span>.</p></li>
+<li><p>If there is a vertex <span class="math notranslate nohighlight">\(a\)</span> that are adjacent to both of <span class="math notranslate nohighlight">\(u\)</span> and <span class="math notranslate nohighlight">\(v\)</span>, we keep the two parallel edges <span class="math notranslate nohighlight">\((a,w)\)</span>.</p></li>
+</ul>
+<dl class="simple myst">
+<dt>Lemma</dt><dd><p>Let <span class="math notranslate nohighlight">\(c\)</span> be the minimal cost. Then any vertex must have degree greater than <span class="math notranslate nohighlight">\(c\)</span> (otherwise that vertex has a cut smaller than <span class="math notranslate nohighlight">\(c\)</span>).</p>
+</dd>
+</dl>
+<hr class="docutils" />
+<p>Algorithm</p>
+<hr class="docutils" />
+<p>Repeat</p>
+<ul class="simple">
+<li><p>Choose one edge <span class="math notranslate nohighlight">\(e=(u,v)\)</span> from the current graph uniformly at random.</p></li>
+<li><p>Contract <span class="math notranslate nohighlight">\(e\)</span>, keep parallel edges, delete self loops. Note that the number of vertices decreases by 1.</p></li>
+</ul>
+<p>After <span class="math notranslate nohighlight">\(n-2\)</span> iterations, then there are two vertices left. Each vertex stands for some vertices of original <span class="math notranslate nohighlight">\(V\)</span>. These two vertices defines a cut <span class="math notranslate nohighlight">\((A,B)\)</span>.</p>
+<hr class="docutils" />
+<dl class="simple myst">
+<dt>Theorem (Global minimum cut probability)</dt><dd><p>The cut <span class="math notranslate nohighlight">\((A,B)\)</span> returned by the above algorithm is a <em>specific</em> global minimum cut with probability <span class="math notranslate nohighlight">\(\ge \frac{1}{C_n^2}\)</span>.</p>
+</dd>
+</dl>
+<div class="dropdown seealso admonition">
+<p class="admonition-title"> <em>Proof</em></p>
+<p>Let <span class="math notranslate nohighlight">\((A^*,B^*)\)</span> be a global minimum cut. Let <span class="math notranslate nohighlight">\(E ^* = E(A ^*, B^*)\)</span> be the across-set edges. The cut returned by the algorithm is this minimal cut <span class="math notranslate nohighlight">\(E^*\)</span> if no edge in <span class="math notranslate nohighlight">\(E^*\)</span> is contracted.</p>
+<p>Let <span class="math notranslate nohighlight">\(A_i\)</span> be the event that all edges in <span class="math notranslate nohighlight">\(E ^*\)</span> survive in iteration <span class="math notranslate nohighlight">\(i\)</span>. If <span class="math notranslate nohighlight">\(A_{n-2}\)</span> happens then the output cut is <span class="math notranslate nohighlight">\(E^*\)</span>.</p>
+<p>Suppose <span class="math notranslate nohighlight">\(\left\vert E ^*  \right\vert = c\)</span>. Then in the original graph, <span class="math notranslate nohighlight">\(\operatorname{deg}(v) \ge c\)</span>. So the total number of edges <span class="math notranslate nohighlight">\(\left\vert E(G) \right\vert  =  \frac{1}{2} \sum_{v\in V} \operatorname{deg}(v)  \ge \frac{nc}{2}\)</span>.</p>
+<p>It is easy to see in the first iteration</p>
+<div class="math notranslate nohighlight">
+\[\mathbb{P} \left( A_1 \right) = 1 - \mathbb{P} \left( \text{one edge of $E ^*$ is chosen}  \right) = 1 - \frac{\left\vert E ^* \right\vert}{\left\vert E(G) \right\vert} \ge 1 - \frac{c}{nc/2} = 1 - \frac{2}{n} = \frac{n-2}{n}\]</div>
+<p>Given all edges survive in the previous <span class="math notranslate nohighlight">\((i-1)\)</span>- iterations, the probability that they survive the <span class="math notranslate nohighlight">\(i\)</span>-th iteration is</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbb{P} \left( A_i \mid A_{i-1} \right) = 1 - \frac{\left\vert E^* \right\vert}{ \left\vert E(G_{i-1}) \right\vert} \ge 1 - \frac{c}{(n-i +1)c/2} = \frac{n-i-1}{n-i+1}
+\]</div>
+<p>By chain rule, we have</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\mathbb{P} (A_{n-2})
+&amp;= \mathbb{P} (A_1) \prod _{i=2}^{n-2} \mathbb{P}\left( A_i \mid A_{i-1} \right) \\
+&amp;\ge \frac{n-2}{2}   \prod _{i=2}^{n-2} \frac{n-i-1}{n-i+1}  \\
+&amp;= \frac{n-2}{n} \cdot \frac{n-3}{n-1} \cdot \frac{n-4}{n-2} \ldots \frac{1}{3}    \\
+&amp;= \frac{(n-2)!2!}{n!}   \\
+&amp;= \frac{1}{C_n^2}  \\
+\end{aligned}\end{split}\]</div>
+<p>What if a deleted parallel edge is in <span class="math notranslate nohighlight">\(E ^*\)</span>? This cannot happen since if we do not select an edge from <span class="math notranslate nohighlight">\(E^*\)</span>, then no parallel edge can be in <span class="math notranslate nohighlight">\(E^*\)</span>. In other words, either all parallel edges are in the output cut, or none of them are in the output cut.</p>
+</div>
+<dl class="simple myst">
+<dt>Corollary (Largest number of global minimum cut)</dt><dd><p>The number of global minimum cut in a graph is at most <span class="math notranslate nohighlight">\(C_n^2\)</span>.</p>
+<p>Suppose the total number of global minimum cut is <span class="math notranslate nohighlight">\(K\)</span>, then</p>
+<div class="math notranslate nohighlight">
+\[\mathbb{P} (\text{the output is not any g.m.c.} ) = 1 - \sum_{k=1}^K \mathbb{P} (\text{the output is g.m.c $k$} ) = 1 - \frac{K}{C_n^2} \ge 0 \Rightarrow K \le C_n^2\]</div>
+</dd>
+</dl>
+<p>An equivalent algorithm (Karger’s) is</p>
+<ul class="simple">
+<li><p>For each edge <span class="math notranslate nohighlight">\(e\)</span>, assign random weight <span class="math notranslate nohighlight">\(w_e \sim \operatorname{U}(0,1]\)</span>.</p></li>
+<li><p>Run Kruskal’s algorithm to find a minimum spanning tree.</p></li>
+<li><p>Remove the heaviest edge from this MST to obtain a cut.</p></li>
+</ul>
+<p>Run time of these steps is <span class="math notranslate nohighlight">\(\mathcal{O}(m \log m)\)</span>, and the output cut is a specific gobal minimum cut with probability at least <span class="math notranslate nohighlight">\(\frac{1}{C_n^2}\)</span>. To find a global minimum cut with constant probability (not depend on <span class="math notranslate nohighlight">\(n\)</span>), we need <span class="math notranslate nohighlight">\(\mathcal{O}(mn^2 \log m)\)</span>.</p>
+<p>Improvement:</p>
+<p>In the algorithm, in early iterations (small <span class="math notranslate nohighlight">\(i\)</span>), the probability of survival in each iteration <span class="math notranslate nohighlight">\(\frac{n-i-1}{n-i-1}\)</span> is high. We can take advantage of this.</p>
+<ul class="simple">
+<li><p>Run the algorithm for <span class="math notranslate nohighlight">\(\frac{n}{2}\)</span> iterations.</p></li>
+<li><p>Then make 2 copies of the graph, run 2 instances of the algorithm in parallel for <span class="math notranslate nohighlight">\(\frac{n}{4}\)</span> iterations.</p></li>
+<li><p>Then make 2 copies of each graph, run 4 instances of the algorithm in parallel for <span class="math notranslate nohighlight">\(\frac{n}{8}\)</span> iterations.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\ldots\)</span></p></li>
+</ul>
+<p>This reduces the running time to <span class="math notranslate nohighlight">\(\mathcal{O}(n^2 \log n)\)</span> with success probability <span class="math notranslate nohighlight">\(\mathcal{\Omega} \left( \frac{1}{\log n}  \right)\)</span>.</p>
+<p>Other improvements:</p>
+<ul class="simple">
+<li><p>approximate global minimum cut</p></li>
+<li><p>sparsify the graph</p></li>
+</ul>
+</div>
+<div class="section" id="polynomial-identity-testing">
+<h2>Polynomial Identity Testing<a class="headerlink" href="#polynomial-identity-testing" title="Permalink to this headline">¶</a></h2>
+<p>A moninomial of <span class="math notranslate nohighlight">\(n\)</span> variables has the form <span class="math notranslate nohighlight">\(c x_1 ^{d_1} x_2 ^{d_2} \ldots x_n ^{d^n}\)</span> where <span class="math notranslate nohighlight">\(d_i \ge 0\)</span>. The degree of a monomial is <span class="math notranslate nohighlight">\(\sum_i d_i\)</span>.</p>
+<p>A polynomial <span class="math notranslate nohighlight">\(P(x_1, x_2, \ldots, x_n)\)</span> of <span class="math notranslate nohighlight">\(n\)</span> variables is a sum of moninomials of <span class="math notranslate nohighlight">\(n\)</span> variables. The degree of a polynomial is the largest degree of its monomials.</p>
+<p>A polynomial <span class="math notranslate nohighlight">\(P\)</span> is said to be identically zero, denoted <span class="math notranslate nohighlight">\(P \equiv 0\)</span> if the coefficients of its monomials are all 0.</p>
+<p>Question: given a polynomial <span class="math notranslate nohighlight">\(P\)</span> in <span class="math notranslate nohighlight">\(n\)</span> variables over field <span class="math notranslate nohighlight">\(f\)</span> of degree <span class="math notranslate nohighlight">\(d\)</span> in the following forms, is <span class="math notranslate nohighlight">\(P \equiv 0\)</span>?</p>
+<div class="math notranslate nohighlight">
+\[
+P(x_1, x_2, \ldots, x_n) = (x_1 + x_2)(x_3 ^2 + 2x_4 - x_5) \ldots
+\]</div>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+A = \left[\begin{array}{ccc}
+x_1 &amp; 0 &amp; \cdots \\
+2x_2 &amp; -1 &amp; \cdots \\
+\vdots &amp; \vdots &amp; \cdots
+\end{array}\right]
+\end{split}\]</div>
+<p>If we unpack the parentheses or compute the determinant of <span class="math notranslate nohighlight">\(A\)</span> to find the monomial representation of <span class="math notranslate nohighlight">\(P\)</span> and determine whether <span class="math notranslate nohighlight">\(P \equiv 0\)</span>, the computation is hard. But if we know the values of variables, it is easy to verify the value of <span class="math notranslate nohighlight">\(P\)</span>.</p>
+<p>In particular,</p>
+<ul class="simple">
+<li><p>If <span class="math notranslate nohighlight">\(\mathbb{F} = \mathbb{R}\)</span>, then <span class="math notranslate nohighlight">\(P \equiv 0\)</span> if and only if <span class="math notranslate nohighlight">\(P(x_1, \ldots x_n)=0\)</span> for all <span class="math notranslate nohighlight">\(x_1, \ldots, x_n \in \mathbb{R}\)</span>.</p></li>
+<li><p>But for some other fields this is not true: if <span class="math notranslate nohighlight">\(\mathbb{F} = \left\vert 0,1 \right\vert\)</span> and <span class="math notranslate nohighlight">\(P(x)=x^2 -x\)</span>, then <span class="math notranslate nohighlight">\(P(x)=0\)</span> for all <span class="math notranslate nohighlight">\(x\in \left\{ 0,1 \right\}\)</span> but it is not identically 0.</p></li>
+</ul>
+<dl class="simple myst">
+<dt>Lemma (Schwartz-Zippel)</dt><dd><p>Let</p>
+</dd>
+</dl>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(P(x_1, \ldots, x_n)\)</span> be a multivariate polynomial of degree <span class="math notranslate nohighlight">\(d\ge 0\)</span> over some field <span class="math notranslate nohighlight">\(\mathbb{F}\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(S \subseteq \mathbb{F}\)</span> be a finite subset of <span class="math notranslate nohighlight">\(\mathbb{F}\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(r_1, \ldots, r_n\)</span> be independent and uniform random draws from <span class="math notranslate nohighlight">\(S\)</span></p></li>
+</ul>
+<p>If <span class="math notranslate nohighlight">\(P(x_1, \ldots, x_n)\)</span> is not identically to <span class="math notranslate nohighlight">\(0\)</span>, then it evaluates to 0 with probability</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbb{P} \left\{ P(r_1, \ldots , r_n) =0 \right\} \le \frac{d}{\left\vert s \right\vert}
+\]</div>
+<p>For instance, we can choose <span class="math notranslate nohighlight">\(\left\vert S \right\vert = nd\)</span>, such that the upper bound is <span class="math notranslate nohighlight">\(\frac{1}{n}\)</span>. If <span class="math notranslate nohighlight">\(\mathbb{F}\)</span> is finite then we choose <span class="math notranslate nohighlight">\(S = \mathbb{F}\)</span>.</p>
 </div>
 </div>
 

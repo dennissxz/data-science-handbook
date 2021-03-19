@@ -843,6 +843,26 @@
      </li>
     </ul>
    </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#independent-set">
+     Independent Set
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#vertex-cover">
+     Vertex Cover
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#edge-cover">
+     Edge Cover
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#set-cover">
+     Set Cover
+    </a>
+   </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -1094,6 +1114,90 @@ e_{i^-} - h(\boldsymbol{x}_{i^+}) &amp;\le -1 \quad &amp;&amp;\forall \ i^-\\
 <p>The feature transformation can involve non-linear terms such as <span class="math notranslate nohighlight">\(x_1^2, x_1 x_2\)</span> etc.</p>
 </div>
 </div>
+<div class="section" id="independent-set">
+<h3>Independent Set<a class="headerlink" href="#independent-set" title="Permalink to this headline">¶</a></h3>
+<p><span class="math notranslate nohighlight">\(x_v=1\)</span> if vertex <span class="math notranslate nohighlight">\(v\)</span> is chosen into the independent set and 0 otherwise.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\max &amp;&amp; \sum_v x_v &amp; &amp;&amp;\\
+\mathrm{s.t.}
+&amp;&amp; x_u + x_v &amp;\leq 1 &amp;&amp; \forall e=(u,v) \in E \\
+&amp;&amp; x_v &amp;\in \left\{ 0,1 \right\}  &amp;&amp; \forall v \in V \\
+\end{aligned}\end{split}\]</div>
+</div>
+<div class="section" id="vertex-cover">
+<h3>Vertex Cover<a class="headerlink" href="#vertex-cover" title="Permalink to this headline">¶</a></h3>
+<p>In an undirected graph <span class="math notranslate nohighlight">\(G=(V,E)\)</span>, a set <span class="math notranslate nohighlight">\(S\subseteq V\)</span> is a vertex cover if for any edge in graph <span class="math notranslate nohighlight">\(G\)</span>, at least one of its endpoint is in <span class="math notranslate nohighlight">\(S\)</span>. Formally,  <span class="math notranslate nohighlight">\(\forall e = (u, v)\in E: u\in S\)</span> or <span class="math notranslate nohighlight">\(v\in S\)</span> or both. We want to find a minimum-cardinality vertex cover.</p>
+<p>Let <span class="math notranslate nohighlight">\(x_v = 1\)</span> if <span class="math notranslate nohighlight">\(x_v \in S\)</span> and 0 otherwise.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\min &amp;&amp; \sum _{v \in V} x_v &amp; &amp;&amp;\\
+\mathrm{s.t.}
+&amp;&amp; x_u + x_v &amp;\ge 1 &amp;&amp; \forall e=(u,v) \in E\\
+&amp;&amp; x_v &amp;\in \left\{ 0,1 \right\}  &amp;&amp; \forall v \in V  \\
+\end{aligned}\end{split}\]</div>
+<p>Dual</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\max &amp;&amp; \sum_{e \in E} y_e  &amp; &amp;&amp;\\
+\mathrm{s.t.}
+&amp;&amp; \sum_{e\in d(v)} y_e  &amp;\leq 1 &amp;&amp; \forall v \in V \\
+&amp;&amp; y_e &amp;\ge 0 &amp;&amp; \forall e \in E  \\
+\end{aligned}\end{split}\]</div>
+</div>
+<div class="section" id="edge-cover">
+<h3>Edge Cover<a class="headerlink" href="#edge-cover" title="Permalink to this headline">¶</a></h3>
+<p>An edge cover of a graph is a set <span class="math notranslate nohighlight">\(S\)</span> of edges such that every vertex of the graph is incident to at least one edge of the set.</p>
+<p>Let <span class="math notranslate nohighlight">\(x_e = 1\)</span> if <span class="math notranslate nohighlight">\(x_e \in S\)</span> and 0 otherwise.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\min &amp;&amp; \sum _{e \in E} x_e &amp; &amp;&amp;\\
+\mathrm{s.t.}
+&amp;&amp; \sum_{e \in d(v)} x_e &amp;\ge 1 &amp;&amp; \forall v \in V\\
+&amp;&amp; x_e &amp;\in \left\{ 0,1 \right\}  &amp;&amp; \forall e \in E  \\
+\end{aligned}\end{split}\]</div>
+<p>Dual:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\max &amp;&amp; \sum _{v \in V} y_v &amp; &amp;&amp;\\
+\mathrm{s.t.}
+&amp;&amp; y_u + y_v &amp;\leq 1 &amp;&amp; \forall e=(u,v) \in E \\
+&amp;&amp; y_v &amp;\ge 0 &amp;&amp; \forall v \in V  \\
+\end{aligned}\end{split}\]</div>
+</div>
+<div class="section" id="set-cover">
+<h3>Set Cover<a class="headerlink" href="#set-cover" title="Permalink to this headline">¶</a></h3>
+<p>We are given a universe <span class="math notranslate nohighlight">\(U=\left\{ e_1, \ldots, e_n \right\}\)</span> of <span class="math notranslate nohighlight">\(n\)</span> elements and a family of <span class="math notranslate nohighlight">\(m\)</span> subsets <span class="math notranslate nohighlight">\(\mathcal{F} = \left\{ S_1, \ldots, S_m \right\}\)</span>, where each <span class="math notranslate nohighlight">\(S_i \subseteq U\)</span>. Further, each set <span class="math notranslate nohighlight">\(S \in F\)</span> has an associated cost <span class="math notranslate nohighlight">\(w_S \ge 0\)</span>. The goal is to choose a sub-collection of <span class="math notranslate nohighlight">\(\mathcal{F}\)</span>, called a set cover, of minimum total cost such that the union of all sets in this sub-collection is <span class="math notranslate nohighlight">\(U\)</span>. In other words, every element <span class="math notranslate nohighlight">\(e \in U\)</span> must belong to
+some subset in the set cover.</p>
+<p>LP formulation: we have an indicator variable <span class="math notranslate nohighlight">\(x_S\)</span> which is 1 if the set <span class="math notranslate nohighlight">\(S\)</span> is included in the set cover, and 0 otherwise.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{array}{ll}
+\min &amp; \sum_{S \in \mathcal{F}} w_{S} x_{S} &amp; \\
+\text { s.t. } &amp; \sum_{S: e \in S} x_{S} \geq 1 &amp; \forall e \in U \\
+&amp; x_{S} \in\{0,1\} &amp;\forall S \in \mathcal{F}
+\end{array}
+\end{split}\]</div>
+<p>To obtain an LP, we will relax the integrality constraint <span class="math notranslate nohighlight">\(x_S \in \left\{ 0,1 \right\}\)</span> to <span class="math notranslate nohighlight">\(x_S \in [0,1]\)</span>. We can additionally relax <span class="math notranslate nohighlight">\(x_S \in [0,1]\)</span> to <span class="math notranslate nohighlight">\(x_S \ge 0\)</span>, sin in the optimal solution, if <span class="math notranslate nohighlight">\(x^*_S&gt;1\)</span>, we can set <span class="math notranslate nohighlight">\(x_S^* = 1\)</span> without violating any constraints, and the total weight can only decrease.</p>
+<p>A natural LP relaxation is,</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{array}{ll}
+\min &amp; \sum_{S \in \mathcal{F}} w_{S} x_{S} &amp; \\
+\text { s.t. } &amp; \sum_{S: e \in S} x_{S} \geq 1 &amp; \forall e \in U \\
+&amp; x_{S} \geq 0 &amp; \forall S \in \mathcal{F}
+\end{array}
+\end{split}\]</div>
+<p>Dual is</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{array}{ll}
+\text { max } &amp; \sum_{e \in U} y_{e} &amp;\\
+\text { s.t. } &amp; \sum_{e \in U: S \ni e} y_{e} \leq w_{S} &amp; \forall S \in \mathcal{F} \\
+&amp; y_{e} \geq 0 &amp; \forall e \in U
+\end{array}
+\end{split}\]</div>
+</div>
 </div>
 <div class="section" id="duality">
 <h2>Duality<a class="headerlink" href="#duality" title="Permalink to this headline">¶</a></h2>
@@ -1144,8 +1248,17 @@ g(\boldsymbol{y}) \le f(\boldsymbol{x}^*)
 </div>
 <div class="section" id="duality-theorem">
 <span id="id1"></span><h3>Duality Theorem<a class="headerlink" href="#duality-theorem" title="Permalink to this headline">¶</a></h3>
-<p>The inequality <span class="math notranslate nohighlight">\(g(\boldsymbol{y}) \le f(\boldsymbol{x})\)</span> is called weak duality theorem.</p>
-<p>The equality <span class="math notranslate nohighlight">\(g(\boldsymbol{y}^*) = f(\boldsymbol{x}^*)\)</span> is called the strong duality theorem.</p>
+<dl class="simple myst">
+<dt>Theorem (Weak duality)</dt><dd><p>If <span class="math notranslate nohighlight">\(P\)</span> is a primal linear program in maximization standard form, <span class="math notranslate nohighlight">\(D\)</span> is its dual, then</p>
+<ul class="simple">
+<li><p>If one of them is unbounded, then the other is infeasible;</p></li>
+<li><p>If <span class="math notranslate nohighlight">\(P\)</span> and <span class="math notranslate nohighlight">\(D\)</span> are both feasible and bounded, then <span class="math notranslate nohighlight">\(\operatorname{OPT}(P) \le \operatorname{OPT} (D)\)</span>.</p></li>
+</ul>
+</dd>
+<dt>Theorem (Strong duality)</dt><dd><p>If either <span class="math notranslate nohighlight">\(P\)</span> or <span class="math notranslate nohighlight">\(D\)</span> is feasible and bounded, then so is the other, and <span class="math notranslate nohighlight">\(\operatorname{OPT}(P) = \operatorname{OPT} (D)\)</span>.</p>
+</dd>
+</dl>
+<p>To summarize, dual is bounded and feasible <span class="math notranslate nohighlight">\(\Leftrightarrow\)</span> dual has a finite optimal solution <span class="math notranslate nohighlight">\(\Leftrightarrow\)</span> primal has a finite optimal solution <span class="math notranslate nohighlight">\(\Leftrightarrow\)</span> primal is bounded and feasible. Sometimes to the first two is hard, we can prove the last two in lieu.</p>
 </div>
 </div>
 <div class="section" id="relaxation">

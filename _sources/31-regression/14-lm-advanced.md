@@ -139,9 +139,135 @@ Suppose we are in
 
 ## Panel Data
 
+Recall the common trends assumption. Can we generalize it? What if there are more than 2 periods and more than 2 groups? We introduce first difference and fixed effect, for more than s.
+
+Panel data, aka. longitudinal data, are data constructed from repeated samples of the same entities/individuals $i$ at different points $t$ in time.
+
+$$
+Y_{i t}=\beta_{0}+\beta_{1} X_{1 i t}+\ldots+\beta_{k} X_{k i t}+u_{i t}
+$$
+
+where entities $i=1, \ldots, N$ and time $t=1, \ldots T$, if balanced. There can also be unbalanced panel data such that the total number of observations is less than $NT$.
+
+For instance,
+
+- Graduation rate at each school in Chicago over last 10 years
+- Poverty rate for each state over several years
+- Earnings of workers over time before and after disability
 
 
+:::{admonition,note} Note
 
+Panel data is different from repeated cross-section data that have multiple observations per sample in multiple time periods.
+
+Whether an analysis uses repeated cross-section or panel data sometimes depends on how raw data are manipulated. Consider a random sample of 100 people from each state, taken every year.
+- Different people each year – so it is repeated cross-section if $i$ indexes people
+- If the individuals from a state are aggregated into a state average, then since we have the same states year after year it is panel — now $i$ indexes states
+
+:::
+
+Panel data enable us to remove bias from certain types of omitted variables.
+
+- If omitted variables for entity $i$ do not change over time,
+- Or if omitted variables for time period $t$ do not differ across entity,
+
+Then panel data gives unbiased estimates.
+
+### First Difference
+
+Suppose we have a panel data set at two time points $t_1$ and $t_2$. Suppose the true model is
+
+$$Y_{it} = \beta_0 + \beta_1 X_{1it} + \beta_2 X_{2it} + u_{it}$$
+
+where $\mathbb{E}(u_{it} \vert X_{1it}, X_{2it})=0$. But we only observe $X_{1}$ and omit $X_2$. Then running a regression model $Y_i \sim X_{1i}$ at each time point leads to a biased estimate of $\beta_1$. However, the difference is
+
+$$\Delta Y_{i} = \beta_1 \Delta X_{1i} + \beta_2 \Delta X_{2i} + \Delta u_{i}$$
+
+If $\Delta X_{2i}=0$ for each $i$, i.e., for $X_{2it}$ does not change over time $t$ for entity $i$, then we can run regression $\Delta Y_i \sim \Delta X_{1i}$ (include intercept) and obtain an unbiased estimate of $\beta_1$. The intercept estimate $\tilde{\beta}_0$ can be interpreted as the change of $\beta_0$ over time.
+
+addimg *3
+
+Rationales of FD
+- FD regress the change in $Y$ against the change in $X$
+- If omitted variables are constant over time (time invariant), then they will be unrelated to changes in $Y$ and $X$ for a given $i$.
+- Differencing gets rid of time invariant unobservables, as well as time invariant observables.
+
+For $T > 2$ case.
+
+We can run compute $\Delta Y_{it} = Y_{i(t+1)} - Y_{it}$ and $\Delta X_{1it}$, for each $t=1,\ldots, T-1$, and use all these $(T-1)n$ number of $(\Delta Y, \Delta X)$ pairs to run a regression to obtain $\hat{\beta}_1$.
+
+
+Pros
+- Solve bias caused by time invariant variables.
+
+Cons
+- Cannot solve bias caused by time varying variables, if they are correlated with $\Delta X$. It's like we omit $\Delta X_{2i} \ne 0$ in $\Delta Y_{i} = \beta_1 \Delta X_{1i} + \beta_2 \Delta X_{2i} + \Delta u_{i}$
+- Cannot estimate coefficient for time invariant variables ($\beta_2$ in the above case)
+- Lower variation in independent variable sine $\sigma_{\Delta X}^{2} \ll \sigma_{X}^{2}$. Higher standard error of estimate
+- May exaggerate measurement error since signal is reduced but noise variance is larger.
+
+
+### Fixed Effect
+
+#### Entity Fixed Effect
+
+In FD we drop time invariant variable $\beta_2 X_{2it} = \beta_2 X_{2i}$ to estimate $\beta_1$, but in fixed effect model we estimate these $\beta_2 X_{2i}$. Suppose again the true model is
+
+$$Y_{it} = \beta_0 + \beta_1 X_{1it} + \beta_2 X_{2it} + u_{it}$$
+
+If $X_{2it}$ is time invariant, then we can write
+
+$$Y_{it} = (\underbrace{\beta_0 + \beta_2 X_{2i}}_{\alpha_i}) + \beta_1 X_{1it} + u_{it}$$
+
+which suggests that each entity $i$ has a different intercept $\alpha_i$. Hence, the new equation can be estimated by letting each entity $i$ have a unique intercept. This is called fixed effects regression.
+
+$$Y_{i t}=\beta_{1} X_{i t}+\sum_{i=1}^{N} \alpha_{i} d_{i}+u_{i t}$$
+
+where $d_i$ is a dummy variable indicating if an observation is in group $i$. The total number of observations in this regression is $NT$, and number of parameters is $N+1$.
+
+Note that
+- If $T=2$ then FD=FE.
+- If there is autocorrelation of errors within an entity, use clustered standard error.
+- de-mean interpretation
+- precision of $a_i$ depends on the number of observations in entity $i$.
+
+
+#### Time Fixed Effect
+
+Some omitted variables very over time but are the same across entities within a time period.
+
+$$Y_{i t}=\beta_{1} X_{i t}+\sum_{t=1}^{T} \alpha^{t} d^{t}+u_{i t}$$
+
+Examples:
+- Federal policy may affect all states the same
+- Macroeconomic shocks may affect many workers the same
+- Technological change may affect all firms the same
+- Quarterly seasonal effect
+- Fall/summer effect for agricultural data
+
+The total number of observations in this regression is $NT$, and number of parameters is $T+1$.
+
+#### Both
+
+We can include both entity and time fixed effect. This will eliminate both time invariant unobservables within each entity, and entity invariant unobservables within each time period.
+
+$$Y_{i t}=\beta_{1} X_{i t}+\sum_{i=1}^{N} \alpha_{i} d_{i}+\sum_{t=1}^{T} \alpha^{t} d^{t}+u_{i t}$$
+
+The total number of observations in this regression is $NT$, and number of parameters is $N + T+1$.
+
+Example:
+- Drinking culture fixed within states ($a_i$)
+- Federal policy changes affect all states the same ($a_t$)
+
+Pros
+- Can eliminate bias due to time invariant unobservable factors or entity invariant unobservable factors
+
+Cons
+- Time varying unobservables that are unique to each state (not a common shock) can still cause bias.
+
+## Time Series
+
+Time series data are data that are temporally ordered.
 
 
 

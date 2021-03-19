@@ -886,6 +886,23 @@
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#minimum-cost-flow">
+     Minimum Cost Flow
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#s-t-shortest-path">
+     <span class="math notranslate nohighlight">
+      \(s\)
+     </span>
+     -
+     <span class="math notranslate nohighlight">
+      \(t\)
+     </span>
+     Shortest Path
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#path-based-flow">
      Path-based Flow
     </a>
@@ -1398,6 +1415,25 @@ f^{\text{out}}(v) =\sum_{e \in \delta^{+}(v)} f(e)
 <p>Likewise, we convert every undirected edge to two anti-parallel directed edges, run Ford-Fulkerson algorithm to find a <span class="math notranslate nohighlight">\(s\)</span>-<span class="math notranslate nohighlight">\(t\)</span> cut <span class="math notranslate nohighlight">\((A,B)\)</span>. The cut values are the same.</p>
 <p>Since in the directed graph we have max-flow <span class="math notranslate nohighlight">\(=\)</span> min-cut, in the undirected graph we have max-flow <span class="math notranslate nohighlight">\(=\)</span> min-cut.</p>
 </div>
+<div class="section" id="minimum-cost-flow">
+<h3>Minimum Cost Flow<a class="headerlink" href="#minimum-cost-flow" title="Permalink to this headline">¶</a></h3>
+<p>Input: a directed graph <span class="math notranslate nohighlight">\(G=(V,E)\)</span>, vertices <span class="math notranslate nohighlight">\(s, t \in V\)</span>, capacities <span class="math notranslate nohighlight">\(c(e)\)</span> and weights <span class="math notranslate nohighlight">\(w(e)\)</span>.</p>
+<p>Goal: send maximum amount of flow from <span class="math notranslate nohighlight">\(s\)</span> to <span class="math notranslate nohighlight">\(t\)</span> in <span class="math notranslate nohighlight">\(G\)</span>, with minimum possible cost, where for each edge <span class="math notranslate nohighlight">\(e\)</span>, we need to pay <span class="math notranslate nohighlight">\(w(e)\)</span> for every unit of flow sent over edge <span class="math notranslate nohighlight">\(e\)</span>.</p>
+<p>Solution: First find the value <span class="math notranslate nohighlight">\(d\)</span> of an <span class="math notranslate nohighlight">\(s\)</span>-<span class="math notranslate nohighlight">\(t\)</span> max-flow in <span class="math notranslate nohighlight">\(G\)</span> (using Ford-Fulkerson algorithm or LP). Then solve the following LP. The variables are <span class="math notranslate nohighlight">\(f(e)\)</span></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\operatorname{minimize} &amp;&amp; \sum_{e \in E} w(e) f(e) &amp; &amp;&amp;\\
+\mathrm{s.t.} &amp;&amp; f(e) &amp;\leq c(e) &amp;&amp; \forall e \in E \\
+&amp;&amp; \sum_{e \in \delta^{+}(v)} f(e)-\sum_{e \in \delta^{-}(v)} f(e)&amp;=0 &amp;&amp; \forall v \in V \backslash\{s, t\} \\
+&amp;&amp;\sum_{e \in \delta^{+}(s)} f(e)&amp; =d &amp;&amp; \\
+&amp;&amp; f(e) &amp;\geq 0 &amp;&amp; \forall e \in E
+\end{aligned}\end{split}\]</div>
+<p>Can you solve the problem by solving a single LP (instead of first computing the value <span class="math notranslate nohighlight">\(d\)</span>
+and then solving an LP that depends on the value <span class="math notranslate nohighlight">\(d\)</span>)??</p>
+</div>
+<div class="section" id="s-t-shortest-path">
+<h3><span class="math notranslate nohighlight">\(s\)</span>-<span class="math notranslate nohighlight">\(t\)</span> Shortest Path<a class="headerlink" href="#s-t-shortest-path" title="Permalink to this headline">¶</a></h3>
+</div>
 <div class="section" id="path-based-flow">
 <h3>Path-based Flow<a class="headerlink" href="#path-based-flow" title="Permalink to this headline">¶</a></h3>
 <div class="margin sidebar">
@@ -1437,7 +1473,15 @@ f^{\text{out}}(v) =\sum_{e \in \delta^{+}(v)} f(e)
 <p>We repeat this process until there is no cycle or path. Each iteration reduces flow to one edge to 0, so the number of iterations is at most <span class="math notranslate nohighlight">\(m\)</span>. Each iteration gives a cycle or <span class="math notranslate nohighlight">\(s\)</span>-<span class="math notranslate nohighlight">\(t\)</span> path with flow <span class="math notranslate nohighlight">\(\Delta\)</span>. Hence, the number of cycles and <span class="math notranslate nohighlight">\(s\)</span>-<span class="math notranslate nohighlight">\(t\)</span> paths is at most <span class="math notranslate nohighlight">\(m\)</span>.</p>
 <p>Each iteration takes <span class="math notranslate nohighlight">\(O(m)\)</span>, so total running time is <span class="math notranslate nohighlight">\(O(m^2)\)</span>.</p>
 </div>
-<p>Note that dropping the cycles does not affect the flow value. So the paths obtained from this algorithm together with their <span class="math notranslate nohighlight">\(\Delta\)</span> form a valid flow-paths solution.</p>
+<p>Note that dropping the cycles does not affect the flow value. Thus, the paths obtained from this algorithm together with their <span class="math notranslate nohighlight">\(\Delta\)</span> form a valid flow-paths solution, which means we can solve path-based max-flow by solving edge-based max-flow, and then converting it. The original path-based flow has exponential number of variables and constraints in <span class="math notranslate nohighlight">\(n\)</span>, but it can be solved by the Ellipsoid Algorithm together with a separation oracle.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{array}{rcc}
+\operatorname{maximize} &amp; \sum_{P \in \mathcal{P}} f_p(P) &amp; \\
+\text { s.t. } &amp; \sum_{P: e \in P} f_p(P) \leq c(e) &amp; \forall e \in E \\
+&amp; f_p(P) \geq 0 &amp; \forall P \in \mathcal{P}
+\end{array}
+\end{split}\]</div>
 </div>
 <div class="section" id="edge-disjoint-paths">
 <h3>Edge-Disjoint Paths<a class="headerlink" href="#edge-disjoint-paths" title="Permalink to this headline">¶</a></h3>
@@ -1472,15 +1516,40 @@ f^{\text{out}}(v) =\sum_{e \in \delta^{+}(v)} f(e)
 <h3>Vertex-capacitated Max Flow<a class="headerlink" href="#vertex-capacitated-max-flow" title="Permalink to this headline">¶</a></h3>
 <p>In reality, capacities are often defined on vertices, such as computer networks. Each vertex has capacity constraint <span class="math notranslate nohighlight">\(c(v)\)</span>. The capacity constraints are on vertices: the total inflow into any vertex <span class="math notranslate nohighlight">\(v\)</span> is at most <span class="math notranslate nohighlight">\(c(v)\)</span>. The conservation becomes: for each vertex, outflow = inflow. How to find a maximum flow?</p>
 <p>We reduce this problem to the usual max flow problem buy convert an vertex-capacitated max flow problem instance <span class="math notranslate nohighlight">\(I_V\)</span> into an edge-capacitated problem instance <span class="math notranslate nohighlight">\(I_E\)</span>, and show that we can solve <span class="math notranslate nohighlight">\(I_V\)</span> by solving <span class="math notranslate nohighlight">\(I_E\)</span>.</p>
-<p>Assign infinite capacity to all edges. Convert each vertex to two vertices connected by an edge, with edge weight <span class="math notranslate nohighlight">\(c(e) = c(v)\)</span>. Equivalent.</p>
-<p>Vertex-disjoint path problem: find maximum number of vertex-disjoint paths (no two paths share vertices) connecting <span class="math notranslate nohighlight">\(S\)</span> to <span class="math notranslate nohighlight">\(T\)</span>.</p>
-<p>Recall Menger’s Theorem:</p>
 <ul class="simple">
-<li><p>The maximum number of EDPs connecting <span class="math notranslate nohighlight">\(S\)</span> to <span class="math notranslate nohighlight">\(T\)</span> is equal to the minimum number of edges needed to disconnect <span class="math notranslate nohighlight">\(S\)</span> from <span class="math notranslate nohighlight">\(T\)</span>.</p></li>
+<li><p>replace node <span class="math notranslate nohighlight">\(v \in V \setminus \left\{ s,t \right\}\)</span> by two nodes <span class="math notranslate nohighlight">\(v_{in}\)</span> and <span class="math notranslate nohighlight">\(v_{out}\)</span></p></li>
+<li><p>replace edge <span class="math notranslate nohighlight">\((u,v)\)</span> by <span class="math notranslate nohighlight">\((u_{out}, v_{in})\)</span></p>
+<ul>
+<li><p>replace edge <span class="math notranslate nohighlight">\((s,v)\)</span> by <span class="math notranslate nohighlight">\((s, v_{in})\)</span></p></li>
+<li><p>replace edge <span class="math notranslate nohighlight">\((v,t)\)</span> by <span class="math notranslate nohighlight">\((v_{out}, t)\)</span></p></li>
+<li><p>assign these edge infinite capacities</p></li>
 </ul>
-<p>The corresponding version in this setting is:</p>
-<ul class="simple">
-<li><p>The maximum number of <strong>VDPs</strong> connecting <span class="math notranslate nohighlight">\(S\)</span> to <span class="math notranslate nohighlight">\(T\)</span> is equal to the minimum number of <strong>vertices</strong> needed to disconnect <span class="math notranslate nohighlight">\(S\)</span> from <span class="math notranslate nohighlight">\(T\)</span>.</p></li>
+</li>
+<li><p>add edge <span class="math notranslate nohighlight">\((v_{in}, v_{out})\)</span> with capacity <span class="math notranslate nohighlight">\(c(v)\)</span></p></li>
+</ul>
+<p>Given a flow <span class="math notranslate nohighlight">\(f_V\)</span> on <span class="math notranslate nohighlight">\(I_V\)</span>, transform it into a flow <span class="math notranslate nohighlight">\(f_E\)</span> for <span class="math notranslate nohighlight">\(I_E\)</span> by</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+f _E (u_{out}, v_{in}) &amp;= f_V(u, v) \\
+f _E (v_{out}, t) &amp;= f_V(v, t) \\
+f _E (s, v_{in}) &amp;= f_V(s, v) \\
+f _E (v_{in}, v_{out}) &amp;= \sum_{u:(u,v) \in E} f_V(u, v) \\
+\end{aligned}\end{split}\]</div>
+<p>In this way, <span class="math notranslate nohighlight">\(f _E\)</span> is a valid flow, and values of flow for <span class="math notranslate nohighlight">\(f_V\)</span> and <span class="math notranslate nohighlight">\(f_E\)</span> are <span class="math notranslate nohighlight">\(\sum_{v:(s, v) \in E\left(I_{V}\right)} f_V(s, v)\)</span> and <span class="math notranslate nohighlight">\(\sum_{v_{i n}:\left(s, v_{i n}\right) \in E\left(I_{E}\right)} f_E\left(s, v_{i n}\right)\)</span> respectively.</p>
+<p>In the other direction, given <span class="math notranslate nohighlight">\(f_E\)</span>, we can construct <span class="math notranslate nohighlight">\(f\)</span> by similar rules as above. Vertex capacity constraints will be satisfied by inflow into a vertex <span class="math notranslate nohighlight">\(v\)</span>, which must be at most <span class="math notranslate nohighlight">\(c(v)\)</span> as <span class="math notranslate nohighlight">\(f_E\)</span> is valid.</p>
+<p>Algorithmically, given <span class="math notranslate nohighlight">\(I_V\)</span>, we construct instance <span class="math notranslate nohighlight">\(I_E\)</span>, run Fold-Fulkerson algorithm on <span class="math notranslate nohighlight">\(I_E\)</span> to obtain optimal flow <span class="math notranslate nohighlight">\(f_E\)</span>, and convert the flow <span class="math notranslate nohighlight">\(f_E\)</span> into an optimal <span class="math notranslate nohighlight">\(f_V\)</span> for <span class="math notranslate nohighlight">\(I_V\)</span> as described above.</p>
+<p>Other problems under this setting:</p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(s\)</span>-<span class="math notranslate nohighlight">\(t\)</span> cut:</p>
+<p>Find a minimum cardinality subet <span class="math notranslate nohighlight">\(V ^\prime \subseteq V \setminus \left\{ s,t \right\}\)</span> such that <span class="math notranslate nohighlight">\(G \setminus V ^\prime\)</span> hs no <span class="math notranslate nohighlight">\(s\)</span>-<span class="math notranslate nohighlight">\(t\)</span> path. Proof: show that any edge cut in <span class="math notranslate nohighlight">\(I_E\)</span> corresponds to a vertex cut in <span class="math notranslate nohighlight">\(I_V\)</span> of the same value, and vice versa.</p>
+</li>
+<li><p>max-flow min-cut:</p>
+<p><span class="math notranslate nohighlight">\(\operatorname{Max}\)</span>-<span class="math notranslate nohighlight">\(\operatorname{flow}\left(I_{V}\right)=\operatorname{Max}\)</span>-<span class="math notranslate nohighlight">\(\operatorname{Mow}\left(I_{E}\right)=\operatorname{Min}\)</span>-<span class="math notranslate nohighlight">\(\operatorname{cut}\left(I_{E}\right)=\operatorname{Min}\)</span>-<span class="math notranslate nohighlight">\(\operatorname{cut}\left(I_{V}\right)\)</span></p>
+</li>
+<li><p>Menger’s Theorem</p>
+<p>The maximum number of vertex-disjoint path connecting <span class="math notranslate nohighlight">\(S\)</span> to <span class="math notranslate nohighlight">\(T\)</span> is equal to the minimum number of vertices needed to remove to disconnect <span class="math notranslate nohighlight">\(S\)</span> from <span class="math notranslate nohighlight">\(T\)</span>.</p>
+<p>Create a super-source <span class="math notranslate nohighlight">\(s\)</span> and a super sink <span class="math notranslate nohighlight">\(t\)</span> connected respectively to all vertices of <span class="math notranslate nohighlight">\(S\)</span> and <span class="math notranslate nohighlight">\(T\)</span>. Give every other vertex (except <span class="math notranslate nohighlight">\(s\)</span> and <span class="math notranslate nohighlight">\(t\)</span>) a capacity of 1. Then max-fow equals maximum number of node disjoint paths between <span class="math notranslate nohighlight">\(S\)</span> and <span class="math notranslate nohighlight">\(T\)</span> and min-cut equals minimum cardinality subset we remove to disconnect <span class="math notranslate nohighlight">\(S,T\)</span>.</p>
+</li>
 </ul>
 </div>
 </div>
