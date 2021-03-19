@@ -127,7 +127,13 @@ Definitions
   - A **SAT formula** $\phi$ is a conjunction (AND) of one or more clauses $c_1 \land c_2 \land \ldots \land c_m$.
   - The Boolean satisfiability problem (**SAT**) is, given an SAT formula $\phi = c_1 \land c_2 \land \ldots \land c_m$, determine whether there is an assignment to the variables satisfying the formula. Note that every clause need to be satisfied.
     - If every clause consists of at most 3 variables, we say it is a **3SAT** problem.
-    - If every clause consists of exactly 3 variables, we say it is a **E3SAT** problem.
+    - If every clause consists of exactly 3 variables, we say it is a **E3SAT** problem. For instance,
+
+
+      $$
+      \mathcal{\phi}=c_{1} \wedge c_{2} \wedge \ldots \wedge c_{m}=\left(l^{1}_{1} \vee l^{2}_{1} \vee l^{3}_{1}\right) \wedge\left(l^{1}_{2} \vee l^{2}_{2} \vee l^{3}_{2}\right) \wedge \ldots \wedge\left(l^{1}_{m} \vee l^{2}_{m} \vee l^{3}_{m}\right)
+      $$
+
 
 #### Reduction to IS
 
@@ -158,7 +164,7 @@ $(\Leftarrow)$ If there is an independent set of size $m$ in $G(\phi)$, since th
 Therefore, to answer the question *"Is an 3SAT problem $\phi$ satisfiable?"*, we can query the black-box *"Is there an independent set of size $m$ in graph $G(\phi)$?"*, where $m$ is the size of clauses in $\phi$. Hence, 3SAT $\le _p$ IS.
 
 
-###  Vertex Cover $\le_p$ Set Cover
+### Vertex Cover $\le_p$ Set Cover
 
 #### Set Cover
 
