@@ -403,10 +403,10 @@ If $X_1$ and $X_2$ show high correlation, then
 
 When $\operatorname{Var}\left( \varepsilon _i \right)$ is not a constant, we say heteroskedasticity of error variance exists. This may happen because data attributes, or due to transformation of $y$, e.g. $\log(y)$. We can diagnose its existence by plots or tests.
 
-If it exists, OLS is still **unbiased** & **consistent**. But $\operatorname{Var}_{OLS}\left( \hat{\boldsymbol{\beta}}  \right) = \sigma^2 (\boldsymbol{X} ^\top \boldsymbol{X} ) ^{-1}$ which uses homoskedastic assumption is incorrect now. There are problems in **testing**.
+If it exists, OLS is still **unbiased** & **consistent**. But the formula $\operatorname{Var}_{OLS}\left( \hat{\boldsymbol{\beta}}  \right) = \sigma^2 (\boldsymbol{X} ^\top \boldsymbol{X} ) ^{-1}$ which uses homoskedastic assumption is incorrect now. There are problems in **testing**.
 
 - To fix that for testing purpose, we can use robust standard error.
-- To get more precise estimate and correct standard errors, we can try alternative models that produces homoskedastic errors.
+- To get more precise estimate and correct standard errors, we can try alternative models that produce homoskedastic errors.
 
 
 ### Diagnosis
@@ -689,13 +689,13 @@ If missing is completely at random, then we have a smaller sample. This will inc
 
 If missing depends on $Y$, Consider the following cases.
 
-1. If some upper value $y_i\ge c$ is missing, then for the remaining observations with $\boldsymbol{x}_i ^\top \boldsymbol{\beta} = c$, their error must be $\varepsilon < 0$, to ensure $y_i < c$ to be selected. Consequently, the assumption that $\operatorname{E}\left( \varepsilon_i \right) = 0$ no longer hold for such $i$.
+1. If some upper value $y_i > c$ is missing, then for the remaining observations with $\boldsymbol{x}_i ^\top \boldsymbol{\beta} = c$, their error must be $\varepsilon < 0$, to ensure $y_i < c$ to be selected. Consequently, the assumption that $\operatorname{E}\left( \varepsilon_i \right) = 0$ no longer hold for such $i$.
 
     Hence, the estimates $\hat{\boldsymbol{\beta}}$ will be **biased** since $\operatorname{E}\left( \boldsymbol{\varepsilon}  \right) \ne 0$.
 
-    The analysis is the same for the case of lower value missing $y_i \ge c$.
+    The analysis is the same for the case of lower value missing $y_i < c$.
 
-2. If some middle value $\left\vert y_i -\mu _y\right\vert \le c$ is missing, will the estimates be unbiased?
+2. If some middle value $\left\vert y_i -\mu _y\right\vert < c$ is missing, will the estimates be unbiased?
 
     This depends. Consider an extreme case that $Y = 10X + \varepsilon$ and we only have three kinds of covariates values $X= 1,2,3$, so there are three data clouds of equal sizes (assumed). Then dropping $\left\vert Y -20 \right\vert < 1$ and using the remaining two data clouds to run OLS, we will still get $E(\tilde{\beta}_1)=1$, which is unbiased.
 
