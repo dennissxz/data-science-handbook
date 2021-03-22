@@ -223,7 +223,9 @@ To sum up, omitting a variable $X_j$ from the true model introduces bias of the 
 (lm-add-variable)=
 ## Adding a Variable
 
-What if we add a new variable $X_j$? What will happen to the variance and standard error of an existing estimator $\hat\beta_k$? Assuming homoskedasticity.
+If we add a new variable $X_j$
+- What will happen to the variance and standard error of an existing estimator $\hat\beta_k$? Assuming homoskedasticity.
+- How will the interpretation and test change? Over-controlling.
 
 ### Variance usually Increases
 
@@ -290,6 +292,33 @@ Hence, the overall effect is uncertain. To sum up,
 
   Hence, if our model is already a good (or close to true) model, adding more covariates increases standard error. This gives a stopping criteria when adding more covariates.
 
+### Over Controlling
+
+Aka. over-specification.
+
+Over controlling occurs if you include variables that modify the ceteris paribus interpretation so that the test **no longer** test the hypothesis of interest. To avoid this,
+- do not include multiple measures of the same economic concept
+- do not include intermediate outcomes or alternative forms of the dependent variables.
+
+Examples:
+
+- To evaluate a new course curriculum, consider two models
+
+  $$\begin{aligned}
+  \text{Model 1: } \text{score} _i &= \beta_0 + \beta_1 \text{In_new_program}_i  + u_i\\
+  \text{Model 2: } \text{score} _i &= \beta_0 + \beta_1 \text{In_new_program}_i  + \beta_2 \text{hours}_i + u_i\\
+  \end{aligned}$$
+
+  Studied hours is an intermediate outcome. The ceteris paribus interpretation of $\beta_1$ changed, so that it no longer tests the hypothesis of interest.
+
+- To evaluate the effect of tax rate change on GDP, consider two models
+
+  $$\begin{aligned}
+  \text{Model 1: } \text{GDP} _i &= \beta_0 + \beta_1 \text{Tax_rate}_i  + u_i\\
+  \text{Model 2: } \text{GDP} _i &= \beta_0 + \beta_1 \text{Tax_rate}_i  + \beta_2 \text{No_of_corporations}_i + u_i\\
+  \end{aligned}$$
+
+  The number of corporations is an intermediate outcome.
 
 ## Multicollinearity
 
