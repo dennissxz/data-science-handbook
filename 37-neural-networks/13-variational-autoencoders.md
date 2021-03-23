@@ -263,3 +263,15 @@ where
 - Reconstruction error becomes squared error between $z_e(x)$ and embedding $e$.
 
 In backpropagation, skip discretization layers.
+
+## VQ-VAE2
+
+VQ-VAE2 [Razavi et al. 2019] is Hierarchical VQ-VAE
+
+Key idea: Represent discrete latent variables at multiple levels.
+
+:::{figure} vqvae2-graph
+<img src="../imgs/vqvae2-graph.png" width = "80%" alt=""/>
+
+Illustration of VQ-VQE2
+:::
