@@ -3,13 +3,17 @@
 We introduced how to use linear models for advanced analysis, e.g. causal effect.
 
 
-## Natural Experiments
-
-In natural experiments, we use observed data, but it is reasonable to suspect treatment uncorrelated with error without an actual experiment, i.e. it is "as if" there had been randomization.
+Some types of data:
 
 - A **cross-section** of data is a sample drawn from a population at a single point in time
 - **Repeated cross-sections** are samples drawn from the same **population** at several points in time
 - If we have information on the same **individuals** at more than one point in time, we have **panel data**
+
+## Natural Experiments
+
+A natural experiment is an **empirical** study in which individuals (or clusters of individuals) are exposed to the experimental and control conditions that are determined by **nature** or by other factors outside the control of the investigators. The process governing the exposures arguably **resembles** random assignment.
+
+In short, two groups of similar individuals are exposed to different treatments. The assignment is determined by nature, which can be reasonably viewed as randomized.
 
 We often use the “difference-in-differences” estimator to study repeated cross-sections or panel data when we have a natural experiment.
 
@@ -175,6 +179,99 @@ We are interested in $\beta_1$.
 Suppose we are in
 
 
+Suppose the true model is
+
+$$Y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \epsilon_i$$
+
+where $X_2$ is unobservable. If we regress $Y$ over $X_1$, then we get a biased estimate for $\beta_1$.
+
+$$Y = \beta_0 + \beta_1 X_1 + u_i$$
+
+We can get a consistent estimate of $\beta_1$ without controlling for $X_2$ if we can find a valid instrument $Z$ satisfying two conditions:
+
+- **exogeneity condition** (exclusion restriction): it is uncorrelated with $u_i$
+- **relevance condition**: it is correlated with $X$
+
+We can view the relations as follows:
+
+$$\begin{aligned}
+Z \rightarrow X \quad & \quad u\\
+\searrow \ &\ \swarrow \\
+Y&
+\end{aligned}$$
+
+In short, $Z$ represents the exogenous (not correlated with $u$) variation in $X$. Variation in $X$ caused by $Z$ is not correlated with u. We use only this variation in $X$ to estimate $\hat{\beta}$.
+
+But good instruments are hard to find. Exogeneity condition is often violated.
+
+### IV Estimator
+
+Consider the covariance of instrument $Z$ and response $Y$:
+
+
+$$\begin{aligned}
+\operatorname{Cov}\left( Z,Y \right)
+&= \operatorname{Cov}\left( Z, \beta_0 + \beta_1 X + u \right)\\
+&= \beta_1 \operatorname{Cov}\left( Z,X \right) + \operatorname{Cov}\left( Z, u \right)\\
+&= \beta_1 \operatorname{Cov}\left( Z, X \right)\\
+\end{aligned}$$
+
+Hence, $\beta_1 = \frac{\operatorname{Cov}\left( Z,Y \right)}{\operatorname{Cov}\left( Z,X \right)}$. The IV estimator is
+
+$$
+\hat{\beta}_1^{\text{IV} } = \frac{\operatorname{\widehat{Cov}}\left( Z,Y \right)}{\operatorname{\widehat{Cov}}\left( Z,X \right)} = \frac{\sum_{i=1}^{n}\left(Z_{i}-\bar{Z}\right)\left(Y_{i}-\bar{Y}\right)}{\sum_{i=1}^{n}\left(Z_{i}-\bar{Z}\right)\left(X_{i}-\bar{X}\right)}
+$$
+
+Properties
+
+- consistent, i.e. $\operatorname{plim} \hat{\beta}_1^{\text{IV} } = \beta_1$.
+- asymptotic variance: $\frac{\sigma^2 }{n \sigma^2 _x \rho_{x,z}^2}$
+- Because the IV estimator uses only a subset of the variation in $X$ to estimate the relationship between $X$ and $Y$, precision will fall (as compared to OLS).
+  - If $X$ and $Z$ very weakly related, then small $\rho_{x,z}^2$, precision will be very poor in the IV estimator.
+  - But, if $X$ and $Z$ are too closely correlated, $Z$ cannot be a good instrument because it will fail the exclusion restriction - if $X$ and $Z$ are perfectly correlated, then $\operatorname{Cov}\left( Z, u \right)$ cannot be zero unless $\operatorname{Cov}\left( X, u \right)$ is also zero (which means we don’t need an instrument in the first place).
+
+### Two-Stage Least Squares
+
+Aka 2SLS.
+
+To accommodate many $X$'s and $Z$'s, we use two-stage least squares. Suppose the model is
+
+$$
+Y_{}=\beta_{0}+\beta_{1} X_{1 }+\ldots+\beta_{k} X_{k }+\beta_{k+1} W_{1 }+\ldots+\beta_{k+r} W_{r }+u_{}
+$$
+
+where
+
+- $X_1, \ldots, X_k$ are endogenous (possibly correlated with $u$)
+- $W_1, \ldots, W_r$ are exogenous (not correlated with $u$)
+- $Z_1, \ldots, Z_m$ are instruments
+- $m \ge k$: more instruments than endogenous regressors.
+
+Steps:
+
+1. For each $X_j$, regress $X_j$ on all $Z$ and all $W$, compute predicted values $\hat{X}_j$.
+2. Regress $Y$ on all predictions $\hat{X}_j$ and all $W$. The resulting $\hat{\beta}$ are the 2SLS estimates of $\beta$.
+
+Assumptions
+- $\mathbb{E}\left( u_i \mid W_1, \ldots, W_r \right)=0$
+- Finite kurtosis for all $X,W,Z$ and $Y$
+- $\hat{X}$'s and $W$'s are not perfect multicollinear
+- Exogeneity: $\operatorname{Cov}\left( Z_j, u \right)=0$ for all $j$
+  - not testable
+  - fail if $Z$ is related to some other factor that influences $Y$, or $Z$ has a direct effect on $Y$.
+- Relevance: $\operatorname{Cov}\left( Z, X \right) \ne 0$
+  - testable: $F$-test on instruments in first stage larger than 10.
+  - if fail, then inconsistent, bias, no-normal.
+
+
+Note
+- $R^2, F$-test are invalid
+
+
+### Interpretation
+
+$\beta^{2SLS} = \mathbb{E}\left( \beta_i \right)$ is a local average treatment effect (LATE). If $\beta_i = \beta$ for all $i$, then $\beta^{2SLS} = \beta$.
+
 ## Panel Data
 
 Recall the common trends assumption. Can we generalize it? What if there are more than 2 periods and more than 2 groups? We introduce first difference and fixed effect, for more than s.
@@ -324,13 +421,17 @@ Static and dynamic models:
 
 Note that the explanatory variables are no longer fixed. For instance, $Y_{t-1}$ contains a random component $u_{t-1}$.
 
+
+
 ### Autoregression
 
 Consider a simple autoregression model
 
 $$Y_t = \beta_0 + \beta_1 Y_{t-1} + u_t$$
 
-Usually, in time series data, there exists **serial correlation**: $u_{t}$ and $u_{t-1}$ are correlated. Hence, the regressor $Y_{t-1}$ which contains $u_{t-1}$ is now correlated with $u_t$. This leads to biased $\beta_1$. It is also inconsistent. But we can use $y_{t-2}$ as an instrument for $y_{t-1}$ to obtain consistent estimate, if $u_{t-2}$ is not correlated $u_{t}$.
+
+
+If serial correlation exists: $u_{t}$ and $u_{t-1}$ are correlated, the regressor $Y_{t-1}$ which contains $u_{t-1}$ is now correlated with $u_t$. This leads to biased $\beta_1$. It is also inconsistent. But we can use $y_{t-2}$ as an instrument for $y_{t-1}$ to obtain consistent estimate, if $u_{t-2}$ is not correlated $u_{t}$.
 
 ### Spurious Correlation
 
@@ -356,7 +457,7 @@ When time series data have trends over time, they will frequently be strongly sp
 
 ## Categorical Data
 
-TBD...
+TBD.
 
 dummy variables $X_{ij}$
 
@@ -365,31 +466,3 @@ when $c = 2$,
 interpretation
 - $\hat{\beta}_1$: difference in means between the group with $X=1$ and $X=0$.
 - $\hat{\beta}_0$: mean of the group with $X=0$.
-
-TBD
-
-https://www.1point3acres.com/bbs/thread-703302-1-1.html
-
-
-.
-
-
-.
-
-
-.
-
-
-.
-
-
-.
-
-
-.
-
-
-.
-
-
-.
