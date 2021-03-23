@@ -272,6 +272,59 @@ Note
 
 $\beta^{2SLS} = \mathbb{E}\left( \beta_i \right)$ is a local average treatment effect (LATE). If $\beta_i = \beta$ for all $i$, then $\beta^{2SLS} = \beta$.
 
+## Simultaneity
+
+If $X$ causes $Y$ and $Y$ causes $X$ (reverse causality), we say there is simultaneity. For instance, price and demand.
+
+Consider the simultaneous equations below. If $\gamma_1 \ne 0$, then $u_i$ affects $Y_i$ in $(1)$ and then $Y_i$ affects $X_i$ in $(2)$, i.e. $X_i$ and $u_i$ are correlated.
+
+$$
+\begin{array}{l}
+(1)\qquad Y_{i}=\beta_{0}+\beta_{1} X_{i}+u_{i} \\
+(2)\qquad X_{i}=\gamma_{0}+\gamma_{1} Y_{i}+v_{i}
+\end{array}
+$$
+
+Simultaneity is a specific type of endogeneity problem in which the explanatory variable is jointly determined with the dependent variable. As with other types of **endogeneity**, Instrumental Variables (IV) estimation can sometimes solve the problem. There are special issues to consider with a simultaneous equations model (SEM).
+
+### Example
+
+Start with an equation we like to estimate: regress crimes per capita on police per capita. Call this a structural equation. Clearly, it has a causal interpretation.
+
+$$\text{crime} = \alpha_0 + \alpha_1 \text{police} + u$$
+
+However, the need for police is also determined by the level of crime. Both variables are endogenous because both are determined by the equilibrium process.
+
+$$
+\text{police} \rightleftharpoons  \text{crime}
+$$
+
+Consider a second structural equation, where $\text{election}$ is the time until the next election.
+
+$$\text{police} = \beta_0 + \beta_1 \text{crime} + \beta_2 \text{election} + v$$
+
+This equation captures that elected officials respond to crime levels (such as the influence of police unions, and the importance of perceptions of effectiveness). The variable $\text{election}$ is exogenous. We can then consider using $\text{election}$ as an instrument for $\text{police}$.
+
+
+$$
+\text{election} \rightarrow \text{police} \rightleftharpoons  \text{crime}
+$$
+
+
+:::{figure} lm-simul
+<img src="../imgs/lm-simul.png" width = "40%" alt=""/>
+
+Equilibrium [Meyer 2021]
+:::
+
+To obtain a consistent estimator of $\alpha_1$, use 2SLS
+1. regress $\text{police}$ over $\text{election}$
+1. regress $\text{crime}$ over the predicted value $\widehat{\text{police} }$
+
+But we cannot estimate $\beta_1$.
+
+
+
 ## Panel Data
 
 Recall the common trends assumption. Can we generalize it? What if there are more than 2 periods and more than 2 groups? We introduce first difference and fixed effect, for more than s.
