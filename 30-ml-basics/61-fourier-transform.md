@@ -200,12 +200,6 @@ $$
 
 ## Applications to Machine Learning
 
-### Faster CNN Training
-
-In-between two convolutional layers of depth $d_1$ and $d_2$, the number of convolution computation is $d_1 \times d_2$ in forward propagation. Fourier transform based convolution can speed up this process. [Mathieu, Henaff, LeCun, "Fast Training of Convolutional Networks through FFTs", arXiv. 2013]
-
-Today there are other methods that speed up CNN training.
-
 ### Random Fourier Features
 
 We introduced that computing kernel matrix is computationally expensive. We can approximate $\phi(\boldsymbol{x})$ corresponding to a given kernel.
@@ -239,7 +233,7 @@ $$
 
 
 ---
-Algorithm 1 Random Fourier Features.
+**Algorithm**: Random Fourier Features.
 
 ---
 - Require: A positive definite shift-invariant kernel $k(\boldsymbol{x}, \boldsymbol{y})=k(\boldsymbol{x}-\boldsymbol{y})$
@@ -248,3 +242,10 @@ Algorithm 1 Random Fourier Features.
 - Draw $D \text { iid samples } \boldsymbol{\omega}_{1}, \cdots, \boldsymbol{\omega}_{D} \in \mathcal{R}^{d} \text { from } p$
 - Let $\boldsymbol{z}(\boldsymbol{x}) \equiv \sqrt{\frac{1}{D}}\left[\cos \left( \boldsymbol{\omega} _{1}^{\prime} \boldsymbol{x}\right) \cdots \cos \left(\boldsymbol{\omega}_{D}^{\prime} \boldsymbol{x}\right) \sin \left(\boldsymbol{\omega}_{1}^{\prime} \boldsymbol{x}\right) \cdots \sin \left(\boldsymbol{\omega}_{D}^{\prime} \boldsymbol{x}\right)\right]^{\prime}$
 ---
+
+
+### Faster CNN Training
+
+In-between two convolutional layers of depth $d_1$ and $d_2$, the number of convolution computation is $d_1 \times d_2$ in forward propagation. Fourier transform based convolution can speed up this process. [Mathieu, Henaff, LeCun, "Fast Training of Convolutional Networks through FFTs", arXiv. 2013]
+
+Today there are other methods that speed up CNN training.
