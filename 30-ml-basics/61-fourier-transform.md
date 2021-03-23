@@ -14,8 +14,6 @@ Before we do any learning, we start with some data representation. Typically, th
 
 Fourier methods include
 
-Fourier methods include:
-
 - Discrete-time and continuous-time Fourier series
 - Discrete-time and continuous-time Fourier transforms
 - Discrete Fourier transform (most common for digital signals)
@@ -204,84 +202,49 @@ $$
 
 ### Faster CNN Training
 
+In-between two convolutional layers of depth $d_1$ and $d_2$, the number of convolution computation is $d_1 \times d_2$ in forward propagation. Fourier transform based convolution can speed up this process. [Mathieu, Henaff, LeCun, "Fast Training of Convolutional Networks through FFTs", arXiv. 2013]
+
 Today there are other methods that speed up CNN training.
 
 ### Random Fourier Features
 
-We introduced that computing kernel matrix is computationally expensive. We can approximate $\phi(x)$ corresponding to a given kernel.
+We introduced that computing kernel matrix is computationally expensive. We can approximate $\phi(\boldsymbol{x})$ corresponding to a given kernel.
 
 Theorem (Bochner’s)
-: Shift-invariant kernels (only depends on the difference $x-y$) are n-dimensional continuous Fourier transforms of some probability distribution $p(w)$,
+: Shift-invariant kernels (only depends on the difference $\boldsymbol{x} -\boldsymbol{y} $) are $n$-dimensional continuous Fourier transforms of some probability distribution $p(\boldsymbol{\omega} )$,
 
 
 $$
-k(x, y)=k(x-y)=\int p(w) e^{j w ^{\top} (x-y)} \mathrm{~d} w=\mathbb{E}_{w}\left[\xi_{w}(x) \xi_{w}(y)^{*}\right]
+k(\boldsymbol{x} , \boldsymbol{y} )=k(\boldsymbol{x} -\boldsymbol{y} )=\int p(\boldsymbol{\omega} ) e^{j \boldsymbol{\omega}  ^{\top} (\boldsymbol{x} -\boldsymbol{y} )} \mathrm{~d} w=\mathbb{E}_{\omega}\left[\xi_{\omega}(\boldsymbol{x} ) \xi_{\omega}(\boldsymbol{y} )^{*}\right]
 $$
 
-where $\xi_{w}(x)=e^{j w ^{\top}  x}$.
+where $\xi_{\omega}(\boldsymbol{x} )=e^{j \boldsymbol{\omega}  ^{\top}  \boldsymbol{y} }$.
 
-So, we can estimate the kernel by **averaging** a bunch of such products for various random drawn values of $w$.
+So, we can estimate the kernel by **averaging** a bunch of such products for various random drawn values of $\boldsymbol{\omega}$.
 
-Idea: Use a feature map $φ(x)$ that is a concatenation of a bunch of $\xi$’s. Then we have an explicit nonlinear map, and no need to do large kernel computations!
+Idea: Use a feature map $\phi(\boldsymbol{x})$ that is a concatenation of a bunch of $\xi$’s. Then we have an explicit nonlinear map, and no need to do large kernel computations!
 
-For Gaussian, Laplacian and Cauchy kernel, $p(w)$ is easy to find.
+For Gaussian, Laplacian and Cauchy kernel, $p(\boldsymbol{\omega})$ is easy to find.
 
 
 $$
 \begin{array}{lll}
-\text { Kernel Name } & k(\Delta) & p(\omega) \\
+\text { Kernel Name } & k(\Delta) & p(\boldsymbol{\omega}) \\
 \hline \text { Gaussian } & e^{-\frac{\|\Delta\|_{2}^{2}}{2}} & (2 \pi)^{-\frac{D}{2}} e^{-\frac{\|\omega\|_{2}^{2}}{2}} \\
-\text { Laplacian } & e^{-\|\Delta\|_{1}} & \prod_{d} \frac{1}{\pi\left(1+\omega_{d}^{2}\right)} \\
+\text { Laplacian } & e^{-\|\Delta\|_{1}} & \prod_{d} \frac{1}{\pi\left(1+\boldsymbol{\omega}_{d}^{2}\right)} \\
 \text { Cauchy } & \prod_{d} \frac{2}{1+\Delta_{d}^{2}} & e^{-\|\Delta\|_{1}}
 \end{array}
 $$
 
-:::{figure} fourier-kernel-algo
-<img src="../imgs/fourier-kernel-algo.png" width = "50%" alt=""/>
-
-fourier-kernel-algo
-:::
 
 
-$$
-\begin{array}{l}
-\text { Algorithm 1 Random Fourier Features. } \\
-\hline \text { Require: A positive definite shift-invariant kernel } k(\mathbf{x}, \mathbf{y})=k(\mathbf{x}-\mathbf{y}) . \\
-\text { Ensure: A randomized feature map } \mathbf{z}(\mathbf{x}): \mathcal{R}^{d} \rightarrow \mathcal{R}^{2 D} \text { so that } \mathbf{z}(\mathbf{x})^{\prime} \mathbf{z}(\mathbf{y}) \approx k(\mathbf{x}-\mathbf{y}) . \\
-\text { Compute the Fourier transform } p \text { of the kernel } k: p(\omega)=\frac{1}{2 \pi} \int e^{-j \omega^{\prime} \Delta} k(\Delta) d \Delta . \\
-\text { Draw } D \text { iid samples } \omega_{1}, \cdots, \omega_{D} \in \mathcal{R}^{d} \text { from } p . \\
-\text { Let } \mathbf{z}(\mathbf{x}) \equiv \sqrt{\frac{1}{D}}\left[\cos \left(\omega_{1}^{\prime} \mathbf{x}\right) \cdots \cos \left(\omega_{D}^{\prime} \mathbf{x}\right) \sin \left(\omega_{1}^{\prime} \mathbf{x}\right) \cdots \sin \left(\omega_{D}^{\prime} \mathbf{x}\right)\right]^{\prime} \\
-\hline
-\end{array}
-$$
+---
+Algorithm 1 Random Fourier Features.
 
-...
-
-
-
-### Regularizing Neural Networks
-
-where is FT used?
-
-.
-
-
-.
-
-
-.
-
-
-.
-
-
-.
-
-
-.
-
-
-.
-
-
-.
+---
+- Require: A positive definite shift-invariant kernel $k(\boldsymbol{x}, \boldsymbol{y})=k(\boldsymbol{x}-\boldsymbol{y})$
+- Ensure: A randomized feature map $\boldsymbol{z}(\boldsymbol{x}): \mathcal{R}^{d} \rightarrow \mathcal{R}^{2 D}$ so that $\boldsymbol{z}(\boldsymbol{x})^{\prime} \boldsymbol{z}(\boldsymbol{y}) \approx k(\boldsymbol{x}-\boldsymbol{y})$
+- Compute the Fourier transform  $p$ of the kernel $k: p(\boldsymbol{\omega} )=\frac{1}{2 \pi} \int e^{-j \boldsymbol{\omega} ^{\top}  \Delta} k(\Delta) \mathrm{~d} \Delta$
+- Draw $D \text { iid samples } \boldsymbol{\omega}_{1}, \cdots, \boldsymbol{\omega}_{D} \in \mathcal{R}^{d} \text { from } p$
+- Let $\boldsymbol{z}(\boldsymbol{x}) \equiv \sqrt{\frac{1}{D}}\left[\cos \left( \boldsymbol{\omega} _{1}^{\prime} \boldsymbol{x}\right) \cdots \cos \left(\boldsymbol{\omega}_{D}^{\prime} \boldsymbol{x}\right) \sin \left(\boldsymbol{\omega}_{1}^{\prime} \boldsymbol{x}\right) \cdots \sin \left(\boldsymbol{\omega}_{D}^{\prime} \boldsymbol{x}\right)\right]^{\prime}$
+---
