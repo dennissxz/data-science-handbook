@@ -482,7 +482,17 @@ Consider a simple autoregression model
 
 $$Y_t = \beta_0 + \beta_1 Y_{t-1} + u_t$$
 
+Recall the OLS estimator for $\beta_1$ is
 
+$$\begin{aligned}
+\hat{\beta}_{1}=\beta_{1}+\frac{\sum\left(x_{i}-\bar{x}\right) u_{i}}{\sum\left(x_{i}-\bar{x}\right)^{2}} = \beta_{1}+\frac{\sum _{t=2} ^{T}\left(y_{t-1}-\bar{y}\right) u_{t}}{\sum_{t=2} ^{T}\left(y_{t-1}-\bar{y}\right)^{2}}
+\end{aligned}$$
+
+The bias term is
+
+$$\mathbb{E}\left( \hat{\beta}_1 \right) - \beta_1 = \sum_{t=1}^{T}\mathbb{E}\left( \frac{y_{t-1} - \bar{y}}{\sum_{s=2} ^{T}\left(y_{s -1}-\bar{y}\right)^{2}} \cdot u_t\right)$$
+
+This is not simply zero, since the terms in the denominator $y_{\ge s}$ depends on $u_s$. Hence, $\hat{\beta}_1$ is not an unbiased estimator in general.
 
 If serial correlation exists: $u_{t}$ and $u_{t-1}$ are correlated, the regressor $Y_{t-1}$ which contains $u_{t-1}$ is now correlated with $u_t$. This leads to biased $\beta_1$. It is also inconsistent. But we can use $y_{t-2}$ as an instrument for $y_{t-1}$ to obtain consistent estimate, if $u_{t-2}$ is not correlated $u_{t}$.
 
