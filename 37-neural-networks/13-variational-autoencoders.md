@@ -237,4 +237,29 @@ Compared to autoregressive models:
 
 - Tend to produce blurrier outputs, since we are sampling from distribution and look at mean (averaging the details)
 
-## Extension: VQ-VAE
+## Extension
+
+### VQ-VAE
+[van den Oord et al. 2018]
+
+
+VQ-VAE is a kind of discrete representation learning. There is a clustering step (vector quantization) layer in VAE. In images, some discrete representations can be, for instance, edge, border, or eye, nose, ear ...
+
+:::{figure} vqvae-graph
+<img src="../imgs/vqvae-graph.png" width = "80%" alt=""/>
+
+Illustration of VQ-VAE
+:::
+
+The loss is
+
+$$
+\mathcal{L}=\log p\left(x \vert z_{q}(x)\right)+\left\|\operatorname{sg}\left[z_{e}(x)\right]-e\right\|^{2}+\beta\left\|z_{e}(x)-\operatorname{sg}[e]\right\|^{2}
+$$
+
+where
+
+- KL divergence in VAE becomes constant
+- Reconstruction error becomes squared error between $z_e(x)$ and embedding $e$.
+
+In backpropagation, skip discretization layers.
