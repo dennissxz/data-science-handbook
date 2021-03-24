@@ -86,6 +86,25 @@ $$
 
 $\square$
 
+## Stationary Distribution
+
+A row vector $\boldsymbol{\pi} ^{\top}$ is called a **stationary distribution** for a Markov chain with transition matrix $\boldsymbol{P}$ if
+- $\pi_j \ge 0$ and $\sum_j\pi_j = 1$
+- $\boldsymbol{\pi} ^{\top} \boldsymbol{P} = \boldsymbol{\pi}^{\top}$
+
+For instance, when $\boldsymbol{P} = \boldsymbol{I}$, then every probability distribution on the states is a stationary probability distribution.
+
+If a Markov chain is aperiodic and irreducible, then it has precisely **one** stationary distribution, in the sense that the limit
+
+$$
+\lim _{n \rightarrow \infty} p_{ij}^{(n)} = \pi _j
+$$
+
+exists for each state $j$ with $\pi_j \ge 0$ and $\sum_j\pi_j = 1$, which is independent of starting state $i$. Equivalently,
+
+$$
+\lim _{n \rightarrow \infty} \boldsymbol{P}^n  = \boldsymbol{1} \boldsymbol{\pi} ^{\top}
+$$
 
 ## Exercise
 
