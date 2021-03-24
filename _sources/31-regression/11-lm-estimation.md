@@ -927,3 +927,7 @@ SLR stands for simple linear regression $y_i = \beta_0 + \beta_1 x_i + \varepsil
 1. Add/Remove an observation
 
     E(b), Var(b), RSS, TSS, R^2
+
+1. More
+
+   https://www.1point3acres.com/bbs/thread-703302-1-1.html

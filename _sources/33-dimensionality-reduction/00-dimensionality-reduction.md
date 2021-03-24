@@ -22,7 +22,7 @@ $$
 by optimizing some goodness of fit criteria $J$
 
 $$
-\min _{\boldsymbol{\theta}} J\left(\mathbf{x}_{1}, \ldots, \mathbf{x}_{n}, P\left(\mathbf{x}_{1}\right), \ldots, P\left(\mathbf{x}_{n}\right)\right)
+\min _{\boldsymbol{\theta}} J\left(\boldsymbol{x}_{1}, \ldots, \boldsymbol{x}_{n}, P\left(\boldsymbol{x}_{1}\right), \ldots, P\left(\boldsymbol{x}_{n}\right)\right)
 $$
 
 - For linear dimensionality models, the projection $P(\boldsymbol{x}; \boldsymbol{\theta} )$ can be represented by a $d \times k$ matrix $\boldsymbol{W}$. The low dimensional representation $\boldsymbol{z}$ is computed by
@@ -74,7 +74,9 @@ The performance of a dimensionality reduction method can be measured by
 Unsupervised dimensionality reduction is very challenging. If we happen to have multiple data views, it can be easier.
 
 View means the number of ways we describe a data object.
+
 - picture: pixel value + captions
+- picture: one with rotation noise, the other with pixel noise
 - wiki webpage: page texts + hyper link structure
 - articles: two languages
 - speech: voice wave + video of mouth
@@ -83,14 +85,14 @@ For instance, in two-view representation learning, training data consists of sam
 
 $$
 \left[\begin{array}{l}
-\mathbf{x} \\
-\mathbf{y}
-\end{array}\right], \mathbf{x} \in \mathbf{R}^{d_{x}}, \mathbf{y} \in \mathbf{R}^{d_{y}}, d_{x}+d_{y}=d
+\boldsymbol{x} \\
+\boldsymbol{y}
+\end{array}\right], \boldsymbol{x} \in \boldsymbol{R}^{d_{x}}, \boldsymbol{y} \in \boldsymbol{R}^{d_{y}}, d_{x}+d_{y}=d
 $$
 
-The task is to learn useful features/subspaces from such two-view data. Typically involves learning representations of one view that are **predictive** of the other.
+The task is to learn useful features/subspaces from such two-view data. Typically it involves learning representations of one view that are **predictive** of the other. The idea is, if some transformation of the two views to make them "similar", then the transformation is meaningful, and the transformed vectors are representations.
 
-One example of linear multi-view representation learning is canonical correlation anlaysis.
+One example of linear multi-view representation learning is canonical correlation analysis. Other variants include Kernel CCA, variational CCA, etc.
 
 ## Summary
 

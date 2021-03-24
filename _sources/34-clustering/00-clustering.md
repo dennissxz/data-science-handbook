@@ -74,3 +74,5 @@ As a result, rather than clustering, we can view such label-assignment problems 
 ## Clustering for Classification
 
 Clustering can be used for classification in the sense of label propagation. See [cluster-then-label](cluster-then-label).
+
+A deep version: deep spectral clustering [Hershey et al. 2016]

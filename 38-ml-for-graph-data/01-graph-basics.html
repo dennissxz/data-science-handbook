@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Graphs &#8212; Data Science Handbook</title>
+    <title>Graph Basics &#8212; Data Science Handbook</title>
     
   <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
 
@@ -57,8 +57,7 @@
     <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Puzzles" href="90-puzzles.html" />
-    <link rel="prev" title="Linear Programming" href="51-linear-programming.html" />
+    <link rel="prev" title="Machine Learning for Graph Data" href="00-ml-for-graph-data.html" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
@@ -98,44 +97,39 @@
   Foundations
  </span>
 </p>
-<ul class="current nav sidenav_l1">
- <li class="toctree-l1 current active collapsible-parent">
-  <a class="reference internal" href="00-math.html">
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../11-math/00-math.html">
    Math
   </a>
-  <ul class="current collapse-ul">
+  <ul class="collapse-ul">
    <li class="toctree-l2">
-    <a class="reference internal" href="11-combinatorics.html">
+    <a class="reference internal" href="../11-math/11-combinatorics.html">
      Combinatorics
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="12-derangement.html">
+    <a class="reference internal" href="../11-math/12-derangement.html">
      Derangement
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="20-fields-and-vector-spaces.html">
+    <a class="reference internal" href="../11-math/20-fields-and-vector-spaces.html">
      Fields and Vector Spaces
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="21-linear-algebra.html">
+    <a class="reference internal" href="../11-math/21-linear-algebra.html">
      Linear Algebra
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="51-linear-programming.html">
+    <a class="reference internal" href="../11-math/51-linear-programming.html">
      Linear Programming
     </a>
    </li>
-   <li class="toctree-l2 current active">
-    <a class="current reference internal" href="#">
-     Graphs
-    </a>
-   </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="90-puzzles.html">
+    <a class="reference internal" href="../11-math/90-puzzles.html">
      Puzzles
     </a>
    </li>
@@ -448,7 +442,7 @@
   Machine Learning
  </span>
 </p>
-<ul class="nav sidenav_l1">
+<ul class="current nav sidenav_l1">
  <li class="toctree-l1 collapsible-parent">
   <a class="reference internal" href="../30-ml-basics/00-ml-basics.html">
    Machine Learning Basics
@@ -714,10 +708,19 @@
   <i class="fas fa-chevron-down">
   </i>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../38-ml-for-graph-data/00-ml-for-graph-data.html">
+ <li class="toctree-l1 current active collapsible-parent">
+  <a class="reference internal" href="00-ml-for-graph-data.html">
    Machine Learning for Graph Data
   </a>
+  <ul class="current collapse-ul">
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     Graph Basics
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
  </li>
 </ul>
 
@@ -759,7 +762,7 @@
         <!-- ipynb file if we had a myst markdown file -->
         
         <!-- Download raw file -->
-        <a class="dropdown-buttons" href="../_sources/11-math/61-graphs.md"><button type="button"
+        <a class="dropdown-buttons" href="../_sources/38-ml-for-graph-data/01-graph-basics.md"><button type="button"
                 class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
                 data-placement="left">.md</button></a>
         <!-- Download PDF via print -->
@@ -779,7 +782,7 @@
                 data-toggle="tooltip" data-placement="left" title="Source repository"><i
                     class="fab fa-github"></i>repository</button></a>
         <a class="issues-button"
-            href="https://github.com/dennissxz/data-science-handbook/issues/new?title=Issue%20on%20page%20%2F11-math/61-graphs.html&body=Your%20issue%20content%20here."><button
+            href="https://github.com/dennissxz/data-science-handbook/issues/new?title=Issue%20on%20page%20%2F38-ml-for-graph-data/01-graph-basics.html&body=Your%20issue%20content%20here."><button
                 type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
                 title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
         
@@ -807,23 +810,38 @@
         <nav id="bd-toc-nav">
             <ul class="nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#basic-terms">
-   Basic Terms
+  <a class="reference internal nav-link" href="#vertex-and-edge-level-concepts">
+   Vertex- and Edge-level Concepts
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#more-types-of-graphs">
-   More Types of Graphs
+  <a class="reference internal nav-link" href="#families-of-graphs">
+   Families of Graphs
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#graph-level-concepts">
+   Graph-level Concepts
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#matrices-for-graphs">
+   Matrices for Graphs
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#structure">
-     Structure
+    <a class="reference internal nav-link" href="#adjacency-matrix">
+     Adjacency Matrix
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#more-concepts">
-     More Concepts
+    <a class="reference internal nav-link" href="#laplacian-matrix">
+     Laplacian Matrix
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#incidence-matrix">
+     Incidence Matrix
     </a>
    </li>
   </ul>
@@ -834,13 +852,8 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#more-definitions">
-   More Definitions
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#decomposition">
-   Decomposition
+  <a class="reference internal nav-link" href="#algorithms">
+   Algorithms
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -860,61 +873,92 @@
         
               <div>
                 
-  <div class="section" id="graphs">
-<h1>Graphs<a class="headerlink" href="#graphs" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="graph-basics">
+<h1>Graph Basics<a class="headerlink" href="#graph-basics" title="Permalink to this headline">¶</a></h1>
 <p>A graph <span class="math notranslate nohighlight">\(G = (V, E)\)</span> contains vertex set <span class="math notranslate nohighlight">\(V\)</span> and edge set <span class="math notranslate nohighlight">\(E\)</span>, with size <span class="math notranslate nohighlight">\(\left\vert V \right\vert = n\)</span> and order <span class="math notranslate nohighlight">\( \left\vert E \right\vert = m\)</span>.</p>
 <p>In particular, <span class="math notranslate nohighlight">\(E\)</span> is a 2-subset of <span class="math notranslate nohighlight">\(V\)</span>.</p>
-<div class="section" id="basic-terms">
-<h2>Basic Terms<a class="headerlink" href="#basic-terms" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="vertex-and-edge-level-concepts">
+<h2>Vertex- and Edge-level Concepts<a class="headerlink" href="#vertex-and-edge-level-concepts" title="Permalink to this headline">¶</a></h2>
 <ul>
+<li><p><strong>Connectivity</strong></p>
+<ul class="simple">
 <li><p>If there is and edge <span class="math notranslate nohighlight">\((u, v)\)</span> connecting vertices <span class="math notranslate nohighlight">\(u\)</span> and <span class="math notranslate nohighlight">\(v\)</span>, we say <span class="math notranslate nohighlight">\(u\)</span> are <span class="math notranslate nohighlight">\(v\)</span> are ends of edge <span class="math notranslate nohighlight">\(e\)</span>, or <span class="math notranslate nohighlight">\(u\)</span> and <span class="math notranslate nohighlight">\(v\)</span> are <strong>adjacent</strong>, or neighbors.</p></li>
 <li><p>If two edges <span class="math notranslate nohighlight">\(e_1 = (u, v)\)</span> and <span class="math notranslate nohighlight">\(e_2 = (u, w)\)</span> shares a common vertex <span class="math notranslate nohighlight">\(u\)</span>, we say <span class="math notranslate nohighlight">\(e_1\)</span> and <span class="math notranslate nohighlight">\(e_2\)</span> are <strong>adjacent</strong>.</p></li>
+<li><p>If a vertex is an endpoint of an edge <span class="math notranslate nohighlight">\(e\)</span>, we say <span class="math notranslate nohighlight">\(v\)</span> is <strong>incident</strong> on <span class="math notranslate nohighlight">\(e\)</span>.</p></li>
+</ul>
+</li>
 <li><p><strong>Neighborhood</strong> of a vertex: The (open) neighborhood of a vertex <span class="math notranslate nohighlight">\(v\)</span> in graph <span class="math notranslate nohighlight">\(G\)</span> is <span class="math notranslate nohighlight">\(N_G(v)= \left\{ u \mid (u, v) \in E(G) \right\}\)</span>. The closed neighborhood is <span class="math notranslate nohighlight">\(N_G [v] = N_G(v) \cup \left\{ v \right\}\)</span>.</p></li>
-<li><p><strong>Degree</strong> of a vertex: The degree of a vertex <span class="math notranslate nohighlight">\(v\)</span> is the number of its neighbors. <span class="math notranslate nohighlight">\(\operatorname{deg}_G (v) = \left\vert N_G(v) \right\vert\)</span>. In short we write <span class="math notranslate nohighlight">\(d(v)\)</span>.</p>
+<li><p><strong>Degree</strong> of a vertex: The degree of a vertex <span class="math notranslate nohighlight">\(v\)</span> is the number of its neighbors. <span class="math notranslate nohighlight">\(\operatorname{deg}_G (v) = \left\vert N_G(v) \right\vert\)</span>. In short we write <span class="math notranslate nohighlight">\(d_v\)</span>.</p>
 <ul class="simple">
 <li><p>Minimum degree is denoted as <span class="math notranslate nohighlight">\(\delta(G)=\min _v \operatorname{deg}_G(v)\)</span></p></li>
 <li><p>Maximum degree is denoted as <span class="math notranslate nohighlight">\(\Delta(G)=\max _v \operatorname{deg}_G(v)\)</span></p></li>
 <li><p>Sum of degree is <span class="math notranslate nohighlight">\(2m\)</span>: <span class="math notranslate nohighlight">\(\sum _{v \in V} \operatorname{deg}_G(v) = 2 \left\vert E \right\vert\)</span></p></li>
 <li><p>Corollary: In any graph, there are an even number of odd-degree vertices.</p></li>
+<li><p><strong>Degree sequence</strong> of a graph is the sequence formed by arranging the vertex degree <span class="math notranslate nohighlight">\(d_v\)</span> in non-decreasing order.</p></li>
+<li><p>For digraphs, vertex degree is replaced by in-degree <span class="math notranslate nohighlight">\(d_v^{in}\)</span> and out-degree <span class="math notranslate nohighlight">\(d_v ^{out}\)</span>.</p></li>
+<li><p>Havel-Hakimi theorem</p></li>
 </ul>
-<dl class="simple myst">
-<dt>Theorem</dt><dd><p>If in a graph <span class="math notranslate nohighlight">\(G\)</span>, all vertices have degree at least 2, then <span class="math notranslate nohighlight">\(G\)</span> contains a cycle.</p>
-</dd>
-</dl>
+</li>
+<li><p><strong>Path</strong>: A path <span class="math notranslate nohighlight">\(P_n\)</span> is a graph whose vertices can be arranged in a sequence <span class="math notranslate nohighlight">\((v_1, \ldots, v_n)\)</span> such that the edge set is <span class="math notranslate nohighlight">\(E = \left\{ (v_i, v_{i+1}) \mid i=1, \ldots, n-1 \right\}\)</span>.</p></li>
+<li><p><strong>Cycle</strong>: A cycle <span class="math notranslate nohighlight">\(C_n\)</span> is a graph whose vertices can be arranged a cycle sequence <span class="math notranslate nohighlight">\((v_1, v_2, \ldots, v_n)\)</span> such that the edge set is <span class="math notranslate nohighlight">\(E = \left\{ (v_i, v_{i+1}) \mid i=1, \ldots, n-1 \right\} \cup \left\{ (v_n, v_1) \right\}\)</span>.</p>
+<ul>
+<li><p>A graph with no cycles is called <strong>acyclic</strong>.</p></li>
+<li><p>The <strong>girth</strong> of an undirected graph is the length of a shortest cycle contained in the graph. If the graph does not contain any cycles (that is, it is a forest), its girth is defined to be infinity</p></li>
+<li><p>If in a graph <span class="math notranslate nohighlight">\(G\)</span>, all vertices have degree at least 2, then <span class="math notranslate nohighlight">\(G\)</span> contains a cycle.</p>
 <div class="dropdown seealso admonition">
 <p class="admonition-title"> <em>Proof</em></p>
 <p>Let <span class="math notranslate nohighlight">\(P=(v_0, \ldots, v_{k})\)</span> be a longest path in <span class="math notranslate nohighlight">\(G\)</span>. Since <span class="math notranslate nohighlight">\(d(v_k) \ge 2\)</span>, then there is a vertex <span class="math notranslate nohighlight">\(v \in V, v \ne v_{k-1}\)</span>, such that <span class="math notranslate nohighlight">\(v\)</span> is adjacent to <span class="math notranslate nohighlight">\(v_k\)</span>. If <span class="math notranslate nohighlight">\(v \notin P\)</span>, then we have a longer path in <span class="math notranslate nohighlight">\(G\)</span>, contradiction. Hence, <span class="math notranslate nohighlight">\(v \in P\)</span>. More precisely, <span class="math notranslate nohighlight">\(v = v_i\)</span> for some <span class="math notranslate nohighlight">\(0\le i \le k-2\)</span>. Thus, <span class="math notranslate nohighlight">\(v_k\)</span> is connected to two vertices in <span class="math notranslate nohighlight">\(P\)</span>, which forms a cycle.</p>
 </div>
 </li>
-<li><p><strong>Path</strong>: A path <span class="math notranslate nohighlight">\(P_n\)</span> is a graph whose vertices can be arranged in a sequence <span class="math notranslate nohighlight">\((v_1, \ldots, v_n)\)</span> such that the edge set is <span class="math notranslate nohighlight">\(E = \left\{ (v_i, v_{i+1}) \mid i=1, \ldots, n-1 \right\}\)</span>.</p></li>
-<li><p><strong>Cycle</strong>: A cycle <span class="math notranslate nohighlight">\(C_n\)</span> is a graph whose vertices can be arranged a cycle sequence <span class="math notranslate nohighlight">\((v_1, v_2, \ldots, v_n)\)</span> such that the edge set is <span class="math notranslate nohighlight">\(E = \left\{ (v_i, v_{i+1}) \mid i=1, \ldots, n-1 \right\} \cup \left\{ (v_n, v_1) \right\}\)</span>.</p></li>
+</ul>
+</li>
 <li><p><strong>Walk</strong>: A walk in a graph <span class="math notranslate nohighlight">\(G\)</span> is a sequence <span class="math notranslate nohighlight">\(W=(v_0, e_1, v_1, e_2, \ldots, v_{k-1}, e_k, v_k)\)</span> whose terms alternate between vertices and edges (not necessarily distinct) such that <span class="math notranslate nohighlight">\(v_{i-1} v_i = e_i\)</span> for <span class="math notranslate nohighlight">\(1 \le i \le \ell\)</span>. When <span class="math notranslate nohighlight">\(G\)</span> is simple, we may write the walk by indicating the vertices only.</p>
 <ul class="simple">
-<li><p>A walk is closed if the start and end vertices are the same <span class="math notranslate nohighlight">\(v_0 = v_k\)</span>.</p></li>
+<li><p>A walk is <strong>closed</strong> if the start and end vertices are the same <span class="math notranslate nohighlight">\(v_0 = v_k\)</span>.</p></li>
 <li><p>A path is a walk such that all of the vertices and edges are distinct. If there is a walk from <span class="math notranslate nohighlight">\(u\)</span> to <span class="math notranslate nohighlight">\(v\)</span>, then there is a path from <span class="math notranslate nohighlight">\(u\)</span> to <span class="math notranslate nohighlight">\(v\)</span> by removing all cycles in the walk.</p></li>
-<li><p>The length of a walk is the number of edges of the walk. If is a walk from <span class="math notranslate nohighlight">\(x\)</span> to <span class="math notranslate nohighlight">\(y\)</span> of length <span class="math notranslate nohighlight">\(k\)</span>, we write <span class="math notranslate nohighlight">\(x \overset{k}{\rightarrow} y\)</span>. If <span class="math notranslate nohighlight">\(k\)</span> is unknown, we write <span class="math notranslate nohighlight">\(x \overset{\star}{\rightarrow} y\)</span>.</p></li>
+<li><p>The <strong>length</strong> of a walk is the number of edges of the walk. If is a walk from <span class="math notranslate nohighlight">\(x\)</span> to <span class="math notranslate nohighlight">\(y\)</span> of length <span class="math notranslate nohighlight">\(k\)</span>, we write <span class="math notranslate nohighlight">\(x \overset{k}{\rightarrow} y\)</span>. If <span class="math notranslate nohighlight">\(k\)</span> is unknown, we write <span class="math notranslate nohighlight">\(x \overset{\star}{\rightarrow} y\)</span>.</p></li>
+<li><p>A vertex <span class="math notranslate nohighlight">\(v\)</span> is <strong>reachable</strong> from another vertex <span class="math notranslate nohighlight">\(u\)</span> if there exists a walk from <span class="math notranslate nohighlight">\(u\)</span> to <span class="math notranslate nohighlight">\(v\)</span>.</p></li>
 </ul>
 </li>
-<li><p><strong>Tail</strong>: A trail is a walk such that all of the edges are distinct.</p>
+<li><p><strong>Trail</strong>: A trail is a walk such that all of the edges are distinct.</p>
 <ul class="simple">
-<li><p>An Euler trail visits every edge once. A graph has a Euler trail if and only if the number of odd-degree nodes are 0 or 2. Moreover, if 0, then and node can be the start node, as well as the end node. If 2, then the two nodes are start and end nodes.</p></li>
-<li><p>An Euler tour is an Euler trail that is closed. If a graph has an Euler tour, we call it Eulerian. A graph <span class="math notranslate nohighlight">\(G\)</span> is Eulerian if and only if every vertex of <span class="math notranslate nohighlight">\(G\)</span> has even degree.</p></li>
+<li><p>An <strong>Euler trail</strong> visits every edge once. A graph has a Euler trail if and only if the number of odd-degree nodes are 0 or 2. Moreover, if 0, then and node can be the start node, as well as the end node. If 2, then the two nodes are start and end nodes.</p></li>
+<li><p>An <strong>Euler tour</strong> is an Euler trail that is closed. If a graph has an Euler tour, we call it <strong>Eulerian</strong>. A graph <span class="math notranslate nohighlight">\(G\)</span> is Eulerian if and only if every vertex of <span class="math notranslate nohighlight">\(G\)</span> has even degree.</p></li>
 </ul>
 </li>
-<li><p><strong>Distance</strong> between two vertices: The distance between two vertices <span class="math notranslate nohighlight">\(u\)</span> and <span class="math notranslate nohighlight">\(v\)</span> in <span class="math notranslate nohighlight">\(G\)</span> is the minimal length of a walk from <span class="math notranslate nohighlight">\(u\)</span> to <span class="math notranslate nohighlight">\(v\)</span>. <span class="math notranslate nohighlight">\(d_G (u,v) = \min \left\{ k \mid u \overset{k}{\rightarrow} v \right\}\)</span>. If there is no walk, then the distance is <span class="math notranslate nohighlight">\(\infty\)</span>.</p></li>
+<li><p><strong>Circuit</strong>: A trail for which the beginning and ending vertices are the same.</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\text{walk}  \overset{\text{distinct edges} }{\longrightarrow} &amp;\text{trail} \overset{\text{distinct vertices} }{\longrightarrow} \text{path} \\
+&amp;\text{trail} \overset{\text{beg = end} }{\longrightarrow} \text{circuit}
+\overset{\text{distinct vertices} }{\longrightarrow} \text{cycle}
+\end{aligned}\end{split}\]</div>
+<ul class="simple">
+<li><p>(Geodesic) <strong>Distance</strong> between two vertices: The distance between two vertices <span class="math notranslate nohighlight">\(u\)</span> and <span class="math notranslate nohighlight">\(v\)</span> in <span class="math notranslate nohighlight">\(G\)</span> is the minimal length of a walk from <span class="math notranslate nohighlight">\(u\)</span> to <span class="math notranslate nohighlight">\(v\)</span>. <span class="math notranslate nohighlight">\(d_G (u,v) = \min \left\{ k \mid u \overset{k}{\rightarrow} v \right\}\)</span>. If there is no walk, then the distance is <span class="math notranslate nohighlight">\(\infty\)</span>.</p>
+<ul>
+<li><p><strong>Diameter</strong> of a graph is the longest distance in a graph.</p></li>
+</ul>
+</li>
 </ul>
 </div>
-<div class="section" id="more-types-of-graphs">
-<h2>More Types of Graphs<a class="headerlink" href="#more-types-of-graphs" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="families-of-graphs">
+<h2>Families of Graphs<a class="headerlink" href="#families-of-graphs" title="Permalink to this headline">¶</a></h2>
 <ul>
-<li><p><strong>Self-edges</strong> (self-loops): allow self-edge <span class="math notranslate nohighlight">\((u,u)\)</span></p></li>
+<li><p><strong>Self-edge</strong> (self-loops): allow self-edge <span class="math notranslate nohighlight">\((u,u)\)</span></p></li>
 <li><p><strong>Multi-graph</strong>: allow multiple edges between two vertices.</p>
 <div class="figure align-default" id="graph-self-edge-multigraph">
 <a class="reference internal image-reference" href="../_images/graph-self-edge-multigraph.png"><img alt="" src="../_images/graph-self-edge-multigraph.png" style="width: 50%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 2 </span><span class="caption-text">Self-edges graph and multigraph</span><a class="headerlink" href="#graph-self-edge-multigraph" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 142 </span><span class="caption-text">Self-edges graph and multigraph</span><a class="headerlink" href="#graph-self-edge-multigraph" title="Permalink to this image">¶</a></p>
 </div>
 </li>
 <li><p><strong>Simple graph</strong>: no self-edges, and no multiple edges.</p></li>
+<li><p><strong>Directed graph</strong>: directed edges called arcs.</p>
+<ul class="simple">
+<li><p>Two arcs <span class="math notranslate nohighlight">\((u, v)\)</span> and <span class="math notranslate nohighlight">\((v, u)\)</span> are said to be mutual.</p></li>
+<li><p><strong>Multi-digraphs</strong>: multiple arcs share the same head and tail.</p></li>
+</ul>
+</li>
 <li><p><strong>Connected graph</strong>: There is a path between every pairs of vertices.</p>
 <ul class="simple">
 <li><p><strong>Bridge</strong> edge: an edge <span class="math notranslate nohighlight">\(e \in E(G)\)</span> is a bridge of <span class="math notranslate nohighlight">\(G\)</span> if <span class="math notranslate nohighlight">\(G \setminus e\)</span> has more connected components than <span class="math notranslate nohighlight">\(G\)</span>. In particular, if <span class="math notranslate nohighlight">\(G\)</span> is connected, then <span class="math notranslate nohighlight">\(G \setminus\)</span> is disconnected.</p>
@@ -939,7 +983,11 @@
 </li>
 </ul>
 </li>
-<li><p><strong>Completed graph</strong>: every pair of vertices are adjacent, denoted as <span class="math notranslate nohighlight">\(K_n\)</span>.</p></li>
+<li><p><strong>Completed graph</strong>: every pair of vertices are adjacent, denoted as <span class="math notranslate nohighlight">\(K_n\)</span>.</p>
+<ul class="simple">
+<li><p><strong>Clique</strong>: A complete subgraph. It is a maximal clique if no other clique contains it.</p></li>
+</ul>
+</li>
 <li><p><strong>Empty graph</strong>: no edges, <span class="math notranslate nohighlight">\(E = \emptyset\)</span>.</p>
 <ul class="simple">
 <li><p>An empty graph <span class="math notranslate nohighlight">\(\Leftrightarrow\)</span> a <span class="math notranslate nohighlight">\(0\)</span>-regular graph.</p></li>
@@ -947,9 +995,13 @@
 </li>
 <li><p><strong>Bipartite graph</strong>: A graph whose vertex set can be partitioned into 2 sets <span class="math notranslate nohighlight">\(U\)</span> and <span class="math notranslate nohighlight">\(V\)</span> such that every edge <span class="math notranslate nohighlight">\((u, v) \in E\)</span> has <span class="math notranslate nohighlight">\(u \in U\)</span> and <span class="math notranslate nohighlight">\(v \in V\)</span>. We usually write <span class="math notranslate nohighlight">\(G=(U,V,E)\)</span>.</p>
 <ul>
+<li><p>Characterization: A graph <span class="math notranslate nohighlight">\(G\)</span> is bipartite iff it contains no odd cycle.</p></li>
+<li><p>Claims:</p>
+<ul class="simple">
 <li><p>A path is bipartite.</p></li>
 <li><p>A cycle is bipartite iff its has even length.</p></li>
-<li><p>Characterization: A graph <span class="math notranslate nohighlight">\(G\)</span> is bipartite iff it contains no odd cycle.</p></li>
+</ul>
+</li>
 <li><p>Property: <span class="math notranslate nohighlight">\(\sum_{v \in V} \operatorname{deg}(v) = \sum_{u \in U} \operatorname{deg} (u) = \left\vert E \right\vert\)</span></p></li>
 <li><p><strong>Complete bipartite graph</strong>: <span class="math notranslate nohighlight">\(E\)</span> has every possible edge between the two sets <span class="math notranslate nohighlight">\(U\)</span> and <span class="math notranslate nohighlight">\(V\)</span>, denoted <span class="math notranslate nohighlight">\(K_{n, m}\)</span> where <span class="math notranslate nohighlight">\(n=\left\vert U \right\vert, m=\left\vert V \right\vert\)</span>.</p>
 <ul class="simple">
@@ -961,7 +1013,7 @@
 <p>For instance, in the authors-papers network, we can find co-authorship network from projection on authors.</p>
 <div class="figure align-default" id="graph-folded">
 <a class="reference internal image-reference" href="../_images/graph-folded.png"><img alt="" src="../_images/graph-folded.png" style="width: 40%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 3 </span><span class="caption-text">Folded/projected bipartite graphs</span><a class="headerlink" href="#graph-folded" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 143 </span><span class="caption-text">Folded/projected bipartite graphs</span><a class="headerlink" href="#graph-folded" title="Permalink to this image">¶</a></p>
 </div>
 </li>
 </ul>
@@ -974,20 +1026,32 @@
 <li><p>A completed graph is <span class="math notranslate nohighlight">\((n-1)\)</span>-regular.</p></li>
 </ul>
 </li>
-<li><p><strong>Tree</strong></p>
+<li><p><strong>Tree</strong> and <strong>Forest</strong></p>
 <ul class="simple">
-<li><p>A graph with no cycles is acyclic.</p></li>
-<li><p>Definition: A tree is a connected acyclic graph.</p></li>
-<li><p>Characterization: A graph <span class="math notranslate nohighlight">\(G\)</span> is a tree if and only any two of the three conditions hold: connected, acyclic, and <span class="math notranslate nohighlight">\(m = n - 1\)</span>.</p></li>
+<li><p>Definition:</p>
+<ul>
+<li><p>A tree is a connected acyclic graph. Root, leaf, ancestor, descendant, parents, children …</p></li>
 <li><p>A forest is an acyclic graph.</p></li>
+</ul>
+</li>
+<li><p>Characterization: A graph <span class="math notranslate nohighlight">\(G\)</span> is a tree if and only any two of the three conditions hold: connected, acyclic, and <span class="math notranslate nohighlight">\(m = n - 1\)</span>.</p></li>
+<li><p>Types of trees: star, double star, caterpillar (removing leaves gives the spine)</p></li>
+<li><p>Claims:</p>
+<ul>
 <li><p>A vertex in a tree is a leaf if it has only one neighbor.</p></li>
 <li><p>Every tree <span class="math notranslate nohighlight">\(T\)</span> with <span class="math notranslate nohighlight">\(\left\vert V(T) \right\vert \ge\)</span> 2 has at least 2 leaves (two ends of a maximal path).</p></li>
 <li><p>A connected graph is a tree iff all of its edges are bridges.</p></li>
 <li><p>Cayley’s Formula: There are <span class="math notranslate nohighlight">\(n^{n-2}\)</span> trees on a vertex set <span class="math notranslate nohighlight">\(V\)</span> of <span class="math notranslate nohighlight">\(n\)</span> elements. Related concept: Prufer Sequence.</p></li>
-<li><p>Types of trees: star, double star, caterpillar (removing leaves gives the spine)</p></li>
 </ul>
 </li>
-<li><p><strong>Hamiltonian Graphs</strong></p>
+</ul>
+</li>
+<li><p><strong>Directed acyclic graph</strong>: directed and has no cycles.</p>
+<ul class="simple">
+<li><p>Note that its underlying undirected graph is not a tree: may contains cycles. Nevertheless, it is often possible to still design efficient computational algorithm on DAGs that take advantage of this near-tree-like structure.</p></li>
+</ul>
+</li>
+<li><p><strong>Hamiltonian graph</strong></p>
 <ul class="simple">
 <li><p>Hamilton path: a path that covers every vertex once</p></li>
 <li><p>Hamilton cycle: a cycle that covers every vertex once. A Hamilton cycle can be converted to a Hamilton path by removing one edge.</p></li>
@@ -1002,64 +1066,129 @@
 </li>
 </ul>
 </li>
-<li><p><strong>Heterogeneous graphs</strong> (node are different kinds of objects)</p></li>
-<li><p><strong>Multimodal graphs</strong> (topics, papers, authors, institutions)</p>
+<li><p><strong>Planar graph</strong>: a graph that can be drawn in the plane, with vertices ad dots and edges as lines, such that no pair of edges intersect.</p></li>
+<li><p><strong>Heterogeneous graph</strong> (node are different kinds of objects)</p></li>
+<li><p><strong>Multimodal graph</strong> (topics, papers, authors, institutions)</p>
 <div class="figure align-default" id="mlg-more-types">
 <a class="reference internal image-reference" href="../_images/mlg-more-types.png"><img alt="" src="../_images/mlg-more-types.png" style="width: 60%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 4 </span><span class="caption-text">More types of graphs</span><a class="headerlink" href="#mlg-more-types" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 144 </span><span class="caption-text">More types of graphs</span><a class="headerlink" href="#mlg-more-types" title="Permalink to this image">¶</a></p>
 </div>
 </li>
 </ul>
-<div class="section" id="structure">
-<h3>Structure<a class="headerlink" href="#structure" title="Permalink to this headline">¶</a></h3>
-<ul class="simple">
+</div>
+<div class="section" id="graph-level-concepts">
+<h2>Graph-level Concepts<a class="headerlink" href="#graph-level-concepts" title="Permalink to this headline">¶</a></h2>
+<ul>
 <li><p><strong>Subgraph</strong>: A graph <span class="math notranslate nohighlight">\(F\)</span> is a subgraph of a graph <span class="math notranslate nohighlight">\(G\)</span> if <span class="math notranslate nohighlight">\(V(F)\subseteq V(G)\)</span> and <span class="math notranslate nohighlight">\(E(F)\subseteq E(G)\)</span>, also denoted as <span class="math notranslate nohighlight">\(F \subseteq G\)</span>.</p></li>
 <li><p><strong>Spanning subgraph</strong>: A spanning subgraph <span class="math notranslate nohighlight">\(F\)</span> is a subgraph obtained only by edge deletions. In other words, <span class="math notranslate nohighlight">\(V(F) = V(G)\)</span> and <span class="math notranslate nohighlight">\(E(F)\subset E(G)\)</span>.</p>
-<ul>
+<ul class="simple">
 <li><p><strong>Spanning tree</strong>: spanning subgraph of <span class="math notranslate nohighlight">\(G\)</span> that is a tree. Every connected graph <span class="math notranslate nohighlight">\(G\)</span> has a spanning tree. Corollary: every connected graph has <span class="math notranslate nohighlight">\(m \ge n-1\)</span>.</p></li>
 </ul>
 </li>
 <li><p><strong>Induced subgraph</strong>: A induced graph <span class="math notranslate nohighlight">\(F\)</span> is a subgraph obtained only by vertices deletion. If the remaining vertices are <span class="math notranslate nohighlight">\(Y=V(G)\setminus\)</span>, we denote <span class="math notranslate nohighlight">\(F\)</span> by <span class="math notranslate nohighlight">\(G[Y]\)</span>.</p></li>
+<li><p><strong>Isomorphic</strong>: Two simple graphs <span class="math notranslate nohighlight">\(G\)</span> and <span class="math notranslate nohighlight">\(H\)</span> are isomorphic, denoted <span class="math notranslate nohighlight">\(G \cong H\)</span> if there is a bijection <span class="math notranslate nohighlight">\(\theta: V(G) \rightarrow V(H)\)</span> which preserves adjacency and non-adjacency:</p>
+<div class="math notranslate nohighlight">
+\[
+  (u,v) \in E(G) \Leftrightarrow (\theta(u), \theta(v)) \in E(H)
+  \]</div>
+<p>To determine isomorphism of two graphs, we can start by comparing some properties, such as <span class="math notranslate nohighlight">\(n\)</span>, <span class="math notranslate nohighlight">\(m\)</span>, <span class="math notranslate nohighlight">\(r\)</span>-regular, number of non-adjacent vertices etc.</p>
+</li>
+<li><p>A <strong>decomposition</strong> of a graph <span class="math notranslate nohighlight">\(G\)</span> is a family <span class="math notranslate nohighlight">\(\mathcal{F}\)</span> of edge-disjoint subgraphs of <span class="math notranslate nohighlight">\(G\)</span> such that all edges in <span class="math notranslate nohighlight">\(G\)</span> are in some subgraphs.</p>
+<div class="math notranslate nohighlight">
+\[\cup _{F \in \mathcal{F}} E(F) = E(G)\]</div>
+<p>If every subgraph of <span class="math notranslate nohighlight">\(\mathcal{F}\)</span> is a cycle, then the decomposition is called a <strong>cycle decomposition</strong>. Similarly, if every subgraph of <span class="math notranslate nohighlight">\(\mathcal{F}\)</span> is a path, then the decomposition is called a <strong>path decomposition</strong>. A trivial path decomposition exists there each subgraph is an edge. But some graphs have no cycle decomposition.</p>
+<p>A graph <span class="math notranslate nohighlight">\(G\)</span> has a cycle decomposition if and only if every vertex in <span class="math notranslate nohighlight">\(G\)</span> has even degree.</p>
+</li>
 </ul>
 </div>
-<div class="section" id="more-concepts">
-<h3>More Concepts<a class="headerlink" href="#more-concepts" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="matrices-for-graphs">
+<h2>Matrices for Graphs<a class="headerlink" href="#matrices-for-graphs" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="adjacency-matrix">
+<h3>Adjacency Matrix<a class="headerlink" href="#adjacency-matrix" title="Permalink to this headline">¶</a></h3>
+<p>For an undirected graph <span class="math notranslate nohighlight">\(G\)</span>, its adjacency matrix <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> is an <span class="math notranslate nohighlight">\(n \times n\)</span> symmetric binary matrix with entries</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+a_{i j}=\left\{\begin{array}{ll}
+1, &amp; \text { if } (i, j) \in E \\
+0, &amp; \text { otherwise }
+\end{array}\right.
+\end{split}\]</div>
+<p>Properties</p>
 <ul class="simple">
-<li><p>Degree sequences, Havel-Hakimi theorem.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{A} \boldsymbol{1} = \boldsymbol{d}\)</span>, i.e. row sum of row <span class="math notranslate nohighlight">\(i\)</span> is the degree of vertex <span class="math notranslate nohighlight">\(i\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\([\boldsymbol{A} ^r]_{ij}=\)</span> the number of walks of length <span class="math notranslate nohighlight">\(r\)</span> between vertices <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(j\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(G\)</span> is a regular graph if and only if the maximum degree <span class="math notranslate nohighlight">\(d_{max}\)</span> of <span class="math notranslate nohighlight">\(G\)</span> is an eigenvalue of <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span>.</p></li>
 </ul>
-</div>
-</div>
-<div class="section" id="data-structure-to-represent-a-graph">
-<h2>Data Structure to Represent a Graph<a class="headerlink" href="#data-structure-to-represent-a-graph" title="Permalink to this headline">¶</a></h2>
-<p>The most intuitional representation is by an <span class="math notranslate nohighlight">\(n\times n\)</span> <strong>adjacency matrix</strong>. It contains binary entries, which is <span class="math notranslate nohighlight">\(1\)</span> if there is an edge between vertices <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(j\)</span>, and zero otherwise.</p>
+<p>For directed graphs, its adjacency matrix is defined in a similar way, but it may not be symmetric. Moreover, <span class="math notranslate nohighlight">\(\boldsymbol{A} _{i +} = d_i^{out}\)</span>, and <span class="math notranslate nohighlight">\(\boldsymbol{A} _{+j} = d_j^{out}\)</span>.</p>
 <div class="figure align-default" id="graph-adjacency-matrix">
 <a class="reference internal image-reference" href="../_images/graph-adjacency-matrix.png"><img alt="" src="../_images/graph-adjacency-matrix.png" style="width: 50%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 5 </span><span class="caption-text">Adjacency matrix for undirected and directed graph.</span><a class="headerlink" href="#graph-adjacency-matrix" title="Permalink to this image">¶</a></p>
-</div>
-<p>Most real-world networks are sparse, <span class="math notranslate nohighlight">\(\left\vert E \right\vert\ll \left\vert E _\max \right\vert\)</span>, or <span class="math notranslate nohighlight">\(\bar{d} \ll n-1\)</span>, so the adjacency matrix is quite sparse.</p>
-<div class="figure align-default" id="graph-adjacency-sparse">
-<a class="reference internal image-reference" href="../_images/graph-adjacency-sparse.png"><img alt="" src="../_images/graph-adjacency-sparse.png" style="width: 40%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 6 </span><span class="caption-text">Sparse adjacency matrix</span><a class="headerlink" href="#graph-adjacency-sparse" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 145 </span><span class="caption-text">Adjacency matrix for undirected and directed graph.</span><a class="headerlink" href="#graph-adjacency-matrix" title="Permalink to this image">¶</a></p>
 </div>
 <p>Adjacency matrix can also store weights.</p>
 <div class="figure align-default" id="graph-weights">
 <a class="reference internal image-reference" href="../_images/graph-weights.png"><img alt="" src="../_images/graph-weights.png" style="width: 50%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 7 </span><span class="caption-text">Adjacency matrix with weights</span><a class="headerlink" href="#graph-weights" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 146 </span><span class="caption-text">Adjacency matrix with weights</span><a class="headerlink" href="#graph-weights" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+<div class="section" id="laplacian-matrix">
+<h3>Laplacian Matrix<a class="headerlink" href="#laplacian-matrix" title="Permalink to this headline">¶</a></h3>
+<p>Let <span class="math notranslate nohighlight">\(\boldsymbol{D} = \operatorname{diag}\left( \boldsymbol{A} \boldsymbol{1}  \right)\)</span> be a diagonal matrix containing the degrees. The laplacian matrix of graph <span class="math notranslate nohighlight">\(G\)</span> is a <span class="math notranslate nohighlight">\(n \times n\)</span> matrix defined as</p>
+<div class="math notranslate nohighlight">
+\[
+\boldsymbol{L} = \boldsymbol{D} - \boldsymbol{A}  
+\]</div>
+<p>It is in analogy to the Laplacian from multivariable calculus (the sum of second partial derivatives of a function), in the sense that</p>
+<div class="math notranslate nohighlight">
+\[
+\boldsymbol{x} ^{\top} \boldsymbol{L} \boldsymbol{x} = \sum _{(i, j) \in E} (x_i - x_j)^2
+\]</div>
+<p>The closer this value is to zero, the more similar are the elements of <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> at adjacent vertices in <span class="math notranslate nohighlight">\(V\)</span>. Hence, the Laplacian is useful in providing some sense of the ‘smoothness’ of functions on a graph <span class="math notranslate nohighlight">\(G\)</span>, with respect to the connectivity of <span class="math notranslate nohighlight">\(G\)</span>.</p>
+<p>Properties</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{L}\)</span> is positive semi-definite</p></li>
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{L} \boldsymbol{1} = \boldsymbol{0}\)</span>, i.e. its smallest eigenvalue is 0. The second smallest eigenvalue is non-trivial, and the arguably most important of all of the eigenvalues, which gives information about its connectivity.</p></li>
+</ul>
+</div>
+<div class="section" id="incidence-matrix">
+<h3>Incidence Matrix<a class="headerlink" href="#incidence-matrix" title="Permalink to this headline">¶</a></h3>
+<p>The incidence matrix <span class="math notranslate nohighlight">\(\boldsymbol{B}\)</span> of a graph <span class="math notranslate nohighlight">\(G\)</span> is an <span class="math notranslate nohighlight">\(n \times m\)</span> binary matrix with entries</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+b_{i j}=\left\{\begin{array}{ll}
+1, &amp; \text { if vertex } i \text { is incident to edge } j \\
+0, &amp; \text { otherwise }
+\end{array}\right.
+\end{split}\]</div>
+<p>If we extend <span class="math notranslate nohighlight">\(\boldsymbol{B}\)</span> to a signed incidence matrix <span class="math notranslate nohighlight">\(\tilde{\boldsymbol{B}}\)</span>, by arbitrarily assigning direction to all edges, and let <span class="math notranslate nohighlight">\(\tilde{b}_{ij}=1\)</span> and <span class="math notranslate nohighlight">\(\tilde{b}_{ji}=-1\)</span> if <span class="math notranslate nohighlight">\((i,j)\)</span> is a directed edge, then we can show that</p>
+<div class="math notranslate nohighlight">
+\[
+\tilde{\boldsymbol{B} }\tilde{\boldsymbol{B} }^{\top} = \boldsymbol{L}
+\]</div>
+</div>
+</div>
+<div class="section" id="data-structure-to-represent-a-graph">
+<h2>Data Structure to Represent a Graph<a class="headerlink" href="#data-structure-to-represent-a-graph" title="Permalink to this headline">¶</a></h2>
+<p>The most intuitional representation is by an <span class="math notranslate nohighlight">\(n\times n\)</span> <strong>adjacency matrix</strong> defined previously. It contains binary entries, which is <span class="math notranslate nohighlight">\(1\)</span> if there is an edge between vertices <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(j\)</span>, and zero otherwise. The memory required is <span class="math notranslate nohighlight">\(O(n^2)\)</span>.</p>
+<p>Most real-world networks are sparse, in the sense that <span class="math notranslate nohighlight">\(m \sim n\)</span>, or <span class="math notranslate nohighlight">\(\bar{d} \ll n-1\)</span>, so the adjacency matrix is sparse. It is preferable to use adjacency list. But the simplicity of the adjacency matrix representation may sometimes be felt to outweigh any memory disadvantages, especially for smaller graphs.</p>
+<div class="figure align-default" id="graph-adjacency-sparse">
+<a class="reference internal image-reference" href="../_images/graph-adjacency-sparse.png"><img alt="" src="../_images/graph-adjacency-sparse.png" style="width: 40%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 147 </span><span class="caption-text">Sparse adjacency matrix</span><a class="headerlink" href="#graph-adjacency-sparse" title="Permalink to this image">¶</a></p>
 </div>
 <p>Other data structures include</p>
 <ul>
 <li><p><strong>Edge List</strong></p>
-<p><span class="math notranslate nohighlight">\(m\)</span> objects in the list, each object represents an edge, and stores the pair of vertices of that edge.</p>
+<p><span class="math notranslate nohighlight">\(m\)</span> objects in the two-column list, each object represents an edge, and stores the pair of vertices of that edge. Memory <span class="math notranslate nohighlight">\(O(m)\)</span></p>
 </li>
 <li><p><strong>Adjacency List</strong></p>
 <p><span class="math notranslate nohighlight">\(n\)</span> objects in the list, each object represents a vertex, and stores a list of neighbors of that vertex.</p>
 <ul class="simple">
-<li><p>Easy to work with large and sparse graphs.</p></li>
+<li><p>Easy to work with large and sparse graphs</p></li>
 <li><p>Allows us to quickly retrieve all neighbors of a given vertex</p></li>
+<li><p>Memory <span class="math notranslate nohighlight">\(O(n + m)\)</span></p></li>
 </ul>
 <div class="figure align-default" id="graph-edge-adjacency-list">
 <a class="reference internal image-reference" href="../_images/graph-edge-adjacency-list.png"><img alt="" src="../_images/graph-edge-adjacency-list.png" style="width: 50%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 8 </span><span class="caption-text">Edge list and adjacency list</span><a class="headerlink" href="#graph-edge-adjacency-list" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 148 </span><span class="caption-text">Edge list and adjacency list</span><a class="headerlink" href="#graph-edge-adjacency-list" title="Permalink to this image">¶</a></p>
 </div>
 </li>
 <li><p><strong>Incidence matrix</strong></p>
@@ -1076,25 +1205,21 @@
 </li>
 </ul>
 </div>
-<div class="section" id="more-definitions">
-<h2>More Definitions<a class="headerlink" href="#more-definitions" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="algorithms">
+<h2>Algorithms<a class="headerlink" href="#algorithms" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>BFS</p>
 <ul>
-<li><p><strong>Isomorphic</strong>: Two simple graphs <span class="math notranslate nohighlight">\(G\)</span> and <span class="math notranslate nohighlight">\(H\)</span> are isomorphic, denoted <span class="math notranslate nohighlight">\(G \cong H\)</span> if there is a bijection <span class="math notranslate nohighlight">\(\theta: V(G) \rightarrow V(H)\)</span> which preserves adjacency and non-adjacency:</p>
-<div class="math notranslate nohighlight">
-\[
-  (u,v) \in E(G) \Leftrightarrow (\theta(u), \theta(v)) \in E(H)
-  \]</div>
-<p>To determine isomorphism of two graphs, we can start by comparing some properties, such as <span class="math notranslate nohighlight">\(n\)</span>, <span class="math notranslate nohighlight">\(m\)</span>, <span class="math notranslate nohighlight">\(r\)</span>-regular, number of non-adjacent vertices etc.</p>
-</li>
+<li><p>Core of Prim’s, Dijkstra’s</p></li>
 </ul>
-</div>
-<div class="section" id="decomposition">
-<h2>Decomposition<a class="headerlink" href="#decomposition" title="Permalink to this headline">¶</a></h2>
-<p>A <strong>decomposition</strong> of a graph <span class="math notranslate nohighlight">\(G\)</span> is a family <span class="math notranslate nohighlight">\(\mathcal{F}\)</span> of edge-disjoint subgraphs of <span class="math notranslate nohighlight">\(G\)</span> such that all edges in <span class="math notranslate nohighlight">\(G\)</span> are in some subgraphs.</p>
-<div class="math notranslate nohighlight">
-\[\cup _{F \in \mathcal{F}} E(F) = E(G)\]</div>
-<p>If every subgraph of <span class="math notranslate nohighlight">\(\mathcal{F}\)</span> is a cycle, then the decomposition is called a cycle decomposition. Similarly, if every subgraph of <span class="math notranslate nohighlight">\(\mathcal{F}\)</span> is a path, then the decomposition is called a path decomposition. A trivial path decomposition exists there each subgraph is an edge. But some graphs have no cycle decompositio n.</p>
-<p>A graph <span class="math notranslate nohighlight">\(G\)</span> has a cycle decomposition if and only if every vertex in <span class="math notranslate nohighlight">\(G\)</span> has even degree.</p>
+</li>
+<li><p>DFS</p>
+<ul>
+<li><p>sub-routine of topological sort, which can be used to determine whether a directed graph <span class="math notranslate nohighlight">\(G\)</span> is acyclic, and algorithms for decomposing <span class="math notranslate nohighlight">\(G\)</span> into its strongly connected components.</p></li>
+</ul>
+</li>
+<li><p>finding a maximal clique is NP-hard</p></li>
+</ul>
 </div>
 <div class="section" id="exercise">
 <h2>Exercise<a class="headerlink" href="#exercise" title="Permalink to this headline">¶</a></h2>
@@ -1128,13 +1253,6 @@
 </li>
 <li><p>A <span class="math notranslate nohighlight">\(k\)</span>-coloring of graph <span class="math notranslate nohighlight">\(G\)</span> partitions the vertex set <span class="math notranslate nohighlight">\(V\)</span> into <span class="math notranslate nohighlight">\(k\)</span> independent sets <span class="math notranslate nohighlight">\(V_1, \ldots, V_k\)</span>.</p></li>
 </ol>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
 </div>
 </div>
 
@@ -1151,7 +1269,7 @@
         },
         kernelOptions: {
             kernelName: "python3",
-            path: "./11-math"
+            path: "./38-ml-for-graph-data"
         },
         predefinedOutput: true
     }
@@ -1163,8 +1281,7 @@
         
         <div class='prev-next-bottom'>
             
-    <a class='left-prev' id="prev-link" href="51-linear-programming.html" title="previous page">Linear Programming</a>
-    <a class='right-next' id="next-link" href="90-puzzles.html" title="next page">Puzzles</a>
+    <a class='left-prev' id="prev-link" href="00-ml-for-graph-data.html" title="previous page">Machine Learning for Graph Data</a>
 
         </div>
         

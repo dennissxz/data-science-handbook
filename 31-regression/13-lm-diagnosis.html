@@ -130,11 +130,6 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../11-math/61-graphs.html">
-     Graphs
-    </a>
-   </li>
-   <li class="toctree-l2">
     <a class="reference internal" href="../11-math/90-puzzles.html">
      Puzzles
     </a>
@@ -714,10 +709,19 @@
   <i class="fas fa-chevron-down">
   </i>
  </li>
- <li class="toctree-l1">
+ <li class="toctree-l1 collapsible-parent">
   <a class="reference internal" href="../38-ml-for-graph-data/00-ml-for-graph-data.html">
    Machine Learning for Graph Data
   </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../38-ml-for-graph-data/01-graph-basics.html">
+     Graph Basics
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
  </li>
 </ul>
 
@@ -866,6 +870,11 @@
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#standard-error-uncertain">
      Standard Error Uncertain
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#over-controlling">
+     Over Controlling
     </a>
    </li>
   </ul>
@@ -1205,10 +1214,10 @@ RHS - LHS &amp;= \left[\begin{array}{cc}
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>coefficients in y ~ x1 + x2 + x3 : [[0.9987468  1.00245232 2.00155951 3.00199361]]
-coefficients in y ~ x1 + x2 : [[0.999671   0.97653817 3.63301814]]
-coefficients in x3 ~ x1 + x2 : [[ 3.07861871e-04 -8.63231510e-03  5.43458394e-01]]
-reconstruction difference of b0, b1, b2 : [0.00000000e+00 4.44089210e-16 2.22044605e-15]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>coefficients in y ~ x1 + x2 + x3 : [[0.99825924 0.9991426  1.99744302 3.00294308]]
+coefficients in y ~ x1 + x2 : [[0.94545868 1.02630808 3.4976509 ]]
+coefficients in x3 ~ x1 + x2 : [[-0.01758294  0.00904628  0.49957919]]
+reconstruction difference of b0, b1, b2 : [ 2.66453526e-15 -1.77635684e-15 -1.33226763e-15]
 </pre></div>
 </div>
 </div>
@@ -1221,7 +1230,11 @@ reconstruction difference of b0, b1, b2 : [0.00000000e+00 4.44089210e-16 2.22044
 </div>
 <div class="section" id="adding-a-variable">
 <span id="lm-add-variable"></span><h2>Adding a Variable<a class="headerlink" href="#adding-a-variable" title="Permalink to this headline">¶</a></h2>
-<p>What if we add a new variable <span class="math notranslate nohighlight">\(X_j\)</span>? What will happen to the variance and standard error of an existing estimator <span class="math notranslate nohighlight">\(\hat\beta_k\)</span>? Assuming homoskedasticity.</p>
+<p>If we add a new variable <span class="math notranslate nohighlight">\(X_j\)</span></p>
+<ul class="simple">
+<li><p>What will happen to the variance and standard error of an existing estimator <span class="math notranslate nohighlight">\(\hat\beta_k\)</span>? Assuming homoskedasticity.</p></li>
+<li><p>How will the interpretation and test change? Over-controlling.</p></li>
+</ul>
 <div class="section" id="variance-usually-increases">
 <h3>Variance usually Increases<a class="headerlink" href="#variance-usually-increases" title="Permalink to this headline">¶</a></h3>
 <p>Let <span class="math notranslate nohighlight">\(\hat{\beta}_k\)</span> be the estimate obtained by using full design matrix <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span>, let <span class="math notranslate nohighlight">\(\hat{\beta}_k ^{(-j)}\)</span> be the estimate obtained by using the design matrix excluding the last column <span class="math notranslate nohighlight">\(\boldsymbol{x}_j\)</span>, denoted <span class="math notranslate nohighlight">\(\boldsymbol{X} _{-j}\)</span>.</p>
@@ -1273,6 +1286,34 @@ reconstruction difference of b0, b1, b2 : [0.00000000e+00 4.44089210e-16 2.22044
 </li>
 <li><p>If <span class="math notranslate nohighlight">\(X_j\)</span> has GOOD explanatory power to <span class="math notranslate nohighlight">\(X_k\)</span> given other covariates, and has SMALL explanatory power to <span class="math notranslate nohighlight">\(Y\)</span> given other covariates, say, nearly a linear combination of the existing covariates, then the standard error <strong>increases</strong>. This is the kind of new variable we want to avoid.</p>
 <p>Hence, if our model is already a good (or close to true) model, adding more covariates increases standard error. This gives a stopping criteria when adding more covariates.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="over-controlling">
+<h3>Over Controlling<a class="headerlink" href="#over-controlling" title="Permalink to this headline">¶</a></h3>
+<p>Aka. over-specification.</p>
+<p>Over controlling occurs if you include variables that modify the ceteris paribus interpretation so that the test <strong>no longer</strong> test the hypothesis of interest. To avoid this,</p>
+<ul class="simple">
+<li><p>do not include multiple measures of the same economic concept</p></li>
+<li><p>do not include intermediate outcomes or alternative forms of the dependent variables.</p></li>
+</ul>
+<p>Examples:</p>
+<ul>
+<li><p>To evaluate a new course curriculum, consider two models</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+  \text{Model 1: } \text{score} _i &amp;= \beta_0 + \beta_1 \text{In_new_program}_i  + u_i\\
+  \text{Model 2: } \text{score} _i &amp;= \beta_0 + \beta_1 \text{In_new_program}_i  + \beta_2 \text{hours}_i + u_i\\
+  \end{aligned}\end{split}\]</div>
+<p>Studied hours is an intermediate outcome. The ceteris paribus interpretation of <span class="math notranslate nohighlight">\(\beta_1\)</span> changed, so that it no longer tests the hypothesis of interest.</p>
+</li>
+<li><p>To evaluate the effect of tax rate change on GDP, consider two models</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+  \text{Model 1: } \text{GDP} _i &amp;= \beta_0 + \beta_1 \text{Tax_rate}_i  + u_i\\
+  \text{Model 2: } \text{GDP} _i &amp;= \beta_0 + \beta_1 \text{Tax_rate}_i  + \beta_2 \text{No_of_corporations}_i + u_i\\
+  \end{aligned}\end{split}\]</div>
+<p>The number of corporations is an intermediate outcome.</p>
 </li>
 </ul>
 </div>
@@ -1377,10 +1418,10 @@ X_{j}=\delta_{0}+\delta_{1} X_{1}+\cdots+\delta_{j-1} X_{j-1}+\delta_{i+1} X_{i+
 <div class="section" id="heteroskedasticity">
 <h2>Heteroskedasticity<a class="headerlink" href="#heteroskedasticity" title="Permalink to this headline">¶</a></h2>
 <p>When <span class="math notranslate nohighlight">\(\operatorname{Var}\left( \varepsilon _i \right)\)</span> is not a constant, we say heteroskedasticity of error variance exists. This may happen because data attributes, or due to transformation of <span class="math notranslate nohighlight">\(y\)</span>, e.g. <span class="math notranslate nohighlight">\(\log(y)\)</span>. We can diagnose its existence by plots or tests.</p>
-<p>If it exists, OLS is still <strong>unbiased</strong> &amp; <strong>consistent</strong>. But <span class="math notranslate nohighlight">\(\operatorname{Var}_{OLS}\left( \hat{\boldsymbol{\beta}}  \right) = \sigma^2 (\boldsymbol{X} ^\top \boldsymbol{X} ) ^{-1}\)</span> which uses homoskedastic assumption is incorrect now. There are problems in <strong>testing</strong>.</p>
+<p>If it exists, OLS is still <strong>unbiased</strong> &amp; <strong>consistent</strong>. But the formula <span class="math notranslate nohighlight">\(\operatorname{Var}_{OLS}\left( \hat{\boldsymbol{\beta}}  \right) = \sigma^2 (\boldsymbol{X} ^\top \boldsymbol{X} ) ^{-1}\)</span> which uses homoskedastic assumption is incorrect now. There are problems in <strong>testing</strong>.</p>
 <ul class="simple">
 <li><p>To fix that for testing purpose, we can use robust standard error.</p></li>
-<li><p>To get more precise estimate and correct standard errors, we can try alternative models that produces homoskedastic errors.</p></li>
+<li><p>To get more precise estimate and correct standard errors, we can try alternative models that produce homoskedastic errors.</p></li>
 </ul>
 <div class="section" id="id1">
 <h3>Diagnosis<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
@@ -1388,7 +1429,7 @@ X_{j}=\delta_{0}+\delta_{1} X_{1}+\cdots+\delta_{j-1} X_{j-1}+\delta_{i+1} X_{i+
 <h4>Plot<a class="headerlink" href="#plot" title="Permalink to this headline">¶</a></h4>
 <div class="figure align-default" id="lm-residual-plot">
 <a class="reference internal image-reference" href="../_images/lm-residual-plot.png"><img alt="" src="../_images/lm-residual-plot.png" style="width: 90%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 42 </span><span class="caption-text">Homoskedastic (left, right) and Heteroskedasticity (middle)</span><a class="headerlink" href="#lm-residual-plot" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 37 </span><span class="caption-text">Homoskedastic (left, right) and Heteroskedasticity (middle)</span><a class="headerlink" href="#lm-residual-plot" title="Permalink to this image">¶</a></p>
 </div>
 </div>
 <div class="section" id="breusch-pagan-test">
@@ -1647,11 +1688,11 @@ X_{j}=\delta_{0}+\delta_{1} X_{1}+\cdots+\delta_{j-1} X_{j-1}+\delta_{i+1} X_{i+
 <h3>Depends on <span class="math notranslate nohighlight">\(Y\)</span> (Endogenous)<a class="headerlink" href="#depends-on-y-endogenous" title="Permalink to this headline">¶</a></h3>
 <p>If missing depends on <span class="math notranslate nohighlight">\(Y\)</span>, Consider the following cases.</p>
 <ol>
-<li><p>If some upper value <span class="math notranslate nohighlight">\(y_i\ge c\)</span> is missing, then for the remaining observations with <span class="math notranslate nohighlight">\(\boldsymbol{x}_i ^\top \boldsymbol{\beta} = c\)</span>, their error must be <span class="math notranslate nohighlight">\(\varepsilon &lt; 0\)</span>, to ensure <span class="math notranslate nohighlight">\(y_i &lt; c\)</span> to be selected. Consequently, the assumption that <span class="math notranslate nohighlight">\(\operatorname{E}\left( \varepsilon_i \right) = 0\)</span> no longer hold for such <span class="math notranslate nohighlight">\(i\)</span>.</p>
+<li><p>If some upper value <span class="math notranslate nohighlight">\(y_i &gt; c\)</span> is missing, then for the remaining observations with <span class="math notranslate nohighlight">\(\boldsymbol{x}_i ^\top \boldsymbol{\beta} = c\)</span>, their error must be <span class="math notranslate nohighlight">\(\varepsilon &lt; 0\)</span>, to ensure <span class="math notranslate nohighlight">\(y_i &lt; c\)</span> to be selected. Consequently, the assumption that <span class="math notranslate nohighlight">\(\operatorname{E}\left( \varepsilon_i \right) = 0\)</span> no longer hold for such <span class="math notranslate nohighlight">\(i\)</span>.</p>
 <p>Hence, the estimates <span class="math notranslate nohighlight">\(\hat{\boldsymbol{\beta}}\)</span> will be <strong>biased</strong> since <span class="math notranslate nohighlight">\(\operatorname{E}\left( \boldsymbol{\varepsilon}  \right) \ne 0\)</span>.</p>
-<p>The analysis is the same for the case of lower value missing <span class="math notranslate nohighlight">\(y_i \ge c\)</span>.</p>
+<p>The analysis is the same for the case of lower value missing <span class="math notranslate nohighlight">\(y_i &lt; c\)</span>.</p>
 </li>
-<li><p>If some middle value <span class="math notranslate nohighlight">\(\left\vert y_i -\mu _y\right\vert \le c\)</span> is missing, will the estimates be unbiased?</p>
+<li><p>If some middle value <span class="math notranslate nohighlight">\(\left\vert y_i -\mu _y\right\vert &lt; c\)</span> is missing, will the estimates be unbiased?</p>
 <p>This depends. Consider an extreme case that <span class="math notranslate nohighlight">\(Y = 10X + \varepsilon\)</span> and we only have three kinds of covariates values <span class="math notranslate nohighlight">\(X= 1,2,3\)</span>, so there are three data clouds of equal sizes (assumed). Then dropping <span class="math notranslate nohighlight">\(\left\vert Y -20 \right\vert &lt; 1\)</span> and using the remaining two data clouds to run OLS, we will still get <span class="math notranslate nohighlight">\(E(\tilde{\beta}_1)=1\)</span>, which is unbiased.</p>
 <p>On the other hand, this selection criteria can be viewed as a combination of an upper dropping and a lower dropping, so bias is also possible under certain cases.</p>
 </li>

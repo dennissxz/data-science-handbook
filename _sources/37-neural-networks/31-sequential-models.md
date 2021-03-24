@@ -138,7 +138,11 @@ Given an input sequence $\boldsymbol{X}_i = (\boldsymbol{x} _1, \ldots, \boldsym
 - one produces $\boldsymbol{h} ^{\text{fwd} }$ from input $(\boldsymbol{x} _1, \ldots, \boldsymbol{x} _t)$ with parameters $(\boldsymbol{W} ^{\text{fwd} }, \boldsymbol{b} ^{\text{fwd} })$
 - the other produces $\boldsymbol{h} ^{\text{bwd} }$ from input $(\boldsymbol{x} _t, \ldots, \boldsymbol{x} _1)$ with parameters $(\boldsymbol{W} ^{\text{bwd} }, \boldsymbol{b} ^{\text{bwd} })$
 
-Note that the two RNNs are completely independent. The output feature for downstream task is $[\boldsymbol{h} ^{\text{fwd} }_t;\boldsymbol{h} ^{\text{bwd} }_1]$
+The below graph illustrate a many-to-many BiRNN.
+
+- $\boldsymbol{x}_i$ is connected to both $A_i$ and $A_i ^\prime$ blocks, meaning that it is input to both blocks
+- Both $A_i$ and $A_i ^\prime$ and connected to $\boldsymbol{y}_i$, this means concatenation, hence $\boldsymbol{y} \in \mathbb{R} ^{2d}$
+- The output are $(\boldsymbol{y} _0, \boldsymbol{y} _1, \ldots, \boldsymbol{y} _t)$. In particular, for many-to-one BiRNN, the output feature for downstream task can be $[\boldsymbol{h} ^{\text{fwd} }_t;\boldsymbol{h} ^{\text{bwd} }_1]$
 
 :::{figure} rnn-bidirectional
 <img src="../imgs/rnn-bidirectional.png" width = "60%" alt=""/>

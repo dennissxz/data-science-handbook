@@ -130,11 +130,6 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../11-math/61-graphs.html">
-     Graphs
-    </a>
-   </li>
-   <li class="toctree-l2">
     <a class="reference internal" href="../11-math/90-puzzles.html">
      Puzzles
     </a>
@@ -714,10 +709,19 @@
   <i class="fas fa-chevron-down">
   </i>
  </li>
- <li class="toctree-l1">
+ <li class="toctree-l1 collapsible-parent">
   <a class="reference internal" href="../38-ml-for-graph-data/00-ml-for-graph-data.html">
    Machine Learning for Graph Data
   </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../38-ml-for-graph-data/01-graph-basics.html">
+     Graph Basics
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
  </li>
 </ul>
 
@@ -878,18 +882,13 @@
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#faster-cnn-training">
-     Faster CNN Training
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#random-fourier-features">
      Random Fourier Features
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#regularizing-neural-networks">
-     Regularizing Neural Networks
+    <a class="reference internal nav-link" href="#faster-cnn-training">
+     Faster CNN Training
     </a>
    </li>
   </ul>
@@ -921,7 +920,6 @@
 <li><p>When number of observations is small, handcraft features are also useful than complicated models, e.g. neural networks</p></li>
 </ul>
 <p>Fourier methods include</p>
-<p>Fourier methods include:</p>
 <ul class="simple">
 <li><p>Discrete-time and continuous-time Fourier series</p></li>
 <li><p>Discrete-time and continuous-time Fourier transforms</p></li>
@@ -953,7 +951,7 @@
 <p>Physiology of hearing suggest that the structure of human ears are doing Fourier transform.</p>
 <div class="figure align-default" id="fourier-ear">
 <a class="reference internal image-reference" href="../_images/fourier-ear.png"><img alt="" src="../_images/fourier-ear.png" style="width: 30%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 34 </span><span class="caption-text">Hairs in the cochlea (3) have different frequency responses [<a class="reference external" href="http://texasearcenter.com">image link</a>]</span><a class="headerlink" href="#fourier-ear" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 30 </span><span class="caption-text">Hairs in the cochlea (3) have different frequency responses [<a class="reference external" href="http://texasearcenter.com">image link</a>]</span><a class="headerlink" href="#fourier-ear" title="Permalink to this image">¶</a></p>
 </div>
 </div>
 <div class="section" id="examples-and-applications">
@@ -962,7 +960,7 @@
 <li><p>Speech</p>
 <div class="figure align-default" id="fourier-speech">
 <a class="reference internal image-reference" href="../_images/spectral-clustering-speech-sep.png"><img alt="" src="../_images/spectral-clustering-speech-sep.png" style="width: 50%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 35 </span><span class="caption-text">Separate components from a speech (apply FT to rolling windows)</span><a class="headerlink" href="#fourier-speech" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 31 </span><span class="caption-text">Separate components from a speech (apply FT to rolling windows)</span><a class="headerlink" href="#fourier-speech" title="Permalink to this image">¶</a></p>
 </div>
 </li>
 <li><p>Financial market data</p></li>
@@ -1104,63 +1102,46 @@ y\left[n_{1}, n_{2}\right]=x\left[n_{1}, n_{2}\right] * h\left[n_{1}, n_{2}\righ
 </div>
 <div class="section" id="applications-to-machine-learning">
 <h2>Applications to Machine Learning<a class="headerlink" href="#applications-to-machine-learning" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="faster-cnn-training">
-<h3>Faster CNN Training<a class="headerlink" href="#faster-cnn-training" title="Permalink to this headline">¶</a></h3>
-<p>Today there are other methods that speed up CNN training.</p>
-</div>
 <div class="section" id="random-fourier-features">
 <h3>Random Fourier Features<a class="headerlink" href="#random-fourier-features" title="Permalink to this headline">¶</a></h3>
-<p>We introduced that computing kernel matrix is computationally expensive. We can approximate <span class="math notranslate nohighlight">\(\phi(x)\)</span> corresponding to a given kernel.</p>
+<p>We introduced that computing kernel matrix is computationally expensive. We can approximate <span class="math notranslate nohighlight">\(\phi(\boldsymbol{x})\)</span> corresponding to a given kernel.</p>
 <dl class="simple myst">
-<dt>Theorem (Bochner’s)</dt><dd><p>Shift-invariant kernels (only depends on the difference <span class="math notranslate nohighlight">\(x-y\)</span>) are n-dimensional continuous Fourier transforms of some probability distribution <span class="math notranslate nohighlight">\(p(w)\)</span>,</p>
+<dt>Theorem (Bochner’s)</dt><dd><p>Shift-invariant kernels (only depends on the difference <span class="math notranslate nohighlight">\(\boldsymbol{x} -\boldsymbol{y} \)</span>) are <span class="math notranslate nohighlight">\(n\)</span>-dimensional continuous Fourier transforms of some probability distribution <span class="math notranslate nohighlight">\(p(\boldsymbol{\omega} )\)</span>,</p>
 </dd>
 </dl>
 <div class="math notranslate nohighlight">
 \[
-k(x, y)=k(x-y)=\int p(w) e^{j w ^{\top} (x-y)} \mathrm{~d} w=\mathbb{E}_{w}\left[\xi_{w}(x) \xi_{w}(y)^{*}\right]
+k(\boldsymbol{x} , \boldsymbol{y} )=k(\boldsymbol{x} -\boldsymbol{y} )=\int p(\boldsymbol{\omega} ) e^{j \boldsymbol{\omega}  ^{\top} (\boldsymbol{x} -\boldsymbol{y} )} \mathrm{~d} w=\mathbb{E}_{\omega}\left[\xi_{\omega}(\boldsymbol{x} ) \xi_{\omega}(\boldsymbol{y} )^{*}\right]
 \]</div>
-<p>where <span class="math notranslate nohighlight">\(\xi_{w}(x)=e^{j w ^{\top}  x}\)</span>.</p>
-<p>So, we can estimate the kernel by <strong>averaging</strong> a bunch of such products for various random drawn values of <span class="math notranslate nohighlight">\(w\)</span>.</p>
-<p>Idea: Use a feature map <span class="math notranslate nohighlight">\(φ(x)\)</span> that is a concatenation of a bunch of <span class="math notranslate nohighlight">\(\xi\)</span>’s. Then we have an explicit nonlinear map, and no need to do large kernel computations!</p>
-<p>For Gaussian, Laplacian and Cauchy kernel, <span class="math notranslate nohighlight">\(p(w)\)</span> is easy to find.</p>
+<p>where <span class="math notranslate nohighlight">\(\xi_{\omega}(\boldsymbol{x} )=e^{j \boldsymbol{\omega}  ^{\top}  \boldsymbol{y} }\)</span>.</p>
+<p>So, we can estimate the kernel by <strong>averaging</strong> a bunch of such products for various random drawn values of <span class="math notranslate nohighlight">\(\boldsymbol{\omega}\)</span>.</p>
+<p>Idea: Use a feature map <span class="math notranslate nohighlight">\(\phi(\boldsymbol{x})\)</span> that is a concatenation of a bunch of <span class="math notranslate nohighlight">\(\xi\)</span>’s. Then we have an explicit nonlinear map, and no need to do large kernel computations!</p>
+<p>For Gaussian, Laplacian and Cauchy kernel, <span class="math notranslate nohighlight">\(p(\boldsymbol{\omega})\)</span> is easy to find.</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{array}{lll}
-\text { Kernel Name } &amp; k(\Delta) &amp; p(\omega) \\
+\text { Kernel Name } &amp; k(\Delta) &amp; p(\boldsymbol{\omega}) \\
 \hline \text { Gaussian } &amp; e^{-\frac{\|\Delta\|_{2}^{2}}{2}} &amp; (2 \pi)^{-\frac{D}{2}} e^{-\frac{\|\omega\|_{2}^{2}}{2}} \\
-\text { Laplacian } &amp; e^{-\|\Delta\|_{1}} &amp; \prod_{d} \frac{1}{\pi\left(1+\omega_{d}^{2}\right)} \\
+\text { Laplacian } &amp; e^{-\|\Delta\|_{1}} &amp; \prod_{d} \frac{1}{\pi\left(1+\boldsymbol{\omega}_{d}^{2}\right)} \\
 \text { Cauchy } &amp; \prod_{d} \frac{2}{1+\Delta_{d}^{2}} &amp; e^{-\|\Delta\|_{1}}
 \end{array}
 \end{split}\]</div>
-<div class="figure align-default" id="fourier-kernel-algo">
-<a class="reference internal image-reference" href="../_images/fourier-kernel-algo.png"><img alt="" src="../_images/fourier-kernel-algo.png" style="width: 50%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 36 </span><span class="caption-text">fourier-kernel-algo</span><a class="headerlink" href="#fourier-kernel-algo" title="Permalink to this image">¶</a></p>
+<hr class="docutils" />
+<p><strong>Algorithm</strong>: Random Fourier Features.</p>
+<hr class="docutils" />
+<ul class="simple">
+<li><p>Require: A positive definite shift-invariant kernel <span class="math notranslate nohighlight">\(k(\boldsymbol{x}, \boldsymbol{y})=k(\boldsymbol{x}-\boldsymbol{y})\)</span></p></li>
+<li><p>Ensure: A randomized feature map <span class="math notranslate nohighlight">\(\boldsymbol{z}(\boldsymbol{x}): \mathcal{R}^{d} \rightarrow \mathcal{R}^{2 D}\)</span> so that <span class="math notranslate nohighlight">\(\boldsymbol{z}(\boldsymbol{x})^{\prime} \boldsymbol{z}(\boldsymbol{y}) \approx k(\boldsymbol{x}-\boldsymbol{y})\)</span></p></li>
+<li><p>Compute the Fourier transform  <span class="math notranslate nohighlight">\(p\)</span> of the kernel <span class="math notranslate nohighlight">\(k: p(\boldsymbol{\omega} )=\frac{1}{2 \pi} \int e^{-j \boldsymbol{\omega} ^{\top}  \Delta} k(\Delta) \mathrm{~d} \Delta\)</span></p></li>
+<li><p>Draw <span class="math notranslate nohighlight">\(D \text { iid samples } \boldsymbol{\omega}_{1}, \cdots, \boldsymbol{\omega}_{D} \in \mathcal{R}^{d} \text { from } p\)</span></p></li>
+<li><p>Let <span class="math notranslate nohighlight">\(\boldsymbol{z}(\boldsymbol{x}) \equiv \sqrt{\frac{1}{D}}\left[\cos \left( \boldsymbol{\omega} _{1}^{\prime} \boldsymbol{x}\right) \cdots \cos \left(\boldsymbol{\omega}_{D}^{\prime} \boldsymbol{x}\right) \sin \left(\boldsymbol{\omega}_{1}^{\prime} \boldsymbol{x}\right) \cdots \sin \left(\boldsymbol{\omega}_{D}^{\prime} \boldsymbol{x}\right)\right]^{\prime}\)</span></p></li>
+</ul>
 </div>
-<div class="math notranslate nohighlight">
-\[\begin{split}
-\begin{array}{l}
-\text { Algorithm 1 Random Fourier Features. } \\
-\hline \text { Require: A positive definite shift-invariant kernel } k(\mathbf{x}, \mathbf{y})=k(\mathbf{x}-\mathbf{y}) . \\
-\text { Ensure: A randomized feature map } \mathbf{z}(\mathbf{x}): \mathcal{R}^{d} \rightarrow \mathcal{R}^{2 D} \text { so that } \mathbf{z}(\mathbf{x})^{\prime} \mathbf{z}(\mathbf{y}) \approx k(\mathbf{x}-\mathbf{y}) . \\
-\text { Compute the Fourier transform } p \text { of the kernel } k: p(\omega)=\frac{1}{2 \pi} \int e^{-j \omega^{\prime} \Delta} k(\Delta) d \Delta . \\
-\text { Draw } D \text { iid samples } \omega_{1}, \cdots, \omega_{D} \in \mathcal{R}^{d} \text { from } p . \\
-\text { Let } \mathbf{z}(\mathbf{x}) \equiv \sqrt{\frac{1}{D}}\left[\cos \left(\omega_{1}^{\prime} \mathbf{x}\right) \cdots \cos \left(\omega_{D}^{\prime} \mathbf{x}\right) \sin \left(\omega_{1}^{\prime} \mathbf{x}\right) \cdots \sin \left(\omega_{D}^{\prime} \mathbf{x}\right)\right]^{\prime} \\
-\hline
-\end{array}
-\end{split}\]</div>
-<p>…</p>
-</div>
-<div class="section" id="regularizing-neural-networks">
-<h3>Regularizing Neural Networks<a class="headerlink" href="#regularizing-neural-networks" title="Permalink to this headline">¶</a></h3>
-<p>where is FT used?</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
+<hr class="docutils" />
+<div class="section" id="faster-cnn-training">
+<h3>Faster CNN Training<a class="headerlink" href="#faster-cnn-training" title="Permalink to this headline">¶</a></h3>
+<p>In-between two convolutional layers of depth <span class="math notranslate nohighlight">\(d_1\)</span> and <span class="math notranslate nohighlight">\(d_2\)</span>, the number of convolution computation is <span class="math notranslate nohighlight">\(d_1 \times d_2\)</span> in forward propagation. Fourier transform based convolution can speed up this process. [Mathieu, Henaff, LeCun, “Fast Training of Convolutional Networks through FFTs”, arXiv. 2013]</p>
+<p>Today there are other methods that speed up CNN training.</p>
 </div>
 </div>
 </div>

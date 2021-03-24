@@ -130,11 +130,6 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../11-math/61-graphs.html">
-     Graphs
-    </a>
-   </li>
-   <li class="toctree-l2">
     <a class="reference internal" href="../11-math/90-puzzles.html">
      Puzzles
     </a>
@@ -714,10 +709,19 @@
   <i class="fas fa-chevron-down">
   </i>
  </li>
- <li class="toctree-l1">
+ <li class="toctree-l1 collapsible-parent">
   <a class="reference internal" href="../38-ml-for-graph-data/00-ml-for-graph-data.html">
    Machine Learning for Graph Data
   </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../38-ml-for-graph-data/01-graph-basics.html">
+     Graph Basics
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
  </li>
 </ul>
 
@@ -829,14 +833,60 @@
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#regression-discontinuity">
-   Regression Discontinuity
+  <a class="reference internal nav-link" href="#regression-discontinuity-design">
+   Regression Discontinuity Design
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#model">
+     Model
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#assumption">
+     Assumption
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#practical-issues">
+     Practical Issues
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#instrumental-variables">
    Instrumental Variables
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#iv-estimator">
+     IV Estimator
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#two-stage-least-squares">
+     Two-Stage Least Squares
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#interpretation">
+     Interpretation
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#simultaneity">
+   Simultaneity
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#example">
+     Example
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#panel-data">
@@ -876,6 +926,23 @@
   <a class="reference internal nav-link" href="#time-series">
    Time Series
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#autoregression">
+     Autoregression
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#spurious-correlation">
+     Spurious Correlation
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#more-concepts">
+     More Concepts
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#categorical-data">
@@ -897,14 +964,16 @@
   <div class="section" id="linear-models-advanced-topics">
 <h1>Linear Models - Advanced Topics<a class="headerlink" href="#linear-models-advanced-topics" title="Permalink to this headline">¶</a></h1>
 <p>We introduced how to use linear models for advanced analysis, e.g. causal effect.</p>
-<div class="section" id="natural-experiments">
-<h2>Natural Experiments<a class="headerlink" href="#natural-experiments" title="Permalink to this headline">¶</a></h2>
-<p>In natural experiments, we use observed data, but it is reasonable to suspect treatment uncorrelated with error without an actual experiment, i.e. it is “as if” there had been randomization.</p>
+<p>Some types of data:</p>
 <ul class="simple">
 <li><p>A <strong>cross-section</strong> of data is a sample drawn from a population at a single point in time</p></li>
 <li><p><strong>Repeated cross-sections</strong> are samples drawn from the same <strong>population</strong> at several points in time</p></li>
 <li><p>If we have information on the same <strong>individuals</strong> at more than one point in time, we have <strong>panel data</strong></p></li>
 </ul>
+<div class="section" id="natural-experiments">
+<h2>Natural Experiments<a class="headerlink" href="#natural-experiments" title="Permalink to this headline">¶</a></h2>
+<p>A natural experiment is an <strong>empirical</strong> study in which individuals (or clusters of individuals) are exposed to the experimental and control conditions that are determined by <strong>nature</strong> or by other factors outside the control of the investigators. The process governing the exposures arguably <strong>resembles</strong> random assignment.</p>
+<p>In short, two groups of similar individuals are exposed to different treatments. The assignment is determined by nature, which can be reasonably viewed as randomized.</p>
 <p>We often use the “difference-in-differences” estimator to study repeated cross-sections or panel data when we have a natural experiment.</p>
 <div class="section" id="difference-in-difference">
 <h3>Difference-in-difference<a class="headerlink" href="#difference-in-difference" title="Permalink to this headline">¶</a></h3>
@@ -943,7 +1012,7 @@ DiD = (\bar{y}_C - \bar{y}_A) - (\bar{y}_D- \bar{y}_B)
 <p>Then we can conduct a two-sample <span class="math notranslate nohighlight">\(t\)</span>-test. We can also use regression with two categorial variables (After, Treat) and one interaction term.</p>
 <div class="math notranslate nohighlight">
 \[
-Y=\beta_{0}+\beta_{1} \text {Treated} * \text {After}+\beta_{2} \text {Treated}+\beta_{3} \text {After}+\varepsilon
+Y=\beta_{0}+\beta_{1} \text {Treated} \times \text {After}+\beta_{2} \text {Treated}+\beta_{3} \text {After}+\varepsilon
 \]</div>
 <p>where</p>
 <ul class="simple">
@@ -956,8 +1025,12 @@ Y=\beta_{0}+\beta_{1} \text {Treated} * \text {After}+\beta_{2} \text {Treated}+
 <p>To control other variables, we add them into the model (note about over controlling)</p>
 <div class="math notranslate nohighlight">
 \[
-Y=\beta_{0}+\beta_{1} \text { Treated } * \text { After }+\beta_{2} \text { Treated }+\beta_{3} \text { After }+\sum_k \gamma_k X_k+\varepsilon
+Y=\beta_{0}+\beta_{1} \text {Treated} \times \text {After}+\beta_{2} \text {Treated}+\beta_{3} \text { After}+\sum_k \gamma_k X_k+\varepsilon
 \]</div>
+<div class="figure align-default" id="lm-ne-illustration">
+<a class="reference internal image-reference" href="../_images/lm-ne-illustration.png"><img alt="" src="../_images/lm-ne-illustration.png" style="width: 30%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 38 </span><span class="caption-text">Illustration of DiD model</span><a class="headerlink" href="#lm-ne-illustration" title="Permalink to this image">¶</a></p>
+</div>
 </div>
 <div class="section" id="choice-of-control-group">
 <h3>Choice of Control Group<a class="headerlink" href="#choice-of-control-group" title="Permalink to this headline">¶</a></h3>
@@ -967,16 +1040,27 @@ Y=\beta_{0}+\beta_{1} \text { Treated } * \text { After }+\beta_{2} \text { Trea
 <ul class="simple">
 <li><p>Use both theory and data to assess common trends</p>
 <ul>
-<li><p>theory: logical reasoning</p></li>
-<li><p>data: plot <span class="math notranslate nohighlight">\(y\)</span> for the two groups along time before the treatment, see if they have similar ups and downs.</p></li>
+<li><p>Theory: logical reasoning</p>
+<ul>
+<li><p>e.g. Is this event/program a part of a broader set of programs?</p></li>
+</ul>
+</li>
+<li><p>Data:
+- plot <span class="math notranslate nohighlight">\(y\)</span> for the two groups along time before the treatment, see if they have similar ups and downs.
+- include fixed time effect, and test a year <span class="math notranslate nohighlight">\(\times\)</span> group interaction term.</p></li>
 </ul>
 </li>
 <li><p>If some unobserved factor changes more for treated group than for control, then we have bias.</p></li>
 </ul>
 </dd>
 </dl>
+<div class="figure align-default" id="lm-ne-parallel">
+<a class="reference internal image-reference" href="../_images/lm-ne-parallel.png"><img alt="" src="../_images/lm-ne-parallel.png" style="width: 50%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 39 </span><span class="caption-text">Check for parallel trend</span><a class="headerlink" href="#lm-ne-parallel" title="Permalink to this image">¶</a></p>
+</div>
 <p>A control group must enable you to approximate the counterfactual for the treated group – what would have happened to them if they had not received treatment?</p>
 <p>For instance, in the project <em>Taxes on the Rich</em> (Feldstein (1995), Goolsbee (2000)). The tax policy impose a decrease in marginal tax rates for high income earners in 1986. Goolsbee examines increase in marginal rates in 1993 for high income earners. Lower (but still high) earners are control.</p>
+<p>If common trends assumption met, can get unbiased estimate without balance.</p>
 </div>
 <div class="section" id="internal-validity">
 <h3>Internal Validity<a class="headerlink" href="#internal-validity" title="Permalink to this headline">¶</a></h3>
@@ -995,41 +1079,199 @@ Y=\beta_{0}+\beta_{1} \text { Treated } * \text { After }+\beta_{2} \text { Trea
 </ol>
 </div>
 </div>
-<div class="section" id="regression-discontinuity">
-<h2>Regression Discontinuity<a class="headerlink" href="#regression-discontinuity" title="Permalink to this headline">¶</a></h2>
-<p>[<a class="reference external" href="https://en.wikipedia.org/wiki/Regression_discontinuity_design">Wiki</a>]</p>
+<div class="section" id="regression-discontinuity-design">
+<h2>Regression Discontinuity Design<a class="headerlink" href="#regression-discontinuity-design" title="Permalink to this headline">¶</a></h2>
+<p>Aka RDD.</p>
+<div class="section" id="model">
+<h3>Model<a class="headerlink" href="#model" title="Permalink to this headline">¶</a></h3>
 <p>We want to analyze an policy effect to different group of people. For instance,</p>
 <ul class="simple">
-<li><p>effect of extended unemployment insurance benefits on willingness to work (measured by actual unemployment period), where the benefits are different for different age group, characterized by age cutoffs.</p></li>
-<li><p>effect of medicaid on health (measured by mortality or hospitalization rate), where the medicaid are different for different age group, characterized by birth date cutoffs</p></li>
-<li><p>in loan application, a rule of thumb is that applicants with credit score greater than 620 have low delinquency probability and hence more likely to get accepted.</p></li>
+<li><p>Effect of extended unemployment insurance benefits on willingness to work (measured by actual unemployment period), where the benefits are different for different age group, characterized by age cutoffs.</p></li>
+<li><p>Effect of medicaid on health (measured by mortality or hospitalization rate), where the medicaid are different for different age group, characterized by birth date cutoffs</p></li>
+<li><p>In loan application, a rule of thumb is that applicants with credit score greater than 620 have low delinquency probability and hence more likely to get accepted.</p></li>
 </ul>
-<p>There are other cutoffs, like earnings.</p>
-<p>In sum, there is a sharp policy at cutoff point <span class="math notranslate nohighlight">\(a^*\)</span>, while other characteristics that influence outcome (<span class="math notranslate nohighlight">\(y\)</span>) are very similar around <span class="math notranslate nohighlight">\(a^*\)</span>. It should be as if we <strong>randomized</strong> and those just above <span class="math notranslate nohighlight">\(a^*\)</span> are the treatment group and just below a* are the control group. To analyze the policy effect at this cutoff, the regression discontinuity equation is</p>
+<p>In sum, there is a sharp policy at cutoff point <span class="math notranslate nohighlight">\(a^*\)</span>, while other characteristics that influence outcome (<span class="math notranslate nohighlight">\(y\)</span>) are <strong>very similar</strong> around <span class="math notranslate nohighlight">\(a^*\)</span>. It should be as if we <strong>randomized</strong> and those just above <span class="math notranslate nohighlight">\(a^*\)</span> are the treatment group and just below a* are the control group. To analyze the policy effect at this cutoff, the regression discontinuity equation is</p>
 <div class="math notranslate nohighlight">
 \[
-Y_{i a}=\beta_{0}+\beta_{1} D_{a \geq a *}+f(a)+\varepsilon_{i a}
+Y_{i}=\beta_{0}+\beta_{1} D_{a_i \geq a *}+f(a_i)+\varepsilon_{i}
 \]</div>
 <p>where</p>
 <ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(i\)</span> is individual, <span class="math notranslate nohighlight">\(a\)</span> is so called <strong>running variable</strong> (e.g. age, score, time)</p></li>
-<li><p><span class="math notranslate nohighlight">\(y_{ia}\)</span> is an outcome variable of interest</p></li>
-<li><p><span class="math notranslate nohighlight">\(D_{a \ge a^*}\)</span> is an indicator for an individual being above the cutoff <span class="math notranslate nohighlight">\(a^*\)</span></p></li>
-<li><p><span class="math notranslate nohighlight">\(f(a)\)</span> is a function of <span class="math notranslate nohighlight">\(a\)</span>, often linear or quadratic, and often with different slopes above and below <span class="math notranslate nohighlight">\(a^*\)</span></p></li>
-<li><p>The observations used to run this regression are those around <span class="math notranslate nohighlight">\(a^*\)</span>, e.g. there is a bandwidth/window width.</p></li>
-<li><p>We can run this equation at each cutoff points in the policy.</p></li>
+<li><p><span class="math notranslate nohighlight">\(i\)</span> is individual index</p></li>
+<li><p><span class="math notranslate nohighlight">\(y_{i}\)</span> is an outcome variable of interest (e.g. income, mortality rate) if different groups receive different treatments</p></li>
+<li><p><span class="math notranslate nohighlight">\(a_i\)</span> is so called <strong>running variable</strong> (e.g. age, score, time) which determines which treatment the individual receives</p></li>
+<li><p><span class="math notranslate nohighlight">\(D_{a_i \ge a^*}\)</span> is an indicator for an individual being above the cutoff <span class="math notranslate nohighlight">\(a^*\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(f(a_i)\)</span> is a function of <span class="math notranslate nohighlight">\(a\)</span>, often linear or quadratic, and often with different slopes above and below <span class="math notranslate nohighlight">\(a^*\)</span></p></li>
+<li><p>The observations used to run this regression are those around <span class="math notranslate nohighlight">\(a^*\)</span>, e.g. there is a bandwidth/window width</p></li>
+<li><p>We can run this equation at each cutoff points in the policy</p></li>
 </ul>
 <p>We are interested in <span class="math notranslate nohighlight">\(\beta_1\)</span>.</p>
-<p>Note</p>
+<div class="figure align-default" id="lm-rd-health">
+<a class="reference internal image-reference" href="../_images/lm-rd-health.png"><img alt="" src="../_images/lm-rd-health.png" style="width: 80%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 40 </span><span class="caption-text">[Wherry and Meyer 2016]</span><a class="headerlink" href="#lm-rd-health" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+<div class="section" id="assumption">
+<h3>Assumption<a class="headerlink" href="#assumption" title="Permalink to this headline">¶</a></h3>
+<ul>
+<li><p>The observations are balance around the cutoff <span class="math notranslate nohighlight">\(t^*\)</span>: they have very similar characteristics. To check this, we can replace <span class="math notranslate nohighlight">\(Y\)</span> by each characteristic over the above model, to see if <span class="math notranslate nohighlight">\(\beta_1\)</span> is significant.</p></li>
+<li><p>Need to check the density around the cutoff to see if there is manipulation, e.g. strategic filing. If there is, exclude these observations that is close to cutoff <span class="math notranslate nohighlight">\(t^*\)</span>.</p>
+<div class="figure align-default" id="lm-rd-fico">
+<a class="reference internal image-reference" href="../_images/lm-rd-fico.png"><img alt="" src="../_images/lm-rd-fico.png" style="width: 50%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 41 </span><span class="caption-text">Loan Distribution by FICO: manipulation around 620.</span><a class="headerlink" href="#lm-rd-fico" title="Permalink to this image">¶</a></p>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="practical-issues">
+<h3>Practical Issues<a class="headerlink" href="#practical-issues" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>RD requires a large sample</p></li>
-<li><p>wider window (larger sample) increase precision as well as bias, precision v. bias tradeoff</p></li>
-<li><p>In some cases the cutoff is “hard” (unemployment benefit), and some times it is soft (credit score). If it is soft we call this fuzzy RD</p></li>
+<li><p>Wider window (larger sample) increase precision as well as bias, precision vs. bias tradeoff. The window width can be a hyper parameter to test model robustness.</p></li>
+<li><p>Can also try various functions <span class="math notranslate nohighlight">\(f(t)\)</span>, often with polynomials with different parameters to the left and right of <span class="math notranslate nohighlight">\(t^*\)</span></p></li>
+<li><p>In some cases the cutoff is “hard” (unemployment benefit), and some times it is soft (credit score). If it is soft we call this fuzzy RD.</p></li>
 </ul>
+</div>
 </div>
 <div class="section" id="instrumental-variables">
 <h2>Instrumental Variables<a class="headerlink" href="#instrumental-variables" title="Permalink to this headline">¶</a></h2>
 <p>Suppose we are in</p>
+<p>Suppose the true model is</p>
+<div class="math notranslate nohighlight">
+\[Y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \epsilon_i\]</div>
+<p>where <span class="math notranslate nohighlight">\(X_2\)</span> is unobservable. If we regress <span class="math notranslate nohighlight">\(Y\)</span> over <span class="math notranslate nohighlight">\(X_1\)</span>, then we get a biased estimate for <span class="math notranslate nohighlight">\(\beta_1\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[Y = \beta_0 + \beta_1 X_1 + u_i\]</div>
+<p>We can get a consistent estimate of <span class="math notranslate nohighlight">\(\beta_1\)</span> without controlling for <span class="math notranslate nohighlight">\(X_2\)</span> if we can find a valid instrument <span class="math notranslate nohighlight">\(Z\)</span> satisfying two conditions:</p>
+<ul class="simple">
+<li><p><strong>exogeneity condition</strong> (exclusion restriction): it is uncorrelated with <span class="math notranslate nohighlight">\(u_i\)</span></p></li>
+<li><p><strong>relevance condition</strong>: it is correlated with <span class="math notranslate nohighlight">\(X\)</span></p></li>
+</ul>
+<p>We can view the relations as follows:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+Z \rightarrow X \quad &amp; \quad u\\
+\searrow \ &amp;\ \swarrow \\
+Y&amp;
+\end{aligned}\end{split}\]</div>
+<p>In short, <span class="math notranslate nohighlight">\(Z\)</span> represents the exogenous (not correlated with <span class="math notranslate nohighlight">\(u\)</span>) variation in <span class="math notranslate nohighlight">\(X\)</span>. Variation in <span class="math notranslate nohighlight">\(X\)</span> caused by <span class="math notranslate nohighlight">\(Z\)</span> is not correlated with u. We use only this variation in <span class="math notranslate nohighlight">\(X\)</span> to estimate <span class="math notranslate nohighlight">\(\hat{\beta}\)</span>.</p>
+<p>But good instruments are hard to find. Exogeneity condition is often violated.</p>
+<div class="section" id="iv-estimator">
+<h3>IV Estimator<a class="headerlink" href="#iv-estimator" title="Permalink to this headline">¶</a></h3>
+<p>Consider the covariance of instrument <span class="math notranslate nohighlight">\(Z\)</span> and response <span class="math notranslate nohighlight">\(Y\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\operatorname{Cov}\left( Z,Y \right)
+&amp;= \operatorname{Cov}\left( Z, \beta_0 + \beta_1 X + u \right)\\
+&amp;= \beta_1 \operatorname{Cov}\left( Z,X \right) + \operatorname{Cov}\left( Z, u \right)\\
+&amp;= \beta_1 \operatorname{Cov}\left( Z, X \right)\\
+\end{aligned}\end{split}\]</div>
+<p>Hence, <span class="math notranslate nohighlight">\(\beta_1 = \frac{\operatorname{Cov}\left( Z,Y \right)}{\operatorname{Cov}\left( Z,X \right)}\)</span>. The IV estimator is</p>
+<div class="math notranslate nohighlight">
+\[
+\hat{\beta}_1^{\text{IV} } = \frac{\operatorname{\widehat{Cov}}\left( Z,Y \right)}{\operatorname{\widehat{Cov}}\left( Z,X \right)} = \frac{\sum_{i=1}^{n}\left(Z_{i}-\bar{Z}\right)\left(Y_{i}-\bar{Y}\right)}{\sum_{i=1}^{n}\left(Z_{i}-\bar{Z}\right)\left(X_{i}-\bar{X}\right)}
+\]</div>
+<p>Properties</p>
+<ul class="simple">
+<li><p>consistent, i.e. <span class="math notranslate nohighlight">\(\operatorname{plim} \hat{\beta}_1^{\text{IV} } = \beta_1\)</span>.</p></li>
+<li><p>asymptotic variance: <span class="math notranslate nohighlight">\(\frac{\sigma^2 }{n \sigma^2 _x \rho_{x,z}^2}\)</span></p></li>
+<li><p>Because the IV estimator uses only a subset of the variation in <span class="math notranslate nohighlight">\(X\)</span> to estimate the relationship between <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span>, precision will fall (as compared to OLS).</p>
+<ul>
+<li><p>If <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Z\)</span> very weakly related, then small <span class="math notranslate nohighlight">\(\rho_{x,z}^2\)</span>, precision will be very poor in the IV estimator.</p></li>
+<li><p>But, if <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Z\)</span> are too closely correlated, <span class="math notranslate nohighlight">\(Z\)</span> cannot be a good instrument because it will fail the exclusion restriction - if <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Z\)</span> are perfectly correlated, then <span class="math notranslate nohighlight">\(\operatorname{Cov}\left( Z, u \right)\)</span> cannot be zero unless <span class="math notranslate nohighlight">\(\operatorname{Cov}\left( X, u \right)\)</span> is also zero (which means we don’t need an instrument in the first place).</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="two-stage-least-squares">
+<h3>Two-Stage Least Squares<a class="headerlink" href="#two-stage-least-squares" title="Permalink to this headline">¶</a></h3>
+<p>Aka 2SLS.</p>
+<p>To accommodate many <span class="math notranslate nohighlight">\(X\)</span>’s and <span class="math notranslate nohighlight">\(Z\)</span>’s, we use two-stage least squares. Suppose the model is</p>
+<div class="math notranslate nohighlight">
+\[
+Y_{}=\beta_{0}+\beta_{1} X_{1 }+\ldots+\beta_{k} X_{k }+\beta_{k+1} W_{1 }+\ldots+\beta_{k+r} W_{r }+u_{}
+\]</div>
+<p>where</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(X_1, \ldots, X_k\)</span> are endogenous (possibly correlated with <span class="math notranslate nohighlight">\(u\)</span>)</p></li>
+<li><p><span class="math notranslate nohighlight">\(W_1, \ldots, W_r\)</span> are exogenous (not correlated with <span class="math notranslate nohighlight">\(u\)</span>)</p></li>
+<li><p><span class="math notranslate nohighlight">\(Z_1, \ldots, Z_m\)</span> are instruments</p></li>
+<li><p><span class="math notranslate nohighlight">\(m \ge k\)</span>: more instruments than endogenous regressors.</p></li>
+</ul>
+<p>Steps:</p>
+<ol class="simple">
+<li><p>For each <span class="math notranslate nohighlight">\(X_j\)</span>, regress <span class="math notranslate nohighlight">\(X_j\)</span> on all <span class="math notranslate nohighlight">\(Z\)</span> and all <span class="math notranslate nohighlight">\(W\)</span>, compute predicted values <span class="math notranslate nohighlight">\(\hat{X}_j\)</span>.</p></li>
+<li><p>Regress <span class="math notranslate nohighlight">\(Y\)</span> on all predictions <span class="math notranslate nohighlight">\(\hat{X}_j\)</span> and all <span class="math notranslate nohighlight">\(W\)</span>. The resulting <span class="math notranslate nohighlight">\(\hat{\beta}\)</span> are the 2SLS estimates of <span class="math notranslate nohighlight">\(\beta\)</span>.</p></li>
+</ol>
+<p>Assumptions</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\mathbb{E}\left( u_i \mid W_1, \ldots, W_r \right)=0\)</span></p></li>
+<li><p>Finite kurtosis for all <span class="math notranslate nohighlight">\(X,W,Z\)</span> and <span class="math notranslate nohighlight">\(Y\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\hat{X}\)</span>’s and <span class="math notranslate nohighlight">\(W\)</span>’s are not perfect multicollinear</p></li>
+<li><p>Exogeneity: <span class="math notranslate nohighlight">\(\operatorname{Cov}\left( Z_j, u \right)=0\)</span> for all <span class="math notranslate nohighlight">\(j\)</span></p>
+<ul>
+<li><p>not testable</p></li>
+<li><p>fail if <span class="math notranslate nohighlight">\(Z\)</span> is related to some other factor that influences <span class="math notranslate nohighlight">\(Y\)</span>, or <span class="math notranslate nohighlight">\(Z\)</span> has a direct effect on <span class="math notranslate nohighlight">\(Y\)</span>.</p></li>
+</ul>
+</li>
+<li><p>Relevance: <span class="math notranslate nohighlight">\(\operatorname{Cov}\left( Z, X \right) \ne 0\)</span></p>
+<ul>
+<li><p>testable: <span class="math notranslate nohighlight">\(F\)</span>-test on instruments in first stage larger than 10.</p></li>
+<li><p>if fail, then inconsistent, bias, no-normal.</p></li>
+</ul>
+</li>
+</ul>
+<p>Note</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(R^2, F\)</span>-test are invalid</p></li>
+</ul>
+</div>
+<div class="section" id="interpretation">
+<h3>Interpretation<a class="headerlink" href="#interpretation" title="Permalink to this headline">¶</a></h3>
+<p><span class="math notranslate nohighlight">\(\beta^{2SLS} = \mathbb{E}\left( \beta_i \right)\)</span> is a local average treatment effect (LATE). If <span class="math notranslate nohighlight">\(\beta_i = \beta\)</span> for all <span class="math notranslate nohighlight">\(i\)</span>, then <span class="math notranslate nohighlight">\(\beta^{2SLS} = \beta\)</span>.</p>
+</div>
+</div>
+<div class="section" id="simultaneity">
+<h2>Simultaneity<a class="headerlink" href="#simultaneity" title="Permalink to this headline">¶</a></h2>
+<p>If <span class="math notranslate nohighlight">\(X\)</span> causes <span class="math notranslate nohighlight">\(Y\)</span> and <span class="math notranslate nohighlight">\(Y\)</span> causes <span class="math notranslate nohighlight">\(X\)</span> (reverse causality), we say there is simultaneity. For instance, price and demand.</p>
+<p>Consider the simultaneous equations below. If <span class="math notranslate nohighlight">\(\gamma_1 \ne 0\)</span>, then <span class="math notranslate nohighlight">\(u_i\)</span> affects <span class="math notranslate nohighlight">\(Y_i\)</span> in <span class="math notranslate nohighlight">\((1)\)</span> and then <span class="math notranslate nohighlight">\(Y_i\)</span> affects <span class="math notranslate nohighlight">\(X_i\)</span> in <span class="math notranslate nohighlight">\((2)\)</span>, i.e. <span class="math notranslate nohighlight">\(X_i\)</span> and <span class="math notranslate nohighlight">\(u_i\)</span> are correlated.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{array}{l}
+(1)\qquad Y_{i}=\beta_{0}+\beta_{1} X_{i}+u_{i} \\
+(2)\qquad X_{i}=\gamma_{0}+\gamma_{1} Y_{i}+v_{i}
+\end{array}
+\end{split}\]</div>
+<p>Simultaneity is a specific type of endogeneity problem in which the explanatory variable is jointly determined with the dependent variable. As with other types of <strong>endogeneity</strong>, Instrumental Variables (IV) estimation can sometimes solve the problem. There are special issues to consider with a simultaneous equations model (SEM).</p>
+<div class="section" id="example">
+<h3>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h3>
+<p>Start with an equation we like to estimate: regress crimes per capita on police per capita. Call this a structural equation. Clearly, it has a causal interpretation.</p>
+<div class="math notranslate nohighlight">
+\[\text{crime} = \alpha_0 + \alpha_1 \text{police} + u\]</div>
+<p>However, the need for police is also determined by the level of crime. Both variables are endogenous because both are determined by the equilibrium process.</p>
+<div class="math notranslate nohighlight">
+\[
+\text{police} \rightleftharpoons  \text{crime}
+\]</div>
+<p>Consider a second structural equation, where <span class="math notranslate nohighlight">\(\text{election}\)</span> is the time until the next election.</p>
+<div class="math notranslate nohighlight">
+\[\text{police} = \beta_0 + \beta_1 \text{crime} + \beta_2 \text{election} + v\]</div>
+<p>This equation captures that elected officials respond to crime levels (such as the influence of police unions, and the importance of perceptions of effectiveness). The variable <span class="math notranslate nohighlight">\(\text{election}\)</span> is exogenous. We can then consider using <span class="math notranslate nohighlight">\(\text{election}\)</span> as an instrument for <span class="math notranslate nohighlight">\(\text{police}\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[
+\text{election} \rightarrow \text{police} \rightleftharpoons  \text{crime}
+\]</div>
+<div class="figure align-default" id="lm-simul">
+<a class="reference internal image-reference" href="../_images/lm-simul.png"><img alt="" src="../_images/lm-simul.png" style="width: 40%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 42 </span><span class="caption-text">Equilibrium [Meyer 2021]</span><a class="headerlink" href="#lm-simul" title="Permalink to this image">¶</a></p>
+</div>
+<p>To obtain a consistent estimator of <span class="math notranslate nohighlight">\(\alpha_1\)</span>, use 2SLS</p>
+<ol class="simple">
+<li><p>regress <span class="math notranslate nohighlight">\(\text{police}\)</span> over <span class="math notranslate nohighlight">\(\text{election}\)</span></p></li>
+<li><p>regress <span class="math notranslate nohighlight">\(\text{crime}\)</span> over the predicted value <span class="math notranslate nohighlight">\(\widehat{\text{police} }\)</span></p></li>
+</ol>
+<p>But we cannot estimate <span class="math notranslate nohighlight">\(\beta_1\)</span>.</p>
+</div>
 </div>
 <div class="section" id="panel-data">
 <h2>Panel Data<a class="headerlink" href="#panel-data" title="Permalink to this headline">¶</a></h2>
@@ -1066,22 +1308,24 @@ Y_{i t}=\beta_{0}+\beta_{1} X_{1 i t}+\ldots+\beta_{k} X_{k i t}+u_{i t}
 <p>Suppose we have a panel data set at two time points <span class="math notranslate nohighlight">\(t_1\)</span> and <span class="math notranslate nohighlight">\(t_2\)</span>. Suppose the true model is</p>
 <div class="math notranslate nohighlight">
 \[Y_{it} = \beta_0 + \beta_1 X_{1it} + \beta_2 X_{2it} + u_{it}\]</div>
-<p>where <span class="math notranslate nohighlight">\(\mathbb{E}(u_{it} \vert X_{1it}, X_{2it})=0\)</span>. But we only observe <span class="math notranslate nohighlight">\(X_{1}\)</span> and omit <span class="math notranslate nohighlight">\(X_2\)</span>. Then running a regression model <span class="math notranslate nohighlight">\(Y_i \sim X_{1i}\)</span> at each time point leads to a biased estimate of <span class="math notranslate nohighlight">\(\beta_1\)</span>. However, the difference is</p>
+<p>where <span class="math notranslate nohighlight">\(\mathbb{E}(u_{it} \vert X_{1it}, X_{2it})=0\)</span>. But we only observe <span class="math notranslate nohighlight">\(X_{1}\)</span> and omit <span class="math notranslate nohighlight">\(X_2\)</span>. Then running a regression model <span class="math notranslate nohighlight">\(Y_i \sim X_{1i}\)</span> at each time point leads to a <strong>biased</strong> estimate of <span class="math notranslate nohighlight">\(\beta_1\)</span>. However, the difference is</p>
 <div class="math notranslate nohighlight">
 \[\Delta Y_{i} = \beta_1 \Delta X_{1i} + \beta_2 \Delta X_{2i} + \Delta u_{i}\]</div>
 <p>If <span class="math notranslate nohighlight">\(\Delta X_{2i}=0\)</span> for each <span class="math notranslate nohighlight">\(i\)</span>, i.e., for <span class="math notranslate nohighlight">\(X_{2it}\)</span> does not change over time <span class="math notranslate nohighlight">\(t\)</span> for entity <span class="math notranslate nohighlight">\(i\)</span>, then we can run regression <span class="math notranslate nohighlight">\(\Delta Y_i \sim \Delta X_{1i}\)</span> (include intercept) and obtain an unbiased estimate of <span class="math notranslate nohighlight">\(\beta_1\)</span>. The intercept estimate <span class="math notranslate nohighlight">\(\tilde{\beta}_0\)</span> can be interpreted as the change of <span class="math notranslate nohighlight">\(\beta_0\)</span> over time.</p>
-<p>addimg *3</p>
+<div class="figure align-default" id="lm-fd-example-beer">
+<a class="reference internal image-reference" href="../_images/lm-fd-example-beer.png"><img alt="" src="../_images/lm-fd-example-beer.png" style="width: 90%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 43 </span><span class="caption-text">Regression using 1982 data, 1988 data, and first difference method [Wooldridge]</span><a class="headerlink" href="#lm-fd-example-beer" title="Permalink to this image">¶</a></p>
+</div>
+<p>For <span class="math notranslate nohighlight">\(T &gt; 2\)</span> case, we can run compute <span class="math notranslate nohighlight">\(\Delta Y_{it} = Y_{i(t+1)} - Y_{it}\)</span> and <span class="math notranslate nohighlight">\(\Delta X_{1it}\)</span>, for each <span class="math notranslate nohighlight">\(t=1,\ldots, T-1\)</span>, and use all these <span class="math notranslate nohighlight">\((T-1)n\)</span> number of <span class="math notranslate nohighlight">\((\Delta Y, \Delta X)\)</span> pairs to run a regression to obtain <span class="math notranslate nohighlight">\(\hat{\beta}_1\)</span>.</p>
 <p>Rationales of FD</p>
 <ul class="simple">
 <li><p>FD regress the change in <span class="math notranslate nohighlight">\(Y\)</span> against the change in <span class="math notranslate nohighlight">\(X\)</span></p></li>
 <li><p>If omitted variables are constant over time (time invariant), then they will be unrelated to changes in <span class="math notranslate nohighlight">\(Y\)</span> and <span class="math notranslate nohighlight">\(X\)</span> for a given <span class="math notranslate nohighlight">\(i\)</span>.</p></li>
 <li><p>Differencing gets rid of time invariant unobservables, as well as time invariant observables.</p></li>
 </ul>
-<p>For <span class="math notranslate nohighlight">\(T &gt; 2\)</span> case.</p>
-<p>We can run compute <span class="math notranslate nohighlight">\(\Delta Y_{it} = Y_{i(t+1)} - Y_{it}\)</span> and <span class="math notranslate nohighlight">\(\Delta X_{1it}\)</span>, for each <span class="math notranslate nohighlight">\(t=1,\ldots, T-1\)</span>, and use all these <span class="math notranslate nohighlight">\((T-1)n\)</span> number of <span class="math notranslate nohighlight">\((\Delta Y, \Delta X)\)</span> pairs to run a regression to obtain <span class="math notranslate nohighlight">\(\hat{\beta}_1\)</span>.</p>
 <p>Pros</p>
 <ul class="simple">
-<li><p>Solve bias caused by time invariant variables.</p></li>
+<li><p>If OLS on the cross-sectional data is biased by time invariant omitted variables, then FD can solve this problem.</p></li>
 </ul>
 <p>Cons</p>
 <ul class="simple">
@@ -1109,8 +1353,8 @@ Y_{i t}=\beta_{0}+\beta_{1} X_{1 i t}+\ldots+\beta_{k} X_{k i t}+u_{i t}
 <ul class="simple">
 <li><p>If <span class="math notranslate nohighlight">\(T=2\)</span> then FD=FE.</p></li>
 <li><p>If there is autocorrelation of errors within an entity, use clustered standard error.</p></li>
-<li><p>de-mean interpretation</p></li>
-<li><p>precision of <span class="math notranslate nohighlight">\(a_i\)</span> depends on the number of observations in entity <span class="math notranslate nohighlight">\(i\)</span>.</p></li>
+<li><p>Precision of <span class="math notranslate nohighlight">\(a_i\)</span> depends on the number of observations in entity <span class="math notranslate nohighlight">\(i\)</span>.</p></li>
+<li><p>Equivalent to de-mean regression: compute entity means for both <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span>, subtract them from <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span>, and run regression to obtain <span class="math notranslate nohighlight">\(\hat{\beta}_1\)</span>.</p></li>
 </ul>
 </div>
 <div class="section" id="time-fixed-effect">
@@ -1130,22 +1374,23 @@ Y_{i t}=\beta_{0}+\beta_{1} X_{1 i t}+\ldots+\beta_{k} X_{k i t}+u_{i t}
 </div>
 <div class="section" id="both">
 <h4>Both<a class="headerlink" href="#both" title="Permalink to this headline">¶</a></h4>
-<p>We can include both entity and time fixed effect. This will eliminate both time invariant unobservables within each entity, and entity invariant unobservables within each time period.</p>
+<p>We can include both entity and time fixed effect. This will eliminate both time invariant unobservables within each entity <span class="math notranslate nohighlight">\(\alpha_i\)</span>, and entity invariant unobservables within each time period <span class="math notranslate nohighlight">\(\alpha^t\)</span>.</p>
 <div class="math notranslate nohighlight">
 \[Y_{i t}=\beta_{1} X_{i t}+\sum_{i=1}^{N} \alpha_{i} d_{i}+\sum_{t=1}^{T} \alpha^{t} d^{t}+u_{i t}\]</div>
 <p>The total number of observations in this regression is <span class="math notranslate nohighlight">\(NT\)</span>, and number of parameters is <span class="math notranslate nohighlight">\(N + T+1\)</span>.</p>
 <p>Example:</p>
 <ul class="simple">
 <li><p>Drinking culture fixed within states (<span class="math notranslate nohighlight">\(a_i\)</span>)</p></li>
-<li><p>Federal policy changes affect all states the same (<span class="math notranslate nohighlight">\(a_t\)</span>)</p></li>
+<li><p>Federal policy changes affect all states the same (<span class="math notranslate nohighlight">\(a^t\)</span>)</p></li>
 </ul>
 <p>Pros</p>
 <ul class="simple">
-<li><p>Can eliminate bias due to time invariant unobservable factors or entity invariant unobservable factors</p></li>
+<li><p>Can eliminate bias due to time invariant unobservable factors or entity invariant unobservable factors.</p></li>
 </ul>
 <p>Cons</p>
 <ul class="simple">
 <li><p>Time varying unobservables that are unique to each state (not a common shock) can still cause bias.</p></li>
+<li><p>Cannot study the effect of things that do not vary over time or within entity.</p></li>
 </ul>
 </div>
 </div>
@@ -1153,10 +1398,60 @@ Y_{i t}=\beta_{0}+\beta_{1} X_{1 i t}+\ldots+\beta_{k} X_{k i t}+u_{i t}
 <div class="section" id="time-series">
 <h2>Time Series<a class="headerlink" href="#time-series" title="Permalink to this headline">¶</a></h2>
 <p>Time series data are data that are temporally ordered.</p>
+<p>Two variables <span class="math notranslate nohighlight">\(Y_t\)</span> and <span class="math notranslate nohighlight">\(X_t\)</span> could be related contemporaneously:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(X_t\)</span> affect <span class="math notranslate nohighlight">\(Y_t\)</span>, e.g. corn price and bacon price</p></li>
+<li><p>dynamic: <span class="math notranslate nohighlight">\(Y_{t-1}\)</span> affects <span class="math notranslate nohighlight">\(X_t\)</span>, and <span class="math notranslate nohighlight">\(X_t\)</span> affects <span class="math notranslate nohighlight">\(Y_t\)</span>, e.g. oil price and fuel demand</p></li>
+<li><p><span class="math notranslate nohighlight">\(\hat{Y}_{t+1}\)</span> affects decision at <span class="math notranslate nohighlight">\(t\)</span>.</p></li>
+</ul>
+<p>Static and dynamic models:</p>
+<ul class="simple">
+<li><p>If no lagged <span class="math notranslate nohighlight">\(Y\)</span> and only contemporaneous <span class="math notranslate nohighlight">\(X\)</span>, model is static
+$<span class="math notranslate nohighlight">\(Y_{t}=\beta_{0}+\beta_{1} X_{t-1}+\beta_{2} X_{t-2}+\cdots+u_{t}\)</span>$</p></li>
+<li><p>Otherwise, if both affect <span class="math notranslate nohighlight">\(Y\)</span>, we call it dynamic
+$<span class="math notranslate nohighlight">\(Y_{t}=\beta_{0}+\beta_{1} Y_{t-1}+\beta_{2} X_{t}+\beta_{3} X_{t-1}+u_{t}\)</span>$</p></li>
+</ul>
+<p>Note that the explanatory variables are no longer fixed. For instance, <span class="math notranslate nohighlight">\(Y_{t-1}\)</span> contains a random component <span class="math notranslate nohighlight">\(u_{t-1}\)</span>.</p>
+<div class="section" id="autoregression">
+<h3>Autoregression<a class="headerlink" href="#autoregression" title="Permalink to this headline">¶</a></h3>
+<p>Consider a simple autoregression model</p>
+<div class="math notranslate nohighlight">
+\[Y_t = \beta_0 + \beta_1 Y_{t-1} + u_t\]</div>
+<p>Recall the OLS estimator for <span class="math notranslate nohighlight">\(\beta_1\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[\begin{aligned}
+\hat{\beta}_{1}=\beta_{1}+\frac{\sum\left(x_{i}-\bar{x}\right) u_{i}}{\sum\left(x_{i}-\bar{x}\right)^{2}} = \beta_{1}+\frac{\sum _{t=2} ^{T}\left(y_{t-1}-\bar{y}\right) u_{t}}{\sum_{t=2} ^{T}\left(y_{t-1}-\bar{y}\right)^{2}}
+\end{aligned}\]</div>
+<p>The bias term is</p>
+<div class="math notranslate nohighlight">
+\[\mathbb{E}\left( \hat{\beta}_1 \right) - \beta_1 = \sum_{t=1}^{T}\mathbb{E}\left( \frac{y_{t-1} - \bar{y}}{\sum_{s=2} ^{T}\left(y_{s -1}-\bar{y}\right)^{2}} \cdot u_t\right)\]</div>
+<p>This is not simply zero, since the terms in the denominator <span class="math notranslate nohighlight">\(y_{\ge s}\)</span> depends on <span class="math notranslate nohighlight">\(u_s\)</span>. Hence, <span class="math notranslate nohighlight">\(\hat{\beta}_1\)</span> is not an unbiased estimator in general.</p>
+<p>If serial correlation exists: <span class="math notranslate nohighlight">\(u_{t}\)</span> and <span class="math notranslate nohighlight">\(u_{t-1}\)</span> are correlated, the regressor <span class="math notranslate nohighlight">\(Y_{t-1}\)</span> which contains <span class="math notranslate nohighlight">\(u_{t-1}\)</span> is now correlated with <span class="math notranslate nohighlight">\(u_t\)</span>. This leads to biased <span class="math notranslate nohighlight">\(\beta_1\)</span>. It is also inconsistent. But we can use <span class="math notranslate nohighlight">\(y_{t-2}\)</span> as an instrument for <span class="math notranslate nohighlight">\(y_{t-1}\)</span> to obtain consistent estimate, if <span class="math notranslate nohighlight">\(u_{t-2}\)</span> is not correlated <span class="math notranslate nohighlight">\(u_{t}\)</span>.</p>
+</div>
+<div class="section" id="spurious-correlation">
+<h3>Spurious Correlation<a class="headerlink" href="#spurious-correlation" title="Permalink to this headline">¶</a></h3>
+<p>When time series data have trends over time, they will frequently be strongly spuriously correlated with each other. You can think of the time trend as an omitted variable that causes omitted variables bias.</p>
+</div>
+<div class="section" id="more-concepts">
+<h3>More Concepts<a class="headerlink" href="#more-concepts" title="Permalink to this headline">¶</a></h3>
+<ul>
+<li><p>Trends: steadily rising or falling in <span class="math notranslate nohighlight">\(t\)</span>. To account for this, we can add a term <span class="math notranslate nohighlight">\(\beta(t-t_0)\)</span> into the model, there <span class="math notranslate nohighlight">\(t_0\)</span> is the start year. We can also use first difference.</p></li>
+<li><p>Breaks: relationship between <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span> changes at some period. To account for this, we can add <span class="math notranslate nohighlight">\(\beta d_{t \le t^*}\)</span> and <span class="math notranslate nohighlight">\(\beta d_{t &gt; t^*}\)</span> where <span class="math notranslate nohighlight">\(d\)</span> is a dummy variable.</p></li>
+<li><p>Interpretation: Consider a dynamic model</p>
+<div class="math notranslate nohighlight">
+\[Y_t = \beta_0 + \beta_1 Y_{t-1} + \beta_2 X_t + \beta_3 X_{t-1} + u_t\]</div>
+<p>What is the effect of one unit change in <span class="math notranslate nohighlight">\(X_{t-1}\)</span> on <span class="math notranslate nohighlight">\(Y_t\)</span>? It is not simply <span class="math notranslate nohighlight">\(\beta_3\)</span> since <span class="math notranslate nohighlight">\(X_{t-1}\)</span> also affects <span class="math notranslate nohighlight">\(Y_{t-1}\)</span>. The answer should be <span class="math notranslate nohighlight">\(\beta_2 \beta_1 + \beta_3\)</span>.</p>
+</li>
+<li><p>Forecasting error: root mean squared forecast error, where <span class="math notranslate nohighlight">\(\hat{Y}_{t+1 \mid t}\)</span> means using data available up to <span class="math notranslate nohighlight">\(t\)</span> to predict <span class="math notranslate nohighlight">\(Y\)</span> at <span class="math notranslate nohighlight">\(t+1\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[R M S F E=\sqrt{E\left[\left(Y_{t+1}-\hat{Y}_{t+1 \mid t}\right)^{2}\right]}\]</div>
+</li>
+</ul>
+</div>
 </div>
 <div class="section" id="categorical-data">
 <h2>Categorical Data<a class="headerlink" href="#categorical-data" title="Permalink to this headline">¶</a></h2>
-<p>TBD…</p>
+<p>TBD.</p>
 <p>dummy variables <span class="math notranslate nohighlight">\(X_{ij}\)</span></p>
 <p>when <span class="math notranslate nohighlight">\(c = 2\)</span>,</p>
 <p>interpretation</p>
@@ -1164,16 +1459,6 @@ Y_{i t}=\beta_{0}+\beta_{1} X_{1 i t}+\ldots+\beta_{k} X_{k i t}+u_{i t}
 <li><p><span class="math notranslate nohighlight">\(\hat{\beta}_1\)</span>: difference in means between the group with <span class="math notranslate nohighlight">\(X=1\)</span> and <span class="math notranslate nohighlight">\(X=0\)</span>.</p></li>
 <li><p><span class="math notranslate nohighlight">\(\hat{\beta}_0\)</span>: mean of the group with <span class="math notranslate nohighlight">\(X=0\)</span>.</p></li>
 </ul>
-<p>TBD</p>
-<p>https://www.1point3acres.com/bbs/thread-703302-1-1.html</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
 </div>
 </div>
 

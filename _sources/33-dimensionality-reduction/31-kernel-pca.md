@@ -365,4 +365,4 @@ So the neural network can be designed as
   - The activation function is simply the identity function
   - Loss: reconstruction loss
 
-In short, we transform the input from $n\times d$ data matrix $\boldsymbol{X}$ to $n\times n$ kernel matrix $\boldsymbol{K}$, and run PCA. In this way, the learned weights $\boldsymbol{A}$ are the eigenvectors of $\boldsymbol{K} ^{\top} \boldsymbol{K}$ (analogous to \boldsymbol{X} ^{\top} \boldsymbol{X} in PCA), which are the same as $\boldsymbol{K}$, i.e. what we want for.
+In short, we transform the input from $n\times d$ data matrix $\boldsymbol{X}$ to $n\times n$ kernel matrix $\boldsymbol{K}$, and run PCA. In this way, the learned weights $\boldsymbol{A}$ are the eigenvectors of $\boldsymbol{K} ^{\top} \boldsymbol{K}$ (analogous to $\boldsymbol{X} ^{\top} \boldsymbol{X}$ in PCA), which are the same as $\boldsymbol{K}$, i.e. what we want for.

@@ -130,11 +130,6 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../11-math/61-graphs.html">
-     Graphs
-    </a>
-   </li>
-   <li class="toctree-l2">
     <a class="reference internal" href="../11-math/90-puzzles.html">
      Puzzles
     </a>
@@ -714,10 +709,19 @@
   <i class="fas fa-chevron-down">
   </i>
  </li>
- <li class="toctree-l1">
+ <li class="toctree-l1 collapsible-parent">
   <a class="reference internal" href="../38-ml-for-graph-data/00-ml-for-graph-data.html">
    Machine Learning for Graph Data
   </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../38-ml-for-graph-data/01-graph-basics.html">
+     Graph Basics
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
  </li>
 </ul>
 
@@ -827,6 +831,33 @@
         <nav id="bd-toc-nav">
             <ul class="nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#definitions">
+   Definitions
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#basics">
+     Basics
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#irreducibility">
+     Irreducibility
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#periodicity">
+     Periodicity
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#stationary-distribution">
+   Stationary Distribution
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#exercise">
    Exercise
   </a>
@@ -869,6 +900,81 @@
                 
   <div class="section" id="markov-chain">
 <h1>Markov Chain<a class="headerlink" href="#markov-chain" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="definitions">
+<h2>Definitions<a class="headerlink" href="#definitions" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="basics">
+<h3>Basics<a class="headerlink" href="#basics" title="Permalink to this headline">¶</a></h3>
+<p>A <strong>stochastic process</strong> <span class="math notranslate nohighlight">\(\boldsymbol{X} = \left\{ X_t: t\in T \right\}\)</span> is a collection of random variables indexed by <span class="math notranslate nohighlight">\(t\)</span>. We call <span class="math notranslate nohighlight">\(X_t\)</span> the <strong>sate</strong> of the process at time <span class="math notranslate nohighlight">\(t\)</span>. If <span class="math notranslate nohighlight">\(T\)</span> is countable infinite, then we call <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span> a <strong>discrete</strong> time process.</p>
+<p>A discrete time process <span class="math notranslate nohighlight">\(\boldsymbol{X} = \left\{ X_0, X_1, \ldots \right\}\)</span> is called a <strong>Markov chain</strong> if, for any positive integer <span class="math notranslate nohighlight">\(t\)</span> and any states <span class="math notranslate nohighlight">\(i_0, \ldots, i_t, j\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\mathbb{P}\left(X_{t+1}=j \mid X_{t}=i, X_{t-1}=i_{t-1}, \ldots, X_{0}=i_{0}\right) =\mathbb{P}\left(X_{t+1}=j \mid X_{t}=i\right) \\
+\end{split}\]</div>
+<p>Verbally, we say that, given the past history of the process up through time <span class="math notranslate nohighlight">\(t\)</span>, the distribution of the process at time <span class="math notranslate nohighlight">\(t+1\)</span> depends only on the state at time <span class="math notranslate nohighlight">\(t\)</span>.</p>
+<p>We say a Markov chain has a <strong>discrete state space</strong> if the set of values of the random variables is countably infinite <span class="math notranslate nohighlight">\(\left\{ v_0, v_1, \ldots \right\}\)</span>. For simplicity, we assume the discrete state space is given by the set of nonnegative integers <span class="math notranslate nohighlight">\(\left\{ 0,1,\ldots \right\}\)</span>. We say a Markov chain is <strong>finite</strong> if the set of values of the random variables if a finite set <span class="math notranslate nohighlight">\(\left\{ v_0, v_1, \ldots, v_{n-1} \right\}\)</span>. In the following discussion we assume the Markov chains are finite.</p>
+<p>A Markov chain is homogeneous if <span class="math notranslate nohighlight">\(\mathbb{P}\left(X_{t+1}=j \mid X_{t}=i\right)=p_{i j}\)</span> for all <span class="math notranslate nohighlight">\(t\)</span>. This indicates that this conditional distribution does not very with <span class="math notranslate nohighlight">\(t\)</span>. The values <span class="math notranslate nohighlight">\(p_{ij}\)</span> are called <strong>transition probabilities</strong>, which can be stored in a transition matrix <span class="math notranslate nohighlight">\(\boldsymbol{P}\)</span>. We can find that <span class="math notranslate nohighlight">\(p_{ij}^{(t)} = [\boldsymbol{P}^t] _{ij}\)</span> is the probability that, starting in state <span class="math notranslate nohighlight">\(i\)</span>, the Markov chain is found in state <span class="math notranslate nohighlight">\(j\)</span> after <span class="math notranslate nohighlight">\(t\)</span> transitions.</p>
+<p>A Markov chain with state space <span class="math notranslate nohighlight">\(V\)</span> and transition matrix <span class="math notranslate nohighlight">\(\boldsymbol{P}\)</span> can be represented by a labeled directed graph, where edges are given by transitions with nonzero probability <span class="math notranslate nohighlight">\(E = \left\{ (u,v) \mid p_{u,v} &gt;0 \right\}\)</span>. Note that self-loops are allowed for <span class="math notranslate nohighlight">\(p_{ii} &gt; 0\)</span>.</p>
+<div class="figure align-default" id="mc-graph">
+<a class="reference internal image-reference" href="../_images/mc-graph.png"><img alt="" src="../_images/mc-graph.png" style="width: 50%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 2 </span><span class="caption-text">Graphical representation of a Markov chain</span><a class="headerlink" href="#mc-graph" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+<div class="section" id="irreducibility">
+<h3>Irreducibility<a class="headerlink" href="#irreducibility" title="Permalink to this headline">¶</a></h3>
+<p>A state <span class="math notranslate nohighlight">\(j\)</span> is <strong>accessible</strong> from state <span class="math notranslate nohighlight">\(i\)</span> if there exists some <span class="math notranslate nohighlight">\(n \ge 0\)</span> such that <span class="math notranslate nohighlight">\(p_{ij}^{(t)} &gt; 0\)</span>. Two states <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(j\)</span> <strong>communicate</strong> if they are accessible from each other, written as <span class="math notranslate nohighlight">\(i \leftrightarrow j\)</span>. In the graph-representation of the chain, we have <span class="math notranslate nohighlight">\(i \leftrightarrow j\)</span> if there are directed paths from <span class="math notranslate nohighlight">\(i\)</span> to <span class="math notranslate nohighlight">\(j\)</span> and from <span class="math notranslate nohighlight">\(j\)</span> to <span class="math notranslate nohighlight">\(i\)</span>. Some states form a communication class if all states in that class communicate.</p>
+<p>A Markov chain is <strong>irreducible</strong> if any state is accessible from any other in some finite number of transitions, i.e.</p>
+<div class="math notranslate nohighlight">
+\[\forall i, j, \exists t: \quad p_{ij}^{(t)} &gt; 0\]</div>
+<p>Equivalently,</p>
+<ul class="simple">
+<li><p>all states belong to one communication class, or</p></li>
+<li><p>its graph representation is a strongly connected graph.</p></li>
+</ul>
+</div>
+<div class="section" id="periodicity">
+<h3>Periodicity<a class="headerlink" href="#periodicity" title="Permalink to this headline">¶</a></h3>
+<p>The period <span class="math notranslate nohighlight">\(d(k)\)</span> of a state <span class="math notranslate nohighlight">\(k\)</span> of a homogeneous Markov chain is defined as</p>
+<div class="math notranslate nohighlight">
+\[
+d(k) = \mathrm{gcd} \left\{ t: p_{k} ^{t} &gt;0 \right\}
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathrm{gcd}\)</span> stands for greatest common divisor.</p>
+<p>If <span class="math notranslate nohighlight">\(d(k)=1\)</span>, we say that state <span class="math notranslate nohighlight">\(k\)</span> is aperiodic. A Markov chain is <strong>aperiodic</strong> if and only if all its states are aperiodic.</p>
+<p>If a finite Markov chain is aperiodic, then there exists a positive integer <span class="math notranslate nohighlight">\(m\)</span>, such that for all states <span class="math notranslate nohighlight">\(i\)</span>, it is guaranteed to return to that state in a finite number of transitions, i.e.</p>
+<div class="math notranslate nohighlight">
+\[\exists m, \forall i, t \ge m: \quad p_{ii}^{(t)} &gt; 0\]</div>
+<p>If a Markov chain is irreducible and aperiodic, then there exists an integer <span class="math notranslate nohighlight">\(m\)</span>, such that any state is accessible from any other after at least <span class="math notranslate nohighlight">\(m\)</span> transitions, i.e.</p>
+<div class="math notranslate nohighlight">
+\[
+\exists m, \forall i, t \ge m: \quad \quad p_{ij}^{(t)} &gt; 0
+\]</div>
+<p><em><strong>Proof</strong></em></p>
+<div class="math notranslate nohighlight">
+\[
+\underbrace{\mathbb{P} \left[X_{m}=j \mid X_{0}=i\right]}_{p_{i, j}^{(m)}} \geqslant \underbrace{\mathbb{P} \left[X_{m}=j \mid X_{m-n_{i, j}}=i\right]}_{\text{irreducible: } p_{i, j}^{(n_{i, j})}&gt;0} \cdot \underbrace{\mathbb{P} \left[X_{m-n_{i, j}}=i \mid X_{0}=i\right]}_{\text{aperiodic: } p_{i, i}^{(m-n_{i, j})}&gt;0} .
+\]</div>
+<p><span class="math notranslate nohighlight">\(\square\)</span></p>
+</div>
+</div>
+<div class="section" id="stationary-distribution">
+<h2>Stationary Distribution<a class="headerlink" href="#stationary-distribution" title="Permalink to this headline">¶</a></h2>
+<p>A row vector <span class="math notranslate nohighlight">\(\boldsymbol{\pi} ^{\top}\)</span> is called a <strong>stationary distribution</strong> for a Markov chain with transition matrix <span class="math notranslate nohighlight">\(\boldsymbol{P}\)</span> if</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\pi_j \ge 0\)</span> and <span class="math notranslate nohighlight">\(\sum_j\pi_j = 1\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{\pi} ^{\top} \boldsymbol{P} = \boldsymbol{\pi}^{\top}\)</span></p></li>
+</ul>
+<p>For instance, when <span class="math notranslate nohighlight">\(\boldsymbol{P} = \boldsymbol{I}\)</span>, then every probability distribution on the states is a stationary probability distribution.</p>
+<p>If a Markov chain is aperiodic and irreducible, then it has precisely <strong>one</strong> stationary distribution, in the sense that the limit</p>
+<div class="math notranslate nohighlight">
+\[
+\lim _{n \rightarrow \infty} p_{ij}^{(n)} = \pi _j
+\]</div>
+<p>exists for each state <span class="math notranslate nohighlight">\(j\)</span> with <span class="math notranslate nohighlight">\(\pi_j \ge 0\)</span> and <span class="math notranslate nohighlight">\(\sum_j\pi_j = 1\)</span>, which is independent of starting state <span class="math notranslate nohighlight">\(i\)</span>. Equivalently,</p>
+<div class="math notranslate nohighlight">
+\[
+\lim _{n \rightarrow \infty} \boldsymbol{P}^n  = \boldsymbol{1} \boldsymbol{\pi} ^{\top}
+\]</div>
+</div>
 <div class="section" id="exercise">
 <h2>Exercise<a class="headerlink" href="#exercise" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="infect-1000">
@@ -1121,7 +1227,7 @@ I_{t+1,j}=\begin{cases}
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/51-markov-chain_14_0.png" src="../_images/51-markov-chain_14_0.png" />
+<img alt="../_images/51-markov-chain_13_0.png" src="../_images/51-markov-chain_13_0.png" />
 </div>
 </div>
 </div>
