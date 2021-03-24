@@ -15,9 +15,76 @@ kernelspec:
 
 
 
-+++
 
 # Markov Chain
+
+## Definitions
+
+### Basics
+
+A **stochastic process** $\boldsymbol{X} = \left\{ X_t: t\in T \right\}$ is a collection of random variables indexed by $t$. We call $X_t$ the **sate** of the process at time $t$. If $T$ is countable infinite, then we call $\boldsymbol{X}$ a **discrete** time process.
+
+A discrete time process $\boldsymbol{X} = \left\{ X_0, X_1, \ldots \right\}$ is called a **Markov chain** if, for any positive integer $t$ and any states $i_0, \ldots, i_t, j$,
+
+$$
+\mathbb{P}\left(X_{t+1}=j \mid X_{t}=i, X_{t-1}=i_{t-1}, \ldots, X_{0}=i_{0}\right) =\mathbb{P}\left(X_{t+1}=j \mid X_{t}=i\right) \\
+$$
+
+Verbally, we say that, given the past history of the process up through time $t$, the distribution of the process at time $t+1$ depends only on the state at time $t$.
+
+We say a Markov chain has a **discrete state space** if the set of values of the random variables is countably infinite $\left\{ v_0, v_1, \ldots \right\}$. For simplicity, we assume the discrete state space is given by the set of nonnegative integers $\left\{ 0,1,\ldots \right\}$. We say a Markov chain is **finite** if the set of values of the random variables if a finite set $\left\{ v_0, v_1, \ldots, v_{n-1} \right\}$. In the following discussion we assume the Markov chains are finite.
+
+A Markov chain is homogeneous if $\mathbb{P}\left(X_{t+1}=j \mid X_{t}=i\right)=p_{i j}$ for all $t$. This indicates that this conditional distribution does not very with $t$. The values $p_{ij}$ are called **transition probabilities**, which can be stored in a transition matrix $\boldsymbol{P}$. We can find that $p_{ij}^{(t)} = [\boldsymbol{P}^t] _{ij}$ is the probability that, starting in state $i$, the Markov chain is found in state $j$ after $t$ transitions.
+
+A Markov chain with state space $V$ and transition matrix $\boldsymbol{P}$ can be represented by a labeled directed graph, where edges are given by transitions with nonzero probability $E = \left\{ (u,v) \mid p_{u,v} >0 \right\}$. Note that self-loops are allowed for $p_{ii} > 0$.
+
+:::{figure} mc-graph
+<img src="../imgs/mc-graph.png" width = "50%" alt=""/>
+
+Graphical representation of a Markov chain
+:::
+
+### Irreducibility
+
+A state $j$ is **accessible** from state $i$ if there exists some $n \ge 0$ such that $p_{ij}^{(t)} > 0$. Two states $i$ and $j$ **communicate** if they are accessible from each other, written as $i \leftrightarrow j$. In the graph-representation of the chain, we have $i \leftrightarrow j$ if there are directed paths from $i$ to $j$ and from $j$ to $i$. Some states form a communication class if all states in that class communicate.
+
+A Markov chain is **irreducible** if any state is accessible from any other in some finite number of transitions, i.e.
+
+$$\forall i, j, \exists t: \quad p_{ij}^{(t)} > 0$$
+
+Equivalently,
+- all states belong to one communication class, or
+- its graph representation is a strongly connected graph.
+
+### Periodicity
+
+The period $d(k)$ of a state $k$ of a homogeneous Markov chain is defined as
+
+$$
+d(k) = \mathrm{gcd} \left\{ t: p_{k} ^{t} >0 \right\}
+$$
+
+where $\mathrm{gcd}$ stands for greatest common divisor.
+
+If $d(k)=1$, we say that state $k$ is aperiodic. A Markov chain is **aperiodic** if and only if all its states are aperiodic.
+
+If a finite Markov chain is aperiodic, then there exists a positive integer $m$, such that for all states $i$, it is guaranteed to return to that state in a finite number of transitions, i.e.
+
+$$\exists m, \forall i, t \ge m: \quad p_{ii}^{(t)} > 0$$
+
+If a Markov chain is irreducible and aperiodic, then there exists an integer $m$, such that any state is accessible from any other after at least $m$ transitions, i.e.
+
+$$
+\exists m, \forall i, t \ge m: \quad \quad p_{ij}^{(t)} > 0
+$$
+
+***Proof***
+
+$$
+\underbrace{\mathbb{P} \left[X_{m}=j \mid X_{0}=i\right]}_{p_{i, j}^{(m)}} \geqslant \underbrace{\mathbb{P} \left[X_{m}=j \mid X_{m-n_{i, j}}=i\right]}_{\text{irreducible: } p_{i, j}^{(n_{i, j})}>0} \cdot \underbrace{\mathbb{P} \left[X_{m-n_{i, j}}=i \mid X_{0}=i\right]}_{\text{aperiodic: } p_{i, i}^{(m-n_{i, j})}>0} .
+$$
+
+$\square$
 
 
 ## Exercise
@@ -26,7 +93,6 @@ kernelspec:
 
 *There are 1,000 people in one room. One of them carries a disease which infects 100% if one shares hands with an infected person. In each minute all the people in the room are randomly paired to share hands with each other. What is your estimate of the expected number of people infected after 10 minutes? Can you use only pen and paper to solve this?*
 
-+++
 
 #### Sol.1 Markov Chain
 
