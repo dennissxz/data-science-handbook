@@ -188,6 +188,14 @@ $$\begin{aligned}
 
 - **Induced subgraph**: A induced graph $F$ is a subgraph obtained only by vertices deletion. If the remaining vertices are $Y=V(G)\setminus$, we denote $F$ by $G[Y]$.
 
+- **Edge-to-vertex dual graph (line graph)**: The edge-to-vertex dual graph (line graph) of a directed graph $G$ is the directed graph $L(G)$ whose vertex set corresponds to the arc set of $G$, and having an arc directed from an original edge $e_1$ to an edge $e_2$ if in $G$, the head of $e_1$ meets the tail of $e_2$. The line graph for undirected graph can be defined accordingly.
+
+  :::{figure} graph-line-graph
+  <img src="../imgs/graph-line-graph.png" width = "80%" alt=""/>
+
+  Graphs and their line graphs [[Wolfram](https://mathworld.wolfram.com/LineGraph.html)]
+  :::
+
 - **Isomorphic**: Two simple graphs $G$ and $H$ are isomorphic, denoted $G \cong H$ if there is a bijection $\theta: V(G) \rightarrow V(H)$ which preserves adjacency and non-adjacency:
 
   $$
