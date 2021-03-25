@@ -1,3 +1,4 @@
+(max-flow)=
 # Maximum Flow
 
 Widely used in algorithms on graphs.
