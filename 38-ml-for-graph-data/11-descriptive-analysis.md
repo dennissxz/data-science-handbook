@@ -105,6 +105,94 @@ A closely related concept is [assortativity](graph-assortativity).
 
 ### Centrality
 
+The importance of a vertex $v$ can be measured by centrality $c(v)$. There are many kinds of centrality measures. Degree is one of them. Deciding which are most appropriate for a given application clearly requires consideration of the context.
+
+#### Closeness Centrality
+
+Closeness centrality measures how close a vertex is to other vertices.
+
+$$c_{cl}(v) = \frac{1}{\sum_{u \in V} \operatorname{dist}(v, u) }$$
+
+where $\operatorname{dist} (v, u)$ is the distance between $u, v$.
+
+Note
+- The graph is assumed to be connected. If not, we can define centrality for each connected component, or set a finite upper limit on distances, e.g $N_v$.
+- To compute $c_{cl}(v)$, we need to compute single-source shortest paths from $v$ to all other vertices $u \in V$.
+- Often, for comparison across graphs and with other centrality measures, this measure is normalized to lie in the interval $[0,1]$, through multiplication by a factor $N_v - 1$. It is 1 if $v$ is the center of a star.
+
+#### Betweenness Centrality
+
+Betweenness centrality relates 'importance' to where a vertex is located with respect to the paths in the graph.
+
+$$
+c_{bet}(v) = \sum_{s,t \in V, s\ne v, t \ne v}\frac{\sigma(s,t \mid v)}{\sigma(s,t)}
+$$
+
+where
+- $\sigma(s,t \mid v)$ is the total number of shortest paths between $s$ and $t$ that pass through $v$
+- $\sigma(s,t)$ is the total number of shortest paths between $s$ and $t$
+
+Note
+
+- If all shortest paths are unique, i.e. $\sigma(s,t)=1$, then $c_{bet}(v)$ simple counts how many shortest paths going through $v$.
+- It can be normalized to $[0,1]$ through division by $(N_v - 1) (N_v - 2)/2$. For instance, it is 1 if $v$ is the center of a star.
+
+#### Eigenvector Centrality
+
+A vertex's importance may depends on its neighbors' importance. Eigenvector centrality captures this,
+
+$$
+c_{eig}(v) = \alpha \sum_{(u,v) \in E} c_{eig}(u)
+$$
+
+The vector $\boldsymbol{c} _{eig} = [c_{eig}(1), \ldots, c_{eig}(N_v)] ^{\top}$ is the solution to the eigenvalue problem
+
+$$
+\boldsymbol{A} \boldsymbol{c} _{eig} = \alpha ^{-1} \boldsymbol{c} _{eig}
+$$
+
+Bonacich [SAND 37] argues that an optimal choice of $\alpha ^{-1}$ is the largest eigenvalue of $\boldsymbol{A}$, and hence $\boldsymbol{c} _{eig}$ is the corresponding eigenvector.
+
+When $G$ is undirected an connected, the largest eigenvector of $\boldsymbol{A}$ is simple: entries are non-zero and share the same sign. Convention is to report the absolute values of these entries.
+
+
+:::{admonition,note} Computation
+
+Calculation of the largest eigenvalue of a matrix and its eigenvector is a standard problem. The power method is generally used. This method is iterative and is guaranteed to converge under various conditions, such as when the matrix is symmetric, which $\boldsymbol{A}$ will be for undirected graphs. The rate of convergence to $\boldsymbol{c} _{eig}$ will behave like a power, in the number of iterations, of the ratio of the second largest eigenvalue of $\boldsymbol{A}$ to the first.
+
+:::
+
+#### Hubs and Authorities (HITS) Algorithms
+
+Given an adjacency matrix $\boldsymbol{A}$ for a directed web graph,
+- hubs are determined by the eigenvector centrality of the matrix $\boldsymbol{M}_{hub} = \boldsymbol{A} \boldsymbol{A} ^{\top}$, where $[\boldsymbol{M}_{hub}]_{ij}=$ the number of vertices that both $i$ and $j$ point to.
+
+  $$[\boldsymbol{M}_{hub}]_{ij}= \langle\boldsymbol{a}_{i\cdot}, \boldsymbol{a} _{j \cdot} \rangle = \sum_{v \in V} \mathbb{I} \left\{ i \rightarrow v \leftarrow j \right\}$$
+
+- authorities are determined by the eigenvector centrality of the matrix $\boldsymbol{M}_{auth} = \boldsymbol{A} ^{\top}\boldsymbol{A}$, where $[\boldsymbol{M}_{auth}]_{ij} =$ the number of vertices that point to both $i$ and $j$.
+
+  $$[\boldsymbol{M}_{hub}]_{ij}= \langle\boldsymbol{a}_{\cdot i}, \boldsymbol{a} _{\cdot j} \rangle = \sum_{v \in V} \mathbb{I} \left\{ i \leftarrow v \rightarrow j \right\}$$
+
+#### Centrality of Edges
+
+Betweenness centrality extends to edges in a straightforward manner. For other measures, we can apply them to the vertices in the edge-to-vertex dual graph (line graph) of $G$.
+
+#### Graph-level Summaries
+
+Once we compute $c(v)$ for all $v$, we can look for graph-level summaries, e.g. the distribution of $c(v)$, in analogy to the degree distribution, as well as its moments and quantiles.
+
+For instance, centralization index is defined as
+
+$$
+c = \frac{\sum_{v \in V} c^* - c(v)}{\max \sum_{v \in V} c^* - c(v)}
+$$
+
+where
+- $c^* = \max_{v \in V} c(v)$
+- $\max$ in the denominator is over all possible graphs of order $N_v$, which is not easy to compute outside of certain special cases.
+
+There are many other extension of the above centrality measures to different levels.
+
 ## Network Cohesion
 
 ### Local Density
