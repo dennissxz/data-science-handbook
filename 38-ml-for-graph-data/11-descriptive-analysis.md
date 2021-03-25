@@ -195,9 +195,101 @@ There are many other extension of the above centrality measures to different lev
 
 ## Network Cohesion
 
+Are some subsets of vertices cohesive? Many measures differ from local (triads) to global (giant components), and explicitly (cliques) or implicitly (clusters).
+
 ### Local Density
 
+#### Cliques
+
+Recall that a clique is a complete subgraph $H$ of $G$. A common case is that of 3-cliques, i.e. triangles. In practice, large cliques are rare. A sufficient condition for a clique of size $n$ to exist in $G$ is $N_e > \frac{n-2}{n-1}\frac{N_v^2}{2}$. But in real-world networks, $N_e \sim N_v$.
+
+- P:
+  - whether a specific subset of nodes $U\subseteq V$ is a clique and whether it is maximal. $O(N_v + N_e)$.
+- NP-complete:
+  - whether a graph $G$ has a maximal clique of ata least size $n$
+
+#### Plexes
+
+Plexes are weakened version of cliques: A subgraph $H$ consisting of $m$ vertices is called an $n$-plex for $m > n$ if no vertex has degree less than $m-n$. In other words, no vertex is missing more than $n$ of its possible $m-1$ edges with other vertices in the subgraph.
+
+Computation problems tend to scale like those involving cliques.
+
+#### Cores
+
+A $k$-core of a graph $G$ is a subgraph $H$ for which all vertices have degree at least $k$.
+
+A maximal $k$-core subgraph may be computed in $O(N_v +N_e)$. The algorithm computes the shell indices for all $v$. The shell index of $v$ is the largest value $c$ such that $v$ belongs to the $c$-core of $G$ but not its $(C+1)$-core.
+
+#### Density
+
+The density of a subgraph $H = (V_H, E_H)$ is defined as the realized fraction of total possible edges in this subgraph
+
+$$
+\operatorname{den}(H)=\frac{\left|E_{H}\right|}{\left|V_{H}\right|\left(\left|V_{H}\right|-1\right) / 2} \in [0,1]
+$$
+
+It measures how $H$ is close to a clique. If $\operatorname{den}(H) =1$ then $H$ is a clique. Note that it is a rescaling of the average degree, $\operatorname{den}(H) = \frac{1}{\left\vert V_H \right\vert-1} \bar{d}(H)$
+
+- If $H=G$, then $\operatorname{den}(G)$ gives the density of the overall graph
+- If $H=N(v)$ is the set of neighbors of a vertex $v$ and the edges between them, then $\operatorname{den}(N(v))$ gives a measure of density in the immediate neighborhood of $v$, which is called the Watts-Strogatz local clustering coefficient. The average of $\operatorname{den}(N(v))$ can be used as a clustering coefficient for the overall graph.
+
+#### Clustering Coefficient
+
+A measure of density in the immediate neighborhood of $v$ can be the answer to the question: among all pairs of neighbors of $v$, how many of them are connected? Or, what's the proportion that two of my friends are also friends of each other? To answer this, we first formally define triangles and connected triples.
+
+- A triangle is a complete subgraph of order three: $\Delta$
+- A connected triple is a subgraph of three vertices connected by two edges (i.e. 2-star): $\land$
+
+Let
+- $\tau_\Delta(v)$ be the number of triangles in $G$ such that $v \in V$ falls into
+- $\tau_{\land}(v)$ be the number of connected triples in $G$ such that both edges incident to $v\in V$.
+
+We can then define a local clustering coefficient as to answer the questions above. For $v$ with at least two neighbors, i.e. $\tau_{\land }(v) > 0$,
+
+$$
+\operatorname{clus} (v) = \frac{\tau_{\Delta}(v)}{\tau_{\land }(v)}
+$$
+
+Note that $\tau_{\land }(v) = C_{d_v}^2$ and hence $\operatorname{clus} (v) = \operatorname{den}(N(v))$.
+
+The clustering coefficient for $G$ is the average over "eligible" vertices in $G$,
+
+$$
+\operatorname{clus} (G) = \frac{1}{\left\vert V ^\prime  \right\vert}  \sum_{v \in \boldsymbol{V} ^\prime } \operatorname{clus}(v)
+$$
+
+where $\boldsymbol{V} ^\prime \subseteq V$ is the set of vertices $v$ with $d_v \ge 2$.
+
+#### Transitivity
+
+The above definition is an simple average of $\operatorname{clus}(v)$, which treat $v$ with different $d_v$ equally. A more informative measure is the weighted average by $\tau_{\land }(v)$,
+
+$$
+\frac{\sum_{v \in V ^\prime} \tau_{\land }(v) \operatorname{clus} (v) }{\sum_{v \in V ^\prime} \tau_{\land }(v)} = \frac{\sum_{v \in V ^\prime} \tau_{\Delta}(v)}{\sum_{v \in V ^\prime} \tau_{\land }(v)}
+$$
+
+Let
+- $\tau_\Delta (G) = \frac{1}{3} \sum_{v \in V} \tau_\Delta(v)$ be the number of triangles in the graph
+- $\tau_ \land (G) = \sum_{v \in V} \tau _ \land (v)$ be the number of connected triples in the graph
+
+For $v \ne V ^\prime$, we have $\tau_\Delta(v) = \tau_ \land  (v) = 0$, hence the above fraction equals to
+
+$$\operatorname{clus}_T (G) = \frac{3 \tau_\Delta(G)}{\tau_ \land (G)}$$
+
+which is the transitivity of graph $G$, a standard quantity in the social network literature. Transitivity in this context refers to, for example, the case where the friend of your friend is also a friend of yours.
+
+The two clustering measures $\operatorname{clus}(G)$ and $\operatorname{clus}_T(G)$ can differ. It is possible to define highly imbalanced graphs so that $\operatorname{clus}(G) \rightarrow 1$ while $\operatorname{clus}_T(G) \rightarrow 0$ as $N_v$ grows.
+
+Clustering coefficients have become a standard quantity used in the analysis of network structure. Interestingly,
+- their values have typically been found to be quite large in real-world networks, in comparison to what otherwise might be expected based on classical random graph models.
+- in large-scale networks with broad degree distributions, it has frequently been found that the local clustering coefficient $\operatorname{clus}(v)$ varies inversely with vertex degree.
+
+Higher-order clustering coefficients have also been proposed, involving cycles of length greater than three.
+
 ### Connectivity
+
+
+
 
 ### Graph Partitioning
 
@@ -205,9 +297,28 @@ There are many other extension of the above centrality measures to different lev
 ### Assortativity and Mixing
 
 
-
-
-
-
-
 ## Dynamic Networks
+
+
+.
+
+
+.
+
+
+.
+
+
+.
+
+
+.
+
+
+.
+
+
+.
+
+
+.
