@@ -252,7 +252,7 @@ $$
 
 Note that $\tau_{\land }(v) = C_{d_v}^2$ and hence $\operatorname{clus} (v) = \operatorname{den}(N(v))$.
 
-The clustering coefficient for $G$ is the average over "eligible" vertices in $G$,
+The **clustering coefficient** for $G$ is the average over "eligible" vertices in $G$,
 
 $$
 \operatorname{clus} (G) = \frac{1}{\left\vert V ^\prime  \right\vert}  \sum_{v \in \boldsymbol{V} ^\prime } \operatorname{clus}(v)
@@ -276,7 +276,7 @@ For $v \ne V ^\prime$, we have $\tau_\Delta(v) = \tau_ \land  (v) = 0$, hence th
 
 $$\operatorname{clus}_T (G) = \frac{3 \tau_\Delta(G)}{\tau_ \land (G)}$$
 
-which is the transitivity of graph $G$, a standard quantity in the social network literature. Transitivity in this context refers to, for example, the case where the friend of your friend is also a friend of yours.
+which is called the **transitivity** of graph $G$, a standard quantity in the social network literature. Transitivity in this context refers to, for example, the case where the friend of your friend is also a friend of yours.
 
 The two clustering measures $\operatorname{clus}(G)$ and $\operatorname{clus}_T(G)$ can differ. It is possible to define highly imbalanced graphs so that $\operatorname{clus}(G) \rightarrow 1$ while $\operatorname{clus}_T(G) \rightarrow 0$ as $N_v$ grows.
 
@@ -287,6 +287,86 @@ Clustering coefficients have become a standard quantity used in the analysis of 
 Higher-order clustering coefficients have also been proposed, involving cycles of length greater than three.
 
 ### Connectivity
+
+The task of verifying whether a graph is connected and, if not, identifying its connected components can be done in $O(N_v + N_e)$ time by DFS or BFS. If it does not, we might seek to quantify how close to being able to do so it is.
+
+#### Small World
+
+Often it is the case that one of the connected components in a graph G dominates the others in magnitude, in that it contains the vast majority of the vertices in $G$. We call it the giant component. Depending on the task at hand, it may be sensible to restrict attention to that component alone in carrying out further analysis and modeling.
+
+The giant component of many real-world networks enjoys the small world property. This concept is traced back to Stanley Milgram's experiment in 1960's: people are only separated by roughly six acquaintances (i.e., by 'six degrees of separation'). That is, despite the enormous size of the giant component, the typical number of ‘hops’ along shortest paths between any two vertices would be quite small.
+
+To measure 'small', we can define the **average distance** between two vertices
+
+$$
+\bar{l}=\frac{1}{N_{v}\left(N_{v}+1\right) / 2} \sum_{u \neq v \in V} \operatorname{dist}(u, v)
+$$
+
+We say it is small if $\bar{l}$ scales as $\mathcal{O} (\log N_v)$ or less.
+
+Besides, small average distance is often accompanied by a high clutering coefficient $\operatorname{clus}(G)$ or $\operatorname{clus} _T (G)$. These two properties joint define the term 'small world', which is related to communication upon them, e.g. information in a social network, disease in an epidemiological network, etc.
+
+#### Vertex and Edge Connectivity and Cut
+
+If an arbitrary subset of k vertices (edges) is removed from a graph, is the remaining subgraph connected?
+
+Definitions (connectivity)
+: - A graph is **$k$-vertex-connected** if
+    - $N_v > k$, and
+    - the removal of **any** subset of vertices $X \subset V$ of cardinality $\left\vert X \right\vert < k$ leaves a subgraph $G-X$ that is connected.
+
+    In particular, for graphs $G$ with at least two vertices, it is 1-vertex-connected iff it is connected.
+
+  - Similarly, a graph is **$k$-edge-connected** if
+    - $N_v > k$, and
+    - the removal of **any** subset of edges $Y \subset E$ of cardinality $\left\vert Y \right\vert < k$ leaves a subgraph $G - Y$ that is connected.
+
+  - The **vertex (edge) connectivity** of $G$ is the largest integer $k$ such that $G$ is $k$-vertex- ($k$-edge-) connected.
+
+It can be shown that
+
+$$
+\text{vertex connectivity} \le  \text{edge connectivity} \le \operatorname{deg}_\min
+$$
+
+Computationally, the following problems are in P
+- Is $G$ $k$-vertex ($k$-edge) connected?
+- What is the vertex(edge)-connectivity of $G$
+- What is the maximal $k$-vertex ($k$-edge) connected components of $G$?
+
+Theorem (Menger's)
+: a nontrivial graph $G$ is $k$-vertex ($k$-edge) connected if and only if all pairs of distinct vertices $u, v \in V$ can be connected by $k$ vertex-disjoint (edge-disjoint) paths.
+
+Definitions (cut)
+: - A **vertex-cut (edge-cut)** is a set such that removing it disconnects the graph.
+  - A $s$-$t$ **cut** is a partition of $V$ into two disjoint, non-empty subsets, $S, \bar{S} \subset V$ where $s \in S$ and $t \in \bar{S}$.
+  - For $G$ equipped with edge weights $w_e$, a $s$-$t$ cut is a **minimum** $s$-$t$ cut if the sum of the weights on edges connecting $S$ and bar{S}$ is a minimum.
+
+Claims
+- If $w_e =1$ for all $e$, then finding a minimum $s$-$t$ cut is equivalent to finding an edge-cut of minimal cardinality, with one component containing $s$ and the other containing $t$.
+- If the cardinality of such minimum $s$-$t$ cut is $k$, then the edge-connectivity of $G$ is $k-1$.
+
+To find a minimum $s$-$t$ cut, it is equivalent to find a maximum flow. See the [section](max-flow) for details.
+
+
+#### In Directed Graphs
+
+Many of the concepts above extend to the case of directed graphs analogously. A often useful characterization of directed graphs is that of a **bowtie**. We can classify the graph into five parts
+
+1. a strongly connected component (SCC)
+1. an in-component, whose vertices that can reach SCC but cannot be reached from the SCC
+1. an out-component, whose vertices that cannot reach SCC but can be reached from the SCC
+1. tendrils, composed of vertices that can neither reach nor be reached from the SCC.
+1. tubes, composed of vertices between the in- and out- components that are not part of the SCC
+
+In the vastly large Word Wide Web graph, Broder and colleagues found that the relative size of the first four parts of the bowtie in their giant component were in fact roughly equal in size.
+
+:::{figure} graph-bowtie
+<img src="../imgs/graph-bowtie.png" width = "90%" alt=""/>
+
+Bowtie illustration [Broder] and application to a network data set [Kolaczyk 2009]. Strongly connected component (yellow), in-component (blue), out-component (red), and tendrils (pink).
+:::
+
 
 
 
