@@ -25,6 +25,31 @@ If the exact functional form of $p(x)$ is unknown or hard to obtain, but we know
 
 For multivariate distributions, e.g. $d=2$, if we want to generate a sample $\left\{ (x_1, y_1), \ldots, (x_n, y_n) \right\}$ from unknown $p(x,y)$, and $f(x \vert y )\propto p(x\vert y)$ and $f(y \vert x )\propto p(x\vert y)$ are known, then we can use $f(x \vert y)$ and $f(y \vert x)$ to obtain the sample. Gibbs sampling solve this problem setting.
 
+## Monte Carlo
+
+Given a random variable $X$ with PDF $f$, sometimes we need to compute the expectation of $g(X)$:
+
+$$
+\mathbb{E}\left( g(X) \right) = \int g(d)f(x) \mathrm{~d}x
+$$
+
+When computationally tractable, closed form expressions are not available for this purpose, and numerical integration is infeasible. For instance, Monte Carlo method generate random draws $x_1, \ldots, x_n$ of $X$ from $f$, and compute the stochastic approximation
+
+$$
+\widehat{\mathbb{E}}(g(X))=\frac{1}{n} \sum_{i=1}^{n} g\left(x_{i}\right)
+$$
+
+Sometimes it is hard to generate random draws from $f$. If we can sample from $h$ where $w(x) = \frac{f(x)}{h(x)}$, then by re-arrangement we have
+
+$$
+\mathbb{E}(g(X))= \frac{\int g(x) w(x) h(x) \mathrm{~d} x }{\int w(x) h(x) \mathrm{~d} x}
+$$
+
+Hence the approximation is
+
+$$
+\widehat{\mathbb{E}}_{h}(g(X)) = \frac{(1 / n) \sum_{i=1}^{n} w\left(x_{i}\right) g\left(x_{i}\right)}{(1 / n) \sum_{i=1}^{n} w\left(x_{i}\right)}
+$$
 
 
 
