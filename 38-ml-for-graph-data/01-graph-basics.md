@@ -1,6 +1,6 @@
 # Graph Basics
 
-A graph $G = (V, E)$ contains vertex set $V$ and edge set $E$, with size $\left\vert V \right\vert = n$ and order $ \left\vert E \right\vert = m$.
+A graph $G = (V, E)$ contains vertex set $V$ and edge set $E$, with size $\left\vert V \right\vert = N_v$ and order $\left\vert E \right\vert = N_e$.
 
 In particular, $E$ is a 2-subset of $V$.
 
@@ -19,7 +19,7 @@ In particular, $E$ is a 2-subset of $V$.
 - **Degree** of a vertex: The degree of a vertex $v$ is the number of its neighbors. $\operatorname{deg}_G (v) = \left\vert N_G(v) \right\vert$. In short we write $d_v$.
   - Minimum degree is denoted as $\delta(G)=\min _v \operatorname{deg}_G(v)$
   - Maximum degree is denoted as $\Delta(G)=\max _v \operatorname{deg}_G(v)$
-  - Sum of degree is $2m$: $\sum _{v \in V} \operatorname{deg}_G(v) = 2 \left\vert E \right\vert$
+  - Sum of degree: $\sum _{v \in V} \operatorname{deg}_G(v) = 2 N_e$
   - Corollary: In any graph, there are an even number of odd-degree vertices.
   - **Degree sequence** of a graph is the sequence formed by arranging the vertex degree $d_v$ in non-decreasing order.
   - For digraphs, vertex degree is replaced by in-degree $d_v^{in}$ and out-degree $d_v ^{out}$.
@@ -35,7 +35,7 @@ In particular, $E$ is a 2-subset of $V$.
 
     :::{admonition,dropdown,seealso} *Proof*
 
-    Let $P=(v_0, \ldots, v_{k})$ be a longest path in $G$. Since $d(v_k) \ge 2$, then there is a vertex $v \in V, v \ne v_{k-1}$, such that $v$ is adjacent to $v_k$. If $v \notin P$, then we have a longer path in $G$, contradiction. Hence, $v \in P$. More precisely, $v = v_i$ for some $0\le i \le k-2$. Thus, $v_k$ is connected to two vertices in $P$, which forms a cycle.
+    Let $P=(v_0, \ldots, v_{k})$ be a longest path in $G$. Since $\operatorname{deg} (v_k) \ge 2$, then there is a vertex $v \in V, v \ne v_{k-1}$, such that $v$ is adjacent to $v_k$. If $v \notin P$, then we have a longer path in $G$, contradiction. Hence, $v \in P$. More precisely, $v = v_i$ for some $0\le i \le k-2$. Thus, $v_k$ is connected to two vertices in $P$, which forms a cycle.
     :::
 
 - **Walk**: A walk in a graph $G$ is a sequence $W=(v_0, e_1, v_1, e_2, \ldots, v_{k-1}, e_k, v_k)$ whose terms alternate between vertices and edges (not necessarily distinct) such that $v_{i-1} v_i = e_i$ for $1 \le i \le \ell$. When $G$ is simple, we may write the walk by indicating the vertices only.
@@ -57,9 +57,9 @@ $$\begin{aligned}
 \overset{\text{distinct vertices} }{\longrightarrow} \text{cycle}
 \end{aligned}$$
 
-- (Geodesic) **Distance** between two vertices: The distance between two vertices $u$ and $v$ in $G$ is the minimal length of a walk from $u$ to $v$. $d_G (u,v) = \min \left\{ k \mid u \overset{k}{\rightarrow} v \right\}$. If there is no walk, then the distance is $\infty$.
+- (Geodesic) **Distance** between two vertices: The distance between two vertices $u$ and $v$ in $G$ is the minimal length of a walk from $u$ to $v$. $\operatorname{dist} (u,v) = \min \left\{ k \mid u \overset{k}{\rightarrow} v \right\}$. If there is no walk, then the distance is $\infty$.
 
-  - **Diameter** of a graph is the longest distance in a graph.
+  - **Diameter** of a graph is the longest distance in a graph: $\operatorname{diam} (G) = \max_{u,v \in V} \operatorname{dist} (u,v)$
 
 
 ## Families of Graphs
@@ -92,7 +92,7 @@ $$\begin{aligned}
 
 - **Connected directed graph**:
 
-  - **Strong connected**: has a path from each node to every other node and vice versa ($a-b$ and $b-a$).
+  - **Strong connected**: has a path from each node to every other node and vice versa ($a \rightarrow b$ and $b \rightarrow a$).
 
   - **Weakly connected**: connected if we disregard the edge directions.
 
@@ -100,7 +100,7 @@ $$\begin{aligned}
     - **in-component**: nodes that can reach SCC
     - **out-component**: nodes that can be reached from SCC
 
-- **Completed graph**: every pair of vertices are adjacent, denoted as $K_n$.
+- **Completed graph**: every pair of vertices are adjacent, denoted as $K_n$, where $n=\left\vert V \right\vert$.
   - **Clique**: A complete subgraph. It is a maximal clique if no other clique contains it.
 
 - **Empty graph**: no edges, $E = \emptyset$.
@@ -135,14 +135,14 @@ $$\begin{aligned}
   - A graph is $1$-regular $\Leftrightarrow$ it is a disjoint union of $K_2$.
   - A graph is $2$-regular $\Leftrightarrow$ it is a disjoint union of cycles of any lengths.
   - $3$-regular graph is called cubic. It must have even number of vertices.
-  - A completed graph is $(n-1)$-regular.
+  - A completed graph is $(N_v-1)$-regular.
 
 - **Tree** and **Forest**
 
   - Definition:
     - A tree is a connected acyclic graph. Root, leaf, ancestor, descendant, parents, children ...
     - A forest is an acyclic graph.
-  - Characterization: A graph $G$ is a tree if and only any two of the three conditions hold: connected, acyclic, and $m = n - 1$.
+  - Characterization: A graph $G$ is a tree if and only any two of the three conditions hold: connected, acyclic, and $N_e = N_v - 1$.
   - Types of trees: star, double star, caterpillar (removing leaves gives the spine)
   - Claims:
     - A vertex in a tree is a leaf if it has only one neighbor.
@@ -160,7 +160,7 @@ $$\begin{aligned}
       - If $G$ is Hamiltonian, then any supergraph $G ^\prime \supseteq G$ where $G ^\prime$ is obtained by adding new edges between non-adjacent vertices of $G$, then $G ^\prime$ is also Hamilton.
       - A cycle is Hamiltonian.
       - A complete graph $K_n$ is Hamiltonian.
-      - A complete bipartite graph $K_{m,n}$ is Hamiltonian if and only if $n = m \ge 2$
+      - A complete bipartite graph $K_{m,n}$ is Hamiltonian if and only if $N_v = N_e \ge 2$
       - No nice characterization of Hamiltonian graphs.
 
 - **Planar graph**: a graph that can be drawn in the plane, with vertices ad dots and edges as lines, such that no pair of edges intersect.
@@ -184,7 +184,7 @@ $$\begin{aligned}
 - **Subgraph**: A graph $F$ is a subgraph of a graph $G$ if $V(F)\subseteq V(G)$ and $E(F)\subseteq E(G)$, also denoted as $F \subseteq G$.
 
 - **Spanning subgraph**: A spanning subgraph $F$ is a subgraph obtained only by edge deletions. In other words, $V(F) = V(G)$ and $E(F)\subset E(G)$.
-  - **Spanning tree**: spanning subgraph of $G$ that is a tree. Every connected graph $G$ has a spanning tree. Corollary: every connected graph has $m \ge n-1$.
+  - **Spanning tree**: spanning subgraph of $G$ that is a tree. Every connected graph $G$ has a spanning tree. Corollary: every connected graph has $N_e \ge N_v-1$.
 
 - **Induced subgraph**: A induced graph $F$ is a subgraph obtained only by vertices deletion. If the remaining vertices are $Y=V(G)\setminus$, we denote $F$ by $G[Y]$.
 
@@ -202,7 +202,7 @@ $$\begin{aligned}
   (u,v) \in E(G) \Leftrightarrow (\theta(u), \theta(v)) \in E(H)
   $$
 
-  To determine isomorphism of two graphs, we can start by comparing some properties, such as $n$, $m$, $r$-regular, number of non-adjacent vertices etc.
+  To determine isomorphism of two graphs, we can start by comparing some properties, such as $N_v$, $N_e$, $r$-regular, number of non-adjacent vertices etc.
 
 
 - A **decomposition** of a graph $G$ is a family $\mathcal{F}$ of edge-disjoint subgraphs of $G$ such that all edges in $G$ are in some subgraphs.
@@ -217,7 +217,7 @@ $$\begin{aligned}
 
 ### Adjacency Matrix
 
-For an undirected graph $G$, its adjacency matrix $\boldsymbol{A}$ is an $n \times n$ symmetric binary matrix with entries
+For an undirected graph $G$, its adjacency matrix $\boldsymbol{A}$ is an $N_v \times N_v$ symmetric binary matrix with entries
 
 $$
 a_{i j}=\left\{\begin{array}{ll}
@@ -249,7 +249,7 @@ Adjacency matrix with weights
 
 ### Laplacian Matrix
 
-Let $\boldsymbol{D} = \operatorname{diag}\left( \boldsymbol{A} \boldsymbol{1}  \right)$ be a diagonal matrix containing the degrees. The laplacian matrix of graph $G$ is a $n \times n$ matrix defined as
+Let $\boldsymbol{D} = \operatorname{diag}\left( \boldsymbol{A} \boldsymbol{1}  \right)$ be a diagonal matrix containing the degrees. The laplacian matrix of graph $G$ is a $N_v \times N_v$ matrix defined as
 
 $$
 \boldsymbol{L} = \boldsymbol{D} - \boldsymbol{A}  
@@ -265,13 +265,13 @@ The closer this value is to zero, the more similar are the elements of $\boldsym
 
 Properties
 - $\boldsymbol{L}$ is positive semi-definite
-- $\boldsymbol{L} \boldsymbol{1} = \boldsymbol{0}$, i.e. its smallest eigenvalue is 0. The second smallest eigenvalue is non-trivial, and the arguably most important of all of the eigenvalues, which gives information about its connectivity.
+- $\boldsymbol{L} \boldsymbol{1} = \boldsymbol{0}$, i.e. its smallest eigenvalue is 0, with an eigenvector of $\boldsymbol{1}$. The second smallest eigenvalue is non-trivial, and the arguably most important of all of the eigenvalues, which gives information about its connectivity.
 
 
 
 ### Incidence Matrix
 
-The incidence matrix $\boldsymbol{B}$ of a graph $G$ is an $n \times m$ binary matrix with entries
+The incidence matrix $\boldsymbol{B}$ of a graph $G$ is an $N_v \times N_e$ binary matrix with entries
 
 $$
 b_{i j}=\left\{\begin{array}{ll}
@@ -294,7 +294,7 @@ Properties
 
 ### Routing matrix
 
-Suppose there $n \times n$ pairwise traffic flows between each pair of vertices. A routing matrix $\boldsymbol{R}$ is a $m \times n^2$ binary matrix,
+Suppose there $N_v \times N_v$ pairwise traffic flows between each pair of vertices. A routing matrix $\boldsymbol{R}$ is a $N_e \times N_v^2$ binary matrix,
 
 $$
 r_{i j}=\left\{\begin{array}{ll}
@@ -305,9 +305,9 @@ $$
 
 ## Data Structure to Represent a Graph
 
-The most intuitional representation is by an $n\times n$ **adjacency matrix** defined previously. It contains binary entries, which is $1$ if there is an edge between vertices $i$ and $j$, and zero otherwise. The memory required is $O(n^2)$.
+The most intuitional representation is by an $N_v \times N_v$ **adjacency matrix** defined previously. It contains binary entries, which is $1$ if there is an edge between vertices $i$ and $j$, and zero otherwise. The memory required is $O(N_v^2)$.
 
-Most real-world networks are sparse, in the sense that $m \sim n$, or $\bar{d} \ll n-1$, so the adjacency matrix is sparse. It is preferable to use adjacency list. But the simplicity of the adjacency matrix representation may sometimes be felt to outweigh any memory disadvantages, especially for smaller graphs.
+Most real-world networks are sparse, in the sense that $N_e \sim N_v$, or $\bar{d} \ll N_v-1$, so the adjacency matrix is sparse. It is preferable to use adjacency list. But the simplicity of the adjacency matrix representation may sometimes be felt to outweigh any memory disadvantages, especially for smaller graphs.
 
 :::{figure} graph-adjacency-sparse
 <img src="../imgs/graph-adjacency-sparse.png" width = "40%" alt=""/>
@@ -321,11 +321,11 @@ Other data structures include
 
 - **Edge List**
 
-  $m$ objects in the two-column list, each object represents an edge, and stores the pair of vertices of that edge. Memory $O(m)$
+  $N_e$ objects in the two-column list, each object represents an edge, and stores the pair of vertices of that edge. Memory $O(m)$
 
 - **Adjacency List**
 
-  $n$ objects in the list, each object represents a vertex, and stores a list of neighbors of that vertex.
+  $N_v$ objects in the list, each object represents a vertex, and stores a list of neighbors of that vertex.
 
   - Easy to work with large and sparse graphs
   - Allows us to quickly retrieve all neighbors of a given vertex
@@ -376,7 +376,7 @@ Other data structures include
     - If in a graph $G$, all vertices have degree at least 2, then $G$ contains a cycle.
     - A graph $G$ is bipartite $\Leftrightarrow$ it contains no odd cycle.
     - An edge $e \in E(G)$ is a bridge $\Leftrightarrow$ $e$ is not in any cycle of $G$ (proof by contrapositive).
-    - A graph $G$ is a tree $\Leftrightarrow$ $G$ is acyclic and $\left\vert E(G) \right\vert = \left\vert V(G) \right\vert -1$.
-    - A connected graph is a tree iff all of its edges are bridges
+    - A graph $G$ is a tree $\Leftrightarrow$ $G$ is acyclic and $N_e = N_v -1$.
+    - A connected graph is a tree iff all of its edges are bridges.
 
 1. A $k$-coloring of graph $G$ partitions the vertex set $V$ into $k$ independent sets $V_1, \ldots, V_k$.
