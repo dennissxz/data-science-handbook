@@ -61,7 +61,7 @@ Hence, in incident subgraph sampling, while the edges are included in the sample
 Note that $N_e$ and $d_i$ are necessary to compute the inclusion probabilities. In the example of sampling email correspondence graph, this would require having access to marginal summaries of the total number of emails (say, in a given month) as well as the number of emails in which a
 given sender had participated.
 
-### Star Sampling
+## Star Sampling
 
 The first stage selects vertices like in induced subgraph sampling, but in the second stage, as its name suggests, we sample all edges incident to the selected vertices, as well as the new vertices on the other end.
 1. Select a simple random sample $V_0^*$ from $V$ without replacement
@@ -87,19 +87,51 @@ where
 - $N[i]$ is the union of vertex $i$ and the its immediate neighbors
 - $\mathbb{P}\left( L \right) = \frac{\binom{N_v - \left\vert L \right\vert}{n - \left\vert L \right\vert} }{\binom{N_v}{n} }$ is the probability that $L \subseteq V_0^*$. ($n > \left\vert L \right\vert$??)
 
-### Snowball sampling
+## Snowball sampling
 
-In star sampling we only look at the immediate neighborhood. We can extends it to the $K$-th order neighbors, which is snowball sampling. In short, a $K$-stage snowball sampling is
+In star sampling we only look at the immediate neighborhood. We can extends it to up to the $K$-th order neighbors, which is snowball sampling. In short, a $K$-stage snowball sampling is
 1. select a simple random sample $V_0^*$ from $V$ without replacement
 2. for each $k = 1, \ldots , K$, observe a $k$-th order neighbors, add them to $V^*$ (excluding repeated vertices), and add their incident edges to $E^*$.
 
 Formally, let $N(S)$ be the set of all neighbors of vertices in a set $S$. After we initialize $V_0^*$, we add vertices, for $k=1, \ldots, K$
 - $V_k^* = N(V_{k-1}^*)\cap \bar{V}_0^* \cap \ldots \cap \bar{V}_{k-1}^*$, called the $k$-th wave.
 
-The final graph $G^*$ consists of the vertices in $V^* = V_0^* \cup V_1 ^* \cup \ldots \cup V_K^*$ and their incident edges.
+A termination condition is $V_k = \emptyset$. The final graph $G^*$ consists of the vertices in $V^* = V_0^* \cup V_1 ^* \cup \ldots \cup V_K^*$ and their incident edges.
 
 Unfortunately, although not surprisingly, inclusion probabilities for snowball sampling become increasingly intractable to calculate after the one-stage level corresponding to star sampling.
 
+:::{figure} graph-sampling-link-tracing
+<img src="../imgs/graph-sampling-link-tracing.png" width = "50%" alt=""/>
+
+Two-stage snowball sampling (left) where $V_0^*$ in yellow, $V_1^*$ in orange, and $V_2^*$ in red. Traceroute sampling (right) for sources $\left\{ s_1, s_2 \right\}$ and targets $\left\{ t_1, t_2 \right\}$ in yellow, observed vertices and edges in orange.
+:::
+
+## Link Tracing
+
+Many of the other sampling designs fall under link tracing designs: after some selection of an initial sample, some **subset** of the edges ('links') from vertices in this sample are traced to additional vertices.
+
+Snowball sampling is a special case of link tracing, in that all edges are observed. Sometimes this is not feasible, for example, in sampling social contact networks, it may be that individuals are unaware of or cannot recall all of their contacts, or that they do not wish to divulge some of them.
+
+We introduce **traceroute** sampling.
+1. select a random sample $S=\left\{s_{1}, \ldots, s_{n_{s}}\right\}$ of vertices as sources from $V$, and another random sample $T=\left\{t_{1}, \ldots, t_{n_{t}}\right\}$ of vertices as targets from $V \setminus S$.
+2. For each pair $(s_i, t_j) \in S \times T$, sample a $s_i$-$t_j$ path. Observe all vertices and edges in the path, whose union yielding $G^* = (V^*, E^*)$.
+
+To find the inclusion probabilities, we assume that the paths are shortest paths w.r.t. some set of edge weights. Dall'Asta et al. [SAND 107] find the probabilities are
+
+
+$$\begin{aligned}
+\pi_{i} &\approx 1-\left(1-\rho_{s}-\rho_{t}\right) \exp \left(-\rho_{s} \rho_{t} b_{i}\right) \\
+\tau_{\{i, j\}} &\approx 1-\exp \left(-\rho_{s} \rho_{t} b_{i, j}\right)
+\end{aligned}$$
+
+where
+- $b_i$ is the vertex betweenness centrality of vertex $i$
+- $b_{i, j}$ is the edge betweenness centrality of edge $(i, j)$
+- $\rho_{s} = \frac{n_s}{N_v} , \rho_t = \frac{n_t}{N_v}$ are the source ant target sampling fractions respectively
+
+We see that the unequal probabilities varies with betweenness centrality $b_i$ and $b_{i, j}$. Though they are not calculable, they lend interesting insight into the nature of this sampling design, to be introduced later.
+
+## Estimation
 
 .
 
