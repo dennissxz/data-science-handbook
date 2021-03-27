@@ -95,6 +95,7 @@ $$\bar{d}(d)=\sum_{d^{\prime}} d^{\prime} f_{d^{\prime} \mid d}$$
 
 A negative trend has been observed in $\bar{d}(d)$ as $d$ increases.
 
+(degree-correlation)
 #### Degree Correlation
 
 Analogously, we can define correlation $\operatorname{Corr}\left( D, D ^\prime  \right)$ by the joint degree distribution $f(d_1, d_2)$ and its marginals.
@@ -340,7 +341,7 @@ Theorem (Menger's)
 Definitions (cut)
 : - A **vertex-cut (edge-cut)** is a set such that removing it disconnects the graph.
   - A $s$-$t$ **cut** is a partition of $V$ into two disjoint, non-empty subsets, $S, \bar{S} \subset V$ where $s \in S$ and $t \in \bar{S}$.
-  - For $G$ equipped with edge weights $w_e$, a $s$-$t$ cut is a **minimum** $s$-$t$ cut if the sum of the weights on edges connecting $S$ and bar{S}$ is a minimum.
+  - For $G$ equipped with edge weights $w_e$, a $s$-$t$ cut is a **minimum** $s$-$t$ cut if the sum of the weights on edges connecting $S$ and $\bar{S}$ is a minimum.
 
 Claims
 - If $w_e =1$ for all $e$, then finding a minimum $s$-$t$ cut is equivalent to finding an edge-cut of minimal cardinality, with one component containing $s$ and the other containing $t$.
@@ -369,36 +370,40 @@ Bowtie illustration [Broder] and application to a network data set [Kolaczyk 200
 
 
 
-
-
 ### Graph Partitioning
+
+A cohesive subset of vertices generally is taken to refer to a subset of vertices that are
+- well connected among themselves, and
+- relatively well separated from the remaining vertices.
+
+It has been used in the detection of community structure in social networks and in the identification of possible protein complexes from protein interaction networks
+
+Graph partitioning algorithms typically seek a partition $\mathcal{C} = \left\{ C_1, \ldots ,C_K \right\}$ of the vertex set $V$ of a graph $G = (V,E)$ in such a manner that the sets $E(C_k,C_{ k ^\prime })$ of edges connecting vertices in $C_k$ to vertices in $C_{k ^\prime }$ are relatively small in size compared to the sets $E(C_k)$ of edges within $C_k$.
+
+Two main methods are hierarchical clustering and spectral clustering. For details, see the [clustering](clustering) section. More methods are under active research.
+
+Other methods are variations or extensions of the two, including
+
+- [SAND 174] Iterative removal of edges in a graph, by their 'importance', e.g. edge-betweenness centrality, since these edges likely serve as 'bridges' separating cohesive subsets of vertices. This method requires $\mathcal{O} (N_v ^3)$, but can be implemented in parallel in nearly linear time. Other edge importance measures can also be used, e.g. based on concepts of resistance and random walks.
+- [SAND 172] Characterizing community structure in World Wide Web using the hubs-and-authorities notion.
+- [SAND 401] Block modeling.
+- Embed the graph into a Euclidean space, and apply a standard clustering algorithm, e.g. $k$-means clustering.
+
 
 (graph-assortativity)=
 ### Assortativity and Mixing
 
 
-## Dynamic Networks
+## Dynamic Graphs
+
+Dynamic graphs refers to a collection $\left\{ G_{t} \right\}$ of graphs indexed over times $t$ in some set $T$.
+
+Settings
+- cumulative: a vertex or edge present in $t$ and stay after $t$
+- snapshots: a vertex or edge present in a certain interval of time around $t$
 
 
-.
-
-
-.
-
-
-.
-
-
-.
-
-
-.
-
-
-.
-
-
-.
-
-
-.
+Problems
+- extension of theorems in static graphs to dynamic graphs, e.g. Menger's theorem [SAND 224]
+- combinatorial problems that incorporates time [SAND 285]
+- evolution of static descriptive statistics over time: degrees, diameter, clustering behavior etc.
