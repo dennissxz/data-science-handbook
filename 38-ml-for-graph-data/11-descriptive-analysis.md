@@ -393,6 +393,53 @@ Other methods are variations or extensions of the two, including
 (graph-assortativity)=
 ### Assortativity and Mixing
 
+Do vertices form a cohesive subset because they have some similar characteristics?
+
+Selective linking among vertices, according to a certain characteristic(s), is termed **assortative mixing** in the social network literature, which can be measured by some assortativity coefficients.
+
+The assortativity coefficients we describe here are attributed to Newman [SAND 293] and are essentially variations on the concept of correlation coefficients in statistics.
+
+The characteristics can be categorical, ordinal, or continuous. We first consider the categorical case.
+
+#### Categorical
+
+Suppose there are $M$ categories. We can define $f_{ij} = \frac{\left\vert E(C_i, C_j) \right\vert}{\left\vert E(G) \right\vert}$ in the same way as that in modularity, where $C_i$ is the set of vertices in category $i$. The assortativity coefficient is then
+
+
+$$
+r_{a}=\frac{\sum_{i} f_{i i}-\sum_{i} f_{i+} f_{+i}}{1-\sum_{i} f_{i+} f_{+i}}
+$$
+
+The value is
+- 0 when the mixing in the graph is no different from that obtained through a random assignment of edges that preserves the marginal degree distribution, where $\mathbb{E}\left( f_{ii} \right) = f_{i+} \cdot f_{+i}$
+- 1 when the mixing is perfect assortative, i.e.$f_{ij}=0$ for $i\ne j$.
+- minimum when the mixing is perfectly disassortative, i.e. $f_{ii}=0$ for all $i$
+
+  $$
+  r_{a}^{\min }=-\frac{\sum_{i} f_{i+} f_{+i}}{1-\sum_{i} f_{i+} f_{+i}}
+  $$
+
+Hence the $r_a \in [-1,1]$ but does not achieve $-1$ in the case of perfect disassortative mixing. Newman [SAND 293] argues that this behavior may be interpreted as reflecting that disassortative networks can range less ‘far’ from randomness than assortative networks.
+
+#### Continuous
+
+For ordinal or continuous characteristics, let $(x, y)$ be the value of the characteristic for the vertices joined by an edge $e \in E$. To quantify the assortativity, we can simply use the Pearson correlation coefficient of the pairs $(x_e, y_e)$
+
+$$
+r = \frac{\operatorname{Cov}\left( X, Y \right)}{\sqrt{\operatorname{Var}\left( X \right)\operatorname{Var}\left( Y \right)}} = \frac{\sum_{x,y} xy (f_{xy} - f_{x+}f_{+y})}{\sigma_x \sigma_y}
+$$
+
+where $\sum_{x,y}$ is over unique pairs $(x, y)$. In particular, when the characteristic is vertex degree, this quantity is simply the [degree correlation](degree-correlation).
+
+### Application
+
+For details see SAND 4.4.
+
+- Time series to graph: suppose we have $N$ time series, we can compute pairwise correlation, and build a similarity graph $G_1$ of $N$ vertices. There is an edge between vertex $i$ and $j$ if their correlation is greater than some threshold.
+- Descriptive analysis: suppose some underlying state change after some event, such that the pairwise correlations change. We can build a new similarity graph $G_2$ accordingly. Then, we can compute descriptive statistics introduced above for $G_1$ and $G_2$.
+- Difference: we can even compute the difference of these quantities before and after the event. This gives information about how these times series are related to the event.
+- Testing: we can also test the significance of the changes. Note the multiple testing issue.
+
 
 ## Dynamic Graphs
 
