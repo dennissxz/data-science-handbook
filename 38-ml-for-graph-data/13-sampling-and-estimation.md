@@ -51,13 +51,9 @@ Inclusion probabilities:
 $$\begin{aligned}
 \pi_{(i, j)} &= \frac{n}{N_e} \\
 \pi_i&= 1-\mathbb{P}(\text{no edge incident to $v_i$ is selected}) \\
-&=\left\{\begin{array}{ll}\frac{\left(\begin{array}{c}
-N_e-d_{i} \\
-n
-\end{array}\right)}{\left(\begin{array}{c}
-N_{e} \\
-n
-\end{array}\right)} & \text { if } n \leq N_{e}-d_{i} \\ 1, & \text { if } n>N_{e}-d_{i}\end{array}\right. \\
+&=\left\{  
+
+  \begin{array}{ll}\frac{\binom{N_e - d_i}{n}}{\binom{N_e}{n}} & \text { if } n \leq N_{e}-d_{i} \\ 1, & \text { if } n>N_{e}-d_{i}\end{array}\right. \\
 \end{aligned}$$
 
 Hence, in incident subgraph sampling, while the edges are included in the sample graph $G^*$ with equal probability, the vertices are included with unequal probabilities depending on their degrees.
@@ -67,8 +63,42 @@ given sender had participated.
 
 ### Star Sampling
 
-As its name suggests, we
+The first stage selects vertices like in induced subgraph sampling, but in the second stage, as its name suggests, we sample all edges incident to the selected vertices, as well as the new vertices on the other end.
+1. Select a simple random sample $V_0^*$ from $V$ without replacement
+2. For each $v \in V^*$,
+   - observe all edges incident to $v$, yielding $E^*$.
+   - also observe its neighbors, together with $V_0^*$ yielding $V^*$
 
+More precisely, this is called labeled star sampling. In unlabeled star sampling, the resulting graph is $G^* = (V_0^*, E^*)$. In the latter case, we focus on some particular characteristics (e.g. degrees), so we don't need the vertices on the other end.
+
+For instance, in co-authorship graph, randomly sampling records of $n$ authors and recording the total number of co-authors of each author would correspond to unlabeled star sampling; if not only the number but the identities of the co-authors are recorded, this would correspond to labeled star sampling.
+
+The inclusion probabilities are
+
+$$\begin{aligned}
+\pi_{(i, j)}
+&= \mathbb{P}\left( \text{neither $i$ nor $j$ are sampled}  \right)\\
+&= 1- \frac{\binom{N_v-2}{n}}{\binom{N_v}{n}} \\
+\pi_ i &= \frac{n}{N_v} \quad \text{unlabeled case}  \\
+\pi_ i &= \sum_{L \subseteq N[i]}(-1)^{|L|+1} \mathbb{P}(L) \quad \text{labeled case}  \\
+\end{aligned}$$
+
+where
+- $N[i]$ is the union of vertex $i$ and the its immediate neighbors
+- $\mathbb{P}\left( L \right) = \frac{\binom{N_v - \left\vert L \right\vert}{n - \left\vert L \right\vert} }{\binom{N_v}{n} }$ is the probability that $L \subseteq V_0^*$. ($n > \left\vert L \right\vert$??)
+
+### Snowball sampling
+
+In star sampling we only look at the immediate neighborhood. We can extends it to the $K$-th order neighbors, which is snowball sampling. In short, a $K$-stage snowball sampling is
+1. select a simple random sample $V_0^*$ from $V$ without replacement
+2. for each $k = 1, \ldots , K$, observe a $k$-th order neighbors, add them to $V^*$ (excluding repeated vertices), and add their incident edges to $E^*$.
+
+Formally, let $N(S)$ be the set of all neighbors of vertices in a set $S$. After we initialize $V_0^*$, we add vertices, for $k=1, \ldots, K$
+- $V_k^* = N(V_{k-1}^*)\cap \bar{V}_0^* \cap \ldots \cap \bar{V}_{k-1}^*$, called the $k$-th wave.
+
+The final graph $G^*$ consists of the vertices in $V^* = V_0^* \cup V_1 ^* \cup \ldots \cup V_K^*$ and their incident edges.
+
+Unfortunately, although not surprisingly, inclusion probabilities for snowball sampling become increasingly intractable to calculate after the one-stage level corresponding to star sampling.
 
 
 .
