@@ -830,6 +830,11 @@
      Graph-based
     </a>
    </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#modularity-measure">
+     Modularity Measure
+    </a>
+   </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -923,11 +928,14 @@
 <p>which measures the Euclidean distance between rows <span class="math notranslate nohighlight">\(a\)</span> and <span class="math notranslate nohighlight">\(b\)</span> in the adjacency matrix.</p>
 </li>
 </ul>
-<p>Besides the distance measures between vertices, Newman [SAND 294, 297] seeks to greedily optimize the so-called <strong>modularity</strong> of a partition. Let</p>
+</div>
+<div class="section" id="modularity-measure">
+<h3>Modularity Measure<a class="headerlink" href="#modularity-measure" title="Permalink to this headline">¶</a></h3>
+<p>Besides the distance measures between two sets of vertices, Newman [SAND 294, 297] seeks to greedily optimize the so-called <strong>modularity</strong> of a partition. Let</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(\mathcal{C} = \left\{ C_1, \ldots, C_K \right\}\)</span> be a given candidate partition.</p></li>
 <li><p><span class="math notranslate nohighlight">\(f_{ij}(\mathcal{C}) = \frac{E(C_i, C_j)}{E(G)}\)</span> be the fraction of edges in <span class="math notranslate nohighlight">\(G\)</span> that connect vertices in <span class="math notranslate nohighlight">\(C_i\)</span> with vertices in <span class="math notranslate nohighlight">\(C_j\)</span></p></li>
-<li><p><span class="math notranslate nohighlight">\(\boldsymbol{F}\)</span> be a <span class="math notranslate nohighlight">\(K \times K\)</span> matrix storing the <span class="math notranslate nohighlight">\(f_{ij}\)</span> values</p></li>
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{F}\)</span> be a <span class="math notranslate nohighlight">\(K \times K\)</span> matrix storing the <span class="math notranslate nohighlight">\(f_{ij}\)</span> values, which is symmetric for undirected graphs and can be asymmetric for undirected graphs.</p></li>
 </ul>
 <p>The modularity of <span class="math notranslate nohighlight">\(\mathcal{C}\)</span> is defined as</p>
 <div class="math notranslate nohighlight">
@@ -946,7 +954,11 @@
 <p>This is one advantage of hierarchical clustering over “flat” clustering like <span class="math notranslate nohighlight">\(k\)</span>-means</p>
 </div>
 <p>A good representation of clustering process is dendrogram. The <span class="math notranslate nohighlight">\(x\)</span>-axis represents items, and the <span class="math notranslate nohighlight">\(y\)</span>-axis is distance. It provides visual guidance to a good choice for the number of clusters</p>
-<p>Stop merging when the merge cost (distance between merged clusters) would be much larger than in previous iterations (for some precise definition of “much larger”), or use <span class="math notranslate nohighlight">\(\bmod (\mathcal{C})\)</span> to choose an optimal partition.</p>
+<p>Stop merging when</p>
+<ul class="simple">
+<li><p>the merge cost (distance between merged clusters) would be much larger than in previous iterations (for some precise definition of “much larger”), or</p></li>
+<li><p>the modularity <span class="math notranslate nohighlight">\(\bmod (\mathcal{C})\)</span> is maximized optimal partition.</p></li>
+</ul>
 <div class="figure align-default" id="clustering-dendrogram">
 <a class="reference internal image-reference" href="../_images/clustering-dendrogram.png"><img alt="" src="../_images/clustering-dendrogram.png" style="width: 50%;" /></a>
 <p class="caption"><span class="caption-number">Fig. 75 </span><span class="caption-text">Representing clustering with dendrograms</span><a class="headerlink" href="#clustering-dendrogram" title="Permalink to this image">¶</a></p>

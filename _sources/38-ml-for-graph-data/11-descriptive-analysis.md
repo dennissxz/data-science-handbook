@@ -1,12 +1,12 @@
 # Descriptive Analysis
 
-## Vertex and Edge Characteristics
+How to measure the importance of a vertex or an edge? Degree, centrality.
 
-How to measure the importance of a vertex or an edge?
+How to measure the cohesiveness of a graph? Density, connectivity, partitioning, assortativity.
 
-### Degree
+## Degree
 
-#### Degree Distributions
+### Degree Distributions
 
 Given a network graph $G$, define $f(d)$ to be the fraction of vertices $v \in V$ with degree $d_v = d$. The collection $\left\{ f(d) \right\}$ is called the degree distribution of $G$, which is simply the histogram formed from the degree sequence, with bins of size one.
 
@@ -65,7 +65,7 @@ There are several methods to estimate $\alpha$, or in general, fitting power-law
 
   $$f(d) \propto d^{-\alpha} \exp \left(-d / d^{*}\right)$$
 
-#### Joint Degree Distribution
+### Joint Degree Distribution
 
 Two graphs may have identical degree sequences and yet otherwise differ noticeably in the way their vertices are paired. To capture information of this sort, we consider a two-dimensional analogue of the degree distribution, i.e. joint degree distribution $f(d_1, d_2)$, which is symmetric.
 
@@ -83,7 +83,7 @@ In the plot below, we see that the joint distribution concentrate primarily wher
 Joint degree distributions for the two datasets. Colors range from blue (low relative frequency) to red (high relative frequency), with white indicating areas with no data. [Kolaczyk 2009]
 :::
 
-#### Conditional Degree Distribution
+### Conditional Degree Distribution
 
 From the joint degree distribution we can define conditional degree distribution $f_{d ^\prime \vert d}$: given a vertex of degree $d$, what is the relative frequency of its neighbor that has degree $d ^\prime$?
 
@@ -95,7 +95,8 @@ $$\bar{d}(d)=\sum_{d^{\prime}} d^{\prime} f_{d^{\prime} \mid d}$$
 
 A negative trend has been observed in $\bar{d}(d)$ as $d$ increases.
 
-#### Degree Correlation
+(degree-correlation)=
+### Degree Correlation
 
 Analogously, we can define correlation $\operatorname{Corr}\left( D, D ^\prime  \right)$ by the joint degree distribution $f(d_1, d_2)$ and its marginals.
 
@@ -103,11 +104,11 @@ For the two data sets above, the degree correlation is 0.023 and -0.093 respecti
 
 A closely related concept is [assortativity](graph-assortativity).
 
-### Centrality
+## Centrality
 
 The importance of a vertex $v$ can be measured by centrality $c(v)$. There are many kinds of centrality measures. Degree is one of them. Deciding which are most appropriate for a given application clearly requires consideration of the context.
 
-#### Closeness Centrality
+### Closeness Centrality
 
 Closeness centrality measures how close a vertex is to other vertices.
 
@@ -120,7 +121,7 @@ Note
 - To compute $c_{cl}(v)$, we need to compute single-source shortest paths from $v$ to all other vertices $u \in V$.
 - Often, for comparison across graphs and with other centrality measures, this measure is normalized to lie in the interval $[0,1]$, through multiplication by a factor $N_v - 1$. It is 1 if $v$ is the center of a star.
 
-#### Betweenness Centrality
+### Betweenness Centrality
 
 Betweenness centrality relates 'importance' to where a vertex is located with respect to the paths in the graph.
 
@@ -137,7 +138,7 @@ Note
 - If all shortest paths are unique, i.e. $\sigma(s,t)=1$, then $c_{bet}(v)$ simple counts how many shortest paths going through $v$.
 - It can be normalized to $[0,1]$ through division by $(N_v - 1) (N_v - 2)/2$. For instance, it is 1 if $v$ is the center of a star.
 
-#### Eigenvector Centrality
+### Eigenvector Centrality
 
 A vertex's importance may depends on its neighbors' importance. Eigenvector centrality captures this,
 
@@ -162,7 +163,7 @@ Calculation of the largest eigenvalue of a matrix and its eigenvector is a stand
 
 :::
 
-#### Hubs and Authorities (HITS) Algorithms
+### Hubs and Authorities (HITS) Algorithms
 
 Given an adjacency matrix $\boldsymbol{A}$ for a directed web graph,
 - hubs are determined by the eigenvector centrality of the matrix $\boldsymbol{M}_{hub} = \boldsymbol{A} \boldsymbol{A} ^{\top}$, where $[\boldsymbol{M}_{hub}]_{ij}=$ the number of vertices that both $i$ and $j$ point to.
@@ -173,11 +174,11 @@ Given an adjacency matrix $\boldsymbol{A}$ for a directed web graph,
 
   $$[\boldsymbol{M}_{hub}]_{ij}= \langle\boldsymbol{a}_{\cdot i}, \boldsymbol{a} _{\cdot j} \rangle = \sum_{v \in V} \mathbb{I} \left\{ i \leftarrow v \rightarrow j \right\}$$
 
-#### Centrality of Edges
+### Centrality of Edges
 
 Betweenness centrality extends to edges in a straightforward manner. For other measures, we can apply them to the vertices in the edge-to-vertex dual graph (line graph) of $G$.
 
-#### Graph-level Summaries
+### Graph-level Summaries
 
 Once we compute $c(v)$ for all $v$, we can look for graph-level summaries, e.g. the distribution of $c(v)$, in analogy to the degree distribution, as well as its moments and quantiles.
 
@@ -193,13 +194,13 @@ where
 
 There are many other extension of the above centrality measures to different levels.
 
-## Network Cohesion
+## Cohesion
 
 Are some subsets of vertices cohesive? Many measures differ from local (triads) to global (giant components), and explicitly (cliques) or implicitly (clusters).
 
 ### Local Density
 
-#### Cliques
+### Cliques
 
 Recall that a clique is a complete subgraph $H$ of $G$. A common case is that of 3-cliques, i.e. triangles. In practice, large cliques are rare. A sufficient condition for a clique of size $n$ to exist in $G$ is $N_e > \frac{n-2}{n-1}\frac{N_v^2}{2}$. But in real-world networks, $N_e \sim N_v$.
 
@@ -208,19 +209,19 @@ Recall that a clique is a complete subgraph $H$ of $G$. A common case is that of
 - NP-complete:
   - whether a graph $G$ has a maximal clique of ata least size $n$
 
-#### Plexes
+### Plexes
 
 Plexes are weakened version of cliques: A subgraph $H$ consisting of $m$ vertices is called an $n$-plex for $m > n$ if no vertex has degree less than $m-n$. In other words, no vertex is missing more than $n$ of its possible $m-1$ edges with other vertices in the subgraph.
 
 Computation problems tend to scale like those involving cliques.
 
-#### Cores
+### Cores
 
 A $k$-core of a graph $G$ is a subgraph $H$ for which all vertices have degree at least $k$.
 
 A maximal $k$-core subgraph may be computed in $O(N_v +N_e)$. The algorithm computes the shell indices for all $v$. The shell index of $v$ is the largest value $c$ such that $v$ belongs to the $c$-core of $G$ but not its $(C+1)$-core.
 
-#### Density
+### Density
 
 The density of a subgraph $H = (V_H, E_H)$ is defined as the realized fraction of total possible edges in this subgraph
 
@@ -233,7 +234,7 @@ It measures how $H$ is close to a clique. If $\operatorname{den}(H) =1$ then $H$
 - If $H=G$, then $\operatorname{den}(G)$ gives the density of the overall graph
 - If $H=N(v)$ is the set of neighbors of a vertex $v$ and the edges between them, then $\operatorname{den}(N(v))$ gives a measure of density in the immediate neighborhood of $v$, which is called the Watts-Strogatz local clustering coefficient. The average of $\operatorname{den}(N(v))$ can be used as a clustering coefficient for the overall graph.
 
-#### Clustering Coefficient
+### Clustering Coefficient
 
 A measure of density in the immediate neighborhood of $v$ can be the answer to the question: among all pairs of neighbors of $v$, how many of them are connected? Or, what's the proportion that two of my friends are also friends of each other? To answer this, we first formally define triangles and connected triples.
 
@@ -260,7 +261,7 @@ $$
 
 where $\boldsymbol{V} ^\prime \subseteq V$ is the set of vertices $v$ with $d_v \ge 2$.
 
-#### Transitivity
+### Transitivity
 
 The above definition is an simple average of $\operatorname{clus}(v)$, which treat $v$ with different $d_v$ equally. A more informative measure is the weighted average by $\tau_{\land }(v)$,
 
@@ -290,7 +291,7 @@ Higher-order clustering coefficients have also been proposed, involving cycles o
 
 The task of verifying whether a graph is connected and, if not, identifying its connected components can be done in $O(N_v + N_e)$ time by DFS or BFS. If it does not, we might seek to quantify how close to being able to do so it is.
 
-#### Small World
+### Small World
 
 Often it is the case that one of the connected components in a graph G dominates the others in magnitude, in that it contains the vast majority of the vertices in $G$. We call it the giant component. Depending on the task at hand, it may be sensible to restrict attention to that component alone in carrying out further analysis and modeling.
 
@@ -306,7 +307,7 @@ We say it is small if $\bar{l}$ scales as $\mathcal{O} (\log N_v)$ or less.
 
 Besides, small average distance is often accompanied by a high clutering coefficient $\operatorname{clus}(G)$ or $\operatorname{clus} _T (G)$. These two properties joint define the term 'small world', which is related to communication upon them, e.g. information in a social network, disease in an epidemiological network, etc.
 
-#### Vertex and Edge Connectivity and Cut
+### Vertex and Edge Connectivity and Cut
 
 If an arbitrary subset of k vertices (edges) is removed from a graph, is the remaining subgraph connected?
 
@@ -340,7 +341,7 @@ Theorem (Menger's)
 Definitions (cut)
 : - A **vertex-cut (edge-cut)** is a set such that removing it disconnects the graph.
   - A $s$-$t$ **cut** is a partition of $V$ into two disjoint, non-empty subsets, $S, \bar{S} \subset V$ where $s \in S$ and $t \in \bar{S}$.
-  - For $G$ equipped with edge weights $w_e$, a $s$-$t$ cut is a **minimum** $s$-$t$ cut if the sum of the weights on edges connecting $S$ and bar{S}$ is a minimum.
+  - For $G$ equipped with edge weights $w_e$, a $s$-$t$ cut is a **minimum** $s$-$t$ cut if the sum of the weights on edges connecting $S$ and $\bar{S}$ is a minimum.
 
 Claims
 - If $w_e =1$ for all $e$, then finding a minimum $s$-$t$ cut is equivalent to finding an edge-cut of minimal cardinality, with one component containing $s$ and the other containing $t$.
@@ -349,7 +350,7 @@ Claims
 To find a minimum $s$-$t$ cut, it is equivalent to find a maximum flow. See the [section](max-flow) for details.
 
 
-#### In Directed Graphs
+### In Directed Graphs
 
 Many of the concepts above extend to the case of directed graphs analogously. A often useful characterization of directed graphs is that of a **bowtie**. We can classify the graph into five parts
 
@@ -369,36 +370,87 @@ Bowtie illustration [Broder] and application to a network data set [Kolaczyk 200
 
 
 
-
-
 ### Graph Partitioning
+
+A cohesive subset of vertices generally is taken to refer to a subset of vertices that are
+- well connected among themselves, and
+- relatively well separated from the remaining vertices.
+
+It has been used in the detection of community structure in social networks and in the identification of possible protein complexes from protein interaction networks
+
+Graph partitioning algorithms typically seek a partition $\mathcal{C} = \left\{ C_1, \ldots ,C_K \right\}$ of the vertex set $V$ of a graph $G = (V,E)$ in such a manner that the sets $E(C_k,C_{ k ^\prime })$ of edges connecting vertices in $C_k$ to vertices in $C_{k ^\prime }$ are relatively small in size compared to the sets $E(C_k)$ of edges within $C_k$.
+
+Two main methods are hierarchical clustering and spectral clustering. For details, see the [clustering](clustering) section. More methods are under active research.
+
+Other methods are variations or extensions of the two, including
+
+- [SAND 174] Iterative removal of edges in a graph, by their 'importance', e.g. edge-betweenness centrality, since these edges likely serve as 'bridges' separating cohesive subsets of vertices. This method requires $\mathcal{O} (N_v ^3)$, but can be implemented in parallel in nearly linear time. Other edge importance measures can also be used, e.g. based on concepts of resistance and random walks.
+- [SAND 172] Characterizing community structure in World Wide Web using the hubs-and-authorities notion.
+- [SAND 401] Block modeling.
+- Embed the graph into a Euclidean space, and apply a standard clustering algorithm, e.g. $k$-means clustering.
+
 
 (graph-assortativity)=
 ### Assortativity and Mixing
 
+Do vertices form a cohesive subset because they have some similar characteristics?
 
-## Dynamic Networks
+Selective linking among vertices, according to a certain characteristic(s), is termed **assortative mixing** in the social network literature, which can be measured by some assortativity coefficients.
 
+The assortativity coefficients we describe here are attributed to Newman [SAND 293] and are essentially variations on the concept of correlation coefficients in statistics.
 
-.
+The characteristics can be categorical, ordinal, or continuous. We first consider the categorical case.
 
+#### Categorical
 
-.
-
-
-.
-
-
-.
+Suppose there are $M$ categories. We can define $f_{ij} = \frac{\left\vert E(C_i, C_j) \right\vert}{\left\vert E(G) \right\vert}$ in the same way as that in modularity, where $C_i$ is the set of vertices in category $i$. The assortativity coefficient is then
 
 
-.
+$$
+r_{a}=\frac{\sum_{i} f_{i i}-\sum_{i} f_{i+} f_{+i}}{1-\sum_{i} f_{i+} f_{+i}}
+$$
+
+The value is
+- 0 when the mixing in the graph is no different from that obtained through a random assignment of edges that preserves the marginal degree distribution, where $\mathbb{E}\left( f_{ii} \right) = f_{i+} \cdot f_{+i}$
+- 1 when the mixing is perfect assortative, i.e.$f_{ij}=0$ for $i\ne j$.
+- minimum when the mixing is perfectly disassortative, i.e. $f_{ii}=0$ for all $i$
+
+  $$
+  r_{a}^{\min }=-\frac{\sum_{i} f_{i+} f_{+i}}{1-\sum_{i} f_{i+} f_{+i}}
+  $$
+
+Hence the $r_a \in [-1,1]$ but does not achieve $-1$ in the case of perfect disassortative mixing. Newman [SAND 293] argues that this behavior may be interpreted as reflecting that disassortative networks can range less ‘far’ from randomness than assortative networks.
+
+#### Continuous
+
+For ordinal or continuous characteristics, let $(x, y)$ be the value of the characteristic for the vertices joined by an edge $e \in E$. To quantify the assortativity, we can simply use the Pearson correlation coefficient of the pairs $(x_e, y_e)$
+
+$$
+r = \frac{\operatorname{Cov}\left( X, Y \right)}{\sqrt{\operatorname{Var}\left( X \right)\operatorname{Var}\left( Y \right)}} = \frac{\sum_{x,y} xy (f_{xy} - f_{x+}f_{+y})}{\sigma_x \sigma_y}
+$$
+
+where $\sum_{x,y}$ is over unique pairs $(x, y)$. In particular, when the characteristic is vertex degree, this quantity is simply the [degree correlation](degree-correlation).
+
+### Application
+
+For details see SAND 4.4.
+
+- Time series to graph: suppose we have $N$ time series, we can compute pairwise correlation, and build a similarity graph $G_1$ of $N$ vertices. There is an edge between vertex $i$ and $j$ if their correlation is greater than some threshold.
+- Descriptive analysis: suppose some underlying state change after some event, such that the pairwise correlations change. We can build a new similarity graph $G_2$ accordingly. Then, we can compute descriptive statistics introduced above for $G_1$ and $G_2$.
+- Difference: we can even compute the difference of these quantities before and after the event. This gives information about how these times series are related to the event.
+- Testing: we can also test the significance of the changes. Note the multiple testing issue.
 
 
-.
+## Dynamic Graphs
+
+Dynamic graphs refers to a collection $\left\{ G_{t} \right\}$ of graphs indexed over times $t$ in some set $T$.
+
+Settings
+- cumulative: a vertex or edge present in $t$ and stay after $t$
+- snapshots: a vertex or edge present in a certain interval of time around $t$
 
 
-.
-
-
-.
+Problems
+- extension of theorems in static graphs to dynamic graphs, e.g. Menger's theorem [SAND 224]
+- combinatorial problems that incorporates time [SAND 285]
+- evolution of static descriptive statistics over time: degrees, diameter, clustering behavior etc.

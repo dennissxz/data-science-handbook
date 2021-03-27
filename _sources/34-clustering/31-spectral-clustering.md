@@ -113,7 +113,7 @@ Property
 
 Thus, $\phi(G)$ will be small when $\lambda_2$ is small and vice versa.
 
-### Fiedler Bisection
+### Bisection
 
 Fiedler [SAND 144] associate $\lambda_2$ with the connectivity of a graph. We partition vertices according to the sign of their entires in $\boldsymbol{v} _2$:
 
@@ -124,7 +124,7 @@ $$
 - The eigenvector $\boldsymbol{v} _2$ is hence often called the Fiedler vector
 - The eigenvalue $\lambda_2$ is often called the Fiedler value, which is also the algebraic connectivity of the graph.
 
-It can be shown that
+This method is often called **spectral bisection**. It can be shown that
 
 $$
 \phi(G) \leq \phi(S_F, \bar{S}_F) \leq \frac{\phi^{2}(G)}{\operatorname{deg} _{\max }} \leq \lambda_{2}

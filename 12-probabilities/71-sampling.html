@@ -836,6 +836,64 @@
         <nav id="bd-toc-nav">
             <ul class="nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#estimation-of-mean-and-total">
+   Estimation of Mean and Total
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#equal-probability-sampling">
+     Equal Probability Sampling
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#with-replacement">
+       With Replacement
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#without-replacement">
+       Without Replacement
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#unequal-probability-sampling">
+     Unequal Probability Sampling
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#horvitz-thompson-estimate">
+       Horvitz-Thompson Estimate
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#id1">
+       With Replacement
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#estimation-of-group-size-and-species">
+   Estimation of Group Size and Species
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#group-size">
+     Group Size
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#group-species">
+     Group Species
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#monte-carlo">
    Monte Carlo
   </a>
@@ -921,12 +979,164 @@
 </li>
 </ul>
 <p>For multivariate distributions, e.g. <span class="math notranslate nohighlight">\(d=2\)</span>, if we want to generate a sample <span class="math notranslate nohighlight">\(\left\{ (x_1, y_1), \ldots, (x_n, y_n) \right\}\)</span> from unknown <span class="math notranslate nohighlight">\(p(x,y)\)</span>, and <span class="math notranslate nohighlight">\(f(x \vert y )\propto p(x\vert y)\)</span> and <span class="math notranslate nohighlight">\(f(y \vert x )\propto p(x\vert y)\)</span> are known, then we can use <span class="math notranslate nohighlight">\(f(x \vert y)\)</span> and <span class="math notranslate nohighlight">\(f(y \vert x)\)</span> to obtain the sample. Gibbs sampling solve this problem setting.</p>
+<div class="section" id="estimation-of-mean-and-total">
+<h2>Estimation of Mean and Total<a class="headerlink" href="#estimation-of-mean-and-total" title="Permalink to this headline">¶</a></h2>
+<p>Setup</p>
+<ul class="simple">
+<li><p>a population <span class="math notranslate nohighlight">\(U = \left\{ 1, \ldots, N_u \right\}\)</span> of <span class="math notranslate nohighlight">\(N_u\)</span> units, e.g. people, animals</p></li>
+<li><p>a value <span class="math notranslate nohighlight">\(y_i\)</span> for each <span class="math notranslate nohighlight">\(i \in U\)</span>, e.g. height, age</p></li>
+<li><p><span class="math notranslate nohighlight">\(\tau = \sum_{i \in U} y_i\)</span> is the total, and <span class="math notranslate nohighlight">\(\mu = \frac{\tau}{N_u}\)</span> is the average, of <span class="math notranslate nohighlight">\(y\)</span>’s in the population</p></li>
+<li><p><span class="math notranslate nohighlight">\(S = \left\{ i_1, \ldots, i_n \right\}\)</span> is a sample of <span class="math notranslate nohighlight">\(n\)</span> units from <span class="math notranslate nohighlight">\(U\)</span>, and we can observe <span class="math notranslate nohighlight">\(y_i\)</span> for each <span class="math notranslate nohighlight">\(i \in S\)</span>.</p></li>
+</ul>
+<p>Estimation of population total <span class="math notranslate nohighlight">\(\tau\)</span> or average <span class="math notranslate nohighlight">\(\mu\)</span> from a random sample is an ubiquitous task.</p>
+<div class="section" id="equal-probability-sampling">
+<h3>Equal Probability Sampling<a class="headerlink" href="#equal-probability-sampling" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="with-replacement">
+<h4>With Replacement<a class="headerlink" href="#with-replacement" title="Permalink to this headline">¶</a></h4>
+<p>Consider a sample <span class="math notranslate nohighlight">\(S\)</span> uniformly from <span class="math notranslate nohighlight">\(U\)</span> with replacement, then we have unbiased estimates</p>
+<div class="math notranslate nohighlight">
+\[
+\hat{\mu} = \frac{1}{n} \sum_{i \in S}  y_i \quad \hat{\tau} = N_u \bar{y}
+\]</div>
+<p>with variance</p>
+<div class="math notranslate nohighlight">
+\[
+\operatorname{Var}\left( \hat{\mu} \right) = \frac{\sigma^2}{n}  \quad \operatorname{Var}\left( \hat{\tau} \right) =  \frac{N_u^2\sigma^2}{n}
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\sigma^2\)</span> is the population variance, which can be estimates by <span class="math notranslate nohighlight">\(s^2 = \frac{1}{n-1} \sum_{i \in S} (y_i - \bar{y})^2\)</span>.</p>
+</div>
+<div class="section" id="without-replacement">
+<h4>Without Replacement<a class="headerlink" href="#without-replacement" title="Permalink to this headline">¶</a></h4>
+<p>Now consider sampling without replacement. The inclusion probability of unit <span class="math notranslate nohighlight">\(i\)</span> in a sample of size <span class="math notranslate nohighlight">\(n\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[
+\pi_i = \frac{\binom{N_u - 1}{n-1} }{\binom{N_u}{n} } = \frac{n}{N_u}
+\]</div>
+<p>Similarly, let <span class="math notranslate nohighlight">\(\pi_{ij}\)</span> be the probability that units <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(j\)</span> are both in the sample <span class="math notranslate nohighlight">\(S\)</span>, we have</p>
+<div class="math notranslate nohighlight">
+\[
+\pi_{ij} = \frac{n(n-1)}{N_u(N_u - 1) }
+\]</div>
+<p>The unbiased estimates of the mean and total have the same form</p>
+<div class="math notranslate nohighlight">
+\[
+\hat{\tau}_\pi = N_u \bar{y} \quad \hat{\mu}_\pi =  \bar{y}
+\]</div>
+<p>but smaller variance</p>
+<div class="math notranslate nohighlight">
+\[
+\operatorname{Var}\left( \hat{\mu}_\pi \right) = \frac{N_u - n}{N_u } \frac{ \sigma^2 }{n} &lt; \frac{\sigma^2 }{n}   \quad \operatorname{Var}\left( \hat{\tau}_\pi \right) = \frac{N_u (N_u - n) \sigma^2 }{n} &lt; \frac{N_u ^2 \sigma^2 }{n}  
+\]</div>
+</div>
+</div>
+<div class="section" id="unequal-probability-sampling">
+<h3>Unequal Probability Sampling<a class="headerlink" href="#unequal-probability-sampling" title="Permalink to this headline">¶</a></h3>
+<p>In many situations, some units are more likely than others to be included in a sample, either by design or by accident, e.g. interviewing people on a street, locating homeless vs homeowners, etc. Sampling under designs of this sort is called <strong>unequal</strong> probability sampling.</p>
+<p>In this setting, the sample mean is a biased estimator for <span class="math notranslate nohighlight">\(\mu\)</span>. The Horvitz-Thompson estimator remedies this problem. Note that the Horvitz-Thompson estimator does not depend on the number of times a unit may be selected. Each distinct unit of the sample is utilized only once. We first consider sampling without replacement such that all units in <span class="math notranslate nohighlight">\(S\)</span> is distinct.</p>
+<div class="section" id="horvitz-thompson-estimate">
+<h4>Horvitz-Thompson Estimate<a class="headerlink" href="#horvitz-thompson-estimate" title="Permalink to this headline">¶</a></h4>
+<p>Suppose that each unit <span class="math notranslate nohighlight">\(i \in U\)</span> has probability <span class="math notranslate nohighlight">\(\pi_i\)</span> of being included in a sample <span class="math notranslate nohighlight">\(S\)</span> of size <span class="math notranslate nohighlight">\(n\)</span>. The Horvitz-Thompson estimate of <span class="math notranslate nohighlight">\(\tau\)</span> and <span class="math notranslate nohighlight">\(\mu\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[
+\hat{\tau}_\pi = \sum_{i \in S} \frac{y_i}{\pi_i} \quad \hat{\mu}_\pi = \frac{1}{N_u}  \hat{\tau}_\pi
+\]</div>
+<p>the estimator <span class="math notranslate nohighlight">\(\hat{\tau}_\pi\)</span> is unbiased since</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbb{E}\left(\hat{\tau}_{\pi}\right)=\mathbb{E}\left(\sum_{i \in S} \frac{y_{i}}{\pi_{i}}  \right)=\mathbb{E}\left(\sum_{i \in {U}}\frac{y_{i}}{\pi_{i}} Z_i\right)=\sum_{i \in {U}} \frac{y_{i}}{\pi_{i}} \mathbb{E}\left(Z_{i}\right) = \mu
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(Z_i = 1\)</span> if <span class="math notranslate nohighlight">\(i \in S\)</span> and zero otherwise, hence <span class="math notranslate nohighlight">\(\mathbb{E}\left( Z_i \right) = \mathbb{P}\left( Z_i = 1 \right) = \pi_i\)</span>.</p>
+<p>To find the variance of this estimator, use the indicator variable approach, we obtain</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\mathbb{V}\left(\hat{\tau}_{\pi}\right)
+&amp;= \operatorname{Cov} \left(\sum_{i \in {U}}\frac{y_{i}}{\pi_{i}} Z_i, \sum_{i \in {U}}\frac{y_{i}}{\pi_{i}} Z_i\right) \\
+&amp;= \sum_{i\in U}\left(\frac{1-\pi_{i}}{\pi_{i}}\right) y_{i}^{2}+\sum_{i\in U}\sum_{j \neq i}\left(\frac{\pi_{i j}-\pi_{i} \pi_{j}}{\pi_{i} \pi_{j}}\right) y_{i} y_{j} \\
+&amp;=\sum_{i \in U} \sum_{j \in U} y_{i} y_{j}\left(\frac{\pi_{i j}}{\pi_{i} \pi_{j}}-1\right) \quad \text{$\pi_{ij} = \pi_i$ when $i = j$.}
+\end{aligned}\end{split}\]</div>
+<p>An unbiased estimator for this is</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\widehat{\mathbb{V}}\left(\hat{\tau}_{\pi}\right)
+&amp;= \sum_{i\in S}\left(\frac{1-\pi_{i}}{\pi_{i}^{2}}\right) y_{i}^{2}+\sum_{i\in S} \sum_{j \neq i}\left(\frac{\pi_{i j}-\pi_{i} \pi_{j}}{\pi_{i} \pi_{j}}\right) \frac{1}{\pi_{i j}} y_{i} y_{j} \\
+&amp;=\sum_{i \in S} \sum_{j \in S} y_{i} y_{j}\left(\frac{1}{\pi_{i} \pi_{j}}-\frac{1}{\pi_{i j}}\right)
+\end{aligned}\end{split}\]</div>
+<p>assuming <span class="math notranslate nohighlight">\(\pi_{ij} &gt; 0\)</span> for all pairs <span class="math notranslate nohighlight">\((i, j)\)</span>. In particular, if the inclusion of units <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(j\)</span> are independent, then <span class="math notranslate nohighlight">\(\pi_{ij} = \pi_i \pi_j\)</span>, and only diagonal term <span class="math notranslate nohighlight">\((i=j)\)</span> remains in the above two quantities.</p>
+<p>An approximate <span class="math notranslate nohighlight">\((1-\alpha)\)</span> 100% confidence interval for <span class="math notranslate nohighlight">\(\tau\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[
+\hat{\tau}_{\pi} \pm t_{\alpha / 2} \sqrt{ \hat{\mathbb{V}}\left(\hat{\tau}_{\pi}\right)}
+\]</div>
+<p>The two analogous quantities for estimator <span class="math notranslate nohighlight">\(\hat{\mu}_\pi\)</span> are</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbb{V}\left(\hat{\mu}_{\pi}\right)=\frac{1}{N_u^2}  \mathbb{V}\left(\hat{\tau}_{\pi}\right) \quad  \mathbb{V}\left(\hat{\mu}_{\pi}\right)=\frac{1}{N_u^2}  \widehat{\mathbb{V}}\left(\hat{\tau}_{\pi}\right)
+\]</div>
+</div>
+<div class="section" id="id1">
+<h4>With Replacement<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h4>
+<p>Now we consider sampling with replacement. We first obtain a sample <span class="math notranslate nohighlight">\(S\)</span> of size <span class="math notranslate nohighlight">\(n\)</span>, then find a set <span class="math notranslate nohighlight">\(S^*\)</span> of distinct units from <span class="math notranslate nohighlight">\(S\)</span>, and use <span class="math notranslate nohighlight">\(S^*\)</span> to compute the Horvitz-Thompson estimates.</p>
+<p>Let <span class="math notranslate nohighlight">\(p_i\)</span> be the probability of being selected in each of the <span class="math notranslate nohighlight">\(n\)</span> times for <span class="math notranslate nohighlight">\(i \in U\)</span>. It is easy to see that the inclusion probability in <span class="math notranslate nohighlight">\(S^*\)</span> (or equivalently, sample <span class="math notranslate nohighlight">\(S\)</span>) are</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\pi_i
+&amp;= 1 - (1-p_i)^n\\
+\pi_{ij}
+&amp; = \mathbb{P}\left( i \in S \right) + \mathbb{P}\left( j \in S \right) - \mathbb{P}\left( i,j \in S \right) \\
+&amp;= \pi_i + \pi_j - [1 - (1-p_i - p_j)^n]
+\end{aligned}\end{split}\]</div>
+<p>Horvitz-Thompson estimators can be computed with these values.</p>
+<p>If <span class="math notranslate nohighlight">\(p_i\)</span> is directly proportional to the values <span class="math notranslate nohighlight">\(c_i\)</span> of some characteristic of <span class="math notranslate nohighlight">\(i\)</span>, i.e., <span class="math notranslate nohighlight">\(p_i = \frac{c_i}{\sum c_i}\)</span> we call this <strong>probability proportional to size</strong> (PPS) sampling. For instance, households might be selected for a marketing survey by drawing names from a database, in which case those households with more members in the database have a larger chance of being included.</p>
+</div>
+</div>
+</div>
+<div class="section" id="estimation-of-group-size-and-species">
+<h2>Estimation of Group Size and Species<a class="headerlink" href="#estimation-of-group-size-and-species" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="group-size">
+<h3>Group Size<a class="headerlink" href="#group-size" title="Permalink to this headline">¶</a></h3>
+<p>The estimation of group total <span class="math notranslate nohighlight">\(\tau\)</span> above usually involve <span class="math notranslate nohighlight">\(N_u\)</span>, but often <span class="math notranslate nohighlight">\(N_u\)</span> is unknown, e.g. populations of endangered animal species. One method to estimate <span class="math notranslate nohighlight">\(N_u\)</span> is the class of <strong>capture-recapture</strong> estimators. The simplest version involves two stages</p>
+<ol class="simple">
+<li><p>Select a simple random sample <span class="math notranslate nohighlight">\(S_1\)</span> of size <span class="math notranslate nohighlight">\(n_1\)</span> without replacement, mark all units in <span class="math notranslate nohighlight">\(S_1\)</span>, and return then to the population</p></li>
+<li><p>Select a simple random sample <span class="math notranslate nohighlight">\(S_2\)</span> of size <span class="math notranslate nohighlight">\(n_2\)</span> without replacement, the value</p></li>
+</ol>
+<div class="math notranslate nohighlight">
+\[
+  \hat{N}_u^{(c/r)} = \frac{n_2}{m} n_1
+  \]</div>
+<p>is then used as an estimate of <span class="math notranslate nohighlight">\(N_u\)</span>, where <span class="math notranslate nohighlight">\(m = \left\vert S_1 \cap S_2 \right\vert\)</span> is the number of marked units in <span class="math notranslate nohighlight">\(S_2\)</span>. An estimator of the variance is</p>
+<div class="math notranslate nohighlight">
+\[
+\widehat{V}\left(\hat{N}_{u}^{(c / r)}\right)=\frac{n_{1} n_{2}\left(n_{1}-m\right)\left(n_{2}-m\right)}{m^{3}}
+\]</div>
+<p>If <span class="math notranslate nohighlight">\(n_1\)</span> and <span class="math notranslate nohighlight">\(n_2\)</span> are fixed, then <span class="math notranslate nohighlight">\(m\)</span> follows a hypergeometric distribution, and the integer part of <span class="math notranslate nohighlight">\(\hat{N}_u^{(c/r)}\)</span> corresponds to MLE of <span class="math notranslate nohighlight">\(N_u\)</span>.</p>
+</div>
+<div class="section" id="group-species">
+<h3>Group Species<a class="headerlink" href="#group-species" title="Permalink to this headline">¶</a></h3>
+<p>Aka species problem. Suppose there <span class="math notranslate nohighlight">\(N_s\)</span> number of species in the forest, how to estimate <span class="math notranslate nohighlight">\(N_s\)</span>? Similar problems include how many words did Shakespeare know based on his published works, and how many kinds of ancient coins minted by a society based on archaeological finds.</p>
+<p>It is possible that there are an arbitrary number of species in the population in arbitrarily small proportions. This fact allows for the species problem to potentially be quite ill-posed.</p>
+<p>One nonparametric estimator called coverage estimator of <span class="math notranslate nohighlight">\(N_s\)</span> adjusts the number of observed species <span class="math notranslate nohighlight">\(n_{obs}\)</span> upward by a certain factor (??)</p>
+<div class="math notranslate nohighlight">
+\[
+\hat{N}_s^{cov} = \frac{n_s ^{obs}}{\hat{c}} \quad \text{where} \quad \hat{c} = 1 - \frac{x_1}{n}
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(x_1\)</span> is the number of species observed <strong>only</strong> once in the sample of size <span class="math notranslate nohighlight">\(n\)</span>. The factor <span class="math notranslate nohighlight">\(\hat{c}\)</span> is an estimate of the coverage <span class="math notranslate nohighlight">\(c\)</span> of the sample: the fraction of population corresponding to species observed <strong>at least</strong> once.</p>
+<p>Pros</p>
+<ul class="simple">
+<li><p>has asymptotic behavior quite close to that of MLE</p></li>
+<li><p>easier to compute than MLE</p></li>
+</ul>
+<p>Cons</p>
+<ul class="simple">
+<li><p>suffer from significant bias and large variance in small samples</p></li>
+</ul>
+</div>
+</div>
 <div class="section" id="monte-carlo">
 <h2>Monte Carlo<a class="headerlink" href="#monte-carlo" title="Permalink to this headline">¶</a></h2>
 <p>Given a random variable <span class="math notranslate nohighlight">\(X\)</span> with PDF <span class="math notranslate nohighlight">\(f\)</span>, sometimes we need to compute the expectation of <span class="math notranslate nohighlight">\(g(X)\)</span>:</p>
 <div class="math notranslate nohighlight">
 \[
-\mathbb{E}\left( g(X) \right) = \int g(d)f(x) \mathrm{~d}x
+\mathbb{E}\left( g(X) \right) = \int g(x)f(x) \mathrm{~d}x
 \]</div>
 <p>When computationally tractable, closed form expressions are not available for this purpose, and numerical integration is infeasible. For instance, Monte Carlo method generate random draws <span class="math notranslate nohighlight">\(x_1, \ldots, x_n\)</span> of <span class="math notranslate nohighlight">\(X\)</span> from <span class="math notranslate nohighlight">\(f\)</span>, and compute the stochastic approximation</p>
 <div class="math notranslate nohighlight">
