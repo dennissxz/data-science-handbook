@@ -1,3 +1,4 @@
+(clustering)=
 # Clustering
 
 Many data sets naturally consist of multiple natural subsets, e.g. multiple digits, object classes in images, topics, phonemes in speech, ...
@@ -41,8 +42,8 @@ In general, we have two types of clustering algorithms.
 - **flat**: specify the number of clusters at the beginnings, and the output are the assignment of data points to clusters.
 
 - **hierarchical**: do not specify the number of cluster at the beginnings.
-  - bottom-up: view each single data point as a cluster, iteratively merge two smaller clusters to a larger cluster by some rule.
-  - top-down: start from a single cluster consisting all data points, iteratively split a large clusters into two smaller clusters by some rule.
+  - bottom-up (agglomerative): view each single data point as a cluster, iteratively merge two smaller clusters to a larger cluster by some rule.
+  - top-down (divisive): start from a single cluster consisting all data points, iteratively split a large clusters into two smaller clusters by some rule.
 
 We will introduce several methods.
 
@@ -50,7 +51,7 @@ We will introduce several methods.
 
 - **Agglomerative methods** are bottom-up hierarchical clustering methods. The methods view each data point as a cluster, and then iteratively merge two **closest** clusters according to some distance measure, until some convergence criterion is achieved. They do not get to see all data points at once – might miss some important pattern,
 
-- **Decision tree** is a top-down hierarchical clustering method. can also be used in clustering. It is a top-down approach that start from one cluster and iteratively partition every cluster to two smaller clusters until come convergence criterion is achieved.
+- **Decision tree** is a top-down hierarchical clustering method, which can also be used in classification. It starts from one cluster and iteratively partition every cluster to two smaller clusters until come convergence criterion is achieved. See the [decision tree](decision-tree) section under classification for details.
 
 - **Spectral clustering** is also a top-down approach. It analyzes the $n\times n$ similarity matrix of a data set and use spectral (eigenvector-based) methods to divide the graph into connected sub-graphs.
 

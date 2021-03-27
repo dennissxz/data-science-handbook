@@ -719,6 +719,11 @@
      Graph Basics
     </a>
    </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../38-ml-for-graph-data/11-descriptive-analysis.html">
+     Descriptive Analysis
+    </a>
+   </li>
   </ul>
   <i class="fas fa-chevron-down">
   </i>
@@ -814,6 +819,18 @@
   <a class="reference internal nav-link" href="#distance-measure">
    Distance Measure
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#euclidean">
+     Euclidean
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#graph-based">
+     Graph-based
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#convergence-criterion">
@@ -837,7 +854,9 @@
 <p>Unlike <span class="math notranslate nohighlight">\(k\)</span>-means which specify <span class="math notranslate nohighlight">\(k\)</span> at start, agglomerative methods view each data point as a cluster, and then iteratively merge two <strong>closest</strong> clusters according to some distance measure, until some convergence criterion.</p>
 <div class="section" id="distance-measure">
 <h2>Distance Measure<a class="headerlink" href="#distance-measure" title="Permalink to this headline">¶</a></h2>
-<p>Let <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span> be two clusters and let <span class="math notranslate nohighlight">\(a,b\)</span> be individual data points.</p>
+<div class="section" id="euclidean">
+<h3>Euclidean<a class="headerlink" href="#euclidean" title="Permalink to this headline">¶</a></h3>
+<p>Let <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span> be two clusters and let <span class="math notranslate nohighlight">\(a, b\)</span> be individual data points. Usually, <span class="math notranslate nohighlight">\(\operatorname{dist}(a, b)\)</span> is the Euclidean distance, while <span class="math notranslate nohighlight">\(\operatorname{dist}(A, B)\)</span> varies in definitions.</p>
 <ul>
 <li><p><strong>Single-linkage</strong> uses the minimum distance</p>
 <div class="math notranslate nohighlight">
@@ -857,15 +876,15 @@
 <div class="math notranslate nohighlight">
 \[\begin{split}
     \begin{aligned}
-    \operatorname{dist}(A, B) &amp;=\sum_{i \in A \cup B}\left\|\mathbf{x}_{i}-\mathbf{\mu}_{A \cup B}\right\|^{2}-\sum_{i \in A}\left\|\mathbf{x}_{i}-\mathbf{\mu}_{A}\right\|^{2}-\sum_{i \in B}\left\|\mathbf{x}_{i}-\mathbf{\mu}_{B}\right\|^2 \\
-    &amp;=\frac{|A||B|}{|A|+|B|}|| \mathbf{\mu}_{A}-\mathbf{\mu}_{B}||^{2}
+    \operatorname{dist}(A, B) &amp;=\sum_{i \in A \cup B}\left\|\boldsymbol{x}_{i}-\boldsymbol{\mu}_{A \cup B}\right\|^{2}-\sum_{i \in A}\left\|\boldsymbol{x}_{i}-\boldsymbol{\mu}_{A}\right\|^{2}-\sum_{i \in B}\left\|\boldsymbol{x}_{i}-\boldsymbol{\mu}_{B}\right\|^2 \\
+    &amp;=\frac{|A||B|}{|A|+|B|}|| \boldsymbol{\mu}_{A}-\boldsymbol{\mu}_{B}||^{2}
     \end{aligned}
     \end{split}\]</div>
 <div class="note admonition">
 <p class="admonition-title"> Wald’s method vs <span class="math notranslate nohighlight">\(k\)</span>-means</p>
 <ul class="simple">
-<li><p>At each merge step, Ward’s method minimizes the same sum-of-squares criterion as k-means, but constrained by choices in previous iterations, so the total sum-of-squares for a given k is normally larger for Ward’s method than for k-means.</p></li>
-<li><p>A common trick: Use Ward’s method to pick k, then run k-means starting from the Ward cluster</p></li>
+<li><p>At each merge step, Ward’s method minimizes the same sum-of-squares criterion as <span class="math notranslate nohighlight">\(k\)</span>-means, but constrained by choices in previous iterations, so the total sum-of-squares for a given <span class="math notranslate nohighlight">\(k\)</span> is normally larger for Ward’s method than for <span class="math notranslate nohighlight">\(k\)</span>-means.</p></li>
+<li><p>A common trick: Use Ward’s method to pick <span class="math notranslate nohighlight">\(k\)</span>, then run <span class="math notranslate nohighlight">\(k\)</span>-means starting from the Ward cluster</p></li>
 </ul>
 </div>
 </li>
@@ -880,6 +899,46 @@
 <p class="caption"><span class="caption-number">Fig. 74 </span><span class="caption-text">Comparison of clustering algorithms [Livescue 2021]</span><a class="headerlink" href="#clustering-comparison-2" title="Permalink to this image">¶</a></p>
 </div>
 </div>
+<div class="section" id="graph-based">
+<h3>Graph-based<a class="headerlink" href="#graph-based" title="Permalink to this headline">¶</a></h3>
+<p>For graphs, or induced graphs from data matrix, there are more methods to define <span class="math notranslate nohighlight">\(\operatorname{dist}(a, b)\)</span> for vertices <span class="math notranslate nohighlight">\(a\)</span> and <span class="math notranslate nohighlight">\(b\)</span>.</p>
+<ul>
+<li><p>Neighborhood dissimilarity</p>
+<div class="math notranslate nohighlight">
+\[
+  \operatorname{dist}(a, b) = \frac{\left\vert N(a) \Delta N(b) \right\vert}{d_{(N_v)} + d_{(N_v - 1)}}
+  \]</div>
+<p>where</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(N(a), N(b)\)</span> are the neighbors of <span class="math notranslate nohighlight">\(a\)</span> and <span class="math notranslate nohighlight">\(b\)</span> respectively.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\Delta\)</span> indicates the symmetric difference of two sets. For instance, <span class="math notranslate nohighlight">\(S_1 \Delta S_2 = (S_1 - S_2) \cup (S_2 - S_1)\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(d_{(i)}\)</span> is the <span class="math notranslate nohighlight">\(i\)</span>-th smallest element in the degree sequence. The denominator is used to normalize the distance to <span class="math notranslate nohighlight">\([0, 1]\)</span>, where 0 and 1 indicate perfect similarity and dissimilarity respectively.</p></li>
+</ul>
+</li>
+<li><p>Adjacency matrix euclidean distance</p>
+<div class="math notranslate nohighlight">
+\[
+  \operatorname{dist}(a, b) = \sqrt{\sum_{k \ne a, b} (A_{ak} - A_{bk})^2}
+  \]</div>
+<p>which measures the Euclidean distance between rows <span class="math notranslate nohighlight">\(a\)</span> and <span class="math notranslate nohighlight">\(b\)</span> in the adjacency matrix.</p>
+</li>
+</ul>
+<p>Besides the distance measures between vertices, Newman [SAND 294, 297] seeks to greedily optimize the so-called <strong>modularity</strong> of a partition. Let</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\mathcal{C} = \left\{ C_1, \ldots, C_K \right\}\)</span> be a given candidate partition.</p></li>
+<li><p><span class="math notranslate nohighlight">\(f_{ij}(\mathcal{C}) = \frac{E(C_i, C_j)}{E(G)}\)</span> be the fraction of edges in <span class="math notranslate nohighlight">\(G\)</span> that connect vertices in <span class="math notranslate nohighlight">\(C_i\)</span> with vertices in <span class="math notranslate nohighlight">\(C_j\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{F}\)</span> be a <span class="math notranslate nohighlight">\(K \times K\)</span> matrix storing the <span class="math notranslate nohighlight">\(f_{ij}\)</span> values</p></li>
+</ul>
+<p>The modularity of <span class="math notranslate nohighlight">\(\mathcal{C}\)</span> is defined as</p>
+<div class="math notranslate nohighlight">
+\[
+\bmod (\mathcal{C})=\sum_{k=1}^{K}\left[f_{k k}(\mathscr{C})- \mathbb{E}\left( f_{k k} \right)\right]^{2}
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbb{E}\left( f_{k k} \right)\)</span> is the expected value of <span class="math notranslate nohighlight">\(f_{kk}\)</span> under some random graph model. For instance, if we use a model where a graph is constructed to have the same degree distribution as <span class="math notranslate nohighlight">\(G\)</span>, but with edges placed at random, then <span class="math notranslate nohighlight">\(\mathbb{E}\left( f_{k k} \right) = f_{k+} \cdot f_{+k}\)</span> where <span class="math notranslate nohighlight">\(f_{k+}\)</span> and <span class="math notranslate nohighlight">\(f_{+k}\)</span> are the <span class="math notranslate nohighlight">\(k\)</span>-th row and column sums of <span class="math notranslate nohighlight">\(\boldsymbol{F}\)</span>.</p>
+<p>Large values of <span class="math notranslate nohighlight">\(\bmod (\mathcal{C})\)</span> suggest that <span class="math notranslate nohighlight">\(\mathcal{C}\)</span> captures nontrivial structure.</p>
+<p>Optimization of the modularity function is NP-complete problem. A greedy agglomerative algorithm is therefore commonly used for heuristic optimization, which runs in <span class="math notranslate nohighlight">\(\mathcal{O} (N_v ^2 \log N_v)\)</span> time generally, using sophisticated data structures, but nearly linear time on sparse networks with hierarchical structure, making it appealing for use in the context of certain large networks.</p>
+</div>
+</div>
 <div class="section" id="convergence-criterion">
 <h2>Convergence Criterion<a class="headerlink" href="#convergence-criterion" title="Permalink to this headline">¶</a></h2>
 <div class="margin sidebar">
@@ -887,7 +946,7 @@
 <p>This is one advantage of hierarchical clustering over “flat” clustering like <span class="math notranslate nohighlight">\(k\)</span>-means</p>
 </div>
 <p>A good representation of clustering process is dendrogram. The <span class="math notranslate nohighlight">\(x\)</span>-axis represents items, and the <span class="math notranslate nohighlight">\(y\)</span>-axis is distance. It provides visual guidance to a good choice for the number of clusters</p>
-<p>Stop merging when the merge cost (distance between merged clusters) would be much larger than in previous iterations (for some precise definition of “much larger”)</p>
+<p>Stop merging when the merge cost (distance between merged clusters) would be much larger than in previous iterations (for some precise definition of “much larger”), or use <span class="math notranslate nohighlight">\(\bmod (\mathcal{C})\)</span> to choose an optimal partition.</p>
 <div class="figure align-default" id="clustering-dendrogram">
 <a class="reference internal image-reference" href="../_images/clustering-dendrogram.png"><img alt="" src="../_images/clustering-dendrogram.png" style="width: 50%;" /></a>
 <p class="caption"><span class="caption-number">Fig. 75 </span><span class="caption-text">Representing clustering with dendrograms</span><a class="headerlink" href="#clustering-dendrogram" title="Permalink to this image">¶</a></p>

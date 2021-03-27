@@ -1,0 +1,1406 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Descriptive Analysis &#8212; Data Science Handbook</title>
+    
+  <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+  <link rel="stylesheet"
+    href="../_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="../_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinx-book-theme.e7340bb3dbd8dde6db86f25597f54a1b.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/style.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.d3f166471bb80abb5163.js">
+
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/sphinx-book-theme.7d483ff0a819d6edff12ce0b1ead3928.js"></script>
+    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Graph Basics" href="01-graph-basics.html" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+
+
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+<a class="navbar-brand text-wrap" href="../index.html">
+  
+  
+  <h1 class="site-logo" id="site-title">Data Science Handbook</h1>
+  
+</a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form>
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+    <ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../index.html">
+   Data Science Handbook
+  </a>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Foundations
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../11-math/00-math.html">
+   Math
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/11-combinatorics.html">
+     Combinatorics
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/12-derangement.html">
+     Derangement
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/20-fields-and-vector-spaces.html">
+     Fields and Vector Spaces
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/21-linear-algebra.html">
+     Linear Algebra
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/51-linear-programming.html">
+     Linear Programming
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/90-puzzles.html">
+     Puzzles
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../12-probabilities/00-probabilities.html">
+   Probabilities
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/11-expectation-and-variance.html">
+     Expectation and Variance
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/13-correlation-and-dependence.html">
+     Correlation and Dependence
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/31-bayesian-theorem.html">
+     Bayesian’s Theorem
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/51-markov-chain.html">
+     Markov Chain
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/71-sampling.html">
+     Sampling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/90-multivariate-notations.html">
+     Multivariate Notations
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/91-large-sample-theory.html">
+     Large Sample Theory
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../13-statistics/00-statistics.html">
+   Statistics
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/11-sample-survey.html">
+     Sample Survey
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/13-randomized-trial.html">
+     Causality and Randomized Trial
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/21-hypothesis-testing.html">
+     Hypothesis Testing
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/25-two-sample-tests.html">
+     Two Sample Mean Tests
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/33-confusion-matrix.html">
+     Confusion Matrix
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/41-maximum-likelihood-estimation.html">
+     Maximum Likelihood Estimator
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/43-estimators-evaluation.html">
+     Estimators Evaluation
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../14-python/00-python.html">
+   Python
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../14-python/11-programming-tools.html">
+     Programmer tools
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../14-python/12-syntax.html">
+     Syntax
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../14-python/13-data-structure.html">
+     Data Structures
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../14-python/15-functional-programming.html">
+     Functional Programming
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../17-sql/00-sql.html">
+   SQL
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../17-sql/11-database.html">
+     Database
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../17-sql/12-relational-structure.html">
+     Relational Structure
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../17-sql/31-data-query.html">
+     Data Query
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../17-sql/33-data-manipulation.html">
+     Data Manipulation
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../19-miscellaneous/00-miscellaneous.html">
+   Miscellaneous
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../19-miscellaneous/11-latex.html">
+     LaTeX
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../19-miscellaneous/13-myst.html">
+     MyST Markdown
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Algorithms
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../20-algorithms-concepts/00-algorithms-concepts.html">
+   Algorithms Concepts
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../20-algorithms-concepts/51-polynomial-reduction.html">
+     Polynomial Reduction
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../20-algorithms-concepts/53-P-and-NP.html">
+     <span class="math notranslate nohighlight">
+      \(P\)
+     </span>
+     and
+     <span class="math notranslate nohighlight">
+      \(NP\)
+     </span>
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../20-algorithms-concepts/61-randomized-algo.html">
+     Randomized Algorithms
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../21-greedy-algorithms/00-greedy-algorithms.html">
+   Greedy Algorithms
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../21-greedy-algorithms/11-interval-scheduling.html">
+     Interval Scheduling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../21-greedy-algorithms/31-huffman-coding.html">
+     Huffman Coding
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../23-dynamic-programming/00-dynamic-programming.html">
+   Dynamic Programming
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/11-weighted-interval-scheduling.html">
+     Weighted Interval Scheduling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/13-longest-common-subsequence.html">
+     Longest Common Subsequence
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/15-longest-increasing-subsequence.html">
+     Longest Increasing Subsequence
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/17-largest-sum-subsequence.html">
+     Largest Sum Subsequence
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/31-knapsack.html">
+     Minimum Knapsack
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/51-chain-matrix-multiplication.html">
+     Chain Matrix Multiplication
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../25-graph-related/00-graph-related.html">
+   Graph Related
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/13-shortest-path.html">
+     Shortest Path
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/21-minimum-spanning-tree.html">
+     Minimum Spanning Tree
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/31-maximum-flow.html">
+     Maximum Flow
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/32-matching.html">
+     Matching
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/42-maximum-independent-set.html">
+     Maximum Independent Set in Trees
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/91-LP-max-flow-min-cut.html">
+     LP on Max-flow and Min-cut
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Machine Learning
+ </span>
+</p>
+<ul class="current nav sidenav_l1">
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../30-ml-basics/00-ml-basics.html">
+   Machine Learning Basics
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../30-ml-basics/02-taxonomy.html">
+     Taxonomy
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../30-ml-basics/03-information-theory.html">
+     Information Theory
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../30-ml-basics/05-kernels.html">
+     Kernels
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../30-ml-basics/11-data-issues.html">
+     Data Issues
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../30-ml-basics/51-semi-supervised.html">
+     Semi-supervised Learning
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../30-ml-basics/53-self-supervised.html">
+     Self-supervised Learning
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../30-ml-basics/61-fourier-transform.html">
+     Fourier Transform-based Representations
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../31-regression/00-regression.html">
+   Regression
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/11-lm-estimation.html">
+     Linear Models - Estimation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/12-lm-inference.html">
+     Linear Models - Inference
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/13-lm-diagnosis.html">
+     Linear Models - Diagnosis
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/14-lm-advanced.html">
+     Linear Models - Advanced Topics
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/21-generalized-linear-models.html">
+     Generalized Linear Models
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/22-logistic-regression.html">
+     Logistic Regression
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/23-multinomial-logitsitc.html">
+     Multinomial Logistic Regression
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/24-ordinal-logistic.html">
+     Ordinal Logistic Regression
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/25-poisson-regression.html">
+     Poisson Regression
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../32-classification/00-classification.html">
+   Classification
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../32-classification/11-support-vector-machine.html">
+     Support Vector Machine
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../32-classification/21-decision-tree.html">
+     Decision Tree
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../33-dimensionality-reduction/00-dimensionality-reduction.html">
+   Dimensionality Reduction
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/11-principal-component-analysis.html">
+     Principal Component Analysis
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/13-canonical-correlation-analysis.html">
+     Canonical Corerlation Analysis
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/21-multidimensional-scaling.html">
+     Multidimensional Scaling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/23-graph-based-spectral-methods.html">
+     Graph-based Spectral Methods
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/25-t-SNE.html">
+     SNE and
+     <span class="math notranslate nohighlight">
+      \(t\)
+     </span>
+     -SNE
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/31-kernel-pca.html">
+     Kernel PCA
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/32-kernel-cca.html">
+     Kernel CCA
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../34-clustering/00-clustering.html">
+   Clustering
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../34-clustering/11-k-means.html">
+     <span class="math notranslate nohighlight">
+      \(k\)
+     </span>
+     -means clustering
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../34-clustering/13-agglomerative-methods.html">
+     Agglomerative Methods
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../34-clustering/31-spectral-clustering.html">
+     Spectral Clustering
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../34-clustering/41-gaussian-mixtures.html">
+     Gaussian Mixtures
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../35-graphical-models/00-graphical-models.html">
+   Graphical Models
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../35-graphical-models/11-hidden-markov-models.html">
+     Hidden Markov Models
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../35-graphical-models/31-topic-models.html">
+     Topic Models
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../35-graphical-models/33-language-models.html">
+     Language Models
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../37-neural-networks/00-neural-networks.html">
+   Neural Networks
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/01-stochastic-gradient-descent.html">
+     Stochastic Gradient Descent
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/03-trainability.html">
+     Trainability
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/05-regularization.html">
+     Regularization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/11-autoencoders.html">
+     Autoencoders
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/13-variational-autoencoders.html">
+     Variational Autoencoders
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/31-sequential-models.html">
+     Sequential Models
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/41-GAN.html">
+     Generative Adversarial Networks
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 current active collapsible-parent">
+  <a class="reference internal" href="00-ml-for-graph-data.html">
+   Machine Learning for Graph Data
+  </a>
+  <ul class="current collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="01-graph-basics.html">
+     Graph Basics
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     Descriptive Analysis
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+</ul>
+
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../_sources/38-ml-for-graph-data/11-descriptive-analysis.md"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.md</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/dennissxz/data-science-handbook"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/dennissxz/data-science-handbook/issues/new?title=Issue%20on%20page%20%2F38-ml-for-graph-data/11-descriptive-analysis.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+            <a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+                    data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+                    title="Fullscreen mode"><i
+                        class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+        <div class="tocsection onthispage pt-5 pb-3">
+            <i class="fas fa-list"></i>
+            Contents
+        </div>
+        <nav id="bd-toc-nav">
+            <ul class="nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#vertex-and-edge-characteristics">
+   Vertex and Edge Characteristics
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#degree">
+     Degree
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#degree-distributions">
+       Degree Distributions
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#joint-degree-distribution">
+       Joint Degree Distribution
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#conditional-degree-distribution">
+       Conditional Degree Distribution
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#degree-correlation">
+       Degree Correlation
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#centrality">
+     Centrality
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#closeness-centrality">
+       Closeness Centrality
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#betweenness-centrality">
+       Betweenness Centrality
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#eigenvector-centrality">
+       Eigenvector Centrality
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#hubs-and-authorities-hits-algorithms">
+       Hubs and Authorities (HITS) Algorithms
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#centrality-of-edges">
+       Centrality of Edges
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#graph-level-summaries">
+       Graph-level Summaries
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#network-cohesion">
+   Network Cohesion
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#local-density">
+     Local Density
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#cliques">
+       Cliques
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#plexes">
+       Plexes
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#cores">
+       Cores
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#density">
+       Density
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#clustering-coefficient">
+       Clustering Coefficient
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#transitivity">
+       Transitivity
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#connectivity">
+     Connectivity
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#small-world">
+       Small World
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#vertex-and-edge-connectivity-and-cut">
+       Vertex and Edge Connectivity and Cut
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#in-directed-graphs">
+       In Directed Graphs
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#graph-partitioning">
+     Graph Partitioning
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#assortativity-and-mixing">
+     Assortativity and Mixing
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#dynamic-networks">
+   Dynamic Networks
+  </a>
+ </li>
+</ul>
+
+        </nav>
+        
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="descriptive-analysis">
+<h1>Descriptive Analysis<a class="headerlink" href="#descriptive-analysis" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="vertex-and-edge-characteristics">
+<h2>Vertex and Edge Characteristics<a class="headerlink" href="#vertex-and-edge-characteristics" title="Permalink to this headline">¶</a></h2>
+<p>How to measure the importance of a vertex or an edge?</p>
+<div class="section" id="degree">
+<h3>Degree<a class="headerlink" href="#degree" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="degree-distributions">
+<h4>Degree Distributions<a class="headerlink" href="#degree-distributions" title="Permalink to this headline">¶</a></h4>
+<p>Given a network graph <span class="math notranslate nohighlight">\(G\)</span>, define <span class="math notranslate nohighlight">\(f(d)\)</span> to be the fraction of vertices <span class="math notranslate nohighlight">\(v \in V\)</span> with degree <span class="math notranslate nohighlight">\(d_v = d\)</span>. The collection <span class="math notranslate nohighlight">\(\left\{ f(d) \right\}\)</span> is called the degree distribution of <span class="math notranslate nohighlight">\(G\)</span>, which is simply the histogram formed from the degree sequence, with bins of size one.</p>
+<p>For directed graphs, degree distributions may be defined analogously for in- and out-degrees.</p>
+<div class="figure align-default" id="graph-deg-dist">
+<a class="reference internal image-reference" href="../_images/graph-deg-dist.png"><img alt="" src="../_images/graph-deg-dist.png" style="width: 80%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 152 </span><span class="caption-text">Degree distributions in base-2 logarithmic scale [Kolaczyk 2009]</span><a class="headerlink" href="#graph-deg-dist" title="Permalink to this image">¶</a></p>
+</div>
+<p>In each plot, we can see that majority of vertices are of very low degree, a nevertheless non-trivial number of vertices are of much higher degree. The distribution is right skewed. There is roughly a linear decay, which suggests the presence of a power-law component to these distributions:</p>
+<div class="math notranslate nohighlight">
+\[
+f(d) \propto d^{-\alpha}
+\]</div>
+<p>There are several methods to estimate <span class="math notranslate nohighlight">\(\alpha\)</span>, or in general, fitting power-law-like distributions. For details see Mitzenmacher [SAND 280].</p>
+<ul>
+<li><p>Linear regression</p>
+<p>The above relation implies
+$<span class="math notranslate nohighlight">\(\log f(d) \sim C-\alpha \log d\)</span>$</p>
+<p>Hence we can fit a line to the above plots, and <span class="math notranslate nohighlight">\(\hat{\alpha} = - \hat{\beta}\)</span> where <span class="math notranslate nohighlight">\(\hat{\beta}\)</span> is the estimated slope.</p>
+<p>However, this method is not advisable due to the disproportionate level of ‘noise’ in the data at the high degrees.</p>
+</li>
+<li><p>Linear regression using cumulative frequencies</p>
+<p>To smooth the noise, we use cumulative frequencies rather than raw frequencies. Note that</p>
+<div class="math notranslate nohighlight">
+\[\bar{F}(d)=1-F(d) \sim d^{-(\alpha-1)}\]</div>
+<p>We can then fit a line to the plot of <span class="math notranslate nohighlight">\(\log \bar{F}(d)\)</span> over <span class="math notranslate nohighlight">\(d\)</span>.</p>
+</li>
+<li><p>Use relative frequencies calculated on intervals of log increasing size (i.e. logarithmic binning).</p></li>
+<li><p>Hill estimator of <span class="math notranslate nohighlight">\(\gamma = (\alpha - 1) ^{-1}\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+  \hat{\alpha}_{k}=1+\hat{\gamma}_{k}^{-1}, \quad \text { with } \quad \hat{\gamma}_{k}=\frac{1}{k} \sum_{i=0}^{k-1} \log \frac{d_{\left(N_{v}-i\right)}}{d_{\left(N_{v}-k\right)}}
+  \]</div>
+<p>where <span class="math notranslate nohighlight">\(d_{(1)} \leq \cdots \leq d_{\left(N_{v}\right)}\)</span> are the sorted vertex degrees and <span class="math notranslate nohighlight">\(k\)</span> is a value chosen by users. Typically, one can plot <span class="math notranslate nohighlight">\(\hat{\alpha}_k\)</span> for a range of <span class="math notranslate nohighlight">\(k\)</span>, and look for an area where the plot settle down to some stable values of <span class="math notranslate nohighlight">\(\hat{\alpha}\)</span>. If the decay is sharp and there is no flatten area, then it suggests that a simple power-law-like model is inappropriate.</p>
+<div class="figure align-default" id="graph-deg-hill-plot">
+<a class="reference internal image-reference" href="../_images/graph-deg-hill-plot.png"><img alt="" src="../_images/graph-deg-hill-plot.png" style="width: 80%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 153 </span><span class="caption-text">Hill plots of <span class="math notranslate nohighlight">\(\hat{\alpha}_k\)</span> over <span class="math notranslate nohighlight">\(k\)</span> for the two datasets above. Note different decay shapes. [Kolaczyk 2009]</span><a class="headerlink" href="#graph-deg-hill-plot" title="Permalink to this image">¶</a></p>
+</div>
+</li>
+<li><p>mixtures of power-laws</p></li>
+<li><p>power-law + exponential truncation</p>
+<div class="math notranslate nohighlight">
+\[f(d) \propto d^{-\alpha} \exp \left(-d / d^{*}\right)\]</div>
+</li>
+</ul>
+</div>
+<div class="section" id="joint-degree-distribution">
+<h4>Joint Degree Distribution<a class="headerlink" href="#joint-degree-distribution" title="Permalink to this headline">¶</a></h4>
+<p>Two graphs may have identical degree sequences and yet otherwise differ noticeably in the way their vertices are paired. To capture information of this sort, we consider a two-dimensional analogue of the degree distribution, i.e. joint degree distribution <span class="math notranslate nohighlight">\(f(d_1, d_2)\)</span>, which is symmetric.</p>
+<ul class="simple">
+<li><p>For a directed graph, it equals the frequency of an arc <span class="math notranslate nohighlight">\((u, v)\)</span> such that <span class="math notranslate nohighlight">\(d_u = d_1, d_v = d_2\)</span>.</p></li>
+<li><p>For an undirected graph,</p>
+<ul>
+<li><p>if <span class="math notranslate nohighlight">\(d_1 &lt; d_2\)</span> then <span class="math notranslate nohighlight">\(f(d_1, d_2) = f(d_2, d_1) = \frac{1}{2} \times\)</span> frequency of edge such that one end has degree <span class="math notranslate nohighlight">\(d_1\)</span> and the other has <span class="math notranslate nohighlight">\(d_2\)</span>.</p></li>
+<li><p>if <span class="math notranslate nohighlight">\(d_1 = d_2 =d\)</span> then <span class="math notranslate nohighlight">\(f(d, d) =\)</span> frequency of edge <span class="math notranslate nohighlight">\((u, v)\)</span> such that <span class="math notranslate nohighlight">\(d_u = d_v = d\)</span>.</p></li>
+</ul>
+</li>
+</ul>
+<p>In the plot below, we see that the joint distribution concentrate primarily where pairs <span class="math notranslate nohighlight">\((d_1, d_2)\)</span> are both low. However, we can see there is also noticeable tendency for the vertices of largest degree to be connected to low-degree vertices.</p>
+<div class="figure align-default" id="graph-deg-dist-joint">
+<a class="reference internal image-reference" href="../_images/graph-deg-dist-joint.png"><img alt="" src="../_images/graph-deg-dist-joint.png" style="width: 80%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 154 </span><span class="caption-text">Joint degree distributions for the two datasets. Colors range from blue (low relative frequency) to red (high relative frequency), with white indicating areas with no data. [Kolaczyk 2009]</span><a class="headerlink" href="#graph-deg-dist-joint" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+<div class="section" id="conditional-degree-distribution">
+<h4>Conditional Degree Distribution<a class="headerlink" href="#conditional-degree-distribution" title="Permalink to this headline">¶</a></h4>
+<p>From the joint degree distribution we can define conditional degree distribution <span class="math notranslate nohighlight">\(f_{d ^\prime \vert d}\)</span>: given a vertex of degree <span class="math notranslate nohighlight">\(d\)</span>, what is the relative frequency of its neighbor that has degree <span class="math notranslate nohighlight">\(d ^\prime\)</span>?</p>
+<div class="math notranslate nohighlight">
+\[f_{d ^\prime \vert d} = \mathbb{P}\left( D_v = d ^\prime \vert D_u = d, (u,v) \in E \right)\]</div>
+<p>We can also defined the conditional mean</p>
+<div class="math notranslate nohighlight">
+\[\bar{d}(d)=\sum_{d^{\prime}} d^{\prime} f_{d^{\prime} \mid d}\]</div>
+<p>A negative trend has been observed in <span class="math notranslate nohighlight">\(\bar{d}(d)\)</span> as <span class="math notranslate nohighlight">\(d\)</span> increases.</p>
+</div>
+<div class="section" id="degree-correlation">
+<h4>Degree Correlation<a class="headerlink" href="#degree-correlation" title="Permalink to this headline">¶</a></h4>
+<p>Analogously, we can define correlation <span class="math notranslate nohighlight">\(\operatorname{Corr}\left( D, D ^\prime  \right)\)</span> by the joint degree distribution <span class="math notranslate nohighlight">\(f(d_1, d_2)\)</span> and its marginals.</p>
+<p>For the two data sets above, the degree correlation is 0.023 and -0.093 respectively. Though they are small, the difference in sign reinforces our observation of high-low degree pair in the second data set.</p>
+<p>A closely related concept is <a class="reference internal" href="#graph-assortativity"><span class="std std-ref">assortativity</span></a>.</p>
+</div>
+</div>
+<div class="section" id="centrality">
+<h3>Centrality<a class="headerlink" href="#centrality" title="Permalink to this headline">¶</a></h3>
+<p>The importance of a vertex <span class="math notranslate nohighlight">\(v\)</span> can be measured by centrality <span class="math notranslate nohighlight">\(c(v)\)</span>. There are many kinds of centrality measures. Degree is one of them. Deciding which are most appropriate for a given application clearly requires consideration of the context.</p>
+<div class="section" id="closeness-centrality">
+<h4>Closeness Centrality<a class="headerlink" href="#closeness-centrality" title="Permalink to this headline">¶</a></h4>
+<p>Closeness centrality measures how close a vertex is to other vertices.</p>
+<div class="math notranslate nohighlight">
+\[c_{cl}(v) = \frac{1}{\sum_{u \in V} \operatorname{dist}(v, u) }\]</div>
+<p>where <span class="math notranslate nohighlight">\(\operatorname{dist} (v, u)\)</span> is the distance between <span class="math notranslate nohighlight">\(u, v\)</span>.</p>
+<p>Note</p>
+<ul class="simple">
+<li><p>The graph is assumed to be connected. If not, we can define centrality for each connected component, or set a finite upper limit on distances, e.g <span class="math notranslate nohighlight">\(N_v\)</span>.</p></li>
+<li><p>To compute <span class="math notranslate nohighlight">\(c_{cl}(v)\)</span>, we need to compute single-source shortest paths from <span class="math notranslate nohighlight">\(v\)</span> to all other vertices <span class="math notranslate nohighlight">\(u \in V\)</span>.</p></li>
+<li><p>Often, for comparison across graphs and with other centrality measures, this measure is normalized to lie in the interval <span class="math notranslate nohighlight">\([0,1]\)</span>, through multiplication by a factor <span class="math notranslate nohighlight">\(N_v - 1\)</span>. It is 1 if <span class="math notranslate nohighlight">\(v\)</span> is the center of a star.</p></li>
+</ul>
+</div>
+<div class="section" id="betweenness-centrality">
+<h4>Betweenness Centrality<a class="headerlink" href="#betweenness-centrality" title="Permalink to this headline">¶</a></h4>
+<p>Betweenness centrality relates ‘importance’ to where a vertex is located with respect to the paths in the graph.</p>
+<div class="math notranslate nohighlight">
+\[
+c_{bet}(v) = \sum_{s,t \in V, s\ne v, t \ne v}\frac{\sigma(s,t \mid v)}{\sigma(s,t)}
+\]</div>
+<p>where</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\sigma(s,t \mid v)\)</span> is the total number of shortest paths between <span class="math notranslate nohighlight">\(s\)</span> and <span class="math notranslate nohighlight">\(t\)</span> that pass through <span class="math notranslate nohighlight">\(v\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\sigma(s,t)\)</span> is the total number of shortest paths between <span class="math notranslate nohighlight">\(s\)</span> and <span class="math notranslate nohighlight">\(t\)</span></p></li>
+</ul>
+<p>Note</p>
+<ul class="simple">
+<li><p>If all shortest paths are unique, i.e. <span class="math notranslate nohighlight">\(\sigma(s,t)=1\)</span>, then <span class="math notranslate nohighlight">\(c_{bet}(v)\)</span> simple counts how many shortest paths going through <span class="math notranslate nohighlight">\(v\)</span>.</p></li>
+<li><p>It can be normalized to <span class="math notranslate nohighlight">\([0,1]\)</span> through division by <span class="math notranslate nohighlight">\((N_v - 1) (N_v - 2)/2\)</span>. For instance, it is 1 if <span class="math notranslate nohighlight">\(v\)</span> is the center of a star.</p></li>
+</ul>
+</div>
+<div class="section" id="eigenvector-centrality">
+<h4>Eigenvector Centrality<a class="headerlink" href="#eigenvector-centrality" title="Permalink to this headline">¶</a></h4>
+<p>A vertex’s importance may depends on its neighbors’ importance. Eigenvector centrality captures this,</p>
+<div class="math notranslate nohighlight">
+\[
+c_{eig}(v) = \alpha \sum_{(u,v) \in E} c_{eig}(u)
+\]</div>
+<p>The vector <span class="math notranslate nohighlight">\(\boldsymbol{c} _{eig} = [c_{eig}(1), \ldots, c_{eig}(N_v)] ^{\top}\)</span> is the solution to the eigenvalue problem</p>
+<div class="math notranslate nohighlight">
+\[
+\boldsymbol{A} \boldsymbol{c} _{eig} = \alpha ^{-1} \boldsymbol{c} _{eig}
+\]</div>
+<p>Bonacich [SAND 37] argues that an optimal choice of <span class="math notranslate nohighlight">\(\alpha ^{-1}\)</span> is the largest eigenvalue of <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span>, and hence <span class="math notranslate nohighlight">\(\boldsymbol{c} _{eig}\)</span> is the corresponding eigenvector.</p>
+<p>When <span class="math notranslate nohighlight">\(G\)</span> is undirected an connected, the largest eigenvector of <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> is simple: entries are non-zero and share the same sign. Convention is to report the absolute values of these entries.</p>
+<div class="note admonition">
+<p class="admonition-title"> Computation</p>
+<p>Calculation of the largest eigenvalue of a matrix and its eigenvector is a standard problem. The power method is generally used. This method is iterative and is guaranteed to converge under various conditions, such as when the matrix is symmetric, which <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> will be for undirected graphs. The rate of convergence to <span class="math notranslate nohighlight">\(\boldsymbol{c} _{eig}\)</span> will behave like a power, in the number of iterations, of the ratio of the second largest eigenvalue of <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> to the first.</p>
+</div>
+</div>
+<div class="section" id="hubs-and-authorities-hits-algorithms">
+<h4>Hubs and Authorities (HITS) Algorithms<a class="headerlink" href="#hubs-and-authorities-hits-algorithms" title="Permalink to this headline">¶</a></h4>
+<p>Given an adjacency matrix <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> for a directed web graph,</p>
+<ul>
+<li><p>hubs are determined by the eigenvector centrality of the matrix <span class="math notranslate nohighlight">\(\boldsymbol{M}_{hub} = \boldsymbol{A} \boldsymbol{A} ^{\top}\)</span>, where <span class="math notranslate nohighlight">\([\boldsymbol{M}_{hub}]_{ij}=\)</span> the number of vertices that both <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(j\)</span> point to.</p>
+<div class="math notranslate nohighlight">
+\[[\boldsymbol{M}_{hub}]_{ij}= \langle\boldsymbol{a}_{i\cdot}, \boldsymbol{a} _{j \cdot} \rangle = \sum_{v \in V} \mathbb{I} \left\{ i \rightarrow v \leftarrow j \right\}\]</div>
+</li>
+<li><p>authorities are determined by the eigenvector centrality of the matrix <span class="math notranslate nohighlight">\(\boldsymbol{M}_{auth} = \boldsymbol{A} ^{\top}\boldsymbol{A}\)</span>, where <span class="math notranslate nohighlight">\([\boldsymbol{M}_{auth}]_{ij} =\)</span> the number of vertices that point to both <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(j\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[[\boldsymbol{M}_{hub}]_{ij}= \langle\boldsymbol{a}_{\cdot i}, \boldsymbol{a} _{\cdot j} \rangle = \sum_{v \in V} \mathbb{I} \left\{ i \leftarrow v \rightarrow j \right\}\]</div>
+</li>
+</ul>
+</div>
+<div class="section" id="centrality-of-edges">
+<h4>Centrality of Edges<a class="headerlink" href="#centrality-of-edges" title="Permalink to this headline">¶</a></h4>
+<p>Betweenness centrality extends to edges in a straightforward manner. For other measures, we can apply them to the vertices in the edge-to-vertex dual graph (line graph) of <span class="math notranslate nohighlight">\(G\)</span>.</p>
+</div>
+<div class="section" id="graph-level-summaries">
+<h4>Graph-level Summaries<a class="headerlink" href="#graph-level-summaries" title="Permalink to this headline">¶</a></h4>
+<p>Once we compute <span class="math notranslate nohighlight">\(c(v)\)</span> for all <span class="math notranslate nohighlight">\(v\)</span>, we can look for graph-level summaries, e.g. the distribution of <span class="math notranslate nohighlight">\(c(v)\)</span>, in analogy to the degree distribution, as well as its moments and quantiles.</p>
+<p>For instance, centralization index is defined as</p>
+<div class="math notranslate nohighlight">
+\[
+c = \frac{\sum_{v \in V} c^* - c(v)}{\max \sum_{v \in V} c^* - c(v)}
+\]</div>
+<p>where</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(c^* = \max_{v \in V} c(v)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\max\)</span> in the denominator is over all possible graphs of order <span class="math notranslate nohighlight">\(N_v\)</span>, which is not easy to compute outside of certain special cases.</p></li>
+</ul>
+<p>There are many other extension of the above centrality measures to different levels.</p>
+</div>
+</div>
+</div>
+<div class="section" id="network-cohesion">
+<h2>Network Cohesion<a class="headerlink" href="#network-cohesion" title="Permalink to this headline">¶</a></h2>
+<p>Are some subsets of vertices cohesive? Many measures differ from local (triads) to global (giant components), and explicitly (cliques) or implicitly (clusters).</p>
+<div class="section" id="local-density">
+<h3>Local Density<a class="headerlink" href="#local-density" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="cliques">
+<h4>Cliques<a class="headerlink" href="#cliques" title="Permalink to this headline">¶</a></h4>
+<p>Recall that a clique is a complete subgraph <span class="math notranslate nohighlight">\(H\)</span> of <span class="math notranslate nohighlight">\(G\)</span>. A common case is that of 3-cliques, i.e. triangles. In practice, large cliques are rare. A sufficient condition for a clique of size <span class="math notranslate nohighlight">\(n\)</span> to exist in <span class="math notranslate nohighlight">\(G\)</span> is <span class="math notranslate nohighlight">\(N_e &gt; \frac{n-2}{n-1}\frac{N_v^2}{2}\)</span>. But in real-world networks, <span class="math notranslate nohighlight">\(N_e \sim N_v\)</span>.</p>
+<ul class="simple">
+<li><p>P:</p>
+<ul>
+<li><p>whether a specific subset of nodes <span class="math notranslate nohighlight">\(U\subseteq V\)</span> is a clique and whether it is maximal. <span class="math notranslate nohighlight">\(O(N_v + N_e)\)</span>.</p></li>
+</ul>
+</li>
+<li><p>NP-complete:</p>
+<ul>
+<li><p>whether a graph <span class="math notranslate nohighlight">\(G\)</span> has a maximal clique of ata least size <span class="math notranslate nohighlight">\(n\)</span></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="plexes">
+<h4>Plexes<a class="headerlink" href="#plexes" title="Permalink to this headline">¶</a></h4>
+<p>Plexes are weakened version of cliques: A subgraph <span class="math notranslate nohighlight">\(H\)</span> consisting of <span class="math notranslate nohighlight">\(m\)</span> vertices is called an <span class="math notranslate nohighlight">\(n\)</span>-plex for <span class="math notranslate nohighlight">\(m &gt; n\)</span> if no vertex has degree less than <span class="math notranslate nohighlight">\(m-n\)</span>. In other words, no vertex is missing more than <span class="math notranslate nohighlight">\(n\)</span> of its possible <span class="math notranslate nohighlight">\(m-1\)</span> edges with other vertices in the subgraph.</p>
+<p>Computation problems tend to scale like those involving cliques.</p>
+</div>
+<div class="section" id="cores">
+<h4>Cores<a class="headerlink" href="#cores" title="Permalink to this headline">¶</a></h4>
+<p>A <span class="math notranslate nohighlight">\(k\)</span>-core of a graph <span class="math notranslate nohighlight">\(G\)</span> is a subgraph <span class="math notranslate nohighlight">\(H\)</span> for which all vertices have degree at least <span class="math notranslate nohighlight">\(k\)</span>.</p>
+<p>A maximal <span class="math notranslate nohighlight">\(k\)</span>-core subgraph may be computed in <span class="math notranslate nohighlight">\(O(N_v +N_e)\)</span>. The algorithm computes the shell indices for all <span class="math notranslate nohighlight">\(v\)</span>. The shell index of <span class="math notranslate nohighlight">\(v\)</span> is the largest value <span class="math notranslate nohighlight">\(c\)</span> such that <span class="math notranslate nohighlight">\(v\)</span> belongs to the <span class="math notranslate nohighlight">\(c\)</span>-core of <span class="math notranslate nohighlight">\(G\)</span> but not its <span class="math notranslate nohighlight">\((C+1)\)</span>-core.</p>
+</div>
+<div class="section" id="density">
+<h4>Density<a class="headerlink" href="#density" title="Permalink to this headline">¶</a></h4>
+<p>The density of a subgraph <span class="math notranslate nohighlight">\(H = (V_H, E_H)\)</span> is defined as the realized fraction of total possible edges in this subgraph</p>
+<div class="math notranslate nohighlight">
+\[
+\operatorname{den}(H)=\frac{\left|E_{H}\right|}{\left|V_{H}\right|\left(\left|V_{H}\right|-1\right) / 2} \in [0,1]
+\]</div>
+<p>It measures how <span class="math notranslate nohighlight">\(H\)</span> is close to a clique. If <span class="math notranslate nohighlight">\(\operatorname{den}(H) =1\)</span> then <span class="math notranslate nohighlight">\(H\)</span> is a clique. Note that it is a rescaling of the average degree, <span class="math notranslate nohighlight">\(\operatorname{den}(H) = \frac{1}{\left\vert V_H \right\vert-1} \bar{d}(H)\)</span></p>
+<ul class="simple">
+<li><p>If <span class="math notranslate nohighlight">\(H=G\)</span>, then <span class="math notranslate nohighlight">\(\operatorname{den}(G)\)</span> gives the density of the overall graph</p></li>
+<li><p>If <span class="math notranslate nohighlight">\(H=N(v)\)</span> is the set of neighbors of a vertex <span class="math notranslate nohighlight">\(v\)</span> and the edges between them, then <span class="math notranslate nohighlight">\(\operatorname{den}(N(v))\)</span> gives a measure of density in the immediate neighborhood of <span class="math notranslate nohighlight">\(v\)</span>, which is called the Watts-Strogatz local clustering coefficient. The average of <span class="math notranslate nohighlight">\(\operatorname{den}(N(v))\)</span> can be used as a clustering coefficient for the overall graph.</p></li>
+</ul>
+</div>
+<div class="section" id="clustering-coefficient">
+<h4>Clustering Coefficient<a class="headerlink" href="#clustering-coefficient" title="Permalink to this headline">¶</a></h4>
+<p>A measure of density in the immediate neighborhood of <span class="math notranslate nohighlight">\(v\)</span> can be the answer to the question: among all pairs of neighbors of <span class="math notranslate nohighlight">\(v\)</span>, how many of them are connected? Or, what’s the proportion that two of my friends are also friends of each other? To answer this, we first formally define triangles and connected triples.</p>
+<ul class="simple">
+<li><p>A triangle is a complete subgraph of order three: <span class="math notranslate nohighlight">\(\Delta\)</span></p></li>
+<li><p>A connected triple is a subgraph of three vertices connected by two edges (i.e. 2-star): <span class="math notranslate nohighlight">\(\land\)</span></p></li>
+</ul>
+<p>Let</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\tau_\Delta(v)\)</span> be the number of triangles in <span class="math notranslate nohighlight">\(G\)</span> such that <span class="math notranslate nohighlight">\(v \in V\)</span> falls into</p></li>
+<li><p><span class="math notranslate nohighlight">\(\tau_{\land}(v)\)</span> be the number of connected triples in <span class="math notranslate nohighlight">\(G\)</span> such that both edges incident to <span class="math notranslate nohighlight">\(v\in V\)</span>.</p></li>
+</ul>
+<p>We can then define a local clustering coefficient as to answer the questions above. For <span class="math notranslate nohighlight">\(v\)</span> with at least two neighbors, i.e. <span class="math notranslate nohighlight">\(\tau_{\land }(v) &gt; 0\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[
+\operatorname{clus} (v) = \frac{\tau_{\Delta}(v)}{\tau_{\land }(v)}
+\]</div>
+<p>Note that <span class="math notranslate nohighlight">\(\tau_{\land }(v) = C_{d_v}^2\)</span> and hence <span class="math notranslate nohighlight">\(\operatorname{clus} (v) = \operatorname{den}(N(v))\)</span>.</p>
+<p>The <strong>clustering coefficient</strong> for <span class="math notranslate nohighlight">\(G\)</span> is the average over “eligible” vertices in <span class="math notranslate nohighlight">\(G\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[
+\operatorname{clus} (G) = \frac{1}{\left\vert V ^\prime  \right\vert}  \sum_{v \in \boldsymbol{V} ^\prime } \operatorname{clus}(v)
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\boldsymbol{V} ^\prime \subseteq V\)</span> is the set of vertices <span class="math notranslate nohighlight">\(v\)</span> with <span class="math notranslate nohighlight">\(d_v \ge 2\)</span>.</p>
+</div>
+<div class="section" id="transitivity">
+<h4>Transitivity<a class="headerlink" href="#transitivity" title="Permalink to this headline">¶</a></h4>
+<p>The above definition is an simple average of <span class="math notranslate nohighlight">\(\operatorname{clus}(v)\)</span>, which treat <span class="math notranslate nohighlight">\(v\)</span> with different <span class="math notranslate nohighlight">\(d_v\)</span> equally. A more informative measure is the weighted average by <span class="math notranslate nohighlight">\(\tau_{\land }(v)\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{\sum_{v \in V ^\prime} \tau_{\land }(v) \operatorname{clus} (v) }{\sum_{v \in V ^\prime} \tau_{\land }(v)} = \frac{\sum_{v \in V ^\prime} \tau_{\Delta}(v)}{\sum_{v \in V ^\prime} \tau_{\land }(v)}
+\]</div>
+<p>Let</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\tau_\Delta (G) = \frac{1}{3} \sum_{v \in V} \tau_\Delta(v)\)</span> be the number of triangles in the graph</p></li>
+<li><p><span class="math notranslate nohighlight">\(\tau_ \land (G) = \sum_{v \in V} \tau _ \land (v)\)</span> be the number of connected triples in the graph</p></li>
+</ul>
+<p>For <span class="math notranslate nohighlight">\(v \ne V ^\prime\)</span>, we have <span class="math notranslate nohighlight">\(\tau_\Delta(v) = \tau_ \land  (v) = 0\)</span>, hence the above fraction equals to</p>
+<div class="math notranslate nohighlight">
+\[\operatorname{clus}_T (G) = \frac{3 \tau_\Delta(G)}{\tau_ \land (G)}\]</div>
+<p>which is called the <strong>transitivity</strong> of graph <span class="math notranslate nohighlight">\(G\)</span>, a standard quantity in the social network literature. Transitivity in this context refers to, for example, the case where the friend of your friend is also a friend of yours.</p>
+<p>The two clustering measures <span class="math notranslate nohighlight">\(\operatorname{clus}(G)\)</span> and <span class="math notranslate nohighlight">\(\operatorname{clus}_T(G)\)</span> can differ. It is possible to define highly imbalanced graphs so that <span class="math notranslate nohighlight">\(\operatorname{clus}(G) \rightarrow 1\)</span> while <span class="math notranslate nohighlight">\(\operatorname{clus}_T(G) \rightarrow 0\)</span> as <span class="math notranslate nohighlight">\(N_v\)</span> grows.</p>
+<p>Clustering coefficients have become a standard quantity used in the analysis of network structure. Interestingly,</p>
+<ul class="simple">
+<li><p>their values have typically been found to be quite large in real-world networks, in comparison to what otherwise might be expected based on classical random graph models.</p></li>
+<li><p>in large-scale networks with broad degree distributions, it has frequently been found that the local clustering coefficient <span class="math notranslate nohighlight">\(\operatorname{clus}(v)\)</span> varies inversely with vertex degree.</p></li>
+</ul>
+<p>Higher-order clustering coefficients have also been proposed, involving cycles of length greater than three.</p>
+</div>
+</div>
+<div class="section" id="connectivity">
+<h3>Connectivity<a class="headerlink" href="#connectivity" title="Permalink to this headline">¶</a></h3>
+<p>The task of verifying whether a graph is connected and, if not, identifying its connected components can be done in <span class="math notranslate nohighlight">\(O(N_v + N_e)\)</span> time by DFS or BFS. If it does not, we might seek to quantify how close to being able to do so it is.</p>
+<div class="section" id="small-world">
+<h4>Small World<a class="headerlink" href="#small-world" title="Permalink to this headline">¶</a></h4>
+<p>Often it is the case that one of the connected components in a graph G dominates the others in magnitude, in that it contains the vast majority of the vertices in <span class="math notranslate nohighlight">\(G\)</span>. We call it the giant component. Depending on the task at hand, it may be sensible to restrict attention to that component alone in carrying out further analysis and modeling.</p>
+<p>The giant component of many real-world networks enjoys the small world property. This concept is traced back to Stanley Milgram’s experiment in 1960’s: people are only separated by roughly six acquaintances (i.e., by ‘six degrees of separation’). That is, despite the enormous size of the giant component, the typical number of ‘hops’ along shortest paths between any two vertices would be quite small.</p>
+<p>To measure ‘small’, we can define the <strong>average distance</strong> between two vertices</p>
+<div class="math notranslate nohighlight">
+\[
+\bar{l}=\frac{1}{N_{v}\left(N_{v}+1\right) / 2} \sum_{u \neq v \in V} \operatorname{dist}(u, v)
+\]</div>
+<p>We say it is small if <span class="math notranslate nohighlight">\(\bar{l}\)</span> scales as <span class="math notranslate nohighlight">\(\mathcal{O} (\log N_v)\)</span> or less.</p>
+<p>Besides, small average distance is often accompanied by a high clutering coefficient <span class="math notranslate nohighlight">\(\operatorname{clus}(G)\)</span> or <span class="math notranslate nohighlight">\(\operatorname{clus} _T (G)\)</span>. These two properties joint define the term ‘small world’, which is related to communication upon them, e.g. information in a social network, disease in an epidemiological network, etc.</p>
+</div>
+<div class="section" id="vertex-and-edge-connectivity-and-cut">
+<h4>Vertex and Edge Connectivity and Cut<a class="headerlink" href="#vertex-and-edge-connectivity-and-cut" title="Permalink to this headline">¶</a></h4>
+<p>If an arbitrary subset of k vertices (edges) is removed from a graph, is the remaining subgraph connected?</p>
+<dl class="simple myst">
+<dt>Definitions (connectivity)</dt><dd><ul>
+<li><p>A graph is <strong><span class="math notranslate nohighlight">\(k\)</span>-vertex-connected</strong> if</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(N_v &gt; k\)</span>, and</p></li>
+<li><p>the removal of <strong>any</strong> subset of vertices <span class="math notranslate nohighlight">\(X \subset V\)</span> of cardinality <span class="math notranslate nohighlight">\(\left\vert X \right\vert &lt; k\)</span> leaves a subgraph <span class="math notranslate nohighlight">\(G-X\)</span> that is connected.</p></li>
+</ul>
+<p>In particular, for graphs <span class="math notranslate nohighlight">\(G\)</span> with at least two vertices, it is 1-vertex-connected iff it is connected.</p>
+</li>
+<li><p>Similarly, a graph is <strong><span class="math notranslate nohighlight">\(k\)</span>-edge-connected</strong> if</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(N_v &gt; k\)</span>, and</p></li>
+<li><p>the removal of <strong>any</strong> subset of edges <span class="math notranslate nohighlight">\(Y \subset E\)</span> of cardinality <span class="math notranslate nohighlight">\(\left\vert Y \right\vert &lt; k\)</span> leaves a subgraph <span class="math notranslate nohighlight">\(G - Y\)</span> that is connected.</p></li>
+</ul>
+</li>
+<li><p>The <strong>vertex (edge) connectivity</strong> of <span class="math notranslate nohighlight">\(G\)</span> is the largest integer <span class="math notranslate nohighlight">\(k\)</span> such that <span class="math notranslate nohighlight">\(G\)</span> is <span class="math notranslate nohighlight">\(k\)</span>-vertex- (<span class="math notranslate nohighlight">\(k\)</span>-edge-) connected.</p></li>
+</ul>
+</dd>
+</dl>
+<p>It can be shown that</p>
+<div class="math notranslate nohighlight">
+\[
+\text{vertex connectivity} \le  \text{edge connectivity} \le \operatorname{deg}_\min
+\]</div>
+<p>Computationally, the following problems are in P</p>
+<ul class="simple">
+<li><p>Is <span class="math notranslate nohighlight">\(G\)</span> <span class="math notranslate nohighlight">\(k\)</span>-vertex (<span class="math notranslate nohighlight">\(k\)</span>-edge) connected?</p></li>
+<li><p>What is the vertex(edge)-connectivity of <span class="math notranslate nohighlight">\(G\)</span></p></li>
+<li><p>What is the maximal <span class="math notranslate nohighlight">\(k\)</span>-vertex (<span class="math notranslate nohighlight">\(k\)</span>-edge) connected components of <span class="math notranslate nohighlight">\(G\)</span>?</p></li>
+</ul>
+<dl class="simple myst">
+<dt>Theorem (Menger’s)</dt><dd><p>a nontrivial graph <span class="math notranslate nohighlight">\(G\)</span> is <span class="math notranslate nohighlight">\(k\)</span>-vertex (<span class="math notranslate nohighlight">\(k\)</span>-edge) connected if and only if all pairs of distinct vertices <span class="math notranslate nohighlight">\(u, v \in V\)</span> can be connected by <span class="math notranslate nohighlight">\(k\)</span> vertex-disjoint (edge-disjoint) paths.</p>
+</dd>
+<dt>Definitions (cut)</dt><dd><ul class="simple">
+<li><p>A <strong>vertex-cut (edge-cut)</strong> is a set such that removing it disconnects the graph.</p></li>
+<li><p>A <span class="math notranslate nohighlight">\(s\)</span>-<span class="math notranslate nohighlight">\(t\)</span> <strong>cut</strong> is a partition of <span class="math notranslate nohighlight">\(V\)</span> into two disjoint, non-empty subsets, <span class="math notranslate nohighlight">\(S, \bar{S} \subset V\)</span> where <span class="math notranslate nohighlight">\(s \in S\)</span> and <span class="math notranslate nohighlight">\(t \in \bar{S}\)</span>.</p></li>
+<li><p>For <span class="math notranslate nohighlight">\(G\)</span> equipped with edge weights <span class="math notranslate nohighlight">\(w_e\)</span>, a <span class="math notranslate nohighlight">\(s\)</span>-<span class="math notranslate nohighlight">\(t\)</span> cut is a <strong>minimum</strong> <span class="math notranslate nohighlight">\(s\)</span>-<span class="math notranslate nohighlight">\(t\)</span> cut if the sum of the weights on edges connecting <span class="math notranslate nohighlight">\(S\)</span> and bar{S}$ is a minimum.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Claims</p>
+<ul class="simple">
+<li><p>If <span class="math notranslate nohighlight">\(w_e =1\)</span> for all <span class="math notranslate nohighlight">\(e\)</span>, then finding a minimum <span class="math notranslate nohighlight">\(s\)</span>-<span class="math notranslate nohighlight">\(t\)</span> cut is equivalent to finding an edge-cut of minimal cardinality, with one component containing <span class="math notranslate nohighlight">\(s\)</span> and the other containing <span class="math notranslate nohighlight">\(t\)</span>.</p></li>
+<li><p>If the cardinality of such minimum <span class="math notranslate nohighlight">\(s\)</span>-<span class="math notranslate nohighlight">\(t\)</span> cut is <span class="math notranslate nohighlight">\(k\)</span>, then the edge-connectivity of <span class="math notranslate nohighlight">\(G\)</span> is <span class="math notranslate nohighlight">\(k-1\)</span>.</p></li>
+</ul>
+<p>To find a minimum <span class="math notranslate nohighlight">\(s\)</span>-<span class="math notranslate nohighlight">\(t\)</span> cut, it is equivalent to find a maximum flow. See the <a class="reference internal" href="../25-graph-related/31-maximum-flow.html#max-flow"><span class="std std-ref">section</span></a> for details.</p>
+</div>
+<div class="section" id="in-directed-graphs">
+<h4>In Directed Graphs<a class="headerlink" href="#in-directed-graphs" title="Permalink to this headline">¶</a></h4>
+<p>Many of the concepts above extend to the case of directed graphs analogously. A often useful characterization of directed graphs is that of a <strong>bowtie</strong>. We can classify the graph into five parts</p>
+<ol class="simple">
+<li><p>a strongly connected component (SCC)</p></li>
+<li><p>an in-component, whose vertices that can reach SCC but cannot be reached from the SCC</p></li>
+<li><p>an out-component, whose vertices that cannot reach SCC but can be reached from the SCC</p></li>
+<li><p>tendrils, composed of vertices that can neither reach nor be reached from the SCC.</p></li>
+<li><p>tubes, composed of vertices between the in- and out- components that are not part of the SCC</p></li>
+</ol>
+<p>In the vastly large Word Wide Web graph, Broder and colleagues found that the relative size of the first four parts of the bowtie in their giant component were in fact roughly equal in size.</p>
+<div class="figure align-default" id="graph-bowtie">
+<a class="reference internal image-reference" href="../_images/graph-bowtie.png"><img alt="" src="../_images/graph-bowtie.png" style="width: 90%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 155 </span><span class="caption-text">Bowtie illustration [Broder] and application to a network data set [Kolaczyk 2009]. Strongly connected component (yellow), in-component (blue), out-component (red), and tendrils (pink).</span><a class="headerlink" href="#graph-bowtie" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+</div>
+<div class="section" id="graph-partitioning">
+<h3>Graph Partitioning<a class="headerlink" href="#graph-partitioning" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="assortativity-and-mixing">
+<span id="graph-assortativity"></span><h3>Assortativity and Mixing<a class="headerlink" href="#assortativity-and-mixing" title="Permalink to this headline">¶</a></h3>
+</div>
+</div>
+<div class="section" id="dynamic-networks">
+<h2>Dynamic Networks<a class="headerlink" href="#dynamic-networks" title="Permalink to this headline">¶</a></h2>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./38-ml-for-graph-data"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        
+        <div class='prev-next-bottom'>
+            
+    <a class='left-prev' id="prev-link" href="01-graph-basics.html" title="previous page">Graph Basics</a>
+
+        </div>
+        
+        </div>
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By Dennis Zheng<br/>
+        
+            &copy; Copyright 2020.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+
+    
+  <script src="../_static/js/index.d3f166471bb80abb5163.js"></script>
+
+
+    
+  </body>
+</html>

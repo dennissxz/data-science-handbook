@@ -1,6 +1,6 @@
 # Spectral Clustering
 
-Spectral clustering methods use a similarity graph (as in graph-based dimensionality reduction) to represents the data points, then use spectral (eigenvector-based) methods to divide the graph into connected sub-graphs.
+Spectral clustering methods use a similarity graph (as in graph-based dimensionality reduction) to represents the data points, then apply spectral (eigenvector-based) methods on certain graph matrices associated with the connectivity of $G$, to divide the graph into connected sub-graphs.
 
 Similar to graph-based representation learning, there are three steps for spectral clustering. Given a data set.
 
@@ -18,23 +18,17 @@ Similar to graph-based representation learning, there are three steps for spectr
 Divide the graph into sub-graphs [D. Sontag]
 :::
 
+## Similarity Graphs
 
+Formally, we have data points $\boldsymbol{x}_{1}, \ldots, \boldsymbol{x}_{n}$, Consider some similarity measures $s_{i j}$ or dissimilarity measures $d_{ij}$. We create a graph $G=(V,E)$, add one node $v_i$ for each data point $\boldsymbol{x}_i$, and unweighted or weighted edges by some criterions.
 
-## Setup
+- **$\varepsilon$-neighborhood graph**: add edge $(v_i, v_j)$ if $d_{ij} \le \varepsilon$
 
-### Similarity Graphs
+- **$k$-NN**: add edge $(v_i,v_j)$ if $v_j$ is a $k$-NN of $v_i$ **or** vice versa, according to $d_{ij}$
 
-Formally, we have data points $\boldsymbol{x}_{1}, \ldots, \boldsymbol{x}_{n}$, Consider some similarities $s_{i j}$. We create a graph $G=(V,E)$, one node $v_i$ for each data point $\boldsymbol{x}_i$ , and edge weights $w_{ij}$ based on $s_{ij}$ (may be a function of $s_{ij}$).
+- **Mutual $k$-NN**: add edge $(v_i,v_j)$ if $v_i$ is a $k$-NN of $v_j$ **and** vice versa. It works well for sub-graphs with different densities.
 
-Common types of similarity graphs constructed from data sets
-
-- **Fully connected**: weighted by similarity $w_{ij}$
-
-- **$\varepsilon$-neighborhood graph**: unweighted, include edges with distance/dissimilarity $< \varepsilon$
-
-- **$k$-NN**: include edges where $v_i$ is a $k$-NN of $v_j$ **or** vice versa
-
-- **Mutual $k$-NN**: include edges where $v_i$ is a $k$-NN of $v_j$ **and** vice versa. It works well for sub-graphs with different densities.
+- **Fully connected**: add edge $(v_i,v_j)$ with weight $w_{ij} = s_{ij}$ or some function of $s_{ij}$.
 
 :::{figure} spectral-clustering-types
 <img src="../imgs/spectral-clustering-types.png" width = "70%" alt=""/>
@@ -42,99 +36,191 @@ Common types of similarity graphs constructed from data sets
 Comparison of three types of graphs [von Luxburg]
 :::
 
-### Graph Matrices
+We mainly consider bisection ($K=2$) and unweighted case.
 
-#### Adjacency Matrix
+## Adjacency Matrix-based
 
-Adjacency matrix contains binary entries of connection relation between any two nodes. Sometimes we can extend it to be the matrix of edge weights (similarities).
+Recall that an adjacency matrix contains binary entries of connection relation between any two nodes. Sometimes we can extend it to be the matrix of edge weights (similarities).
 
-- **Degree** (considering weights) $d_{i}=\sum_{j} w_{i j} = \operatorname{RowSum}_i (A)$
-- **Volume** of a set of nodes $\operatorname{vol}(S)=\sum_{i \in S} d_{i}$.
+- **Degree** (considering weights) $\operatorname{deg} (i)=\sum_{j} a_{i j} = \operatorname{RowSum}_i (A)$
+- **Volume** of a set $S$ of nodes $\operatorname{vol}(S)=\sum_{i \in S} \operatorname{deg} _{i}$.
 
-#### Graph Laplacian
+### Property
 
-The (unnormalized) graph Laplacian is defined as
+Let the eigen-pairs of an binary adjacency matrix $\boldsymbol{A}$ be $(\lambda_i, \boldsymbol{v}_i)$, where $\lambda_1 \le \ldots \le \lambda_{N_v}$ (not necessarily distinct).
 
-$$\boldsymbol{L} = \boldsymbol{D} - \boldsymbol{W}$$
+Fact (Spectrum of graph adjacency matrices)
+: In the case of a graph $G$ consisting of two $d$-regular graphs joined to each other by just a handful of vertices,
+  - the two largest eigenvalues $\lambda_1, \lambda_2$ will be roughly equal to $d$, and the remaining eigenvalues will be of only $\mathcal{O} (d^{1/2})$ in magnitude. Hence, there is a gap in the spectrum of eigenvalues, namely 'spectral gap'.
+  - the two corresponding eigenvectors $\boldsymbol{v} _1, \boldsymbol{v} _2$ are expected two have large positive entires on vertices of one $d$-'regular' graphs, and large negative entires on the vertices of the other.
+
+### Bisection
+
+Using this fact, to find two clusters in the data set, we can compute eigenvalues and eigenvectors of $\boldsymbol{A}$, then find the largest positive and largest negative entries in the two eigenvectors. Their respective neighbors are declared to be two clusters.
+
+For instance, in the plots below, We see that
+- The first two eigenvalues are fairly distinct from the rest, indicating the possible presence of two sub-graphs.
+- The first eigenvector appears to suggest a separation of the 1st and 34th actors, and some of their nearest neighbors, from the rest of the actors.
+- The second eigenvector in turn provides evidence that these two actors, and certain of their neighbors, should themselves be separated.
+
+:::{figure} spectral-clustering-ex1
+<img src="../imgs/spectral-clustering-ex1.png" width = "70%" alt=""/>
+
+Spectral analysis of the karate club network. Left: $\left\vert \lambda_i \right\vert$. Right: $\boldsymbol{v} _1, \boldsymbol{v} _2$, colored by subgroups. [Kolaczyk 2009]
+:::
+
+For $K \ge 3$, we can
+- Look for a spectral gap to determine $K$
+- Run $K$-NN using the first $K$ eigenvectors to determine assignment
+
+### Pros and Cons
+
+Cons
+- In reality, graphs are far from regular, so this method does not work well
+- The partitions found through spectral analysis will tend to be ordered and separated by vertex degree, since the eigenvalues will mirror quite closely the underlying degree distribution. Normalizing the adjacency matrix to have unit row sums is a commonly proposed solution.
+
+
+## Laplacian Matrix-based
+
+Recall that the graph Laplacian matrix is defined as $\boldsymbol{L} = \boldsymbol{D} -\boldsymbol{A}$ where $\boldsymbol{D}$ is diagonal matrix of degrees.
+
+Let the eigen-pairs of $\boldsymbol{L}$ be $(\lambda_i, \boldsymbol{v}_i)$, where $\lambda_1 \le \ldots \le \lambda_{N_v}$ (not necessarily distinct).
+
+### Property
+
+Fact (Spectrum of graph Laplacian matrices)
+: A graph $G$ will consist of $K$ connected components if and only $\lambda_1 = \ldots = \lambda_K = 0$ and $\lambda_{K+1} > 0$.
+
+Therefore, if we suspect a graph $G$ to consist of nearly $K=2$ components, then we expect $\lambda_2$ to be close to zero.
+
+Definitions
+: - The **ratio** of the cut defined by $(S, \bar{S})$ is the ratio between the number of across-part edges and the number of vertices in the smaller component.
+
+    $$\phi(S, \bar{S}) = \frac{\left\vert E(S, \bar{S}) \right\vert}{ \left\vert S \right\vert}$$
+
+  - The **isoperimetric number** of a graph $G$ is defined as the smallest ratio of all cuts.
+
+    $$\phi(G)=\min _{S \subset V:|S| \leq N_{v} / 2} \phi(S, \bar{S})$$
+
+The ratio is a natural quantity to minimize in seeking a good bisection of $G$. Unfortunately, this minimization problem to find $S$ for $\phi(G)$, aka **ratio cut**, is NP-hard. But the isoperimetric number is closely related to $\lambda_2$
+
+Property
+: The isoperimetric number $\phi(G)$ is bounded by $\lambda_2$ as
+
+  $$
+  \frac{\lambda_{2}}{2} \leq \phi(G) \leq \sqrt{\lambda_{2}}\left(2 \operatorname{deg} _{\max }-\lambda_{2}\right)
+  $$
+
+Thus, $\phi(G)$ will be small when $\lambda_2$ is small and vice versa.
+
+### Fiedler Bisection
+
+Fiedler [SAND 144] associate $\lambda_2$ with the connectivity of a graph. We partition vertices according to the sign of their entires in $\boldsymbol{v} _2$:
+
+$$
+S_F=\left\{u \in V: \boldsymbol{v} _{2}(u) \geq 0\right\} \quad \text { and } \quad \bar{S}_F=\left\{u \in V: \boldsymbol{v} _{2}(u)<0\right\}
+$$
+
+- The eigenvector $\boldsymbol{v} _2$ is hence often called the Fiedler vector
+- The eigenvalue $\lambda_2$ is often called the Fiedler value, which is also the algebraic connectivity of the graph.
+
+It can be shown that
+
+$$
+\phi(G) \leq \phi(S_F, \bar{S}_F) \leq \frac{\phi^{2}(G)}{\operatorname{deg} _{\max }} \leq \lambda_{2}
+$$
+
+Fiedler bisection can be viewed as a computationally efficient approximation to finding a best cut achieving $\phi(G)$. In the example below, we see that is gives a good result, classifying all but the 3rd actor correctly.
+
+:::{figure} spectral-clustering-ex2
+<img src="../imgs/spectral-clustering-ex2.png" width = "50%" alt=""/>
+
+Fiedler vector $\boldsymbol{v} _2$ of the karate club graph. Color and shape indicate subgroups. [Kolaczyk 2009]
+:::
+
+For $K \ge 3$, apply bisection recursively.
+
+### Pros and Cons
+
+Pros
+- Work well on bounded-degree planar graphs and certain mesh graphs [SAND 366]
+
+## Computation
+
+For both of the two spectral partitioning methods above, the computational
+overhead is in principle determined by the cost of computing the spectral decomposition of an $N_v \times N_v$ matrix $\boldsymbol{A}$ or $\boldsymbol{L}$, which takes $\mathcal{O} (N_v^2)$ time. However, realistically,
+- only a small subset of extreme eigenvalues and eigenvectors are needed.
+- the matrices $\boldsymbol{A}$ and $\boldsymbol{L}$ will typically be quite sparse in practice.
+
+Lanczos algorithm can efficiently solve such settings. If the graph between $\lambda_2$ and $\lambda_3$ is sufficiently large (nearly $K=2$), the spectral bisection takes $\mathcal{O} (\frac{1}{\lambda_3 - \lambda_2} N_e)$, i.e. almost linear.
+
+## Weighted Case
+
+Now we consider the weighted case from optimization point of view, where weights $w_{ij} = s_{ij}$.
+
+We define the (unnormalized) graph Laplacian  as
+
+$$\boldsymbol{L}_w = \boldsymbol{D} - \boldsymbol{W}$$
 
 where
 
-- $\boldsymbol{W}$ is the similarity matrix
-- $\boldsymbol{D}$ is the diagonal degree matrix $d_{ii} = \sum_j w_{ij}$
+- $\boldsymbol{W}$ is the similarity matrix of $s_{ij}$
+- $\boldsymbol{D}$ is the diagonal matrix of $\boldsymbol{W} \boldsymbol{1}$
 
-There are many properties of $\boldsymbol{L}$. Suppose $G$ is an undirected graph with non-negative weights. Then $0$ is an eigenvalue of $\boldsymbol{L}$ and the multiplicity $k$ of the $0$ eigenvalue is the number of connected components in the graph.
+The volume of a set $S$ of vertices extends to $\operatorname{vol}(S)=\sum_{i \in S} \sum_{j \in N(i)} w_{ij}$
 
-- So if the clusters are disconnected, it is easy to tell how many clusters.
+### Objectives
 
-- If not, we still use the first $k$ eigenvectors, but it’s less obvious why. Some theoretical foundations include
+Definition (Value of a cut)
+: A cut is a partition of the graph into two sub-graphs $S$ and $\bar{S}$. The value of a cut is defined as the sum of total edge weights between the two subgraphs
 
-  - Graph cuts view
-  - Random walks
-  - Perturbation theory
+$$W(S, \bar{S})=\sum_{i \in A, j \in B} w_{i j}$$
 
-
-
-## Objectives
-
-
-Definition (Cut)
-: A cut is a partition of the graph into **two** sub-graphs $A$ and $B$. The value of a cut is defined as the sum of total edge weights between the two subgraphs
-
-$$\operatorname{Cut}(A, B)=W(A, B)=\sum_{i \in A, j \in B} w_{i j}$$
-
-To partition the graph into $k$ subgraphs, we would like to minimize the sum of cut values between **each** subgraph $A_i$ and the rest of the graph:
+To partition the graph into $K$ subgraphs, we would like to minimize the sum of cut values between **each** subgraph $A_i$ and the rest of the graph:
 
 $$
-\underset{A_{1}, \ldots, A_{k}}{\operatorname{argmin}} \frac{1}{2} \sum_{i=1}^{k} W\left(A_{i}, \bar{A}_{i}\right)
+\underset{S_{1}, \ldots, S_{K}}{\operatorname{argmin}} \frac{1}{2} \sum_{k=1}^{K} W\left(S_{k}, \bar{S}_{k}\right)
 $$
 
 :::{figure} spectral-clustering-cuts
 <img src="../imgs/spectral-clustering-cuts.png" width = "70%" alt=""/>
 
-A graph cut with $W(A,B)=0.3$[Hamad & Biela]
+A graph cut with $W(S,\bar{S})=0.3$ [Hamad & Biela]
 :::
 
 The algorithm with the above objective function is called **MinCut**, which favors **isolated** nodes.
 
-Other methods with modified/normalized objectives are:
+Other methods with modified/normalized objectives include:
 
-- Ratio cuts $(\operatorname{RatioCut} )$ normalizes by cardinality: $\frac{1}{2} \sum_{i=1}^{k} \frac{W\left(A_{i}, \bar{A}_{i}\right)}{\left|A_{i}\right|}$
+- **Ratio cuts** $(\operatorname{RatioCut} )$ normalizes by cardinality: $\frac{1}{2} \sum_{k=1}^{K} \frac{W\left(S_{k}, \bar{S}_{k}\right)}{\left|S_{k}\right|}$
+- **Normalized cuts** $(\operatorname{Ncut})$ normalizes by volume: $\frac{1}{2} \sum_{i=1}^{k} \frac{W\left(S_{i}, \bar{S}_{i}\right)}{\operatorname{vol}\left(S_{i}\right)}$.
 
-- Normalized cuts $(\operatorname{Ncut})$ normalizes by volume $\frac{1}{2} \sum_{i=1}^{k} \frac{W\left(A_{i}, \bar{A}_{i}\right)}{\operatorname{vol}\left(A_{i}\right)}$.
+### Bisection Normalized Cut
 
-## Learning
-
-We introduce how to solve normalized cuts. As discussed above, the solution is related to the first $k$ eigenvectors of the Laplacian matrix.
-
-
-### 2 Clusters
-
-To solve normalized cut for 2 clusters, define a indicator vector $\boldsymbol{c} \in\{-1,1\}^{n}$, where $c_i = 1$ means data point $i$ is in cluster/subgraph $A$; otherwise cluster $B$.
+We introduce how to solve normalized cuts. The solution is related to the first $K$ eigenvectors of the Laplacian matrix. We define a indicator vector $\boldsymbol{c} \in\{-1,1\}^{n}$, where $c_i = 1$ means data point $i$ is in cluster/subgraph $A$; otherwise cluster $B$.
 
 We can show that the $\operatorname{Ncut}$ problem to find $\boldsymbol{c}$ is equivalent to the optimization problem
 
 $$
 \begin{aligned}
 \min _{\boldsymbol{c}} \operatorname{Ncut} (\boldsymbol{c})
-=\min _{\boldsymbol{c}} &\ \frac{\boldsymbol{c}^{\top}(\boldsymbol{D} -\boldsymbol{W} ) \boldsymbol{c}}{\boldsymbol{c}^{\top} \boldsymbol{D}  \boldsymbol{c}} \\
+=\min _{\boldsymbol{c}} &\ \frac{\boldsymbol{c}^{\top}\boldsymbol{L} _w \boldsymbol{c}}{\boldsymbol{c}^{\top} \boldsymbol{D}  \boldsymbol{c}} \\
  \text { s.t. } &\ \boldsymbol{c}^{\top} \boldsymbol{D}  \boldsymbol{1}  =0 \\
 &\ \boldsymbol{c} \in\{-1,1\}^{n}  \\
 \end{aligned}
 $$
 
-
 However, solving for discrete combinatorial values is hard. The optimization problem is relaxed to solve for a continuous $\boldsymbol{c}$ vector instead:
-
 
 $$
 \begin{array}{cl}
-\min _{\boldsymbol{c}} & \boldsymbol{c}^{\top}(\boldsymbol{D} - \boldsymbol{W} ) \boldsymbol{c} \\
+\min _{\boldsymbol{c}} & \boldsymbol{c}^{\top}\boldsymbol{L} _w \boldsymbol{c} \\
 \text { s.t. } & \boldsymbol{c}^{\top} \boldsymbol{D}  \boldsymbol{c}= \boldsymbol{1} \\
-\Longrightarrow & (\boldsymbol{D} - \boldsymbol{W} ) \boldsymbol{c}=\lambda \boldsymbol{D}  \boldsymbol{c}
+\Longrightarrow & \boldsymbol{L} _w \boldsymbol{c}=\lambda \boldsymbol{D}  \boldsymbol{c}
 \end{array}
 $$
 
-The first eigenvector is all ones (all data in a single cluster). We take the 2nd eigenvector as the real-valued solution. As shown below, the solved eigenvector (right picture) has values around $-0.2$ and $0.2$ (why??), which can be the labels for two clusters.
+The first eigenvector of $\boldsymbol{L} _w$ is all ones (all data in a single cluster). We take the 2nd eigenvector as the real-valued solution. As shown below, the solved eigenvector (right picture) has positive and negative values, which can be used for assignment.
 
 :::{figure} spectral-clustering-egvector
 <img src="../imgs/spectral-clustering-egvector.png" width = "80%" alt=""/>
@@ -146,7 +232,7 @@ $\operatorname{Ncut}$ for a data set of $40$ points.
 ### More Clusters
 
 - Option 1: Recursively apply the 2-cluster algorithm
-- Option 2: Treat the first $k$ eigenvectors as a reduced-dimensionality representation of the data, and cluster the eigenvectors. The task will be easier if the values in the eigenvectors are close to discrete, like the above case.
+- Option 2: Treat the first $K$ eigenvectors as a reduced-dimensionality representation of the data, and cluster these eigenvectors. The task will be easier if the values in the eigenvectors are close to discrete, like the above case.
 
 ```{margin} Relation to Representation Learning
 

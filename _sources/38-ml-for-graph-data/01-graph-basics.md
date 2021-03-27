@@ -188,6 +188,14 @@ $$\begin{aligned}
 
 - **Induced subgraph**: A induced graph $F$ is a subgraph obtained only by vertices deletion. If the remaining vertices are $Y=V(G)\setminus$, we denote $F$ by $G[Y]$.
 
+- **Edge-to-vertex dual graph (line graph)**: The edge-to-vertex dual graph (line graph) of a directed graph $G$ is the directed graph $L(G)$ whose vertex set corresponds to the arc set of $G$, and having an arc directed from an original edge $e_1$ to an edge $e_2$ if in $G$, the head of $e_1$ meets the tail of $e_2$. The line graph for undirected graph can be defined accordingly.
+
+  :::{figure} graph-line-graph
+  <img src="../imgs/graph-line-graph.png" width = "80%" alt=""/>
+
+  Graphs and their line graphs [[Wolfram](https://mathworld.wolfram.com/LineGraph.html)]
+  :::
+
 - **Isomorphic**: Two simple graphs $G$ and $H$ are isomorphic, denoted $G \cong H$ if there is a bijection $\theta: V(G) \rightarrow V(H)$ which preserves adjacency and non-adjacency:
 
   $$
@@ -272,12 +280,28 @@ b_{i j}=\left\{\begin{array}{ll}
 \end{array}\right.
 $$
 
-If we extend $\boldsymbol{B}$ to a signed incidence matrix $\tilde{\boldsymbol{B}}$, by arbitrarily assigning direction to all edges, and let $\tilde{b}_{ij}=1$ and $\tilde{b}_{ji}=-1$ if $(i,j)$ is a directed edge, then we can show that
+Properties
+
+- If we extend $\boldsymbol{B}$ to a signed incidence matrix $\tilde{\boldsymbol{B}}$, by arbitrarily assigning direction to all edges, and let $\tilde{b}_{ij}=1$ and $\tilde{b}_{ji}=-1$ if $(i,j)$ is a directed edge, then we can show that
+
+  $$
+  \tilde{\boldsymbol{B} }\tilde{\boldsymbol{B} }^{\top} = \boldsymbol{L}
+  $$
+
+- $\texttt{RowSum}(v)= \operatorname{deg} (v)$ and $\texttt{ColSum} = 2$.
+
+- If there exists self-loop $j$ of vertex $i$, then $M_{ij}=2$.
+
+### Routing matrix
+
+Suppose there $n \times n$ pairwise traffic flows between each pair of vertices. A routing matrix $\boldsymbol{R}$ is a $m \times n^2$ binary matrix,
 
 $$
-\tilde{\boldsymbol{B} }\tilde{\boldsymbol{B} }^{\top} = \boldsymbol{L}
+r_{i j}=\left\{\begin{array}{ll}
+1, & \text { if edge $e$ is traversed in the flow from $i$ to $j$ } \\
+0, & \text { otherwise }
+\end{array}\right.
 $$
-
 
 ## Data Structure to Represent a Graph
 
@@ -315,18 +339,10 @@ Other data structures include
 
 - **Incidence matrix**
 
-  Each row is a vertex, and each column is an edge.
+  - $O(nm)$
 
-  $$
-  M_{ij} = \left\{\begin{array}{ll}
-  1, & \text { if vertex $i$ belongs to edge $j$} \\
-  0, & \text { otherwise }
-  \end{array}\right.
-  $$
 
-  $\texttt{RowSum}(v)= \operatorname{deg} (v)$ and $\texttt{ColSum} = 2$.
 
-  If there exists self-loop $j$ of vertex $i$, then $M_{ij}=2$.
 
 ## Algorithms
 

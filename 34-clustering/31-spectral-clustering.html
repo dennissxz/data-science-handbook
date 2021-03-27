@@ -719,6 +719,11 @@
      Graph Basics
     </a>
    </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../38-ml-for-graph-data/11-descriptive-analysis.html">
+     Descriptive Analysis
+    </a>
+   </li>
   </ul>
   <i class="fas fa-chevron-down">
   </i>
@@ -811,47 +816,72 @@
         <nav id="bd-toc-nav">
             <ul class="nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#setup">
-   Setup
+  <a class="reference internal nav-link" href="#similarity-graphs">
+   Similarity Graphs
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#adjacency-matrix-based">
+   Adjacency Matrix-based
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#similarity-graphs">
-     Similarity Graphs
+    <a class="reference internal nav-link" href="#property">
+     Property
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#graph-matrices">
-     Graph Matrices
+    <a class="reference internal nav-link" href="#bisection">
+     Bisection
     </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#adjacency-matrix">
-       Adjacency Matrix
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#graph-laplacian">
-       Graph Laplacian
-      </a>
-     </li>
-    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pros-and-cons">
+     Pros and Cons
+    </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#objectives">
-   Objectives
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#learning">
-   Learning
+  <a class="reference internal nav-link" href="#laplacian-matrix-based">
+   Laplacian Matrix-based
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#clusters">
-     2 Clusters
+    <a class="reference internal nav-link" href="#id1">
+     Property
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#fiedler-bisection">
+     Fiedler Bisection
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id2">
+     Pros and Cons
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#computation">
+   Computation
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#weighted-case">
+   Weighted Case
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#objectives">
+     Objectives
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#bisection-normalized-cut">
+     Bisection Normalized Cut
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
@@ -901,7 +931,7 @@
                 
   <div class="section" id="spectral-clustering">
 <h1>Spectral Clustering<a class="headerlink" href="#spectral-clustering" title="Permalink to this headline">¶</a></h1>
-<p>Spectral clustering methods use a similarity graph (as in graph-based dimensionality reduction) to represents the data points, then use spectral (eigenvector-based) methods to divide the graph into connected sub-graphs.</p>
+<p>Spectral clustering methods use a similarity graph (as in graph-based dimensionality reduction) to represents the data points, then apply spectral (eigenvector-based) methods on certain graph matrices associated with the connectivity of <span class="math notranslate nohighlight">\(G\)</span>, to divide the graph into connected sub-graphs.</p>
 <p>Similar to graph-based representation learning, there are three steps for spectral clustering. Given a data set.</p>
 <ol class="simple">
 <li><p>Define a similarity measure</p></li>
@@ -918,93 +948,189 @@
 <a class="reference internal image-reference" href="../_images/spectral-clustering-ep-1.png"><img alt="" src="../_images/spectral-clustering-ep-1.png" style="width: 80%;" /></a>
 <p class="caption"><span class="caption-number">Fig. 77 </span><span class="caption-text">Divide the graph into sub-graphs [D. Sontag]</span><a class="headerlink" href="#spectral-clustering-ep-1" title="Permalink to this image">¶</a></p>
 </div>
-<div class="section" id="setup">
-<h2>Setup<a class="headerlink" href="#setup" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="similarity-graphs">
-<h3>Similarity Graphs<a class="headerlink" href="#similarity-graphs" title="Permalink to this headline">¶</a></h3>
-<p>Formally, we have data points <span class="math notranslate nohighlight">\(\boldsymbol{x}_{1}, \ldots, \boldsymbol{x}_{n}\)</span>, Consider some similarities <span class="math notranslate nohighlight">\(s_{i j}\)</span>. We create a graph <span class="math notranslate nohighlight">\(G=(V,E)\)</span>, one node <span class="math notranslate nohighlight">\(v_i\)</span> for each data point <span class="math notranslate nohighlight">\(\boldsymbol{x}_i\)</span> , and edge weights <span class="math notranslate nohighlight">\(w_{ij}\)</span> based on <span class="math notranslate nohighlight">\(s_{ij}\)</span> (may be a function of <span class="math notranslate nohighlight">\(s_{ij}\)</span>).</p>
-<p>Common types of similarity graphs constructed from data sets</p>
+<h2>Similarity Graphs<a class="headerlink" href="#similarity-graphs" title="Permalink to this headline">¶</a></h2>
+<p>Formally, we have data points <span class="math notranslate nohighlight">\(\boldsymbol{x}_{1}, \ldots, \boldsymbol{x}_{n}\)</span>, Consider some similarity measures <span class="math notranslate nohighlight">\(s_{i j}\)</span> or dissimilarity measures <span class="math notranslate nohighlight">\(d_{ij}\)</span>. We create a graph <span class="math notranslate nohighlight">\(G=(V,E)\)</span>, add one node <span class="math notranslate nohighlight">\(v_i\)</span> for each data point <span class="math notranslate nohighlight">\(\boldsymbol{x}_i\)</span>, and unweighted or weighted edges by some criterions.</p>
 <ul class="simple">
-<li><p><strong>Fully connected</strong>: weighted by similarity <span class="math notranslate nohighlight">\(w_{ij}\)</span></p></li>
-<li><p><strong><span class="math notranslate nohighlight">\(\varepsilon\)</span>-neighborhood graph</strong>: unweighted, include edges with distance/dissimilarity <span class="math notranslate nohighlight">\(&lt; \varepsilon\)</span></p></li>
-<li><p><strong><span class="math notranslate nohighlight">\(k\)</span>-NN</strong>: include edges where <span class="math notranslate nohighlight">\(v_i\)</span> is a <span class="math notranslate nohighlight">\(k\)</span>-NN of <span class="math notranslate nohighlight">\(v_j\)</span> <strong>or</strong> vice versa</p></li>
-<li><p><strong>Mutual <span class="math notranslate nohighlight">\(k\)</span>-NN</strong>: include edges where <span class="math notranslate nohighlight">\(v_i\)</span> is a <span class="math notranslate nohighlight">\(k\)</span>-NN of <span class="math notranslate nohighlight">\(v_j\)</span> <strong>and</strong> vice versa. It works well for sub-graphs with different densities.</p></li>
+<li><p><strong><span class="math notranslate nohighlight">\(\varepsilon\)</span>-neighborhood graph</strong>: add edge <span class="math notranslate nohighlight">\((v_i, v_j)\)</span> if <span class="math notranslate nohighlight">\(d_{ij} \le \varepsilon\)</span></p></li>
+<li><p><strong><span class="math notranslate nohighlight">\(k\)</span>-NN</strong>: add edge <span class="math notranslate nohighlight">\((v_i,v_j)\)</span> if <span class="math notranslate nohighlight">\(v_j\)</span> is a <span class="math notranslate nohighlight">\(k\)</span>-NN of <span class="math notranslate nohighlight">\(v_i\)</span> <strong>or</strong> vice versa, according to <span class="math notranslate nohighlight">\(d_{ij}\)</span></p></li>
+<li><p><strong>Mutual <span class="math notranslate nohighlight">\(k\)</span>-NN</strong>: add edge <span class="math notranslate nohighlight">\((v_i,v_j)\)</span> if <span class="math notranslate nohighlight">\(v_i\)</span> is a <span class="math notranslate nohighlight">\(k\)</span>-NN of <span class="math notranslate nohighlight">\(v_j\)</span> <strong>and</strong> vice versa. It works well for sub-graphs with different densities.</p></li>
+<li><p><strong>Fully connected</strong>: add edge <span class="math notranslate nohighlight">\((v_i,v_j)\)</span> with weight <span class="math notranslate nohighlight">\(w_{ij} = s_{ij}\)</span> or some function of <span class="math notranslate nohighlight">\(s_{ij}\)</span>.</p></li>
 </ul>
 <div class="figure align-default" id="spectral-clustering-types">
 <a class="reference internal image-reference" href="../_images/spectral-clustering-types.png"><img alt="" src="../_images/spectral-clustering-types.png" style="width: 70%;" /></a>
 <p class="caption"><span class="caption-number">Fig. 78 </span><span class="caption-text">Comparison of three types of graphs [von Luxburg]</span><a class="headerlink" href="#spectral-clustering-types" title="Permalink to this image">¶</a></p>
 </div>
+<p>We mainly consider bisection (<span class="math notranslate nohighlight">\(K=2\)</span>) and unweighted case.</p>
 </div>
-<div class="section" id="graph-matrices">
-<h3>Graph Matrices<a class="headerlink" href="#graph-matrices" title="Permalink to this headline">¶</a></h3>
-<div class="section" id="adjacency-matrix">
-<h4>Adjacency Matrix<a class="headerlink" href="#adjacency-matrix" title="Permalink to this headline">¶</a></h4>
-<p>Adjacency matrix contains binary entries of connection relation between any two nodes. Sometimes we can extend it to be the matrix of edge weights (similarities).</p>
+<div class="section" id="adjacency-matrix-based">
+<h2>Adjacency Matrix-based<a class="headerlink" href="#adjacency-matrix-based" title="Permalink to this headline">¶</a></h2>
+<p>Recall that an adjacency matrix contains binary entries of connection relation between any two nodes. Sometimes we can extend it to be the matrix of edge weights (similarities).</p>
 <ul class="simple">
-<li><p><strong>Degree</strong> (considering weights) <span class="math notranslate nohighlight">\(d_{i}=\sum_{j} w_{i j} = \operatorname{RowSum}_i (A)\)</span></p></li>
-<li><p><strong>Volume</strong> of a set of nodes <span class="math notranslate nohighlight">\(\operatorname{vol}(S)=\sum_{i \in S} d_{i}\)</span>.</p></li>
+<li><p><strong>Degree</strong> (considering weights) <span class="math notranslate nohighlight">\(\operatorname{deg} (i)=\sum_{j} a_{i j} = \operatorname{RowSum}_i (A)\)</span></p></li>
+<li><p><strong>Volume</strong> of a set <span class="math notranslate nohighlight">\(S\)</span> of nodes <span class="math notranslate nohighlight">\(\operatorname{vol}(S)=\sum_{i \in S} \operatorname{deg} _{i}\)</span>.</p></li>
+</ul>
+<div class="section" id="property">
+<h3>Property<a class="headerlink" href="#property" title="Permalink to this headline">¶</a></h3>
+<p>Let the eigen-pairs of an binary adjacency matrix <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> be <span class="math notranslate nohighlight">\((\lambda_i, \boldsymbol{v}_i)\)</span>, where <span class="math notranslate nohighlight">\(\lambda_1 \le \ldots \le \lambda_{N_v}\)</span> (not necessarily distinct).</p>
+<dl class="simple myst">
+<dt>Fact (Spectrum of graph adjacency matrices)</dt><dd><p>In the case of a graph <span class="math notranslate nohighlight">\(G\)</span> consisting of two <span class="math notranslate nohighlight">\(d\)</span>-regular graphs joined to each other by just a handful of vertices,</p>
+<ul class="simple">
+<li><p>the two largest eigenvalues <span class="math notranslate nohighlight">\(\lambda_1, \lambda_2\)</span> will be roughly equal to <span class="math notranslate nohighlight">\(d\)</span>, and the remaining eigenvalues will be of only <span class="math notranslate nohighlight">\(\mathcal{O} (d^{1/2})\)</span> in magnitude. Hence, there is a gap in the spectrum of eigenvalues, namely ‘spectral gap’.</p></li>
+<li><p>the two corresponding eigenvectors <span class="math notranslate nohighlight">\(\boldsymbol{v} _1, \boldsymbol{v} _2\)</span> are expected two have large positive entires on vertices of one <span class="math notranslate nohighlight">\(d\)</span>-‘regular’ graphs, and large negative entires on the vertices of the other.</p></li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="bisection">
+<h3>Bisection<a class="headerlink" href="#bisection" title="Permalink to this headline">¶</a></h3>
+<p>Using this fact, to find two clusters in the data set, we can compute eigenvalues and eigenvectors of <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span>, then find the largest positive and largest negative entries in the two eigenvectors. Their respective neighbors are declared to be two clusters.</p>
+<p>For instance, in the plots below, We see that</p>
+<ul class="simple">
+<li><p>The first two eigenvalues are fairly distinct from the rest, indicating the possible presence of two sub-graphs.</p></li>
+<li><p>The first eigenvector appears to suggest a separation of the 1st and 34th actors, and some of their nearest neighbors, from the rest of the actors.</p></li>
+<li><p>The second eigenvector in turn provides evidence that these two actors, and certain of their neighbors, should themselves be separated.</p></li>
+</ul>
+<div class="figure align-default" id="spectral-clustering-ex1">
+<a class="reference internal image-reference" href="../_images/spectral-clustering-ex1.png"><img alt="" src="../_images/spectral-clustering-ex1.png" style="width: 70%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 79 </span><span class="caption-text">Spectral analysis of the karate club network. Left: <span class="math notranslate nohighlight">\(\left\vert \lambda_i \right\vert\)</span>. Right: <span class="math notranslate nohighlight">\(\boldsymbol{v} _1, \boldsymbol{v} _2\)</span>, colored by subgroups. [Kolaczyk 2009]</span><a class="headerlink" href="#spectral-clustering-ex1" title="Permalink to this image">¶</a></p>
+</div>
+<p>For <span class="math notranslate nohighlight">\(K \ge 3\)</span>, we can</p>
+<ul class="simple">
+<li><p>Look for a spectral gap to determine <span class="math notranslate nohighlight">\(K\)</span></p></li>
+<li><p>Run <span class="math notranslate nohighlight">\(K\)</span>-NN using the first <span class="math notranslate nohighlight">\(K\)</span> eigenvectors to determine assignment</p></li>
 </ul>
 </div>
-<div class="section" id="graph-laplacian">
-<h4>Graph Laplacian<a class="headerlink" href="#graph-laplacian" title="Permalink to this headline">¶</a></h4>
-<p>The (unnormalized) graph Laplacian is defined as</p>
+<div class="section" id="pros-and-cons">
+<h3>Pros and Cons<a class="headerlink" href="#pros-and-cons" title="Permalink to this headline">¶</a></h3>
+<p>Cons</p>
+<ul class="simple">
+<li><p>In reality, graphs are far from regular, so this method does not work well</p></li>
+<li><p>The partitions found through spectral analysis will tend to be ordered and separated by vertex degree, since the eigenvalues will mirror quite closely the underlying degree distribution. Normalizing the adjacency matrix to have unit row sums is a commonly proposed solution.</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="laplacian-matrix-based">
+<h2>Laplacian Matrix-based<a class="headerlink" href="#laplacian-matrix-based" title="Permalink to this headline">¶</a></h2>
+<p>Recall that the graph Laplacian matrix is defined as <span class="math notranslate nohighlight">\(\boldsymbol{L} = \boldsymbol{D} -\boldsymbol{A}\)</span> where <span class="math notranslate nohighlight">\(\boldsymbol{D}\)</span> is diagonal matrix of degrees.</p>
+<p>Let the eigen-pairs of <span class="math notranslate nohighlight">\(\boldsymbol{L}\)</span> be <span class="math notranslate nohighlight">\((\lambda_i, \boldsymbol{v}_i)\)</span>, where <span class="math notranslate nohighlight">\(\lambda_1 \le \ldots \le \lambda_{N_v}\)</span> (not necessarily distinct).</p>
+<div class="section" id="id1">
+<h3>Property<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<dl class="simple myst">
+<dt>Fact (Spectrum of graph Laplacian matrices)</dt><dd><p>A graph <span class="math notranslate nohighlight">\(G\)</span> will consist of <span class="math notranslate nohighlight">\(K\)</span> connected components if and only <span class="math notranslate nohighlight">\(\lambda_1 = \ldots = \lambda_K = 0\)</span> and <span class="math notranslate nohighlight">\(\lambda_{K+1} &gt; 0\)</span>.</p>
+</dd>
+</dl>
+<p>Therefore, if we suspect a graph <span class="math notranslate nohighlight">\(G\)</span> to consist of nearly <span class="math notranslate nohighlight">\(K=2\)</span> components, then we expect <span class="math notranslate nohighlight">\(\lambda_2\)</span> to be close to zero.</p>
+<dl class="simple myst">
+<dt>Definitions</dt><dd><ul>
+<li><p>The <strong>ratio</strong> of the cut defined by <span class="math notranslate nohighlight">\((S, \bar{S})\)</span> is the ratio between the number of across-part edges and the number of vertices in the smaller component.</p>
 <div class="math notranslate nohighlight">
-\[\boldsymbol{L} = \boldsymbol{D} - \boldsymbol{W}\]</div>
-<p>where</p>
-<ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(\boldsymbol{W}\)</span> is the similarity matrix</p></li>
-<li><p><span class="math notranslate nohighlight">\(\boldsymbol{D}\)</span> is the diagonal degree matrix <span class="math notranslate nohighlight">\(d_{ii} = \sum_j w_{ij}\)</span></p></li>
-</ul>
-<p>There are many properties of <span class="math notranslate nohighlight">\(\boldsymbol{L}\)</span>. Suppose <span class="math notranslate nohighlight">\(G\)</span> is an undirected graph with non-negative weights. Then <span class="math notranslate nohighlight">\(0\)</span> is an eigenvalue of <span class="math notranslate nohighlight">\(\boldsymbol{L}\)</span> and the multiplicity <span class="math notranslate nohighlight">\(k\)</span> of the <span class="math notranslate nohighlight">\(0\)</span> eigenvalue is the number of connected components in the graph.</p>
-<ul class="simple">
-<li><p>So if the clusters are disconnected, it is easy to tell how many clusters.</p></li>
-<li><p>If not, we still use the first <span class="math notranslate nohighlight">\(k\)</span> eigenvectors, but it’s less obvious why. Some theoretical foundations include</p>
-<ul>
-<li><p>Graph cuts view</p></li>
-<li><p>Random walks</p></li>
-<li><p>Perturbation theory</p></li>
-</ul>
+\[\phi(S, \bar{S}) = \frac{\left\vert E(S, \bar{S}) \right\vert}{ \left\vert S \right\vert}\]</div>
+</li>
+<li><p>The <strong>isoperimetric number</strong> of a graph <span class="math notranslate nohighlight">\(G\)</span> is defined as the smallest ratio of all cuts.</p>
+<div class="math notranslate nohighlight">
+\[\phi(G)=\min _{S \subset V:|S| \leq N_{v} / 2} \phi(S, \bar{S})\]</div>
 </li>
 </ul>
-</div>
-</div>
-</div>
-<div class="section" id="objectives">
-<h2>Objectives<a class="headerlink" href="#objectives" title="Permalink to this headline">¶</a></h2>
+</dd>
+</dl>
+<p>The ratio is a natural quantity to minimize in seeking a good bisection of <span class="math notranslate nohighlight">\(G\)</span>. Unfortunately, this minimization problem to find <span class="math notranslate nohighlight">\(S\)</span> for <span class="math notranslate nohighlight">\(\phi(G)\)</span>, aka <strong>ratio cut</strong>, is NP-hard. But the isoperimetric number is closely related to <span class="math notranslate nohighlight">\(\lambda_2\)</span></p>
 <dl class="simple myst">
-<dt>Definition (Cut)</dt><dd><p>A cut is a partition of the graph into <strong>two</strong> sub-graphs <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span>. The value of a cut is defined as the sum of total edge weights between the two subgraphs</p>
+<dt>Property</dt><dd><p>The isoperimetric number <span class="math notranslate nohighlight">\(\phi(G)\)</span> is bounded by <span class="math notranslate nohighlight">\(\lambda_2\)</span> as</p>
+<div class="math notranslate nohighlight">
+\[
+  \frac{\lambda_{2}}{2} \leq \phi(G) \leq \sqrt{\lambda_{2}}\left(2 \operatorname{deg} _{\max }-\lambda_{2}\right)
+  \]</div>
+</dd>
+</dl>
+<p>Thus, <span class="math notranslate nohighlight">\(\phi(G)\)</span> will be small when <span class="math notranslate nohighlight">\(\lambda_2\)</span> is small and vice versa.</p>
+</div>
+<div class="section" id="fiedler-bisection">
+<h3>Fiedler Bisection<a class="headerlink" href="#fiedler-bisection" title="Permalink to this headline">¶</a></h3>
+<p>Fiedler [SAND 144] associate <span class="math notranslate nohighlight">\(\lambda_2\)</span> with the connectivity of a graph. We partition vertices according to the sign of their entires in <span class="math notranslate nohighlight">\(\boldsymbol{v} _2\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+S_F=\left\{u \in V: \boldsymbol{v} _{2}(u) \geq 0\right\} \quad \text { and } \quad \bar{S}_F=\left\{u \in V: \boldsymbol{v} _{2}(u)&lt;0\right\}
+\]</div>
+<ul class="simple">
+<li><p>The eigenvector <span class="math notranslate nohighlight">\(\boldsymbol{v} _2\)</span> is hence often called the Fiedler vector</p></li>
+<li><p>The eigenvalue <span class="math notranslate nohighlight">\(\lambda_2\)</span> is often called the Fiedler value, which is also the algebraic connectivity of the graph.</p></li>
+</ul>
+<p>It can be shown that</p>
+<div class="math notranslate nohighlight">
+\[
+\phi(G) \leq \phi(S_F, \bar{S}_F) \leq \frac{\phi^{2}(G)}{\operatorname{deg} _{\max }} \leq \lambda_{2}
+\]</div>
+<p>Fiedler bisection can be viewed as a computationally efficient approximation to finding a best cut achieving <span class="math notranslate nohighlight">\(\phi(G)\)</span>. In the example below, we see that is gives a good result, classifying all but the 3rd actor correctly.</p>
+<div class="figure align-default" id="spectral-clustering-ex2">
+<a class="reference internal image-reference" href="../_images/spectral-clustering-ex2.png"><img alt="" src="../_images/spectral-clustering-ex2.png" style="width: 50%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 80 </span><span class="caption-text">Fiedler vector <span class="math notranslate nohighlight">\(\boldsymbol{v} _2\)</span> of the karate club graph. Color and shape indicate subgroups. [Kolaczyk 2009]</span><a class="headerlink" href="#spectral-clustering-ex2" title="Permalink to this image">¶</a></p>
+</div>
+<p>For <span class="math notranslate nohighlight">\(K \ge 3\)</span>, apply bisection recursively.</p>
+</div>
+<div class="section" id="id2">
+<h3>Pros and Cons<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<p>Pros</p>
+<ul class="simple">
+<li><p>Work well on bounded-degree planar graphs and certain mesh graphs [SAND 366]</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="computation">
+<h2>Computation<a class="headerlink" href="#computation" title="Permalink to this headline">¶</a></h2>
+<p>For both of the two spectral partitioning methods above, the computational
+overhead is in principle determined by the cost of computing the spectral decomposition of an <span class="math notranslate nohighlight">\(N_v \times N_v\)</span> matrix <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> or <span class="math notranslate nohighlight">\(\boldsymbol{L}\)</span>, which takes <span class="math notranslate nohighlight">\(\mathcal{O} (N_v^2)\)</span> time. However, realistically,</p>
+<ul class="simple">
+<li><p>only a small subset of extreme eigenvalues and eigenvectors are needed.</p></li>
+<li><p>the matrices <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{L}\)</span> will typically be quite sparse in practice.</p></li>
+</ul>
+<p>Lanczos algorithm can efficiently solve such settings. If the graph between <span class="math notranslate nohighlight">\(\lambda_2\)</span> and <span class="math notranslate nohighlight">\(\lambda_3\)</span> is sufficiently large (nearly <span class="math notranslate nohighlight">\(K=2\)</span>), the spectral bisection takes <span class="math notranslate nohighlight">\(\mathcal{O} (\frac{1}{\lambda_3 - \lambda_2} N_e)\)</span>, i.e. almost linear.</p>
+</div>
+<div class="section" id="weighted-case">
+<h2>Weighted Case<a class="headerlink" href="#weighted-case" title="Permalink to this headline">¶</a></h2>
+<p>Now we consider the weighted case from optimization point of view, where weights <span class="math notranslate nohighlight">\(w_{ij} = s_{ij}\)</span>.</p>
+<p>We define the (unnormalized) graph Laplacian  as</p>
+<div class="math notranslate nohighlight">
+\[\boldsymbol{L}_w = \boldsymbol{D} - \boldsymbol{W}\]</div>
+<p>where</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{W}\)</span> is the similarity matrix of <span class="math notranslate nohighlight">\(s_{ij}\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{D}\)</span> is the diagonal matrix of <span class="math notranslate nohighlight">\(\boldsymbol{W} \boldsymbol{1}\)</span></p></li>
+</ul>
+<p>The volume of a set <span class="math notranslate nohighlight">\(S\)</span> of vertices extends to <span class="math notranslate nohighlight">\(\operatorname{vol}(S)=\sum_{i \in S} \sum_{j \in N(i)} w_{ij}\)</span></p>
+<div class="section" id="objectives">
+<h3>Objectives<a class="headerlink" href="#objectives" title="Permalink to this headline">¶</a></h3>
+<dl class="simple myst">
+<dt>Definition (Value of a cut)</dt><dd><p>A cut is a partition of the graph into two sub-graphs <span class="math notranslate nohighlight">\(S\)</span> and <span class="math notranslate nohighlight">\(\bar{S}\)</span>. The value of a cut is defined as the sum of total edge weights between the two subgraphs</p>
 </dd>
 </dl>
 <div class="math notranslate nohighlight">
-\[\operatorname{Cut}(A, B)=W(A, B)=\sum_{i \in A, j \in B} w_{i j}\]</div>
-<p>To partition the graph into <span class="math notranslate nohighlight">\(k\)</span> subgraphs, we would like to minimize the sum of cut values between <strong>each</strong> subgraph <span class="math notranslate nohighlight">\(A_i\)</span> and the rest of the graph:</p>
+\[W(S, \bar{S})=\sum_{i \in A, j \in B} w_{i j}\]</div>
+<p>To partition the graph into <span class="math notranslate nohighlight">\(K\)</span> subgraphs, we would like to minimize the sum of cut values between <strong>each</strong> subgraph <span class="math notranslate nohighlight">\(A_i\)</span> and the rest of the graph:</p>
 <div class="math notranslate nohighlight">
 \[
-\underset{A_{1}, \ldots, A_{k}}{\operatorname{argmin}} \frac{1}{2} \sum_{i=1}^{k} W\left(A_{i}, \bar{A}_{i}\right)
+\underset{S_{1}, \ldots, S_{K}}{\operatorname{argmin}} \frac{1}{2} \sum_{k=1}^{K} W\left(S_{k}, \bar{S}_{k}\right)
 \]</div>
 <div class="figure align-default" id="spectral-clustering-cuts">
 <a class="reference internal image-reference" href="../_images/spectral-clustering-cuts.png"><img alt="" src="../_images/spectral-clustering-cuts.png" style="width: 70%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 79 </span><span class="caption-text">A graph cut with <span class="math notranslate nohighlight">\(W(A,B)=0.3\)</span>[Hamad &amp; Biela]</span><a class="headerlink" href="#spectral-clustering-cuts" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 81 </span><span class="caption-text">A graph cut with <span class="math notranslate nohighlight">\(W(S,\bar{S})=0.3\)</span> [Hamad &amp; Biela]</span><a class="headerlink" href="#spectral-clustering-cuts" title="Permalink to this image">¶</a></p>
 </div>
 <p>The algorithm with the above objective function is called <strong>MinCut</strong>, which favors <strong>isolated</strong> nodes.</p>
-<p>Other methods with modified/normalized objectives are:</p>
+<p>Other methods with modified/normalized objectives include:</p>
 <ul class="simple">
-<li><p>Ratio cuts <span class="math notranslate nohighlight">\((\operatorname{RatioCut} )\)</span> normalizes by cardinality: <span class="math notranslate nohighlight">\(\frac{1}{2} \sum_{i=1}^{k} \frac{W\left(A_{i}, \bar{A}_{i}\right)}{\left|A_{i}\right|}\)</span></p></li>
-<li><p>Normalized cuts <span class="math notranslate nohighlight">\((\operatorname{Ncut})\)</span> normalizes by volume <span class="math notranslate nohighlight">\(\frac{1}{2} \sum_{i=1}^{k} \frac{W\left(A_{i}, \bar{A}_{i}\right)}{\operatorname{vol}\left(A_{i}\right)}\)</span>.</p></li>
+<li><p><strong>Ratio cuts</strong> <span class="math notranslate nohighlight">\((\operatorname{RatioCut} )\)</span> normalizes by cardinality: <span class="math notranslate nohighlight">\(\frac{1}{2} \sum_{k=1}^{K} \frac{W\left(S_{k}, \bar{S}_{k}\right)}{\left|S_{k}\right|}\)</span></p></li>
+<li><p><strong>Normalized cuts</strong> <span class="math notranslate nohighlight">\((\operatorname{Ncut})\)</span> normalizes by volume: <span class="math notranslate nohighlight">\(\frac{1}{2} \sum_{i=1}^{k} \frac{W\left(S_{i}, \bar{S}_{i}\right)}{\operatorname{vol}\left(S_{i}\right)}\)</span>.</p></li>
 </ul>
 </div>
-<div class="section" id="learning">
-<h2>Learning<a class="headerlink" href="#learning" title="Permalink to this headline">¶</a></h2>
-<p>We introduce how to solve normalized cuts. As discussed above, the solution is related to the first <span class="math notranslate nohighlight">\(k\)</span> eigenvectors of the Laplacian matrix.</p>
-<div class="section" id="clusters">
-<h3>2 Clusters<a class="headerlink" href="#clusters" title="Permalink to this headline">¶</a></h3>
-<p>To solve normalized cut for 2 clusters, define a indicator vector <span class="math notranslate nohighlight">\(\boldsymbol{c} \in\{-1,1\}^{n}\)</span>, where <span class="math notranslate nohighlight">\(c_i = 1\)</span> means data point <span class="math notranslate nohighlight">\(i\)</span> is in cluster/subgraph <span class="math notranslate nohighlight">\(A\)</span>; otherwise cluster <span class="math notranslate nohighlight">\(B\)</span>.</p>
+<div class="section" id="bisection-normalized-cut">
+<h3>Bisection Normalized Cut<a class="headerlink" href="#bisection-normalized-cut" title="Permalink to this headline">¶</a></h3>
+<p>We introduce how to solve normalized cuts. The solution is related to the first <span class="math notranslate nohighlight">\(K\)</span> eigenvectors of the Laplacian matrix. We define a indicator vector <span class="math notranslate nohighlight">\(\boldsymbol{c} \in\{-1,1\}^{n}\)</span>, where <span class="math notranslate nohighlight">\(c_i = 1\)</span> means data point <span class="math notranslate nohighlight">\(i\)</span> is in cluster/subgraph <span class="math notranslate nohighlight">\(A\)</span>; otherwise cluster <span class="math notranslate nohighlight">\(B\)</span>.</p>
 <p>We can show that the <span class="math notranslate nohighlight">\(\operatorname{Ncut}\)</span> problem to find <span class="math notranslate nohighlight">\(\boldsymbol{c}\)</span> is equivalent to the optimization problem</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{aligned}
 \min _{\boldsymbol{c}} \operatorname{Ncut} (\boldsymbol{c})
-=\min _{\boldsymbol{c}} &amp;\ \frac{\boldsymbol{c}^{\top}(\boldsymbol{D} -\boldsymbol{W} ) \boldsymbol{c}}{\boldsymbol{c}^{\top} \boldsymbol{D}  \boldsymbol{c}} \\
+=\min _{\boldsymbol{c}} &amp;\ \frac{\boldsymbol{c}^{\top}\boldsymbol{L} _w \boldsymbol{c}}{\boldsymbol{c}^{\top} \boldsymbol{D}  \boldsymbol{c}} \\
  \text { s.t. } &amp;\ \boldsymbol{c}^{\top} \boldsymbol{D}  \boldsymbol{1}  =0 \\
 &amp;\ \boldsymbol{c} \in\{-1,1\}^{n}  \\
 \end{aligned}
@@ -1013,22 +1139,22 @@
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{array}{cl}
-\min _{\boldsymbol{c}} &amp; \boldsymbol{c}^{\top}(\boldsymbol{D} - \boldsymbol{W} ) \boldsymbol{c} \\
+\min _{\boldsymbol{c}} &amp; \boldsymbol{c}^{\top}\boldsymbol{L} _w \boldsymbol{c} \\
 \text { s.t. } &amp; \boldsymbol{c}^{\top} \boldsymbol{D}  \boldsymbol{c}= \boldsymbol{1} \\
-\Longrightarrow &amp; (\boldsymbol{D} - \boldsymbol{W} ) \boldsymbol{c}=\lambda \boldsymbol{D}  \boldsymbol{c}
+\Longrightarrow &amp; \boldsymbol{L} _w \boldsymbol{c}=\lambda \boldsymbol{D}  \boldsymbol{c}
 \end{array}
 \end{split}\]</div>
-<p>The first eigenvector is all ones (all data in a single cluster). We take the 2nd eigenvector as the real-valued solution. As shown below, the solved eigenvector (right picture) has values around <span class="math notranslate nohighlight">\(-0.2\)</span> and <span class="math notranslate nohighlight">\(0.2\)</span> (why??), which can be the labels for two clusters.</p>
+<p>The first eigenvector of <span class="math notranslate nohighlight">\(\boldsymbol{L} _w\)</span> is all ones (all data in a single cluster). We take the 2nd eigenvector as the real-valued solution. As shown below, the solved eigenvector (right picture) has positive and negative values, which can be used for assignment.</p>
 <div class="figure align-default" id="spectral-clustering-egvector">
 <a class="reference internal image-reference" href="../_images/spectral-clustering-egvector.png"><img alt="" src="../_images/spectral-clustering-egvector.png" style="width: 80%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 80 </span><span class="caption-text"><span class="math notranslate nohighlight">\(\operatorname{Ncut}\)</span> for a data set of <span class="math notranslate nohighlight">\(40\)</span> points.</span><a class="headerlink" href="#spectral-clustering-egvector" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 82 </span><span class="caption-text"><span class="math notranslate nohighlight">\(\operatorname{Ncut}\)</span> for a data set of <span class="math notranslate nohighlight">\(40\)</span> points.</span><a class="headerlink" href="#spectral-clustering-egvector" title="Permalink to this image">¶</a></p>
 </div>
 </div>
 <div class="section" id="more-clusters">
 <h3>More Clusters<a class="headerlink" href="#more-clusters" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Option 1: Recursively apply the 2-cluster algorithm</p></li>
-<li><p>Option 2: Treat the first <span class="math notranslate nohighlight">\(k\)</span> eigenvectors as a reduced-dimensionality representation of the data, and cluster the eigenvectors. The task will be easier if the values in the eigenvectors are close to discrete, like the above case.</p></li>
+<li><p>Option 2: Treat the first <span class="math notranslate nohighlight">\(K\)</span> eigenvectors as a reduced-dimensionality representation of the data, and cluster these eigenvectors. The task will be easier if the values in the eigenvectors are close to discrete, like the above case.</p></li>
 </ul>
 <div class="margin sidebar">
 <p class="sidebar-title">Relation to Representation Learning</p>
@@ -1042,7 +1168,7 @@
 <h3>Comparison to <span class="math notranslate nohighlight">\(k\)</span>-means<a class="headerlink" href="#comparison-to-k-means" title="Permalink to this headline">¶</a></h3>
 <div class="figure align-default" id="spectral-clustering-vs-k-means">
 <a class="reference internal image-reference" href="../_images/spectral-clustering-vs-k-means.png"><img alt="" src="../_images/spectral-clustering-vs-k-means.png" style="width: 80%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 81 </span><span class="caption-text"><span class="math notranslate nohighlight">\(k\)</span>-means vs spectral clustering on double rings data set [Ng, Jordan, &amp; Weiss]</span><a class="headerlink" href="#spectral-clustering-vs-k-means" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 83 </span><span class="caption-text"><span class="math notranslate nohighlight">\(k\)</span>-means vs spectral clustering on double rings data set [Ng, Jordan, &amp; Weiss]</span><a class="headerlink" href="#spectral-clustering-vs-k-means" title="Permalink to this image">¶</a></p>
 </div>
 </div>
 <div class="section" id="image-segmentation">
@@ -1057,11 +1183,11 @@ w_{i j}= \left\{\begin{array}{ll}
 \end{split}\]</div>
 <div class="figure align-default" id="spectral-clustering-img-seg">
 <a class="reference internal image-reference" href="../_images/spectral-clustering-img-seg.png"><img alt="" src="../_images/spectral-clustering-img-seg.png" style="width: 80%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 82 </span><span class="caption-text">Spectral clustering for image segmentation [Shi &amp; Malik]</span><a class="headerlink" href="#spectral-clustering-img-seg" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 84 </span><span class="caption-text">Spectral clustering for image segmentation [Shi &amp; Malik]</span><a class="headerlink" href="#spectral-clustering-img-seg" title="Permalink to this image">¶</a></p>
 </div>
 <div class="figure align-default" id="spectral-clustering-img-seg-2">
 <a class="reference internal image-reference" href="../_images/spectral-clustering-img-seg-2.png"><img alt="" src="../_images/spectral-clustering-img-seg-2.png" style="width: 50%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 83 </span><span class="caption-text">Spectral clustering for image segmentation [Arbel ́aez et al.]</span><a class="headerlink" href="#spectral-clustering-img-seg-2" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 85 </span><span class="caption-text">Spectral clustering for image segmentation [Arbel ́aez et al.]</span><a class="headerlink" href="#spectral-clustering-img-seg-2" title="Permalink to this image">¶</a></p>
 </div>
 </div>
 <div class="section" id="speech-separation">
@@ -1069,7 +1195,7 @@ w_{i j}= \left\{\begin{array}{ll}
 <p>Speech separation (into speakers): Similar to image segmentation, where a “pixel” is a cell of a spectrogram. Darkness corresponds to amount of frequency at that time.</p>
 <div class="figure align-default" id="spectral-clustering-speech-sep">
 <a class="reference internal image-reference" href="../_images/spectral-clustering-speech-sep.png"><img alt="" src="../_images/spectral-clustering-speech-sep.png" style="width: 80%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 84 </span><span class="caption-text">Spectral clustering for speech separation [Bach &amp; Jordan]</span><a class="headerlink" href="#spectral-clustering-speech-sep" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 86 </span><span class="caption-text">Spectral clustering for speech separation [Bach &amp; Jordan]</span><a class="headerlink" href="#spectral-clustering-speech-sep" title="Permalink to this image">¶</a></p>
 </div>
 </div>
 </div>

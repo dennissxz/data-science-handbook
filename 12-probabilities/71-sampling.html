@@ -719,6 +719,11 @@
      Graph Basics
     </a>
    </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../38-ml-for-graph-data/11-descriptive-analysis.html">
+     Descriptive Analysis
+    </a>
+   </li>
   </ul>
   <i class="fas fa-chevron-down">
   </i>
@@ -831,6 +836,11 @@
         <nav id="bd-toc-nav">
             <ul class="nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#monte-carlo">
+   Monte Carlo
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#rejection-sampling">
    Rejection Sampling
   </a>
@@ -911,6 +921,29 @@
 </li>
 </ul>
 <p>For multivariate distributions, e.g. <span class="math notranslate nohighlight">\(d=2\)</span>, if we want to generate a sample <span class="math notranslate nohighlight">\(\left\{ (x_1, y_1), \ldots, (x_n, y_n) \right\}\)</span> from unknown <span class="math notranslate nohighlight">\(p(x,y)\)</span>, and <span class="math notranslate nohighlight">\(f(x \vert y )\propto p(x\vert y)\)</span> and <span class="math notranslate nohighlight">\(f(y \vert x )\propto p(x\vert y)\)</span> are known, then we can use <span class="math notranslate nohighlight">\(f(x \vert y)\)</span> and <span class="math notranslate nohighlight">\(f(y \vert x)\)</span> to obtain the sample. Gibbs sampling solve this problem setting.</p>
+<div class="section" id="monte-carlo">
+<h2>Monte Carlo<a class="headerlink" href="#monte-carlo" title="Permalink to this headline">¶</a></h2>
+<p>Given a random variable <span class="math notranslate nohighlight">\(X\)</span> with PDF <span class="math notranslate nohighlight">\(f\)</span>, sometimes we need to compute the expectation of <span class="math notranslate nohighlight">\(g(X)\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbb{E}\left( g(X) \right) = \int g(d)f(x) \mathrm{~d}x
+\]</div>
+<p>When computationally tractable, closed form expressions are not available for this purpose, and numerical integration is infeasible. For instance, Monte Carlo method generate random draws <span class="math notranslate nohighlight">\(x_1, \ldots, x_n\)</span> of <span class="math notranslate nohighlight">\(X\)</span> from <span class="math notranslate nohighlight">\(f\)</span>, and compute the stochastic approximation</p>
+<div class="math notranslate nohighlight">
+\[
+\widehat{\mathbb{E}}(g(X))=\frac{1}{n} \sum_{i=1}^{n} g\left(x_{i}\right)
+\]</div>
+<p>Sometimes it is hard to generate random draws from <span class="math notranslate nohighlight">\(f\)</span>. If we can sample from <span class="math notranslate nohighlight">\(h\)</span> where <span class="math notranslate nohighlight">\(w(x) = \frac{f(x)}{h(x)}\)</span>, then by re-arrangement we have</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbb{E}(g(X))= \frac{\int g(x) w(x) h(x) \mathrm{~d} x }{\int w(x) h(x) \mathrm{~d} x}
+\]</div>
+<p>Hence the approximation is</p>
+<div class="math notranslate nohighlight">
+\[
+\widehat{\mathbb{E}}_{h}(g(X)) = \frac{(1 / n) \sum_{i=1}^{n} w\left(x_{i}\right) g\left(x_{i}\right)}{(1 / n) \sum_{i=1}^{n} w\left(x_{i}\right)}
+\]</div>
+</div>
 <div class="section" id="rejection-sampling">
 <h2>Rejection Sampling<a class="headerlink" href="#rejection-sampling" title="Permalink to this headline">¶</a></h2>
 </div>

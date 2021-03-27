@@ -1,3 +1,4 @@
+(decision-tree)=
 # Decision Tree
 
 Decision trees are a top-down approach for classification.
