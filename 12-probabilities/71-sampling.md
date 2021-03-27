@@ -152,6 +152,46 @@ Horvitz-Thompson estimators can be computed with these values.
 
 If $p_i$ is directly proportional to the values $c_i$ of some characteristic of $i$, i.e., $p_i = \frac{c_i}{\sum c_i}$ we call this **probability proportional to size** (PPS) sampling. For instance, households might be selected for a marketing survey by drawing names from a database, in which case those households with more members in the database have a larger chance of being included.
 
+## Estimation of Group Size and Species
+
+### Group Size
+
+The estimation of group total $\tau$ above usually involve $N_u$, but often $N_u$ is unknown, e.g. populations of endangered animal species. One method to estimate $N_u$ is the class of **capture-recapture** estimators. The simplest version involves two stages
+1. Select a simple random sample $S_1$ of size $n_1$ without replacement, mark all units in $S_1$, and return then to the population
+2. Select a simple random sample $S_2$ of size $n_2$ without replacement, the value
+
+  $$
+  \hat{N}_u^{(c/r)} = \frac{n_2}{m} n_1
+  $$
+
+is then used as an estimate of $N_u$, where $m = \left\vert S_1 \cap S_2 \right\vert$ is the number of marked units in $S_2$. An estimator of the variance is
+
+$$
+\widehat{V}\left(\hat{N}_{u}^{(c / r)}\right)=\frac{n_{1} n_{2}\left(n_{1}-m\right)\left(n_{2}-m\right)}{m^{3}}
+$$
+
+If $n_1$ and $n_2$ are fixed, then $m$ follows a hypergeometric distribution, and the integer part of $\hat{N}_u^{(c/r)}$ corresponds to MLE of $N_u$.
+
+### Group Species
+
+Aka species problem. Suppose there $N_s$ number of species in the forest, how to estimate $N_s$? Similar problems include how many words did Shakespeare know based on his published works, and how many kinds of ancient coins minted by a society based on archaeological finds.
+
+It is possible that there are an arbitrary number of species in the population in arbitrarily small proportions. This fact allows for the species problem to potentially be quite ill-posed.
+
+One nonparametric estimator called coverage estimator of $N_s$ adjusts the number of observed species $n_{obs}$ upward by a certain factor (??)
+
+$$
+\hat{N}_s^{cov} = \frac{n_s ^{obs}}{\hat{c}} \quad \text{where} \quad \hat{c} = 1 - \frac{x_1}{n}
+$$
+
+where $x_1$ is the number of species observed **only** once in the sample of size $n$. The factor $\hat{c}$ is an estimate of the coverage $c$ of the sample: the fraction of population corresponding to species observed **at least** once.
+
+Pros
+- has asymptotic behavior quite close to that of MLE
+- easier to compute than MLE
+
+Cons
+- suffer from significant bias and large variance in small samples
 
 
 ## Monte Carlo
@@ -159,7 +199,7 @@ If $p_i$ is directly proportional to the values $c_i$ of some characteristic of 
 Given a random variable $X$ with PDF $f$, sometimes we need to compute the expectation of $g(X)$:
 
 $$
-\mathbb{E}\left( g(X) \right) = \int g(d)f(x) \mathrm{~d}x
+\mathbb{E}\left( g(X) \right) = \int g(x)f(x) \mathrm{~d}x
 $$
 
 When computationally tractable, closed form expressions are not available for this purpose, and numerical integration is infeasible. For instance, Monte Carlo method generate random draws $x_1, \ldots, x_n$ of $X$ from $f$, and compute the stochastic approximation
