@@ -79,10 +79,12 @@ For graphs, or induced graphs from data matrix, there are more methods to define
 
   which measures the Euclidean distance between rows $a$ and $b$ in the adjacency matrix.
 
-Besides the distance measures between vertices, Newman [SAND 294, 297] seeks to greedily optimize the so-called **modularity** of a partition. Let
+### Modularity Measure
+
+Besides the distance measures between two sets of vertices, Newman [SAND 294, 297] seeks to greedily optimize the so-called **modularity** of a partition. Let
 - $\mathcal{C} = \left\{ C_1, \ldots, C_K \right\}$ be a given candidate partition.
 - $f_{ij}(\mathcal{C}) = \frac{E(C_i, C_j)}{E(G)}$ be the fraction of edges in $G$ that connect vertices in $C_i$ with vertices in $C_j$
-- $\boldsymbol{F}$ be a $K \times K$ matrix storing the $f_{ij}$ values
+- $\boldsymbol{F}$ be a $K \times K$ matrix storing the $f_{ij}$ values, which is symmetric for undirected graphs and can be asymmetric for undirected graphs.
 
 The modularity of $\mathcal{C}$ is defined as
 
@@ -105,7 +107,9 @@ This is one advantage of hierarchical clustering over “flat” clustering like
 
 A good representation of clustering process is dendrogram. The $x$-axis represents items, and the $y$-axis is distance. It provides visual guidance to a good choice for the number of clusters
 
-Stop merging when the merge cost (distance between merged clusters) would be much larger than in previous iterations (for some precise definition of “much larger”), or use $\bmod (\mathcal{C})$ to choose an optimal partition.
+Stop merging when
+- the merge cost (distance between merged clusters) would be much larger than in previous iterations (for some precise definition of “much larger”), or
+- the modularity $\bmod (\mathcal{C})$ is maximized optimal partition.
 
 :::{figure} clustering-dendrogram
 <img src="../imgs/clustering-dendrogram.png" width = "50%" alt=""/>
