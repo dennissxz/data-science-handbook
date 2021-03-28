@@ -29,6 +29,7 @@ There are several methods to estimate $\alpha$, or in general, fitting power-law
 - Linear regression
 
   The above relation implies
+
   $$\log f(d) \sim C-\alpha \log d$$
 
   Hence we can fit a line to the above plots, and $\hat{\alpha} = - \hat{\beta}$ where $\hat{\beta}$ is the estimated slope.

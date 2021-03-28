@@ -99,7 +99,7 @@ $$
 the estimator $\hat{\tau}_\pi$ is unbiased since
 
 $$
-\mathbb{E}\left(\hat{\tau}_{\pi}\right)=\mathbb{E}\left(\sum_{i \in S} \frac{y_{i}}{\pi_{i}}  \right)=\mathbb{E}\left(\sum_{i \in {U}}\frac{y_{i}}{\pi_{i}} Z_i\right)=\sum_{i \in {U}} \frac{y_{i}}{\pi_{i}} \mathbb{E}\left(Z_{i}\right) = \mu
+\mathbb{E}\left(\hat{\tau}_{\pi}\right)=\mathbb{E}\left(\sum_{i \in S} \frac{y_{i}}{\pi_{i}}  \right)=\mathbb{E}\left(\sum_{i \in {U}}\frac{y_{i}}{\pi_{i}} Z_i\right)=\sum_{i \in {U}} \frac{y_{i}}{\pi_{i}} \mathbb{E}\left(Z_{i}\right) = \tau
 $$
 
 where $Z_i = 1$ if $i \in S$ and zero otherwise, hence $\mathbb{E}\left( Z_i \right) = \mathbb{P}\left( Z_i = 1 \right) = \pi_i$.
