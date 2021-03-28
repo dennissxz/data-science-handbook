@@ -108,7 +108,7 @@ Unfortunately, although not surprisingly, inclusion probabilities for snowball s
 Two-stage snowball sampling (left) where $V_0^*$ in yellow, $V_1^*$ in orange, and $V_2^*$ in red. Traceroute sampling (right) for sources $\left\{ s_1, s_2 \right\}$ and targets $\left\{ t_1, t_2 \right\}$ in yellow, observed vertices and edges in orange.
 :::
 
-## Link Tracing
+### Link Tracing
 
 Many of the other sampling designs fall under link tracing designs: after some selection of an initial sample, some **subset** of the edges ('links') from vertices in this sample are traced to additional vertices.
 
@@ -158,6 +158,7 @@ Note that
 - in some sampling design, the graph structure will be irrelevant for estimating a vertex total, e.g. when the graph structure is irrelevant to $y$ and vertices are sampled through simple random sampling without replacement. $\pi_i$ can be computed in the conventional way.
 - on the other hand, the graph structure matters, e.g. in snowball sampling the structure determines $V^*$ and hence the calculation of $\pi_i$.
 
+(total-on-vertex-pairs)=
 ### Totals on Vertex Pairs
 
 Now we are interested in $U = V^{(2)}$, the total is
@@ -174,10 +175,15 @@ $$
 The Horvitz-Thompson estimator takes the form
 
 $$
-\hat{\tau}_{\pi}=\sum_{(i, j) \in V^{(2)}} \frac{y_{i j}}{\pi_{i j}}
+\hat{\tau}_{\pi}=\sum_{(i, j) \in V^{*(2)}} \frac{y_{i j}}{\pi_{i j}}
 $$
 
-If $y_{ij} \ne 0$ iff $(i, j) \in E$, then $\tau$ is an edge total, and the inclusion probability $\pi_{ij}$ is just the edge inclusion probability $\pi_{(i, j)}$.
+If $y_{ij} \ne 0$ iff $(i, j) \in E$, then
+- vertex pairs total $\tau$ equals to an edge total
+- summation in the estimator $\hat{\tau}$ is taken over $E^*$,
+- the inclusion probability $\pi_{ij}$ is just the edge inclusion probability $\pi_{(i, j)}$, which equals
+  - $\frac{n(n-1)}{N_v (N_v - 1)}$ under induced graph sampling with simple random sampling without replacement in stage 1
+  - $\frac{1}{p^2}$ under induced graph sampling with Bernoulli sampling with probability $p$ in stage 1
 
 The variance of the above estimator, generalized from that for conventional Horvitz-Thompson estimator, is given by
 
@@ -188,7 +194,7 @@ $$
 where $\pi_{ijkl}$ is the probability that units $(i,j)$ and $(k,l)$ are both included in the sample, and $\pi_{ijkl} = \pi_{ij}$ for convenience when $(i,j) = (k, l)$. Note that there can be $1 \le r \le 4$ different vertices among $i,j,k,l$. The corresponding unbiased estimate of this variance is given by
 
 $$
-\widehat{V}\left(\hat{\tau}_{\pi}\right)=\sum_{(i, j) \in V^{*(2)}} \sum_{(k, l) \in V^{*(2)}} y_{i j} y_{k l}\left(\frac{1}{\pi_{i j} \pi_{k l}}-\frac{1}{\pi_{i j k l}}\right)
+\widehat{\mathbb{V}}\left(\hat{\tau}_{\pi}\right)=\sum_{(i, j) \in V^{*(2)}} \sum_{(k, l) \in V^{*(2)}} y_{i j} y_{k l}\left(\frac{1}{\pi_{i j} \pi_{k l}}-\frac{1}{\pi_{i j k l}}\right)
 $$
 
 
@@ -243,7 +249,50 @@ and similarly $\hat{\tau}_{\wedge}^+(G) = p^{-3}\tau_{\wedge}^+(G^*)$.
 
 We can then substitute these two values to obtain a plug-in estimator of transitivity $\operatorname{clus}_T (G)$. Note that the coefficient $p^{-3}$ cancel out, hence $\widehat{\operatorname{clus}}_T (G) = \operatorname{clus} _T (G^*)$.
 
+### Summary
 
+There are three conditions to make the estimation feasible
+1. the graph summary statistic $\eta(G)$ must be expressed in terms of totals
+2. the values $y$ must be either observed or obtainable from the available measurements
+3. the inclusion probabilities $\pi$ must be computable for the sampling design
+
+But it is not always the case that all three elements are present at the same time.
+
+We will see estimating average degree using two different sampling designs.
+
+First consider unlabeled star sampling. Let the sampled graph be $G^*_{star} = (V^*_{star}, E^*_{star})$. The average degree is a rescaling of vertex total
+
+$$
+\hat{\mu}_{star} = \frac{\hat{\tau}_{star}}{N_v}  \quad \text{where} \quad \hat{\tau}_{star} = \sum_{i \in V_{star}^*} \frac{d_i}{n/N_v}
+$$
+
+Note that $d_i$ is observed.
+
+On the other hand, under induced subgraph sampling, we do not observe $d_i$, but only a number $d_i^* \le d_i$ for each $i \in V_{indu}^*$. As a result, $\tau$ is not amenable to Horvitz-Thompson estimation methods as a vertex total.
+
+However, we can use the relation $\mu = \frac{2N_e}{N_v}$, which shows an alternative way by estimating $N_e$. As introduced in [total on vertex pairs](total-on-vertex-pairs) above, with inclusion probability $\pi_{ij}= \frac{n(n-1)}{N_v (N_v - 1)}$, we have
+
+
+$$
+\hat{N}_{e, indu}=\sum_{(i, j) \in E_{indu}^{*}} \frac{1}{\pi_{ij}}=N_{e, indu}^{*} \cdot \frac{N_{v}\left(N_{v}-1\right)}{n(n-1)}
+$$
+
+which gives the unbiased estimator
+
+$$
+\hat{\mu} _{indu} = \frac{2 \hat{N}_{e, indu}}{N_v}
+$$
+
+for $\mu$
+
+We can then compare these two estimator. Some re-writing gives
+
+
+$$
+\hat{\mu}_{star} = \frac{2N_{e, star}^*}{n} \quad \hat{\mu}_{I S}=\frac{2 N_{e, indu}^{*}}{n} \cdot \frac{N_{v}-1}{n-1}
+$$
+
+Hence under star sampling, it simply use the relation $\bar{d} = \frac{2N_e}{N_v}$ to the sample. In contrast, under induced subgraph sampling, the analogous result (sample average degree) is scaled up by the factor $\frac{N_v - 1}{n-1}$ to account for $d_{i, indu}^* \le d_i$.
 
 .
 
