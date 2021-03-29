@@ -1,4 +1,4 @@
-# Machine Learning for Graph Data
+# For Graph-structured Data
 
 Graphs are a general language for describing and analyzing entities with relations/interactions. Examples include social networks, biological networks, power grid, scene graphs, knowledge graphs, and similarity graph induced from a data matrix.
 

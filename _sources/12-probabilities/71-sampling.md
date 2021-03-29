@@ -25,6 +25,7 @@ If the exact functional form of $p(x)$ is unknown or hard to obtain, but we know
 
 For multivariate distributions, e.g. $d=2$, if we want to generate a sample $\left\{ (x_1, y_1), \ldots, (x_n, y_n) \right\}$ from unknown $p(x,y)$, and $f(x \vert y )\propto p(x\vert y)$ and $f(y \vert x )\propto p(x\vert y)$ are known, then we can use $f(x \vert y)$ and $f(y \vert x)$ to obtain the sample. Gibbs sampling solve this problem setting.
 
+(estimation-mean-total)=
 ## Estimation of Mean and Total
 
 Setup
@@ -98,7 +99,7 @@ $$
 the estimator $\hat{\tau}_\pi$ is unbiased since
 
 $$
-\mathbb{E}\left(\hat{\tau}_{\pi}\right)=\mathbb{E}\left(\sum_{i \in S} \frac{y_{i}}{\pi_{i}}  \right)=\mathbb{E}\left(\sum_{i \in {U}}\frac{y_{i}}{\pi_{i}} Z_i\right)=\sum_{i \in {U}} \frac{y_{i}}{\pi_{i}} \mathbb{E}\left(Z_{i}\right) = \mu
+\mathbb{E}\left(\hat{\tau}_{\pi}\right)=\mathbb{E}\left(\sum_{i \in S} \frac{y_{i}}{\pi_{i}}  \right)=\mathbb{E}\left(\sum_{i \in {U}}\frac{y_{i}}{\pi_{i}} Z_i\right)=\sum_{i \in {U}} \frac{y_{i}}{\pi_{i}} \mathbb{E}\left(Z_{i}\right) = \tau
 $$
 
 where $Z_i = 1$ if $i \in S$ and zero otherwise, hence $\mathbb{E}\left( Z_i \right) = \mathbb{P}\left( Z_i = 1 \right) = \pi_i$.

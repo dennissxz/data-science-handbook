@@ -1,0 +1,1225 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sampling and Estimation &#8212; Data Science Handbook</title>
+    
+  <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+  <link rel="stylesheet"
+    href="../_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="../_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinx-book-theme.e7340bb3dbd8dde6db86f25597f54a1b.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/style.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.d3f166471bb80abb5163.js">
+
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/sphinx-book-theme.7d483ff0a819d6edff12ce0b1ead3928.js"></script>
+    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Descriptive Analysis" href="11-descriptive-analysis.html" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+
+
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+<a class="navbar-brand text-wrap" href="../index.html">
+  
+  
+  <h1 class="site-logo" id="site-title">Data Science Handbook</h1>
+  
+</a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form>
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+    <ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../index.html">
+   Data Science Handbook
+  </a>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Foundations
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../11-math/00-math.html">
+   Math
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/11-combinatorics.html">
+     Combinatorics
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/12-derangement.html">
+     Derangement
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/20-fields-and-vector-spaces.html">
+     Fields and Vector Spaces
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/21-linear-algebra.html">
+     Linear Algebra
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/51-linear-programming.html">
+     Linear Programming
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/90-puzzles.html">
+     Puzzles
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../12-probabilities/00-probabilities.html">
+   Probabilities
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/11-expectation-and-variance.html">
+     Expectation and Variance
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/13-correlation-and-dependence.html">
+     Correlation and Dependence
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/31-bayesian-theorem.html">
+     Bayesian’s Theorem
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/51-markov-chain.html">
+     Markov Chain
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/71-sampling.html">
+     Sampling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/90-multivariate-notations.html">
+     Multivariate Notations
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/91-large-sample-theory.html">
+     Large Sample Theory
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../13-statistics/00-statistics.html">
+   Statistics
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/11-sample-survey.html">
+     Sample Survey
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/13-randomized-trial.html">
+     Causality and Randomized Trial
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/21-hypothesis-testing.html">
+     Hypothesis Testing
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/25-two-sample-tests.html">
+     Two Sample Mean Tests
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/33-confusion-matrix.html">
+     Confusion Matrix
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/41-maximum-likelihood-estimation.html">
+     Maximum Likelihood Estimator
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/43-estimators-evaluation.html">
+     Estimators Evaluation
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../14-python/00-python.html">
+   Python
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../14-python/11-programming-tools.html">
+     Programmer tools
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../14-python/12-syntax.html">
+     Syntax
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../14-python/13-data-structure.html">
+     Data Structures
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../14-python/15-functional-programming.html">
+     Functional Programming
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../17-sql/00-sql.html">
+   SQL
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../17-sql/11-database.html">
+     Database
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../17-sql/12-relational-structure.html">
+     Relational Structure
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../17-sql/31-data-query.html">
+     Data Query
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../17-sql/33-data-manipulation.html">
+     Data Manipulation
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../19-miscellaneous/00-miscellaneous.html">
+   Miscellaneous
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../19-miscellaneous/11-latex.html">
+     LaTeX
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../19-miscellaneous/13-myst.html">
+     MyST Markdown
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Algorithms
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../20-algorithms-concepts/00-algorithms-concepts.html">
+   Algorithms Concepts
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../20-algorithms-concepts/51-polynomial-reduction.html">
+     Polynomial Reduction
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../20-algorithms-concepts/53-P-and-NP.html">
+     <span class="math notranslate nohighlight">
+      \(P\)
+     </span>
+     and
+     <span class="math notranslate nohighlight">
+      \(NP\)
+     </span>
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../20-algorithms-concepts/61-randomized-algo.html">
+     Randomized Algorithms
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../21-greedy-algorithms/00-greedy-algorithms.html">
+   Greedy Algorithms
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../21-greedy-algorithms/11-interval-scheduling.html">
+     Interval Scheduling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../21-greedy-algorithms/31-huffman-coding.html">
+     Huffman Coding
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../23-dynamic-programming/00-dynamic-programming.html">
+   Dynamic Programming
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/11-weighted-interval-scheduling.html">
+     Weighted Interval Scheduling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/13-longest-common-subsequence.html">
+     Longest Common Subsequence
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/15-longest-increasing-subsequence.html">
+     Longest Increasing Subsequence
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/17-largest-sum-subsequence.html">
+     Largest Sum Subsequence
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/31-knapsack.html">
+     Minimum Knapsack
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/51-chain-matrix-multiplication.html">
+     Chain Matrix Multiplication
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../25-graph-related/00-graph-related.html">
+   Graph Related
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/13-shortest-path.html">
+     Shortest Path
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/21-minimum-spanning-tree.html">
+     Minimum Spanning Tree
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/31-maximum-flow.html">
+     Maximum Flow
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/32-matching.html">
+     Matching
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/42-maximum-independent-set.html">
+     Maximum Independent Set in Trees
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/91-LP-max-flow-min-cut.html">
+     LP on Max-flow and Min-cut
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Machine Learning
+ </span>
+</p>
+<ul class="current nav sidenav_l1">
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../30-ml-basics/00-ml-basics.html">
+   Machine Learning Basics
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../30-ml-basics/02-taxonomy.html">
+     Taxonomy
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../30-ml-basics/03-information-theory.html">
+     Information Theory
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../30-ml-basics/05-kernels.html">
+     Kernels
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../30-ml-basics/11-data-issues.html">
+     Data Issues
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../30-ml-basics/51-semi-supervised.html">
+     Semi-supervised Learning
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../30-ml-basics/53-self-supervised.html">
+     Self-supervised Learning
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../30-ml-basics/61-fourier-transform.html">
+     Fourier Transform-based Representations
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../31-regression/00-regression.html">
+   Regression
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/11-lm-estimation.html">
+     Linear Models - Estimation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/12-lm-inference.html">
+     Linear Models - Inference
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/13-lm-diagnosis.html">
+     Linear Models - Diagnosis
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/14-lm-advanced.html">
+     Linear Models - Advanced Topics
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/21-generalized-linear-models.html">
+     Generalized Linear Models
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/22-logistic-regression.html">
+     Logistic Regression
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/23-multinomial-logitsitc.html">
+     Multinomial Logistic Regression
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/24-ordinal-logistic.html">
+     Ordinal Logistic Regression
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/25-poisson-regression.html">
+     Poisson Regression
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../32-classification/00-classification.html">
+   Classification
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../32-classification/11-support-vector-machine.html">
+     Support Vector Machine
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../32-classification/21-decision-tree.html">
+     Decision Tree
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../33-dimensionality-reduction/00-dimensionality-reduction.html">
+   Dimensionality Reduction
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/11-principal-component-analysis.html">
+     Principal Component Analysis
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/13-canonical-correlation-analysis.html">
+     Canonical Corerlation Analysis
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/21-multidimensional-scaling.html">
+     Multidimensional Scaling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/23-graph-based-spectral-methods.html">
+     Graph-based Spectral Methods
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/25-t-SNE.html">
+     SNE and
+     <span class="math notranslate nohighlight">
+      \(t\)
+     </span>
+     -SNE
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/31-kernel-pca.html">
+     Kernel PCA
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/32-kernel-cca.html">
+     Kernel CCA
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../34-clustering/00-clustering.html">
+   Clustering
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../34-clustering/11-k-means.html">
+     <span class="math notranslate nohighlight">
+      \(k\)
+     </span>
+     -means clustering
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../34-clustering/13-agglomerative-methods.html">
+     Agglomerative Methods
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../34-clustering/31-spectral-clustering.html">
+     Spectral Clustering
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../34-clustering/41-gaussian-mixtures.html">
+     Gaussian Mixtures
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../35-graphical-models/00-graphical-models.html">
+   Graphical Models
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../35-graphical-models/11-hidden-markov-models.html">
+     Hidden Markov Models
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../35-graphical-models/31-topic-models.html">
+     Topic Models
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../35-graphical-models/33-language-models.html">
+     Language Models
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../37-neural-networks/00-neural-networks.html">
+   Neural Networks
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/01-stochastic-gradient-descent.html">
+     Stochastic Gradient Descent
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/03-trainability.html">
+     Trainability
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/05-regularization.html">
+     Regularization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/11-autoencoders.html">
+     Autoencoders
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/13-variational-autoencoders.html">
+     Variational Autoencoders
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/31-sequential-models.html">
+     Sequential Models
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/41-GAN.html">
+     Generative Adversarial Networks
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 current active collapsible-parent">
+  <a class="reference internal" href="00-ml-for-graph-data.html">
+   For Graph-structured Data
+  </a>
+  <ul class="current collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="01-graph-basics.html">
+     Graph Basics
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="11-descriptive-analysis.html">
+     Descriptive Analysis
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     Sampling and Estimation
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+</ul>
+
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../_sources/38-ml-for-graph-data/13-sampling-and-estimation.md"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.md</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/dennissxz/data-science-handbook"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/dennissxz/data-science-handbook/issues/new?title=Issue%20on%20page%20%2F38-ml-for-graph-data/13-sampling-and-estimation.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+            <a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+                    data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+                    title="Fullscreen mode"><i
+                        class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+        <div class="tocsection onthispage pt-5 pb-3">
+            <i class="fas fa-list"></i>
+            Contents
+        </div>
+        <nav id="bd-toc-nav">
+            <ul class="nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#sampling">
+   Sampling
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#induced-subgraph-sampling">
+     Induced Subgraph Sampling
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#incident-subgraph-sampling">
+     Incident Subgraph Sampling
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#star-sampling">
+     Star Sampling
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#snowball-sampling">
+     Snowball sampling
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#link-tracing">
+     Link Tracing
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#estimation">
+   Estimation
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#totals-on-vertex">
+     Totals on Vertex
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#totals-on-vertex-pairs">
+     Totals on Vertex Pairs
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#totals-of-higher-order">
+     Totals of Higher Order
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#summary">
+     Summary
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+        </nav>
+        
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="sampling-and-estimation">
+<h1>Sampling and Estimation<a class="headerlink" href="#sampling-and-estimation" title="Permalink to this headline">¶</a></h1>
+<p>Like other statistical data, we usually only observe a sample from a larger underlying graph. We introduce sampling and estimation in graphs.</p>
+<div class="section" id="sampling">
+<h2>Sampling<a class="headerlink" href="#sampling" title="Permalink to this headline">¶</a></h2>
+<p>Graph sampling designs are somewhat distinct from typical sampling designs in non-network contexts, in that there are effectively two inter-related sets <span class="math notranslate nohighlight">\(V\)</span> and <span class="math notranslate nohighlight">\(E\)</span> of units being sampled. Often these designs can be characterized as having two stages:</p>
+<ol class="simple">
+<li><p>a selection stage, among one set (e.g. vertices)</p></li>
+<li><p>an observation stage, among the other or both</p></li>
+</ol>
+<p>It’s also important to discuss the inclusion probabilities of a vertex and an edge in each sampling design, denoted <span class="math notranslate nohighlight">\(\pi_i\)</span> for vertex <span class="math notranslate nohighlight">\(i \in E\)</span> and <span class="math notranslate nohighlight">\(\pi_{(i, j)}\)</span> for edge <span class="math notranslate nohighlight">\((i,j) \in V^{(2)}\)</span>, where <span class="math notranslate nohighlight">\(V^{(2)}\)</span> is the set of all unordered pairs of vertices.</p>
+<div class="section" id="induced-subgraph-sampling">
+<h3>Induced Subgraph Sampling<a class="headerlink" href="#induced-subgraph-sampling" title="Permalink to this headline">¶</a></h3>
+<div class="margin sidebar">
+<p class="sidebar-title"></p>
+<p>When <span class="math notranslate nohighlight">\(N_v\)</span> is large and <span class="math notranslate nohighlight">\(p \approx n/N_v\)</span> is small, Bernoulli sampling design is a quite reasonable approximation to simple random sampling without replacement in stage 1.</p>
+</div>
+<p>The two stages are</p>
+<ol class="simple">
+<li><p>Select a simple random sample of <span class="math notranslate nohighlight">\(n\)</span> vertices <span class="math notranslate nohighlight">\(V^{*}=\left\{i_{1}, \ldots, i_{n}\right\}\)</span> from <span class="math notranslate nohighlight">\(V\)</span> without replacement</p></li>
+<li><p>Observe a set <span class="math notranslate nohighlight">\(S^*\)</span> of edges in their induced subgraphs: for <span class="math notranslate nohighlight">\(n(n-1)\)</span> pairs of <span class="math notranslate nohighlight">\((i, j)\)</span> for <span class="math notranslate nohighlight">\(i,j \in V^*\)</span>, check whether <span class="math notranslate nohighlight">\((i,j)\in E\)</span>.</p></li>
+</ol>
+<p>For instance, in social networks, we an sample a group of individuals, and then ask their relation or some measure of contact, e.g. friendship, likes or dislike.</p>
+<p>The inclusion probabilities are uniformly equal to</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\pi_{i}&amp;= \mathbb{P}\left( v_i \text{ is selected}  \right) \\
+&amp;= \frac{n}{N_v} \\
+\pi_{(i,j)}&amp;= \mathbb{P}\left( \text{both $v_i$ and $v_j$ are selected}  \right) \\
+&amp;= \mathbb{P}\left( \text{$v_i$ is selected}  \right) \mathbb{P}\left( \text{$v_j$ is selected} \mid \text{$v_i$ is selected}  \right)\\
+&amp;= \frac{n}{N_v} \cdot \frac{n-1}{N_v - 1} \quad \because \text{without replacement}
+\end{aligned}\end{split}\]</div>
+<p>Note that <span class="math notranslate nohighlight">\(N_v\)</span> is necessary to compute these probabilities.</p>
+<div class="figure align-default" id="graph-sampling-induced-incident">
+<a class="reference internal image-reference" href="../_images/graph-sampling-induced-incident.png"><img alt="" src="../_images/graph-sampling-induced-incident.png" style="width: 50%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 156 </span><span class="caption-text">Induced (left) and incident (right) subgraph sampling. Selected vertices/edges are shown in yellow, while observed edges/vertices are shown in orange.</span><a class="headerlink" href="#graph-sampling-induced-incident" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+<div class="section" id="incident-subgraph-sampling">
+<h3>Incident Subgraph Sampling<a class="headerlink" href="#incident-subgraph-sampling" title="Permalink to this headline">¶</a></h3>
+<p>Complementary to induced subgraph sampling is incident subgraph sampling.
+Instead of selecting <span class="math notranslate nohighlight">\(n\)</span> vertices in the initial stage, <span class="math notranslate nohighlight">\(n\)</span> edges are selected:</p>
+<ol class="simple">
+<li><p>Select a simple random sample <span class="math notranslate nohighlight">\(E^*\)</span> of <span class="math notranslate nohighlight">\(n\)</span> edges from <span class="math notranslate nohighlight">\(E\)</span> without replacement</p></li>
+<li><p>All vertices incident to the selected edges are then observed, thus providing <span class="math notranslate nohighlight">\(V^*\)</span>.</p></li>
+</ol>
+<p>For instance, we sample email correspondence from a database, and observe the sender and receiver.</p>
+<p>Inclusion probabilities:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\pi_{(i, j)} &amp;= \frac{n}{N_e} \\
+\pi_i&amp;= 1-\mathbb{P}(\text{no edge incident to $v_i$ is selected}) \\
+&amp;=\left\{\begin{array}{ll}\frac{\binom{N_e - d_i}{n}}{\binom{N_e}{n}} &amp; \text { if } n \leq N_{e}-d_{i} \\ 1, &amp; \text { if } n&gt;N_{e}-d_{i}\end{array}\right. \\
+\end{aligned}\end{split}\]</div>
+<p>Hence, in incident subgraph sampling, while the edges are included in the sample graph <span class="math notranslate nohighlight">\(G^*\)</span> with equal probability, the vertices are included with unequal probabilities depending on their degrees.</p>
+<p>Note that <span class="math notranslate nohighlight">\(N_e\)</span> and <span class="math notranslate nohighlight">\(d_i\)</span> are necessary to compute the inclusion probabilities. In the example of sampling email correspondence graph, this would require having access to marginal summaries of the total number of emails (say, in a given month) as well as the number of emails in which a given sender had participated.</p>
+</div>
+<div class="section" id="star-sampling">
+<h3>Star Sampling<a class="headerlink" href="#star-sampling" title="Permalink to this headline">¶</a></h3>
+<p>The first stage selects vertices like in induced subgraph sampling, but in the second stage, as its name suggests, we sample all edges incident to the selected vertices, as well as the new vertices on the other end.</p>
+<ol class="simple">
+<li><p>Select a simple random sample <span class="math notranslate nohighlight">\(V_0^*\)</span> from <span class="math notranslate nohighlight">\(V\)</span> without replacement</p></li>
+<li><p>For each <span class="math notranslate nohighlight">\(v \in V^*\)</span>,</p>
+<ul class="simple">
+<li><p>observe all edges incident to <span class="math notranslate nohighlight">\(v\)</span>, yielding <span class="math notranslate nohighlight">\(E^*\)</span>.</p></li>
+<li><p>also observe its neighbors, together with <span class="math notranslate nohighlight">\(V_0^*\)</span> yielding <span class="math notranslate nohighlight">\(V^*\)</span></p></li>
+</ul>
+</li>
+</ol>
+<p>More precisely, this is called labeled star sampling. In unlabeled star sampling, the resulting graph is <span class="math notranslate nohighlight">\(G^* = (V_0^*, E^*)\)</span>. In the latter case, we focus on some particular characteristics (e.g. degrees), so we don’t need the vertices on the other end.</p>
+<p>For instance, in co-authorship graph, randomly sampling records of <span class="math notranslate nohighlight">\(n\)</span> authors and recording the total number of co-authors of each author would correspond to unlabeled star sampling; if not only the number but the identities of the co-authors are recorded, this would correspond to labeled star sampling.</p>
+<p>The inclusion probabilities are</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\pi_{(i, j)}
+&amp;= \mathbb{P}\left( \text{neither $i$ nor $j$ are sampled}  \right)\\
+&amp;= 1- \frac{\binom{N_v-2}{n}}{\binom{N_v}{n}} \\
+\pi_ i &amp;= \frac{n}{N_v} \quad \text{unlabeled case}  \\
+\pi_ i &amp;= \sum_{L \subseteq N[i]}(-1)^{|L|+1} \mathbb{P}(L) \quad \text{labeled case}  \\
+\end{aligned}\end{split}\]</div>
+<p>where</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(N[i]\)</span> is the union of vertex <span class="math notranslate nohighlight">\(i\)</span> and the its immediate neighbors</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathbb{P}\left( L \right) = \frac{\binom{N_v - \left\vert L \right\vert}{n - \left\vert L \right\vert} }{\binom{N_v}{n} }\)</span> is the probability that <span class="math notranslate nohighlight">\(L \subseteq V_0^*\)</span>. (<span class="math notranslate nohighlight">\(n &gt; \left\vert L \right\vert\)</span>??)</p></li>
+</ul>
+</div>
+<div class="section" id="snowball-sampling">
+<h3>Snowball sampling<a class="headerlink" href="#snowball-sampling" title="Permalink to this headline">¶</a></h3>
+<p>In star sampling we only look at the immediate neighborhood. We can extends it to up to the <span class="math notranslate nohighlight">\(K\)</span>-th order neighbors, which is snowball sampling. In short, a <span class="math notranslate nohighlight">\(K\)</span>-stage snowball sampling is</p>
+<ol class="simple">
+<li><p>select a simple random sample <span class="math notranslate nohighlight">\(V_0^*\)</span> from <span class="math notranslate nohighlight">\(V\)</span> without replacement</p></li>
+<li><p>for each <span class="math notranslate nohighlight">\(k = 1, \ldots , K\)</span>, observe a <span class="math notranslate nohighlight">\(k\)</span>-th order neighbors, add them to <span class="math notranslate nohighlight">\(V^*\)</span> (excluding repeated vertices), and add their incident edges to <span class="math notranslate nohighlight">\(E^*\)</span>.</p></li>
+</ol>
+<p>Formally, let <span class="math notranslate nohighlight">\(N(S)\)</span> be the set of all neighbors of vertices in a set <span class="math notranslate nohighlight">\(S\)</span>. After we initialize <span class="math notranslate nohighlight">\(V_0^*\)</span>, we add vertices, for <span class="math notranslate nohighlight">\(k=1, \ldots, K\)</span></p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(V_k^* = N(V_{k-1}^*)\cap \bar{V}_0^* \cap \ldots \cap \bar{V}_{k-1}^*\)</span>, called the <span class="math notranslate nohighlight">\(k\)</span>-th wave.</p></li>
+</ul>
+<p>A termination condition is <span class="math notranslate nohighlight">\(V_k = \emptyset\)</span>. The final graph <span class="math notranslate nohighlight">\(G^*\)</span> consists of the vertices in <span class="math notranslate nohighlight">\(V^* = V_0^* \cup V_1 ^* \cup \ldots \cup V_K^*\)</span> and their incident edges.</p>
+<p>Unfortunately, although not surprisingly, inclusion probabilities for snowball sampling become increasingly intractable to calculate after the one-stage level corresponding to star sampling.</p>
+<div class="figure align-default" id="graph-sampling-link-tracing">
+<a class="reference internal image-reference" href="../_images/graph-sampling-link-tracing.png"><img alt="" src="../_images/graph-sampling-link-tracing.png" style="width: 50%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 157 </span><span class="caption-text">Two-stage snowball sampling (left) where <span class="math notranslate nohighlight">\(V_0^*\)</span> in yellow, <span class="math notranslate nohighlight">\(V_1^*\)</span> in orange, and <span class="math notranslate nohighlight">\(V_2^*\)</span> in red. Traceroute sampling (right) for sources <span class="math notranslate nohighlight">\(\left\{ s_1, s_2 \right\}\)</span> and targets <span class="math notranslate nohighlight">\(\left\{ t_1, t_2 \right\}\)</span> in yellow, observed vertices and edges in orange.</span><a class="headerlink" href="#graph-sampling-link-tracing" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+<div class="section" id="link-tracing">
+<h3>Link Tracing<a class="headerlink" href="#link-tracing" title="Permalink to this headline">¶</a></h3>
+<p>Many of the other sampling designs fall under link tracing designs: after some selection of an initial sample, some <strong>subset</strong> of the edges (‘links’) from vertices in this sample are traced to additional vertices.</p>
+<p>Snowball sampling is a special case of link tracing, in that all edges are observed. Sometimes this is not feasible, for example, in sampling social contact networks, it may be that individuals are unaware of or cannot recall all of their contacts, or that they do not wish to divulge some of them.</p>
+<p>We introduce <strong>traceroute</strong> sampling.</p>
+<ol class="simple">
+<li><p>select a random sample <span class="math notranslate nohighlight">\(S=\left\{s_{1}, \ldots, s_{n_{s}}\right\}\)</span> of vertices as sources from <span class="math notranslate nohighlight">\(V\)</span>, and another random sample <span class="math notranslate nohighlight">\(T=\left\{t_{1}, \ldots, t_{n_{t}}\right\}\)</span> of vertices as targets from <span class="math notranslate nohighlight">\(V \setminus S\)</span>.</p></li>
+<li><p>For each pair <span class="math notranslate nohighlight">\((s_i, t_j) \in S \times T\)</span>, sample a <span class="math notranslate nohighlight">\(s_i\)</span>-<span class="math notranslate nohighlight">\(t_j\)</span> path. Observe all vertices and edges in the path, whose union yielding <span class="math notranslate nohighlight">\(G^* = (V^*, E^*)\)</span>.</p></li>
+</ol>
+<p>To find the inclusion probabilities, we assume that the paths are shortest paths w.r.t. some set of edge weights. Dall’Asta et al. [SAND 107] find the probabilities are</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\pi_{i} &amp;\approx 1-\left(1-\rho_{s}-\rho_{t}\right) \exp \left(-\rho_{s} \rho_{t} b_{i}\right) \\
+\tau_{\{i, j\}} &amp;\approx 1-\exp \left(-\rho_{s} \rho_{t} b_{i, j}\right)
+\end{aligned}\end{split}\]</div>
+<p>where</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(b_i\)</span> is the vertex betweenness centrality of vertex <span class="math notranslate nohighlight">\(i\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(b_{i, j}\)</span> is the edge betweenness centrality of edge <span class="math notranslate nohighlight">\((i, j)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\rho_{s} = \frac{n_s}{N_v} , \rho_t = \frac{n_t}{N_v}\)</span> are the source ant target sampling fractions respectively</p></li>
+</ul>
+<p>We see that the unequal probabilities varies with betweenness centrality <span class="math notranslate nohighlight">\(b_i\)</span> and <span class="math notranslate nohighlight">\(b_{i, j}\)</span>. Though they are not calculable, they lend interesting insight into the nature of this sampling design, to be introduced later.</p>
+</div>
+</div>
+<div class="section" id="estimation">
+<h2>Estimation<a class="headerlink" href="#estimation" title="Permalink to this headline">¶</a></h2>
+<p>(Review the <a class="reference internal" href="../12-probabilities/71-sampling.html#estimation-mean-total"><span class="std std-ref">estimation of total</span></a> section)</p>
+<p>With appropriate choice of population <span class="math notranslate nohighlight">\(U\)</span> and unit values <span class="math notranslate nohighlight">\(y_i\)</span> for <span class="math notranslate nohighlight">\(i \in U\)</span>, many of the quantities <span class="math notranslate nohighlight">\(\eta(G)\)</span> of graph <span class="math notranslate nohighlight">\(G\)</span>, e.g. average degree, <span class="math notranslate nohighlight">\(N_e\)</span>, or even centrality, can be written in a form of population total <span class="math notranslate nohighlight">\(\sum_{i \in U} y_i\)</span>, as introduced below.</p>
+<p>To estimate the total from a sampled graph <span class="math notranslate nohighlight">\(G^* = (V^*, E^*)\)</span> where <span class="math notranslate nohighlight">\(V^* \subseteq V, E^* \subseteq E\)</span>, we can use generalization of the Horvitz-Thompson estimator.</p>
+<div class="section" id="totals-on-vertex">
+<h3>Totals on Vertex<a class="headerlink" href="#totals-on-vertex" title="Permalink to this headline">¶</a></h3>
+<p>Let <span class="math notranslate nohighlight">\(U=V\)</span>, we can define <span class="math notranslate nohighlight">\(y_i\)</span> according to the total we are interested.</p>
+<ul class="simple">
+<li><p>average degree: let <span class="math notranslate nohighlight">\(y_i = d_i\)</span>, then the average degree <span class="math notranslate nohighlight">\(\bar{d}\)</span> equals the population total <span class="math notranslate nohighlight">\(\sum_{i \in V} d_i\)</span> divided by <span class="math notranslate nohighlight">\(N_v\)</span></p></li>
+<li><p>proportion of special vertices: let <span class="math notranslate nohighlight">\(y_i = \mathbb{I} \left\{ v_i \text{ has some property}  \right\}\)</span>, then the proportion of such special vertices equals the population total <span class="math notranslate nohighlight">\(\sum_{i \in V} 1\)</span> divided by <span class="math notranslate nohighlight">\(N_v\)</span>. For instance, proportion of gene responsible for the growth of an organism.</p></li>
+</ul>
+<p>Given a sample of vertices <span class="math notranslate nohighlight">\(V^* \subseteq V\)</span>, the Horvitz-Thompson estimator for vertex totals takes the form</p>
+<div class="math notranslate nohighlight">
+\[
+\hat{\tau}_{\pi}=\sum_{i \in V^{*}} \frac{y_{i}}{\pi_{i}}
+\]</div>
+<p>Note that</p>
+<ul class="simple">
+<li><p>in some sampling design, the graph structure will be irrelevant for estimating a vertex total, e.g. when the graph structure is irrelevant to <span class="math notranslate nohighlight">\(y\)</span> and vertices are sampled through simple random sampling without replacement. <span class="math notranslate nohighlight">\(\pi_i\)</span> can be computed in the conventional way.</p></li>
+<li><p>on the other hand, the graph structure matters, e.g. in snowball sampling the structure determines <span class="math notranslate nohighlight">\(V^*\)</span> and hence the calculation of <span class="math notranslate nohighlight">\(\pi_i\)</span>.</p></li>
+</ul>
+</div>
+<div class="section" id="totals-on-vertex-pairs">
+<span id="total-on-vertex-pairs"></span><h3>Totals on Vertex Pairs<a class="headerlink" href="#totals-on-vertex-pairs" title="Permalink to this headline">¶</a></h3>
+<p>Now we are interested in <span class="math notranslate nohighlight">\(U = V^{(2)}\)</span>, the total is</p>
+<div class="math notranslate nohighlight">
+\[
+\tau=\sum_{(i, j) \in V^{(2)}} y_{i j}
+\]</div>
+<ul class="simple">
+<li><p>number of edges: let <span class="math notranslate nohighlight">\(y_{(i, j)} = \mathbb{I} \left\{ (i,j) \in E \right\}\)</span>, then the number of edges <span class="math notranslate nohighlight">\(N_e\)</span> is given by the total.</p></li>
+<li><p>betweenness centrality: let <span class="math notranslate nohighlight">\(y_{(i,j)} = \mathbb{I} \left\{ v \in P(i,j) \right\}\)</span> where <span class="math notranslate nohighlight">\(P(i,j)\)</span> is the shortest path between <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(j\)</span>, and <span class="math notranslate nohighlight">\(y_{(i, j)} = 1\)</span> if vertex <span class="math notranslate nohighlight">\(v\)</span> is in this shortest path. If all shortest paths are unique, then the betweenness centrality <span class="math notranslate nohighlight">\(c_{bet}(v)\)</span> of a vertex <span class="math notranslate nohighlight">\(v \in V\)</span> is given by the total, which counts how many shortest paths going through <span class="math notranslate nohighlight">\(k\)</span>.</p></li>
+<li><p>number of homogeneous vertices: let <span class="math notranslate nohighlight">\(y_{(i,j)} = \mathbb{I} \left\{ \text{both } i \text{ and } j \text{ have some properties}  \right\}\)</span></p></li>
+<li><p>average of some (dis)similarity value between vertex: let <span class="math notranslate nohighlight">\(y_{(i,j)} = s(i, j)\)</span> and then divide the total by <span class="math notranslate nohighlight">\(N_e\)</span>.</p></li>
+</ul>
+<p>The Horvitz-Thompson estimator takes the form</p>
+<div class="math notranslate nohighlight">
+\[
+\hat{\tau}_{\pi}=\sum_{(i, j) \in V^{*(2)}} \frac{y_{i j}}{\pi_{i j}}
+\]</div>
+<p>If <span class="math notranslate nohighlight">\(y_{ij} \ne 0\)</span> iff <span class="math notranslate nohighlight">\((i, j) \in E\)</span>, then</p>
+<ul class="simple">
+<li><p>vertex pairs total <span class="math notranslate nohighlight">\(\tau\)</span> equals to an edge total</p></li>
+<li><p>summation in the estimator <span class="math notranslate nohighlight">\(\hat{\tau}\)</span> is taken over <span class="math notranslate nohighlight">\(E^*\)</span>,</p></li>
+<li><p>the inclusion probability <span class="math notranslate nohighlight">\(\pi_{ij}\)</span> is just the edge inclusion probability <span class="math notranslate nohighlight">\(\pi_{(i, j)}\)</span>, which equals</p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(\frac{n(n-1)}{N_v (N_v - 1)}\)</span> under induced graph sampling with simple random sampling without replacement in stage 1</p></li>
+<li><p><span class="math notranslate nohighlight">\(\frac{1}{p^2}\)</span> under induced graph sampling with Bernoulli sampling with probability <span class="math notranslate nohighlight">\(p\)</span> in stage 1</p></li>
+</ul>
+</li>
+</ul>
+<p>The variance of the above estimator, generalized from that for conventional Horvitz-Thompson estimator, is given by</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbb{V}\left(\hat{\tau}_{\pi}\right)=\sum_{(i, j) \in V^{(2)}} \sum_{(k, l) \in V^{(2)}} y_{i j} y_{k l}\left(\frac{\pi_{i j k l}}{\pi_{i j} \pi_{k l}}-1\right)
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\pi_{ijkl}\)</span> is the probability that units <span class="math notranslate nohighlight">\((i,j)\)</span> and <span class="math notranslate nohighlight">\((k,l)\)</span> are both included in the sample, and <span class="math notranslate nohighlight">\(\pi_{ijkl} = \pi_{ij}\)</span> for convenience when <span class="math notranslate nohighlight">\((i,j) = (k, l)\)</span>. Note that there can be <span class="math notranslate nohighlight">\(1 \le r \le 4\)</span> different vertices among <span class="math notranslate nohighlight">\(i,j,k,l\)</span>. The corresponding unbiased estimate of this variance is given by</p>
+<div class="math notranslate nohighlight">
+\[
+\widehat{\mathbb{V}}\left(\hat{\tau}_{\pi}\right)=\sum_{(i, j) \in V^{*(2)}} \sum_{(k, l) \in V^{*(2)}} y_{i j} y_{k l}\left(\frac{1}{\pi_{i j} \pi_{k l}}-\frac{1}{\pi_{i j k l}}\right)
+\]</div>
+<p>Note that these quantities can become increasingly complicated to compute under some sampling designs, since it is necessary to be able to evaluate probabilities <span class="math notranslate nohighlight">\(\pi_{ijkl}\)</span> for <span class="math notranslate nohighlight">\(1 \le r \le 4\)</span>. See Example 5.4 in SAND pg.139 for <span class="math notranslate nohighlight">\(p_r\)</span> in induced graph sampling and estimation of <span class="math notranslate nohighlight">\(N_e\)</span>. Results are shown below.</p>
+<div class="figure align-default" id="graph-sampling-edge-total">
+<a class="reference internal image-reference" href="../_images/graph-sampling-edge-total.png"><img alt="" src="../_images/graph-sampling-edge-total.png" style="width: 60%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 158 </span><span class="caption-text">Histograms of estimates <span class="math notranslate nohighlight">\(\hat{N}_e\)</span> of <span class="math notranslate nohighlight">\(N_e\)</span> = 31201 and its estimated standard errors (right), under induced subgraph sampling, with Bernoulli sampling of vertices using <span class="math notranslate nohighlight">\(p=0.1, 0.2, 0.3\)</span> based on 10000 trials. [Kolaczyk 2009]</span><a class="headerlink" href="#graph-sampling-edge-total" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+<div class="section" id="totals-of-higher-order">
+<h3>Totals of Higher Order<a class="headerlink" href="#totals-of-higher-order" title="Permalink to this headline">¶</a></h3>
+<p>The expressions for higher order cases are more complicated. We introduce the case of triples, where <span class="math notranslate nohighlight">\(U = V^{(3)}\)</span> and <span class="math notranslate nohighlight">\(\tau=\sum_{(i, j, k) \in V^{(3)}} y_{i j k}\)</span>. The sample Horvitz-Thompson estimator is</p>
+<div class="math notranslate nohighlight">
+\[
+\hat{\tau}_{\pi}=\sum_{(i, j, k) \in V^{*(3)}} \frac{y_{i j k}}{\pi_{i j k}}
+\]</div>
+<p>The expressions for variance and estimated variance follow in a like manner.</p>
+<p>We see an example of estimating transitivity. Recall that</p>
+<div class="math notranslate nohighlight">
+\[
+\operatorname{clus}_{T}(G)=\frac{3 \tau_{\Delta}(G)}{\tau_{\wedge}(G)}
+\]</div>
+<p>where</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\tau_{\Delta}(G)=\frac{1}{3} \sum_{v \in V} \tau_{\Delta}(v)\)</span> is the number of triangles in the graph</p></li>
+<li><p><span class="math notranslate nohighlight">\(\tau_{\wedge}(G)=\sum_{v \in V} \tau_{\wedge}(v)\)</span> is the number of connected triples in the graph</p></li>
+</ul>
+<p>This quantity can be re-expressed in the form</p>
+<div class="math notranslate nohighlight">
+\[
+\operatorname{clus}_{T}(G)=\frac{3 \tau_{\Delta}(G)}{\tau_{\wedge} ^ +(G) + 3 \tau_{\Delta}(G)}
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\tau_{\wedge} ^ +(G) = \tau_{\wedge}(G) -  3 \tau_{\Delta}(G)\)</span> is the number of vertex triples that are connected by <strong>exactly</strong> two edges. Then both <span class="math notranslate nohighlight">\(\tau_{\Delta}(G)\)</span> and <span class="math notranslate nohighlight">\(\tau_{\wedge}^+(G)\)</span> can becomputed as  a total <span class="math notranslate nohighlight">\(\sum_{(i,j,k) \in V^{(3)} }y_{ijk}\)</span> by setting, respectively,</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(y_{ijk} = a_{ij}a_{jk}a_{ki}\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(y_{i j k}=a_{i j} a_{j k}\left(1-a_{k i}\right)+a_{i j}\left(1-a_{j k}\right) a_{k i}+\left(1-a_{i j}\right) a_{j k} a_{k i}\)</span></p></li>
+</ul>
+<p>where <span class="math notranslate nohighlight">\(a_{ij}\)</span> is the <span class="math notranslate nohighlight">\(ij\)</span>-th entry in the adjacency matrix.</p>
+<p>If we use induced subgraph sampling with Bernoulli sampling of vertices with probability <span class="math notranslate nohighlight">\(p\)</span> to obtain a sample <span class="math notranslate nohighlight">\(G^* = (V^*, E^*)\)</span>, then <span class="math notranslate nohighlight">\(\pi_{ijk} = p^{-3}\)</span>, and hence</p>
+<div class="math notranslate nohighlight">
+\[
+\hat{\tau}_{\Delta}(G) =\sum_{(i, j, k) \in V^{*(3)}} \frac{y_{i j k}}{\pi_{i j k}} = p^{-3} \sum_{(i, j, k) \in V^{*(3)}}y_{i j k} = p^{-3} \tau_{\Delta}(G^*)
+\]</div>
+<p>and similarly <span class="math notranslate nohighlight">\(\hat{\tau}_{\wedge}^+(G) = p^{-3}\tau_{\wedge}^+(G^*)\)</span>.</p>
+<p>We can then substitute these two values to obtain a plug-in estimator of transitivity <span class="math notranslate nohighlight">\(\operatorname{clus}_T (G)\)</span>. Note that the coefficient <span class="math notranslate nohighlight">\(p^{-3}\)</span> cancel out, hence <span class="math notranslate nohighlight">\(\widehat{\operatorname{clus}}_T (G) = \operatorname{clus} _T (G^*)\)</span>.</p>
+</div>
+<div class="section" id="summary">
+<h3>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h3>
+<p>There are three conditions to make the estimation feasible</p>
+<ol class="simple">
+<li><p>the graph summary statistic <span class="math notranslate nohighlight">\(\eta(G)\)</span> must be expressed in terms of totals</p></li>
+<li><p>the values <span class="math notranslate nohighlight">\(y\)</span> must be either observed or obtainable from the available measurements</p></li>
+<li><p>the inclusion probabilities <span class="math notranslate nohighlight">\(\pi\)</span> must be computable for the sampling design</p></li>
+</ol>
+<p>But it is not always the case that all three elements are present at the same time.</p>
+<p>We will see estimating average degree using two different sampling designs.</p>
+<p>First consider unlabeled star sampling. Let the sampled graph be <span class="math notranslate nohighlight">\(G^*_{star} = (V^*_{star}, E^*_{star})\)</span>. The average degree is a rescaling of vertex total</p>
+<div class="math notranslate nohighlight">
+\[
+\hat{\mu}_{star} = \frac{\hat{\tau}_{star}}{N_v}  \quad \text{where} \quad \hat{\tau}_{star} = \sum_{i \in V_{star}^*} \frac{d_i}{n/N_v}
+\]</div>
+<p>Note that <span class="math notranslate nohighlight">\(d_i\)</span> is observed.</p>
+<p>On the other hand, under induced subgraph sampling, we do not observe <span class="math notranslate nohighlight">\(d_i\)</span>, but only a number <span class="math notranslate nohighlight">\(d_i^* \le d_i\)</span> for each <span class="math notranslate nohighlight">\(i \in V_{indu}^*\)</span>. As a result, <span class="math notranslate nohighlight">\(\tau\)</span> is not amenable to Horvitz-Thompson estimation methods as a vertex total.</p>
+<p>However, we can use the relation <span class="math notranslate nohighlight">\(\mu = \frac{2N_e}{N_v}\)</span>, which shows an alternative way by estimating <span class="math notranslate nohighlight">\(N_e\)</span>. As introduced in <a class="reference internal" href="#total-on-vertex-pairs"><span class="std std-ref">total on vertex pairs</span></a> above, with inclusion probability <span class="math notranslate nohighlight">\(\pi_{ij}= \frac{n(n-1)}{N_v (N_v - 1)}\)</span>, we have</p>
+<div class="math notranslate nohighlight">
+\[
+\hat{N}_{e, indu}=\sum_{(i, j) \in E_{indu}^{*}} \frac{1}{\pi_{ij}}=N_{e, indu}^{*} \cdot \frac{N_{v}\left(N_{v}-1\right)}{n(n-1)}
+\]</div>
+<p>which gives the unbiased estimator</p>
+<div class="math notranslate nohighlight">
+\[
+\hat{\mu} _{indu} = \frac{2 \hat{N}_{e, indu}}{N_v}
+\]</div>
+<p>for <span class="math notranslate nohighlight">\(\mu\)</span></p>
+<p>We can then compare these two estimator. Some re-writing gives</p>
+<div class="math notranslate nohighlight">
+\[
+\hat{\mu}_{star} = \frac{2N_{e, star}^*}{n} \quad \hat{\mu}_{I S}=\frac{2 N_{e, indu}^{*}}{n} \cdot \frac{N_{v}-1}{n-1}
+\]</div>
+<p>Hence under star sampling, it simply use the relation <span class="math notranslate nohighlight">\(\bar{d} = \frac{2N_e}{N_v}\)</span> to the sample. In contrast, under induced subgraph sampling, the analogous result (sample average degree) is scaled up by the factor <span class="math notranslate nohighlight">\(\frac{N_v - 1}{n-1}\)</span> to account for <span class="math notranslate nohighlight">\(d_{i, indu}^* \le d_i\)</span>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./38-ml-for-graph-data"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        
+        <div class='prev-next-bottom'>
+            
+    <a class='left-prev' id="prev-link" href="11-descriptive-analysis.html" title="previous page">Descriptive Analysis</a>
+
+        </div>
+        
+        </div>
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By Dennis Zheng<br/>
+        
+            &copy; Copyright 2020.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+
+    
+  <script src="../_static/js/index.d3f166471bb80abb5163.js"></script>
+
+
+    
+  </body>
+</html>
