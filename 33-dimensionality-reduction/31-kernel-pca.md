@@ -87,10 +87,10 @@ In fact, we don't need the exact form of $\boldsymbol{\phi}$ at all.
 We've implicitly assumed zero-mean in the new feature space $\mathbb{R} ^p$, but it is usually not. Hence, we should modify $\boldsymbol{K}$ by
 
 $$
-\boldsymbol{K} ^\prime = (\boldsymbol{I} - \boldsymbol{u} \boldsymbol{u} ^\top )\boldsymbol{K}(\boldsymbol{I} - \boldsymbol{u} \boldsymbol{u} ^\top)  
+\boldsymbol{K} ^\prime = \boldsymbol{C} \boldsymbol{K} \boldsymbol{C}
 $$
 
-where $\boldsymbol{u} = \frac{1}{\sqrt{n}}[1 \ldots 1]^{\top}$, and solve for the eigenvectors of $\boldsymbol{K} ^\prime$
+where $\boldsymbol{C}  = \left(\boldsymbol{I}-\frac{1}{n} \boldsymbol{1} \boldsymbol{1}^{\top}\right)$ is the centering matrix. Then we solve for the eigenvectors of $\boldsymbol{K} ^\prime$
 
 :::
 
