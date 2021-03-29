@@ -132,10 +132,10 @@ Definition
 Aka rotation matrices.
 
 Definition
-: A matrix $\boldsymbol{A}$ is **orthogonal** if $\boldsymbol{A} ^{-1} = \boldsymbol{A} ^\top$.
+: A matrix $\boldsymbol{U}$ is **orthogonal** if $\boldsymbol{U} ^{-1} = \boldsymbol{U} ^\top$.
 
 Properties
-: Transformation by $\boldsymbol{U}$ preserves vector length an angle.
+: Transformation by $\boldsymbol{U}$ preserves vector length and angle.
 
   $$\begin{aligned}
   \|\boldsymbol{U x}\| &=\|\boldsymbol{x}\| \\
@@ -149,14 +149,43 @@ Definition
 : A matrix $\boldsymbol{A}$ is idempotent if $\boldsymbol{A} ^2 = \boldsymbol{A}$.
 
 Properties
-: If $\boldsymbol{A}$ is idempotent,
-  - $\boldsymbol{I} - \boldsymbol{A}$ is idempotent
-  - $\boldsymbol{P} ^\top \boldsymbol{A} \boldsymbol{P} \boldsymbol{x}$  
-  - and symmetric
+: If $\boldsymbol{A}$ is idempotent, then
+  - $\boldsymbol{I} - \boldsymbol{A}$ is also idempotent
+  - $\boldsymbol{U} ^\top \boldsymbol{A} \boldsymbol{U}$ is idempotent if $\boldsymbol{U}$ is orthogonal
+  - $\boldsymbol{A} ^n = \boldsymbol{A}$ for all positive integer $n$
+  - it is non-singular iff $\boldsymbol{A} = \boldsymbol{I}$.
+  - has eigenvalues 0 or 1 since $\lambda \boldsymbol{v} = \boldsymbol{A} \boldsymbol{v}  = \boldsymbol{A} ^2 \boldsymbol{v} = \lambda \boldsymbol{A} \boldsymbol{v} = \lambda^2 \boldsymbol{v}$
+  - If $\boldsymbol{A}$ is also symmetric, then
     - $\operatorname{rank}\left( \boldsymbol{A} \right) = \operatorname{tr}\left( \boldsymbol{A}  \right)$
-    - $\operatorname{rank}\left( \boldsymbol{A}  \right) = r \Rightarrow \boldsymbol{A}$ has $r$ eigevalues equal to 1 and $n-r$ equal to $0$.
+    - $\operatorname{rank}\left( \boldsymbol{A}  \right) = r \Rightarrow \boldsymbol{A}$ has $r$ eigenvalues equal to 1 and $n-r$ equal to $0$.
     - $\operatorname{rank}\left( \boldsymbol{A}  \right) = n \Rightarrow \boldsymbol{A} = \boldsymbol{I} _n$
 
+### Reflection Matrices
+
+Definition (Householder reflection)
+: A Householder transformation (aka Householder reflection) is a linear transformation that describe a reflection about a plane or hyperplane containing the origin. The reflection of a point $\boldsymbol{x}$ about a hyperplane defined by $\boldsymbol{v}$ is the linear transformation
+
+  $$
+  \boldsymbol{x} - 2 \langle \boldsymbol{x}, \boldsymbol{v}  \rangle \boldsymbol{v}
+  $$
+
+  where $\boldsymbol{v}$ is the unit vector that is orthogonal to the hyperplane.
+
+Definition (Householder matrices)
+: The matrix constructed from this transformation can be expressed in terms of an outer product as
+
+  $$
+  \boldsymbol{H} = \boldsymbol{I} - 2 \boldsymbol{v} \boldsymbol{v} ^{\top}
+  $$
+
+Properties
+- symmetric: $\boldsymbol{H} = \boldsymbol{H} ^{\top}$
+- unitary: $\boldsymbol{H}^{-1} = \boldsymbol{H} ^{\top}$
+- involutory: $\boldsymbol{H}^{-1} = \boldsymbol{H}$
+- has eigenvalues
+  - $-1$, since $\boldsymbol{H} \boldsymbol{v} = - \boldsymbol{v}$
+  - $1$ of multiplicity $n-1$, since $\boldsymbol{H} \boldsymbol{u} = \boldsymbol{u}$ where $\boldsymbol{u} \perp \boldsymbol{v}$, and there are $n-1$ independent vectors orthogonal to $\boldsymbol{v}$
+- has determinant $-1$.
 
 ### Projection Matrices
 
@@ -227,6 +256,10 @@ Inequalities
   $$
 
   is minimized uniquely at $\boldsymbol{\Sigma} =\boldsymbol{A}$.
+
+### Conditional Negative Definite
+
+rt square distance matrix
 
 ## Matrix Differentiation
 
