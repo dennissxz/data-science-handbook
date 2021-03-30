@@ -34,7 +34,7 @@ Verbally, we say that, given the past history of the process up through time $t$
 
 We say a Markov chain has a **discrete state space** if the set of values of the random variables is countably infinite $\left\{ v_0, v_1, \ldots \right\}$. For simplicity, we assume the discrete state space is given by the set of nonnegative integers $\left\{ 0,1,\ldots \right\}$. We say a Markov chain is **finite** if the set of values of the random variables if a finite set $\left\{ v_0, v_1, \ldots, v_{n-1} \right\}$. In the following discussion we assume the Markov chains are finite.
 
-A Markov chain is homogeneous if $\mathbb{P}\left(X_{t+1}=j \mid X_{t}=i\right)=p_{i j}$ for all $t$. This indicates that this conditional distribution does not very with $t$. The values $p_{ij}$ are called **transition probabilities**, which can be stored in a transition matrix $\boldsymbol{P}$. We can find the $t$-step transition probability $p_{ij}^{(t)} = [\boldsymbol{P}^t] _{ij}$, which is the probability that, starting in state $i$, the Markov chain is found in state $j$ after $t$ transitions.
+A Markov chain is **homogeneous** if $\mathbb{P}\left(X_{t+1}=j \mid X_{t}=i\right)=p_{i j}$ for all $t$. This indicates that this conditional distribution does not very with $t$. The values $p_{ij}$ are called **transition probabilities**, which can be stored in a transition matrix $\boldsymbol{P}$. We can find the $t$-step transition probability $p_{ij}^{(t)} = [\boldsymbol{P}^t] _{ij}$, which is the probability that, starting in state $i$, the Markov chain is found in state $j$ after $t$ transitions.
 
 A Markov chain with state space $V$ and transition matrix $\boldsymbol{P}$ can be represented by a labeled directed graph, where edges are given by transitions with nonzero probability $E = \left\{ (u,v) \mid p_{u,v} >0 \right\}$. Note that self-loops are allowed for $p_{ii} > 0$.
 
@@ -46,65 +46,78 @@ Graphical representation of a Markov chain
 
 ### Irreducibility
 
-A state $j$ is **accessible** from state $i$ if there exists some $n \ge 0$ such that $p_{ij}^{(t)} > 0$. Two states $i$ and $j$ **communicate** if they are accessible from each other, written as $i \leftrightarrow j$. In the graph-representation of the chain, we have $i \leftrightarrow j$ if there are directed paths from $i$ to $j$ and from $j$ to $i$. Some states form a communication class if all states in that class communicate.
+Definitions
+: - A state $j$ is **accessible** from state $i$ if there exists some $n \ge 0$ such that $p_{ij}^{(t)} > 0$.
+  - Two states $i$ and $j$ **communicate** if they are accessible from each other, written as $i \leftrightarrow j$. In the graph-representation of the chain, we have $i \leftrightarrow j$ if there are directed paths from $i$ to $j$ and from $j$ to $i$.
+  - Some states form a **communication class** if all states in that class communicate.
+  - A Markov chain is **irreducible** if any state is accessible from any other in some finite number of transitions, i.e.
 
-A Markov chain is **irreducible** if any state is accessible from any other in some finite number of transitions, i.e.
+    $$\forall i, j, \exists t: \quad p_{ij}^{(t)} > 0$$
 
-$$\forall i, j, \exists t: \quad p_{ij}^{(t)} > 0$$
-
-Equivalently,
-- all states belong to one communication class, or
-- its graph representation is a strongly connected graph.
+    Equivalently,
+    - all states belong to one communication class, or
+    - its graph representation is a strongly connected graph.
 
 ### Periodicity
 
-The period $d(k)$ of a state $k$ of a homogeneous Markov chain is defined as
+Definition (Period)
+: The period $d(i)$ of a state $i$ of a homogeneous Markov chain is defined as
 
-$$
-d(k) = \mathrm{gcd} \left\{ t: p_{k} ^{t} >0 \right\}
-$$
+  $$
+  d(i) = \mathrm{gcd} \left\{ t: p_{ii} ^{(t)} >0 \right\}
+  $$
 
-where $\mathrm{gcd}$ stands for greatest common divisor.
+  where $\mathrm{gcd}$ stands for greatest common divisor.
 
-If $d(k)=1$, we say that state $k$ is aperiodic. A Markov chain is **aperiodic** if and only if all its states are aperiodic.
 
-If a finite Markov chain is aperiodic, then there exists a positive integer $m$, such that for all states $i$, it is guaranteed to return to that state in a finite number of transitions, i.e.
+Definition (Periodic and aperiodic)
+: - If $d(i)>1$, we say that state $i$ is periodic. That is, there is a period $d(i)$ such that starting in state $i$, the chain can return to $i$ only at multiples of the period $d(i)$, and $d(i)$ is the largest such integer.
+  - If $d(i)=1$, we say that state $i$ is aperiodic.
+  - A Markov chain is aperiodic if all its states are aperiodic.
 
-$$\exists m, \forall i, t \ge m: \quad p_{ii}^{(t)} > 0$$
+Claims
+: - If $p_{ii} > 0$ then $x$ is aperiodic. Converse is not true.
+  - If $i \leftrightarrow j$, then $d(i) = d(j)$.
+  - If a finite Markov chain is aperiodic, then there exists a positive integer $m$, such that for all states $i$, it is guaranteed to return to that state in a finite number of transitions, i.e.
 
-If a Markov chain is irreducible and aperiodic, then there exists an integer $m$, such that any state is accessible from any other after at least $m$ transitions, i.e.
+    $$\exists m, \forall i, t \ge m: \quad p_{ii}^{(t)} > 0$$
 
-$$
-\exists m, \forall i, t \ge m: \quad \quad p_{ij}^{(t)} > 0
-$$
+  - If a Markov chain is irreducible and aperiodic, then there exists an integer $m$, such that any state is accessible from any other after at least $m$ transitions, i.e.
 
-***Proof***
+    $$
+    \exists m, \forall i, t \ge m: \quad \quad p_{ij}^{(t)} > 0
+    $$
 
-$$
-\underbrace{\mathbb{P} \left[X_{m}=j \mid X_{0}=i\right]}_{p_{i, j}^{(m)}} \geqslant \underbrace{\mathbb{P} \left[X_{m}=j \mid X_{m-n_{i, j}}=i\right]}_{\text{irreducible: } p_{i, j}^{(n_{i, j})}>0} \cdot \underbrace{\mathbb{P} \left[X_{m-n_{i, j}}=i \mid X_{0}=i\right]}_{\text{aperiodic: } p_{i, i}^{(m-n_{i, j})}>0} .
-$$
+    ***Proof***
 
-$\square$
+    $$
+    \underbrace{\mathbb{P} \left[X_{m}=j \mid X_{0}=i\right]}_{p_{i, j}^{(m)}} \geqslant \underbrace{\mathbb{P} \left[X_{m}=j \mid X_{m-n_{i, j}}=i\right]}_{\text{irreducible: } p_{i, j}^{(n_{i, j})}>0} \cdot \underbrace{\mathbb{P} \left[X_{m-n_{i, j}}=i \mid X_{0}=i\right]}_{\text{aperiodic: } p_{i, i}^{(m-n_{i, j})}>0} .
+    $$
+
+    $\square$
 
 ## Stationary Distribution
 
-A row vector $\boldsymbol{\pi} ^{\top}$ is called a **stationary distribution** for a Markov chain with transition matrix $\boldsymbol{P}$ if
-- $\pi_j \ge 0$ and $\sum_j\pi_j = 1$
-- $\boldsymbol{\pi} ^{\top} \boldsymbol{P} = \boldsymbol{\pi}^{\top}$
+Definition (Stationary distribution)
+: A row vector $\boldsymbol{\pi} ^{\top}$ is called a **stationary distribution** for a Markov chain with transition matrix $\boldsymbol{P}$ if
+  - $\pi_j \ge 0$ and $\sum_j\pi_j = 1$
+  - $\boldsymbol{\pi} ^{\top} \boldsymbol{P} = \boldsymbol{\pi}^{\top}$
 
 For instance, when $\boldsymbol{P} = \boldsymbol{I}$, then every probability distribution on the states is a stationary probability distribution.
 
-If a Markov chain is aperiodic and irreducible, then it has precisely **one** stationary distribution, in the sense that the limit
 
-$$
-\lim _{n \rightarrow \infty} p_{ij}^{(n)} = \pi _j
-$$
+Existence and uniqueness
+: If a Markov chain is **aperiodic** and **irreducible**, then it has precisely **one** stationary distribution, in the sense that the limit
 
-exists for each state $j$ with $\pi_j \ge 0$ and $\sum_j\pi_j = 1$, which is independent of starting state $i$. Equivalently,
+  $$
+  \lim _{n \rightarrow \infty} p_{ij}^{(n)} = \pi _j
+  $$
 
-$$
-\lim _{n \rightarrow \infty} \boldsymbol{P}^n  = \boldsymbol{1} \boldsymbol{\pi} ^{\top}
-$$
+  exists for each state $j$ with $\pi_j \ge 0$ and $\sum_j\pi_j = 1$, which is independent of starting state $i$. Equivalently,
+
+  $$
+  \lim _{n \rightarrow \infty} \boldsymbol{P}^n  = \boldsymbol{1} \boldsymbol{\pi} ^{\top}
+  $$
 
 ## Exercise
 

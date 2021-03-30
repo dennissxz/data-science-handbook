@@ -115,8 +115,8 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../11-math/20-fields-and-vector-spaces.html">
-     Fields and Vector Spaces
+    <a class="reference internal" href="../11-math/20-vector-spaces.html">
+     Vector Spaces
     </a>
    </li>
    <li class="toctree-l2">
@@ -171,6 +171,11 @@
    <li class="toctree-l2">
     <a class="reference internal" href="../12-probabilities/90-multivariate-notations.html">
      Multivariate Notations
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/91-exponential-families.html">
+     Exponential Families
     </a>
    </li>
    <li class="toctree-l2">
@@ -946,9 +951,9 @@ k(\boldsymbol{x} _n, \boldsymbol{x}) \\
 <p>We’ve implicitly assumed zero-mean in the new feature space <span class="math notranslate nohighlight">\(\mathbb{R} ^p\)</span>, but it is usually not. Hence, we should modify <span class="math notranslate nohighlight">\(\boldsymbol{K}\)</span> by</p>
 <div class="math notranslate nohighlight">
 \[
-\boldsymbol{K} ^\prime = (\boldsymbol{I} - \boldsymbol{u} \boldsymbol{u} ^\top )\boldsymbol{K}(\boldsymbol{I} - \boldsymbol{u} \boldsymbol{u} ^\top)  
+\boldsymbol{K} ^\prime = \boldsymbol{C} \boldsymbol{K} \boldsymbol{C}
 \]</div>
-<p>where <span class="math notranslate nohighlight">\(\boldsymbol{u} = \frac{1}{\sqrt{n}}[1 \ldots 1]^{\top}\)</span>, and solve for the eigenvectors of <span class="math notranslate nohighlight">\(\boldsymbol{K} ^\prime\)</span></p>
+<p>where <span class="math notranslate nohighlight">\(\boldsymbol{C}  = \left(\boldsymbol{I}-\frac{1}{n} \boldsymbol{1} \boldsymbol{1}^{\top}\right)\)</span> is the centering matrix. Then we solve for the eigenvectors of <span class="math notranslate nohighlight">\(\boldsymbol{K} ^\prime\)</span></p>
 </div>
 </div>
 <div class="section" id="learning">
@@ -1004,7 +1009,7 @@ k(\boldsymbol{x} _n, \boldsymbol{x}) \\
 </ul>
 <div class="figure align-default" id="kernels-rbf">
 <a class="reference internal image-reference" href="../_images/kernels-RBF.png"><img alt="" src="../_images/kernels-RBF.png" style="width: 50%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 65 </span><span class="caption-text">Gaussian kernels</span><a class="headerlink" href="#kernels-rbf" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 70 </span><span class="caption-text">Gaussian kernels</span><a class="headerlink" href="#kernels-rbf" title="Permalink to this image">¶</a></p>
 </div>
 <ul>
 <li><p>Polynomial kernel</p>
@@ -1026,13 +1031,13 @@ k(\boldsymbol{x} _n, \boldsymbol{x}) \\
 <li><p>the data is non-linear and fit the chosen kernel.</p>
 <div class="figure align-default" id="kernel-pca-ep1">
 <a class="reference internal image-reference" href="../_images/kernel-pca-ep1.png"><img alt="" src="../_images/kernel-pca-ep1.png" style="width: 80%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 66 </span><span class="caption-text">Kernel PCA with a RBF kernel on points [Livescu 2021].</span><a class="headerlink" href="#kernel-pca-ep1" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 71 </span><span class="caption-text">Kernel PCA with a RBF kernel on points [Livescu 2021].</span><a class="headerlink" href="#kernel-pca-ep1" title="Permalink to this image">¶</a></p>
 </div>
 </li>
 <li><p>there is much noise in the data</p>
 <div class="figure align-default" id="id1">
 <a class="reference internal image-reference" href="../_images/kernel-pca-ep2.png"><img alt="" src="../_images/kernel-pca-ep2.png" style="width: 60%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 67 </span><span class="caption-text">Kernel PCA on images [Livescu 2021].</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 72 </span><span class="caption-text">Kernel PCA on images [Livescu 2021].</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
 </div>
 </li>
 </ul>
@@ -1043,7 +1048,7 @@ k(\boldsymbol{x} _n, \boldsymbol{x}) \\
 <li><p>Kernel PCA works bad when the data lies a special manifold</p>
 <div class="figure align-default" id="id2">
 <a class="reference internal image-reference" href="../_images/kernel-pca-ep3.png"><img alt="" src="../_images/kernel-pca-ep3.png" style="width: 50%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 68 </span><span class="caption-text">Kernel PCA with RBF kernel on a Swiss roll manifold [Livescu 2021]</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 73 </span><span class="caption-text">Kernel PCA with RBF kernel on a Swiss roll manifold [Livescu 2021]</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
 </div>
 </li>
 <li><p>Computationally expensive to compute the <span class="math notranslate nohighlight">\(n \times n\)</span> pairwise kernel values in <span class="math notranslate nohighlight">\(\boldsymbol{K}\)</span> when <span class="math notranslate nohighlight">\(n\)</span> is large. Remedies include</p>

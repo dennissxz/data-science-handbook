@@ -115,8 +115,8 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../11-math/20-fields-and-vector-spaces.html">
-     Fields and Vector Spaces
+    <a class="reference internal" href="../11-math/20-vector-spaces.html">
+     Vector Spaces
     </a>
    </li>
    <li class="toctree-l2">
@@ -171,6 +171,11 @@
    <li class="toctree-l2">
     <a class="reference internal" href="../12-probabilities/90-multivariate-notations.html">
      Multivariate Notations
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/91-exponential-families.html">
+     Exponential Families
     </a>
    </li>
    <li class="toctree-l2">
@@ -829,18 +834,23 @@
   <a class="reference internal nav-link" href="#learning">
    Learning
   </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#special-cases">
-   Special Cases
-  </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#input-is-a-euclidean-distance-matrix">
-     Input is a Euclidean Distance Matrix
+    <a class="reference internal nav-link" href="#input-is-data-or-gram-matrix">
+     Input is Data or Gram Matrix
     </a>
    </li>
   </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#input-is-an-euclidean-distance-matrix">
+   Input is an Euclidean Distance Matrix
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#model-selection">
+   Model Selection
+  </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#relation-to-pca">
@@ -872,7 +882,8 @@
 <p>Many non-linear dimensionality reduction methods are extension to MDS. MDS is a clue to link linear and non-linear dimensionality reduction.</p>
 <div class="section" id="objective">
 <h2>Objective<a class="headerlink" href="#objective" title="Permalink to this headline">¶</a></h2>
-<p>MDS seeks a <span class="math notranslate nohighlight">\(k\)</span>-dimensional representation <span class="math notranslate nohighlight">\(\boldsymbol{z} \in \mathbb{R} ^k\)</span> of a data set that preserves inner products (or similarity/distance) between pairs of data points <span class="math notranslate nohighlight">\((\boldsymbol{x_i}, \boldsymbol{x}_j)\)</span></p>
+<p>Question: If we are given a distance matrix <span class="math notranslate nohighlight">\(\boldsymbol{D}\in \mathbb{R} ^{n \times n}\)</span>, then we can find a <span class="math notranslate nohighlight">\(2\)</span>-dimensional representation of it <span class="math notranslate nohighlight">\(\boldsymbol{Z} \in \mathbb{R} ^{n \times k}\)</span>, to visualize them in 2-D plane?</p>
+<p>Essentially, MDS seeks a <span class="math notranslate nohighlight">\(k\)</span>-dimensional representation <span class="math notranslate nohighlight">\(\boldsymbol{z} \in \mathbb{R} ^k\)</span> of a data set that preserves inner products (or similarity/distance) between pairs of data points <span class="math notranslate nohighlight">\((\boldsymbol{x_i}, \boldsymbol{x}_j)\)</span></p>
 <div class="math notranslate nohighlight">
 \[
 \min \sum_{i, j}\left(\boldsymbol{x}_{i} ^\top  \boldsymbol{x}_{j}-\boldsymbol{z}_{i} ^\top  \boldsymbol{z}_{j}\right)^{2}
@@ -882,6 +893,7 @@
 \[
 \min \left\Vert \boldsymbol{X} \boldsymbol{X} ^\top  - \boldsymbol{Z} \boldsymbol{Z} ^\top    \right\Vert _F^2
 \]</div>
+<p>The input to MDS can be one of the following: data matrix <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span>, gram matrix <span class="math notranslate nohighlight">\(\boldsymbol{X} \boldsymbol{X} ^{\top}\)</span>, or distance matrix <span class="math notranslate nohighlight">\(\boldsymbol{D}\)</span>.</p>
 </div>
 <div class="section" id="learning">
 <h2>Learning<a class="headerlink" href="#learning" title="Permalink to this headline">¶</a></h2>
@@ -889,6 +901,8 @@
 <p class="sidebar-title"></p>
 <p>Note the inner product matrix <span class="math notranslate nohighlight">\(\boldsymbol{G}_{n\times n} = \boldsymbol{X} \boldsymbol{X} ^\top\)</span> is different from the data covariance matrix <span class="math notranslate nohighlight">\(\boldsymbol{S}_{d\times d} = \boldsymbol{X} ^\top \boldsymbol{X}\)</span>.</p>
 </div>
+<div class="section" id="input-is-data-or-gram-matrix">
+<h3>Input is Data or Gram Matrix<a class="headerlink" href="#input-is-data-or-gram-matrix" title="Permalink to this headline">¶</a></h3>
 <p>The solution can be obtained from the <span class="math notranslate nohighlight">\(n\times n\)</span> Gram matrix of inner products</p>
 <div class="math notranslate nohighlight">
 \[
@@ -915,22 +929,37 @@ g_{i j}=\boldsymbol{x}_{i} \cdot \boldsymbol{x}_{j}
 \widehat{\boldsymbol{G}} = \boldsymbol{Z} \boldsymbol{Z} ^\top
 \]</div>
 </div>
-<div class="section" id="special-cases">
-<h2>Special Cases<a class="headerlink" href="#special-cases" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="input-is-a-euclidean-distance-matrix">
-<h3>Input is a Euclidean Distance Matrix<a class="headerlink" href="#input-is-a-euclidean-distance-matrix" title="Permalink to this headline">¶</a></h3>
-<p>If the input is not a data matrix <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span> but a Euclidean distances matrix <span class="math notranslate nohighlight">\(\boldsymbol{F}\)</span></p>
-<div class="math notranslate nohighlight">
-\[
-f_{i j}=\left\|\boldsymbol{x}_{i}-\boldsymbol{x}_{j}\right\|^{2}=\left\|\boldsymbol{x}_{i}\right\|^{2}-2 \boldsymbol{x}_{i}^{\top} \boldsymbol{x}_{j}+\left\|\boldsymbol{x}_{j}\right\|^{2}
-\]</div>
-<p>If <span class="math notranslate nohighlight">\(\boldsymbol{x} _i\)</span> are <strong>centered</strong> (zero-mean), we can convert the Euclidean distance matrix <span class="math notranslate nohighlight">\(\boldsymbol{F}\)</span> to the Gram matrix <span class="math notranslate nohighlight">\(\boldsymbol{G}\)</span> of inner product by left- and right-multiplying by the centering matrix <span class="math notranslate nohighlight">\(\boldsymbol{C}  = \left(\boldsymbol{I}-\frac{1}{n} \boldsymbol{1} \boldsymbol{1}^{\top}\right)\)</span>,</p>
-<div class="math notranslate nohighlight">
-\[
-\boldsymbol{G} = - \frac{1}{2} \boldsymbol{C}  \boldsymbol{F}\boldsymbol{C} ^{\top}
-\]</div>
-<p>And then we can run MDS over <span class="math notranslate nohighlight">\(\boldsymbol{G}\)</span>.</p>
 </div>
+<div class="section" id="input-is-an-euclidean-distance-matrix">
+<h2>Input is an Euclidean Distance Matrix<a class="headerlink" href="#input-is-an-euclidean-distance-matrix" title="Permalink to this headline">¶</a></h2>
+<p>If the input is not a data matrix <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span> but a Euclidean distances matrix <span class="math notranslate nohighlight">\(\boldsymbol{D}\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+d_{i j}=\left\|\boldsymbol{x}_{i}-\boldsymbol{x}_{j}\right\|^{2}=\left\|\boldsymbol{x}_{i}\right\|^{2}-2 \boldsymbol{x}_{i}^{\top} \boldsymbol{x}_{j}+\left\|\boldsymbol{x}_{j}\right\|^{2}
+\]</div>
+<p>We can convert the Euclidean distance matrix <span class="math notranslate nohighlight">\(\boldsymbol{D}\)</span> to the Gram matrix <span class="math notranslate nohighlight">\(\boldsymbol{G}\)</span> for centered <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span> by left- and right-multiplying by the centering matrix <span class="math notranslate nohighlight">\(\boldsymbol{C}  = \left(\boldsymbol{I}-\frac{1}{n} \boldsymbol{1} \boldsymbol{1}^{\top}\right)\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[
+\boldsymbol{G} = - \frac{1}{2} \boldsymbol{C}  \boldsymbol{D}\boldsymbol{C} ^{\top}
+\]</div>
+<p>And then we can run MDS over <span class="math notranslate nohighlight">\(\boldsymbol{G}\)</span> to obtain <span class="math notranslate nohighlight">\(k\)</span>-dimensional representation.</p>
+<div class="dropdown seealso admonition">
+<p class="admonition-title"> <em>Proof</em></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+d_{ij}
+&amp;= \left\| x_i \right\|  + \left\| x_j \right\|  - 2 \boldsymbol{x}_i ^{\top} \boldsymbol{x}_j  \\
+\Rightarrow \boldsymbol{D} &amp;= \boldsymbol{v} \boldsymbol{1} ^{\top} + \boldsymbol{1} \boldsymbol{v} ^{\top} - 2 \boldsymbol{X}  \boldsymbol{X} ^{\top}\text{ where }  \boldsymbol{v} = \left\| \boldsymbol{x}_i  \right\| ^2  \\
+\Rightarrow \boldsymbol{C} \boldsymbol{D} \boldsymbol{C} &amp;= -2 \boldsymbol{C} \boldsymbol{X}  \boldsymbol{X} ^{\top} \boldsymbol{C} \quad \because \boldsymbol{C} (\boldsymbol{v} \boldsymbol{1} ^{\top}) \boldsymbol{C} = 0\\
+\Rightarrow -\frac{1}{2} \boldsymbol{C} \boldsymbol{D} \boldsymbol{C} &amp;= (\boldsymbol{C} \boldsymbol{X} )(\boldsymbol{C} \boldsymbol{X}) ^{\top}  \\
+&amp;= \boldsymbol{G} \quad \text{where $\boldsymbol{C} \boldsymbol{X}$ is column-centered $\boldsymbol{X}$} \\
+\end{aligned}\end{split}\]</div>
+<p><span class="math notranslate nohighlight">\(\square\)</span></p>
+</div>
+</div>
+<div class="section" id="model-selection">
+<h2>Model Selection<a class="headerlink" href="#model-selection" title="Permalink to this headline">¶</a></h2>
+<p>noise vs <span class="math notranslate nohighlight">\(k\)</span></p>
 </div>
 <div class="section" id="relation-to-pca">
 <h2>Relation to PCA<a class="headerlink" href="#relation-to-pca" title="Permalink to this headline">¶</a></h2>

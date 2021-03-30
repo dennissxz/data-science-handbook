@@ -14,7 +14,10 @@ Many non-linear dimensionality reduction methods are extension to MDS. MDS is a 
 
 ## Objective
 
-MDS seeks a $k$-dimensional representation $\boldsymbol{z} \in \mathbb{R} ^k$ of a data set that preserves inner products (or similarity/distance) between pairs of data points $(\boldsymbol{x_i}, \boldsymbol{x}_j)$
+
+Question: If we are given a distance matrix $\boldsymbol{D}\in \mathbb{R} ^{n \times n}$, then we can find a $2$-dimensional representation of it $\boldsymbol{Z} \in \mathbb{R} ^{n \times k}$, to visualize them in 2-D plane?
+
+Essentially, MDS seeks a $k$-dimensional representation $\boldsymbol{z} \in \mathbb{R} ^k$ of a data set that preserves inner products (or similarity/distance) between pairs of data points $(\boldsymbol{x_i}, \boldsymbol{x}_j)$
 
 $$
 \min \sum_{i, j}\left(\boldsymbol{x}_{i} ^\top  \boldsymbol{x}_{j}-\boldsymbol{z}_{i} ^\top  \boldsymbol{z}_{j}\right)^{2}
@@ -26,11 +29,16 @@ $$
 \min \left\Vert \boldsymbol{X} \boldsymbol{X} ^\top  - \boldsymbol{Z} \boldsymbol{Z} ^\top    \right\Vert _F^2
 $$
 
+The input to MDS can be one of the following: data matrix $\boldsymbol{X}$, gram matrix $\boldsymbol{X} \boldsymbol{X} ^{\top}$, or distance matrix $\boldsymbol{D}$.
+
 ## Learning
 
 ```{margin}
 Note the inner product matrix $\boldsymbol{G}_{n\times n} = \boldsymbol{X} \boldsymbol{X} ^\top$ is different from the data covariance matrix $\boldsymbol{S}_{d\times d} = \boldsymbol{X} ^\top \boldsymbol{X}$.
 ```
+
+### Input is Data or Gram Matrix
+
 
 The solution can be obtained from the $n\times n$ Gram matrix of inner products
 
@@ -62,23 +70,40 @@ $$
 \widehat{\boldsymbol{G}} = \boldsymbol{Z} \boldsymbol{Z} ^\top
 $$
 
-## Special Cases
+## Input is an Euclidean Distance Matrix
 
-### Input is a Euclidean Distance Matrix
-
-If the input is not a data matrix $\boldsymbol{X}$ but a Euclidean distances matrix $\boldsymbol{F}$
+If the input is not a data matrix $\boldsymbol{X}$ but a Euclidean distances matrix $\boldsymbol{D}$
 
 $$
-f_{i j}=\left\|\boldsymbol{x}_{i}-\boldsymbol{x}_{j}\right\|^{2}=\left\|\boldsymbol{x}_{i}\right\|^{2}-2 \boldsymbol{x}_{i}^{\top} \boldsymbol{x}_{j}+\left\|\boldsymbol{x}_{j}\right\|^{2}
+d_{i j}=\left\|\boldsymbol{x}_{i}-\boldsymbol{x}_{j}\right\|^{2}=\left\|\boldsymbol{x}_{i}\right\|^{2}-2 \boldsymbol{x}_{i}^{\top} \boldsymbol{x}_{j}+\left\|\boldsymbol{x}_{j}\right\|^{2}
 $$
 
-If $\boldsymbol{x} _i$ are **centered** (zero-mean), we can convert the Euclidean distance matrix $\boldsymbol{F}$ to the Gram matrix $\boldsymbol{G}$ of inner product by left- and right-multiplying by the centering matrix $\boldsymbol{C}  = \left(\boldsymbol{I}-\frac{1}{n} \boldsymbol{1} \boldsymbol{1}^{\top}\right)$,
+We can convert the Euclidean distance matrix $\boldsymbol{D}$ to the Gram matrix $\boldsymbol{G}$ for centered $\boldsymbol{X}$ by left- and right-multiplying by the centering matrix $\boldsymbol{C}  = \left(\boldsymbol{I}-\frac{1}{n} \boldsymbol{1} \boldsymbol{1}^{\top}\right)$,
 
 $$
-\boldsymbol{G} = - \frac{1}{2} \boldsymbol{C}  \boldsymbol{F}\boldsymbol{C} ^{\top}
+\boldsymbol{G} = - \frac{1}{2} \boldsymbol{C}  \boldsymbol{D}\boldsymbol{C} ^{\top}
 $$
 
-And then we can run MDS over $\boldsymbol{G}$.
+And then we can run MDS over $\boldsymbol{G}$ to obtain $k$-dimensional representation.
+
+:::{admonition,dropdown,seealso} *Proof*
+
+$$\begin{aligned}
+d_{ij}
+&= \left\| x_i \right\|  + \left\| x_j \right\|  - 2 \boldsymbol{x}_i ^{\top} \boldsymbol{x}_j  \\
+\Rightarrow \boldsymbol{D} &= \boldsymbol{v} \boldsymbol{1} ^{\top} + \boldsymbol{1} \boldsymbol{v} ^{\top} - 2 \boldsymbol{X}  \boldsymbol{X} ^{\top}\text{ where }  \boldsymbol{v} = \left\| \boldsymbol{x}_i  \right\| ^2  \\
+\Rightarrow \boldsymbol{C} \boldsymbol{D} \boldsymbol{C} &= -2 \boldsymbol{C} \boldsymbol{X}  \boldsymbol{X} ^{\top} \boldsymbol{C} \quad \because \boldsymbol{C} (\boldsymbol{v} \boldsymbol{1} ^{\top}) \boldsymbol{C} = 0\\
+\Rightarrow -\frac{1}{2} \boldsymbol{C} \boldsymbol{D} \boldsymbol{C} &= (\boldsymbol{C} \boldsymbol{X} )(\boldsymbol{C} \boldsymbol{X}) ^{\top}  \\
+&= \boldsymbol{G} \quad \text{where $\boldsymbol{C} \boldsymbol{X}$ is column-centered $\boldsymbol{X}$} \\
+\end{aligned}$$
+
+$\square$
+:::
+
+
+## Model Selection
+
+noise vs $k$
 
 
 ## Relation to PCA

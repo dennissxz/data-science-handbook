@@ -115,8 +115,8 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../11-math/20-fields-and-vector-spaces.html">
-     Fields and Vector Spaces
+    <a class="reference internal" href="../11-math/20-vector-spaces.html">
+     Vector Spaces
     </a>
    </li>
    <li class="toctree-l2">
@@ -171,6 +171,11 @@
    <li class="toctree-l2">
     <a class="reference internal" href="../12-probabilities/90-multivariate-notations.html">
      Multivariate Notations
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/91-exponential-families.html">
+     Exponential Families
     </a>
    </li>
    <li class="toctree-l2">
@@ -951,20 +956,30 @@
 </ol>
 <div class="figure align-default" id="spectral-clustering-ep-1">
 <a class="reference internal image-reference" href="../_images/spectral-clustering-ep-1.png"><img alt="" src="../_images/spectral-clustering-ep-1.png" style="width: 80%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 77 </span><span class="caption-text">Divide the graph into sub-graphs [D. Sontag]</span><a class="headerlink" href="#spectral-clustering-ep-1" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 82 </span><span class="caption-text">Divide the graph into sub-graphs [D. Sontag]</span><a class="headerlink" href="#spectral-clustering-ep-1" title="Permalink to this image">¶</a></p>
 </div>
 <div class="section" id="similarity-graphs">
 <h2>Similarity Graphs<a class="headerlink" href="#similarity-graphs" title="Permalink to this headline">¶</a></h2>
 <p>Formally, we have data points <span class="math notranslate nohighlight">\(\boldsymbol{x}_{1}, \ldots, \boldsymbol{x}_{n}\)</span>, Consider some similarity measures <span class="math notranslate nohighlight">\(s_{i j}\)</span> or dissimilarity measures <span class="math notranslate nohighlight">\(d_{ij}\)</span>. We create a graph <span class="math notranslate nohighlight">\(G=(V,E)\)</span>, add one node <span class="math notranslate nohighlight">\(v_i\)</span> for each data point <span class="math notranslate nohighlight">\(\boldsymbol{x}_i\)</span>, and unweighted or weighted edges by some criterions.</p>
 <ul class="simple">
-<li><p><strong><span class="math notranslate nohighlight">\(\varepsilon\)</span>-neighborhood graph</strong>: add edge <span class="math notranslate nohighlight">\((v_i, v_j)\)</span> if <span class="math notranslate nohighlight">\(d_{ij} \le \varepsilon\)</span></p></li>
-<li><p><strong><span class="math notranslate nohighlight">\(k\)</span>-NN</strong>: add edge <span class="math notranslate nohighlight">\((v_i,v_j)\)</span> if <span class="math notranslate nohighlight">\(v_j\)</span> is a <span class="math notranslate nohighlight">\(k\)</span>-NN of <span class="math notranslate nohighlight">\(v_i\)</span> <strong>or</strong> vice versa, according to <span class="math notranslate nohighlight">\(d_{ij}\)</span></p></li>
+<li><p><strong><span class="math notranslate nohighlight">\(\varepsilon\)</span>-neighborhood graph</strong>: add edge <span class="math notranslate nohighlight">\((v_i, v_j)\)</span> if <span class="math notranslate nohighlight">\(d_{ij} \le \varepsilon\)</span></p>
+<ul>
+<li><p>Advantages: Geometrically motivated, the relationship is naturally symmetric.</p></li>
+<li><p>Disadvantages: Often leads to graphs with several connected components, difficult to choose <span class="math notranslate nohighlight">\(\epsilon\)</span>.</p></li>
+</ul>
+</li>
+<li><p><strong><span class="math notranslate nohighlight">\(k\)</span>-NN</strong>: add edge <span class="math notranslate nohighlight">\((v_i,v_j)\)</span> if <span class="math notranslate nohighlight">\(v_j\)</span> is a <span class="math notranslate nohighlight">\(k\)</span>-NN of <span class="math notranslate nohighlight">\(v_i\)</span> <strong>or</strong> vice versa, according to <span class="math notranslate nohighlight">\(d_{ij}\)</span></p>
+<ul>
+<li><p>Advantages: Easier to choose; does not tend to lead to disconnected graphs.</p></li>
+<li><p>Disadvantages: Less geometrically intuitive.</p></li>
+</ul>
+</li>
 <li><p><strong>Mutual <span class="math notranslate nohighlight">\(k\)</span>-NN</strong>: add edge <span class="math notranslate nohighlight">\((v_i,v_j)\)</span> if <span class="math notranslate nohighlight">\(v_i\)</span> is a <span class="math notranslate nohighlight">\(k\)</span>-NN of <span class="math notranslate nohighlight">\(v_j\)</span> <strong>and</strong> vice versa. It works well for sub-graphs with different densities.</p></li>
 <li><p><strong>Fully connected</strong>: add edge <span class="math notranslate nohighlight">\((v_i,v_j)\)</span> with weight <span class="math notranslate nohighlight">\(w_{ij} = s_{ij}\)</span> or some function of <span class="math notranslate nohighlight">\(s_{ij}\)</span>.</p></li>
 </ul>
 <div class="figure align-default" id="spectral-clustering-types">
 <a class="reference internal image-reference" href="../_images/spectral-clustering-types.png"><img alt="" src="../_images/spectral-clustering-types.png" style="width: 70%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 78 </span><span class="caption-text">Comparison of three types of graphs [von Luxburg]</span><a class="headerlink" href="#spectral-clustering-types" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 83 </span><span class="caption-text">Comparison of three types of graphs [von Luxburg]</span><a class="headerlink" href="#spectral-clustering-types" title="Permalink to this image">¶</a></p>
 </div>
 <p>We mainly consider bisection (<span class="math notranslate nohighlight">\(K=2\)</span>) and unweighted case.</p>
 </div>
@@ -998,7 +1013,7 @@
 </ul>
 <div class="figure align-default" id="spectral-clustering-ex1">
 <a class="reference internal image-reference" href="../_images/spectral-clustering-ex1.png"><img alt="" src="../_images/spectral-clustering-ex1.png" style="width: 70%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 79 </span><span class="caption-text">Spectral analysis of the karate club network. Left: <span class="math notranslate nohighlight">\(\left\vert \lambda_i \right\vert\)</span>. Right: <span class="math notranslate nohighlight">\(\boldsymbol{v} _1, \boldsymbol{v} _2\)</span>, colored by subgroups. [Kolaczyk 2009]</span><a class="headerlink" href="#spectral-clustering-ex1" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 84 </span><span class="caption-text">Spectral analysis of the karate club network. Left: <span class="math notranslate nohighlight">\(\left\vert \lambda_i \right\vert\)</span>. Right: <span class="math notranslate nohighlight">\(\boldsymbol{v} _1, \boldsymbol{v} _2\)</span>, colored by subgroups. [Kolaczyk 2009]</span><a class="headerlink" href="#spectral-clustering-ex1" title="Permalink to this image">¶</a></p>
 </div>
 <p>For <span class="math notranslate nohighlight">\(K \ge 3\)</span>, we can</p>
 <ul class="simple">
@@ -1069,7 +1084,7 @@ S_F=\left\{u \in V: \boldsymbol{v} _{2}(u) \geq 0\right\} \quad \text { and } \q
 <p>Fiedler bisection can be viewed as a computationally efficient approximation to finding a best cut achieving <span class="math notranslate nohighlight">\(\phi(G)\)</span>. In the example below, we see that is gives a good result, classifying all but the 3rd actor correctly.</p>
 <div class="figure align-default" id="spectral-clustering-ex2">
 <a class="reference internal image-reference" href="../_images/spectral-clustering-ex2.png"><img alt="" src="../_images/spectral-clustering-ex2.png" style="width: 50%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 80 </span><span class="caption-text">Fiedler vector <span class="math notranslate nohighlight">\(\boldsymbol{v} _2\)</span> of the karate club graph. Color and shape indicate subgroups. [Kolaczyk 2009]</span><a class="headerlink" href="#spectral-clustering-ex2" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 85 </span><span class="caption-text">Fiedler vector <span class="math notranslate nohighlight">\(\boldsymbol{v} _2\)</span> of the karate club graph. Color and shape indicate subgroups. [Kolaczyk 2009]</span><a class="headerlink" href="#spectral-clustering-ex2" title="Permalink to this image">¶</a></p>
 </div>
 <p>For <span class="math notranslate nohighlight">\(K \ge 3\)</span>, apply bisection recursively.</p>
 </div>
@@ -1118,7 +1133,7 @@ overhead is in principle determined by the cost of computing the spectral decomp
 \]</div>
 <div class="figure align-default" id="spectral-clustering-cuts">
 <a class="reference internal image-reference" href="../_images/spectral-clustering-cuts.png"><img alt="" src="../_images/spectral-clustering-cuts.png" style="width: 70%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 81 </span><span class="caption-text">A graph cut with <span class="math notranslate nohighlight">\(W(S,\bar{S})=0.3\)</span> [Hamad &amp; Biela]</span><a class="headerlink" href="#spectral-clustering-cuts" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 86 </span><span class="caption-text">A graph cut with <span class="math notranslate nohighlight">\(W(S,\bar{S})=0.3\)</span> [Hamad &amp; Biela]</span><a class="headerlink" href="#spectral-clustering-cuts" title="Permalink to this image">¶</a></p>
 </div>
 <p>The algorithm with the above objective function is called <strong>MinCut</strong>, which favors <strong>isolated</strong> nodes.</p>
 <p>Other methods with modified/normalized objectives include:</p>
@@ -1152,7 +1167,7 @@ overhead is in principle determined by the cost of computing the spectral decomp
 <p>The first eigenvector of <span class="math notranslate nohighlight">\(\boldsymbol{L} _w\)</span> is all ones (all data in a single cluster). We take the 2nd eigenvector as the real-valued solution. As shown below, the solved eigenvector (right picture) has positive and negative values, which can be used for assignment.</p>
 <div class="figure align-default" id="spectral-clustering-egvector">
 <a class="reference internal image-reference" href="../_images/spectral-clustering-egvector.png"><img alt="" src="../_images/spectral-clustering-egvector.png" style="width: 80%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 82 </span><span class="caption-text"><span class="math notranslate nohighlight">\(\operatorname{Ncut}\)</span> for a data set of <span class="math notranslate nohighlight">\(40\)</span> points.</span><a class="headerlink" href="#spectral-clustering-egvector" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 87 </span><span class="caption-text"><span class="math notranslate nohighlight">\(\operatorname{Ncut}\)</span> for a data set of <span class="math notranslate nohighlight">\(40\)</span> points.</span><a class="headerlink" href="#spectral-clustering-egvector" title="Permalink to this image">¶</a></p>
 </div>
 </div>
 <div class="section" id="more-clusters">
@@ -1173,7 +1188,7 @@ overhead is in principle determined by the cost of computing the spectral decomp
 <h3>Comparison to <span class="math notranslate nohighlight">\(k\)</span>-means<a class="headerlink" href="#comparison-to-k-means" title="Permalink to this headline">¶</a></h3>
 <div class="figure align-default" id="spectral-clustering-vs-k-means">
 <a class="reference internal image-reference" href="../_images/spectral-clustering-vs-k-means.png"><img alt="" src="../_images/spectral-clustering-vs-k-means.png" style="width: 80%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 83 </span><span class="caption-text"><span class="math notranslate nohighlight">\(k\)</span>-means vs spectral clustering on double rings data set [Ng, Jordan, &amp; Weiss]</span><a class="headerlink" href="#spectral-clustering-vs-k-means" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 88 </span><span class="caption-text"><span class="math notranslate nohighlight">\(k\)</span>-means vs spectral clustering on double rings data set [Ng, Jordan, &amp; Weiss]</span><a class="headerlink" href="#spectral-clustering-vs-k-means" title="Permalink to this image">¶</a></p>
 </div>
 </div>
 <div class="section" id="image-segmentation">
@@ -1188,11 +1203,11 @@ w_{i j}= \left\{\begin{array}{ll}
 \end{split}\]</div>
 <div class="figure align-default" id="spectral-clustering-img-seg">
 <a class="reference internal image-reference" href="../_images/spectral-clustering-img-seg.png"><img alt="" src="../_images/spectral-clustering-img-seg.png" style="width: 80%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 84 </span><span class="caption-text">Spectral clustering for image segmentation [Shi &amp; Malik]</span><a class="headerlink" href="#spectral-clustering-img-seg" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 89 </span><span class="caption-text">Spectral clustering for image segmentation [Shi &amp; Malik]</span><a class="headerlink" href="#spectral-clustering-img-seg" title="Permalink to this image">¶</a></p>
 </div>
 <div class="figure align-default" id="spectral-clustering-img-seg-2">
 <a class="reference internal image-reference" href="../_images/spectral-clustering-img-seg-2.png"><img alt="" src="../_images/spectral-clustering-img-seg-2.png" style="width: 50%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 85 </span><span class="caption-text">Spectral clustering for image segmentation [Arbel ́aez et al.]</span><a class="headerlink" href="#spectral-clustering-img-seg-2" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 90 </span><span class="caption-text">Spectral clustering for image segmentation [Arbel ́aez et al.]</span><a class="headerlink" href="#spectral-clustering-img-seg-2" title="Permalink to this image">¶</a></p>
 </div>
 </div>
 <div class="section" id="speech-separation">
@@ -1200,7 +1215,7 @@ w_{i j}= \left\{\begin{array}{ll}
 <p>Speech separation (into speakers): Similar to image segmentation, where a “pixel” is a cell of a spectrogram. Darkness corresponds to amount of frequency at that time.</p>
 <div class="figure align-default" id="spectral-clustering-speech-sep">
 <a class="reference internal image-reference" href="../_images/spectral-clustering-speech-sep.png"><img alt="" src="../_images/spectral-clustering-speech-sep.png" style="width: 80%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 86 </span><span class="caption-text">Spectral clustering for speech separation [Bach &amp; Jordan]</span><a class="headerlink" href="#spectral-clustering-speech-sep" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 91 </span><span class="caption-text">Spectral clustering for speech separation [Bach &amp; Jordan]</span><a class="headerlink" href="#spectral-clustering-speech-sep" title="Permalink to this image">¶</a></p>
 </div>
 </div>
 </div>

@@ -115,8 +115,8 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../11-math/20-fields-and-vector-spaces.html">
-     Fields and Vector Spaces
+    <a class="reference internal" href="../11-math/20-vector-spaces.html">
+     Vector Spaces
     </a>
    </li>
    <li class="toctree-l2">
@@ -171,6 +171,11 @@
    <li class="toctree-l2">
     <a class="reference internal" href="90-multivariate-notations.html">
      Multivariate Notations
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="91-exponential-families.html">
+     Exponential Families
     </a>
    </li>
    <li class="toctree-l2">
@@ -873,6 +878,11 @@
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#chernoff-bound">
+     Chernoff Bound
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#cauchy-schewarz-inequality-in-probability">
      Cauchy-Schewarz Inequality in Probability
     </a>
@@ -932,24 +942,24 @@
 \[\begin{split}\begin{align}
 &amp;&amp;&amp;\text{Population} &amp;&amp; \text{Sample} \\
 &amp; \text{Mean} &amp; \mu &amp;= \sum_{i=1}^n x_i p(x_i) \text{ or } \int_{\mathcal{X}} x f(x) \mathrm{~d}x &amp;  \bar x &amp;= \frac{1}{n}\sum_i x_i  \\
-&amp; \text{Variance} &amp; \sigma^2 &amp;= \operatorname{E}\left[ \left( X-\mu \right)^2 \right]  &amp; s^2 &amp;= \frac{1}{n}\sum_i(x_i - \bar x)^2\\
-&amp; \text{Standard deviation}  &amp; \sigma &amp;= \sqrt{\operatorname{E}\left[ \left( X-\mu \right)^2 \right]}  &amp; s &amp;= \sqrt{\frac{1}{n}\sum_i(x_i - \bar x)^2} \\
-&amp; \text{Covariance}  &amp; \sigma_{X,Y} &amp;= \operatorname{E}\left[ (X-\mu_X)(Y-\mu_Y) \right] &amp; s_{X,Y} &amp;= \frac{1}{n}\sum_i \left[ (x_i - \bar x)(y_i - \bar y) \right]
+&amp; \text{Variance} &amp; \sigma^2 &amp;= \operatorname{\mathbb{E}}\left[ \left( X-\mu \right)^2 \right]  &amp; s^2 &amp;= \frac{1}{n}\sum_i(x_i - \bar x)^2\\
+&amp; \text{Standard deviation}  &amp; \sigma &amp;= \sqrt{\operatorname{\mathbb{E}}\left[ \left( X-\mu \right)^2 \right]}  &amp; s &amp;= \sqrt{\frac{1}{n}\sum_i(x_i - \bar x)^2} \\
+&amp; \text{Covariance}  &amp; \sigma_{X,Y} &amp;= \operatorname{\mathbb{E}}\left[ (X-\mu_X)(Y-\mu_Y) \right] &amp; s_{X,Y} &amp;= \frac{1}{n}\sum_i \left[ (x_i - \bar x)(y_i - \bar y) \right]
 \end{align}\end{split}\]</div>
 <p>Also recall the definitions of conditional expectation and conditional variance:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
- \operatorname{E}(X \mid Y=y)
+ \operatorname{\mathbb{E}}(X \mid Y=y)
  &amp;= \sum_{x} x P(X=x \mid Y=y) \\
  &amp;\text{or} \int_{-\infty}^{\infty} x f_{X \mid Y}(x, y) \mathrm{~d} x \\
 \operatorname{Var}\left( X \mid Y=y \right)
- &amp;= \operatorname{E}\left[ (X-\mu_{X\mid Y=y})^{2} \mid Y=y \right] \\
+ &amp;= \operatorname{\mathbb{E}}\left[ (X-\mu_{X\mid Y=y})^{2} \mid Y=y \right] \\
 \end{align}\end{split}\]</div>
 <div class="note admonition">
 <p class="admonition-title"> Notations</p>
 <ul class="simple">
-<li><p>The notation <span class="math notranslate nohighlight">\(X \mid Y=y\)</span> means that <span class="math notranslate nohighlight">\(Y=y\)</span> is observed. In this case, the conditional expectation (variance) is a function of the observed value <span class="math notranslate nohighlight">\(y\)</span>, i.e., <span class="math notranslate nohighlight">\(\operatorname{E}(X \mid Y=y) = g(y)\)</span>, which itself is a constant.</p></li>
-<li><p>The notation <span class="math notranslate nohighlight">\(X \mid Y\)</span> means that <span class="math notranslate nohighlight">\(Y\)</span> is a random variable and has not been observed yet. In this case, the conditional expectation (variance) is a function of the random variable <span class="math notranslate nohighlight">\(Y\)</span>, i.e., <span class="math notranslate nohighlight">\(\operatorname{E}(X \mid Y) = g(Y)\)</span>, which itself is a random variable.</p></li>
+<li><p>The notation <span class="math notranslate nohighlight">\(X \mid Y=y\)</span> means that <span class="math notranslate nohighlight">\(Y=y\)</span> is observed. In this case, the conditional expectation (variance) is a function of the observed value <span class="math notranslate nohighlight">\(y\)</span>, i.e., <span class="math notranslate nohighlight">\(\operatorname{\mathbb{E}}(X \mid Y=y) = g(y)\)</span>, which itself is a constant.</p></li>
+<li><p>The notation <span class="math notranslate nohighlight">\(X \mid Y\)</span> means that <span class="math notranslate nohighlight">\(Y\)</span> is a random variable and has not been observed yet. In this case, the conditional expectation (variance) is a function of the random variable <span class="math notranslate nohighlight">\(Y\)</span>, i.e., <span class="math notranslate nohighlight">\(\operatorname{\mathbb{E}}(X \mid Y) = g(Y)\)</span>, which itself is a random variable.</p></li>
 </ul>
 </div>
 </div>
@@ -960,12 +970,12 @@
 <p>In general, we have</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
-\operatorname{E}\left( aX + bY \right) &amp;= a \operatorname{E}\left( X \right) + b \operatorname{E}\left( Y \right) \\
+\operatorname{\mathbb{E}}\left( aX + bY \right) &amp;= a \operatorname{\mathbb{E}}\left( X \right) + b \operatorname{\mathbb{E}}\left( Y \right) \\
 \operatorname{Var}\left( aX + bY \right) &amp;= a^2\operatorname{Var}\left( X \right) + b^2\operatorname{Var}\left( Y \right) + 2ab\operatorname{Cov}\left( X, Y \right) \\
-\operatorname{Var}\left( X \right) &amp;= \operatorname{E}\left( X^2 \right) - \left[ \operatorname{E}\left( X \right) \right]^2\\
-\operatorname{E}\left( X^2 \right) &amp;= \mu^2 + \sigma^2 \\
+\operatorname{Var}\left( X \right) &amp;= \operatorname{\mathbb{E}}\left( X^2 \right) - \left[ \operatorname{\mathbb{E}}\left( X \right) \right]^2\\
+\operatorname{\mathbb{E}}\left( X^2 \right) &amp;= \mu^2 + \sigma^2 \\
 \operatorname{Cov}\left( X, X \right) &amp;= \operatorname{Var}\left( X \right) \\
-\operatorname{Cov}\left( X,Y \right) &amp;= \operatorname{E}\left( XY \right) - \operatorname{E}\left( X \right)\operatorname{E}\left( Y \right) \\
+\operatorname{Cov}\left( X,Y \right) &amp;= \operatorname{\mathbb{E}}\left( XY \right) - \operatorname{\mathbb{E}}\left( X \right)\operatorname{\mathbb{E}}\left( Y \right) \\
 \operatorname{Cov}\left( X, a \right) &amp;= 0 \\
 \operatorname{Cov}\left( X, Y+Z \right) &amp;= \operatorname{Cov}\left( X, Y \right) + \operatorname{Cov}\left( X, Z \right) \\
 \operatorname{Cov}\left( aX, bY \right) &amp;= ab \operatorname{Cov}\left( X, Y \right)
@@ -979,7 +989,7 @@
 <p>If <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span> are independent,</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
-\operatorname{E}\left( XY \right) &amp;= \operatorname{E}\left( X \right)\operatorname{E}\left( Y \right) \\
+\operatorname{\mathbb{E}}\left( XY \right) &amp;= \operatorname{\mathbb{E}}\left( X \right)\operatorname{\mathbb{E}}\left( Y \right) \\
 \operatorname{Cov}\left( X, Y \right) &amp;= 0 \\
 \operatorname{Var}\left( aX + bY \right) &amp;= a^2\operatorname{Var}\left( X \right) + b^2\operatorname{Var}\left( Y \right) \\
 \end{align}\end{split}\]</div>
@@ -989,16 +999,16 @@
 <p>For <span class="math notranslate nohighlight">\(n\)</span> random variables <span class="math notranslate nohighlight">\(X_1, X_2, \ldots, X_n\)</span>, consider a linear combination <span class="math notranslate nohighlight">\(\sum_i^n a_i X_i\)</span>. Though we have no information about the dependence between <span class="math notranslate nohighlight">\(X_i\)</span>’s, the expectation of the sum equals to the sum of the expectations</p>
 <div class="math notranslate nohighlight">
 \[
-\operatorname{E}\left( \sum_i^n a_i X_i \right)
- = \sum_i^n \operatorname{E}\left(a_i X_i \right)
- = \sum_i^n a_i\operatorname{E}\left( X_i \right)
+\operatorname{\mathbb{E}}\left( \sum_i^n a_i X_i \right)
+ = \sum_i^n \operatorname{\mathbb{E}}\left(a_i X_i \right)
+ = \sum_i^n a_i\operatorname{\mathbb{E}}\left( X_i \right)
 \]</div>
 <p>In this sense, expectation is a linear operator.</p>
-<p>In particular, for independently and identically distributed <span class="math notranslate nohighlight">\(X_1, X_2, \ldots, X_n\)</span> with common mean <span class="math notranslate nohighlight">\(\operatorname{E}\left( X_i \right)=\mu\)</span>, the expectation of the average value is</p>
+<p>In particular, for independently and identically distributed <span class="math notranslate nohighlight">\(X_1, X_2, \ldots, X_n\)</span> with common mean <span class="math notranslate nohighlight">\(\operatorname{\mathbb{E}}\left( X_i \right)=\mu\)</span>, the expectation of the average value is</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
-\operatorname{E}\left( \bar X \right) &amp;= \operatorname{E}\left( \frac{1}{n}\sum_{i} X_i \right)\\
-&amp;= \frac{1}{n}\sum_i \operatorname{E}\left( X_i \right)\\
+\operatorname{\mathbb{E}}\left( \bar X \right) &amp;= \operatorname{\mathbb{E}}\left( \frac{1}{n}\sum_{i} X_i \right)\\
+&amp;= \frac{1}{n}\sum_i \operatorname{\mathbb{E}}\left( X_i \right)\\
 &amp;= \mu \\
 \end{align}\end{split}\]</div>
 <p>In general, the variance of a sum of a linear combination is</p>
@@ -1030,140 +1040,145 @@
 </div>
 <div class="section" id="expectation-of-nonnegative-random-variables">
 <h3>Expectation of Nonnegative Random Variables<a class="headerlink" href="#expectation-of-nonnegative-random-variables" title="Permalink to this headline">¶</a></h3>
-<p>For nonnegative random variables, the expectation can be computed from the complementary cumulative distribution function <span class="math notranslate nohighlight">\(1 - F(x) = \operatorname{P}\left( X &gt; x \right)\)</span>.</p>
+<p>For nonnegative random variables, the expectation can be computed from the complementary cumulative distribution function <span class="math notranslate nohighlight">\(1 - F(x) = \operatorname{\mathbb{P}}\left( X &gt; x \right)\)</span>.</p>
 <ul class="simple">
 <li><p>discrete case</p></li>
 </ul>
 <div class="math notranslate nohighlight">
 \[
-\operatorname{E}\left( X \right)=\sum_{n=0}^{\infty} \operatorname{P}\left( X&gt;n \right)
+\operatorname{\mathbb{E}}\left( X \right)=\sum_{n=0}^{\infty} \operatorname{\mathbb{P}}\left( X&gt;n \right)
 \]</div>
 <ul class="simple">
 <li><p>continuous case</p></li>
 </ul>
 <div class="math notranslate nohighlight">
 \[
-\operatorname{E}\left( X \right) = \int_{0}^{\infty} \operatorname{P}(X \geq x) \mathrm{~d} x
+\operatorname{\mathbb{E}}\left( X \right) = \int_{0}^{\infty} \operatorname{\mathbb{P}}(X \geq x) \mathrm{~d} x
 \]</div>
-<p><em><strong>Proof</strong></em></p>
-<p>We prove by changing the <strong>order</strong> of summation/integral.</p>
+<div class="dropdown seealso admonition">
+<p class="admonition-title"> <em>Proof by changing the order of summation/integral</em></p>
 <ul>
 <li><p>discrete case</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
-  \sum_{n=0}^{\infty} \operatorname{P}\left( X&gt;n \right)
-  &amp;= \sum_{n=0}^{\infty} \sum_{k=n+1}^{\infty} \operatorname{P}\left( X=k \right) \\
-  &amp;= \sum_{k=1}^{\infty} \sum_{n=1}^k \operatorname{P}\left( X=k \right) \\
-  &amp;= \sum_{k=1}^{\infty} k \operatorname{P}\left( X=k \right) \\
-  &amp;= \sum_{k=0}^{\infty} k \operatorname{P}\left( X=k \right) \\
-  &amp;= \operatorname{E}\left( X \right)
+  \sum_{n=0}^{\infty} \operatorname{\mathbb{P}}\left( X&gt;n \right)
+  &amp;= \sum_{n=0}^{\infty} \sum_{k=n+1}^{\infty} \operatorname{\mathbb{P}}\left( X=k \right) \\
+  &amp;= \sum_{k=1}^{\infty} \sum_{n=1}^k \operatorname{\mathbb{P}}\left( X=k \right) \\
+  &amp;= \sum_{k=1}^{\infty} k \operatorname{\mathbb{P}}\left( X=k \right) \\
+  &amp;= \sum_{k=0}^{\infty} k \operatorname{\mathbb{P}}\left( X=k \right) \\
+  &amp;= \operatorname{\mathbb{E}}\left( X \right)
   \end{align}\end{split}\]</div>
 </li>
 <li><p>continuous case</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
   \begin{aligned}
-  \int_{0}^{\infty} \operatorname{P}(X \ge x) \mathrm{~d} x
+  \int_{0}^{\infty} \operatorname{\mathbb{P}}(X \ge x) \mathrm{~d} x
   &amp;=\int_{0}^{\infty} \int_{x}^{\infty} f_{X}(y) \mathrm{~d} y \mathrm{~d} x \\
   &amp;=\int_{0}^{\infty} \int_{0}^{y} f_{X}(y) \mathrm{~d} x \mathrm{~d} y \\
   &amp;=\int_{0}^{\infty} f_{X}(y) \int_{0}^{y} 1 \mathrm{~d} x \mathrm{~d} y \\
   &amp;=\int_{0}^{\infty} y f_{X}(y) \mathrm{~d} y \\
-  &amp;=\operatorname{E}\left( X \right)
+  &amp;=\operatorname{\mathbb{E}}\left( X \right)
   \end{aligned}
   \end{split}\]</div>
 <p><span class="math notranslate nohighlight">\(\square\)</span></p>
 </li>
 </ul>
 </div>
+</div>
 <div class="section" id="law-of-total-expectation">
 <h3>Law of Total Expectation<a class="headerlink" href="#law-of-total-expectation" title="Permalink to this headline">¶</a></h3>
 <p>Aka law of iterated expectations, tower rule, smoothing theorem.</p>
-<p>Given the conditional expectation <span class="math notranslate nohighlight">\(\operatorname{E}\left( X \mid Y \right)\)</span>, the law of total expectation states that we can obtained the unconditional expectation <span class="math notranslate nohighlight">\(\operatorname{E}\left( X \right)\)</span> by</p>
+<p>Given the conditional expectation <span class="math notranslate nohighlight">\(\operatorname{\mathbb{E}}\left( X \mid Y \right)\)</span>, the law of total expectation states that we can obtained the unconditional expectation <span class="math notranslate nohighlight">\(\operatorname{\mathbb{E}}\left( X \right)\)</span> by</p>
 <div class="math notranslate nohighlight">
 \[
-\operatorname{E}\left( X \right)=\operatorname{E}\left[ \operatorname{E}(X \mid Y) \right]
+\operatorname{\mathbb{E}}\left( X \right)=\operatorname{\mathbb{E}}\left[ \operatorname{\mathbb{E}}(X \mid Y) \right]
 \]</div>
 <div class="note admonition">
 <p class="admonition-title"> Note</p>
-<p>The inside expectation is taken w.r.t. <span class="math notranslate nohighlight">\(X\)</span> and the outside expectation is taken w.r.t. <span class="math notranslate nohighlight">\(Y\)</span>, since the conditional expectation <span class="math notranslate nohighlight">\(\operatorname{E}\left(X \mid Y \right)\)</span> is a function <span class="math notranslate nohighlight">\(g(Y)\)</span> that depends on the random variables <span class="math notranslate nohighlight">\(Y\)</span>. To emphasize this we can write</p>
+<p>The inside expectation is taken w.r.t. <span class="math notranslate nohighlight">\(X\)</span> and the outside expectation is taken w.r.t. <span class="math notranslate nohighlight">\(Y\)</span>, since the conditional expectation <span class="math notranslate nohighlight">\(\operatorname{\mathbb{E}}\left(X \mid Y \right)\)</span> is a function <span class="math notranslate nohighlight">\(g(Y)\)</span> that depends on the random variables <span class="math notranslate nohighlight">\(Y\)</span>. To emphasize this we can write</p>
 <div class="math notranslate nohighlight">
 \[
-\operatorname{E}_X\left( X \right)=\operatorname{E}_Y\left[ \operatorname{E}_X(X \mid Y) \right]
+\operatorname{\mathbb{E}}_X\left( X \right)=\operatorname{\mathbb{E}}_Y\left[ \operatorname{\mathbb{E}}_X(X \mid Y) \right]
 \]</div>
 </div>
 <p>In general, we can partition the sample space into finite or countably infinite sets <span class="math notranslate nohighlight">\(A_i\)</span>, then</p>
 <div class="math notranslate nohighlight">
 \[
-\operatorname{E}(X)=\sum_{i} \operatorname{E}\left(X \mid A_{i}\right) \operatorname{P}\left(A_{i}\right)
+\operatorname{\mathbb{E}}(X)=\sum_{i} \operatorname{\mathbb{E}}\left(X \mid A_{i}\right) \operatorname{\mathbb{P}}\left(A_{i}\right)
 \]</div>
 <p>For instance, we can compute the expectation as a weighted sum of the expectation of the positive part and the expectation of the negative part on respective probabilities.</p>
 <div class="math notranslate nohighlight">
 \[
-\operatorname{E}(X)=\operatorname{E}\left(X \mid X&gt;0\right) \operatorname{P}\left(X&gt;0\right) + \operatorname{E}\left(X \mid X&lt;0\right) \operatorname{P}\left(X&lt;0\right)
+\operatorname{\mathbb{E}}(X)=\operatorname{\mathbb{E}}\left(X \mid X&gt;0\right) \operatorname{\mathbb{P}}\left(X&gt;0\right) + \operatorname{\mathbb{E}}\left(X \mid X&lt;0\right) \operatorname{\mathbb{P}}\left(X&lt;0\right)
 \]</div>
-<p><em><strong>Proof</strong></em></p>
+<div class="dropdown seealso admonition">
+<p class="admonition-title"> <em>Proof</em></p>
 <p>By definition</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{aligned}
-\operatorname{E}\left( \operatorname{E}\left( X \mid Y \right) \right) &amp;=\operatorname{E}\left[\sum_{x} x \cdot \operatorname{P}(X=x \mid Y)\right] \\
-&amp;=\sum_{y}\left[\sum_{x} x \cdot \operatorname{P}(X=x \mid Y=y)\right] \cdot \operatorname{P}(Y=y) \\
-&amp;=\sum_{y} \sum_{x} x \cdot \operatorname{P}(X=x, Y=y) \\
-&amp;=\sum_{x} x \sum_{y} \operatorname{P}(X=x, Y=y) \\
-&amp;=\sum_{x} x \cdot \operatorname{P}(X=x) \\
-&amp;=\operatorname{E}(X)
+\operatorname{\mathbb{E}}\left( \operatorname{\mathbb{E}}\left( X \mid Y \right) \right) &amp;=\operatorname{\mathbb{E}}\left[\sum_{x} x \cdot \operatorname{\mathbb{P}}(X=x \mid Y)\right] \\
+&amp;=\sum_{y}\left[\sum_{x} x \cdot \operatorname{\mathbb{P}}(X=x \mid Y=y)\right] \cdot \operatorname{\mathbb{P}}(Y=y) \\
+&amp;=\sum_{y} \sum_{x} x \cdot \operatorname{\mathbb{P}}(X=x, Y=y) \\
+&amp;=\sum_{x} x \sum_{y} \operatorname{\mathbb{P}}(X=x, Y=y) \\
+&amp;=\sum_{x} x \cdot \operatorname{\mathbb{P}}(X=x) \\
+&amp;=\operatorname{\mathbb{E}}(X)
 \end{aligned}
 \end{split}\]</div>
 <p><span class="math notranslate nohighlight">\(\square\)</span></p>
+</div>
 </div>
 <div class="section" id="law-of-total-variance">
 <h3>Law of Total Variance<a class="headerlink" href="#law-of-total-variance" title="Permalink to this headline">¶</a></h3>
 <p>Aka law of iterated variances, variance decomposition formula, Eve’s law.</p>
 <div class="math notranslate nohighlight">
 \[
-\operatorname{Var}(X)=\operatorname{E}[\operatorname{Var}(X \mid Y)]+\operatorname{Var}(\operatorname{E}[X \mid Y])
+\operatorname{Var}(X)=\operatorname{\mathbb{E}}[\operatorname{Var}(X \mid Y)]+\operatorname{Var}(\operatorname{\mathbb{E}}[X \mid Y])
 \]</div>
 <div class="note admonition">
 <p class="admonition-title"> Note</p>
-<p>Here both <span class="math notranslate nohighlight">\(\operatorname{Var}\left( X \mid Y \right)\)</span> and <span class="math notranslate nohighlight">\(\operatorname{E}\left( X \mid Y \right)\)</span> are random. The outside expectation and variance are taken w.r.t. the conditioned variable, <span class="math notranslate nohighlight">\(Y\)</span>.</p>
+<p>Here both <span class="math notranslate nohighlight">\(\operatorname{Var}\left( X \mid Y \right)\)</span> and <span class="math notranslate nohighlight">\(\operatorname{\mathbb{E}}\left( X \mid Y \right)\)</span> are random. The outside expectation and variance are taken w.r.t. the conditioned variable, <span class="math notranslate nohighlight">\(Y\)</span>.</p>
 </div>
 <p>The first and the second term can be interpreted as the unexplained and the explained components of the variance of <span class="math notranslate nohighlight">\(X\)</span> by knowing <span class="math notranslate nohighlight">\(Y\)</span>. Imagine that there is a deterministic relation <span class="math notranslate nohighlight">\(X=f(Y)\)</span>, then <span class="math notranslate nohighlight">\(\operatorname{Var}\left( X \mid Y \right) = 0\)</span> so that the first term is 0, and the second term becomes <span class="math notranslate nohighlight">\(\operatorname{Var}\left(  f(Y) \right) = \operatorname{Var}\left( X \right)\)</span>.</p>
-<p><em><strong>Proof</strong></em></p>
-<p>Note that the relation <span class="math notranslate nohighlight">\(\operatorname{Var}\left( X \right) = \operatorname{E}\left( X^2 \right) - \left[ \operatorname{E}\left( X \right) \right]^2\)</span> holds in a similar fashion when conditioning on <span class="math notranslate nohighlight">\(Y\)</span></p>
+<div class="dropdown seealso admonition">
+<p class="admonition-title"> <em>Proof</em></p>
+<p>Note that the relation <span class="math notranslate nohighlight">\(\operatorname{Var}\left( X \right) = \operatorname{\mathbb{E}}\left( X^2 \right) - \left[ \operatorname{\mathbb{E}}\left( X \right) \right]^2\)</span> holds in a similar fashion when conditioning on <span class="math notranslate nohighlight">\(Y\)</span></p>
 <div class="math notranslate nohighlight">
 \[
-\operatorname{Var}\left( X \mid Y \right) = \operatorname{E}\left( X^2 \mid Y \right) - \left[ \operatorname{E}\left( X \mid Y\right) \right]^2
+\operatorname{Var}\left( X \mid Y \right) = \operatorname{\mathbb{E}}\left( X^2 \mid Y \right) - \left[ \operatorname{\mathbb{E}}\left( X \mid Y\right) \right]^2
 \]</div>
-<p>By the law of total expectation, we can compute <span class="math notranslate nohighlight">\(\operatorname{E}\left( X^2 \right)\)</span> by</p>
+<p>By the law of total expectation, we can compute <span class="math notranslate nohighlight">\(\operatorname{\mathbb{E}}\left( X^2 \right)\)</span> by</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{align}
-\operatorname{E}\left( X^2 \right)
-&amp;= \operatorname{E}\left[ \operatorname{E}\left( X^2 \mid Y \right) \right] \\
-&amp;=  \operatorname{E}\left\{ \operatorname{Var}\left( X \mid Y \right) + \left[ \operatorname{E}\left( X \mid Y\right) \right]^2  \right\}
+\operatorname{\mathbb{E}}\left( X^2 \right)
+&amp;= \operatorname{\mathbb{E}}\left[ \operatorname{\mathbb{E}}\left( X^2 \mid Y \right) \right] \\
+&amp;=  \operatorname{\mathbb{E}}\left\{ \operatorname{Var}\left( X \mid Y \right) + \left[ \operatorname{\mathbb{E}}\left( X \mid Y\right) \right]^2  \right\}
 \end{align}
 \end{split}\]</div>
-<p>and compute <span class="math notranslate nohighlight">\(\operatorname{E}\left( X \right)\)</span> by <span class="math notranslate nohighlight">\(\operatorname{E}\left[ \operatorname{E}\left( X\mid Y \right) \right]\)</span>. Hence,</p>
+<p>and compute <span class="math notranslate nohighlight">\(\operatorname{\mathbb{E}}\left( X \right)\)</span> by <span class="math notranslate nohighlight">\(\operatorname{\mathbb{E}}\left[ \operatorname{\mathbb{E}}\left( X\mid Y \right) \right]\)</span>. Hence,</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
-\operatorname{Var}\left( X \right) &amp;= \operatorname{E}\left( X^2 \right) - \left[ \operatorname{E}\left( X \right) \right]^2\\
-&amp;=  \operatorname{E}\left\{ \operatorname{Var}\left( X \mid Y \right) + \left[ \operatorname{E}\left( X \mid Y\right) \right]^2  \right\} - \left\{ \operatorname{E}\left[ \operatorname{E}\left( X\mid Y \right) \right] \right\}^2\\
-&amp;= \operatorname{E}[\operatorname{Var}(X \mid Y)]+\operatorname{Var}(\operatorname{E}[X \mid Y])
+\operatorname{Var}\left( X \right) &amp;= \operatorname{\mathbb{E}}\left( X^2 \right) - \left[ \operatorname{\mathbb{E}}\left( X \right) \right]^2\\
+&amp;=  \operatorname{\mathbb{E}}\left\{ \operatorname{Var}\left( X \mid Y \right) + \left[ \operatorname{\mathbb{E}}\left( X \mid Y\right) \right]^2  \right\} - \left\{ \operatorname{\mathbb{E}}\left[ \operatorname{\mathbb{E}}\left( X\mid Y \right) \right] \right\}^2\\
+&amp;= \operatorname{\mathbb{E}}[\operatorname{Var}(X \mid Y)]+\operatorname{Var}(\operatorname{\mathbb{E}}[X \mid Y])
 \end{align}\end{split}\]</div>
 <p><span class="math notranslate nohighlight">\(\square\)</span></p>
+</div>
 <div class="warning admonition">
 <p class="admonition-title"> Warning</p>
 <p>From above we see that the identity that holds for expectation</p>
 <div class="math notranslate nohighlight">
 \[
-\operatorname{E}(X)=\sum_{i} \operatorname{E}\left(X \mid A_{i}\right) \operatorname{P}\left(A_{i}\right)
+\operatorname{\mathbb{E}}(X)=\sum_{i} \operatorname{\mathbb{E}}\left(X \mid A_{i}\right) \operatorname{\mathbb{P}}\left(A_{i}\right)
 \]</div>
 <p>does <strong>not</strong> hold for variance</p>
 <div class="math notranslate nohighlight">
 \[
-\operatorname{Var}(X) \ne \sum_{i} \operatorname{Var}\left(X \mid A_{i}\right) \operatorname{P}\left(A_{i}\right)
+\operatorname{Var}(X) \ne \sum_{i} \operatorname{Var}\left(X \mid A_{i}\right) \operatorname{\mathbb{P}}\left(A_{i}\right)
 \]</div>
-<p>unless <span class="math notranslate nohighlight">\(\operatorname{Var}(\operatorname{E}[X \mid A]) = 0\)</span>, which implies that <span class="math notranslate nohighlight">\(\operatorname{E}\left( X \mid A \right) = \text{constant}\)</span>, i.e., <span class="math notranslate nohighlight">\(X\)</span> and the partitioning <span class="math notranslate nohighlight">\(A_i\)</span> are independent.</p>
+<p>unless <span class="math notranslate nohighlight">\(\operatorname{Var}(\operatorname{\mathbb{E}}[X \mid A]) = 0\)</span>, which implies that <span class="math notranslate nohighlight">\(\operatorname{\mathbb{E}}\left( X \mid A \right) = \text{constant}\)</span>, i.e., <span class="math notranslate nohighlight">\(X\)</span> and the partitioning <span class="math notranslate nohighlight">\(A_i\)</span> are independent.</p>
 </div>
 </div>
 </div>
@@ -1172,61 +1187,90 @@
 <p>There are two important inequalities that connect probability, expectation and variance.</p>
 <div class="section" id="markov-s-inequality">
 <h3>Markov’s Inequality<a class="headerlink" href="#markov-s-inequality" title="Permalink to this headline">¶</a></h3>
-<p>Markov’s inequality upper bounds right-tail probability <span class="math notranslate nohighlight">\(\operatorname{P}\left( X\ge a \right)\)</span> by <span class="math notranslate nohighlight">\(\frac{1}{a} \operatorname{E}\left( X \right)\)</span>.</p>
-<p>For a nonnegative random variable <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(a&gt;0\)</span>,</p>
+<p>Markov’s inequality upper bounds right-tail probability <span class="math notranslate nohighlight">\(\operatorname{\mathbb{P}}\left( X\ge \lambda \right)\)</span> by <span class="math notranslate nohighlight">\(\frac{\mu}{\lambda}\)</span>. For a <strong>nonnegative</strong> random variable <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(\lambda&gt;0\)</span>,</p>
 <div class="math notranslate nohighlight">
 \[
-\operatorname{P}(X \geq a) \leq \frac{\operatorname{E}(X)}{a}
+\operatorname{\mathbb{P}}(X \geq \lambda) \leq \frac{\mu}{\lambda}
 \]</div>
-<p>A simple way to memorize this is: <span class="math notranslate nohighlight">\(\operatorname{P}\left( \frac{X}{a} \ge 1 \right ) \le \operatorname{E}\left( \frac{X}{a}  \right)\)</span></p>
-<p><em><strong>Proof</strong></em></p>
-<ul>
-<li><p>By the law of total expectation, and since <span class="math notranslate nohighlight">\(\operatorname{E}(X \mid X&lt;a)\ge0\)</span> and <span class="math notranslate nohighlight">\(\operatorname{E}(X \mid X \geq a)\ge a\)</span>, we have</p>
+<p>A more useful form is to substitute <span class="math notranslate nohighlight">\(\lambda \leftarrow \lambda \mu\)</span>, then</p>
 <div class="math notranslate nohighlight">
-\[\begin{split}\begin{align}
-    \operatorname{E}(X) &amp; =  \operatorname{E}(X \mid X&lt;a) \cdot \operatorname{P}(X&lt;a) +  \operatorname{E}(X \mid X \geq a) \cdot \operatorname{P}(X \geq a)\\
-    &amp; \ge 0 \cdot \operatorname{P}(X&lt;a) +\operatorname{E}(X \mid X \geq a) \cdot \operatorname{P}(X \geq a) \\
-    &amp; \geq a \cdot \operatorname{P}(X \geq a)
-    \end{align}\end{split}\]</div>
+\[
+\operatorname{\mathbb{P}}(X \geq \lambda \mu) \leq \frac{1}{\lambda}
+\]</div>
+<p>That is, the probability of exceeding expectation by more than a factor  of <span class="math notranslate nohighlight">\(\lambda\)</span> is at most <span class="math notranslate nohighlight">\(\frac{1}{\lambda}\)</span>.</p>
+<div class="dropdown seealso admonition">
+<p class="admonition-title"> <em>Proof</em></p>
+<ul>
+<li><p>By the law of total expectation, and since <span class="math notranslate nohighlight">\(\operatorname{\mathbb{E}}(X \mid X&lt;\lambda)\ge 0\)</span> and <span class="math notranslate nohighlight">\(\operatorname{\mathbb{E}}(X \mid X \geq \lambda)\ge \lambda\)</span>, we have</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+    \operatorname{\mathbb{E}}(X) &amp; =  \operatorname{\mathbb{E}}(X \mid X&lt;\lambda) \cdot \operatorname{\mathbb{P}}(X&lt;\lambda) +  \operatorname{\mathbb{E}}(X \mid X \geq \lambda) \cdot \operatorname{\mathbb{P}}(X \geq \lambda)\\
+    &amp; \ge 0 \cdot \operatorname{\mathbb{P}}(X&lt;\lambda) +\operatorname{\mathbb{E}}(X \mid X \geq \lambda) \cdot \operatorname{\mathbb{P}}(X \geq \lambda) \\
+    &amp; \geq \lambda \cdot \operatorname{\mathbb{P}}(X \geq \lambda)
+    \end{aligned}\end{split}\]</div>
 <p><span class="math notranslate nohighlight">\(\square\)</span></p>
 </li>
 <li><p>By the definition of expectation,</p>
 <div class="math notranslate nohighlight">
-\[\begin{split}\begin{align}
-    \operatorname{E}(X) &amp;= \int_{0}^{a} x f(x) \mathrm{~d} x+\int_{a}^{\infty} x f(x) \mathrm{~d} x \\
-    &amp; \geq \int_{a}^{\infty} x f(x) \mathrm{~d} x \\
-    &amp; \geq \int_{a}^{\infty} a f(x) \mathrm{~d} x \\
-    &amp; =a \int_{a}^{\infty} f(x) \mathrm{~d} x \\
-    &amp;=a \operatorname{P}(X \geq a)
-    \end{align}\end{split}\]</div>
+\[\begin{split}\begin{aligned}
+    \operatorname{\mathbb{E}}(X) &amp;= \int_{0}^{\lambda} x f(x) \mathrm{~d} x+\int_{\lambda}^{\infty} x f(x) \mathrm{~d} x \\
+    &amp; \geq \int_{\lambda}^{\infty} x f(x) \mathrm{~d} x \\
+    &amp; \geq \int_{\lambda}^{\infty} \lambda f(x) \mathrm{~d} x \\
+    &amp; =\lambda \int_{\lambda}^{\infty} f(x) \mathrm{~d} x \\
+    &amp;=\lambda \operatorname{\mathbb{P}}(X \geq \lambda)
+    \end{aligned}\end{split}\]</div>
 <p><span class="math notranslate nohighlight">\(\square\)</span></p>
 </li>
 </ul>
 </div>
+</div>
 <div class="section" id="chebyshev-s-inequality">
 <h3>Chebyshev’s Inequality<a class="headerlink" href="#chebyshev-s-inequality" title="Permalink to this headline">¶</a></h3>
-<p>Chebyshev’s inequality upper bounds the probability that a random variable is outside the interval <span class="math notranslate nohighlight">\(\left( \mu - k \sigma, \mu + k \sigma \right)\)</span> by <span class="math notranslate nohighlight">\(\frac{1}{k^2}\)</span>.</p>
-<p>For any <span class="math notranslate nohighlight">\(k&gt;0\)</span>,</p>
+<p>The probability of deviating from <span class="math notranslate nohighlight">\(\mu\)</span> by more than <span class="math notranslate nohighlight">\(\lambda \sigma\)</span> is at most <span class="math notranslate nohighlight">\(\frac{1}{\lambda^2}\)</span>. For any <span class="math notranslate nohighlight">\(\lambda&gt;0\)</span>,</p>
 <div class="math notranslate nohighlight">
 \[
-\operatorname{P}(|X-\mu| \geq k \sigma) \leq \frac{1}{k^{2}}
+\operatorname{\mathbb{P}}(|X-\mu| \geq \lambda \sigma) \leq \frac{1}{\lambda^{2}}
 \]</div>
-<p>For instance, taking <span class="math notranslate nohighlight">\(k=\sqrt{2}\)</span> gives</p>
+<p>For instance, taking <span class="math notranslate nohighlight">\(\lambda=\sqrt{2}\)</span> gives</p>
 <div class="math notranslate nohighlight">
 \[
-\operatorname{P}\left( \mu - \sqrt{2}\sigma \le X \le \mu - \sqrt{2}\sigma \right) &gt; \frac{1}{2}
+\operatorname{\mathbb{P}}\left( \mu - \sqrt{2}\sigma \le X \le \mu - \sqrt{2}\sigma \right) &gt; \frac{1}{2}
 \]</div>
-<p><em><strong>Proof</strong></em></p>
-<p>By the law of total expectation,</p>
+<p>Substituting <span class="math notranslate nohighlight">\(\lambda \leftarrow \frac{\lambda}{\sigma}\)</span> gives</p>
+<div class="math notranslate nohighlight">
+\[
+\operatorname{\mathbb{P}}(|X-\mu| \geq \lambda ) \leq \frac{\sigma ^2}{\lambda^{2}}
+\]</div>
+<p>In general,</p>
+<div class="math notranslate nohighlight">
+\[
+\operatorname{\mathbb{P}}(|\mathrm{X}-\mu|&gt;\lambda) \leq \frac{\mathbb{E}\left[(X-\mu)^{p}\right]}{\lambda^{p}}
+\]</div>
+<div class="dropdown seealso admonition">
+<p class="admonition-title"> <em>Proof by the law of total expectation</em></p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
-\sigma^{2} &amp;=\operatorname{E}\left[(X-\mu)^{2}\right] \\
-&amp;=  \operatorname{E}\left[(X-\mu)^{2} \mid k \sigma \leq| X-\mu \mid\right] \cdot \operatorname{P}\left( k \sigma \leq|X-\mu| \right)\\
-&amp; \, +  \operatorname{E}\left[(X-\mu)^{2} \mid k \sigma&gt;| X-\mu \mid\right] \cdot \operatorname{P}\left( k \sigma&gt;|X-\mu| \right) \\
-&amp; \geq(k \sigma)^{2} \operatorname{P}\left( k \sigma \leq|X-\mu| \right)+0 \cdot \operatorname{P}\left( k \sigma&gt;|X-\mu| \right) \\
-&amp;=k^{2} \sigma^{2} \operatorname{P}[k \sigma \leq|X-\mu|]
+\sigma^{2} &amp;=\operatorname{\mathbb{E}}\left[(X-\mu)^{2}\right] \\
+&amp;=  \operatorname{\mathbb{E}}\left[(X-\mu)^{2} \mid \lambda \sigma \leq| X-\mu \mid\right] \cdot \operatorname{\mathbb{P}}\left( \lambda \sigma \leq|X-\mu| \right)\\
+&amp; \, +  \operatorname{\mathbb{E}}\left[(X-\mu)^{2} \mid \lambda \sigma&gt;| X-\mu \mid\right] \cdot \operatorname{\mathbb{P}}\left( \lambda \sigma&gt;|X-\mu| \right) \\
+&amp; \geq(\lambda \sigma)^{2} \operatorname{\mathbb{P}}\left( \lambda \sigma \leq|X-\mu| \right)+0 \cdot \operatorname{\mathbb{P}}\left( \lambda \sigma&gt;|X-\mu| \right) \\
+&amp;=\lambda^{2} \sigma^{2} \operatorname{\mathbb{P}}[\lambda \sigma \leq|X-\mu|]
 \end{align}\end{split}\]</div>
 <p><span class="math notranslate nohighlight">\(\square\)</span></p>
+</div>
+</div>
+<div class="section" id="chernoff-bound">
+<h3>Chernoff Bound<a class="headerlink" href="#chernoff-bound" title="Permalink to this headline">¶</a></h3>
+<p>Suppose <span class="math notranslate nohighlight">\(X_{1}, \cdots, X_{n}\)</span> are independent r.v. with <span class="math notranslate nohighlight">\(X_{i} \in[0,1]\)</span>. Let <span class="math notranslate nohighlight">\(S=\sum_{i} X_{i}\)</span> and <span class="math notranslate nohighlight">\(\mu=\mathbb{E}[X]\)</span>. Then for <span class="math notranslate nohighlight">\(\lambda \in (0,1)\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[
+\operatorname{\mathbb{P}}(S&gt;(1+\lambda) \mu)&lt;e^{-\frac{\lambda^{2} \mu}{3}} \qquad \text{(upper tail)}
+\]</div>
+<p>and,</p>
+<div class="math notranslate nohighlight">
+\[
+\operatorname{Pr}(S&lt;(1-\lambda) \mu)&lt;e^{-\frac{\lambda^{2} \mu}{2}} \qquad \text{(lower tail)}
+\]</div>
 </div>
 <div class="section" id="cauchy-schewarz-inequality-in-probability">
 <h3>Cauchy-Schewarz Inequality in Probability<a class="headerlink" href="#cauchy-schewarz-inequality-in-probability" title="Permalink to this headline">¶</a></h3>
@@ -1236,7 +1280,8 @@
 \left[ \operatorname{Cov}\left( X,Y \right) \right]^2 \le \operatorname{Var}\left( X \right) \operatorname{Var}\left( Y \right)
 \]</div>
 <p>The equality holds iff there is a deterministic linear relation between <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span>, <span class="math notranslate nohighlight">\(Y = aX + b\)</span>.</p>
-<p><em><strong>Proof</strong></em></p>
+<div class="dropdown seealso admonition">
+<p class="admonition-title"> <em>Proof</em></p>
 <p>Recall the Cauchy-Schewarz inequality for vectors <span class="math notranslate nohighlight">\(\boldsymbol{u}, \boldsymbol{v}\)</span> of an innver product space,</p>
 <div class="math notranslate nohighlight">
 \[
@@ -1245,23 +1290,24 @@
 <p>Define an inner product on the set of random variables using the expectation of their product</p>
 <div class="math notranslate nohighlight">
 \[
-\langle X, Y\rangle:=\mathrm{E}(X Y)
+\langle X, Y\rangle:=\operatorname{\mathbb{E}}(X Y)
 \]</div>
 <p>Then the Cauchy-Schewrz inequality becomes</p>
 <div class="math notranslate nohighlight">
 \[
-|\mathrm{E}(X Y)|^{2} \leq \mathrm{E}\left(X^{2}\right) \mathrm{E}\left(Y^{2}\right)
+|\operatorname{\mathbb{E}}(X Y)|^{2} \leq \operatorname{\mathbb{E}}\left(X^{2}\right) \operatorname{\mathbb{E}}\left(Y^{2}\right)
 \]</div>
 <p>Substituting <span class="math notranslate nohighlight">\(X\)</span> by <span class="math notranslate nohighlight">\(X-\mu_X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span> by <span class="math notranslate nohighlight">\(Y-\mu_Y\)</span> gives</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{aligned}
-|\operatorname{Cov}(X, Y)|^{2} &amp;=\left\vert \mathrm{E}\left[ (X-\mu_X)(Y-\mu_Y) \right] \right\vert^{2} \\
-&amp;\le \mathrm{E}\left[ (X-\mu_X)^{2} \right] \mathrm{E}\left[ (Y-\mu_Y)^2\right]\\
+|\operatorname{Cov}(X, Y)|^{2} &amp;=\left\vert \operatorname{\mathbb{E}}\left[ (X-\mu_X)(Y-\mu_Y) \right] \right\vert^{2} \\
+&amp;\le \operatorname{\mathbb{E}}\left[ (X-\mu_X)^{2} \right] \operatorname{\mathbb{E}}\left[ (Y-\mu_Y)^2\right]\\
 &amp;=\operatorname{Var}(X) \operatorname{Var}(Y)
 \end{aligned}
 \end{split}\]</div>
 <p><span class="math notranslate nohighlight">\(\square\)</span></p>
+</div>
 </div>
 </div>
 <div class="section" id="exercise">
@@ -1281,9 +1327,9 @@
 <p>It’s easy to see</p>
 <div class="math notranslate nohighlight">
 \[
-\operatorname{P}\left( A_T \right) = \frac{1}{2}, \operatorname{P}\left( A_{HT} \right) = \operatorname{P}\left( A_{HH} \right) = \frac{1}{4}
+\operatorname{\mathbb{P}}\left( A_T \right) = \frac{1}{2}, \operatorname{\mathbb{P}}\left( A_{HT} \right) = \operatorname{\mathbb{P}}\left( A_{HH} \right) = \frac{1}{4}
 \]</div>
-<p>But what are <span class="math notranslate nohighlight">\(\operatorname{E}\left( X \mid A_T \right), \operatorname{E}\left( X \mid A_{HT} \right), \operatorname{E}\left( X \mid A_{HH} \right)\)</span>?</p>
+<p>But what are <span class="math notranslate nohighlight">\(\operatorname{\mathbb{E}}\left( X \mid A_T \right), \operatorname{\mathbb{E}}\left( X \mid A_{HT} \right), \operatorname{\mathbb{E}}\left( X \mid A_{HH} \right)\)</span>?</p>
 <ul class="simple">
 <li><p>If the first flip is T, then we start over, and waste 1 flip</p></li>
 <li><p>If the first two flips are HT, then we start over, and waste 2 flips</p></li>
@@ -1291,65 +1337,65 @@
 </ul>
 <p>As a result, we have</p>
 <ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(\operatorname{E}\left( X \mid A_T \right) = \operatorname{E}\left( X \right) + 1\)</span></p></li>
-<li><p><span class="math notranslate nohighlight">\(\operatorname{E}\left( X \mid A_{HT} \right) = \operatorname{E}\left( X \right)+ 2\)</span></p></li>
-<li><p><span class="math notranslate nohighlight">\(\operatorname{E}\left( X \mid A_{HH} \right) = 2\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\operatorname{\mathbb{E}}\left( X \mid A_T \right) = \operatorname{\mathbb{E}}\left( X \right) + 1\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\operatorname{\mathbb{E}}\left( X \mid A_{HT} \right) = \operatorname{\mathbb{E}}\left( X \right)+ 2\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\operatorname{\mathbb{E}}\left( X \mid A_{HH} \right) = 2\)</span></p></li>
 </ul>
 <p>Then by the law of total expectation</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{align}
-\operatorname{E}\left( X \right)
-&amp;= \operatorname{E}\left( X \mid A_T \right) \operatorname{P}\left( A_T \right)
-+  \operatorname{E}\left( X \mid A_{HT} \right) \operatorname{P}\left( A_{HT} \right)
-+  \operatorname{E}\left( X \mid A_{HH} \right) \operatorname{P}\left( A_{HH} \right) \\
-&amp;= \left[ \operatorname{E}\left( X \right)
- + 1 \right]\cdot \frac{1}{2} + \left[ \operatorname{E}\left( X \right) + 2\right] \cdot \frac{1}{4}
+\operatorname{\mathbb{E}}\left( X \right)
+&amp;= \operatorname{\mathbb{E}}\left( X \mid A_T \right) \operatorname{\mathbb{P}}\left( A_T \right)
++  \operatorname{\mathbb{E}}\left( X \mid A_{HT} \right) \operatorname{\mathbb{P}}\left( A_{HT} \right)
++  \operatorname{\mathbb{E}}\left( X \mid A_{HH} \right) \operatorname{\mathbb{P}}\left( A_{HH} \right) \\
+&amp;= \left[ \operatorname{\mathbb{E}}\left( X \right)
+ + 1 \right]\cdot \frac{1}{2} + \left[ \operatorname{\mathbb{E}}\left( X \right) + 2\right] \cdot \frac{1}{4}
  + 2 \cdot \frac{1}{4} \\
 \end{align}
 \end{split}\]</div>
-<p>Solving the equation gives <span class="math notranslate nohighlight">\(\operatorname{E}\left( X \right) = 6\)</span></p>
+<p>Solving the equation gives <span class="math notranslate nohighlight">\(\operatorname{\mathbb{E}}\left( X \right) = 6\)</span></p>
 <div class="note admonition">
 <p class="admonition-title"> Note</p>
-<p>One may also partition the sample space to two parts <span class="math notranslate nohighlight">\({A_H}\)</span> and <span class="math notranslate nohighlight">\(A_T\)</span>, but to compute <span class="math notranslate nohighlight">\(\operatorname{E}\left( X \mid A_H \right)\)</span>, it requires to partition <span class="math notranslate nohighlight">\(A_H\)</span> into <span class="math notranslate nohighlight">\(A_{HT}\)</span> and <span class="math notranslate nohighlight">\(A_{HH}\)</span>, and then use the law of total expectation again, which is complicated and easy to make mistakes. So it would be better to partition <span class="math notranslate nohighlight">\(A\)</span> to three parts at the beginning.</p>
+<p>One may also partition the sample space to two parts <span class="math notranslate nohighlight">\({A_H}\)</span> and <span class="math notranslate nohighlight">\(A_T\)</span>, but to compute <span class="math notranslate nohighlight">\(\operatorname{\mathbb{E}}\left( X \mid A_H \right)\)</span>, it requires to partition <span class="math notranslate nohighlight">\(A_H\)</span> into <span class="math notranslate nohighlight">\(A_{HT}\)</span> and <span class="math notranslate nohighlight">\(A_{HH}\)</span>, and then use the law of total expectation again, which is complicated and easy to make mistakes. So it would be better to partition <span class="math notranslate nohighlight">\(A\)</span> to three parts at the beginning.</p>
 </div>
 <p>In general, what is the expected number of coin flips to get <span class="math notranslate nohighlight">\(n\)</span> heads in a row? In fact, we just need to continue to partition <span class="math notranslate nohighlight">\(A_{HH}\)</span> into <span class="math notranslate nohighlight">\(A_{HHT}\)</span> and <span class="math notranslate nohighlight">\(A_{HHH}\)</span>, and so on. By the law of total expectation the equation becomes</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
-\operatorname{E}\left( X_n \right)
-= \left[ \operatorname{E}\left( X_n \right) + 1 \right]\cdot \frac{1}{2}
-+ \left[ \operatorname{E}\left( X_n \right) + 2\right] \cdot \frac{1}{4}
+\operatorname{\mathbb{E}}\left( X_n \right)
+= \left[ \operatorname{\mathbb{E}}\left( X_n \right) + 1 \right]\cdot \frac{1}{2}
++ \left[ \operatorname{\mathbb{E}}\left( X_n \right) + 2\right] \cdot \frac{1}{4}
  + \ldots
- + \left[ \operatorname{E}\left( X_n \right) + n\right] \cdot \frac{1}{2^n}
+ + \left[ \operatorname{\mathbb{E}}\left( X_n \right) + n\right] \cdot \frac{1}{2^n}
  + n \cdot \frac{1}{2^n} \\
 \end{split}\]</div>
 <p>The solution is</p>
 <div class="math notranslate nohighlight">
 \[
-\operatorname{E}\left( X_n \right) = 2 \left( 2^n-1 \right)
+\operatorname{\mathbb{E}}\left( X_n \right) = 2 \left( 2^n-1 \right)
 \]</div>
 </div>
 <div class="dropdown seealso admonition">
 <p class="admonition-title"> <em>Solution 2: Recurrence Relation</em></p>
-<p>One can also derive the solution from a recurrence relation between <span class="math notranslate nohighlight">\(\operatorname{E}\left( X_n \right)\)</span> and <span class="math notranslate nohighlight">\(\operatorname{E}\left( X_{n-1} \right)\)</span>.</p>
+<p>One can also derive the solution from a recurrence relation between <span class="math notranslate nohighlight">\(\operatorname{\mathbb{E}}\left( X_n \right)\)</span> and <span class="math notranslate nohighlight">\(\operatorname{\mathbb{E}}\left( X_{n-1} \right)\)</span>.</p>
 <p>Let <span class="math notranslate nohighlight">\(Y_{n} = X_n - X_{n-1}\)</span> be the number of additional flips required to get <span class="math notranslate nohighlight">\(n\)</span> heads in a row, given that we already got <span class="math notranslate nohighlight">\(n-1\)</span> heads in a row. Then by the law of total expectation,</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{align}
-\operatorname{E}\left( Y_{n} \right)
-&amp;= \operatorname{E}\left( Y_n \mid \text{the $n$-th flip is H} \right) \operatorname{P}\left( \text{the $n$-th flip is H}  \right) \\
-  &amp;\ + \operatorname{E}\left( Y_n \mid \text{the $n$-th flip is T} \right) \operatorname{P}\left( \text{the $n$-th flip is T}  \right) \\
-&amp;= 1 \cdot \frac{1}{2} + \left[ 1 + \operatorname{E}\left( X_n \right) \right] \cdot \frac{1}{2}
+\operatorname{\mathbb{E}}\left( Y_{n} \right)
+&amp;= \operatorname{\mathbb{E}}\left( Y_n \mid \text{the $n$-th flip is H} \right) \operatorname{\mathbb{P}}\left( \text{the $n$-th flip is H}  \right) \\
+  &amp;\ + \operatorname{\mathbb{E}}\left( Y_n \mid \text{the $n$-th flip is T} \right) \operatorname{\mathbb{P}}\left( \text{the $n$-th flip is T}  \right) \\
+&amp;= 1 \cdot \frac{1}{2} + \left[ 1 + \operatorname{\mathbb{E}}\left( X_n \right) \right] \cdot \frac{1}{2}
  \end{align}
 \end{split}\]</div>
 <p>Hence, we have the recurrence relation</p>
 <div class="math notranslate nohighlight">
 \[
-\operatorname{E}\left( X_n \right) = 2 \operatorname{E}\left( X_{n-1} \right) + 2
+\operatorname{\mathbb{E}}\left( X_n \right) = 2 \operatorname{\mathbb{E}}\left( X_{n-1} \right) + 2
 \]</div>
-<p>Let <span class="math notranslate nohighlight">\(f(n) = \operatorname{E}\left( X_n\right) + 2\)</span> then we have <span class="math notranslate nohighlight">\(f(n) = 2f(n-1)\)</span>. Since <span class="math notranslate nohighlight">\(f(1) = \operatorname{E}\left( X_1 \right)+2 = 4\)</span>, we have <span class="math notranslate nohighlight">\(f(n) = 2^{n+1}\)</span>. Therefore,</p>
+<p>Let <span class="math notranslate nohighlight">\(f(n) = \operatorname{\mathbb{E}}\left( X_n\right) + 2\)</span> then we have <span class="math notranslate nohighlight">\(f(n) = 2f(n-1)\)</span>. Since <span class="math notranslate nohighlight">\(f(1) = \operatorname{\mathbb{E}}\left( X_1 \right)+2 = 4\)</span>, we have <span class="math notranslate nohighlight">\(f(n) = 2^{n+1}\)</span>. Therefore,</p>
 <div class="math notranslate nohighlight">
-\[\operatorname{E}\left( X_n \right) = 2^{n+1}-2\]</div>
+\[\operatorname{\mathbb{E}}\left( X_n \right) = 2^{n+1}-2\]</div>
 </div>
 </div>
 <div class="section" id="coin-flips-count-rows">
@@ -1365,8 +1411,8 @@ X = \sum_{i=1}^{n-k+1} X_i
 <p>and hence</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
-\operatorname{E}\left( X \right) &amp;= \operatorname{E}\left( \sum_{i=1}^{n-k+1} X_i \right)\\
-&amp;= \sum_{i=1}^{n-k+1} \operatorname{E}\left( X_i \right)\\
+\operatorname{\mathbb{E}}\left( X \right) &amp;= \operatorname{\mathbb{E}}\left( \sum_{i=1}^{n-k+1} X_i \right)\\
+&amp;= \sum_{i=1}^{n-k+1} \operatorname{\mathbb{E}}\left( X_i \right)\\
 &amp;= \frac{n-k+1}{2^k} \\
 \end{align}\end{split}\]</div>
 <p>The first second last line holds even if <span class="math notranslate nohighlight">\(X_i\)</span>’s are not independent.</p>
@@ -1377,13 +1423,13 @@ X = \sum_{i=1}^{n-k+1} X_i
 <div class="dropdown seealso admonition">
 <p class="admonition-title"> <em>Solution</em></p>
 <p>A coin with a probability <span class="math notranslate nohighlight">\(p\)</span> to get a head is flipped <span class="math notranslate nohighlight">\(n\)</span> times. A “run” is a maximal sequence of consecutive flips that are all the same. For instance, HTHHHTTH has five runs and <span class="math notranslate nohighlight">\(n=8\)</span>. What is the expected number of runs?</p>
-<p>Let <span class="math notranslate nohighlight">\(X_i\)</span> be the indicator for the event that a run starts at the <span class="math notranslate nohighlight">\(i-th\)</span> toss. Let <span class="math notranslate nohighlight">\(X = \sum_i X_i\)</span> be the total number of runs. It is easy to see <span class="math notranslate nohighlight">\(\operatorname{E}\left( X_1 \right) = 1\)</span>. For <span class="math notranslate nohighlight">\(i&gt;1\)</span>,</p>
+<p>Let <span class="math notranslate nohighlight">\(X_i\)</span> be the indicator for the event that a run starts at the <span class="math notranslate nohighlight">\(i-th\)</span> toss. Let <span class="math notranslate nohighlight">\(X = \sum_i X_i\)</span> be the total number of runs. It is easy to see <span class="math notranslate nohighlight">\(\operatorname{\mathbb{E}}\left( X_1 \right) = 1\)</span>. For <span class="math notranslate nohighlight">\(i&gt;1\)</span>,</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{aligned}
-\mathrm{E}\left(X_{i}\right)=&amp; \operatorname{P}\left(X_{i}=1\right) \\
-=&amp; \operatorname{P}\left(i \text { -th toss is } \mathrm{H} \mid(i-1) \text { -th toss is } \mathrm{T}\right) \times \operatorname{P}\left((i-1) \text { -th toss is } \mathrm{T}\right) \\
-&amp;+\operatorname{P}\left(i \text { -th toss is } \mathrm{T} \mid(i-1)\text {-th} \text { toss is } \mathrm{H}\right) \times \operatorname{P}\left((i-1)\text {-th } \text { toss is } \mathrm{H}\right) \\
+\operatorname{\mathbb{E}}\left(X_{i}\right)=&amp; \operatorname{\mathbb{P}}\left(X_{i}=1\right) \\
+=&amp; \operatorname{\mathbb{P}}\left(i \text { -th toss is } \mathrm{H} \mid(i-1) \text { -th toss is } \mathrm{T}\right) \times \operatorname{\mathbb{P}}\left((i-1) \text { -th toss is } \mathrm{T}\right) \\
+&amp;+\operatorname{\mathbb{P}}\left(i \text { -th toss is } \mathrm{T} \mid(i-1)\text {-th} \text { toss is } \mathrm{H}\right) \times \operatorname{\mathbb{P}}\left((i-1)\text {-th } \text { toss is } \mathrm{H}\right) \\
 =&amp; p(1-p)+(1-p) p \\
 =&amp; 2 p(1-p)
 \end{aligned}
@@ -1392,9 +1438,9 @@ X = \sum_{i=1}^{n-k+1} X_i
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{aligned}
-\mathrm{E}(X) &amp;=\mathrm{E}\left(X_{1}+X_{2}+\cdots+X_{n}\right) \\
-&amp;=\mathrm{E}\left(X_{1}\right)+\mathrm{E}\left(X_{2}\right)+\cdots+\mathrm{E}\left(X_{n}\right) \\
-&amp;=\mathrm{E}\left(X_{1}\right)+\left[\mathrm{E}\left(X_{2}\right)+\cdots+\mathrm{E}\left(X_{n}\right)\right] \\
+\operatorname{\mathbb{E}}(X) &amp;=\operatorname{\mathbb{E}}\left(X_{1}+X_{2}+\cdots+X_{n}\right) \\
+&amp;=\operatorname{\mathbb{E}}\left(X_{1}\right)+\operatorname{\mathbb{E}}\left(X_{2}\right)+\cdots+\operatorname{\mathbb{E}}\left(X_{n}\right) \\
+&amp;=\operatorname{\mathbb{E}}\left(X_{1}\right)+\left[\operatorname{\mathbb{E}}\left(X_{2}\right)+\cdots+\operatorname{\mathbb{E}}\left(X_{n}\right)\right] \\
 &amp;=1+(n-1) \times 2 p(1-p) \\
 &amp;=1+2(n-1) p(1-p)
 \end{aligned}

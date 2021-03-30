@@ -1,0 +1,1195 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vector Spaces &#8212; Data Science Handbook</title>
+    
+  <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+  <link rel="stylesheet"
+    href="../_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="../_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinx-book-theme.e7340bb3dbd8dde6db86f25597f54a1b.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/style.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.d3f166471bb80abb5163.js">
+
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/sphinx-book-theme.7d483ff0a819d6edff12ce0b1ead3928.js"></script>
+    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Linear Algebra" href="21-linear-algebra.html" />
+    <link rel="prev" title="Derangement" href="12-derangement.html" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+
+
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+<a class="navbar-brand text-wrap" href="../index.html">
+  
+  
+  <h1 class="site-logo" id="site-title">Data Science Handbook</h1>
+  
+</a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form>
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+    <ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../index.html">
+   Data Science Handbook
+  </a>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Foundations
+ </span>
+</p>
+<ul class="current nav sidenav_l1">
+ <li class="toctree-l1 current active collapsible-parent">
+  <a class="reference internal" href="00-math.html">
+   Math
+  </a>
+  <ul class="current collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="11-combinatorics.html">
+     Combinatorics
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="12-derangement.html">
+     Derangement
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     Vector Spaces
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="21-linear-algebra.html">
+     Linear Algebra
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="51-linear-programming.html">
+     Linear Programming
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="90-puzzles.html">
+     Puzzles
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../12-probabilities/00-probabilities.html">
+   Probabilities
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/11-expectation-and-variance.html">
+     Expectation and Variance
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/13-correlation-and-dependence.html">
+     Correlation and Dependence
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/31-bayesian-theorem.html">
+     Bayesian’s Theorem
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/51-markov-chain.html">
+     Markov Chain
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/71-sampling.html">
+     Sampling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/90-multivariate-notations.html">
+     Multivariate Notations
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/91-exponential-families.html">
+     Exponential Families
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/91-large-sample-theory.html">
+     Large Sample Theory
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../13-statistics/00-statistics.html">
+   Statistics
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/11-sample-survey.html">
+     Sample Survey
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/13-randomized-trial.html">
+     Causality and Randomized Trial
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/21-hypothesis-testing.html">
+     Hypothesis Testing
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/25-two-sample-tests.html">
+     Two Sample Mean Tests
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/33-confusion-matrix.html">
+     Confusion Matrix
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/41-maximum-likelihood-estimation.html">
+     Maximum Likelihood Estimator
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/43-estimators-evaluation.html">
+     Estimators Evaluation
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../14-python/00-python.html">
+   Python
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../14-python/11-programming-tools.html">
+     Programmer tools
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../14-python/12-syntax.html">
+     Syntax
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../14-python/13-data-structure.html">
+     Data Structures
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../14-python/15-functional-programming.html">
+     Functional Programming
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../17-sql/00-sql.html">
+   SQL
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../17-sql/11-database.html">
+     Database
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../17-sql/12-relational-structure.html">
+     Relational Structure
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../17-sql/31-data-query.html">
+     Data Query
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../17-sql/33-data-manipulation.html">
+     Data Manipulation
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../19-miscellaneous/00-miscellaneous.html">
+   Miscellaneous
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../19-miscellaneous/11-latex.html">
+     LaTeX
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../19-miscellaneous/13-myst.html">
+     MyST Markdown
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Algorithms
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../20-algorithms-concepts/00-algorithms-concepts.html">
+   Algorithms Concepts
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../20-algorithms-concepts/51-polynomial-reduction.html">
+     Polynomial Reduction
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../20-algorithms-concepts/53-P-and-NP.html">
+     <span class="math notranslate nohighlight">
+      \(P\)
+     </span>
+     and
+     <span class="math notranslate nohighlight">
+      \(NP\)
+     </span>
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../20-algorithms-concepts/61-randomized-algo.html">
+     Randomized Algorithms
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../21-greedy-algorithms/00-greedy-algorithms.html">
+   Greedy Algorithms
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../21-greedy-algorithms/11-interval-scheduling.html">
+     Interval Scheduling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../21-greedy-algorithms/31-huffman-coding.html">
+     Huffman Coding
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../23-dynamic-programming/00-dynamic-programming.html">
+   Dynamic Programming
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/11-weighted-interval-scheduling.html">
+     Weighted Interval Scheduling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/13-longest-common-subsequence.html">
+     Longest Common Subsequence
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/15-longest-increasing-subsequence.html">
+     Longest Increasing Subsequence
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/17-largest-sum-subsequence.html">
+     Largest Sum Subsequence
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/31-knapsack.html">
+     Minimum Knapsack
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/51-chain-matrix-multiplication.html">
+     Chain Matrix Multiplication
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../25-graph-related/00-graph-related.html">
+   Graph Related
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/13-shortest-path.html">
+     Shortest Path
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/21-minimum-spanning-tree.html">
+     Minimum Spanning Tree
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/31-maximum-flow.html">
+     Maximum Flow
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/32-matching.html">
+     Matching
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/42-maximum-independent-set.html">
+     Maximum Independent Set in Trees
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/91-LP-max-flow-min-cut.html">
+     LP on Max-flow and Min-cut
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Machine Learning
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../30-ml-basics/00-ml-basics.html">
+   Machine Learning Basics
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../30-ml-basics/02-taxonomy.html">
+     Taxonomy
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../30-ml-basics/03-information-theory.html">
+     Information Theory
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../30-ml-basics/05-kernels.html">
+     Kernels
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../30-ml-basics/11-data-issues.html">
+     Data Issues
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../30-ml-basics/51-semi-supervised.html">
+     Semi-supervised Learning
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../30-ml-basics/53-self-supervised.html">
+     Self-supervised Learning
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../30-ml-basics/61-fourier-transform.html">
+     Fourier Transform-based Representations
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../31-regression/00-regression.html">
+   Regression
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/11-lm-estimation.html">
+     Linear Models - Estimation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/12-lm-inference.html">
+     Linear Models - Inference
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/13-lm-diagnosis.html">
+     Linear Models - Diagnosis
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/14-lm-advanced.html">
+     Linear Models - Advanced Topics
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/21-generalized-linear-models.html">
+     Generalized Linear Models
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/22-logistic-regression.html">
+     Logistic Regression
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/23-multinomial-logitsitc.html">
+     Multinomial Logistic Regression
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/24-ordinal-logistic.html">
+     Ordinal Logistic Regression
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/25-poisson-regression.html">
+     Poisson Regression
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../32-classification/00-classification.html">
+   Classification
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../32-classification/11-support-vector-machine.html">
+     Support Vector Machine
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../32-classification/21-decision-tree.html">
+     Decision Tree
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../33-dimensionality-reduction/00-dimensionality-reduction.html">
+   Dimensionality Reduction
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/11-principal-component-analysis.html">
+     Principal Component Analysis
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/13-canonical-correlation-analysis.html">
+     Canonical Corerlation Analysis
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/21-multidimensional-scaling.html">
+     Multidimensional Scaling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/23-graph-based-spectral-methods.html">
+     Graph-based Spectral Methods
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/25-t-SNE.html">
+     SNE and
+     <span class="math notranslate nohighlight">
+      \(t\)
+     </span>
+     -SNE
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/31-kernel-pca.html">
+     Kernel PCA
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/32-kernel-cca.html">
+     Kernel CCA
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../34-clustering/00-clustering.html">
+   Clustering
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../34-clustering/11-k-means.html">
+     <span class="math notranslate nohighlight">
+      \(k\)
+     </span>
+     -means clustering
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../34-clustering/13-agglomerative-methods.html">
+     Agglomerative Methods
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../34-clustering/31-spectral-clustering.html">
+     Spectral Clustering
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../34-clustering/41-gaussian-mixtures.html">
+     Gaussian Mixtures
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../35-graphical-models/00-graphical-models.html">
+   Graphical Models
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../35-graphical-models/11-hidden-markov-models.html">
+     Hidden Markov Models
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../35-graphical-models/31-topic-models.html">
+     Topic Models
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../35-graphical-models/33-language-models.html">
+     Language Models
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../37-neural-networks/00-neural-networks.html">
+   Neural Networks
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/01-stochastic-gradient-descent.html">
+     Stochastic Gradient Descent
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/03-trainability.html">
+     Trainability
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/05-regularization.html">
+     Regularization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/11-autoencoders.html">
+     Autoencoders
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/13-variational-autoencoders.html">
+     Variational Autoencoders
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/31-sequential-models.html">
+     Sequential Models
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/41-GAN.html">
+     Generative Adversarial Networks
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../38-ml-for-graph-data/00-ml-for-graph-data.html">
+   For Graph-structured Data
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../38-ml-for-graph-data/01-graph-basics.html">
+     Graph Basics
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../38-ml-for-graph-data/11-descriptive-analysis.html">
+     Descriptive Analysis
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../38-ml-for-graph-data/13-sampling-and-estimation.html">
+     Sampling and Estimation
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+</ul>
+
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../_sources/11-math/20-vector-spaces.md"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.md</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/dennissxz/data-science-handbook"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/dennissxz/data-science-handbook/issues/new?title=Issue%20on%20page%20%2F11-math/20-vector-spaces.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+            <a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+                    data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+                    title="Fullscreen mode"><i
+                        class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+        <div class="tocsection onthispage pt-5 pb-3">
+            <i class="fas fa-list"></i>
+            Contents
+        </div>
+        <nav id="bd-toc-nav">
+            <ul class="nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#id1">
+   Vector Spaces
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#fields">
+     Fields
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#definition">
+     Definition
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#metric-spaces">
+   Metric Spaces
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id2">
+     Definition
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#completeness">
+     Completeness
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#normed-vector-spaces">
+   Normed Vector Spaces
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#inner-product-spaces">
+   Inner Product Spaces
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#hilbert-spaces">
+   Hilbert Spaces
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id3">
+     Definition
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#reproducing-kernel-hilbert-space">
+     Reproducing Kernel Hilbert Space
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+        </nav>
+        
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="vector-spaces">
+<h1>Vector Spaces<a class="headerlink" href="#vector-spaces" title="Permalink to this headline">¶</a></h1>
+<div class="figure align-default" id="vector-spaces-venn">
+<a class="reference internal image-reference" href="../_images/vector-spaces-venn.jpg"><img alt="" src="../_images/vector-spaces-venn.jpg" style="width: 60%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 1 </span><span class="caption-text">Venn diagram of vector spaces and other spaces</span><a class="headerlink" href="#vector-spaces-venn" title="Permalink to this image">¶</a></p>
+</div>
+<div class="section" id="id1">
+<h2>Vector Spaces<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>Before defining vector spaces, we first define fields.</p>
+<div class="section" id="fields">
+<h3>Fields<a class="headerlink" href="#fields" title="Permalink to this headline">¶</a></h3>
+<dl class="simple myst">
+<dt>Definition (Fields)</dt><dd><p>A field is a set <span class="math notranslate nohighlight">\(F\)</span> with <em>addition</em> and <em>multiplication</em> (mappings <span class="math notranslate nohighlight">\(F\times F \rightarrow F\)</span>), which satisfies all the following axioms</p>
+</dd>
+<dd><ul class="simple">
+<li><p>Commutativity: <span class="math notranslate nohighlight">\(\forall a, b \in F, a+b=b+a, a \cdot b=b \cdot a\)</span></p></li>
+<li><p>Association: <span class="math notranslate nohighlight">\(\forall a, b, c \in F, (a+b)+c=a+(b+c),(a \cdot b) \cdot c=a \cdot(b \cdot c)\)</span></p></li>
+<li><p>Additive and multiplicative identity: <span class="math notranslate nohighlight">\(\exists 0,1 \in F \text { s.t. } \forall a \in F, a+0=a \text { and } a \cdot 1=a\)</span></p></li>
+<li><p>Additive inverse: <span class="math notranslate nohighlight">\(\forall a \in F, \exists(-a) \in F, \text { s.t. } a+(-a)=0\)</span></p></li>
+<li><p>Multiplicative inverse: <span class="math notranslate nohighlight">\(\forall a \in F(a \neq 0), \exists a^{-1} \in F, \text { s.t. } a \cdot a^{-1}=1\)</span></p></li>
+<li><p>Distributivity of multiplication over addition: <span class="math notranslate nohighlight">\(\forall a, b, c \in F, a \cdot(b+c)=a \cdot b+a \cdot c\)</span></p></li>
+</ul>
+</dd>
+<dt>Examples</dt><dd><p><span class="math notranslate nohighlight">\(\mathbb{Q}, \mathbb{R}, \mathbb{C}, \mathbb{F}_{2}, \mathbb{F}_{p}\)</span> (<span class="math notranslate nohighlight">\(p\)</span> is a prime).</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="definition">
+<h3>Definition<a class="headerlink" href="#definition" title="Permalink to this headline">¶</a></h3>
+<p>A vector space is defined per field.</p>
+<dl class="simple myst">
+<dt>Definition (Vector spaces)</dt><dd><p>A vector space over field <span class="math notranslate nohighlight">\(F\)</span> is a set <span class="math notranslate nohighlight">\(V\)</span> associated with operations <em>addition</em> and <em>scalar multiplication</em> that satisfies all the following axioms</p>
+</dd>
+<dd><ul class="simple">
+<li><p>Association of addition: <span class="math notranslate nohighlight">\(\forall \boldsymbol{u}, \boldsymbol{v}, \boldsymbol{w} \in V,(\boldsymbol{u}+\boldsymbol{v})+\boldsymbol{w}=\boldsymbol{u}+(\boldsymbol{v}+\boldsymbol{w})\)</span></p></li>
+<li><p>Commutativity of addition: <span class="math notranslate nohighlight">\(\forall \boldsymbol{u}, \boldsymbol{v} \in V, \boldsymbol{u}+\boldsymbol{v}=\boldsymbol{v}+\boldsymbol{u}\)</span></p></li>
+<li><p>Identity element of addition: <span class="math notranslate nohighlight">\(\exists \boldsymbol{0} \in V\)</span> s.t. <span class="math notranslate nohighlight">\(\forall \boldsymbol{v} \in V, \boldsymbol{v}+\boldsymbol{0}=\boldsymbol{v}\)</span></p></li>
+<li><p>Compatibility of scalar multiplication with field multiplication: <span class="math notranslate nohighlight">\(\forall a, b \in F, \boldsymbol{v} \in V, a(b \boldsymbol{v})=(a b) \boldsymbol{v}\)</span></p></li>
+<li><p>Identity element of scalar multiplication: <span class="math notranslate nohighlight">\(1 \boldsymbol{v}=\boldsymbol{v}\)</span> where <span class="math notranslate nohighlight">\(1\)</span> is the multiplicative identity in <span class="math notranslate nohighlight">\(F\)</span></p></li>
+<li><p>Distributivity of scalar multiplication with respect to vector addition: <span class="math notranslate nohighlight">\(\forall a \in F, \boldsymbol{u}, \boldsymbol{v} \in V, a(\boldsymbol{u}+\boldsymbol{v})=a \boldsymbol{u}+a \boldsymbol{v}\)</span></p></li>
+<li><p>Distributivity of scalar multiplication with respect to field addition: <span class="math notranslate nohighlight">\(\forall a, b \in F, \boldsymbol{v} \in V,(a+b) \boldsymbol{v}=a \boldsymbol{v}+b \boldsymbol{v}\)</span></p></li>
+</ul>
+</dd>
+<dt>Examples</dt><dd><ul>
+<li><p><span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span> is a vector space over field <span class="math notranslate nohighlight">\(\mathbb{R}\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathbb{R}\)</span> is a vector space over <span class="math notranslate nohighlight">\(\mathbb{Q}\)</span></p></li>
+<li><p>All Fibonacci sequences form a vector space over <span class="math notranslate nohighlight">\(\mathbb{R}\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+    \left\{\left(x_{1}, x_{2}, x_{3} \ldots\right) \in \mathbb{R}^{\infty} \mid \forall i \geq 1: x_{i}+x_{i+1}=x_{i+2}\right\}
+    \]</div>
+</li>
+</ul>
+</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="metric-spaces">
+<h2>Metric Spaces<a class="headerlink" href="#metric-spaces" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id2">
+<h3>Definition<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<dl class="simple myst">
+<dt>Definition (Metric spaces)</dt><dd><p>A metric space is an ordered pair <span class="math notranslate nohighlight">\((M, d)\)</span> where <span class="math notranslate nohighlight">\(M\)</span> is a set and <span class="math notranslate nohighlight">\(d\)</span> is a metric function <span class="math notranslate nohighlight">\(d: M \times M \rightarrow \mathbb{R}\)</span> that satisfies all the following axioms</p>
+</dd>
+</dl>
+<ol class="simple">
+<li><p>Identity of indiscernibles: <span class="math notranslate nohighlight">\(d(x, y)=0 \Leftrightarrow  x= y\)</span></p></li>
+<li><p>Symmetry: <span class="math notranslate nohighlight">\(d(x,y) = d(y, x)\)</span></p></li>
+<li><p>Triangle inequality: <span class="math notranslate nohighlight">\(d(x, z) \le d(x, y) + d(y, z)\)</span></p></li>
+</ol>
+<p>Given the above three axioms, we have <span class="math notranslate nohighlight">\(d(x, y) \ge 0\)</span> for any <span class="math notranslate nohighlight">\(x, y \in M\)</span>.</p>
+<p>The function <span class="math notranslate nohighlight">\(d\)</span> is also called <strong>distance function</strong> or simply <strong>distance</strong>. Often, <span class="math notranslate nohighlight">\(d\)</span> is omitted and one just writes <span class="math notranslate nohighlight">\(M\)</span> for a metric space if it is clear from the context what metric is used.</p>
+<dl class="simple myst">
+<dt>Examples:</dt><dd><ul class="simple">
+<li><p>Discrete metric <span class="math notranslate nohighlight">\(d(x,y)=1\)</span> if <span class="math notranslate nohighlight">\(x\ne y\)</span> and <span class="math notranslate nohighlight">\(0\)</span> otherwise.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathbb{R}\)</span> with absolute difference <span class="math notranslate nohighlight">\(d(x,y) = \left\vert x-y \right\vert\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathbb{R} ^n\)</span> with Euclidean distance</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathbb{R} _{&gt;0}\)</span> with <span class="math notranslate nohighlight">\(d(x, y) = \left\vert \log(y/x) \right\vert\)</span></p></li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="completeness">
+<h3>Completeness<a class="headerlink" href="#completeness" title="Permalink to this headline">¶</a></h3>
+<p>We first introduce Cauchy sequence.</p>
+<dl class="simple myst">
+<dt>Definition (Cauchy sequence)</dt><dd><p>Cauchy sequence is a sequence whose elements become arbitrarily “close” to each other as the sequence progresses. The elements can be in <span class="math notranslate nohighlight">\(\mathbb{R}\)</span> or other spaces. The definition of “close” depends on some metric function.</p>
+</dd>
+</dl>
+<p>For instance, in <span class="math notranslate nohighlight">\(\mathbb{R}\)</span>, <span class="math notranslate nohighlight">\(x_1, x_2, \ldots,\)</span> is called a Cauchy sequence if for every positive number <span class="math notranslate nohighlight">\(\epsilon\)</span>, there is a positive integer <span class="math notranslate nohighlight">\(N\)</span> such that for all natural numbers <span class="math notranslate nohighlight">\(m, n&gt;N\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[
+\left\vert x_m - x_n \right\vert &lt; \epsilon
+\]</div>
+<p>Pictorially,</p>
+<div class="figure align-default" id="space-cauchy-seq">
+<a class="reference internal image-reference" href="../_images/space-cauchy-seq.png"><img alt="" src="../_images/space-cauchy-seq.png" style="width: 70%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 2 </span><span class="caption-text">Cauchy (left) and non-Cauchy (right) sequence [<a class="reference external" href="https://en.wikipedia.org/wiki/Cauchy_sequence#In_a_metric_space">Wikipedia</a>]</span><a class="headerlink" href="#space-cauchy-seq" title="Permalink to this image">¶</a></p>
+</div>
+<dl class="simple myst">
+<dt>Examples</dt><dd><ul class="simple">
+<li><p>For any real number <span class="math notranslate nohighlight">\(r\)</span>, the sequence of truncated decimal expansions of <span class="math notranslate nohighlight">\(r\)</span> forms a Cauchy sequence. For example, when <span class="math notranslate nohighlight">\(r = \pi\)</span>, this sequence is <span class="math notranslate nohighlight">\((3, 3.1, 3.14, 3.141, ...)\)</span>. The <span class="math notranslate nohighlight">\(m\)</span>-th and <span class="math notranslate nohighlight">\(n\)</span>-th terms differ by at most <span class="math notranslate nohighlight">\(10^{1-m}\)</span> when <span class="math notranslate nohighlight">\(m &lt; n\)</span>, and as <span class="math notranslate nohighlight">\(m\)</span> grows, this becomes smaller than any fixed positive number <span class="math notranslate nohighlight">\(\epsilon\)</span>.</p></li>
+</ul>
+</dd>
+<dt>Non-examples</dt><dd><ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(x_n = \sqrt{n}\)</span>, though each term becomes arbitrarily close to the preceding term</p></li>
+</ul>
+</dd>
+<dt>Definition (Complete metric space)</dt><dd><p>A metric space <span class="math notranslate nohighlight">\(M\)</span> is called complete if every Cauchy sequence of points in <span class="math notranslate nohighlight">\(M\)</span> has a limit that is also in <span class="math notranslate nohighlight">\(M\)</span>, or alternatively, if every Cauchy sequence in <span class="math notranslate nohighlight">\(M\)</span> converges in <span class="math notranslate nohighlight">\(M\)</span> (converges to some point of <span class="math notranslate nohighlight">\(M\)</span>).</p>
+</dd>
+<dt>Examples</dt><dd><ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\mathbb{R}\)</span></p></li>
+</ul>
+</dd>
+<dt>Non-examples</dt><dd><ul class="simple">
+<li><p>open interval <span class="math notranslate nohighlight">\(A=(0,1)\)</span> with an ordinary distance in <span class="math notranslate nohighlight">\(\mathbb{R}\)</span> is not a complete space: there is a sequence <span class="math notranslate nohighlight">\(x_n = \frac{1}{n}\)</span>, which is Cauchy, but does not converge in <span class="math notranslate nohighlight">\(X\)</span>, i.e. its limit <span class="math notranslate nohighlight">\(0 \notin A\)</span>.</p></li>
+</ul>
+</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="normed-vector-spaces">
+<h2>Normed Vector Spaces<a class="headerlink" href="#normed-vector-spaces" title="Permalink to this headline">¶</a></h2>
+<dl class="simple myst">
+<dt>Definition (Normed vector spaces)</dt><dd><p>A normed vector space or normed space is a vector space <span class="math notranslate nohighlight">\(V\)</span> over the real or complex numbers, on which a norm <span class="math notranslate nohighlight">\(\left\| \cdot \right\|\)</span> is defined, together denoted as <span class="math notranslate nohighlight">\((V, \left\| \cdot \right\| )\)</span>.</p>
+</dd>
+<dt>Definition (Norm)</dt><dd><p>A norm is a real-valued function from a real or complex vector space <span class="math notranslate nohighlight">\(V\)</span> to the non-negative real numbers, denoted <span class="math notranslate nohighlight">\(\left\| \cdot \right\| : V \rightarrow \mathbb{R}_{\ge 0}\)</span>, that satisfies the following axioms</p>
+</dd>
+</dl>
+<ol class="simple">
+<li><p>Positive definite: <span class="math notranslate nohighlight">\(\|x\|=0 \Longleftrightarrow x=0\)</span></p></li>
+<li><p>Absolutely homogeneous: <span class="math notranslate nohighlight">\(\|\alpha x\|=|\alpha\|\| x|\)</span></p></li>
+<li><p>Triangle inequality: <span class="math notranslate nohighlight">\(\|x+y\| \leq\|x\|+\|y\|\)</span></p></li>
+</ol>
+<p>A norm is the formalization and the generalization to real vector spaces of the intuitive notion of “length” in the real world.</p>
+<dl class="simple myst">
+<dt>Examples</dt><dd><ul class="simple">
+<li><p>absolute value <span class="math notranslate nohighlight">\(\left\| x \right\| = \left\vert x \right\vert\)</span></p></li>
+<li><p>Euclidean norm <span class="math notranslate nohighlight">\(\|\boldsymbol{x}\|_{2}:=\sqrt{x_{1}^{2}+\cdots+x_{n}^{2}}\)</span></p></li>
+<li><p>Manhattan norm</p></li>
+<li><p>Maximum norm</p></li>
+</ul>
+</dd>
+<dt>Relations</dt><dd><ul>
+<li><p>Once a norm is defined, we can immediately define a distance by</p>
+<div class="math notranslate nohighlight">
+\[
+    d(x, y) = \left\| x - y \right\|
+    \]</div>
+<p>which is called the induced distance by the norm. <strong>Hence, any normed vector space is a metric space and a topological vector space</strong>.</p>
+<ul class="simple">
+<li><p>If the induced distance <span class="math notranslate nohighlight">\(d\)</span> is complete, then the normed vector space is a Banach space</p></li>
+</ul>
+</li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="inner-product-spaces">
+<h2>Inner Product Spaces<a class="headerlink" href="#inner-product-spaces" title="Permalink to this headline">¶</a></h2>
+<p>Aka Hausdorff pre-Hilbert spaces.</p>
+<dl class="simple myst">
+<dt>Definition (Inner product spaces)</dt><dd><p>An inner product space is a vector space <span class="math notranslate nohighlight">\(V\)</span> over a field <span class="math notranslate nohighlight">\(F\)</span> together with a binary operation <span class="math notranslate nohighlight">\(\langle \cdot, \cdot \rangle\)</span> called an inner product.</p>
+</dd>
+<dt>Definition (Inner products)</dt><dd><p>An inner product is a binary operation <span class="math notranslate nohighlight">\(\langle\cdot, \cdot\rangle: V \times V \rightarrow \mathbb{F}\)</span> that satisfies all the following axioms</p>
+</dd>
+</dl>
+<ol>
+<li><p>Linearity in the first argument</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+    \langle a \boldsymbol{x}, \boldsymbol{y}\rangle &amp;=a\langle\boldsymbol{x}, \boldsymbol{y}\rangle \\
+    \left\langle\boldsymbol{x}_{1}, \boldsymbol{y}\right\rangle+\left\langle\boldsymbol{x}_{2}, \boldsymbol{y}\right\rangle &amp;=\left\langle\boldsymbol{x}_{1}+\boldsymbol{x}_{2}, \boldsymbol{y}\right\rangle
+    \end{aligned}\end{split}\]</div>
+</li>
+<li><p>Conjugate symmetry (Hermitian symmetry):</p>
+<div class="math notranslate nohighlight">
+\[\langle\boldsymbol{x}, \boldsymbol{y}\rangle=\overline{\langle\boldsymbol{y}, \boldsymbol{x}\rangle}\]</div>
+</li>
+<li><p>Positive definite</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+    \langle\boldsymbol{x}, \boldsymbol{x}\rangle \left\{\begin{array}{ll}
+    &gt;0, &amp; \text { if } \boldsymbol{x} \neq \boldsymbol{0} \\
+    = 0, &amp; \text { otherwise }
+    \end{array}\right.
+    \end{split}\]</div>
+<p>Note that <span class="math notranslate nohighlight">\(2\)</span> and <span class="math notranslate nohighlight">\(3\)</span> together imply that <span class="math notranslate nohighlight">\(\langle\boldsymbol{x}, \boldsymbol{x}\rangle \in \mathbb{R}_{\geq 0}\)</span>.</p>
+</li>
+</ol>
+<p>Inner products associate each pair of vectors in the space with a scalar quantity. They allow the rigorous introduction of intuitive geometrical notions, such as the length of a vector or the angle between two vectors. They also provide the means of defining orthogonality between vectors (zero inner product)</p>
+<dl class="simple myst">
+<dt>Examples</dt><dd><ul class="simple">
+<li><p>standard multiplication over the real numbers: <span class="math notranslate nohighlight">\(\langle x, y \rangle = xy\)</span></p></li>
+<li><p>dot product over <span class="math notranslate nohighlight">\(\mathbb{R} ^n\)</span>: <span class="math notranslate nohighlight">\(\langle \boldsymbol{x} , \boldsymbol{y} \rangle= \boldsymbol{x} ^{\top} \boldsymbol{y} = \sum_{i=1}^n x_i y_i\)</span></p></li>
+</ul>
+</dd>
+<dt>Relations</dt><dd><ul>
+<li><p>An inner product naturally induces an associated norm <span class="math notranslate nohighlight">\(\left\| x \right\|= \sqrt{ \langle x, x \rangle}\)</span>, which canonically makes every <strong>inner product space into a normed vector space.</strong></p></li>
+<li><p>If this normed space is also a Banach space then the inner product space is called a Hilbert space.</p></li>
+<li><p>The relations between metric spaces, normed vector spaces and inner product spaces can then be summarized as below:</p>
+<div class="figure align-default" id="vector-spaces-venn2">
+<a class="reference internal image-reference" href="../_images/vector-spaces-venn2.png"><img alt="" src="../_images/vector-spaces-venn2.png" style="width: 50%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 3 </span><span class="caption-text">Venn diagram of metric spaces, normed vector spaces and inner product spaces [<a class="reference external" href="https://en.wikipedia.org/wiki/Inner_product_space">Wikipedia</a>]</span><a class="headerlink" href="#vector-spaces-venn2" title="Permalink to this image">¶</a></p>
+</div>
+</li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="hilbert-spaces">
+<h2>Hilbert Spaces<a class="headerlink" href="#hilbert-spaces" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id3">
+<h3>Definition<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<p>A Hilbert space extends the methods of vector algebra and calculus from the two-dimensional Euclidean plane and three-dimensional space to spaces with any finite or <strong>infinite</strong> number of dimensions.</p>
+<dl class="simple myst">
+<dt>Definition (Hilbert spaces)</dt><dd><p>A Hilbert space <span class="math notranslate nohighlight">\(H\)</span> is a real or complex inner product space that is also a complete metric space with respect to the distance function induced by the inner product.</p>
+</dd>
+<dt>Relations:</dt><dd><ul class="simple">
+<li><p>Every finite-dimensional inner product space is also a Hilbert space.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathbb{R} ^d\)</span> is a Hilbert space</p></li>
+<li><p>Any pre-Hilbert space that is additionally also a complete space is a Hilbert space.</p></li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="reproducing-kernel-hilbert-space">
+<h3>Reproducing Kernel Hilbert Space<a class="headerlink" href="#reproducing-kernel-hilbert-space" title="Permalink to this headline">¶</a></h3>
+<p>Reproducing kernel Hilbert space: function evaluation is bounded</p>
+<div class="math notranslate nohighlight">
+\[
+f(x) \le c _x \left\| f \right\|  _H \quad \forall f, x
+\]</div>
+<p>for some constant <span class="math notranslate nohighlight">\(c\)</span> depending on <span class="math notranslate nohighlight">\(x\)</span>.</p>
+<p>TBC.</p>
+<p>reference: <a class="reference external" href="https://www.youtube.com/watch?v=EoM_DF3VAO8&amp;list=PL05umP7R6ij2XCvrRzLokX6EoHWaGA2cC&amp;index=21&amp;ab_channel=T%C3%BCbingenMachineLearning">video</a></p>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./11-math"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        
+        <div class='prev-next-bottom'>
+            
+    <a class='left-prev' id="prev-link" href="12-derangement.html" title="previous page">Derangement</a>
+    <a class='right-next' id="next-link" href="21-linear-algebra.html" title="next page">Linear Algebra</a>
+
+        </div>
+        
+        </div>
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By Dennis Zheng<br/>
+        
+            &copy; Copyright 2020.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+
+    
+  <script src="../_static/js/index.d3f166471bb80abb5163.js"></script>
+
+
+    
+  </body>
+</html>

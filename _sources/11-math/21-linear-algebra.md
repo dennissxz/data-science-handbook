@@ -7,7 +7,7 @@
 ### Transpose
 
 Definition
-: $\boldsymbol{a} ^\top =\left( a_{ji} \right)$
+: $\boldsymbol{A} ^\top =\left( a_{ji} \right)$
 
 Properties
 : $\ $
@@ -125,17 +125,17 @@ Properties
 ### Symmetric Matrices
 
 Definition
-: A matrix $\boldsymbol{A}$ is **symmetric** if $\boldsymbol{A} ^\top =\boldsymbol{A}$. This is denoted by $\boldsymbol{A} \in \mathrm{Sym}$
+: A matrix $\boldsymbol{A}$ is **symmetric** if $\boldsymbol{A} ^\top =\boldsymbol{A}$. This is denoted by $\boldsymbol{A} \in \mathrm{Sym}$.
 
 ### Orthogonal Matrices
 
 Aka rotation matrices.
 
 Definition
-: A matrix $\boldsymbol{A}$ is **orthogonal** if $\boldsymbol{A} ^{-1} = \boldsymbol{A} ^\top$.
+: A matrix $\boldsymbol{U}$ is **orthogonal** if $\boldsymbol{U} ^{-1} = \boldsymbol{U} ^\top$.
 
 Properties
-: Transformation by $\boldsymbol{U}$ preserves vector length an angle.
+: Transformation by $\boldsymbol{U}$ preserves vector length and angle.
 
   $$\begin{aligned}
   \|\boldsymbol{U x}\| &=\|\boldsymbol{x}\| \\
@@ -149,38 +149,75 @@ Definition
 : A matrix $\boldsymbol{A}$ is idempotent if $\boldsymbol{A} ^2 = \boldsymbol{A}$.
 
 Properties
-: If $\boldsymbol{A}$ is idempotent,
-  - $\boldsymbol{I} - \boldsymbol{A}$ is idempotent
-  - $\boldsymbol{P} ^\top \boldsymbol{A} \boldsymbol{P} \boldsymbol{x}$  
-  - and symmetric
+: If $\boldsymbol{A}$ is idempotent, then
+  - $\boldsymbol{I} - \boldsymbol{A}$ is also idempotent
+  - $\boldsymbol{U} ^\top \boldsymbol{A} \boldsymbol{U}$ is idempotent if $\boldsymbol{U}$ is orthogonal
+  - $\boldsymbol{A} ^n = \boldsymbol{A}$ for all positive integer $n$
+  - it is non-singular iff $\boldsymbol{A} = \boldsymbol{I}$.
+  - has eigenvalues 0 or 1 since $\lambda \boldsymbol{v} = \boldsymbol{A} \boldsymbol{v}  = \boldsymbol{A} ^2 \boldsymbol{v} = \lambda \boldsymbol{A} \boldsymbol{v} = \lambda^2 \boldsymbol{v}$
+  - If $\boldsymbol{A}$ is also symmetric, then
     - $\operatorname{rank}\left( \boldsymbol{A} \right) = \operatorname{tr}\left( \boldsymbol{A}  \right)$
-    - $\operatorname{rank}\left( \boldsymbol{A}  \right) = r \Rightarrow \boldsymbol{A}$ has $r$ eigevalues equal to 1 and $n-r$ equal to $0$.
+    - $\operatorname{rank}\left( \boldsymbol{A}  \right) = r \Rightarrow \boldsymbol{A}$ has $r$ eigenvalues equal to 1 and $n-r$ equal to $0$.
     - $\operatorname{rank}\left( \boldsymbol{A}  \right) = n \Rightarrow \boldsymbol{A} = \boldsymbol{I} _n$
 
+### Reflection Matrices
+
+Definition (Householder reflection)
+: A Householder transformation (aka Householder reflection) is a linear transformation that describe a reflection about a plane or hyperplane containing the origin. The reflection of a point $\boldsymbol{x}$ about a hyperplane defined by $\boldsymbol{v}$ is the linear transformation
+
+  $$
+  \boldsymbol{x} - 2 \langle \boldsymbol{x}, \boldsymbol{v}  \rangle \boldsymbol{v}
+  $$
+
+  where $\boldsymbol{v}$ is the unit vector that is orthogonal to the hyperplane.
+
+Definition (Householder matrices)
+: The matrix constructed from this transformation can be expressed in terms of an outer product as
+
+  $$
+  \boldsymbol{H} = \boldsymbol{I} - 2 \boldsymbol{v} \boldsymbol{v} ^{\top}
+  $$
+
+Properties
+- symmetric: $\boldsymbol{H} = \boldsymbol{H} ^{\top}$
+- unitary: $\boldsymbol{H}^{-1} = \boldsymbol{H} ^{\top}$
+- involutory: $\boldsymbol{H}^{-1} = \boldsymbol{H}$
+- has eigenvalues
+  - $-1$, since $\boldsymbol{H} \boldsymbol{v} = - \boldsymbol{v}$
+  - $1$ of multiplicity $n-1$, since $\boldsymbol{H} \boldsymbol{u} = \boldsymbol{u}$ where $\boldsymbol{u} \perp \boldsymbol{v}$, and there are $n-1$ independent vectors orthogonal to $\boldsymbol{v}$
+- has determinant $-1$.
 
 ### Projection Matrices
 
+Definition(Projection matrices)
+: A square matrix $\boldsymbol{P}$ is called a projection matrix if $\boldsymbol{P}^2 = \boldsymbol{P}$. By definition, a projection $\boldsymbol{P}$ is idempotent.
+  - If $P$ is further symmetric, then it is called an orthogonal projection matrix.
+  - otherwise it called an oblique projection matrix.
+
+(Orthogonal) Projection
+- onto a line for which $\boldsymbol{u}$ is a unit vector: $\boldsymbol{P}_u = \boldsymbol{u} \boldsymbol{u} ^{\top}$
+- onto a subspace $\boldsymbol{U}$ with orthonormal basis $\boldsymbol{u} _1, \ldots, \boldsymbol{u} _k$ forming matrix $\boldsymbol{A}$: $\boldsymbol{P}_A = \boldsymbol{A} \boldsymbol{A} ^{\top} = \sum_i \langle \boldsymbol{u} _i, \cdot \rangle \boldsymbol{u} _i$
+- onto subspace $\boldsymbol{U}$ with (not necessarily orthonormal) basis $\boldsymbol{u} _1, \ldots, \boldsymbol{u} _k$ forming matrix $\boldsymbol{A}$: $\boldsymbol{P} _{A}= \boldsymbol{A} \left( \boldsymbol{A} ^{\top} \boldsymbol{A}  \right) ^{-1} \boldsymbol{A} ^{\top}$. Such as that in linear regression.
 
 ### Positive Semi-Definite and Positive Definite
 
 Definitions
+: - A symmetric matrix $\boldsymbol{A}$ is **positive semi-defiinite** (p.s.d.) if $\boldsymbol{c}^\top \boldsymbol{A} \boldsymbol{c} \ge 0$ for all $\boldsymbol{c}$. This is denoted by $\boldsymbol{A} \succ \boldsymbol{0}$ or $\boldsymbol{A} \in \mathrm{PD}$.
 
-: A symmetric matrix $\boldsymbol{A}$ is **positive and semi-defiinite** (p.s.d.) if $\boldsymbol{A}$ is symmetric and $\boldsymbol{c}^\top \boldsymbol{A} \boldsymbol{c} \ge 0$ for all $\boldsymbol{c}$. This is denoted by $\boldsymbol{A} \succ \boldsymbol{0}$ or $\boldsymbol{A} \in \mathrm{PD}$.
-
-: A symmetric matrix $\boldsymbol{A}$ is **positive and definite** (p.d.) if $\boldsymbol{A}$ is symmetric and $\boldsymbol{c}^\top \boldsymbol{A} \boldsymbol{c} \ge 0$ for all $\boldsymbol{c}\ne \boldsymbol{0}$. This is denoted by $\boldsymbol{A} \succeq \boldsymbol{0}$ or $\boldsymbol{A} \in \mathrm{PSD}$.
+  - A symmetric matrix $\boldsymbol{A}$ is **positive definite** (p.d.) if $\boldsymbol{c}^\top \boldsymbol{A} \boldsymbol{c} \ge 0$ for all $\boldsymbol{c}\ne \boldsymbol{0}$. This is denoted by $\boldsymbol{A} \succeq \boldsymbol{0}$ or $\boldsymbol{A} \in \mathrm{PSD}$.
 
 
 Properties
 : $\ $
 
-$$\begin{align}
-\boldsymbol{A} \in \mathrm{PD} &\Leftrightarrow \lambda_i(\boldsymbol{A}) > 0 \\
-&\Leftrightarrow \exists \text{ non-singular } \boldsymbol{R}: \boldsymbol{A} = \boldsymbol{R} \boldsymbol{R} ^\top\\
-&\Rightarrow \boldsymbol{A} \text{ is nonsingular} \\
-\boldsymbol{A} \in \mathrm{PSD} &\Leftrightarrow \lambda_i(\boldsymbol{A}) \ge 0 \\
-&\Leftrightarrow \exists \text{ square } \boldsymbol{R}, \operatorname{rank}\left( R \right) = \operatorname{rank}\left( \boldsymbol{A}  \right): \boldsymbol{A} = \boldsymbol{R} \boldsymbol{R} ^\top\\
-\text{square } \boldsymbol{B} &\Rightarrow \boldsymbol{B} ^\top \boldsymbol{B} \in \mathrm{PSD}\\
-\end{align}$$
+  $$\begin{align}
+  \boldsymbol{A} \in \mathrm{PD} &\Leftrightarrow \lambda_i(\boldsymbol{A}) > 0 \\
+  &\Leftrightarrow \exists \text{ non-singular } \boldsymbol{R}: \boldsymbol{A} = \boldsymbol{R} \boldsymbol{R} ^\top\\
+  &\Rightarrow \boldsymbol{A} \text{ is nonsingular} \\
+  \boldsymbol{A} \in \mathrm{PSD} &\Leftrightarrow \lambda_i(\boldsymbol{A}) \ge 0 \\
+  &\Leftrightarrow \exists \text{ square } \boldsymbol{R}, \operatorname{rank}\left( R \right) = \operatorname{rank}\left( \boldsymbol{A}  \right): \boldsymbol{A} = \boldsymbol{R} \boldsymbol{R} ^\top\\
+  \text{square } \boldsymbol{B} &\Rightarrow \boldsymbol{B} ^\top \boldsymbol{B} \in \mathrm{PSD}\\
+  \end{align}$$
 
 
 ```{note}
@@ -188,45 +225,54 @@ If $\boldsymbol{A}$ is p.s.d. (p.d.) there exists a p.s.d. (p.d.) matrix $\bolds
 ```
 
 Inequalities
-: If $\boldsymbol{A}$ is p.d., then for all $\boldsymbol{a}$
+: - If $\boldsymbol{A}$ is p.d., then for all $\boldsymbol{a}$
 
-  $$
-  \frac{\left(\boldsymbol{a}^{\top} \boldsymbol{b} \right)^{2}}{\boldsymbol{a}^{\top} \boldsymbol{A} \boldsymbol{a}} \leq \boldsymbol{b} ^{\top} \boldsymbol{A}^{-1} \boldsymbol{b}
-  $$
+    $$
+    \frac{\left(\boldsymbol{a}^{\top} \boldsymbol{b} \right)^{2}}{\boldsymbol{a}^{\top} \boldsymbol{A} \boldsymbol{a}} \leq \boldsymbol{b} ^{\top} \boldsymbol{A}^{-1} \boldsymbol{b}
+    $$
 
-  The equality holds when $\boldsymbol{a} \propto \boldsymbol{R} ^{-1} \boldsymbol{b}$.
+    The equality holds when $\boldsymbol{a} \propto \boldsymbol{R} ^{-1} \boldsymbol{b}$.
 
-  The inequality can be proved by Cauchy-Schwarz inequality where $\boldsymbol{u} = \boldsymbol{R} ^\top \boldsymbol{a} , \boldsymbol{v} = \boldsymbol{R} ^{-1} \boldsymbol{b}$.
+    The inequality can be proved by Cauchy-Schwarz inequality where $\boldsymbol{u} = \boldsymbol{R} ^\top \boldsymbol{a} , \boldsymbol{v} = \boldsymbol{R} ^{-1} \boldsymbol{b}$.
 
-: If $\boldsymbol{A}$ is symmetric and $\boldsymbol{B}$ is p.d., both of size $n \times n$, then for all $\boldsymbol{a}$ ,
+  - If $\boldsymbol{A}$ is symmetric and $\boldsymbol{B}$ is p.d., both of size $n \times n$, then for all $\boldsymbol{a}$ ,
 
-  $$
-  \lambda_{\min}(\boldsymbol{B} ^{-1} \boldsymbol{A} )
-  \le
-  \frac{\boldsymbol{a} ^\top \boldsymbol{A} \boldsymbol{a} }{\boldsymbol{a} ^\top \boldsymbol{B} \boldsymbol{a} }  
-  \le
-  \lambda_{\max}(\boldsymbol{B} ^{-1} \boldsymbol{A} )
-  $$
+    $$
+    \lambda_{\min}(\boldsymbol{B} ^{-1} \boldsymbol{A} )
+    \le
+    \frac{\boldsymbol{a} ^\top \boldsymbol{A} \boldsymbol{a} }{\boldsymbol{a} ^\top \boldsymbol{B} \boldsymbol{a} }  
+    \le
+    \lambda_{\max}(\boldsymbol{B} ^{-1} \boldsymbol{A} )
+    $$
 
-  The equality on either side holds when $\boldsymbol{a}$ is proportional to the corresponding eigenvector.
+    The equality on either side holds when $\boldsymbol{a}$ is proportional to the corresponding eigenvector.
 
-: If $\boldsymbol{A}$ and $\boldsymbol{B}$ are p.d.,
+  - If $\boldsymbol{A}$ and $\boldsymbol{B}$ are p.d.,
 
-  $$
-  \max _{a, b} \frac{\left(\boldsymbol{a}^{\top} \boldsymbol{D} \boldsymbol{b}\right)^{2}}{\boldsymbol{a}^{\top} \boldsymbol{A} \boldsymbol{a} \cdot \boldsymbol{b}^{\top} \boldsymbol{B} \boldsymbol{b}}=\theta
-  $$
+    $$
+    \max _{a, b} \frac{\left(\boldsymbol{a}^{\top} \boldsymbol{D} \boldsymbol{b}\right)^{2}}{\boldsymbol{a}^{\top} \boldsymbol{A} \boldsymbol{a} \cdot \boldsymbol{b}^{\top} \boldsymbol{B} \boldsymbol{b}}=\theta
+    $$
 
-  where $\theta$ is the largest eigenvalue of $\boldsymbol{A} ^{-1} \boldsymbol{D} \boldsymbol{B} ^{-1} \boldsymbol{D} ^\top$ or $\boldsymbol{B} ^{-1} \boldsymbol{D} ^\top \boldsymbol{A} ^{-1} \boldsymbol{D}$.
+    where $\theta$ is the largest eigenvalue of $\boldsymbol{A} ^{-1} \boldsymbol{D} \boldsymbol{B} ^{-1} \boldsymbol{D} ^\top$ or $\boldsymbol{B} ^{-1} \boldsymbol{D} ^\top \boldsymbol{A} ^{-1} \boldsymbol{D}$.
 
-  The maximum is obtained when $\boldsymbol{a}$ is proportional to an eigenvector of $\boldsymbol{A} ^{-1} \boldsymbol{D} \boldsymbol{B} ^{-1} \boldsymbol{D} ^\top$ corresponding to $\theta$, $\boldsymbol{b}$ is proportional to an eigenvector of $\boldsymbol{B} ^{-1} \boldsymbol{D} ^\top \boldsymbol{A} ^{-1} \boldsymbol{D}$ corresponding to $\theta$.
+    The maximum is obtained when $\boldsymbol{a}$ is proportional to an eigenvector of $\boldsymbol{A} ^{-1} \boldsymbol{D} \boldsymbol{B} ^{-1} \boldsymbol{D} ^\top$ corresponding to $\theta$, $\boldsymbol{b}$ is proportional to an eigenvector of $\boldsymbol{B} ^{-1} \boldsymbol{D} ^\top \boldsymbol{A} ^{-1} \boldsymbol{D}$ corresponding to $\theta$.
 
-: If $\boldsymbol{A} , \boldsymbol{\Sigma}$ are p.d., then the function
+  - If $\boldsymbol{A} , \boldsymbol{\Sigma}$ are p.d., then the function
 
-  $$
-  f(\boldsymbol{\Sigma} ) = \log \left\vert \boldsymbol{\Sigma}  \right\vert + \operatorname{tr}\left( \boldsymbol{\Sigma} ^{-1} \boldsymbol{A}  \right)
-  $$
+    $$
+    f(\boldsymbol{\Sigma} ) = \log \left\vert \boldsymbol{\Sigma}  \right\vert + \operatorname{tr}\left( \boldsymbol{\Sigma} ^{-1} \boldsymbol{A}  \right)
+    $$
 
-  is minimized uniquely at $\boldsymbol{\Sigma} =\boldsymbol{A}$.
+    is minimized uniquely at $\boldsymbol{\Sigma} =\boldsymbol{A}$.
+
+### Conditional Negative Definite
+
+Definition (Conditionally negative definite)
+: A symmetric matrix $\boldsymbol{A}$ is called conditionally negative definite (c.n.d.) if $\boldsymbol{c}^{\top} \boldsymbol{A}  \boldsymbol{c} \le 0$ for all $\boldsymbol{c}:\boldsymbol{1} ^{\top} \boldsymbol{c} = 0$.
+
+Theorem (Schoenberg)
+: A symmetric matrix $\boldsymbol{A}$ with zero diagonal entires is c.n.d. if and only if it can be realized as the square of the mutual Euclidean distance between points: $a_{ij} = \left\| \boldsymbol{x}_i - \boldsymbol{x}_j  \right\|$ for $i, j= 1, \ldots, n$ and some $\boldsymbol{x}_i \in \mathbb{R} ^d$
+
 
 ## Matrix Differentiation
 

@@ -247,13 +247,20 @@ Adjacency matrix can also store weights.
 Adjacency matrix with weights
 :::
 
+(graph-laplacian)=
 ### Laplacian Matrix
 
 Let $\boldsymbol{D} = \operatorname{diag}\left( \boldsymbol{A} \boldsymbol{1}  \right)$ be a diagonal matrix containing the degrees. The laplacian matrix of graph $G$ is a $N_v \times N_v$ matrix defined as
 
-$$
-\boldsymbol{L} = \boldsymbol{D} - \boldsymbol{A}  
-$$
+$$\begin{aligned}
+\boldsymbol{L}
+&= \boldsymbol{D} - \boldsymbol{A}  \\
+[\boldsymbol{L} ]_{ij}&= \left\{\begin{array}{ll}
+\operatorname{deg}\left(v_{i}\right) & \text { diagonal } i \\
+-1 & \text { off-diagonal and } (i, j) \in E \\
+0 & \text { otherwise }
+\end{array}\right. \\
+\end{aligned}$$
 
 It is in analogy to the Laplacian from multivariable calculus (the sum of second partial derivatives of a function), in the sense that
 
@@ -264,10 +271,94 @@ $$
 The closer this value is to zero, the more similar are the elements of $\boldsymbol{x}$ at adjacent vertices in $V$. Hence, the Laplacian is useful in providing some sense of the 'smoothness' of functions on a graph $G$, with respect to the connectivity of $G$.
 
 Properties
-- $\boldsymbol{L}$ is positive semi-definite
-- $\boldsymbol{L} \boldsymbol{1} = \boldsymbol{0}$, i.e. its smallest eigenvalue is 0, with an eigenvector of $\boldsymbol{1}$. The second smallest eigenvalue is non-trivial, and the arguably most important of all of the eigenvalues, which gives information about its connectivity.
+- $\boldsymbol{L}$ is positive semi-definite, as seen from the above equation
+- $\boldsymbol{L} \boldsymbol{1} = \boldsymbol{0}$, i.e. its smallest eigenvalue is 0, with an eigenvector of $\boldsymbol{1}$. The second smallest eigenvalue is non-trivial, and the arguably most important of all of the eigenvalues, which gives information about its connectivity. In short, the multiplicity of $0$ equals the number of connected components in $G$.
+- The equation above can also be written as
 
+  $$
+  \boldsymbol{x} ^{\top} \boldsymbol{L} \boldsymbol{x} = \frac{1}{2} \sum _{i,j = 1}^n (x_i - x_j)^2
+  $$
 
+  where the range of summation changes from $E$ to $[n] \times [n]$, and there is an additional coefficient $\frac{1}{2}$.
+
+:::{admonition,note,dropdown} More definitions of graph Laplacian
+
+- If edge weights are given, another way to define the graph Laplacian by replacing $\boldsymbol{A}$ by $\boldsymbol{W}$ is defined as:
+
+  $$
+  \boldsymbol{L} _W = \boldsymbol{D} _W - \boldsymbol{W}
+  $$
+
+  where $\boldsymbol{D} _W = \boldsymbol{W} \boldsymbol{1}$. The corresponding equation becomes
+
+  $$
+  \boldsymbol{x} ^{\top} \boldsymbol{L} _W \boldsymbol{x}  = \frac{1}{2}  \sum _{i,j = 1}^n w_{ij} (x_i - x_j)^2
+  $$
+
+  To prove it (and the equations above), use
+
+  $$
+  \begin{aligned}
+  \sum_{i, j} w_{i j}\left(x_{i}-x_{j}\right)^{2} &=\sum_{i, j} w_{i j} x_{i}^{2}+\sum_{i, j} w_{i j} x_{j}^{2}-2 \sum_{i, j} w_{i j} x_{i} x_{j} \\
+  &=\sum_{i} d_{W, i} x_{i}^{2}+\sum_{j} d_{W, j} x_{j}^{2}-2 \sum_{i, j} w_{i j} x_{i} x_{j} \\
+  &=2 \boldsymbol{x}^{\top} \boldsymbol{D}_W \boldsymbol{x} -2 \boldsymbol{x}^{\top} \boldsymbol{W} \boldsymbol{x} \\
+  &=2 \boldsymbol{x}^{\top}(\boldsymbol{D}_W-\boldsymbol{W}) \boldsymbol{x} \\
+  &=2 \boldsymbol{x}^{\top} \boldsymbol{L}_W \boldsymbol{x}  .
+  \end{aligned}
+  $$
+
+- The symmetric normalized Laplacian is defined as
+
+  $$\begin{aligned}
+  \boldsymbol{L} ^\mathrm{sym}
+  &= \boldsymbol{D} ^{-1/2} \boldsymbol{L} \boldsymbol{D} ^{-1/2} \\
+  &= \boldsymbol{I} - \boldsymbol{D} ^{-1/2} \boldsymbol{A} \boldsymbol{D} ^{-1/2} \\
+  [\boldsymbol{L} ^\mathrm{sym}]_{ij}&= \left\{\begin{array}{ll}
+  1 & \text { diagonal and } \operatorname{deg}\left(v_{i}\right) \neq 0 \\
+  -\frac{1}{\sqrt{\operatorname{deg}\left(v_{i}\right) \operatorname{deg}\left(v_{j}\right)}} & \text { off-diagonal and } (i, j) \in E\\
+  0 & \text { otherwise. }
+  \end{array}\right.\\
+  \end{aligned}$$
+
+- The random-walk normalized Laplacian matrix is defined as
+
+  $$\begin{aligned}
+  \boldsymbol{L} ^\mathrm{rw}
+  &= \boldsymbol{D} ^{-1} \boldsymbol{L} \\
+  &= \boldsymbol{I} - \boldsymbol{D} ^{-1} \boldsymbol{A} \\
+  [\boldsymbol{L} ^\mathrm{rw}]_{ij}&= \left\{\begin{array}{ll}
+  1 & \text { if } i=j \text { and } \operatorname{deg}\left(v_{i}\right) \neq 0 \\
+  -\frac{1}{\operatorname{deg}\left(v_{i}\right)} & \text { if } i \neq j \text { and } v_{i} \text { is adjacent to } v_{j} \\
+  0 & \text { otherwise. }
+  \end{array}\right.\\
+  \end{aligned}$$
+
+  Note that $L^\mathrm{rw}$ and $L^\mathrm{sym}$ are similar:
+
+  $$
+  \underbrace{\boldsymbol{D}^{-1} \boldsymbol{L}}_{\boldsymbol{L}_{\mathrm\mathrm{rw}}}=\underbrace{\boldsymbol{D}^{-1 / 2}}_{\boldsymbol{P}^{-1}} \underbrace{\boldsymbol{D}^{-1 / 2} \boldsymbol{L} \boldsymbol{D}^{-1 / 2}} \underbrace{\boldsymbol{D}^{1 / 2}}_{\boldsymbol{L}_{\mathrm\mathrm{sym}}} \cdot
+  $$
+
+  which implies that
+  - both matrices have the same eigenvalues
+
+    $$
+    0=\lambda_{1} \leq \lambda_{2} \leq \cdots \leq \lambda_{n}
+    $$
+
+    Additionally, it can be shown that the multiplicity of the zero eigenvalue is also equal to the number of connected components in the graph.
+
+  - a vector $\boldsymbol{v}$ is an eigenvector of $\boldsymbol{L} ^\mathrm{rw}$ if and only if the vector $\boldsymbol{D} ^{1/2}\boldsymbol{v}$ is an eigenvector of $\boldsymbol{L} ^\mathrm{sym}$.
+
+    $$
+    \underbrace{\boldsymbol{D}^{-1} \boldsymbol{L}}_{\boldsymbol{L}_{\mathrm\mathrm{rw}}} \boldsymbol{v}=\lambda \boldsymbol{v} \Longleftrightarrow \underbrace{\boldsymbol{D}^{-1 / 2} \boldsymbol{L} \boldsymbol{D}^{-1 / 2}}_{\boldsymbol{L}_{\mathrm\mathrm{sym}}} \boldsymbol{D}^{1 / 2} \boldsymbol{v}=\lambda \boldsymbol{D}^{1 / 2} \boldsymbol{v} .
+    $$
+
+    In particular, for the eigenvalue 0, the associated eigenvectors for $L^\mathrm{rw}$ and $L^\mathrm{sym}$ are $\boldsymbol{1}$ and $\boldsymbol{D} ^{1/2}\boldsymbol{1}$ respectively.
+
+- The weighted analogies for $\boldsymbol{L} ^\mathrm{sym}$ and $\boldsymbol{L} ^\mathrm{rw}$ are defined accordingly.
+
+:::
 
 ### Incidence Matrix
 

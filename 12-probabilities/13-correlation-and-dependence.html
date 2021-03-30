@@ -115,8 +115,8 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../11-math/20-fields-and-vector-spaces.html">
-     Fields and Vector Spaces
+    <a class="reference internal" href="../11-math/20-vector-spaces.html">
+     Vector Spaces
     </a>
    </li>
    <li class="toctree-l2">
@@ -171,6 +171,11 @@
    <li class="toctree-l2">
     <a class="reference internal" href="90-multivariate-notations.html">
      Multivariate Notations
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="91-exponential-families.html">
+     Exponential Families
     </a>
    </li>
    <li class="toctree-l2">
@@ -836,8 +841,13 @@
       </a>
      </li>
      <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#spearman-correlation-coefficient">
-       Spearman Correlation Coefficient
+      <a class="reference internal nav-link" href="#spearman-s-rank-correlation-coefficient">
+       Spearman’s Rank Correlation Coefficient
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#kendall-s-rank-correlation-coefficient">
+       Kendall’s Rank Correlation Coefficient
       </a>
      </li>
     </ul>
@@ -907,7 +917,8 @@
 <h2>Definitions<a class="headerlink" href="#definitions" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="correlation">
 <h3>Correlation<a class="headerlink" href="#correlation" title="Permalink to this headline">¶</a></h3>
-<p>The correlation of two random variables measures how two or more variables are related or associated to one another. There are several correlation coefficients, and the most familiar one is Pearson correlation coefficient.</p>
+<p>The correlation of two random variables measures how two or more variables are related or associated to one another. There are several correlation coefficients, and the most familiar one is Pearson correlation coefficient. We will also cover some rank correlation coefficients. Besides, mutual information can also be applied to measure association between two variables, given their distribution functions.</p>
+<p>Note that different correlation coefficients can give different values for the same sample of data.</p>
 <div class="section" id="pearson-correlation-coefficient">
 <h4>Pearson Correlation Coefficient<a class="headerlink" href="#pearson-correlation-coefficient" title="Permalink to this headline">¶</a></h4>
 <p>It is defined for two continuous variables <span class="math notranslate nohighlight">\(X,Y\)</span> and only measure the <strong>linear relationship</strong> between them.</p>
@@ -916,7 +927,7 @@
 \rho
 = \frac{\operatorname{Cov}\left( X, Y \right)}{\sqrt{\operatorname{Var}\left( X \right)\operatorname{Var}\left( Y \right)}}
 = \frac{\sigma_{X,Y}}{\sigma_X \sigma_Y}
-= \frac{\mathrm{E}\left[\left(X-\mu_{X}\right)\left(Y-\mu_{Y}\right)\right]}{\sigma_{X} \sigma_{Y}}
+= \frac{\operatorname{\mathbb{E}}\left[\left(X-\mu_{X}\right)\left(Y-\mu_{Y}\right)\right]}{\sigma_{X} \sigma_{Y}}
 \]</div>
 <p>If <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span> are more likely to have values larger or smallerthan their means <span class="math notranslate nohighlight">\(\mu_X, \mu_Y\)</span> concurrently, then the product <span class="math notranslate nohighlight">\(\left(X-\mu_{X}\right)\left(Y-\mu_{Y}\right)\)</span> is more likely to be positive, which leads to a positive value of the correlation coefficient. On the other hand, the correlation coefficient is more likely to be negative.</p>
 <p>By the Cauchy-Schwarz inequality we have</p>
@@ -946,8 +957,8 @@ r_{x y} &amp;=\frac{\sum x_{i} y_{i}-n \bar{x} \bar{y}}{n s_{x}^{\prime} s_{y}^{
 \end{aligned}
 \end{split}\]</div>
 </div>
-<div class="section" id="spearman-correlation-coefficient">
-<h4>Spearman Correlation Coefficient<a class="headerlink" href="#spearman-correlation-coefficient" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="spearman-s-rank-correlation-coefficient">
+<h4>Spearman’s Rank Correlation Coefficient<a class="headerlink" href="#spearman-s-rank-correlation-coefficient" title="Permalink to this headline">¶</a></h4>
 <p>Spearman’s rank correlation is more robust than Pearson’s to capture nonlinear relationships. In fact, it assesses monotonic relationships. For a sample of <span class="math notranslate nohighlight">\(n\)</span> scores <span class="math notranslate nohighlight">\(X_i, Y_i\)</span>, they are first converted to ranks <span class="math notranslate nohighlight">\(\operatorname{rg}_{X_i}, \operatorname{rg}_{Y_i}\)</span>, and the Spearman correlation coefficient is defined as the Pearson correlation coefficient between the rank variables.µ</p>
 <div class="math notranslate nohighlight">
 \[
@@ -964,10 +975,38 @@ r_{s}=1-\frac{6 \sum_i d_{i}^{2}}{n\left(n^{2}-1\right)}
 <li><p>If two variables are monotonically related (even if their relationship is not linear), then <span class="math notranslate nohighlight">\(d_i = 0\)</span> for all <span class="math notranslate nohighlight">\(i\)</span>, and therefore <span class="math notranslate nohighlight">\(r_s = 1\)</span>. For instance, <span class="math notranslate nohighlight">\(X\sim U(-1,1), Y=X^3\)</span>.</p></li>
 <li><p>If two variables are inversely monotonically related, then <span class="math notranslate nohighlight">\(d_i = n-1, n-3, \ldots, 3-n, 1-n\)</span> and <span class="math notranslate nohighlight">\(\sum_i d_i ^2 = \frac{1}{3} n (n^2-1)\)</span>, and therefore <span class="math notranslate nohighlight">\(r_s = 1-2 = -1\)</span></p></li>
 </ul>
-<div class="admonition seealso">
-<p class="admonition-title">See also</p>
-<p>Mutual information can also be applied to measure association between two variables, given their distribution functions.</p>
+<p>For bivariate continuous random vector <span class="math notranslate nohighlight">\((X, Y)\)</span> with joint distribution <span class="math notranslate nohighlight">\(F(x, y)\)</span> and marginals <span class="math notranslate nohighlight">\(F_X(x), F_Y(y)\)</span>, Spearman’s <span class="math notranslate nohighlight">\(\rho\)</span> is the correlation of <span class="math notranslate nohighlight">\(F_X (X)\)</span> and <span class="math notranslate nohighlight">\(F_Y (Y)\)</span></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\rho_{s}
+&amp;=\operatorname{Corr}\left(F_X\left(X\right), F_Y\left(Y\right)\right) \\
+&amp;= 12 \iint_{\mathbb{R}^{2}} F_X\left(x\right) F_Y\left(y\right) \mathrm{~d} F\left(x, y\right)-3 \\
+\end{aligned}\end{split}\]</div>
 </div>
+<div class="section" id="kendall-s-rank-correlation-coefficient">
+<h4>Kendall’s Rank Correlation Coefficient<a class="headerlink" href="#kendall-s-rank-correlation-coefficient" title="Permalink to this headline">¶</a></h4>
+<p>We first define concordance. For observations <span class="math notranslate nohighlight">\((x_i, y_i), i = 1, 2, \ldots, n\)</span>, we consider all <span class="math notranslate nohighlight">\(\frac{1}{2}n(n-1)\)</span> pairs <span class="math notranslate nohighlight">\(\left\{ (x_i, y_i), (x_j, y_j) \right\}\)</span> with <span class="math notranslate nohighlight">\(i &lt; j\)</span>.</p>
+<p>A pair is called</p>
+<ul class="simple">
+<li><p>concordant if <span class="math notranslate nohighlight">\((x_i - x_j)(y_i - y_j) &gt; 0\)</span></p></li>
+<li><p>discordant otherwise</p></li>
+</ul>
+<p>Kendall’s tau <span class="math notranslate nohighlight">\(\tau\)</span> is defined as</p>
+<div class="math notranslate nohighlight">
+\[
+\tau=\frac{n_{c}-n_{d}}{\frac{1}{2} n(n-1)} \in [-1,1]
+\]</div>
+<p>where</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(n_c\)</span> is the number of concordant pairs</p></li>
+<li><p><span class="math notranslate nohighlight">\(n_d\)</span> is the number of discordant pairs</p></li>
+</ul>
+<p>Intuitively, the Kendall correlation between two variables will be high when observations have a similar rank (i.e. relative position label of the observations within the variable: 1st, 2nd, 3rd, etc.) between the two variables, and low when observations have a dissimilar rank between the two variables.</p>
+<p>For (continuous) bivariate random vectors <span class="math notranslate nohighlight">\((X_1, Y_1)\)</span> and <span class="math notranslate nohighlight">\((X_2, Y_2)\)</span> with the same distribution function, Kendall’s tau <span class="math notranslate nohighlight">\(\tau\)</span> can be defined as</p>
+<div class="math notranslate nohighlight">
+\[
+\tau=\operatorname{\mathbb{P} }\left[\left(X_{1}-X_{2}\right)\left(Y_{1}-Y_{2}\right)&gt;0\right]-\operatorname{\mathbb{P}} \left[\left(X_{1}-X_{2}\right)\left(Y_{1}-Y_{2}\right)&lt;0\right]
+\]</div>
 </div>
 </div>
 <div class="section" id="correlated">
@@ -1002,7 +1041,7 @@ f_{X\mid Y}(x\mid y) = \frac{f_{X,Y}(x,y)}{f_Y(y)}  = f_X(x)
 <h2>Comparison<a class="headerlink" href="#comparison" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="independent-rightarrow-uncorrelated">
 <h3>Independent <span class="math notranslate nohighlight">\(\Rightarrow\)</span> Uncorrelated<a class="headerlink" href="#independent-rightarrow-uncorrelated" title="Permalink to this headline">¶</a></h3>
-<p>If two random variables are independent, then <span class="math notranslate nohighlight">\(\operatorname{E}\left( XY \right) = \operatorname{E}\left( X \right) \operatorname{E}\left( Y \right)\)</span>, <span class="math notranslate nohighlight">\(\operatorname{Cov}\left( X,Y \right) = 0\)</span>, i.e., they are uncorrelated.</p>
+<p>If two random variables are independent, then <span class="math notranslate nohighlight">\(\operatorname{\mathbb{E}}\left( XY \right) = \operatorname{\mathbb{E}}\left( X \right) \operatorname{\mathbb{E}}\left( Y \right)\)</span>, <span class="math notranslate nohighlight">\(\operatorname{Cov}\left( X,Y \right) = 0\)</span>, i.e., they are uncorrelated.</p>
 </div>
 <div class="section" id="uncorrelated-not-rightarrow-independent">
 <h3>Uncorrelated <span class="math notranslate nohighlight">\(\not \Rightarrow\)</span> Independent<a class="headerlink" href="#uncorrelated-not-rightarrow-independent" title="Permalink to this headline">¶</a></h3>
@@ -1011,9 +1050,9 @@ f_{X\mid Y}(x\mid y) = \frac{f_{X,Y}(x,y)}{f_Y(y)}  = f_X(x)
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
 \operatorname{Cov}\left( X, Y \right)  
-&amp;= \operatorname{E}\left( XY \right) - \operatorname{E}\left( X \right) \operatorname{E}\left( Y \right)   \\
-&amp;= \operatorname{E}\left( X \left\vert X \right\vert \right) - \operatorname{E}\left( X \right) \operatorname{E}\left( \left\vert X \right\vert \right)\\
-&amp;= \operatorname{E}\left( X^2 \right)\cdot \frac{1}{2} + \operatorname{E}\left( -X^2 \right)\cdot \frac{1}{2} - 0 \cdot \frac{1}{2} \\
+&amp;= \operatorname{\mathbb{E}}\left( XY \right) - \operatorname{\mathbb{E}}\left( X \right) \operatorname{\mathbb{E}}\left( Y \right)   \\
+&amp;= \operatorname{\mathbb{E}}\left( X \left\vert X \right\vert \right) - \operatorname{\mathbb{E}}\left( X \right) \operatorname{\mathbb{E}}\left( \left\vert X \right\vert \right)\\
+&amp;= \operatorname{\mathbb{E}}\left( X^2 \right)\cdot \frac{1}{2} + \operatorname{\mathbb{E}}\left( -X^2 \right)\cdot \frac{1}{2} - 0 \cdot \frac{1}{2} \\
 &amp; = 0
 \end{align}\end{split}\]</div>
 <p>so that <span class="math notranslate nohighlight">\(\rho(X,Y) = 0\)</span></p>
@@ -1068,10 +1107,10 @@ f_{X\mid Y}(x\mid y) = \frac{f_{X,Y}(x,y)}{f_Y(y)}  = f_X(x)
 <p>Hence</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
-    \mathrm{P}(X=1) &amp;= p\\
-    \mathrm{P}(Y=1) &amp;= q\\
+    \operatorname{\mathbb{P}}(X=1) &amp;= p\\
+    \operatorname{\mathbb{P}}(Y=1) &amp;= q\\
     \end{align}\end{split}\]</div>
-<p>Suppose <span class="math notranslate nohighlight">\(\mathrm{P}(X=1, Y=1)=a\)</span>, then the contingency table is</p>
+<p>Suppose <span class="math notranslate nohighlight">\(\operatorname{\mathbb{P}}(X=1, Y=1)=a\)</span>, then the contingency table is</p>
 <table class="colwidths-auto table">
 <thead>
 <tr class="row-odd"><th class="text-align:center head"><p><span class="math notranslate nohighlight">\(X \ \backslash \ Y\)</span></p></th>
@@ -1111,19 +1150,19 @@ f_{X\mid Y}(x\mid y) = \frac{f_{X,Y}(x,y)}{f_Y(y)}  = f_X(x)
 <p>The required answer is</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
-    p_1&amp;= \mathrm{P}(\text{raining on weekend})  \\
-    &amp; = 1 - \mathrm{P}(X=0, Y=0)  \\
+    p_1&amp;= \operatorname{\mathbb{P}}(\text{raining on weekend})  \\
+    &amp; = 1 - \operatorname{\mathbb{P}}(X=0, Y=0)  \\
      &amp; = p+q-a \\
      &amp; \in [\max(p,q), \min(p+q,1)] \\
-    p_2 &amp;= \mathrm{P}(\text{raining on either Saturday or Sunday})  \\
-    &amp; = \mathrm{P}(X=1, Y=0) + \mathrm{P}(X=0, Y=1)  \\
+    p_2 &amp;= \operatorname{\mathbb{P}}(\text{raining on either Saturday or Sunday})  \\
+    &amp; = \operatorname{\mathbb{P}}(X=1, Y=0) + \operatorname{\mathbb{P}}(X=0, Y=1)  \\
      &amp; = p+q-2a \\
      &amp; \in [\vert p-q\vert, \min(p+q, 2-p-q)]
     \end{align}\end{split}\]</div>
 </div>
 </li>
 <li><p>(Expected Value of the Maximum of Two Uniform Random Variables)</p>
-<p><em>Suppose <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span> are two uniformly distributed random variables over the interval <span class="math notranslate nohighlight">\([0,1]\)</span>. What is the expected value <span class="math notranslate nohighlight">\(\mathrm{E}[\max(X,Y)]\)</span>?</em></p>
+<p><em>Suppose <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span> are two uniformly distributed random variables over the interval <span class="math notranslate nohighlight">\([0,1]\)</span>. What is the expected value <span class="math notranslate nohighlight">\(\operatorname{\mathbb{E}}[\max(X,Y)]\)</span>?</em></p>
 <div class="dropdown seealso admonition">
 <p class="admonition-title"> <em>Proof</em></p>
 <p>Let <span class="math notranslate nohighlight">\(Z=\max(X,Y)\)</span>. Since there is no dependence specified, we start from the special cases.</p>
@@ -1131,37 +1170,37 @@ f_{X\mid Y}(x\mid y) = \frac{f_{X,Y}(x,y)}{f_Y(y)}  = f_X(x)
 <li><p>If <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span> are independent, then</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
-        \mathrm{P}(Z\le z) &amp;= \mathrm{P}(\max (X, Y) \le z) \\
-        &amp;=\mathrm{P}(X \leqslant z) \mathrm{P}(Y \leqslant z) \\
-        &amp;= z^2 \\
-        \mathrm{E}(Z) &amp;= \int_{0}^{1}\mathrm{P}(Z\ge z)\mathrm{d}z \\
-         &amp;= \int_{0}^{1}\left(1-z^{2}\right) \mathrm{d}z \\
-        &amp;=\frac{2}{3}
-        \end{align}\end{split}\]</div>
-<p>Another way without finding the cumulative distribution function <span class="math notranslate nohighlight">\(\mathrm{P}\left( Z\le z \right)\)</span>:</p>
+      \operatorname{\mathbb{P}}(Z\le z) &amp;= \operatorname{\mathbb{P}}(\max (X, Y) \le z) \\
+      &amp;=\operatorname{\mathbb{P}}(X \leqslant z) \operatorname{\mathbb{P}}(Y \leqslant z) \\
+      &amp;= z^2 \\
+      \operatorname{\mathbb{E}}(Z) &amp;= \int_{0}^{1}\operatorname{\mathbb{P}}(Z\ge z)\mathrm{d}z \\
+       &amp;= \int_{0}^{1}\left(1-z^{2}\right) \mathrm{d}z \\
+      &amp;=\frac{2}{3}
+      \end{align}\end{split}\]</div>
+<p>Another way without finding the cumulative distribution function <span class="math notranslate nohighlight">\(\operatorname{\mathbb{P}}\left( Z\le z \right)\)</span>:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
-        \begin{aligned}
-        \mathrm{E}(\max (x, y)) &amp;=\int_{-\infty}^{\infty} \int_{-\infty}^{\infty} \max (x, y) p(x, y) \,\mathrm{d}x \,\mathrm{d}y \\
-        &amp;=\int_{0}^{1} \int_{0}^{1} \max (x, y) \,\mathrm{d}x \,\mathrm{d}y \\
-        &amp;=\int_{0}^{1} \int_{0}^{x} x \,\mathrm{d}y \,\mathrm{d}x+\int_{0}^{1} \int_{0}^{y} y \,\mathrm{d}x \,\mathrm{d}y \\
-        &amp;=\int_{0}^{1} x^{2} \,\mathrm{d}x+\int_{0}^{1} y^{2} \,\mathrm{d}y \\
-        &amp;=\left[\frac{x^{3}}{3}\right]_{0}^{1}+\left[\frac{y^{3}}{3}\right]_{0}^{1} \\
-        &amp;=\frac{1}{3}+\frac{1}{3} \\
-        &amp;=\frac{2}{3}
-        \end{aligned}
-        \end{split}\]</div>
+      \begin{aligned}
+      \operatorname{\mathbb{E}}(\max (x, y)) &amp;=\int_{-\infty}^{\infty} \int_{-\infty}^{\infty} \max (x, y) p(x, y) \,\mathrm{d}x \,\mathrm{d}y \\
+      &amp;=\int_{0}^{1} \int_{0}^{1} \max (x, y) \,\mathrm{d}x \,\mathrm{d}y \\
+      &amp;=\int_{0}^{1} \int_{0}^{x} x \,\mathrm{d}y \,\mathrm{d}x+\int_{0}^{1} \int_{0}^{y} y \,\mathrm{d}x \,\mathrm{d}y \\
+      &amp;=\int_{0}^{1} x^{2} \,\mathrm{d}x+\int_{0}^{1} y^{2} \,\mathrm{d}y \\
+      &amp;=\left[\frac{x^{3}}{3}\right]_{0}^{1}+\left[\frac{y^{3}}{3}\right]_{0}^{1} \\
+      &amp;=\frac{1}{3}+\frac{1}{3} \\
+      &amp;=\frac{2}{3}
+      \end{aligned}
+      \end{split}\]</div>
 <p>In particular, for <span class="math notranslate nohighlight">\(n\)</span> independent uniform random variables,</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
-        \mathrm{E}(Z) &amp;= \int_{0}^{1}\mathrm{P}(Z\ge z)\mathrm{d}z\\
-        &amp;= \int_{0}^{1}\left(1-z^{n}\right) \mathrm{d}z\\
-        &amp;= \frac{n}{n+1}\\
-        \end{align}\end{split}\]</div>
+      \operatorname{\mathbb{E}}(Z) &amp;= \int_{0}^{1}\operatorname{\mathbb{P}}(Z\ge z)\mathrm{d}z\\
+      &amp;= \int_{0}^{1}\left(1-z^{n}\right) \mathrm{d}z\\
+      &amp;= \frac{n}{n+1}\\
+      \end{align}\end{split}\]</div>
 </li>
 <li><p>If <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span> has the relation <span class="math notranslate nohighlight">\(X=Y\)</span>, then</p>
 <div class="math notranslate nohighlight">
-\[\mathrm{E}(Z)=\mathrm{E}(X)=\frac{1}{2}\]</div>
+\[\operatorname{\mathbb{E}}(Z)=\operatorname{\mathbb{E}}(X)=\frac{1}{2}\]</div>
 <p>In this case</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
@@ -1174,11 +1213,11 @@ f_{X\mid Y}(x\mid y) = \frac{f_{X,Y}(x,y)}{f_Y(y)}  = f_X(x)
 <li><p>If <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span> has the relation <span class="math notranslate nohighlight">\(X+Y=1\)</span>, then by the law of total expectation</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
-        \mathrm{E}(Z) &amp;=\mathrm{E}[\mathrm{E}(Z \,\vert\, X)]\\
-        &amp;=\mathrm{\mathrm{P}\left( X\le \frac{1}{2} \right)} \cdot \mathrm{E}\left( 1-X\,\vert\, X\le \frac{1}{2}  \right) + \mathrm{P}\left( X&gt; \frac{1}{2} \right) \cdot \mathrm{E}\left( X\,\vert\, X &gt; \frac{1}{2}\right)\\
-         &amp;= \frac{1}{2} \times \frac{3}{4}  + \frac{1}{2} \times \frac{3}{4}  \\
-        &amp;=\frac{3}{4}
-        \end{align}\end{split}\]</div>
+      \operatorname{\mathbb{E}}(Z) &amp;=\operatorname{\mathbb{E}}[\operatorname{\mathbb{E}}(Z \,\vert\, X)]\\
+      &amp;=\operatorname{\mathbb{P}}\left( X\le \frac{1}{2} \right) \cdot \operatorname{\mathbb{E}}\left( 1-X\,\vert\, X\le \frac{1}{2}  \right) + \operatorname{\mathbb{P}}\left( X&gt; \frac{1}{2} \right) \cdot \operatorname{\mathbb{E}}\left( X\,\vert\, X &gt; \frac{1}{2}\right)\\
+       &amp;= \frac{1}{2} \times \frac{3}{4}  + \frac{1}{2} \times \frac{3}{4}  \\
+      &amp;=\frac{3}{4}
+      \end{align}\end{split}\]</div>
 <p>In this case</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
@@ -1199,16 +1238,16 @@ f_{X\mid Y}(x\mid y) = \frac{f_{X,Y}(x,y)}{f_Y(y)}  = f_X(x)
 <p>Since</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
-      \operatorname{Var}\left( \sum_i X_i \right)
-      &amp;= \sum_i \operatorname{Var}\left( X_i \right) + \sum_{i=1}^n \sum_{j\ne i}^n \operatorname{Cov}\left( X_i, X_j \right) \\
-      &amp;= n \sigma^2 + n(n-1)\rho\sigma^2 \\
-      \ge 0 \\
-      \end{align}\end{split}\]</div>
+    \operatorname{Var}\left( \sum_i X_i \right)
+    &amp;= \sum_i \operatorname{Var}\left( X_i \right) + \sum_{i=1}^n \sum_{j\ne i}^n \operatorname{Cov}\left( X_i, X_j \right) \\
+    &amp;= n \sigma^2 + n(n-1)\rho\sigma^2 \\
+    &amp;\ge 0 \\
+    \end{align}\end{split}\]</div>
 <p>we have</p>
 <div class="math notranslate nohighlight">
 \[
-      \rho \ge - \frac{1}{n-1}
-      \]</div>
+    \rho \ge - \frac{1}{n-1}
+    \]</div>
 <p>if <span class="math notranslate nohighlight">\(\sigma^2 &gt; 0\)</span>, otherwise <span class="math notranslate nohighlight">\(\rho\)</span> is undefined.</p>
 <p>The lower bound is obtained iff <span class="math notranslate nohighlight">\(\operatorname{Var}\left( \sum_i X_i \right) = 0\)</span>, i.e., <span class="math notranslate nohighlight">\(\sum_i X_i = \text{constant}\)</span> almost surely.</p>
 </div>
