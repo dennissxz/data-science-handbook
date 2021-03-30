@@ -309,10 +309,10 @@ Properties
 - The symmetric normalized Laplacian is defined as
 
   $$\begin{aligned}
-  \boldsymbol{L} ^{sym}
+  \boldsymbol{L} ^\mathrm{sym}
   &= \boldsymbol{D} ^{-1/2} \boldsymbol{L} \boldsymbol{D} ^{-1/2} \\
   &= \boldsymbol{I} - \boldsymbol{D} ^{-1/2} \boldsymbol{A} \boldsymbol{D} ^{-1/2} \\
-  [\boldsymbol{L} ^{sym}]_{ij}&= \left\{\begin{array}{ll}
+  [\boldsymbol{L} ^\mathrm{sym}]_{ij}&= \left\{\begin{array}{ll}
   1 & \text { diagonal and } \operatorname{deg}\left(v_{i}\right) \neq 0 \\
   -\frac{1}{\sqrt{\operatorname{deg}\left(v_{i}\right) \operatorname{deg}\left(v_{j}\right)}} & \text { off-diagonal and } (i, j) \in E\\
   0 & \text { otherwise. }
@@ -322,17 +322,40 @@ Properties
 - The random-walk normalized Laplacian matrix is defined as
 
   $$\begin{aligned}
-  \boldsymbol{L} ^{rw}
+  \boldsymbol{L} ^\mathrm{rw}
   &= \boldsymbol{D} ^{-1} \boldsymbol{L} \\
   &= \boldsymbol{I} - \boldsymbol{D} ^{-1} \boldsymbol{A} \\
-  [\boldsymbol{L} ^{rw}]_{ij}&= \left\{\begin{array}{ll}
+  [\boldsymbol{L} ^\mathrm{rw}]_{ij}&= \left\{\begin{array}{ll}
   1 & \text { if } i=j \text { and } \operatorname{deg}\left(v_{i}\right) \neq 0 \\
   -\frac{1}{\operatorname{deg}\left(v_{i}\right)} & \text { if } i \neq j \text { and } v_{i} \text { is adjacent to } v_{j} \\
   0 & \text { otherwise. }
   \end{array}\right.\\
   \end{aligned}$$
 
-- The weighted analogies for $\boldsymbol{L} ^{sym}$ and $\boldsymbol{L} ^{rw}$ are defined accordingly.
+  Note that $L^\mathrm{rw}$ and $L^\mathrm{sym}$ are similar:
+
+  $$
+  \underbrace{\boldsymbol{D}^{-1} \boldsymbol{L}}_{\boldsymbol{L}_{\mathrm\mathrm{rw}}}=\underbrace{\boldsymbol{D}^{-1 / 2}}_{\boldsymbol{P}^{-1}} \underbrace{\boldsymbol{D}^{-1 / 2} \boldsymbol{L} \boldsymbol{D}^{-1 / 2}} \underbrace{\boldsymbol{D}^{1 / 2}}_{\boldsymbol{L}_{\mathrm\mathrm{sym}}} \cdot
+  $$
+
+  which implies that
+  - both matrices have the same eigenvalues
+
+    $$
+    0=\lambda_{1} \leq \lambda_{2} \leq \cdots \leq \lambda_{n}
+    $$
+
+    Additionally, it can be shown that the multiplicity of the zero eigenvalue is also equal to the number of connected components in the graph.
+
+  - a vector $\boldsymbol{v}$ is an eigenvector of $\boldsymbol{L} ^\mathrm{rw}$ if and only if the vector $\boldsymbol{D} ^{1/2}\boldsymbol{v}$ is an eigenvector of $\boldsymbol{L} ^\mathrm{sym}$.
+
+    $$
+    \underbrace{\boldsymbol{D}^{-1} \boldsymbol{L}}_{\boldsymbol{L}_{\mathrm\mathrm{rw}}} \boldsymbol{v}=\lambda \boldsymbol{v} \Longleftrightarrow \underbrace{\boldsymbol{D}^{-1 / 2} \boldsymbol{L} \boldsymbol{D}^{-1 / 2}}_{\boldsymbol{L}_{\mathrm\mathrm{sym}}} \boldsymbol{D}^{1 / 2} \boldsymbol{v}=\lambda \boldsymbol{D}^{1 / 2} \boldsymbol{v} .
+    $$
+
+    In particular, for the eigenvalue 0, the associated eigenvectors for $L^\mathrm{rw}$ and $L^\mathrm{sym}$ are $\boldsymbol{1}$ and $\boldsymbol{D} ^{1/2}\boldsymbol{1}$ respectively.
+
+- The weighted analogies for $\boldsymbol{L} ^\mathrm{sym}$ and $\boldsymbol{L} ^\mathrm{rw}$ are defined accordingly.
 
 :::
 
