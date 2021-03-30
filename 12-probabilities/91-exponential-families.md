@@ -16,16 +16,15 @@ Power transform
 
 Box-Cox transformation
 
-## Weibull Distribution
+<!-- ## Weibull Distribution -->
 
 ## Multivariate Gaussian
 
 
 ### Definition
 
-Definition
-:  A random vector x is said to have a multivariate normal distribution (multinormal distribution) if **every** linear combination of its components has a univariate normal distribution.
-
+Definition (Multivariate normal)
+: A random vector $\boldsymbol{x}$ is said to have a multivariate normal distribution (multinormal distribution) if **every** linear combination of its components has a univariate normal distribution.
 
 For a multivariate normal distribution $\boldsymbol{x} \sim \mathcal{N}(\boldsymbol{\mu} , \boldsymbol{\Sigma} )$, the probability density function is
 
@@ -105,7 +104,6 @@ Pros
 - Evaluation is convenient
 - Can be convert to product of univariate Gaussians in some rotated space
 - Mixtures of Gaussian are sufficient to approximate a wide range of distributions
-
 - Arbitrary linear combinations of jointly Gaussian variables are also Gaussian
 - Marginals and conditionals of multivariate Gaussians are also Gaussian
 - Sums of many i.i.d. random variables converge to Gaussian variables (Central Limit Theorem)
