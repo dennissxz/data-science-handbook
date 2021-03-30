@@ -370,6 +370,20 @@ $\square$
 :::
 
 
+### Chernoff Bound
+
+Suppose $X_{1}, \cdots, X_{n}$ are independent r.v. with $X_{i} \in[0,1]$. Let $S=\sum_{i} X_{i}$ and $\mu=\mathbb{E}[X]$. Then for $\lambda \in (0,1)$,
+
+$$
+\operatorname{\mathbb{P}}(S>(1+\lambda) \mu)<e^{-\frac{\lambda^{2} \mu}{3}} \qquad \text{(upper tail)}
+$$
+
+and,
+
+$$
+\operatorname{Pr}(S<(1-\lambda) \mu)<e^{-\frac{\lambda^{2} \mu}{2}} \qquad \text{(lower tail)}
+$$
+
 
 
 ### Cauchy-Schewarz Inequality in Probability
