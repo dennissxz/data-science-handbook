@@ -129,7 +129,6 @@ $$
 
 where
 - $s_{jj} = s_j ^2$ is the sample variance of $x_j$
-
 - $s_{kj} = \frac{1}{n-1} \sum_{i=1}^{n}\left(x_{i k}-\bar{x}_{k}\right)\left(x_{i j}-\bar{x}_{j}\right)$ is the sample covariance between $x_k$ and $x_j$
 
 In matrix form,
@@ -149,6 +148,8 @@ $$
 $$
 
 is called the corrected (centered) sums of squares and products matrix (CSSP). One can view it as a multivariate generalization of the corrected (centered) sum of squares $\sum_i \left( x_i - \bar{x} \right)^2$ in the univariate case.
+
+The determinant of the sample covariance $\left\vert \boldsymbol{S}  \right\vert = \operatorname{det} (\boldsymbol{S} )$ is called the generalized sample variance. It changes for scaling of variables like univariate sample covariance.
 
 
 (prob-covariance-matrix-of-two-vectors)=
