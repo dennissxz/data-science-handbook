@@ -172,7 +172,7 @@ Therefore, the maximized variance $\boldsymbol{u} ^\top \boldsymbol{\Sigma} \bol
 Rather than obtaining the principal components sequentially, the principal components and their variances can be obtained simultaneously by solving for the eigenvectors and eigenvalues of $\boldsymbol{\Sigma}$. Its [spectral decomposition](eigen-decomposition) is,
 
 $$
-\boldsymbol{\Sigma}  = \boldsymbol{U} \boldsymbol{\Lambda} \boldsymbol{U} ^\top = \sum_i^p \lambda_i \boldsymbol{u} _i \boldsymbol{u} _i ^\top
+\boldsymbol{\Sigma}  = \boldsymbol{U} \boldsymbol{\Lambda} \boldsymbol{U} ^\top = \sum_i^d \lambda_i \boldsymbol{u} _i \boldsymbol{u} _i ^\top
 $$
 
 where
@@ -213,11 +213,11 @@ where $\boldsymbol{U} _{[:k]}$ means the matrix consisting of the first $k$ colu
     &=\mathrm{E}\left(\boldsymbol{u}_{i}^{\top}(\boldsymbol{x}-\boldsymbol{\mu})(\boldsymbol{x}-\boldsymbol{\mu})^{\top} \boldsymbol{u}_{j}\right) \\
     &=\boldsymbol{u}_{i}^{\top} \boldsymbol{\Sigma} \boldsymbol{u}_{j} \\
     &=\boldsymbol{u}_{i}^{\top} \boldsymbol{U} \boldsymbol{\Lambda} \boldsymbol{U} ^{\top} \boldsymbol{u}_{j} \\
-    &=\left(\boldsymbol{u}_{i}^{\top}\right)\left(\boldsymbol{u}_{1} \boldsymbol{u}_{2} \cdots \boldsymbol{u}_{p}\right) \boldsymbol{\Lambda}\left(\begin{array}{c}
+    &=\left(\boldsymbol{u}_{i}^{\top}\right)\left(\boldsymbol{u}_{1} \boldsymbol{u}_{2} \cdots \boldsymbol{u}_{d}\right) \boldsymbol{\Lambda}\left(\begin{array}{c}
     \boldsymbol{u}_{1}^{\top} \\
     \boldsymbol{u}_{2}^{\top} \\
     \vdots \\
-    \boldsymbol{u}_{p}^{\top}
+    \boldsymbol{u}_{d}^{\top}
     \end{array}\right) \boldsymbol{u}_{j} \\
     &=\boldsymbol{e}_{i}^{\top} \boldsymbol{\Lambda} \boldsymbol{e}_{j} \\
     &=0
@@ -239,32 +239,39 @@ where $\boldsymbol{U} _{[:k]}$ means the matrix consisting of the first $k$ colu
     \end{aligned}$$
     :::
 
-1. The first principal component $Z_1 = \boldsymbol{u} _1 ^\top \boldsymbol{x}$ has the largest variance among all linear combinations of $X_i$'s. The $i=2, \ldots, p$, the $i$-th principal component has the largest variance among all linear combinations of $X_i$'s, which are uncorrelated with the first $(i-1)$ principal components.
+1. The first principal component $Z_1 = \boldsymbol{u} _1 ^\top \boldsymbol{x}$ has the largest variance among all linear combinations of $X_i$'s. Then for $i=2, \ldots, p$, the $i$-th principal component has the largest variance among all linear combinations of $X_i$'s, which are uncorrelated with the first $(i-1)$ principal components.
 
 
 1. The principal component preserve the total variance
 
     $$
-    \sum_{i=1}^{p} \operatorname{Var}\left(Z_{i}\right)=\sum_{i=1}^{p} \operatorname{Var}\left(X_{i}\right)
+    \sum_{i=1}^{d} \operatorname{Var}\left(Z_{i}\right)=\sum_{i=1}^{d} \operatorname{Var}\left(X_{i}\right)
     $$
 
     or
 
     $$
-    \sum_{i=1}^{p} \lambda_{i}=\sum_{i=1}^{p} \sigma_{i i}
+    \sum_{i=1}^{d} \lambda_{i}=\sum_{i=1}^{d} \sigma_{i i}
     $$
 
     :::{admonition,dropdown,seealso} *Proof*
     $$
     \begin{aligned}
-    \sum_{i=1}^{p} \sigma_{i i} &=\operatorname{tr}(\boldsymbol{\Sigma}) \\
-    &=\operatorname{tr}\left(\sum_{i=1}^{p} \lambda_{i} \boldsymbol{u}_{i} \boldsymbol{u}_{i}^{\top}\right) \\
-    &=\sum_{i=1}^{p} \lambda_{i} \operatorname{tr}\left(\boldsymbol{u}_{i} \boldsymbol{u}_{i}^{\top}\right) \\
-    &=\sum_{i=1}^{p} \lambda_{i} \operatorname{tr}\left(\boldsymbol{u}_{i}^{\top} \boldsymbol{u}_{i}\right) \\
-    &=\sum_{i=1}^{p} \lambda_{i}
+    \sum_{i=1}^{d} \sigma_{i i} &=\operatorname{tr}(\boldsymbol{\Sigma}) \\
+    &=\operatorname{tr}\left(\sum_{i=1}^{d} \lambda_{i} \boldsymbol{u}_{i} \boldsymbol{u}_{i}^{\top}\right) \\
+    &=\sum_{i=1}^{d} \lambda_{i} \operatorname{tr}\left(\boldsymbol{u}_{i} \boldsymbol{u}_{i}^{\top}\right) \\
+    &=\sum_{i=1}^{d} \lambda_{i} \operatorname{tr}\left(\boldsymbol{u}_{i}^{\top} \boldsymbol{u}_{i}\right) \\
+    &=\sum_{i=1}^{d} \lambda_{i}
     \end{aligned}
     $$
     :::
+
+1. If the correlation matrix $\boldsymbol{\rho} = \boldsymbol{D}^{-1}\boldsymbol{\Sigma} \boldsymbol{D}^{-1}$ instead of the covariance matrix $\boldsymbol{\Sigma}$ is used, i.e. variables $X_1, X_2, \ldots, X_d$ are standardized, then
+
+
+   $$
+   \sum_i^d \lambda_i = \sum_i^d \sigma_{ii} = \sum_i^d 1 =  d
+   $$
 
 1. The correlation between a principal component $Z_j$ and an original variable $X_i$ is given by
 
@@ -280,7 +287,7 @@ where $\boldsymbol{U} _{[:k]}$ means the matrix consisting of the first $k$ colu
     \operatorname{Cov}\left(X_{i}, Z_{j}\right) &=\operatorname{Cov}\left(X_{i}, \boldsymbol{u}_{j}^{\top} \boldsymbol{x}\right) \\
     &=\operatorname{Cov}\left(\boldsymbol{e}_{i}^{\top} \boldsymbol{x}, \boldsymbol{u}_{j}^{\top} \boldsymbol{x}\right) \\
     &=\boldsymbol{e}_{i}^{\top} \boldsymbol{\Sigma} \boldsymbol{u}_{j} \\
-    &=\boldsymbol{e}_{i}^{\top} \sum_{k=1}^{p} \lambda_{k} \boldsymbol{u}_{k} \boldsymbol{u}_{k}^{\top} \boldsymbol{u}_{j} \\
+    &=\boldsymbol{e}_{i}^{\top} \sum_{k=1}^{d} \lambda_{k} \boldsymbol{u}_{k} \boldsymbol{u}_{k}^{\top} \boldsymbol{u}_{j} \\
     &=\lambda_{j} \boldsymbol{e}_{i}^{\top} \boldsymbol{u}_{j} \boldsymbol{u}_{j}^{\top} \boldsymbol{u}_{j} \\
     &=\lambda_{j} \boldsymbol{e}_{i}^{\top} \boldsymbol{u}_{j} \\
     &=\lambda_{j} u_{i j}
@@ -297,12 +304,7 @@ where $\boldsymbol{U} _{[:k]}$ means the matrix consisting of the first $k$ colu
     \end{align}$$
     :::
 
-1. If the correlation matrix $\boldsymbol{\rho} = \boldsymbol{D}^{-1}\boldsymbol{\Sigma} \boldsymbol{D}^{-1}$ instead of the covariance matrix $\boldsymbol{\Sigma}$ is used, i.e. variables $X_1, X_2, \ldots, X_d$ are standardized, then
 
-
-   $$
-   \sum_i^p \lambda_i = \sum_i^p \sigma_{ii} = d
-   $$
 
 
 ## Tuning
@@ -315,7 +317,7 @@ There are several ways to choose the number of principal components to retain.
 
     $$
     \begin{equation}
-    \frac{\sum_{i=1}^{m} \ell_{i}}{\sum_{i=1}^{d} \ell_{i}} >0.8
+    \frac{\sum_{i=1}^{k} \operatorname{Var}\left( Z_i \right)}{\sum_{i=1}^{d} \operatorname{Var}\left( X_i \right)} >0.8
     \end{equation}
     $$
 
@@ -323,7 +325,7 @@ There are several ways to choose the number of principal components to retain.
 
 1. **Proportion cutoff**
 
-    Select the components whose eigenvalues are greater than a threshold value, say average of eigenvalues; for correlation matrix input, this average is $d^{-1} \sum_{i=1}^{d} \ell_{i}=d^{-1} d=1$ if we use the correlation matrix $\boldsymbol{\rho}$.
+    Select the components whose eigenvalues are greater than a threshold value, say average of eigenvalues; for correlation matrix input, this average is $d^{-1} \sum_{i=1}^{d} \operatorname{Var}\left( Z_i \right)=d^{-1} d=1$ if we use the correlation matrix $\boldsymbol{\rho}$.
 
 1. **Scree plot**
 
@@ -348,6 +350,7 @@ There are several ways to choose the number of principal components to retain.
     $$
 
     If $\boldsymbol{x}$ was centered before PCA, we add the mean back
+
     $$
     \hat{\boldsymbol{x} }=\boldsymbol{\mu} _{\boldsymbol{x}} +\sum_{j=1}^{k}\left(\boldsymbol{u}_{j}^{\top} \boldsymbol{x} \right) \boldsymbol{u} _{j}
     $$
@@ -370,7 +373,7 @@ There are several ways to choose the number of principal components to retain.
 
 ### Geometric Meaning: Direction of Variation
 
-For the distribution of $\boldsymbol{x}$, thelcenter location is determined by $\boldsymbol{\mu} _ \boldsymbol{x}$ and the variation is captured by each principal direction $\boldsymbol{u} _i$
+For the distribution of $\boldsymbol{x}$, thelcenter location is determined by $\boldsymbol{\mu} _ X$ and the variation is captured by each principal direction $\boldsymbol{u} _i$
 
 
 For the multinormal distribution, the family of **contours** of $\boldsymbol{x}$ (on each of which the pdf is a constant) is a family of ellipsoids in the original coordinate system $\boldsymbol{x}$ satisfying the following equation for a
@@ -412,7 +415,7 @@ Reconstruction of digits with mean and scaled principal components [Livescu 2021
 
 The proportion of total variance explained by $Z_i$, which is
 
-$$\frac{\lambda_i}{\sum_{j=1}^p \lambda_j}$$
+$$\frac{\lambda_i}{\sum_{j=1}^d \lambda_j}$$
 
 is considered as a measure of **importance** of $Z_i$ in a more parsimonious description of the system.
 
