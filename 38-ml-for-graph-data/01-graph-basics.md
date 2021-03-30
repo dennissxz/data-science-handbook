@@ -247,6 +247,7 @@ Adjacency matrix can also store weights.
 Adjacency matrix with weights
 :::
 
+(graph-laplacian)=
 ### Laplacian Matrix
 
 Let $\boldsymbol{D} = \operatorname{diag}\left( \boldsymbol{A} \boldsymbol{1}  \right)$ be a diagonal matrix containing the degrees. The laplacian matrix of graph $G$ is a $N_v \times N_v$ matrix defined as
