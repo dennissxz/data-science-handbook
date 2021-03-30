@@ -215,3 +215,5 @@ $$
 for some constant $c$ depending on $x$.
 
 TBC.
+
+reference: [video](https://www.youtube.com/watch?v=EoM_DF3VAO8&list=PL05umP7R6ij2XCvrRzLokX6EoHWaGA2cC&index=21&ab_channel=T%C3%BCbingenMachineLearning)
