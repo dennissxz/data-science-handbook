@@ -23,8 +23,12 @@ Divide the graph into sub-graphs [D. Sontag]
 Formally, we have data points $\boldsymbol{x}_{1}, \ldots, \boldsymbol{x}_{n}$, Consider some similarity measures $s_{i j}$ or dissimilarity measures $d_{ij}$. We create a graph $G=(V,E)$, add one node $v_i$ for each data point $\boldsymbol{x}_i$, and unweighted or weighted edges by some criterions.
 
 - **$\varepsilon$-neighborhood graph**: add edge $(v_i, v_j)$ if $d_{ij} \le \varepsilon$
+  - Advantages: Geometrically motivated, the relationship is naturally symmetric.
+  - Disadvantages: Often leads to graphs with several connected components, difficult to choose $\epsilon$.
 
 - **$k$-NN**: add edge $(v_i,v_j)$ if $v_j$ is a $k$-NN of $v_i$ **or** vice versa, according to $d_{ij}$
+  - Advantages: Easier to choose; does not tend to lead to disconnected graphs.
+  - Disadvantages: Less geometrically intuitive.
 
 - **Mutual $k$-NN**: add edge $(v_i,v_j)$ if $v_i$ is a $k$-NN of $v_j$ **and** vice versa. It works well for sub-graphs with different densities.
 
