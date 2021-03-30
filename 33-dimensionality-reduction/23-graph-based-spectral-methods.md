@@ -74,53 +74,116 @@ Isomap with $d=3,k=2$. The blue line is the real geodesic distance and the red l
 
 ## Laplacian Eigenmaps
 
-[Belkin & Niyogi 2003]
+[[Belkin & Niyogi 2003](https://web.cse.ohio-state.edu/~belkin.8/papers/LEM_NC_03.pdf)]
 
 Unlike isomap where the edge weights are local Euclidean distances, Laplacian eigenmaps define edge weights in another way.
-
-### Objective
-
-1. Define a weight matrix $\boldsymbol{W}$ with pairwise edge weights as
-
-    $$
-    w_{i j}=\left\{\begin{array}{ll}
-    \exp \left(-\left\|\boldsymbol{x}_{i}-\boldsymbol{x}_{j}\right\|^{2} / t\right), & \left\|\boldsymbol{x}_{i}-\boldsymbol{x}_{j}\right\|<\epsilon \\
-    0 & \text { otherwise }
-    \end{array}\right.
-    $$
-
-    where
-
-    - $\epsilon$ is a hyperparameter used to define nearest neighbors (can also use counts)
-    - $t$ is a hyperparameter like temperature.
-
-1. Then we define a diagonal matrix $\boldsymbol{D}$ with $d_{ii} = \sum_j w_{ij}$. This can be seen as the density around the node $i$.
-
-1. Find centered and unit-covariance projections $\boldsymbol{z}_i$ that solve the total projected pairwise distances weighted by $w_{ij}$ and scaled by $d_{ii}d_{jj}$
-
-
-    $$\begin{aligned}
-    \min &\ \sum_{i j} \frac{w_{i j}|| \boldsymbol{z}_{i}-\boldsymbol{z}_{j}||^{2}}{\sqrt{d_{i i} d_{j j}}} \\
-    \text{s.t.} &\ \boldsymbol{Z} \text{ is centered and has unit covariance} \\
-    \end{aligned}$$
 
 
 ### Learning
 
-The solution is given by the $k$ **bottom** eigenvectors of
+1. Construct an graph $G = (V, E)$ from data $\boldsymbol{X}$. Add edge $(i, j)$ if $\boldsymbol{x}_i$ and $\boldsymbol{x}_j$ are close, in the sense that
+   - $\left\| \boldsymbol{x}_i  - \boldsymbol{x}_j  \right\| < \epsilon$, or
+   - $n$-nearest-neighbors
+
+1. Define edge weights as
+
+    $$
+    w_{i j}=\left\{\begin{array}{ll}
+    \exp \left(-\left\|\boldsymbol{x}_{i}-\boldsymbol{x}_{j}\right\|^{2} / t\right), & (i, j) \in E \\
+    0 & \text { otherwise }
+    \end{array}\right.
+    $$
+
+    where $t$ is a hyperparameter like temperature. As $t = \infty$, $w_{ij} = a_{ij}$.
+
+1. Define a diagonal matrix $\boldsymbol{D}$ with $d_{ii} = \sum_j w_{ij}$. This can be seen as the density around the node $i$. The graph Laplacian is $\boldsymbol{L} = \boldsymbol{D} - \boldsymbol{W}$. The $k$-dimensional representation $\boldsymbol{Z}$ is given by the $k$ bottom eigenvectors (excluding the smallest one, which is $\boldsymbol{1}$) for the generalized eigenvector problem
+
+    $$
+    \boldsymbol{L} \boldsymbol{v} = \lambda \boldsymbol{D} \boldsymbol{v}
+    $$
+
+    If $G$ is not connected, run this step for each connected component in $G$.
+
+:::{admonition,dropdown,seealso} *Derivation*
+
+We want to preserve locality: if two data points $\boldsymbol{x}_i , \boldsymbol{x}_j$ are close, then their embeddings $\boldsymbol{z}_i , \boldsymbol{z}_j$ are also close. To ensure this, the loss function is formulated as
 
 $$
-\boldsymbol{L} =\boldsymbol{I}  - \boldsymbol{D} ^{-\frac{1}{2}} \boldsymbol{W}  \boldsymbol{D} ^{-\frac{1}{2}}
+\sum_{i,j=1}^n w_{ij} \left\| \boldsymbol{z}_i - \boldsymbol{z}_j  \right\|  ^2
 $$
 
-excluding the bottom (constant) eigenvector. This is a symmetrized, normalized form of the graph Laplacian $\boldsymbol{D} - \boldsymbol{W}$.
+where $w_{ij}$ measures the closeness of $i$ and $j$ in $\boldsymbol{X}$. If $w_{ij}$ is large, then $\left\| \boldsymbol{z}_i - \boldsymbol{z}_j  \right\|$ is forced to be small.
+
+It can be shown that $\frac{1}{2}$ of this summation equals $\operatorname{tr}\left( \boldsymbol{Z} ^{\top} \boldsymbol{L} \boldsymbol{Z} \right)$. Hence our objective is
+
+$$\begin{aligned}
+\min && \operatorname{tr}\left( \boldsymbol{Z} ^{\top} \boldsymbol{L} \boldsymbol{Z} \right) & &&\\
+\mathrm{s.t.}
+&& \boldsymbol{Z} ^{\top} \boldsymbol{D} \boldsymbol{Z} &= \boldsymbol{I} \\ && \boldsymbol{Z} ^{\top} \boldsymbol{D} \boldsymbol{1} &= \boldsymbol{0} \\
+\end{aligned}$$
+
+The constraint prevents collapse onto a subspace of dimension less than $m-1$. The solution is given by the bottom $k$ eigenvectors (excluding $\boldsymbol{1}$) of the generalized eigenvalue problem
+
+$$
+\boldsymbol{L} \boldsymbol{v} = \lambda \boldsymbol{D} \boldsymbol{v}
+$$
+
+To see why the two (??) constraints come from, we can first see a $k=1$ example, i.e. projection to a line. Suppose the projections are $z_1, \ldots, z_n$, the problem is
+
+$$
+\min _{\boldsymbol{z}} \boldsymbol{z} ^{\top} \boldsymbol{L} \boldsymbol{z}
+$$
+
+Note that there are two issues
+- arbitrary scaling: if $\boldsymbol{z}^*$ is an optimal solution, then a new solution $c\boldsymbol{z}^*$ where $0<c<1$ gives a smaller function value, contradiction.
+- translational invariance: if $\boldsymbol{z} ^*$ is an optimal solution, then a new solution $\boldsymbol{z} ^* + c\boldsymbol{1}$ gives the same function value.
+
+To solve these two issues, we add two constraints $\boldsymbol{z} ^{\top} \boldsymbol{D} \boldsymbol{z} = 1$ and $\boldsymbol{z} ^{\top} \boldsymbol{D} \boldsymbol{1} = 0$ respectively. The second constraint also removes a trivial solution, to be introduced soon. The problem is then
+
+$$\begin{aligned}
+\min && \boldsymbol{z} ^{\top} \boldsymbol{L} \boldsymbol{z}  & &&\\
+\mathrm{s.t.}
+&& \boldsymbol{z} ^{\top} \boldsymbol{D} \boldsymbol{z} &= 1 &&  \\
+&& \boldsymbol{z} ^{\top} \boldsymbol{D} \boldsymbol{1} &= 0 && \\
+\end{aligned}$$
+
+the solution is given by the 2nd smallest eigenvector of the generalized eigenproblem
+
+$$
+\boldsymbol{L} \boldsymbol{v} = \lambda \boldsymbol{D} \boldsymbol{v}
+$$
+
+Note that $\boldsymbol{v} = c\boldsymbol{1}$ is an eigenvector of $\boldsymbol{L}$ but the constraint $\boldsymbol{z} ^{\top} \boldsymbol{D} \boldsymbol{1} =0$ removes that.
+
+To generalize to $k\ge 0$, we have the constraints shown above.
+
+:::
+
+
+:::{admonition,note} Note
+Due to some properties of different Laplacians matrices, the solution can also be found as the $k$ bottom eigenvectors (excluding the smallest one) to the eignproblem $\boldsymbol{L} ^\mathrm{rw} \boldsymbol{v}  = \lambda \boldsymbol{v}$ or $\boldsymbol{L} ^\mathrm{sym} \boldsymbol{v}  = \lambda \boldsymbol{v}$. For details see [graph Laplacians](graph-laplacian).
+:::
+
 
 :::{figure} gb-laplacian-eigenmap-Nt
 <img src="../imgs/gb-laplacian-eigenmap-Nt.png" width = "50%" alt=""/>
 
-Laplacian eigenmap with varing N-nearest-neighbors and temperature $t$ [Livescu 2021]
+Laplacian eigenmap with varing $N$-nearest-neighbors and temperature $t$ [Livescu 2021]
 
 :::
+
+Other formulation: find centered and unit-covariance projections $\boldsymbol{z}_i$ that solve the total projected pairwise distances weighted by $w_{ij}$ and scaled by $d_{ii}d_{jj}$
+
+$$\begin{aligned}
+\min &\ \sum_{i j} \frac{w_{i j}|| \boldsymbol{z}_{i}-\boldsymbol{z}_{j}||^{2}}{\sqrt{d_{i i} d_{j j}}} \\
+\text{s.t.} &\ \boldsymbol{Z} \text{ is centered and has unit covariance} \\
+\end{aligned}$$
+
+The solution $\boldsymbol{Z}$ is given by the $k$ bottom eigenvectors (excluding the smallest one) of the symmetrized normalized Laplacian defined as
+
+$$
+\boldsymbol{L}^{sym} = \boldsymbol{I}  - \boldsymbol{D} ^{-\frac{1}{2}} \boldsymbol{W}  \boldsymbol{D} ^{-\frac{1}{2}}
+$$
 
 
 ## Locally Linear Embedding
