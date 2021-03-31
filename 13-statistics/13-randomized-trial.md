@@ -1,4 +1,5 @@
-# Causality and Randomized Trial
+(rct)=
+# Randomized Controlled Trials
 
 
 ## Rubin Model of Causation
@@ -17,7 +18,7 @@ State $S$
 : The state of the world $S$ for unit $i$ is its treatment status, $S \in {t, c}$
 
 Potential outcomes
-: **Before** treatment is assigned, we can imagine the measure of interest $Y$ for each unit, under both treatment and control, labeled $Y_i^t$ and $Y_i^c$.
+: **Before** treatment is assigned, we can imagine the measure of interest $Y$ for each unit, under both treatment and control, labeled $Y_i^t$ and $Y_i^c$. We assume that $(Y_i^c, Y_i^t) \overset{\text{iid}}{\sim} P$ where $P$ is unknown.
 
 Assignment mechanism
 : is the algorithm that determines whether $i$ receives $t$ or $c$.
@@ -28,7 +29,7 @@ Causal effect (treatment effect)
 $$T_i = Y_i^t - Y_i^c$$
 
 Fundamental problem of causal inference
-: Once the state $S \in {t, c}$ is determined, we observe one outcome $Y_i^t$ or $Y_i^c$. It is impossible to observe the value $Y_i^t$ and $Y_i^c$ for the same unit and, therefore, it is impossible to observe the effect of treatment $t$ versus control $c$ on object $i$.
+: Once the state $S_i \in {t, c}$ is determined, we observe one outcome $Y_i^t$ **or** $Y_i^c$. It is impossible to observe the value $Y_i^t$ and $Y_i^c$ for the same unit and, therefore, it is impossible to observe the effect of treatment $t$ versus control $c$ on object $i$.
 
 Identification problem
 : Because of the fundamental problem of causal inference, we cannot get an unbiased estimate (identify) causal parameters unless the assignment mechanism meets certain conditions.
@@ -36,49 +37,49 @@ Identification problem
 
 ### Statistical Solution
 
-We give up on calculating $T_i = Y_i^t - Y_i^c$, and settle for $d$, the average treatment effect
+We give up on calculating $T_i = Y_i^t - Y_i^c$, and settle for the average treatment effect $\tau$
 
 $$
-d = \operatorname{E}\left( Y^t - Y^c \right) = \operatorname{E}\left( Y^t\right) - \operatorname{E}\left(Y^c \right) = \operatorname{E}\left( T \right)
+\tau := \operatorname{\mathbb{E}}\left( Y^t - Y^c \right) = \operatorname{\mathbb{E}}\left( Y^t\right) - \operatorname{\mathbb{E}}\left(Y^c \right) = \operatorname{\mathbb{E}}\left( T \right)
 $$
 
-Note that we cannot observe $Y^t$ and $Y^c$ at the same time. What we observe is actually $Y^t \mid S=t$ and $Y^c \mid S=c$. Consider the conditional expectations
+Note that we cannot observe $Y^t$ and $Y^c$ at the same time. What we observe is actually $Y_i^t$ if $S_i=t$ and $Y_i^c$ if $S_i=c$. Consider the conditional expectations
 
 $$
-\operatorname{E}\left( Y^t \mid S=t  \right) \text{ and } \operatorname{E}\left( Y^c \mid S=c  \right)
+\operatorname{\mathbb{E}}\left( Y_i^t \mid S_i=t  \right) \text{ and } \operatorname{\mathbb{E}}\left( Y_i^c \mid S_i=c  \right)
 $$
 
-If $S$ is **independent** with $Y^t$ and $Y^c$, then
+If $S_i$ is **independent** with $Y_i^t$ and $Y_i^c$, then
 
 $$\begin{align}
-\operatorname{E}\left( Y^t \mid S=t  \right)  &= \operatorname{E}\left( Y^t \right) \\
-\operatorname{E}\left( Y^c \mid S=c  \right) &= \operatorname{E}\left( Y^c \right)
+\operatorname{\mathbb{E}}\left( Y_i^t \mid S_i=t  \right)  &= \operatorname{\mathbb{E}}\left( Y_i^t \right) = \mathbb{E} (Y^t)\\
+\operatorname{\mathbb{E}}\left( Y_i^c \mid S_i=c  \right) &= \operatorname{\mathbb{E}}\left( Y_i^c \right) = \mathbb{E} (Y^c)
 \end{align}$$
 
 and hence
 
 $$
-d = \operatorname{E}\left( Y^t \mid S=t  \right)  - \operatorname{E}\left( Y^c \mid S=c  \right)
+\tau = \operatorname{\mathbb{E}}\left( Y^t \mid S=t  \right)   - \operatorname{\mathbb{E}}\left( Y^c \mid S=c  \right)  
 $$
 
 Note that we can get unbiased estimators of the conditional expectations
 
 $$\begin{align}
-\hat{\operatorname{E}}\left( Y^t \mid S=t  \right)
- &= \frac{1}{n_t} \sum_{S = t} Y^t \\
-\hat{\operatorname{E}}\left( Y^c \mid S=c  \right)  
-&= \frac{1}{n_c} \sum_{S = c} Y^c
+\widehat{\operatorname{\mathbb{E}}}\left( Y^t \mid S=t  \right)
+&= \frac{1}{n_t} \sum_{i:S_i = t} Y_i^t \\
+\widehat{\operatorname{\mathbb{E}}}\left( Y^c \mid S=c  \right)  
+&= \frac{1}{n_c} \sum_{i:S_i = c} Y_i^c
 \end{align}$$
 
-Therefore, if $S$ is independent with $Y^t$ and $Y^c$, then we have an unbiased estimator for $d$:
+Therefore, if $S$ is independent with $Y^t$ and $Y^c$, then we have an unbiased estimator for $\tau$:
 
 $$\begin{align}
-\hat{d}
- &= \frac{1}{n_t} \sum_{i: S = t} Y^t  - \frac{1}{n_c} \sum_{i: S = c} Y^c \\
-\operatorname{E}\left( \hat{d} \right)&= d
+\hat{\tau}
+&= \frac{1}{n_t} \sum_{i: S_i = t} Y_i^t  - \frac{1}{n_c} \sum_{i: S_i = c} Y_i^c \\
+\operatorname{\mathbb{E}}\left( \hat{\tau} \right)&= \tau
 \end{align}$$
 
-Random assignment of $S$ makes independence (at the sample level) plausible, but not certain
+Random assignment of $S$ makes independence (at the sample level) plausible, but not certain.
 
 ### Example of Assignment Mechanism: Rubin’s Perfect Doctor
 
@@ -98,9 +99,9 @@ Suppose that patients with a particular form of cancer can have surgery ($t$) or
 From the table we have
 
 $$\begin{align}
-\operatorname{E}\left( Y^t \right) &= 44/6\\
-\operatorname{E}\left( Y^c \right)&= 50/6\\
-d&= \operatorname{E}\left( T \right)\\
+\operatorname{\mathbb{E}}\left( Y^t \right) &= 44/6\\
+\operatorname{\mathbb{E}}\left( Y^c \right)&= 50/6\\
+\tau&= \operatorname{\mathbb{E}}\left( T \right)\\
 &= -1
 \end{align}$$
 
@@ -109,21 +110,21 @@ So on average, the treatment is **bad**.
 Now suppose the omnipotent doctor assigns the treatment to those who will **benefit**. As researchers we would see
 
 
-| Person | $Y_i^t$ (Surgery) | $Y_i^c$ (Not) | $T_i$ |
-|--------|----------|-----|-----|
-| A      |    ?     | 12  | $c$  |
-| B      |     ?    | 8   | $c$   |
-| C      | 12       | ?  | $t$   |
-| D      |        ? | 4   | $c$   |
-| E      | 10       |  ?  | $t$    |
-| F      | 11       |   ? | $t$   |
+| Person | $Y_i^t$ (Surgery) | $Y_i^c$ (Not) | $T_i$ | $S_i$ |
+|--------|----------|-----|-- | ---|
+| A      |    ?     | 12  | -4 | $c$  |
+| B      |     ?    | 8   | -7 | $c$   |
+| C      | 12       | ?  | 2 | $t$   |
+| D      |        ? | 4   | -2 | $c$   |
+| E      | 10       |  ?  | 2 | $t$    |
+| F      | 11       |   ? | 3 | $t$   |
 
 and calculate
 
 $$\begin{align}
-\operatorname{E}\left( Y^t \mid S = t\right) &= 33/3\\
-\operatorname{E}\left( Y^c \mid S = c\right)&= 24/3\\
-d & =\operatorname{E}\left( T \right)\\
+\operatorname{\mathbb{E}}\left( Y^t \mid S = t\right) &= 33/3\\
+\operatorname{\mathbb{E}}\left( Y^c \mid S = c\right)&= 24/3\\
+\tau & =\operatorname{\mathbb{E}}\left( T \right)\\
 &= 3
 \end{align}$$
 
