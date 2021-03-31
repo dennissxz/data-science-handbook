@@ -1,21 +1,5 @@
 # Hypothesis Testing
 
-*Explain hypothesis testing related concepts*
-
-<!-- TOC -->
-
-- [Hypothesis Testing](#hypothesis-testing)
-  - [$p$-value](#p-value)
-  - [Type I error and Type II error](#type-i-error-and-type-ii-error)
-    - [Definitions](#definitions)
-    - [Error Control](#error-control)
-  - [Confidence Interval](#confidence-interval)
-  - [Credible Interval](#credible-interval)
-  - [Bonferroni Correction](#bonferroni-correction)
-
-<!-- /TOC -->
-
-
 When we investigate a question of interest, we first formulate a null hypothesis and an alternative hypothesis, denoted as $H_0$ and $H_1$ respectively. For instance,
 
 $$H_0: \theta = \theta_0\quad \text{vs} \quad H_1: \theta > \theta_0$$
@@ -49,7 +33,7 @@ Remember that failing to reject a null hypothesis does not necessarily mean that
 
 After we collected data and find the estimate, we want to know whether the estimate prefer $H_0$ or $H_1$. The $p$-value describe that how likely it is to observe more extreme cases than your current estimate, under the null hypothesis.
 
-$$p\text{-value}=P(\text{more extreme cases of your estimate}\,\vert\, H_0)$$
+$$p\text{-value}=\operatorname{\mathbb{P}}(\text{more extreme cases of your estimate}\,\vert\, H_0)$$
 
 If the $p$-value is small, then it means your current estimate and the more extreme cases are unlikely to be observed under the null. But you do observed it, which implies the null may not hold. Hence, when $p$-value is too small, we reject $H_0$. That is, comparing $p$-value and some threshold can be one of the rejection rules.
 
@@ -62,17 +46,17 @@ The threshold is called significance level, which is the type I error we want to
 
 **Type I error**, aka **size** of a test, denoted $\alpha$, is defined as
 
-$$\alpha = \mathrm{P}\left( H_0 \text{ is rejected} \,\vert\, H_0 \text{ is true}\right) $$
+$$\alpha = \operatorname{\mathbb{P}}\left( H_0 \text{ is rejected} \,\vert\, H_0 \text{ is true}\right) $$
 
 **Type II error**, $\beta$, is defined as
 
-$$\beta = \mathrm{P}\left( H_0 \text{ is not rejected} \,\vert\, H_0 \text{ is false}\right) $$
+$$\beta = \operatorname{\mathbb{P}}\left( H_0 \text{ is not rejected} \,\vert\, H_0 \text{ is false}\right) $$
 
 **Power** of a test is defined as
 
 $$\begin{aligned}
 \text{power}
-&= \mathrm{P}\left( H_0 \text{ is rejected} \,\vert\, H_0 \text{ is false}\right)\\
+&= \operatorname{\mathbb{P}}\left( H_0 \text{ is rejected} \,\vert\, H_0 \text{ is false}\right)\\
 &= 1 - \beta\\
 \end{aligned}$$
 
@@ -84,8 +68,8 @@ Both type I error and type II error are important. We want small $\alpha$ and sm
 
 $$\begin{aligned}
 \text{power}
-&= \mathrm{P}\left(H_{0} \text { is rejected } \mid H_{1} \text { is true }\right) \\
-&= \mathrm{P}\left( T > c\mid H_{1} \text { is true }\right) \\
+&= \operatorname{\mathbb{P}}\left(H_{0} \text { is rejected } \mid H_{1} \text { is true }\right) \\
+&= \operatorname{\mathbb{P}}\left( T > c\mid H_{1} \text { is true }\right) \\
 \end{aligned}$$
 
 Usually the constant $c$ in the rejection rule $T>c$ involves $\alpha$. The distribution of $T$ under $H_1$ depends on the true parameter in $H_1$, and probably sample size $n$. To see their effect, we look at the following examples of $t$-test in simple linear regression.
@@ -97,8 +81,8 @@ Example (Linear regression $t$-test with different $H_1$)
 
   $$\begin{aligned}
   \text{power}
-  &= \mathrm{P}\left(H_{0} \text { is rejected } \mid H_{1} \text { is true }\right) \\
-  &= \mathrm{P}\left( \left\vert T \right\vert > t_{n-2}^{{1-\alpha/2}}\mid H_{1} \text { is true }\right) \\
+  &= \operatorname{\mathbb{P}}\left(H_{0} \text { is rejected } \mid H_{1} \text { is true }\right) \\
+  &= \operatorname{\mathbb{P}}\left( \left\vert T \right\vert > t_{n-2}^{{1-\alpha/2}}\mid H_{1} \text { is true }\right) \\
   &= \text{yellow area to the right of } 2 \text{ and to the left of } -2
   \end{aligned}$$
 
@@ -133,8 +117,8 @@ As discussed above, we first fixed $\alpha$, and then control $\beta$. Take $t$-
 
 $$\begin{aligned}
 \text{power}
-&= \mathrm{P}\left(H_{0} \text { is rejected } \mid H_{1} \text { is true }\right) \\
-&= \mathrm{P}\left( \left\vert T \right\vert > t_{n-2}^{{1-\alpha/2}}\mid H_{1} \text { is true }\right) \\
+&= \operatorname{\mathbb{P}}\left(H_{0} \text { is rejected } \mid H_{1} \text { is true }\right) \\
+&= \operatorname{\mathbb{P}}\left( \left\vert T \right\vert > t_{n-2}^{{1-\alpha/2}}\mid H_{1} \text { is true }\right) \\
 &\ge \text{threshold} \\
 \end{aligned}$$
 

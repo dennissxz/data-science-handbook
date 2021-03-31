@@ -36,10 +36,10 @@ where
 The mean vector of a random vector $\boldsymbol{x}$ is defined as
 
 $$
-\operatorname{E}(\boldsymbol{x})=\left[\begin{array}{c}
-\operatorname{E}\left(x_{1}\right) \\
+\operatorname{\mathbb{E}}(\boldsymbol{x})=\left[\begin{array}{c}
+\operatorname{\mathbb{E}}\left(x_{1}\right) \\
 \vdots \\
-\operatorname{E}\left(x_{p}\right)
+\operatorname{\mathbb{E}}\left(x_{p}\right)
 \end{array}\right]=\left[\begin{array}{c}
 \mu_{1} \\
 \vdots \\
@@ -49,9 +49,9 @@ $$
 
 **Properties**
 
-1. $\operatorname{E}\left( \boldsymbol{a}^{\boldsymbol{\top}} \boldsymbol{x} \right)=\boldsymbol{a}^{\boldsymbol{\top}} \boldsymbol{\mu}$
+1. $\operatorname{\mathbb{E}}\left( \boldsymbol{a}^{\boldsymbol{\top}} \boldsymbol{x} \right)=\boldsymbol{a}^{\boldsymbol{\top}} \boldsymbol{\mu}$
 
-1. $\operatorname{E}\left( \boldsymbol{A x} \right)=\boldsymbol{A} \boldsymbol{\mu}$
+1. $\operatorname{\mathbb{E}}\left( \boldsymbol{A x} \right)=\boldsymbol{A} \boldsymbol{\mu}$
 
 ### Sample Mean Vector
 
@@ -93,9 +93,9 @@ In matrix form,
 $$
 \begin{align}
 \operatorname{Var}(\boldsymbol{x})
-&=\operatorname{E}\left[(\boldsymbol{x}-\operatorname{E}(\boldsymbol{x}))(\boldsymbol{x}-\operatorname{E}(\boldsymbol{x}))^{\top}\right] \\
-&=\operatorname{E}\left(\boldsymbol{x} \boldsymbol{x}^{\top}\right)-\operatorname{E}(\boldsymbol{x}) \operatorname{E}(\boldsymbol{x}) \\
-&=\operatorname{E}\left(\boldsymbol{x} \boldsymbol{x}^{\top}\right)-\mu \mu ^\top
+&=\operatorname{\mathbb{E}}\left[(\boldsymbol{x}-\operatorname{\mathbb{E}}(\boldsymbol{x}))(\boldsymbol{x}-\operatorname{\mathbb{E}}(\boldsymbol{x}))^{\top}\right] \\
+&=\operatorname{\mathbb{E}}\left(\boldsymbol{x} \boldsymbol{x}^{\top}\right)-\operatorname{\mathbb{E}}(\boldsymbol{x}) \operatorname{\mathbb{E}}(\boldsymbol{x}) \\
+&=\operatorname{\mathbb{E}}\left(\boldsymbol{x} \boldsymbol{x}^{\top}\right)-\mu \mu ^\top
 \end{align}
 $$
 
@@ -158,7 +158,7 @@ The determinant of the sample covariance $\left\vert \boldsymbol{S}  \right\vert
 The covariance matrix of two random vectors $\boldsymbol{x} _{p\times 1}, \boldsymbol{y} _{q \times 1}$ is defined as
 
 $$
-\operatorname{Cov}\left( \boldsymbol{x} _{p \times 1}, \boldsymbol{y} _ {q \times 1} \right) = \operatorname{E}\left[(\boldsymbol{x}-\boldsymbol{\mu} _x)(\boldsymbol{y}-\boldsymbol{\mu} _y)^{\top}\right]_{p\times q}
+\operatorname{Cov}\left( \boldsymbol{x} _{p \times 1}, \boldsymbol{y} _ {q \times 1} \right) = \operatorname{\mathbb{E}}\left[(\boldsymbol{x}-\boldsymbol{\mu} _x)(\boldsymbol{y}-\boldsymbol{\mu} _y)^{\top}\right]_{p\times q}
 $$
 
 Note that the shape is $p \times q$, which implies the non-symmetry of covariance matrix

@@ -39,7 +39,7 @@ A Markov chain is **homogeneous** if $\mathbb{P}\left(X_{t+1}=j \mid X_{t}=i\rig
 A Markov chain with state space $V$ and transition matrix $\boldsymbol{P}$ can be represented by a labeled directed graph, where edges are given by transitions with nonzero probability $E = \left\{ (u,v) \mid p_{u,v} >0 \right\}$. Note that self-loops are allowed for $p_{ii} > 0$.
 
 :::{figure} mc-graph
-<img src="../imgs/mc-graph.png" width = "50%" alt=""/>
+<img src="../imgs/mc-graph.png" width = "70%" alt=""/>
 
 Graphical representation of a Markov chain
 :::
@@ -130,7 +130,7 @@ Existence and uniqueness
 
 Let $I_t$ be the number of infected individuals after $t$ minutes. Define a transition matrix $\boldsymbol{P}=\left\{ p_{i,j} \right\}$, where
 
-$$p_{i,j} = \mathrm{P}(I_{t+1}=j\vert I_t=i)$$
+$$p_{i,j} = \operatorname{\mathbb{P}}(I_{t+1}=j\vert I_t=i)$$
 
 It's easy to see that
 
@@ -167,7 +167,7 @@ where $\boldsymbol{e}_1 = [1,0,\ldots,0]$ and $\boldsymbol{p}_{I_{10}} = [p_{1,1
 
 The expected number is
 
-$$\mathrm{E}(I_{10}) = [1,2,3,\ldots, n]^\top\boldsymbol{p}_{I_{10}} $$
+$$\operatorname{\mathbb{E}}(I_{10}) = [1,2,3,\ldots, n]^\top\boldsymbol{p}_{I_{10}} $$
 
 A python script to implement the above steps:
 
@@ -218,7 +218,7 @@ Hence,
 
 $$
 \begin{align}
-\mathrm{E}\left( I_{t+1, j} \right) &= p_{t} \times 1 + (1-p_{t}) \times 0  \\
+\operatorname{\mathbb{E}}\left( I_{t+1, j} \right) &= p_{t} \times 1 + (1-p_{t}) \times 0  \\
 & = p_{t} \\
 \end{align}
 $$
@@ -227,8 +227,8 @@ Therefore, the conditional expectation of the total number of infected individua
 
 $$
 \begin{align}
-\mathrm{E}(I_{t+1}|I_t) & = \mathrm{E}\left( I_t +  \sum_{j=1}^{I_t} I_{t+1,j} \right)\\
-&= I_t + \sum_{j=1}^{I_t} \mathrm{E}\left( I_{t+1, j} \right) \\
+\operatorname{\mathbb{E}}(I_{t+1}|I_t) & = \operatorname{\mathbb{E}}\left( I_t +  \sum_{j=1}^{I_t} I_{t+1,j} \right)\\
+&= I_t + \sum_{j=1}^{I_t} \operatorname{\mathbb{E}}\left( I_{t+1, j} \right) \\
 & = I_t + I_t \times p_t \\
 & = I_t + I_t \times \frac{n-I_t}{n - 1} \\
 \end{align}
@@ -240,32 +240,32 @@ By the law of total expectation,
 
 $$
 \begin{align}
-\mathrm{E}(I_{t+1}) & = \mathrm{E}\left( \mathrm{E}(I_{t+1}|I_t) \right) \\
-& = \mathrm{E}\left(I_t + I_t \times \frac{n-I_t}{n - 1} \right)\\
-& = \frac{2n-1}{n-1}\mathrm{E}\left( I_t \right) - \frac{1}{n-1}\mathrm{E}\left( I_t^2 \right)
+\operatorname{\mathbb{E}}(I_{t+1}) & = \operatorname{\mathbb{E}}\left( \operatorname{\mathbb{E}}(I_{t+1}|I_t) \right) \\
+& = \operatorname{\mathbb{E}}\left(I_t + I_t \times \frac{n-I_t}{n - 1} \right)\\
+& = \frac{2n-1}{n-1}\operatorname{\mathbb{E}}\left( I_t \right) - \frac{1}{n-1}\operatorname{\mathbb{E}}\left( I_t^2 \right)
 \end{align}
 $$
 
 +++
 
-In particular, since $\mathrm{P}(I_1=2\vert I_0=1)=1$, there is no randomness in $I_1$, such that
+In particular, since $\operatorname{\mathbb{P}}(I_1=2\vert I_0=1)=1$, there is no randomness in $I_1$, such that
 
 $$
 \begin{align}
-\mathrm{E}(I_2) &= \mathrm{E}\left( \mathrm{E}(I_2\vert I_1) \right) \\
-&= \mathrm{E}\left(I_1 + I_1 \times \frac{n-I_1}{n - 1}\right)\\
+\operatorname{\mathbb{E}}(I_2) &= \operatorname{\mathbb{E}}\left( \operatorname{\mathbb{E}}(I_2\vert I_1) \right) \\
+&= \operatorname{\mathbb{E}}\left(I_1 + I_1 \times \frac{n-I_1}{n - 1}\right)\\
 & = 2 + 2 \times 998 / 999 \\
 & = 3994/999
 \end{align}
 $$
 
-But when $t\ge 3$, the computation become complicated due to the second-order term $\mathrm{E}\left( I_t^2 \right)$
+But when $t\ge 3$, the computation become complicated due to the second-order term $\operatorname{\mathbb{E}}\left( I_t^2 \right)$
 
-One attempt is to approximate $\mathrm{E}\left( I_t^2 \right)$ by $\left[ \mathrm{E}\left( I_t \right) \right]^2$ such that we have a **recurrence relation**
+One attempt is to approximate $\operatorname{\mathbb{E}}\left( I_t^2 \right)$ by $\left[ \operatorname{\mathbb{E}}\left( I_t \right) \right]^2$ such that we have a **recurrence relation**
 
-$$\mathrm{E}\left( I_{t+1} \right) \approx \frac{2n-1}{n-1}\mathrm{E}\left( I_t \right) - \frac{1}{n-1}\left[ \mathrm{E}\left( I_t \right) \right]^2$$
+$$\operatorname{\mathbb{E}}\left( I_{t+1} \right) \approx \frac{2n-1}{n-1}\operatorname{\mathbb{E}}\left( I_t \right) - \frac{1}{n-1}\left[ \operatorname{\mathbb{E}}\left( I_t \right) \right]^2$$
 
-Note that this will lead to a larger result since $\mathrm{E}\left( I_t^2 \right) - \left[ \mathrm{E}\left( I_t \right) \right]^2 = \mathrm{Var}\left( I_t \right) \ge 0$. But since $\mathrm{Var}\left( I_t \right)$ is small, the positive error is also small.
+Note that this will lead to a larger result since $\operatorname{\mathbb{E}}\left( I_t^2 \right) - \left[ \operatorname{\mathbb{E}}\left( I_t \right) \right]^2 = \mathrm{Var}\left( I_t \right) \ge 0$. But since $\mathrm{Var}\left( I_t \right)$ is small, the positive error is also small.
 
 +++
 
@@ -288,9 +288,9 @@ The result $642.975$ is slightly larger than the result $642.347$ in Solution 1.
 
 If we take a closer look at the recurrence relation, dividing $2n-1$ on both sides gives
 
-$$\frac{\mathrm{E}\left( I_{t+1} \right)}{2n-1} \approx \frac{2n-1}{n-1} \frac{\mathrm{E}\left( I_t \right)}{2n-1} - \frac{2n-1}{n-1}\left[ \frac{\mathrm{E}\left( I_t \right)}{2n-1} \right]^2$$
+$$\frac{\operatorname{\mathbb{E}}\left( I_{t+1} \right)}{2n-1} \approx \frac{2n-1}{n-1} \frac{\operatorname{\mathbb{E}}\left( I_t \right)}{2n-1} - \frac{2n-1}{n-1}\left[ \frac{\operatorname{\mathbb{E}}\left( I_t \right)}{2n-1} \right]^2$$
 
-Let $x_t = \frac{\mathrm{E}\left( I_t \right)}{2n-1}$ then it becomes
+Let $x_t = \frac{\operatorname{\mathbb{E}}\left( I_t \right)}{2n-1}$ then it becomes
 
 $$x_{t+1} \approx 2x_t(1-x_t)$$
 

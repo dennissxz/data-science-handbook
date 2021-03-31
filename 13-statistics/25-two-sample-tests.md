@@ -13,14 +13,14 @@ To model them, we assume
 
 We are interested in comparing the two samples, often by comparing the two means $\mu_X$ and $\mu_Y$.
 
-An unbiased estimator for the difference in mean $\mu_X - \mu_Y$ is $\bar{X} - \bar{Y}$. To provide standard error to this estimator, $Var(\bar{X} - \bar{Y})$ need to be estimated, contigent on sample properties.
+An unbiased estimator for the difference in mean $\mu_X - \mu_Y$ is $\bar{X} - \bar{Y}$. To provide standard error to this estimator, $\operatorname{Var}\left( \bar{X} - \bar{Y} \right)$ need to be estimated, contingent on sample properties.
 
 
 ## Paired
 
 In many studies, the $i$-th measurements in the two samples $x_i$ and $y_i$ actually are related, such as measurements before and after a treatment from the same subject.
 
-When $m = n$ and $Corr(X_i,Y_i) = \rho \ne 0$, very often $\rho >0$. Then,
+When $m = n$ and $\operatorname{Corr}\left( X_i,Y_i \right) = \rho \ne 0$, very often $\rho >0$. Then,
 
 $$
 \begin{aligned}
@@ -51,10 +51,10 @@ $$
 
 ### Normal
 
-If $X \sim N\left(\mu_{X}, \sigma_{X}^{2}\right), Y \sim N\left(\mu_{Y}, \sigma_{Y}^{2}\right)$, then we have the distributions for the sample estimators
+If $X \sim \mathcal{N} \left(\mu_{X}, \sigma_{X}^{2}\right), Y \sim \mathcal{N} \left(\mu_{Y}, \sigma_{Y}^{2}\right)$, then we have the distributions for the sample estimators
 
 $$
-\frac{\bar{D}-\mu_{D}}{\sigma_{D} / \sqrt{n}} \sim N(0,1), \quad \frac{(n-1) S_{D}^{2}}{\sigma_{D}^{2}} \sim \chi_{n-1}^{2}
+\frac{\bar{D}-\mu_{D}}{\sigma_{D} / \sqrt{n}} \sim \mathcal{N}(0,1), \quad \frac{(n-1) S_{D}^{2}}{\sigma_{D}^{2}} \sim \chi_{n-1}^{2}
 $$
 
 In addition, they are independent. By the definition of $t$-distribution, the test statistic
@@ -83,7 +83,7 @@ When the samples are not normally distributed, $t_{n-1}$ can be used as an appro
 When n is large, we may use the Central Limit Theorem,
 
 $$
-\frac{\bar{D}-\mu_{D}}{S_{D} / \sqrt{n}} \overset{\mathcal{D}}{\longrightarrow} N(0,1)
+\frac{\bar{D}-\mu_{D}}{S_{D} / \sqrt{n}} \overset{\mathcal{D}}{\longrightarrow} \mathcal{N}(0,1)
 $$
 
 The asymptotic pivotal property can be used to conduct hypothesis tests.
@@ -138,7 +138,7 @@ When the samples are not normally distributed, $t_{n+m-2}$ distribution can be u
 When **both** $n$ and $m$ are large, we may apply the Central Limit Theorem,
 
 $$
-\frac{(\bar{X}-\bar{Y})-\left(\mu_{X}-\mu_{Y}\right)}{S_{p} \sqrt{\frac{1}{n}+\frac{1}{m}}} \overset{\mathcal{D}}{\longrightarrow} N(0,1)
+\frac{(\bar{X}-\bar{Y})-\left(\mu_{X}-\mu_{Y}\right)}{S_{p} \sqrt{\frac{1}{n}+\frac{1}{m}}} \overset{\mathcal{D}}{\longrightarrow} \mathcal{N}(0,1)
 $$
 
 
@@ -205,7 +205,7 @@ Hence, $T$ is not $t$-distributed.
 If $n$ and $m$ are both large, we can resort to Central Limit Theorem as usual,
 
 $$
-T=\frac{\left( \bar{X}-\bar{Y} \right)-\left(\mu_{X}-\mu_{Y}\right)}{\sqrt{\frac{S_{X}^{2}}{n}+\frac{S_{Y}^{2}}{m}}} \stackrel{\mathcal{D}}{\longrightarrow} N(0,1)
+T=\frac{\left( \bar{X}-\bar{Y} \right)-\left(\mu_{X}-\mu_{Y}\right)}{\sqrt{\frac{S_{X}^{2}}{n}+\frac{S_{Y}^{2}}{m}}} \stackrel{\mathcal{D}}{\longrightarrow} \mathcal{N}(0,1)
 $$
 
 The asymptotic approximation lead to a $(1-\alpha)\%$ confidence interval for the true difference in mean $\mu_X - \mu_Y$
@@ -244,6 +244,6 @@ $$
 
 | Dependency | Test statistic | Normal | Non-normal, large $n, m$ |
 | - | - | - | - |
-| Paired (reduced to a univariate test)| $\frac{\bar{D}-\mu_{D}}{S_{D} / \sqrt{n}}$ | $\sim t_{n-1}$ | $\stackrel{\mathcal{D}}{\longrightarrow} N(0,1)$ |
-| Independent with equal variance | $\frac{(\bar{X}-\bar{Y})-\left(\mu_{X}-\mu_{Y}\right)}{S_{p} \sqrt{\frac{1}{n}+\frac{1}{m}}}$ | $\sim t_{n+m-2}$ | $\stackrel{\mathcal{D}}{\longrightarrow} N(0,1)$ |
+| Paired (reduced to a univariate test)| $\frac{\bar{D}-\mu_{D}}{S_{D} / \sqrt{n}}$ | $\sim t_{n-1}$ | $\stackrel{\mathcal{D}}{\longrightarrow} \mathcal{N}(0,1)$ |
+| Independent with equal variance | $\frac{(\bar{X}-\bar{Y})-\left(\mu_{X}-\mu_{Y}\right)}{S_{p} \sqrt{\frac{1}{n}+\frac{1}{m}}}$ | $\sim t_{n+m-2}$ | $\stackrel{\mathcal{D}}{\longrightarrow} \mathcal{N}(0,1)$ |
 | Independent with unequal variance | $\frac{\left( \bar{X}-\bar{Y} \right)-\left(\mu_{X}-\mu_{Y}\right)}{\sqrt{\frac{S_{X}^{2}}{n}+\frac{S_{Y}^{2}}{m}}}$ | / | $t_v$ |
