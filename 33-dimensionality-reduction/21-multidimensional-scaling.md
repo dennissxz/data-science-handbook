@@ -124,91 +124,99 @@ We compare PCA and MDS in terms of finding representation $\boldsymbol{Z}$ given
 
 - Difference: unlike PCA which gives a projection equation $\boldsymbol{z} = \boldsymbol{U} ^\top \boldsymbol{x}$, MDS only gives a projected result for the training set. It does not give us a way to project a new data point.
 
-- Connection: the two representation are exactly the **same**. Suppose the data matrix $\boldsymbol{X}$ is centered. Let $\boldsymbol{Z} _{PCA}$ be the $n\times k$ projected matrix by PCA and $\boldsymbol{Z} _{MDS}$ be that by MDS. Then it can be shown that
+- Connections
 
-$$
-\boldsymbol{Z} _{PCA} = \boldsymbol{Z} _{MDS}\\
-$$
-
-This also implies that, to obtain PCA projections, we can use the covariance matrix $\boldsymbol{S}$, or the Gram matrix $\boldsymbol{G}$, or the Euclidean distances matrix $\boldsymbol{F}$.
-
-:::{admonition,dropdown,seealso} *Proof*
-
-Consider the SVD of the **centered** data matrix
-
-$$\boldsymbol{X}_{n\times d} = \boldsymbol{V} \boldsymbol{\Sigma} \boldsymbol{U} ^\top$$
-
-- In PCA, the EVD of $n$ times the data covariance matrix is
-
-    $$n \boldsymbol{S}_{d \times d} = \boldsymbol{X} ^\top \boldsymbol{X} = \boldsymbol{U} \boldsymbol{\Sigma} ^\top \boldsymbol{\Sigma} \boldsymbol{U} = \boldsymbol{U} \boldsymbol{D} \boldsymbol{U}$$
-
-    where the diagonal entries in $\boldsymbol{D}$ are the squared singular values $\sigma^2 _j$ for $j=1,\ldots, d$.
-
-    The $n\times k$ projected matrix $(k\le d)$ is
+  - the two representation are exactly the **same**. Suppose the data matrix $\boldsymbol{X}$ is centered. Let $\boldsymbol{Z} _{PCA}$ be the $n\times k$ projected matrix by PCA and $\boldsymbol{Z} _{MDS}$ be that by MDS. Then it can be shown that
 
     $$
-    \boldsymbol{Z}_{PCA} = \boldsymbol{X} \boldsymbol{U} _{[:k]}
+    \boldsymbol{Z} _{PCA} = \boldsymbol{Z} _{MDS}\\
     $$
 
-- In MDS, the EVD of the inner product matrix $\boldsymbol{G}$ is
+    This also implies that, to obtain PCA projections, we can use the covariance matrix, the Gram matrix $\boldsymbol{G}$, or the Euclidean distances matrix $\boldsymbol{F}$.
+
+    :::{admonition,dropdown,seealso} *Proof*
+
+    Consider the SVD of the **centered** data matrix
+
+    $$\boldsymbol{X}_{n\times d} = \boldsymbol{V} \boldsymbol{\Sigma} \boldsymbol{U} ^\top$$
+
+    - In PCA, the EVD of $n$ times the data covariance matrix is
+
+        $$n \boldsymbol{S}_{d \times d} = \boldsymbol{X} ^\top \boldsymbol{X} = \boldsymbol{U} \boldsymbol{\Sigma} ^\top \boldsymbol{\Sigma} \boldsymbol{U} = \boldsymbol{U} \boldsymbol{D} \boldsymbol{U}$$
+
+        where the diagonal entries in $\boldsymbol{D}$ are the squared singular values $\sigma^2 _j$ for $j=1,\ldots, d$.
+
+        The $n\times k$ projected matrix $(k\le d)$ is
+
+        $$
+        \boldsymbol{Z}_{PCA} = \boldsymbol{X} \boldsymbol{U} _{[:k]}
+        $$
+
+    - In MDS, the EVD of the inner product matrix $\boldsymbol{G}$ is
+
+        $$
+        \boldsymbol{G}_{n \times n} = \boldsymbol{X} \boldsymbol{X} ^\top = \boldsymbol{V} \boldsymbol{\Sigma} \boldsymbol{\Sigma} ^\top \boldsymbol{V} ^\top = \boldsymbol{V} \boldsymbol{\Lambda} \boldsymbol{V} ^\top = \boldsymbol{V} _{[:d]} \boldsymbol{D} \boldsymbol{V} _{[:d]} ^\top
+        $$
+
+        where
+
+        $$
+        \boldsymbol{\Lambda} _{n \times n} = \left[\begin{array}{cc}
+        \boldsymbol{D} _{d \times d} & \boldsymbol{0}  \\
+        \boldsymbol{0}  & \boldsymbol{0}_{(n-d) \times (n-d)}
+        \end{array}\right]
+        $$
+
+        The $n\times k$ projected matrix $(k\le d)$ is
+
+        $$
+        \boldsymbol{Z} _{MDS} = \boldsymbol{V}_{[:k]} \boldsymbol{\Lambda} ^{1/2}_{[:k, :k]} = \boldsymbol{V}_{[:k]} \boldsymbol{D} ^{1/2}_{[:k, :k]}
+        $$
+
+    Let $\boldsymbol{v} _j$ be an eigenvector of $\boldsymbol{G}$ with eigenvalue $\sigma^2 _j$. Pre-multiplying $\boldsymbol{G} \boldsymbol{v}_j = \sigma^2 _j \boldsymbol{v} _j$ by $\boldsymbol{X} ^\top$ yields
+
+    $$\begin{aligned}
+    \boldsymbol{X} ^\top (\boldsymbol{X} \boldsymbol{X} ^\top) \boldsymbol{v} _j &= \boldsymbol{X} ^\top (\sigma^2 _j  \boldsymbol{v} _j) \\
+    \Rightarrow \qquad  n\boldsymbol{S} (\boldsymbol{X} ^\top \boldsymbol{v} _j) &= \sigma^2 _j (\boldsymbol{X} ^\top \boldsymbol{v} _j)
+    \end{aligned}$$
+
+    Hence, we found that $\boldsymbol{X} ^\top \boldsymbol{v} _j$ is an eigenvector of $n \boldsymbol{S}$ with eigenvalue $\sigma^2 _j$, denoted $\boldsymbol{u} _j$,
 
     $$
-    \boldsymbol{G}_{n \times n} = \boldsymbol{X} \boldsymbol{X} ^\top = \boldsymbol{V} \boldsymbol{\Sigma} \boldsymbol{\Sigma} ^\top \boldsymbol{V} ^\top = \boldsymbol{V} \boldsymbol{\Lambda} \boldsymbol{V} ^\top = \boldsymbol{V} _{[:d]} \boldsymbol{D} \boldsymbol{V} _{[:d]} ^\top
+    \boldsymbol{u} _j = \boldsymbol{X} ^\top \boldsymbol{v} _j
     $$
 
-    where
+    But note that $\boldsymbol{u} _j$ is not normalized, since $\left\| \boldsymbol{u} _j \right\|^2 = \boldsymbol{v} _j ^\top \boldsymbol{X} \boldsymbol{X} ^\top \boldsymbol{v} _j = \sigma^2 _j$. After normalization, we have,
 
     $$
-    \boldsymbol{\Lambda} _{n \times n} = \left[\begin{array}{cc}
-    \boldsymbol{D} _{d \times d} & \boldsymbol{0}  \\
-    \boldsymbol{0}  & \boldsymbol{0}_{(n-d) \times (n-d)}
-    \end{array}\right]
+    \boldsymbol{U} _{[:d]} = \boldsymbol{X} ^\top \boldsymbol{V} _{[:d]} \boldsymbol{D} ^ {-1/2}
     $$
 
-    The $n\times k$ projected matrix $(k\le d)$ is
+    Substituting this relation to the $n\times d$ projected matrix by PCA gives
 
-    $$
-    \boldsymbol{Z} _{MDS} = \boldsymbol{V}_{[:k]} \boldsymbol{\Lambda} ^{1/2}_{[:k, :k]} = \boldsymbol{V}_{[:k]} \boldsymbol{D} ^{1/2}_{[:k, :k]}
-    $$
+    $$\begin{aligned}
+    \boldsymbol{Z} _{PCA}
+    &= \boldsymbol{X} \boldsymbol{U} _{[:d]} \boldsymbol{D} ^ {-1/2}\\
+    &= \boldsymbol{X} \boldsymbol{X} ^\top \boldsymbol{V}  _{[:d]} \boldsymbol{D} ^ {-1/2}\\
+    &= \boldsymbol{V} _{[:d]} \boldsymbol{D} \boldsymbol{V} ^\top _{[:d]} \boldsymbol{V}  _{[:d]} \boldsymbol{D} ^ {-1/2} \quad \because \text{EVD of } \boldsymbol{X} \boldsymbol{X} ^\top  \\
+    &= \boldsymbol{V} _{[:d]} \boldsymbol{D} \boldsymbol{D} ^ {-1/2} \quad \because \boldsymbol{V} \text{ is orthogonal} \\
+    &= \boldsymbol{V} _{[:d]}\boldsymbol{D} ^ {1/2} \\
+    &= \boldsymbol{Z} _{MDS} \\
+    \end{aligned}$$
 
-Let $\boldsymbol{v} _j$ be an eigenvector of $\boldsymbol{G}$ with eigenvalue $\sigma^2 _j$. Pre-multiplying $\boldsymbol{G} \boldsymbol{v}_j = \sigma^2 _j \boldsymbol{v} _j$ by $\boldsymbol{X} ^\top$ yields
+    :::
 
-$$\begin{aligned}
-\boldsymbol{X} ^\top (\boldsymbol{X} \boldsymbol{X} ^\top) \boldsymbol{v} _j &= \boldsymbol{X} ^\top (\sigma^2 _j  \boldsymbol{v} _j) \\
-\Rightarrow \qquad  n\boldsymbol{S} (\boldsymbol{X} ^\top \boldsymbol{v} _j) &= \sigma^2 _j (\boldsymbol{X} ^\top \boldsymbol{v} _j)
-\end{aligned}$$
+  - PCA finds basis $\boldsymbol{u} \in \mathbb{R} ^n$ (principle directions) for spanning $\boldsymbol{X}$, and MDS finds the coordinates $\boldsymbol{z} \in \mathbb{R} ^d$ of the embeddings associated with the PCA basis.
 
-Hence, we found that $\boldsymbol{X} ^\top \boldsymbol{v} _j$ is an eigenvector of $n \boldsymbol{S}$ with eigenvalue $\sigma^2 _j$, denoted $\boldsymbol{u} _j$,
-
-$$
-\boldsymbol{u} _j = \boldsymbol{X} ^\top \boldsymbol{v} _j
-$$
-
-But note that $\boldsymbol{u} _j$ is not normalized, since $\left\| \boldsymbol{u} _j \right\|^2 = \boldsymbol{v} _j ^\top \boldsymbol{X} \boldsymbol{X} ^\top \boldsymbol{v} _j = \sigma^2 _j$. After normalization, we have,
-
-$$
-\boldsymbol{U} _{[:d]} = \boldsymbol{X} ^\top \boldsymbol{V} _{[:d]} \boldsymbol{D} ^ {-1/2}
-$$
-
-Substituting this relation to the $n\times d$ projected matrix by PCA gives
-
-$$\begin{aligned}
-\boldsymbol{Z} _{PCA}
-&= \boldsymbol{X} \boldsymbol{U} _{[:d]} \boldsymbol{D} ^ {-1/2}\\
-&= \boldsymbol{X} \boldsymbol{X} ^\top \boldsymbol{V}  _{[:d]} \boldsymbol{D} ^ {-1/2}\\
-&= \boldsymbol{V} _{[:d]} \boldsymbol{D} \boldsymbol{V} ^\top _{[:d]} \boldsymbol{V}  _{[:d]} \boldsymbol{D} ^ {-1/2} \quad \because \text{EVD of } \boldsymbol{X} \boldsymbol{X} ^\top  \\
-&= \boldsymbol{V} _{[:d]} \boldsymbol{D} \boldsymbol{D} ^ {-1/2} \quad \because \boldsymbol{V} \text{ is orthogonal} \\
-&= \boldsymbol{V} _{[:d]}\boldsymbol{D} ^ {1/2} \\
-&= \boldsymbol{Z} _{MDS} \\
-\end{aligned}$$
-
-:::
-
-In sum, PCA finds basis (principle directions) for spanning $\boldsymbol{X}$, and MDS finds the coordinates of the embeddings associated with the PCA basis.
-
-$$
-\boldsymbol{x} _i = \sum_{j=1}^n \alpha_{ij} \boldsymbol{u} _j
-$$
+    $$\begin{aligned}
+    \boldsymbol{X} ^{\top}  
+    &= \boldsymbol{U} (\boldsymbol{V} \boldsymbol{\Sigma} ) ^{\top} \\
+    &= \boldsymbol{U} (\boldsymbol{V}_{[:d]} \boldsymbol{\Sigma}_{[:d]} ) ^{\top} \\
+    &= \boldsymbol{U} \boldsymbol{Z} _{MDS} ^{\top} \\
+    [\boldsymbol{x} _i \ \ldots \ \boldsymbol{x} _n]&= [\boldsymbol{u}_1 \ \ldots \ \boldsymbol{u} _d ] [\boldsymbol{z} _1 \ \ldots \ \boldsymbol{z} _n] \\
+    \boldsymbol{x} _i&= \sum_{j=1}^d
+    z^{MDS}_{ij} \boldsymbol{u} _j\\
+    \end{aligned}$$
 
 
 Reference: Davis-kahan theorem
