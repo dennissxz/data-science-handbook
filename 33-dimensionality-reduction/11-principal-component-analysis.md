@@ -77,94 +77,99 @@ $$
 \operatorname{Var}\left(Z_{1}\right)=\max _{\left\Vert \boldsymbol{u}  \right\Vert _2^2 = 1 } \boldsymbol{u}^{\top} \boldsymbol{\Sigma} \boldsymbol{u}
 $$
 
-Suppose the maximum is achieved at $\boldsymbol{u} = \boldsymbol{u} _1$ and we call $Z_1$ given below the **first population principal component**
-
+where the constraint is to removes scaling or $\boldsymbol{u}$. Suppose the maximum is achieved at $\boldsymbol{u} = \boldsymbol{u} _1$ and we call the variable $Z_1$ given below the **first population principal component**
 
 $$
 Z_1 = \boldsymbol{u} _1^{\top} \boldsymbol{x}
 $$
 
-Successively for $i=2, \ldots, m$ the variance of $Z_i$ can be obtained by the following maximization
+Successively for $k=2, \ldots, d$ the variance of $Z_i$ can be obtained by the following maximization
 
+$$\begin{aligned}
+\max _{\boldsymbol{u} _k} && \boldsymbol{u}_k^{\top} \boldsymbol{\Sigma} \boldsymbol{u}_k & \\
+\mathrm{s.t.}
+&& \quad \boldsymbol{u}_k^{\top} \boldsymbol{u}_k&=1 \\
+&& \boldsymbol{u}_k ^{\top} \boldsymbol{u} _j &= 0  \text{  for }  j=1, \ldots, k-1 \\
+\end{aligned}$$
+
+where the second constraint $\boldsymbol{u}_k ^{\top} \boldsymbol{u} _j = 0$ comes from the identity
 
 $$
 \begin{aligned}
-\operatorname{Var}\left(Z_{i}\right)&=\max _{u} \boldsymbol{u}^{\top} \boldsymbol{\Sigma} \boldsymbol{u}\\
-\mathrm{s.t.}  \quad \boldsymbol{u}^{\top} \boldsymbol{u}&=1 \\
-\boldsymbol{u}^{\top} \boldsymbol{x} &\text { being uncorrelated with } Z_{1}, \ldots, Z_{i-1}  
+\operatorname{Cov}\left(Z_{k}, Z_{j}\right)  &=\operatorname{Cov}\left(\boldsymbol{u} _{k}^{\top} \boldsymbol{x}, \boldsymbol{u}_{j}^{\top} \boldsymbol{x}\right) \\
+&=\boldsymbol{u}_{k}^{\top} \operatorname{Cov}(\boldsymbol{x}, \boldsymbol{x}) \boldsymbol{u}_{j} \\
+&=\boldsymbol{u}_{k}^{\top} \boldsymbol{\Sigma} \boldsymbol{u}_{j} \\
+&=\boldsymbol{u}_{k}^{\top} \lambda_{j} \boldsymbol{u}_{j} \\
+&=\lambda_{j} \boldsymbol{u}_{k}^{\top} \boldsymbol{u}_{j}
 \end{aligned}
 $$
 
-The maximum is achieved at $\boldsymbol{u} = \boldsymbol{u} _i$ and the $i$-th population principal component is
+Since $\lambda_j > 0$ and we want uncorrelated principal components $\operatorname{Cov}\left(Z_k, Z_{j}\right) = 0$, we obtain $\boldsymbol{u} _k ^{\top} \boldsymbol{u} _j = 0$.
+
+After we solve $\boldsymbol{u} _k$, the $k$-th population principal component is then
 
 $$
-Z_i = \boldsymbol{u} _i^\top \boldsymbol{x}
+Z_k = \boldsymbol{u} _k^\top \boldsymbol{x}
 $$
 
 :::{admonition,dropdown,seealso} Derivation
-We consider the maximization problem:
 
-$$\begin{align}
-\max _{\boldsymbol{u}} \quad & \boldsymbol{u}^{\top} \boldsymbol{\Sigma} \boldsymbol{u}  \\
-\text {s.t.} \quad & \boldsymbol{u}^{\top} \boldsymbol{u}=1
-\end{align}$$
+The problem to find $\boldsymbol{u} _1$ is an [Rayleigh quotient](rayleigh-quotient) problem which has been solved there. We show how to solve the subsequent $\boldsymbol{u} _k$ for $k \ge 2$.
 
-$$
-\quad
-$$
+When $k=2$, the problem is
+
+$$\begin{aligned}
+\max _{\boldsymbol{u} _2} && \boldsymbol{u}_2^{\top} \boldsymbol{\Sigma} \boldsymbol{u}_2 & \\
+\mathrm{s.t.}
+&& \quad \boldsymbol{u}_2^{\top} \boldsymbol{u}_2&=1 \\
+&& \boldsymbol{u}_2 ^{\top} \boldsymbol{u} _1 &= 0\\
+\end{aligned}$$
 
 The Lagrangean is
 
 $$
-\begin{equation}
-\mathcal{L}(\boldsymbol{u}, \theta)=\boldsymbol{u}^{\top} \boldsymbol{\Sigma} \boldsymbol{u}-\lambda\left(\boldsymbol{u}^{\top} \boldsymbol{u}-1\right)
-\end{equation}
+\mathcal{L}_{2}=\boldsymbol{u}_{2}^{\top} \Sigma \boldsymbol{u}_{2}-\lambda\left(\boldsymbol{u}_{2}^{\top} \boldsymbol{u}_{2}-1\right)-\delta\left(\boldsymbol{u}_{2}^{\top} \boldsymbol{u}_{1}-0\right)
 $$
 
-The first order conditions are
+Taking derivative w.r.t. $\boldsymbol{u} _2$ gives
 
 $$
-\begin{aligned}
-\frac{\partial L}{\partial \boldsymbol{u}}
-&= 2 \boldsymbol{\Sigma} \boldsymbol{u}-2 \lambda \boldsymbol{u} \\
-&=\boldsymbol{0} \\
-\Rightarrow \quad \quad \boldsymbol{\Sigma} \boldsymbol{u} &=\lambda \boldsymbol{u}  \quad \quad \quad \quad (1)
-\end{aligned}
+\frac{\partial \mathcal{L}_{2}}{\partial \boldsymbol{u}_{2}}=2 \boldsymbol{\Sigma} \boldsymbol{u}_{2}-2 \lambda \boldsymbol{u}_{2}-\delta \boldsymbol{u}_{1}=0
 $$
 
-and
+Left-multiply $\boldsymbol{u} _1 ^{\top}$ we have
 
 $$
 \begin{aligned}
-\frac{\partial L}{\partial \lambda}
-&= 1-\boldsymbol{u}^{\top} \boldsymbol{u} \\
-&= 0 \\
-\Rightarrow \quad \quad  \boldsymbol{u}^{\top} \boldsymbol{u}
-&=1 \quad \quad \quad \quad (2)
+RHS &= \boldsymbol{u}_{1}^{\top} \boldsymbol{0} =0 \\
+LHS &=2\left(\boldsymbol{u}_{1}^{\top} \Sigma \boldsymbol{u}_{2}-\boldsymbol{u}_{1}^{\top} \lambda \boldsymbol{u}_{2}\right)-\boldsymbol{u}_{1}^{\top} \delta \boldsymbol{u}_{1} \\
+&=2\left(\left(\boldsymbol{\Sigma} \boldsymbol{u}_{1}\right)^{\top} \boldsymbol{u}_{2}-\lambda \boldsymbol{u}_{1}^{\top} \boldsymbol{u}_{2}\right)-\delta \boldsymbol{u}_{1}^{\top} \boldsymbol{u}_{1} \\
+&=2\left(\lambda \boldsymbol{u}_{1}^{\top} \boldsymbol{u}_{2}-\lambda \boldsymbol{u}_{1}^{\top} \boldsymbol{u}_{2}\right)-\delta \\
+&=- \delta
 \end{aligned}
 $$
 
-Premultiply $(1)$ by $\boldsymbol{u} ^\top$ we have
-$$
-\boldsymbol{u}^{\top} \boldsymbol{\Sigma} \boldsymbol{u}=\lambda \boldsymbol{u}^{\top} \boldsymbol{u}
-$$
+Hence $\delta = 0$. Substituting this back gives $\Sigma \boldsymbol{u} _2= \lambda\boldsymbol{u} _{2}$. Thus, $\boldsymbol{u} _2$ is an eigenvector of $\boldsymbol{\Sigma}$ with eigenvalue $\lambda$. The objective is then $\boldsymbol{u} _2 \boldsymbol{\Sigma} \boldsymbol{u} _2 = \lambda$. Hence, we choose $\lambda_2$, and choose $\boldsymbol{u} _2$ to be the eigenvector of $\boldsymbol{\Sigma}$ associated with $\lambda_2$.
 
-Hence,
+For $k=3, \ldots, n$, the Lagrangean is
+
 
 $$
-\lambda = \boldsymbol{u} ^\top \boldsymbol{\Sigma} \boldsymbol{u}
+\mathcal{L}_{k}=\boldsymbol{u}_{k}^{\top} \Sigma \boldsymbol{u}_{k}-\lambda\left(\boldsymbol{u}_{k}^{\top} \boldsymbol{u}_{k}-1\right)-\delta_{1}\left(\boldsymbol{u}_{k}^{\top} \boldsymbol{u}_{1}\right)-\cdots-\delta_{k-1}\left(\boldsymbol{u}_{k}^{\top} \boldsymbol{u}_{k-1}\right)
 $$
 
-Note that $(1)$ also gives
+Taking derivative gives
 
 $$
-(\boldsymbol{\Sigma}-\lambda \boldsymbol{I}) \boldsymbol{u} =\boldsymbol{0}
+\begin{aligned}
+\frac{\partial L_{k}}{\partial \boldsymbol{u}_{k}} &=2(\Sigma-\lambda I) \boldsymbol{u}_{k}-\delta_{1} \boldsymbol{u}_{1}-\cdots-\delta_{k-1} \boldsymbol{u}_{k-1} \\
+&=2 \boldsymbol{\Sigma} \boldsymbol{u}_{k}-2 \lambda \boldsymbol{u}_{k}-\delta_{1} \boldsymbol{u}_{1}-\cdots-\delta_{k-1} \boldsymbol{u}_{k-1} \\
+&=0
+\end{aligned}
 $$
 
-which implies $\lambda$ is the eigenvalue of $\boldsymbol{\Sigma}$.
+Similarly, left multiplying $\boldsymbol{u} _j ^{\top}$ gives $\delta_j=0$ for $j=1, \ldots, k-1$. Substituting $\delta_j=0$ back gives $\boldsymbol{\Sigma} \boldsymbol{u} _k = \lambda \boldsymbol{u} _k$. We can then choose the $k$-th largest eigenvalue $\lambda_k$ and the associated eigenvector to be $\boldsymbol{u}_k$.
 
-
-Therefore, the maximized variance $\boldsymbol{u} ^\top \boldsymbol{\Sigma} \boldsymbol{u}$ equals to the largest eigenvalue of $\boldsymbol{\Sigma}$.
 :::
 
 ### Spectral Decomposition
@@ -254,6 +259,8 @@ where $\boldsymbol{U} _{[:k]}$ means the matrix consisting of the first $k$ colu
     \sum_{i=1}^{d} \lambda_{i}=\sum_{i=1}^{d} \sigma_{i i}
     $$
 
+    Hence, the PCA procedure, the total variance is preserved by re-allocated to $\operatorname{Var}\left( Z_1 \right) \ge \operatorname{Var}\left( Z_2 \right) \ge \ldots \operatorname{Var}\left( Z_d \right)$.
+
     :::{admonition,dropdown,seealso} *Proof*
     $$
     \begin{aligned}
@@ -265,6 +272,7 @@ where $\boldsymbol{U} _{[:k]}$ means the matrix consisting of the first $k$ colu
     \end{aligned}
     $$
     :::
+
 
 1. If the correlation matrix $\boldsymbol{\rho} = \boldsymbol{D}^{-1}\boldsymbol{\Sigma} \boldsymbol{D}^{-1}$ instead of the covariance matrix $\boldsymbol{\Sigma}$ is used, i.e. variables $X_1, X_2, \ldots, X_d$ are standardized, then
 
@@ -522,7 +530,7 @@ before performing PCA.
 
 **Sensitive to Variable Transformation**
 
-The results of PCA are not invariant under a linear transformation and, even worse, there is no easy correspondence between the two sets of results $\boldsymbol{z}$ and $\boldsymbol{z} ^\prime$, before and after the linear transformation. For example, the PCA using $\boldsymbol{\Sigma}$ is not the same as the PCA using $\boldsymbol{\rho}$ and we cannot use the PCA from $\boldsymbol{\rho}$ to get the PCA results from the original variables.
+The results of PCA are not invariant under a linear transformation and, even worse, there is no easy correspondence between the two sets of results $\boldsymbol{z}$ and $\boldsymbol{z} ^\top$, before and after the linear transformation. For example, the PCA using $\boldsymbol{\Sigma}$ is not the same as the PCA using $\boldsymbol{\rho}$ and we cannot use the PCA from $\boldsymbol{\rho}$ to get the PCA results from the original variables.
 
 If the two sets of results are consistent to each other, the PCA based on $\boldsymbol{\Sigma}$  may be preferred in some situation. If they are very different, or even contradictory, subject-matter knowledge and/or wisdom are needed to make a choice.
 
