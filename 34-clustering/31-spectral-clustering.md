@@ -243,7 +243,7 @@ Actually, this problem can be solved exactly. See the [max flow](max-flow) secti
 (Ncut)=
 ### Bisection Normalized Cut
 
-[[Shi & Malik 1999](http://www2.imm.dtu.dk/projects/manifold/Papers/Laplacian.pdf)]
+[[Shi & Malik 1999](https://people.eecs.berkeley.edu/~malik/papers/SM-ncut.pdf)]
 
 Recall that the objective of the bisection normalized cut is
 
