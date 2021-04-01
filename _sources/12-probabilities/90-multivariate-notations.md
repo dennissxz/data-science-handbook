@@ -2,9 +2,6 @@
 
 In machine learning models, we often deal with more than one variables at a time. Below are the notations for multivariate case, and their properties.
 
-
-
-
 ## Data Matrix
 
 Suppose there are $p$ random variables $X_1, X_2, \ldots, X_p$ and we have $n$ observed values for each of them. The data matrix is
@@ -50,7 +47,6 @@ $$
 **Properties**
 
 1. $\operatorname{\mathbb{E}}\left( \boldsymbol{a}^{\boldsymbol{\top}} \boldsymbol{x} \right)=\boldsymbol{a}^{\boldsymbol{\top}} \boldsymbol{\mu}$
-
 1. $\operatorname{\mathbb{E}}\left( \boldsymbol{A x} \right)=\boldsymbol{A} \boldsymbol{\mu}$
 
 ### Sample Mean Vector
@@ -62,13 +58,14 @@ $$
 \bar{x}_{1} \\
 \vdots \\
 \bar{x}_{p}
-\end{array}\right]=\frac{1}{n} \boldsymbol{X}^{\top} \mathbf{1}
+\end{array}\right]=\frac{1}{n} \boldsymbol{X}^{\top} \boldsymbol{1}
 $$
 
 
 
 ## Covariance Matrix
 
+(covariance-matrix)=
 ### Population Covariance Matrix
 
 Aka variance-covariance matrix.
@@ -112,7 +109,19 @@ $$
 
 1. $\operatorname{Var}\left( \boldsymbol{A} \boldsymbol{x} + b \right) = \boldsymbol{A} \boldsymbol{\Sigma} \boldsymbol{A} ^\top$
 
+1. $\sum_{j=1}^d \lambda_j = \sum_{j=1}^d \sigma_{ii}$: the sum of eigenvalues of $\boldsymbol{\Sigma}$ equals the sum of variances.
 
+1. The determinant of the covariance matrix $\left\vert \boldsymbol{\boldsymbol{\Sigma}}  \right\vert = \operatorname{det} (\boldsymbol{\boldsymbol{\Sigma}} )$ is called the generalized variance. It changes for scaling of variables like the case of univariate variance. Suppose $\boldsymbol{x}$ follows [multivariate Gaussian](multi-gaussian) $\boldsymbol{x} \sim \mathcal{N}_p(\boldsymbol{\mu} , \boldsymbol{\Sigma})$, then we have the following interpretation for $\operatorname{det} (\boldsymbol{\Sigma})$:
+   - $\operatorname{det}(\boldsymbol{\Sigma})$ is a (indirect) measure of the entropy of the Gaussian density
+
+    $$
+    H(\mathcal{N} _p)=\frac{p}{2}(1+\ln (2 \pi))+\frac{1}{2} \ln |\Sigma|
+    $$
+
+   - $\operatorname{det} (\boldsymbol{\Sigma})$ is proportional to the squared of the [volume](ellipsoid) of the ellipsoid $E(\boldsymbol{\mu} , \boldsymbol{\Sigma}, c) = \left\{\boldsymbol{x} \in \mathbb{R} ^p: (\boldsymbol{x}-\boldsymbol{\mu})^{\top} \boldsymbol{\Sigma}^{-1}(\boldsymbol{x}-\boldsymbol{\mu}) \le c \right\}$ which measures the disperse of the "data cloud", i.e. uncertainty.
+   - $\operatorname{det} (\boldsymbol{\Sigma}) = \prod_{j=1}^d \lambda_j = 0$ if at least one variables is degenerate.
+
+   The interpretation for other distributions is analogous.
 
 ### Sample Covariance Matrix and CSSP
 
@@ -149,7 +158,7 @@ $$
 
 is called the corrected (centered) sums of squares and products matrix (CSSP). One can view it as a multivariate generalization of the corrected (centered) sum of squares $\sum_i \left( x_i - \bar{x} \right)^2$ in the univariate case.
 
-The determinant of the sample covariance $\left\vert \boldsymbol{S}  \right\vert = \operatorname{det} (\boldsymbol{S} )$ is called the generalized sample variance. It changes for scaling of variables like univariate sample covariance.
+The determinant of the sample covariance $\left\vert \boldsymbol{S}  \right\vert = \operatorname{det} (\boldsymbol{S} )$ is called the generalized sample variance. It changes for scaling of variables like the case of univariate sample variance. Since $\boldsymbol{S}$ is an estimator for $\boldsymbol{\Sigma}$, the interpretations of $\operatorname{det}(\boldsymbol{S} )$ and $\operatorname{det}(\boldsymbol{\Sigma} )$ are similar. See the above section for $\operatorname{det} (\boldsymbol{\Sigma})$.
 
 
 (prob-covariance-matrix-of-two-vectors)=
@@ -170,14 +179,11 @@ $$
 **Properties**
 
 1. $\operatorname{Var}\left( \boldsymbol{x}  \right) = \operatorname{Cov}\left( \boldsymbol{x} , \boldsymbol{x}  \right)$
-
 1. If $\boldsymbol{x} _1, \boldsymbol{x} _2, \boldsymbol{y}$ are $p \times 1$ vectors, then $\operatorname{Var}\left( \boldsymbol{x} + \boldsymbol{y} \right) = \operatorname{Cov}\left( \boldsymbol{x} _1, \boldsymbol{y}  \right) + \operatorname{Cov}\left( \boldsymbol{x} _2 + \boldsymbol{y} \right)$
-
 1. If $\boldsymbol{x}$ and $\boldsymbol{y}$ are $p \times 1$ vectors, then $\operatorname{Var}\left( \boldsymbol{x} +\boldsymbol{y}  \right) = \operatorname{Var}\left( \boldsymbol{x}  \right) + \operatorname{Var}\left( y \right) + \operatorname{Cov}\left( \boldsymbol{y} ,\boldsymbol{x} \right) + \operatorname{Cov}\left( \boldsymbol{x} , \boldsymbol{y} \right)$
-
 1. $\operatorname{Cov}\left( \boldsymbol{A} \boldsymbol{x} , \boldsymbol{B} \boldsymbol{y} \right) = \boldsymbol{A} \operatorname{Cov}\left( \boldsymbol{x} , \boldsymbol{y} \right) \boldsymbol{B} ^\top$
-
 1. If $\boldsymbol{x}$ and $\boldsymbol{y}$ are independent, then $\operatorname{Cov}\left( \boldsymbol{x} , \boldsymbol{y} \right)$. Note that the converse is not always true.
+
 
 
 ## Correlation Matrix
@@ -237,10 +243,11 @@ In short we will write $D ^{-1} = \left( \operatorname{diag}\left( \boldsymbol{\
 
 **Properties**
 
-1. $\rho_{ii} = 1$. $\rho_{ij} = \rho_{ji}$. $\rho_{ij} = 0$ iff $\sigma_{ij} = 0$
-
-1. Each $\rho_{ij}$ does not change under re-location or rescaling of $x_i$ and $x_j$
-
+- $\rho_{ii} = 1$. $\rho_{ij} = \rho_{ji}$. $\rho_{ij} = 0$ iff $\sigma_{ij} = 0$
+- Each $\rho_{ij}$ does not change under re-location or rescaling of $x_i$ and $x_j$
+- $\operatorname{tr}(\boldsymbol{\rho} )= \sum_{j=1}^d \lambda_j = d$
+- $\operatorname{det}(\boldsymbol{\rho} ) = \prod_{j=1}^d \lambda_j  \in [0, 1]$: it is 1 if all variables are independent, and 0 if at least one variable is degenerate $\sigma _{ii} = 0$. The larger the value, higher level of independence, and higher level of uncertainty.
+- $\operatorname{det}(\boldsymbol{\rho} ) = \operatorname{det} (\boldsymbol{D} ^{-1} \boldsymbol{\Sigma} \boldsymbol{D} ^{-1} ) = \operatorname{det}(\boldsymbol{D} ^{-1}) \operatorname{det} (\boldsymbol{\Sigma} ) \operatorname{det} (\boldsymbol{D} ^{-1} ) = \operatorname{det} (\boldsymbol{\Sigma}) \prod_i {\sigma}_{ii}$
 
 ### Sample Correlation Matrix
 

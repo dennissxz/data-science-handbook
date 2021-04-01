@@ -43,6 +43,8 @@ Definition
   - $\sigma_i$ is the value in the $i$-th position after the reordering $\sigma$.
   - $\operatorname{sgn}{\sigma}$ is the signature of $\sigma$, which is $1$ if the reordering given by $\sigma$ can be achieved by successively interchanging two entries an even number of times, and $-1$ otherwise.
 
+The absolute value of the determinant of a $2 \times 2$ matrix $\boldsymbol{A} =[\boldsymbol{a} \ \boldsymbol{b}] \in \mathbb{R} ^{2 \times 2}$ can be interpreted as the area of parallelogram spanned by the vectors $\boldsymbol{a}$ and $\boldsymbol{b}$. The absolute value of the determinant of a $3 \times 3$ matrix $\boldsymbol{A} = [\boldsymbol{a} \ \boldsymbol{b} \ \boldsymbol{c}] \in \mathbb{R} ^{3 \times 3}$ equals the volume of a parallelepiped spanned by the vectors $\boldsymbol{a} ,\boldsymbol{b} ,\boldsymbol{c}$. This extends to $n$-dimensional parallelotope $P$: $\operatorname{det}(\boldsymbol{A}) = \pm \operatorname{vol} (P)$.
+
 Properties
 : $\ $
 
@@ -199,6 +201,7 @@ Definition(Projection matrices)
 - onto a subspace $\boldsymbol{U}$ with orthonormal basis $\boldsymbol{u} _1, \ldots, \boldsymbol{u} _k$ forming matrix $\boldsymbol{A}$: $\boldsymbol{P}_A = \boldsymbol{A} \boldsymbol{A} ^{\top} = \sum_i \langle \boldsymbol{u} _i, \cdot \rangle \boldsymbol{u} _i$
 - onto subspace $\boldsymbol{U}$ with (not necessarily orthonormal) basis $\boldsymbol{u} _1, \ldots, \boldsymbol{u} _k$ forming matrix $\boldsymbol{A}$: $\boldsymbol{P} _{A}= \boldsymbol{A} \left( \boldsymbol{A} ^{\top} \boldsymbol{A}  \right) ^{-1} \boldsymbol{A} ^{\top}$. Such as that in linear regression.
 
+(pd-matrix)=
 ### Positive Semi-Definite and Positive Definite
 
 Definitions
@@ -216,7 +219,10 @@ Properties
   &\Rightarrow \boldsymbol{A} \text{ is nonsingular} \\
   \boldsymbol{A} \in \mathrm{PSD} &\Leftrightarrow \lambda_i(\boldsymbol{A}) \ge 0 \\
   &\Leftrightarrow \exists \text{ square } \boldsymbol{R}, \operatorname{rank}\left( R \right) = \operatorname{rank}\left( \boldsymbol{A}  \right): \boldsymbol{A} = \boldsymbol{R} \boldsymbol{R} ^\top\\
+  &\Rightarrow \exists \boldsymbol{B} = \boldsymbol{U}
+  \boldsymbol{\Lambda}^{1/2} \boldsymbol{U} ^{\top} \in \mathrm{PSD}: \boldsymbol{B} ^2 = \boldsymbol{A} \\
   \text{square } \boldsymbol{B} &\Rightarrow \boldsymbol{B} ^\top \boldsymbol{B} \in \mathrm{PSD}\\
+  \text{any } \boldsymbol{M} \in \mathbb{R} ^{m \times n} &\Rightarrow \boldsymbol{M} \boldsymbol{M}  ^\top, \boldsymbol{M} ^{\top} \boldsymbol{M} \in \mathrm{PSD}\\
   \end{align}$$
 
 
@@ -271,7 +277,7 @@ Definition (Conditionally negative definite)
 : A symmetric matrix $\boldsymbol{A}$ is called conditionally negative definite (c.n.d.) if $\boldsymbol{c}^{\top} \boldsymbol{A}  \boldsymbol{c} \le 0$ for all $\boldsymbol{c}:\boldsymbol{1} ^{\top} \boldsymbol{c} = 0$.
 
 Theorem (Schoenberg)
-: A symmetric matrix $\boldsymbol{A}$ with zero diagonal entires is c.n.d. if and only if it can be realized as the square of the mutual Euclidean distance between points: $a_{ij} = \left\| \boldsymbol{x}_i - \boldsymbol{x}_j  \right\|$ for $i, j= 1, \ldots, n$ and some $\boldsymbol{x}_i \in \mathbb{R} ^d$
+: A symmetric matrix $\boldsymbol{A}$ with zero diagonal entires is c.n.d. if and only if it can be realized as the square of the mutual Euclidean distance between points: $a_{ij} = \left\| \boldsymbol{x}_i - \boldsymbol{x}_j  \right\|$ for $i, j= 1, \ldots, n$ and some $\boldsymbol{x}_i \in \mathbb{R} ^d$.
 
 
 ## Matrix Differentiation

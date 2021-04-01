@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Derangement &#8212; Data Science Handbook</title>
+    <title>Geometry &#8212; Data Science Handbook</title>
     
   <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
 
@@ -57,8 +57,8 @@
     <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Vector Spaces" href="20-vector-spaces.html" />
-    <link rel="prev" title="Combinatorics" href="11-combinatorics.html" />
+    <link rel="next" title="Linear Algebra" href="21-linear-algebra.html" />
+    <link rel="prev" title="Vector Spaces" href="20-vector-spaces.html" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
@@ -109,14 +109,14 @@
      Combinatorics
     </a>
    </li>
-   <li class="toctree-l2 current active">
-    <a class="current reference internal" href="#">
-     Derangement
-    </a>
-   </li>
    <li class="toctree-l2">
     <a class="reference internal" href="20-vector-spaces.html">
      Vector Spaces
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     Geometry
     </a>
    </li>
    <li class="toctree-l2">
@@ -797,7 +797,7 @@
         <!-- ipynb file if we had a myst markdown file -->
         
         <!-- Download raw file -->
-        <a class="dropdown-buttons" href="../_sources/11-math/12-derangement.md"><button type="button"
+        <a class="dropdown-buttons" href="../_sources/11-math/31-geometry.md"><button type="button"
                 class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
                 data-placement="left">.md</button></a>
         <!-- Download PDF via print -->
@@ -817,7 +817,7 @@
                 data-toggle="tooltip" data-placement="left" title="Source repository"><i
                     class="fab fa-github"></i>repository</button></a>
         <a class="issues-button"
-            href="https://github.com/dennissxz/data-science-handbook/issues/new?title=Issue%20on%20page%20%2F11-math/12-derangement.html&body=Your%20issue%20content%20here."><button
+            href="https://github.com/dennissxz/data-science-handbook/issues/new?title=Issue%20on%20page%20%2F11-math/31-geometry.html&body=Your%20issue%20content%20here."><button
                 type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
                 title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
         
@@ -845,14 +845,31 @@
         <nav id="bd-toc-nav">
             <ul class="nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#sol-1-recurrence-relation">
-   Sol.1 Recurrence Relation
+  <a class="reference internal nav-link" href="#half-spaces">
+   Half-spaces
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#sol-2-inclusion-exclusion-principle">
-   Sol.2 Inclusion-Exclusion Principle
+  <a class="reference internal nav-link" href="#polytopes">
+   Polytopes
   </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#ellipsoids">
+   Ellipsoids
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#characterization">
+     Characterization
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ball">
+     Ball
+    </a>
+   </li>
+  </ul>
  </li>
 </ul>
 
@@ -866,89 +883,94 @@
         
               <div>
                 
-  <div class="section" id="derangement">
-<h1>Derangement<a class="headerlink" href="#derangement" title="Permalink to this headline">¶</a></h1>
-<p><em>At a party, <span class="math notranslate nohighlight">\(n\)</span> gentlemen check their hats. They “have a good time”,
-and are each handed a hat on the way out. In how many ways can
-the hats be returned so that no one is returned his own hat?</em></p>
-<p>This is a derangement problem. An <span class="math notranslate nohighlight">\(n\)</span>-derangement is an <span class="math notranslate nohighlight">\(n\)</span>-permutation <span class="math notranslate nohighlight">\(\pi=p_1p_2\ldots p_n\)</span> such that <span class="math notranslate nohighlight">\(p_1\ne1, p_2\ne2, \ldots, p_n\ne n\)</span>. We let <span class="math notranslate nohighlight">\(D_n\)</span> be the number of all <span class="math notranslate nohighlight">\(n\)</span>-derangements, sometimes denoted by <span class="math notranslate nohighlight">\(!n\)</span>.</p>
+  <div class="section" id="geometry">
+<h1>Geometry<a class="headerlink" href="#geometry" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="half-spaces">
+<h2>Half-spaces<a class="headerlink" href="#half-spaces" title="Permalink to this headline">¶</a></h2>
+<p>A half-space is either of the two parts into which a hyperplane <span class="math notranslate nohighlight">\((\boldsymbol{a} ^\top \boldsymbol{x} = b)\)</span> divides an affine space.</p>
+<p>A strict linear inequality specifies an <strong>open</strong> half-space:</p>
+<div class="math notranslate nohighlight">
+\[\boldsymbol{a} ^\top \boldsymbol{x} &gt;b\]</div>
+<p>A non-strict one specifies a <strong>closed</strong> half-space:</p>
+<div class="math notranslate nohighlight">
+\[\boldsymbol{a} ^\top \boldsymbol{x}  \ge b\]</div>
+<p>A half-space is a convex set.</p>
+</div>
+<div class="section" id="polytopes">
+<h2>Polytopes<a class="headerlink" href="#polytopes" title="Permalink to this headline">¶</a></h2>
+<p>Let’s first review some basics.</p>
+<ul>
+<li><p>A <strong>polygon</strong> (多边形) is a 2-dimensional polytope</p>
+<div class="figure align-default" id="geometry-polygon">
+<a class="reference internal image-reference" href="../_images/geometry-polygon.png"><img alt="" src="../_images/geometry-polygon.png" style="width: 40%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 4 </span><span class="caption-text">Polygons [<a class="reference external" href="https://en.wikipedia.org/wiki/Polytope">Wikipedia</a>]</span><a class="headerlink" href="#geometry-polygon" title="Permalink to this image">¶</a></p>
+</div>
+</li>
+<li><p>A <strong>polyhedron</strong> (多面体) is a 3-dimensional polytope.</p>
+<div class="figure align-default" id="geometry-polyhedron">
+<a class="reference internal image-reference" href="../_images/geometry-polyhedron.png"><img alt="" src="../_images/geometry-polyhedron.png" style="width: 70%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 5 </span><span class="caption-text">Polyhedrons [<a class="reference external" href="https://en.wikipedia.org/wiki/Polytope">Wikipedia</a>]</span><a class="headerlink" href="#geometry-polyhedron" title="Permalink to this image">¶</a></p>
+</div>
+</li>
+</ul>
+<p>Then, a <strong>polytope</strong> (多胞体) is a generalization in any number of dimensions. It a geometric object with flat sides. Flat sides mean that the sides of a (k+1)-polytope consist of k-polytopes that may have (k−1)-polytopes in common. For instance, the sides of a polyhedron consist of polygons that may have 1-polytope (dion) in common.</p>
+<p>Properties</p>
+<ul class="simple">
+<li><p><strong>Convex</strong>: A polytope can be convex. For instance, intersection of a set of half-spaces.</p></li>
+<li><p><strong>Bounded</strong>: A polytope is bounded if there is a ball of finite radius that contains it.</p></li>
+</ul>
+<dl class="simple myst">
+<dt>Definition (full-dimensional)</dt><dd><p>A polyhedron <span class="math notranslate nohighlight">\(P \in \mathbb{R} ^n\)</span> is full-dimensional if it has positive volume. Equivalently,</p>
+<ul class="simple">
+<li><p>if it has <span class="math notranslate nohighlight">\(n+1\)</span> affinely independent points</p></li>
+<li><p>if it contains a ball of positive radius</p></li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="ellipsoids">
+<span id="ellipsoid"></span><h2>Ellipsoids<a class="headerlink" href="#ellipsoids" title="Permalink to this headline">¶</a></h2>
+<p>An ellipsoid is a generalization of an ellipse into any number of dimensions.</p>
+<p>In 3-d case, the implicit equation of an ellipsoid has the standard form</p>
 <div class="math notranslate nohighlight">
 \[
-D_{n}=n! \left( \frac{1}{2!}-\frac{1}{3!}+\ldots+(-1)^{n} \frac{1}{n!}\right)
+\frac{x^{2}}{a^{2}}+\frac{y^{2}}{b^{2}}+\frac{z^{2}}{c^{2}}=1
 \]</div>
-<div class="section" id="sol-1-recurrence-relation">
-<h2>Sol.1 Recurrence Relation<a class="headerlink" href="#sol-1-recurrence-relation" title="Permalink to this headline">¶</a></h2>
-<p>There is a recurrence relation</p>
-<div class="math notranslate nohighlight">
-\[D_n = (n-1)\left(D_{n-1} + D_{n-2}\right)\]</div>
-<p>where <span class="math notranslate nohighlight">\(D(1)=0, D(2)=1\)</span>.</p>
-<p>To understand it, let person <span class="math notranslate nohighlight">\(i\)</span>’s hat be <span class="math notranslate nohighlight">\(h_i\)</span>, and suppose he gets person <span class="math notranslate nohighlight">\(j\)</span>’s hat <span class="math notranslate nohighlight">\(h_j\)</span>. Consider two cases that can happen to person <span class="math notranslate nohighlight">\(j\)</span>.</p>
-<ul class="simple">
-<li><p>He gets <span class="math notranslate nohighlight">\(h_i\)</span>. In this case, the other <span class="math notranslate nohighlight">\(n-2\)</span> persons and the other <span class="math notranslate nohighlight">\(n-2\)</span> hats formulate a problem <span class="math notranslate nohighlight">\(D(n-2)\)</span>.</p></li>
-<li><p>He gets a hat other than <span class="math notranslate nohighlight">\(h_i\)</span>. In this case, he and the other <span class="math notranslate nohighlight">\(n-2\)</span> persons and the <span class="math notranslate nohighlight">\(n-1\)</span> hats (total excluding <span class="math notranslate nohighlight">\(h_j\)</span>) formulate a problem <span class="math notranslate nohighlight">\(D(n-1)\)</span>. Why? Check the constraints: for each of the <span class="math notranslate nohighlight">\(n-1\)</span> person, there is a hat that he cannot get. In particular, person <span class="math notranslate nohighlight">\(j\)</span> cannot get <span class="math notranslate nohighlight">\(h_i\)</span>, and person <span class="math notranslate nohighlight">\(k\)</span> cannot get <span class="math notranslate nohighlight">\(h_k\)</span> for <span class="math notranslate nohighlight">\(k\ne j\)</span>. The constraints are the same as a regular <span class="math notranslate nohighlight">\(D(n-1)\)</span> problem.</p></li>
-</ul>
-<p>Moreover, for a person <span class="math notranslate nohighlight">\(i\)</span>, there are <span class="math notranslate nohighlight">\(n-1\)</span> ways to get a hat <span class="math notranslate nohighlight">\(h_j\)</span>, so the recurrence relation has the above form.</p>
-<p>To derive the explicit form of <span class="math notranslate nohighlight">\(D_n\)</span>, let <span class="math notranslate nohighlight">\(D_n = n ! M_{n}\)</span>, where <span class="math notranslate nohighlight">\(M_1=0, M_2=\frac{1}{2}\)</span>.</p>
-<p>By the recurrence relation we have</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{align}
-n ! M_{n} &amp; = (n-1)(n-1) ! M_{n-1}+(n-1)(n-2) ! M_{n-2} \\
-&amp; =n ! M_{n-1}-(n-1) ! M_{n-1}+(n-1) ! M_{n-2}
-\end{align}\end{split}\]</div>
-<p>Dividing by <span class="math notranslate nohighlight">\((n-1)!\)</span> on both sides gives</p>
-<div class="math notranslate nohighlight">
-\[nM_n = nM_{n-1} - M_{n-1} + (n-1)!M_{n-2}\]</div>
-<p>Rearrangement gives</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{align}
-M_{n}-M_{n-1} &amp;= -\frac{1}{n}\left(M_{n-1}-M_{n-2}\right) \\
-&amp;=\ldots \\
-&amp;=\left(-\frac{1}{n}\right)\left(-\frac{1}{n-1}\right) \ldots \left(-\frac{1}{3}\right)\left(M_{2}-M_{1}\right) \\
-&amp;=(-1)^{n} \frac{1}{n !}
-\end{align}\end{split}\]</div>
-<p>Then</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{align}
-M_{n} &amp;= (M_n - M_{n-1}) + (M_{n-1} - M_{n-2}) + \ldots + (M_2 - M_1) \\
-&amp; =(-1)^{2} \frac{1}{2 !}+(-1)^{3} \frac{1}{3 !} \ldots+(-1)^{n} \frac{1}{n !} \\
-\end{align}\end{split}\]</div>
-<p>Finally, substituting the equation into <span class="math notranslate nohighlight">\(D_n=n! M_n\)</span> gives</p>
-<div class="math notranslate nohighlight">
-\[D_{n}=n!\left(\frac{1}{2 !}-\frac{1}{3 !}+\ldots+(-1)^{n} \frac{1}{n !}\right)\]</div>
+<div class="figure align-default" id="geometry-ellipsoid">
+<a class="reference internal image-reference" href="../_images/geometry-ellipsoid.png"><img alt="" src="../_images/geometry-ellipsoid.png" style="width: 50%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 6 </span><span class="caption-text">Sphere (<span class="math notranslate nohighlight">\(a = b = c\)</span>, top), Spheroid (<span class="math notranslate nohighlight">\(a = b \ne c\)</span>, bottom left), Tri-axial ellipsoid (<span class="math notranslate nohighlight">\(a,b,c\)</span> all different, bottom right)</span><a class="headerlink" href="#geometry-ellipsoid" title="Permalink to this image">¶</a></p>
 </div>
-<div class="section" id="sol-2-inclusion-exclusion-principle">
-<h2>Sol.2 Inclusion-Exclusion Principle<a class="headerlink" href="#sol-2-inclusion-exclusion-principle" title="Permalink to this headline">¶</a></h2>
-<p>Let <span class="math notranslate nohighlight">\(E_i\)</span> be the event that the <span class="math notranslate nohighlight">\(i\)</span>-th person gets his hat. Then the event that at least one person get his hat is</p>
+<div class="section" id="characterization">
+<h3>Characterization<a class="headerlink" href="#characterization" title="Permalink to this headline">¶</a></h3>
+<p>Formally, a set <span class="math notranslate nohighlight">\(E\)</span> of vectors in <span class="math notranslate nohighlight">\(\mathbb{R} ^n\)</span> of the form</p>
 <div class="math notranslate nohighlight">
-\[E_{1} \cup E_{2} \cup \cdots \cup E_{n}\]</div>
-<p>And we want to find the probability that no one get his hat, which is</p>
-<div class="math notranslate nohighlight">
-\[\overline{E_{1}} \cap \overline{E_{2}} \cap \ldots \cap \overline{E_{n}} = \overline{E_{1} \cup E_{2} \cup \ldots \cup E_{n}}\]</div>
-<p>By the inclusion-exclusion principle,</p>
+\[
+E=E(\boldsymbol{z} , \boldsymbol{D})=\left\{\boldsymbol{x}  \in \mathbb{R}^{n} \mid(\boldsymbol{x} -\boldsymbol{z} )^{\top} \boldsymbol{D} ^{-1}(\boldsymbol{x} -\boldsymbol{z} ) \leq 1\right\}
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\boldsymbol{D}\)</span> is an <span class="math notranslate nohighlight">\(n\times n\)</span> positive definite matrix, is called an ellipsoid with center <span class="math notranslate nohighlight">\(\boldsymbol{z} \in \mathbb{R} ^n\)</span>.</p>
+<p>Other formulation: <span class="math notranslate nohighlight">\(E(\boldsymbol{b} , \boldsymbol{A})=\left\{\boldsymbol{x} \in \mathbb{R} ^2:\|\boldsymbol{A} \boldsymbol{x} -\boldsymbol{b} \|_{2} \leq 1\right\}\)</span> where <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> is p.d. The volume of <span class="math notranslate nohighlight">\(E\)</span> is <a class="reference external" href="https://math.stackexchange.com/questions/3252200/volume-of-ellipsoid-via-determinant#:~:text=be%20the%20equation%20of%20a,det(A%E2%88%921)">proportional</a> to <span class="math notranslate nohighlight">\(\operatorname{det} (\boldsymbol{A} ^{-1} )\)</span>.</p>
+<p>Relation between <span class="math notranslate nohighlight">\((\boldsymbol{z} ,\boldsymbol{D})\)</span> and <span class="math notranslate nohighlight">\((\boldsymbol{b}, \boldsymbol{A})\)</span>:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{aligned}
-\left\vert E_{1} \cup E_{2} \cup \cdots \cup E_{n}\right\vert &amp;=\sum_{j=1}^{n}(-1)^{j+1} \sum_{i_{1}&lt;i_{2}&lt;\cdots&lt;i_{j}} \left\vert E_{i_{1}} \cap E_{i_{2}} \cap \cdots \cap E_{i _{j}}\right\vert \\
-&amp;=\sum_{i=1}^{n} \left\vert E_{i}\right\vert-\sum_{i_{1}&lt;i_{2}} \left\vert E_{i_{1}} \cap E_{i_{2}}\right\vert+\cdots \\
-&amp;\quad +(-1)^{j+1} \sum_{i_{1}&lt;i_{2}&lt;\cdots&lt;i_{j}} \left\vert E_{i_{1}} \cap E_{i_{2}} \cap \cdots \cap E_{i_{j}}\right\vert \\
-&amp;\quad +\cdots \\
-&amp;\quad +(-1)^{n+1} \sum_{i_{1}&lt;i_{2}&lt;\cdots&lt;i_{n}} \left\vert E_{i_{1}} \cap E_{i_{2}} \cap \cdots \cap E_{i_{n}}\right\vert
+\|\boldsymbol{A} \boldsymbol{x} -\boldsymbol{b} \|_{2} &amp;\leq 1 \\
+\left( \boldsymbol{A} \boldsymbol{x}  - \boldsymbol{b}  \right) ^{\top} (\boldsymbol{A} \boldsymbol{x} - \boldsymbol{b} )&amp;\le 1 \\
+[\boldsymbol{A} \left( \boldsymbol{x}  - \boldsymbol{A} ^{-1}  \boldsymbol{b}  \right)] ^{\top} [\boldsymbol{A} \left( \boldsymbol{x}  - \boldsymbol{A} ^{-1}  \boldsymbol{b}  \right)]&amp;\le 1 \\
+(\boldsymbol{x} - \boldsymbol{A} ^{-1} \boldsymbol{b} ) ^{\top} (\boldsymbol{A} ^{\top} \boldsymbol{A} ) (\boldsymbol{x} - \boldsymbol{A} ^{-1} \boldsymbol{b} )&amp;\le 1\\
 \end{aligned}\end{split}\]</div>
-<p>Note that the number of ways that exactly <span class="math notranslate nohighlight">\(j\)</span> people get their hats is</p>
+<p>Hence, the relation is <span class="math notranslate nohighlight">\(\boldsymbol{z} = \boldsymbol{A} ^{-1} \boldsymbol{b}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{D} = (\boldsymbol{A} ^{\top} \boldsymbol{A} ) ^{-1}\)</span>, or <span class="math notranslate nohighlight">\(\boldsymbol{b} = \boldsymbol{A} \boldsymbol{z}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{A} = \boldsymbol{D} ^{-1/2}\)</span>. Hence <span class="math notranslate nohighlight">\(\operatorname{vol} (E) \propto \operatorname{det} (\boldsymbol{D} ^{1/2})\)</span>, or <span class="math notranslate nohighlight">\(\operatorname{det} (\boldsymbol{D} ) \propto \operatorname{vol}(E)^2\)</span>. We use many properties of positive definite matrices, see the relevant <a class="reference internal" href="21-linear-algebra.html#pd-matrix"><span class="std std-ref">section</span></a>.</p>
+</div>
+<div class="section" id="ball">
+<h3>Ball<a class="headerlink" href="#ball" title="Permalink to this headline">¶</a></h3>
+<p>For any <span class="math notranslate nohighlight">\(r &gt;0\)</span>, the ellipsoid</p>
 <div class="math notranslate nohighlight">
-\[\sum_{i_{1}&lt;i_{2}&lt;\cdots&lt;i_{j}}\left\vert E_{i_{1}} \cap E_{i_{2}} \cap \cdots \cap E_{i _{j}}\right\vert=\frac{C_n^j (n-j)!}{n!} = \frac{n!}{j!} \]</div>
-<p>Therefore,</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{align}
-\left\vert E_{1} \cup E_{2} \cup \cdots \cup E_{n} \right\vert  &amp;= \sum_{j=1}^{n}(-1)^{j+1} \sum_{i_{1}&lt;i_{2}&lt;\cdots&lt;i_{j}} \left\vert E_{i_{1}} \cap E_{i_{2}} \cap \cdots \cap E_{i _{j}}\right\vert \\
-&amp;= n! \sum_{j=1}^{n}(-1)^{j+1} \frac{1}{j!} \\
-\end{align}\end{split}\]</div>
-<p>and the detergent number is</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{align}
-D_n &amp;=\left\vert \overline{E_{1}} \cap \overline{E_{2}} \cap \ldots \cap \overline{E_{n}}\right\vert  \\
- &amp;= n! - \left\vert E_{1} \cup E_{2} \cup \ldots \cup E_{n}\right\vert \\
-&amp;= n!\left(\frac{1}{2 !}-\frac{1}{3 !}+\ldots+(-1)^{n} \frac{1}{n !}\right) \\
-\end{align}\end{split}\]</div>
+\[\begin{split}
+\begin{aligned}
+E\left(\boldsymbol{z} , r^{2} I\right) &amp;=\left\{\boldsymbol{x}  \in \mathbb{R}^{n} \mid(\boldsymbol{x} -\boldsymbol{z} )^{\top}(\boldsymbol{x} -\boldsymbol{z} ) \leq r^{2}\right\} \\
+&amp;=\left\{\boldsymbol{x}  \in \mathbb{R}^{n} \mid\|\boldsymbol{x} -\boldsymbol{z} \|_2 \leq r\right\}
+\end{aligned}
+\end{split}\]</div>
+<p>is called a <strong>ball</strong> centered at <span class="math notranslate nohighlight">\(\boldsymbol{z}\)</span> of radius <span class="math notranslate nohighlight">\(r\)</span>.</p>
+</div>
 </div>
 </div>
 
@@ -977,8 +999,8 @@ D_n &amp;=\left\vert \overline{E_{1}} \cap \overline{E_{2}} \cap \ldots \cap \ov
         
         <div class='prev-next-bottom'>
             
-    <a class='left-prev' id="prev-link" href="11-combinatorics.html" title="previous page">Combinatorics</a>
-    <a class='right-next' id="next-link" href="20-vector-spaces.html" title="next page">Vector Spaces</a>
+    <a class='left-prev' id="prev-link" href="20-vector-spaces.html" title="previous page">Vector Spaces</a>
+    <a class='right-next' id="next-link" href="21-linear-algebra.html" title="next page">Linear Algebra</a>
 
         </div>
         

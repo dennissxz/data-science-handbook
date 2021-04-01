@@ -171,7 +171,7 @@ where
 - $\boldsymbol{W}$ is the similarity matrix of $s_{ij}$
 - $\boldsymbol{D}$ is the diagonal matrix of $\boldsymbol{W} \boldsymbol{1}$
 
-The volume of a set $S$ of vertices extends to $\operatorname{vol}(S)=\sum_{i \in S} \sum_{j \in N(i)} w_{ij}$
+The volume of a set $S$ of vertices extends to $\operatorname{vol}(S)= \sum_{i \in S} d_i =  \sum_{i \in S} \left( \sum_{j \in N(i)} w_{ij} \right)$.
 
 ### Objectives
 
@@ -240,13 +240,14 @@ The first eigenvector of $\boldsymbol{L}$ is all ones (all data in a single clus
 
 Actually, this problem can be solved exactly. See the [max flow](max-flow) section.
 
+(Ncut)=
 ### Bisection Normalized Cut
 
 [[Shi & Malik 1999](https://people.eecs.berkeley.edu/~malik/papers/SM-ncut.pdf)]
 
 Recall that the objective of the bisection normalized cut is
 
-$$\min_S\ \left( \frac{W\left(S, \bar{S}\right)}{\operatorname{vol}\left(S\right)} + \frac{W\left(S, \bar{S}\right)}{\operatorname{vol}\left(\bar{S}\right)}  \right)$$
+$$\min_S\ \left( \frac{W\left(S, \bar{S}\right)}{\operatorname{vol}\left(S\right)} + \frac{W\left(\bar{S}, S\right)}{\operatorname{vol}\left(\bar{S}\right)}  \right)$$
 
 Let the $\boldsymbol{c} \in\{-1,1\}^{n}$ be the assignment vector. Define $\boldsymbol{y} = (\boldsymbol{1}  + \boldsymbol{x} ) - b (\boldsymbol{1} - \boldsymbol{x} )$ where $b = \frac{\operatorname{vol}(S) }{\operatorname{vol}(\bar{S})}$ such that $y_i = 2$ if $x_i=1$, and $y_i = -2b$ and $x_i = -1$. It can shown that finding $\boldsymbol{c}$ is equivalent to solve the following optimization problem for $\boldsymbol{y}$
 
@@ -257,13 +258,13 @@ $$\begin{aligned}
 && \boldsymbol{y} ^{\top} \boldsymbol{D} \boldsymbol{1}  &= \boldsymbol{0} && \\
 \end{aligned}$$
 
-where the constraint $\boldsymbol{y} ^{\top} \boldsymbol{D} \boldsymbol{1} = \boldsymbol{0}$ comes from the condition of the assignment vector $\boldsymbol{x}$. However, solving for discrete combinatorial values is hard. The optimization problem is relaxed to solve for a continuous $\boldsymbol{y} \in \mathbb{R} ^n$ vector instead. The solution is given by the generalized eigenproblem
+where the constraint $\boldsymbol{y} ^{\top} \boldsymbol{D} \boldsymbol{1} = \boldsymbol{0}$ comes from the condition of the assignment vector $\boldsymbol{x}$. However, solving for discrete combinatorial values is hard. The optimization problem is relaxed to solve for a continuous $\boldsymbol{y} \in \mathbb{R} ^n$ vector instead. The solution is given by the eigenvectors of the generalized eigenproblem
 
 $$
 \boldsymbol{L} \boldsymbol{y}=\lambda \boldsymbol{D}  \boldsymbol{y}
 $$
 
-We take the 2nd eigenvector $\boldsymbol{v} _2$ as the real-valued solution, and find a splitting point to decide assignment with the methods introduced in Min-cut.
+Or equivalently, the eigenvectors of random-walk Laplacian $\boldsymbol{L} ^{\mathrm{rw}} = \boldsymbol{D} ^{-1} \boldsymbol{L}$. For the same reason above, we take the 2nd smallest eigenvector $\boldsymbol{v} _2$ as the real-valued solution, and find a splitting point to decide assignment with the methods introduced in Min-cut.
 
 :::{figure} spectral-clustering-egvector
 <img src="../imgs/spectral-clustering-egvector.png" width = "80%" alt=""/>

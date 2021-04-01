@@ -307,7 +307,7 @@ Properties
   \end{aligned}
   $$
 
-- The symmetric normalized Laplacian is defined as
+- The **symmetric normalized Laplacian** is defined as
 
   $$\begin{aligned}
   \boldsymbol{L} ^\mathrm{sym}
@@ -320,7 +320,7 @@ Properties
   \end{array}\right.\\
   \end{aligned}$$
 
-- The random-walk normalized Laplacian matrix is defined as
+- The **random-walk normalized Laplacian** matrix is defined as
 
   $$\begin{aligned}
   \boldsymbol{L} ^\mathrm{rw}
@@ -336,7 +336,7 @@ Properties
   Note that $L^\mathrm{rw}$ and $L^\mathrm{sym}$ are similar:
 
   $$
-  \underbrace{\boldsymbol{D}^{-1} \boldsymbol{L}}_{\boldsymbol{L}_{\mathrm\mathrm{rw}}}=\underbrace{\boldsymbol{D}^{-1 / 2}}_{\boldsymbol{P}^{-1}} \underbrace{\boldsymbol{D}^{-1 / 2} \boldsymbol{L} \boldsymbol{D}^{-1 / 2}} \underbrace{\boldsymbol{D}^{1 / 2}}_{\boldsymbol{L}_{\mathrm\mathrm{sym}}} \cdot
+  \underbrace{\boldsymbol{D}^{-1} \boldsymbol{L}}_{\boldsymbol{L}^{\mathrm{rw}}}=\underbrace{\boldsymbol{D}^{-1 / 2}}_{\boldsymbol{P}^{-1}} \underbrace{\boldsymbol{D}^{-1 / 2} \boldsymbol{L} \boldsymbol{D}^{-1 / 2}}_{\boldsymbol{L}^{\mathrm{sym}}} \underbrace{\boldsymbol{D}^{1 / 2}}_{\boldsymbol{P} }
   $$
 
   which implies that
@@ -351,12 +351,26 @@ Properties
   - a vector $\boldsymbol{v}$ is an eigenvector of $\boldsymbol{L} ^\mathrm{rw}$ if and only if the vector $\boldsymbol{D} ^{1/2}\boldsymbol{v}$ is an eigenvector of $\boldsymbol{L} ^\mathrm{sym}$.
 
     $$
-    \underbrace{\boldsymbol{D}^{-1} \boldsymbol{L}}_{\boldsymbol{L}_{\mathrm\mathrm{rw}}} \boldsymbol{v}=\lambda \boldsymbol{v} \Longleftrightarrow \underbrace{\boldsymbol{D}^{-1 / 2} \boldsymbol{L} \boldsymbol{D}^{-1 / 2}}_{\boldsymbol{L}_{\mathrm\mathrm{sym}}} \boldsymbol{D}^{1 / 2} \boldsymbol{v}=\lambda \boldsymbol{D}^{1 / 2} \boldsymbol{v} .
+    \underbrace{\boldsymbol{D}^{-1} \boldsymbol{L}}_{\boldsymbol{L}_{\mathrm{rw}}} \boldsymbol{v}=\lambda \boldsymbol{v} \Longleftrightarrow \underbrace{\boldsymbol{D}^{-1 / 2} \boldsymbol{L} \boldsymbol{D}^{-1 / 2}}_{\boldsymbol{L}^{\mathrm{sym}}} (\boldsymbol{D}^{1 / 2} \boldsymbol{v})=\lambda (\boldsymbol{D}^{1 / 2} \boldsymbol{v} )
     $$
 
     In particular, for the eigenvalue 0, the associated eigenvectors for $L^\mathrm{rw}$ and $L^\mathrm{sym}$ are $\boldsymbol{1}$ and $\boldsymbol{D} ^{1/2}\boldsymbol{1}$ respectively.
 
-- The weighted analogies for $\boldsymbol{L} ^\mathrm{sym}$ and $\boldsymbol{L} ^\mathrm{rw}$ are defined accordingly.
+- The **additive normalized Laplacian** is defined as
+
+  $$
+  \boldsymbol{L} ^{\mathrm{add}} = \frac{1}{d_\max} (\boldsymbol{A} + d_\max \boldsymbol{I} - \boldsymbol{D} ) = \frac{1}{d_\max}(d_\max \boldsymbol{I} - \boldsymbol{L} )
+  $$
+
+  It has same eigenvectors with $\boldsymbol{L}$ but different eigenvalues
+
+  $$
+  \boldsymbol{L}_{a} \boldsymbol{u}=\mu \boldsymbol{u} \Longleftrightarrow \boldsymbol{L} \boldsymbol{u}=\lambda \boldsymbol{u}\qquad \mu=1-\frac{\lambda}{d_{\max }}
+  $$
+
+- The weighted analogies for $\boldsymbol{L} ^\mathrm{sym}, \boldsymbol{L} ^\mathrm{rw}, \boldsymbol{L} ^{\mathrm{add}}$ are defined accordingly.
+
+
 
 :::
 

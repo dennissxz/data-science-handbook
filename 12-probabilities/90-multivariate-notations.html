@@ -110,13 +110,13 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../11-math/12-derangement.html">
-     Derangement
+    <a class="reference internal" href="../11-math/20-vector-spaces.html">
+     Vector Spaces
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../11-math/20-vector-spaces.html">
-     Vector Spaces
+    <a class="reference internal" href="../11-math/31-geometry.html">
+     Geometry
     </a>
    </li>
    <li class="toctree-l2">
@@ -977,14 +977,14 @@ x_{n 1} &amp; \cdots &amp; x_{n j} &amp; \cdots &amp; x_{n p}
 \bar{x}_{1} \\
 \vdots \\
 \bar{x}_{p}
-\end{array}\right]=\frac{1}{n} \boldsymbol{X}^{\top} \mathbf{1}
+\end{array}\right]=\frac{1}{n} \boldsymbol{X}^{\top} \boldsymbol{1}
 \end{split}\]</div>
 </div>
 </div>
 <div class="section" id="covariance-matrix">
 <h2>Covariance Matrix<a class="headerlink" href="#covariance-matrix" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="population-covariance-matrix">
-<h3>Population Covariance Matrix<a class="headerlink" href="#population-covariance-matrix" title="Permalink to this headline">¶</a></h3>
+<span id="id1"></span><h3>Population Covariance Matrix<a class="headerlink" href="#population-covariance-matrix" title="Permalink to this headline">¶</a></h3>
 <p>Aka variance-covariance matrix.</p>
 <p>Covariance matrix of a random vector <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> summarizes pairwise covariance,</p>
 <div class="math notranslate nohighlight">
@@ -1021,6 +1021,21 @@ x_{n 1} &amp; \cdots &amp; x_{n j} &amp; \cdots &amp; x_{n p}
 \ne c\)</span>, a constant.</p>
 </li>
 <li><p><span class="math notranslate nohighlight">\(\operatorname{Var}\left( \boldsymbol{A} \boldsymbol{x} + b \right) = \boldsymbol{A} \boldsymbol{\Sigma} \boldsymbol{A} ^\top\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\sum_{j=1}^d \lambda_j = \sum_{j=1}^d \sigma_{ii}\)</span>: the sum of eigenvalues of <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}\)</span> equals the sum of variances.</p></li>
+<li><p>The determinant of the covariance matrix <span class="math notranslate nohighlight">\(\left\vert \boldsymbol{\boldsymbol{\Sigma}}  \right\vert = \operatorname{det} (\boldsymbol{\boldsymbol{\Sigma}} )\)</span> is called the generalized variance. It changes for scaling of variables like the case of univariate variance. Suppose <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> follows <a class="reference internal" href="91-exponential-families.html#multi-gaussian"><span class="std std-ref">multivariate Gaussian</span></a> <span class="math notranslate nohighlight">\(\boldsymbol{x} \sim \mathcal{N}_p(\boldsymbol{\mu} , \boldsymbol{\Sigma})\)</span>, then we have the following interpretation for <span class="math notranslate nohighlight">\(\operatorname{det} (\boldsymbol{\Sigma})\)</span>:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\operatorname{det}(\boldsymbol{\Sigma})\)</span> is a (indirect) measure of the entropy of the Gaussian density</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+    H(\mathcal{N} _p)=\frac{p}{2}(1+\ln (2 \pi))+\frac{1}{2} \ln |\Sigma|
+    \]</div>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\operatorname{det} (\boldsymbol{\Sigma})\)</span> is proportional to the squared of the <a class="reference internal" href="../11-math/31-geometry.html#ellipsoid"><span class="std std-ref">volume</span></a> of the ellipsoid <span class="math notranslate nohighlight">\(E(\boldsymbol{\mu} , \boldsymbol{\Sigma}, c) = \left\{\boldsymbol{x} \in \mathbb{R} ^p: (\boldsymbol{x}-\boldsymbol{\mu})^{\top} \boldsymbol{\Sigma}^{-1}(\boldsymbol{x}-\boldsymbol{\mu}) \le c \right\}\)</span> which measures the disperse of the “data cloud”, i.e. uncertainty.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\operatorname{det} (\boldsymbol{\Sigma}) = \prod_{j=1}^d \lambda_j = 0\)</span> if at least one variables is degenerate.</p></li>
+</ul>
+<p>The interpretation for other distributions is analogous.</p>
+</li>
 </ol>
 </div>
 <div class="section" id="sample-covariance-matrix-and-cssp">
@@ -1055,7 +1070,7 @@ s_{p 1} &amp; s_{p 2} &amp; \cdots &amp; s_{p p}
 \boldsymbol{W}_{p \times p}=\boldsymbol{X}^{\top} \boldsymbol{X}-n \overline{\boldsymbol{x}} \overline{\boldsymbol{x}}^{\top}=\sum_{i=1}^{n}\left(\boldsymbol{x}_{i}-\overline{\boldsymbol{x}}\right)\left(\boldsymbol{x}_{i}-\overline{\boldsymbol{x}}\right)^{\top}
 \]</div>
 <p>is called the corrected (centered) sums of squares and products matrix (CSSP). One can view it as a multivariate generalization of the corrected (centered) sum of squares <span class="math notranslate nohighlight">\(\sum_i \left( x_i - \bar{x} \right)^2\)</span> in the univariate case.</p>
-<p>The determinant of the sample covariance <span class="math notranslate nohighlight">\(\left\vert \boldsymbol{S}  \right\vert = \operatorname{det} (\boldsymbol{S} )\)</span> is called the generalized sample variance. It changes for scaling of variables like univariate sample covariance.</p>
+<p>The determinant of the sample covariance <span class="math notranslate nohighlight">\(\left\vert \boldsymbol{S}  \right\vert = \operatorname{det} (\boldsymbol{S} )\)</span> is called the generalized sample variance. It changes for scaling of variables like the case of univariate sample variance. Since <span class="math notranslate nohighlight">\(\boldsymbol{S}\)</span> is an estimator for <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}\)</span>, the interpretations of <span class="math notranslate nohighlight">\(\operatorname{det}(\boldsymbol{S} )\)</span> and <span class="math notranslate nohighlight">\(\operatorname{det}(\boldsymbol{\Sigma} )\)</span> are similar. See the above section for <span class="math notranslate nohighlight">\(\operatorname{det} (\boldsymbol{\Sigma})\)</span>.</p>
 </div>
 <div class="section" id="covariance-matrix-of-two-vectors">
 <span id="prob-covariance-matrix-of-two-vectors"></span><h3>Covariance Matrix of Two Vectors<a class="headerlink" href="#covariance-matrix-of-two-vectors" title="Permalink to this headline">¶</a></h3>
@@ -1129,10 +1144,13 @@ s_{p 1} &amp; s_{p 2} &amp; \cdots &amp; s_{p p}
 \end{split}\]</div>
 <p>In short we will write <span class="math notranslate nohighlight">\(D ^{-1} = \left( \operatorname{diag}\left( \boldsymbol{\Sigma}  \right) \right) ^{-\frac{1}{2}}\)</span>.</p>
 <p><strong>Properties</strong></p>
-<ol class="simple">
+<ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(\rho_{ii} = 1\)</span>. <span class="math notranslate nohighlight">\(\rho_{ij} = \rho_{ji}\)</span>. <span class="math notranslate nohighlight">\(\rho_{ij} = 0\)</span> iff <span class="math notranslate nohighlight">\(\sigma_{ij} = 0\)</span></p></li>
 <li><p>Each <span class="math notranslate nohighlight">\(\rho_{ij}\)</span> does not change under re-location or rescaling of <span class="math notranslate nohighlight">\(x_i\)</span> and <span class="math notranslate nohighlight">\(x_j\)</span></p></li>
-</ol>
+<li><p><span class="math notranslate nohighlight">\(\operatorname{tr}(\boldsymbol{\rho} )= \sum_{j=1}^d \lambda_j = d\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\operatorname{det}(\boldsymbol{\rho} ) = \prod_{j=1}^d \lambda_j  \in [0, 1]\)</span>: it is 1 if all variables are independent, and 0 if at least one variable is degenerate <span class="math notranslate nohighlight">\(\sigma _{ii} = 0\)</span>. The larger the value, higher level of independence, and higher level of uncertainty.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\operatorname{det}(\boldsymbol{\rho} ) = \operatorname{det} (\boldsymbol{D} ^{-1} \boldsymbol{\Sigma} \boldsymbol{D} ^{-1} ) = \operatorname{det}(\boldsymbol{D} ^{-1}) \operatorname{det} (\boldsymbol{\Sigma} ) \operatorname{det} (\boldsymbol{D} ^{-1} ) = \operatorname{det} (\boldsymbol{\Sigma}) \prod_i {\sigma}_{ii}\)</span></p></li>
+</ul>
 </div>
 <div class="section" id="sample-correlation-matrix">
 <h3>Sample Correlation Matrix<a class="headerlink" href="#sample-correlation-matrix" title="Permalink to this headline">¶</a></h3>

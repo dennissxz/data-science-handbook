@@ -110,13 +110,13 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../11-math/12-derangement.html">
-     Derangement
+    <a class="reference internal" href="../11-math/20-vector-spaces.html">
+     Vector Spaces
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../11-math/20-vector-spaces.html">
-     Vector Spaces
+    <a class="reference internal" href="../11-math/31-geometry.html">
+     Geometry
     </a>
    </li>
    <li class="toctree-l2">
@@ -1067,81 +1067,84 @@ social behavioral sciences.</p></li>
 \[
 \operatorname{Var}\left(Z_{1}\right)=\max _{\left\Vert \boldsymbol{u}  \right\Vert _2^2 = 1 } \boldsymbol{u}^{\top} \boldsymbol{\Sigma} \boldsymbol{u}
 \]</div>
-<p>Suppose the maximum is achieved at <span class="math notranslate nohighlight">\(\boldsymbol{u} = \boldsymbol{u} _1\)</span> and we call <span class="math notranslate nohighlight">\(Z_1\)</span> given below the <strong>first population principal component</strong></p>
+<p>where the constraint is to removes scaling or <span class="math notranslate nohighlight">\(\boldsymbol{u}\)</span>. Suppose the maximum is achieved at <span class="math notranslate nohighlight">\(\boldsymbol{u} = \boldsymbol{u} _1\)</span> and we call the variable <span class="math notranslate nohighlight">\(Z_1\)</span> given below the <strong>first population principal component</strong></p>
 <div class="math notranslate nohighlight">
 \[
 Z_1 = \boldsymbol{u} _1^{\top} \boldsymbol{x}
 \]</div>
-<p>Successively for <span class="math notranslate nohighlight">\(i=2, \ldots, m\)</span> the variance of <span class="math notranslate nohighlight">\(Z_i\)</span> can be obtained by the following maximization</p>
+<p>Successively for <span class="math notranslate nohighlight">\(k=2, \ldots, d\)</span> the variance of <span class="math notranslate nohighlight">\(Z_i\)</span> can be obtained by the following maximization</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\max _{\boldsymbol{u} _k} &amp;&amp; \boldsymbol{u}_k^{\top} \boldsymbol{\Sigma} \boldsymbol{u}_k &amp; \\
+\mathrm{s.t.}
+&amp;&amp; \quad \boldsymbol{u}_k^{\top} \boldsymbol{u}_k&amp;=1 \\
+&amp;&amp; \boldsymbol{u}_k ^{\top} \boldsymbol{u} _j &amp;= 0  \text{  for }  j=1, \ldots, k-1 \\
+\end{aligned}\end{split}\]</div>
+<p>where the second constraint <span class="math notranslate nohighlight">\(\boldsymbol{u}_k ^{\top} \boldsymbol{u} _j = 0\)</span> comes from the identity</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{aligned}
-\operatorname{Var}\left(Z_{i}\right)&amp;=\max _{u} \boldsymbol{u}^{\top} \boldsymbol{\Sigma} \boldsymbol{u}\\
-\mathrm{s.t.}  \quad \boldsymbol{u}^{\top} \boldsymbol{u}&amp;=1 \\
-\boldsymbol{u}^{\top} \boldsymbol{x} &amp;\text { being uncorrelated with } Z_{1}, \ldots, Z_{i-1}  
+\operatorname{Cov}\left(Z_{k}, Z_{j}\right)  &amp;=\operatorname{Cov}\left(\boldsymbol{u} _{k}^{\top} \boldsymbol{x}, \boldsymbol{u}_{j}^{\top} \boldsymbol{x}\right) \\
+&amp;=\boldsymbol{u}_{k}^{\top} \operatorname{Cov}(\boldsymbol{x}, \boldsymbol{x}) \boldsymbol{u}_{j} \\
+&amp;=\boldsymbol{u}_{k}^{\top} \boldsymbol{\Sigma} \boldsymbol{u}_{j} \\
+&amp;=\boldsymbol{u}_{k}^{\top} \lambda_{j} \boldsymbol{u}_{j} \\
+&amp;=\lambda_{j} \boldsymbol{u}_{k}^{\top} \boldsymbol{u}_{j}
 \end{aligned}
 \end{split}\]</div>
-<p>The maximum is achieved at <span class="math notranslate nohighlight">\(\boldsymbol{u} = \boldsymbol{u} _i\)</span> and the <span class="math notranslate nohighlight">\(i\)</span>-th population principal component is</p>
+<p>Since <span class="math notranslate nohighlight">\(\lambda_j &gt; 0\)</span> and we want uncorrelated principal components <span class="math notranslate nohighlight">\(\operatorname{Cov}\left(Z_k, Z_{j}\right) = 0\)</span>, we obtain <span class="math notranslate nohighlight">\(\boldsymbol{u} _k ^{\top} \boldsymbol{u} _j = 0\)</span>.</p>
+<p>After we solve <span class="math notranslate nohighlight">\(\boldsymbol{u} _k\)</span>, the <span class="math notranslate nohighlight">\(k\)</span>-th population principal component is then</p>
 <div class="math notranslate nohighlight">
 \[
-Z_i = \boldsymbol{u} _i^\top \boldsymbol{x}
+Z_k = \boldsymbol{u} _k^\top \boldsymbol{x}
 \]</div>
 <div class="dropdown seealso admonition">
 <p class="admonition-title"> Derivation</p>
-<p>We consider the maximization problem:</p>
+<p>The problem to find <span class="math notranslate nohighlight">\(\boldsymbol{u} _1\)</span> is an <a class="reference internal" href="../11-math/52-non-linear-programming.html#rayleigh-quotient"><span class="std std-ref">Rayleigh quotient</span></a> problem which has been solved there. We show how to solve the subsequent <span class="math notranslate nohighlight">\(\boldsymbol{u} _k\)</span> for <span class="math notranslate nohighlight">\(k \ge 2\)</span>.</p>
+<p>When <span class="math notranslate nohighlight">\(k=2\)</span>, the problem is</p>
 <div class="math notranslate nohighlight">
-\[\begin{split}\begin{align}
-\max _{\boldsymbol{u}} \quad &amp; \boldsymbol{u}^{\top} \boldsymbol{\Sigma} \boldsymbol{u}  \\
-\text {s.t.} \quad &amp; \boldsymbol{u}^{\top} \boldsymbol{u}=1
-\end{align}\end{split}\]</div>
-<div class="math notranslate nohighlight">
-\[
-\quad
-\]</div>
+\[\begin{split}\begin{aligned}
+\max _{\boldsymbol{u} _2} &amp;&amp; \boldsymbol{u}_2^{\top} \boldsymbol{\Sigma} \boldsymbol{u}_2 &amp; \\
+\mathrm{s.t.}
+&amp;&amp; \quad \boldsymbol{u}_2^{\top} \boldsymbol{u}_2&amp;=1 \\
+&amp;&amp; \boldsymbol{u}_2 ^{\top} \boldsymbol{u} _1 &amp;= 0\\
+\end{aligned}\end{split}\]</div>
 <p>The Lagrangean is</p>
 <div class="math notranslate nohighlight">
 \[
-\begin{equation}
-\mathcal{L}(\boldsymbol{u}, \theta)=\boldsymbol{u}^{\top} \boldsymbol{\Sigma} \boldsymbol{u}-\lambda\left(\boldsymbol{u}^{\top} \boldsymbol{u}-1\right)
-\end{equation}
+\mathcal{L}_{2}=\boldsymbol{u}_{2}^{\top} \Sigma \boldsymbol{u}_{2}-\lambda\left(\boldsymbol{u}_{2}^{\top} \boldsymbol{u}_{2}-1\right)-\delta\left(\boldsymbol{u}_{2}^{\top} \boldsymbol{u}_{1}-0\right)
 \]</div>
-<p>The first order conditions are</p>
+<p>Taking derivative w.r.t. <span class="math notranslate nohighlight">\(\boldsymbol{u} _2\)</span> gives</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{\partial \mathcal{L}_{2}}{\partial \boldsymbol{u}_{2}}=2 \boldsymbol{\Sigma} \boldsymbol{u}_{2}-2 \lambda \boldsymbol{u}_{2}-\delta \boldsymbol{u}_{1}=0
+\]</div>
+<p>Left-multiply <span class="math notranslate nohighlight">\(\boldsymbol{u} _1 ^{\top}\)</span> we have</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{aligned}
-\frac{\partial L}{\partial \boldsymbol{u}}
-&amp;= 2 \boldsymbol{\Sigma} \boldsymbol{u}-2 \lambda \boldsymbol{u} \\
-&amp;=\boldsymbol{0} \\
-\Rightarrow \quad \quad \boldsymbol{\Sigma} \boldsymbol{u} &amp;=\lambda \boldsymbol{u}  \quad \quad \quad \quad (1)
+RHS &amp;= \boldsymbol{u}_{1}^{\top} \boldsymbol{0} =0 \\
+LHS &amp;=2\left(\boldsymbol{u}_{1}^{\top} \Sigma \boldsymbol{u}_{2}-\boldsymbol{u}_{1}^{\top} \lambda \boldsymbol{u}_{2}\right)-\boldsymbol{u}_{1}^{\top} \delta \boldsymbol{u}_{1} \\
+&amp;=2\left(\left(\boldsymbol{\Sigma} \boldsymbol{u}_{1}\right)^{\top} \boldsymbol{u}_{2}-\lambda \boldsymbol{u}_{1}^{\top} \boldsymbol{u}_{2}\right)-\delta \boldsymbol{u}_{1}^{\top} \boldsymbol{u}_{1} \\
+&amp;=2\left(\lambda \boldsymbol{u}_{1}^{\top} \boldsymbol{u}_{2}-\lambda \boldsymbol{u}_{1}^{\top} \boldsymbol{u}_{2}\right)-\delta \\
+&amp;=- \delta
 \end{aligned}
 \end{split}\]</div>
-<p>and</p>
+<p>Hence <span class="math notranslate nohighlight">\(\delta = 0\)</span>. Substituting this back gives <span class="math notranslate nohighlight">\(\Sigma \boldsymbol{u} _2= \lambda\boldsymbol{u} _{2}\)</span>. Thus, <span class="math notranslate nohighlight">\(\boldsymbol{u} _2\)</span> is an eigenvector of <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}\)</span> with eigenvalue <span class="math notranslate nohighlight">\(\lambda\)</span>. The objective is then <span class="math notranslate nohighlight">\(\boldsymbol{u} _2 \boldsymbol{\Sigma} \boldsymbol{u} _2 = \lambda\)</span>. Hence, we choose <span class="math notranslate nohighlight">\(\lambda_2\)</span>, and choose <span class="math notranslate nohighlight">\(\boldsymbol{u} _2\)</span> to be the eigenvector of <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}\)</span> associated with <span class="math notranslate nohighlight">\(\lambda_2\)</span>.</p>
+<p>For <span class="math notranslate nohighlight">\(k=3, \ldots, n\)</span>, the Lagrangean is</p>
+<div class="math notranslate nohighlight">
+\[
+\mathcal{L}_{k}=\boldsymbol{u}_{k}^{\top} \Sigma \boldsymbol{u}_{k}-\lambda\left(\boldsymbol{u}_{k}^{\top} \boldsymbol{u}_{k}-1\right)-\delta_{1}\left(\boldsymbol{u}_{k}^{\top} \boldsymbol{u}_{1}\right)-\cdots-\delta_{k-1}\left(\boldsymbol{u}_{k}^{\top} \boldsymbol{u}_{k-1}\right)
+\]</div>
+<p>Taking derivative gives</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{aligned}
-\frac{\partial L}{\partial \lambda}
-&amp;= 1-\boldsymbol{u}^{\top} \boldsymbol{u} \\
-&amp;= 0 \\
-\Rightarrow \quad \quad  \boldsymbol{u}^{\top} \boldsymbol{u}
-&amp;=1 \quad \quad \quad \quad (2)
+\frac{\partial L_{k}}{\partial \boldsymbol{u}_{k}} &amp;=2(\Sigma-\lambda I) \boldsymbol{u}_{k}-\delta_{1} \boldsymbol{u}_{1}-\cdots-\delta_{k-1} \boldsymbol{u}_{k-1} \\
+&amp;=2 \boldsymbol{\Sigma} \boldsymbol{u}_{k}-2 \lambda \boldsymbol{u}_{k}-\delta_{1} \boldsymbol{u}_{1}-\cdots-\delta_{k-1} \boldsymbol{u}_{k-1} \\
+&amp;=0
 \end{aligned}
 \end{split}\]</div>
-<p>Premultiply <span class="math notranslate nohighlight">\((1)\)</span> by <span class="math notranslate nohighlight">\(\boldsymbol{u} ^\top\)</span> we have
-$<span class="math notranslate nohighlight">\(
-\boldsymbol{u}^{\top} \boldsymbol{\Sigma} \boldsymbol{u}=\lambda \boldsymbol{u}^{\top} \boldsymbol{u}
-\)</span>$</p>
-<p>Hence,</p>
-<div class="math notranslate nohighlight">
-\[
-\lambda = \boldsymbol{u} ^\top \boldsymbol{\Sigma} \boldsymbol{u}
-\]</div>
-<p>Note that <span class="math notranslate nohighlight">\((1)\)</span> also gives</p>
-<div class="math notranslate nohighlight">
-\[
-(\boldsymbol{\Sigma}-\lambda \boldsymbol{I}) \boldsymbol{u} =\boldsymbol{0}
-\]</div>
-<p>which implies <span class="math notranslate nohighlight">\(\lambda\)</span> is the eigenvalue of <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}\)</span>.</p>
-<p>Therefore, the maximized variance <span class="math notranslate nohighlight">\(\boldsymbol{u} ^\top \boldsymbol{\Sigma} \boldsymbol{u}\)</span> equals to the largest eigenvalue of <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}\)</span>.</p>
+<p>Similarly, left multiplying <span class="math notranslate nohighlight">\(\boldsymbol{u} _j ^{\top}\)</span> gives <span class="math notranslate nohighlight">\(\delta_j=0\)</span> for <span class="math notranslate nohighlight">\(j=1, \ldots, k-1\)</span>. Substituting <span class="math notranslate nohighlight">\(\delta_j=0\)</span> back gives <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma} \boldsymbol{u} _k = \lambda \boldsymbol{u} _k\)</span>. We can then choose the <span class="math notranslate nohighlight">\(k\)</span>-th largest eigenvalue <span class="math notranslate nohighlight">\(\lambda_k\)</span> and the associated eigenvector to be <span class="math notranslate nohighlight">\(\boldsymbol{u}_k\)</span>.</p>
 </div>
 </div>
 <div class="section" id="spectral-decomposition">
@@ -1223,6 +1226,7 @@ Z_{k}=\boldsymbol{u}_{k}^{\top} \boldsymbol{x}=u_{1 k} X_{1}+u_{2 k} X_{2}+\cdot
 \[
     \sum_{i=1}^{d} \lambda_{i}=\sum_{i=1}^{d} \sigma_{i i}
     \]</div>
+<p>Hence, the PCA procedure, the total variance is preserved by re-allocated to <span class="math notranslate nohighlight">\(\operatorname{Var}\left( Z_1 \right) \ge \operatorname{Var}\left( Z_2 \right) \ge \ldots \operatorname{Var}\left( Z_d \right)\)</span>.</p>
 <div class="dropdown seealso admonition">
 <p class="admonition-title"> <em>Proof</em></p>
 <div class="math notranslate nohighlight">
@@ -1296,7 +1300,7 @@ Z_{k}=\boldsymbol{u}_{k}^{\top} \boldsymbol{x}=u_{1 k} X_{1}+u_{2 k} X_{2}+\cdot
 <p>Construct the so-called scree plot of the eigenvalue <span class="math notranslate nohighlight">\(\ell_i\)</span> on the vertical axis versus <span class="math notranslate nohighlight">\(i\)</span> on horizontal axis with equal intervals for <span class="math notranslate nohighlight">\(i = 1, 2, \ldots, d\)</span>, and join the points into a decreasing polygon. Try to find a “clean-cut” where the polygon “levels off” so that the first few eigenvalues seem to be far apart from the others.</p>
 <div class="myclass figure align-default" id="pca-scree-plot">
 <a class="reference internal image-reference" href="../_images/pca-scree-plot.png"><img alt="" src="../_images/pca-scree-plot.png" style="width: 50%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 58 </span><span class="caption-text">Scree plot of <span class="math notranslate nohighlight">\(\lambda\)</span>. [Fung 2021]</span><a class="headerlink" href="#pca-scree-plot" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 61 </span><span class="caption-text">Scree plot of <span class="math notranslate nohighlight">\(\lambda\)</span>. [Fung 2021]</span><a class="headerlink" href="#pca-scree-plot" title="Permalink to this image">¶</a></p>
 </div>
 </li>
 <li><p><strong>Hypothesis testing</strong></p>
@@ -1316,7 +1320,7 @@ Z_{k}=\boldsymbol{u}_{k}^{\top} \boldsymbol{x}=u_{1 k} X_{1}+u_{2 k} X_{2}+\cdot
 <p>To choose an optimal number of principal components <span class="math notranslate nohighlight">\(k\)</span>, we can examine the magnitude of the residual <span class="math notranslate nohighlight">\(\left\Vert \boldsymbol{x} - \hat{\boldsymbol{x} } \right\Vert ^2\)</span>. The expected residual corresponds to variance in the <strong>remaining</strong> subspace.</p>
 <div class="myclass figure align-default" id="pca-reconstruction">
 <a class="reference internal image-reference" href="../_images/pca-reconstruction.png"><img alt="" src="../_images/pca-reconstruction.png" style="width: 80%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 59 </span><span class="caption-text">Reconstruction of digits with mean and principal components [Livescu 2021]</span><a class="headerlink" href="#pca-reconstruction" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 62 </span><span class="caption-text">Reconstruction of digits with mean and principal components [Livescu 2021]</span><a class="headerlink" href="#pca-reconstruction" title="Permalink to this image">¶</a></p>
 </div>
 </li>
 <li><p><strong>Downstream task performance</strong></p>
@@ -1349,12 +1353,12 @@ constant <span class="math notranslate nohighlight">\(c\)</span>,</p>
 </ul>
 <div class="figure align-default" id="pca-gausian-ellipsoids">
 <a class="reference internal image-reference" href="../_images/pca-pc-ellipsoids.png"><img alt="" src="../_images/pca-pc-ellipsoids.png" style="width: 80%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 60 </span><span class="caption-text">PCA and Ellipsoids of Gaussian [Fung 2018]</span><a class="headerlink" href="#pca-gausian-ellipsoids" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 63 </span><span class="caption-text">PCA and Ellipsoids of Gaussian [Fung 2018]</span><a class="headerlink" href="#pca-gausian-ellipsoids" title="Permalink to this image">¶</a></p>
 </div>
 <p>Another example is hand written digits. Suppose <span class="math notranslate nohighlight">\(\boldsymbol{\mu} _ \boldsymbol{x}\)</span> is the sample mean that determines the “mean” appearance of the digit <span class="math notranslate nohighlight">\(2\)</span>, then <span class="math notranslate nohighlight">\(\boldsymbol{\phi}_j\)</span> is a principal direction which determines the location of variation of the black/white pixels.</p>
 <div class="myclass figure align-default" id="pca-reconstruction-scale">
 <a class="reference internal image-reference" href="../_images/pca-pc-digits.png"><img alt="" src="../_images/pca-pc-digits.png" style="width: 50%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 61 </span><span class="caption-text">Reconstruction of digits with mean and scaled principal components [Livescu 2021]</span><a class="headerlink" href="#pca-reconstruction-scale" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 64 </span><span class="caption-text">Reconstruction of digits with mean and scaled principal components [Livescu 2021]</span><a class="headerlink" href="#pca-reconstruction-scale" title="Permalink to this image">¶</a></p>
 </div>
 </div>
 <div class="section" id="proportion-explained">
@@ -1454,7 +1458,7 @@ Z_i = \frac{X_i - \mu_i}{\sigma_i}
 <div class="section" id="cons">
 <h2>Cons<a class="headerlink" href="#cons" title="Permalink to this headline">¶</a></h2>
 <p><strong>Sensitive to Variable Transformation</strong></p>
-<p>The results of PCA are not invariant under a linear transformation and, even worse, there is no easy correspondence between the two sets of results <span class="math notranslate nohighlight">\(\boldsymbol{z}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{z} ^\prime\)</span>, before and after the linear transformation. For example, the PCA using <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}\)</span> is not the same as the PCA using <span class="math notranslate nohighlight">\(\boldsymbol{\rho}\)</span> and we cannot use the PCA from <span class="math notranslate nohighlight">\(\boldsymbol{\rho}\)</span> to get the PCA results from the original variables.</p>
+<p>The results of PCA are not invariant under a linear transformation and, even worse, there is no easy correspondence between the two sets of results <span class="math notranslate nohighlight">\(\boldsymbol{z}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{z} ^\top\)</span>, before and after the linear transformation. For example, the PCA using <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}\)</span> is not the same as the PCA using <span class="math notranslate nohighlight">\(\boldsymbol{\rho}\)</span> and we cannot use the PCA from <span class="math notranslate nohighlight">\(\boldsymbol{\rho}\)</span> to get the PCA results from the original variables.</p>
 <p>If the two sets of results are consistent to each other, the PCA based on <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}\)</span>  may be preferred in some situation. If they are very different, or even contradictory, subject-matter knowledge and/or wisdom are needed to make a choice.</p>
 <p>The PCA based on covariance matrix is preferred when the original measurements units are very important, like in many applications in
 natural sciences. However, when the units of measurement are of artificial nature, like scores in some questions as frequently used in social sciences, the PCA based on correlation matrix is preferred.</p>
@@ -1462,7 +1466,7 @@ natural sciences. However, when the units of measurement are of artificial natur
 <p>But note that the direction of largest variance need not to be the most discriminative direction. See the example below.</p>
 <div class="myclass figure align-default" id="pca-not-discriminative">
 <a class="reference internal image-reference" href="../_images/pca-classification.png"><img alt="" src="../_images/pca-classification.png" style="width: 80%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 62 </span><span class="caption-text">PCA may not be discriminative [Livescu 2021]</span><a class="headerlink" href="#pca-not-discriminative" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 65 </span><span class="caption-text">PCA may not be discriminative [Livescu 2021]</span><a class="headerlink" href="#pca-not-discriminative" title="Permalink to this image">¶</a></p>
 </div>
 <p>If we knew the labels, we could use a supervised dimensionality reduction, e.g. linear discriminant analysis.</p>
 </div>

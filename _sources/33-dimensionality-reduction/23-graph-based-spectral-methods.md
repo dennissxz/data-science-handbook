@@ -2,7 +2,7 @@
 
 PCA, CCA, MDS are linear dimensionality reduction methods. The lower-dimensional linear projection preserves distances between **all** points.
 
-If our data lies on a nonlinear manifold (a topological space locally resembling Euclidean space), then we need non-linear dimensionality reduction methods. Many of them are extended from MDS, that extends to a variety of distance/similarity measures. They only preserve **local** distance/neighborhood information along nonlinear manifold
+If our data lies on a nonlinear manifold (a topological space locally resembling Euclidean space), then we need non-linear dimensionality reduction methods. Many of them are extended from MDS, that extends to a variety of distance/similarity measures. They only preserve **local** distance/neighborhood information along nonlinear manifold.
 
 In general, there are three steps:
 
@@ -14,6 +14,8 @@ In general, there are three steps:
 
 
 Examples: Isomap, maximum variance unfolding, locally linear embedding, Laplacian eigenmaps.
+
+The obtained embeddings can then be used as input for clustering, e.g. $k$-means. Essentially, we look for clustering on the manifold, rather than the original space, which makes more sense.
 
 ## Isomap
 
@@ -112,9 +114,19 @@ $$
 \sum_{i,j=1}^n w_{ij} \left\| \boldsymbol{z}_i - \boldsymbol{z}_j  \right\|  ^2
 $$
 
-where $w_{ij}$ measures the closeness of $i$ and $j$ in $\boldsymbol{X}$. If $w_{ij}$ is large, then $\left\| \boldsymbol{z}_i - \boldsymbol{z}_j  \right\|$ is forced to be small.
+where $w_{ij}$ measures the closeness of $i$ and $j$ in $\boldsymbol{X}$. If $i$ and $j$ are close in $\boldsymbol{X}$, then $w_{ij}$ is large, which force $\left\| \boldsymbol{z}_i - \boldsymbol{z}_j  \right\|$ to be small, i.e. $i$ and $j$ are close in $\boldsymbol{Z}$. For $i$ and $j$ that are far away in $\boldsymbol{X}$, don't care. Recall that the objective is to maintain locality.
 
-It can be shown that $\frac{1}{2}$ of this summation equals $\operatorname{tr}\left( \boldsymbol{Z} ^{\top} \boldsymbol{L} \boldsymbol{Z} \right)$. Hence our objective is
+It can be shown that
+
+$$\begin{aligned}
+\sum_{i,j=1}^n w_{ij} \left\| \boldsymbol{z}_i - \boldsymbol{z}_j  \right\|  ^2
+&= \sum_{i,j=1}^n w_{ij} \left\| \boldsymbol{Z}^{\top} (\boldsymbol{e} _i - \boldsymbol{e} _j) \right\|  ^2\\
+&= 2 \operatorname{tr} \left( \boldsymbol{Z} \boldsymbol{Z} ^{\top} \underbrace{\sum_{ij} w_{ij}(\boldsymbol{e} _i - \boldsymbol{e} _j) (\boldsymbol{e} _i - \boldsymbol{e} _j) ^{\top}}_{=\boldsymbol{L}} \right) \\
+&= 2 \operatorname{tr}\left( \boldsymbol{Z} ^{\top} \boldsymbol{L} \boldsymbol{Z} \right) \\
+\end{aligned}$$
+
+
+Hence, our objective is now
 
 $$\begin{aligned}
 \min && \operatorname{tr}\left( \boldsymbol{Z} ^{\top} \boldsymbol{L} \boldsymbol{Z} \right) & &&\\
@@ -122,23 +134,35 @@ $$\begin{aligned}
 && \boldsymbol{Z} ^{\top} \boldsymbol{D} \boldsymbol{Z} &= \boldsymbol{I} \\ && \boldsymbol{Z} ^{\top} \boldsymbol{D} \boldsymbol{1} &= \boldsymbol{0} \\
 \end{aligned}$$
 
-The constraint prevents collapse onto a subspace of dimension less than $m-1$. The solution is given by the bottom $k$ eigenvectors (excluding $\boldsymbol{1}$) of the generalized eigenvalue problem
+where the first constraint prevents trivial solution $\boldsymbol{Z} = \boldsymbol{0}$. Actually $\boldsymbol{Z} ^{\top} \boldsymbol{D} \boldsymbol{1} = \boldsymbol{0}$ is not necessary.
+
+The solution ($k$ columns of $\boldsymbol{Z}$) is given by the bottom $k$ eigenvectors (excluding $\boldsymbol{1}$) of the generalized eigenvalue problem
 
 $$
 \boldsymbol{L} \boldsymbol{v} = \lambda \boldsymbol{D} \boldsymbol{v}
 $$
 
-To see why the two (??) constraints come from, we can first see a $k=1$ example, i.e. projection to a line. Suppose the projections are $z_1, \ldots, z_n$, the problem is
+```{margin}
+See [graph Laplacians](graph-laplacian) for details about $\boldsymbol{L} ^\mathrm{rw}$ and $\boldsymbol{L} ^\mathrm{sym}$.
+```
+
+Or equivalently, the eigenvectors of random-walk graph Laplacian: $\boldsymbol{L} ^{\mathrm{rw}} = \boldsymbol{D} ^{-1} \boldsymbol{L}$.
+
+To see why the two constraints come from, we can first see a $k=1$ example, i.e. projection onto a line. Suppose the projections are $z_1, \ldots, z_n$, the problem is
 
 $$
 \min _{\boldsymbol{z}} \boldsymbol{z} ^{\top} \boldsymbol{L} \boldsymbol{z}
 $$
 
 Note that there are two issues
-- arbitrary scaling: if $\boldsymbol{z}^*$ is an optimal solution, then a new solution $c\boldsymbol{z}^*$ where $0<c<1$ gives a smaller function value, contradiction.
+- arbitrary scaling: if $\boldsymbol{z}^*$ is an optimal solution, then a new solution $c\boldsymbol{z}^*$ where $0<c<1$ gives a smaller function value, contradiction. Or we say $\boldsymbol{z} = \boldsymbol{0}$ is a trivial solution.
 - translational invariance: if $\boldsymbol{z} ^*$ is an optimal solution, then a new solution $\boldsymbol{z} ^* + c\boldsymbol{1}$ gives the same function value.
 
-To solve these two issues, we add two constraints $\boldsymbol{z} ^{\top} \boldsymbol{D} \boldsymbol{z} = 1$ and $\boldsymbol{z} ^{\top} \boldsymbol{D} \boldsymbol{1} = 0$ respectively. The second constraint also removes a trivial solution, to be introduced soon. The problem is then
+```{margin}
+The matrix $\boldsymbol{D}$ here is introduced by the authors in the original paper to reflect vertex importance. Actually replacing $\boldsymbol{D}$ by $\boldsymbol{I}$ also solve these two issues.
+```
+
+To solve these two issues, we add two constraints $\boldsymbol{z} ^{\top} \boldsymbol{D} \boldsymbol{z} = 1$ and $\boldsymbol{z} ^{\top} \boldsymbol{D} \boldsymbol{1} = 0$ respectively. The second constraint also removes a trivial solution $\boldsymbol{z} = c\boldsymbol{1}$, to be introduced soon. The problem becomes
 
 $$\begin{aligned}
 \min && \boldsymbol{z} ^{\top} \boldsymbol{L} \boldsymbol{z}  & &&\\
@@ -153,16 +177,11 @@ $$
 \boldsymbol{L} \boldsymbol{v} = \lambda \boldsymbol{D} \boldsymbol{v}
 $$
 
+
 Note that $\boldsymbol{v} = c\boldsymbol{1}$ is an eigenvector of $\boldsymbol{L}$ but the constraint $\boldsymbol{z} ^{\top} \boldsymbol{D} \boldsymbol{1} =0$ removes that.
 
-To generalize to $k\ge 0$, we have the constraints shown above.
+To generalize to $k\ge 2$, we generalize the constraints to $\boldsymbol{Z} ^{\top} \boldsymbol{D} \boldsymbol{Z} = \boldsymbol{I}$ and $\boldsymbol{Z} ^{\top} \boldsymbol{D} \boldsymbol{1} = \boldsymbol{0}$ shown above. Note that if we move the second constraint (as in the paper), then the embedding in one of the $k$ dimensions will be $c \boldsymbol{1}$, hence we actually obtain $(k-1)$-dimensional embedding, but it is also helpful to distinguish points.
 
-:::
-
-
-:::{admonition,note} Note
-Due to some properties of different Laplacians matrices, the solution can also be found as the $k$ bottom eigenvectors (excluding the smallest one) to the eignproblem $\boldsymbol{L} ^\mathrm{rw} \boldsymbol{v}  = \lambda \boldsymbol{v}$ or $\boldsymbol{L} ^\mathrm{sym} \boldsymbol{v}  = \lambda \boldsymbol{v}$. For details see [graph Laplacians](graph-laplacian).
-:::
 
 
 :::{figure} gb-laplacian-eigenmap-Nt
@@ -172,7 +191,7 @@ Laplacian eigenmap with varing $N$-nearest-neighbors and temperature $t$ [Livesc
 
 :::
 
-Other formulation: find centered and unit-covariance projections $\boldsymbol{z}_i$ that solve the total projected pairwise distances weighted by $w_{ij}$ and scaled by $d_{ii}d_{jj}$
+<!-- Other formulation: find centered and unit-covariance projections $\boldsymbol{z}_i$ that solve the total projected pairwise distances weighted by $w_{ij}$ and scaled by $d_{ii}d_{jj}$
 
 $$\begin{aligned}
 \min &\ \sum_{i j} \frac{w_{i j}|| \boldsymbol{z}_{i}-\boldsymbol{z}_{j}||^{2}}{\sqrt{d_{i i} d_{j j}}} \\
@@ -182,8 +201,76 @@ $$\begin{aligned}
 The solution $\boldsymbol{Z}$ is given by the $k$ bottom eigenvectors (excluding the smallest one) of the symmetrized normalized Laplacian defined as
 
 $$
-\boldsymbol{L}^{sym} = \boldsymbol{I}  - \boldsymbol{D} ^{-\frac{1}{2}} \boldsymbol{W}  \boldsymbol{D} ^{-\frac{1}{2}}
+\boldsymbol{L}^{\mathrm{sym}} = \boldsymbol{I}  - \boldsymbol{D} ^{-\frac{1}{2}} \boldsymbol{W}  \boldsymbol{D} ^{-\frac{1}{2}}
+$$ -->
+
+### Relation to Spectral Clustering
+
+Laplacian eigenmaps, as a dimension reduction that preserves locality, yields the same solution as [normalized cut](Ncut) in spectral clustering. By setting
+
 $$
+x_{i}=\left\{\begin{array}{c}
+\frac{1}{\operatorname{vol}(A)}, \text { if } V_{i} \in A \\
+-\frac{1}{\operatorname{vol}(B)}, \text { if } V_{i} \in B
+\end{array}\right.
+$$
+
+We can show that $\boldsymbol{x} ^{\top} \boldsymbol{D} \boldsymbol{1} = \boldsymbol{0}$ and
+
+$$
+\frac{\boldsymbol{x}^{\top} \boldsymbol{L} \boldsymbol{x}}{\boldsymbol{x}^{\top} \boldsymbol{D}  \boldsymbol{x}}=W(A, B)\left(\frac{1}{\operatorname{vol}(A) }+\frac{1}{\operatorname{vol}(B) }\right)=\operatorname{Ncut}(A, B)
+$$
+
+The relaxed problem is
+
+$$\begin{aligned}
+\min_{\boldsymbol{x}} && \frac{\boldsymbol{x}^{\top} \boldsymbol{L} \boldsymbol{x}}{\boldsymbol{x}^{\top} \boldsymbol{D}  \boldsymbol{x}} & &&\\
+\mathrm{s.t.}
+&& \boldsymbol{x} ^{\top} \boldsymbol{D} \boldsymbol{1}  &= 0  && \\
+\end{aligned}$$
+
+To solve this, let $\boldsymbol{y} = \boldsymbol{D} ^{1/2} \boldsymbol{x}$, where $\boldsymbol{D}$ is invertible if $G$ has no isolated vertices. Then $\boldsymbol{y} ^{\top} \boldsymbol{D}^{1/2} \boldsymbol{1} =0$ and
+
+$$
+\frac{\boldsymbol{x}^{\top} \boldsymbol{L} \boldsymbol{x}}{\boldsymbol{x}^{\top} \boldsymbol{D}}  = \frac{\boldsymbol{y} \boldsymbol{D} ^{-1/2}\boldsymbol{L} \boldsymbol{D} ^{-1/2}\boldsymbol{y} }{\boldsymbol{y} ^{\top} \boldsymbol{y}}
+$$
+
+Note that $\boldsymbol{D} ^{-1/2}\boldsymbol{L} \boldsymbol{D} ^{-1/2} = \boldsymbol{L} ^{\mathrm{sym}}$. The problem is then
+
+$$\begin{aligned}
+\min_{\boldsymbol{y}} && \frac{\boldsymbol{y} \boldsymbol{L}^{\mathrm{sym}} \boldsymbol{y} }{\boldsymbol{y} ^{\top} \boldsymbol{y}}& &&\\
+\mathrm{s.t.}
+&& \boldsymbol{y} ^{\top} \boldsymbol{D}^{1/2} \boldsymbol{1} &=0 && \\
+\end{aligned}$$
+
+The solution is given by the second smallest eigenvalue of $\boldsymbol{L}^{\mathrm{sym}}$, when $\boldsymbol{y}$ is the corresponding eigenvector.
+
+
+<!-- ### Interpretation
+
+Consider data points on a circle.
+
+some choice of $\epsilon$
+
+$$
+\approx \boldsymbol{L}
+$$
+
+$\boldsymbol{L} \boldsymbol{U}  = \boldsymbol{U} \boldsymbol{\Lambda}$ is discretization of the following:
+
+$$
+\frac{\partial^2 \boldsymbol{U}}{\partial x^2}  = \lambda \boldsymbol{U}
+$$
+
+$$U(0) = U(1)$$ -->
+
+<!-- ### Diffusion Map
+
+Interpretation: weighting $\boldsymbol{L}$ by connectivity (low weight for low connectivity) $\boldsymbol{D} ^{-1} \boldsymbol{L} \boldsymbol{v} = \lambda \boldsymbol{v}$, recall $\boldsymbol{L} = \boldsymbol{D} - \boldsymbol{W}$, then $\boldsymbol{D} ^{-1} \boldsymbol{W} \boldsymbol{v} = (1-\lambda)\boldsymbol{z}$.
+
+$\mathbb{M}  = \boldsymbol{D} ^{-1} \boldsymbol{W}$ is a rwo stochastic matrix.
+
+where $\mathbb{M} \boldsymbol{1} = \boldsymbol{1}, \mathbb{M} \ge 0, \lambda(\mathbb{M}) \le 1$. -->
 
 
 ## Locally Linear Embedding
@@ -193,3 +280,5 @@ Locally linear embedding learns a mapping in which each point can be expressed a
 ## Maximum Variance Unfolding
 
 Maximum variance unfolding tries to maximize the variance of the data (like PCA) while respecting neighborhood relationships.
+
+ref: https://www.youtube.com/watch?v=DW3lSYltfzo

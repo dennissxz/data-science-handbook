@@ -110,13 +110,13 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../11-math/12-derangement.html">
-     Derangement
+    <a class="reference internal" href="../11-math/20-vector-spaces.html">
+     Vector Spaces
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../11-math/20-vector-spaces.html">
-     Vector Spaces
+    <a class="reference internal" href="../11-math/31-geometry.html">
+     Geometry
     </a>
    </li>
    <li class="toctree-l2">
@@ -871,6 +871,11 @@
      Learning
     </a>
    </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#relation-to-spectral-clustering">
+     Relation to Spectral Clustering
+    </a>
+   </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -898,7 +903,7 @@
   <div class="section" id="graph-based-spectral-methods">
 <h1>Graph-based Spectral Methods<a class="headerlink" href="#graph-based-spectral-methods" title="Permalink to this headline">¶</a></h1>
 <p>PCA, CCA, MDS are linear dimensionality reduction methods. The lower-dimensional linear projection preserves distances between <strong>all</strong> points.</p>
-<p>If our data lies on a nonlinear manifold (a topological space locally resembling Euclidean space), then we need non-linear dimensionality reduction methods. Many of them are extended from MDS, that extends to a variety of distance/similarity measures. They only preserve <strong>local</strong> distance/neighborhood information along nonlinear manifold</p>
+<p>If our data lies on a nonlinear manifold (a topological space locally resembling Euclidean space), then we need non-linear dimensionality reduction methods. Many of them are extended from MDS, that extends to a variety of distance/similarity measures. They only preserve <strong>local</strong> distance/neighborhood information along nonlinear manifold.</p>
 <p>In general, there are three steps:</p>
 <ol class="simple">
 <li><p>Define some similarity/distance measure between data points <span class="math notranslate nohighlight">\(d(\boldsymbol{x}_i ,\boldsymbol{x}_j)\)</span>.</p></li>
@@ -911,6 +916,7 @@
 <li><p>Perform spectral methods on some graph matrices, such as adjacency matrix, weights matrix, Laplacian matrix, etc, to obtain the embedding <span class="math notranslate nohighlight">\(\boldsymbol{Z} _{n \times d}\)</span> that preserve some property in the original space.</p></li>
 </ol>
 <p>Examples: Isomap, maximum variance unfolding, locally linear embedding, Laplacian eigenmaps.</p>
+<p>The obtained embeddings can then be used as input for clustering, e.g. <span class="math notranslate nohighlight">\(k\)</span>-means. Essentially, we look for clustering on the manifold, rather than the original space, which makes more sense.</p>
 <div class="section" id="isomap">
 <h2>Isomap<a class="headerlink" href="#isomap" title="Permalink to this headline">¶</a></h2>
 <p>[Tenenbaum et al. 2000]</p>
@@ -931,7 +937,7 @@
 \]</div>
 <div class="figure align-default" id="isomap-geodesic-distance">
 <a class="reference internal image-reference" href="../_images/gb-isomap-d3k2.png"><img alt="" src="../_images/gb-isomap-d3k2.png" style="width: 80%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 64 </span><span class="caption-text">Isomap with <span class="math notranslate nohighlight">\(d=3,k=2\)</span>. The blue line is the real geodesic distance and the red line is estimated.  [Livescu 2021]</span><a class="headerlink" href="#isomap-geodesic-distance" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 67 </span><span class="caption-text">Isomap with <span class="math notranslate nohighlight">\(d=3,k=2\)</span>. The blue line is the real geodesic distance and the red line is estimated.  [Livescu 2021]</span><a class="headerlink" href="#isomap-geodesic-distance" title="Permalink to this image">¶</a></p>
 </div>
 </div>
 <div class="section" id="pros-cons">
@@ -945,13 +951,13 @@
 <li><p>Can be sensitive to the <strong>neighborhood size</strong> used in graph construction, or equivalently to the noise in the data.</p>
 <div class="figure align-default" id="isomap-noise">
 <a class="reference internal image-reference" href="../_images/gb-isomap-failure.png"><img alt="" src="../_images/gb-isomap-failure.png" style="width: 70%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 65 </span><span class="caption-text">Isomap fails when there are noises [Livescu 2021]</span><a class="headerlink" href="#isomap-noise" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 68 </span><span class="caption-text">Isomap fails when there are noises [Livescu 2021]</span><a class="headerlink" href="#isomap-noise" title="Permalink to this image">¶</a></p>
 </div>
 </li>
 <li><p>Can’t handle <strong>holes</strong> in the manifold. Geodesic distance computation can break. This is because the two points (even with the same color/label) sit in opposite to the hole have large geodesic distance on the manifold, which leads to large Euclidean distance in the projected space.</p>
 <div class="figure align-default" id="gb-isomap-holes">
 <a class="reference internal image-reference" href="../_images/gb-isomap-holes.png"><img alt="" src="../_images/gb-isomap-holes.png" style="width: 80%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 66 </span><span class="caption-text">Isomap fails when there are holes [Livescu 2021]</span><a class="headerlink" href="#gb-isomap-holes" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 69 </span><span class="caption-text">Isomap fails when there are holes [Livescu 2021]</span><a class="headerlink" href="#gb-isomap-holes" title="Permalink to this image">¶</a></p>
 </div>
 </li>
 </ul>
@@ -995,30 +1001,48 @@
 \[
 \sum_{i,j=1}^n w_{ij} \left\| \boldsymbol{z}_i - \boldsymbol{z}_j  \right\|  ^2
 \]</div>
-<p>where <span class="math notranslate nohighlight">\(w_{ij}\)</span> measures the closeness of <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(j\)</span> in <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span>. If <span class="math notranslate nohighlight">\(w_{ij}\)</span> is large, then <span class="math notranslate nohighlight">\(\left\| \boldsymbol{z}_i - \boldsymbol{z}_j  \right\|\)</span> is forced to be small.</p>
-<p>It can be shown that <span class="math notranslate nohighlight">\(\frac{1}{2}\)</span> of this summation equals <span class="math notranslate nohighlight">\(\operatorname{tr}\left( \boldsymbol{Z} ^{\top} \boldsymbol{L} \boldsymbol{Z} \right)\)</span>. Hence our objective is</p>
+<p>where <span class="math notranslate nohighlight">\(w_{ij}\)</span> measures the closeness of <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(j\)</span> in <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span>. If <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(j\)</span> are close in <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span>, then <span class="math notranslate nohighlight">\(w_{ij}\)</span> is large, which force <span class="math notranslate nohighlight">\(\left\| \boldsymbol{z}_i - \boldsymbol{z}_j  \right\|\)</span> to be small, i.e. <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(j\)</span> are close in <span class="math notranslate nohighlight">\(\boldsymbol{Z}\)</span>. For <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(j\)</span> that are far away in <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span>, don’t care. Recall that the objective is to maintain locality.</p>
+<p>It can be shown that</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\sum_{i,j=1}^n w_{ij} \left\| \boldsymbol{z}_i - \boldsymbol{z}_j  \right\|  ^2
+&amp;= \sum_{i,j=1}^n w_{ij} \left\| \boldsymbol{Z}^{\top} (\boldsymbol{e} _i - \boldsymbol{e} _j) \right\|  ^2\\
+&amp;= 2 \operatorname{tr} \left( \boldsymbol{Z} \boldsymbol{Z} ^{\top} \underbrace{\sum_{ij} w_{ij}(\boldsymbol{e} _i - \boldsymbol{e} _j) (\boldsymbol{e} _i - \boldsymbol{e} _j) ^{\top}}_{=\boldsymbol{L}} \right) \\
+&amp;= 2 \operatorname{tr}\left( \boldsymbol{Z} ^{\top} \boldsymbol{L} \boldsymbol{Z} \right) \\
+\end{aligned}\end{split}\]</div>
+<p>Hence, our objective is now</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{aligned}
 \min &amp;&amp; \operatorname{tr}\left( \boldsymbol{Z} ^{\top} \boldsymbol{L} \boldsymbol{Z} \right) &amp; &amp;&amp;\\
 \mathrm{s.t.}
 &amp;&amp; \boldsymbol{Z} ^{\top} \boldsymbol{D} \boldsymbol{Z} &amp;= \boldsymbol{I} \\ &amp;&amp; \boldsymbol{Z} ^{\top} \boldsymbol{D} \boldsymbol{1} &amp;= \boldsymbol{0} \\
 \end{aligned}\end{split}\]</div>
-<p>The constraint prevents collapse onto a subspace of dimension less than <span class="math notranslate nohighlight">\(m-1\)</span>. The solution is given by the bottom <span class="math notranslate nohighlight">\(k\)</span> eigenvectors (excluding <span class="math notranslate nohighlight">\(\boldsymbol{1}\)</span>) of the generalized eigenvalue problem</p>
+<p>where the first constraint prevents trivial solution <span class="math notranslate nohighlight">\(\boldsymbol{Z} = \boldsymbol{0}\)</span>. Actually <span class="math notranslate nohighlight">\(\boldsymbol{Z} ^{\top} \boldsymbol{D} \boldsymbol{1} = \boldsymbol{0}\)</span> is not necessary.</p>
+<p>The solution (<span class="math notranslate nohighlight">\(k\)</span> columns of <span class="math notranslate nohighlight">\(\boldsymbol{Z}\)</span>) is given by the bottom <span class="math notranslate nohighlight">\(k\)</span> eigenvectors (excluding <span class="math notranslate nohighlight">\(\boldsymbol{1}\)</span>) of the generalized eigenvalue problem</p>
 <div class="math notranslate nohighlight">
 \[
 \boldsymbol{L} \boldsymbol{v} = \lambda \boldsymbol{D} \boldsymbol{v}
 \]</div>
-<p>To see why the two (??) constraints come from, we can first see a <span class="math notranslate nohighlight">\(k=1\)</span> example, i.e. projection to a line. Suppose the projections are <span class="math notranslate nohighlight">\(z_1, \ldots, z_n\)</span>, the problem is</p>
+<div class="margin sidebar">
+<p class="sidebar-title"></p>
+<p>See <a class="reference internal" href="../38-ml-for-graph-data/01-graph-basics.html#graph-laplacian"><span class="std std-ref">graph Laplacians</span></a> for details about <span class="math notranslate nohighlight">\(\boldsymbol{L} ^\mathrm{rw}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{L} ^\mathrm{sym}\)</span>.</p>
+</div>
+<p>Or equivalently, the eigenvectors of random-walk graph Laplacian: <span class="math notranslate nohighlight">\(\boldsymbol{L} ^{\mathrm{rw}} = \boldsymbol{D} ^{-1} \boldsymbol{L}\)</span>.</p>
+<p>To see why the two constraints come from, we can first see a <span class="math notranslate nohighlight">\(k=1\)</span> example, i.e. projection onto a line. Suppose the projections are <span class="math notranslate nohighlight">\(z_1, \ldots, z_n\)</span>, the problem is</p>
 <div class="math notranslate nohighlight">
 \[
 \min _{\boldsymbol{z}} \boldsymbol{z} ^{\top} \boldsymbol{L} \boldsymbol{z}
 \]</div>
 <p>Note that there are two issues</p>
 <ul class="simple">
-<li><p>arbitrary scaling: if <span class="math notranslate nohighlight">\(\boldsymbol{z}^*\)</span> is an optimal solution, then a new solution <span class="math notranslate nohighlight">\(c\boldsymbol{z}^*\)</span> where <span class="math notranslate nohighlight">\(0&lt;c&lt;1\)</span> gives a smaller function value, contradiction.</p></li>
+<li><p>arbitrary scaling: if <span class="math notranslate nohighlight">\(\boldsymbol{z}^*\)</span> is an optimal solution, then a new solution <span class="math notranslate nohighlight">\(c\boldsymbol{z}^*\)</span> where <span class="math notranslate nohighlight">\(0&lt;c&lt;1\)</span> gives a smaller function value, contradiction. Or we say <span class="math notranslate nohighlight">\(\boldsymbol{z} = \boldsymbol{0}\)</span> is a trivial solution.</p></li>
 <li><p>translational invariance: if <span class="math notranslate nohighlight">\(\boldsymbol{z} ^*\)</span> is an optimal solution, then a new solution <span class="math notranslate nohighlight">\(\boldsymbol{z} ^* + c\boldsymbol{1}\)</span> gives the same function value.</p></li>
 </ul>
-<p>To solve these two issues, we add two constraints <span class="math notranslate nohighlight">\(\boldsymbol{z} ^{\top} \boldsymbol{D} \boldsymbol{z} = 1\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{z} ^{\top} \boldsymbol{D} \boldsymbol{1} = 0\)</span> respectively. The second constraint also removes a trivial solution, to be introduced soon. The problem is then</p>
+<div class="margin sidebar">
+<p class="sidebar-title"></p>
+<p>The matrix <span class="math notranslate nohighlight">\(\boldsymbol{D}\)</span> here is introduced by the authors in the original paper to reflect vertex importance. Actually replacing <span class="math notranslate nohighlight">\(\boldsymbol{D}\)</span> by <span class="math notranslate nohighlight">\(\boldsymbol{I}\)</span> also solve these two issues.</p>
+</div>
+<p>To solve these two issues, we add two constraints <span class="math notranslate nohighlight">\(\boldsymbol{z} ^{\top} \boldsymbol{D} \boldsymbol{z} = 1\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{z} ^{\top} \boldsymbol{D} \boldsymbol{1} = 0\)</span> respectively. The second constraint also removes a trivial solution <span class="math notranslate nohighlight">\(\boldsymbol{z} = c\boldsymbol{1}\)</span>, to be introduced soon. The problem becomes</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{aligned}
 \min &amp;&amp; \boldsymbol{z} ^{\top} \boldsymbol{L} \boldsymbol{z}  &amp; &amp;&amp;\\
@@ -1032,27 +1056,84 @@
 \boldsymbol{L} \boldsymbol{v} = \lambda \boldsymbol{D} \boldsymbol{v}
 \]</div>
 <p>Note that <span class="math notranslate nohighlight">\(\boldsymbol{v} = c\boldsymbol{1}\)</span> is an eigenvector of <span class="math notranslate nohighlight">\(\boldsymbol{L}\)</span> but the constraint <span class="math notranslate nohighlight">\(\boldsymbol{z} ^{\top} \boldsymbol{D} \boldsymbol{1} =0\)</span> removes that.</p>
-<p>To generalize to <span class="math notranslate nohighlight">\(k\ge 0\)</span>, we have the constraints shown above.</p>
-</div>
-<div class="note admonition">
-<p class="admonition-title"> Note</p>
-<p>Due to some properties of different Laplacians matrices, the solution can also be found as the <span class="math notranslate nohighlight">\(k\)</span> bottom eigenvectors (excluding the smallest one) to the eignproblem <span class="math notranslate nohighlight">\(\boldsymbol{L} ^\mathrm{rw} \boldsymbol{v}  = \lambda \boldsymbol{v}\)</span> or <span class="math notranslate nohighlight">\(\boldsymbol{L} ^\mathrm{sym} \boldsymbol{v}  = \lambda \boldsymbol{v}\)</span>. For details see <a class="reference internal" href="../38-ml-for-graph-data/01-graph-basics.html#graph-laplacian"><span class="std std-ref">graph Laplacians</span></a>.</p>
-</div>
+<p>To generalize to <span class="math notranslate nohighlight">\(k\ge 2\)</span>, we generalize the constraints to <span class="math notranslate nohighlight">\(\boldsymbol{Z} ^{\top} \boldsymbol{D} \boldsymbol{Z} = \boldsymbol{I}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{Z} ^{\top} \boldsymbol{D} \boldsymbol{1} = \boldsymbol{0}\)</span> shown above. Note that if we move the second constraint (as in the paper), then the embedding in one of the <span class="math notranslate nohighlight">\(k\)</span> dimensions will be <span class="math notranslate nohighlight">\(c \boldsymbol{1}\)</span>, hence we actually obtain <span class="math notranslate nohighlight">\((k-1)\)</span>-dimensional embedding, but it is also helpful to distinguish points.</p>
 <div class="figure align-default" id="gb-laplacian-eigenmap-nt">
 <a class="reference internal image-reference" href="../_images/gb-laplacian-eigenmap-Nt.png"><img alt="" src="../_images/gb-laplacian-eigenmap-Nt.png" style="width: 50%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 67 </span><span class="caption-text">Laplacian eigenmap with varing <span class="math notranslate nohighlight">\(N\)</span>-nearest-neighbors and temperature <span class="math notranslate nohighlight">\(t\)</span> [Livescu 2021]</span><a class="headerlink" href="#gb-laplacian-eigenmap-nt" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 70 </span><span class="caption-text">Laplacian eigenmap with varing <span class="math notranslate nohighlight">\(N\)</span>-nearest-neighbors and temperature <span class="math notranslate nohighlight">\(t\)</span> [Livescu 2021]</span><a class="headerlink" href="#gb-laplacian-eigenmap-nt" title="Permalink to this image">¶</a></p>
 </div>
-<p>Other formulation: find centered and unit-covariance projections <span class="math notranslate nohighlight">\(\boldsymbol{z}_i\)</span> that solve the total projected pairwise distances weighted by <span class="math notranslate nohighlight">\(w_{ij}\)</span> and scaled by <span class="math notranslate nohighlight">\(d_{ii}d_{jj}\)</span></p>
+</div>
+<!-- Other formulation: find centered and unit-covariance projections $\boldsymbol{z}_i$ that solve the total projected pairwise distances weighted by $w_{ij}$ and scaled by $d_{ii}d_{jj}$
+
+$$\begin{aligned}
+\min &\ \sum_{i j} \frac{w_{i j}|| \boldsymbol{z}_{i}-\boldsymbol{z}_{j}||^{2}}{\sqrt{d_{i i} d_{j j}}} \\
+\text{s.t.} &\ \boldsymbol{Z} \text{ is centered and has unit covariance} \\
+\end{aligned}$$
+
+The solution $\boldsymbol{Z}$ is given by the $k$ bottom eigenvectors (excluding the smallest one) of the symmetrized normalized Laplacian defined as
+
+$$
+\boldsymbol{L}^{\mathrm{sym}} = \boldsymbol{I}  - \boldsymbol{D} ^{-\frac{1}{2}} \boldsymbol{W}  \boldsymbol{D} ^{-\frac{1}{2}}
+$$ -->
+</div>
+<div class="section" id="relation-to-spectral-clustering">
+<h3>Relation to Spectral Clustering<a class="headerlink" href="#relation-to-spectral-clustering" title="Permalink to this headline">¶</a></h3>
+<p>Laplacian eigenmaps, as a dimension reduction that preserves locality, yields the same solution as <a class="reference internal" href="../34-clustering/31-spectral-clustering.html#ncut"><span class="std std-ref">normalized cut</span></a> in spectral clustering. By setting</p>
 <div class="math notranslate nohighlight">
-\[\begin{split}\begin{aligned}
-\min &amp;\ \sum_{i j} \frac{w_{i j}|| \boldsymbol{z}_{i}-\boldsymbol{z}_{j}||^{2}}{\sqrt{d_{i i} d_{j j}}} \\
-\text{s.t.} &amp;\ \boldsymbol{Z} \text{ is centered and has unit covariance} \\
-\end{aligned}\end{split}\]</div>
-<p>The solution <span class="math notranslate nohighlight">\(\boldsymbol{Z}\)</span> is given by the <span class="math notranslate nohighlight">\(k\)</span> bottom eigenvectors (excluding the smallest one) of the symmetrized normalized Laplacian defined as</p>
+\[\begin{split}
+x_{i}=\left\{\begin{array}{c}
+\frac{1}{\operatorname{vol}(A)}, \text { if } V_{i} \in A \\
+-\frac{1}{\operatorname{vol}(B)}, \text { if } V_{i} \in B
+\end{array}\right.
+\end{split}\]</div>
+<p>We can show that <span class="math notranslate nohighlight">\(\boldsymbol{x} ^{\top} \boldsymbol{D} \boldsymbol{1} = \boldsymbol{0}\)</span> and</p>
 <div class="math notranslate nohighlight">
 \[
-\boldsymbol{L}^{sym} = \boldsymbol{I}  - \boldsymbol{D} ^{-\frac{1}{2}} \boldsymbol{W}  \boldsymbol{D} ^{-\frac{1}{2}}
+\frac{\boldsymbol{x}^{\top} \boldsymbol{L} \boldsymbol{x}}{\boldsymbol{x}^{\top} \boldsymbol{D}  \boldsymbol{x}}=W(A, B)\left(\frac{1}{\operatorname{vol}(A) }+\frac{1}{\operatorname{vol}(B) }\right)=\operatorname{Ncut}(A, B)
 \]</div>
+<p>The relaxed problem is</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\min_{\boldsymbol{x}} &amp;&amp; \frac{\boldsymbol{x}^{\top} \boldsymbol{L} \boldsymbol{x}}{\boldsymbol{x}^{\top} \boldsymbol{D}  \boldsymbol{x}} &amp; &amp;&amp;\\
+\mathrm{s.t.}
+&amp;&amp; \boldsymbol{x} ^{\top} \boldsymbol{D} \boldsymbol{1}  &amp;= 0  &amp;&amp; \\
+\end{aligned}\end{split}\]</div>
+<p>To solve this, let <span class="math notranslate nohighlight">\(\boldsymbol{y} = \boldsymbol{D} ^{1/2} \boldsymbol{x}\)</span>, where <span class="math notranslate nohighlight">\(\boldsymbol{D}\)</span> is invertible if <span class="math notranslate nohighlight">\(G\)</span> has no isolated vertices. Then <span class="math notranslate nohighlight">\(\boldsymbol{y} ^{\top} \boldsymbol{D}^{1/2} \boldsymbol{1} =0\)</span> and</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{\boldsymbol{x}^{\top} \boldsymbol{L} \boldsymbol{x}}{\boldsymbol{x}^{\top} \boldsymbol{D}}  = \frac{\boldsymbol{y} \boldsymbol{D} ^{-1/2}\boldsymbol{L} \boldsymbol{D} ^{-1/2}\boldsymbol{y} }{\boldsymbol{y} ^{\top} \boldsymbol{y}}
+\]</div>
+<p>Note that <span class="math notranslate nohighlight">\(\boldsymbol{D} ^{-1/2}\boldsymbol{L} \boldsymbol{D} ^{-1/2} = \boldsymbol{L} ^{\mathrm{sym}}\)</span>. The problem is then</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\min_{\boldsymbol{y}} &amp;&amp; \frac{\boldsymbol{y} \boldsymbol{L}^{\mathrm{sym}} \boldsymbol{y} }{\boldsymbol{y} ^{\top} \boldsymbol{y}}&amp; &amp;&amp;\\
+\mathrm{s.t.}
+&amp;&amp; \boldsymbol{y} ^{\top} \boldsymbol{D}^{1/2} \boldsymbol{1} &amp;=0 &amp;&amp; \\
+\end{aligned}\end{split}\]</div>
+<p>The solution is given by the second smallest eigenvalue of <span class="math notranslate nohighlight">\(\boldsymbol{L}^{\mathrm{sym}}\)</span>, when <span class="math notranslate nohighlight">\(\boldsymbol{y}\)</span> is the corresponding eigenvector.</p>
+<!-- ### Interpretation
+
+Consider data points on a circle.
+
+some choice of $\epsilon$
+
+$$
+\approx \boldsymbol{L}
+$$
+
+$\boldsymbol{L} \boldsymbol{U}  = \boldsymbol{U} \boldsymbol{\Lambda}$ is discretization of the following:
+
+$$
+\frac{\partial^2 \boldsymbol{U}}{\partial x^2}  = \lambda \boldsymbol{U}
+$$
+
+$$U(0) = U(1)$$ -->
+<!-- ### Diffusion Map
+
+Interpretation: weighting $\boldsymbol{L}$ by connectivity (low weight for low connectivity) $\boldsymbol{D} ^{-1} \boldsymbol{L} \boldsymbol{v} = \lambda \boldsymbol{v}$, recall $\boldsymbol{L} = \boldsymbol{D} - \boldsymbol{W}$, then $\boldsymbol{D} ^{-1} \boldsymbol{W} \boldsymbol{v} = (1-\lambda)\boldsymbol{z}$.
+
+$\mathbb{M}  = \boldsymbol{D} ^{-1} \boldsymbol{W}$ is a rwo stochastic matrix.
+
+where $\mathbb{M} \boldsymbol{1} = \boldsymbol{1}, \mathbb{M} \ge 0, \lambda(\mathbb{M}) \le 1$. -->
 </div>
 </div>
 <div class="section" id="locally-linear-embedding">
@@ -1062,6 +1143,7 @@
 <div class="section" id="maximum-variance-unfolding">
 <h2>Maximum Variance Unfolding<a class="headerlink" href="#maximum-variance-unfolding" title="Permalink to this headline">¶</a></h2>
 <p>Maximum variance unfolding tries to maximize the variance of the data (like PCA) while respecting neighborhood relationships.</p>
+<p>ref: https://www.youtube.com/watch?v=DW3lSYltfzo</p>
 </div>
 </div>
 

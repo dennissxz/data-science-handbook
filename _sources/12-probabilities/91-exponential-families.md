@@ -18,6 +18,7 @@ Box-Cox transformation
 
 <!-- ## Weibull Distribution -->
 
+(multi-gaussian)=
 ## Multivariate Gaussian
 
 
@@ -31,7 +32,7 @@ For a multivariate normal distribution $\boldsymbol{x} \sim \mathcal{N}(\boldsym
 
 $$
 \begin{equation}
-f(\boldsymbol{x} ;\boldsymbol{\mu}, \mathbf{\Sigma})=\frac{1}{(2 \pi)^{p / 2}|\mathbf{\Sigma}|^{1 / 2}} \exp \left(-\frac{1}{2}(\mathbf{x}-\boldsymbol{\mu})^{\top} \boldsymbol{\Sigma}^{-1}(\mathbf{x}-\boldsymbol{\mu})\right)
+f(\boldsymbol{x} ;\boldsymbol{\mu}, \boldsymbol{\Sigma})=\frac{1}{(2 \pi)^{p / 2}|\boldsymbol{\Sigma}|^{1 / 2}} \exp \left(-\frac{1}{2}(\boldsymbol{x}-\boldsymbol{\mu})^{\top} \boldsymbol{\Sigma}^{-1}(\boldsymbol{x}-\boldsymbol{\mu})\right)
 \end{equation}
 $$
 
@@ -39,7 +40,8 @@ $$
 where
 - $\boldsymbol{\mu}$ is the mean vector
 - $\boldsymbol{\Sigma}$ is the covariance matrix, with $\sigma_{ij} = \operatorname{Cov}\left( x_i, x_j \right)$
-- The fraction $\frac{1}{(2 \pi)^{p / 2}|\mathbf{\Sigma}|^{1 / 2}}$ is a normalizing constant.
+- The fraction $\frac{1}{(2 \pi)^{p / 2}|\boldsymbol{\Sigma}|^{1 / 2}}$ is a normalizing constant.
+- The determinant $\left\vert \boldsymbol{\Sigma}  \right\vert = \operatorname{det}(\boldsymbol{\Sigma})$ is called [generalized variance](covariance-matrix). It can be viewed as a higher dimension generalization of the scalar-valued $\sigma^2$ in univariate case that measures uncertainty of the distribution. Hence we have the square root $\left\vert  \right\vert ^{1/2}$, as $\sigma$ in the univariate Gaussian density.
 
 ### Properties
 
@@ -56,7 +58,7 @@ More
 
   $$\begin{align}
   f(\boldsymbol{x} ^\prime; \boldsymbol{\mu} ^\prime, \boldsymbol{\Lambda})
-  &= \frac{1}{(2 \pi)^{p / 2}|\boldsymbol{\Lambda}|^{1 / 2}} \exp \left(-\frac{1}{2}(\mathbf{x}^\prime-\boldsymbol{\mu} ^\prime)^{\top} \boldsymbol{\Lambda} ^{-1}(
+  &= \frac{1}{(2 \pi)^{p / 2}|\boldsymbol{\Lambda}|^{1 / 2}} \exp \left(-\frac{1}{2}(\boldsymbol{x}^\prime-\boldsymbol{\mu} ^\prime)^{\top} \boldsymbol{\Lambda} ^{-1}(
     \boldsymbol{x} ^\prime -\boldsymbol{\mu} ^\prime)\right) \\
   &=  \frac{1}{(2 \pi)^{p / 2}\Pi_{i=1}^p \lambda_i} \exp \left(-\sum_{i=1}^p\frac{1}{2\sigma^2}(x_i^\prime-\mu_i ^\prime)^2\right) \\
   &= \prod_{i=1}^{p} \frac{1}{(2 \pi)^{1 / 2} \lambda_{i}} \exp \left(-\frac{1}{2 \lambda_{i}^{2}}\left(x_{i}^{\prime}-\mu_{i}^{\prime}\right)^{2}\right)
@@ -79,7 +81,7 @@ Marginal Gaussian and conditional Gaussian are also Gaussians [Shi 2020]
 All $\boldsymbol{x}$ satisfy the equality below is a contour. This contour is an ellipsoid.
 
 $$
-c = f(\boldsymbol{x} ;\boldsymbol{\mu}, \mathbf{\Sigma})
+c = f(\boldsymbol{x} ;\boldsymbol{\mu}, \boldsymbol{\Sigma})
 $$
 
 

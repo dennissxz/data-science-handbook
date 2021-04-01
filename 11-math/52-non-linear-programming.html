@@ -110,13 +110,13 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="12-derangement.html">
-     Derangement
+    <a class="reference internal" href="20-vector-spaces.html">
+     Vector Spaces
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="20-vector-spaces.html">
-     Vector Spaces
+    <a class="reference internal" href="31-geometry.html">
+     Geometry
     </a>
    </li>
    <li class="toctree-l2">
@@ -838,6 +838,21 @@
         <!-- Table of contents -->
         <div class="d-none d-md-block col-md-2 bd-toc show">
             
+        <div class="tocsection onthispage pt-5 pb-3">
+            <i class="fas fa-list"></i>
+            Contents
+        </div>
+        <nav id="bd-toc-nav">
+            <ul class="nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#rayleigh-quotients">
+   Rayleigh Quotients
+  </a>
+ </li>
+</ul>
+
+        </nav>
+        
         </div>
     </div>
 </div>
@@ -848,6 +863,7 @@
                 
   <div class="section" id="non-linear-programming">
 <h1>Non-linear Programming<a class="headerlink" href="#non-linear-programming" title="Permalink to this headline">¶</a></h1>
+<p><strong>TBC</strong></p>
 <p>Primal and Dual short <a class="reference external" href="https://zhuanlan.zhihu.com/p/46944722">intro</a>.</p>
 <p>Lagrange multiplier:</p>
 <ul class="simple">
@@ -855,7 +871,150 @@
 <li><p><a class="reference external" href="https://www.youtube.com/watch?v=hQ4UNu1P2kw&amp;t=311s&amp;ab_channel=KhanAcademy">formulation</a> of Lagrangean <span class="math notranslate nohighlight">\(\mathcal{L}\)</span>: combining all equations to <span class="math notranslate nohighlight">\(\nabla\mathcal{L} = 0\)</span>.</p></li>
 <li><p><a class="reference external" href="https://www.youtube.com/watch?v=m-G3K2GPmEQ&amp;t=185s&amp;ab_channel=KhanAcademy">interpretation</a> and <a class="reference external" href="https://www.youtube.com/watch?v=b9B2FZ5cqbM&amp;ab_channel=KhanAcademy">proof</a> of the Lagrange multiplier <span class="math notranslate nohighlight">\(\lambda\)</span> as <span class="math notranslate nohighlight">\(\frac{\partial f}{\partial c}\)</span>, e.g. if budget change, how much will revenue change?</p></li>
 </ul>
-<p>TBC</p>
+<div class="section" id="rayleigh-quotients">
+<span id="rayleigh-quotient"></span><h2>Rayleigh Quotients<a class="headerlink" href="#rayleigh-quotients" title="Permalink to this headline">¶</a></h2>
+<p>Consider the following constrained optimization:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\max_{\boldsymbol{x}} &amp;&amp; \boldsymbol{x} ^{\top} \boldsymbol{A} \boldsymbol{x}  &amp; \\
+\mathrm{s.t.}
+&amp;&amp; \left\| \boldsymbol{x}  \right\|^2 &amp;= 1  \\
+\end{aligned}\end{split}\]</div>
+<p>An equivalent unconstrained problem is</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\max_{\boldsymbol{x} \ne \boldsymbol{0}} &amp;&amp; \frac{\boldsymbol{x} ^{\top} \boldsymbol{A} \boldsymbol{x} }{\boldsymbol{x} ^{\top} \boldsymbol{x} }  &amp; \\
+\end{aligned}\end{split}\]</div>
+<p>which makes the objective function invariant to scaling of <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span>. How do we solve this?</p>
+<dl class="simple myst">
+<dt>Definition (Quadratic forms)</dt><dd><p>Let <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> be a symmetric real matrix. A quadratic form corresponding to <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> is a function <span class="math notranslate nohighlight">\(Q: \mathbb{R} ^n \rightarrow \mathbb{R}\)</span> with</p>
+<div class="math notranslate nohighlight">
+\[
+  Q_A(\boldsymbol{x}) = \boldsymbol{x} ^{\top} \boldsymbol{A} \boldsymbol{x}
+  \]</div>
+<p>A quadratic form is can be written as a polynomial with terms all of second order</p>
+<div class="math notranslate nohighlight">
+\[
+  \boldsymbol{x} ^{\top} \boldsymbol{A} \boldsymbol{x}  = \sum_{i, j=1}^n a_{ij} x_i x_j
+  \]</div>
+</dd>
+<dt>Definition (Rayleigh quotient)</dt><dd><ul class="simple">
+<li><p>For a fixed symmetric matrix <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span>, the normalized quadratic form <span class="math notranslate nohighlight">\(\frac{\boldsymbol{x} ^{\top} \boldsymbol{A} \boldsymbol{x}}{\boldsymbol{x} ^{\top} \boldsymbol{x} }\)</span> is called a Rayleigh quotient.</p></li>
+<li><p>In addition, given a positive definite matrix <span class="math notranslate nohighlight">\(\boldsymbol{B}\)</span> of the same size, the quantity <span class="math notranslate nohighlight">\(\frac{\boldsymbol{x} ^{\top} \boldsymbol{A} \boldsymbol{x} }{\boldsymbol{x} ^{\top} \boldsymbol{B} \boldsymbol{x} }\)</span> is called a generalized Rayleigh quotient.</p></li>
+</ul>
+</dd>
+<dt>Applications</dt><dd><ul class="simple">
+<li><p>PCA: <span class="math notranslate nohighlight">\(\max _{\boldsymbol{v} \neq 0} \frac{\boldsymbol{v}^{T} \boldsymbol{\Sigma} \boldsymbol{v}}{\boldsymbol{v}^{T} \boldsymbol{v}}\)</span> where <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}\)</span> is a covariance matrix</p></li>
+<li><p>LDA: <span class="math notranslate nohighlight">\(\max _{\boldsymbol{v} \neq 0} \frac{\boldsymbol{v}^{T} \boldsymbol{S}_{b} \boldsymbol{v}}{\boldsymbol{v}^{T} \boldsymbol{S}_{w} \boldsymbol{v}}\)</span> where <span class="math notranslate nohighlight">\(\boldsymbol{S} _b\)</span> is a between-class scatter matrix, and <span class="math notranslate nohighlight">\(\boldsymbol{S} _w\)</span> is a within-class scatter matrix</p></li>
+<li><p>Spectral clustering (relaxed Ncut): <span class="math notranslate nohighlight">\(\max _{\boldsymbol{v} \neq \boldsymbol{0}} \frac{\boldsymbol{v}^{T} \boldsymbol{L} \boldsymbol{v}}{\boldsymbol{v}^{T} \boldsymbol{D} \boldsymbol{v}} \quad {s.t.} \boldsymbol{v} ^{\top} \boldsymbol{D} \boldsymbol{1}  = 0\)</span> where <span class="math notranslate nohighlight">\(\boldsymbol{L}\)</span> is graph Laplacian and <span class="math notranslate nohighlight">\(\boldsymbol{D}\)</span> is degree matrix.</p></li>
+</ul>
+</dd>
+<dt>Theorem (Range of Rayleigh quotients)</dt><dd><p>For any symmetric matrix <span class="math notranslate nohighlight">\(\boldsymbol{A} \in \mathbb{R} {n \times n}\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+  \max _{\boldsymbol{x} \in \mathbb{R}^{n}: \boldsymbol{x} \neq \boldsymbol{o}} \frac{\boldsymbol{x}^{T} \boldsymbol{A} \boldsymbol{x}}{\boldsymbol{x}^{T} \boldsymbol{x}} &amp;=\lambda_{\max } \\
+  \min _{\boldsymbol{x} \in \mathbb{R}^{n}: \boldsymbol{x} \neq \boldsymbol{o}} \frac{\boldsymbol{x}^{T} \boldsymbol{A} \boldsymbol{x}}{\boldsymbol{x}^{T} \boldsymbol{x}} &amp;=\lambda_{\min }
+  \end{aligned}\end{split}\]</div>
+<p>That is, the smallest and largest eigenvalues of <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> gives the range for the Rayleigh quotient.</p>
+<div class="dropdown seealso admonition">
+<p class="admonition-title"> <em>Proof: Linear algebra approach</em></p>
+<p>Consider EVD of <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+  \boldsymbol{x}^{T} \boldsymbol{A} \boldsymbol{x}=\boldsymbol{x}^{T}\left(\boldsymbol{U} \boldsymbol{\Lambda} \boldsymbol{U}^{T}\right) \boldsymbol{x}=\left(\boldsymbol{x}^{T} \boldsymbol{U}\right) \boldsymbol{\Lambda}\left(\boldsymbol{U}^{T} \boldsymbol{x}\right)=\boldsymbol{y}^{T} \boldsymbol{\Lambda} \boldsymbol{y}
+  \]</div>
+<p>where <span class="math notranslate nohighlight">\(\boldsymbol{y} = \boldsymbol{U} ^{\top} \boldsymbol{x}\)</span> is also a unit vector since <span class="math notranslate nohighlight">\(\left\| \boldsymbol{y}  \right\| ^2 = 1\)</span>. The original optimization problem becomes</p>
+<div class="math notranslate nohighlight">
+\[
+  \max _{\boldsymbol{y} \in \mathbb{R}^{n}:\|\boldsymbol{y}\|=1} \quad \boldsymbol{y}^{T} \underbrace{\boldsymbol{\Lambda}}_{\text {diagonal }} \boldsymbol{y}
+  \]</div>
+<p>Note that the objective and constraint can be written as a weighted sum of eigenvalues</p>
+<div class="math notranslate nohighlight">
+\[
+  \boldsymbol{y}^{T} \boldsymbol{\Lambda} \boldsymbol{y}=\sum_{i=1}^{n} \underbrace{\lambda_{i}}_{\text {fixed }} y_{i}^{2} \quad \text { (subject to } y_{1}^{2}+y_{2}^{2}+\cdots+y_{n}^{2}=1)
+  \]</div>
+<p>Let <span class="math notranslate nohighlight">\(\lambda_1 \ge \lambda_2 \ge \ldots \ge \lambda_n\)</span>, then when <span class="math notranslate nohighlight">\(y_1^2 = 1\)</span> and <span class="math notranslate nohighlight">\(y_2^2 = \ldots = y_n ^2 = 0\)</span>, the objective function attains its maximum <span class="math notranslate nohighlight">\(\boldsymbol{y} ^{\top} \boldsymbol{\Lambda} \boldsymbol{y} = \lambda_1\)</span>. In terms of <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span>, the maximizer is</p>
+<div class="math notranslate nohighlight">
+\[
+  \boldsymbol{x} ^* = \boldsymbol{U} \boldsymbol{y} ^* = \boldsymbol{U} (\pm \boldsymbol{e} _1) = \pm \boldsymbol{u}_1   
+  \]</div>
+<p>In conclusion, when <span class="math notranslate nohighlight">\(\boldsymbol{x} = \pm \boldsymbol{u} _1\)</span>, i.e. the largest eigenvector, <span class="math notranslate nohighlight">\(\boldsymbol{x} ^{\top} \boldsymbol{A} \boldsymbol{x}\)</span> attains its maximum value <span class="math notranslate nohighlight">\(\lambda_1\)</span></p>
+</div>
+<div class="dropdown seealso admonition">
+<p class="admonition-title"> <em>Proof: Multivariable calculus approach</em></p>
+<p>Alternatively, we can use the Method of Lagrange Multipliers to prove the theorem. First, we form the Lagrangian function</p>
+<div class="math notranslate nohighlight">
+\[
+    L(\boldsymbol{x}, \lambda)=\boldsymbol{x}^{T} \boldsymbol{A} \boldsymbol{x}-\lambda\left(\|\boldsymbol{x}\|^{2}-1\right)
+    \]</div>
+<p>Differentiation gives</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+    \begin{aligned}
+    \frac{\partial L}{\partial \boldsymbol{x}} &amp;=2 \boldsymbol{A} \boldsymbol{x}-\lambda(2 \boldsymbol{x})=0 &amp; \longrightarrow &amp; \boldsymbol{A} \boldsymbol{x}=\lambda \boldsymbol{x} \\
+    \frac{\partial L}{\partial \lambda} &amp;=\|\boldsymbol{x}\|^{2}-1=0 &amp; \longrightarrow &amp;\|\boldsymbol{x}\|^{2}=1
+    \end{aligned}
+    \end{split}\]</div>
+<p>This implies that <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> and <span class="math notranslate nohighlight">\(\lambda\)</span> must be an eigenpair of <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span>. Moreover, for any solution <span class="math notranslate nohighlight">\(\lambda=\lambda_{i}, \boldsymbol{x}=\boldsymbol{v}_{i}\)</span>, the objective function takes the value</p>
+<div class="math notranslate nohighlight">
+\[
+    \boldsymbol{v}_{i}^{T} \boldsymbol{A} \boldsymbol{v}_{i}=\boldsymbol{v}_{i}^{T}\left(\lambda_{i} \boldsymbol{v}_{i}\right)=\lambda_{i}\left\|\boldsymbol{v}_{i}\right\|^{2}=\lambda_{i}
+    \]</div>
+<p>Therefore, the eigenvector <span class="math notranslate nohighlight">\(\boldsymbol{v} _1\)</span> (corresponding to largest eigenvalue <span class="math notranslate nohighlight">\(\lambda_1\)</span> of <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span>) is the global maximizer, and it yields the absolute maximum value <span class="math notranslate nohighlight">\(\lambda_1\)</span>.</p>
+</div>
+</dd>
+<dt>Corollary (Generalized Rayleigh quotient problem)</dt><dd><p>For the generalized Rayleigh quotient <span class="math notranslate nohighlight">\(\frac{\boldsymbol{x}^{T} \boldsymbol{A} \boldsymbol{x}}{\boldsymbol{x}^{T} \boldsymbol{B} \boldsymbol{x}}\)</span>, the smallest and largest values <span class="math notranslate nohighlight">\(\lambda\)</span> satisfy</p>
+<div class="math notranslate nohighlight">
+\[
+  \boldsymbol{A v}=\lambda \boldsymbol{B v} \quad \Longleftrightarrow \quad \boldsymbol{B}^{-1} \boldsymbol{A v}=\lambda \boldsymbol{v}
+  \]</div>
+<p>That is, the smallest/largest quotient value equals the smallest/largest eigenvalue of <span class="math notranslate nohighlight">\((\boldsymbol{B} ^{-1} \boldsymbol{A})\)</span>. The left equation is called a generalized eigenvalue problem.</p>
+<div class="dropdown seealso admonition">
+<p class="admonition-title"> <em>Proof</em></p>
+<ul>
+<li><p>Substitution approach</p>
+<p>Since <span class="math notranslate nohighlight">\(\boldsymbol{B}\)</span> is p.d., we have <span class="math notranslate nohighlight">\(\boldsymbol{B} ^{1/2}\)</span>. Let <span class="math notranslate nohighlight">\(\boldsymbol{y} = \boldsymbol{B} ^{1/2}\boldsymbol{x}\)</span>, then the denominator can be written as</p>
+<div class="math notranslate nohighlight">
+\[
+    \boldsymbol{x}^{T} \boldsymbol{B} \boldsymbol{x}=\boldsymbol{x}^{T} \boldsymbol{B}^{1 / 2} \boldsymbol{B}^{1 / 2} \boldsymbol{x}=\boldsymbol{y}^{T} \boldsymbol{y}
+    \]</div>
+<p>Substitute <span class="math notranslate nohighlight">\(\boldsymbol{x}=\left(\boldsymbol{B}^{1 / 2}\right)^{-1} \boldsymbol{y} \stackrel{\text { denote }}{=} \boldsymbol{B}^{-1 / 2} \boldsymbol{y}\)</span> y into the numerator to rewrite it
+in terms of the new variable <span class="math notranslate nohighlight">\(\boldsymbol{y}\)</span>. This will convert the generalized Rayleigh
+quotient problem back to a regular Rayleigh quotient problem, which has
+been solved.</p>
+<div class="math notranslate nohighlight">
+\[
+    \frac{\boldsymbol{y} \boldsymbol{B} ^{-1/2} \boldsymbol{A} \boldsymbol{B} ^{-1/2} \boldsymbol{y} }{\boldsymbol{y} ^{\top} \boldsymbol{y}}
+    \]</div>
+</li>
+<li><p>Lagrange multipliers:</p>
+<div class="math notranslate nohighlight">
+\[
+    \max _{\boldsymbol{x} \neq \boldsymbol{0}} \frac{\boldsymbol{x}^{T} \boldsymbol{A} \boldsymbol{x}}{\boldsymbol{x}^{T} \boldsymbol{B} \boldsymbol{x}}
+    \]</div>
+<div class="math notranslate nohighlight">
+\[
+    \max _{\boldsymbol{x} \in \mathbb{R}^{n}} \boldsymbol{x}^{T} \boldsymbol{A} \boldsymbol{x} \quad \text { subject to } \boldsymbol{x}^{T} \boldsymbol{B} \boldsymbol{x}=1
+    \]</div>
+<div class="math notranslate nohighlight">
+\[
+    L(\boldsymbol{x}, \lambda)=\boldsymbol{x}^{T} \boldsymbol{A} \boldsymbol{x}-\lambda\left(\boldsymbol{x}^{T} \boldsymbol{B} \boldsymbol{x}-1\right)
+    \]</div>
+<p>Then</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+    \begin{aligned}
+    \frac{\partial L}{\partial \boldsymbol{x}} &amp;=2 \boldsymbol{A} \boldsymbol{x}-2\lambda \boldsymbol{B}  \boldsymbol{x}=0 &amp; \longrightarrow &amp; \boldsymbol{A} \boldsymbol{x}=\lambda \boldsymbol{B}\boldsymbol{x} \\
+    \frac{\partial L}{\partial \lambda} &amp;=0 &amp; \longrightarrow &amp; \boldsymbol{x} ^{\top} \boldsymbol{B} \boldsymbol{x} =1
+    \end{aligned}
+    \end{split}\]</div>
+</li>
+</ul>
+</div>
+</dd>
+</dl>
+<p>reference: <a class="reference external" href="https://www.sjsu.edu/faculty/guangliang.chen/Math253S20/lec4RayleighQuotient.pdf">notes</a></p>
+</div>
 </div>
 
     <script type="text/x-thebe-config">
