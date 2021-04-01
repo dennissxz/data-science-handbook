@@ -728,3 +728,16 @@ The substitution $S_n = ns_n^2$ avoids the computation that involves $\frac{1}{n
     :::
 
    - How about two uniform random points in a compact convex subset in $\mathbb{R} ^n$? For example, interval, disk, square, cube? See this [paper](https://www.cambridge.org/core/journals/bulletin-of-the-australian-mathematical-society/article/average-distance-between-two-points/F182A617B5EC6DB5AD31042A4BDF83AE).
+
+1. Randomly and independent select $n$ points from an interval of length $\ell$, let $D$ be the minimum distance between two points: $d = \min_{i \ne j \in [n]} \left\vert x_i - x_j \right\vert$, find $\mathbb{E}\left( D \right)$.
+
+    :::{admonition,dropdown,seealso} *Solution*
+
+    Consider two events:
+    - the minimum distance between two points equals $d$
+    - no points are in the left section of length $(n-1)d$
+
+    The two events have the same probability: imagine that we take $d$ from each segment $[x_{i}, x_{i+1}]$, and aggregate all $(n-1)$ of them to the left. Hence, $\mathbb{P}\left( D = d \right) = \left( 1 - \frac{(n-1)d}{\ell}  \right)^n$. Integration over $0 \le d \le \frac{\ell}{n-1}$ gives $\frac{\ell}{n^2 - 1}$.
+
+    Note that if $n=2$ then this problem reduces to the previous one.
+    :::
