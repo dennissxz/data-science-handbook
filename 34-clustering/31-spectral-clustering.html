@@ -130,6 +130,11 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/52-non-linear-programming.html">
+     Non-linear Programming
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="../11-math/90-puzzles.html">
      Puzzles
     </a>
@@ -199,7 +204,7 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../13-statistics/13-randomized-trial.html">
-     Causality and Randomized Trial
+     Randomized Controlled Trials
     </a>
    </li>
    <li class="toctree-l2">
@@ -738,6 +743,20 @@
   <i class="fas fa-chevron-down">
   </i>
  </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../39-causal/00-causal-intro.html">
+   For Causal Inference
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../39-causal/11-causal-estimation.html">
+     Causal Estimation
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
 </ul>
 
 </nav> <!-- To handle the deprecated key -->
@@ -890,6 +909,11 @@
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#bisection-min-cut">
+     Bisection Min Cut
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#bisection-normalized-cut">
      Bisection Normalized Cut
     </a>
@@ -988,7 +1012,7 @@
 <p>Recall that an adjacency matrix contains binary entries of connection relation between any two nodes. Sometimes we can extend it to be the matrix of edge weights (similarities).</p>
 <ul class="simple">
 <li><p><strong>Degree</strong> (considering weights) <span class="math notranslate nohighlight">\(\operatorname{deg} (i)=\sum_{j} a_{i j} = \operatorname{RowSum}_i (A)\)</span></p></li>
-<li><p><strong>Volume</strong> of a set <span class="math notranslate nohighlight">\(S\)</span> of nodes <span class="math notranslate nohighlight">\(\operatorname{vol}(S)=\sum_{i \in S} \operatorname{deg} _{i}\)</span>.</p></li>
+<li><p><strong>Volume</strong> of a set <span class="math notranslate nohighlight">\(S\)</span> of nodes <span class="math notranslate nohighlight">\(\operatorname{vol}(S)=\sum_{i \in S} \operatorname{deg} (i)\)</span>.</p></li>
 </ul>
 <div class="section" id="property">
 <h3>Property<a class="headerlink" href="#property" title="Permalink to this headline">¶</a></h3>
@@ -1070,11 +1094,11 @@
 <p>Fiedler [SAND 144] associate <span class="math notranslate nohighlight">\(\lambda_2\)</span> with the connectivity of a graph. We partition vertices according to the sign of their entires in <span class="math notranslate nohighlight">\(\boldsymbol{v} _2\)</span>:</p>
 <div class="math notranslate nohighlight">
 \[
-S_F=\left\{u \in V: \boldsymbol{v} _{2}(u) \geq 0\right\} \quad \text { and } \quad \bar{S}_F=\left\{u \in V: \boldsymbol{v} _{2}(u)&lt;0\right\}
+S_F=\left\{u \in V: \boldsymbol{v} _{2}[u] \geq 0\right\} \quad \text { and } \quad \bar{S}_F=\left\{u \in V: \boldsymbol{v} _{2}[u]&lt;0\right\}
 \]</div>
 <ul class="simple">
 <li><p>The eigenvector <span class="math notranslate nohighlight">\(\boldsymbol{v} _2\)</span> is hence often called the Fiedler vector</p></li>
-<li><p>The eigenvalue <span class="math notranslate nohighlight">\(\lambda_2\)</span> is often called the Fiedler value, which is also the algebraic connectivity of the graph.</p></li>
+<li><p>The eigenvalue <span class="math notranslate nohighlight">\(\lambda_2\)</span> is often called the Fiedler value, which is also the algebraic connectivity of the graph</p></li>
 </ul>
 <p>This method is often called <strong>spectral bisection</strong>. It can be shown that</p>
 <div class="math notranslate nohighlight">
@@ -1111,7 +1135,7 @@ overhead is in principle determined by the cost of computing the spectral decomp
 <p>Now we consider the weighted case from optimization point of view, where weights <span class="math notranslate nohighlight">\(w_{ij} = s_{ij}\)</span>.</p>
 <p>We define the (unnormalized) graph Laplacian  as</p>
 <div class="math notranslate nohighlight">
-\[\boldsymbol{L}_w = \boldsymbol{D} - \boldsymbol{W}\]</div>
+\[\boldsymbol{L} = \boldsymbol{D} - \boldsymbol{W}\]</div>
 <p>where</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(\boldsymbol{W}\)</span> is the similarity matrix of <span class="math notranslate nohighlight">\(s_{ij}\)</span></p></li>
@@ -1129,42 +1153,76 @@ overhead is in principle determined by the cost of computing the spectral decomp
 <p>To partition the graph into <span class="math notranslate nohighlight">\(K\)</span> subgraphs, we would like to minimize the sum of cut values between <strong>each</strong> subgraph <span class="math notranslate nohighlight">\(A_i\)</span> and the rest of the graph:</p>
 <div class="math notranslate nohighlight">
 \[
-\underset{S_{1}, \ldots, S_{K}}{\operatorname{argmin}} \frac{1}{2} \sum_{k=1}^{K} W\left(S_{k}, \bar{S}_{k}\right)
+\underset{S_{1}, \ldots, S_{K}}{\operatorname{min}} \frac{1}{2} \sum_{k=1}^{K} W\left(S_{k}, \bar{S}_{k}\right)
 \]</div>
 <div class="figure align-default" id="spectral-clustering-cuts">
 <a class="reference internal image-reference" href="../_images/spectral-clustering-cuts.png"><img alt="" src="../_images/spectral-clustering-cuts.png" style="width: 70%;" /></a>
 <p class="caption"><span class="caption-number">Fig. 86 </span><span class="caption-text">A graph cut with <span class="math notranslate nohighlight">\(W(S,\bar{S})=0.3\)</span> [Hamad &amp; Biela]</span><a class="headerlink" href="#spectral-clustering-cuts" title="Permalink to this image">¶</a></p>
 </div>
-<p>The algorithm with the above objective function is called <strong>MinCut</strong>, which favors <strong>isolated</strong> nodes.</p>
+<p>The algorithm with the above objective function is called <strong>Min Cut</strong>, which favors <strong>isolated</strong> nodes.</p>
 <p>Other methods with modified/normalized objectives include:</p>
 <ul class="simple">
 <li><p><strong>Ratio cuts</strong> <span class="math notranslate nohighlight">\((\operatorname{RatioCut} )\)</span> normalizes by cardinality: <span class="math notranslate nohighlight">\(\frac{1}{2} \sum_{k=1}^{K} \frac{W\left(S_{k}, \bar{S}_{k}\right)}{\left|S_{k}\right|}\)</span></p></li>
 <li><p><strong>Normalized cuts</strong> <span class="math notranslate nohighlight">\((\operatorname{Ncut})\)</span> normalizes by volume: <span class="math notranslate nohighlight">\(\frac{1}{2} \sum_{i=1}^{k} \frac{W\left(S_{i}, \bar{S}_{i}\right)}{\operatorname{vol}\left(S_{i}\right)}\)</span>.</p></li>
 </ul>
 </div>
+<div class="section" id="bisection-min-cut">
+<h3>Bisection Min Cut<a class="headerlink" href="#bisection-min-cut" title="Permalink to this headline">¶</a></h3>
+<p>Recall that the bisection Min-cut objective is</p>
+<div class="math notranslate nohighlight">
+\[\min_S\ W\left(S, \bar{S}\right)\]</div>
+<p>We define a indicator vector <span class="math notranslate nohighlight">\(\boldsymbol{c} \in\{-1,1\}^{n}\)</span>, where <span class="math notranslate nohighlight">\(c_i = 1\)</span> means data point <span class="math notranslate nohighlight">\(i\)</span> is in cluster/subgraph <span class="math notranslate nohighlight">\(S\)</span>; otherwise cluster <span class="math notranslate nohighlight">\(\bar{S}\)</span>. Note that</p>
+<div class="math notranslate nohighlight">
+\[
+W\left(S, \bar{S}\right) = \sum_{i \in S, j \in \bar{S}} w_{i j} = \frac{1}{4}\sum_{ij} w_{ij}(c_i - c_j)^2 = \frac{1}{4} \boldsymbol{c} ^{\top} \boldsymbol{L} \boldsymbol{c}
+\]</div>
+<p>The objective can be formulated as</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\min_{\boldsymbol{c}} &amp;&amp;&amp; \boldsymbol{c} ^{\top} \boldsymbol{L} \boldsymbol{c}\\
+\mathrm{s.t.}
+&amp;&amp;&amp; \boldsymbol{c} \in\{-1,1\}^{n} \\
+\end{aligned}\end{split}\]</div>
+<p>A relaxation of this problem is to solve for a continuous <span class="math notranslate nohighlight">\(\boldsymbol{c}\)</span> vector instead <span class="math notranslate nohighlight">\(\boldsymbol{c} \in \mathbb{R} ^{n}\)</span></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\min_{\boldsymbol{c}} &amp;&amp; \boldsymbol{c} ^{\top} \boldsymbol{L} \boldsymbol{c} &amp;\\
+\mathrm{s.t.}
+&amp;&amp; \boldsymbol{c} &amp;\in \mathbb{R} ^n\\
+&amp;&amp; \boldsymbol{c} ^{\top} \boldsymbol{c} &amp;= n \\
+\end{aligned}\end{split}\]</div>
+<p>If we don’t add the <span class="math notranslate nohighlight">\(\boldsymbol{c} ^{\top} \boldsymbol{c} = n\)</span> constraint then a trivial solution is <span class="math notranslate nohighlight">\(\boldsymbol{c} = \boldsymbol{0}\)</span>.  The solution is given by the eigenvector of the eigenproblem</p>
+<div class="math notranslate nohighlight">
+\[
+\boldsymbol{L} \boldsymbol{c}=\lambda \boldsymbol{c}
+\]</div>
+<p>The first eigenvector of <span class="math notranslate nohighlight">\(\boldsymbol{L}\)</span> is all ones (all data in a single cluster, which is meaningless). We take the 2nd eigenvector <span class="math notranslate nohighlight">\(\boldsymbol{v} _2\)</span> as the real-valued solution. There are several ways to decide the binary assignment</p>
+<ul class="simple">
+<li><p>take 0 or the median value as the splitting point or,</p></li>
+<li><p>search for the splitting point such that the resulting partition has the best objective value</p></li>
+</ul>
+<p>Actually, this problem can be solved exactly. See the <a class="reference internal" href="../25-graph-related/31-maximum-flow.html#max-flow"><span class="std std-ref">max flow</span></a> section.</p>
+</div>
 <div class="section" id="bisection-normalized-cut">
 <h3>Bisection Normalized Cut<a class="headerlink" href="#bisection-normalized-cut" title="Permalink to this headline">¶</a></h3>
-<p>We introduce how to solve normalized cuts. The solution is related to the first <span class="math notranslate nohighlight">\(K\)</span> eigenvectors of the Laplacian matrix. We define a indicator vector <span class="math notranslate nohighlight">\(\boldsymbol{c} \in\{-1,1\}^{n}\)</span>, where <span class="math notranslate nohighlight">\(c_i = 1\)</span> means data point <span class="math notranslate nohighlight">\(i\)</span> is in cluster/subgraph <span class="math notranslate nohighlight">\(A\)</span>; otherwise cluster <span class="math notranslate nohighlight">\(B\)</span>.</p>
-<p>We can show that the <span class="math notranslate nohighlight">\(\operatorname{Ncut}\)</span> problem to find <span class="math notranslate nohighlight">\(\boldsymbol{c}\)</span> is equivalent to the optimization problem</p>
+<p>[<a class="reference external" href="https://people.eecs.berkeley.edu/~malik/papers/SM-ncut.pdf">Shi &amp; Malik 1999</a>]</p>
+<p>Recall that the objective of the bisection normalized cut is</p>
 <div class="math notranslate nohighlight">
-\[\begin{split}
-\begin{aligned}
-\min _{\boldsymbol{c}} \operatorname{Ncut} (\boldsymbol{c})
-=\min _{\boldsymbol{c}} &amp;\ \frac{\boldsymbol{c}^{\top}\boldsymbol{L} _w \boldsymbol{c}}{\boldsymbol{c}^{\top} \boldsymbol{D}  \boldsymbol{c}} \\
- \text { s.t. } &amp;\ \boldsymbol{c}^{\top} \boldsymbol{D}  \boldsymbol{1}  =0 \\
-&amp;\ \boldsymbol{c} \in\{-1,1\}^{n}  \\
-\end{aligned}
-\end{split}\]</div>
-<p>However, solving for discrete combinatorial values is hard. The optimization problem is relaxed to solve for a continuous <span class="math notranslate nohighlight">\(\boldsymbol{c}\)</span> vector instead:</p>
+\[\min_S\ \left( \frac{W\left(S, \bar{S}\right)}{\operatorname{vol}\left(S\right)} + \frac{W\left(S, \bar{S}\right)}{\operatorname{vol}\left(\bar{S}\right)}  \right)\]</div>
+<p>Let the <span class="math notranslate nohighlight">\(\boldsymbol{c} \in\{-1,1\}^{n}\)</span> be the assignment vector. Define <span class="math notranslate nohighlight">\(\boldsymbol{y} = (\boldsymbol{1}  + \boldsymbol{x} ) - b (\boldsymbol{1} - \boldsymbol{x} )\)</span> where <span class="math notranslate nohighlight">\(b = \frac{\operatorname{vol}(S) }{\operatorname{vol}(\bar{S})}\)</span> such that <span class="math notranslate nohighlight">\(y_i = 2\)</span> if <span class="math notranslate nohighlight">\(x_i=1\)</span>, and <span class="math notranslate nohighlight">\(y_i = -2b\)</span> and <span class="math notranslate nohighlight">\(x_i = -1\)</span>. It can shown that finding <span class="math notranslate nohighlight">\(\boldsymbol{c}\)</span> is equivalent to solve the following optimization problem for <span class="math notranslate nohighlight">\(\boldsymbol{y}\)</span></p>
 <div class="math notranslate nohighlight">
-\[\begin{split}
-\begin{array}{cl}
-\min _{\boldsymbol{c}} &amp; \boldsymbol{c}^{\top}\boldsymbol{L} _w \boldsymbol{c} \\
-\text { s.t. } &amp; \boldsymbol{c}^{\top} \boldsymbol{D}  \boldsymbol{c}= \boldsymbol{1} \\
-\Longrightarrow &amp; \boldsymbol{L} _w \boldsymbol{c}=\lambda \boldsymbol{D}  \boldsymbol{c}
-\end{array}
-\end{split}\]</div>
-<p>The first eigenvector of <span class="math notranslate nohighlight">\(\boldsymbol{L} _w\)</span> is all ones (all data in a single cluster). We take the 2nd eigenvector as the real-valued solution. As shown below, the solved eigenvector (right picture) has positive and negative values, which can be used for assignment.</p>
+\[\begin{split}\begin{aligned}
+\min _{\boldsymbol{y} } &amp;&amp; \frac{\boldsymbol{y} ^{\top} \boldsymbol{L} \boldsymbol{y} }{\boldsymbol{y} ^{\top} \boldsymbol{D} \boldsymbol{y} }  &amp; &amp;&amp;\\
+\mathrm{s.t.}
+&amp;&amp; \boldsymbol{y} &amp;\in \left\{ 1, -b \right\} ^n &amp;&amp;\\
+&amp;&amp; \boldsymbol{y} ^{\top} \boldsymbol{D} \boldsymbol{1}  &amp;= \boldsymbol{0} &amp;&amp; \\
+\end{aligned}\end{split}\]</div>
+<p>where the constraint <span class="math notranslate nohighlight">\(\boldsymbol{y} ^{\top} \boldsymbol{D} \boldsymbol{1} = \boldsymbol{0}\)</span> comes from the condition of the assignment vector <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span>. However, solving for discrete combinatorial values is hard. The optimization problem is relaxed to solve for a continuous <span class="math notranslate nohighlight">\(\boldsymbol{y} \in \mathbb{R} ^n\)</span> vector instead. The solution is given by the generalized eigenproblem</p>
+<div class="math notranslate nohighlight">
+\[
+\boldsymbol{L} \boldsymbol{y}=\lambda \boldsymbol{D}  \boldsymbol{y}
+\]</div>
+<p>We take the 2nd eigenvector <span class="math notranslate nohighlight">\(\boldsymbol{v} _2\)</span> as the real-valued solution, and find a splitting point to decide assignment with the methods introduced in Min-cut.</p>
 <div class="figure align-default" id="spectral-clustering-egvector">
 <a class="reference internal image-reference" href="../_images/spectral-clustering-egvector.png"><img alt="" src="../_images/spectral-clustering-egvector.png" style="width: 80%;" /></a>
 <p class="caption"><span class="caption-number">Fig. 87 </span><span class="caption-text"><span class="math notranslate nohighlight">\(\operatorname{Ncut}\)</span> for a data set of <span class="math notranslate nohighlight">\(40\)</span> points.</span><a class="headerlink" href="#spectral-clustering-egvector" title="Permalink to this image">¶</a></p>
@@ -1174,7 +1232,7 @@ overhead is in principle determined by the cost of computing the spectral decomp
 <h3>More Clusters<a class="headerlink" href="#more-clusters" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Option 1: Recursively apply the 2-cluster algorithm</p></li>
-<li><p>Option 2: Treat the first <span class="math notranslate nohighlight">\(K\)</span> eigenvectors as a reduced-dimensionality representation of the data, and cluster these eigenvectors. The task will be easier if the values in the eigenvectors are close to discrete, like the above case.</p></li>
+<li><p>Option 2: For <span class="math notranslate nohighlight">\(K\)</span> clusters, treat the smallest <span class="math notranslate nohighlight">\(K-1\)</span> eigenvectors (excluding the last one) as a reduced-dimensionality representation of the data, and cluster these eigenvectors. The task will be easier if the values in the eigenvectors are close to discrete, like the above case.</p></li>
 </ul>
 <div class="margin sidebar">
 <p class="sidebar-title">Relation to Representation Learning</p>

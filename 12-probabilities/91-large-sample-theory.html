@@ -130,6 +130,11 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/52-non-linear-programming.html">
+     Non-linear Programming
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="../11-math/90-puzzles.html">
      Puzzles
     </a>
@@ -199,7 +204,7 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../13-statistics/13-randomized-trial.html">
-     Causality and Randomized Trial
+     Randomized Controlled Trials
     </a>
    </li>
    <li class="toctree-l2">
@@ -738,6 +743,20 @@
   <i class="fas fa-chevron-down">
   </i>
  </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../39-causal/00-causal-intro.html">
+   For Causal Inference
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../39-causal/11-causal-estimation.html">
+     Causal Estimation
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
 </ul>
 
 </nav> <!-- To handle the deprecated key -->
@@ -892,11 +911,11 @@
 <dt>Definition (Convergence in probability)</dt><dd><p>A sequence <span class="math notranslate nohighlight">\({X_n}\)</span> of random variables converges in probability towards the random variable <span class="math notranslate nohighlight">\(X\)</span> if for all <span class="math notranslate nohighlight">\(\varepsilon &gt; 0\)</span>,</p>
 <div class="math notranslate nohighlight">
 \[
-  \lim _{n \rightarrow \infty} \operatorname{P}\left(\left|X_{n}-X\right|&gt;\varepsilon\right)=0
+  \lim _{n \rightarrow \infty} \operatorname{\mathbb{P}}\left(\left|X_{n}-X\right|&gt;\varepsilon\right)=0
   \]</div>
 </dd>
 </dl>
-<p>In short, we write <span class="math notranslate nohighlight">\(X_{n} \stackrel{P}{\rightarrow} X\)</span> or <span class="math notranslate nohighlight">\(\operatorname{plim} X_{n}=X\)</span>.</p>
+<p>In short, we write <span class="math notranslate nohighlight">\(X_{n} \stackrel{\mathcal{P}}{\rightarrow} X\)</span> or <span class="math notranslate nohighlight">\(\operatorname{plim} X_{n}=X\)</span>.</p>
 <p><strong>Properties</strong></p>
 <ol class="simple">
 <li><p><span class="math notranslate nohighlight">\(\operatorname{plim} \frac{X_n}{Y_n}   = \frac{\operatorname{plim} X_n }{\operatorname{plim} Y_n }\)</span></p></li>
@@ -914,7 +933,7 @@
 Then for every <span class="math notranslate nohighlight">\(\epsilon&gt;0\)</span>,</p>
 <div class="math notranslate nohighlight">
 \[
-\lim_{n\rightarrow\infty}\mathrm{P}\left(\left|\bar{X}_{n}-\mu\right|&lt;\epsilon\right)=1
+\lim_{n\rightarrow\infty}\operatorname{\mathbb{P}}\left(\left|\bar{X}_{n}-\mu\right|&lt;\epsilon\right)=1
 \]</div>
 <p>i.e. the sample mean converge in probability to the theoretical mean <span class="math notranslate nohighlight">\(\mu\)</span>,</p>
 <div class="math notranslate nohighlight">
@@ -925,9 +944,9 @@ Then for every <span class="math notranslate nohighlight">\(\epsilon&gt;0\)</spa
 <p>To prove it, by Chebychev’s Inequality,</p>
 <div class="math notranslate nohighlight">
 \[
-\mathrm{P}\left(\left|\bar{X}_{n}-\mu\right|\geq\epsilon\right)
-=\mathrm{P}\left(\left(\bar{X}_{n}-\mu\right)^{2}\geq\epsilon^{2}\right)
-\leq\frac{\mathrm{E}\left(\bar{X}_{n}-\mu\right)^{2}}{\epsilon^{2}}
+\operatorname{\mathbb{P}}\left(\left|\bar{X}_{n}-\mu\right|\geq\epsilon\right)
+=\operatorname{\mathbb{P}}\left(\left(\bar{X}_{n}-\mu\right)^{2}\geq\epsilon^{2}\right)
+\leq\frac{\operatorname{\mathbb{E}}\left(\bar{X}_{n}-\mu\right)^{2}}{\epsilon^{2}}
 =\frac{\operatorname{Var}\bar{X}_{\mathfrak{H}}}{\epsilon^{2}}=\frac{\sigma^{2}}{n\epsilon^{2}} \rightarrow 0
 \]</div>
 </div>
@@ -937,7 +956,7 @@ Then for every <span class="math notranslate nohighlight">\(\epsilon&gt;0\)</spa
 Then for every <span class="math notranslate nohighlight">\(\epsilon&gt;0\)</span>,</p>
 <div class="math notranslate nohighlight">
 \[
-\mathrm{P}\left(\lim_{n\rightarrow\infty}\left|\bar{X}_{n}-\mu\right|&lt;\epsilon\right)=1
+\operatorname{\mathbb{P}}\left(\lim_{n\rightarrow\infty}\left|\bar{X}_{n}-\mu\right|&lt;\epsilon\right)=1
 \]</div>
 <p>i.e. the sample mean converge to the theoretical mean <span class="math notranslate nohighlight">\(\mu\)</span> almost surely,</p>
 <div class="math notranslate nohighlight">
@@ -958,7 +977,7 @@ Then for every <span class="math notranslate nohighlight">\(\epsilon&gt;0\)</spa
 <p>The Central Limit Theorem, in probability theory, when independent random variables are added, their properly normalized sum tends toward a normal distribution (informally a “bell curve”) even if the original variables themselves are not normally distributed.</p>
 <p>There are many versions of CLT with various problem settings. Here we introduce Lindeberg–Lévy CLT.</p>
 <p>Let <span class="math notranslate nohighlight">\(X_1, \ldots, X_n\)</span> be a sequence of independently and identically distributed random variables such that
-<span class="math notranslate nohighlight">\(\mathrm{E}\left( X_{i} \right)=\mu\)</span>, <span class="math notranslate nohighlight">\(\mathrm{Var}\left( X_{i} \right)=\sigma^{2}&gt;0\)</span>. Let <span class="math notranslate nohighlight">\(G_{n}(x)\)</span> denote
+<span class="math notranslate nohighlight">\(\operatorname{\mathbb{E}}\left( X_{i} \right)=\mu\)</span>, <span class="math notranslate nohighlight">\(\mathrm{Var}\left( X_{i} \right)=\sigma^{2}&gt;0\)</span>. Let <span class="math notranslate nohighlight">\(G_{n}(x)\)</span> denote
 the CDF of <span class="math notranslate nohighlight">\(\frac{\sqrt{n}\left(\bar{X}_{n}-\mu\right)}{\sigma}\)</span>,
 then</p>
 <div class="math notranslate nohighlight">
@@ -968,12 +987,12 @@ then</p>
 <p>i.e., the normalized sample mean converge in distribution to a standard normal random variable,</p>
 <div class="math notranslate nohighlight">
 \[
-\frac{\sqrt{n}\left(\bar{X}_{n}-\mu\right)}{\sigma}\overset{\mathcal{D}}{\rightarrow}N(0,1)
+\frac{\sqrt{n}\left(\bar{X}_{n}-\mu\right)}{\sigma}\overset{\mathcal{D}}{\rightarrow} \mathcal{N}(0,1)
 \]</div>
-<p>The Central Limit Theorem implies that we can obtain a normal distribution from a uniform random variable generator. Let  <span class="math notranslate nohighlight">\(X\sim U(0,1)\)</span>, then <span class="math notranslate nohighlight">\(\mu = \mathrm{E}\left( X \right) =\frac{1}{2}\)</span>, <span class="math notranslate nohighlight">\(\sigma = \sqrt{\mathrm{Var}\left(X \right)} = \sqrt{\frac{1}{12}}\)</span>. Hence,</p>
+<p>The Central Limit Theorem implies that we can obtain a normal distribution from a uniform random variable generator. Let  <span class="math notranslate nohighlight">\(X\sim \mathcal{U}(0,1)\)</span>, then <span class="math notranslate nohighlight">\(\mu = \operatorname{\mathbb{E}}\left( X \right) =\frac{1}{2}\)</span>, <span class="math notranslate nohighlight">\(\sigma = \sqrt{\mathrm{Var}\left(X \right)} = \sqrt{\frac{1}{12}}\)</span>. Hence,</p>
 <div class="math notranslate nohighlight">
 \[
-Y_n=\frac{\sqrt{n}\left(\bar{X}_{n}-\mu\right)}{\sigma}\overset{\mathcal{D}}{\rightarrow}N(0,1)
+Y_n=\frac{\sqrt{n}\left(\bar{X}_{n}-\mu\right)}{\sigma}\overset{\mathcal{D}}{\rightarrow}\mathcal{N}(0,1)
 \]</div>
 <p>Implementation with Python:</p>
 <div class="cell docutils container">
@@ -1001,7 +1020,7 @@ Y_n=\frac{\sqrt{n}\left(\bar{X}_{n}-\mu\right)}{\sigma}\overset{\mathcal{D}}{\ri
 <img alt="../_images/91-large-sample-theory_1_0.png" src="../_images/91-large-sample-theory_1_0.png" />
 </div>
 </div>
-<p>In general, one can then sample from any normal distribution <span class="math notranslate nohighlight">\(N(a,b^2)\)</span> by the transformation <span class="math notranslate nohighlight">\(Z = bY_n+a\)</span>.</p>
+<p>In general, one can then sample from any normal distribution <span class="math notranslate nohighlight">\(\mathcal{N}(a,b^2)\)</span> by the transformation <span class="math notranslate nohighlight">\(Z = bY_n+a\)</span>.</p>
 </div>
 </div>
 

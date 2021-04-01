@@ -16,7 +16,7 @@ If we formulate the question in the other way: You tossed two fair coins. It's k
 
 Let $X_H$ be the number of heads. The intuitive solution is a conditional probability
 
-$$\mathrm{P}(X_H=2  \,\vert\, X_H\ge 1) = \frac{\mathrm{P}(X_H=2\cap X_H\ge 1)}{\mathrm{P}(X_H\ge 1)} = \frac{\mathrm{P}(X_H=2)}{\mathrm{P}(X_H\ge 1)} = \frac{1/4}{3/4}= \frac{1}{3}$$
+$$\operatorname{\mathbb{P}}(X_H=2  \,\vert\, X_H\ge 1) = \frac{\operatorname{\mathbb{P}}(X_H=2\cap X_H\ge 1)}{\operatorname{\mathbb{P}}(X_H\ge 1)} = \frac{\operatorname{\mathbb{P}}(X_H=2)}{\operatorname{\mathbb{P}}(X_H\ge 1)} = \frac{1/4}{3/4}= \frac{1}{3}$$
 
 
 But when it comes to boy or girl, it simulated a great deal of controversy. The paradox occurs when it is not known how the statement "at least one is a boy" was generated. One may refer to the Wikipedia link for more details of the other answer $1/2$.
@@ -25,23 +25,23 @@ But when it comes to boy or girl, it simulated a great deal of controversy. The 
 
 ### Solution to Q2
 
-This is also a controversial question. Let $X_B \in \{0,1,2\}$ be the number of boys in the family. Let $A \in \{B,G\}$ be the outcome of who answer the call. And let $O\in\{BB,BG,GB,GG\}$ be the birth order of the wo children. It's known that
+This is also a controversial question. Let $X_B \in \{0,1,2\}$ be the number of boys in the family. Let $A \in \{B,G\}$ be the outcome of who answer the call. And let $O\in\{BB,BG,GB,GG\}$ be the birth order of the two children. It's known that
 
 $$\begin{align}
-\mathrm{P}(A=B\,\vert\,O=BB) &= 1 \\
-\mathrm{P}(A=B\,\vert\,O=BG) &= 1/2 \\
-\mathrm{P}(A=B\,\vert\,O=GB) &= 1/2 \\
-\mathrm{P}(A=B\,\vert\,O=GG) &= 0 \\
-\mathrm{P}(O_i) &= 1/4 \ \forall \ i \\
+\operatorname{\mathbb{P}}(A=B\,\vert\,O=BB) &= 1 \\
+\operatorname{\mathbb{P}}(A=B\,\vert\,O=BG) &= 1/2 \\
+\operatorname{\mathbb{P}}(A=B\,\vert\,O=GB) &= 1/2 \\
+\operatorname{\mathbb{P}}(A=B\,\vert\,O=GG) &= 0 \\
+\operatorname{\mathbb{P}}(O_i) &= 1/4 \ \forall \ i \\
 \end{align}$$
 
-So by the Bayeisan formula,
+So by the Bayesian formula,
 
 
 $$\begin{align}
-\mathrm{P}(X_B=2\,\vert\,A=B) &= \frac{\mathrm{P}(X_B=2 \cap A=B)}{\mathrm{P}(A=B)} \\
- &= \frac{\mathrm{P}(X_B=2)}{\mathrm{P}(A=B)} \ \text{since}\  \mathrm{P}(X_B=2 \cap A=G)=0\\
-&=  \frac{\mathrm{P}(X_B=2)}{\sum_i \mathrm{P}(A=B\,\vert\, O_i)\mathrm{P}(O_i)} \\
+\operatorname{\mathbb{P}}(X_B=2\,\vert\,A=B) &= \frac{\operatorname{\mathbb{P}}(X_B=2 \cap A=B)}{\operatorname{\mathbb{P}}(A=B)} \\
+ &= \frac{\operatorname{\mathbb{P}}(X_B=2)}{\operatorname{\mathbb{P}}(A=B)} \ \text{since}\  \operatorname{\mathbb{P}}(X_B=2 \cap A=G)=0\\
+&=  \frac{\operatorname{\mathbb{P}}(X_B=2)}{\sum_i \operatorname{\mathbb{P}}(A=B\,\vert\, O_i)\operatorname{\mathbb{P}}(O_i)} \\
 &= \frac{1/4}{2/4} \\
 &= \frac{1}{2} \\
 \end{align}$$
@@ -56,13 +56,13 @@ $$\{A=B\} \ne \{X_B\ge 1\}$$
 
 So what is the set difference?
 
-$$\{X_B\ge1\} \backslash \{A=B\}$$
+$$\{X_B\ge 1\} \backslash \{A=B\}$$
 
-Image an experiment on $n$ families with two children. For each family $i$, you make a call and ask a question "how many boys are there in your family?" and record the receiver's gender $A_i$ and the answer $X_{B,i}$. In this sense, it is easy to find there are four possible pairs
+Image an experiment on $n$ families with two children. For each family $i$, you make a call and ask a question "how many boys are there in your family?" and record the receiver's gender $A_i$ and the answer $X_{B, i}$. In this sense, it is easy to find there are four possible pairs
 
 $$(A_i, X_{B,i}) \in \{(B,1), (B,2), (G,0), (G,1)\}$$
 
-As a results, the families with the first two pairs of answers corresponds to $\{A=B\}$, but they are not $\{X_B \ge 1\}$. Yes, the last kind of family $(G, 1)$ is the set difference $\{X_B\ge1\} \backslash \{A=B\}$, since they have $X_{B,i}=1$ but $A_i=G$.
+As a results, the families with the first two pairs of answers corresponds to $\{A=B\}$, but they are not $\{X_B \ge 1\}$. Yes, the last kind of family $(G, 1)$ is the set difference $\{X_B\ge 1\} \backslash \{A=B\}$, since they have $X_{B,i}=1$ but $A_i=G$.
 
 In particular, the four kinds of pairs should be equally likely to be observed.
 

@@ -130,6 +130,11 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/52-non-linear-programming.html">
+     Non-linear Programming
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="../11-math/90-puzzles.html">
      Puzzles
     </a>
@@ -199,7 +204,7 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../13-statistics/13-randomized-trial.html">
-     Causality and Randomized Trial
+     Randomized Controlled Trials
     </a>
    </li>
    <li class="toctree-l2">
@@ -738,6 +743,20 @@
   <i class="fas fa-chevron-down">
   </i>
  </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../39-causal/00-causal-intro.html">
+   For Causal Inference
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../39-causal/11-causal-estimation.html">
+     Causal Estimation
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
 </ul>
 
 </nav> <!-- To handle the deprecated key -->
@@ -930,7 +949,7 @@
 <p>A Markov chain is <strong>homogeneous</strong> if <span class="math notranslate nohighlight">\(\mathbb{P}\left(X_{t+1}=j \mid X_{t}=i\right)=p_{i j}\)</span> for all <span class="math notranslate nohighlight">\(t\)</span>. This indicates that this conditional distribution does not very with <span class="math notranslate nohighlight">\(t\)</span>. The values <span class="math notranslate nohighlight">\(p_{ij}\)</span> are called <strong>transition probabilities</strong>, which can be stored in a transition matrix <span class="math notranslate nohighlight">\(\boldsymbol{P}\)</span>. We can find the <span class="math notranslate nohighlight">\(t\)</span>-step transition probability <span class="math notranslate nohighlight">\(p_{ij}^{(t)} = [\boldsymbol{P}^t] _{ij}\)</span>, which is the probability that, starting in state <span class="math notranslate nohighlight">\(i\)</span>, the Markov chain is found in state <span class="math notranslate nohighlight">\(j\)</span> after <span class="math notranslate nohighlight">\(t\)</span> transitions.</p>
 <p>A Markov chain with state space <span class="math notranslate nohighlight">\(V\)</span> and transition matrix <span class="math notranslate nohighlight">\(\boldsymbol{P}\)</span> can be represented by a labeled directed graph, where edges are given by transitions with nonzero probability <span class="math notranslate nohighlight">\(E = \left\{ (u,v) \mid p_{u,v} &gt;0 \right\}\)</span>. Note that self-loops are allowed for <span class="math notranslate nohighlight">\(p_{ii} &gt; 0\)</span>.</p>
 <div class="figure align-default" id="mc-graph">
-<a class="reference internal image-reference" href="../_images/mc-graph.png"><img alt="" src="../_images/mc-graph.png" style="width: 50%;" /></a>
+<a class="reference internal image-reference" href="../_images/mc-graph.png"><img alt="" src="../_images/mc-graph.png" style="width: 70%;" /></a>
 <p class="caption"><span class="caption-number">Fig. 5 </span><span class="caption-text">Graphical representation of a Markov chain</span><a class="headerlink" href="#mc-graph" title="Permalink to this image">¶</a></p>
 </div>
 </div>
@@ -1028,7 +1047,7 @@
 <h4>Sol.1 Markov Chain<a class="headerlink" href="#sol-1-markov-chain" title="Permalink to this headline">¶</a></h4>
 <p>Let <span class="math notranslate nohighlight">\(I_t\)</span> be the number of infected individuals after <span class="math notranslate nohighlight">\(t\)</span> minutes. Define a transition matrix <span class="math notranslate nohighlight">\(\boldsymbol{P}=\left\{ p_{i,j} \right\}\)</span>, where</p>
 <div class="math notranslate nohighlight">
-\[p_{i,j} = \mathrm{P}(I_{t+1}=j\vert I_t=i)\]</div>
+\[p_{i,j} = \operatorname{\mathbb{P}}(I_{t+1}=j\vert I_t=i)\]</div>
 <p>It’s easy to see that</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(p_{1,2}=1\)</span></p></li>
@@ -1060,7 +1079,7 @@
 <p>where <span class="math notranslate nohighlight">\(\boldsymbol{e}_1 = [1,0,\ldots,0]\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{p}_{I_{10}} = [p_{1,1}^{(10)}, \ldots, p_{1,n}^{(10)}]\)</span></p>
 <p>The expected number is</p>
 <div class="math notranslate nohighlight">
-\[\mathrm{E}(I_{10}) = [1,2,3,\ldots, n]^\top\boldsymbol{p}_{I_{10}} \]</div>
+\[\operatorname{\mathbb{E}}(I_{10}) = [1,2,3,\ldots, n]^\top\boldsymbol{p}_{I_{10}} \]</div>
 <p>A python script to implement the above steps:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1112,7 +1131,7 @@ I_{t+1,j}=\begin{cases}
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{align}
-\mathrm{E}\left( I_{t+1, j} \right) &amp;= p_{t} \times 1 + (1-p_{t}) \times 0  \\
+\operatorname{\mathbb{E}}\left( I_{t+1, j} \right) &amp;= p_{t} \times 1 + (1-p_{t}) \times 0  \\
 &amp; = p_{t} \\
 \end{align}
 \end{split}\]</div>
@@ -1120,8 +1139,8 @@ I_{t+1,j}=\begin{cases}
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{align}
-\mathrm{E}(I_{t+1}|I_t) &amp; = \mathrm{E}\left( I_t +  \sum_{j=1}^{I_t} I_{t+1,j} \right)\\
-&amp;= I_t + \sum_{j=1}^{I_t} \mathrm{E}\left( I_{t+1, j} \right) \\
+\operatorname{\mathbb{E}}(I_{t+1}|I_t) &amp; = \operatorname{\mathbb{E}}\left( I_t +  \sum_{j=1}^{I_t} I_{t+1,j} \right)\\
+&amp;= I_t + \sum_{j=1}^{I_t} \operatorname{\mathbb{E}}\left( I_{t+1, j} \right) \\
 &amp; = I_t + I_t \times p_t \\
 &amp; = I_t + I_t \times \frac{n-I_t}{n - 1} \\
 \end{align}
@@ -1131,26 +1150,26 @@ I_{t+1,j}=\begin{cases}
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{align}
-\mathrm{E}(I_{t+1}) &amp; = \mathrm{E}\left( \mathrm{E}(I_{t+1}|I_t) \right) \\
-&amp; = \mathrm{E}\left(I_t + I_t \times \frac{n-I_t}{n - 1} \right)\\
-&amp; = \frac{2n-1}{n-1}\mathrm{E}\left( I_t \right) - \frac{1}{n-1}\mathrm{E}\left( I_t^2 \right)
+\operatorname{\mathbb{E}}(I_{t+1}) &amp; = \operatorname{\mathbb{E}}\left( \operatorname{\mathbb{E}}(I_{t+1}|I_t) \right) \\
+&amp; = \operatorname{\mathbb{E}}\left(I_t + I_t \times \frac{n-I_t}{n - 1} \right)\\
+&amp; = \frac{2n-1}{n-1}\operatorname{\mathbb{E}}\left( I_t \right) - \frac{1}{n-1}\operatorname{\mathbb{E}}\left( I_t^2 \right)
 \end{align}
 \end{split}\]</div>
-<p>In particular, since <span class="math notranslate nohighlight">\(\mathrm{P}(I_1=2\vert I_0=1)=1\)</span>, there is no randomness in <span class="math notranslate nohighlight">\(I_1\)</span>, such that</p>
+<p>In particular, since <span class="math notranslate nohighlight">\(\operatorname{\mathbb{P}}(I_1=2\vert I_0=1)=1\)</span>, there is no randomness in <span class="math notranslate nohighlight">\(I_1\)</span>, such that</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{align}
-\mathrm{E}(I_2) &amp;= \mathrm{E}\left( \mathrm{E}(I_2\vert I_1) \right) \\
-&amp;= \mathrm{E}\left(I_1 + I_1 \times \frac{n-I_1}{n - 1}\right)\\
+\operatorname{\mathbb{E}}(I_2) &amp;= \operatorname{\mathbb{E}}\left( \operatorname{\mathbb{E}}(I_2\vert I_1) \right) \\
+&amp;= \operatorname{\mathbb{E}}\left(I_1 + I_1 \times \frac{n-I_1}{n - 1}\right)\\
 &amp; = 2 + 2 \times 998 / 999 \\
 &amp; = 3994/999
 \end{align}
 \end{split}\]</div>
-<p>But when <span class="math notranslate nohighlight">\(t\ge 3\)</span>, the computation become complicated due to the second-order term <span class="math notranslate nohighlight">\(\mathrm{E}\left( I_t^2 \right)\)</span></p>
-<p>One attempt is to approximate <span class="math notranslate nohighlight">\(\mathrm{E}\left( I_t^2 \right)\)</span> by <span class="math notranslate nohighlight">\(\left[ \mathrm{E}\left( I_t \right) \right]^2\)</span> such that we have a <strong>recurrence relation</strong></p>
+<p>But when <span class="math notranslate nohighlight">\(t\ge 3\)</span>, the computation become complicated due to the second-order term <span class="math notranslate nohighlight">\(\operatorname{\mathbb{E}}\left( I_t^2 \right)\)</span></p>
+<p>One attempt is to approximate <span class="math notranslate nohighlight">\(\operatorname{\mathbb{E}}\left( I_t^2 \right)\)</span> by <span class="math notranslate nohighlight">\(\left[ \operatorname{\mathbb{E}}\left( I_t \right) \right]^2\)</span> such that we have a <strong>recurrence relation</strong></p>
 <div class="math notranslate nohighlight">
-\[\mathrm{E}\left( I_{t+1} \right) \approx \frac{2n-1}{n-1}\mathrm{E}\left( I_t \right) - \frac{1}{n-1}\left[ \mathrm{E}\left( I_t \right) \right]^2\]</div>
-<p>Note that this will lead to a larger result since <span class="math notranslate nohighlight">\(\mathrm{E}\left( I_t^2 \right) - \left[ \mathrm{E}\left( I_t \right) \right]^2 = \mathrm{Var}\left( I_t \right) \ge 0\)</span>. But since <span class="math notranslate nohighlight">\(\mathrm{Var}\left( I_t \right)\)</span> is small, the positive error is also small.</p>
+\[\operatorname{\mathbb{E}}\left( I_{t+1} \right) \approx \frac{2n-1}{n-1}\operatorname{\mathbb{E}}\left( I_t \right) - \frac{1}{n-1}\left[ \operatorname{\mathbb{E}}\left( I_t \right) \right]^2\]</div>
+<p>Note that this will lead to a larger result since <span class="math notranslate nohighlight">\(\operatorname{\mathbb{E}}\left( I_t^2 \right) - \left[ \operatorname{\mathbb{E}}\left( I_t \right) \right]^2 = \mathrm{Var}\left( I_t \right) \ge 0\)</span>. But since <span class="math notranslate nohighlight">\(\mathrm{Var}\left( I_t \right)\)</span> is small, the positive error is also small.</p>
 <p>A python script of the iteration is</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1176,8 +1195,8 @@ I_{t+1,j}=\begin{cases}
 <p>The result <span class="math notranslate nohighlight">\(642.975\)</span> is slightly larger than the result <span class="math notranslate nohighlight">\(642.347\)</span> in Solution 1.</p>
 <p>If we take a closer look at the recurrence relation, dividing <span class="math notranslate nohighlight">\(2n-1\)</span> on both sides gives</p>
 <div class="math notranslate nohighlight">
-\[\frac{\mathrm{E}\left( I_{t+1} \right)}{2n-1} \approx \frac{2n-1}{n-1} \frac{\mathrm{E}\left( I_t \right)}{2n-1} - \frac{2n-1}{n-1}\left[ \frac{\mathrm{E}\left( I_t \right)}{2n-1} \right]^2\]</div>
-<p>Let <span class="math notranslate nohighlight">\(x_t = \frac{\mathrm{E}\left( I_t \right)}{2n-1}\)</span> then it becomes</p>
+\[\frac{\operatorname{\mathbb{E}}\left( I_{t+1} \right)}{2n-1} \approx \frac{2n-1}{n-1} \frac{\operatorname{\mathbb{E}}\left( I_t \right)}{2n-1} - \frac{2n-1}{n-1}\left[ \frac{\operatorname{\mathbb{E}}\left( I_t \right)}{2n-1} \right]^2\]</div>
+<p>Let <span class="math notranslate nohighlight">\(x_t = \frac{\operatorname{\mathbb{E}}\left( I_t \right)}{2n-1}\)</span> then it becomes</p>
 <div class="math notranslate nohighlight">
 \[x_{t+1} \approx 2x_t(1-x_t)\]</div>
 <p>when <span class="math notranslate nohighlight">\(n\)</span> is large.</p>

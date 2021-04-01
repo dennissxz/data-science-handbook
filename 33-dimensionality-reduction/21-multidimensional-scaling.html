@@ -130,6 +130,11 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/52-non-linear-programming.html">
+     Non-linear Programming
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="../11-math/90-puzzles.html">
      Puzzles
     </a>
@@ -199,7 +204,7 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../13-statistics/13-randomized-trial.html">
-     Causality and Randomized Trial
+     Randomized Controlled Trials
     </a>
    </li>
    <li class="toctree-l2">
@@ -738,6 +743,20 @@
   <i class="fas fa-chevron-down">
   </i>
  </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../39-causal/00-causal-intro.html">
+   For Causal Inference
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../39-causal/11-causal-estimation.html">
+     Causal Estimation
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
 </ul>
 
 </nav> <!-- To handle the deprecated key -->
@@ -834,23 +853,6 @@
   <a class="reference internal nav-link" href="#learning">
    Learning
   </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#input-is-data-or-gram-matrix">
-     Input is Data or Gram Matrix
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#input-is-an-euclidean-distance-matrix">
-   Input is an Euclidean Distance Matrix
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#model-selection">
-   Model Selection
-  </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#relation-to-pca">
@@ -871,105 +873,131 @@
                 
   <div class="section" id="multidimensional-scaling">
 <h1>Multidimensional Scaling<a class="headerlink" href="#multidimensional-scaling" title="Permalink to this headline">¶</a></h1>
-<p>In this section we introduce (metric) multidimensional scaling (MDS).</p>
-<p>Instead of a <span class="math notranslate nohighlight">\(n \times p\)</span> data matrix, MDS looks at pairwise similarity measures of data points. For instance,</p>
+<p>In this section we introduce (metric) multidimensional scaling (MDS). It finds some representation of input data, which can be used for dimension reduction or visualization. In addition to a <span class="math notranslate nohighlight">\(n \times d\)</span> data matrix <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span>, MDS can also take as input</p>
+<ul>
+<li><p>pairwise dissimilarity measures of data points as input, denoted <span class="math notranslate nohighlight">\(\boldsymbol{D} \in \mathbb{R} ^{n \times n}\)</span></p>
 <ul class="simple">
-<li><p>a matrix of Euclidean distances between points,</p></li>
-<li><p>co-occurrence counts of words between documents</p></li>
-<li><p>an adjacency matrix of web pages</p></li>
+<li><p>a matrix of Euclidean distances between points</p></li>
+<li><p>survey results of customers’ perception of dissimilarity between products</p></li>
 </ul>
-<p>Non-metric MDS applies ranks, KL divergences, etc (rather than numerical similarities).</p>
+<p>Note that the input dissimilarity matrix <span class="math notranslate nohighlight">\(\boldsymbol{D}\)</span> may not be exactly euclidean distance, hence it does not enjoy all properties that a distance matrix has.</p>
+</li>
+<li><p>pairwise similarity measures of data points as input, denoted <span class="math notranslate nohighlight">\(\boldsymbol{S} \in \mathbb{R} ^{n \times n}\)</span></p>
+<ul class="simple">
+<li><p>co-occurrence counts of words between documents</p></li>
+<li><p>an adjacency matrix of web pages (MDS as a graph layout technique)</p></li>
+<li><p>survey results of customers’ perception of similarity between products</p></li>
+</ul>
+</li>
+</ul>
+<p>In all, there are four types of MDS: {metric, non-metric} <span class="math notranslate nohighlight">\(\times\)</span> {distance, classical}.</p>
+<ul class="simple">
+<li><p><strong>distance scaling</strong>: fit dissimilarity by Euclidean distance <span class="math notranslate nohighlight">\(d_{ij} \approx \left\| \boldsymbol{z} _i - \boldsymbol{z} _j \right\|\)</span></p></li>
+<li><p><strong>classical scaling</strong>: transform dissimilarity to some form of ‘similarity’ and then fit by inner product  <span class="math notranslate nohighlight">\(s_{ij} \approx \langle \boldsymbol{z}_i , \boldsymbol{z} _j \rangle\)</span>. Note the identity <span class="math notranslate nohighlight">\(\left\| \boldsymbol{z}_i - \boldsymbol{z}_j  \right\| ^2 = \left\| \boldsymbol{z} _i \right\|^2 + \left\| z
+_j \right\| ^2 - 2 \langle \boldsymbol{z}_i , \boldsymbol{z}_j  \rangle\)</span>.</p></li>
+<li><p><strong>metric scaling</strong> uses actual numerical values of dissimilarities</p></li>
+<li><p><strong>non-metric scaling</strong> applies ranks, KL divergences, etc. rather than numerical dissimilarities.</p></li>
+</ul>
+<p>Here, we introduce metric classical scaling. For others, see this <a class="reference external" href="http://www.stat.yale.edu/~lc436/papers/JCGS-mds.pdf">paper</a>.</p>
 <p>Many non-linear dimensionality reduction methods are extension to MDS. MDS is a clue to link linear and non-linear dimensionality reduction.</p>
 <div class="section" id="objective">
 <h2>Objective<a class="headerlink" href="#objective" title="Permalink to this headline">¶</a></h2>
-<p>Question: If we are given a distance matrix <span class="math notranslate nohighlight">\(\boldsymbol{D}\in \mathbb{R} ^{n \times n}\)</span>, then we can find a <span class="math notranslate nohighlight">\(2\)</span>-dimensional representation of it <span class="math notranslate nohighlight">\(\boldsymbol{Z} \in \mathbb{R} ^{n \times k}\)</span>, to visualize them in 2-D plane?</p>
-<p>Essentially, MDS seeks a <span class="math notranslate nohighlight">\(k\)</span>-dimensional representation <span class="math notranslate nohighlight">\(\boldsymbol{z} \in \mathbb{R} ^k\)</span> of a data set that preserves inner products (or similarity/distance) between pairs of data points <span class="math notranslate nohighlight">\((\boldsymbol{x_i}, \boldsymbol{x}_j)\)</span></p>
+<ul>
+<li><p>Given a distance matrix <span class="math notranslate nohighlight">\(\boldsymbol{D}\in \mathbb{R} ^{n \times n}\)</span>, can we find a <span class="math notranslate nohighlight">\(2\)</span>-dimensional representation of it <span class="math notranslate nohighlight">\(\boldsymbol{Z} \in \mathbb{R} ^{n \times k}\)</span>, to visualize them in 2-D plane?</p>
+<p>More generally, suppose <span class="math notranslate nohighlight">\(\boldsymbol{Z} \in \mathbb{R} ^{n \times k}\)</span> are the underlying embeddings, MDS finds <span class="math notranslate nohighlight">\(\boldsymbol{Z}\)</span> such that the distance is nearly preserved: <span class="math notranslate nohighlight">\(\left\| \boldsymbol{z} _i - \boldsymbol{z} _j \right\| \approx d_{ij}\)</span>. Hence the objective is to find embeddings <span class="math notranslate nohighlight">\(\boldsymbol{Z}\)</span> that minimizes <strong>stress</strong></p>
 <div class="math notranslate nohighlight">
 \[
-\min \sum_{i, j}\left(\boldsymbol{x}_{i} ^\top  \boldsymbol{x}_{j}-\boldsymbol{z}_{i} ^\top  \boldsymbol{z}_{j}\right)^{2}
-\]</div>
+  \operatorname{Stress}_{D}\left(\boldsymbol{z}_{1}, \ldots, \boldsymbol{z}_{N}\right)=\left(\sum_{i \neq j=1}^n\left(d_{ij}-\left\|\boldsymbol{z}_{i}-\boldsymbol{z}_{j}\right\|\right)^{2}\right)^{1 / 2}
+  \]</div>
+</li>
+</ul>
+<!--
+This can be solved by gradient descent. However, we can also transform $\boldsymbol{D}$ to a form $\boldsymbol{B}$ that is naturally fitted by inner product. The transformation satisfies $d_{ij} = b_{ii} - 2b_{ij} + b_{ij}$, thereby mimicking the corresponding identities for $\left\| \boldsymbol{x}_i - \boldsymbol{x}_j  \right\|$ and $\langle \boldsymbol{x} _i, \boldsymbol{x} _j \rangle$.
+
+
+If the input is similarity matrix $\boldsymbol{S}$, for the conversion of similarities $s_{ij}$ to dissimilarities $d_{ij}$, one could in principle use any monotone decreasing transformation, but the following conversion is preferred.
+
+$$
+d_{ij} = s_{ii} - 2 s_{i, j} + s_{jj}
+$$
+
+It interprets the similarities as inner product data, and guarantee $d_{ii} = 0$. -->
+<ul>
+<li><p>Given data matrix <span class="math notranslate nohighlight">\(\boldsymbol{X} \in \mathbb{R} ^{n \times n}\)</span>, MDS seeks a <span class="math notranslate nohighlight">\(k\)</span>-dimensional representation <span class="math notranslate nohighlight">\(\boldsymbol{Z} \in \mathbb{R} ^{n \times k}\)</span> that preserves inner products (similarity) between pairs of data points <span class="math notranslate nohighlight">\((\boldsymbol{x_i}, \boldsymbol{x}_j)\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+  \min \sum_{i, j}\left(\boldsymbol{x}_{i} ^\top  \boldsymbol{x}_{j}-\boldsymbol{z}_{i} ^\top  \boldsymbol{z}_{j}\right)^{2}
+  \]</div>
 <p>or equivalently</p>
 <div class="math notranslate nohighlight">
 \[
-\min \left\Vert \boldsymbol{X} \boldsymbol{X} ^\top  - \boldsymbol{Z} \boldsymbol{Z} ^\top    \right\Vert _F^2
-\]</div>
-<p>The input to MDS can be one of the following: data matrix <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span>, gram matrix <span class="math notranslate nohighlight">\(\boldsymbol{X} \boldsymbol{X} ^{\top}\)</span>, or distance matrix <span class="math notranslate nohighlight">\(\boldsymbol{D}\)</span>.</p>
+  \min \left\Vert \boldsymbol{X} \boldsymbol{X} ^\top  - \boldsymbol{Z} \boldsymbol{Z} ^\top    \right\Vert _F^2
+  \]</div>
+</li>
+</ul>
 </div>
 <div class="section" id="learning">
 <h2>Learning<a class="headerlink" href="#learning" title="Permalink to this headline">¶</a></h2>
+<p>Let <span class="math notranslate nohighlight">\(\boldsymbol{C}  = \boldsymbol{I}-\frac{1}{n} \boldsymbol{1} \boldsymbol{1}^{\top}\)</span> be a centering matrix.</p>
 <div class="margin sidebar">
 <p class="sidebar-title"></p>
 <p>Note the inner product matrix <span class="math notranslate nohighlight">\(\boldsymbol{G}_{n\times n} = \boldsymbol{X} \boldsymbol{X} ^\top\)</span> is different from the data covariance matrix <span class="math notranslate nohighlight">\(\boldsymbol{S}_{d\times d} = \boldsymbol{X} ^\top \boldsymbol{X}\)</span>.</p>
 </div>
-<div class="section" id="input-is-data-or-gram-matrix">
-<h3>Input is Data or Gram Matrix<a class="headerlink" href="#input-is-data-or-gram-matrix" title="Permalink to this headline">¶</a></h3>
-<p>The solution can be obtained from the <span class="math notranslate nohighlight">\(n\times n\)</span> Gram matrix of inner products</p>
+<ul>
+<li><p>If the input matrix is data matrix <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span>, the solution can be obtained from the <span class="math notranslate nohighlight">\(n\times n\)</span> Gram matrix of inner products of centered data <span class="math notranslate nohighlight">\(\boldsymbol{C} \boldsymbol{X}\)</span></p>
 <div class="math notranslate nohighlight">
 \[
-\boldsymbol{G}=\boldsymbol{X} \boldsymbol{X} ^\top
-\]</div>
-<p>where</p>
+  \boldsymbol{G} := (\boldsymbol{C} \boldsymbol{X} ) (\boldsymbol{C} \boldsymbol{X}) ^\top
+  \]</div>
+<p>where <span class="math notranslate nohighlight">\(g_{i j}=\boldsymbol{x}_{i} \cdot \boldsymbol{x}_{j}\)</span>. Suppose the spectral decomposition of <span class="math notranslate nohighlight">\(\boldsymbol{G}\)</span> is <span class="math notranslate nohighlight">\(\boldsymbol{G} = \boldsymbol{V} \boldsymbol{\Lambda} \boldsymbol{V} ^\top\)</span>, then the representation is given by</p>
 <div class="math notranslate nohighlight">
 \[
-g_{i j}=\boldsymbol{x}_{i} \cdot \boldsymbol{x}_{j}
-\]</div>
-<p>Suppose the spectral decomposition of <span class="math notranslate nohighlight">\(\boldsymbol{G}\)</span> is</p>
+  \boldsymbol{Z}_{n \times k} = \left[  \boldsymbol{V}  \boldsymbol{\Lambda} ^{1/2} \right]_{[:k]} = \boldsymbol{V}_{[: k]} \boldsymbol{\Lambda}_{[: k,: k]}^{1 / 2}
+  \]</div>
+<p>For derivation see <a class="reference external" href="http://www.math.uwaterloo.ca/~aghodsib/courses/f10stat946/notes/lec10-11.pdf">here</a>. The reconstruction of <span class="math notranslate nohighlight">\(\boldsymbol{G}\)</span> from <span class="math notranslate nohighlight">\(\boldsymbol{Z}\)</span> is then <span class="math notranslate nohighlight">\(\widehat{\boldsymbol{G}} = \boldsymbol{Z} \boldsymbol{Z} ^\top\)</span>.</p>
+</li>
+<li><p>If the input is a similarity matrix <span class="math notranslate nohighlight">\(\boldsymbol{S}\)</span>, we can run the above algorithm by treating <span class="math notranslate nohighlight">\(\boldsymbol{S}\)</span> as <span class="math notranslate nohighlight">\(\boldsymbol{G}\)</span>.</p></li>
+<li><p>If the input is an <strong>Euclidean</strong> distance matrix <span class="math notranslate nohighlight">\(\boldsymbol{D}\)</span>, suppose the true data is <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span>, then by definition we have</p>
 <div class="math notranslate nohighlight">
 \[
-\boldsymbol{G} = \boldsymbol{V} \boldsymbol{\Lambda} \boldsymbol{V} ^\top  
-\]</div>
-<p>The projected data matrix is given by</p>
+  d_{i j}=\left\|\boldsymbol{x}_{i}-\boldsymbol{x}_{j}\right\|^{2}=\left\|\boldsymbol{x}_{i}\right\|^{2}-2 \boldsymbol{x}_{i}^{\top} \boldsymbol{x}_{j}+\left\|\boldsymbol{x}_{j}\right\|^{2}
+  \]</div>
+<p>We can convert the Euclidean distance matrix <span class="math notranslate nohighlight">\(\boldsymbol{D}\)</span> to the Gram matrix <span class="math notranslate nohighlight">\(\boldsymbol{G}\)</span> for centered <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span> by left- and right-multiplying <span class="math notranslate nohighlight">\(\boldsymbol{C}\)</span></p>
 <div class="math notranslate nohighlight">
 \[
-\boldsymbol{Z}_{n \times k} = \left[  \boldsymbol{V}  \boldsymbol{\Lambda} ^{1/2} \right]_{[:k]} = \boldsymbol{V}_{[: k]} \boldsymbol{\Lambda}_{[: k,: k]}^{1 / 2}
-\]</div>
-<p>The reconstruction of <span class="math notranslate nohighlight">\(\boldsymbol{G}\)</span> from <span class="math notranslate nohighlight">\(\boldsymbol{Z}\)</span> is then</p>
-<div class="math notranslate nohighlight">
-\[
-\widehat{\boldsymbol{G}} = \boldsymbol{Z} \boldsymbol{Z} ^\top
-\]</div>
-</div>
-</div>
-<div class="section" id="input-is-an-euclidean-distance-matrix">
-<h2>Input is an Euclidean Distance Matrix<a class="headerlink" href="#input-is-an-euclidean-distance-matrix" title="Permalink to this headline">¶</a></h2>
-<p>If the input is not a data matrix <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span> but a Euclidean distances matrix <span class="math notranslate nohighlight">\(\boldsymbol{D}\)</span></p>
-<div class="math notranslate nohighlight">
-\[
-d_{i j}=\left\|\boldsymbol{x}_{i}-\boldsymbol{x}_{j}\right\|^{2}=\left\|\boldsymbol{x}_{i}\right\|^{2}-2 \boldsymbol{x}_{i}^{\top} \boldsymbol{x}_{j}+\left\|\boldsymbol{x}_{j}\right\|^{2}
-\]</div>
-<p>We can convert the Euclidean distance matrix <span class="math notranslate nohighlight">\(\boldsymbol{D}\)</span> to the Gram matrix <span class="math notranslate nohighlight">\(\boldsymbol{G}\)</span> for centered <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span> by left- and right-multiplying by the centering matrix <span class="math notranslate nohighlight">\(\boldsymbol{C}  = \left(\boldsymbol{I}-\frac{1}{n} \boldsymbol{1} \boldsymbol{1}^{\top}\right)\)</span>,</p>
-<div class="math notranslate nohighlight">
-\[
-\boldsymbol{G} = - \frac{1}{2} \boldsymbol{C}  \boldsymbol{D}\boldsymbol{C} ^{\top}
-\]</div>
+  \boldsymbol{G} = - \frac{1}{2} \boldsymbol{C}  \boldsymbol{D}\boldsymbol{C} ^{\top}
+  \]</div>
 <p>And then we can run MDS over <span class="math notranslate nohighlight">\(\boldsymbol{G}\)</span> to obtain <span class="math notranslate nohighlight">\(k\)</span>-dimensional representation.</p>
 <div class="dropdown seealso admonition">
 <p class="admonition-title"> <em>Proof</em></p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{aligned}
-d_{ij}
-&amp;= \left\| x_i \right\|  + \left\| x_j \right\|  - 2 \boldsymbol{x}_i ^{\top} \boldsymbol{x}_j  \\
-\Rightarrow \boldsymbol{D} &amp;= \boldsymbol{v} \boldsymbol{1} ^{\top} + \boldsymbol{1} \boldsymbol{v} ^{\top} - 2 \boldsymbol{X}  \boldsymbol{X} ^{\top}\text{ where }  \boldsymbol{v} = \left\| \boldsymbol{x}_i  \right\| ^2  \\
-\Rightarrow \boldsymbol{C} \boldsymbol{D} \boldsymbol{C} &amp;= -2 \boldsymbol{C} \boldsymbol{X}  \boldsymbol{X} ^{\top} \boldsymbol{C} \quad \because \boldsymbol{C} (\boldsymbol{v} \boldsymbol{1} ^{\top}) \boldsymbol{C} = 0\\
-\Rightarrow -\frac{1}{2} \boldsymbol{C} \boldsymbol{D} \boldsymbol{C} &amp;= (\boldsymbol{C} \boldsymbol{X} )(\boldsymbol{C} \boldsymbol{X}) ^{\top}  \\
-&amp;= \boldsymbol{G} \quad \text{where $\boldsymbol{C} \boldsymbol{X}$ is column-centered $\boldsymbol{X}$} \\
-\end{aligned}\end{split}\]</div>
+  d_{ij}
+  &amp;= \left\| x_i \right\|  + \left\| x_j \right\|  - 2 \boldsymbol{x}_i ^{\top} \boldsymbol{x}_j  \\
+  \Rightarrow \boldsymbol{D} &amp;= \boldsymbol{v} \boldsymbol{1} ^{\top} + \boldsymbol{1} \boldsymbol{v} ^{\top} - 2 \boldsymbol{X}  \boldsymbol{X} ^{\top}\text{ where }  \boldsymbol{v} = \left\| \boldsymbol{x}_i  \right\| ^2  \\
+  \Rightarrow \boldsymbol{C} \boldsymbol{D} \boldsymbol{C} &amp;= -2 \boldsymbol{C} \boldsymbol{X}  \boldsymbol{X} ^{\top} \boldsymbol{C} \quad \because \boldsymbol{C} (\boldsymbol{v} \boldsymbol{1} ^{\top}) \boldsymbol{C} = 0\\
+  \Rightarrow -\frac{1}{2} \boldsymbol{C} \boldsymbol{D} \boldsymbol{C} &amp;= (\boldsymbol{C} \boldsymbol{X} )(\boldsymbol{C} \boldsymbol{X}) ^{\top}  \\
+  &amp;= \boldsymbol{G} \quad \text{where $\boldsymbol{C} \boldsymbol{X}$ is column-centered $\boldsymbol{X}$} \\
+  \end{aligned}\end{split}\]</div>
 <p><span class="math notranslate nohighlight">\(\square\)</span></p>
 </div>
-</div>
-<div class="section" id="model-selection">
-<h2>Model Selection<a class="headerlink" href="#model-selection" title="Permalink to this headline">¶</a></h2>
-<p>noise vs <span class="math notranslate nohighlight">\(k\)</span></p>
+</li>
+<li><p>Motivated by this, if the input matrix is dissimilarity (not necessarily Euclidean distance) matrix <span class="math notranslate nohighlight">\(\boldsymbol{D}\)</span>, we can run the above algorithm over <span class="math notranslate nohighlight">\(\boldsymbol{B} = - \frac{1}{2} \boldsymbol{C} \boldsymbol{D} \boldsymbol{C}\)</span>, where <span class="math notranslate nohighlight">\(\boldsymbol{B}\)</span> approximates <span class="math notranslate nohighlight">\(\boldsymbol{G}\)</span>.</p></li>
+</ul>
 </div>
 <div class="section" id="relation-to-pca">
 <h2>Relation to PCA<a class="headerlink" href="#relation-to-pca" title="Permalink to this headline">¶</a></h2>
-<p>A difference is that, unlike PCA which gives a projection equation <span class="math notranslate nohighlight">\(\boldsymbol{z} = \boldsymbol{U} ^\top \boldsymbol{x}\)</span>, MDS only gives a projected result for the training set. It does not give us a way to project a new data point.</p>
-<p>A connection is that, the two projected data matrices are exactly the <strong>same</strong>. Suppose the data matrix <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span> is centered. Let <span class="math notranslate nohighlight">\(\boldsymbol{Z} _{PCA}\)</span> be the <span class="math notranslate nohighlight">\(n\times k\)</span> projected matrix by PCA and <span class="math notranslate nohighlight">\(\boldsymbol{Z} _{MDS}\)</span> be that by MDS. Then it can be shown that</p>
+<p>We compare PCA and MDS in terms of finding representation <span class="math notranslate nohighlight">\(\boldsymbol{Z}\)</span> given <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span>,</p>
+<ul>
+<li><p>Difference: unlike PCA which gives a projection equation <span class="math notranslate nohighlight">\(\boldsymbol{z} = \boldsymbol{U} ^\top \boldsymbol{x}\)</span>, MDS only gives a projected result for the training set. It does not give us a way to project a new data point.</p></li>
+<li><p>Connections</p>
+<ul>
+<li><p>the two representation are exactly the <strong>same</strong>. Suppose the data matrix <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span> is centered. Let <span class="math notranslate nohighlight">\(\boldsymbol{Z} _{PCA}\)</span> be the <span class="math notranslate nohighlight">\(n\times k\)</span> projected matrix by PCA and <span class="math notranslate nohighlight">\(\boldsymbol{Z} _{MDS}\)</span> be that by MDS. Then it can be shown that</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
-\boldsymbol{Z} _{PCA} = \boldsymbol{Z} _{MDS}\\
-\end{split}\]</div>
-<p>This also implies that, to obtain PCA projections, we can use the covariance matrix <span class="math notranslate nohighlight">\(\boldsymbol{S}\)</span>, or the Gram matrix <span class="math notranslate nohighlight">\(\boldsymbol{G}\)</span>, or the Euclidean distances matrix <span class="math notranslate nohighlight">\(\boldsymbol{F}\)</span>.</p>
+    \boldsymbol{Z} _{PCA} = \boldsymbol{Z} _{MDS}\\
+    \end{split}\]</div>
+<p>This also implies that, to obtain PCA projections, we can use the covariance matrix, the Gram matrix <span class="math notranslate nohighlight">\(\boldsymbol{G}\)</span>, or the Euclidean distances matrix <span class="math notranslate nohighlight">\(\boldsymbol{F}\)</span>.</p>
 <div class="dropdown seealso admonition">
 <p class="admonition-title"> <em>Proof</em></p>
 <p>Consider the SVD of the <strong>centered</strong> data matrix</p>
@@ -983,57 +1011,74 @@ d_{ij}
 <p>The <span class="math notranslate nohighlight">\(n\times k\)</span> projected matrix <span class="math notranslate nohighlight">\((k\le d)\)</span> is</p>
 <div class="math notranslate nohighlight">
 \[
-    \boldsymbol{Z}_{PCA} = \boldsymbol{X} \boldsymbol{U} _{[:k]}
-    \]</div>
+        \boldsymbol{Z}_{PCA} = \boldsymbol{X} \boldsymbol{U} _{[:k]}
+        \]</div>
 </li>
 <li><p>In MDS, the EVD of the inner product matrix <span class="math notranslate nohighlight">\(\boldsymbol{G}\)</span> is</p>
 <div class="math notranslate nohighlight">
 \[
-    \boldsymbol{G}_{n \times n} = \boldsymbol{X} \boldsymbol{X} ^\top = \boldsymbol{V} \boldsymbol{\Sigma} \boldsymbol{\Sigma} ^\top \boldsymbol{V} ^\top = \boldsymbol{V} \boldsymbol{\Lambda} \boldsymbol{V} ^\top = \boldsymbol{V} _{[:d]} \boldsymbol{D} \boldsymbol{V} _{[:d]} ^\top
-    \]</div>
+        \boldsymbol{G}_{n \times n} = \boldsymbol{X} \boldsymbol{X} ^\top = \boldsymbol{V} \boldsymbol{\Sigma} \boldsymbol{\Sigma} ^\top \boldsymbol{V} ^\top = \boldsymbol{V} \boldsymbol{\Lambda} \boldsymbol{V} ^\top = \boldsymbol{V} _{[:d]} \boldsymbol{D} \boldsymbol{V} _{[:d]} ^\top
+        \]</div>
 <p>where</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
-    \boldsymbol{\Lambda} _{n \times n} = \left[\begin{array}{cc}
-    \boldsymbol{D} _{d \times d} &amp; \boldsymbol{0}  \\
-    \boldsymbol{0}  &amp; \boldsymbol{0}_{(n-d) \times (n-d)}
-    \end{array}\right]
-    \end{split}\]</div>
+        \boldsymbol{\Lambda} _{n \times n} = \left[\begin{array}{cc}
+        \boldsymbol{D} _{d \times d} &amp; \boldsymbol{0}  \\
+        \boldsymbol{0}  &amp; \boldsymbol{0}_{(n-d) \times (n-d)}
+        \end{array}\right]
+        \end{split}\]</div>
 <p>The <span class="math notranslate nohighlight">\(n\times k\)</span> projected matrix <span class="math notranslate nohighlight">\((k\le d)\)</span> is</p>
 <div class="math notranslate nohighlight">
 \[
-    \boldsymbol{Z} _{MDS} = \boldsymbol{V}_{[:k]} \boldsymbol{\Lambda} ^{1/2}_{[:k, :k]} = \boldsymbol{V}_{[:k]} \boldsymbol{D} ^{1/2}_{[:k, :k]}
-    \]</div>
+        \boldsymbol{Z} _{MDS} = \boldsymbol{V}_{[:k]} \boldsymbol{\Lambda} ^{1/2}_{[:k, :k]} = \boldsymbol{V}_{[:k]} \boldsymbol{D} ^{1/2}_{[:k, :k]}
+        \]</div>
 </li>
 </ul>
 <p>Let <span class="math notranslate nohighlight">\(\boldsymbol{v} _j\)</span> be an eigenvector of <span class="math notranslate nohighlight">\(\boldsymbol{G}\)</span> with eigenvalue <span class="math notranslate nohighlight">\(\sigma^2 _j\)</span>. Pre-multiplying <span class="math notranslate nohighlight">\(\boldsymbol{G} \boldsymbol{v}_j = \sigma^2 _j \boldsymbol{v} _j\)</span> by <span class="math notranslate nohighlight">\(\boldsymbol{X} ^\top\)</span> yields</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{aligned}
-\boldsymbol{X} ^\top (\boldsymbol{X} \boldsymbol{X} ^\top) \boldsymbol{v} _j &amp;= \boldsymbol{X} ^\top (\sigma^2 _j  \boldsymbol{v} _j) \\
-\Rightarrow \qquad  n\boldsymbol{S} (\boldsymbol{X} ^\top \boldsymbol{v} _j) &amp;= \sigma^2 _j (\boldsymbol{X} ^\top \boldsymbol{v} _j)
-\end{aligned}\end{split}\]</div>
+    \boldsymbol{X} ^\top (\boldsymbol{X} \boldsymbol{X} ^\top) \boldsymbol{v} _j &amp;= \boldsymbol{X} ^\top (\sigma^2 _j  \boldsymbol{v} _j) \\
+    \Rightarrow \qquad  n\boldsymbol{S} (\boldsymbol{X} ^\top \boldsymbol{v} _j) &amp;= \sigma^2 _j (\boldsymbol{X} ^\top \boldsymbol{v} _j)
+    \end{aligned}\end{split}\]</div>
 <p>Hence, we found that <span class="math notranslate nohighlight">\(\boldsymbol{X} ^\top \boldsymbol{v} _j\)</span> is an eigenvector of <span class="math notranslate nohighlight">\(n \boldsymbol{S}\)</span> with eigenvalue <span class="math notranslate nohighlight">\(\sigma^2 _j\)</span>, denoted <span class="math notranslate nohighlight">\(\boldsymbol{u} _j\)</span>,</p>
 <div class="math notranslate nohighlight">
 \[
-\boldsymbol{u} _j = \boldsymbol{X} ^\top \boldsymbol{v} _j
-\]</div>
+    \boldsymbol{u} _j = \boldsymbol{X} ^\top \boldsymbol{v} _j
+    \]</div>
 <p>But note that <span class="math notranslate nohighlight">\(\boldsymbol{u} _j\)</span> is not normalized, since <span class="math notranslate nohighlight">\(\left\| \boldsymbol{u} _j \right\|^2 = \boldsymbol{v} _j ^\top \boldsymbol{X} \boldsymbol{X} ^\top \boldsymbol{v} _j = \sigma^2 _j\)</span>. After normalization, we have,</p>
 <div class="math notranslate nohighlight">
 \[
-\boldsymbol{U} _{[:d]} = \boldsymbol{X} ^\top \boldsymbol{V} _{[:d]} \boldsymbol{D} ^ {-1/2}
-\]</div>
+    \boldsymbol{U} _{[:d]} = \boldsymbol{X} ^\top \boldsymbol{V} _{[:d]} \boldsymbol{D} ^ {-1/2}
+    \]</div>
 <p>Substituting this relation to the <span class="math notranslate nohighlight">\(n\times d\)</span> projected matrix by PCA gives</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{aligned}
-\boldsymbol{Z} _{PCA}
-&amp;= \boldsymbol{X} \boldsymbol{U} _{[:d]} \boldsymbol{D} ^ {-1/2}\\
-&amp;= \boldsymbol{X} \boldsymbol{X} ^\top \boldsymbol{V}  _{[:d]} \boldsymbol{D} ^ {-1/2}\\
-&amp;= \boldsymbol{V} _{[:d]} \boldsymbol{D} \boldsymbol{V} ^\top _{[:d]} \boldsymbol{V}  _{[:d]} \boldsymbol{D} ^ {-1/2} \quad \because \text{EVD of } \boldsymbol{X} \boldsymbol{X} ^\top  \\
-&amp;= \boldsymbol{V} _{[:d]} \boldsymbol{D} \boldsymbol{D} ^ {-1/2} \quad \because \boldsymbol{V} \text{ is orthogonal} \\
-&amp;= \boldsymbol{V} _{[:d]}\boldsymbol{D} ^ {1/2} \\
-&amp;= \boldsymbol{Z} _{MDS} \\
-\end{aligned}\end{split}\]</div>
+    \boldsymbol{Z} _{PCA}
+    &amp;= \boldsymbol{X} \boldsymbol{U} _{[:d]} \boldsymbol{D} ^ {-1/2}\\
+    &amp;= \boldsymbol{X} \boldsymbol{X} ^\top \boldsymbol{V}  _{[:d]} \boldsymbol{D} ^ {-1/2}\\
+    &amp;= \boldsymbol{V} _{[:d]} \boldsymbol{D} \boldsymbol{V} ^\top _{[:d]} \boldsymbol{V}  _{[:d]} \boldsymbol{D} ^ {-1/2} \quad \because \text{EVD of } \boldsymbol{X} \boldsymbol{X} ^\top  \\
+    &amp;= \boldsymbol{V} _{[:d]} \boldsymbol{D} \boldsymbol{D} ^ {-1/2} \quad \because \boldsymbol{V} \text{ is orthogonal} \\
+    &amp;= \boldsymbol{V} _{[:d]}\boldsymbol{D} ^ {1/2} \\
+    &amp;= \boldsymbol{Z} _{MDS} \\
+    \end{aligned}\end{split}\]</div>
 </div>
+</li>
+<li><p>PCA finds basis <span class="math notranslate nohighlight">\(\boldsymbol{u} \in \mathbb{R} ^n\)</span> (principle directions) for spanning <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span>, and MDS finds the coordinates <span class="math notranslate nohighlight">\(\boldsymbol{z} \in \mathbb{R} ^d\)</span> of the embeddings associated with the PCA basis.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+    \boldsymbol{X} ^{\top}  
+    &amp;= \boldsymbol{U} (\boldsymbol{V} \boldsymbol{\Sigma} ) ^{\top} \\
+    &amp;= \boldsymbol{U} (\boldsymbol{V}_{[:d]} \boldsymbol{\Sigma}_{[:d]} ) ^{\top} \\
+    &amp;= \boldsymbol{U} \boldsymbol{Z} _{MDS} ^{\top} \\
+    [\boldsymbol{x} _i \ \ldots \ \boldsymbol{x} _n]&amp;= [\boldsymbol{u}_1 \ \ldots \ \boldsymbol{u} _d ] [\boldsymbol{z} _1 \ \ldots \ \boldsymbol{z} _n] \\
+    \boldsymbol{x} _i&amp;= \sum_{j=1}^d
+    z^{MDS}_{ij} \boldsymbol{u} _j\\
+    \end{aligned}\end{split}\]</div>
+</li>
+</ul>
+</li>
+</ul>
+<p>Reference: Davis-kahan theorem</p>
 </div>
 </div>
 

@@ -1,191 +1,223 @@
 # Multidimensional Scaling
 
-In this section we introduce (metric) multidimensional scaling (MDS).
+In this section we introduce (metric) multidimensional scaling (MDS). It finds some representation of input data, which can be used for dimension reduction or visualization. In addition to a $n \times d$ data matrix $\boldsymbol{X}$, MDS can also take as input
+- pairwise dissimilarity measures of data points as input, denoted $\boldsymbol{D} \in \mathbb{R} ^{n \times n}$
+  - a matrix of Euclidean distances between points
+  - survey results of customers' perception of dissimilarity between products
 
-Instead of a $n \times p$ data matrix, MDS looks at pairwise similarity measures of data points. For instance,
+  Note that the input dissimilarity matrix $\boldsymbol{D}$ may not be exactly euclidean distance, hence it does not enjoy all properties that a distance matrix has.
 
-- a matrix of Euclidean distances between points,
-- co-occurrence counts of words between documents
-- an adjacency matrix of web pages
+- pairwise similarity measures of data points as input, denoted $\boldsymbol{S} \in \mathbb{R} ^{n \times n}$
 
-Non-metric MDS applies ranks, KL divergences, etc (rather than numerical similarities).
+  - co-occurrence counts of words between documents
+  - an adjacency matrix of web pages (MDS as a graph layout technique)
+  - survey results of customers' perception of similarity between products
+
+In all, there are four types of MDS: {metric, non-metric} $\times$ {distance, classical}.
+
+- **distance scaling**: fit dissimilarity by Euclidean distance $d_{ij} \approx \left\| \boldsymbol{z} _i - \boldsymbol{z} _j \right\|$
+- **classical scaling**: transform dissimilarity to some form of 'similarity' and then fit by inner product  $s_{ij} \approx \langle \boldsymbol{z}_i , \boldsymbol{z} _j \rangle$. Note the identity $\left\| \boldsymbol{z}_i - \boldsymbol{z}_j  \right\| ^2 = \left\| \boldsymbol{z} _i \right\|^2 + \left\| z
+_j \right\| ^2 - 2 \langle \boldsymbol{z}_i , \boldsymbol{z}_j  \rangle$.
+- **metric scaling** uses actual numerical values of dissimilarities
+- **non-metric scaling** applies ranks, KL divergences, etc. rather than numerical dissimilarities.
+
+Here, we introduce metric classical scaling. For others, see this [paper](http://www.stat.yale.edu/~lc436/papers/JCGS-mds.pdf).
 
 Many non-linear dimensionality reduction methods are extension to MDS. MDS is a clue to link linear and non-linear dimensionality reduction.
 
 ## Objective
 
+- Given a distance matrix $\boldsymbol{D}\in \mathbb{R} ^{n \times n}$, can we find a $2$-dimensional representation of it $\boldsymbol{Z} \in \mathbb{R} ^{n \times k}$, to visualize them in 2-D plane?
 
-Question: If we are given a distance matrix $\boldsymbol{D}\in \mathbb{R} ^{n \times n}$, then we can find a $2$-dimensional representation of it $\boldsymbol{Z} \in \mathbb{R} ^{n \times k}$, to visualize them in 2-D plane?
+  More generally, suppose $\boldsymbol{Z} \in \mathbb{R} ^{n \times k}$ are the underlying embeddings, MDS finds $\boldsymbol{Z}$ such that the distance is nearly preserved: $\left\| \boldsymbol{z} _i - \boldsymbol{z} _j \right\| \approx d_{ij}$. Hence the objective is to find embeddings $\boldsymbol{Z}$ that minimizes **stress**
 
-Essentially, MDS seeks a $k$-dimensional representation $\boldsymbol{z} \in \mathbb{R} ^k$ of a data set that preserves inner products (or similarity/distance) between pairs of data points $(\boldsymbol{x_i}, \boldsymbol{x}_j)$
+  $$
+  \operatorname{Stress}_{D}\left(\boldsymbol{z}_{1}, \ldots, \boldsymbol{z}_{N}\right)=\left(\sum_{i \neq j=1}^n\left(d_{ij}-\left\|\boldsymbol{z}_{i}-\boldsymbol{z}_{j}\right\|\right)^{2}\right)^{1 / 2}
+  $$
+
+<!--
+This can be solved by gradient descent. However, we can also transform $\boldsymbol{D}$ to a form $\boldsymbol{B}$ that is naturally fitted by inner product. The transformation satisfies $d_{ij} = b_{ii} - 2b_{ij} + b_{ij}$, thereby mimicking the corresponding identities for $\left\| \boldsymbol{x}_i - \boldsymbol{x}_j  \right\|$ and $\langle \boldsymbol{x} _i, \boldsymbol{x} _j \rangle$.
+
+
+If the input is similarity matrix $\boldsymbol{S}$, for the conversion of similarities $s_{ij}$ to dissimilarities $d_{ij}$, one could in principle use any monotone decreasing transformation, but the following conversion is preferred.
 
 $$
-\min \sum_{i, j}\left(\boldsymbol{x}_{i} ^\top  \boldsymbol{x}_{j}-\boldsymbol{z}_{i} ^\top  \boldsymbol{z}_{j}\right)^{2}
+d_{ij} = s_{ii} - 2 s_{i, j} + s_{jj}
 $$
 
-or equivalently
+It interprets the similarities as inner product data, and guarantee $d_{ii} = 0$. -->
 
-$$
-\min \left\Vert \boldsymbol{X} \boldsymbol{X} ^\top  - \boldsymbol{Z} \boldsymbol{Z} ^\top    \right\Vert _F^2
-$$
 
-The input to MDS can be one of the following: data matrix $\boldsymbol{X}$, gram matrix $\boldsymbol{X} \boldsymbol{X} ^{\top}$, or distance matrix $\boldsymbol{D}$.
+- Given data matrix $\boldsymbol{X} \in \mathbb{R} ^{n \times n}$, MDS seeks a $k$-dimensional representation $\boldsymbol{Z} \in \mathbb{R} ^{n \times k}$ that preserves inner products (similarity) between pairs of data points $(\boldsymbol{x_i}, \boldsymbol{x}_j)$
+
+  $$
+  \min \sum_{i, j}\left(\boldsymbol{x}_{i} ^\top  \boldsymbol{x}_{j}-\boldsymbol{z}_{i} ^\top  \boldsymbol{z}_{j}\right)^{2}
+  $$
+
+  or equivalently
+
+  $$
+  \min \left\Vert \boldsymbol{X} \boldsymbol{X} ^\top  - \boldsymbol{Z} \boldsymbol{Z} ^\top    \right\Vert _F^2
+  $$
+
 
 ## Learning
+
+Let $\boldsymbol{C}  = \boldsymbol{I}-\frac{1}{n} \boldsymbol{1} \boldsymbol{1}^{\top}$ be a centering matrix.
 
 ```{margin}
 Note the inner product matrix $\boldsymbol{G}_{n\times n} = \boldsymbol{X} \boldsymbol{X} ^\top$ is different from the data covariance matrix $\boldsymbol{S}_{d\times d} = \boldsymbol{X} ^\top \boldsymbol{X}$.
 ```
 
-### Input is Data or Gram Matrix
+- If the input matrix is data matrix $\boldsymbol{X}$, the solution can be obtained from the $n\times n$ Gram matrix of inner products of centered data $\boldsymbol{C} \boldsymbol{X}$
+
+  $$
+  \boldsymbol{G} := (\boldsymbol{C} \boldsymbol{X} ) (\boldsymbol{C} \boldsymbol{X}) ^\top
+  $$
+
+  where $g_{i j}=\boldsymbol{x}_{i} \cdot \boldsymbol{x}_{j}$. Suppose the spectral decomposition of $\boldsymbol{G}$ is $\boldsymbol{G} = \boldsymbol{V} \boldsymbol{\Lambda} \boldsymbol{V} ^\top$, then the representation is given by
+
+  $$
+  \boldsymbol{Z}_{n \times k} = \left[  \boldsymbol{V}  \boldsymbol{\Lambda} ^{1/2} \right]_{[:k]} = \boldsymbol{V}_{[: k]} \boldsymbol{\Lambda}_{[: k,: k]}^{1 / 2}
+  $$
+
+  For derivation see [here](http://www.math.uwaterloo.ca/~aghodsib/courses/f10stat946/notes/lec10-11.pdf). The reconstruction of $\boldsymbol{G}$ from $\boldsymbol{Z}$ is then $\widehat{\boldsymbol{G}} = \boldsymbol{Z} \boldsymbol{Z} ^\top$.
 
 
-The solution can be obtained from the $n\times n$ Gram matrix of inner products
+- If the input is a similarity matrix $\boldsymbol{S}$, we can run the above algorithm by treating $\boldsymbol{S}$ as $\boldsymbol{G}$.
 
-$$
-\boldsymbol{G}=\boldsymbol{X} \boldsymbol{X} ^\top
-$$
+- If the input is an **Euclidean** distance matrix $\boldsymbol{D}$, suppose the true data is $\boldsymbol{X}$, then by definition we have
 
-where
+  $$
+  d_{i j}=\left\|\boldsymbol{x}_{i}-\boldsymbol{x}_{j}\right\|^{2}=\left\|\boldsymbol{x}_{i}\right\|^{2}-2 \boldsymbol{x}_{i}^{\top} \boldsymbol{x}_{j}+\left\|\boldsymbol{x}_{j}\right\|^{2}
+  $$
 
-$$
-g_{i j}=\boldsymbol{x}_{i} \cdot \boldsymbol{x}_{j}
-$$
+  We can convert the Euclidean distance matrix $\boldsymbol{D}$ to the Gram matrix $\boldsymbol{G}$ for centered $\boldsymbol{X}$ by left- and right-multiplying $\boldsymbol{C}$
 
-Suppose the spectral decomposition of $\boldsymbol{G}$ is
+  $$
+  \boldsymbol{G} = - \frac{1}{2} \boldsymbol{C}  \boldsymbol{D}\boldsymbol{C} ^{\top}
+  $$
 
-$$
-\boldsymbol{G} = \boldsymbol{V} \boldsymbol{\Lambda} \boldsymbol{V} ^\top  
-$$
+  And then we can run MDS over $\boldsymbol{G}$ to obtain $k$-dimensional representation.
 
-The projected data matrix is given by
+  :::{admonition,dropdown,seealso} *Proof*
 
-$$
-\boldsymbol{Z}_{n \times k} = \left[  \boldsymbol{V}  \boldsymbol{\Lambda} ^{1/2} \right]_{[:k]} = \boldsymbol{V}_{[: k]} \boldsymbol{\Lambda}_{[: k,: k]}^{1 / 2}
-$$
+  $$\begin{aligned}
+  d_{ij}
+  &= \left\| x_i \right\|  + \left\| x_j \right\|  - 2 \boldsymbol{x}_i ^{\top} \boldsymbol{x}_j  \\
+  \Rightarrow \boldsymbol{D} &= \boldsymbol{v} \boldsymbol{1} ^{\top} + \boldsymbol{1} \boldsymbol{v} ^{\top} - 2 \boldsymbol{X}  \boldsymbol{X} ^{\top}\text{ where }  \boldsymbol{v} = \left\| \boldsymbol{x}_i  \right\| ^2  \\
+  \Rightarrow \boldsymbol{C} \boldsymbol{D} \boldsymbol{C} &= -2 \boldsymbol{C} \boldsymbol{X}  \boldsymbol{X} ^{\top} \boldsymbol{C} \quad \because \boldsymbol{C} (\boldsymbol{v} \boldsymbol{1} ^{\top}) \boldsymbol{C} = 0\\
+  \Rightarrow -\frac{1}{2} \boldsymbol{C} \boldsymbol{D} \boldsymbol{C} &= (\boldsymbol{C} \boldsymbol{X} )(\boldsymbol{C} \boldsymbol{X}) ^{\top}  \\
+  &= \boldsymbol{G} \quad \text{where $\boldsymbol{C} \boldsymbol{X}$ is column-centered $\boldsymbol{X}$} \\
+  \end{aligned}$$
 
-The reconstruction of $\boldsymbol{G}$ from $\boldsymbol{Z}$ is then
+  $\square$
 
-$$
-\widehat{\boldsymbol{G}} = \boldsymbol{Z} \boldsymbol{Z} ^\top
-$$
+  :::
 
-## Input is an Euclidean Distance Matrix
+- Motivated by this, if the input matrix is dissimilarity (not necessarily Euclidean distance) matrix $\boldsymbol{D}$, we can run the above algorithm over $\boldsymbol{B} = - \frac{1}{2} \boldsymbol{C} \boldsymbol{D} \boldsymbol{C}$, where $\boldsymbol{B}$ approximates $\boldsymbol{G}$.
 
-If the input is not a data matrix $\boldsymbol{X}$ but a Euclidean distances matrix $\boldsymbol{D}$
-
-$$
-d_{i j}=\left\|\boldsymbol{x}_{i}-\boldsymbol{x}_{j}\right\|^{2}=\left\|\boldsymbol{x}_{i}\right\|^{2}-2 \boldsymbol{x}_{i}^{\top} \boldsymbol{x}_{j}+\left\|\boldsymbol{x}_{j}\right\|^{2}
-$$
-
-We can convert the Euclidean distance matrix $\boldsymbol{D}$ to the Gram matrix $\boldsymbol{G}$ for centered $\boldsymbol{X}$ by left- and right-multiplying by the centering matrix $\boldsymbol{C}  = \left(\boldsymbol{I}-\frac{1}{n} \boldsymbol{1} \boldsymbol{1}^{\top}\right)$,
-
-$$
-\boldsymbol{G} = - \frac{1}{2} \boldsymbol{C}  \boldsymbol{D}\boldsymbol{C} ^{\top}
-$$
-
-And then we can run MDS over $\boldsymbol{G}$ to obtain $k$-dimensional representation.
-
-:::{admonition,dropdown,seealso} *Proof*
-
-$$\begin{aligned}
-d_{ij}
-&= \left\| x_i \right\|  + \left\| x_j \right\|  - 2 \boldsymbol{x}_i ^{\top} \boldsymbol{x}_j  \\
-\Rightarrow \boldsymbol{D} &= \boldsymbol{v} \boldsymbol{1} ^{\top} + \boldsymbol{1} \boldsymbol{v} ^{\top} - 2 \boldsymbol{X}  \boldsymbol{X} ^{\top}\text{ where }  \boldsymbol{v} = \left\| \boldsymbol{x}_i  \right\| ^2  \\
-\Rightarrow \boldsymbol{C} \boldsymbol{D} \boldsymbol{C} &= -2 \boldsymbol{C} \boldsymbol{X}  \boldsymbol{X} ^{\top} \boldsymbol{C} \quad \because \boldsymbol{C} (\boldsymbol{v} \boldsymbol{1} ^{\top}) \boldsymbol{C} = 0\\
-\Rightarrow -\frac{1}{2} \boldsymbol{C} \boldsymbol{D} \boldsymbol{C} &= (\boldsymbol{C} \boldsymbol{X} )(\boldsymbol{C} \boldsymbol{X}) ^{\top}  \\
-&= \boldsymbol{G} \quad \text{where $\boldsymbol{C} \boldsymbol{X}$ is column-centered $\boldsymbol{X}$} \\
-\end{aligned}$$
-
-$\square$
-:::
-
-
-## Model Selection
-
-noise vs $k$
 
 
 ## Relation to PCA
 
-A difference is that, unlike PCA which gives a projection equation $\boldsymbol{z} = \boldsymbol{U} ^\top \boldsymbol{x}$, MDS only gives a projected result for the training set. It does not give us a way to project a new data point.
+We compare PCA and MDS in terms of finding representation $\boldsymbol{Z}$ given $\boldsymbol{X}$,
 
-A connection is that, the two projected data matrices are exactly the **same**. Suppose the data matrix $\boldsymbol{X}$ is centered. Let $\boldsymbol{Z} _{PCA}$ be the $n\times k$ projected matrix by PCA and $\boldsymbol{Z} _{MDS}$ be that by MDS. Then it can be shown that
+- Difference: unlike PCA which gives a projection equation $\boldsymbol{z} = \boldsymbol{U} ^\top \boldsymbol{x}$, MDS only gives a projected result for the training set. It does not give us a way to project a new data point.
 
-$$
-\boldsymbol{Z} _{PCA} = \boldsymbol{Z} _{MDS}\\
-$$
+- Connections
 
-This also implies that, to obtain PCA projections, we can use the covariance matrix $\boldsymbol{S}$, or the Gram matrix $\boldsymbol{G}$, or the Euclidean distances matrix $\boldsymbol{F}$.
-
-:::{admonition,dropdown,seealso} *Proof*
-
-Consider the SVD of the **centered** data matrix
-
-$$\boldsymbol{X}_{n\times d} = \boldsymbol{V} \boldsymbol{\Sigma} \boldsymbol{U} ^\top$$
-
-- In PCA, the EVD of $n$ times the data covariance matrix is
-
-    $$n \boldsymbol{S}_{d \times d} = \boldsymbol{X} ^\top \boldsymbol{X} = \boldsymbol{U} \boldsymbol{\Sigma} ^\top \boldsymbol{\Sigma} \boldsymbol{U} = \boldsymbol{U} \boldsymbol{D} \boldsymbol{U}$$
-
-    where the diagonal entries in $\boldsymbol{D}$ are the squared singular values $\sigma^2 _j$ for $j=1,\ldots, d$.
-
-    The $n\times k$ projected matrix $(k\le d)$ is
+  - the two representation are exactly the **same**. Suppose the data matrix $\boldsymbol{X}$ is centered. Let $\boldsymbol{Z} _{PCA}$ be the $n\times k$ projected matrix by PCA and $\boldsymbol{Z} _{MDS}$ be that by MDS. Then it can be shown that
 
     $$
-    \boldsymbol{Z}_{PCA} = \boldsymbol{X} \boldsymbol{U} _{[:k]}
+    \boldsymbol{Z} _{PCA} = \boldsymbol{Z} _{MDS}\\
     $$
 
-- In MDS, the EVD of the inner product matrix $\boldsymbol{G}$ is
+    This also implies that, to obtain PCA projections, we can use the covariance matrix, the Gram matrix $\boldsymbol{G}$, or the Euclidean distances matrix $\boldsymbol{F}$.
+
+    :::{admonition,dropdown,seealso} *Proof*
+
+    Consider the SVD of the **centered** data matrix
+
+    $$\boldsymbol{X}_{n\times d} = \boldsymbol{V} \boldsymbol{\Sigma} \boldsymbol{U} ^\top$$
+
+    - In PCA, the EVD of $n$ times the data covariance matrix is
+
+        $$n \boldsymbol{S}_{d \times d} = \boldsymbol{X} ^\top \boldsymbol{X} = \boldsymbol{U} \boldsymbol{\Sigma} ^\top \boldsymbol{\Sigma} \boldsymbol{U} = \boldsymbol{U} \boldsymbol{D} \boldsymbol{U}$$
+
+        where the diagonal entries in $\boldsymbol{D}$ are the squared singular values $\sigma^2 _j$ for $j=1,\ldots, d$.
+
+        The $n\times k$ projected matrix $(k\le d)$ is
+
+        $$
+        \boldsymbol{Z}_{PCA} = \boldsymbol{X} \boldsymbol{U} _{[:k]}
+        $$
+
+    - In MDS, the EVD of the inner product matrix $\boldsymbol{G}$ is
+
+        $$
+        \boldsymbol{G}_{n \times n} = \boldsymbol{X} \boldsymbol{X} ^\top = \boldsymbol{V} \boldsymbol{\Sigma} \boldsymbol{\Sigma} ^\top \boldsymbol{V} ^\top = \boldsymbol{V} \boldsymbol{\Lambda} \boldsymbol{V} ^\top = \boldsymbol{V} _{[:d]} \boldsymbol{D} \boldsymbol{V} _{[:d]} ^\top
+        $$
+
+        where
+
+        $$
+        \boldsymbol{\Lambda} _{n \times n} = \left[\begin{array}{cc}
+        \boldsymbol{D} _{d \times d} & \boldsymbol{0}  \\
+        \boldsymbol{0}  & \boldsymbol{0}_{(n-d) \times (n-d)}
+        \end{array}\right]
+        $$
+
+        The $n\times k$ projected matrix $(k\le d)$ is
+
+        $$
+        \boldsymbol{Z} _{MDS} = \boldsymbol{V}_{[:k]} \boldsymbol{\Lambda} ^{1/2}_{[:k, :k]} = \boldsymbol{V}_{[:k]} \boldsymbol{D} ^{1/2}_{[:k, :k]}
+        $$
+
+    Let $\boldsymbol{v} _j$ be an eigenvector of $\boldsymbol{G}$ with eigenvalue $\sigma^2 _j$. Pre-multiplying $\boldsymbol{G} \boldsymbol{v}_j = \sigma^2 _j \boldsymbol{v} _j$ by $\boldsymbol{X} ^\top$ yields
+
+    $$\begin{aligned}
+    \boldsymbol{X} ^\top (\boldsymbol{X} \boldsymbol{X} ^\top) \boldsymbol{v} _j &= \boldsymbol{X} ^\top (\sigma^2 _j  \boldsymbol{v} _j) \\
+    \Rightarrow \qquad  n\boldsymbol{S} (\boldsymbol{X} ^\top \boldsymbol{v} _j) &= \sigma^2 _j (\boldsymbol{X} ^\top \boldsymbol{v} _j)
+    \end{aligned}$$
+
+    Hence, we found that $\boldsymbol{X} ^\top \boldsymbol{v} _j$ is an eigenvector of $n \boldsymbol{S}$ with eigenvalue $\sigma^2 _j$, denoted $\boldsymbol{u} _j$,
 
     $$
-    \boldsymbol{G}_{n \times n} = \boldsymbol{X} \boldsymbol{X} ^\top = \boldsymbol{V} \boldsymbol{\Sigma} \boldsymbol{\Sigma} ^\top \boldsymbol{V} ^\top = \boldsymbol{V} \boldsymbol{\Lambda} \boldsymbol{V} ^\top = \boldsymbol{V} _{[:d]} \boldsymbol{D} \boldsymbol{V} _{[:d]} ^\top
+    \boldsymbol{u} _j = \boldsymbol{X} ^\top \boldsymbol{v} _j
     $$
 
-    where
+    But note that $\boldsymbol{u} _j$ is not normalized, since $\left\| \boldsymbol{u} _j \right\|^2 = \boldsymbol{v} _j ^\top \boldsymbol{X} \boldsymbol{X} ^\top \boldsymbol{v} _j = \sigma^2 _j$. After normalization, we have,
 
     $$
-    \boldsymbol{\Lambda} _{n \times n} = \left[\begin{array}{cc}
-    \boldsymbol{D} _{d \times d} & \boldsymbol{0}  \\
-    \boldsymbol{0}  & \boldsymbol{0}_{(n-d) \times (n-d)}
-    \end{array}\right]
+    \boldsymbol{U} _{[:d]} = \boldsymbol{X} ^\top \boldsymbol{V} _{[:d]} \boldsymbol{D} ^ {-1/2}
     $$
 
-    The $n\times k$ projected matrix $(k\le d)$ is
+    Substituting this relation to the $n\times d$ projected matrix by PCA gives
 
-    $$
-    \boldsymbol{Z} _{MDS} = \boldsymbol{V}_{[:k]} \boldsymbol{\Lambda} ^{1/2}_{[:k, :k]} = \boldsymbol{V}_{[:k]} \boldsymbol{D} ^{1/2}_{[:k, :k]}
-    $$
+    $$\begin{aligned}
+    \boldsymbol{Z} _{PCA}
+    &= \boldsymbol{X} \boldsymbol{U} _{[:d]} \boldsymbol{D} ^ {-1/2}\\
+    &= \boldsymbol{X} \boldsymbol{X} ^\top \boldsymbol{V}  _{[:d]} \boldsymbol{D} ^ {-1/2}\\
+    &= \boldsymbol{V} _{[:d]} \boldsymbol{D} \boldsymbol{V} ^\top _{[:d]} \boldsymbol{V}  _{[:d]} \boldsymbol{D} ^ {-1/2} \quad \because \text{EVD of } \boldsymbol{X} \boldsymbol{X} ^\top  \\
+    &= \boldsymbol{V} _{[:d]} \boldsymbol{D} \boldsymbol{D} ^ {-1/2} \quad \because \boldsymbol{V} \text{ is orthogonal} \\
+    &= \boldsymbol{V} _{[:d]}\boldsymbol{D} ^ {1/2} \\
+    &= \boldsymbol{Z} _{MDS} \\
+    \end{aligned}$$
 
-Let $\boldsymbol{v} _j$ be an eigenvector of $\boldsymbol{G}$ with eigenvalue $\sigma^2 _j$. Pre-multiplying $\boldsymbol{G} \boldsymbol{v}_j = \sigma^2 _j \boldsymbol{v} _j$ by $\boldsymbol{X} ^\top$ yields
+    :::
 
-$$\begin{aligned}
-\boldsymbol{X} ^\top (\boldsymbol{X} \boldsymbol{X} ^\top) \boldsymbol{v} _j &= \boldsymbol{X} ^\top (\sigma^2 _j  \boldsymbol{v} _j) \\
-\Rightarrow \qquad  n\boldsymbol{S} (\boldsymbol{X} ^\top \boldsymbol{v} _j) &= \sigma^2 _j (\boldsymbol{X} ^\top \boldsymbol{v} _j)
-\end{aligned}$$
+  - PCA finds basis $\boldsymbol{u} \in \mathbb{R} ^n$ (principle directions) for spanning $\boldsymbol{X}$, and MDS finds the coordinates $\boldsymbol{z} \in \mathbb{R} ^d$ of the embeddings associated with the PCA basis.
 
-Hence, we found that $\boldsymbol{X} ^\top \boldsymbol{v} _j$ is an eigenvector of $n \boldsymbol{S}$ with eigenvalue $\sigma^2 _j$, denoted $\boldsymbol{u} _j$,
+    $$\begin{aligned}
+    \boldsymbol{X} ^{\top}  
+    &= \boldsymbol{U} (\boldsymbol{V} \boldsymbol{\Sigma} ) ^{\top} \\
+    &= \boldsymbol{U} (\boldsymbol{V}_{[:d]} \boldsymbol{\Sigma}_{[:d]} ) ^{\top} \\
+    &= \boldsymbol{U} \boldsymbol{Z} _{MDS} ^{\top} \\
+    [\boldsymbol{x} _i \ \ldots \ \boldsymbol{x} _n]&= [\boldsymbol{u}_1 \ \ldots \ \boldsymbol{u} _d ] [\boldsymbol{z} _1 \ \ldots \ \boldsymbol{z} _n] \\
+    \boldsymbol{x} _i&= \sum_{j=1}^d
+    z^{MDS}_{ij} \boldsymbol{u} _j\\
+    \end{aligned}$$
 
-$$
-\boldsymbol{u} _j = \boldsymbol{X} ^\top \boldsymbol{v} _j
-$$
 
-But note that $\boldsymbol{u} _j$ is not normalized, since $\left\| \boldsymbol{u} _j \right\|^2 = \boldsymbol{v} _j ^\top \boldsymbol{X} \boldsymbol{X} ^\top \boldsymbol{v} _j = \sigma^2 _j$. After normalization, we have,
-
-$$
-\boldsymbol{U} _{[:d]} = \boldsymbol{X} ^\top \boldsymbol{V} _{[:d]} \boldsymbol{D} ^ {-1/2}
-$$
-
-Substituting this relation to the $n\times d$ projected matrix by PCA gives
-
-$$\begin{aligned}
-\boldsymbol{Z} _{PCA}
-&= \boldsymbol{X} \boldsymbol{U} _{[:d]} \boldsymbol{D} ^ {-1/2}\\
-&= \boldsymbol{X} \boldsymbol{X} ^\top \boldsymbol{V}  _{[:d]} \boldsymbol{D} ^ {-1/2}\\
-&= \boldsymbol{V} _{[:d]} \boldsymbol{D} \boldsymbol{V} ^\top _{[:d]} \boldsymbol{V}  _{[:d]} \boldsymbol{D} ^ {-1/2} \quad \because \text{EVD of } \boldsymbol{X} \boldsymbol{X} ^\top  \\
-&= \boldsymbol{V} _{[:d]} \boldsymbol{D} \boldsymbol{D} ^ {-1/2} \quad \because \boldsymbol{V} \text{ is orthogonal} \\
-&= \boldsymbol{V} _{[:d]}\boldsymbol{D} ^ {1/2} \\
-&= \boldsymbol{Z} _{MDS} \\
-\end{aligned}$$
-
-:::
+Reference: Davis-kahan theorem

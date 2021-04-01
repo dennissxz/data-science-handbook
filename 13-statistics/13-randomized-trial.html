@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Causality and Randomized Trial &#8212; Data Science Handbook</title>
+    <title>Randomized Controlled Trials &#8212; Data Science Handbook</title>
     
   <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
 
@@ -130,6 +130,11 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/52-non-linear-programming.html">
+     Non-linear Programming
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="../11-math/90-puzzles.html">
      Puzzles
     </a>
@@ -199,7 +204,7 @@
    </li>
    <li class="toctree-l2 current active">
     <a class="current reference internal" href="#">
-     Causality and Randomized Trial
+     Randomized Controlled Trials
     </a>
    </li>
    <li class="toctree-l2">
@@ -738,6 +743,20 @@
   <i class="fas fa-chevron-down">
   </i>
  </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../39-causal/00-causal-intro.html">
+   For Causal Inference
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../39-causal/11-causal-estimation.html">
+     Causal Estimation
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
 </ul>
 
 </nav> <!-- To handle the deprecated key -->
@@ -903,8 +922,8 @@
         
               <div>
                 
-  <div class="section" id="causality-and-randomized-trial">
-<h1>Causality and Randomized Trial<a class="headerlink" href="#causality-and-randomized-trial" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="randomized-controlled-trials">
+<span id="rct"></span><h1>Randomized Controlled Trials<a class="headerlink" href="#randomized-controlled-trials" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="rubin-model-of-causation">
 <h2>Rubin Model of Causation<a class="headerlink" href="#rubin-model-of-causation" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="definitions">
@@ -917,7 +936,7 @@
 </dd>
 <dt>State <span class="math notranslate nohighlight">\(S\)</span></dt><dd><p>The state of the world <span class="math notranslate nohighlight">\(S\)</span> for unit <span class="math notranslate nohighlight">\(i\)</span> is its treatment status, <span class="math notranslate nohighlight">\(S \in {t, c}\)</span></p>
 </dd>
-<dt>Potential outcomes</dt><dd><p><strong>Before</strong> treatment is assigned, we can imagine the measure of interest <span class="math notranslate nohighlight">\(Y\)</span> for each unit, under both treatment and control, labeled <span class="math notranslate nohighlight">\(Y_i^t\)</span> and <span class="math notranslate nohighlight">\(Y_i^c\)</span>.</p>
+<dt>Potential outcomes</dt><dd><p><strong>Before</strong> treatment is assigned, we can imagine the measure of interest <span class="math notranslate nohighlight">\(Y\)</span> for each unit, under both treatment and control, labeled <span class="math notranslate nohighlight">\(Y_i^t\)</span> and <span class="math notranslate nohighlight">\(Y_i^c\)</span>. We assume that <span class="math notranslate nohighlight">\((Y_i^c, Y_i^t) \overset{\text{iid}}{\sim} P\)</span> where <span class="math notranslate nohighlight">\(P\)</span> is unknown.</p>
 </dd>
 <dt>Assignment mechanism</dt><dd><p>is the algorithm that determines whether <span class="math notranslate nohighlight">\(i\)</span> receives <span class="math notranslate nohighlight">\(t\)</span> or <span class="math notranslate nohighlight">\(c\)</span>.</p>
 </dd>
@@ -927,7 +946,7 @@
 <div class="math notranslate nohighlight">
 \[T_i = Y_i^t - Y_i^c\]</div>
 <dl class="simple myst">
-<dt>Fundamental problem of causal inference</dt><dd><p>Once the state <span class="math notranslate nohighlight">\(S \in {t, c}\)</span> is determined, we observe one outcome <span class="math notranslate nohighlight">\(Y_i^t\)</span> or <span class="math notranslate nohighlight">\(Y_i^c\)</span>. It is impossible to observe the value <span class="math notranslate nohighlight">\(Y_i^t\)</span> and <span class="math notranslate nohighlight">\(Y_i^c\)</span> for the same unit and, therefore, it is impossible to observe the effect of treatment <span class="math notranslate nohighlight">\(t\)</span> versus control <span class="math notranslate nohighlight">\(c\)</span> on object <span class="math notranslate nohighlight">\(i\)</span>.</p>
+<dt>Fundamental problem of causal inference</dt><dd><p>Once the state <span class="math notranslate nohighlight">\(S_i \in {t, c}\)</span> is determined, we observe one outcome <span class="math notranslate nohighlight">\(Y_i^t\)</span> <strong>or</strong> <span class="math notranslate nohighlight">\(Y_i^c\)</span>. It is impossible to observe the value <span class="math notranslate nohighlight">\(Y_i^t\)</span> and <span class="math notranslate nohighlight">\(Y_i^c\)</span> for the same unit and, therefore, it is impossible to observe the effect of treatment <span class="math notranslate nohighlight">\(t\)</span> versus control <span class="math notranslate nohighlight">\(c\)</span> on object <span class="math notranslate nohighlight">\(i\)</span>.</p>
 </dd>
 <dt>Identification problem</dt><dd><p>Because of the fundamental problem of causal inference, we cannot get an unbiased estimate (identify) causal parameters unless the assignment mechanism meets certain conditions.</p>
 </dd>
@@ -935,43 +954,43 @@
 </div>
 <div class="section" id="statistical-solution">
 <h3>Statistical Solution<a class="headerlink" href="#statistical-solution" title="Permalink to this headline">¶</a></h3>
-<p>We give up on calculating <span class="math notranslate nohighlight">\(T_i = Y_i^t - Y_i^c\)</span>, and settle for <span class="math notranslate nohighlight">\(d\)</span>, the average treatment effect</p>
+<p>We give up on calculating <span class="math notranslate nohighlight">\(T_i = Y_i^t - Y_i^c\)</span>, and settle for the average treatment effect <span class="math notranslate nohighlight">\(\tau\)</span></p>
 <div class="math notranslate nohighlight">
 \[
-d = \operatorname{E}\left( Y^t - Y^c \right) = \operatorname{E}\left( Y^t\right) - \operatorname{E}\left(Y^c \right) = \operatorname{E}\left( T \right)
+\tau := \operatorname{\mathbb{E}}\left( Y^t - Y^c \right) = \operatorname{\mathbb{E}}\left( Y^t\right) - \operatorname{\mathbb{E}}\left(Y^c \right) = \operatorname{\mathbb{E}}\left( T \right)
 \]</div>
-<p>Note that we cannot observe <span class="math notranslate nohighlight">\(Y^t\)</span> and <span class="math notranslate nohighlight">\(Y^c\)</span> at the same time. What we observe is actually <span class="math notranslate nohighlight">\(Y^t \mid S=t\)</span> and <span class="math notranslate nohighlight">\(Y^c \mid S=c\)</span>. Consider the conditional expectations</p>
+<p>Note that we cannot observe <span class="math notranslate nohighlight">\(Y^t\)</span> and <span class="math notranslate nohighlight">\(Y^c\)</span> at the same time. What we observe is actually <span class="math notranslate nohighlight">\(Y_i^t\)</span> if <span class="math notranslate nohighlight">\(S_i=t\)</span> and <span class="math notranslate nohighlight">\(Y_i^c\)</span> if <span class="math notranslate nohighlight">\(S_i=c\)</span>. Consider the conditional expectations</p>
 <div class="math notranslate nohighlight">
 \[
-\operatorname{E}\left( Y^t \mid S=t  \right) \text{ and } \operatorname{E}\left( Y^c \mid S=c  \right)
+\operatorname{\mathbb{E}}\left( Y_i^t \mid S_i=t  \right) \text{ and } \operatorname{\mathbb{E}}\left( Y_i^c \mid S_i=c  \right)
 \]</div>
-<p>If <span class="math notranslate nohighlight">\(S\)</span> is <strong>independent</strong> with <span class="math notranslate nohighlight">\(Y^t\)</span> and <span class="math notranslate nohighlight">\(Y^c\)</span>, then</p>
+<p>If <span class="math notranslate nohighlight">\(S_i\)</span> is <strong>independent</strong> with <span class="math notranslate nohighlight">\(Y_i^t\)</span> and <span class="math notranslate nohighlight">\(Y_i^c\)</span>, then</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
-\operatorname{E}\left( Y^t \mid S=t  \right)  &amp;= \operatorname{E}\left( Y^t \right) \\
-\operatorname{E}\left( Y^c \mid S=c  \right) &amp;= \operatorname{E}\left( Y^c \right)
+\operatorname{\mathbb{E}}\left( Y_i^t \mid S_i=t  \right)  &amp;= \operatorname{\mathbb{E}}\left( Y_i^t \right) = \mathbb{E} (Y^t)\\
+\operatorname{\mathbb{E}}\left( Y_i^c \mid S_i=c  \right) &amp;= \operatorname{\mathbb{E}}\left( Y_i^c \right) = \mathbb{E} (Y^c)
 \end{align}\end{split}\]</div>
 <p>and hence</p>
 <div class="math notranslate nohighlight">
 \[
-d = \operatorname{E}\left( Y^t \mid S=t  \right)  - \operatorname{E}\left( Y^c \mid S=c  \right)
+\tau = \operatorname{\mathbb{E}}\left( Y^t \mid S=t  \right)   - \operatorname{\mathbb{E}}\left( Y^c \mid S=c  \right)  
 \]</div>
 <p>Note that we can get unbiased estimators of the conditional expectations</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
-\hat{\operatorname{E}}\left( Y^t \mid S=t  \right)
- &amp;= \frac{1}{n_t} \sum_{S = t} Y^t \\
-\hat{\operatorname{E}}\left( Y^c \mid S=c  \right)  
-&amp;= \frac{1}{n_c} \sum_{S = c} Y^c
+\widehat{\operatorname{\mathbb{E}}}\left( Y^t \mid S=t  \right)
+&amp;= \frac{1}{n_t} \sum_{i:S_i = t} Y_i^t \\
+\widehat{\operatorname{\mathbb{E}}}\left( Y^c \mid S=c  \right)  
+&amp;= \frac{1}{n_c} \sum_{i:S_i = c} Y_i^c
 \end{align}\end{split}\]</div>
-<p>Therefore, if <span class="math notranslate nohighlight">\(S\)</span> is independent with <span class="math notranslate nohighlight">\(Y^t\)</span> and <span class="math notranslate nohighlight">\(Y^c\)</span>, then we have an unbiased estimator for <span class="math notranslate nohighlight">\(d\)</span>:</p>
+<p>Therefore, if <span class="math notranslate nohighlight">\(S\)</span> is independent with <span class="math notranslate nohighlight">\(Y^t\)</span> and <span class="math notranslate nohighlight">\(Y^c\)</span>, then we have an unbiased estimator for <span class="math notranslate nohighlight">\(\tau\)</span>:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
-\hat{d}
- &amp;= \frac{1}{n_t} \sum_{i: S = t} Y^t  - \frac{1}{n_c} \sum_{i: S = c} Y^c \\
-\operatorname{E}\left( \hat{d} \right)&amp;= d
+\hat{\tau}
+&amp;= \frac{1}{n_t} \sum_{i: S_i = t} Y_i^t  - \frac{1}{n_c} \sum_{i: S_i = c} Y_i^c \\
+\operatorname{\mathbb{E}}\left( \hat{\tau} \right)&amp;= \tau
 \end{align}\end{split}\]</div>
-<p>Random assignment of <span class="math notranslate nohighlight">\(S\)</span> makes independence (at the sample level) plausible, but not certain</p>
+<p>Random assignment of <span class="math notranslate nohighlight">\(S\)</span> makes independence (at the sample level) plausible, but not certain.</p>
 </div>
 <div class="section" id="example-of-assignment-mechanism-rubins-perfect-doctor">
 <h3>Example of Assignment Mechanism: Rubin’s Perfect Doctor<a class="headerlink" href="#example-of-assignment-mechanism-rubins-perfect-doctor" title="Permalink to this headline">¶</a></h3>
@@ -1021,9 +1040,9 @@ d = \operatorname{E}\left( Y^t \mid S=t  \right)  - \operatorname{E}\left( Y^c \
 <p>From the table we have</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
-\operatorname{E}\left( Y^t \right) &amp;= 44/6\\
-\operatorname{E}\left( Y^c \right)&amp;= 50/6\\
-d&amp;= \operatorname{E}\left( T \right)\\
+\operatorname{\mathbb{E}}\left( Y^t \right) &amp;= 44/6\\
+\operatorname{\mathbb{E}}\left( Y^c \right)&amp;= 50/6\\
+\tau&amp;= \operatorname{\mathbb{E}}\left( T \right)\\
 &amp;= -1
 \end{align}\end{split}\]</div>
 <p>So on average, the treatment is <strong>bad</strong>.</p>
@@ -1034,37 +1053,44 @@ d&amp;= \operatorname{E}\left( T \right)\\
 <th class="head"><p><span class="math notranslate nohighlight">\(Y_i^t\)</span> (Surgery)</p></th>
 <th class="head"><p><span class="math notranslate nohighlight">\(Y_i^c\)</span> (Not)</p></th>
 <th class="head"><p><span class="math notranslate nohighlight">\(T_i\)</span></p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(S_i\)</span></p></th>
 </tr>
 </thead>
 <tbody>
 <tr class="row-even"><td><p>A</p></td>
 <td><p>?</p></td>
 <td><p>12</p></td>
+<td><p>-4</p></td>
 <td><p><span class="math notranslate nohighlight">\(c\)</span></p></td>
 </tr>
 <tr class="row-odd"><td><p>B</p></td>
 <td><p>?</p></td>
 <td><p>8</p></td>
+<td><p>-7</p></td>
 <td><p><span class="math notranslate nohighlight">\(c\)</span></p></td>
 </tr>
 <tr class="row-even"><td><p>C</p></td>
 <td><p>12</p></td>
 <td><p>?</p></td>
+<td><p>2</p></td>
 <td><p><span class="math notranslate nohighlight">\(t\)</span></p></td>
 </tr>
 <tr class="row-odd"><td><p>D</p></td>
 <td><p>?</p></td>
 <td><p>4</p></td>
+<td><p>-2</p></td>
 <td><p><span class="math notranslate nohighlight">\(c\)</span></p></td>
 </tr>
 <tr class="row-even"><td><p>E</p></td>
 <td><p>10</p></td>
 <td><p>?</p></td>
+<td><p>2</p></td>
 <td><p><span class="math notranslate nohighlight">\(t\)</span></p></td>
 </tr>
 <tr class="row-odd"><td><p>F</p></td>
 <td><p>11</p></td>
 <td><p>?</p></td>
+<td><p>3</p></td>
 <td><p><span class="math notranslate nohighlight">\(t\)</span></p></td>
 </tr>
 </tbody>
@@ -1072,9 +1098,9 @@ d&amp;= \operatorname{E}\left( T \right)\\
 <p>and calculate</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
-\operatorname{E}\left( Y^t \mid S = t\right) &amp;= 33/3\\
-\operatorname{E}\left( Y^c \mid S = c\right)&amp;= 24/3\\
-d &amp; =\operatorname{E}\left( T \right)\\
+\operatorname{\mathbb{E}}\left( Y^t \mid S = t\right) &amp;= 33/3\\
+\operatorname{\mathbb{E}}\left( Y^c \mid S = c\right)&amp;= 24/3\\
+\tau &amp; =\operatorname{\mathbb{E}}\left( T \right)\\
 &amp;= 3
 \end{align}\end{split}\]</div>
 <p>and conclude that the treatment is <strong>good</strong>.</p>

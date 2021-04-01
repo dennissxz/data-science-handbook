@@ -434,162 +434,155 @@ $\square$
 
 ## Exercise
 
-### Coin Flips - Count Trials
+### Coin Flips
 
-*What is the expected number of coin flips to get two heads in a row?*
+- Count trials: What is the expected number of coin flips to get two heads in a row?
 
-{dropdown} Solution 1: Law of Total Expectation
+  ::::{admonition,dropdown,seealso} *Solution 1: Law of Total Expectation*
 
-::::{admonition,dropdown,seealso} *Solution*
+  Denote the required number of flips by $X$. We can partition the sample space into **three** parts:
+  - $A_T$: the first flip is a tail
+  - $A_{HT}$: the first two flips are head, tail
+  - $A_{HH}$: the first two flips are head, head
 
-Denote the required number of flips by $X$. We can partition the sample space into **three** parts:
-- $A_T$: the first flip is a tail
-- $A_{HT}$: the first two flips are head, tail
-- $A_{HH}$: the first two flips are head, head
+  It's easy to see
 
-It's easy to see
+  $$
+  \operatorname{\mathbb{P}}\left( A_T \right) = \frac{1}{2}, \operatorname{\mathbb{P}}\left( A_{HT} \right) = \operatorname{\mathbb{P}}\left( A_{HH} \right) = \frac{1}{4}
+  $$
 
-$$
-\operatorname{\mathbb{P}}\left( A_T \right) = \frac{1}{2}, \operatorname{\mathbb{P}}\left( A_{HT} \right) = \operatorname{\mathbb{P}}\left( A_{HH} \right) = \frac{1}{4}
-$$
+  But what are $\operatorname{\mathbb{E}}\left( X \mid A_T \right), \operatorname{\mathbb{E}}\left( X \mid A_{HT} \right), \operatorname{\mathbb{E}}\left( X \mid A_{HH} \right)$?
 
-But what are $\operatorname{\mathbb{E}}\left( X \mid A_T \right), \operatorname{\mathbb{E}}\left( X \mid A_{HT} \right), \operatorname{\mathbb{E}}\left( X \mid A_{HH} \right)$?
+  - If the first flip is T, then we start over, and waste 1 flip
+  - If the first two flips are HT, then we start over, and waste 2 flips
+  - If the first two flips are HH, then done! We use 2 flips
 
-- If the first flip is T, then we start over, and waste 1 flip
-- If the first two flips are HT, then we start over, and waste 2 flips
-- If the first two flips are HH, then done! We use 2 flips
+  As a result, we have
 
-As a result, we have
+  - $\operatorname{\mathbb{E}}\left( X \mid A_T \right) = \operatorname{\mathbb{E}}\left( X \right) + 1$
+  - $\operatorname{\mathbb{E}}\left( X \mid A_{HT} \right) = \operatorname{\mathbb{E}}\left( X \right)+ 2$
+  - $\operatorname{\mathbb{E}}\left( X \mid A_{HH} \right) = 2$
 
-- $\operatorname{\mathbb{E}}\left( X \mid A_T \right) = \operatorname{\mathbb{E}}\left( X \right) + 1$
-- $\operatorname{\mathbb{E}}\left( X \mid A_{HT} \right) = \operatorname{\mathbb{E}}\left( X \right)+ 2$
-- $\operatorname{\mathbb{E}}\left( X \mid A_{HH} \right) = 2$
+  Then by the law of total expectation
 
-Then by the law of total expectation
+  $$
+  \begin{align}
+  \operatorname{\mathbb{E}}\left( X \right)
+  &= \operatorname{\mathbb{E}}\left( X \mid A_T \right) \operatorname{\mathbb{P}}\left( A_T \right)
+  +  \operatorname{\mathbb{E}}\left( X \mid A_{HT} \right) \operatorname{\mathbb{P}}\left( A_{HT} \right)
+  +  \operatorname{\mathbb{E}}\left( X \mid A_{HH} \right) \operatorname{\mathbb{P}}\left( A_{HH} \right) \\
+  &= \left[ \operatorname{\mathbb{E}}\left( X \right)
+   + 1 \right]\cdot \frac{1}{2} + \left[ \operatorname{\mathbb{E}}\left( X \right) + 2\right] \cdot \frac{1}{4}
+   + 2 \cdot \frac{1}{4} \\
+  \end{align}
+  $$
 
-$$
-\begin{align}
-\operatorname{\mathbb{E}}\left( X \right)
-&= \operatorname{\mathbb{E}}\left( X \mid A_T \right) \operatorname{\mathbb{P}}\left( A_T \right)
-+  \operatorname{\mathbb{E}}\left( X \mid A_{HT} \right) \operatorname{\mathbb{P}}\left( A_{HT} \right)
-+  \operatorname{\mathbb{E}}\left( X \mid A_{HH} \right) \operatorname{\mathbb{P}}\left( A_{HH} \right) \\
-&= \left[ \operatorname{\mathbb{E}}\left( X \right)
- + 1 \right]\cdot \frac{1}{2} + \left[ \operatorname{\mathbb{E}}\left( X \right) + 2\right] \cdot \frac{1}{4}
- + 2 \cdot \frac{1}{4} \\
-\end{align}
-$$
-
-Solving the equation gives $\operatorname{\mathbb{E}}\left( X \right) = 6$
+  Solving the equation gives $\operatorname{\mathbb{E}}\left( X \right) = 6$
 
 
-:::{admonition,note} Note
-One may also partition the sample space to two parts ${A_H}$ and $A_T$, but to compute $\operatorname{\mathbb{E}}\left( X \mid A_H \right)$, it requires to partition $A_H$ into $A_{HT}$ and $A_{HH}$, and then use the law of total expectation again, which is complicated and easy to make mistakes. So it would be better to partition $A$ to three parts at the beginning.
-:::
+  :::{admonition,note} Note
+  One may also partition the sample space to two parts ${A_H}$ and $A_T$, but to compute $\operatorname{\mathbb{E}}\left( X \mid A_H \right)$, it requires to partition $A_H$ into $A_{HT}$ and $A_{HH}$, and then use the law of total expectation again, which is complicated and easy to make mistakes. So it would be better to partition $A$ to three parts at the beginning.
+  :::
 
-In general, what is the expected number of coin flips to get $n$ heads in a row? In fact, we just need to continue to partition $A_{HH}$ into $A_{HHT}$ and $A_{HHH}$, and so on. By the law of total expectation the equation becomes
+  In general, what is the expected number of coin flips to get $n$ heads in a row? In fact, we just need to continue to partition $A_{HH}$ into $A_{HHT}$ and $A_{HHH}$, and so on. By the law of total expectation the equation becomes
 
-$$
-\operatorname{\mathbb{E}}\left( X_n \right)
-= \left[ \operatorname{\mathbb{E}}\left( X_n \right) + 1 \right]\cdot \frac{1}{2}
-+ \left[ \operatorname{\mathbb{E}}\left( X_n \right) + 2\right] \cdot \frac{1}{4}
- + \ldots
- + \left[ \operatorname{\mathbb{E}}\left( X_n \right) + n\right] \cdot \frac{1}{2^n}
- + n \cdot \frac{1}{2^n} \\
-$$
+  $$
+  \operatorname{\mathbb{E}}\left( X_n \right)
+  = \left[ \operatorname{\mathbb{E}}\left( X_n \right) + 1 \right]\cdot \frac{1}{2}
+  + \left[ \operatorname{\mathbb{E}}\left( X_n \right) + 2\right] \cdot \frac{1}{4}
+   + \ldots
+   + \left[ \operatorname{\mathbb{E}}\left( X_n \right) + n\right] \cdot \frac{1}{2^n}
+   + n \cdot \frac{1}{2^n} \\
+  $$
 
-The solution is
+  The solution is
 
-$$
-\operatorname{\mathbb{E}}\left( X_n \right) = 2 \left( 2^n-1 \right)
-$$
-::::
-
-
-:::{admonition,dropdown,seealso} *Solution 2: Recurrence Relation*
-
-One can also derive the solution from a recurrence relation between $\operatorname{\mathbb{E}}\left( X_n \right)$ and $\operatorname{\mathbb{E}}\left( X_{n-1} \right)$.
-
-Let $Y_{n} = X_n - X_{n-1}$ be the number of additional flips required to get $n$ heads in a row, given that we already got $n-1$ heads in a row. Then by the law of total expectation,
-
-$$
-\begin{align}
-\operatorname{\mathbb{E}}\left( Y_{n} \right)
-&= \operatorname{\mathbb{E}}\left( Y_n \mid \text{the $n$-th flip is H} \right) \operatorname{\mathbb{P}}\left( \text{the $n$-th flip is H}  \right) \\
-  &\ + \operatorname{\mathbb{E}}\left( Y_n \mid \text{the $n$-th flip is T} \right) \operatorname{\mathbb{P}}\left( \text{the $n$-th flip is T}  \right) \\
-&= 1 \cdot \frac{1}{2} + \left[ 1 + \operatorname{\mathbb{E}}\left( X_n \right) \right] \cdot \frac{1}{2}
- \end{align}
-$$
-
-Hence, we have the recurrence relation
-
-$$
-\operatorname{\mathbb{E}}\left( X_n \right) = 2 \operatorname{\mathbb{E}}\left( X_{n-1} \right) + 2
-$$
-
-Let $f(n) = \operatorname{\mathbb{E}}\left( X_n\right) + 2$ then we have $f(n) = 2f(n-1)$. Since $f(1) = \operatorname{\mathbb{E}}\left( X_1 \right)+2 = 4$, we have $f(n) = 2^{n+1}$. Therefore,  
-
-$$\operatorname{\mathbb{E}}\left( X_n \right) = 2^{n+1}-2$$
-
-:::
+  $$
+  \operatorname{\mathbb{E}}\left( X_n \right) = 2 \left( 2^n-1 \right)
+  $$
+  ::::
 
 
-### Coin Flips - Count Rows
+  :::{admonition,dropdown,seealso} *Solution 2: Recurrence Relation*
 
-*What is the expected number of times to see $k$ heads in a row, i.e., HH...HH, in $n$ flips of a coin?*
+  One can also derive the solution from a recurrence relation between $\operatorname{\mathbb{E}}\left( X_n \right)$ and $\operatorname{\mathbb{E}}\left( X_{n-1} \right)$.
 
-:::{admonition,dropdown,seealso} *Solution*
+  Let $Y_{n} = X_n - X_{n-1}$ be the number of additional flips required to get $n$ heads in a row, given that we already got $n-1$ heads in a row. Then by the law of total expectation,
 
-In $n$ flips of a coin, there are $n-k+1$ places where the string HH...HH can start to appear, each with a (non-independent) probability $\frac{1}{2^k} $ of happening. Let $X$ be the number of times to see the string HH...HH, and $X_i$ be the indicator variable that is $1$ if the string starts to appear at the $i$-th flip, then
+  $$
+  \begin{align}
+  \operatorname{\mathbb{E}}\left( Y_{n} \right)
+  &= \operatorname{\mathbb{E}}\left( Y_n \mid \text{the $n$-th flip is H} \right) \operatorname{\mathbb{P}}\left( \text{the $n$-th flip is H}  \right) \\
+    &\ + \operatorname{\mathbb{E}}\left( Y_n \mid \text{the $n$-th flip is T} \right) \operatorname{\mathbb{P}}\left( \text{the $n$-th flip is T}  \right) \\
+  &= 1 \cdot \frac{1}{2} + \left[ 1 + \operatorname{\mathbb{E}}\left( X_n \right) \right] \cdot \frac{1}{2}
+   \end{align}
+  $$
 
-$$
-X = \sum_{i=1}^{n-k+1} X_i
-$$
+  Hence, we have the recurrence relation
 
-and hence
+  $$
+  \operatorname{\mathbb{E}}\left( X_n \right) = 2 \operatorname{\mathbb{E}}\left( X_{n-1} \right) + 2
+  $$
 
-$$\begin{align}
-\operatorname{\mathbb{E}}\left( X \right) &= \operatorname{\mathbb{E}}\left( \sum_{i=1}^{n-k+1} X_i \right)\\
-&= \sum_{i=1}^{n-k+1} \operatorname{\mathbb{E}}\left( X_i \right)\\
-&= \frac{n-k+1}{2^k} \\
-\end{align}$$
+  Let $f(n) = \operatorname{\mathbb{E}}\left( X_n\right) + 2$ then we have $f(n) = 2f(n-1)$. Since $f(1) = \operatorname{\mathbb{E}}\left( X_1 \right)+2 = 4$, we have $f(n) = 2^{n+1}$. Therefore,  
 
-The first second last line holds even if $X_i$'s are not independent.
+  $$\operatorname{\mathbb{E}}\left( X_n \right) = 2^{n+1}-2$$
 
-:::
-
-
-### Coin Flips - Count Runs
-
-::::{admonition,dropdown,seealso} *Solution*
-
-A coin with a probability $p$ to get a head is flipped $n$ times. A "run" is a maximal sequence of consecutive flips that are all the same. For instance, HTHHHTTH has five runs and $n=8$. What is the expected number of runs?
-
-Let $X_i$ be the indicator for the event that a run starts at the $i-th$ toss. Let $X = \sum_i X_i$ be the total number of runs. It is easy to see $\operatorname{\mathbb{E}}\left( X_1 \right) = 1$. For $i>1$,
+  :::
 
 
-$$
-\begin{aligned}
-\operatorname{\mathbb{E}}\left(X_{i}\right)=& \operatorname{\mathbb{P}}\left(X_{i}=1\right) \\
-=& \operatorname{\mathbb{P}}\left(i \text { -th toss is } \mathrm{H} \mid(i-1) \text { -th toss is } \mathrm{T}\right) \times \operatorname{\mathbb{P}}\left((i-1) \text { -th toss is } \mathrm{T}\right) \\
-&+\operatorname{\mathbb{P}}\left(i \text { -th toss is } \mathrm{T} \mid(i-1)\text {-th} \text { toss is } \mathrm{H}\right) \times \operatorname{\mathbb{P}}\left((i-1)\text {-th } \text { toss is } \mathrm{H}\right) \\
-=& p(1-p)+(1-p) p \\
-=& 2 p(1-p)
-\end{aligned}
-$$
+- **Count rows**: what is the expected number of times to see $k$ heads in a row, i.e., HH...HH, in $n$ flips of a coin?
 
-Therefore,
+  :::{admonition,dropdown,seealso} *Solution*
 
-$$
-\begin{aligned}
-\operatorname{\mathbb{E}}(X) &=\operatorname{\mathbb{E}}\left(X_{1}+X_{2}+\cdots+X_{n}\right) \\
-&=\operatorname{\mathbb{E}}\left(X_{1}\right)+\operatorname{\mathbb{E}}\left(X_{2}\right)+\cdots+\operatorname{\mathbb{E}}\left(X_{n}\right) \\
-&=\operatorname{\mathbb{E}}\left(X_{1}\right)+\left[\operatorname{\mathbb{E}}\left(X_{2}\right)+\cdots+\operatorname{\mathbb{E}}\left(X_{n}\right)\right] \\
-&=1+(n-1) \times 2 p(1-p) \\
-&=1+2(n-1) p(1-p)
-\end{aligned}
-$$
-::::
+  In $n$ flips of a coin, there are $n-k+1$ places where the string HH...HH can start to appear, each with a (non-independent) probability $\frac{1}{2^k} $ of happening. Let $X$ be the number of times to see the string HH...HH, and $X_i$ be the indicator variable that is $1$ if the string starts to appear at the $i$-th flip, then
 
+  $$
+  X = \sum_{i=1}^{n-k+1} X_i
+  $$
+
+  and hence
+
+  $$\begin{align}
+  \operatorname{\mathbb{E}}\left( X \right) &= \operatorname{\mathbb{E}}\left( \sum_{i=1}^{n-k+1} X_i \right)\\
+  &= \sum_{i=1}^{n-k+1} \operatorname{\mathbb{E}}\left( X_i \right)\\
+  &= \frac{n-k+1}{2^k} \\
+  \end{align}$$
+
+  The first second last line holds even if $X_i$'s are not independent.
+
+  :::
+
+
+- **Count runs**: a coin with a probability $p$ to get a head is flipped $n$ times. A "run" is a maximal sequence of consecutive flips that are all the same. For instance, HTHHHTTH has five runs and $n=8$. What is the expected number of runs?
+
+  :::{admonition,dropdown,seealso} *Solution*
+
+  Let $X_i$ be the indicator for the event that a run starts at the $i-th$ toss. Let $X = \sum_i X_i$ be the total number of runs. It is easy to see $\operatorname{\mathbb{E}}\left( X_1 \right) = 1$. For $i>1$,
+
+
+  $$
+  \begin{aligned}
+  \operatorname{\mathbb{E}}\left(X_{i}\right)=& \operatorname{\mathbb{P}}\left(X_{i}=1\right) \\
+  =& \operatorname{\mathbb{P}}\left(i \text { -th toss is } \mathrm{H} \mid(i-1) \text { -th toss is } \mathrm{T}\right) \times \operatorname{\mathbb{P}}\left((i-1) \text { -th toss is } \mathrm{T}\right) \\
+  &+\operatorname{\mathbb{P}}\left(i \text { -th toss is } \mathrm{T} \mid(i-1)\text {-th} \text { toss is } \mathrm{H}\right) \times \operatorname{\mathbb{P}}\left((i-1)\text {-th } \text { toss is } \mathrm{H}\right) \\
+  =& p(1-p)+(1-p) p \\
+  =& 2 p(1-p)
+  \end{aligned}
+  $$
+
+  Therefore,
+
+  $$
+  \begin{aligned}
+  \operatorname{\mathbb{E}}(X) &=\operatorname{\mathbb{E}}\left(X_{1}+X_{2}+\cdots+X_{n}\right) \\
+  &=\operatorname{\mathbb{E}}\left(X_{1}\right)+\operatorname{\mathbb{E}}\left(X_{2}\right)+\cdots+\operatorname{\mathbb{E}}\left(X_{n}\right) \\
+  &=\operatorname{\mathbb{E}}\left(X_{1}\right)+\left[\operatorname{\mathbb{E}}\left(X_{2}\right)+\cdots+\operatorname{\mathbb{E}}\left(X_{n}\right)\right] \\
+  &=1+(n-1) \times 2 p(1-p) \\
+  &=1+2(n-1) p(1-p)
+  \end{aligned}
+  $$
+  :::
 
 
 ### Incremental Update of Mean and Variance
@@ -635,36 +628,128 @@ The substitution $S_n = ns_n^2$ avoids the computation that involves $\frac{1}{n
 ::::
 
 (exp-var-ex)=
-### Misc
+### Miscellaneous
 
 1. Two groups of data. In group one, sample standard deviation is $s_1$, in group two it is $s_2$. After merging them, it is $s_3$. Do we always have $s_3 > \max(s_1, s_2)$?
 
-  :::{admonition,dropdown,seealso} *Solution*
+    :::{admonition,dropdown,seealso} *Solution*
+
+    Let $\lambda = \frac{n_1}{n_1 + n_2} \in (0,1)$, then $\bar{x}_3 = \lambda \bar{x}_1 + (1-\lambda)\bar{x}_2$. WLOG assume $\bar{x}_1 - \bar{x}_2 = d \ge 0$.
+
+    $$\begin{aligned}
+    s^2 _1 &= \frac{TSS_1}{n_1} \\
+    s^2 _2 &= \frac{TSS_2}{n_2} \\
+    s^2 _3 &= \frac{TSS_3}{n_3}\\
+    s^2 _3 &= \frac{TSS_1 + TTS_2 + n_1 (\bar{x}_1 - \bar{x}_3)^2 + n_2 (\bar{x}_3 - \bar{x}_2)^2 }{n_1 + n_2}\\
+    &= \lambda s^2 _1 + (1-\lambda) s^2 _2  + \lambda ((1-\lambda)d )^2 + (1-\lambda) (\lambda d)^2    \\
+    &= \underbrace{\lambda s^2 _1 + (1-\lambda) s^2 _2}_{a}  + \underbrace{\lambda(1-\lambda)d^2}_{b}   \\
+    \end{aligned}$$
+
+    where
+
+    - $\lambda = \frac{n_1}{n_1 + n_2} \in (0,1)$
+    - $d_1 = \bar{x}_1 - \bar{x}_3 = \bar{x}_1 - (\lambda \bar{x}_1 + (1-\lambda)\bar{x}_2) = (1-\lambda)(\bar{x}_1 - \bar{x}_2) = (1-\lambda)c \in [0, c)$
+    - $d_2 = \bar{x}_3 - \bar{x}_2 = \lambda \bar{x}_1 + (1-\lambda)\bar{x}_2 - \bar{x}_2 = \lambda(\bar{x}_1 - \bar{x}_2) = \lambda c \in [0, c)$
+    - $d_1 + d_2 = c$
+
+    We have
+
+    - $\min(s^2_1, s^2_2) \le a \le \max(s^2_1, s^2_2)$ with equalities iff $s_2^2 = s_2^2$.
+    - $0 \le b < d^2$ with equality iff $d=0$.
+
+    Since $a$ and $b$ are independent, we can know for sure that $\min(s^2_1, s^2_2) \le s_3^2$. The other comparison $\max(s^2_1, s^2_2) \text{ vs } s_3^2$ is uncertain, depending on $d$.
+
+    :::
+
+1. Find the distribution of the sum of two independent uniform random variable.
+
+    :::{admonition,dropdown,seealso} *Proof*
+
+    Let $X, Y \overset{\text{iid}}{\sim} \mathcal{U} (0,1)$ and their sum be $Z = X + Y$. Then
+
+    $$\begin{aligned}
+    f_{Z}(z)
+    &=\int_{-\infty}^{\infty} f_{X}(x) f_{Y}(z-x) \mathrm{~d} x \\
+    &=\int_{-\infty}^{\infty} \boldsymbol{1} _{x \in (0,1)} \boldsymbol{1} _{z-x \in (0,1)} \mathrm{~d} x \\
+    &=\int_{0}^{1} \boldsymbol{1} _{z-x \in (0,1) } \mathrm{~d} x \\
+    &= \left\{\begin{array}{ll}
+    \int_{0}^{z} 1 \mathrm{~d} x = z, & \text { if } 0<z<1 \\
+    \int_{z-1}^{1} 1 \mathrm{~d} x = 2 - z, & \text { if } 1\le z<2 \\
+    \end{array}\right.\\
+    \end{aligned}$$
+
+    Hence, $Z$ follows a triangular distribution with lower limit $0$, upper limit $2$, and mode $1$. That is, it's more likely to see $Z$ around $1$, which equals the sum of two expected values. In real life, the sum of two dices is probably around 3.5.
+
+    :::
 
 
-  Let $\lambda = \frac{n_1}{n_1 + n_2} \in (0,1)$, then $\bar{x}_3 = \lambda \bar{x}_1 + (1-\lambda)\bar{x}_2$. WLOG assume $\bar{x}_1 - \bar{x}_2 = d \ge 0$.
+1. Randomly and independently select two points in $[0, \ell]$, find their expected distance.
 
-  $$\begin{aligned}
-  s^2 _1 &= \frac{TSS_1}{n_1} \\
-  s^2 _2 &= \frac{TSS_2}{n_2} \\
-  s^2 _3 &= \frac{TSS_3}{n_3}\\
-  s^2 _3 &= \frac{TSS_1 + TTS_2 + n_1 (\bar{x}_1 - \bar{x}_3)^2 + n_2 (\bar{x}_3 - \bar{x}_2)^2 }{n_1 + n_2}\\
-  &= \lambda s^2 _1 + (1-\lambda) s^2 _2  + \lambda ((1-\lambda)d )^2 + (1-\lambda) (\lambda d)^2    \\
-  &= \underbrace{\lambda s^2 _1 + (1-\lambda) s^2 _2}_{a}  + \underbrace{\lambda(1-\lambda)d^2}_{b}   \\
-  \end{aligned}$$
+    :::{admonition,dropdown,seealso} *Solution 1: integration*
 
-  where
+    \ellet $X_1, X_2 \overset{\text{iid}}{\sim} \mathcal{U} [0, \ell]$, their joint density function is
 
-  - $\lambda = \frac{n_1}{n_1 + n_2} \in (0,1)$
-  - $d_1 = \bar{x}_1 - \bar{x}_3 = \bar{x}_1 - (\lambda \bar{x}_1 + (1-\lambda)\bar{x}_2) = (1-\lambda)(\bar{x}_1 - \bar{x}_2) = (1-\lambda)c \in [0, c)$
-  - $d_2 = \bar{x}_3 - \bar{x}_2 = \lambda \bar{x}_1 + (1-\lambda)\bar{x}_2 - \bar{x}_2 = \lambda(\bar{x}_1 - \bar{x}_2) = \lambda c \in [0, c)$
-  - $d_1 + d_2 = c$
+    $$
+    f_{X_{1} X_{2}}\left(x_{1}, x_{2}\right)=f_{X_{1}}\left(x_{1}\right) f_{X_{2}}\left(x_{2}\right)=\left\{\begin{array}{ll}
+    \frac{1}{\ell^2} & \text { if } \quad x_1, x_2 \in[0, \ell] \\
+    0 & \text { otherwise }
+    \end{array}\right.
+    $$
 
-  We have
+    Define the distance as
 
-  - $\min(s^2_1, s^2_2) \le a \le \max(s^2_1, s^2_2)$ with equalities iff $s_2^2 = s_2^2$.
-  - $0 \le b < d^2$ with equality iff $d=0$.
+    $$
+    g\left(x_{1}, x_{2}\right)=\left|x_{1}-x_{2}\right|=\left\{\begin{array}{lll}
+    x_{1}-x_{2} & \text { if } x_{1} \geq x_{2} \\
+    x_{2}-x_{1} & \text { otherwise }
+    \end{array}\right.
+    $$
 
-  Since $a$ and $b$ are independent, we can know for sure that $\min(s^2_1, s^2_2) \le s_3^2$. The other comparison $\max(s^2_1, s^2_2) \text{ vs } s_3^2$ is uncertain, depending on $d$.
+    Hence the expectation is
 
-  :::
+    $$
+    \begin{aligned}
+    \mathbb{E}(g(X_1, X_2)) &=\int_{0}^{\ell} \int_{0}^{\ell} g\left(x_{1}, x_{2}\right) f_{X_{1} X_{2}}\left(x_{1}, x_{2}\right) \mathrm{~d} x_{1} \mathrm{~d} x_{2} \\
+    &=\frac{1}{\ell^{2}} \int_{0}^{\ell} \int_{0}^{\ell}\left|x_{1}-x_{2}\right| \mathrm{~d} x_{1} \mathrm{~d} x_{2} \\
+    &=\frac{1}{\ell^{2}} \int_{0}^{\ell} \int_{0}^{x_{1}}\left(x_{1}-x_{2}\right) \mathrm{~d} x_{2} \mathrm{~d} x_{1}+\frac{1}{\ell^{2}} \int_{0}^{\ell} \int_{x_{1}}^{\ell}\left(x_{2}-x_{1}\right) \mathrm{~d} x_2 \mathrm{~d} x_1 \\
+    &=\frac{\ell^3}{6\ell^2} + \frac{\ell^3}{6\ell^2}  \\
+    &=\frac{\ell}{3}
+    \end{aligned}
+    $$
+
+    :::
+
+    :::{admonition,dropdown,seealso} *Solution 2: random procedure*
+
+    If we randomly select two points, then we cut the interval of length $\ell$ into 3 segments, of length $D_1, D_2, D_3$ respectively. They should be "exchangeable", so $\mathbb{E}\left( D_1 \right) = \mathbb{E}\left( D_2 \right) = \mathbb{E}\left( D_3 \right)$. Since $\mathbb{E}\left( D_1 + D_2 + D_3 \right) = \ell$, we have $\mathbb{E}\left( D_2 \right) = \frac{\ell}{3}$.
+
+    Formally, $(D_1, D_2, D_3) = (\min (X, Y), \max (X, Y)-\min (X, Y), \ell-\max (X, Y))$. One can show that $(D_1, D_2, D_3)$ is an exchangeable sequence, i.e., whose joint probability distribution does not change when the positions in the sequence in which finitely many of them appear are altered.
+
+    :::
+
+   - How about two uniform random points in a compact convex subset in $\mathbb{R} ^n$? For example, interval, disk, square, cube? See this [paper](https://www.cambridge.org/core/journals/bulletin-of-the-australian-mathematical-society/article/average-distance-between-two-points/F182A617B5EC6DB5AD31042A4BDF83AE).
+
+1. Randomly and independent select $n$ points from an interval of length $\ell$, let $D$ be the minimum distance between two points: $d = \min_{i \ne j \in [n]} \left\vert x_i - x_j \right\vert$, find $\mathbb{E}\left( D \right)$.
+
+    :::{admonition,dropdown,seealso} *Solution*
+
+    Consider two events:
+    - the minimum distance between two points equals $d$
+    - no points are in the left section of length $(n-1)d$
+
+    The two events have the same probability: imagine that we take $d$ from each segment $[x_{i}, x_{i+1}]$, and aggregate all $(n-1)$ of them to the left. Hence, $\mathbb{P}\left( D = d \right) = \left( 1 - \frac{(n-1)d}{\ell}  \right)^n$. Integration over $0 \le d \le \frac{\ell}{n-1}$ gives $\frac{\ell}{n^2 - 1}$.
+
+    Note that if $n=2$ then this problem reduces to the previous one.
+    :::
+
+
+1. Randomly select three points $A, B, C$ from a circle, what's the probability that the center $O$ is in the triangle $ABC$? Extension: probability of four random points on a sphere such that the tetrahedron $ABCD$ contains $O$?
+
+    :::{admonition,dropdown,seealso} *Solution: change of random procedure*
+
+    Here are some hints. For details, see the great youtube [video](https://www.youtube.com/watch?v=OkmNXy7er84).
+
+    - Suppose we have already select two points $A, B$. What's the range of $C$ such that $ABC$ covers $O$?
+    - Two random points can generated as follows: generate two random diameter lines $\ell_1, \ell_2$ that pass center $O$, then randomly choose one endpoint of $\ell_1$ to be $B$, and one endpoint of $\ell_2$ to be $C$, their are 4 combinations. Now, suppose we already have $A$, and use this random procedure to generate $B$ and $C$, which of the 4 combinations of $(B,C)$ gives a required triangle $ABC$?
+
+    :::

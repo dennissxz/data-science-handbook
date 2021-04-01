@@ -47,7 +47,7 @@ We mainly consider bisection ($K=2$) and unweighted case.
 Recall that an adjacency matrix contains binary entries of connection relation between any two nodes. Sometimes we can extend it to be the matrix of edge weights (similarities).
 
 - **Degree** (considering weights) $\operatorname{deg} (i)=\sum_{j} a_{i j} = \operatorname{RowSum}_i (A)$
-- **Volume** of a set $S$ of nodes $\operatorname{vol}(S)=\sum_{i \in S} \operatorname{deg} _{i}$.
+- **Volume** of a set $S$ of nodes $\operatorname{vol}(S)=\sum_{i \in S} \operatorname{deg} (i)$.
 
 ### Property
 
@@ -122,11 +122,11 @@ Thus, $\phi(G)$ will be small when $\lambda_2$ is small and vice versa.
 Fiedler [SAND 144] associate $\lambda_2$ with the connectivity of a graph. We partition vertices according to the sign of their entires in $\boldsymbol{v} _2$:
 
 $$
-S_F=\left\{u \in V: \boldsymbol{v} _{2}(u) \geq 0\right\} \quad \text { and } \quad \bar{S}_F=\left\{u \in V: \boldsymbol{v} _{2}(u)<0\right\}
+S_F=\left\{u \in V: \boldsymbol{v} _{2}[u] \geq 0\right\} \quad \text { and } \quad \bar{S}_F=\left\{u \in V: \boldsymbol{v} _{2}[u]<0\right\}
 $$
 
 - The eigenvector $\boldsymbol{v} _2$ is hence often called the Fiedler vector
-- The eigenvalue $\lambda_2$ is often called the Fiedler value, which is also the algebraic connectivity of the graph.
+- The eigenvalue $\lambda_2$ is often called the Fiedler value, which is also the algebraic connectivity of the graph
 
 This method is often called **spectral bisection**. It can be shown that
 
@@ -164,7 +164,7 @@ Now we consider the weighted case from optimization point of view, where weights
 
 We define the (unnormalized) graph Laplacian  as
 
-$$\boldsymbol{L}_w = \boldsymbol{D} - \boldsymbol{W}$$
+$$\boldsymbol{L} = \boldsymbol{D} - \boldsymbol{W}$$
 
 where
 
@@ -183,7 +183,7 @@ $$W(S, \bar{S})=\sum_{i \in A, j \in B} w_{i j}$$
 To partition the graph into $K$ subgraphs, we would like to minimize the sum of cut values between **each** subgraph $A_i$ and the rest of the graph:
 
 $$
-\underset{S_{1}, \ldots, S_{K}}{\operatorname{argmin}} \frac{1}{2} \sum_{k=1}^{K} W\left(S_{k}, \bar{S}_{k}\right)
+\underset{S_{1}, \ldots, S_{K}}{\operatorname{min}} \frac{1}{2} \sum_{k=1}^{K} W\left(S_{k}, \bar{S}_{k}\right)
 $$
 
 :::{figure} spectral-clustering-cuts
@@ -192,39 +192,78 @@ $$
 A graph cut with $W(S,\bar{S})=0.3$ [Hamad & Biela]
 :::
 
-The algorithm with the above objective function is called **MinCut**, which favors **isolated** nodes.
+The algorithm with the above objective function is called **Min Cut**, which favors **isolated** nodes.
 
 Other methods with modified/normalized objectives include:
 
 - **Ratio cuts** $(\operatorname{RatioCut} )$ normalizes by cardinality: $\frac{1}{2} \sum_{k=1}^{K} \frac{W\left(S_{k}, \bar{S}_{k}\right)}{\left|S_{k}\right|}$
 - **Normalized cuts** $(\operatorname{Ncut})$ normalizes by volume: $\frac{1}{2} \sum_{i=1}^{k} \frac{W\left(S_{i}, \bar{S}_{i}\right)}{\operatorname{vol}\left(S_{i}\right)}$.
 
+### Bisection Min Cut
+
+Recall that the bisection Min-cut objective is
+
+$$\min_S\ W\left(S, \bar{S}\right)$$
+
+We define a indicator vector $\boldsymbol{c} \in\{-1,1\}^{n}$, where $c_i = 1$ means data point $i$ is in cluster/subgraph $S$; otherwise cluster $\bar{S}$. Note that
+
+$$
+W\left(S, \bar{S}\right) = \sum_{i \in S, j \in \bar{S}} w_{i j} = \frac{1}{4}\sum_{ij} w_{ij}(c_i - c_j)^2 = \frac{1}{4} \boldsymbol{c} ^{\top} \boldsymbol{L} \boldsymbol{c}
+$$
+
+The objective can be formulated as
+
+$$\begin{aligned}
+\min_{\boldsymbol{c}} &&& \boldsymbol{c} ^{\top} \boldsymbol{L} \boldsymbol{c}\\
+\mathrm{s.t.}
+&&& \boldsymbol{c} \in\{-1,1\}^{n} \\
+\end{aligned}$$
+
+A relaxation of this problem is to solve for a continuous $\boldsymbol{c}$ vector instead $\boldsymbol{c} \in \mathbb{R} ^{n}$
+
+$$\begin{aligned}
+\min_{\boldsymbol{c}} && \boldsymbol{c} ^{\top} \boldsymbol{L} \boldsymbol{c} &\\
+\mathrm{s.t.}
+&& \boldsymbol{c} &\in \mathbb{R} ^n\\
+&& \boldsymbol{c} ^{\top} \boldsymbol{c} &= n \\
+\end{aligned}$$
+
+If we don't add the $\boldsymbol{c} ^{\top} \boldsymbol{c} = n$ constraint then a trivial solution is $\boldsymbol{c} = \boldsymbol{0}$.  The solution is given by the eigenvector of the eigenproblem
+
+$$
+\boldsymbol{L} \boldsymbol{c}=\lambda \boldsymbol{c}
+$$
+
+The first eigenvector of $\boldsymbol{L}$ is all ones (all data in a single cluster, which is meaningless). We take the 2nd eigenvector $\boldsymbol{v} _2$ as the real-valued solution. There are several ways to decide the binary assignment
+- take 0 or the median value as the splitting point or,
+- search for the splitting point such that the resulting partition has the best objective value
+
+Actually, this problem can be solved exactly. See the [max flow](max-flow) section.
+
 ### Bisection Normalized Cut
 
-We introduce how to solve normalized cuts. The solution is related to the first $K$ eigenvectors of the Laplacian matrix. We define a indicator vector $\boldsymbol{c} \in\{-1,1\}^{n}$, where $c_i = 1$ means data point $i$ is in cluster/subgraph $A$; otherwise cluster $B$.
+[[Shi & Malik 1999](https://people.eecs.berkeley.edu/~malik/papers/SM-ncut.pdf)]
 
-We can show that the $\operatorname{Ncut}$ problem to find $\boldsymbol{c}$ is equivalent to the optimization problem
+Recall that the objective of the bisection normalized cut is
+
+$$\min_S\ \left( \frac{W\left(S, \bar{S}\right)}{\operatorname{vol}\left(S\right)} + \frac{W\left(S, \bar{S}\right)}{\operatorname{vol}\left(\bar{S}\right)}  \right)$$
+
+Let the $\boldsymbol{c} \in\{-1,1\}^{n}$ be the assignment vector. Define $\boldsymbol{y} = (\boldsymbol{1}  + \boldsymbol{x} ) - b (\boldsymbol{1} - \boldsymbol{x} )$ where $b = \frac{\operatorname{vol}(S) }{\operatorname{vol}(\bar{S})}$ such that $y_i = 2$ if $x_i=1$, and $y_i = -2b$ and $x_i = -1$. It can shown that finding $\boldsymbol{c}$ is equivalent to solve the following optimization problem for $\boldsymbol{y}$
+
+$$\begin{aligned}
+\min _{\boldsymbol{y} } && \frac{\boldsymbol{y} ^{\top} \boldsymbol{L} \boldsymbol{y} }{\boldsymbol{y} ^{\top} \boldsymbol{D} \boldsymbol{y} }  & &&\\
+\mathrm{s.t.}
+&& \boldsymbol{y} &\in \left\{ 1, -b \right\} ^n &&\\
+&& \boldsymbol{y} ^{\top} \boldsymbol{D} \boldsymbol{1}  &= \boldsymbol{0} && \\
+\end{aligned}$$
+
+where the constraint $\boldsymbol{y} ^{\top} \boldsymbol{D} \boldsymbol{1} = \boldsymbol{0}$ comes from the condition of the assignment vector $\boldsymbol{x}$. However, solving for discrete combinatorial values is hard. The optimization problem is relaxed to solve for a continuous $\boldsymbol{y} \in \mathbb{R} ^n$ vector instead. The solution is given by the generalized eigenproblem
 
 $$
-\begin{aligned}
-\min _{\boldsymbol{c}} \operatorname{Ncut} (\boldsymbol{c})
-=\min _{\boldsymbol{c}} &\ \frac{\boldsymbol{c}^{\top}\boldsymbol{L} _w \boldsymbol{c}}{\boldsymbol{c}^{\top} \boldsymbol{D}  \boldsymbol{c}} \\
- \text { s.t. } &\ \boldsymbol{c}^{\top} \boldsymbol{D}  \boldsymbol{1}  =0 \\
-&\ \boldsymbol{c} \in\{-1,1\}^{n}  \\
-\end{aligned}
+\boldsymbol{L} \boldsymbol{y}=\lambda \boldsymbol{D}  \boldsymbol{y}
 $$
 
-However, solving for discrete combinatorial values is hard. The optimization problem is relaxed to solve for a continuous $\boldsymbol{c}$ vector instead:
-
-$$
-\begin{array}{cl}
-\min _{\boldsymbol{c}} & \boldsymbol{c}^{\top}\boldsymbol{L} _w \boldsymbol{c} \\
-\text { s.t. } & \boldsymbol{c}^{\top} \boldsymbol{D}  \boldsymbol{c}= \boldsymbol{1} \\
-\Longrightarrow & \boldsymbol{L} _w \boldsymbol{c}=\lambda \boldsymbol{D}  \boldsymbol{c}
-\end{array}
-$$
-
-The first eigenvector of $\boldsymbol{L} _w$ is all ones (all data in a single cluster). We take the 2nd eigenvector as the real-valued solution. As shown below, the solved eigenvector (right picture) has positive and negative values, which can be used for assignment.
+We take the 2nd eigenvector $\boldsymbol{v} _2$ as the real-valued solution, and find a splitting point to decide assignment with the methods introduced in Min-cut.
 
 :::{figure} spectral-clustering-egvector
 <img src="../imgs/spectral-clustering-egvector.png" width = "80%" alt=""/>
@@ -236,7 +275,7 @@ $\operatorname{Ncut}$ for a data set of $40$ points.
 ### More Clusters
 
 - Option 1: Recursively apply the 2-cluster algorithm
-- Option 2: Treat the first $K$ eigenvectors as a reduced-dimensionality representation of the data, and cluster these eigenvectors. The task will be easier if the values in the eigenvectors are close to discrete, like the above case.
+- Option 2: For $K$ clusters, treat the smallest $K-1$ eigenvectors (excluding the last one) as a reduced-dimensionality representation of the data, and cluster these eigenvectors. The task will be easier if the values in the eigenvectors are close to discrete, like the above case.
 
 ```{margin} Relation to Representation Learning
 

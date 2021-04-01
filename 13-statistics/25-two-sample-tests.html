@@ -130,6 +130,11 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/52-non-linear-programming.html">
+     Non-linear Programming
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="../11-math/90-puzzles.html">
      Puzzles
     </a>
@@ -199,7 +204,7 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="13-randomized-trial.html">
-     Causality and Randomized Trial
+     Randomized Controlled Trials
     </a>
    </li>
    <li class="toctree-l2">
@@ -738,6 +743,20 @@
   <i class="fas fa-chevron-down">
   </i>
  </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../39-causal/00-causal-intro.html">
+   For Causal Inference
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../39-causal/11-causal-estimation.html">
+     Causal Estimation
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
 </ul>
 
 </nav> <!-- To handle the deprecated key -->
@@ -898,11 +917,11 @@
 <li><p><span class="math notranslate nohighlight">\(Y_{i}, \cdots, Y_{m}\)</span> i.i.d. sampled from a distribution with mean with mean <span class="math notranslate nohighlight">\(\mu_Y\)</span> and variance <span class="math notranslate nohighlight">\(\sigma^2 _Y\)</span></p></li>
 </ul>
 <p>We are interested in comparing the two samples, often by comparing the two means <span class="math notranslate nohighlight">\(\mu_X\)</span> and <span class="math notranslate nohighlight">\(\mu_Y\)</span>.</p>
-<p>An unbiased estimator for the difference in mean <span class="math notranslate nohighlight">\(\mu_X - \mu_Y\)</span> is <span class="math notranslate nohighlight">\(\bar{X} - \bar{Y}\)</span>. To provide standard error to this estimator, <span class="math notranslate nohighlight">\(Var(\bar{X} - \bar{Y})\)</span> need to be estimated, contigent on sample properties.</p>
+<p>An unbiased estimator for the difference in mean <span class="math notranslate nohighlight">\(\mu_X - \mu_Y\)</span> is <span class="math notranslate nohighlight">\(\bar{X} - \bar{Y}\)</span>. To provide standard error to this estimator, <span class="math notranslate nohighlight">\(\operatorname{Var}\left( \bar{X} - \bar{Y} \right)\)</span> need to be estimated, contingent on sample properties.</p>
 <div class="section" id="paired">
 <h2>Paired<a class="headerlink" href="#paired" title="Permalink to this headline">¶</a></h2>
 <p>In many studies, the <span class="math notranslate nohighlight">\(i\)</span>-th measurements in the two samples <span class="math notranslate nohighlight">\(x_i\)</span> and <span class="math notranslate nohighlight">\(y_i\)</span> actually are related, such as measurements before and after a treatment from the same subject.</p>
-<p>When <span class="math notranslate nohighlight">\(m = n\)</span> and <span class="math notranslate nohighlight">\(Corr(X_i,Y_i) = \rho \ne 0\)</span>, very often <span class="math notranslate nohighlight">\(\rho &gt;0\)</span>. Then,</p>
+<p>When <span class="math notranslate nohighlight">\(m = n\)</span> and <span class="math notranslate nohighlight">\(\operatorname{Corr}\left( X_i,Y_i \right) = \rho \ne 0\)</span>, very often <span class="math notranslate nohighlight">\(\rho &gt;0\)</span>. Then,</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{aligned}
@@ -928,10 +947,10 @@ S_{D}^{2}=\frac{1}{n-1} \sum_{i=1}^{n}\left(D_{i}-\bar{D}\right)^{2}=\widehat{\o
 \]</div>
 <div class="section" id="normal">
 <h3>Normal<a class="headerlink" href="#normal" title="Permalink to this headline">¶</a></h3>
-<p>If <span class="math notranslate nohighlight">\(X \sim N\left(\mu_{X}, \sigma_{X}^{2}\right), Y \sim N\left(\mu_{Y}, \sigma_{Y}^{2}\right)\)</span>, then we have the distributions for the sample estimators</p>
+<p>If <span class="math notranslate nohighlight">\(X \sim \mathcal{N} \left(\mu_{X}, \sigma_{X}^{2}\right), Y \sim \mathcal{N} \left(\mu_{Y}, \sigma_{Y}^{2}\right)\)</span>, then we have the distributions for the sample estimators</p>
 <div class="math notranslate nohighlight">
 \[
-\frac{\bar{D}-\mu_{D}}{\sigma_{D} / \sqrt{n}} \sim N(0,1), \quad \frac{(n-1) S_{D}^{2}}{\sigma_{D}^{2}} \sim \chi_{n-1}^{2}
+\frac{\bar{D}-\mu_{D}}{\sigma_{D} / \sqrt{n}} \sim \mathcal{N}(0,1), \quad \frac{(n-1) S_{D}^{2}}{\sigma_{D}^{2}} \sim \chi_{n-1}^{2}
 \]</div>
 <p>In addition, they are independent. By the definition of <span class="math notranslate nohighlight">\(t\)</span>-distribution, the test statistic</p>
 <div class="math notranslate nohighlight">
@@ -955,7 +974,7 @@ H_{0}: \mu_{D}=0
 <p>When n is large, we may use the Central Limit Theorem,</p>
 <div class="math notranslate nohighlight">
 \[
-\frac{\bar{D}-\mu_{D}}{S_{D} / \sqrt{n}} \overset{\mathcal{D}}{\longrightarrow} N(0,1)
+\frac{\bar{D}-\mu_{D}}{S_{D} / \sqrt{n}} \overset{\mathcal{D}}{\longrightarrow} \mathcal{N}(0,1)
 \]</div>
 <p>The asymptotic pivotal property can be used to conduct hypothesis tests.</p>
 <p>A <span class="math notranslate nohighlight">\((1-\alpha)\%\)</span> confidence interval for the true difference in mean <span class="math notranslate nohighlight">\(\mu_X - \mu_Y\)</span> is</p>
@@ -1001,7 +1020,7 @@ S_{p}^{2}=S_{\text {pooled }}^{2}=\frac{(n-1) S_{X}^{2}+(m-1) S_{Y}^{2}}{n+m-2}
 <p>When <strong>both</strong> <span class="math notranslate nohighlight">\(n\)</span> and <span class="math notranslate nohighlight">\(m\)</span> are large, we may apply the Central Limit Theorem,</p>
 <div class="math notranslate nohighlight">
 \[
-\frac{(\bar{X}-\bar{Y})-\left(\mu_{X}-\mu_{Y}\right)}{S_{p} \sqrt{\frac{1}{n}+\frac{1}{m}}} \overset{\mathcal{D}}{\longrightarrow} N(0,1)
+\frac{(\bar{X}-\bar{Y})-\left(\mu_{X}-\mu_{Y}\right)}{S_{p} \sqrt{\frac{1}{n}+\frac{1}{m}}} \overset{\mathcal{D}}{\longrightarrow} \mathcal{N}(0,1)
 \]</div>
 <div class="note admonition">
 <p class="admonition-title"> Pooling vs paring</p>
@@ -1058,7 +1077,7 @@ T=\frac{\bar{X}-\bar{Y}-\left(\mu_{X}-\mu_{Y}\right)}{\sqrt{\frac{S_{X}^{2}}{n}+
 <p>If <span class="math notranslate nohighlight">\(n\)</span> and <span class="math notranslate nohighlight">\(m\)</span> are both large, we can resort to Central Limit Theorem as usual,</p>
 <div class="math notranslate nohighlight">
 \[
-T=\frac{\left( \bar{X}-\bar{Y} \right)-\left(\mu_{X}-\mu_{Y}\right)}{\sqrt{\frac{S_{X}^{2}}{n}+\frac{S_{Y}^{2}}{m}}} \stackrel{\mathcal{D}}{\longrightarrow} N(0,1)
+T=\frac{\left( \bar{X}-\bar{Y} \right)-\left(\mu_{X}-\mu_{Y}\right)}{\sqrt{\frac{S_{X}^{2}}{n}+\frac{S_{Y}^{2}}{m}}} \stackrel{\mathcal{D}}{\longrightarrow} \mathcal{N}(0,1)
 \]</div>
 <p>The asymptotic approximation lead to a <span class="math notranslate nohighlight">\((1-\alpha)\%\)</span> confidence interval for the true difference in mean <span class="math notranslate nohighlight">\(\mu_X - \mu_Y\)</span></p>
 <div class="math notranslate nohighlight">
@@ -1101,12 +1120,12 @@ H_0: \mu_X - \mu_Y = 0
 <tr class="row-even"><td><p>Paired (reduced to a univariate test)</p></td>
 <td><p><span class="math notranslate nohighlight">\(\frac{\bar{D}-\mu_{D}}{S_{D} / \sqrt{n}}\)</span></p></td>
 <td><p><span class="math notranslate nohighlight">\(\sim t_{n-1}\)</span></p></td>
-<td><p><span class="math notranslate nohighlight">\(\stackrel{\mathcal{D}}{\longrightarrow} N(0,1)\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\stackrel{\mathcal{D}}{\longrightarrow} \mathcal{N}(0,1)\)</span></p></td>
 </tr>
 <tr class="row-odd"><td><p>Independent with equal variance</p></td>
 <td><p><span class="math notranslate nohighlight">\(\frac{(\bar{X}-\bar{Y})-\left(\mu_{X}-\mu_{Y}\right)}{S_{p} \sqrt{\frac{1}{n}+\frac{1}{m}}}\)</span></p></td>
 <td><p><span class="math notranslate nohighlight">\(\sim t_{n+m-2}\)</span></p></td>
-<td><p><span class="math notranslate nohighlight">\(\stackrel{\mathcal{D}}{\longrightarrow} N(0,1)\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\stackrel{\mathcal{D}}{\longrightarrow} \mathcal{N}(0,1)\)</span></p></td>
 </tr>
 <tr class="row-even"><td><p>Independent with unequal variance</p></td>
 <td><p><span class="math notranslate nohighlight">\(\frac{\left( \bar{X}-\bar{Y} \right)-\left(\mu_{X}-\mu_{Y}\right)}{\sqrt{\frac{S_{X}^{2}}{n}+\frac{S_{Y}^{2}}{m}}}\)</span></p></td>
