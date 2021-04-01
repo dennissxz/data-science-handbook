@@ -119,6 +119,7 @@ $$
     $$
 
    - $\operatorname{det} (\boldsymbol{\Sigma})$ is proportional to the squared of the [volume](ellipsoid) of the ellipsoid $E(\boldsymbol{\mu} , \boldsymbol{\Sigma}, c) = \left\{\boldsymbol{x} \in \mathbb{R} ^p: (\boldsymbol{x}-\boldsymbol{\mu})^{\top} \boldsymbol{\Sigma}^{-1}(\boldsymbol{x}-\boldsymbol{\mu}) \le c \right\}$ which measures the disperse of the "data cloud", i.e. uncertainty.
+   - $\operatorname{det} (\boldsymbol{\Sigma}) = \prod_{j=1}^d \lambda_j = 0$ if at least one variables is degenerate.
 
    The interpretation for other distributions is analogous.
 
@@ -244,7 +245,8 @@ In short we will write $D ^{-1} = \left( \operatorname{diag}\left( \boldsymbol{\
 
 - $\rho_{ii} = 1$. $\rho_{ij} = \rho_{ji}$. $\rho_{ij} = 0$ iff $\sigma_{ij} = 0$
 - Each $\rho_{ij}$ does not change under re-location or rescaling of $x_i$ and $x_j$
-- $\operatorname{det}(\boldsymbol{\rho} ) \in [0, 1]$: it is 1 if all variables are independent, and 0 if at least one variable is degenerate $\sigma _{ii} = 0$. The larger the value, higher level of independence, and higher level of uncertainty.
+- $\operatorname{tr}(\boldsymbol{\rho} )= \sum_{j=1}^d \lambda_j = d$
+- $\operatorname{det}(\boldsymbol{\rho} ) = \prod_{j=1}^d \lambda_j  \in [0, 1]$: it is 1 if all variables are independent, and 0 if at least one variable is degenerate $\sigma _{ii} = 0$. The larger the value, higher level of independence, and higher level of uncertainty.
 - $\operatorname{det}(\boldsymbol{\rho} ) = \operatorname{det} (\boldsymbol{D} ^{-1} \boldsymbol{\Sigma} \boldsymbol{D} ^{-1} ) = \operatorname{det}(\boldsymbol{D} ^{-1}) \operatorname{det} (\boldsymbol{\Sigma} ) \operatorname{det} (\boldsymbol{D} ^{-1} ) = \operatorname{det} (\boldsymbol{\Sigma}) \prod_i {\sigma}_{ii}$
 
 ### Sample Correlation Matrix
