@@ -81,7 +81,7 @@ Note the inner product matrix $\boldsymbol{G}_{n\times n} = \boldsymbol{X} \bold
   \boldsymbol{Z}_{n \times k} = \left[  \boldsymbol{V}  \boldsymbol{\Lambda} ^{1/2} \right]_{[:k]} = \boldsymbol{V}_{[: k]} \boldsymbol{\Lambda}_{[: k,: k]}^{1 / 2}
   $$
 
-  The reconstruction of $\boldsymbol{G}$ from $\boldsymbol{Z}$ is then $\widehat{\boldsymbol{G}} = \boldsymbol{Z} \boldsymbol{Z} ^\top$
+  For derivation see [here](http://www.math.uwaterloo.ca/~aghodsib/courses/f10stat946/notes/lec10-11.pdf). The reconstruction of $\boldsymbol{G}$ from $\boldsymbol{Z}$ is then $\widehat{\boldsymbol{G}} = \boldsymbol{Z} \boldsymbol{Z} ^\top$.
 
 
 - If the input is a similarity matrix $\boldsymbol{S}$, we can run the above algorithm by treating $\boldsymbol{S}$ as $\boldsymbol{G}$.
@@ -116,6 +116,7 @@ Note the inner product matrix $\boldsymbol{G}_{n\times n} = \boldsymbol{X} \bold
   :::
 
 - Motivated by this, if the input matrix is dissimilarity (not necessarily Euclidean distance) matrix $\boldsymbol{D}$, we can run the above algorithm over $\boldsymbol{B} = - \frac{1}{2} \boldsymbol{C} \boldsymbol{D} \boldsymbol{C}$, where $\boldsymbol{B}$ approximates $\boldsymbol{G}$.
+
 
 
 ## Relation to PCA
