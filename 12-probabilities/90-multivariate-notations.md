@@ -109,6 +109,8 @@ $$
 
 1. $\operatorname{Var}\left( \boldsymbol{A} \boldsymbol{x} + b \right) = \boldsymbol{A} \boldsymbol{\Sigma} \boldsymbol{A} ^\top$
 
+1. $\sum_{j=1}^d \lambda_j = \sum_{j=1}^d \sigma_{ii}$: the sum of eigenvalues of $\boldsymbol{\Sigma}$ equals the sum of variances.
+
 1. The determinant of the covariance matrix $\left\vert \boldsymbol{\boldsymbol{\Sigma}}  \right\vert = \operatorname{det} (\boldsymbol{\boldsymbol{\Sigma}} )$ is called the generalized variance. It changes for scaling of variables like the case of univariate variance. Suppose $\boldsymbol{x}$ follows [multivariate Gaussian](multi-gaussian) $\boldsymbol{x} \sim \mathcal{N}_p(\boldsymbol{\mu} , \boldsymbol{\Sigma})$, then we have the following interpretation for $\operatorname{det} (\boldsymbol{\Sigma})$:
    - $\operatorname{det}(\boldsymbol{\Sigma})$ is a (indirect) measure of the entropy of the Gaussian density
 
@@ -180,6 +182,7 @@ $$
 1. If $\boldsymbol{x}$ and $\boldsymbol{y}$ are $p \times 1$ vectors, then $\operatorname{Var}\left( \boldsymbol{x} +\boldsymbol{y}  \right) = \operatorname{Var}\left( \boldsymbol{x}  \right) + \operatorname{Var}\left( y \right) + \operatorname{Cov}\left( \boldsymbol{y} ,\boldsymbol{x} \right) + \operatorname{Cov}\left( \boldsymbol{x} , \boldsymbol{y} \right)$
 1. $\operatorname{Cov}\left( \boldsymbol{A} \boldsymbol{x} , \boldsymbol{B} \boldsymbol{y} \right) = \boldsymbol{A} \operatorname{Cov}\left( \boldsymbol{x} , \boldsymbol{y} \right) \boldsymbol{B} ^\top$
 1. If $\boldsymbol{x}$ and $\boldsymbol{y}$ are independent, then $\operatorname{Cov}\left( \boldsymbol{x} , \boldsymbol{y} \right)$. Note that the converse is not always true.
+
 
 
 ## Correlation Matrix
