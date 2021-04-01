@@ -59,8 +59,13 @@ Kernels are popular. Why? Let's first see two theorems.
 (ml-mercers-theorem)=
 ### Mercer's Theorem
 
+Given a kernel function $k(x, y)$, can we find a map $\boldsymbol{\phi}: \mathcal{S} \rightarrow \mathcal{H}$ to approximate the function value: $k(x, y)\approx \langle\boldsymbol{\phi}(x), \boldsymbol{\phi}(y)\rangle_{\mathcal{H}}$?
+
+
 Theorem (Mercer's, 1909)
 : Under fairly general conditions, for any PSD kernel $k: \mathcal{S} \times \mathcal{S} \rightarrow \mathbb{C}$, there **exists** a map $\boldsymbol{\phi}: \mathcal{S} \rightarrow \mathcal{H}$ such that $k(x, y)=\langle\boldsymbol{\phi}(x), \boldsymbol{\phi}(y)\rangle_{\mathcal{H}}$.
+
+Note that $\boldsymbol{\phi}$ can have infinite dimensions.
 
 (ml-representer-theorem)=
 ### Representer Theorem
