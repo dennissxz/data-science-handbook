@@ -741,3 +741,15 @@ The substitution $S_n = ns_n^2$ avoids the computation that involves $\frac{1}{n
 
     Note that if $n=2$ then this problem reduces to the previous one.
     :::
+
+
+1. Randomly select three points $A, B, C$ from a circle, what's the probability that the center $O$ is in the triangle $ABC$? Extension: probability of four random points on a sphere such that the tetrahedron $ABCD$ contains $O$?
+
+    :::{admonition,dropdown,seealso} *Solution: change of random procedure*
+
+    Here are some hints. For details, see the great youtube [video](https://www.youtube.com/watch?v=OkmNXy7er84).
+
+    - Suppose we have already select two points $A, B$. What's the range of $C$ such that $ABC$ covers $O$?
+    - Two random points can generated as follows: generate two random diameter lines $\ell_1, \ell_2$ that pass center $O$, then randomly choose one endpoint of $\ell_1$ to be $B$, and one endpoint of $\ell_2$ to be $C$, their are 4 combinations. Now, suppose we already have $A$, and use this random procedure to generate $B$ and $C$, which of the 4 combinations of $(B,C)$ gives a required triangle $ABC$?
+
+    :::
