@@ -241,7 +241,8 @@ In short we will write $D ^{-1} = \left( \operatorname{diag}\left( \boldsymbol{\
 
 - $\rho_{ii} = 1$. $\rho_{ij} = \rho_{ji}$. $\rho_{ij} = 0$ iff $\sigma_{ij} = 0$
 - Each $\rho_{ij}$ does not change under re-location or rescaling of $x_i$ and $x_j$
-- $\operatorname{det}(\boldsymbol{\rho} ) \in [0, 1]$: it is 1 if all variables are independent, and 0 if at least one variable is degenerate $\sigma _{ii} = 0$
+- $\operatorname{det}(\boldsymbol{\rho} ) \in [0, 1]$: it is 1 if all variables are independent, and 0 if at least one variable is degenerate $\sigma _{ii} = 0$. The larger the value, higher level of independence, and higher level of uncertainty.
+- $\operatorname{det}(\boldsymbol{\rho} ) = \operatorname{det} (\boldsymbol{D} ^{-1} \boldsymbol{\Sigma} \boldsymbol{D} ^{-1} ) = \operatorname{det}(\boldsymbol{D} ^{-1}) \operatorname{det} (\boldsymbol{\Sigma} ) \operatorname{det} (\boldsymbol{D} ^{-1} ) = \operatorname{det} (\boldsymbol{\Sigma}) \prod_i {\sigma}_{ii}$
 
 ### Sample Correlation Matrix
 
