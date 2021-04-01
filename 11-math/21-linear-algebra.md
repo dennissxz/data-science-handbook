@@ -216,7 +216,10 @@ Properties
   &\Rightarrow \boldsymbol{A} \text{ is nonsingular} \\
   \boldsymbol{A} \in \mathrm{PSD} &\Leftrightarrow \lambda_i(\boldsymbol{A}) \ge 0 \\
   &\Leftrightarrow \exists \text{ square } \boldsymbol{R}, \operatorname{rank}\left( R \right) = \operatorname{rank}\left( \boldsymbol{A}  \right): \boldsymbol{A} = \boldsymbol{R} \boldsymbol{R} ^\top\\
+  &\Rightarrow \exists \boldsymbol{B} = \boldsymbol{U}
+  \boldsymbol{\Lambda}^{1/2} \boldsymbol{U} ^{\top} \in \mathrm{PSD}: \boldsymbol{B} ^2 = \boldsymbol{A} \\
   \text{square } \boldsymbol{B} &\Rightarrow \boldsymbol{B} ^\top \boldsymbol{B} \in \mathrm{PSD}\\
+  \text{any } \boldsymbol{M} \in \mathbb{R} ^{m \times n} &\Rightarrow \boldsymbol{M} \boldsymbol{M}  ^\top, \boldsymbol{M} ^{\top} \boldsymbol{M} \in \mathrm{PSD}\\
   \end{align}$$
 
 
