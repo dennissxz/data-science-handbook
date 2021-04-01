@@ -1,15 +1,12 @@
 # Correlation and Dependence
 
-## Definitions
-
-### Correlation
-
+## Correlation
 
 The correlation of two random variables measures how two or more variables are related or associated to one another. There are several correlation coefficients, and the most familiar one is Pearson correlation coefficient. We will also cover some rank correlation coefficients. Besides, mutual information can also be applied to measure association between two variables, given their distribution functions.
 
 Note that different correlation coefficients can give different values for the same sample of data.
 
-#### Pearson Correlation Coefficient
+### Pearson Correlation Coefficient
 
 It is defined for two continuous variables $X,Y$ and only measure the **linear relationship** between them.
 
@@ -54,7 +51,7 @@ r_{x y} &=\frac{\sum x_{i} y_{i}-n \bar{x} \bar{y}}{n s_{x}^{\prime} s_{y}^{\pri
 $$
 
 
-#### Spearman's Rank Correlation Coefficient
+### Spearman's Rank Correlation Coefficient
 
 Spearman's rank correlation is more robust than Pearson's to capture nonlinear relationships. In fact, it assesses monotonic relationships. For a sample of $n$ scores $X_i, Y_i$, they are first converted to ranks $\operatorname{rg}_{X_i}, \operatorname{rg}_{Y_i}$, and the Spearman correlation coefficient is defined as the Pearson correlation coefficient between the rank variables.µ
 
@@ -84,7 +81,7 @@ $$\begin{aligned}
 \end{aligned}$$
 
 
-#### Kendall's Rank Correlation Coefficient
+### Kendall's Rank Correlation Coefficient
 
 We first define concordance. For observations $(x_i, y_i), i = 1, 2, \ldots, n$, we consider all $\frac{1}{2}n(n-1)$ pairs $\left\{ (x_i, y_i), (x_j, y_j) \right\}$ with $i < j$.
 
@@ -110,26 +107,31 @@ $$
 \tau=\operatorname{\mathbb{P} }\left[\left(X_{1}-X_{2}\right)\left(Y_{1}-Y_{2}\right)>0\right]-\operatorname{\mathbb{P}} \left[\left(X_{1}-X_{2}\right)\left(Y_{1}-Y_{2}\right)<0\right]
 $$
 
-
 ### Correlated
 
-Two random variables $X,Y$ are said to be
-- correlated if $\operatorname{Cov}\left( X,Y \right) \ne 0$
-- uncorrelated if $\operatorname{Cov}\left( X,Y \right) = 0$.
+A related notion of correlation is correlated.
 
-### Dependence
+Definition (Correlated)
+: Two random variables $X,Y$ are said to be
+  - correlated if $\operatorname{Cov}\left( X,Y \right) \ne 0$
+  - uncorrelated if $\operatorname{Cov}\left( X,Y \right) = 0$.
 
-Two random variables $X,Y$ are independent iff the joints cumulative distribution function satisfies
+## Independence
 
-$$
-F_{X, Y}(x, y)=F_{X}(x) F_{Y}(y) \quad \text{for all}\ x, y
-$$
+### Definition
 
-or equivalently, the joint density satisfies
+Definition (Independent)
+: Two random variables $X,Y$ are independent iff the joints cumulative distribution function satisfies
 
-$$
-f_{X, Y}(x, y)=f_{X}(x) f_{Y}(y) \quad \text{for all}\ x, y
-$$
+  $$
+  F_{X, Y}(x, y)=F_{X}(x) F_{Y}(y) \quad \text{for all}\ x, y
+  $$
+
+  or equivalently, the joint density satisfies
+
+  $$
+  f_{X, Y}(x, y)=f_{X}(x) f_{Y}(y) \quad \text{for all}\ x, y
+  $$
 
 From this definition we have
 
@@ -138,6 +140,58 @@ f_{X\mid Y}(x\mid y) = \frac{f_{X,Y}(x,y)}{f_Y(y)}  = f_X(x)
 $$
 
 which can be interpreted as "knowing any information about $Y=y$ does not change our knowledge of $X$". If this is false then the two random variables are not independent.
+
+### $k$-wise Independence
+
+Definition ($k$-wise independence)
+: - A set of events $E_1, \ldots, E_n$ are called $k$-wise independent if for any set $I \subseteq \left\{ 1, 2, \ldots, n \right\}$ with $\left\vert I \right\vert \le k$,
+
+    $$
+    \operatorname{\mathbb{P}}\left[\wedge_{i \in I} E_{i}\right]=\prod_{i \in I} \operatorname{\mathbb{P}}\left[E_{i}\right]
+    $$
+
+    The term pairwise independence is a synonym for 2-wise independence, and the term mutual independence for $n$-wise independence.
+
+  - A set of **discrete** random variables $X_1, X_2, \ldots, X_n$ are called $k$-wise independent if for any set $I \subseteq \left\{ 1, 2, \ldots, n \right\}$ with $\left\vert I \right\vert \le k$ and any values $x_i$ we have
+
+    $$
+    \operatorname{\mathbb{P}}\left[\wedge_{i \in I} X_{i}=x_{i}\right]=\prod_{i \in I} \operatorname{\mathbb{P}}\left[X_{i}=x_{i}\right]
+    $$
+
+Example
+: Consider Bernoulli random variables $X_1, X_2, X_3$ with joint distribution:
+
+  $$
+  \begin{array}{ccc}
+  X_{1} & X_{2} & X_{3} \\
+  \hline 0 & 0 & 0 \\
+  0 & 1 & 1 \\
+  1 & 0 & 1 \\
+  1 & 1 & 0
+  \end{array}
+  $$
+
+  They are certainly not mutually independent because the event $X_{1}=X_{2}=X_{3}=1$ has probability 0. But they are pairwise independent.
+
+Theorem
+: If $X_1, X_2, \ldots, X_n$ are $k$-wise independent, then for any set $I \subseteq \left\{ 1, 2, \ldots, n \right\}$ with $\left\vert I \right\vert \le k$,
+
+  $$
+  \operatorname{\mathbb{E}}\left[\prod_{i \in I} X_{i}\right]=\prod_{i \in I} \operatorname{\mathbb{E}}\left[X_{i}\right]
+  $$
+
+  :::{admonition,dropdown,seealso} *Proof*
+
+  $$
+  \begin{aligned}
+  \operatorname{\mathbb{E}}\left[\prod_{i=1}^{k} X_{i}\right] &=\sum_{x_{1}} \sum_{x_{2}} \cdots \sum_{x_{k}} \operatorname{\mathbb{P}}\left[\wedge_{i=1}^{k} X_{i}=x_{i}\right] \cdot \prod_{i=1}^{k} x_{i} \\
+  &=\sum_{x_{1}} \sum_{x_{2}} \cdots \sum_{x_{k}} \prod_{i=1}^{k} \operatorname{\mathbb{P}}\left[X_{i}=x_{i}\right] \cdot x_{i} \quad(k \text { -wise independence) }\\
+  &=\left(\sum_{x_{1}} \operatorname{\mathbb{P}}\left[X_{1}=x_{1}\right] \cdot x_{1}\right) \cdots\left(\sum_{x_{k}} \operatorname{\mathbb{P}}\left[X_{k}=x_{k}\right] \cdot x_{k}\right) \\
+  &=\prod_{i=1}^{k} \operatorname{\mathbb{E}}\left[X_{i}\right]
+  \end{aligned}
+  $$
+
+  :::
 
 ## Comparison
 
@@ -209,7 +263,7 @@ The Simpson's paradox says that, even if $\overrightarrow{L_{1}}$ has a smaller 
 
 ## Exercise
 
-1. (Raining, Tags: Jane Street, Quant, 20Q4)
+1. [Raining, Tags: Jane Street, Quant, 20Q4]
 
     *Suppose the probabilities of raining on Saturday and Sunday are $p$ and $q$ respectively. What is the probability of raining on weekend? What is the probability that it rains on either Saturday or Sunday?*
 
@@ -268,7 +322,7 @@ The Simpson's paradox says that, even if $\overrightarrow{L_{1}}$ has a smaller 
     :::  
 
 
-1. (Expected Value of the Maximum of Two Uniform Random Variables)
+1. [Expected Value of the Maximum of Two Uniform Random Variables]
 
     *Suppose $X$ and $Y$ are two uniformly distributed random variables over the interval $[0,1]$. What is the expected value $\operatorname{\mathbb{E}}[\max(X,Y)]$?*
 
@@ -348,7 +402,7 @@ The Simpson's paradox says that, even if $\overrightarrow{L_{1}}$ has a smaller 
 
 
 
-1. (Lower Bound of Correlation for IID)
+1. [Lower Bound of Correlation for IID]
 
     *Suppose $X_1, X_2, \ldots, X_n$ where $n\ge 2$ are IID variables with common pairwise correlation $\rho = \operatorname{Corr}\left( X_i, X_j \right)$ for $i\ne j$. What is the lower bound of $r$ and when is it obtained?*
 
