@@ -343,17 +343,6 @@ $$
 \operatorname{\mathbb{P}}\left( \mu - \sqrt{2}\sigma \le X \le \mu - \sqrt{2}\sigma \right) > \frac{1}{2}
 $$
 
-Substituting $\lambda \leftarrow \frac{\lambda}{\sigma}$ gives
-
-$$
-\operatorname{\mathbb{P}}(|X-\mu| \geq \lambda ) \leq \frac{\sigma ^2}{\lambda^{2}}
-$$
-
-In general,
-
-$$
-\operatorname{\mathbb{P}}(|\mathrm{X}-\mu|>\lambda) \leq \frac{\mathbb{E}\left[(X-\mu)^{p}\right]}{\lambda^{p}}
-$$
 
 :::{admonition,dropdown,seealso} *Proof by the law of total expectation*
 
@@ -369,22 +358,52 @@ $\square$
 
 :::
 
+Some variation:
+
+- Substituting $\lambda \leftarrow \frac{\epsilon\mu}{\sigma}$ gives
+
+  $$
+  \operatorname{\mathbb{P}}(|X-\mu| \geq \epsilon \mu ) \leq \frac{\sigma ^2}{(\epsilon \mu)^{2}}
+  $$
+
+  which can be used to construct a $(\epsilon, \delta)$ estimator.
+
+- Substituting $\lambda \leftarrow \frac{\lambda}{\sigma}$ gives
+
+  $$
+  \operatorname{\mathbb{P}}(|X-\mu| \geq \lambda ) \leq \frac{\sigma ^2}{\lambda^{2}}
+  $$
+
+  In general,
+
+  $$
+  \operatorname{\mathbb{P}}(|\mathrm{X}-\mu|>\lambda) \leq \frac{\mathbb{E}\left[(X-\mu)^{p}\right]}{\lambda^{p}}
+  $$
+
+
+
 
 ### Chernoff Bound
 
-Suppose $X_{1}, \cdots, X_{n}$ are independent r.v. with $X_{i} \in[0,1]$. Let $S=\sum_{i} X_{i}$ and $\mu=\mathbb{E}[X]$. Then for $\lambda \in (0,1)$,
+Suppose $X_{1}, \cdots, X_{n}$ are independent r.v. with $X_{i} \in[0,1]$. Let $S=\sum_{i} X_{i}$ and $\mu_S=\mathbb{E}[X]$. Then for $\lambda \in (0,1)$,
 
 $$
-\operatorname{\mathbb{P}}(S>(1+\lambda) \mu)<e^{-\frac{\lambda^{2} \mu}{3}} \qquad \text{(upper tail)}
+\operatorname{\mathbb{P}} \left[ S>(1+\lambda) \mu_S \right]<e^{-\frac{\lambda^{2} \mu_S}{3}} \qquad \text{(upper tail)}
 $$
 
 and,
 
 $$
-\operatorname{Pr}(S<(1-\lambda) \mu)<e^{-\frac{\lambda^{2} \mu}{2}} \qquad \text{(lower tail)}
+\operatorname{\mathbb{P}} \left[ S<(1-\lambda) \mu_S  \right]<e^{-\frac{\lambda^{2} \mu_S}{2}} \qquad \text{(lower tail)}
 $$
 
+Together:
 
+
+$$\begin{aligned}
+\mathbb{P}(|S-\mu _S|>\lambda \mu_S)
+& \leq 2 e^{-\lambda^{2} \mu_S / 3}\\
+\end{aligned}$$
 
 ### Cauchy-Schewarz Inequality in Probability
 
