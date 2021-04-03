@@ -447,6 +447,20 @@
   <i class="fas fa-chevron-down">
   </i>
  </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../26-algo-for-big-data/00-algo-for-big-data.html">
+   For Big Data
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../26-algo-for-big-data/10-streaming.html">
+     Streaming Model
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
 </ul>
 <p class="caption collapsible-parent">
  <span class="caption-text">
@@ -1245,16 +1259,6 @@
 \[
 \operatorname{\mathbb{P}}\left( \mu - \sqrt{2}\sigma \le X \le \mu - \sqrt{2}\sigma \right) &gt; \frac{1}{2}
 \]</div>
-<p>Substituting <span class="math notranslate nohighlight">\(\lambda \leftarrow \frac{\lambda}{\sigma}\)</span> gives</p>
-<div class="math notranslate nohighlight">
-\[
-\operatorname{\mathbb{P}}(|X-\mu| \geq \lambda ) \leq \frac{\sigma ^2}{\lambda^{2}}
-\]</div>
-<p>In general,</p>
-<div class="math notranslate nohighlight">
-\[
-\operatorname{\mathbb{P}}(|\mathrm{X}-\mu|&gt;\lambda) \leq \frac{\mathbb{E}\left[(X-\mu)^{p}\right]}{\lambda^{p}}
-\]</div>
 <div class="dropdown seealso admonition">
 <p class="admonition-title"> <em>Proof by the law of total expectation</em></p>
 <div class="math notranslate nohighlight">
@@ -1267,19 +1271,46 @@
 \end{align}\end{split}\]</div>
 <p><span class="math notranslate nohighlight">\(\square\)</span></p>
 </div>
+<p>Some variation:</p>
+<ul>
+<li><p>Substituting <span class="math notranslate nohighlight">\(\lambda \leftarrow \frac{\epsilon\mu}{\sigma}\)</span> gives</p>
+<div class="math notranslate nohighlight">
+\[
+  \operatorname{\mathbb{P}}(|X-\mu| \geq \epsilon \mu ) \leq \frac{\sigma ^2}{(\epsilon \mu)^{2}}
+  \]</div>
+<p>which can be used to construct a <span class="math notranslate nohighlight">\((\epsilon, \delta)\)</span> estimator.</p>
+</li>
+<li><p>Substituting <span class="math notranslate nohighlight">\(\lambda \leftarrow \frac{\lambda}{\sigma}\)</span> gives</p>
+<div class="math notranslate nohighlight">
+\[
+  \operatorname{\mathbb{P}}(|X-\mu| \geq \lambda ) \leq \frac{\sigma ^2}{\lambda^{2}}
+  \]</div>
+<p>In general,</p>
+<div class="math notranslate nohighlight">
+\[
+  \operatorname{\mathbb{P}}(|\mathrm{X}-\mu|&gt;\lambda) \leq \frac{\mathbb{E}\left[(X-\mu)^{p}\right]}{\lambda^{p}}
+  \]</div>
+</li>
+</ul>
 </div>
 <div class="section" id="chernoff-bound">
 <h3>Chernoff Bound<a class="headerlink" href="#chernoff-bound" title="Permalink to this headline">¶</a></h3>
-<p>Suppose <span class="math notranslate nohighlight">\(X_{1}, \cdots, X_{n}\)</span> are independent r.v. with <span class="math notranslate nohighlight">\(X_{i} \in[0,1]\)</span>. Let <span class="math notranslate nohighlight">\(S=\sum_{i} X_{i}\)</span> and <span class="math notranslate nohighlight">\(\mu=\mathbb{E}[X]\)</span>. Then for <span class="math notranslate nohighlight">\(\lambda \in (0,1)\)</span>,</p>
+<p>Suppose <span class="math notranslate nohighlight">\(X_{1}, \cdots, X_{n}\)</span> are independent r.v. with <span class="math notranslate nohighlight">\(X_{i} \in[0,1]\)</span>. Let <span class="math notranslate nohighlight">\(S=\sum_{i} X_{i}\)</span> and <span class="math notranslate nohighlight">\(\mu_S=\mathbb{E}[X]\)</span>. Then for <span class="math notranslate nohighlight">\(\lambda \in (0,1)\)</span>,</p>
 <div class="math notranslate nohighlight">
 \[
-\operatorname{\mathbb{P}}(S&gt;(1+\lambda) \mu)&lt;e^{-\frac{\lambda^{2} \mu}{3}} \qquad \text{(upper tail)}
+\operatorname{\mathbb{P}} \left[ S&gt;(1+\lambda) \mu_S \right]&lt;e^{-\frac{\lambda^{2} \mu_S}{3}} \qquad \text{(upper tail)}
 \]</div>
 <p>and,</p>
 <div class="math notranslate nohighlight">
 \[
-\operatorname{Pr}(S&lt;(1-\lambda) \mu)&lt;e^{-\frac{\lambda^{2} \mu}{2}} \qquad \text{(lower tail)}
+\operatorname{\mathbb{P}} \left[ S&lt;(1-\lambda) \mu_S  \right]&lt;e^{-\frac{\lambda^{2} \mu_S}{2}} \qquad \text{(lower tail)}
 \]</div>
+<p>Together:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\mathbb{P}(|S-\mu _S|&gt;\lambda \mu_S)
+&amp; \leq 2 e^{-\lambda^{2} \mu_S / 3}\\
+\end{aligned}\end{split}\]</div>
 </div>
 <div class="section" id="cauchy-schewarz-inequality-in-probability">
 <h3>Cauchy-Schewarz Inequality in Probability<a class="headerlink" href="#cauchy-schewarz-inequality-in-probability" title="Permalink to this headline">¶</a></h3>

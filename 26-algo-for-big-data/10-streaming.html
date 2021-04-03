@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Matching &#8212; Data Science Handbook</title>
+    <title>Streaming Model &#8212; Data Science Handbook</title>
     
   <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
 
@@ -57,8 +57,8 @@
     <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Maximum Independent Set in Trees" href="42-maximum-independent-set.html" />
-    <link rel="prev" title="Maximum Flow" href="31-maximum-flow.html" />
+    <link rel="next" title="Machine Learning Basics" href="../30-ml-basics/00-ml-basics.html" />
+    <link rel="prev" title="For Big Data" href="00-algo-for-big-data.html" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
@@ -408,38 +408,38 @@
   <i class="fas fa-chevron-down">
   </i>
  </li>
- <li class="toctree-l1 current active collapsible-parent">
-  <a class="reference internal" href="00-graph-related.html">
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../25-graph-related/00-graph-related.html">
    Graph Related
   </a>
-  <ul class="current collapse-ul">
+  <ul class="collapse-ul">
    <li class="toctree-l2">
-    <a class="reference internal" href="13-shortest-path.html">
+    <a class="reference internal" href="../25-graph-related/13-shortest-path.html">
      Shortest Path
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="21-minimum-spanning-tree.html">
+    <a class="reference internal" href="../25-graph-related/21-minimum-spanning-tree.html">
      Minimum Spanning Tree
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="31-maximum-flow.html">
+    <a class="reference internal" href="../25-graph-related/31-maximum-flow.html">
      Maximum Flow
     </a>
    </li>
-   <li class="toctree-l2 current active">
-    <a class="current reference internal" href="#">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/32-matching.html">
      Matching
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="42-maximum-independent-set.html">
+    <a class="reference internal" href="../25-graph-related/42-maximum-independent-set.html">
      Maximum Independent Set in Trees
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="91-LP-max-flow-min-cut.html">
+    <a class="reference internal" href="../25-graph-related/91-LP-max-flow-min-cut.html">
      LP on Max-flow and Min-cut
     </a>
    </li>
@@ -447,13 +447,13 @@
   <i class="fas fa-chevron-down">
   </i>
  </li>
- <li class="toctree-l1 collapsible-parent">
-  <a class="reference internal" href="../26-algo-for-big-data/00-algo-for-big-data.html">
+ <li class="toctree-l1 current active collapsible-parent">
+  <a class="reference internal" href="00-algo-for-big-data.html">
    For Big Data
   </a>
-  <ul class="collapse-ul">
-   <li class="toctree-l2">
-    <a class="reference internal" href="../26-algo-for-big-data/10-streaming.html">
+  <ul class="current collapse-ul">
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
      Streaming Model
     </a>
    </li>
@@ -811,7 +811,7 @@
         <!-- ipynb file if we had a myst markdown file -->
         
         <!-- Download raw file -->
-        <a class="dropdown-buttons" href="../_sources/25-graph-related/32-matching.md"><button type="button"
+        <a class="dropdown-buttons" href="../_sources/26-algo-for-big-data/10-streaming.md"><button type="button"
                 class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
                 data-placement="left">.md</button></a>
         <!-- Download PDF via print -->
@@ -831,7 +831,7 @@
                 data-toggle="tooltip" data-placement="left" title="Source repository"><i
                     class="fab fa-github"></i>repository</button></a>
         <a class="issues-button"
-            href="https://github.com/dennissxz/data-science-handbook/issues/new?title=Issue%20on%20page%20%2F25-graph-related/32-matching.html&body=Your%20issue%20content%20here."><button
+            href="https://github.com/dennissxz/data-science-handbook/issues/new?title=Issue%20on%20page%20%2F26-algo-for-big-data/10-streaming.html&body=Your%20issue%20content%20here."><button
                 type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
                 title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
         
@@ -859,60 +859,72 @@
         <nav id="bd-toc-nav">
             <ul class="nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#maximum-bipartite-matching">
-   Maximum Bipartite Matching
+  <a class="reference internal nav-link" href="#background">
+   Background
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#estimate-ell-0">
+   Estimate
+   <span class="math notranslate nohighlight">
+    \(\ell_0\)
+   </span>
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#estimate-ell-1">
+   Estimate
+   <span class="math notranslate nohighlight">
+    \(\ell_1\)
+   </span>
   </a>
   <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#morris">
+     Morris
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id1">
+     Morris+
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id2">
+     Morris++
+    </a>
+   </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#problem">
      Problem
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#reduction-to-bipartite-matching">
-     Reduction to Bipartite Matching
+    <a class="reference internal nav-link" href="#trivial-solution">
+     Trivial Solution
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#reduction-to-max-flow">
-     Reduction to Max-flow
+    <a class="reference internal nav-link" href="#approximation">
+     Approximation
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#bipartite-b-matching">
-   Bipartite
+  <a class="reference internal nav-link" href="#l-2-norm-estimation">
    <span class="math notranslate nohighlight">
-    \(b\)
+    \(L_2\)
    </span>
-   -matching
+   Norm Estimation
   </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#id1">
-     Problem
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#id2">
-     Reduction to Max-flow
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#extension">
-     Extension
-    </a>
-   </li>
-  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#matching-in-d-regular-bipartite-graph">
-   Matching in
+  <a class="reference internal nav-link" href="#x-i-estimation">
    <span class="math notranslate nohighlight">
-    \(d\)
+    \(x_i\)
    </span>
-   -regular Bipartite Graph
+   Estimation
   </a>
  </li>
 </ul>
@@ -927,125 +939,216 @@
         
               <div>
                 
-  <div class="section" id="matching">
-<h1>Matching<a class="headerlink" href="#matching" title="Permalink to this headline">¶</a></h1>
-<dl class="simple myst">
-<dt>Definition (Matching)</dt><dd><p>In graph <span class="math notranslate nohighlight">\(G=(V,E)\)</span>, an edge set <span class="math notranslate nohighlight">\(M \subseteq E\)</span> is a matching in <span class="math notranslate nohighlight">\(G\)</span>, if no two edges in <span class="math notranslate nohighlight">\(M\)</span> share a common vertex. That is, every vertex in <span class="math notranslate nohighlight">\((V, M)\)</span> can only have one edge.</p>
-</dd>
-</dl>
-<p>We call a vertex <span class="math notranslate nohighlight">\(v\in V\)</span> <strong>matched</strong> w.r.t. <span class="math notranslate nohighlight">\(M\)</span> if it is an endpoint of some edge <span class="math notranslate nohighlight">\(e\in M\)</span>.</p>
-<p>A matching <span class="math notranslate nohighlight">\(M\)</span> is called <strong>perfect</strong>, if all vertices <span class="math notranslate nohighlight">\(V\)</span> of <span class="math notranslate nohighlight">\(G\)</span> is matched. That is, every vertex <span class="math notranslate nohighlight">\(v \in V\)</span> is an endpoint of one and only one edge <span class="math notranslate nohighlight">\(e \in M\)</span>.</p>
-<dl class="simple myst">
-<dt>Definition (Maximum Matching)</dt><dd><p>A matching <span class="math notranslate nohighlight">\(M\)</span> is a maximum matching in <span class="math notranslate nohighlight">\(G\)</span>, it it contains the largest possible number of edges among all matchings of <span class="math notranslate nohighlight">\(G\)</span>.</p>
-</dd>
-</dl>
-<p>Many matching problems can reduce to max-flow problems.</p>
-<div class="section" id="maximum-bipartite-matching">
-<h2>Maximum Bipartite Matching<a class="headerlink" href="#maximum-bipartite-matching" title="Permalink to this headline">¶</a></h2>
-<dl class="simple myst">
-<dt>Definition (Bipartite graph)</dt><dd><p>A graph is called a bipartite graph if its vertices are partitioned into two subsets, and every edge has one endpoint in one subset, and on in the other.</p>
-</dd>
-</dl>
-<div class="section" id="problem">
-<h3>Problem<a class="headerlink" href="#problem" title="Permalink to this headline">¶</a></h3>
-<div class="margin sidebar">
-<p class="sidebar-title"></p>
-<p>Note this problem is different from interval scheduling. Here one machine only process one job.</p>
-</div>
-<p>Consider a job assignment problem. There are a set <span class="math notranslate nohighlight">\(J\)</span> of jobs and set <span class="math notranslate nohighlight">\(M\)</span> of machines. For each job <span class="math notranslate nohighlight">\(j \in J\)</span>, we are given a subset <span class="math notranslate nohighlight">\(M_j\subseteq M\)</span> of machines that are capable to process the job <span class="math notranslate nohighlight">\(j\)</span>. We would like to assign as many jobs as possible to machines, subject to the constraint that each machine is assigned at most one job.</p>
-</div>
-<div class="section" id="reduction-to-bipartite-matching">
-<h3>Reduction to Bipartite Matching<a class="headerlink" href="#reduction-to-bipartite-matching" title="Permalink to this headline">¶</a></h3>
-<p>We can build a graph <span class="math notranslate nohighlight">\(G=(V,E)\)</span> modeling this problem.</p>
+  <div class="section" id="streaming-model">
+<h1>Streaming Model<a class="headerlink" href="#streaming-model" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="background">
+<h2>Background<a class="headerlink" href="#background" title="Permalink to this headline">¶</a></h2>
+<p>Problem</p>
 <ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(V\)</span> consists of two disjoint subsets <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span></p>
+<li><p>Given a sequence of input data, <span class="math notranslate nohighlight">\(y_1, \ldots, y_n\)</span>, where <span class="math notranslate nohighlight">\(y \in [m]\)</span>, let <span class="math notranslate nohighlight">\(\boldsymbol{x} \in [n]^m\)</span> be a container vector of sample frequency, where <span class="math notranslate nohighlight">\(x_i\)</span> counts the number of <span class="math notranslate nohighlight">\(y\)</span> that has value <span class="math notranslate nohighlight">\(i\)</span>, for <span class="math notranslate nohighlight">\(i=[m]\)</span>. We are interested in</p>
 <ul>
-<li><p><span class="math notranslate nohighlight">\(X\)</span> contains vertex <span class="math notranslate nohighlight">\(x_j\)</span> for each job <span class="math notranslate nohighlight">\(j\)</span></p></li>
-<li><p><span class="math notranslate nohighlight">\(Y\)</span> contains vertex <span class="math notranslate nohighlight">\(y_i\)</span> for each machine <span class="math notranslate nohighlight">\(i\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\left\| \boldsymbol{x}  \right\| _0\)</span>: how many distinct <span class="math notranslate nohighlight">\(y_i\)</span> are there? Let it be <span class="math notranslate nohighlight">\(\ell_0\)</span>, note that <span class="math notranslate nohighlight">\(\ell_0\le m\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\left\| \boldsymbol{x}  \right\| _1\)</span>: how many <span class="math notranslate nohighlight">\(y_i\)</span> are there, i.e. how large is <span class="math notranslate nohighlight">\(n\)</span>?</p></li>
+<li><p><span class="math notranslate nohighlight">\(\left\| \boldsymbol{x}  \right\| _2\)</span>: what is the Euclidean norm <span class="math notranslate nohighlight">\(\ell_2\)</span> of <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span>?</p></li>
+<li><p><span class="math notranslate nohighlight">\(x_i\)</span>: what is the frequency of <span class="math notranslate nohighlight">\(y\)</span> that has value <span class="math notranslate nohighlight">\(i\)</span>?</p></li>
 </ul>
 </li>
-<li><p>There is an edge <span class="math notranslate nohighlight">\(e(i,j)\)</span> if machine <span class="math notranslate nohighlight">\(i\)</span> can process job <span class="math notranslate nohighlight">\(j\)</span></p></li>
 </ul>
-<dl class="simple myst">
-<dt>Claim</dt><dd><p>An optimal assignment of jobs to machines is a maximum matching in <span class="math notranslate nohighlight">\(G\)</span></p>
-</dd>
-</dl>
-<p>Indeed, every assignment of jobs to machines assigns every job to at most one machine, and
-every machine processes at most one job, which translates the assignment directly to a matching
-of <span class="math notranslate nohighlight">\(G\)</span>. As a result, if we solve the maximum matching problem in bipartite graphs, we will solve
-the assignment problem too.</p>
-</div>
-<div class="section" id="reduction-to-max-flow">
-<h3>Reduction to Max-flow<a class="headerlink" href="#reduction-to-max-flow" title="Permalink to this headline">¶</a></h3>
-<p>We are going to solve the maximum bipartite matching problem by reducing it to an instance
-of maximum flow problem. First, construct a graph <span class="math notranslate nohighlight">\(G_2\)</span> as follows</p>
+<p>Limitation</p>
 <ul class="simple">
-<li><p>direct all edges from <span class="math notranslate nohighlight">\(X\)</span> towards <span class="math notranslate nohighlight">\(Y\)</span>, assign capacity <span class="math notranslate nohighlight">\(1\)</span></p></li>
-<li><p>add a source vertex <span class="math notranslate nohighlight">\(s\)</span>, and directed edges <span class="math notranslate nohighlight">\(e(s, x_j)\)</span> with capacity <span class="math notranslate nohighlight">\(1\)</span></p></li>
-<li><p>add a sink vertex <span class="math notranslate nohighlight">\(t\)</span>, and directed edges <span class="math notranslate nohighlight">\(e(y_i, t)\)</span> with capacity <span class="math notranslate nohighlight">\(1\)</span></p></li>
+<li><p>the data set of interest is large, cannot fit into the main memory</p></li>
+<li><p>we only have sequential access to the data (one pass or few passes), i.e. the data comes as a <strong>stream</strong>.</p></li>
 </ul>
-<dl class="simple myst">
-<dt>Claims</dt><dd><ul class="simple">
-<li><p>Any matching of size <span class="math notranslate nohighlight">\(z\)</span> in <span class="math notranslate nohighlight">\(G\)</span> gives a flow of value <span class="math notranslate nohighlight">\(z\)</span> in <span class="math notranslate nohighlight">\(G_2\)</span></p></li>
-<li><p>Any integral flow of value <span class="math notranslate nohighlight">\(z\)</span> in <span class="math notranslate nohighlight">\(G_2\)</span> gives a matching of size <span class="math notranslate nohighlight">\(z\)</span> in <span class="math notranslate nohighlight">\(G\)</span></p></li>
+<p>Goal</p>
+<ul>
+<li><p>use little memory, e.g. sub-linear in input parameter or input size</p></li>
+<li><p>can also solve the problem of interest approximately, i.e. find estimator <span class="math notranslate nohighlight">\(\hat{\ell}_p\)</span> for <span class="math notranslate nohighlight">\(\ell_p = \left\| x \right\| _p\)</span> that is</p>
+<ul>
+<li><p>unbiased <span class="math notranslate nohighlight">\(\mathbb{E}[\hat{\ell}_p] = \ell_p\)</span></p></li>
+<li><p>good concentration</p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\((\epsilon, \delta)\)</span> approximation (guarantee): given <span class="math notranslate nohighlight">\(0 &lt; \epsilon, \delta&lt; 1\)</span>, want the probability of deviation from true value <span class="math notranslate nohighlight">\(\ell_p\)</span> by <span class="math notranslate nohighlight">\(\epsilon \ell_p\)</span> to be no larger than <span class="math notranslate nohighlight">\(\delta\)</span>. This event can be viewed as a failure output, and its probability is called failure probability.</p>
+<div class="math notranslate nohighlight">
+\[\mathbb{P}[ \vert \hat{\ell}_p - \ell_p \vert&gt; \epsilon \ell_p ] &lt; \delta\]</div>
+<p>Often, given required <span class="math notranslate nohighlight">\(\epsilon\)</span>, we want to find good <span class="math notranslate nohighlight">\(\hat{\ell}_p\)</span> that gives lower <span class="math notranslate nohighlight">\(\delta\)</span>.</p>
+</li>
+<li><p>constant approximation</p></li>
 </ul>
-</dd>
-</dl>
-<p>Due to this one-one correspondence, as a corollary, a maximum integral flow in <span class="math notranslate nohighlight">\(G_2\)</span> gives a maximum bipartite matching in <span class="math notranslate nohighlight">\(G\)</span>. And, since we can compute the maximum integral flow in <span class="math notranslate nohighlight">\(G_2\)</span> efficiently, this gives us an algorithm for computing maximum bipartite matching in <span class="math notranslate nohighlight">\(G\)</span>.</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>Metrics for reviewing algorithms</p>
+<ul class="simple">
+<li><p>memory usage</p></li>
+<li><p>number of passes</p></li>
+<li><p>approximation factor</p></li>
+<li><p>(sometimes) query/update time</p></li>
+</ul>
+<p>Types of streams</p>
+<ul class="simple">
+<li><p>Insertion-only: only <span class="math notranslate nohighlight">\(\texttt{Insert(i)}: x_i \mathrel{+}= 1\)</span> is allowed.</p></li>
+<li><p>Insertion and deletion (dynamic): also allow <span class="math notranslate nohighlight">\(\texttt{Delete(i)}: x_i \mathrel{-}= 1\)</span>, e.g. numbers, edges of graphs, etc. Assume that <span class="math notranslate nohighlight">\(\#\operatorname{deletions} (i) \le \#\operatorname{insertions} (i)\)</span> such that <span class="math notranslate nohighlight">\(x_i \ge 0\)</span>.</p></li>
+<li><p>Turnstile: more general case for vectors and matrices, with operation <span class="math notranslate nohighlight">\(\texttt{Add}(i,\Delta): x_i \mathrel{+}= \Delta\)</span></p></li>
+</ul>
 </div>
+<div class="section" id="estimate-ell-0">
+<h2>Estimate <span class="math notranslate nohighlight">\(\ell_0\)</span><a class="headerlink" href="#estimate-ell-0" title="Permalink to this headline">¶</a></h2>
+<p>How many distinct <span class="math notranslate nohighlight">\(y_i\)</span> are there? Aka distinct element counting problem.</p>
 </div>
-<div class="section" id="bipartite-b-matching">
-<h2>Bipartite <span class="math notranslate nohighlight">\(b\)</span>-matching<a class="headerlink" href="#bipartite-b-matching" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="estimate-ell-1">
+<h2>Estimate <span class="math notranslate nohighlight">\(\ell_1\)</span><a class="headerlink" href="#estimate-ell-1" title="Permalink to this headline">¶</a></h2>
+<p>How many <span class="math notranslate nohighlight">\(y_i\)</span> are there, i.e. How large is <span class="math notranslate nohighlight">\(n\)</span>? Aka counting problem. A trivial solution is to maintain a counter, which requires space <span class="math notranslate nohighlight">\(\mathcal{O}(\log n)\)</span> bits. But when <span class="math notranslate nohighlight">\(n\)</span> is large, can we do better? We introduce Morris counter in insertion-only streams. Morris algorithm was developed in 1970s, when memory was expensive.</p>
+<div class="section" id="morris">
+<h3>Morris<a class="headerlink" href="#morris" title="Permalink to this headline">¶</a></h3>
+<p>The Morris algorithms is</p>
+<hr class="docutils" />
+<p><strong>Algorithms</strong>: Morris Counter</p>
+<hr class="docutils" />
+<ul class="simple">
+<li><p>Initialize <span class="math notranslate nohighlight">\(X = 0\)</span>.</p></li>
+<li><p>Upon receiving a new number <span class="math notranslate nohighlight">\(y\)</span>, increase <span class="math notranslate nohighlight">\(X \mathrel{+}= 1\)</span> with probability <span class="math notranslate nohighlight">\(\frac{1}{2^X}\)</span></p></li>
+<li><p>Return <span class="math notranslate nohighlight">\(\hat{n} = 2^X - 1\)</span></p></li>
+</ul>
+<hr class="docutils" />
+<p>Intuition: <span class="math notranslate nohighlight">\(X\)</span> is attempting to store a value that is roughly <span class="math notranslate nohighlight">\(\log n\)</span>. Hence, the amount of space required to store <span class="math notranslate nohighlight">\(X\)</span> is <span class="math notranslate nohighlight">\(O(\log \log n)\)</span></p>
+<p>Correctness</p>
+<ul>
+<li><p>Unbiasedness: Let <span class="math notranslate nohighlight">\(X_n\)</span> denote <span class="math notranslate nohighlight">\(X\)</span> after <span class="math notranslate nohighlight">\(n\)</span> updates. Then <span class="math notranslate nohighlight">\(\mathbb{E}\left[ 2 ^{X_n} \right]  = n + 1\)</span>. Hence <span class="math notranslate nohighlight">\(\mathbb{E} [\hat{n}_1] = 2^{\mathbb{E} [X_n]} - 1\)</span> is an unbiased estimator of <span class="math notranslate nohighlight">\(\ell_1 = n\)</span>.</p>
+<div class="dropdown seealso admonition">
+<p class="admonition-title"> <em>Proof by induction</em></p>
+<p>Base: <span class="math notranslate nohighlight">\(n=0, X_0=0\)</span>, the identity <span class="math notranslate nohighlight">\(\mathbb{E}\left[ 2^{X_n} \right]  = n + 1\)</span> holds.</p>
+<p>Step: Suppose <span class="math notranslate nohighlight">\(\mathbb{E}\left[ 2^{X_n} \right]  = n + 1\)</span> holds, then</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+  \begin{array}{l}
+  \mathbb{E}\left[2^{X_{n+1}}\right]
+  &amp;=\sum_{j=0}^{\infty} \operatorname{Pr}\left(X_{n}=j\right) \cdot \mathbb{E}\left[2^{X_{n+1}} \mid X_{n}=j\right] \\
+  &amp;=\sum_{j=0}^{\infty} \operatorname{Pr}\left(X_{n}=j\right) \cdot\left(2^{j} \cdot \mathbb{P}[ \text{not increase } X_n \mid X_n = j ] +2^{j+1} \cdot \mathbb{P}[ \text{increase } X_n \mid X_n = j ]\right) \\
+  &amp;=\sum_{j=0}^{\infty} \operatorname{Pr}\left(X_{n}=j\right) \cdot\left(2^{j} \cdot\left(1-\frac{1}{2^{j}}\right)+2^{j+1} \cdot \frac{1}{2^{j}}\right) \\
+  &amp;=\sum_{j=0}^{\infty} \operatorname{Pr}\left(X_{n}=j\right) \cdot 2^{j}+\sum_{j=0}^{\infty} \operatorname{Pr}\left(X_{n}=j\right) \\
+  &amp;=\mathbb{E}\left[2^{X_{n}}\right]+1 \\
+  &amp;=(n+1) + 1
+  \end{array}
+  \end{split}\]</div>
+</div>
+</li>
+<li><p>Good concentration <span class="math notranslate nohighlight">\(\mathbb{P}[ \left\vert \hat{n} - n \right\vert \ge \epsilon n] \le \frac{1}{2\epsilon^2}\)</span></p>
+<div class="dropdown seealso admonition">
+<p class="admonition-title"> <em>Proof</em></p>
+<p>Recall Chebyshev’s inequality</p>
+<div class="math notranslate nohighlight">
+\[
+  \operatorname{\mathbb{P}}(|X-\mu| \geq \epsilon \mu ) \leq \frac{\sigma ^2}{(\epsilon \mu)^{2}}
+  \]</div>
+<p>It can be shown that <span class="math notranslate nohighlight">\(\mathbb{E}\left[2^{2 X_{n}}\right]=\frac{3}{2} n^{2}+\frac{3}{2} n+1\)</span>, hence,</p>
+<div class="math notranslate nohighlight">
+\[\operatorname{Var}\left( \hat{n} \right) = \operatorname{Var}\left( 2^{X_n} \right) = \mathbb{E}\left[2^{2 X_{n}}\right] -  \mathbb{E}\left[2^{X_{n}}\right]^2 =\frac{n^2}{2} - \frac{n}{2}\]</div>
+<p>Substitute this into Chebyshev’s inequality gives</p>
+<div class="math notranslate nohighlight">
+\[
+  \operatorname{\mathbb{P}}(|\hat{n}-n| \geq \epsilon n ) \leq \frac{1}{(\epsilon n)^{2}}\left( \frac{n^2}{2} - \frac{n}{2} \right) \le  \frac{n^2}{2(\epsilon n)^{2}} = \frac{1}{2\epsilon ^2}
+  \]</div>
+</div>
+</li>
+</ul>
+<p>However, the upper bound <span class="math notranslate nohighlight">\(\delta = \frac{1}{2\epsilon^2}\)</span> is not very meaningful. We only have <span class="math notranslate nohighlight">\(\delta &lt; 1\)</span> when <span class="math notranslate nohighlight">\(\epsilon &gt; 1\)</span>, for which we can simply return 0. Is there any way to find a smaller upper bound? Currently <span class="math notranslate nohighlight">\(\operatorname{Var}\left( \hat{n} \right) = \Theta(n^2)\)</span>, can we find another estimate that does better?</p>
+</div>
 <div class="section" id="id1">
-<h3>Problem<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
-<p>Now suppose every vertex <span class="math notranslate nohighlight">\(x \in X\)</span> can take <span class="math notranslate nohighlight">\(b(x) \ge 1\)</span> edges towards <span class="math notranslate nohighlight">\(Y\)</span>.</p>
-<dl class="simple myst">
-<dt>Definition (Bipartite <span class="math notranslate nohighlight">\(b\)</span>-matching)</dt><dd><p>Given</p>
-<ul class="simple">
-<li><p>a bipartite graph <span class="math notranslate nohighlight">\(G = (V, E)\)</span> where <span class="math notranslate nohighlight">\(V = (X,Y)\)</span></p></li>
-<li><p>a function <span class="math notranslate nohighlight">\(b: X \rightarrow \mathbb{Z} _{\ge 0}\)</span></p></li>
-</ul>
-<p>a subset <span class="math notranslate nohighlight">\(M \subseteq E\)</span> of edges is called a <span class="math notranslate nohighlight">\(b\)</span>-matching, if</p>
-<ul class="simple">
-<li><p>every vertex <span class="math notranslate nohighlight">\(y\in Y\)</span> is an endpoint of at most 1 edge in <span class="math notranslate nohighlight">\(M\)</span></p></li>
-<li><p>every vertex <span class="math notranslate nohighlight">\(x\in X\)</span> is an endpoint of at most <span class="math notranslate nohighlight">\(b(x)\)</span> edges in <span class="math notranslate nohighlight">\(M\)</span></p></li>
-</ul>
-</dd>
-</dl>
+<h3>Morris+<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<p>Run in parallel: <span class="math notranslate nohighlight">\(s\)</span> independent instantiations of Morris estimator <span class="math notranslate nohighlight">\(\hat{n}\)</span>, then return the average, denoted <span class="math notranslate nohighlight">\(\hat{n}_+\)</span>. Hence</p>
+<div class="math notranslate nohighlight">
+\[\operatorname{Var}\left( \hat{n}_+ \right) = \operatorname{Var}\left( \frac{1}{s} \sum_{k=1}^s \hat{n}_k \right) = \frac{1}{s} \operatorname{Var}\left( \hat{n} \right)\]</div>
+<p>Note that <span class="math notranslate nohighlight">\(\mathbb{E} [\hat{n}_+]\)</span> is still unbiased. The upper bound now becomes <span class="math notranslate nohighlight">\(\frac{1}{s}\cdot \frac{1}{2\epsilon^2}\)</span>. How to choose <span class="math notranslate nohighlight">\(s\)</span>? To ensure failure probability is less than <span class="math notranslate nohighlight">\(\delta\)</span>, we can set <span class="math notranslate nohighlight">\(s \ge \frac{1}{2\epsilon ^2 \delta}\)</span>. Equivalently, we say that we can set <span class="math notranslate nohighlight">\(s = \Theta \left( \frac{1}{\epsilon^2 \delta}  \right)\)</span>, for suitable constant.</p>
+<p>In total there are <span class="math notranslate nohighlight">\(s\)</span> number of <span class="math notranslate nohighlight">\(X\)</span>, each <span class="math notranslate nohighlight">\(X\)</span> takes <span class="math notranslate nohighlight">\(\mathcal{O} (\log \log n)\)</span>. The total space for an Morris++ estimator <span class="math notranslate nohighlight">\(\hat{n}\)</span> with <span class="math notranslate nohighlight">\((\epsilon, \delta)\)</span> guarantee is then <span class="math notranslate nohighlight">\(\Theta\left( \frac{1}{\epsilon^{2} \delta} \cdot \log \log n\right)\)</span>.</p>
 </div>
 <div class="section" id="id2">
-<h3>Reduction to Max-flow<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
-<p>Likewise, we can construct a graph <span class="math notranslate nohighlight">\(G_2\)</span>, but this time we change the capacities of edges that go from source <span class="math notranslate nohighlight">\(s\)</span> to vertex <span class="math notranslate nohighlight">\(x \in X\)</span> from <span class="math notranslate nohighlight">\(1\)</span> to <span class="math notranslate nohighlight">\(b(x)\)</span>, for every <span class="math notranslate nohighlight">\(x \in X\)</span>.</p>
-<dl class="simple myst">
-<dt>Claims</dt><dd><ul class="simple">
-<li><p>Any <span class="math notranslate nohighlight">\(b\)</span>-matching of size <span class="math notranslate nohighlight">\(z\)</span> in <span class="math notranslate nohighlight">\(G\)</span> gives a flow of value <span class="math notranslate nohighlight">\(z\)</span> in <span class="math notranslate nohighlight">\(G_2\)</span></p></li>
-<li><p>Any integral flow of value <span class="math notranslate nohighlight">\(z\)</span> in <span class="math notranslate nohighlight">\(G_2\)</span> gives a <span class="math notranslate nohighlight">\(b\)</span>-matching of size <span class="math notranslate nohighlight">\(z\)</span> in <span class="math notranslate nohighlight">\(G\)</span></p></li>
+<h3>Morris++<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<p>Run in parallel: <span class="math notranslate nohighlight">\(t\)</span> independent instantiations of Morris+ estimator <span class="math notranslate nohighlight">\(\hat{n}_{+}\)</span> with failure probability at most <span class="math notranslate nohighlight">\(\frac{1}{3}\)</span>, by setting <span class="math notranslate nohighlight">\(s = \Theta \left( \frac{1}{\epsilon^2\frac{1}{3} }  \right) =  \Theta \left( \frac{1}{\epsilon^2} \right)\)</span>. Then return their median, denoted as <span class="math notranslate nohighlight">\(\hat{n}_{+ +}\)</span>.</p>
+<p>What’s the failure probability of the median <span class="math notranslate nohighlight">\(\hat{n}_{+ +}\)</span>? If it fails, then at least half of <span class="math notranslate nohighlight">\(\hat{n}_{+}\)</span> fails, i.e. at most half succeed. Formally, define</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+Y_{i}=\left\{\begin{array}{ll}
+1, &amp; \text { if the } i \text {-th Morris+ instantiation succeeds. } \\
+0, &amp; \text { otherwise }
+\end{array}\right.
+\end{split}\]</div>
+<p>Let <span class="math notranslate nohighlight">\(S = \sum_{i=1}^t Y_i\)</span>. Then, the failure probability is</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\mathbb{P}\left( \hat{n}_{+ +} \text{ fails}  \right)
+&amp;= \mathbb{P}\left( S \le \frac{t}{2}   \right) \\
+&amp;\le \mathbb{P}\left( S \le \frac{3}{4} \mu_S   \right) \quad \because \mu_S \ge \frac{2t}{3} \\
+&amp;\le e^{-(1/4)^2 \mu_S/2} \quad \text{by Chernoff Bound} \\
+&amp;\le e^{- t/48} \\
+\end{aligned}\end{split}\]</div>
+<p>To get the failure probability at most <span class="math notranslate nohighlight">\(\delta\)</span>, we can set <span class="math notranslate nohighlight">\(t = \Theta(\log \frac{1}{\delta})\)</span>.</p>
+<p>In total there are <span class="math notranslate nohighlight">\(t \times s\)</span> number of <span class="math notranslate nohighlight">\(X\)</span>. The total space of Morris++ with success probability <span class="math notranslate nohighlight">\(\delta\)</span> is then <span class="math notranslate nohighlight">\(\Theta\left(\log \frac{1}{\delta} \cdot \frac{1}{\epsilon^{2}} \cdot \log \log n\right)\)</span>.</p>
+</div>
+<div class="section" id="problem">
+<h3>Problem<a class="headerlink" href="#problem" title="Permalink to this headline">¶</a></h3>
+<p>Input</p>
+<ul class="simple">
+<li><p>a stream of <span class="math notranslate nohighlight">\(n\)</span> number from <span class="math notranslate nohighlight">\([m]\)</span></p></li>
 </ul>
-</dd>
-</dl>
+<p>Goal</p>
+<ul class="simple">
+<li><p>estimate the number of distinct elements in the stream</p></li>
+</ul>
+<p>For instance, <span class="math notranslate nohighlight">\(m = 10\)</span>, input stream is <span class="math notranslate nohighlight">\((3,6,9,3,4,5,4)\)</span>, output <span class="math notranslate nohighlight">\(5\)</span>.</p>
 </div>
-<div class="section" id="extension">
-<h3>Extension<a class="headerlink" href="#extension" title="Permalink to this headline">¶</a></h3>
-<p>We can let each <span class="math notranslate nohighlight">\(y\in Y\)</span> take up to <span class="math notranslate nohighlight">\(b(y)\)</span> edges from <span class="math notranslate nohighlight">\(X\)</span>. That is, the function <span class="math notranslate nohighlight">\(b\)</span> becomes <span class="math notranslate nohighlight">\(b: V \rightarrow \mathbb{Z}_{\ge 0}\)</span>. Consequently, to solve this, in <span class="math notranslate nohighlight">\(G_2\)</span> we change the capacities of edges that go from vertex <span class="math notranslate nohighlight">\(y \in Y\)</span> to sink <span class="math notranslate nohighlight">\(t\)</span> from <span class="math notranslate nohighlight">\(1\)</span> to <span class="math notranslate nohighlight">\(b(y)\)</span>, for every <span class="math notranslate nohighlight">\(y \in Y\)</span>.</p>
+<div class="section" id="trivial-solution">
+<h3>Trivial Solution<a class="headerlink" href="#trivial-solution" title="Permalink to this headline">¶</a></h3>
+<p><span class="math notranslate nohighlight">\(L_0\)</span>: non-zero coordinates.</p>
+<p>A trivial solution is to keep a counter <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> of size <span class="math notranslate nohighlight">\(m\)</span>. For each number <span class="math notranslate nohighlight">\(i \in [m]\)</span>, if <span class="math notranslate nohighlight">\(x_i = 0\)</span>, then increase <span class="math notranslate nohighlight">\(x_i\)</span> from 0 to 1. Note that we need to store (??) all seen numbers, which takes <span class="math notranslate nohighlight">\(\mathcal{O} (n \log m)\)</span> bits. The counter takes <span class="math notranslate nohighlight">\(m\)</span> bits. So overall <span class="math notranslate nohighlight">\(\mathcal{O} (\min(m, n \log m))\)</span>.</p>
+<p>This is not efficient if <span class="math notranslate nohighlight">\(m, n\)</span> are large.</p>
+</div>
+<div class="section" id="approximation">
+<h3>Approximation<a class="headerlink" href="#approximation" title="Permalink to this headline">¶</a></h3>
+<p>Let <span class="math notranslate nohighlight">\(k\)</span> be the true number of distinct element. We find an estimate <span class="math notranslate nohighlight">\(\hat{k}\)</span> such that</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbb{P}\left( \left\vert \hat{k} - k  \right\vert &gt; \epsilon k\right) &lt; \delta
+\]</div>
+<p>Consider a decision problem: given a number <span class="math notranslate nohighlight">\(d\)</span>, return YES if <span class="math notranslate nohighlight">\(k \ge d(1 + \epsilon)\)</span> and NO otherwise. If we can solve this decision problem, then we can run <span class="math notranslate nohighlight">\(d\)</span> for <span class="math notranslate nohighlight">\((1, 1 + \epsilon, \ldots, (1 + \epsilon)^i, \ldots, n)\)</span> to find where <span class="math notranslate nohighlight">\(k\)</span> is.</p>
+<p>Algorithms to solve the decision problem:</p>
+<ul class="simple">
+<li><p>sample each of <span class="math notranslate nohighlight">\(m\)</span> coordinate w.p. <span class="math notranslate nohighlight">\(\frac{1}{d} \ge 1\)</span>, obtain <span class="math notranslate nohighlight">\(S = \left\{ i_1, \ldots \right\}\)</span></p></li>
+<li><p>if a number <span class="math notranslate nohighlight">\(i \in S\)</span> is shown in the stream, increase <span class="math notranslate nohighlight">\(x_i\)</span></p></li>
+<li><p>if <span class="math notranslate nohighlight">\(x_i = 0\)</span> for all <span class="math notranslate nohighlight">\(i \in S\)</span>, return NO, else YES.</p></li>
+</ul>
+<p>Analysis:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\mathbb{P}\left( \text{NO}  \right)
+&amp;= \mathbb{P}\left( \text{all $k$ elements in the stream are not sampled}  \right)\\
+&amp;= \left( 1 - \frac{1}{d}  \right)^k \\
+&amp;\approx \exp \left( - \frac{k}{d}  \right)\\
+\end{aligned}\end{split}\]</div>
+<p>For small enough <span class="math notranslate nohighlight">\(\epsilon\)</span>,</p>
+<ul class="simple">
+<li><p>if <span class="math notranslate nohighlight">\(k &gt; (1 + \epsilon) d\)</span> then <span class="math notranslate nohighlight">\(e^{-(1+\epsilon)}&lt;\frac{1}{\mathrm{e}}-\frac{\epsilon}{3}\)</span></p></li>
+<li><p>if <span class="math notranslate nohighlight">\(k &lt; (1 - \epsilon) d\)</span> then <span class="math notranslate nohighlight">\(e^{-(1-\epsilon)}&gt;\frac{1}{\mathrm{e}}+\frac{\epsilon}{3}\)</span></p></li>
+</ul>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
 </div>
 </div>
-<div class="section" id="matching-in-d-regular-bipartite-graph">
-<h2>Matching in <span class="math notranslate nohighlight">\(d\)</span>-regular Bipartite Graph<a class="headerlink" href="#matching-in-d-regular-bipartite-graph" title="Permalink to this headline">¶</a></h2>
-<dl class="simple myst">
-<dt>Definition (<span class="math notranslate nohighlight">\(d\)</span>-regular graph)</dt><dd><p>A graph <span class="math notranslate nohighlight">\(G=(V,E)\)</span> is called <span class="math notranslate nohighlight">\(d\)</span>-regular for <span class="math notranslate nohighlight">\(d \ge 0\)</span>, if every vertex has the same degree <span class="math notranslate nohighlight">\(\operatorname{deg}(v) = d\)</span>.</p>
-</dd>
-</dl>
-<p>A <span class="math notranslate nohighlight">\(d\)</span>-regular bipartite graph is a bipartite graph where every vertex <span class="math notranslate nohighlight">\(x \in X\)</span> take <span class="math notranslate nohighlight">\(d\)</span> edges towards <span class="math notranslate nohighlight">\(Y\)</span>, and vice versa. It turns out that a <span class="math notranslate nohighlight">\(d\)</span>-regular bipartite graph has <strong>a lot of</strong> different perfect matchings.</p>
-<dl class="simple myst">
-<dt>Claim (Existence of perfect matching)</dt><dd><p>Let <span class="math notranslate nohighlight">\(G = (X, Y, E)\)</span> be a <span class="math notranslate nohighlight">\(d\)</span>-regular bipartite graph with <span class="math notranslate nohighlight">\(\left\vert X \right\vert = \left\vert Y \right\vert = n\)</span>. Then <span class="math notranslate nohighlight">\(G\)</span> contains at least one perfect matching.</p>
-</dd>
-</dl>
-<p><em>Proof</em>: A perfect matching can be obtained by constructing <span class="math notranslate nohighlight">\(G_2\)</span> with all capacities being 1. can run Ford-Fulkerson algorithm on <span class="math notranslate nohighlight">\(G_2\)</span> like in the above sections to obtain a flow of value <span class="math notranslate nohighlight">\(n\)</span>, which corresponds to a perfect matching.</p>
-<dl class="simple myst">
-<dt>Claim (Union of matchings)</dt><dd><p>Every <span class="math notranslate nohighlight">\(d\)</span>-regular bipartite graph <span class="math notranslate nohighlight">\(G=(X,Y,E)\)</span> is a union of <span class="math notranslate nohighlight">\(d\)</span> disjoint perfect matchings.</p>
-</dd>
-</dl>
-<p><em>Proof</em>: We can use the above method to find a perfect matching <span class="math notranslate nohighlight">\(M\)</span>, and delete all its edges from <span class="math notranslate nohighlight">\(G\)</span>, then obtain <span class="math notranslate nohighlight">\(G-M\)</span>. It  is easy to see that <span class="math notranslate nohighlight">\(G-M\)</span> is a <span class="math notranslate nohighlight">\((d-1)\)</span> bipartite graph. We can repeat this process until no edges are left, and then we get <span class="math notranslate nohighlight">\(d\)</span> disjoint perfect matchings in total.</p>
+<div class="section" id="l-2-norm-estimation">
+<h2><span class="math notranslate nohighlight">\(L_2\)</span> Norm Estimation<a class="headerlink" href="#l-2-norm-estimation" title="Permalink to this headline">¶</a></h2>
+<p>AMS algorithm.</p>
+<p>maintain a single number <span class="math notranslate nohighlight">\(z = \sum_{i=1}^n s_i x_i\)</span>.</p>
+<p>2-wise independent, 4-wise independent??</p>
+<p><span class="math notranslate nohighlight">\(k\)</span>-wise independent requires <span class="math notranslate nohighlight">\(k\log m\)</span> bits.</p>
+</div>
+<div class="section" id="x-i-estimation">
+<h2><span class="math notranslate nohighlight">\(x_i\)</span> Estimation<a class="headerlink" href="#x-i-estimation" title="Permalink to this headline">¶</a></h2>
 </div>
 </div>
 
@@ -1062,7 +1165,7 @@ of maximum flow problem. First, construct a graph <span class="math notranslate 
         },
         kernelOptions: {
             kernelName: "python3",
-            path: "./25-graph-related"
+            path: "./26-algo-for-big-data"
         },
         predefinedOutput: true
     }
@@ -1074,8 +1177,8 @@ of maximum flow problem. First, construct a graph <span class="math notranslate 
         
         <div class='prev-next-bottom'>
             
-    <a class='left-prev' id="prev-link" href="31-maximum-flow.html" title="previous page">Maximum Flow</a>
-    <a class='right-next' id="next-link" href="42-maximum-independent-set.html" title="next page">Maximum Independent Set in Trees</a>
+    <a class='left-prev' id="prev-link" href="00-algo-for-big-data.html" title="previous page">For Big Data</a>
+    <a class='right-next' id="next-link" href="../30-ml-basics/00-ml-basics.html" title="next page">Machine Learning Basics</a>
 
         </div>
         

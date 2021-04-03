@@ -51,6 +51,16 @@ Metrics defined by overall table
 
 - $F_1$ score
 
-  The $F_1$ score is the harmonic mean of precision and recall.
+  The $F_1$ score is the harmonic mean of precision and recall. Hence, tt is often used to balance precision and recall.
 
-$$F_1 = \frac{1}{\text{precision}^{-1} + \text{recall}^{-1}} = \frac{\mathrm{TP}}{\mathrm{TP} + \frac{1}{2}\left( \mathrm{FP} + \mathrm{FN} \right)  } $$
+  $$F_1 = \frac{1}{\text{precision}^{-1} + \text{recall}^{-1}} = \frac{\mathrm{TP}}{\mathrm{TP} + \frac{1}{2}\left( \mathrm{FP} + \mathrm{FN} \right)  } $$
+
+- Macro $F_1$ score
+
+  Macro $F_1$ score extends $F_1$ score for multiple binary labels, or multiple classes. It is computed by first computing the F1-score per class/label and then averaging them. Aka Macro F1-averaging.
+
+  $$
+  \text{Macro } F_1 = \frac{1}{K} \sum_{k=1}^K  F_{1, k}
+  $$
+
+  where $K$ is the number of classes/labels.

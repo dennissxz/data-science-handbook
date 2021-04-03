@@ -447,6 +447,20 @@
   <i class="fas fa-chevron-down">
   </i>
  </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../26-algo-for-big-data/00-algo-for-big-data.html">
+   For Big Data
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../26-algo-for-big-data/10-streaming.html">
+     Streaming Model
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
 </ul>
 <p class="caption collapsible-parent">
  <span class="caption-text">
@@ -1029,6 +1043,7 @@ social behavioral sciences.</p></li>
 \boldsymbol{z}_i &amp;= \boldsymbol{W}_{d \times k} ^\top \boldsymbol{x}_i \\
 \boldsymbol{Z}_{n \times k} &amp;= \boldsymbol{X}_{n \times d}  \boldsymbol{W} _{d \times k} \\
 \end{aligned}\end{split}\]</div>
+<p>The mapping <span class="math notranslate nohighlight">\(\boldsymbol{W} _{d \times k}\)</span> are also called <strong>loadings</strong>, and the embeddings <span class="math notranslate nohighlight">\(\boldsymbol{Z} _{n \times k}\)</span> are called <strong>scores</strong>. The loadings can be used to visualize how the original variables <span class="math notranslate nohighlight">\(X_j\)</span> contributes to each principal component <span class="math notranslate nohighlight">\(Z_j\)</span>. The scores <span class="math notranslate nohighlight">\(\boldsymbol{Z} _{n \times k}\)</span> can then be used for downstream tasks, e.g. visualization.</p>
 <ul>
 <li><p>Maximize the total variances <span class="math notranslate nohighlight">\(\sum_i \operatorname{Var}\left( Z_i \right)\)</span> of the projected data <span class="math notranslate nohighlight">\(\boldsymbol{Z} =  \boldsymbol{X}  \boldsymbol{W}\)</span> (similar to the population formulation above)</p>
 <div class="math notranslate nohighlight">
@@ -1598,7 +1613,7 @@ p(\boldsymbol{x} \mid \boldsymbol{z}) =\mathcal{N}\left( \boldsymbol{W} \boldsym
 <p>By the property of multivariate Gaussian, we have</p>
 <div class="math notranslate nohighlight">
 \[
-p(\boldsymbol{x})=\mathcal{N}\left(\boldsymbol{\mu} , \boldsymbol{W} \boldsymbol{W}^+\sigma^{2} \boldsymbol{I}\right)
+p(\boldsymbol{x})=\mathcal{N}\left(\boldsymbol{\mu} , \boldsymbol{W} \boldsymbol{W}^{\top} +\sigma^{2} \boldsymbol{I}\right)
 \]</div>
 <p>The goal is to estimate the parameter <span class="math notranslate nohighlight">\(\boldsymbol{W} , \boldsymbol{\mu} , \sigma\)</span> that maximize the log likelihood <span class="math notranslate nohighlight">\(\sum_{i=1}^{n} \log p\left(\boldsymbol{x}_{i} \mid \boldsymbol{W} , \boldsymbol{\mu} , \sigma\right)\)</span>.</p>
 </div>
@@ -1609,7 +1624,7 @@ p(\boldsymbol{x})=\mathcal{N}\left(\boldsymbol{\mu} , \boldsymbol{W} \boldsymbol
 <p>Before seeking the ML solution, notice that the solution is not unique: if <span class="math notranslate nohighlight">\(\boldsymbol{R}\)</span> is an orthogonal matrix, then <span class="math notranslate nohighlight">\(\widetilde{\boldsymbol{W}} = \boldsymbol{W} \boldsymbol{\boldsymbol{R}}\)</span> is indistinguishable from <span class="math notranslate nohighlight">\(\boldsymbol{W}\)</span></p>
 <div class="math notranslate nohighlight">
 \[
-\widetilde{\boldsymbol{W}} \widetilde{\boldsymbol{W}}^=\boldsymbol{W} \boldsymbol{R} \boldsymbol{R}^ \boldsymbol{W}^=\boldsymbol{W} \boldsymbol{W}^
+\widetilde{\boldsymbol{W}} \widetilde{\boldsymbol{W}} ^{\top}=\boldsymbol{W} (\boldsymbol{R} \boldsymbol{R} ^{\top}) \boldsymbol{W} ^{\top}  =\boldsymbol{W} \boldsymbol{W} ^{\top}
 \]</div>
 <p>So we will find a solution <span class="math notranslate nohighlight">\(W _{ML}\)</span> up to a rotation <span class="math notranslate nohighlight">\(\boldsymbol{R}\)</span>.</p>
 </div>
@@ -1618,7 +1633,7 @@ p(\boldsymbol{x})=\mathcal{N}\left(\boldsymbol{\mu} , \boldsymbol{W} \boldsymbol
 \[
 \begin{equation}
 \sum_{i=1}^{n} \log p\left(\boldsymbol{x}_{i} ; \boldsymbol{W}, \mu, \sigma^{2}\right) =
--\frac{n d}{2} \log (2 \pi)-\frac{n}{2} \log |\boldsymbol{C}|-\frac{1}{2} \sum_{i=1}^{n}\left(\boldsymbol{x}_{i}-\boldsymbol{\mu} \right)^ \boldsymbol{C}^{-1}\left(\boldsymbol{x}_{i}-\boldsymbol{\mu} \right)
+-\frac{n d}{2} \log (2 \pi)-\frac{n}{2} \log |\boldsymbol{C}|-\frac{1}{2} \sum_{i=1}^{n}\left(\boldsymbol{x}_{i}-\boldsymbol{\mu} \right) ^{\top}  \boldsymbol{C}^{-1}\left(\boldsymbol{x}_{i}-\boldsymbol{\mu} \right)
 \end{equation}
 \]</div>
 <p>Setting the derivative w.r.t. <span class="math notranslate nohighlight">\(\boldsymbol{\mu}\)</span> to <span class="math notranslate nohighlight">\(\boldsymbol{0} \)</span> we have</p>
@@ -1674,7 +1689,7 @@ p(\boldsymbol{x})=\mathcal{N}\left(\boldsymbol{\mu} , \boldsymbol{W} \boldsymbol
 <p>The conditional distribution of <span class="math notranslate nohighlight">\(\boldsymbol{z}\)</span> given <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> is</p>
 <div class="math notranslate nohighlight">
 \[
-p(\boldsymbol{z} \mid \boldsymbol{x})=\mathcal{N}\left(\boldsymbol{M}^{-1} \boldsymbol{W}^(\boldsymbol{x}- \boldsymbol{\mu} ), \sigma^{2} \boldsymbol{M}^{-1}\right)
+p(\boldsymbol{z} \mid \boldsymbol{x})=\mathcal{N}\left(\boldsymbol{M}^{-1} \boldsymbol{W} ^{\top} (\boldsymbol{x}- \boldsymbol{\mu} ), \sigma^{2} \boldsymbol{M}^{-1}\right)
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(\boldsymbol{M} = \boldsymbol{W} ^\top \boldsymbol{W}  + \sigma^2 \boldsymbol{I}_k\)</span>.</p>
 <p>A reduced-dimansionality representation of <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> is given by the estimated conditional mean</p>

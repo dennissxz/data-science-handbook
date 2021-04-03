@@ -134,7 +134,8 @@ Definition
 Aka rotation matrices.
 
 Definition
-: A matrix $\boldsymbol{U}$ is **orthogonal** if $\boldsymbol{U} ^{-1} = \boldsymbol{U} ^\top$.
+: A real square matrix $\boldsymbol{U}$ is **orthogonal** if $\boldsymbol{U} ^{-1} = \boldsymbol{U} ^\top$. Equivalently, if its columns and rows are orthonormal: $\boldsymbol{U} ^{\top} \boldsymbol{U} = \boldsymbol{U} \boldsymbol{U} ^{\top} = \boldsymbol{I}$.
+
 
 Properties
 : Transformation by $\boldsymbol{U}$ preserves vector length and angle.
@@ -216,7 +217,11 @@ Properties
   $$\begin{align}
   \boldsymbol{A} \in \mathrm{PD} &\Leftrightarrow \lambda_i(\boldsymbol{A}) > 0 \\
   &\Leftrightarrow \exists \text{ non-singular } \boldsymbol{R}: \boldsymbol{A} = \boldsymbol{R} \boldsymbol{R} ^\top\\
-  &\Rightarrow \boldsymbol{A} \text{ is nonsingular} \\
+  &\Rightarrow \boldsymbol{A} = \boldsymbol{U} \boldsymbol{\Lambda}  \boldsymbol{U} ^{\top} \quad \text{EVD = SVD}\\
+  &\Rightarrow \boldsymbol{A} ^{-1} = \boldsymbol{U} \boldsymbol{\Lambda} ^{-1} \boldsymbol{U} ^{\top} \text{ where } \operatorname{diag}(\boldsymbol{\Lambda} ^{-1} )=\frac{1}{\lambda_i}   \\
+  &\Rightarrow \exists \boldsymbol{B} = \boldsymbol{U}
+  \boldsymbol{\Lambda}^{1/2} \boldsymbol{U} ^{\top} \in \mathrm{PD}: \boldsymbol{B} ^2 = \boldsymbol{A}, \text{denoted } \boldsymbol{B} = \boldsymbol{A} ^{1/2}  = \sqrt{\boldsymbol{A}}\\
+  &\Rightarrow \sqrt{\boldsymbol{A} ^{-1} } = (\sqrt{\boldsymbol{A} })^{-1} \\
   \boldsymbol{A} \in \mathrm{PSD} &\Leftrightarrow \lambda_i(\boldsymbol{A}) \ge 0 \\
   &\Leftrightarrow \exists \text{ square } \boldsymbol{R}, \operatorname{rank}\left( R \right) = \operatorname{rank}\left( \boldsymbol{A}  \right): \boldsymbol{A} = \boldsymbol{R} \boldsymbol{R} ^\top\\
   &\Rightarrow \exists \boldsymbol{B} = \boldsymbol{U}
