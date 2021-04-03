@@ -26,6 +26,21 @@ Goal
 
       - constant approximation
 
+Overall algorithm design intuition:
+- maintain in memory some quantity $Q$ (can be a scalar, vector, matrix)
+- upon receiving new $y_i$, update $Q$ **probabilistically**, rather than deterministically:
+  - update $Q$ with some probability
+    - depending on $Q$ (Morris for $\ell_1$)
+    - depending on $y_i$ (FM for $\ell_0$)
+  - update $Q \mathrel{+}= q$ with some random quantity $q$ (AMS, CountMin, etc.)
+- output some transformation $f(Q)$ of $Q$, such that
+  - unbiasedness: $\mathbb{E} [f(Q)] = \ell_p$.
+  - good concentration probability $\mathbb{P}[ \vert f(Q) - \ell_p \vert> \epsilon \ell_p ] < \delta$.
+- improvement
+  - repeat $s$ instantiations to obtain $Q_1, \ldots, Q_s$, report their average $Q_+$ (FM+, Morris+, AMS)
+  - repeat $t$ instantiations of $Q_+$, report their median (FM++, Morris++, AMS++).
+
+
 Metrics for reviewing algorithms
 - memory usage
 - number of passes
@@ -38,11 +53,12 @@ Types of streams
 - Turnstile: more general case for vectors and matrices, with operation $\texttt{Add}(i,\Delta): x_i \mathrel{+}= \Delta$
 
 References
-- TTIC 41000: Algorithms for Massive Data [link](https://www.mit.edu/~mahabadi/courses/Algorithms_for_Massive_Data_SP21/)
-- Harvard CS 226/MIT 6.889: Sketching Algorithms for Big Data [link](https://www.sketchingbigdata.org/fall17/)
+- [TTIC 41000](https://www.mit.edu/~mahabadi/courses/Algorithms_for_Massive_Data_SP21/): Algorithms for Massive Data, Spring 2021
+- [Harvard CS 226/MIT 6.889](https://www.sketchingbigdata.org/fall17/): Sketching Algorithms for Big Data, Fall 2017
 
-Note: section 'Estimate $\ell_1$' would be a good start than 'Estimate $\ell_0$'.
+Note: section [Estimate $\ell_1$](streaming-estimate-l1) might be a better appetizer than [Estimate $\ell_0$](streaming-estimate-l0).
 
+(streaming-estimate-l0)=
 ## Estimate $\ell_0$
 
 How many distinct $y_i$ are there? Aka distinct element counting problem. For instance, $m = 10$, input stream is $(3,6,9,3,4,5,4)$, output $5$.
@@ -178,6 +194,7 @@ Run $t = \Theta(\log \frac{1}{\eta} )$ independent copies of FM+, each with $\et
 Total space is $\mathcal{O} (\log \frac{1}{\delta} \cdot \frac{1}{\epsilon^2}  )$.
 
 
+(streaming-estimate-l1)=
 ## Estimate $\ell_1$
 
 How many $y_i$ are there, i.e. How large is $n$? Aka counting problem. A trivial solution is to maintain a counter, which requires space $\mathcal{O}(\log n)$ bits. But when $n$ is large, can we do better? We introduce Morris counter in insertion-only streams. Morris algorithm was developed in 1970s, when memory was expensive.
@@ -305,7 +322,7 @@ $k$-wise independent requires $k\log m$ bits.
 Consider turnstile model: a stream of $n$ input $(i, \Delta)$ to update $x_i \mathrel{+}=\Delta$. We want to approximate $\ell_2 = \left\| \boldsymbol{x}  \right\| _2$. In statistics, this is related to the second order moment of $X$, which describe how disperse the distribution is.
 
 We introduce Alon-Matias-Szegedy’96 (AMS) Algorithm to estimate $\ell_2 ^2 = \left\| \boldsymbol{x}  \right\| _2 ^2$.
-For another method Johnson-Lindenstrauss (JL) Lemma, see [here](https://www.sketchingbigdata.org/fall17/lec/lec3.pdf).
+For another method Johnson-Lindenstrauss (JL) Lemma, see [here](https://www.sketchingbigdata.org/fall17/lec/lec3.pdf). For $\ell_p$-norm approximation, see here [https://www.sketchingbigdata.org/fall17/lec/lec4.pdf].
 
 ### AMS
 
@@ -418,10 +435,18 @@ To get a $(\epsilon, \delta)$ approximation, we run $t = \mathcal{O} (\log \frac
 There are $\mathcal{O} (\log \frac{1}{\delta} \cdot \frac{1}{\epsilon^2} )$ number of $Z$'s, and $\mathcal{O} (\log m)$ random bits for sign $s$'s.
 
 
-
 ## Estimate $x_i$
 
+(Review $k$-wise independent hash function [here](https://www.sketchingbigdata.org/fall17/lec/lec2.pdf))
+
 Now we want to estimate the frequency $x_i$ of $i$.
+
+Two algorithms:
+- **CountMin**: keep track of all coordinates with additive error, i.e., for each coordinate report $\hat{x}_i$ that is within $x_{i} \pm \frac{\|x\|_{1}}{k}$
+- **CountSketch**: keep track of all coordinates with additive error, i.e., for each coordinate report $\hat{x}_i$ that is within $x_{i} \pm \frac{\|x\|_{2}}{\sqrt{k}}$
+
+
+See [here](https://www.mit.edu/~mahabadi/courses/Algorithms_for_Massive_Data_SP21/Lec2.pdf).
 
 
 .
