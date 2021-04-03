@@ -302,6 +302,121 @@ maintain a single number $z = \sum_{i=1}^n s_i x_i$.
 
 $k$-wise independent requires $k\log m$ bits.
 
+Consider turnstile model: a stream of $n$ input $(i, \Delta)$ to update $x_i \mathrel{+}=\Delta$. We want to approximate $\ell_2 = \left\| \boldsymbol{x}  \right\| _2$. In statistics, this is related to the second order moment of $X$, which describe how disperse the distribution is.
+
+We introduce Alon-Matias-Szegedy’96 (AMS) Algorithm to estimate $\ell_2 ^2 = \left\| \boldsymbol{x}  \right\| _2 ^2$.
+For another method Johnson-Lindenstrauss (JL) Lemma, see [here](https://www.sketchingbigdata.org/fall17/lec/lec3.pdf).
+
+### AMS
+
+Let $s_i \in \left\{ -1, 1 \right\}$ with equal probability.
+
+---
+**Algorithms**: (part of) Alon-Matias-Szegedy’96 (AMS)
+
+---
+- Generate $s_1, \ldots, s_m$ for each coordinates. Initialize $Z=0$.
+- Upon $\texttt{add}(i, \Delta)$, update $Z \mathrel{+}= s_i \cdot \Delta$
+- Upon $\texttt{query()}$, output $Z^2$
+
+---
+
+
+:::{admonition,tip} Intuition
+
+- $Z = \sum_{i=1}^m s_i x_i = \boldsymbol{s} ^{\top} \boldsymbol{x}$ where $s_i = \pm 1$ with equal probability.
+
+:::
+
+
+Correctness
+
+- $\mathbb{E} [Z^2] =\left\| \boldsymbol{x}  \right\| _2 ^2$
+
+  :::{admonition,dropdown,seealso} *Proof*
+
+  $$
+  \mathbb{E}\left(Z^{2}\right)=\mathbb{E}\left(\boldsymbol{x}^{T} \boldsymbol{s} \boldsymbol{s}^{T} \boldsymbol{x}\right)=\boldsymbol{x}^{T} \mathbb{E}\left(\boldsymbol{s} \boldsymbol{s}^{T}\right) \boldsymbol{x}=\boldsymbol{x}^{T} \boldsymbol{x}=\|\boldsymbol{x}\|_{2}^{2}
+  $$
+
+  where we use $s_i \perp s_j, \mathbb{E} [s^2_i]$. In fact, 2-wise independence is enough.
+
+  :::
+
+- Good concentration $\operatorname{Pr}\left[\left|Z^{2}-\ell_2^2\right| \geq \sqrt{2}c \ell_2^2\right] \le \frac{1}{c^{2}}$
+
+  :::{admonition,dropdown,seealso} *Proof*
+
+  We use $\operatorname{Var}\left(Z^{2}\right)=\mathbb{E}\left[Z^{4}\right]-\mathbb{E}\left[Z^{2}\right]^{2}$
+
+  To compute $\mathbb{E}\left[Z^{4}\right]$, note that for distinct $i,j,k,l$,
+
+  $$\begin{aligned}
+  x_{i} x_{j}^{2} x_{k} \mathbb{E}\left[s_{i} s_{j}^{2} s_{k}\right] &=0 \\
+  x_{i} x_{j} x_{k} x_{l} \mathbb{E}\left[s_{i} s_{j} s_{k} s_{l}\right]&=0 \\
+  \end{aligned}$$
+
+  which can be shown using iterative conditioning. Thus,
+
+  $$\begin{aligned}
+  \mathbb{E}\left[Z^{4}\right] &=\mathbb{E}\left[\left(\sum_{i} s_{i} x_{i}\right)^{4}\right] \\
+  & =\mathbb{E}\left[\sum_{i}\left(s_{i} x_{i}\right)^{4}\right]+3 \cdot \mathbb{E}\left[\sum_{i \ne j}\left(s_{i} s_{j} x_{i} x_{j}\right)^{2}\right]+0 \\
+  &= \mathbb{E}\left[\sum_{i} x_{i}^{4}\right]+\mathbb{E}\left[\sum_{i \neq j}\left(x_{i} x_{j}\right)^{2}\right] \\
+  &= \sum_{i} x_{i}^{4} + 3 \sum_{i \neq j}\left(x_{i} x_{j}\right)^{2} \\
+  &\le 3 \left( \sum_{i} x_{i}^{4} + \sum_{i \neq j}\left(x_{i} x_{j}\right)^{2}  \right) \\
+  &= 3 \left\| \boldsymbol{x}  \right\| _2 ^4
+  \end{aligned}$$
+
+  In sum, we have
+
+  $$
+  \operatorname{Var}\left(Z^{2}\right)
+  \le 3 \left\| \boldsymbol{x}  \right\|_2 ^4 - \left\| \boldsymbol{x}  \right\|_2 ^4 \le 2 \left\| \boldsymbol{x}  \right\| _2 ^4
+  $$
+
+  By Chebyshev,
+
+  $$
+  \operatorname{Pr}\left[\left|Z^{2}-\|x\|_{2}^{2}\right| \geq \sqrt{2} \epsilon\|x\|_{2}^{2}\right] \leq 1 / \epsilon^{2}
+  $$
+
+  In fact, 4-wise independence is enough since the maximum degree of the polynomial in $s_i$ is 4.
+
+  :::
+
+This bound is too loose to be informative. The overall AMS algorithm keep multiple estimators $Z_1, \ldots, Z_k$. And output the average of squared values, $Z ^\prime = Z_1 ^2, \ldots, Z_k^2$. It is easy to see that
+
+$$
+\mathbb{E}\left[Z^{\prime}\right]=\mathbb{E}\left[\frac{\sum_{i} z_{i}^{2}}{k}\right]=\mathbb{E}\left[Z_{1}\right]=\|x\|_{2}^{2}
+$$
+
+and
+
+$$
+\operatorname{Var}\left(Z^{\prime}\right)=\operatorname{Var}\left(\frac{\sum_{i} Z_{i}^{2}}{k}\right)=\frac{\sum \operatorname{Var}\left(Z_{i}^{2}\right)}{k^{2}}=\frac{\operatorname{Var}\left(Z_{1}^{2}\right)}{k} \le \frac{2\|x\|_{2}^{4}}{k}
+$$
+
+Hence,
+
+$$\operatorname{Pr}\left[\left|Z^{\prime}-\ell_{2}^{2}\right| \geq c \sqrt{2/k}\ell_{2}^{2}\right] \leq 1 / c ^{2}$$
+
+If we set $c=\Theta(1)$ and $k=\Theta\left(1 / \varepsilon^{2}\right)$, we get a $(1 \pm \epsilon)$ approximation with constant probability.
+
+Note that we need 4-wise independence of $s_1, \ldots, s_m$ to bound $\mathbb{E} \left[ \left( \sum_{i=1}^m s_i x_i \right)^2 \right]$, which requires $\mathcal{O} (\log m)$ random bits. ($p\log m$ random bits for $p$-wise independence). Besides, there are $\mathcal{O} (\frac{1}{\epsilon^2})$ number of $Z$'s, with maximum value $nm$, so total we need $\mathcal{O} (\frac{1}{\epsilon^2} \log(mn))$ bits.
+
+We can formulate our algorithm in vector form. Let $\boldsymbol{S}$ be an $k \times n$ matrix where $s_{ij} = \pm 1$ with equal probability, then basically we are just maintaining the vector $\boldsymbol{Z} = \boldsymbol{S} \boldsymbol{x}$ throughout the algorithm and answering the query by outputting $\left\| \boldsymbol{Z}  \right\|_2 ^2 / k$. Here $\boldsymbol{Z}$ is a **linear sketch** $C(\boldsymbol{x})$ of $\boldsymbol{x}$.
+
+
+### AMS++
+
+```{margin}
+Since AMS already use averaging, we denote AMS++ for taking median, as in FM++ and Morris ++.
+```
+
+To get a $(\epsilon, \delta)$ approximation, we run $t = \mathcal{O} (\log \frac{1}{\delta})$ independent instantiations of AMS and take the median, similar to FM++ and Morris++.
+
+There are $\mathcal{O} (\log \frac{1}{\delta} \cdot \frac{1}{\epsilon^2} )$ number of $Z$'s, and $\mathcal{O} (\log m)$ random bits for sign $s$'s.
+
 
 
 ## Estimate $x_i$
