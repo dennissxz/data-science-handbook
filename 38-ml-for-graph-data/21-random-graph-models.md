@@ -70,8 +70,8 @@ $$
 That is, for large $N_v$, $G$ will have a degree distribution that is like a Poisson distribution with mean $c = p N_v$. This is intuitive since from the perspective of a vertex $i \in V$, it has edge $(i, j)$ w.p. $p$ for $N_v - 1$ number of $j$, hence its expected degree is $p(N_v - 1)$.
 
 Thus, we observe
-- **concentrated** degree distribution with expressions decay tails, rather than broad degree distribution observed in many large-scale real-world networks.
-- **less clustering**: recall that assortativity is the probability that two neighbors of a randomly chosen vertex are linked is just $p$, which tend to zero as $N_v$ grows.
+- **concentrated degree distribution** with exponentially decay tails, rather than broad degree distribution observed in many large-scale real-world networks.
+- **low clustering**: recall that assortativity is the probability that two neighbors of a randomly chosen vertex are linked is just $p$, which tend to zero as $N_v$ grows.
 - **small-world property**: the diameter of the graph very like $\mathcal{O} (\log N_v)$ w.h.p as $N_v \rightarrow \infty$.
 
 ## Generalized Random Graph Models
@@ -80,7 +80,33 @@ Equal probability on all graphs of a given order and some particular characteris
 
 $$\mathcal{G} (N_v, \eta^*) = \left\{ G = (V, E): \left\vert V \right\vert = N_v, \eta(G) = \eta^*\right\}$$
 
-Erdos Renyi random graph is a particular case of this, with $\eta^* = N_e$. $\eta^*$ can be more general, for instance, degree sequence $\left\{d_{(1)}, \ldots, d_{\left(N_{v}\right)}\right\}$ in ordered form.
+Erdos Renyi random graph is a particular case of this, with $\eta^* = N_e$. $\eta^*$ can be more general, for instance, degree sequence $\left\{d_{(1)}, \ldots, d_{\left(N_{v}\right)}\right\}$ in ordered form. Note that since $N_v$ and $\bar{d}$ is fixed, due to $\bar{d} = \frac{2N_e}{N_v}$, then $N_e$ is also fixed. Hence, they form a subset of $\mathcal{G} (N_v, N_e)$.
+
+Some results
+- suppose $\eta$ is the first two moments of the degree distribution, under what condition will there be a giant component? [SAND 282, 283]
+- suppose $\left\{ f_d \right\}$ has a power-law form $f_d = C d^{-\alpha}$,
+  - under what condition will there be a giant component? [SAND 5]
+  - if $\alpha \in (2,3)$, the diameter is $\mathcal{O} (\log N_v)$ and average distance $\mathcal{O} (\log \log N_v)$ w.h.p. under mild conditions [SAND 87]
+  - if $\alpha \in (\frac{7}{3}, 3 )$, assortativity is $\mathcal{O} (N_v ^{- \beta})$ where $\beta = \frac{3\alpha - 7}{\alpha - 1}$, i.e. the rate is slower than $N_v ^{-1}$ [SAND 296.IV.B].
+
+## Simulation
+
+### Classical RGM
+
+For some models it is actually possible to produce samples in linear time; for others, it appears that Markov chain Monte Carlo (MCMC) methods are the only realistic alternative.
+
+- $\mathcal{G} (N_v, p)$
+
+  A trivial solution is to store $\binom{N_v}{2} = \mathcal{O} (N_v^2)$ independent Bernoulli random variables, each with success probability $p$. When $p$ is small, majority of these variables will be $0$, hence $\mathcal{O} (N_v^2)$ seems a waste. Can we do better? Hint: for a given vertex $i$, consider a sequence of its $N_v-1$ neighbors $j$, such that $a_{ij} \sim \operatorname{Ber}(p)$, what the expected number of 0's between two 1's?
+
+
+- $\mathcal{G} (N_v, N_e)$
+
+  It is more cumbersome to use the skipping trick above since edges are correlated: $\sum_{i\ne j=1}^n a_{ij} = N_e$. We simply draw $N_e$ number of distinct pairs from $(i, j) \in V^{(2)}, i\ne j$, which is a variant of coupon collector's problem with stopping criteria of reaching $N_e \le \binom{N_v}{2}$. This running time is $\mathcal{O} (N_v + N_e)$ in expectation.
+
+See [Batagelj and Brandes](http://www.cosinproject.eu/publications/batagelj-pre71-2005.pdf).
+
+### Generalized RGM
 
 .
 
