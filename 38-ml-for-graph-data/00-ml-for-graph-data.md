@@ -101,4 +101,15 @@ Illustration of AlphaFold
 
 ## Reference
 
-[Stanford CS244W](http://web.stanford.edu/class/cs224w/slides/01-intro.pdf)
+- ML + Graphs
+  - Stanford CS244W: Machine Learning with Graphs [[link]((http://web.stanford.edu/class/cs224w/slides/01-intro.pdf))]
+- Theory
+  - Lingyuan Lu: Selected topics in spectral graph theory [[link](https://people.math.sc.edu/lu/talks/nankai_2014/)]
+- More application using graphs and networks
+  - National Research University Higher School of Economics: Structural Analysis and Visualization of Networks, Winter-Spring 2015 [[link](http://www.leonidzhukov.net/hse/2015/networks/)]
+
+:::{figure} graph-theory-venn
+<img src="../imgs/graph-theory-venn.png" width = "50%" alt=""/>
+
+Venn diagram of graph-related theories: I = spectral graph theory, II = random graph theory, III = random matrix theory. [Lingyuan 2014]
+:::
