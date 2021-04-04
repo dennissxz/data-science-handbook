@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
     <title>Neural Networks &#8212; Data Science Handbook</title>
     
   <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
@@ -93,7 +94,7 @@
   </a>
  </li>
 </ul>
-<p class="caption collapsible-parent">
+<p>
  <span class="caption-text">
   Foundations
  </span>
@@ -314,7 +315,7 @@
   </i>
  </li>
 </ul>
-<p class="caption collapsible-parent">
+<p>
  <span class="caption-text">
   Algorithms
  </span>
@@ -462,7 +463,7 @@
   </i>
  </li>
 </ul>
-<p class="caption collapsible-parent">
+<p>
  <span class="caption-text">
   Machine Learning
  </span>
@@ -941,12 +942,12 @@
         
               <div>
                 
-  <div class="section" id="neural-networks">
+  <section id="neural-networks">
 <h1>Neural Networks<a class="headerlink" href="#neural-networks" title="Permalink to this headline">¶</a></h1>
 <p>In this section we introduce neural networks and its application for regression, classification, dimensionality-reduction, generation, etc.</p>
-<div class="section" id="structure">
+<section id="structure">
 <h2>Structure<a class="headerlink" href="#structure" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="versus-machine-learning-linear-vs-hierarchical">
+<section id="versus-machine-learning-linear-vs-hierarchical">
 <h3>Versus Machine Learning: Linear vs Hierarchical<a class="headerlink" href="#versus-machine-learning-linear-vs-hierarchical" title="Permalink to this headline">¶</a></h3>
 <p>Most machine learning relies almost entirely on <em>linear</em> predictors, where predictors can be <em>non-linear</em> features <span class="math notranslate nohighlight">\(\boldsymbol{\phi} : \mathcal{X} \rightarrow \mathbb{R}^{d}\)</span> of the data.</p>
 <div class="math notranslate nohighlight">
@@ -959,17 +960,17 @@ f_{y}(\boldsymbol{x} ; \boldsymbol{w}, b)=\boldsymbol{w}_{y} \cdot \boldsymbol{\
 <li><p>polynomial regression: <span class="math notranslate nohighlight">\(\phi_{j}(x)=x^{j}, j=0, \ldots, d\)</span></p></li>
 <li><p>Kernel SVM: employing kernel <span class="math notranslate nohighlight">\(k\)</span> corresponds to (some) feature space such that <span class="math notranslate nohighlight">\(k\left(\boldsymbol{x}_{i}, \boldsymbol{x}_{j}\right)=\phi\left(\boldsymbol{x}_{i}\right) \cdot \phi\left(\boldsymbol{x}_{j}\right)\)</span>. SVM is just a linear classifier in that space.</p></li>
 </ul>
-<div class="margin sidebar">
+<aside class="margin sidebar">
 <p class="sidebar-title"></p>
 <p>The hierarchy structure is the reason why it is called “deep”.</p>
-</div>
+</aside>
 <p>In contrast, in <strong>deep</strong> learning, a predictor that uses a <strong>hierarchy</strong> of features of the input, typically (but not always) learned end-to-end jointly with the predictor.</p>
 <div class="math notranslate nohighlight">
 \[
 f_{y}(\boldsymbol{x})=F_{L}\left(F_{L-1}\left(F_{L-2}\left(\cdots F_{1}(\boldsymbol{x}) \cdots\right)\right)\right)
 \]</div>
-</div>
-<div class="section" id="a-2-layer-neural-network">
+</section>
+<section id="a-2-layer-neural-network">
 <h3>A 2-layer Neural Network<a class="headerlink" href="#a-2-layer-neural-network" title="Permalink to this headline">¶</a></h3>
 <p>The simplest case is a 2-layer neural network, which can be represented by</p>
 <div class="math notranslate nohighlight">
@@ -982,18 +983,20 @@ f_{y}(\boldsymbol{x})=\sum_{j=1}^{m} w_{j, y}^{(2)} h\left(\sum_{i=1}^{d} w_{i, 
 \boldsymbol{f}(\boldsymbol{x})=\boldsymbol{W}_{2} \cdot \boldsymbol{h} \left(\boldsymbol{W}_{1} \cdot \boldsymbol{x}+\boldsymbol{b}_{1}\right)+\boldsymbol{b}_{2}
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(h\)</span> is a non-linear activation function, and is applied elementwise; <span class="math notranslate nohighlight">\(\boldsymbol{x} \in \mathbb{R}^{d}, \boldsymbol{W}_{1} \in \mathbb{R}^{m \times d}, \boldsymbol{W}_{2} \in \mathbb{R}^{C \times m}, \boldsymbol{b}_{2} \in \mathbb{R}^{C}, \boldsymbol{b}_{1} \in \mathbb{R}^{m}\)</span>.</p>
-<div class="figure align-default" id="nn-two-layer">
+<figure class="align-default" id="nn-two-layer">
 <a class="reference internal image-reference" href="../_images/nn-two-layer.png"><img alt="" src="../_images/nn-two-layer.png" style="width: 30%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 115 </span><span class="caption-text">A 2-layer feedforward neural network</span><a class="headerlink" href="#nn-two-layer" title="Permalink to this image">¶</a></p>
-</div>
-</div>
-<div class="section" id="softmax-layer">
+<figcaption>
+<p><span class="caption-number">Fig. 115 </span><span class="caption-text">A 2-layer feedforward neural network</span><a class="headerlink" href="#nn-two-layer" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="softmax-layer">
 <h3>Softmax Layer<a class="headerlink" href="#softmax-layer" title="Permalink to this headline">¶</a></h3>
 <p>There are many other layers, e.g., the softmax layer, convolutional layer, residual connection etc. Here we introduce the softmax layer which is used for classification.</p>
-<div class="margin sidebar">
+<aside class="margin sidebar">
 <p class="sidebar-title"></p>
 <p>Usually the last several layers in a neural network for classification are in this form. The vector <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> can be the output vector from some previous layer in that neural network.</p>
-</div>
+</aside>
 <p>A softmax classifier computes probability of each class <span class="math notranslate nohighlight">\(c\)</span> for an given input, and pass it to the loss node to compute loss. Suppose <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> is an input, then</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -1007,30 +1010,34 @@ f_{y}(\boldsymbol{x})=\sum_{j=1}^{m} w_{j, y}^{(2)} h\left(\sum_{i=1}^{d} w_{i, 
 \[
 L(\boldsymbol{x}, y)=-\log \hat{p}(y \mid \boldsymbol{x})=-f_{y}(\boldsymbol{x})+\log \sum_c \exp \left(f_{c}(\boldsymbol{x})\right)
 \]</div>
-</div>
-<div class="section" id="activation-functions">
+</section>
+<section id="activation-functions">
 <h3>Activation Functions<a class="headerlink" href="#activation-functions" title="Permalink to this headline">¶</a></h3>
 <p>There are several kinds of activation functions we can choose to build a neural network. Their advantages and weakness are discussed in <a class="reference internal" href="03-trainability.html"><span class="doc std std-doc">trainability</span></a> section.</p>
-<div class="section" id="sigmoid-and-tanh">
+<section id="sigmoid-and-tanh">
 <h4>Sigmoid and tanh<a class="headerlink" href="#sigmoid-and-tanh" title="Permalink to this headline">¶</a></h4>
 <p>The sigmoid function is</p>
 <div class="math notranslate nohighlight">
 \[
 h(a)=\frac{1}{1+\exp (a)}
 \]</div>
-<div class="figure align-default" id="nn-sigmoid-plot">
+<figure class="align-default" id="nn-sigmoid-plot">
 <a class="reference internal image-reference" href="../_images/nn-sigmoid-plot.png"><img alt="" src="../_images/nn-sigmoid-plot.png" style="width: 30%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 116 </span><span class="caption-text">Plot of sigmoid function</span><a class="headerlink" href="#nn-sigmoid-plot" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">Fig. 116 </span><span class="caption-text">Plot of sigmoid function</span><a class="headerlink" href="#nn-sigmoid-plot" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <p>The tanh function is</p>
 <div class="math notranslate nohighlight">
 \[
 h(a)=\tanh (a)
 \]</div>
-<div class="figure align-default" id="nn-tanh-plot">
+<figure class="align-default" id="nn-tanh-plot">
 <a class="reference internal image-reference" href="../_images/nn-tanh-plot.png"><img alt="" src="../_images/nn-tanh-plot.png" style="width: 30%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 117 </span><span class="caption-text">Plot of tanh function</span><a class="headerlink" href="#nn-tanh-plot" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">Fig. 117 </span><span class="caption-text">Plot of tanh function</span><a class="headerlink" href="#nn-tanh-plot" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <p>The two functions are</p>
 <ul>
 <li><p>Good: squash activations to a fixed range</p></li>
@@ -1042,21 +1049,23 @@ h(a)=\tanh (a)
 <p>so they can make learning sensitive to initialization, and very, very slow.</p>
 </li>
 </ul>
-</div>
-<div class="section" id="relu">
+</section>
+<section id="relu">
 <h4>RELU<a class="headerlink" href="#relu" title="Permalink to this headline">¶</a></h4>
 <p>ReLU solves the problems of saturating gradient by making the non-linearity non-saturating, at least in part of the range. It greatly speeds up convergence compared to sigmoid (order of magnitude), and used as the “default” nonlinearity in recent work.</p>
 <div class="math notranslate nohighlight">
 \[
 h(a)=\max (0, a)
 \]</div>
-<div class="figure align-default" id="nn-relu-plot">
+<figure class="align-default" id="nn-relu-plot">
 <a class="reference internal image-reference" href="../_images/nn-relu-plot.png"><img alt="" src="../_images/nn-relu-plot.png" style="width: 30%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 118 </span><span class="caption-text">Plot of ReLU function</span><a class="headerlink" href="#nn-relu-plot" title="Permalink to this image">¶</a></p>
-</div>
-</div>
-</div>
-<div class="section" id="advantage-of-deep-architecture">
+<figcaption>
+<p><span class="caption-number">Fig. 118 </span><span class="caption-text">Plot of ReLU function</span><a class="headerlink" href="#nn-relu-plot" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+</section>
+</section>
+<section id="advantage-of-deep-architecture">
 <h3>Advantage of Deep Architecture<a class="headerlink" href="#advantage-of-deep-architecture" title="Permalink to this headline">¶</a></h3>
 <dl class="simple myst">
 <dt>Theorem (Neural networks approximation, Cybenko 1989)</dt><dd><p>2-layer net with linear output (sigmoid hidden units) can approximate any continuous function over compact domain to arbitrary accuracy (given enough hidden units).</p>
@@ -1067,12 +1076,12 @@ h(a)=\max (0, a)
 <dt>Example (Advantage of deep architecture)</dt><dd><p>Compute the parity of <span class="math notranslate nohighlight">\(n\)</span>-bit numbers, with AND, OR, NOT, XOR gates. Trivial shallow architecture: express parity as DNF or CNF. They are shallow functions, and need exponential number of gates. On the other hand, use deep architecture just use a tree of XOR gates.</p>
 </dd>
 </dl>
-</div>
-</div>
-<div class="section" id="learning">
+</section>
+</section>
+<section id="learning">
 <h2>Learning<a class="headerlink" href="#learning" title="Permalink to this headline">¶</a></h2>
 <p>For the discussion below, we are assuming feedforward, fully-connected networks. There are other options: convolutional networks, recurrent networks, transformers</p>
-<div class="section" id="gradient-descent">
+<section id="gradient-descent">
 <h3>Gradient Descent<a class="headerlink" href="#gradient-descent" title="Permalink to this headline">¶</a></h3>
 <p>The general form of gradient descent is</p>
 <ul>
@@ -1103,22 +1112,26 @@ h(a)=\max (0, a)
 </li>
 </ul>
 <p>The learning rate <span class="math notranslate nohighlight">\(\eta\)</span> controls the step size. The effect of different learning rates are shown in the below picture. There are many algorithm that optimizes the training process by modifying <span class="math notranslate nohighlight">\(\eta\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{g} ^{(t)}\)</span>, e.g., AdaGrad, RMSProp, Adam. For more details on gradient descent, see <a class="reference internal" href="01-stochastic-gradient-descent.html"><span class="doc std std-doc">here</span></a>.</p>
-<div class="figure align-default" id="nn-lr-comparison">
+<figure class="align-default" id="nn-lr-comparison">
 <a class="reference internal image-reference" href="../_images/nn-lr-comparison.png"><img alt="" src="../_images/nn-lr-comparison.png" style="width: 50%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 119 </span><span class="caption-text">Comparison of different learning rate [Lecun et al 1996]</span><a class="headerlink" href="#nn-lr-comparison" title="Permalink to this image">¶</a></p>
-</div>
-</div>
-<div class="section" id="backward-propagation">
+<figcaption>
+<p><span class="caption-number">Fig. 119 </span><span class="caption-text">Comparison of different learning rate [Lecun et al 1996]</span><a class="headerlink" href="#nn-lr-comparison" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="backward-propagation">
 <h3>Backward propagation<a class="headerlink" href="#backward-propagation" title="Permalink to this headline">¶</a></h3>
 <p>How the gradient <span class="math notranslate nohighlight">\(\boldsymbol{g}\)</span> is computed in each iteration?</p>
 <dl class="simple myst">
 <dt>Definition (Backward propagation)</dt><dd><p>Aka backpropagation, refers to efficient computation of gradients with respect to all parameters via chain rule of differentiation.</p>
 </dd>
 <dt>Example (Computation of Backpropagation)</dt><dd><p>In the neural network below, the node <span class="math notranslate nohighlight">\(z_t\)</span> receives values from input nodes <span class="math notranslate nohighlight">\(z_{i_s}\)</span> where <span class="math notranslate nohighlight">\(j=1, \ldots, S\)</span> and feed its value to outpue nodes <span class="math notranslate nohighlight">\(z_{o_r}\)</span> where <span class="math notranslate nohighlight">\(r=1, \ldots, R\)</span>.</p>
-<div class="figure align-default" id="nn-backpropagation">
+<figure class="align-default" id="nn-backpropagation">
 <a class="reference internal image-reference" href="../_images/nn-backpropagation.png"><img alt="" src="../_images/nn-backpropagation.png" style="width: 30%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 120 </span><span class="caption-text">Backpropagation [Shi 2021]</span><a class="headerlink" href="#nn-backpropagation" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">Fig. 120 </span><span class="caption-text">Backpropagation [Shi 2021]</span><a class="headerlink" href="#nn-backpropagation" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <p>Then computation in node <span class="math notranslate nohighlight">\(z_t\)</span> is</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -1171,9 +1184,9 @@ x\texttt{.grad} &amp;\mathrel{+}= 4 \times z\texttt{.grad}\\
 x\texttt{.grad} &amp;\mathrel{+}= y\texttt{.grad} \times 2 \times x\texttt{.value}\\
 \end{aligned}\end{split}\]</div>
 </div>
-</div>
-</div>
-<div class="section" id="einstein-notation">
+</section>
+</section>
+<section id="einstein-notation">
 <h2>Einstein Notation<a class="headerlink" href="#einstein-notation" title="Permalink to this headline">¶</a></h2>
 <p>In many neural networks models, we will use Einstein notation, since it</p>
 <ul class="simple">
@@ -1215,8 +1228,8 @@ x\texttt{.grad} &amp;\mathrel{+}= y\texttt{.grad} \times 2 \times x\texttt{.valu
 </ul>
 </li>
 </ul>
-</div>
-<div class="section" id="unsupervised-deep-representation-learning">
+</section>
+<section id="unsupervised-deep-representation-learning">
 <h2>Unsupervised Deep Representation Learning<a class="headerlink" href="#unsupervised-deep-representation-learning" title="Permalink to this headline">¶</a></h2>
 <p>Neural networks can be used to extract representation from unlabeled data. There are four categories of methods.</p>
 <ul class="simple">
@@ -1238,8 +1251,8 @@ x\texttt{.grad} &amp;\mathrel{+}= y\texttt{.grad} \times 2 \times x\texttt{.valu
 </ul>
 <div class="toctree-wrapper compound">
 </div>
-</div>
-</div>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {

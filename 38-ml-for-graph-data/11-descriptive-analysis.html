@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
     <title>Descriptive Analysis &#8212; Data Science Handbook</title>
     
   <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
@@ -93,7 +94,7 @@
   </a>
  </li>
 </ul>
-<p class="caption collapsible-parent">
+<p>
  <span class="caption-text">
   Foundations
  </span>
@@ -314,7 +315,7 @@
   </i>
  </li>
 </ul>
-<p class="caption collapsible-parent">
+<p>
  <span class="caption-text">
   Algorithms
  </span>
@@ -462,7 +463,7 @@
   </i>
  </li>
 </ul>
-<p class="caption collapsible-parent">
+<p>
  <span class="caption-text">
   Machine Learning
  </span>
@@ -1028,20 +1029,22 @@
         
               <div>
                 
-  <div class="section" id="descriptive-analysis">
+  <section id="descriptive-analysis">
 <h1>Descriptive Analysis<a class="headerlink" href="#descriptive-analysis" title="Permalink to this headline">¶</a></h1>
 <p>How to measure the importance of a vertex or an edge? Degree, centrality.</p>
 <p>How to measure the cohesiveness of a graph? Density, connectivity, partitioning, assortativity.</p>
-<div class="section" id="degree">
+<section id="degree">
 <h2>Degree<a class="headerlink" href="#degree" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="degree-distributions">
+<section id="degree-distributions">
 <h3>Degree Distributions<a class="headerlink" href="#degree-distributions" title="Permalink to this headline">¶</a></h3>
 <p>Given a network graph <span class="math notranslate nohighlight">\(G\)</span>, define <span class="math notranslate nohighlight">\(f(d)\)</span> to be the fraction of vertices <span class="math notranslate nohighlight">\(v \in V\)</span> with degree <span class="math notranslate nohighlight">\(d_v = d\)</span>. The collection <span class="math notranslate nohighlight">\(\left\{ f(d) \right\}\)</span> is called the degree distribution of <span class="math notranslate nohighlight">\(G\)</span>, which is simply the histogram formed from the degree sequence, with bins of size one.</p>
 <p>For directed graphs, degree distributions may be defined analogously for in- and out-degrees.</p>
-<div class="figure align-default" id="graph-deg-dist">
+<figure class="align-default" id="graph-deg-dist">
 <a class="reference internal image-reference" href="../_images/graph-deg-dist.png"><img alt="" src="../_images/graph-deg-dist.png" style="width: 80%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 160 </span><span class="caption-text">Degree distributions in base-2 logarithmic scale [Kolaczyk 2009]</span><a class="headerlink" href="#graph-deg-dist" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">Fig. 161 </span><span class="caption-text">Degree distributions in base-2 logarithmic scale [Kolaczyk 2009]</span><a class="headerlink" href="#graph-deg-dist" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <p>In each plot, we can see that majority of vertices are of very low degree, a nevertheless non-trivial number of vertices are of much higher degree. The distribution is right skewed. There is roughly a linear decay, which suggests the presence of a power-law component to these distributions:</p>
 <div class="math notranslate nohighlight">
 \[
@@ -1069,10 +1072,12 @@ f(d) \propto d^{-\alpha}
   \hat{\alpha}_{k}=1+\hat{\gamma}_{k}^{-1}, \quad \text { with } \quad \hat{\gamma}_{k}=\frac{1}{k} \sum_{i=0}^{k-1} \log \frac{d_{\left(N_{v}-i\right)}}{d_{\left(N_{v}-k\right)}}
   \]</div>
 <p>where <span class="math notranslate nohighlight">\(d_{(1)} \leq \cdots \leq d_{\left(N_{v}\right)}\)</span> are the sorted vertex degrees and <span class="math notranslate nohighlight">\(k\)</span> is a value chosen by users. Typically, one can plot <span class="math notranslate nohighlight">\(\hat{\alpha}_k\)</span> for a range of <span class="math notranslate nohighlight">\(k\)</span>, and look for an area where the plot settle down to some stable values of <span class="math notranslate nohighlight">\(\hat{\alpha}\)</span>. If the decay is sharp and there is no flatten area, then it suggests that a simple power-law-like model is inappropriate.</p>
-<div class="figure align-default" id="graph-deg-hill-plot">
+<figure class="align-default" id="graph-deg-hill-plot">
 <a class="reference internal image-reference" href="../_images/graph-deg-hill-plot.png"><img alt="" src="../_images/graph-deg-hill-plot.png" style="width: 80%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 161 </span><span class="caption-text">Hill plots of <span class="math notranslate nohighlight">\(\hat{\alpha}_k\)</span> over <span class="math notranslate nohighlight">\(k\)</span> for the two datasets above. Note different decay shapes. [Kolaczyk 2009]</span><a class="headerlink" href="#graph-deg-hill-plot" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">Fig. 162 </span><span class="caption-text">Hill plots of <span class="math notranslate nohighlight">\(\hat{\alpha}_k\)</span> over <span class="math notranslate nohighlight">\(k\)</span> for the two datasets above. Note different decay shapes. [Kolaczyk 2009]</span><a class="headerlink" href="#graph-deg-hill-plot" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 </li>
 <li><p>mixtures of power-laws</p></li>
 <li><p>power-law + exponential truncation</p>
@@ -1080,8 +1085,8 @@ f(d) \propto d^{-\alpha}
 \[f(d) \propto d^{-\alpha} \exp \left(-d / d^{*}\right)\]</div>
 </li>
 </ul>
-</div>
-<div class="section" id="joint-degree-distribution">
+</section>
+<section id="joint-degree-distribution">
 <h3>Joint Degree Distribution<a class="headerlink" href="#joint-degree-distribution" title="Permalink to this headline">¶</a></h3>
 <p>Two graphs may have identical degree sequences and yet otherwise differ noticeably in the way their vertices are paired. To capture information of this sort, we consider a two-dimensional analogue of the degree distribution, i.e. joint degree distribution <span class="math notranslate nohighlight">\(f(d_1, d_2)\)</span>, which is symmetric.</p>
 <ul class="simple">
@@ -1094,12 +1099,14 @@ f(d) \propto d^{-\alpha}
 </li>
 </ul>
 <p>In the plot below, we see that the joint distribution concentrate primarily where pairs <span class="math notranslate nohighlight">\((d_1, d_2)\)</span> are both low. However, we can see there is also noticeable tendency for the vertices of largest degree to be connected to low-degree vertices.</p>
-<div class="figure align-default" id="graph-deg-dist-joint">
+<figure class="align-default" id="graph-deg-dist-joint">
 <a class="reference internal image-reference" href="../_images/graph-deg-dist-joint.png"><img alt="" src="../_images/graph-deg-dist-joint.png" style="width: 80%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 162 </span><span class="caption-text">Joint degree distributions for the two datasets. Colors range from blue (low relative frequency) to red (high relative frequency), with white indicating areas with no data. [Kolaczyk 2009]</span><a class="headerlink" href="#graph-deg-dist-joint" title="Permalink to this image">¶</a></p>
-</div>
-</div>
-<div class="section" id="conditional-degree-distribution">
+<figcaption>
+<p><span class="caption-number">Fig. 163 </span><span class="caption-text">Joint degree distributions for the two datasets. Colors range from blue (low relative frequency) to red (high relative frequency), with white indicating areas with no data. [Kolaczyk 2009]</span><a class="headerlink" href="#graph-deg-dist-joint" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="conditional-degree-distribution">
 <h3>Conditional Degree Distribution<a class="headerlink" href="#conditional-degree-distribution" title="Permalink to this headline">¶</a></h3>
 <p>From the joint degree distribution we can define conditional degree distribution <span class="math notranslate nohighlight">\(f_{d ^\prime \vert d}\)</span>: given a vertex of degree <span class="math notranslate nohighlight">\(d\)</span>, what is the relative frequency of its neighbor that has degree <span class="math notranslate nohighlight">\(d ^\prime\)</span>?</p>
 <div class="math notranslate nohighlight">
@@ -1108,18 +1115,18 @@ f(d) \propto d^{-\alpha}
 <div class="math notranslate nohighlight">
 \[\bar{d}(d)=\sum_{d^{\prime}} d^{\prime} f_{d^{\prime} \mid d}\]</div>
 <p>A negative trend has been observed in <span class="math notranslate nohighlight">\(\bar{d}(d)\)</span> as <span class="math notranslate nohighlight">\(d\)</span> increases.</p>
-</div>
-<div class="section" id="degree-correlation">
+</section>
+<section id="degree-correlation">
 <span id="id1"></span><h3>Degree Correlation<a class="headerlink" href="#degree-correlation" title="Permalink to this headline">¶</a></h3>
 <p>Analogously, we can define correlation <span class="math notranslate nohighlight">\(\operatorname{Corr}\left( D, D ^\prime  \right)\)</span> by the joint degree distribution <span class="math notranslate nohighlight">\(f(d_1, d_2)\)</span> and its marginals.</p>
 <p>For the two data sets above, the degree correlation is 0.023 and -0.093 respectively. Though they are small, the difference in sign reinforces our observation of high-low degree pair in the second data set.</p>
 <p>A closely related concept is <a class="reference internal" href="#graph-assortativity"><span class="std std-ref">assortativity</span></a>.</p>
-</div>
-</div>
-<div class="section" id="centrality">
+</section>
+</section>
+<section id="centrality">
 <h2>Centrality<a class="headerlink" href="#centrality" title="Permalink to this headline">¶</a></h2>
 <p>The importance of a vertex <span class="math notranslate nohighlight">\(v\)</span> can be measured by centrality <span class="math notranslate nohighlight">\(c(v)\)</span>. There are many kinds of centrality measures. Degree is one of them. Deciding which are most appropriate for a given application clearly requires consideration of the context.</p>
-<div class="section" id="closeness-centrality">
+<section id="closeness-centrality">
 <h3>Closeness Centrality<a class="headerlink" href="#closeness-centrality" title="Permalink to this headline">¶</a></h3>
 <p>Closeness centrality measures how close a vertex is to other vertices.</p>
 <div class="math notranslate nohighlight">
@@ -1131,8 +1138,8 @@ f(d) \propto d^{-\alpha}
 <li><p>To compute <span class="math notranslate nohighlight">\(c_{cl}(v)\)</span>, we need to compute single-source shortest paths from <span class="math notranslate nohighlight">\(v\)</span> to all other vertices <span class="math notranslate nohighlight">\(u \in V\)</span>.</p></li>
 <li><p>Often, for comparison across graphs and with other centrality measures, this measure is normalized to lie in the interval <span class="math notranslate nohighlight">\([0,1]\)</span>, through multiplication by a factor <span class="math notranslate nohighlight">\(N_v - 1\)</span>. It is 1 if <span class="math notranslate nohighlight">\(v\)</span> is the center of a star.</p></li>
 </ul>
-</div>
-<div class="section" id="betweenness-centrality">
+</section>
+<section id="betweenness-centrality">
 <h3>Betweenness Centrality<a class="headerlink" href="#betweenness-centrality" title="Permalink to this headline">¶</a></h3>
 <p>Betweenness centrality relates ‘importance’ to where a vertex is located with respect to the paths in the graph.</p>
 <div class="math notranslate nohighlight">
@@ -1149,8 +1156,8 @@ c_{bet}(v) = \sum_{s,t \in V, s\ne v, t \ne v}\frac{\sigma(s,t \mid v)}{\sigma(s
 <li><p>If all shortest paths are unique, i.e. <span class="math notranslate nohighlight">\(\sigma(s,t)=1\)</span>, then <span class="math notranslate nohighlight">\(c_{bet}(v)\)</span> simple counts how many shortest paths going through <span class="math notranslate nohighlight">\(v\)</span>.</p></li>
 <li><p>It can be normalized to <span class="math notranslate nohighlight">\([0,1]\)</span> through division by <span class="math notranslate nohighlight">\((N_v - 1) (N_v - 2)/2\)</span>. For instance, it is 1 if <span class="math notranslate nohighlight">\(v\)</span> is the center of a star.</p></li>
 </ul>
-</div>
-<div class="section" id="eigenvector-centrality">
+</section>
+<section id="eigenvector-centrality">
 <h3>Eigenvector Centrality<a class="headerlink" href="#eigenvector-centrality" title="Permalink to this headline">¶</a></h3>
 <p>A vertex’s importance may depends on its neighbors’ importance. Eigenvector centrality captures this,</p>
 <div class="math notranslate nohighlight">
@@ -1168,8 +1175,8 @@ c_{eig}(v) = \alpha \sum_{(u,v) \in E} c_{eig}(u)
 <p class="admonition-title"> Computation</p>
 <p>Calculation of the largest eigenvalue of a matrix and its eigenvector is a standard problem. The power method is generally used. This method is iterative and is guaranteed to converge under various conditions, such as when the matrix is symmetric, which <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> will be for undirected graphs. The rate of convergence to <span class="math notranslate nohighlight">\(\boldsymbol{c} _{eig}\)</span> will behave like a power, in the number of iterations, of the ratio of the second largest eigenvalue of <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> to the first.</p>
 </div>
-</div>
-<div class="section" id="hubs-and-authorities-hits-algorithms">
+</section>
+<section id="hubs-and-authorities-hits-algorithms">
 <h3>Hubs and Authorities (HITS) Algorithms<a class="headerlink" href="#hubs-and-authorities-hits-algorithms" title="Permalink to this headline">¶</a></h3>
 <p>Given an adjacency matrix <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> for a directed web graph,</p>
 <ul>
@@ -1182,12 +1189,12 @@ c_{eig}(v) = \alpha \sum_{(u,v) \in E} c_{eig}(u)
 \[[\boldsymbol{M}_{hub}]_{ij}= \langle\boldsymbol{a}_{\cdot i}, \boldsymbol{a} _{\cdot j} \rangle = \sum_{v \in V} \mathbb{I} \left\{ i \leftarrow v \rightarrow j \right\}\]</div>
 </li>
 </ul>
-</div>
-<div class="section" id="centrality-of-edges">
+</section>
+<section id="centrality-of-edges">
 <h3>Centrality of Edges<a class="headerlink" href="#centrality-of-edges" title="Permalink to this headline">¶</a></h3>
 <p>Betweenness centrality extends to edges in a straightforward manner. For other measures, we can apply them to the vertices in the edge-to-vertex dual graph (line graph) of <span class="math notranslate nohighlight">\(G\)</span>.</p>
-</div>
-<div class="section" id="graph-level-summaries">
+</section>
+<section id="graph-level-summaries">
 <h3>Graph-level Summaries<a class="headerlink" href="#graph-level-summaries" title="Permalink to this headline">¶</a></h3>
 <p>Once we compute <span class="math notranslate nohighlight">\(c(v)\)</span> for all <span class="math notranslate nohighlight">\(v\)</span>, we can look for graph-level summaries, e.g. the distribution of <span class="math notranslate nohighlight">\(c(v)\)</span>, in analogy to the degree distribution, as well as its moments and quantiles.</p>
 <p>For instance, centralization index is defined as</p>
@@ -1201,15 +1208,15 @@ c = \frac{\sum_{v \in V} c^* - c(v)}{\max \sum_{v \in V} c^* - c(v)}
 <li><p><span class="math notranslate nohighlight">\(\max\)</span> in the denominator is over all possible graphs of order <span class="math notranslate nohighlight">\(N_v\)</span>, which is not easy to compute outside of certain special cases.</p></li>
 </ul>
 <p>There are many other extension of the above centrality measures to different levels.</p>
-</div>
-</div>
-<div class="section" id="cohesion">
+</section>
+</section>
+<section id="cohesion">
 <h2>Cohesion<a class="headerlink" href="#cohesion" title="Permalink to this headline">¶</a></h2>
 <p>Are some subsets of vertices cohesive? Many measures differ from local (triads) to global (giant components), and explicitly (cliques) or implicitly (clusters).</p>
-<div class="section" id="local-density">
+<section id="local-density">
 <h3>Local Density<a class="headerlink" href="#local-density" title="Permalink to this headline">¶</a></h3>
-</div>
-<div class="section" id="cliques">
+</section>
+<section id="cliques">
 <h3>Cliques<a class="headerlink" href="#cliques" title="Permalink to this headline">¶</a></h3>
 <p>Recall that a clique is a complete subgraph <span class="math notranslate nohighlight">\(H\)</span> of <span class="math notranslate nohighlight">\(G\)</span>. A common case is that of 3-cliques, i.e. triangles. In practice, large cliques are rare. A sufficient condition for a clique of size <span class="math notranslate nohighlight">\(n\)</span> to exist in <span class="math notranslate nohighlight">\(G\)</span> is <span class="math notranslate nohighlight">\(N_e &gt; \frac{n-2}{n-1}\frac{N_v^2}{2}\)</span>. But in real-world networks, <span class="math notranslate nohighlight">\(N_e \sim N_v\)</span>.</p>
 <ul class="simple">
@@ -1224,18 +1231,18 @@ c = \frac{\sum_{v \in V} c^* - c(v)}{\max \sum_{v \in V} c^* - c(v)}
 </ul>
 </li>
 </ul>
-</div>
-<div class="section" id="plexes">
+</section>
+<section id="plexes">
 <h3>Plexes<a class="headerlink" href="#plexes" title="Permalink to this headline">¶</a></h3>
 <p>Plexes are weakened version of cliques: A subgraph <span class="math notranslate nohighlight">\(H\)</span> consisting of <span class="math notranslate nohighlight">\(m\)</span> vertices is called an <span class="math notranslate nohighlight">\(n\)</span>-plex for <span class="math notranslate nohighlight">\(m &gt; n\)</span> if no vertex has degree less than <span class="math notranslate nohighlight">\(m-n\)</span>. In other words, no vertex is missing more than <span class="math notranslate nohighlight">\(n\)</span> of its possible <span class="math notranslate nohighlight">\(m-1\)</span> edges with other vertices in the subgraph.</p>
 <p>Computation problems tend to scale like those involving cliques.</p>
-</div>
-<div class="section" id="cores">
+</section>
+<section id="cores">
 <h3>Cores<a class="headerlink" href="#cores" title="Permalink to this headline">¶</a></h3>
 <p>A <span class="math notranslate nohighlight">\(k\)</span>-core of a graph <span class="math notranslate nohighlight">\(G\)</span> is a subgraph <span class="math notranslate nohighlight">\(H\)</span> for which all vertices have degree at least <span class="math notranslate nohighlight">\(k\)</span>.</p>
 <p>A maximal <span class="math notranslate nohighlight">\(k\)</span>-core subgraph may be computed in <span class="math notranslate nohighlight">\(O(N_v +N_e)\)</span>. The algorithm computes the shell indices for all <span class="math notranslate nohighlight">\(v\)</span>. The shell index of <span class="math notranslate nohighlight">\(v\)</span> is the largest value <span class="math notranslate nohighlight">\(c\)</span> such that <span class="math notranslate nohighlight">\(v\)</span> belongs to the <span class="math notranslate nohighlight">\(c\)</span>-core of <span class="math notranslate nohighlight">\(G\)</span> but not its <span class="math notranslate nohighlight">\((C+1)\)</span>-core.</p>
-</div>
-<div class="section" id="density">
+</section>
+<section id="density">
 <h3>Density<a class="headerlink" href="#density" title="Permalink to this headline">¶</a></h3>
 <p>The density of a subgraph <span class="math notranslate nohighlight">\(H = (V_H, E_H)\)</span> is defined as the realized fraction of total possible edges in this subgraph</p>
 <div class="math notranslate nohighlight">
@@ -1247,8 +1254,8 @@ c = \frac{\sum_{v \in V} c^* - c(v)}{\max \sum_{v \in V} c^* - c(v)}
 <li><p>If <span class="math notranslate nohighlight">\(H=G\)</span>, then <span class="math notranslate nohighlight">\(\operatorname{den}(G)\)</span> gives the density of the overall graph</p></li>
 <li><p>If <span class="math notranslate nohighlight">\(H=N(v)\)</span> is the set of neighbors of a vertex <span class="math notranslate nohighlight">\(v\)</span> and the edges between them, then <span class="math notranslate nohighlight">\(\operatorname{den}(N(v))\)</span> gives a measure of density in the immediate neighborhood of <span class="math notranslate nohighlight">\(v\)</span>, which is called the Watts-Strogatz local clustering coefficient. The average of <span class="math notranslate nohighlight">\(\operatorname{den}(N(v))\)</span> can be used as a clustering coefficient for the overall graph.</p></li>
 </ul>
-</div>
-<div class="section" id="clustering-coefficient">
+</section>
+<section id="clustering-coefficient">
 <h3>Clustering Coefficient<a class="headerlink" href="#clustering-coefficient" title="Permalink to this headline">¶</a></h3>
 <p>A measure of density in the immediate neighborhood of <span class="math notranslate nohighlight">\(v\)</span> can be the answer to the question: among all pairs of neighbors of <span class="math notranslate nohighlight">\(v\)</span>, how many of them are connected? Or, what’s the proportion that two of my friends are also friends of each other? To answer this, we first formally define triangles and connected triples.</p>
 <ul class="simple">
@@ -1272,8 +1279,8 @@ c = \frac{\sum_{v \in V} c^* - c(v)}{\max \sum_{v \in V} c^* - c(v)}
 \operatorname{clus} (G) = \frac{1}{\left\vert V ^\prime  \right\vert}  \sum_{v \in \boldsymbol{V} ^\prime } \operatorname{clus}(v)
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(\boldsymbol{V} ^\prime \subseteq V\)</span> is the set of vertices <span class="math notranslate nohighlight">\(v\)</span> with <span class="math notranslate nohighlight">\(d_v \ge 2\)</span>.</p>
-</div>
-<div class="section" id="transitivity">
+</section>
+<section id="transitivity">
 <h3>Transitivity<a class="headerlink" href="#transitivity" title="Permalink to this headline">¶</a></h3>
 <p>The above definition is an simple average of <span class="math notranslate nohighlight">\(\operatorname{clus}(v)\)</span>, which treat <span class="math notranslate nohighlight">\(v\)</span> with different <span class="math notranslate nohighlight">\(d_v\)</span> equally. A more informative measure is the weighted average by <span class="math notranslate nohighlight">\(\tau_{\land }(v)\)</span>,</p>
 <div class="math notranslate nohighlight">
@@ -1296,12 +1303,12 @@ c = \frac{\sum_{v \in V} c^* - c(v)}{\max \sum_{v \in V} c^* - c(v)}
 <li><p>in large-scale networks with broad degree distributions, it has frequently been found that the local clustering coefficient <span class="math notranslate nohighlight">\(\operatorname{clus}(v)\)</span> varies inversely with vertex degree.</p></li>
 </ul>
 <p>Higher-order clustering coefficients have also been proposed, involving cycles of length greater than three.</p>
-</div>
-<div class="section" id="connectivity">
+</section>
+<section id="connectivity">
 <h3>Connectivity<a class="headerlink" href="#connectivity" title="Permalink to this headline">¶</a></h3>
 <p>The task of verifying whether a graph is connected and, if not, identifying its connected components can be done in <span class="math notranslate nohighlight">\(O(N_v + N_e)\)</span> time by DFS or BFS. If it does not, we might seek to quantify how close to being able to do so it is.</p>
-</div>
-<div class="section" id="small-world">
+</section>
+<section id="small-world">
 <h3>Small World<a class="headerlink" href="#small-world" title="Permalink to this headline">¶</a></h3>
 <p>Often it is the case that one of the connected components in a graph G dominates the others in magnitude, in that it contains the vast majority of the vertices in <span class="math notranslate nohighlight">\(G\)</span>. We call it the giant component. Depending on the task at hand, it may be sensible to restrict attention to that component alone in carrying out further analysis and modeling.</p>
 <p>The giant component of many real-world networks enjoys the small world property. This concept is traced back to Stanley Milgram’s experiment in 1960’s: people are only separated by roughly six acquaintances (i.e., by ‘six degrees of separation’). That is, despite the enormous size of the giant component, the typical number of ‘hops’ along shortest paths between any two vertices would be quite small.</p>
@@ -1312,8 +1319,8 @@ c = \frac{\sum_{v \in V} c^* - c(v)}{\max \sum_{v \in V} c^* - c(v)}
 \]</div>
 <p>We say it is small if <span class="math notranslate nohighlight">\(\bar{l}\)</span> scales as <span class="math notranslate nohighlight">\(\mathcal{O} (\log N_v)\)</span> or less.</p>
 <p>Besides, small average distance is often accompanied by a high clutering coefficient <span class="math notranslate nohighlight">\(\operatorname{clus}(G)\)</span> or <span class="math notranslate nohighlight">\(\operatorname{clus} _T (G)\)</span>. These two properties joint define the term ‘small world’, which is related to communication upon them, e.g. information in a social network, disease in an epidemiological network, etc.</p>
-</div>
-<div class="section" id="vertex-and-edge-connectivity-and-cut">
+</section>
+<section id="vertex-and-edge-connectivity-and-cut">
 <h3>Vertex and Edge Connectivity and Cut<a class="headerlink" href="#vertex-and-edge-connectivity-and-cut" title="Permalink to this headline">¶</a></h3>
 <p>If an arbitrary subset of k vertices (edges) is removed from a graph, is the remaining subgraph connected?</p>
 <dl class="simple myst">
@@ -1362,8 +1369,8 @@ c = \frac{\sum_{v \in V} c^* - c(v)}{\max \sum_{v \in V} c^* - c(v)}
 <li><p>If the cardinality of such minimum <span class="math notranslate nohighlight">\(s\)</span>-<span class="math notranslate nohighlight">\(t\)</span> cut is <span class="math notranslate nohighlight">\(k\)</span>, then the edge-connectivity of <span class="math notranslate nohighlight">\(G\)</span> is <span class="math notranslate nohighlight">\(k-1\)</span>.</p></li>
 </ul>
 <p>To find a minimum <span class="math notranslate nohighlight">\(s\)</span>-<span class="math notranslate nohighlight">\(t\)</span> cut, it is equivalent to find a maximum flow. See the <a class="reference internal" href="../25-graph-related/31-maximum-flow.html#max-flow"><span class="std std-ref">section</span></a> for details.</p>
-</div>
-<div class="section" id="in-directed-graphs">
+</section>
+<section id="in-directed-graphs">
 <h3>In Directed Graphs<a class="headerlink" href="#in-directed-graphs" title="Permalink to this headline">¶</a></h3>
 <p>Many of the concepts above extend to the case of directed graphs analogously. A often useful characterization of directed graphs is that of a <strong>bowtie</strong>. We can classify the graph into five parts</p>
 <ol class="simple">
@@ -1374,12 +1381,14 @@ c = \frac{\sum_{v \in V} c^* - c(v)}{\max \sum_{v \in V} c^* - c(v)}
 <li><p>tubes, composed of vertices between the in- and out- components that are not part of the SCC</p></li>
 </ol>
 <p>In the vastly large Word Wide Web graph, Broder and colleagues found that the relative size of the first four parts of the bowtie in their giant component were in fact roughly equal in size.</p>
-<div class="figure align-default" id="graph-bowtie">
+<figure class="align-default" id="graph-bowtie">
 <a class="reference internal image-reference" href="../_images/graph-bowtie.png"><img alt="" src="../_images/graph-bowtie.png" style="width: 90%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 163 </span><span class="caption-text">Bowtie illustration [Broder] and application to a network data set [Kolaczyk 2009]. Strongly connected component (yellow), in-component (blue), out-component (red), and tendrils (pink).</span><a class="headerlink" href="#graph-bowtie" title="Permalink to this image">¶</a></p>
-</div>
-</div>
-<div class="section" id="graph-partitioning">
+<figcaption>
+<p><span class="caption-number">Fig. 164 </span><span class="caption-text">Bowtie illustration [Broder] and application to a network data set [Kolaczyk 2009]. Strongly connected component (yellow), in-component (blue), out-component (red), and tendrils (pink).</span><a class="headerlink" href="#graph-bowtie" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="graph-partitioning">
 <h3>Graph Partitioning<a class="headerlink" href="#graph-partitioning" title="Permalink to this headline">¶</a></h3>
 <p>A cohesive subset of vertices generally is taken to refer to a subset of vertices that are</p>
 <ul class="simple">
@@ -1396,14 +1405,14 @@ c = \frac{\sum_{v \in V} c^* - c(v)}{\max \sum_{v \in V} c^* - c(v)}
 <li><p>[SAND 401] Block modeling.</p></li>
 <li><p>Embed the graph into a Euclidean space, and apply a standard clustering algorithm, e.g. <span class="math notranslate nohighlight">\(k\)</span>-means clustering.</p></li>
 </ul>
-</div>
-<div class="section" id="assortativity-and-mixing">
+</section>
+<section id="assortativity-and-mixing">
 <span id="graph-assortativity"></span><h3>Assortativity and Mixing<a class="headerlink" href="#assortativity-and-mixing" title="Permalink to this headline">¶</a></h3>
 <p>Do vertices form a cohesive subset because they have some similar characteristics?</p>
 <p>Selective linking among vertices, according to a certain characteristic(s), is termed <strong>assortative mixing</strong> in the social network literature, which can be measured by some assortativity coefficients.</p>
 <p>The assortativity coefficients we describe here are attributed to Newman [SAND 293] and are essentially variations on the concept of correlation coefficients in statistics.</p>
 <p>The characteristics can be categorical, ordinal, or continuous. We first consider the categorical case.</p>
-<div class="section" id="categorical">
+<section id="categorical">
 <h4>Categorical<a class="headerlink" href="#categorical" title="Permalink to this headline">¶</a></h4>
 <p>Suppose there are <span class="math notranslate nohighlight">\(M\)</span> categories. We can define <span class="math notranslate nohighlight">\(f_{ij} = \frac{\left\vert E(C_i, C_j) \right\vert}{\left\vert E(G) \right\vert}\)</span> in the same way as that in modularity, where <span class="math notranslate nohighlight">\(C_i\)</span> is the set of vertices in category <span class="math notranslate nohighlight">\(i\)</span>. The assortativity coefficient is then</p>
 <div class="math notranslate nohighlight">
@@ -1422,8 +1431,8 @@ r_{a}=\frac{\sum_{i} f_{i i}-\sum_{i} f_{i+} f_{+i}}{1-\sum_{i} f_{i+} f_{+i}}
 </li>
 </ul>
 <p>Hence the <span class="math notranslate nohighlight">\(r_a \in [-1,1]\)</span> but does not achieve <span class="math notranslate nohighlight">\(-1\)</span> in the case of perfect disassortative mixing. Newman [SAND 293] argues that this behavior may be interpreted as reflecting that disassortative networks can range less ‘far’ from randomness than assortative networks.</p>
-</div>
-<div class="section" id="continuous">
+</section>
+<section id="continuous">
 <h4>Continuous<a class="headerlink" href="#continuous" title="Permalink to this headline">¶</a></h4>
 <p>For ordinal or continuous characteristics, let <span class="math notranslate nohighlight">\((x, y)\)</span> be the value of the characteristic for the vertices joined by an edge <span class="math notranslate nohighlight">\(e \in E\)</span>. To quantify the assortativity, we can simply use the Pearson correlation coefficient of the pairs <span class="math notranslate nohighlight">\((x_e, y_e)\)</span></p>
 <div class="math notranslate nohighlight">
@@ -1431,9 +1440,9 @@ r_{a}=\frac{\sum_{i} f_{i i}-\sum_{i} f_{i+} f_{+i}}{1-\sum_{i} f_{i+} f_{+i}}
 r = \frac{\operatorname{Cov}\left( X, Y \right)}{\sqrt{\operatorname{Var}\left( X \right)\operatorname{Var}\left( Y \right)}} = \frac{\sum_{x,y} xy (f_{xy} - f_{x+}f_{+y})}{\sigma_x \sigma_y}
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(\sum_{x,y}\)</span> is over unique pairs <span class="math notranslate nohighlight">\((x, y)\)</span>. In particular, when the characteristic is vertex degree, this quantity is simply the <a class="reference internal" href="#degree-correlation"><span class="std std-ref">degree correlation</span></a>.</p>
-</div>
-</div>
-<div class="section" id="application">
+</section>
+</section>
+<section id="application">
 <h3>Application<a class="headerlink" href="#application" title="Permalink to this headline">¶</a></h3>
 <p>For details see SAND 4.4.</p>
 <ul class="simple">
@@ -1442,9 +1451,9 @@ r = \frac{\operatorname{Cov}\left( X, Y \right)}{\sqrt{\operatorname{Var}\left( 
 <li><p>Difference: we can even compute the difference of these quantities before and after the event. This gives information about how these times series are related to the event.</p></li>
 <li><p>Testing: we can also test the significance of the changes. Note the multiple testing issue.</p></li>
 </ul>
-</div>
-</div>
-<div class="section" id="dynamic-graphs">
+</section>
+</section>
+<section id="dynamic-graphs">
 <h2>Dynamic Graphs<a class="headerlink" href="#dynamic-graphs" title="Permalink to this headline">¶</a></h2>
 <p>Dynamic graphs refers to a collection <span class="math notranslate nohighlight">\(\left\{ G_{t} \right\}\)</span> of graphs indexed over times <span class="math notranslate nohighlight">\(t\)</span> in some set <span class="math notranslate nohighlight">\(T\)</span>.</p>
 <p>Settings</p>
@@ -1458,8 +1467,8 @@ r = \frac{\operatorname{Cov}\left( X, Y \right)}{\sqrt{\operatorname{Var}\left( 
 <li><p>combinatorial problems that incorporates time [SAND 285]</p></li>
 <li><p>evolution of static descriptive statistics over time: degrees, diameter, clustering behavior etc.</p></li>
 </ul>
-</div>
-</div>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {

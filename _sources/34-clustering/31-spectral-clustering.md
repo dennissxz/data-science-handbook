@@ -108,7 +108,7 @@ Definitions
 
 The ratio is a natural quantity to minimize in seeking a good bisection of $G$. Unfortunately, this minimization problem to find $S$ for $\phi(G)$, aka **ratio cut**, is NP-hard. But the isoperimetric number is closely related to $\lambda_2$
 
-Property
+Cheeger’s Inequality
 : The isoperimetric number $\phi(G)$ is bounded by $\lambda_2$ as
 
   $$

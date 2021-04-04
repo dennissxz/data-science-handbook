@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
     <title>Randomized Algorithms &#8212; Data Science Handbook</title>
     
   <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
@@ -93,7 +94,7 @@
   </a>
  </li>
 </ul>
-<p class="caption collapsible-parent">
+<p>
  <span class="caption-text">
   Foundations
  </span>
@@ -314,7 +315,7 @@
   </i>
  </li>
 </ul>
-<p class="caption collapsible-parent">
+<p>
  <span class="caption-text">
   Algorithms
  </span>
@@ -462,7 +463,7 @@
   </i>
  </li>
 </ul>
-<p class="caption collapsible-parent">
+<p>
  <span class="caption-text">
   Machine Learning
  </span>
@@ -919,12 +920,16 @@
         
               <div>
                 
-  <div class="section" id="randomized-algorithms">
+  <section id="randomized-algorithms">
 <h1>Randomized Algorithms<a class="headerlink" href="#randomized-algorithms" title="Permalink to this headline">¶</a></h1>
 <p>Randomized algorithms requires no assumption of distribution of input instance. For any input instance, a randomized algorithm is good in the sense that its expected running time is polynomial, and it gives a near optimal solution with high probability.</p>
-<div class="section" id="max-exact-3sat">
+<p>Reference</p>
+<ul class="simple">
+<li><p>UBC Randomized Algorithms (Winter 2015) <a class="reference external" href="https://www.cs.ubc.ca/~nickhar/W15/">link</a></p></li>
+</ul>
+<section id="max-exact-3sat">
 <h2>Max Exact 3SAT<a class="headerlink" href="#max-exact-3sat" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="problem">
+<section id="problem">
 <h3>Problem<a class="headerlink" href="#problem" title="Permalink to this headline">¶</a></h3>
 <p>Input</p>
 <ul class="simple">
@@ -943,8 +948,8 @@
 <ul class="simple">
 <li><p>find an assignment to all variables that satisfies as many clauses as possible.</p></li>
 </ul>
-</div>
-<div class="section" id="randomized-algorithm">
+</section>
+<section id="randomized-algorithm">
 <h3>Randomized Algorithm<a class="headerlink" href="#randomized-algorithm" title="Permalink to this headline">¶</a></h3>
 <p>A randomized algorithm is to assign to every variable a value T/F uniformly at random <strong>independently</strong>.</p>
 <p>Consider a clause, <span class="math notranslate nohighlight">\(c_i = l_{i1} \vee l_{i2} \vee l_{i3}\)</span>. Then</p>
@@ -957,8 +962,8 @@
 </dd>
 </dl>
 <p>To ensure that in the output of the randomized algorithm, the number of clauses satisfied is at least <span class="math notranslate nohighlight">\(\frac{7}{8} m\)</span>, we just run the randomized algorithm multiple times, until we obtain an assignment satisfying at least <span class="math notranslate nohighlight">\(\frac{7}{8} m\)</span> clauses.</p>
-</div>
-<div class="section" id="expected-number-of-iterations">
+</section>
+<section id="expected-number-of-iterations">
 <h3>Expected Number of Iterations<a class="headerlink" href="#expected-number-of-iterations" title="Permalink to this headline">¶</a></h3>
 <p>If a random assignment satisfies at least <span class="math notranslate nohighlight">\(\frac{7}{8} m\)</span> clauses, we call it a success.</p>
 <p>What is the expected number of iterations to obtain a success?</p>
@@ -985,33 +990,33 @@
 <p>Hence <span class="math notranslate nohighlight">\(k+mp^* \ge \operatorname{E}\left( \# \text{satisfied clauses}  \right) = \frac{7}{8}m\)</span>, and then <span class="math notranslate nohighlight">\(p^* \ge \frac{1}{m} \left( \frac{7}{8}m - k  \right)\)</span>. Since <span class="math notranslate nohighlight">\(\frac{7}{8}m - k &gt; 0\)</span>, then the integer <span class="math notranslate nohighlight">\(7m-8k \ge 1\)</span>, then <span class="math notranslate nohighlight">\(\frac{7}{8}m - k \ge \frac{1}{8}\)</span> and <span class="math notranslate nohighlight">\(p^* \ge \frac{1}{8m}\)</span>.</p>
 </div>
 <p>Therefore, the number of random runs until a success follows a geometric distribution with probability <span class="math notranslate nohighlight">\(p^*\)</span>. Hence, to obtain a success the expected number of runs is <span class="math notranslate nohighlight">\(\frac{1}{p^*}\)</span> which is smaller than <span class="math notranslate nohighlight">\(8m\)</span>. But it may happen that there is no success solution after many runs, so make sure there is some appropriate stoping criteria.</p>
-</div>
-</div>
-<div class="section" id="monte-carlo-and-las-vegas">
+</section>
+</section>
+<section id="monte-carlo-and-las-vegas">
 <h2>Monte Carlo and Las Vegas<a class="headerlink" href="#monte-carlo-and-las-vegas" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="monte-carlo-algorithms">
+<section id="monte-carlo-algorithms">
 <h3>Monte Carlo Algorithms<a class="headerlink" href="#monte-carlo-algorithms" title="Permalink to this headline">¶</a></h3>
-<div class="margin sidebar">
+<aside class="margin sidebar">
 <p class="sidebar-title"></p>
 <p>w.h.p. = with high probability
 w.p.1 = with probability 1</p>
-</div>
+</aside>
 <p>Monte Carlo algorithms are a family of algorithms that</p>
 <ul class="simple">
 <li><p>provide a good (optimal, near-optimal, etc.) solution w.h.p., or</p></li>
 <li><p>the expected solution value is close to <span class="math notranslate nohighlight">\(OPT\)</span>.</p></li>
 </ul>
 <p>In the first case w.h.p., if we obtain a unsatisfactory solution, then we can repeat running until find a satisfactory solution, like what we did in the previous example.</p>
-</div>
-<div class="section" id="las-vegas-algorithm">
+</section>
+<section id="las-vegas-algorithm">
 <h3>Las Vegas Algorithm<a class="headerlink" href="#las-vegas-algorithm" title="Permalink to this headline">¶</a></h3>
 <p>Las Vegas algorithms always produce a good solution with polynomial expected run time.</p>
 <p>Generally, if we have a Las Vegas algorithm then we can get a Monte Carlo algorithm: run LV , if there is no optimal solution in some polynomial time, then output some random solution and then re-run.</p>
 <p>The reverse does not always work. Cannot know whether optimal in MC??</p>
 <p>Question: If there is an efficient randomized algorithm for a problem, is there always an efficient deterministic algorithm for it? i.e., <span class="math notranslate nohighlight">\(RP = P\)</span>? Believed to be true, no proof yet.</p>
-</div>
-</div>
-<div class="section" id="global-minimum-cut">
+</section>
+</section>
+<section id="global-minimum-cut">
 <h2>Global Minimum Cut<a class="headerlink" href="#global-minimum-cut" title="Permalink to this headline">¶</a></h2>
 <p>A global minimum cut is a partition of vertices <span class="math notranslate nohighlight">\((A,B)\)</span> of <span class="math notranslate nohighlight">\(V\)</span> that minimizes the number of across-set edges <span class="math notranslate nohighlight">\(\left\vert E(A,B) \right\vert\)</span>.</p>
 <p>We’ve introduced minimum <span class="math notranslate nohighlight">\(s-t\)</span> cuts. Apply it to this problem: assign every edge the same capacity, and go over all vertices pairs <span class="math notranslate nohighlight">\((u,v)\)</span>, find the global minimum <span class="math notranslate nohighlight">\(u\)</span>-<span class="math notranslate nohighlight">\(v\)</span> cut. This takes <span class="math notranslate nohighlight">\(O(n^2)\)</span> time which is slow.</p>
@@ -1096,8 +1101,8 @@ w.p.1 = with probability 1</p>
 <li><p>approximate global minimum cut</p></li>
 <li><p>sparsify the graph</p></li>
 </ul>
-</div>
-<div class="section" id="polynomial-identity-testing">
+</section>
+<section id="polynomial-identity-testing">
 <h2>Polynomial Identity Testing<a class="headerlink" href="#polynomial-identity-testing" title="Permalink to this headline">¶</a></h2>
 <p>A moninomial of <span class="math notranslate nohighlight">\(n\)</span> variables has the form <span class="math notranslate nohighlight">\(c x_1 ^{d_1} x_2 ^{d_2} \ldots x_n ^{d^n}\)</span> where <span class="math notranslate nohighlight">\(d_i \ge 0\)</span>. The degree of a monomial is <span class="math notranslate nohighlight">\(\sum_i d_i\)</span>.</p>
 <p>A polynomial <span class="math notranslate nohighlight">\(P(x_1, x_2, \ldots, x_n)\)</span> of <span class="math notranslate nohighlight">\(n\)</span> variables is a sum of moninomials of <span class="math notranslate nohighlight">\(n\)</span> variables. The degree of a polynomial is the largest degree of its monomials.</p>
@@ -1136,8 +1141,8 @@ x_1 &amp; 0 &amp; \cdots \\
 \mathbb{P} \left\{ P(r_1, \ldots , r_n) =0 \right\} \le \frac{d}{\left\vert s \right\vert}
 \]</div>
 <p>For instance, we can choose <span class="math notranslate nohighlight">\(\left\vert S \right\vert = nd\)</span>, such that the upper bound is <span class="math notranslate nohighlight">\(\frac{1}{n}\)</span>. If <span class="math notranslate nohighlight">\(\mathbb{F}\)</span> is finite then we choose <span class="math notranslate nohighlight">\(S = \mathbb{F}\)</span>.</p>
-</div>
-</div>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {

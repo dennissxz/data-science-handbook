@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
     <title>Chain Matrix Multiplication &#8212; Data Science Handbook</title>
     
   <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
@@ -93,7 +94,7 @@
   </a>
  </li>
 </ul>
-<p class="caption collapsible-parent">
+<p>
  <span class="caption-text">
   Foundations
  </span>
@@ -314,7 +315,7 @@
   </i>
  </li>
 </ul>
-<p class="caption collapsible-parent">
+<p>
  <span class="caption-text">
   Algorithms
  </span>
@@ -462,7 +463,7 @@
   </i>
  </li>
 </ul>
-<p class="caption collapsible-parent">
+<p>
  <span class="caption-text">
   Machine Learning
  </span>
@@ -902,9 +903,9 @@
         
               <div>
                 
-  <div class="section" id="chain-matrix-multiplication">
+  <section id="chain-matrix-multiplication">
 <h1>Chain Matrix Multiplication<a class="headerlink" href="#chain-matrix-multiplication" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="problem">
+<section id="problem">
 <h2>Problem<a class="headerlink" href="#problem" title="Permalink to this headline">¶</a></h2>
 <dl class="simple myst">
 <dt>Input</dt><dd><p><span class="math notranslate nohighlight">\(n\)</span> matrices <span class="math notranslate nohighlight">\(A_1, \ldots, A_n\)</span> with dimensions <span class="math notranslate nohighlight">\((d_0, d_1), (d_1, d_2), \ldots, (d_{n-1}, d_n)\)</span>.</p>
@@ -912,8 +913,8 @@
 <dt>Goal</dt><dd><p>The total product <span class="math notranslate nohighlight">\(A_1 \cdot A_2, \ldots, A_n\)</span> with minimum number of scalar multiplications.</p>
 </dd>
 </dl>
-</div>
-<div class="section" id="analysis">
+</section>
+<section id="analysis">
 <h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
 <p>Recall the matrix multiplication <span class="math notranslate nohighlight">\(A_{m \times n} \times B_{n \times p}\)</span> takes <span class="math notranslate nohighlight">\(m\times n\times p\)</span> number of scalar multiplications.</p>
 <p>For three matrices, there are two ways to compute their product</p>
@@ -922,7 +923,7 @@
 <li><p><span class="math notranslate nohighlight">\(A_{m \times n} \times \left(  B_{n \times p} \times C_{p \times q} \right)\)</span> takes <span class="math notranslate nohighlight">\(mnq + npq = nq (m+n)\)</span> number of scalar multiplications</p></li>
 </ul>
 <p>Basically, we want to construct an agglomerative tree that represents the order of computation.</p>
-<div class="section" id="d-table">
+<section id="d-table">
 <h3>1-d Table<a class="headerlink" href="#d-table" title="Permalink to this headline">¶</a></h3>
 <p>Let <span class="math notranslate nohighlight">\(T_n\)</span> be the optimal number of scalar multiplications for the sequence. Consider the last matrix in the sequence, <span class="math notranslate nohighlight">\(A_n\)</span>.</p>
 <ul class="simple">
@@ -930,8 +931,8 @@
 <li><p>Else <span class="math notranslate nohighlight">\(A_n\)</span> is not the last to be multiplied, then <span class="math notranslate nohighlight">\(T_n = ...\)</span></p></li>
 </ul>
 <p>Hard to figure out the subproblem.</p>
-</div>
-<div class="section" id="id1">
+</section>
+<section id="id1">
 <h3>2-d Table<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
 <p>Let’s try a two dimensional DP table. Let <span class="math notranslate nohighlight">\(T_{i,j}\)</span> where <span class="math notranslate nohighlight">\(i\le j\)</span> be the number of scalar multiplications in computing the product of the sequence <span class="math notranslate nohighlight">\(A_i, A_{i+1}, \ldots, A_j\)</span>.</p>
 <p>It is easy to find the base cases,</p>
@@ -948,9 +949,9 @@ T_{i,i} &amp;= 0 \\
 <li><p>start from top left <span class="math notranslate nohighlight">\(T_{1,1}\)</span>, fill by column from bottom to top, or</p></li>
 <li><p>fill by diagonal, from <span class="math notranslate nohighlight">\(+1\)</span> diagonal to <span class="math notranslate nohighlight">\(+(n-1)\)</span> diagonal, which is equivalent to fill by length of sub-array.</p></li>
 </ul>
-</div>
-</div>
-<div class="section" id="algorithm">
+</section>
+</section>
+<section id="algorithm">
 <h2>Algorithm<a class="headerlink" href="#algorithm" title="Permalink to this headline">¶</a></h2>
 <p>For each pair <span class="math notranslate nohighlight">\(i,j\)</span> such that <span class="math notranslate nohighlight">\(1 \le i \le j \le n\)</span>, we define <span class="math notranslate nohighlight">\(T_{i,j}\)</span> be the minimum number of multiplications for computing <span class="math notranslate nohighlight">\(A_{i} \times A_{i+1} \times \cdots \times A_{j}\)</span>.</p>
 <ul>
@@ -979,13 +980,13 @@ T_{i,i} &amp;= 0 \\
 </li>
 </ul>
 <p>To track the solution, we create a label function to store the chosen <span class="math notranslate nohighlight">\(k^*\)</span> in each recursive step.</p>
-</div>
-<div class="section" id="complexity">
+</section>
+<section id="complexity">
 <h2>Complexity<a class="headerlink" href="#complexity" title="Permalink to this headline">¶</a></h2>
 <p>In total <span class="math notranslate nohighlight">\(O(n^2)\)</span> entries. In each entry, the <code class="docutils literal notranslate"><span class="pre">min</span></code> step takes need $O(n) time.</p>
 <p>Total <span class="math notranslate nohighlight">\(O(n^3)\)</span>.</p>
-</div>
-</div>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {

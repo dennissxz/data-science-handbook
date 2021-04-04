@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
     <title>Topic Models &#8212; Data Science Handbook</title>
     
   <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
@@ -93,7 +94,7 @@
   </a>
  </li>
 </ul>
-<p class="caption collapsible-parent">
+<p>
  <span class="caption-text">
   Foundations
  </span>
@@ -314,7 +315,7 @@
   </i>
  </li>
 </ul>
-<p class="caption collapsible-parent">
+<p>
  <span class="caption-text">
   Algorithms
  </span>
@@ -462,7 +463,7 @@
   </i>
  </li>
 </ul>
-<p class="caption collapsible-parent">
+<p>
  <span class="caption-text">
   Machine Learning
  </span>
@@ -885,11 +886,11 @@
         
               <div>
                 
-  <div class="section" id="topic-models">
+  <section id="topic-models">
 <h1>Topic Models<a class="headerlink" href="#topic-models" title="Permalink to this headline">¶</a></h1>
 <p>Topic models are generative “mixture” models for documents.</p>
 <p>The data we have in hand are <span class="math notranslate nohighlight">\(D\)</span> documents. Each document <span class="math notranslate nohighlight">\(d\)</span> has <span class="math notranslate nohighlight">\(n_d\)</span> words. Topic model assumes that there is a topic <span class="math notranslate nohighlight">\(t_d\)</span> for each document, which is latent, unobservable.</p>
-<div class="section" id="generative-process">
+<section id="generative-process">
 <h2>Generative Process<a class="headerlink" href="#generative-process" title="Permalink to this headline">¶</a></h2>
 <p>Now we generate the <span class="math notranslate nohighlight">\(D\)</span> documents.</p>
 <p><strong>Assumptions</strong></p>
@@ -925,12 +926,14 @@
 </ul>
 </li>
 </ul>
-<div class="figure align-default" id="topic-illustration">
+<figure class="align-default" id="topic-illustration">
 <a class="reference internal image-reference" href="../_images/topic-illustration.png"><img alt="" src="../_images/topic-illustration.png" style="width: 90%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 104 </span><span class="caption-text">Topic model (generation vs estimation)</span><a class="headerlink" href="#topic-illustration" title="Permalink to this image">¶</a></p>
-</div>
-</div>
-<div class="section" id="estimation">
+<figcaption>
+<p><span class="caption-number">Fig. 104 </span><span class="caption-text">Topic model (generation vs estimation)</span><a class="headerlink" href="#topic-illustration" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="estimation">
 <h2>Estimation<a class="headerlink" href="#estimation" title="Permalink to this headline">¶</a></h2>
 <p>In a document of words <span class="math notranslate nohighlight">\(w_1, \ldots, w_{n_d}\)</span>, we want to estimate the underlying word distribution <span class="math notranslate nohighlight">\(\boldsymbol{\beta} = \left[ \beta_1, \ldots, \beta_{k_w} \right]\)</span>. A simple approach is to use maximum likelihood</p>
 <div class="math notranslate nohighlight">
@@ -942,40 +945,50 @@
 \]</div>
 <p>Other variables include <span class="math notranslate nohighlight">\(t\)</span>’s, <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}\)</span>’s, which can be estimated by  Expectation Maximization (EM) algorithm and sampling-based methods (MCMC and Gibbs sampling)</p>
 <p>The learned results are like</p>
-<div class="figure align-default" id="topic-beta-by-t">
+<figure class="align-default" id="topic-beta-by-t">
 <a class="reference internal image-reference" href="../_images/topic-beta-by-t.png"><img alt="" src="../_images/topic-beta-by-t.png" style="width: 80%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 105 </span><span class="caption-text">Learned words distribution parameters <span class="math notranslate nohighlight">\(\boldsymbol{\beta} _t\)</span> by topics [Steyvers &amp; Griffiths, 2007]</span><a class="headerlink" href="#topic-beta-by-t" title="Permalink to this image">¶</a></p>
-</div>
-</div>
-<div class="section" id="hidden-topic-markov-models">
+<figcaption>
+<p><span class="caption-number">Fig. 105 </span><span class="caption-text">Learned words distribution parameters <span class="math notranslate nohighlight">\(\boldsymbol{\beta} _t\)</span> by topics [Steyvers &amp; Griffiths, 2007]</span><a class="headerlink" href="#topic-beta-by-t" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="hidden-topic-markov-models">
 <h2>Hidden Topic Markov Models<a class="headerlink" href="#hidden-topic-markov-models" title="Permalink to this headline">¶</a></h2>
 <p>Recall that in topic models, we do not consider the dependency of topics between a sequence of words.</p>
 <p>Hidden topic Markov model improve this. It view the topic behind a word as a hidden state. Let <span class="math notranslate nohighlight">\(\epsilon\)</span> be the probability of ending sentence and drawing a new topic. Clearly, as <span class="math notranslate nohighlight">\(\epsilon\)</span> increases, we switch topic mode frequently, and the number of topics should increases.</p>
-<div class="figure align-default" id="htmm-epsilon">
+<figure class="align-default" id="htmm-epsilon">
 <a class="reference internal image-reference" href="../_images/htmm-epsilon.png"><img alt="" src="../_images/htmm-epsilon.png" style="width: 50%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 106 </span><span class="caption-text">How <span class="math notranslate nohighlight">\(\epsilon\)</span> affect number of topics in a sentence.</span><a class="headerlink" href="#htmm-epsilon" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">Fig. 106 </span><span class="caption-text">How <span class="math notranslate nohighlight">\(\epsilon\)</span> affect number of topics in a sentence.</span><a class="headerlink" href="#htmm-epsilon" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <p>HTMM can decrease perplexity too.</p>
-<div class="figure align-default" id="htmm-perplexity">
+<figure class="align-default" id="htmm-perplexity">
 <a class="reference internal image-reference" href="../_images/htmm-perplexity.png"><img alt="" src="../_images/htmm-perplexity.png" style="width: 50%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 107 </span><span class="caption-text">HTMM decreases perplexity as number of topics increases</span><a class="headerlink" href="#htmm-perplexity" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">Fig. 107 </span><span class="caption-text">HTMM decreases perplexity as number of topics increases</span><a class="headerlink" href="#htmm-perplexity" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <dl class="simple myst">
 <dt>Example</dt><dd><p>Consider two paragraphs. If we use topic mixture model (smoother LDA), the topics seems random. For the word “support”, all appearances are all from the same topic.</p>
-<div class="figure align-default" id="topic-model-results">
+<figure class="align-default" id="topic-model-results">
 <a class="reference internal image-reference" href="../_images/topic-model-results.png"><img alt="" src="../_images/topic-model-results.png" style="width: 70%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 108 </span><span class="caption-text">Topic mixture model (smoothed LDA) results, colors are topic labels [Livescu 2021]</span><a class="headerlink" href="#topic-model-results" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">Fig. 108 </span><span class="caption-text">Topic mixture model (smoothed LDA) results, colors are topic labels [Livescu 2021]</span><a class="headerlink" href="#topic-model-results" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 </dd>
 <dd><p>Using HTMM, the results are much better. It distinguish “support” from support vector and support in research.</p>
-<div class="figure align-default" id="htmm-results">
+<figure class="align-default" id="htmm-results">
 <a class="reference internal image-reference" href="../_images/htmm-results.png"><img alt="" src="../_images/htmm-results.png" style="width: 70%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 109 </span><span class="caption-text">HTMM results, colors are topic labels [Livescu 2021]</span><a class="headerlink" href="#htmm-results" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">Fig. 109 </span><span class="caption-text">HTMM results, colors are topic labels [Livescu 2021]</span><a class="headerlink" href="#htmm-results" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 </dd>
 </dl>
-</div>
-</div>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {

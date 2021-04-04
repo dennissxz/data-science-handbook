@@ -36,7 +36,7 @@ $$\begin{aligned}
 Note that $N_v$ is necessary to compute these probabilities.
 
 :::{figure} graph-sampling-induced-incident
-<img src="../imgs/graph-sampling-induced-incident.png" width = "50%" alt=""/>
+<img src="../imgs/graph-sampling-induced-incident.png" width = "80%" alt=""/>
 
 Induced (left) and incident (right) subgraph sampling. Selected vertices/edges are shown in yellow, while observed edges/vertices are shown in orange.
 :::
@@ -103,7 +103,7 @@ A termination condition is $V_k = \emptyset$. The final graph $G^*$ consists of 
 Unfortunately, although not surprisingly, inclusion probabilities for snowball sampling become increasingly intractable to calculate after the one-stage level corresponding to star sampling.
 
 :::{figure} graph-sampling-link-tracing
-<img src="../imgs/graph-sampling-link-tracing.png" width = "50%" alt=""/>
+<img src="../imgs/graph-sampling-link-tracing.png" width = "80%" alt=""/>
 
 Two-stage snowball sampling (left) where $V_0^*$ in yellow, $V_1^*$ in orange, and $V_2^*$ in red. Traceroute sampling (right) for sources $\left\{ s_1, s_2 \right\}$ and targets $\left\{ t_1, t_2 \right\}$ in yellow, observed vertices and edges in orange.
 :::
@@ -258,6 +258,10 @@ There are three conditions to make the estimation feasible
 
 But it is not always the case that all three elements are present at the same time.
 
+### Examples
+
+#### Average Degree
+
 We will see estimating average degree using two different sampling designs.
 
 First consider unlabeled star sampling. Let the sampled graph be $G^*_{star} = (V^*_{star}, E^*_{star})$. The average degree is a rescaling of vertex total
@@ -293,6 +297,65 @@ $$
 $$
 
 Hence under star sampling, it simply use the relation $\bar{d} = \frac{2N_e}{N_v}$ to the sample. In contrast, under induced subgraph sampling, the analogous result (sample average degree) is scaled up by the factor $\frac{N_v - 1}{n-1}$ to account for $d_{i, indu}^* \le d_i$.
+
+#### Hidden Population Size
+
+The term 'hidden population' generally refers to one in which the individuals do not wish to expose themselves to view. For example, humans of socially sensitive status, such as illegal drug usage or prostitution. Two issues:
+- they will not be inclined to disclose themselves
+- their population is small
+
+Frank and Snijders [SAND 154] describe how snowball sampling may
+be used for this problem, using the idea that mimics capture-recapture methods.
+
+Let
+- $V$ be the set of all members of the hidden population
+- $G = (V,E)$ be a directed graph associated with that population, in which an arc from vertex $i$ to vertex $j$ indicates that, if asked, individual $i$ would mention individual $j$ as a member of the hidden population (there are some concerns of trust, veracity etc). We want to estimate $N_v$.
+- $G^*$ be a subgraph of $G$, where the vertices $V^* = V_0^* \cup V_1 ^*$ are obtained through a one-wave snowball sample, with the initial
+sample $V_0^*$ selected through Bernoulli sampling $Z_i \sim \operatorname{Ber}(p_0)$ from $V$, where the sampling rate $p_0$ is unknown. We have three random variables
+  - $N_v ^* = \left\vert V_0^* \right\vert$ be the size of the initial sample
+  - $M_1$ be the number of arcs $(i, j)$ in $V_0^*$ ($i \in V_0^*$ and $j \in V_0^*$)
+  - $M_2$ be the number of arcs pointing from $i \in V_0^*$ to $j \in V_1^*$ ($i \in V_0^*$ but $j \notin V_0^*$)
+
+Out estimator of $N_v$ will be derived using the method-of-moments. We first find the expectation of the three variables.
+
+$$
+\begin{array}{l}
+\mathbb{E}(N_v ^*)=\mathbb{E}\left(\sum_{i} Z_{i}\right)=N_{v} p_{0} \\
+\mathbb{E}\left(M_{1}\right)=\mathbb{E}\left(\sum_{i \neq j} Z_{i} Z_{j} A_{i j}\right)=\left(N_{e}-N_{v}\right) p_{0}^{2} \\
+\mathbb{E}\left(M_{2}\right)=\mathbb{E}\left(\sum_{i \neq j} Z_{i}\left(1-Z_{j}\right) A_{i j}\right)=\left(N_{e}-N_{v}\right) p_{0}\left(1-p_{0}\right)
+\end{array}
+$$
+
+Setting the left-hand sides of these equations equal to their observed counterparts, say $n_v ^*, m_1$ and $m_2$ gives
+
+
+$$\begin{aligned}
+\hat{p}_0&= \frac{m_1 + m_2}{m_1}  \\
+\widehat{N_v} &=  \frac{1}{\hat{p}_0}  n_v ^*\\
+\end{aligned}$$
+
+In other words, the number of individuals observed initially is inflated by an estimate $\hat{p}_0$ of the sampling rate, where that estimate reflects the relative number of arcs from individuals in the initial sample that point inwards among themselves.
+
+```{margin}
+Recall capture-recapture estimator $\frac{1}{m/n_2} n_1$ where $n_1, n_2$ are sample sizes, and $m$ are marked individuals in stage 1. The denominator $m/n_2$ can be seen as sampling rate $\hat{p}_0$.
+```
+
+To find the variance this estimator, we use the [jackknife principle](https://en.wikipedia.org/wiki/Jackknife_resampling). Let $\widehat{N}_{v}^{(-i)}$ be the estimate of $N_v$ obtained by removing $i \in V_0^*$ and $j \in V_1^*$ that has only one edge $(i, j)$ adjacent to it, and let $\bar{\widehat{N}}_v$ be their average, then
+
+$$
+\widehat{\mathbb{V}}_{J}\left(\widehat{N}_{v}\right)=\frac{n-2}{2 n} \sum_{i \in V_{0}^{*}}\left(\widehat{N}_{v}^{(-i)}-\bar{\widehat{N}}_v\right)^{2}
+$$
+
+
+#### Graph Size via Link Tracing
+
+
+$$
+\mathbb{P}\left(\delta_{j}=1 \mid V_{(-j)}^{*}\right)=\frac{N_{v}-N_{(-j)}^{*}}{N_{v}-n_{s}-n_{t}+1}
+$$
+
+
+
 
 .
 

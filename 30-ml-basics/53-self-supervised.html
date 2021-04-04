@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
     <title>Self-supervised Learning &#8212; Data Science Handbook</title>
     
   <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
@@ -93,7 +94,7 @@
   </a>
  </li>
 </ul>
-<p class="caption collapsible-parent">
+<p>
  <span class="caption-text">
   Foundations
  </span>
@@ -314,7 +315,7 @@
   </i>
  </li>
 </ul>
-<p class="caption collapsible-parent">
+<p>
  <span class="caption-text">
   Algorithms
  </span>
@@ -462,7 +463,7 @@
   </i>
  </li>
 </ul>
-<p class="caption collapsible-parent">
+<p>
  <span class="caption-text">
   Machine Learning
  </span>
@@ -907,46 +908,56 @@
         
               <div>
                 
-  <div class="section" id="self-supervised-learning">
+  <section id="self-supervised-learning">
 <h1>Self-supervised Learning<a class="headerlink" href="#self-supervised-learning" title="Permalink to this headline">¶</a></h1>
-<div class="margin sidebar">
+<aside class="margin sidebar">
 <p class="sidebar-title"></p>
 <p>The term “self-supervised” is used fairly loosely, and the boundary between self-supervised and other types of unsupervised learning is often unclear</p>
-</div>
+</aside>
 <p>In supervised learning, we have <span class="math notranslate nohighlight">\(\left(\boldsymbol{x}_{i}, y_{i}\right)\)</span> and an objective <span class="math notranslate nohighlight">\(\min \sum_{i} L\left(f\left(\boldsymbol{x}_{i}, \theta\right), y_{i}\right)\)</span>.</p>
-<div class="figure align-default" id="selfsup-sup">
+<figure class="align-default" id="selfsup-sup">
 <a class="reference internal image-reference" href="../_images/selfsup-sup.png"><img alt="" src="../_images/selfsup-sup.png" style="width: 50%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 26 </span><span class="caption-text">Data <span class="math notranslate nohighlight">\((\boldsymbol{x} _i, y_i)\)</span> in supervised learning [Shakhnarovich 2021]</span><a class="headerlink" href="#selfsup-sup" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">Fig. 26 </span><span class="caption-text">Data <span class="math notranslate nohighlight">\((\boldsymbol{x} _i, y_i)\)</span> in supervised learning [Shakhnarovich 2021]</span><a class="headerlink" href="#selfsup-sup" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <p>In unsupervised learning, we only have <span class="math notranslate nohighlight">\(\boldsymbol{x} _i\)</span>, the objective is specified as a function of <span class="math notranslate nohighlight">\((\boldsymbol{x} _i, f(\boldsymbol{x} _i))\)</span>, e.g. clustering, dimensionality reduction.</p>
 <p>In self-supervised learning, data comes in form of multiple channels <span class="math notranslate nohighlight">\((\boldsymbol{x}_i ,\boldsymbol{z}_i )\)</span>. Our goal is to predict <span class="math notranslate nohighlight">\(\boldsymbol{z}\)</span> from <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span>. This is similar to supervised learning, but with no manual labels <span class="math notranslate nohighlight">\(y_i\)</span>, and <span class="math notranslate nohighlight">\(\boldsymbol{z}\)</span> is inherent in data. The <span class="math notranslate nohighlight">\(\boldsymbol{z}\)</span> here are some “proxy” or “pretext”. In order to predict it well, the model need to have a good understanding/representation of <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span>.</p>
-<div class="figure align-default" id="selfsup-selfsup">
+<figure class="align-default" id="selfsup-selfsup">
 <a class="reference internal image-reference" href="../_images/selfsup-selfsup.png"><img alt="" src="../_images/selfsup-selfsup.png" style="width: 50%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 27 </span><span class="caption-text">Data <span class="math notranslate nohighlight">\((\boldsymbol{x} _i, \boldsymbol{z} _i)\)</span> in self-supervised learning [Shakhnarovich 2021]</span><a class="headerlink" href="#selfsup-selfsup" title="Permalink to this image">¶</a></p>
-</div>
-<div class="section" id="proxy-task">
+<figcaption>
+<p><span class="caption-number">Fig. 27 </span><span class="caption-text">Data <span class="math notranslate nohighlight">\((\boldsymbol{x} _i, \boldsymbol{z} _i)\)</span> in self-supervised learning [Shakhnarovich 2021]</span><a class="headerlink" href="#selfsup-selfsup" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<section id="proxy-task">
 <h2>Proxy Task<a class="headerlink" href="#proxy-task" title="Permalink to this headline">¶</a></h2>
 <p>Proxy tasks include</p>
 <ul>
 <li><p>Colorization</p>
 <p>Color gray scale images</p>
-<div class="figure align-default" id="selfsup-colorization">
+<figure class="align-default" id="selfsup-colorization">
 <a class="reference internal image-reference" href="../_images/selfsup-colorization.png"><img alt="" src="../_images/selfsup-colorization.png" style="width: 50%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 28 </span><span class="caption-text">Colorization [Shakhnarovich 2021]</span><a class="headerlink" href="#selfsup-colorization" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">Fig. 28 </span><span class="caption-text">Colorization [Shakhnarovich 2021]</span><a class="headerlink" href="#selfsup-colorization" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 </li>
 <li><p>Inpainting (mask reconstruction)</p>
 <p>Fill a masked part in an image</p>
-<div class="figure align-default" id="selfsup-inpainting">
+<figure class="align-default" id="selfsup-inpainting">
 <a class="reference internal image-reference" href="../_images/selfsup-inpainting.png"><img alt="" src="../_images/selfsup-inpainting.png" style="width: 50%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 29 </span><span class="caption-text">Inpainting [Shakhnarovich 2021]</span><a class="headerlink" href="#selfsup-inpainting" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">Fig. 29 </span><span class="caption-text">Inpainting [Shakhnarovich 2021]</span><a class="headerlink" href="#selfsup-inpainting" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 </li>
 <li><p>Given two patches of an image, determine their relative position.</p>
-<div class="figure align-default" id="selfsup-location">
+<figure class="align-default" id="selfsup-location">
 <a class="reference internal image-reference" href="../_images/selfsup-location.png"><img alt="" src="../_images/selfsup-location.png" style="width: 60%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 30 </span><span class="caption-text">Relative position [Shakhnarovich 2021]</span><a class="headerlink" href="#selfsup-location" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">Fig. 30 </span><span class="caption-text">Relative position [Shakhnarovich 2021]</span><a class="headerlink" href="#selfsup-location" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 </li>
 <li><p>Solving jigsaw puzzles</p>
 <p>Learn to identify more probable permutations of image pieces</p>
@@ -954,35 +965,41 @@
 <li><p>Learn to predict soundtrack (more precisely, a cluster to which the soundtrack should be assigned) from a single video frame [Owens et al., 2016]</p></li>
 <li><p>Predicting video frame from previous frames</p></li>
 </ul>
-</div>
-<div class="section" id="contrastive-learning">
+</section>
+<section id="contrastive-learning">
 <h2>Contrastive Learning<a class="headerlink" href="#contrastive-learning" title="Permalink to this headline">¶</a></h2>
 <p>“Simple framework for Contrastive Learning of visual Representations” (Chen et al., 2020)</p>
 <p>Consider pairs of views from the same image. Goal is to maximize similarity for matching pairs and dissimilarity for non-matching pair</p>
-<div class="figure align-default" id="selfsup-contrastive-views">
+<figure class="align-default" id="selfsup-contrastive-views">
 <a class="reference internal image-reference" href="../_images/selfsup-contrastive-views.png"><img alt="" src="../_images/selfsup-contrastive-views.png" style="width: 70%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 31 </span><span class="caption-text">Views (transformations)</span><a class="headerlink" href="#selfsup-contrastive-views" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">Fig. 31 </span><span class="caption-text">Views (transformations)</span><a class="headerlink" href="#selfsup-contrastive-views" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <p>Computation graph:</p>
-<div class="figure align-default" id="selfsup-contrastive-graph">
+<figure class="align-default" id="selfsup-contrastive-graph">
 <a class="reference internal image-reference" href="../_images/selfsup-contrastive-graph.png"><img alt="" src="../_images/selfsup-contrastive-graph.png" style="width: 30%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 32 </span><span class="caption-text">Computational graph of contrastive learning</span><a class="headerlink" href="#selfsup-contrastive-graph" title="Permalink to this image">¶</a></p>
-</div>
-</div>
-<div class="section" id="contrastive-predictive-coding">
+<figcaption>
+<p><span class="caption-number">Fig. 32 </span><span class="caption-text">Computational graph of contrastive learning</span><a class="headerlink" href="#selfsup-contrastive-graph" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="contrastive-predictive-coding">
 <h2>Contrastive Predictive Coding<a class="headerlink" href="#contrastive-predictive-coding" title="Permalink to this headline">¶</a></h2>
 <p>For objects of spatial or temporal order.</p>
 <p>Idea
 :</p>
 <p>Predictive coding means the coding is capable to predict some learned representation of other parts of the object.</p>
 <p>In these reconstruction tasks, some layers in the model can be regarded as the learned representation of the image/text/speech, which can be used for downstream tasks.</p>
-<div class="section" id="for-speech-wav2vec">
+<section id="for-speech-wav2vec">
 <h3>For Speech (Wav2vec)<a class="headerlink" href="#for-speech-wav2vec" title="Permalink to this headline">¶</a></h3>
 <p>Speech: predict future speech segments</p>
-<div class="figure align-default" id="selfsup-cpc-speech">
+<figure class="align-default" id="selfsup-cpc-speech">
 <a class="reference internal image-reference" href="../_images/selfsup-cpc-speech.png"><img alt="" src="../_images/selfsup-cpc-speech.png" style="width: 50%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 33 </span><span class="caption-text">CPC for speech</span><a class="headerlink" href="#selfsup-cpc-speech" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">Fig. 33 </span><span class="caption-text">CPC for speech</span><a class="headerlink" href="#selfsup-cpc-speech" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(x_t\)</span> is input</p></li>
 <li><p><span class="math notranslate nohighlight">\(z_t\)</span> is representation of <span class="math notranslate nohighlight">\(x_t\)</span></p></li>
@@ -999,17 +1016,21 @@
 <li><p>the second part, we randomly draw <span class="math notranslate nohighlight">\(\tilde{\boldsymbol{z} }\)</span> from other far away time steps, and minimize the similarity between this negative example and the predicted representation.</p></li>
 <li><p>want to learn a representation that can differentiate true future step and distractors.</p></li>
 </ul>
-<div class="figure align-default" id="cpc-loss">
+<figure class="align-default" id="cpc-loss">
 <a class="reference internal image-reference" href="../_images/cpc-loss.png"><img alt="" src="../_images/cpc-loss.png" style="width: 30%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 34 </span><span class="caption-text">Contrastive Loss [Schneider et al. 2019]</span><a class="headerlink" href="#cpc-loss" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">Fig. 34 </span><span class="caption-text">Contrastive Loss [Schneider et al. 2019]</span><a class="headerlink" href="#cpc-loss" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <p>Wav2vec 2.0 add a quantized representation layer. Predict masked window.</p>
-<div class="figure align-default" id="wav2vec2">
+<figure class="align-default" id="wav2vec2">
 <a class="reference internal image-reference" href="../_images/wav2vec2.png"><img alt="" src="../_images/wav2vec2.png" style="width: 50%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 35 </span><span class="caption-text">Wav2vec 2.0 [Baevski et al. 2020]</span><a class="headerlink" href="#wav2vec2" title="Permalink to this image">¶</a></p>
-</div>
-</div>
-<div class="section" id="for-vision">
+<figcaption>
+<p><span class="caption-number">Fig. 35 </span><span class="caption-text">Wav2vec 2.0 [Baevski et al. 2020]</span><a class="headerlink" href="#wav2vec2" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="for-vision">
 <h3>For Vision<a class="headerlink" href="#for-vision" title="Permalink to this headline">¶</a></h3>
 <p>Predict some part of the image from another part</p>
 <ul>
@@ -1024,25 +1045,29 @@
 <p>where <span class="math notranslate nohighlight">\(n\)</span> goes over (sampled) other patches, both in this image and in other images</p>
 </li>
 </ul>
-<div class="figure align-default" id="selfsup-cpc-vision">
+<figure class="align-default" id="selfsup-cpc-vision">
 <a class="reference internal image-reference" href="../_images/selfsup-cpc-vision.png"><img alt="" src="../_images/selfsup-cpc-vision.png" style="width: 50%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 36 </span><span class="caption-text">CPC for image</span><a class="headerlink" href="#selfsup-cpc-vision" title="Permalink to this image">¶</a></p>
-</div>
-</div>
-<div class="section" id="for-language">
+<figcaption>
+<p><span class="caption-number">Fig. 36 </span><span class="caption-text">CPC for image</span><a class="headerlink" href="#selfsup-cpc-vision" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="for-language">
 <h3>For Language<a class="headerlink" href="#for-language" title="Permalink to this headline">¶</a></h3>
 <p>masked word reconstruction</p>
-<div class="figure align-default" id="selfsup-bert">
+<figure class="align-default" id="selfsup-bert">
 <a class="reference internal image-reference" href="../_images/selfsup-bert.png"><img alt="" src="../_images/selfsup-bert.png" style="width: 60%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 37 </span><span class="caption-text">Word reconstruction</span><a class="headerlink" href="#selfsup-bert" title="Permalink to this image">¶</a></p>
-</div>
-</div>
-</div>
-<div class="section" id="others">
+<figcaption>
+<p><span class="caption-number">Fig. 37 </span><span class="caption-text">Word reconstruction</span><a class="headerlink" href="#selfsup-bert" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+</section>
+</section>
+<section id="others">
 <h2>Others<a class="headerlink" href="#others" title="Permalink to this headline">¶</a></h2>
 <p>CLIP: Learning Transferable Visual Models From Natural Language Supervision (OpenAI, 2021)</p>
-</div>
-</div>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {

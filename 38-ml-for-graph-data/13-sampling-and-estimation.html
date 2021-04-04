@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
     <title>Sampling and Estimation &#8212; Data Science Handbook</title>
     
   <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
@@ -93,7 +94,7 @@
   </a>
  </li>
 </ul>
-<p class="caption collapsible-parent">
+<p>
  <span class="caption-text">
   Foundations
  </span>
@@ -314,7 +315,7 @@
   </i>
  </li>
 </ul>
-<p class="caption collapsible-parent">
+<p>
  <span class="caption-text">
   Algorithms
  </span>
@@ -462,7 +463,7 @@
   </i>
  </li>
 </ul>
-<p class="caption collapsible-parent">
+<p>
  <span class="caption-text">
   Machine Learning
  </span>
@@ -915,6 +916,28 @@
      Summary
     </a>
    </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#examples">
+     Examples
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#average-degree">
+       Average Degree
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#hidden-population-size">
+       Hidden Population Size
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#graph-size-via-link-tracing">
+       Graph Size via Link Tracing
+      </a>
+     </li>
+    </ul>
+   </li>
   </ul>
  </li>
 </ul>
@@ -929,10 +952,10 @@
         
               <div>
                 
-  <div class="section" id="sampling-and-estimation">
+  <section id="sampling-and-estimation">
 <h1>Sampling and Estimation<a class="headerlink" href="#sampling-and-estimation" title="Permalink to this headline">¶</a></h1>
 <p>Like other statistical data, we usually only observe a sample from a larger underlying graph. We introduce sampling and estimation in graphs.</p>
-<div class="section" id="sampling">
+<section id="sampling">
 <h2>Sampling<a class="headerlink" href="#sampling" title="Permalink to this headline">¶</a></h2>
 <p>Graph sampling designs are somewhat distinct from typical sampling designs in non-network contexts, in that there are effectively two inter-related sets <span class="math notranslate nohighlight">\(V\)</span> and <span class="math notranslate nohighlight">\(E\)</span> of units being sampled. Often these designs can be characterized as having two stages:</p>
 <ol class="simple">
@@ -940,12 +963,12 @@
 <li><p>an observation stage, among the other or both</p></li>
 </ol>
 <p>It’s also important to discuss the inclusion probabilities of a vertex and an edge in each sampling design, denoted <span class="math notranslate nohighlight">\(\pi_i\)</span> for vertex <span class="math notranslate nohighlight">\(i \in E\)</span> and <span class="math notranslate nohighlight">\(\pi_{(i, j)}\)</span> for edge <span class="math notranslate nohighlight">\((i,j) \in V^{(2)}\)</span>, where <span class="math notranslate nohighlight">\(V^{(2)}\)</span> is the set of all unordered pairs of vertices.</p>
-<div class="section" id="induced-subgraph-sampling">
+<section id="induced-subgraph-sampling">
 <h3>Induced Subgraph Sampling<a class="headerlink" href="#induced-subgraph-sampling" title="Permalink to this headline">¶</a></h3>
-<div class="margin sidebar">
+<aside class="margin sidebar">
 <p class="sidebar-title"></p>
 <p>When <span class="math notranslate nohighlight">\(N_v\)</span> is large and <span class="math notranslate nohighlight">\(p \approx n/N_v\)</span> is small, Bernoulli sampling design is a quite reasonable approximation to simple random sampling without replacement in stage 1.</p>
-</div>
+</aside>
 <p>The two stages are</p>
 <ol class="simple">
 <li><p>Select a simple random sample of <span class="math notranslate nohighlight">\(n\)</span> vertices <span class="math notranslate nohighlight">\(V^{*}=\left\{i_{1}, \ldots, i_{n}\right\}\)</span> from <span class="math notranslate nohighlight">\(V\)</span> without replacement</p></li>
@@ -962,12 +985,14 @@
 &amp;= \frac{n}{N_v} \cdot \frac{n-1}{N_v - 1} \quad \because \text{without replacement}
 \end{aligned}\end{split}\]</div>
 <p>Note that <span class="math notranslate nohighlight">\(N_v\)</span> is necessary to compute these probabilities.</p>
-<div class="figure align-default" id="graph-sampling-induced-incident">
-<a class="reference internal image-reference" href="../_images/graph-sampling-induced-incident.png"><img alt="" src="../_images/graph-sampling-induced-incident.png" style="width: 50%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 164 </span><span class="caption-text">Induced (left) and incident (right) subgraph sampling. Selected vertices/edges are shown in yellow, while observed edges/vertices are shown in orange.</span><a class="headerlink" href="#graph-sampling-induced-incident" title="Permalink to this image">¶</a></p>
-</div>
-</div>
-<div class="section" id="incident-subgraph-sampling">
+<figure class="align-default" id="graph-sampling-induced-incident">
+<a class="reference internal image-reference" href="../_images/graph-sampling-induced-incident.png"><img alt="" src="../_images/graph-sampling-induced-incident.png" style="width: 80%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 165 </span><span class="caption-text">Induced (left) and incident (right) subgraph sampling. Selected vertices/edges are shown in yellow, while observed edges/vertices are shown in orange.</span><a class="headerlink" href="#graph-sampling-induced-incident" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="incident-subgraph-sampling">
 <h3>Incident Subgraph Sampling<a class="headerlink" href="#incident-subgraph-sampling" title="Permalink to this headline">¶</a></h3>
 <p>Complementary to induced subgraph sampling is incident subgraph sampling.
 Instead of selecting <span class="math notranslate nohighlight">\(n\)</span> vertices in the initial stage, <span class="math notranslate nohighlight">\(n\)</span> edges are selected:</p>
@@ -985,8 +1010,8 @@ Instead of selecting <span class="math notranslate nohighlight">\(n\)</span> ver
 \end{aligned}\end{split}\]</div>
 <p>Hence, in incident subgraph sampling, while the edges are included in the sample graph <span class="math notranslate nohighlight">\(G^*\)</span> with equal probability, the vertices are included with unequal probabilities depending on their degrees.</p>
 <p>Note that <span class="math notranslate nohighlight">\(N_e\)</span> and <span class="math notranslate nohighlight">\(d_i\)</span> are necessary to compute the inclusion probabilities. In the example of sampling email correspondence graph, this would require having access to marginal summaries of the total number of emails (say, in a given month) as well as the number of emails in which a given sender had participated.</p>
-</div>
-<div class="section" id="star-sampling">
+</section>
+<section id="star-sampling">
 <h3>Star Sampling<a class="headerlink" href="#star-sampling" title="Permalink to this headline">¶</a></h3>
 <p>The first stage selects vertices like in induced subgraph sampling, but in the second stage, as its name suggests, we sample all edges incident to the selected vertices, as well as the new vertices on the other end.</p>
 <ol class="simple">
@@ -1014,8 +1039,8 @@ Instead of selecting <span class="math notranslate nohighlight">\(n\)</span> ver
 <li><p><span class="math notranslate nohighlight">\(N[i]\)</span> is the union of vertex <span class="math notranslate nohighlight">\(i\)</span> and the its immediate neighbors</p></li>
 <li><p><span class="math notranslate nohighlight">\(\mathbb{P}\left( L \right) = \frac{\binom{N_v - \left\vert L \right\vert}{n - \left\vert L \right\vert} }{\binom{N_v}{n} }\)</span> is the probability that <span class="math notranslate nohighlight">\(L \subseteq V_0^*\)</span>. (<span class="math notranslate nohighlight">\(n &gt; \left\vert L \right\vert\)</span>??)</p></li>
 </ul>
-</div>
-<div class="section" id="snowball-sampling">
+</section>
+<section id="snowball-sampling">
 <h3>Snowball sampling<a class="headerlink" href="#snowball-sampling" title="Permalink to this headline">¶</a></h3>
 <p>In star sampling we only look at the immediate neighborhood. We can extends it to up to the <span class="math notranslate nohighlight">\(K\)</span>-th order neighbors, which is snowball sampling. In short, a <span class="math notranslate nohighlight">\(K\)</span>-stage snowball sampling is</p>
 <ol class="simple">
@@ -1028,12 +1053,14 @@ Instead of selecting <span class="math notranslate nohighlight">\(n\)</span> ver
 </ul>
 <p>A termination condition is <span class="math notranslate nohighlight">\(V_k = \emptyset\)</span>. The final graph <span class="math notranslate nohighlight">\(G^*\)</span> consists of the vertices in <span class="math notranslate nohighlight">\(V^* = V_0^* \cup V_1 ^* \cup \ldots \cup V_K^*\)</span> and their incident edges.</p>
 <p>Unfortunately, although not surprisingly, inclusion probabilities for snowball sampling become increasingly intractable to calculate after the one-stage level corresponding to star sampling.</p>
-<div class="figure align-default" id="graph-sampling-link-tracing">
-<a class="reference internal image-reference" href="../_images/graph-sampling-link-tracing.png"><img alt="" src="../_images/graph-sampling-link-tracing.png" style="width: 50%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 165 </span><span class="caption-text">Two-stage snowball sampling (left) where <span class="math notranslate nohighlight">\(V_0^*\)</span> in yellow, <span class="math notranslate nohighlight">\(V_1^*\)</span> in orange, and <span class="math notranslate nohighlight">\(V_2^*\)</span> in red. Traceroute sampling (right) for sources <span class="math notranslate nohighlight">\(\left\{ s_1, s_2 \right\}\)</span> and targets <span class="math notranslate nohighlight">\(\left\{ t_1, t_2 \right\}\)</span> in yellow, observed vertices and edges in orange.</span><a class="headerlink" href="#graph-sampling-link-tracing" title="Permalink to this image">¶</a></p>
-</div>
-</div>
-<div class="section" id="link-tracing">
+<figure class="align-default" id="graph-sampling-link-tracing">
+<a class="reference internal image-reference" href="../_images/graph-sampling-link-tracing.png"><img alt="" src="../_images/graph-sampling-link-tracing.png" style="width: 80%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 166 </span><span class="caption-text">Two-stage snowball sampling (left) where <span class="math notranslate nohighlight">\(V_0^*\)</span> in yellow, <span class="math notranslate nohighlight">\(V_1^*\)</span> in orange, and <span class="math notranslate nohighlight">\(V_2^*\)</span> in red. Traceroute sampling (right) for sources <span class="math notranslate nohighlight">\(\left\{ s_1, s_2 \right\}\)</span> and targets <span class="math notranslate nohighlight">\(\left\{ t_1, t_2 \right\}\)</span> in yellow, observed vertices and edges in orange.</span><a class="headerlink" href="#graph-sampling-link-tracing" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="link-tracing">
 <h3>Link Tracing<a class="headerlink" href="#link-tracing" title="Permalink to this headline">¶</a></h3>
 <p>Many of the other sampling designs fall under link tracing designs: after some selection of an initial sample, some <strong>subset</strong> of the edges (‘links’) from vertices in this sample are traced to additional vertices.</p>
 <p>Snowball sampling is a special case of link tracing, in that all edges are observed. Sometimes this is not feasible, for example, in sampling social contact networks, it may be that individuals are unaware of or cannot recall all of their contacts, or that they do not wish to divulge some of them.</p>
@@ -1055,14 +1082,14 @@ Instead of selecting <span class="math notranslate nohighlight">\(n\)</span> ver
 <li><p><span class="math notranslate nohighlight">\(\rho_{s} = \frac{n_s}{N_v} , \rho_t = \frac{n_t}{N_v}\)</span> are the source ant target sampling fractions respectively</p></li>
 </ul>
 <p>We see that the unequal probabilities varies with betweenness centrality <span class="math notranslate nohighlight">\(b_i\)</span> and <span class="math notranslate nohighlight">\(b_{i, j}\)</span>. Though they are not calculable, they lend interesting insight into the nature of this sampling design, to be introduced later.</p>
-</div>
-</div>
-<div class="section" id="estimation">
+</section>
+</section>
+<section id="estimation">
 <h2>Estimation<a class="headerlink" href="#estimation" title="Permalink to this headline">¶</a></h2>
 <p>(Review the <a class="reference internal" href="../12-probabilities/71-sampling.html#estimation-mean-total"><span class="std std-ref">estimation of total</span></a> section)</p>
 <p>With appropriate choice of population <span class="math notranslate nohighlight">\(U\)</span> and unit values <span class="math notranslate nohighlight">\(y_i\)</span> for <span class="math notranslate nohighlight">\(i \in U\)</span>, many of the quantities <span class="math notranslate nohighlight">\(\eta(G)\)</span> of graph <span class="math notranslate nohighlight">\(G\)</span>, e.g. average degree, <span class="math notranslate nohighlight">\(N_e\)</span>, or even centrality, can be written in a form of population total <span class="math notranslate nohighlight">\(\sum_{i \in U} y_i\)</span>, as introduced below.</p>
 <p>To estimate the total from a sampled graph <span class="math notranslate nohighlight">\(G^* = (V^*, E^*)\)</span> where <span class="math notranslate nohighlight">\(V^* \subseteq V, E^* \subseteq E\)</span>, we can use generalization of the Horvitz-Thompson estimator.</p>
-<div class="section" id="totals-on-vertex">
+<section id="totals-on-vertex">
 <h3>Totals on Vertex<a class="headerlink" href="#totals-on-vertex" title="Permalink to this headline">¶</a></h3>
 <p>Let <span class="math notranslate nohighlight">\(U=V\)</span>, we can define <span class="math notranslate nohighlight">\(y_i\)</span> according to the total we are interested.</p>
 <ul class="simple">
@@ -1079,8 +1106,8 @@ Instead of selecting <span class="math notranslate nohighlight">\(n\)</span> ver
 <li><p>in some sampling design, the graph structure will be irrelevant for estimating a vertex total, e.g. when the graph structure is irrelevant to <span class="math notranslate nohighlight">\(y\)</span> and vertices are sampled through simple random sampling without replacement. <span class="math notranslate nohighlight">\(\pi_i\)</span> can be computed in the conventional way.</p></li>
 <li><p>on the other hand, the graph structure matters, e.g. in snowball sampling the structure determines <span class="math notranslate nohighlight">\(V^*\)</span> and hence the calculation of <span class="math notranslate nohighlight">\(\pi_i\)</span>.</p></li>
 </ul>
-</div>
-<div class="section" id="totals-on-vertex-pairs">
+</section>
+<section id="totals-on-vertex-pairs">
 <span id="total-on-vertex-pairs"></span><h3>Totals on Vertex Pairs<a class="headerlink" href="#totals-on-vertex-pairs" title="Permalink to this headline">¶</a></h3>
 <p>Now we are interested in <span class="math notranslate nohighlight">\(U = V^{(2)}\)</span>, the total is</p>
 <div class="math notranslate nohighlight">
@@ -1120,12 +1147,14 @@ Instead of selecting <span class="math notranslate nohighlight">\(n\)</span> ver
 \widehat{\mathbb{V}}\left(\hat{\tau}_{\pi}\right)=\sum_{(i, j) \in V^{*(2)}} \sum_{(k, l) \in V^{*(2)}} y_{i j} y_{k l}\left(\frac{1}{\pi_{i j} \pi_{k l}}-\frac{1}{\pi_{i j k l}}\right)
 \]</div>
 <p>Note that these quantities can become increasingly complicated to compute under some sampling designs, since it is necessary to be able to evaluate probabilities <span class="math notranslate nohighlight">\(\pi_{ijkl}\)</span> for <span class="math notranslate nohighlight">\(1 \le r \le 4\)</span>. See Example 5.4 in SAND pg.139 for <span class="math notranslate nohighlight">\(p_r\)</span> in induced graph sampling and estimation of <span class="math notranslate nohighlight">\(N_e\)</span>. Results are shown below.</p>
-<div class="figure align-default" id="graph-sampling-edge-total">
+<figure class="align-default" id="graph-sampling-edge-total">
 <a class="reference internal image-reference" href="../_images/graph-sampling-edge-total.png"><img alt="" src="../_images/graph-sampling-edge-total.png" style="width: 60%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 166 </span><span class="caption-text">Histograms of estimates <span class="math notranslate nohighlight">\(\hat{N}_e\)</span> of <span class="math notranslate nohighlight">\(N_e\)</span> = 31201 and its estimated standard errors (right), under induced subgraph sampling, with Bernoulli sampling of vertices using <span class="math notranslate nohighlight">\(p=0.1, 0.2, 0.3\)</span> based on 10000 trials. [Kolaczyk 2009]</span><a class="headerlink" href="#graph-sampling-edge-total" title="Permalink to this image">¶</a></p>
-</div>
-</div>
-<div class="section" id="totals-of-higher-order">
+<figcaption>
+<p><span class="caption-number">Fig. 167 </span><span class="caption-text">Histograms of estimates <span class="math notranslate nohighlight">\(\hat{N}_e\)</span> of <span class="math notranslate nohighlight">\(N_e\)</span> = 31201 and its estimated standard errors (right), under induced subgraph sampling, with Bernoulli sampling of vertices using <span class="math notranslate nohighlight">\(p=0.1, 0.2, 0.3\)</span> based on 10000 trials. [Kolaczyk 2009]</span><a class="headerlink" href="#graph-sampling-edge-total" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="totals-of-higher-order">
 <h3>Totals of Higher Order<a class="headerlink" href="#totals-of-higher-order" title="Permalink to this headline">¶</a></h3>
 <p>The expressions for higher order cases are more complicated. We introduce the case of triples, where <span class="math notranslate nohighlight">\(U = V^{(3)}\)</span> and <span class="math notranslate nohighlight">\(\tau=\sum_{(i, j, k) \in V^{(3)}} y_{i j k}\)</span>. The sample Horvitz-Thompson estimator is</p>
 <div class="math notranslate nohighlight">
@@ -1161,8 +1190,8 @@ Instead of selecting <span class="math notranslate nohighlight">\(n\)</span> ver
 \]</div>
 <p>and similarly <span class="math notranslate nohighlight">\(\hat{\tau}_{\wedge}^+(G) = p^{-3}\tau_{\wedge}^+(G^*)\)</span>.</p>
 <p>We can then substitute these two values to obtain a plug-in estimator of transitivity <span class="math notranslate nohighlight">\(\operatorname{clus}_T (G)\)</span>. Note that the coefficient <span class="math notranslate nohighlight">\(p^{-3}\)</span> cancel out, hence <span class="math notranslate nohighlight">\(\widehat{\operatorname{clus}}_T (G) = \operatorname{clus} _T (G^*)\)</span>.</p>
-</div>
-<div class="section" id="summary">
+</section>
+<section id="summary">
 <h3>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h3>
 <p>There are three conditions to make the estimation feasible</p>
 <ol class="simple">
@@ -1171,6 +1200,11 @@ Instead of selecting <span class="math notranslate nohighlight">\(n\)</span> ver
 <li><p>the inclusion probabilities <span class="math notranslate nohighlight">\(\pi\)</span> must be computable for the sampling design</p></li>
 </ol>
 <p>But it is not always the case that all three elements are present at the same time.</p>
+</section>
+<section id="examples">
+<h3>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h3>
+<section id="average-degree">
+<h4>Average Degree<a class="headerlink" href="#average-degree" title="Permalink to this headline">¶</a></h4>
 <p>We will see estimating average degree using two different sampling designs.</p>
 <p>First consider unlabeled star sampling. Let the sampled graph be <span class="math notranslate nohighlight">\(G^*_{star} = (V^*_{star}, E^*_{star})\)</span>. The average degree is a rescaling of vertex total</p>
 <div class="math notranslate nohighlight">
@@ -1196,6 +1230,61 @@ Instead of selecting <span class="math notranslate nohighlight">\(n\)</span> ver
 \hat{\mu}_{star} = \frac{2N_{e, star}^*}{n} \quad \hat{\mu}_{I S}=\frac{2 N_{e, indu}^{*}}{n} \cdot \frac{N_{v}-1}{n-1}
 \]</div>
 <p>Hence under star sampling, it simply use the relation <span class="math notranslate nohighlight">\(\bar{d} = \frac{2N_e}{N_v}\)</span> to the sample. In contrast, under induced subgraph sampling, the analogous result (sample average degree) is scaled up by the factor <span class="math notranslate nohighlight">\(\frac{N_v - 1}{n-1}\)</span> to account for <span class="math notranslate nohighlight">\(d_{i, indu}^* \le d_i\)</span>.</p>
+</section>
+<section id="hidden-population-size">
+<h4>Hidden Population Size<a class="headerlink" href="#hidden-population-size" title="Permalink to this headline">¶</a></h4>
+<p>The term ‘hidden population’ generally refers to one in which the individuals do not wish to expose themselves to view. For example, humans of socially sensitive status, such as illegal drug usage or prostitution. Two issues:</p>
+<ul class="simple">
+<li><p>they will not be inclined to disclose themselves</p></li>
+<li><p>their population is small</p></li>
+</ul>
+<p>Frank and Snijders [SAND 154] describe how snowball sampling may
+be used for this problem, using the idea that mimics capture-recapture methods.</p>
+<p>Let</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(V\)</span> be the set of all members of the hidden population</p></li>
+<li><p><span class="math notranslate nohighlight">\(G = (V,E)\)</span> be a directed graph associated with that population, in which an arc from vertex <span class="math notranslate nohighlight">\(i\)</span> to vertex <span class="math notranslate nohighlight">\(j\)</span> indicates that, if asked, individual <span class="math notranslate nohighlight">\(i\)</span> would mention individual <span class="math notranslate nohighlight">\(j\)</span> as a member of the hidden population (there are some concerns of trust, veracity etc). We want to estimate <span class="math notranslate nohighlight">\(N_v\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(G^*\)</span> be a subgraph of <span class="math notranslate nohighlight">\(G\)</span>, where the vertices <span class="math notranslate nohighlight">\(V^* = V_0^* \cup V_1 ^*\)</span> are obtained through a one-wave snowball sample, with the initial
+sample <span class="math notranslate nohighlight">\(V_0^*\)</span> selected through Bernoulli sampling <span class="math notranslate nohighlight">\(Z_i \sim \operatorname{Ber}(p_0)\)</span> from <span class="math notranslate nohighlight">\(V\)</span>, where the sampling rate <span class="math notranslate nohighlight">\(p_0\)</span> is unknown. We have three random variables</p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(N_v ^* = \left\vert V_0^* \right\vert\)</span> be the size of the initial sample</p></li>
+<li><p><span class="math notranslate nohighlight">\(M_1\)</span> be the number of arcs <span class="math notranslate nohighlight">\((i, j)\)</span> in <span class="math notranslate nohighlight">\(V_0^*\)</span> (<span class="math notranslate nohighlight">\(i \in V_0^*\)</span> and <span class="math notranslate nohighlight">\(j \in V_0^*\)</span>)</p></li>
+<li><p><span class="math notranslate nohighlight">\(M_2\)</span> be the number of arcs pointing from <span class="math notranslate nohighlight">\(i \in V_0^*\)</span> to <span class="math notranslate nohighlight">\(j \in V_1^*\)</span> (<span class="math notranslate nohighlight">\(i \in V_0^*\)</span> but <span class="math notranslate nohighlight">\(j \notin V_0^*\)</span>)</p></li>
+</ul>
+</li>
+</ul>
+<p>Out estimator of <span class="math notranslate nohighlight">\(N_v\)</span> will be derived using the method-of-moments. We first find the expectation of the three variables.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{array}{l}
+\mathbb{E}(N_v ^*)=\mathbb{E}\left(\sum_{i} Z_{i}\right)=N_{v} p_{0} \\
+\mathbb{E}\left(M_{1}\right)=\mathbb{E}\left(\sum_{i \neq j} Z_{i} Z_{j} A_{i j}\right)=\left(N_{e}-N_{v}\right) p_{0}^{2} \\
+\mathbb{E}\left(M_{2}\right)=\mathbb{E}\left(\sum_{i \neq j} Z_{i}\left(1-Z_{j}\right) A_{i j}\right)=\left(N_{e}-N_{v}\right) p_{0}\left(1-p_{0}\right)
+\end{array}
+\end{split}\]</div>
+<p>Setting the left-hand sides of these equations equal to their observed counterparts, say <span class="math notranslate nohighlight">\(n_v ^*, m_1\)</span> and <span class="math notranslate nohighlight">\(m_2\)</span> gives</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\hat{p}_0&amp;= \frac{m_1 + m_2}{m_1}  \\
+\widehat{N_v} &amp;=  \frac{1}{\hat{p}_0}  n_v ^*\\
+\end{aligned}\end{split}\]</div>
+<p>In other words, the number of individuals observed initially is inflated by an estimate <span class="math notranslate nohighlight">\(\hat{p}_0\)</span> of the sampling rate, where that estimate reflects the relative number of arcs from individuals in the initial sample that point inwards among themselves.</p>
+<aside class="margin sidebar">
+<p class="sidebar-title"></p>
+<p>Recall capture-recapture estimator <span class="math notranslate nohighlight">\(\frac{1}{m/n_2} n_1\)</span> where <span class="math notranslate nohighlight">\(n_1, n_2\)</span> are sample sizes, and <span class="math notranslate nohighlight">\(m\)</span> are marked individuals in stage 1. The denominator <span class="math notranslate nohighlight">\(m/n_2\)</span> can be seen as sampling rate <span class="math notranslate nohighlight">\(\hat{p}_0\)</span>.</p>
+</aside>
+<p>To find the variance this estimator, we use the <a class="reference external" href="https://en.wikipedia.org/wiki/Jackknife_resampling">jackknife principle</a>. Let <span class="math notranslate nohighlight">\(\widehat{N}_{v}^{(-i)}\)</span> be the estimate of <span class="math notranslate nohighlight">\(N_v\)</span> obtained by removing <span class="math notranslate nohighlight">\(i \in V_0^*\)</span> and <span class="math notranslate nohighlight">\(j \in V_1^*\)</span> that has only one edge <span class="math notranslate nohighlight">\((i, j)\)</span> adjacent to it, and let <span class="math notranslate nohighlight">\(\bar{\widehat{N}}_v\)</span> be their average, then</p>
+<div class="math notranslate nohighlight">
+\[
+\widehat{\mathbb{V}}_{J}\left(\widehat{N}_{v}\right)=\frac{n-2}{2 n} \sum_{i \in V_{0}^{*}}\left(\widehat{N}_{v}^{(-i)}-\bar{\widehat{N}}_v\right)^{2}
+\]</div>
+</section>
+<section id="graph-size-via-link-tracing">
+<h4>Graph Size via Link Tracing<a class="headerlink" href="#graph-size-via-link-tracing" title="Permalink to this headline">¶</a></h4>
+<div class="math notranslate nohighlight">
+\[
+\mathbb{P}\left(\delta_{j}=1 \mid V_{(-j)}^{*}\right)=\frac{N_{v}-N_{(-j)}^{*}}{N_{v}-n_{s}-n_{t}+1}
+\]</div>
 <p>.</p>
 <p>.</p>
 <p>.</p>
@@ -1204,9 +1293,10 @@ Instead of selecting <span class="math notranslate nohighlight">\(n\)</span> ver
 <p>.</p>
 <p>.</p>
 <p>.</p>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {

@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
     <title>Longest Common Subsequence &#8212; Data Science Handbook</title>
     
   <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
@@ -93,7 +94,7 @@
   </a>
  </li>
 </ul>
-<p class="caption collapsible-parent">
+<p>
  <span class="caption-text">
   Foundations
  </span>
@@ -314,7 +315,7 @@
   </i>
  </li>
 </ul>
-<p class="caption collapsible-parent">
+<p>
  <span class="caption-text">
   Algorithms
  </span>
@@ -462,7 +463,7 @@
   </i>
  </li>
 </ul>
-<p class="caption collapsible-parent">
+<p>
  <span class="caption-text">
   Machine Learning
  </span>
@@ -912,13 +913,13 @@
         
               <div>
                 
-  <div class="section" id="longest-common-subsequence">
+  <section id="longest-common-subsequence">
 <h1>Longest Common Subsequence<a class="headerlink" href="#longest-common-subsequence" title="Permalink to this headline">¶</a></h1>
 <dl class="simple myst">
 <dt>Definition (Subsequence)</dt><dd><p>Let <span class="math notranslate nohighlight">\(S = (s_1, s_2, \ldots, s_n)\)</span> and <span class="math notranslate nohighlight">\(x = (x_1, x_2, \ldots, x_n)\)</span>. We say <span class="math notranslate nohighlight">\(X\)</span> is a sub sequence of <span class="math notranslate nohighlight">\(S\)</span> iff <span class="math notranslate nohighlight">\(\forall 1 \le j \le k, \exists i_j\)</span> such that <span class="math notranslate nohighlight">\(1 \le i_1 &lt; i_2 &lt; \ldots, &lt; i_k \le n, x_j = s_{i_j}\)</span>.</p>
 </dd>
 </dl>
-<div class="section" id="problem">
+<section id="problem">
 <h2>Problem<a class="headerlink" href="#problem" title="Permalink to this headline">¶</a></h2>
 <dl class="simple myst">
 <dt>Input</dt><dd><p><span class="math notranslate nohighlight">\(A\)</span> is a sequence of length <span class="math notranslate nohighlight">\(n\)</span>, <span class="math notranslate nohighlight">\(B\)</span> is a sequence of length <span class="math notranslate nohighlight">\(m\)</span>.</p>
@@ -926,10 +927,10 @@
 <dt>Goal</dt><dd><p>Find the longest sequence <span class="math notranslate nohighlight">\(X\)</span> that is a subsequence of both <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span>. <span class="math notranslate nohighlight">\(X = LCS(A,B)\)</span>.</p>
 </dd>
 </dl>
-</div>
-<div class="section" id="analysis">
+</section>
+<section id="analysis">
 <h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="iterative-relation">
+<section id="iterative-relation">
 <h3>Iterative Relation<a class="headerlink" href="#iterative-relation" title="Permalink to this headline">¶</a></h3>
 <p>For now, we only compute the length, not the exact LCS <span class="math notranslate nohighlight">\(X\)</span>.</p>
 <ul class="simple">
@@ -947,12 +948,12 @@ LCS(A, B_{[:-1]}) \\
 LCS(A_{[:-1]}, B)
 \end{array}\right\}
 \end{split}\]</div>
-</div>
-<div class="section" id="dp-table">
+</section>
+<section id="dp-table">
 <h3>DP Table<a class="headerlink" href="#dp-table" title="Permalink to this headline">¶</a></h3>
 <p>For all <span class="math notranslate nohighlight">\(0 \le i \le n, 0 \le j \le m\)</span>, the table entry <span class="math notranslate nohighlight">\(T_{[i,j]}\)</span> stores the length <span class="math notranslate nohighlight">\(\left\vert LCS(A_{[:i]}, B_{[:j]}) \right\vert\)</span></p>
-</div>
-<div class="section" id="order-of-computation">
+</section>
+<section id="order-of-computation">
 <h3>Order of computation<a class="headerlink" href="#order-of-computation" title="Permalink to this headline">¶</a></h3>
 <p>In non-decreasing order of <span class="math notranslate nohighlight">\(i+j\)</span>. Because <span class="math notranslate nohighlight">\(T_{[i,j]}\)</span> depends on three entries <span class="math notranslate nohighlight">\(T_{[i-1, j-1]}, T_{[i, j-1]}, T_{[i-1, j]}\)</span> that are on the left/right of it.</p>
 <p>Another order can follow fixed <span class="math notranslate nohighlight">\(i\)</span> and increasing <span class="math notranslate nohighlight">\(j\)</span>. Any order works as long as a new value is computed from existing values.</p>
@@ -980,17 +981,17 @@ T_{[i, j-1]}
 &amp; \text{otherwise}
 \end{array}\right.
 \end{split}\]</div>
-</div>
-<div class="section" id="solution">
+</section>
+<section id="solution">
 <h3>Solution<a class="headerlink" href="#solution" title="Permalink to this headline">¶</a></h3>
 <p>If the condition <span class="math notranslate nohighlight">\(A_{[i]} = B_{[j]}\)</span> holds, this means we pop out <span class="math notranslate nohighlight">\(A_{[i]}\)</span>. Otherwise, we go to <span class="math notranslate nohighlight">\(T_{[i,j-1]}\)</span> or <span class="math notranslate nohighlight">\(T_{[i-1,j]}\)</span>.</p>
-</div>
-</div>
-<div class="section" id="running-time">
+</section>
+</section>
+<section id="running-time">
 <h2>Running Time<a class="headerlink" href="#running-time" title="Permalink to this headline">¶</a></h2>
 <p>In total <span class="math notranslate nohighlight">\(n\times m\)</span> entires, time for each entry is <span class="math notranslate nohighlight">\(O(1)\)</span>, so total time is <span class="math notranslate nohighlight">\(O(nm)\)</span>.</p>
-</div>
-<div class="section" id="correctness">
+</section>
+<section id="correctness">
 <h2>Correctness<a class="headerlink" href="#correctness" title="Permalink to this headline">¶</a></h2>
 <dl class="simple myst">
 <dt>Claim</dt><dd><p>For all <span class="math notranslate nohighlight">\(0 \le i \le n, 0 \le j \le m\)</span>, the table entry <span class="math notranslate nohighlight">\(T_{[i,j]}\)</span> stores the length <span class="math notranslate nohighlight">\(\left\vert LCS(A_{[:i]}, B_{[:j]}) \right\vert\)</span>. The final solution is <span class="math notranslate nohighlight">\(T_{[n,m]} = \left\vert LCS(A, B) \right\vert\)</span></p>
@@ -998,8 +999,8 @@ T_{[i, j-1]}
 <dt><em>Proof</em></dt><dd><p>Induction over <span class="math notranslate nohighlight">\(i+j\)</span>.</p>
 </dd>
 </dl>
-</div>
-</div>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {

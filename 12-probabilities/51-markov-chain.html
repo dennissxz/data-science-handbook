@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
     <title>Markov Chain &#8212; Data Science Handbook</title>
     
   <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
@@ -93,7 +94,7 @@
   </a>
  </li>
 </ul>
-<p class="caption collapsible-parent">
+<p>
  <span class="caption-text">
   Foundations
  </span>
@@ -314,7 +315,7 @@
   </i>
  </li>
 </ul>
-<p class="caption collapsible-parent">
+<p>
  <span class="caption-text">
   Algorithms
  </span>
@@ -462,7 +463,7 @@
   </i>
  </li>
 </ul>
-<p class="caption collapsible-parent">
+<p>
  <span class="caption-text">
   Machine Learning
  </span>
@@ -946,11 +947,11 @@
         
               <div>
                 
-  <div class="section" id="markov-chain">
+  <section id="markov-chain">
 <h1>Markov Chain<a class="headerlink" href="#markov-chain" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="definitions">
+<section id="definitions">
 <h2>Definitions<a class="headerlink" href="#definitions" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="basics">
+<section id="basics">
 <h3>Basics<a class="headerlink" href="#basics" title="Permalink to this headline">¶</a></h3>
 <p>A <strong>stochastic process</strong> <span class="math notranslate nohighlight">\(\boldsymbol{X} = \left\{ X_t: t\in T \right\}\)</span> is a collection of random variables indexed by <span class="math notranslate nohighlight">\(t\)</span>. We call <span class="math notranslate nohighlight">\(X_t\)</span> the <strong>sate</strong> of the process at time <span class="math notranslate nohighlight">\(t\)</span>. If <span class="math notranslate nohighlight">\(T\)</span> is countable infinite, then we call <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span> a <strong>discrete</strong> time process.</p>
 <p>A discrete time process <span class="math notranslate nohighlight">\(\boldsymbol{X} = \left\{ X_0, X_1, \ldots \right\}\)</span> is called a <strong>Markov chain</strong> if, for any positive integer <span class="math notranslate nohighlight">\(t\)</span> and any states <span class="math notranslate nohighlight">\(i_0, \ldots, i_t, j\)</span>,</p>
@@ -962,12 +963,14 @@
 <p>We say a Markov chain has a <strong>discrete state space</strong> if the set of values of the random variables is countably infinite <span class="math notranslate nohighlight">\(\left\{ v_0, v_1, \ldots \right\}\)</span>. For simplicity, we assume the discrete state space is given by the set of nonnegative integers <span class="math notranslate nohighlight">\(\left\{ 0,1,\ldots \right\}\)</span>. We say a Markov chain is <strong>finite</strong> if the set of values of the random variables if a finite set <span class="math notranslate nohighlight">\(\left\{ v_0, v_1, \ldots, v_{n-1} \right\}\)</span>. In the following discussion we assume the Markov chains are finite.</p>
 <p>A Markov chain is <strong>homogeneous</strong> if <span class="math notranslate nohighlight">\(\mathbb{P}\left(X_{t+1}=j \mid X_{t}=i\right)=p_{i j}\)</span> for all <span class="math notranslate nohighlight">\(t\)</span>. This indicates that this conditional distribution does not very with <span class="math notranslate nohighlight">\(t\)</span>. The values <span class="math notranslate nohighlight">\(p_{ij}\)</span> are called <strong>transition probabilities</strong>, which can be stored in a transition matrix <span class="math notranslate nohighlight">\(\boldsymbol{P}\)</span>. We can find the <span class="math notranslate nohighlight">\(t\)</span>-step transition probability <span class="math notranslate nohighlight">\(p_{ij}^{(t)} = [\boldsymbol{P}^t] _{ij}\)</span>, which is the probability that, starting in state <span class="math notranslate nohighlight">\(i\)</span>, the Markov chain is found in state <span class="math notranslate nohighlight">\(j\)</span> after <span class="math notranslate nohighlight">\(t\)</span> transitions.</p>
 <p>A Markov chain with state space <span class="math notranslate nohighlight">\(V\)</span> and transition matrix <span class="math notranslate nohighlight">\(\boldsymbol{P}\)</span> can be represented by a labeled directed graph, where edges are given by transitions with nonzero probability <span class="math notranslate nohighlight">\(E = \left\{ (u,v) \mid p_{u,v} &gt;0 \right\}\)</span>. Note that self-loops are allowed for <span class="math notranslate nohighlight">\(p_{ii} &gt; 0\)</span>.</p>
-<div class="figure align-default" id="mc-graph">
+<figure class="align-default" id="mc-graph">
 <a class="reference internal image-reference" href="../_images/mc-graph.png"><img alt="" src="../_images/mc-graph.png" style="width: 70%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 8 </span><span class="caption-text">Graphical representation of a Markov chain</span><a class="headerlink" href="#mc-graph" title="Permalink to this image">¶</a></p>
-</div>
-</div>
-<div class="section" id="irreducibility">
+<figcaption>
+<p><span class="caption-number">Fig. 8 </span><span class="caption-text">Graphical representation of a Markov chain</span><a class="headerlink" href="#mc-graph" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="irreducibility">
 <h3>Irreducibility<a class="headerlink" href="#irreducibility" title="Permalink to this headline">¶</a></h3>
 <dl class="simple myst">
 <dt>Definitions</dt><dd><ul>
@@ -986,8 +989,8 @@
 </ul>
 </dd>
 </dl>
-</div>
-<div class="section" id="periodicity">
+</section>
+<section id="periodicity">
 <h3>Periodicity<a class="headerlink" href="#periodicity" title="Permalink to this headline">¶</a></h3>
 <dl class="simple myst">
 <dt>Definition (Period)</dt><dd><p>The period <span class="math notranslate nohighlight">\(d(i)\)</span> of a state <span class="math notranslate nohighlight">\(i\)</span> of a homogeneous Markov chain is defined as</p>
@@ -1025,9 +1028,9 @@
 </ul>
 </dd>
 </dl>
-</div>
-</div>
-<div class="section" id="stationary-distribution">
+</section>
+</section>
+<section id="stationary-distribution">
 <h2>Stationary Distribution<a class="headerlink" href="#stationary-distribution" title="Permalink to this headline">¶</a></h2>
 <dl class="simple myst">
 <dt>Definition (Stationary distribution)</dt><dd><p>A row vector <span class="math notranslate nohighlight">\(\boldsymbol{\pi} ^{\top}\)</span> is called a <strong>stationary distribution</strong> for a Markov chain with transition matrix <span class="math notranslate nohighlight">\(\boldsymbol{P}\)</span> if</p>
@@ -1051,13 +1054,13 @@
   \]</div>
 </dd>
 </dl>
-</div>
-<div class="section" id="exercise">
+</section>
+<section id="exercise">
 <h2>Exercise<a class="headerlink" href="#exercise" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="infect-1000">
+<section id="infect-1000">
 <h3>Infect 1000<a class="headerlink" href="#infect-1000" title="Permalink to this headline">¶</a></h3>
 <p><em>There are 1,000 people in one room. One of them carries a disease which infects 100% if one shares hands with an infected person. In each minute all the people in the room are randomly paired to share hands with each other. What is your estimate of the expected number of people infected after 10 minutes? Can you use only pen and paper to solve this?</em></p>
-<div class="section" id="sol-1-markov-chain">
+<section id="sol-1-markov-chain">
 <h4>Sol.1 Markov Chain<a class="headerlink" href="#sol-1-markov-chain" title="Permalink to this headline">¶</a></h4>
 <p>Let <span class="math notranslate nohighlight">\(I_t\)</span> be the number of infected individuals after <span class="math notranslate nohighlight">\(t\)</span> minutes. Define a transition matrix <span class="math notranslate nohighlight">\(\boldsymbol{P}=\left\{ p_{i,j} \right\}\)</span>, where</p>
 <div class="math notranslate nohighlight">
@@ -1127,8 +1130,8 @@
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="sol-2-conditional-expectation">
+</section>
+<section id="sol-2-conditional-expectation">
 <h4>Sol.2 Conditional Expectation<a class="headerlink" href="#sol-2-conditional-expectation" title="Permalink to this headline">¶</a></h4>
 <p>Let <span class="math notranslate nohighlight">\(p_{t,j}\)</span> be the probability that infected individual <span class="math notranslate nohighlight">\(j\)</span> is paired with a <strong>healthy</strong> individual from time <span class="math notranslate nohighlight">\(t\)</span> to <span class="math notranslate nohighlight">\(t+1\)</span>, we have</p>
 <div class="math notranslate nohighlight">
@@ -1218,8 +1221,8 @@ I_{t+1,j}=\begin{cases}
 <div class="math notranslate nohighlight">
 \[x_{t} = \frac{1}{2}\left\{1-\exp \left[2^{t} \ln \left(1-2 x_{0}\right)\right]\right\}\]</div>
 <p>For details, see <a class="reference external" href="https://mathworld.wolfram.com/LogisticMap.html">Logistic Map</a>.</p>
-</div>
-<div class="section" id="sol-3-simulation">
+</section>
+<section id="sol-3-simulation">
 <h4>Sol.3 Simulation<a class="headerlink" href="#sol-3-simulation" title="Permalink to this headline">¶</a></h4>
 <p>To verify the solutions above, we can simulate the infection process.</p>
 <div class="cell docutils container">
@@ -1307,10 +1310,10 @@ I_{t+1,j}=\begin{cases}
 <img alt="../_images/51-markov-chain_13_0.png" src="../_images/51-markov-chain_13_0.png" />
 </div>
 </div>
-</div>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {

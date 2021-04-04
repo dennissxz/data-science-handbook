@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
     <title>Maximum Flow &#8212; Data Science Handbook</title>
     
   <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
@@ -93,7 +94,7 @@
   </a>
  </li>
 </ul>
-<p class="caption collapsible-parent">
+<p>
  <span class="caption-text">
   Foundations
  </span>
@@ -314,7 +315,7 @@
   </i>
  </li>
 </ul>
-<p class="caption collapsible-parent">
+<p>
  <span class="caption-text">
   Algorithms
  </span>
@@ -462,7 +463,7 @@
   </i>
  </li>
 </ul>
-<p class="caption collapsible-parent">
+<p>
  <span class="caption-text">
   Machine Learning
  </span>
@@ -1019,10 +1020,10 @@
         
               <div>
                 
-  <div class="section" id="maximum-flow">
+  <section id="maximum-flow">
 <span id="max-flow"></span><h1>Maximum Flow<a class="headerlink" href="#maximum-flow" title="Permalink to this headline">¶</a></h1>
 <p>Widely used in algorithms on graphs.</p>
-<div class="section" id="problem">
+<section id="problem">
 <h2>Problem<a class="headerlink" href="#problem" title="Permalink to this headline">¶</a></h2>
 <p>Send something from a place to another over some networks, e.g. information, package, oil.</p>
 <p>Each edge has capacity limit.</p>
@@ -1032,8 +1033,8 @@
 <dt>Goal</dt><dd><p>find the maximum volume flowing from <span class="math notranslate nohighlight">\(s\)</span> to <span class="math notranslate nohighlight">\(t\)</span> subject to the capacity constraint.</p>
 </dd>
 </dl>
-</div>
-<div class="section" id="analysis">
+</section>
+<section id="analysis">
 <h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
 <p>Assume</p>
 <ul class="simple">
@@ -1042,10 +1043,10 @@
 <li><p>call all edges entering <span class="math notranslate nohighlight">\(v\)</span> by <span class="math notranslate nohighlight">\(\delta ^- (v)\)</span></p></li>
 <li><p>call all edges leaving <span class="math notranslate nohighlight">\(v\)</span> by <span class="math notranslate nohighlight">\(\delta ^+ (v)\)</span></p></li>
 </ul>
-<div class="margin sidebar">
+<aside class="margin sidebar">
 <p class="sidebar-title"></p>
 <p>If the two vertices of an edge are <span class="math notranslate nohighlight">\(e=(u,v)\)</span>, sometimes we write <span class="math notranslate nohighlight">\(f(u,v)\)</span> for convenience. If there is no edge between two vertices <span class="math notranslate nohighlight">\(u\)</span> and <span class="math notranslate nohighlight">\(v\)</span>, then <span class="math notranslate nohighlight">\(f(u,v)=0\)</span>.</p>
-</div>
+</aside>
 <dl class="simple myst">
 <dt>Definition (Flow)</dt><dd><p>A function <span class="math notranslate nohighlight">\(f:E \rightarrow \mathbb{R}\)</span> which assign a value <span class="math notranslate nohighlight">\(f(e)\)</span> to every edge <span class="math notranslate nohighlight">\(e \in E\)</span>, subject to</p>
 </dd>
@@ -1101,26 +1102,26 @@ f(e)\leftarrow f(e) + \Delta(p)
 \]</div>
 <p>This gives a feasible solution. Optimal? No, depends on the order of <span class="math notranslate nohighlight">\(s\)</span>-<span class="math notranslate nohighlight">\(t\)</span> path in <code class="docutils literal notranslate"><span class="pre">WHILE</span></code>.</p>
 </div>
-</div>
-<div class="section" id="algorithm">
+</section>
+<section id="algorithm">
 <h2>Algorithm<a class="headerlink" href="#algorithm" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id1">
+<section id="id1">
 <h3>Algorithm<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
 <p>We first make an additional assumption and define residual flow networks.</p>
-<div class="margin sidebar">
+<aside class="margin sidebar">
 <p class="sidebar-title"></p>
 <p>This assumption is not necessary for the algorithm to run, but make the algorithm easier to understand.</p>
-</div>
+</aside>
 <dl class="simple myst">
 <dt>Assumption (No anti-parallel edges)</dt><dd><p>Input <span class="math notranslate nohighlight">\(G\)</span> has no anti-parallel edges. If there is, say <span class="math notranslate nohighlight">\(e = (u,v)\)</span> and <span class="math notranslate nohighlight">\(e ^\prime  = (v,u)\)</span>, then add a node <span class="math notranslate nohighlight">\(x\)</span> in-between <span class="math notranslate nohighlight">\(e = (u,v)\)</span> and the new edges have the same capacity <span class="math notranslate nohighlight">\(c(u,x) = c(x,v) = c(u,v)\)</span>.</p>
 </dd>
 <dt>Definition (Residual Flow Network)</dt><dd><p>Given a graph <span class="math notranslate nohighlight">\(G\)</span> and a feasible flow <span class="math notranslate nohighlight">\(f\)</span> in <span class="math notranslate nohighlight">\(G\)</span>, let <span class="math notranslate nohighlight">\(G_f\)</span> be a new graph with the same vertices but new edges.</p>
 </dd>
 </dl>
-<div class="margin sidebar">
+<aside class="margin sidebar">
 <p class="sidebar-title"></p>
 <p>One can check if the residual capacity assigned to a pair of forward edge and backward edge in the residual flow network are correct by checking their sum of residual capacity <span class="math notranslate nohighlight">\(c_f(e) + c_f(e ^\prime)\)</span>, which should be <span class="math notranslate nohighlight">\(c(e)\)</span>.</p>
-</div>
+</aside>
 <ul>
 <li><p>For every <span class="math notranslate nohighlight">\(e(u,v) \in G\)</span>, add edges and assign capacity (called <strong>residual capacity</strong>)</p>
 <ul>
@@ -1140,10 +1141,12 @@ f(e)\leftarrow f(e) + \Delta(p)
 </li>
 <li><p>For every edge <span class="math notranslate nohighlight">\(e ^\prime\)</span> in <span class="math notranslate nohighlight">\(G_f\)</span> with zero residual capacity <span class="math notranslate nohighlight">\(c_f (e ^\prime ) = 0\)</span>, delete.</p></li>
 </ul>
-<div class="figure align-default" id="max-flow-three-edges">
+<figure class="align-default" id="max-flow-three-edges">
 <a class="reference internal image-reference" href="../_images/max-flow-three-edges.png"><img alt="" src="../_images/max-flow-three-edges.png" style="width: 40%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 17 </span><span class="caption-text">Three kinds of edge in <span class="math notranslate nohighlight">\(G\)</span> [Chuzhoy 2021]</span><a class="headerlink" href="#max-flow-three-edges" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">Fig. 17 </span><span class="caption-text">Three kinds of edge in <span class="math notranslate nohighlight">\(G\)</span> [Chuzhoy 2021]</span><a class="headerlink" href="#max-flow-three-edges" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <p>Ford-Fulkerson algorithm is an iterative algorithm. In each iteration, we compute the residual floe network of the current graph and use that to improve the original graph. Note that flow <span class="math notranslate nohighlight">\(f()\)</span> only exists in the original graph.</p>
 <hr class="docutils" />
 <p><strong>Ford-Fulkerson’s algorithm</strong></p>
@@ -1172,10 +1175,10 @@ f(e)\leftarrow f(e) + \Delta(p)
 </ul>
 </li>
 </ul>
-<div class="margin sidebar">
+<aside class="margin sidebar">
 <p class="sidebar-title"></p>
 <p>An augmenting path in residual graph can be found using DFS or BFS.</p>
-</div>
+</aside>
 <ul>
 <li><p>While <span class="math notranslate nohighlight">\(\exists\)</span> a simple path <span class="math notranslate nohighlight">\(s\)</span>-<span class="math notranslate nohighlight">\(t\)</span> path <span class="math notranslate nohighlight">\(P\)</span> in the residual flow network <span class="math notranslate nohighlight">\(G_f\)</span>, we “push” flow along this path (aka <em>augmenting path</em>).</p>
 <ul>
@@ -1199,9 +1202,9 @@ f(e)\leftarrow f(e) + \Delta(p)
 </ul>
 </li>
 </ul>
-</div>
+</section>
 <hr class="docutils" />
-<div class="section" id="feasibility">
+<section id="feasibility">
 <h3>Feasibility<a class="headerlink" href="#feasibility" title="Permalink to this headline">¶</a></h3>
 <dl class="simple myst">
 <dt>Claim (Stops in finit time)</dt><dd><p>The FF algorithm stops after at most <span class="math notranslate nohighlight">\(\sum_{v\in \operatorname{succ}(s)} c(s, v)\)</span> iterations.</p>
@@ -1258,8 +1261,8 @@ f(e)\leftarrow f(e) + \Delta(p)
 <p><span class="math notranslate nohighlight">\(\square\)</span></p>
 </div>
 <p>Therefore, we show that after an iteration is completed, the constraints remain to be satisfied, so the feasibility is guaranteed.</p>
-</div>
-<div class="section" id="optimality">
+</section>
+<section id="optimality">
 <h3>Optimality<a class="headerlink" href="#optimality" title="Permalink to this headline">¶</a></h3>
 <p>To prove optimality of the FF algorithm, we first introduce some definitions.</p>
 <p>Recall the definition of in-flow to and out-flow from a node <span class="math notranslate nohighlight">\(v\)</span></p>
@@ -1312,10 +1315,10 @@ f^{\text{out}}(v) =\sum_{e \in \delta^{+}(v)} f(e)
 \end{aligned}\end{split}\]</div>
 <p><span class="math notranslate nohighlight">\(\square\)</span></p>
 </div>
-<div class="margin sidebar">
+<aside class="margin sidebar">
 <p class="sidebar-title"></p>
 <p>This corollary is the key for subsequent analysis</p>
-</div>
+</aside>
 <dl class="simple myst">
 <dt>Corollary</dt><dd><p><span class="math notranslate nohighlight">\(\operatorname{val}(f) \le c(A,B)\)</span>, with equality iff <span class="math notranslate nohighlight">\(f^{\text{in}}(A) = 0\)</span> and <span class="math notranslate nohighlight">\(f^{\text{out}}(A) = c(A,B)\)</span>.</p>
 </dd>
@@ -1347,8 +1350,8 @@ f^{\text{out}}(v) =\sum_{e \in \delta^{+}(v)} f(e)
 </ol>
 <p><span class="math notranslate nohighlight">\(\square\)</span></p>
 </div>
-</div>
-<div class="section" id="complexity">
+</section>
+<section id="complexity">
 <h3>Complexity<a class="headerlink" href="#complexity" title="Permalink to this headline">¶</a></h3>
 <p>Let <span class="math notranslate nohighlight">\(m\)</span> be the number of edges in the graph <span class="math notranslate nohighlight">\(G\)</span>.</p>
 <p>Recall that there are at most <span class="math notranslate nohighlight">\(\sum_{v\in \operatorname{succ}(s)} c(s, v)\)</span> iterations. The bound is upper bounded by <span class="math notranslate nohighlight">\(n \times c _{\max}(e)\)</span>.</p>
@@ -1373,8 +1376,8 @@ f^{\text{out}}(v) =\sum_{e \in \delta^{+}(v)} f(e)
 <li><p>pseudo-polynomial time: <span class="math notranslate nohighlight">\(Poly(\text{the largest integer present in the input})\)</span>, e.g. <span class="math notranslate nohighlight">\(O(c_\max)\)</span></p></li>
 </ul>
 </div>
-</div>
-<div class="section" id="improvement-edmonds-karp-algorithm">
+</section>
+<section id="improvement-edmonds-karp-algorithm">
 <h3>Improvement: Edmonds-Karp Algorithm<a class="headerlink" href="#improvement-edmonds-karp-algorithm" title="Permalink to this headline">¶</a></h3>
 <p>Instead of using an arbitrary augmenting path, we use the <strong>shortest</strong> path <span class="math notranslate nohighlight">\(s\)</span>-<span class="math notranslate nohighlight">\(t\)</span> in <span class="math notranslate nohighlight">\(G\)</span> that minimizes number of edges. This work takes <span class="math notranslate nohighlight">\(O(m)\)</span> by BFS or DFS, so each iteration still takes <span class="math notranslate nohighlight">\(O(m)\)</span>. But it reduces the number of iterations from <span class="math notranslate nohighlight">\(O(nc_\max)\)</span> to <span class="math notranslate nohighlight">\(O(nm)\)</span>, this leads to the Edmonds-Karp algorithm with complexity <span class="math notranslate nohighlight">\(O(nm^2)\)</span>.</p>
 <p>To show that, we first run that algorithm, record the length of the chosen shortest path in each iteration, and then partition these the execution into phases, where each phase lasts as long as the lengths of augmenting paths chosen remains the same.</p>
@@ -1398,28 +1401,30 @@ f^{\text{out}}(v) =\sum_{e \in \delta^{+}(v)} f(e)
 <li><p>if <span class="math notranslate nohighlight">\(e \notin E(G_f)\)</span> but <span class="math notranslate nohighlight">\(e \in E(G_f ^\prime)\)</span> then its anti-parallel edge <span class="math notranslate nohighlight">\(e ^\prime  \in E(P)\)</span>.</p></li>
 </ul>
 <p>Now consider using BFS from to find a shortest path <span class="math notranslate nohighlight">\(s\)</span>-<span class="math notranslate nohighlight">\(t\)</span> in <span class="math notranslate nohighlight">\(G_f\)</span>. Suppose the path length is <span class="math notranslate nohighlight">\(d\)</span>, then there are <span class="math notranslate nohighlight">\(d+1\)</span> layers. The first layers only contains <span class="math notranslate nohighlight">\(s\)</span>, and the last layer contains <span class="math notranslate nohighlight">\(t\)</span>. In each iteration, we delete some forward-looking edge, and add a backward-looking edge or sideways-looking edge, but <strong>no</strong> shortcut edge. So the shortest path is non-decreasing. Beside, there are at most <span class="math notranslate nohighlight">\(m\)</span> layers to delete in a phase with path length <span class="math notranslate nohighlight">\(d\)</span>, so at most <span class="math notranslate nohighlight">\(O(m)\)</span> iterations in that phase.</p>
-<div class="figure align-default" id="max-flow-bfs">
+<figure class="align-default" id="max-flow-bfs">
 <a class="reference internal image-reference" href="../_images/max-flow-bfs.png"><img alt="" src="../_images/max-flow-bfs.png" style="width: 100%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 18 </span><span class="caption-text">BFS in <span class="math notranslate nohighlight">\(G_f\)</span> [Chuzhoy 2021]</span><a class="headerlink" href="#max-flow-bfs" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">Fig. 18 </span><span class="caption-text">BFS in <span class="math notranslate nohighlight">\(G_f\)</span> [Chuzhoy 2021]</span><a class="headerlink" href="#max-flow-bfs" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <p><span class="math notranslate nohighlight">\(\square\)</span></p>
 </div>
-</div>
-<div class="section" id="approximation">
+</section>
+<section id="approximation">
 <h3>Approximation<a class="headerlink" href="#approximation" title="Permalink to this headline">¶</a></h3>
 <p><span class="math notranslate nohighlight">\((1+\epsilon)\)</span>-approximation returns a flow of value at least <span class="math notranslate nohighlight">\(\frac{OPT}{1+\epsilon}\)</span>.</p>
-</div>
-<div class="section" id="other-properties">
+</section>
+<section id="other-properties">
 <h3>Other Properties<a class="headerlink" href="#other-properties" title="Permalink to this headline">¶</a></h3>
 <dl class="simple myst">
 <dt>Theorem (Integrality of flow)</dt><dd><p>If all capacities are integrals, then the Ford-Fulkerson algorithm finds a maximum flow where <span class="math notranslate nohighlight">\(f(e)\)</span> is integral for all <span class="math notranslate nohighlight">\(e\)</span>.</p>
 </dd>
 </dl>
-</div>
-</div>
-<div class="section" id="minimum-cut">
+</section>
+</section>
+<section id="minimum-cut">
 <h2>Minimum Cut<a class="headerlink" href="#minimum-cut" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id2">
+<section id="id2">
 <h3>Problem<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
 <p><strong>Input</strong></p>
 <ul class="simple">
@@ -1430,8 +1435,8 @@ f^{\text{out}}(v) =\sum_{e \in \delta^{+}(v)} f(e)
 <p><strong>Goal</strong></p>
 <p>Find an <span class="math notranslate nohighlight">\(s\)</span>-<span class="math notranslate nohighlight">\(t\)</span> cut <span class="math notranslate nohighlight">\((A,B)\)</span> where <span class="math notranslate nohighlight">\(s \in A, t \in B\)</span>, with minimal cut capacity <span class="math notranslate nohighlight">\(c(A,B)\)</span>, which is the sum of capacities of edge from <span class="math notranslate nohighlight">\(A\)</span> to <span class="math notranslate nohighlight">\(B\)</span>, <span class="math notranslate nohighlight">\(c(A, B) = \sum_{u\in A, v\in B} c(u,v)\)</span>.</p>
 <p>In other words, we want to remove some edges to <strong>disconnect</strong> <span class="math notranslate nohighlight">\(s\)</span> and <span class="math notranslate nohighlight">\(t\)</span>, and minimize the total capacities of these removed edges. The vertex partition’s perspective and edge removal’s perspective are equivalent.</p>
-</div>
-<div class="section" id="id3">
+</section>
+<section id="id3">
 <h3>Analysis<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
 <dl class="simple myst">
 <dt>Theorem (Equivalency of maximum flow and minimum cut)</dt><dd><p>In any flow network <span class="math notranslate nohighlight">\(G\)</span>, the value of a maximum <span class="math notranslate nohighlight">\(s\)</span>-<span class="math notranslate nohighlight">\(t\)</span> flow is equal to the capacity of a minimum <span class="math notranslate nohighlight">\(s\)</span>-<span class="math notranslate nohighlight">\(t\)</span> cut.</p>
@@ -1439,12 +1444,12 @@ f^{\text{out}}(v) =\sum_{e \in \delta^{+}(v)} f(e)
 </dl>
 <p>The proof is simply from the Corollary.</p>
 <p>Thus, FF algorithm also gives an algorithm for finding a minimum <span class="math notranslate nohighlight">\(s\)</span>-<span class="math notranslate nohighlight">\(t\)</span> cut: after the algorithm stops, in the residual graph <span class="math notranslate nohighlight">\(G_f\)</span>, find the set of vertices reachable from <span class="math notranslate nohighlight">\(s\)</span>, then <span class="math notranslate nohighlight">\((A, V\setminus B)\)</span> is a minimum <span class="math notranslate nohighlight">\(s\)</span>-<span class="math notranslate nohighlight">\(t\)</span> cut.</p>
-</div>
-</div>
-<div class="section" id="extension">
+</section>
+</section>
+<section id="extension">
 <h2>Extension<a class="headerlink" href="#extension" title="Permalink to this headline">¶</a></h2>
 <p><span class="math notranslate nohighlight">\(O(m n c_\max)\)</span> is not efficient. There are alternative algorithms to improve this.</p>
-<div class="section" id="max-flow-and-min-cut-in-undirected-graphs">
+<section id="max-flow-and-min-cut-in-undirected-graphs">
 <h3>Max-flow and Min-cut in Undirected Graphs<a class="headerlink" href="#max-flow-and-min-cut-in-undirected-graphs" title="Permalink to this headline">¶</a></h3>
 <p>To find maximum <span class="math notranslate nohighlight">\(s-t\)</span> flow in undirected graph with capacities <span class="math notranslate nohighlight">\(c(e)&gt;0\)</span>, we can make the graph directed, and run Ford-Fulkerson algorithm on the directed counterpart.</p>
 <ul>
@@ -1466,8 +1471,8 @@ f^{\text{out}}(v) =\sum_{e \in \delta^{+}(v)} f(e)
 \]</div>
 <p>Likewise, we convert every undirected edge to two anti-parallel directed edges, run Ford-Fulkerson algorithm to find a <span class="math notranslate nohighlight">\(s\)</span>-<span class="math notranslate nohighlight">\(t\)</span> cut <span class="math notranslate nohighlight">\((A,B)\)</span>. The cut values are the same.</p>
 <p>Since in the directed graph we have max-flow <span class="math notranslate nohighlight">\(=\)</span> min-cut, in the undirected graph we have max-flow <span class="math notranslate nohighlight">\(=\)</span> min-cut.</p>
-</div>
-<div class="section" id="minimum-cost-flow">
+</section>
+<section id="minimum-cost-flow">
 <h3>Minimum Cost Flow<a class="headerlink" href="#minimum-cost-flow" title="Permalink to this headline">¶</a></h3>
 <p>Input: a directed graph <span class="math notranslate nohighlight">\(G=(V,E)\)</span>, vertices <span class="math notranslate nohighlight">\(s, t \in V\)</span>, capacities <span class="math notranslate nohighlight">\(c(e)\)</span> and weights <span class="math notranslate nohighlight">\(w(e)\)</span>.</p>
 <p>Goal: send maximum amount of flow from <span class="math notranslate nohighlight">\(s\)</span> to <span class="math notranslate nohighlight">\(t\)</span> in <span class="math notranslate nohighlight">\(G\)</span>, with minimum possible cost, where for each edge <span class="math notranslate nohighlight">\(e\)</span>, we need to pay <span class="math notranslate nohighlight">\(w(e)\)</span> for every unit of flow sent over edge <span class="math notranslate nohighlight">\(e\)</span>.</p>
@@ -1482,16 +1487,16 @@ f^{\text{out}}(v) =\sum_{e \in \delta^{+}(v)} f(e)
 \end{aligned}\end{split}\]</div>
 <p>Can you solve the problem by solving a single LP (instead of first computing the value <span class="math notranslate nohighlight">\(d\)</span>
 and then solving an LP that depends on the value <span class="math notranslate nohighlight">\(d\)</span>)??</p>
-</div>
-<div class="section" id="s-t-shortest-path">
+</section>
+<section id="s-t-shortest-path">
 <h3><span class="math notranslate nohighlight">\(s\)</span>-<span class="math notranslate nohighlight">\(t\)</span> Shortest Path<a class="headerlink" href="#s-t-shortest-path" title="Permalink to this headline">¶</a></h3>
-</div>
-<div class="section" id="path-based-flow">
+</section>
+<section id="path-based-flow">
 <h3>Path-based Flow<a class="headerlink" href="#path-based-flow" title="Permalink to this headline">¶</a></h3>
-<div class="margin sidebar">
+<aside class="margin sidebar">
 <p class="sidebar-title"></p>
 <p>Aka flow-paths.</p>
-</div>
+</aside>
 <p>Recall the flow <span class="math notranslate nohighlight">\(f: V\rightarrow \mathbb{R} _{\ge 0}\)</span> is defined for edges. We can consider a path-based flow <span class="math notranslate nohighlight">\(f_{p} : \mathcal{P}\rightarrow \mathbb{R} _{\ge 0}\)</span>, where <span class="math notranslate nohighlight">\(\mathcal{P}\)</span> is the set of some <span class="math notranslate nohighlight">\(s\)</span>-<span class="math notranslate nohighlight">\(t\)</span> paths. Let <span class="math notranslate nohighlight">\(f _{p} (P)\)</span> be the flow of a path <span class="math notranslate nohighlight">\(P \in \mathcal{P}\)</span>. It is valid if the edge capacity constraint holds.</p>
 <div class="math notranslate nohighlight">
 \[
@@ -1534,14 +1539,14 @@ and then solving an LP that depends on the value <span class="math notranslate n
 &amp; f_p(P) \geq 0 &amp; \forall P \in \mathcal{P}
 \end{array}
 \end{split}\]</div>
-</div>
-<div class="section" id="edge-disjoint-paths">
+</section>
+<section id="edge-disjoint-paths">
 <h3>Edge-Disjoint Paths<a class="headerlink" href="#edge-disjoint-paths" title="Permalink to this headline">¶</a></h3>
 <p>Ford-Fulkerson algorithm is an efficient algorithm for finding edge-disjoint paths problem in directed graph.</p>
-<div class="margin sidebar">
+<aside class="margin sidebar">
 <p class="sidebar-title"></p>
 <p>Edge-disjoint path = EDP</p>
-</div>
+</aside>
 <p><strong>Problem</strong>: For a directed graph with two disjoint <strong>sets</strong> of vertices <span class="math notranslate nohighlight">\(S\)</span> and <span class="math notranslate nohighlight">\(T\)</span>, we want to find a maximum-cardinality set <span class="math notranslate nohighlight">\(\mathcal{P}\)</span> of <span class="math notranslate nohighlight">\(S\)</span>-<span class="math notranslate nohighlight">\(T\)</span> paths that are edge-disjoint, i.e. no path in <span class="math notranslate nohighlight">\(\mathcal{P}\)</span> can share any edges.</p>
 <p>To solve this,</p>
 <ol>
@@ -1554,8 +1559,8 @@ and then solving an LP that depends on the value <span class="math notranslate n
 <li><p>Run Ford-Fulkerson algorithm on <span class="math notranslate nohighlight">\(H\)</span> to obtain a flow <span class="math notranslate nohighlight">\(f\)</span>. Since <span class="math notranslate nohighlight">\(f(e)\le c(e)=1\)</span> and is integral, it is 1.</p></li>
 <li><p>Run flow-path decomposition, then each path also carries path-flow value 1. When we delete the path, we actually remove all edges along the path since <span class="math notranslate nohighlight">\(c(e)=1\)</span>. Moreover, the subsequent paths must be disjoint with this one since <span class="math notranslate nohighlight">\(c(e)=1\)</span>. We will get a collection of EDP from <span class="math notranslate nohighlight">\(S\)</span> to <span class="math notranslate nohighlight">\(T\)</span>. The number of paths equals to the flow value.</p></li>
 </ol>
-</div>
-<div class="section" id="s-t-cut">
+</section>
+<section id="s-t-cut">
 <h3><span class="math notranslate nohighlight">\(S\)</span>-<span class="math notranslate nohighlight">\(T\)</span> Cut<a class="headerlink" href="#s-t-cut" title="Permalink to this headline">¶</a></h3>
 <p><strong>Problem</strong>: Given two sets of vertices <span class="math notranslate nohighlight">\(S\)</span> and <span class="math notranslate nohighlight">\(T\)</span> in a directed graph <span class="math notranslate nohighlight">\(G\)</span>, what is the minimum number of edges needed to disconnect <span class="math notranslate nohighlight">\(S\)</span> from <span class="math notranslate nohighlight">\(T\)</span>? Formally, find a minimum-cardinality edge set <span class="math notranslate nohighlight">\(E ^\prime \subseteq E\)</span> such that in the remaining graph <span class="math notranslate nohighlight">\(G \setminus E ^\prime\)</span>, there is <strong>no</strong> path from a vertex of <span class="math notranslate nohighlight">\(S\)</span> to a vertex of <span class="math notranslate nohighlight">\(T\)</span>.</p>
 <dl class="simple myst">
@@ -1563,8 +1568,8 @@ and then solving an LP that depends on the value <span class="math notranslate n
 </dd>
 </dl>
 <p>The same can be done for undirected graphs.</p>
-</div>
-<div class="section" id="vertex-capacitated-max-flow">
+</section>
+<section id="vertex-capacitated-max-flow">
 <h3>Vertex-capacitated Max Flow<a class="headerlink" href="#vertex-capacitated-max-flow" title="Permalink to this headline">¶</a></h3>
 <p>In reality, capacities are often defined on vertices, such as computer networks. Each vertex has capacity constraint <span class="math notranslate nohighlight">\(c(v)\)</span>. The capacity constraints are on vertices: the total inflow into any vertex <span class="math notranslate nohighlight">\(v\)</span> is at most <span class="math notranslate nohighlight">\(c(v)\)</span>. The conservation becomes: for each vertex, outflow = inflow. How to find a maximum flow?</p>
 <p>We reduce this problem to the usual max flow problem buy convert an vertex-capacitated max flow problem instance <span class="math notranslate nohighlight">\(I_V\)</span> into an edge-capacitated problem instance <span class="math notranslate nohighlight">\(I_E\)</span>, and show that we can solve <span class="math notranslate nohighlight">\(I_V\)</span> by solving <span class="math notranslate nohighlight">\(I_E\)</span>.</p>
@@ -1603,11 +1608,11 @@ f _E (v_{in}, v_{out}) &amp;= \sum_{u:(u,v) \in E} f_V(u, v) \\
 <p>Create a super-source <span class="math notranslate nohighlight">\(s\)</span> and a super sink <span class="math notranslate nohighlight">\(t\)</span> connected respectively to all vertices of <span class="math notranslate nohighlight">\(S\)</span> and <span class="math notranslate nohighlight">\(T\)</span>. Give every other vertex (except <span class="math notranslate nohighlight">\(s\)</span> and <span class="math notranslate nohighlight">\(t\)</span>) a capacity of 1. Then max-fow equals maximum number of node disjoint paths between <span class="math notranslate nohighlight">\(S\)</span> and <span class="math notranslate nohighlight">\(T\)</span> and min-cut equals minimum cardinality subset we remove to disconnect <span class="math notranslate nohighlight">\(S,T\)</span>.</p>
 </li>
 </ul>
-</div>
-</div>
-<div class="section" id="applications">
+</section>
+</section>
+<section id="applications">
 <h2>Applications<a class="headerlink" href="#applications" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="image-segmentation">
+<section id="image-segmentation">
 <h3>Image Segmentation<a class="headerlink" href="#image-segmentation" title="Permalink to this headline">¶</a></h3>
 <p>An image can be viewed as a vertex. We want to partition an image into two parts, e.g. foreground and background. For pixel/vertex <span class="math notranslate nohighlight">\(s\)</span>, let <span class="math notranslate nohighlight">\(a_v\)</span> be how likely <span class="math notranslate nohighlight">\(v\)</span> to be in a part, and <span class="math notranslate nohighlight">\(b_v\)</span> be how likely <span class="math notranslate nohighlight">\(v\)</span> to be in the other part.</p>
 <p>To solve this, we define strength/similarity for every pair of pixels <span class="math notranslate nohighlight">\(s_{u,v}\)</span>. The ultimate task is to partition the pixels into two sets <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span>. The similarity of two pixels from different partition should be small. The objective is</p>
@@ -1653,9 +1658,9 @@ c(A,B) = \sum_{v \in X, u\in Y} s_{v,u}  + \sum_{v \in Y} a_v  + \sum_{u \in X} 
 \]</div>
 <p>which is exactly the objective function.</p>
 <p><span class="math notranslate nohighlight">\(\square\)</span></p>
-</div>
-</div>
-<div class="section" id="exercise">
+</section>
+</section>
+<section id="exercise">
 <h2>Exercise<a class="headerlink" href="#exercise" title="Permalink to this headline">¶</a></h2>
 <p>Let <span class="math notranslate nohighlight">\(G\)</span> be an arbitrary (directed) flow network with integral edge capacities</p>
 <ol>
@@ -1711,10 +1716,12 @@ Decreasing by <span class="math notranslate nohighlight">\(k\)</span> is the sam
 <li><p>If some edge has different capacity, increasing capacity might have resulted in different minimum cut, as the graph below.</p></li>
 <li><p>Else all edges have same capacity then minimum cut would remain same. To see this, if all edges have the same capacity <span class="math notranslate nohighlight">\(c\)</span>, then the capacity of any cut is <span class="math notranslate nohighlight">\(xc\)</span> where <span class="math notranslate nohighlight">\(x\)</span> is the number of edges cut. So a min-cut has <span class="math notranslate nohighlight">\(x_\min\)</span>. After <span class="math notranslate nohighlight">\(c\)</span> becomes <span class="math notranslate nohighlight">\(c+1\)</span>, it is still a min-cut since it has <span class="math notranslate nohighlight">\(x_\min\)</span>.</p></li>
 </ul>
-<div class="figure align-default" id="max-flow-ex-1">
+<figure class="align-default" id="max-flow-ex-1">
 <a class="reference internal image-reference" href="../_images/max-flow-ex-1.png"><img alt="" src="../_images/max-flow-ex-1.png" style="width: 30%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 19 </span><span class="caption-text">New min-cut becomes <span class="math notranslate nohighlight">\(S\)</span>-<span class="math notranslate nohighlight">\(A\)</span> with cut capacity <span class="math notranslate nohighlight">\(5\)</span>.</span><a class="headerlink" href="#max-flow-ex-1" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">Fig. 19 </span><span class="caption-text">New min-cut becomes <span class="math notranslate nohighlight">\(S\)</span>-<span class="math notranslate nohighlight">\(A\)</span> with cut capacity <span class="math notranslate nohighlight">\(5\)</span>.</span><a class="headerlink" href="#max-flow-ex-1" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 </li>
 </ol>
 </div>
@@ -1797,15 +1804,15 @@ Decreasing by <span class="math notranslate nohighlight">\(k\)</span> is the sam
 </div>
 </li>
 </ol>
-<div class="section" id="more">
+<section id="more">
 <h3>More<a class="headerlink" href="#more" title="Permalink to this headline">¶</a></h3>
 <p>http://www.cim.mcgill.ca/~langer/251/E11-networkflow-2.pdf</p>
 <p>http://web.stanford.edu/class/archive/cs/cs161/cs161.1176/maxflow_problems.pdf</p>
 <p>https://courses.engr.illinois.edu/cs573/fa2012/hw/files/hw_3_pract.pdf</p>
 <p>https://www.cs.cornell.edu/courses/cs6820/2016fa/handouts/flows.pdf</p>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {

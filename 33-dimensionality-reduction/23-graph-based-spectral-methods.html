@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
     <title>Graph-based Spectral Methods &#8212; Data Science Handbook</title>
     
   <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
@@ -93,7 +94,7 @@
   </a>
  </li>
 </ul>
-<p class="caption collapsible-parent">
+<p>
  <span class="caption-text">
   Foundations
  </span>
@@ -314,7 +315,7 @@
   </i>
  </li>
 </ul>
-<p class="caption collapsible-parent">
+<p>
  <span class="caption-text">
   Algorithms
  </span>
@@ -462,7 +463,7 @@
   </i>
  </li>
 </ul>
-<p class="caption collapsible-parent">
+<p>
  <span class="caption-text">
   Machine Learning
  </span>
@@ -914,7 +915,7 @@
         
               <div>
                 
-  <div class="section" id="graph-based-spectral-methods">
+  <section id="graph-based-spectral-methods">
 <h1>Graph-based Spectral Methods<a class="headerlink" href="#graph-based-spectral-methods" title="Permalink to this headline">¶</a></h1>
 <p>PCA, CCA, MDS are linear dimensionality reduction methods. The lower-dimensional linear projection preserves distances between <strong>all</strong> points.</p>
 <p>If our data lies on a nonlinear manifold (a topological space locally resembling Euclidean space), then we need non-linear dimensionality reduction methods. Many of them are extended from MDS, that extends to a variety of distance/similarity measures. They only preserve <strong>local</strong> distance/neighborhood information along nonlinear manifold.</p>
@@ -931,12 +932,12 @@
 </ol>
 <p>Examples: Isomap, maximum variance unfolding, locally linear embedding, Laplacian eigenmaps.</p>
 <p>The obtained embeddings can then be used as input for clustering, e.g. <span class="math notranslate nohighlight">\(k\)</span>-means. Essentially, we look for clustering on the manifold, rather than the original space, which makes more sense.</p>
-<div class="section" id="isomap">
+<section id="isomap">
 <h2>Isomap<a class="headerlink" href="#isomap" title="Permalink to this headline">¶</a></h2>
 <p>[Tenenbaum et al. 2000]</p>
 <p>For a manifold in a high-dimensional space, it may NOT be reasonable to use Euclidean distance to measure the pairwise dissimilarity of points. Geodesic distance along the manifold may be more appropriate.</p>
 <p>Isomap is a direct extension of MDS where Euclidean distances are replaced with <em>estimated geodesic distances</em> along the manifold, i.e. it tries to “unfold” a manifold and preserve the pairwise geodesic distances.</p>
-<div class="section" id="learning">
+<section id="learning">
 <h3>Learning<a class="headerlink" href="#learning" title="Permalink to this headline">¶</a></h3>
 <p>Isomap algorithm:</p>
 <ol class="simple">
@@ -949,12 +950,14 @@
 \[
 \left\|\boldsymbol{z}_{i}-\boldsymbol{z}_{j}\right\|^{2} \approx \Delta_{i j}^{2}
 \]</div>
-<div class="figure align-default" id="isomap-geodesic-distance">
+<figure class="align-default" id="isomap-geodesic-distance">
 <a class="reference internal image-reference" href="../_images/gb-isomap-d3k2.png"><img alt="" src="../_images/gb-isomap-d3k2.png" style="width: 80%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 67 </span><span class="caption-text">Isomap with <span class="math notranslate nohighlight">\(d=3,k=2\)</span>. The blue line is the real geodesic distance and the red line is estimated.  [Livescu 2021]</span><a class="headerlink" href="#isomap-geodesic-distance" title="Permalink to this image">¶</a></p>
-</div>
-</div>
-<div class="section" id="pros-cons">
+<figcaption>
+<p><span class="caption-number">Fig. 67 </span><span class="caption-text">Isomap with <span class="math notranslate nohighlight">\(d=3,k=2\)</span>. The blue line is the real geodesic distance and the red line is estimated.  [Livescu 2021]</span><a class="headerlink" href="#isomap-geodesic-distance" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="pros-cons">
 <h3>Pros Cons<a class="headerlink" href="#pros-cons" title="Permalink to this headline">¶</a></h3>
 <p><strong>Pros</strong></p>
 <ul class="simple">
@@ -963,25 +966,29 @@
 <p><strong>Cons</strong></p>
 <ul>
 <li><p>Can be sensitive to the <strong>neighborhood size</strong> used in graph construction, or equivalently to the noise in the data.</p>
-<div class="figure align-default" id="isomap-noise">
+<figure class="align-default" id="isomap-noise">
 <a class="reference internal image-reference" href="../_images/gb-isomap-failure.png"><img alt="" src="../_images/gb-isomap-failure.png" style="width: 70%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 68 </span><span class="caption-text">Isomap fails when there are noises [Livescu 2021]</span><a class="headerlink" href="#isomap-noise" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">Fig. 68 </span><span class="caption-text">Isomap fails when there are noises [Livescu 2021]</span><a class="headerlink" href="#isomap-noise" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 </li>
 <li><p>Can’t handle <strong>holes</strong> in the manifold. Geodesic distance computation can break. This is because the two points (even with the same color/label) sit in opposite to the hole have large geodesic distance on the manifold, which leads to large Euclidean distance in the projected space.</p>
-<div class="figure align-default" id="gb-isomap-holes">
+<figure class="align-default" id="gb-isomap-holes">
 <a class="reference internal image-reference" href="../_images/gb-isomap-holes.png"><img alt="" src="../_images/gb-isomap-holes.png" style="width: 80%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 69 </span><span class="caption-text">Isomap fails when there are holes [Livescu 2021]</span><a class="headerlink" href="#gb-isomap-holes" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">Fig. 69 </span><span class="caption-text">Isomap fails when there are holes [Livescu 2021]</span><a class="headerlink" href="#gb-isomap-holes" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 </li>
 </ul>
-</div>
-</div>
-<div class="section" id="laplacian-eigenmaps">
+</section>
+</section>
+<section id="laplacian-eigenmaps">
 <h2>Laplacian Eigenmaps<a class="headerlink" href="#laplacian-eigenmaps" title="Permalink to this headline">¶</a></h2>
 <p>[<a class="reference external" href="https://web.cse.ohio-state.edu/~belkin.8/papers/LEM_NC_03.pdf">Belkin &amp; Niyogi 2003</a>]</p>
 <p>Unlike isomap where the edge weights are local Euclidean distances, Laplacian eigenmaps define edge weights in another way.</p>
-<div class="section" id="id1">
+<section id="id1">
 <h3>Learning<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
 <ol>
 <li><p>Construct an graph <span class="math notranslate nohighlight">\(G = (V, E)\)</span> from data <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span>. Add edge <span class="math notranslate nohighlight">\((i, j)\)</span> if <span class="math notranslate nohighlight">\(\boldsymbol{x}_i\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{x}_j\)</span> are close, in the sense that</p>
@@ -1037,10 +1044,10 @@
 \[
 \boldsymbol{L} \boldsymbol{v} = \lambda \boldsymbol{D} \boldsymbol{v}
 \]</div>
-<div class="margin sidebar">
+<aside class="margin sidebar">
 <p class="sidebar-title"></p>
 <p>See <a class="reference internal" href="../38-ml-for-graph-data/01-graph-basics.html#graph-laplacian"><span class="std std-ref">graph Laplacians</span></a> for details about <span class="math notranslate nohighlight">\(\boldsymbol{L} ^\mathrm{rw}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{L} ^\mathrm{sym}\)</span>.</p>
-</div>
+</aside>
 <p>Or equivalently, the eigenvectors of random-walk graph Laplacian: <span class="math notranslate nohighlight">\(\boldsymbol{L} ^{\mathrm{rw}} = \boldsymbol{D} ^{-1} \boldsymbol{L}\)</span>.</p>
 <p>To see why the two constraints come from, we can first see a <span class="math notranslate nohighlight">\(k=1\)</span> example, i.e. projection onto a line. Suppose the projections are <span class="math notranslate nohighlight">\(z_1, \ldots, z_n\)</span>, the problem is</p>
 <div class="math notranslate nohighlight">
@@ -1052,10 +1059,10 @@
 <li><p>arbitrary scaling: if <span class="math notranslate nohighlight">\(\boldsymbol{z}^*\)</span> is an optimal solution, then a new solution <span class="math notranslate nohighlight">\(c\boldsymbol{z}^*\)</span> where <span class="math notranslate nohighlight">\(0&lt;c&lt;1\)</span> gives a smaller function value, contradiction. Or we say <span class="math notranslate nohighlight">\(\boldsymbol{z} = \boldsymbol{0}\)</span> is a trivial solution.</p></li>
 <li><p>translational invariance: if <span class="math notranslate nohighlight">\(\boldsymbol{z} ^*\)</span> is an optimal solution, then a new solution <span class="math notranslate nohighlight">\(\boldsymbol{z} ^* + c\boldsymbol{1}\)</span> gives the same function value.</p></li>
 </ul>
-<div class="margin sidebar">
+<aside class="margin sidebar">
 <p class="sidebar-title"></p>
 <p>The matrix <span class="math notranslate nohighlight">\(\boldsymbol{D}\)</span> here is introduced by the authors in the original paper to reflect vertex importance. Actually replacing <span class="math notranslate nohighlight">\(\boldsymbol{D}\)</span> by <span class="math notranslate nohighlight">\(\boldsymbol{I}\)</span> also solve these two issues.</p>
-</div>
+</aside>
 <p>To solve these two issues, we add two constraints <span class="math notranslate nohighlight">\(\boldsymbol{z} ^{\top} \boldsymbol{D} \boldsymbol{z} = 1\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{z} ^{\top} \boldsymbol{D} \boldsymbol{1} = 0\)</span> respectively. The second constraint also removes a trivial solution <span class="math notranslate nohighlight">\(\boldsymbol{z} = c\boldsymbol{1}\)</span>, to be introduced soon. The problem becomes</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{aligned}
@@ -1071,10 +1078,12 @@
 \]</div>
 <p>Note that <span class="math notranslate nohighlight">\(\boldsymbol{v} = c\boldsymbol{1}\)</span> is an eigenvector of <span class="math notranslate nohighlight">\(\boldsymbol{L}\)</span> but the constraint <span class="math notranslate nohighlight">\(\boldsymbol{z} ^{\top} \boldsymbol{D} \boldsymbol{1} =0\)</span> removes that.</p>
 <p>To generalize to <span class="math notranslate nohighlight">\(k\ge 2\)</span>, we generalize the constraints to <span class="math notranslate nohighlight">\(\boldsymbol{Z} ^{\top} \boldsymbol{D} \boldsymbol{Z} = \boldsymbol{I}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{Z} ^{\top} \boldsymbol{D} \boldsymbol{1} = \boldsymbol{0}\)</span> shown above. Note that if we move the second constraint (as in the paper), then the embedding in one of the <span class="math notranslate nohighlight">\(k\)</span> dimensions will be <span class="math notranslate nohighlight">\(c \boldsymbol{1}\)</span>, hence we actually obtain <span class="math notranslate nohighlight">\((k-1)\)</span>-dimensional embedding, but it is also helpful to distinguish points.</p>
-<div class="figure align-default" id="gb-laplacian-eigenmap-nt">
+<figure class="align-default" id="gb-laplacian-eigenmap-nt">
 <a class="reference internal image-reference" href="../_images/gb-laplacian-eigenmap-Nt.png"><img alt="" src="../_images/gb-laplacian-eigenmap-Nt.png" style="width: 50%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 70 </span><span class="caption-text">Laplacian eigenmap with varing <span class="math notranslate nohighlight">\(N\)</span>-nearest-neighbors and temperature <span class="math notranslate nohighlight">\(t\)</span> [Livescu 2021]</span><a class="headerlink" href="#gb-laplacian-eigenmap-nt" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">Fig. 70 </span><span class="caption-text">Laplacian eigenmap with varing <span class="math notranslate nohighlight">\(N\)</span>-nearest-neighbors and temperature <span class="math notranslate nohighlight">\(t\)</span> [Livescu 2021]</span><a class="headerlink" href="#gb-laplacian-eigenmap-nt" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 </div>
 <!-- Other formulation: find centered and unit-covariance projections $\boldsymbol{z}_i$ that solve the total projected pairwise distances weighted by $w_{ij}$ and scaled by $d_{ii}d_{jj}$
 
@@ -1088,8 +1097,8 @@ The solution $\boldsymbol{Z}$ is given by the $k$ bottom eigenvectors (excluding
 $$
 \boldsymbol{L}^{\mathrm{sym}} = \boldsymbol{I}  - \boldsymbol{D} ^{-\frac{1}{2}} \boldsymbol{W}  \boldsymbol{D} ^{-\frac{1}{2}}
 $$ -->
-</div>
-<div class="section" id="relation-to-spectral-clustering">
+</section>
+<section id="relation-to-spectral-clustering">
 <h3>Relation to Spectral Clustering<a class="headerlink" href="#relation-to-spectral-clustering" title="Permalink to this headline">¶</a></h3>
 <p>Laplacian eigenmaps, as a dimension reduction that preserves locality, yields the same solution as <a class="reference internal" href="../34-clustering/31-spectral-clustering.html#ncut"><span class="std std-ref">normalized cut</span></a> in spectral clustering. By setting</p>
 <div class="math notranslate nohighlight">
@@ -1148,18 +1157,18 @@ Interpretation: weighting $\boldsymbol{L}$ by connectivity (low weight for low c
 $\mathbb{M}  = \boldsymbol{D} ^{-1} \boldsymbol{W}$ is a rwo stochastic matrix.
 
 where $\mathbb{M} \boldsymbol{1} = \boldsymbol{1}, \mathbb{M} \ge 0, \lambda(\mathbb{M}) \le 1$. -->
-</div>
-</div>
-<div class="section" id="locally-linear-embedding">
+</section>
+</section>
+<section id="locally-linear-embedding">
 <h2>Locally Linear Embedding<a class="headerlink" href="#locally-linear-embedding" title="Permalink to this headline">¶</a></h2>
 <p>Locally linear embedding learns a mapping in which each point can be expressed as a <strong>linear function</strong> of its nearest neighbors.</p>
-</div>
-<div class="section" id="maximum-variance-unfolding">
+</section>
+<section id="maximum-variance-unfolding">
 <h2>Maximum Variance Unfolding<a class="headerlink" href="#maximum-variance-unfolding" title="Permalink to this headline">¶</a></h2>
 <p>Maximum variance unfolding tries to maximize the variance of the data (like PCA) while respecting neighborhood relationships.</p>
 <p>ref: https://www.youtube.com/watch?v=DW3lSYltfzo</p>
-</div>
-</div>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {

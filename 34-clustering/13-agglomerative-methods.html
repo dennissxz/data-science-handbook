@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
     <title>Agglomerative Methods &#8212; Data Science Handbook</title>
     
   <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
@@ -93,7 +94,7 @@
   </a>
  </li>
 </ul>
-<p class="caption collapsible-parent">
+<p>
  <span class="caption-text">
   Foundations
  </span>
@@ -314,7 +315,7 @@
   </i>
  </li>
 </ul>
-<p class="caption collapsible-parent">
+<p>
  <span class="caption-text">
   Algorithms
  </span>
@@ -462,7 +463,7 @@
   </i>
  </li>
 </ul>
-<p class="caption collapsible-parent">
+<p>
  <span class="caption-text">
   Machine Learning
  </span>
@@ -897,12 +898,12 @@
         
               <div>
                 
-  <div class="section" id="agglomerative-methods">
+  <section id="agglomerative-methods">
 <h1>Agglomerative Methods<a class="headerlink" href="#agglomerative-methods" title="Permalink to this headline">¶</a></h1>
 <p>Unlike <span class="math notranslate nohighlight">\(k\)</span>-means which specify <span class="math notranslate nohighlight">\(k\)</span> at start, agglomerative methods view each data point as a cluster, and then iteratively merge two <strong>closest</strong> clusters according to some distance measure, until some convergence criterion.</p>
-<div class="section" id="distance-measure">
+<section id="distance-measure">
 <h2>Distance Measure<a class="headerlink" href="#distance-measure" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="euclidean">
+<section id="euclidean">
 <h3>Euclidean<a class="headerlink" href="#euclidean" title="Permalink to this headline">¶</a></h3>
 <p>Let <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span> be two clusters and let <span class="math notranslate nohighlight">\(a, b\)</span> be individual data points. Usually, <span class="math notranslate nohighlight">\(\operatorname{dist}(a, b)\)</span> is the Euclidean distance, while <span class="math notranslate nohighlight">\(\operatorname{dist}(A, B)\)</span> varies in definitions.</p>
 <ul>
@@ -938,16 +939,20 @@
 </li>
 </ul>
 <p>In the examples below, <span class="math notranslate nohighlight">\(k\)</span>-means tends to produce clusters with spherical shapes, and we can see how single-linkage is good or bad.</p>
-<div class="figure align-default" id="clustering-comparison-1">
+<figure class="align-default" id="clustering-comparison-1">
 <a class="reference internal image-reference" href="../_images/clustering-comparison-1.png"><img alt="" src="../_images/clustering-comparison-1.png" style="width: 80%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 81 </span><span class="caption-text">Comparison of clustering algorithms [Livescue 2021]</span><a class="headerlink" href="#clustering-comparison-1" title="Permalink to this image">¶</a></p>
-</div>
-<div class="figure align-default" id="clustering-comparison-2">
+<figcaption>
+<p><span class="caption-number">Fig. 81 </span><span class="caption-text">Comparison of clustering algorithms [Livescue 2021]</span><a class="headerlink" href="#clustering-comparison-1" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<figure class="align-default" id="clustering-comparison-2">
 <a class="reference internal image-reference" href="../_images/clustering-comparison-2.png"><img alt="" src="../_images/clustering-comparison-2.png" style="width: 80%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 82 </span><span class="caption-text">Comparison of clustering algorithms [Livescue 2021]</span><a class="headerlink" href="#clustering-comparison-2" title="Permalink to this image">¶</a></p>
-</div>
-</div>
-<div class="section" id="graph-based">
+<figcaption>
+<p><span class="caption-number">Fig. 82 </span><span class="caption-text">Comparison of clustering algorithms [Livescue 2021]</span><a class="headerlink" href="#clustering-comparison-2" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="graph-based">
 <h3>Graph-based<a class="headerlink" href="#graph-based" title="Permalink to this headline">¶</a></h3>
 <p>For graphs, or induced graphs from data matrix, there are more methods to define <span class="math notranslate nohighlight">\(\operatorname{dist}(a, b)\)</span> for vertices <span class="math notranslate nohighlight">\(a\)</span> and <span class="math notranslate nohighlight">\(b\)</span>.</p>
 <ul>
@@ -971,8 +976,8 @@
 <p>which measures the Euclidean distance between rows <span class="math notranslate nohighlight">\(a\)</span> and <span class="math notranslate nohighlight">\(b\)</span> in the adjacency matrix.</p>
 </li>
 </ul>
-</div>
-<div class="section" id="modularity-measure">
+</section>
+<section id="modularity-measure">
 <h3>Modularity Measure<a class="headerlink" href="#modularity-measure" title="Permalink to this headline">¶</a></h3>
 <p>Besides the distance measures between two sets of vertices, Newman [SAND 294, 297] seeks to greedily optimize the so-called <strong>modularity</strong> of a partition. Let</p>
 <ul class="simple">
@@ -988,31 +993,35 @@
 <p>where <span class="math notranslate nohighlight">\(\mathbb{E}\left( f_{k k} \right)\)</span> is the expected value of <span class="math notranslate nohighlight">\(f_{kk}\)</span> under some random graph model. For instance, if we use a model where a graph is constructed to have the same degree distribution as <span class="math notranslate nohighlight">\(G\)</span>, but with edges placed at random, then <span class="math notranslate nohighlight">\(\mathbb{E}\left( f_{k k} \right) = f_{k+} \cdot f_{+k}\)</span> where <span class="math notranslate nohighlight">\(f_{k+}\)</span> and <span class="math notranslate nohighlight">\(f_{+k}\)</span> are the <span class="math notranslate nohighlight">\(k\)</span>-th row and column sums of <span class="math notranslate nohighlight">\(\boldsymbol{F}\)</span>.</p>
 <p>Large values of <span class="math notranslate nohighlight">\(\bmod (\mathcal{C})\)</span> suggest that <span class="math notranslate nohighlight">\(\mathcal{C}\)</span> captures nontrivial structure.</p>
 <p>Optimization of the modularity function is NP-complete problem. A greedy agglomerative algorithm is therefore commonly used for heuristic optimization, which runs in <span class="math notranslate nohighlight">\(\mathcal{O} (N_v ^2 \log N_v)\)</span> time generally, using sophisticated data structures, but nearly linear time on sparse networks with hierarchical structure, making it appealing for use in the context of certain large networks.</p>
-</div>
-</div>
-<div class="section" id="convergence-criterion">
+</section>
+</section>
+<section id="convergence-criterion">
 <h2>Convergence Criterion<a class="headerlink" href="#convergence-criterion" title="Permalink to this headline">¶</a></h2>
-<div class="margin sidebar">
+<aside class="margin sidebar">
 <p class="sidebar-title"></p>
 <p>This is one advantage of hierarchical clustering over “flat” clustering like <span class="math notranslate nohighlight">\(k\)</span>-means</p>
-</div>
+</aside>
 <p>A good representation of clustering process is dendrogram. The <span class="math notranslate nohighlight">\(x\)</span>-axis represents items, and the <span class="math notranslate nohighlight">\(y\)</span>-axis is distance. It provides visual guidance to a good choice for the number of clusters</p>
 <p>Stop merging when</p>
 <ul class="simple">
 <li><p>the merge cost (distance between merged clusters) would be much larger than in previous iterations (for some precise definition of “much larger”), or</p></li>
 <li><p>the modularity <span class="math notranslate nohighlight">\(\bmod (\mathcal{C})\)</span> is maximized optimal partition.</p></li>
 </ul>
-<div class="figure align-default" id="clustering-dendrogram">
+<figure class="align-default" id="clustering-dendrogram">
 <a class="reference internal image-reference" href="../_images/clustering-dendrogram.png"><img alt="" src="../_images/clustering-dendrogram.png" style="width: 50%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 83 </span><span class="caption-text">Representing clustering with dendrograms</span><a class="headerlink" href="#clustering-dendrogram" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">Fig. 83 </span><span class="caption-text">Representing clustering with dendrograms</span><a class="headerlink" href="#clustering-dendrogram" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <p>For instance, given a matrix of phonemes and electrodes, we are interested in discovering cohesive neural regions/firing patterns and relating them to clusters of stimuli.</p>
-<div class="figure align-default" id="clustering-neural-regions">
+<figure class="align-default" id="clustering-neural-regions">
 <a class="reference internal image-reference" href="../_images/clustering-neural-regions.png"><img alt="" src="../_images/clustering-neural-regions.png" style="width: 50%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 84 </span><span class="caption-text">Cohesive neural regions/firing patterns [Bouchard et al. 2013]</span><a class="headerlink" href="#clustering-neural-regions" title="Permalink to this image">¶</a></p>
-</div>
-</div>
-</div>
+<figcaption>
+<p><span class="caption-number">Fig. 84 </span><span class="caption-text">Cohesive neural regions/firing patterns [Bouchard et al. 2013]</span><a class="headerlink" href="#clustering-neural-regions" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {

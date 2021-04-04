@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
     <title>Linear Models - Diagnosis &#8212; Data Science Handbook</title>
     
   <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
@@ -93,7 +94,7 @@
   </a>
  </li>
 </ul>
-<p class="caption collapsible-parent">
+<p>
  <span class="caption-text">
   Foundations
  </span>
@@ -314,7 +315,7 @@
   </i>
  </li>
 </ul>
-<p class="caption collapsible-parent">
+<p>
  <span class="caption-text">
   Algorithms
  </span>
@@ -462,7 +463,7 @@
   </i>
  </li>
 </ul>
-<p class="caption collapsible-parent">
+<p>
  <span class="caption-text">
   Machine Learning
  </span>
@@ -1075,12 +1076,12 @@
         
               <div>
                 
-  <div class="section" id="linear-models-diagnosis">
+  <section id="linear-models-diagnosis">
 <h1>Linear Models - Diagnosis<a class="headerlink" href="#linear-models-diagnosis" title="Permalink to this headline">¶</a></h1>
 <p>No models are perfect. In this section we introduce what happen when our model is misspecified or when some assumptions fail. We will introduce how to diagnose these problems, and corresponding remedies and alternative models, e.g. Lasso, ridge regression, etc.</p>
-<div class="section" id="special-observations">
+<section id="special-observations">
 <h2>Special Observations<a class="headerlink" href="#special-observations" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="outliers">
+<section id="outliers">
 <h3>Outliers<a class="headerlink" href="#outliers" title="Permalink to this headline">¶</a></h3>
 <dl class="simple myst">
 <dt>Definition (Outliers)</dt><dd><p>There are many ways to define outliers. Observations <span class="math notranslate nohighlight">\(i\)</span> is an outlier</p>
@@ -1097,13 +1098,13 @@
 </ul>
 </dd>
 </dl>
-</div>
-<div class="section" id="leverage-points">
+</section>
+<section id="leverage-points">
 <h3>Leverage Points<a class="headerlink" href="#leverage-points" title="Permalink to this headline">¶</a></h3>
-<div class="margin sidebar">
+<aside class="margin sidebar">
 <p class="sidebar-title"></p>
 <p>Unlike outliers which can be a univariate measure, leverage looks at the whole data vector <span class="math notranslate nohighlight">\(\boldsymbol{x}_i\)</span> w.r.t. all data <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span>.</p>
-</div>
+</aside>
 <dl class="simple myst">
 <dt>Definition (Leverages and leverage points)</dt><dd><ul class="simple">
 <li><p>Leverage of an observation <span class="math notranslate nohighlight">\(i\)</span> is defined as <span class="math notranslate nohighlight">\(h_i = \boldsymbol{x}_i ^\top (\boldsymbol{X} ^\top \boldsymbol{X} ) ^{-1} \boldsymbol{x}_i\)</span>. It is the <span class="math notranslate nohighlight">\(i\)</span>-th diagonal entry of the projection matrix <span class="math notranslate nohighlight">\(\boldsymbol{H} = \boldsymbol{X} (\boldsymbol{X} ^\top \boldsymbol{X} )^{-1} \boldsymbol{X} ^\top = \boldsymbol{P}_{\operatorname{im} (\boldsymbol{X} )}\)</span>.</p></li>
@@ -1123,8 +1124,8 @@
 <p>It is standardized since <span class="math notranslate nohighlight">\(\operatorname{Var}\left( r_i \right) = 1\)</span>. But in practice, we don’t know <span class="math notranslate nohighlight">\(\sigma\)</span>. So we plug in its estimate <span class="math notranslate nohighlight">\(\hat{\sigma}\)</span>.</p>
 </dd>
 </dl>
-</div>
-<div class="section" id="influential-points">
+</section>
+<section id="influential-points">
 <h3>Influential Points<a class="headerlink" href="#influential-points" title="Permalink to this headline">¶</a></h3>
 <dl class="simple myst">
 <dt>Definition (Influential points)</dt><dd><p>Influential points are data points such that if we remove it, the model changes substantially. It can be quantified by Cook’s distance</p>
@@ -1142,9 +1143,9 @@
 <li><p>Two or more influential points near each other can mask each other’s influence in a leave-one-out regression. That is, if remove any one of them, then the regression results do not change substantially, but if we remove both of them, then the results change substantially.</p></li>
 </ul>
 </div>
-</div>
-</div>
-<div class="section" id="omitting-a-variable">
+</section>
+</section>
+<section id="omitting-a-variable">
 <span id="lm-omit-variable"></span><h2>Omitting a Variable<a class="headerlink" href="#omitting-a-variable" title="Permalink to this headline">¶</a></h2>
 <p>Suppose the true model is</p>
 <div class="math notranslate nohighlight">
@@ -1194,10 +1195,10 @@ X_j
 <li><p>If <span class="math notranslate nohighlight">\(\alpha_k = 0\)</span>, which can be checked by running a regression <span class="math notranslate nohighlight">\(X_j\)</span> over other all other covariates. Note that this does NOT implies <span class="math notranslate nohighlight">\(X_j\)</span> and <span class="math notranslate nohighlight">\(X_k\)</span> are uncorrelated in the design matrix: <span class="math notranslate nohighlight">\(\boldsymbol{x}_j ^\top \boldsymbol{x}_k = 0\)</span>, see related <a class="reference internal" href="12-lm-inference.html#lm-rss-nonincreasing"><span class="std std-ref">discussion</span></a>.</p></li>
 <li><p>If <span class="math notranslate nohighlight">\(\beta_j = 0\)</span> in the full model, but this is never known. Note that this does NOT mean <span class="math notranslate nohighlight">\(X_j\)</span> and <span class="math notranslate nohighlight">\(Y\)</span> are uncorrelated in the data set: <span class="math notranslate nohighlight">\(\boldsymbol{x}_j ^\top \boldsymbol{y} = 0\)</span> since <span class="math notranslate nohighlight">\(\boldsymbol{y}\)</span> is random.</p></li>
 </ul>
-<div class="margin sidebar">
+<aside class="margin sidebar">
 <p class="sidebar-title"></p>
 <p>The takeaway here is that we should include all relevant omitted factors to reduce bias. But in practice, we can never know what all relevant factors are, and rarely can we measure all relevant factors.</p>
-</div>
+</aside>
 <p>What is the relation between the sample estimates? The relation has a similar form.</p>
 <div class="math notranslate nohighlight">
 \[
@@ -1262,10 +1263,10 @@ RHS - LHS &amp;= \left[\begin{array}{cc}
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>coefficients in y ~ x1 + x2 + x3 : [[0.99754193 1.00194616 2.00485013 2.99863304]]
-coefficients in y ~ x1 + x2 : [[0.97209366 1.00255347 3.35799236]]
-coefficients in x3 ~ x1 + x2 : [[-8.48662186e-03  2.02529096e-04  4.51253026e-01]]
-reconstruction difference of b0, b1, b2 : [-1.11022302e-15 -6.66133815e-16 -8.88178420e-16]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>coefficients in y ~ x1 + x2 + x3 : [[0.9975781  0.9977489  1.99724783 3.00434228]]
+coefficients in y ~ x1 + x2 : [[0.981783   0.95087984 3.40994837]]
+coefficients in x3 ~ x1 + x2 : [[-0.00525742 -0.01560044  0.47021957]]
+reconstruction difference of b0, b1, b2 : [ 1.11022302e-16 -2.22044605e-16 -4.44089210e-16]
 </pre></div>
 </div>
 </div>
@@ -1275,15 +1276,15 @@ reconstruction difference of b0, b1, b2 : [-1.11022302e-15 -6.66133815e-16 -8.88
 <li><p><span class="math notranslate nohighlight">\(\alpha_k = 0\)</span>: the variable <span class="math notranslate nohighlight">\(X_k\)</span> has no explanatory power to <span class="math notranslate nohighlight">\(X_j\)</span> given other covariates</p></li>
 <li><p><span class="math notranslate nohighlight">\(\beta_j = 0\)</span>: the variable <span class="math notranslate nohighlight">\(X_j\)</span> has no effect in the data generating process of <span class="math notranslate nohighlight">\(Y\)</span>.</p></li>
 </ul>
-</div>
-<div class="section" id="adding-a-variable">
+</section>
+<section id="adding-a-variable">
 <span id="lm-add-variable"></span><h2>Adding a Variable<a class="headerlink" href="#adding-a-variable" title="Permalink to this headline">¶</a></h2>
 <p>If we add a new variable <span class="math notranslate nohighlight">\(X_j\)</span></p>
 <ul class="simple">
 <li><p>What will happen to the variance and standard error of an existing estimator <span class="math notranslate nohighlight">\(\hat\beta_k\)</span>? Assuming homoskedasticity.</p></li>
 <li><p>How will the interpretation and test change? Over-controlling.</p></li>
 </ul>
-<div class="section" id="variance-usually-increases">
+<section id="variance-usually-increases">
 <h3>Variance usually Increases<a class="headerlink" href="#variance-usually-increases" title="Permalink to this headline">¶</a></h3>
 <p>Let <span class="math notranslate nohighlight">\(\hat{\beta}_k\)</span> be the estimate obtained by using full design matrix <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span>, let <span class="math notranslate nohighlight">\(\hat{\beta}_k ^{(-j)}\)</span> be the estimate obtained by using the design matrix excluding the last column <span class="math notranslate nohighlight">\(\boldsymbol{x}_j\)</span>, denoted <span class="math notranslate nohighlight">\(\boldsymbol{X} _{-j}\)</span>.</p>
 <p>We want to compare</p>
@@ -1312,8 +1313,8 @@ reconstruction difference of b0, b1, b2 : [-1.11022302e-15 -6.66133815e-16 -8.88
 \end{aligned}\end{split}\]</div>
 <p>with equality iff <span class="math notranslate nohighlight">\(\boldsymbol{A} = \boldsymbol{0} \Leftrightarrow \boldsymbol{X} ^\top _{-j} \boldsymbol{x}_j = \boldsymbol{0}\)</span>.</p>
 <p>In conclusion, unless the new variable <span class="math notranslate nohighlight">\(X_j\)</span> is uncorrelated with all existing variable, the variance of existing <span class="math notranslate nohighlight">\(\hat{\beta}_k\)</span> will increase.</p>
-</div>
-<div class="section" id="standard-error-uncertain">
+</section>
+<section id="standard-error-uncertain">
 <h3>Standard Error Uncertain<a class="headerlink" href="#standard-error-uncertain" title="Permalink to this headline">¶</a></h3>
 <p>Recall that the estimated variance of <span class="math notranslate nohighlight">\(\hat{\beta}_k\)</span>,</p>
 <div class="math notranslate nohighlight">
@@ -1336,8 +1337,8 @@ reconstruction difference of b0, b1, b2 : [-1.11022302e-15 -6.66133815e-16 -8.88
 <p>Hence, if our model is already a good (or close to true) model, adding more covariates increases standard error. This gives a stopping criteria when adding more covariates.</p>
 </li>
 </ul>
-</div>
-<div class="section" id="over-controlling">
+</section>
+<section id="over-controlling">
 <h3>Over Controlling<a class="headerlink" href="#over-controlling" title="Permalink to this headline">¶</a></h3>
 <p>Aka. over-specification.</p>
 <p>Over controlling occurs if you include variables that modify the ceteris paribus interpretation so that the test <strong>no longer</strong> test the hypothesis of interest. To avoid this,</p>
@@ -1364,16 +1365,16 @@ reconstruction difference of b0, b1, b2 : [-1.11022302e-15 -6.66133815e-16 -8.88
 <p>The number of corporations is an intermediate outcome.</p>
 </li>
 </ul>
-</div>
-</div>
-<div class="section" id="multicollinearity">
+</section>
+</section>
+<section id="multicollinearity">
 <h2>Multicollinearity<a class="headerlink" href="#multicollinearity" title="Permalink to this headline">¶</a></h2>
 <p>Definition (Multicollinearity)<br />
 Multicollinearity measure the extent of pairwise correlation of variables in the design matrix.</p>
-<div class="margin sidebar">
+<aside class="margin sidebar">
 <p class="sidebar-title">Multicollinearity in computation</p>
 <p>From numerical algebra’s perspective, the extent of correlation of variables in the design matrix <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span> determines the condition number of <span class="math notranslate nohighlight">\(\boldsymbol{X} ^\top \boldsymbol{X}\)</span>. As the correlation increases, its inverse becomes unstable. When perfect linear relation exists, then <span class="math notranslate nohighlight">\(\boldsymbol{X} ^\top \boldsymbol{X}\)</span> is not of full rank, and thus no inverse exists.</p>
-</div>
+</aside>
 <p>Definition (Perfect multicollinearity)<br />
 A set of variables is perfectly multicollinear if a variable does not vary, or if there is an exact linear relationship between a set of variables:</p>
 <div class="math notranslate nohighlight">
@@ -1381,7 +1382,7 @@ A set of variables is perfectly multicollinear if a variable does not vary, or i
 X_{j}=\delta_{0}+\delta_{1} X_{1}+\cdots+\delta_{j-1} X_{j-1}+\delta_{i+1} X_{i+1}+\cdots+\delta_{k} X_{k}
 \]</div>
 <p>As long as the variables in the design matrix are not uncorrelated, then multicollinearity exists.</p>
-<div class="section" id="diagnosis">
+<section id="diagnosis">
 <h3>Diagnosis<a class="headerlink" href="#diagnosis" title="Permalink to this headline">¶</a></h3>
 <p>Some common symptoms include</p>
 <ul class="simple">
@@ -1400,8 +1401,8 @@ X_{j}=\delta_{0}+\delta_{1} X_{1}+\cdots+\delta_{j-1} X_{j-1}+\delta_{i+1} X_{i+
 \kappa_2 \left( \boldsymbol{X} ^\top \boldsymbol{X}  \right) = \sqrt{\frac{\lambda_1 (\boldsymbol{X} ^\top \boldsymbol{X} )}{\lambda_p (\boldsymbol{X} ^\top \boldsymbol{X} )} }
 \]</div>
 <p>Finally, <strong>correlation matrix</strong> can also be used to measure multicollinearity since it is closely related to the condition number <span class="math notranslate nohighlight">\(\kappa_2 \left( \boldsymbol{X} ^\top \boldsymbol{X} \right)\)</span>.</p>
-</div>
-<div class="section" id="consequences">
+</section>
+<section id="consequences">
 <h3>Consequences<a class="headerlink" href="#consequences" title="Permalink to this headline">¶</a></h3>
 <ol>
 <li><p>It inflates <span class="math notranslate nohighlight">\(\operatorname{Var}\left( \hat{\beta}_j \right)\)</span>.</p>
@@ -1452,8 +1453,8 @@ X_{j}=\delta_{0}+\delta_{1} X_{1}+\cdots+\delta_{j-1} X_{j-1}+\delta_{i+1} X_{i+
 </div>
 </li>
 </ol>
-</div>
-<div class="section" id="implications">
+</section>
+<section id="implications">
 <h3>Implications<a class="headerlink" href="#implications" title="Permalink to this headline">¶</a></h3>
 <p>If <span class="math notranslate nohighlight">\(X_1\)</span> and <span class="math notranslate nohighlight">\(X_2\)</span> show high correlation, then</p>
 <ol class="simple">
@@ -1461,9 +1462,9 @@ X_{j}=\delta_{0}+\delta_{1} X_{1}+\cdots+\delta_{j-1} X_{j-1}+\delta_{i+1} X_{i+
 <li><p><span class="math notranslate nohighlight">\(X_1 - X_2\)</span> may just be noise.</p></li>
 <li><p>If <span class="math notranslate nohighlight">\(X_2\)</span> is removed, <span class="math notranslate nohighlight">\(X_1\)</span> may still be good for prediction.</p></li>
 </ol>
-</div>
-</div>
-<div class="section" id="heteroskedasticity">
+</section>
+</section>
+<section id="heteroskedasticity">
 <h2>Heteroskedasticity<a class="headerlink" href="#heteroskedasticity" title="Permalink to this headline">¶</a></h2>
 <p>When <span class="math notranslate nohighlight">\(\operatorname{Var}\left( \varepsilon _i \right)\)</span> is not a constant, we say heteroskedasticity of error variance exists. This may happen because data attributes, or due to transformation of <span class="math notranslate nohighlight">\(y\)</span>, e.g. <span class="math notranslate nohighlight">\(\log(y)\)</span>. We can diagnose its existence by plots or tests.</p>
 <p>If it exists, OLS is still <strong>unbiased</strong> &amp; <strong>consistent</strong>. But the formula <span class="math notranslate nohighlight">\(\operatorname{Var}_{OLS}\left( \hat{\boldsymbol{\beta}}  \right) = \sigma^2 (\boldsymbol{X} ^\top \boldsymbol{X} ) ^{-1}\)</span> which uses homoskedastic assumption is incorrect now. There are problems in <strong>testing</strong>.</p>
@@ -1471,16 +1472,18 @@ X_{j}=\delta_{0}+\delta_{1} X_{1}+\cdots+\delta_{j-1} X_{j-1}+\delta_{i+1} X_{i+
 <li><p>To fix that for testing purpose, we can use robust standard error.</p></li>
 <li><p>To get more precise estimate and correct standard errors, we can try alternative models that produce homoskedastic errors.</p></li>
 </ul>
-<div class="section" id="id1">
+<section id="id1">
 <h3>Diagnosis<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
-<div class="section" id="plot">
+<section id="plot">
 <h4>Plot<a class="headerlink" href="#plot" title="Permalink to this headline">¶</a></h4>
-<div class="figure align-default" id="lm-residual-plot">
+<figure class="align-default" id="lm-residual-plot">
 <a class="reference internal image-reference" href="../_images/lm-residual-plot.png"><img alt="" src="../_images/lm-residual-plot.png" style="width: 90%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 45 </span><span class="caption-text">Homoskedastic (left, right) and Heteroskedasticity (middle)</span><a class="headerlink" href="#lm-residual-plot" title="Permalink to this image">¶</a></p>
-</div>
-</div>
-<div class="section" id="breusch-pagan-test">
+<figcaption>
+<p><span class="caption-number">Fig. 45 </span><span class="caption-text">Homoskedastic (left, right) and Heteroskedasticity (middle)</span><a class="headerlink" href="#lm-residual-plot" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="breusch-pagan-test">
 <h4>Breusch-Pagan Test<a class="headerlink" href="#breusch-pagan-test" title="Permalink to this headline">¶</a></h4>
 <p>Idea: under the null hypothesis of homoskedasticity, the covariate <span class="math notranslate nohighlight">\(X_1, X-2, \ldots, X_p\)</span> should have no explanatory power on the error <span class="math notranslate nohighlight">\(\varepsilon\)</span>. That is, in the regression <span class="math notranslate nohighlight">\(\varepsilon \sim X_1 \ldots X_p\)</span>, the <span class="math notranslate nohighlight">\(F\)</span>-test should be insignificant.</p>
 <p>Steps are:</p>
@@ -1501,8 +1504,8 @@ X_{j}=\delta_{0}+\delta_{1} X_{1}+\cdots+\delta_{j-1} X_{j-1}+\delta_{i+1} X_{i+
 <p>Under the null hypothesis of homoskedasticity, it follows <span class="math notranslate nohighlight">\(\chi^2_{p-1}\)</span></p>
 </li>
 </ol>
-</div>
-<div class="section" id="white-test">
+</section>
+<section id="white-test">
 <h4>White Test<a class="headerlink" href="#white-test" title="Permalink to this headline">¶</a></h4>
 <p>The Breusch-Pagan test will detect any linear forms of heteroskedasticity, while the White test allows for nonlinearities by using squares and crossproducts of all the covariates. White test also tests model misspecification.</p>
 <p>Steps are:</p>
@@ -1538,12 +1541,12 @@ X_{j}=\delta_{0}+\delta_{1} X_{1}+\cdots+\delta_{j-1} X_{j-1}+\delta_{i+1} X_{i+
 <p class="admonition-title"> Warning</p>
 <p>In cases where the White test statistic is statistically significant, heteroskedasticity may not necessarily be the cause; instead the problem could be a specification error.</p>
 </div>
-</div>
-</div>
-<div class="section" id="correction-by-robust-error">
+</section>
+</section>
+<section id="correction-by-robust-error">
 <h3>Correction by Robust Error<a class="headerlink" href="#correction-by-robust-error" title="Permalink to this headline">¶</a></h3>
-</div>
-<div class="section" id="alt-model-weighted-least-squares">
+</section>
+<section id="alt-model-weighted-least-squares">
 <h3>Alt Model: Weighted Least Squares<a class="headerlink" href="#alt-model-weighted-least-squares" title="Permalink to this headline">¶</a></h3>
 <p>We can use weighted least squares as an alternative model. Assume <span class="math notranslate nohighlight">\(Var(\varepsilon_i) = \sigma_i\)</span>, then we can scale the error <span class="math notranslate nohighlight">\(\varepsilon_i\)</span> by <span class="math notranslate nohighlight">\(\frac{1}{\sigma_i}\)</span>. The new error term has the same unit variance <span class="math notranslate nohighlight">\(Var(\frac{\varepsilon_i}{\sigma_i} ) = 1\)</span>.</p>
 <p>The optimization problem is therefore</p>
@@ -1552,8 +1555,8 @@ X_{j}=\delta_{0}+\delta_{1} X_{1}+\cdots+\delta_{j-1} X_{j-1}+\delta_{i+1} X_{i+
 \hat{\boldsymbol{\beta}} _{WLS} = \arg\min \sum_{i} (y_i - \boldsymbol{x}_i ^\top \boldsymbol{\beta} )^2 / \sigma_i ^2
 \]</div>
 <p>We will talk about how to find <span class="math notranslate nohighlight">\(\sigma_i\)</span> later.</p>
-</div>
-<div class="section" id="estimation">
+</section>
+<section id="estimation">
 <h3>Estimation<a class="headerlink" href="#estimation" title="Permalink to this headline">¶</a></h3>
 <p>To find the solution, we introduce an <span class="math notranslate nohighlight">\(n\times n\)</span> diagonal matrix <span class="math notranslate nohighlight">\(\boldsymbol{W}\)</span>, whose diagonal entries are the scaling factor <span class="math notranslate nohighlight">\(w_{ii} = \frac{1}{\sigma^2 _i}\)</span>. Hence,</p>
 <div class="math notranslate nohighlight">
@@ -1573,7 +1576,7 @@ X_{j}=\delta_{0}+\delta_{1} X_{1}+\cdots+\delta_{j-1} X_{j-1}+\delta_{i+1} X_{i+
 <li><p>Scale the data and response by error standard deviation <span class="math notranslate nohighlight">\((\widetilde{\boldsymbol{x}}_i , \widetilde{y}_i) = \left( \frac{\boldsymbol{x}_i  }{\sigma_i}  , \frac{y_i}{\sigma_i} \right)\)</span>. in matrix form, <span class="math notranslate nohighlight">\(\widetilde{\boldsymbol{X}} = \boldsymbol{X} \boldsymbol{W} ^{1/2}, \widetilde{\boldsymbol{y} } = \boldsymbol{W} ^{1/2}\boldsymbol{y}\)</span></p></li>
 <li><p>Run OLS with <span class="math notranslate nohighlight">\(\widetilde{\boldsymbol{X} }\)</span> and <span class="math notranslate nohighlight">\(\widetilde{\boldsymbol{y} }\)</span></p></li>
 </ol>
-<div class="section" id="inference">
+<section id="inference">
 <h4>Inference<a class="headerlink" href="#inference" title="Permalink to this headline">¶</a></h4>
 <p>Like in OLS, we want to find the distribution of <span class="math notranslate nohighlight">\(\hat{\boldsymbol{\beta}} _{WLS}\)</span>. Note that <span class="math notranslate nohighlight">\(\boldsymbol{\varepsilon} \sim N(\boldsymbol{0} , \boldsymbol{W} ^{-1})\)</span>, so</p>
 <div class="math notranslate nohighlight">
@@ -1584,18 +1587,18 @@ X_{j}=\delta_{0}+\delta_{1} X_{1}+\cdots+\delta_{j-1} X_{j-1}+\delta_{i+1} X_{i+
 &amp;\sim N \left( \boldsymbol{\beta} , \left( \boldsymbol{X} ^\top \boldsymbol{W} \boldsymbol{X}  \right) ^{-1}  \right)\\
 \end{aligned}\end{split}\]</div>
 <p>In particular, if <span class="math notranslate nohighlight">\(\boldsymbol{W} = \frac{1}{\sigma^2 } \boldsymbol{I}\)</span> as in OLS (homogeneity), then the <span class="math notranslate nohighlight">\(\left( \boldsymbol{X} ^\top \boldsymbol{W} \boldsymbol{X}  \right) ^{-1} = \sigma^2 (\boldsymbol{X} ^\top \boldsymbol{X} ) ^{-1}\)</span> as in OLS.</p>
-</div>
-<div class="section" id="find-weights">
+</section>
+<section id="find-weights">
 <h4>Find Weights<a class="headerlink" href="#find-weights" title="Permalink to this headline">¶</a></h4>
 <p>The question is, how to find <span class="math notranslate nohighlight">\(\boldsymbol{W}\)</span> in advance? Some rules of thumbs include</p>
 <ul class="simple">
 <li><p>If <span class="math notranslate nohighlight">\(y_i\)</span> is a <strong>sum</strong> from a sample of size <span class="math notranslate nohighlight">\(n_i\)</span>, then <span class="math notranslate nohighlight">\(\sigma^2 _i \propto n_i\)</span>, then we can set weights <span class="math notranslate nohighlight">\(w_{ii} = \frac{1}{n_i}\)</span></p></li>
 <li><p>If <span class="math notranslate nohighlight">\(y_i\)</span> is an <strong>average</strong> from a sample of size <span class="math notranslate nohighlight">\(n_i\)</span>, then <span class="math notranslate nohighlight">\(\sigma^2 _i \propto \frac{1}{n_i}\)</span>, then we can set weights <span class="math notranslate nohighlight">\(w_{ii} = n_i\)</span></p></li>
 </ul>
-<div class="margin sidebar">
+<aside class="margin sidebar">
 <p class="sidebar-title"></p>
 <p>Note <span class="math notranslate nohighlight">\(\hat{\boldsymbol{\beta}} _{WLS}\)</span> is invariant to spherical scaling of <span class="math notranslate nohighlight">\(\boldsymbol{W}\)</span>, so we don’t need to know the exact value of <span class="math notranslate nohighlight">\(\sigma^2_i\)</span>, we just need to know their relative ratio.</p>
-</div>
+</aside>
 <p>Besides, we can find weights from data adaptively.</p>
 <ul>
 <li><p>If measurements are in blocks of size <span class="math notranslate nohighlight">\(n_1, n_2, \ldots, n_m\)</span> such that <span class="math notranslate nohighlight">\(n = n_1+ \ldots + n_m\)</span>, and <span class="math notranslate nohighlight">\(\sigma^2 _i\)</span> is constant within each block but differ across blocks, then the error variance matrix looks like</p>
@@ -1632,12 +1635,12 @@ X_{j}=\delta_{0}+\delta_{1} X_{1}+\cdots+\delta_{j-1} X_{j-1}+\delta_{i+1} X_{i+
 </li>
 </ul>
 <p>and use the estimated</p>
-</div>
-</div>
-</div>
-<div class="section" id="measurement-error">
+</section>
+</section>
+</section>
+<section id="measurement-error">
 <h2>Measurement Error<a class="headerlink" href="#measurement-error" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="of-y">
+<section id="of-y">
 <h3>Of <span class="math notranslate nohighlight">\(Y\)</span><a class="headerlink" href="#of-y" title="Permalink to this headline">¶</a></h3>
 <p>Suppose due to some measurement error <span class="math notranslate nohighlight">\(w\)</span>, we obtain <span class="math notranslate nohighlight">\(\widetilde{Y} = Y + w\)</span></p>
 <div class="math notranslate nohighlight">
@@ -1667,14 +1670,14 @@ X_{j}=\delta_{0}+\delta_{1} X_{1}+\cdots+\delta_{j-1} X_{j-1}+\delta_{i+1} X_{i+
 </li>
 <li><p>In terms of variances, assume <span class="math notranslate nohighlight">\(\boldsymbol{\varepsilon}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{w}\)</span> are independent, and assume <span class="math notranslate nohighlight">\(\operatorname{Var}\left( \boldsymbol{w}  \right) = \sigma^2 _w \boldsymbol{I}\)</span>, then the variance increases, so the standard error increases.</p></li>
 </ul>
-</div>
-<div class="section" id="of-x">
+</section>
+<section id="of-x">
 <h3>Of <span class="math notranslate nohighlight">\(X\)</span><a class="headerlink" href="#of-x" title="Permalink to this headline">¶</a></h3>
 <p>Suppose the true values of explanatory variables is <span class="math notranslate nohighlight">\(x_{ij}\)</span>. Due to some measurement error <span class="math notranslate nohighlight">\(w_{ij}\)</span>, we collect <span class="math notranslate nohighlight">\(\tilde{x}_{ij} = x_{ij} + w_{ij}\)</span>. Now we want to analyze its effect on our OLS estimates.</p>
-<div class="margin sidebar">
+<aside class="margin sidebar">
 <p class="sidebar-title"></p>
 <p>Erros satisfying these assumptions are called classical errors</p>
-</div>
+</aside>
 <p>Assume</p>
 <ul class="simple">
 <li><p>common zero mean <span class="math notranslate nohighlight">\(\operatorname{E}\left( w_{ij} \right) = 0\)</span></p></li>
@@ -1714,25 +1717,25 @@ X_{j}=\delta_{0}+\delta_{1} X_{1}+\cdots+\delta_{j-1} X_{j-1}+\delta_{i+1} X_{i+
 \[
 \tilde{\beta}_1 \rightarrow \beta_1 \cdot \frac{\sum_{i=1}^n (x_i - \bar{x})^2}{n\sigma^2_w  + \sum_{i=1}^n (x_i - \bar{x})^2}
 \]</div>
-</div>
-<div class="section" id="solution">
+</section>
+<section id="solution">
 <h3>Solution<a class="headerlink" href="#solution" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Use better measures</p></li>
 <li><p>Can correct estimates accordingly, if we know how the distribution of measurement error <span class="math notranslate nohighlight">\(w\)</span> given <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span></p></li>
 <li><p>Use instrumental variables</p></li>
 </ul>
-</div>
-</div>
-<div class="section" id="missing-values">
+</section>
+</section>
+<section id="missing-values">
 <span id="lm-missing-values"></span><h2>Missing Values<a class="headerlink" href="#missing-values" title="Permalink to this headline">¶</a></h2>
 <p>For more details about missing, refer to <a class="reference internal" href="../30-ml-basics/11-data-issues.html#missing-values"><span class="std std-ref">missing values</span></a>.</p>
 <p>Suppose the true model is <span class="math notranslate nohighlight">\(\boldsymbol{Y}  = \boldsymbol{X} \boldsymbol{\beta} + \boldsymbol{\varepsilon}\)</span>. What happen if some <span class="math notranslate nohighlight">\(Y\)</span> or <span class="math notranslate nohighlight">\(X\)</span> are not observed?</p>
-<div class="section" id="completely-at-random">
+<section id="completely-at-random">
 <h3>Completely At Random<a class="headerlink" href="#completely-at-random" title="Permalink to this headline">¶</a></h3>
 <p>If missing is completely at random, then we have a smaller sample. This will increase the standard errors of <span class="math notranslate nohighlight">\(\boldsymbol{\beta}\)</span> estimators (lower precision), but it does not cause bias.</p>
-</div>
-<div class="section" id="depends-on-y-endogenous">
+</section>
+<section id="depends-on-y-endogenous">
 <h3>Depends on <span class="math notranslate nohighlight">\(Y\)</span> (Endogenous)<a class="headerlink" href="#depends-on-y-endogenous" title="Permalink to this headline">¶</a></h3>
 <p>If missing depends on <span class="math notranslate nohighlight">\(Y\)</span>, Consider the following cases.</p>
 <ol>
@@ -1745,14 +1748,14 @@ X_{j}=\delta_{0}+\delta_{1} X_{1}+\cdots+\delta_{j-1} X_{j-1}+\delta_{i+1} X_{i+
 <p>On the other hand, this selection criteria can be viewed as a combination of an upper dropping and a lower dropping, so bias is also possible under certain cases.</p>
 </li>
 </ol>
-</div>
-<div class="section" id="depends-on-x-exogenous">
+</section>
+<section id="depends-on-x-exogenous">
 <h3>Depends on <span class="math notranslate nohighlight">\(X\)</span> (Exogenous)<a class="headerlink" href="#depends-on-x-exogenous" title="Permalink to this headline">¶</a></h3>
 <p>If missing depends on <span class="math notranslate nohighlight">\(X\)</span>, then we miss part of the data.</p>
-<div class="margin sidebar">
+<aside class="margin sidebar">
 <p class="sidebar-title">Non-linear true model</p>
 <p>If the true underlying model is not linear, then the estimates may or may not change. One example is <span class="math notranslate nohighlight">\(Y = X^2 + \varepsilon\)</span> where <span class="math notranslate nohighlight">\(X \sim U(-1,1)\)</span>, where we will obtain <span class="math notranslate nohighlight">\(E(\hat{\beta_1}) = 0\)</span>, and after removing <span class="math notranslate nohighlight">\(X&lt;0\)</span>, we will obtain <span class="math notranslate nohighlight">\(\operatorname{E}\left( \widetilde{\beta_1} \right) &gt; 0\)</span>.</p>
-</div>
+</aside>
 <ul>
 <li><p>In terms of unbiasedness, we only observe some parts of the hyperplane, with the same local slope as the overall hyperplane. Hence, the estimates are still <strong>unbiased</strong>.</p></li>
 <li><p>In terms of variance of estimates, recall that <span class="math notranslate nohighlight">\(\operatorname{Var}\left( \beta_j \right) = \sigma^{2} \frac{1}{1-R_{j}^{2}} \frac{1}{\sum_{i}\left(x_{i j}-\bar{x}_{j}\right)^{2}}\)</span>, then</p>
@@ -1763,9 +1766,9 @@ X_{j}=\delta_{0}+\delta_{1} X_{1}+\cdots+\delta_{j-1} X_{j-1}+\delta_{i+1} X_{i+
 <p>Hence the how <span class="math notranslate nohighlight">\(\operatorname{Var} (\beta_j)\)</span> change is uncertain.</p>
 </li>
 </ul>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {

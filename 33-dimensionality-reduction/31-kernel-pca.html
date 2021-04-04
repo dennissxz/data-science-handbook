@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
     <title>Kernel PCA &#8212; Data Science Handbook</title>
     
   <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
@@ -93,7 +94,7 @@
   </a>
  </li>
 </ul>
-<p class="caption collapsible-parent">
+<p>
  <span class="caption-text">
   Foundations
  </span>
@@ -314,7 +315,7 @@
   </i>
  </li>
 </ul>
-<p class="caption collapsible-parent">
+<p>
  <span class="caption-text">
   Algorithms
  </span>
@@ -462,7 +463,7 @@
   </i>
  </li>
 </ul>
-<p class="caption collapsible-parent">
+<p>
  <span class="caption-text">
   Machine Learning
  </span>
@@ -912,10 +913,10 @@
         
               <div>
                 
-  <div class="section" id="kernel-pca">
+  <section id="kernel-pca">
 <h1>Kernel PCA<a class="headerlink" href="#kernel-pca" title="Permalink to this headline">¶</a></h1>
 <p>Kernel PCA is a nonlinear extension of PCA where dot products are replaced with generalized dot products in feature space computed by a kernel function.</p>
-<div class="section" id="kernelization">
+<section id="kernelization">
 <h2>Kernelization<a class="headerlink" href="#kernelization" title="Permalink to this headline">¶</a></h2>
 <p>Linear PCA only consider linear subspaces</p>
 <div class="math notranslate nohighlight">
@@ -924,10 +925,10 @@
 \]</div>
 <p>To improve this, we can apply feature transformation <span class="math notranslate nohighlight">\(\boldsymbol{\phi}: \mathbb{R} ^d \rightarrow \mathbb{R} ^p\)</span> to include non-linear features, such as <span class="math notranslate nohighlight">\(\boldsymbol{\phi} ([x_1, x_2])= [x_1, x_1^2, x_1 x_2]\)</span>.</p>
 <p>Then the data matrix changes from <span class="math notranslate nohighlight">\(\boldsymbol{X}_{n \times d}\)</span> to <span class="math notranslate nohighlight">\(\boldsymbol{\Phi}_{n \times p}\)</span>. Then we run standard PCA on the new data covariance matrix <span class="math notranslate nohighlight">\(\frac{1}{n} \boldsymbol{\Phi} ^\top  \boldsymbol{\Phi}\)</span>.</p>
-<div class="margin sidebar">
+<aside class="margin sidebar">
 <p class="sidebar-title"></p>
 <p>For kernelized problems, the original problem formulation (primal) is in the original feature space <span class="math notranslate nohighlight">\(\mathbb{R} ^d\)</span>, and the kernelized problem formulation (dual) is in the transformed space <span class="math notranslate nohighlight">\(\mathbb{R} ^p\)</span>.</p>
-</div>
+</aside>
 <p>Note that handcrafting feature transformation <span class="math notranslate nohighlight">\(\boldsymbol{\phi}\)</span> is <a class="reference internal" href="../30-ml-basics/05-kernels.html#kernels-logic"><span class="std std-ref">equivalent</span></a> to choosing a kernel function <span class="math notranslate nohighlight">\(k(\boldsymbol{x}_1, \boldsymbol{x} _2) = \boldsymbol{\phi}(\boldsymbol{x} _1) ^\top \boldsymbol{\phi}(\boldsymbol{x} _2)\)</span>. And there are many advantages choosing kernels instead of handcrafting <span class="math notranslate nohighlight">\(\boldsymbol{\phi}\)</span>. After choosing <span class="math notranslate nohighlight">\(k(\cdot, \cdot)\)</span>, We can compute the new <span class="math notranslate nohighlight">\(n \times n\)</span> inner product matrix by <span class="math notranslate nohighlight">\(\boldsymbol{K} = \boldsymbol{\Phi} \boldsymbol{\Phi} ^\top\)</span>, aka <strong>kernel matrix</strong>. And the <span class="math notranslate nohighlight">\(k\)</span>-dimensional embeddings for a data vector <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> is given by</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -988,8 +989,8 @@ k(\boldsymbol{x} _n, \boldsymbol{x}) \\
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(\boldsymbol{C}  = \left(\boldsymbol{I}-\frac{1}{n} \boldsymbol{1} \boldsymbol{1}^{\top}\right)\)</span> is the centering matrix. Then we solve for the eigenvectors of <span class="math notranslate nohighlight">\(\boldsymbol{K} ^\prime\)</span></p>
 </div>
-</div>
-<div class="section" id="learning">
+</section>
+<section id="learning">
 <h2>Learning<a class="headerlink" href="#learning" title="Permalink to this headline">¶</a></h2>
 <p>From the analysis above, the steps to train a kernel PCA are</p>
 <ol class="simple">
@@ -1027,8 +1028,8 @@ k(\boldsymbol{x} _n, \boldsymbol{x}) \\
     \end{split}\]</div>
 </li>
 </ul>
-</div>
-<div class="section" id="choice-of-kernel">
+</section>
+<section id="choice-of-kernel">
 <h2>Choice of Kernel<a class="headerlink" href="#choice-of-kernel" title="Permalink to this headline">¶</a></h2>
 <p>As <a class="reference internal" href="../30-ml-basics/05-kernels.html#kernels-logic"><span class="std std-ref">discussed</span></a>, in practice, we don’t engineer <span class="math notranslate nohighlight">\(\boldsymbol{\phi}(\cdot)\)</span>, but directly think about <span class="math notranslate nohighlight">\(k(\cdot, \cdot)\)</span>.</p>
 <ul>
@@ -1040,10 +1041,12 @@ k(\boldsymbol{x} _n, \boldsymbol{x}) \\
 <p>where the standard deviation (radius) <span class="math notranslate nohighlight">\(\sigma\)</span> is a tuning parameter. Note that RBF corresponds to an implicit feature space <span class="math notranslate nohighlight">\(\mathbb{R} ^p\)</span> of infinite dimensionality <span class="math notranslate nohighlight">\(p\rightarrow \infty\)</span>.</p>
 </li>
 </ul>
-<div class="figure align-default" id="kernels-rbf">
+<figure class="align-default" id="kernels-rbf">
 <a class="reference internal image-reference" href="../_images/kernels-RBF.png"><img alt="" src="../_images/kernels-RBF.png" style="width: 50%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 73 </span><span class="caption-text">Gaussian kernels</span><a class="headerlink" href="#kernels-rbf" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">Fig. 73 </span><span class="caption-text">Gaussian kernels</span><a class="headerlink" href="#kernels-rbf" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <ul>
 <li><p>Polynomial kernel</p>
 <div class="math notranslate nohighlight">
@@ -1053,8 +1056,8 @@ k(\boldsymbol{x} _n, \boldsymbol{x}) \\
 <p>where the polynomial degree <span class="math notranslate nohighlight">\(p\)</span> is a tuning parameter. <span class="math notranslate nohighlight">\(p=2\)</span> is common.</p>
 </li>
 </ul>
-</div>
-<div class="section" id="pros-and-cos">
+</section>
+<section id="pros-and-cos">
 <h2>Pros and Cos<a class="headerlink" href="#pros-and-cos" title="Permalink to this headline">¶</a></h2>
 <p><strong>Pros</strong></p>
 <ul>
@@ -1062,16 +1065,20 @@ k(\boldsymbol{x} _n, \boldsymbol{x}) \\
 <li><p>Kernel PCA works well when</p>
 <ul>
 <li><p>the data is non-linear and fit the chosen kernel.</p>
-<div class="figure align-default" id="kernel-pca-ep1">
+<figure class="align-default" id="kernel-pca-ep1">
 <a class="reference internal image-reference" href="../_images/kernel-pca-ep1.png"><img alt="" src="../_images/kernel-pca-ep1.png" style="width: 80%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 74 </span><span class="caption-text">Kernel PCA with a RBF kernel on points [Livescu 2021].</span><a class="headerlink" href="#kernel-pca-ep1" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">Fig. 74 </span><span class="caption-text">Kernel PCA with a RBF kernel on points [Livescu 2021].</span><a class="headerlink" href="#kernel-pca-ep1" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 </li>
 <li><p>there is much noise in the data</p>
-<div class="figure align-default" id="id1">
+<figure class="align-default" id="id1">
 <a class="reference internal image-reference" href="../_images/kernel-pca-ep2.png"><img alt="" src="../_images/kernel-pca-ep2.png" style="width: 60%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 75 </span><span class="caption-text">Kernel PCA on images [Livescu 2021].</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">Fig. 75 </span><span class="caption-text">Kernel PCA on images [Livescu 2021].</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 </li>
 </ul>
 </li>
@@ -1079,10 +1086,12 @@ k(\boldsymbol{x} _n, \boldsymbol{x}) \\
 <p><strong>Cons</strong></p>
 <ul>
 <li><p>Kernel PCA works bad when the data lies a special manifold</p>
-<div class="figure align-default" id="id2">
+<figure class="align-default" id="id2">
 <a class="reference internal image-reference" href="../_images/kernel-pca-ep3.png"><img alt="" src="../_images/kernel-pca-ep3.png" style="width: 50%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 76 </span><span class="caption-text">Kernel PCA with RBF kernel on a Swiss roll manifold [Livescu 2021]</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">Fig. 76 </span><span class="caption-text">Kernel PCA with RBF kernel on a Swiss roll manifold [Livescu 2021]</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 </li>
 <li><p>Computationally expensive to compute the <span class="math notranslate nohighlight">\(n \times n\)</span> pairwise kernel values in <span class="math notranslate nohighlight">\(\boldsymbol{K}\)</span> when <span class="math notranslate nohighlight">\(n\)</span> is large. Remedies include</p>
 <ul>
@@ -1110,10 +1119,10 @@ k(\boldsymbol{x} _n, \boldsymbol{x}) \\
 </ul>
 </li>
 </ul>
-</div>
-<div class="section" id="relation-to">
+</section>
+<section id="relation-to">
 <h2>Relation to<a class="headerlink" href="#relation-to" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="standard-pca">
+<section id="standard-pca">
 <h3>Standard PCA<a class="headerlink" href="#standard-pca" title="Permalink to this headline">¶</a></h3>
 <p>Clearly, kernel PCA with linear kernel <span class="math notranslate nohighlight">\(k(\boldsymbol{x} , \boldsymbol{y} ) = \boldsymbol{x} ^\top \boldsymbol{y}\)</span> is equivalent to a standard PCA. That is, they give the same projection.</p>
 <div class="dropdown seealso admonition">
@@ -1185,13 +1194,13 @@ where <span class="math notranslate nohighlight">\(\boldsymbol{A}_{n \times k}\)
 <p>which completes the proof.</p>
 <p><span class="math notranslate nohighlight">\(\square\)</span></p>
 </div>
-</div>
-<div class="section" id="graph-based-spectral-methods">
+</section>
+<section id="graph-based-spectral-methods">
 <h3>Graph-based Spectral Methods<a class="headerlink" href="#graph-based-spectral-methods" title="Permalink to this headline">¶</a></h3>
 <p>Both are motivates as extensions of MDS and involves a <span class="math notranslate nohighlight">\(n \times n\)</span> matrix.</p>
 <p>We can view kernel in kernel PCA as the edge weights in <a class="reference internal" href="23-graph-based-spectral-methods.html"><span class="doc std std-doc">graph-based spectral methods</span></a>. But the main difference is that in kernel PCA we compute the kernel value of <strong>every pair</strong> of data points (computationally demanding), but in graph-based spectral methods we only compute weights between points that are neighbors, charactrized by an integer <span class="math notranslate nohighlight">\(k\)</span> or distance <span class="math notranslate nohighlight">\(\epsilon\)</span>.</p>
-</div>
-<div class="section" id="neural-networks">
+</section>
+<section id="neural-networks">
 <h3>Neural Networks<a class="headerlink" href="#neural-networks" title="Permalink to this headline">¶</a></h3>
 <p>Kernel PCA can be viewed as a <a class="reference internal" href="../37-neural-networks/00-neural-networks.html"><span class="doc std std-doc">neural network</span></a> of one single layer with certain constraints.</p>
 <p>Let</p>
@@ -1241,9 +1250,9 @@ k\left(\boldsymbol{x}_{n}, \boldsymbol{x}\right)
 </li>
 </ul>
 <p>In short, we transform the input from <span class="math notranslate nohighlight">\(n\times d\)</span> data matrix <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span> to <span class="math notranslate nohighlight">\(n\times n\)</span> kernel matrix <span class="math notranslate nohighlight">\(\boldsymbol{K}\)</span>, and run PCA. In this way, the learned weights <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> are the eigenvectors of <span class="math notranslate nohighlight">\(\boldsymbol{K} ^{\top} \boldsymbol{K}\)</span> (analogous to <span class="math notranslate nohighlight">\(\boldsymbol{X} ^{\top} \boldsymbol{X}\)</span> in PCA), which are the same as <span class="math notranslate nohighlight">\(\boldsymbol{K}\)</span>, i.e. what we want for.</p>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {

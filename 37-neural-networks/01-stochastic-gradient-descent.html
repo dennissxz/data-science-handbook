@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
     <title>Stochastic Gradient Descent &#8212; Data Science Handbook</title>
     
   <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
@@ -93,7 +94,7 @@
   </a>
  </li>
 </ul>
-<p class="caption collapsible-parent">
+<p>
  <span class="caption-text">
   Foundations
  </span>
@@ -314,7 +315,7 @@
   </i>
  </li>
 </ul>
-<p class="caption collapsible-parent">
+<p>
  <span class="caption-text">
   Algorithms
  </span>
@@ -462,7 +463,7 @@
   </i>
  </li>
 </ul>
-<p class="caption collapsible-parent">
+<p>
  <span class="caption-text">
   Machine Learning
  </span>
@@ -970,7 +971,7 @@
         
               <div>
                 
-  <div class="section" id="stochastic-gradient-descent">
+  <section id="stochastic-gradient-descent">
 <h1>Stochastic Gradient Descent<a class="headerlink" href="#stochastic-gradient-descent" title="Permalink to this headline">¶</a></h1>
 <p>In this section we talk stochastic gradient descent in detail. Recall the three general steps in stochastic gradient descent:</p>
 <ol class="simple">
@@ -979,19 +980,19 @@
 <li><p>update the model parameters <span class="math notranslate nohighlight">\(\Theta^{(t)}=\Theta^{(t-1)}-\eta \boldsymbol{g}^{(t)}\)</span></p></li>
 </ol>
 <p>Then we check for stopping criteria (convergence of loss / gradient, model performance, etc).</p>
-<div class="section" id="why-stochastic">
+<section id="why-stochastic">
 <h2>Why “Stochastic”<a class="headerlink" href="#why-stochastic" title="Permalink to this headline">¶</a></h2>
 <p>SGD differ from standard GD on how the gradient is computed.</p>
-<div class="section" id="basic-gradient-descent">
+<section id="basic-gradient-descent">
 <h3>Basic Gradient Descent<a class="headerlink" href="#basic-gradient-descent" title="Permalink to this headline">¶</a></h3>
 <dl class="simple myst">
 <dt>Definition (Epoch)</dt><dd><p>An epoch is a single pass through the training set.</p>
 </dd>
 </dl>
-<div class="margin sidebar">
+<aside class="margin sidebar">
 <p class="sidebar-title">Total loss vs sum of losses</p>
 <p>In some cases the total loss is not a sum of per-example losses</p>
-</div>
+</aside>
 <p>A single “iteration” <span class="math notranslate nohighlight">\(t\)</span> can be an epoch, which means we loop over examples (or in parallel) to compute the gradient <span class="math notranslate nohighlight">\(\boldsymbol{g}^{(t)}\left(\boldsymbol{x}_{i}, y_{i}\right)\)</span> for each observation <span class="math notranslate nohighlight">\(i\)</span> and use the average gradient to approximate the true gradient</p>
 <div class="math notranslate nohighlight">
 \[
@@ -999,8 +1000,8 @@
 \]</div>
 <p>Then we make a single update at the end of the epoch.</p>
 <p>Assuming <span class="math notranslate nohighlight">\(n\)</span> is large, <span class="math notranslate nohighlight">\(\boldsymbol{g}^{(t)}(X, Y)\)</span> is a good estimate for gradient, but it costs <span class="math notranslate nohighlight">\(O(n)\)</span> to compute.</p>
-</div>
-<div class="section" id="id1">
+</section>
+<section id="id1">
 <h3>Stochastic Gradient Descent<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
 <p>Computing gradient on all <span class="math notranslate nohighlight">\(n\)</span> examples is expensive and may be wasteful: many data points provide similar information.</p>
 <p>Instead, SGD <strong>randomly</strong> select one observation at a time. It estimates the gradient on the entire set by the gradient on a single example in an iteration <span class="math notranslate nohighlight">\(t\)</span>.</p>
@@ -1008,8 +1009,8 @@
 \[
 \frac{1}{n} \sum_{i=1}^{n} \nabla_{\Theta} L\left(y_{i}, \boldsymbol{x}_{i} ; \Theta\right) \approx \nabla_{\Theta} L\left(y_{t}, \boldsymbol{x}_{t} ; \Theta\right)
 \]</div>
-</div>
-<div class="section" id="mini-batch-gradient-descent">
+</section>
+<section id="mini-batch-gradient-descent">
 <h3>Mini-batch Gradient Descent<a class="headerlink" href="#mini-batch-gradient-descent" title="Permalink to this headline">¶</a></h3>
 <p>Mini-batch gradient descent use a batch <span class="math notranslate nohighlight">\(B\)</span> of observations to estimate the sample gradient in an iteration. For some <span class="math notranslate nohighlight">\(B \subset \left\{ 1,2,\ldots, n \right\},|B| \ll n\)</span>,</p>
 <div class="math notranslate nohighlight">
@@ -1019,8 +1020,8 @@
 <p>In each epoch, we shuffle data, partition into batches, and iterate over batches.</p>
 <p>In theory, if computation power is not an issue, we should set <span class="math notranslate nohighlight">\(\left\vert B \right\vert\)</span> as large as possible. But in practice, people found there are some advantages of small <span class="math notranslate nohighlight">\(\left\vert B \right\vert\)</span>. Using small <span class="math notranslate nohighlight">\(\left\vert B \right\vert\)</span> works like adding noise to the gradient, which brings regularization effect and make the trained model more robust. Usually <span class="math notranslate nohighlight">\(\left\vert B \right\vert = 32, 64\)</span> are used.</p>
 <p>Nowadays, the term SGD often refers to batch GD.</p>
-</div>
-<div class="section" id="comparison">
+</section>
+<section id="comparison">
 <h3>Comparison<a class="headerlink" href="#comparison" title="Permalink to this headline">¶</a></h3>
 <p>We can plot the contours of the loss value w.r.t. parameter <span class="math notranslate nohighlight">\(\boldsymbol{\Phi}\)</span>, and plot the trajectory of <span class="math notranslate nohighlight">\(\boldsymbol{\Phi}^{(t)}\)</span> for GD, SGD and mini-batch GD. We can see</p>
 <ul class="simple">
@@ -1028,16 +1029,18 @@
 <li><p>SGD has the most tortuous trajectory</p></li>
 <li><p>Batch GD is between the two. Increasing the batch size reduces the noise in gradient.</p></li>
 </ul>
-<div class="figure align-default" id="nn-sgd-trajectory">
+<figure class="align-default" id="nn-sgd-trajectory">
 <a class="reference internal image-reference" href="../_images/nn-sgd-trajectory.png"><img alt="" src="../_images/nn-sgd-trajectory.png" style="width: 30%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 121 </span><span class="caption-text">Comparison of gradient descent methods [Shi 2021]</span><a class="headerlink" href="#nn-sgd-trajectory" title="Permalink to this image">¶</a></p>
-</div>
-</div>
-</div>
-<div class="section" id="learning-rate-scheduling">
+<figcaption>
+<p><span class="caption-number">Fig. 121 </span><span class="caption-text">Comparison of gradient descent methods [Shi 2021]</span><a class="headerlink" href="#nn-sgd-trajectory" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+</section>
+</section>
+<section id="learning-rate-scheduling">
 <h2>Learning Rate Scheduling<a class="headerlink" href="#learning-rate-scheduling" title="Permalink to this headline">¶</a></h2>
 <p>How to tune learning rate? First we review some concepts in optimization, and introduce learning rate decay, and finally introduce theoretical foundation for it.</p>
-<div class="section" id="concepts-review">
+<section id="concepts-review">
 <h3>Concepts Review<a class="headerlink" href="#concepts-review" title="Permalink to this headline">¶</a></h3>
 <ul>
 <li><p>Local minimum</p>
@@ -1073,21 +1076,23 @@
 </ul>
 </li>
 <li><p>Stationary distribution</p>
-<div class="margin sidebar">
+<aside class="margin sidebar">
 <p class="sidebar-title"></p>
 <p>Similar to the sense of stationary distribution in Markov Chains.</p>
-</div>
+</aside>
 <p>After we reach a stationary point, the parameters after one update is <span class="math notranslate nohighlight">\(\Phi^{*}+\Delta_{1}\Phi\)</span>, after two update is <span class="math notranslate nohighlight">\(\Phi^{*}+\Delta_{1}\Phi+\Delta_{2}\Phi\)</span> and all these updated parameters follow a distribution <span class="math notranslate nohighlight">\(\sim\)</span> stationary distribution.</p>
 </li>
 </ul>
-</div>
-<div class="section" id="learning-rate-decay">
+</section>
+<section id="learning-rate-decay">
 <h3>Learning Rate Decay<a class="headerlink" href="#learning-rate-decay" title="Permalink to this headline">¶</a></h3>
 <p>The magnitude of learning rate is important. When we are close to a minimum, if the learning rate is still large, then we will jump around and cannot achieve the minimum. Thus, an attempt is reduce learning rate by time.</p>
-<div class="figure align-default" id="nn-lr-decay-traj">
+<figure class="align-default" id="nn-lr-decay-traj">
 <a class="reference internal image-reference" href="../_images/nn-lr-decay-traj.png"><img alt="" src="../_images/nn-lr-decay-traj.png" style="width: 50%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 122 </span><span class="caption-text">Loss trajectory with (green) vs without (blue) learning rate decay [Ng 2017]</span><a class="headerlink" href="#nn-lr-decay-traj" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">Fig. 122 </span><span class="caption-text">Loss trajectory with (green) vs without (blue) learning rate decay [Ng 2017]</span><a class="headerlink" href="#nn-lr-decay-traj" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <p>In practice, we start with a reasonable learning rate, and drop learning rate by some schedule</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(\eta = 0.95 ^{\text{epoch} } \eta_0\)</span></p></li>
@@ -1095,12 +1100,14 @@
 <li><p>decay by a factor of <span class="math notranslate nohighlight">\(\alpha\)</span> every <span class="math notranslate nohighlight">\(\beta\)</span> epochs.</p></li>
 <li><p>manually drop (typically 1/10) when loss appears stuck (monitor mini-batch training loss)</p></li>
 </ul>
-<div class="figure align-default" id="nn-lr-decay">
+<figure class="align-default" id="nn-lr-decay">
 <a class="reference internal image-reference" href="../_images/nn-lr-decay.png"><img alt="" src="../_images/nn-lr-decay.png" style="width: 50%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 123 </span><span class="caption-text">Training loss drop down by learning rate decay [Shi 2021]</span><a class="headerlink" href="#nn-lr-decay" title="Permalink to this image">¶</a></p>
-</div>
-</div>
-<div class="section" id="classical-convergence-theorem">
+<figcaption>
+<p><span class="caption-number">Fig. 123 </span><span class="caption-text">Training loss drop down by learning rate decay [Shi 2021]</span><a class="headerlink" href="#nn-lr-decay" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="classical-convergence-theorem">
 <h3>Classical Convergence Theorem<a class="headerlink" href="#classical-convergence-theorem" title="Permalink to this headline">¶</a></h3>
 <p>If use the fundamental update equation</p>
 <div class="math notranslate nohighlight">
@@ -1123,9 +1130,9 @@
 </li>
 </ul>
 <p>Note that it may be a saddle point, not a local optimum.</p>
-</div>
-</div>
-<div class="section" id="optimizers">
+</section>
+</section>
+<section id="optimizers">
 <h2>Optimizers<a class="headerlink" href="#optimizers" title="Permalink to this headline">¶</a></h2>
 <p>There are various algorithms to reduce oscillations in the training trajectory and speed up training.</p>
 <ul class="simple">
@@ -1133,14 +1140,16 @@
 <li><p>RMSProp is an adaptive SGD methods, in the sense that they use different learning rates for different parameters.</p></li>
 <li><p>Adam combines momentum and RMSProp, and is more widely used.</p></li>
 </ul>
-<div class="section" id="momentum-sgd">
+<section id="momentum-sgd">
 <h3>Momentum SGD<a class="headerlink" href="#momentum-sgd" title="Permalink to this headline">¶</a></h3>
 <p>Momentum SGD use a running average of gradient instead of the raw gradient. The averaging step can reduce oscillations in the trajectory. It also has interpretation as velocity and acceleration.</p>
-<div class="figure align-default" id="nn-sgd-momentum">
+<figure class="align-default" id="nn-sgd-momentum">
 <a class="reference internal image-reference" href="../_images/nn-sgd-momentum.png"><img alt="" src="../_images/nn-sgd-momentum.png" style="width: 80%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 124 </span><span class="caption-text">SGD with and without momentum [S. Ruder]</span><a class="headerlink" href="#nn-sgd-momentum" title="Permalink to this image">¶</a></p>
-</div>
-<div class="section" id="review-of-running-average">
+<figcaption>
+<p><span class="caption-number">Fig. 124 </span><span class="caption-text">SGD with and without momentum [S. Ruder]</span><a class="headerlink" href="#nn-sgd-momentum" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<section id="review-of-running-average">
 <h4>Review of Running Average<a class="headerlink" href="#review-of-running-average" title="Permalink to this headline">¶</a></h4>
 <p>First we review the concept of running average.</p>
 <p>A running average <span class="math notranslate nohighlight">\(\tilde{\boldsymbol{x}}_t\)</span> on input <span class="math notranslate nohighlight">\(x_t\)</span> is written as a weight sum of previous value <span class="math notranslate nohighlight">\(\tilde{\boldsymbol{x}}_{t-1}\)</span> and new input <span class="math notranslate nohighlight">\(x_t\)</span></p>
@@ -1185,8 +1194,8 @@ together,</p>
 \tilde{x}_{t}=\left(1-\frac{1}{\min(N,t)}\right)\tilde{x}_{t-1}+\left(\frac{1}{\min(N,t)}\right)x_{t}
 \]</div>
 </div>
-</div>
-<div class="section" id="algorithm">
+</section>
+<section id="algorithm">
 <h4>Algorithm<a class="headerlink" href="#algorithm" title="Permalink to this headline">¶</a></h4>
 <p>The standard momentum SGD algorithm is</p>
 <div class="math notranslate nohighlight">
@@ -1203,11 +1212,11 @@ together,</p>
 <li><p><span class="math notranslate nohighlight">\(N_g=10,100\)</span> or <span class="math notranslate nohighlight">\(1000\)</span> is the window size.</p></li>
 </ul>
 <p>The hyperparameters are <span class="math notranslate nohighlight">\(N_g, \eta\)</span>.</p>
-</div>
-</div>
-<div class="section" id="root-mean-square-prop-rmsprop">
+</section>
+</section>
+<section id="root-mean-square-prop-rmsprop">
 <h3>Root Mean Square Prop (RMSProp)<a class="headerlink" href="#root-mean-square-prop-rmsprop" title="Permalink to this headline">¶</a></h3>
-<div class="section" id="motivation">
+<section id="motivation">
 <h4>Motivation<a class="headerlink" href="#motivation" title="Permalink to this headline">¶</a></h4>
 <p>To reduce oscillations in the training trajectory, we wants to slow down learning in the parameter direction with large gradient, and speed up learning in the parameter direction with small gradient. To achieve this, we need parameter dimension-specific update, and a measure of large/small gradient in that parameter dimension.</p>
 <p>One attempt is to can set the learning rate in the update
@@ -1224,8 +1233,8 @@ to be <span class="math notranslate nohighlight">\(\eta_{i}=\eta_{0}/\sigma_{i}^
 {\boldsymbol{\Phi}}_{t+1}[i]={\boldsymbol{\Phi}}_{t}[i]-\frac{\eta_{0}}{\sigma_{i}}{\color{blue}{\hat{\boldsymbol{g}}_{t}[i]}}
 \]</div>
 <p>So question is, how to find <span class="math notranslate nohighlight">\(\sigma _i\)</span>?</p>
-</div>
-<div class="section" id="id2">
+</section>
+<section id="id2">
 <h4>Algorithm<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h4>
 <p>RMSrPop’s approximates <span class="math notranslate nohighlight">\(\sigma_i\)</span> by a running average <span class="math notranslate nohighlight">\(\boldsymbol{s}_{t}[i]\)</span> of the <strong>second moment</strong> of the gradient of a particular parameter dimension, written as <span class="math notranslate nohighlight">\({\color{blue}{\hat{\boldsymbol{g} }_{t}[i]^{2}}}\)</span>.</p>
 <div class="math notranslate nohighlight">
@@ -1235,17 +1244,17 @@ to be <span class="math notranslate nohighlight">\(\eta_{i}=\eta_{0}/\sigma_{i}^
 \end{aligned}
 \end{split}\]</div>
 <p>where <span class="math notranslate nohighlight">\(\epsilon\)</span> is used to avoid <span class="math notranslate nohighlight">\(/0\)</span>.</p>
-<div class="margin sidebar">
+<aside class="margin sidebar">
 <p class="sidebar-title"></p>
 <p>PyTorch has a <em>centering</em> option
 that switches from the second moment to the variance.</p>
-</div>
+</aside>
 <p>Basically, <span class="math notranslate nohighlight">\(\color{brown}{\boldsymbol{s}_{t}[i]}\)</span> approximates the variance <span class="math notranslate nohighlight">\(\operatorname{Var} (\color{blue}{\hat{\boldsymbol{g}}_{t}[i]})\)</span> well
 if <span class="math notranslate nohighlight">\(\operatorname{E} (\color{blue}{\hat{\boldsymbol{g}}_{t}[i]})\)</span> is small.</p>
 <p>The hyperparameters are <span class="math notranslate nohighlight">\(N_s, \eta, \varepsilon\)</span>.</p>
-</div>
-</div>
-<div class="section" id="adaptive-momentum-adam">
+</section>
+</section>
+<section id="adaptive-momentum-adam">
 <h3>Adaptive Momentum (Adam)<a class="headerlink" href="#adaptive-momentum-adam" title="Permalink to this headline">¶</a></h3>
 <p>Adam combines momentum and RMSProp. It maintains a running average <span class="math notranslate nohighlight">\(\color{teal}{\tilde{\boldsymbol{g}}_{t}[i]}\)</span> of the gradient <span class="math notranslate nohighlight">\(\color{blue}{\hat{\boldsymbol{g}}_{t}[i]}\)</span>, and another running average <span class="math notranslate nohighlight">\(\color{brown}{\boldsymbol{s}_{t}[i]}\)</span> of the second moment of the gradient. The two window sizes can be different.</p>
 <div class="math notranslate nohighlight">
@@ -1257,9 +1266,9 @@ if <span class="math notranslate nohighlight">\(\operatorname{E} (\color{blue}{\
 \end{aligned}
 \end{split}\]</div>
 <p>The hyperparameters are <span class="math notranslate nohighlight">\(N_g, N_s, \eta, \varepsilon\)</span>.</p>
-</div>
-</div>
-<div class="section" id="issues">
+</section>
+</section>
+<section id="issues">
 <h2>Issues<a class="headerlink" href="#issues" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Gradient Estimation: inaccurate estimation brings noise. More than batch size effect</p></li>
@@ -1267,8 +1276,8 @@ if <span class="math notranslate nohighlight">\(\operatorname{E} (\color{blue}{\
 <li><p>Convergence: to converge to a local optimum the learning rate must be gradually reduced toward zero, how to design the schedule? see below</p></li>
 <li><p>Exploration: deep models are non-convex, we need to search over the parameter space. SGD can behave like MCMC.</p></li>
 </ul>
-</div>
-</div>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {

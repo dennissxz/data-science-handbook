@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
     <title>Weighted Interval Scheduling &#8212; Data Science Handbook</title>
     
   <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
@@ -93,7 +94,7 @@
   </a>
  </li>
 </ul>
-<p class="caption collapsible-parent">
+<p>
  <span class="caption-text">
   Foundations
  </span>
@@ -314,7 +315,7 @@
   </i>
  </li>
 </ul>
-<p class="caption collapsible-parent">
+<p>
  <span class="caption-text">
   Algorithms
  </span>
@@ -462,7 +463,7 @@
   </i>
  </li>
 </ul>
-<p class="caption collapsible-parent">
+<p>
  <span class="caption-text">
   Machine Learning
  </span>
@@ -895,9 +896,9 @@
         
               <div>
                 
-  <div class="section" id="weighted-interval-scheduling">
+  <section id="weighted-interval-scheduling">
 <h1>Weighted Interval Scheduling<a class="headerlink" href="#weighted-interval-scheduling" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="problem">
+<section id="problem">
 <h2>Problem<a class="headerlink" href="#problem" title="Permalink to this headline">¶</a></h2>
 <dl class="simple myst">
 <dt>Input</dt><dd><p>A set of <span class="math notranslate nohighlight">\(n\)</span> jobs. For each job <span class="math notranslate nohighlight">\(j\)</span>, it has start time <span class="math notranslate nohighlight">\(s_j\)</span> and finish time <span class="math notranslate nohighlight">\(f_j\)</span>, and profit <span class="math notranslate nohighlight">\(p_j \ge 0\)</span>.</p>
@@ -907,8 +908,8 @@
 <dt>Constraint</dt><dd><p>No two scheduled jobs can overlap.</p>
 </dd>
 </dl>
-</div>
-<div class="section" id="analysis">
+</section>
+<section id="analysis">
 <h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
 <p>For now, we compute total profit of the solution.</p>
 <p>Sort jobs by finish time <span class="math notranslate nohighlight">\(f_j\)</span> from smallest to biggest. We obtain a sorted set of job indices <span class="math notranslate nohighlight">\(J = \left\{ j_1, \ldots, j_n \right\}\)</span> such that <span class="math notranslate nohighlight">\(f_{j_1} \le f_{j_2}, \ldots, \le f_{j_n}\)</span>.</p>
@@ -926,8 +927,8 @@ i_k = \underset{f_i \le s_{j_k}}{\operatorname{argmax}} \, i
 <p>The iterative relation is</p>
 <div class="math notranslate nohighlight">
 \[P(J_k) = \max \left\{ P(J_{k-1}), P(J_{i_k}) + p_k \right\}\]</div>
-</div>
-<div class="section" id="algorithm">
+</section>
+<section id="algorithm">
 <h2>Algorithm<a class="headerlink" href="#algorithm" title="Permalink to this headline">¶</a></h2>
 <p>Define a DP table with <span class="math notranslate nohighlight">\(k\)</span>-th entry <span class="math notranslate nohighlight">\(T_k\)</span> being the optimal profit of to the problem on <span class="math notranslate nohighlight">\(J_k\)</span>.</p>
 <ul>
@@ -939,8 +940,8 @@ i_k = \underset{f_i \le s_{j_k}}{\operatorname{argmax}} \, i
 </li>
 <li><p>Return <span class="math notranslate nohighlight">\(T_n\)</span></p></li>
 </ul>
-</div>
-<div class="section" id="complexity">
+</section>
+<section id="complexity">
 <h2>Complexity<a class="headerlink" href="#complexity" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Sorting: <span class="math notranslate nohighlight">\(O(n \log n)\)</span></p></li>
@@ -953,8 +954,8 @@ i_k = \underset{f_i \le s_{j_k}}{\operatorname{argmax}} \, i
 </li>
 </ul>
 <p>Total <span class="math notranslate nohighlight">\(O(n \log n)\)</span>.</p>
-</div>
-<div class="section" id="solution">
+</section>
+<section id="solution">
 <h2>Solution<a class="headerlink" href="#solution" title="Permalink to this headline">¶</a></h2>
 <p>One can store the solution in the algorithm. For instance, store the choice in the <span class="math notranslate nohighlight">\(\max\)</span> comparison, if choose the second one then append job <span class="math notranslate nohighlight">\(p_k\)</span> to a list, or just record <span class="math notranslate nohighlight">\(k\)</span> in every step and then do indexing on <span class="math notranslate nohighlight">\(J\)</span>.</p>
 <p>Another way is to start from <span class="math notranslate nohighlight">\(T_n\)</span>, and compare <span class="math notranslate nohighlight">\(T_{n-1}\)</span>,</p>
@@ -963,8 +964,8 @@ i_k = \underset{f_i \le s_{j_k}}{\operatorname{argmax}} \, i
 <li><p>if different, pop out <span class="math notranslate nohighlight">\(p_n\)</span>, and then go to entry <span class="math notranslate nohighlight">\(T_{i_k}\)</span></p></li>
 </ul>
 <p>Repeat until go to <span class="math notranslate nohighlight">\(T_0\)</span>.</p>
-</div>
-</div>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {

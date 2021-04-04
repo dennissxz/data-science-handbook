@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
     <title>Interval Scheduling &#8212; Data Science Handbook</title>
     
   <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
@@ -93,7 +94,7 @@
   </a>
  </li>
 </ul>
-<p class="caption collapsible-parent">
+<p>
  <span class="caption-text">
   Foundations
  </span>
@@ -314,7 +315,7 @@
   </i>
  </li>
 </ul>
-<p class="caption collapsible-parent">
+<p>
  <span class="caption-text">
   Algorithms
  </span>
@@ -462,7 +463,7 @@
   </i>
  </li>
 </ul>
-<p class="caption collapsible-parent">
+<p>
  <span class="caption-text">
   Machine Learning
  </span>
@@ -968,13 +969,13 @@
         
               <div>
                 
-  <div class="section" id="interval-scheduling">
+  <section id="interval-scheduling">
 <h1>Interval Scheduling<a class="headerlink" href="#interval-scheduling" title="Permalink to this headline">¶</a></h1>
 <p>Aka. job interval selection problem (JISP).</p>
-<div class="section" id="maximize-jobs">
+<section id="maximize-jobs">
 <h2>Maximize #Jobs<a class="headerlink" href="#maximize-jobs" title="Permalink to this headline">¶</a></h2>
 <p>There are many jobs, but we only have one machine that can execute at most one job at a time. We want to execute as many jobs as possible.</p>
-<div class="section" id="problem">
+<section id="problem">
 <h3>Problem<a class="headerlink" href="#problem" title="Permalink to this headline">¶</a></h3>
 <dl class="simple myst">
 <dt>Input</dt><dd><ul class="simple">
@@ -991,8 +992,8 @@
 </ul>
 </dd>
 </dl>
-</div>
-<div class="section" id="algorithm">
+</section>
+<section id="algorithm">
 <h3>Algorithm<a class="headerlink" href="#algorithm" title="Permalink to this headline">¶</a></h3>
 <p>A solution by greedy algorithms is</p>
 <hr class="docutils" />
@@ -1027,20 +1028,20 @@
 </ul>
 </li>
 </ul>
-</div>
-<div class="section" id="correctness">
+</section>
+<section id="correctness">
 <h3>Correctness<a class="headerlink" href="#correctness" title="Permalink to this headline">¶</a></h3>
 <p>Feasibility is guaranteed since we delete all jobs that overlap with <span class="math notranslate nohighlight">\(j\)</span> from <span class="math notranslate nohighlight">\(J\)</span>.</p>
 <p>Optimality: <span class="math notranslate nohighlight">\(\left\vert S \right\vert = \left\vert OPT \right\vert\)</span>. The intuition is that, we are pushing intervals to the left. It can be shown in two ways.</p>
-<div class="section" id="exchange-argument">
+<section id="exchange-argument">
 <h4>Exchange Argument<a class="headerlink" href="#exchange-argument" title="Permalink to this headline">¶</a></h4>
 <p>Want to prove <span class="math notranslate nohighlight">\(\vert S \vert \le \vert OPT \vert\)</span>. Try to show <span class="math notranslate nohighlight">\(OPT\)</span> approaches our solution <span class="math notranslate nohighlight">\(S\)</span>.</p>
 <p><em><strong>Proof</strong></em></p>
 <p>Suppose the first job in <span class="math notranslate nohighlight">\(OPT\)</span> is <span class="math notranslate nohighlight">\(j_1^*\)</span> and the first job in <span class="math notranslate nohighlight">\(S\)</span> is <span class="math notranslate nohighlight">\(j_1\)</span>. According to the greedy rule, the finish time of <span class="math notranslate nohighlight">\(j_1\)</span> is ealier than <span class="math notranslate nohighlight">\(j_1^*\)</span>, so substituting <span class="math notranslate nohighlight">\(j_1^*\)</span> by <span class="math notranslate nohighlight">\(j_1\)</span> in <span class="math notranslate nohighlight">\(OPT\)</span> does not affect the optimality of <span class="math notranslate nohighlight">\(OPT\)</span>. Call the updated <span class="math notranslate nohighlight">\(OPT\)</span> by <span class="math notranslate nohighlight">\(OPT_1\)</span>. We can then substitute <span class="math notranslate nohighlight">\(j_2^*\)</span> in <span class="math notranslate nohighlight">\(OPT_1\)</span> by <span class="math notranslate nohighlight">\(j_2\)</span> in <span class="math notranslate nohighlight">\(S\)</span> (note that <span class="math notranslate nohighlight">\(f_{j_2} \le f_{j_2^*}\)</span> by our algorithms), and so on.</p>
 <p>What if <span class="math notranslate nohighlight">\(\vert S \vert &lt; \vert OPT_k \vert\)</span>, i.e. we run out of jobs in <span class="math notranslate nohighlight">\(S\)</span> after <span class="math notranslate nohighlight">\(k\)</span> substitutions? This is impossible. Our algorithm will select <span class="math notranslate nohighlight">\(j\)</span> in <span class="math notranslate nohighlight">\(J\)</span> until <span class="math notranslate nohighlight">\(J\)</span> is empty. So if there is any jobs in <span class="math notranslate nohighlight">\(OPT_k\)</span> that is not in <span class="math notranslate nohighlight">\(S\)</span>, they should be in <span class="math notranslate nohighlight">\(J\)</span> and be added to <span class="math notranslate nohighlight">\(S\)</span> by our algorithm.</p>
 <p><span class="math notranslate nohighlight">\(\square\)</span></p>
-</div>
-<div class="section" id="charging-scheme">
+</section>
+<section id="charging-scheme">
 <h4>Charging Scheme<a class="headerlink" href="#charging-scheme" title="Permalink to this headline">¶</a></h4>
 <p>Given <span class="math notranslate nohighlight">\(\left\vert S \right\vert \le \left\vert OPT \right\vert\)</span>, want to show <span class="math notranslate nohighlight">\(\left\vert S \right\vert \ge \left\vert OPT \right\vert\)</span> such that <span class="math notranslate nohighlight">\(\left\vert S \right\vert = \left\vert OPT \right\vert\)</span>.</p>
 <p><em><strong>Proof</strong></em></p>
@@ -1056,18 +1057,18 @@
 <p>Moreover, for each job <span class="math notranslate nohighlight">\(j ^\prime \in S\)</span>, it can take up to one mapping. If it takes two jobs <span class="math notranslate nohighlight">\(j_i^*, j_k^* \in OPT\)</span>, then both intervals of <span class="math notranslate nohighlight">\(j_i^*\)</span> and <span class="math notranslate nohighlight">\(j_k^*\)</span> should contain <span class="math notranslate nohighlight">\(f_{j ^\prime}\)</span>, which is impossible since the intervals in <span class="math notranslate nohighlight">\(OPT\)</span> cannot overlap.</p>
 <p>In sum, this function <span class="math notranslate nohighlight">\(g\)</span> exists. Hence, <span class="math notranslate nohighlight">\(\left\vert S \right\vert \ge \left\vert OPT \right\vert\)</span>.</p>
 <p><span class="math notranslate nohighlight">\(\square\)</span></p>
-</div>
-</div>
-<div class="section" id="analysis-of-running-time">
+</section>
+</section>
+<section id="analysis-of-running-time">
 <h3>Analysis of Running time<a class="headerlink" href="#analysis-of-running-time" title="Permalink to this headline">¶</a></h3>
 <p>There are at most <span class="math notranslate nohighlight">\(n\)</span> iterations in <code class="docutils literal notranslate"><span class="pre">while</span></code>, and in every iteration we need to find <span class="math notranslate nohighlight">\(\operatorname{argmin}_j \, s_j\)</span>, which can be doen in <span class="math notranslate nohighlight">\(O(n)\)</span>. In sum, the overall time complexity is <span class="math notranslate nohighlight">\(O(n^2)\)</span>.</p>
 <p>Another way of implementation is to sort the jobs by <span class="math notranslate nohighlight">\(s_j\)</span>. Then there are at most <span class="math notranslate nohighlight">\(n\)</span> iterations. The overall time complexity is <span class="math notranslate nohighlight">\(O(n \log n)\)</span>.</p>
-</div>
-</div>
-<div class="section" id="minimize-machines-used">
+</section>
+</section>
+<section id="minimize-machines-used">
 <h2>Minimize #Machines Used<a class="headerlink" href="#minimize-machines-used" title="Permalink to this headline">¶</a></h2>
 <p>Instead of schedule jobs on one machine, now we can execute all jobs on multiple machines. We want to minimize the number of machines used.</p>
-<div class="section" id="id1">
+<section id="id1">
 <h3>Problem<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
 <dl class="simple myst">
 <dt>Input</dt><dd><ul class="simple">
@@ -1084,8 +1085,8 @@
 </ul>
 </dd>
 </dl>
-</div>
-<div class="section" id="id2">
+</section>
+<section id="id2">
 <h3>Algorithm<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
 <p>We will schedule jobs to machines iteratively. Over the course of the algorithm, we say that a machine is <em>used</em> iff at least one job is assigned to it.</p>
 <hr class="docutils" />
@@ -1095,9 +1096,9 @@
 <li><p>Sort all jobs in the order of increasing start time, breaking ties arbitrarily.</p></li>
 <li><p>Assume without loss of generality that <span class="math notranslate nohighlight">\(s_{1} \leq s_{2} \leq \ldots \leq s_{n}\)</span>. Process jobs <span class="math notranslate nohighlight">\(j_{1}, \ldots, j_{n}\)</span> in this order. Upon processing job <span class="math notranslate nohighlight">\(j_i\)</span>, schedule it on any used machine that does not contain a job whose interval overlaps with <span class="math notranslate nohighlight">\(\left(s_{i}, f_{i}\right]\)</span>; if there is no such machine, schedule it on a new machine.</p></li>
 </ul>
-</div>
+</section>
 <hr class="docutils" />
-<div class="section" id="id3">
+<section id="id3">
 <h3>Correctness<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
 <p>Feasibility is immediate. We prove optimality.</p>
 <dl class="simple myst">
@@ -1107,20 +1108,20 @@
 <p><em><strong>Proof</strong></em></p>
 <p>If our algorithm returns a scheduling using k machines, then there are <span class="math notranslate nohighlight">\(k\)</span> jobs <span class="math notranslate nohighlight">\(j_{i_{1}}, \ldots, j_{i_{k}}\)</span> in <span class="math notranslate nohighlight">\(J\)</span>, such that some time-point <span class="math notranslate nohighlight">\(x\)</span> belongs to every interval in set <span class="math notranslate nohighlight">\(\left\{\left(s_{i_{t}}, f_{i_{t}}\right] \mid 1 \leq t \leq k\right\}\)</span>. Therefore, these jobs have to be scheduled on different machines in any feasible solution, and the claim then follows.</p>
 <p><span class="math notranslate nohighlight">\(\square\)</span></p>
-</div>
-<div class="section" id="complexity">
+</section>
+<section id="complexity">
 <h3>Complexity<a class="headerlink" href="#complexity" title="Permalink to this headline">¶</a></h3>
 <p>The algorithm consists of at most n iterations. In each iteration we need to schedule a job <span class="math notranslate nohighlight">\(j\)</span> on some machine. All this can be done in time <span class="math notranslate nohighlight">\(O(n)\)</span> (by checking which scheduled jobs overlap with the current one), so the running time of the algorithm is <span class="math notranslate nohighlight">\(O(n^2)\)</span>.</p>
-</div>
-</div>
-<div class="section" id="minimize-machine-rented">
+</section>
+</section>
+<section id="minimize-machine-rented">
 <h2>Minimize #Machine Rented<a class="headerlink" href="#minimize-machine-rented" title="Permalink to this headline">¶</a></h2>
 <p>Similar to last problem, but the machines are rented, which means we need to return it at some time points.</p>
-</div>
-<div class="section" id="minimize-maximum-lateness">
+</section>
+<section id="minimize-maximum-lateness">
 <h2>Minimize Maximum Lateness<a class="headerlink" href="#minimize-maximum-lateness" title="Permalink to this headline">¶</a></h2>
 <p>In this problem, each job has a deadline <span class="math notranslate nohighlight">\(d_i\)</span>, and we have one machine. We want to execute all jobs, and minimize the maximum lateness of a job.</p>
-<div class="section" id="id4">
+<section id="id4">
 <h3>Problem<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
 <dl class="simple myst">
 <dt>Input</dt><dd><ul class="simple">
@@ -1137,8 +1138,8 @@
 </ul>
 </dd>
 </dl>
-</div>
-<div class="section" id="id5">
+</section>
+<section id="id5">
 <h3>Algorithm<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
 <p>A greedy solution is to execute the job with the earliest deadline, like in real-life setting.</p>
 <hr class="docutils" />
@@ -1148,9 +1149,9 @@
 <li><p>Sort all jobs in the order of increasing deadline, breaking ties arbitrarily.</p></li>
 <li><p>Schedule them one-by-one in this order with no idle time.</p></li>
 </ul>
-</div>
+</section>
 <hr class="docutils" />
-<div class="section" id="id6">
+<section id="id6">
 <h3>Correctness<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
 <p>Feasibility is immediate. We prove correctness by proving two claims.</p>
 <dl class="simple myst">
@@ -1175,13 +1176,13 @@
 <p>The maximum lateness of the two jobs changes from <span class="math notranslate nohighlight">\(\max \left\{ T + t_{i_2} + t_{i_1} - d_{i_1} \right\}\)</span> to <span class="math notranslate nohighlight">\(\max \left\{ T + t_{i_2} + t_{i_1} - d_{i_2} \right\}\)</span>, which does not increase since <span class="math notranslate nohighlight">\(d_{i_1} &lt; d_{i_2}\)</span>.</p>
 <p><span class="math notranslate nohighlight">\(\square\)</span></p>
 <p>It is easy to see that our algorithm computes a schedule with no inverted pairs. From the two claims above, we see the schedule computed by our algorithm is optimal.</p>
-</div>
-<div class="section" id="id7">
+</section>
+<section id="id7">
 <h3>Complexity<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
 <p>We first sort all jobs by their deadlines in time <span class="math notranslate nohighlight">\(O(n\log n)\)</span>, and then schedule jobs according to this order in time <span class="math notranslate nohighlight">\(O(n)\)</span>, so the running time of the algorithm is <span class="math notranslate nohighlight">\(O(n\log n)\)</span>.</p>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {

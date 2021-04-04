@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
     <title>Variational Autoencoders &#8212; Data Science Handbook</title>
     
   <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
@@ -93,7 +94,7 @@
   </a>
  </li>
 </ul>
-<p class="caption collapsible-parent">
+<p>
  <span class="caption-text">
   Foundations
  </span>
@@ -314,7 +315,7 @@
   </i>
  </li>
 </ul>
-<p class="caption collapsible-parent">
+<p>
  <span class="caption-text">
   Algorithms
  </span>
@@ -462,7 +463,7 @@
   </i>
  </li>
 </ul>
-<p class="caption collapsible-parent">
+<p>
  <span class="caption-text">
   Machine Learning
  </span>
@@ -931,7 +932,7 @@
         
               <div>
                 
-  <div class="section" id="variational-autoencoders">
+  <section id="variational-autoencoders">
 <h1>Variational Autoencoders<a class="headerlink" href="#variational-autoencoders" title="Permalink to this headline">¶</a></h1>
 <p>More or less simultaneously proposed by Kingma &amp; Welling (2013) and Rezende et al. (2014)</p>
 <p>VAE is a type of generative model for a vector of random variables <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> assumed to be generated from a set of latent variables <span class="math notranslate nohighlight">\(\boldsymbol{z}\)</span>. Assuming both <span class="math notranslate nohighlight">\(\boldsymbol{x} \in \mathbb{R}^d\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{z} \in \mathbb{R}^k\)</span> are continuous, the unconditional distribution of <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> can be written as</p>
@@ -941,27 +942,31 @@ p(\boldsymbol{x})=\int_{\boldsymbol{z}} p(\boldsymbol{x} \vert \boldsymbol{z}) p
 \]</div>
 <p>Initially used for generation, VAE has also been successful for representation learning. It is popular, fast, and relatively easy to train.</p>
 <p>VAE have similar structure with AE. But we add probabilistic assumptions of the VAE representation and optimize the VAE objective via variational optimization.</p>
-<div class="section" id="objective">
+<section id="objective">
 <h2>Objective<a class="headerlink" href="#objective" title="Permalink to this headline">¶</a></h2>
 <p>Ideally, the encoder and decoder should learn the two conditional distributions (from the joint distribution of <span class="math notranslate nohighlight">\((x,z)\)</span>) parameterized by <span class="math notranslate nohighlight">\(\theta\)</span>.</p>
-<div class="figure align-default" id="vae-ideal-step">
+<figure class="align-default" id="vae-ideal-step">
 <a class="reference internal image-reference" href="../_images/vae-ideal-step.png"><img alt="" src="../_images/vae-ideal-step.png" style="width: 30%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 128 </span><span class="caption-text">Ideal case of VAE [Durr 2016]</span><a class="headerlink" href="#vae-ideal-step" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">Fig. 128 </span><span class="caption-text">Ideal case of VAE [Durr 2016]</span><a class="headerlink" href="#vae-ideal-step" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <p>But <span class="math notranslate nohighlight">\(p(\boldsymbol{z} \vert \boldsymbol{x} )\)</span> can be very costly to estimate. As a result, we approximate it with another neural function <span class="math notranslate nohighlight">\(q(\boldsymbol{z} \vert \boldsymbol{x} )\)</span>, which is the decoder.</p>
 <p>Assume w.l.o.g. that latent variable <span class="math notranslate nohighlight">\(\boldsymbol{z}\)</span> is 1-dimensional, <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> is 2-dimensional. The VAE structure can be shown as</p>
-<div class="figure align-default" id="vae-networks">
+<figure class="align-default" id="vae-networks">
 <a class="reference internal image-reference" href="../_images/vae-networks.png"><img alt="" src="../_images/vae-networks.png" style="width: 80%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 129 </span><span class="caption-text">VAE structure (dash lines mean sampling) [Durr 2016]</span><a class="headerlink" href="#vae-networks" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">Fig. 129 </span><span class="caption-text">VAE structure (dash lines mean sampling) [Durr 2016]</span><a class="headerlink" href="#vae-networks" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(q(\boldsymbol{x}  \vert \boldsymbol{z} )\)</span> is the distribution learned by the encoder part.</p></li>
 <li><p><span class="math notranslate nohighlight">\(p(\boldsymbol{x} \vert \boldsymbol{z})\)</span> is the distribution learned by the decoder part.</p></li>
 </ul>
-<div class="margin sidebar">
+<aside class="margin sidebar">
 <p class="sidebar-title"></p>
 <p>We often assume <span class="math notranslate nohighlight">\(q(\boldsymbol{z})\)</span> is spherical Gaussian. The node for the variance is actually <span class="math notranslate nohighlight">\(\log \sigma^2\)</span> so that it is in <span class="math notranslate nohighlight">\(\mathbb{R}\)</span>.</p>
-</div>
+</aside>
 <ul class="simple">
 <li><p>The orange nodes in the middle and at the right are the parameters in the distribution <span class="math notranslate nohighlight">\(q(\boldsymbol{z})\)</span> and <span class="math notranslate nohighlight">\(p(\boldsymbol{x})\)</span> respectively.</p></li>
 </ul>
@@ -970,20 +975,22 @@ p(\boldsymbol{x})=\int_{\boldsymbol{z}} p(\boldsymbol{x} \vert \boldsymbol{z}) p
 <li><p>a learned representation described by <span class="math notranslate nohighlight">\(q(\boldsymbol{z})\)</span>. To output a single value, we can use the mean, or mode.</p></li>
 <li><p>a generator <span class="math notranslate nohighlight">\(p(\boldsymbol{x} \vert \boldsymbol{z} )\)</span>. To generate <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> (e.g. an image) given <span class="math notranslate nohighlight">\(\boldsymbol{z}\)</span>, we can use the decoder network.</p></li>
 </ul>
-<div class="figure align-default" id="id1">
+<figure class="align-default" id="id1">
 <a class="reference internal image-reference" href="../_images/vae-decoder-generation.png"><img alt="" src="../_images/vae-decoder-generation.png" style="width: 80%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 130 </span><span class="caption-text">Use VAE to generate a handwritten digit [Durr 2016]</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">Fig. 130 </span><span class="caption-text">Use VAE to generate a handwritten digit [Durr 2016]</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <p>There is a theoretical foundation of generation.</p>
 <dl class="simple myst">
 <dt>Theorem (Validation of VAE)</dt><dd><p>Any <span class="math notranslate nohighlight">\(d\)</span>-dimensional distribution can be generated by taking <span class="math notranslate nohighlight">\(d\)</span> normally distributed variables and mapping them through some appropriate (possibly very complicated) function.</p>
 </dd>
 </dl>
 <p>Of course, the function can be a neural network.</p>
-</div>
-<div class="section" id="training">
+</section>
+<section id="training">
 <h2>Training<a class="headerlink" href="#training" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="variational-optimization">
+<section id="variational-optimization">
 <h3>Variational Optimization<a class="headerlink" href="#variational-optimization" title="Permalink to this headline">¶</a></h3>
 <p>Directly Maximizing the likelihood can be challenging. Instead, we maximize the lower bound of the likelihood.</p>
 <p>By some formula from conditional probability and <a class="reference internal" href="../30-ml-basics/03-information-theory.html"><span class="doc std std-doc">information theory</span></a>, we have</p>
@@ -1000,10 +1007,10 @@ L &amp;=\log p(x) \\
 \end{aligned}
 \end{split}\]</div>
 <p>If we can well approximate <span class="math notranslate nohighlight">\(p(z \vert x)\)</span> by <span class="math notranslate nohighlight">\(q(z \vert x)\)</span>, then the KL divergence is small, and we can maximizing <span class="math notranslate nohighlight">\(L\)</span> by maximizing <span class="math notranslate nohighlight">\(L^v\)</span>.</p>
-<div class="margin sidebar">
+<aside class="margin sidebar">
 <p class="sidebar-title"></p>
 <p>The lower abound <span class="math notranslate nohighlight">\(L^v\)</span> is also known as evidence lower bound, or ELBO.</p>
-</div>
+</aside>
 <p>The lower bound <span class="math notranslate nohighlight">\(L^v\)</span> can be further arranged to</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -1056,8 +1063,8 @@ L^{v} &amp;=\sum_{z} q(z \vert x) \log \left(\frac{p(z, x)}{q(z \vert x)}\right)
 </li>
 </ul>
 </div>
-</div>
-<div class="section" id="reparameterization-trick">
+</section>
+<section id="reparameterization-trick">
 <h3>Reparameterization Trick<a class="headerlink" href="#reparameterization-trick" title="Permalink to this headline">¶</a></h3>
 <p>Note that at the end of the encoder part, we have the neurons that corresponds to the parameters in <span class="math notranslate nohighlight">\(q(\boldsymbol{z})\)</span>, then we sample <span class="math notranslate nohighlight">\(\boldsymbol{z}\)</span>. Then <span class="math notranslate nohighlight">\(z\)</span> is random in the back. The question is, how to do backpropagation through this random node?</p>
 <p>A trick is to reparameterize <span class="math notranslate nohighlight">\(\boldsymbol{z}\)</span> by</p>
@@ -1067,28 +1074,32 @@ L^{v} &amp;=\sum_{z} q(z \vert x) \log \left(\frac{p(z, x)}{q(z \vert x)}\right)
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(\boldsymbol{\varepsilon} \sim N(\boldsymbol{0}, \boldsymbol{I})\)</span> can be viewed as noise.</p>
 <p>Then random node becomes <span class="math notranslate nohighlight">\(\boldsymbol{\varepsilon}\)</span>, and we won’t need to compute its gradient during backpropagation.</p>
-<div class="figure align-default" id="vae-reparm-trick-png">
+<figure class="align-default" id="vae-reparm-trick-png">
 <a class="reference internal image-reference" href="../_images/vae-reparm-trick.png"><img alt="" src="../_images/vae-reparm-trick.png" style="width: 50%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 131 </span><span class="caption-text">Reparametrization trick of VAE [Kingma 2015]</span><a class="headerlink" href="#vae-reparm-trick-png" title="Permalink to this image">¶</a></p>
-</div>
-<div class="margin sidebar">
+<figcaption>
+<p><span class="caption-number">Fig. 131 </span><span class="caption-text">Reparametrization trick of VAE [Kingma 2015]</span><a class="headerlink" href="#vae-reparm-trick-png" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<aside class="margin sidebar">
 <p class="sidebar-title">How about non-Gaussian distributions?</p>
 <p>Essentially any distribution can be approximated arbitrarily well by a large enough Gaussian mixture. So we can simply let <span class="math notranslate nohighlight">\(\boldsymbol{z} ~ \mathcal{N}\)</span> and the subsequent layers can help to approximate any distributions.</p>
-</div>
-</div>
-</div>
-<div class="section" id="interpretation">
+</aside>
+</section>
+</section>
+<section id="interpretation">
 <h2>Interpretation<a class="headerlink" href="#interpretation" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="by-phase-diagrams">
+<section id="by-phase-diagrams">
 <h3>By Phase Diagrams<a class="headerlink" href="#by-phase-diagrams" title="Permalink to this headline">¶</a></h3>
 <p>After obtaining <span class="math notranslate nohighlight">\(q(\boldsymbol{z})\)</span>, we can create a phase diagram with varying values in each dimension <span class="math notranslate nohighlight">\(z_1, z_2, \ldots, z_k\)</span>, and then pass them to decoder to generate <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span>, then we can see that how these <span class="math notranslate nohighlight">\(\boldsymbol{z}\)</span>’s differ according to varying values of <span class="math notranslate nohighlight">\(z_1, z_2, \ldots, z_k\)</span>, and the difference along dimension <span class="math notranslate nohighlight">\(j\)</span> can be interpreted as the learned representation by <span class="math notranslate nohighlight">\(z_j\)</span>.</p>
 <p>In the following example (a), <span class="math notranslate nohighlight">\(k=2\)</span>, the horizontal dimension is head tile, and the vertical dimension is degree of smiling vs frowning.</p>
-<div class="figure align-default" id="vae-phase">
+<figure class="align-default" id="vae-phase">
 <a class="reference internal image-reference" href="../_images/vae-phase.png"><img alt="" src="../_images/vae-phase.png" style="width: 80%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 132 </span><span class="caption-text">VAE phase diagram for interpretation</span><a class="headerlink" href="#vae-phase" title="Permalink to this image">¶</a></p>
-</div>
-</div>
-<div class="section" id="potential-representations">
+<figcaption>
+<p><span class="caption-number">Fig. 132 </span><span class="caption-text">VAE phase diagram for interpretation</span><a class="headerlink" href="#vae-phase" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="potential-representations">
 <h3>Potential Representations<a class="headerlink" href="#potential-representations" title="Permalink to this headline">¶</a></h3>
 <p>Interpretable dimensions of continuous variation can be</p>
 <ul class="simple">
@@ -1105,9 +1116,9 @@ L^{v} &amp;=\sum_{z} q(z \vert x) \log \left(\frac{p(z, x)}{q(z \vert x)}\right)
 <li><p>Text: part of speech, phrase (constituent) type, topic, …</p></li>
 </ul>
 <p>Or, the representation just learn signal and get rid of noise.</p>
-</div>
-</div>
-<div class="section" id="generation">
+</section>
+</section>
+<section id="generation">
 <h2>Generation<a class="headerlink" href="#generation" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Option 1. Draw <span class="math notranslate nohighlight">\(\boldsymbol{z}\)</span> from the prior <span class="math notranslate nohighlight">\(p(\boldsymbol{z})\)</span>, feed through decoder to generate <span class="math notranslate nohighlight">\(\hat{\boldsymbol{x}}\)</span>. [<a class="reference external" href="https://blog.openai.com/generative-models/">Details</a>]</p></li>
@@ -1119,10 +1130,12 @@ L^{v} &amp;=\sum_{z} q(z \vert x) \log \left(\frac{p(z, x)}{q(z \vert x)}\right)
 </ul>
 </li>
 </ul>
-<div class="figure align-default" id="vae-generation">
+<figure class="align-default" id="vae-generation">
 <a class="reference internal image-reference" href="../_images/vae-generation.png"><img alt="" src="../_images/vae-generation.png" style="width: 60%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 133 </span><span class="caption-text">VAE for generation</span><a class="headerlink" href="#vae-generation" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">Fig. 133 </span><span class="caption-text">VAE for generation</span><a class="headerlink" href="#vae-generation" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <p>Compared to autoregressive models:</p>
 <ul class="simple">
 <li><p>In autoregressive models, e.g. RNN or PixelRNN, we need to define the order/dependency of generated text/pixels. While in VAE, all outputs are generated jointly from the latent variables <span class="math notranslate nohighlight">\(\boldsymbol{z}\)</span>, so it can model <strong>arbitrary</strong> dependencies.</p></li>
@@ -1130,17 +1143,19 @@ L^{v} &amp;=\sum_{z} q(z \vert x) \log \left(\frac{p(z, x)}{q(z \vert x)}\right)
 <li><p>Usually, more efficient to sample from distribution</p></li>
 <li><p>Tend to produce blurrier outputs, since we are sampling from distribution and look at mean (averaging the details)</p></li>
 </ul>
-</div>
-<div class="section" id="extension">
+</section>
+<section id="extension">
 <h2>Extension<a class="headerlink" href="#extension" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="vq-vae">
+<section id="vq-vae">
 <h3>VQ-VAE<a class="headerlink" href="#vq-vae" title="Permalink to this headline">¶</a></h3>
 <p>[van den Oord et al. 2018]</p>
 <p>VQ-VAE is a kind of discrete representation learning. There is a clustering step (vector quantization) layer in VAE. In images, some discrete representations can be, for instance, edge, border, or eye, nose, ear …</p>
-<div class="figure align-default" id="vqvae-graph">
+<figure class="align-default" id="vqvae-graph">
 <a class="reference internal image-reference" href="../_images/vqvae-graph.png"><img alt="" src="../_images/vqvae-graph.png" style="width: 80%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 134 </span><span class="caption-text">Illustration of VQ-VAE</span><a class="headerlink" href="#vqvae-graph" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">Fig. 134 </span><span class="caption-text">Illustration of VQ-VAE</span><a class="headerlink" href="#vqvae-graph" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <p>The loss is</p>
 <div class="math notranslate nohighlight">
 \[
@@ -1152,18 +1167,20 @@ L^{v} &amp;=\sum_{z} q(z \vert x) \log \left(\frac{p(z, x)}{q(z \vert x)}\right)
 <li><p>Reconstruction error becomes squared error between <span class="math notranslate nohighlight">\(z_e(x)\)</span> and embedding <span class="math notranslate nohighlight">\(e\)</span>.</p></li>
 </ul>
 <p>In backpropagation, skip discretization layers.</p>
-</div>
-</div>
-<div class="section" id="vq-vae2">
+</section>
+</section>
+<section id="vq-vae2">
 <h2>VQ-VAE2<a class="headerlink" href="#vq-vae2" title="Permalink to this headline">¶</a></h2>
 <p>VQ-VAE2 [Razavi et al. 2019] is Hierarchical VQ-VAE</p>
 <p>Key idea: Represent discrete latent variables at multiple levels.</p>
-<div class="figure align-default" id="vqvae2-graph">
+<figure class="align-default" id="vqvae2-graph">
 <a class="reference internal image-reference" href="../_images/vqvae2-graph.png"><img alt="" src="../_images/vqvae2-graph.png" style="width: 80%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 135 </span><span class="caption-text">Illustration of VQ-VQE2</span><a class="headerlink" href="#vqvae2-graph" title="Permalink to this image">¶</a></p>
-</div>
-</div>
-</div>
+<figcaption>
+<p><span class="caption-number">Fig. 135 </span><span class="caption-text">Illustration of VQ-VQE2</span><a class="headerlink" href="#vqvae2-graph" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {

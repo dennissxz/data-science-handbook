@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
     <title>Language Models &#8212; Data Science Handbook</title>
     
   <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
@@ -93,7 +94,7 @@
   </a>
  </li>
 </ul>
-<p class="caption collapsible-parent">
+<p>
  <span class="caption-text">
   Foundations
  </span>
@@ -314,7 +315,7 @@
   </i>
  </li>
 </ul>
-<p class="caption collapsible-parent">
+<p>
  <span class="caption-text">
   Algorithms
  </span>
@@ -462,7 +463,7 @@
   </i>
  </li>
 </ul>
-<p class="caption collapsible-parent">
+<p>
  <span class="caption-text">
   Machine Learning
  </span>
@@ -951,7 +952,7 @@
         
               <div>
                 
-  <div class="section" id="language-models">
+  <section id="language-models">
 <h1>Language Models<a class="headerlink" href="#language-models" title="Permalink to this headline">¶</a></h1>
 <p>Language models aim to model the joint distribution over words <span class="math notranslate nohighlight">\(p(\boldsymbol{w})\)</span>, where <span class="math notranslate nohighlight">\(\boldsymbol{w}\)</span> is a word sequence <span class="math notranslate nohighlight">\(\boldsymbol{w} = \left\{ w_1, \ldots, w_k \right\}\)</span>.</p>
 <div class="math notranslate nohighlight">
@@ -961,9 +962,9 @@ p( \text{&quot;And nuts sing on the roof&quot;} ) &amp;\approx 0 \\
 p(\text{&quot;I t is easy to recognize speech&quot;}  ) &amp;=.0001  \\
 p( \text{&quot;It is easy to wreck a nice beach&quot;}  ) &amp;=.00000001
 \end{aligned}\end{split}\]</div>
-<div class="section" id="objective">
+<section id="objective">
 <h2>Objective<a class="headerlink" href="#objective" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="factorization">
+<section id="factorization">
 <h3>Factorization<a class="headerlink" href="#factorization" title="Permalink to this headline">¶</a></h3>
 <p>Recall that factorization helps to reduce the number of parameters. By the chain rule, we have</p>
 <div class="math notranslate nohighlight">
@@ -978,8 +979,8 @@ p(\boldsymbol{w})=\prod_{i=1}^{K} p\left(w_{i} \mid w_{1}, \ldots, w_{i-1}\right
 <li><p>Good equivalence classes maximize the information about the current
 word given the class <span class="math notranslate nohighlight">\(\psi(\boldsymbol{h} _i)\)</span>.</p></li>
 </ul>
-</div>
-<div class="section" id="n-gram-models">
+</section>
+<section id="n-gram-models">
 <h3><span class="math notranslate nohighlight">\(n\)</span>-gram Models<a class="headerlink" href="#n-gram-models" title="Permalink to this headline">¶</a></h3>
 <p>In <span class="math notranslate nohighlight">\(n\)</span>-gram language models,  the history equivalence class is the previous <span class="math notranslate nohighlight">\(n-1\)</span> words <span class="math notranslate nohighlight">\(\phi\left(\boldsymbol{h}_{i}\right)=\left\{w_{i-1}, \ldots, w_{i-(n-1)}\right\}\)</span>.</p>
 <p>For example</p>
@@ -1002,9 +1003,9 @@ p\left(w_{1}, \ldots, w_{n}\right) =\
 &amp; p(&lt;&gt;\mid \text {dog, lazy})
 \end{aligned}
 \end{split}\]</div>
-</div>
-</div>
-<div class="section" id="estimation">
+</section>
+</section>
+<section id="estimation">
 <h2>Estimation<a class="headerlink" href="#estimation" title="Permalink to this headline">¶</a></h2>
 <p>Maximum-likelihood estimate of n-gram probabilities given some training set of text:</p>
 <div class="math notranslate nohighlight">
@@ -1012,29 +1013,31 @@ p\left(w_{1}, \ldots, w_{n}\right) =\
 \hat{p}(\text { quick } \mid&lt;&gt;, \text { the })=\frac{\text { count }(&lt;&gt;, \text { the, quick })}{\operatorname{count}(&lt;&gt;, \text { the })}
 \]</div>
 <p>Using ML, the model is good to predict functional words (e.g. “the”, “to”), not content word (nouns, verbs, adjectives). below example shows where the correct word is in the decreasing probability list.</p>
-<div class="figure align-default" id="lang-pred-list">
+<figure class="align-default" id="lang-pred-list">
 <a class="reference internal image-reference" href="../_images/lang-pred-list.png"><img alt="" src="../_images/lang-pred-list.png" style="width: 60%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 110 </span><span class="caption-text">Trigram Prediction [Jelink 1997]</span><a class="headerlink" href="#lang-pred-list" title="Permalink to this image">¶</a></p>
-</div>
-</div>
-<div class="section" id="evaluation">
+<figcaption>
+<p><span class="caption-number">Fig. 110 </span><span class="caption-text">Trigram Prediction [Jelink 1997]</span><a class="headerlink" href="#lang-pred-list" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="evaluation">
 <h2>Evaluation<a class="headerlink" href="#evaluation" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Qualitatively (How good do random sentences generated from the LM look?)</p></li>
 <li><p>Evaluate via the task loss/performance measure</p></li>
 </ul>
 <p>Other quantitative intrinsic measure include cross-entropy and perplexity.</p>
-<div class="section" id="cross-entropy">
+<section id="cross-entropy">
 <h3>Cross-entropy<a class="headerlink" href="#cross-entropy" title="Permalink to this headline">¶</a></h3>
 <p>The (empirical) cross-entropy of a model distribution <span class="math notranslate nohighlight">\(\hat{p}(x)\)</span> with respect to some data <span class="math notranslate nohighlight">\(\boldsymbol{w}=\left\{x_{1}, \ldots, x_{n}\right\}\)</span> is</p>
 <div class="math notranslate nohighlight">
 \[
 H_{\hat{p}}(\boldsymbol{x})=-\frac{1}{n} \log _{2} \hat{p}(\boldsymbol{x})
 \]</div>
-<div class="margin sidebar">
+<aside class="margin sidebar">
 <p class="sidebar-title"></p>
 <p>Intuition: This is the number of bits per word needed to encode this data set using the model.</p>
-</div>
+</aside>
 <p>For an <span class="math notranslate nohighlight">\(n\)</span>-gram LM, to evaluate <span class="math notranslate nohighlight">\(\hat{p}(\cdot)\)</span> on a test set <span class="math notranslate nohighlight">\(\boldsymbol{w}=\left\{w_{1}, \ldots, w_{n}\right\}\)</span>.</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -1044,8 +1047,8 @@ H_{\hat{p}}(\boldsymbol{w}) &amp;=-\frac{1}{n} \log _{2} \hat{p}(\boldsymbol{w})
 &amp;=-\frac{1}{n} \sum_{i=1}^{n} \log _{2} \hat{p}\left(w_{i} \mid \phi\left(\boldsymbol{h}_{i}\right)\right)
 \end{aligned}
 \end{split}\]</div>
-</div>
-<div class="section" id="perplexity">
+</section>
+<section id="perplexity">
 <h3>Perplexity<a class="headerlink" href="#perplexity" title="Permalink to this headline">¶</a></h3>
 <p>Recall the perplexity of a distribution <span class="math notranslate nohighlight">\(P(X)\)</span> is <span class="math notranslate nohighlight">\(2^{H_{p}(X)}\)</span>.</p>
 <p>Here, we consider the empirical perplexity of a model of a distribution w.r.t. a data set</p>
@@ -1055,15 +1058,17 @@ P P_{\hat{p}}(\boldsymbol{w})=2^{H_{\hat{p}}(\boldsymbol{w})}
 \]</div>
 <p><strong>Interpretation</strong>: Perplexity is the average number of words possible after a given history (the average branching factor of the LM).</p>
 <p>Usually, as <span class="math notranslate nohighlight">\(n\)</span> increases in <span class="math notranslate nohighlight">\(n\)</span>-gram models, perplexity goes down, as we are more certain in the conditional distribution <span class="math notranslate nohighlight">\(p(w_i\vert \phi(\boldsymbol{h_i} ))\)</span></p>
-<div class="figure align-default" id="lang-perplexity">
+<figure class="align-default" id="lang-perplexity">
 <a class="reference internal image-reference" href="../_images/lang-perplexity.png"><img alt="" src="../_images/lang-perplexity.png" style="width: 50%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 111 </span><span class="caption-text">Perplexity on different domains</span><a class="headerlink" href="#lang-perplexity" title="Permalink to this image">¶</a></p>
-</div>
-</div>
-</div>
-<div class="section" id="improvement">
+<figcaption>
+<p><span class="caption-number">Fig. 111 </span><span class="caption-text">Perplexity on different domains</span><a class="headerlink" href="#lang-perplexity" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+</section>
+</section>
+<section id="improvement">
 <h2>Improvement<a class="headerlink" href="#improvement" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="sparse-data-problem">
+<section id="sparse-data-problem">
 <h3>Sparse Data Problem<a class="headerlink" href="#sparse-data-problem" title="Permalink to this headline">¶</a></h3>
 <p>A vocabulary of size <span class="math notranslate nohighlight">\(V\)</span> has <span class="math notranslate nohighlight">\(V^n\)</span> possible <span class="math notranslate nohighlight">\(n\)</span>-grams <span class="math notranslate nohighlight">\(w_i \vert w_{i-(n-1)}, \ldots, w_{i-1}\)</span>. Most of <span class="math notranslate nohighlight">\(n\)</span>-grams are rare. In a training set, it’s unlikely that we will see all of them. As a result, maximum-likelihood just assign 0 probability.</p>
 <p>To alleviate this, we use <strong>smoothing</strong>: A set of techniques for re-distributing probability mass from frequently seen to unseen/rare events.</p>
@@ -1078,8 +1083,8 @@ P P_{\hat{p}}(\boldsymbol{w})=2^{H_{\hat{p}}(\boldsymbol{w})}
 </ul>
 <p>This is because both halves are samples, not identical. There must be some bigrams in 2nd half that are unseen in 1st half, which take up some counts, such that <span class="math notranslate nohighlight">\(5\)</span> is diluted.</p>
 <p>There are several improvements to solve this problem.</p>
-</div>
-<div class="section" id="laplace-add-one-smoothing">
+</section>
+<section id="laplace-add-one-smoothing">
 <h3>Laplace (add-one) Smoothing<a class="headerlink" href="#laplace-add-one-smoothing" title="Permalink to this headline">¶</a></h3>
 <p>Simplest idea: Add count of 1 to each event (seen or unseen)</p>
 <ul class="simple">
@@ -1097,8 +1102,8 @@ P P_{\hat{p}}(\boldsymbol{w})=2^{H_{\hat{p}}(\boldsymbol{w})}
 </li>
 </ul>
 <p>A simple extension is “delta smoothing”: Add some value <span class="math notranslate nohighlight">\(\delta\)</span> instead of <span class="math notranslate nohighlight">\(1\)</span></p>
-</div>
-<div class="section" id="back-off-n-grams">
+</section>
+<section id="back-off-n-grams">
 <h3>Back-off n-grams<a class="headerlink" href="#back-off-n-grams" title="Permalink to this headline">¶</a></h3>
 <p>Idea: reduce <span class="math notranslate nohighlight">\(n\)</span>, so the total number of probabilities to be estimated, which is <span class="math notranslate nohighlight">\(V^n\)</span>, decreases.</p>
 <ul>
@@ -1119,24 +1124,28 @@ P P_{\hat{p}}(\boldsymbol{w})=2^{H_{\hat{p}}(\boldsymbol{w})}
   \]</div>
 </li>
 </ul>
-</div>
-</div>
-<div class="section" id="neural-language-model">
+</section>
+</section>
+<section id="neural-language-model">
 <h2>Neural Language Model<a class="headerlink" href="#neural-language-model" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="word-embeddings-mlp">
+<section id="word-embeddings-mlp">
 <h3>Word Embeddings + MLP<a class="headerlink" href="#word-embeddings-mlp" title="Permalink to this headline">¶</a></h3>
 <p>To alleviate the sparse data problem in <span class="math notranslate nohighlight">\(n\)</span>-gram model, instead of smoothing, neural language models (multi-layer perceptron) represent each <strong>word</strong> as a continuous-valued vector (word embedding) given by matrix <span class="math notranslate nohighlight">\(\boldsymbol{C}\)</span>, where each row is a word embedding. The embedding is trained.</p>
-<div class="figure align-default" id="nlm-structure">
+<figure class="align-default" id="nlm-structure">
 <a class="reference internal image-reference" href="../_images/nlm-structure.png"><img alt="" src="../_images/nlm-structure.png" style="width: 70%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 112 </span><span class="caption-text">Neural language models [Bengio 2003]. Dash lines are optional concatenation</span><a class="headerlink" href="#nlm-structure" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">Fig. 112 </span><span class="caption-text">Neural language models [Bengio 2003]. Dash lines are optional concatenation</span><a class="headerlink" href="#nlm-structure" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <p>The perplexity is reduced from smoothing method’s 312 to 252.</p>
-<div class="figure align-default" id="nlm-perplexity">
+<figure class="align-default" id="nlm-perplexity">
 <a class="reference internal image-reference" href="../_images/nlm-perplexity.png"><img alt="" src="../_images/nlm-perplexity.png" style="width: 60%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 113 </span><span class="caption-text">NLM perplexity</span><a class="headerlink" href="#nlm-perplexity" title="Permalink to this image">¶</a></p>
-</div>
-</div>
-<div class="section" id="character-embedding-rnn">
+<figcaption>
+<p><span class="caption-number">Fig. 113 </span><span class="caption-text">NLM perplexity</span><a class="headerlink" href="#nlm-perplexity" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="character-embedding-rnn">
 <h3>Character Embedding + RNN<a class="headerlink" href="#character-embedding-rnn" title="Permalink to this headline">¶</a></h3>
 <p>Consider a basic RNN language model, that take a character as input, and predict the next character.</p>
 <p>Forward propagation:</p>
@@ -1152,15 +1161,17 @@ P P_{\hat{p}}(\boldsymbol{w})=2^{H_{\hat{p}}(\boldsymbol{w})}
 \[
 \prod_{t} p\left(\boldsymbol{x} _{t} \vert \boldsymbol{x} _{&lt;t}\right)
 \]</div>
-<div class="figure align-default" id="nlm-rnn">
+<figure class="align-default" id="nlm-rnn">
 <a class="reference internal image-reference" href="../_images/nlm-rnn.png"><img alt="" src="../_images/nlm-rnn.png" style="width: 60%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 114 </span><span class="caption-text">A basic RNN language model</span><a class="headerlink" href="#nlm-rnn" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">Fig. 114 </span><span class="caption-text">A basic RNN language model</span><a class="headerlink" href="#nlm-rnn" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <p>This is a many-to-many RNN. For details of RNN, see <a class="reference internal" href="../37-neural-networks/31-sequential-models.html"><span class="doc std std-doc">sequential models</span></a>,</p>
 <p>Most recent work based on transformers, trained on much more data, with many more parameters. Example: GPT-3 from OpenAI with 100s of billions of training text tokens + 175 billion parameters</p>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {

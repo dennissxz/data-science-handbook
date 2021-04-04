@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
     <title>Sequential Models &#8212; Data Science Handbook</title>
     
   <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
@@ -93,7 +94,7 @@
   </a>
  </li>
 </ul>
-<p class="caption collapsible-parent">
+<p>
  <span class="caption-text">
   Foundations
  </span>
@@ -314,7 +315,7 @@
   </i>
  </li>
 </ul>
-<p class="caption collapsible-parent">
+<p>
  <span class="caption-text">
   Algorithms
  </span>
@@ -462,7 +463,7 @@
   </i>
  </li>
 </ul>
-<p class="caption collapsible-parent">
+<p>
  <span class="caption-text">
   Machine Learning
  </span>
@@ -932,12 +933,12 @@
         
               <div>
                 
-  <div class="section" id="sequential-models">
+  <section id="sequential-models">
 <h1>Sequential Models<a class="headerlink" href="#sequential-models" title="Permalink to this headline">¶</a></h1>
 <p>In this section we introduce neural networks for sequential data, like text or speech. First we introduce RNN in detail, and then briefly introduce other models.</p>
-<div class="section" id="recurrent-neural-networks">
+<section id="recurrent-neural-networks">
 <h2>Recurrent Neural Networks<a class="headerlink" href="#recurrent-neural-networks" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="i-o">
+<section id="i-o">
 <h3>I/O<a class="headerlink" href="#i-o" title="Permalink to this headline">¶</a></h3>
 <p>The main idea is parameter sharing through time.</p>
 <ul class="simple">
@@ -961,8 +962,8 @@
 </ul>
 </li>
 </ul>
-</div>
-<div class="section" id="forward-propagation">
+</section>
+<section id="forward-propagation">
 <h3>Forward Propagation<a class="headerlink" href="#forward-propagation" title="Permalink to this headline">¶</a></h3>
 <p>Different tasks have different RNN structure. Here we start from a simple task of sequence classification. For instance, given a sentence, we want to classify its sentiment as “positive/negative”.</p>
 <p>The forward propagation is</p>
@@ -974,10 +975,12 @@
 </li>
 </ul>
 <p>Pictorially, RNN can be illustrated in either recurrent format (left) or unfold/unrolled format (right). In the unfold format, we call each iteration unit <span class="math notranslate nohighlight">\(A\)</span> a <strong>block</strong>. Note that each block shares the same parameters <span class="math notranslate nohighlight">\((\boldsymbol{W} _h, \boldsymbol{W} _x, \boldsymbol{b} )\)</span>.</p>
-<div class="figure align-default" id="rnn-structure-revised">
+<figure class="align-default" id="rnn-structure-revised">
 <a class="reference internal image-reference" href="../_images/rnn-structure-revised.png"><img alt="" src="../_images/rnn-structure-revised.png" style="width: 70%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 136 </span><span class="caption-text">Illustration of RNN structure [Chris Olah, revised]</span><a class="headerlink" href="#rnn-structure-revised" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">Fig. 136 </span><span class="caption-text">Illustration of RNN structure [Chris Olah, revised]</span><a class="headerlink" href="#rnn-structure-revised" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <p>Note that</p>
 <ul class="simple">
 <li><p>The same weight matrices <span class="math notranslate nohighlight">\(\boldsymbol{W}_x\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{W} _h\)</span> are used in every iteration, i.e. parameter sharing. One can write <span class="math notranslate nohighlight">\(\boldsymbol{W} = [\boldsymbol{W} _h\quad \boldsymbol{W} _x] \in \mathbb{R} ^{d \times 2d}\)</span> and hence <span class="math notranslate nohighlight">\(\boldsymbol{h} _j = \boldsymbol{W} \left[\begin{array}{c}
@@ -999,8 +1002,8 @@
   \end{aligned}
   \end{split}\]</div>
 <p>Recall in for language modeling, the task is to model <span class="math notranslate nohighlight">\(P\left(w_{i} \mid w_{1}, \ldots, w_{i-1}\right)\)</span>. We can view <span class="math notranslate nohighlight">\(\boldsymbol{h} _{i-1} = \operatorname{info} (w_{1}, \ldots, w_{i-1})\)</span>, with gold label <span class="math notranslate nohighlight">\(w_i\)</span>.</p>
-</div>
-<div class="section" id="backward-propagation">
+</section>
+<section id="backward-propagation">
 <h3>Backward Propagation<a class="headerlink" href="#backward-propagation" title="Permalink to this headline">¶</a></h3>
 <p>Consider the case without activation function,</p>
 <div class="math notranslate nohighlight">
@@ -1021,8 +1024,8 @@
 \end{aligned}
 \end{split}\]</div>
 <p>Note that above equations implies that we need to store <span class="math notranslate nohighlight">\(\boldsymbol{h} _j\)</span> at every intermediate steps. This leads to a memory problem, see <a class="reference internal" href="#rnn-truncated-bptt"><span class="std std-ref">Truncated BPTT</span></a> for solution.</p>
-</div>
-<div class="section" id="exploding-gradient">
+</section>
+<section id="exploding-gradient">
 <h3>Exploding Gradient<a class="headerlink" href="#exploding-gradient" title="Permalink to this headline">¶</a></h3>
 <p>From the toy case above, we see that there the accumulative gradient leads to</p>
 <div class="math notranslate nohighlight">
@@ -1035,18 +1038,20 @@
 \boldsymbol{W}\texttt{.grad} = \frac{\delta \boldsymbol{W}\texttt{.grad}}{\left\| \boldsymbol{W}\texttt{.grad} \right\|  }
 \]</div>
 <p>to ensure the gradient norm is at most <span class="math notranslate nohighlight">\(\delta\)</span>.</p>
-</div>
-<div class="section" id="other-structure">
+</section>
+<section id="other-structure">
 <h3>Other Structure<a class="headerlink" href="#other-structure" title="Permalink to this headline">¶</a></h3>
 <p>As said, we only introduce RNN for sequence classification. There are many other RNN structures to other tasks.</p>
-<div class="figure align-default" id="rnn-tasks">
+<figure class="align-default" id="rnn-tasks">
 <a class="reference internal image-reference" href="../_images/rnn-tasks.png"><img alt="" src="../_images/rnn-tasks.png" style="width: 100%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 137 </span><span class="caption-text">Different RNN structures to different tasks [<a class="reference external" href="https://subscription.packtpub.com/book/big_data_and_business_intelligence/9781789536089/5/ch05lvl1sec86/summarizing-different-types-of-sequence-processing-tasks">figure link</a>]</span><a class="headerlink" href="#rnn-tasks" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">Fig. 137 </span><span class="caption-text">Different RNN structures to different tasks [<a class="reference external" href="https://subscription.packtpub.com/book/big_data_and_business_intelligence/9781789536089/5/ch05lvl1sec86/summarizing-different-types-of-sequence-processing-tasks">figure link</a>]</span><a class="headerlink" href="#rnn-tasks" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <p>More <a class="reference external" href="https://calvinfeng.gitbook.io/machine-learning-notebook/supervised-learning/recurrent-neural-network/recurrent_neural_networks">reference</a>.</p>
-</div>
-</div>
-<div class="section" id="bidirectional-rnns">
+</section>
+</section>
+<section id="bidirectional-rnns">
 <h2>Bidirectional RNNs<a class="headerlink" href="#bidirectional-rnns" title="Permalink to this headline">¶</a></h2>
 <p>In RNN, when we see a word <span class="math notranslate nohighlight">\(\boldsymbol{x} _t\)</span>, we look up <span class="math notranslate nohighlight">\(\boldsymbol{h} _{t-1}\)</span> which contains information from the past words. But in natural language, in a sentence, to understand a word, we may need a word in the future (e.g. postpositive adjective). Hence, can we extract information from <span class="math notranslate nohighlight">\(\boldsymbol{x} _t\)</span> and understand <span class="math notranslate nohighlight">\(\boldsymbol{x} _{t-1}, \boldsymbol{x} _{t-2}, \ldots\)</span> and so on?</p>
 <p>Given an input sequence <span class="math notranslate nohighlight">\(\boldsymbol{X}_i = (\boldsymbol{x} _1, \ldots, \boldsymbol{x} _t)\)</span>, we can build two RNNs,</p>
@@ -1060,21 +1065,25 @@
 <li><p>Both <span class="math notranslate nohighlight">\(A_i\)</span> and <span class="math notranslate nohighlight">\(A_i ^\prime\)</span> and connected to <span class="math notranslate nohighlight">\(\boldsymbol{y}_i\)</span>, this means concatenation, hence <span class="math notranslate nohighlight">\(\boldsymbol{y} \in \mathbb{R} ^{2d}\)</span></p></li>
 <li><p>The output are <span class="math notranslate nohighlight">\((\boldsymbol{y} _0, \boldsymbol{y} _1, \ldots, \boldsymbol{y} _t)\)</span>. In particular, for many-to-one BiRNN, the output feature for downstream task can be <span class="math notranslate nohighlight">\([\boldsymbol{h} ^{\text{fwd} }_t;\boldsymbol{h} ^{\text{bwd} }_1]\)</span></p></li>
 </ul>
-<div class="figure align-default" id="rnn-bidirectional">
+<figure class="align-default" id="rnn-bidirectional">
 <a class="reference internal image-reference" href="../_images/rnn-bidirectional.png"><img alt="" src="../_images/rnn-bidirectional.png" style="width: 60%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 138 </span><span class="caption-text">Bidirectional RNN [Chris Olah]</span><a class="headerlink" href="#rnn-bidirectional" title="Permalink to this image">¶</a></p>
-</div>
-</div>
-<div class="section" id="multi-layer-rnn">
+<figcaption>
+<p><span class="caption-number">Fig. 138 </span><span class="caption-text">Bidirectional RNN [Chris Olah]</span><a class="headerlink" href="#rnn-bidirectional" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="multi-layer-rnn">
 <h2>Multi-layer RNN<a class="headerlink" href="#multi-layer-rnn" title="Permalink to this headline">¶</a></h2>
 <p>In RNNs, the hidden states of each block <span class="math notranslate nohighlight">\(\boldsymbol{h} _j\)</span> can be used as input vector “<span class="math notranslate nohighlight">\(\boldsymbol{x} _j\)</span>” to another RNN. Following this idea, we can build multi-layer RNN.</p>
-<div class="figure align-default" id="rnn-multi-layer">
+<figure class="align-default" id="rnn-multi-layer">
 <a class="reference internal image-reference" href="../_images/rnn-multi-layer.png"><img alt="" src="../_images/rnn-multi-layer.png" style="width: 70%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 139 </span><span class="caption-text">Multi-layer RNNs [<a class="reference external" href="https://www.kaggle.com/andradaolteanu/pytorch-rnns-and-lstms-explained-acc-0-99">figure link</a>]</span><a class="headerlink" href="#rnn-multi-layer" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">Fig. 139 </span><span class="caption-text">Multi-layer RNNs [<a class="reference external" href="https://www.kaggle.com/andradaolteanu/pytorch-rnns-and-lstms-explained-acc-0-99">figure link</a>]</span><a class="headerlink" href="#rnn-multi-layer" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <p>Note that the computation time for <span class="math notranslate nohighlight">\(1\)</span>-layer RNN is <span class="math notranslate nohighlight">\(O(t)\)</span>, and for <span class="math notranslate nohighlight">\(L\)</span>-layer RNN is <span class="math notranslate nohighlight">\(O(L+t)\)</span>, not <span class="math notranslate nohighlight">\(O(L\times t)\)</span>. Think about forward propagation, when processing the <span class="math notranslate nohighlight">\(j\)</span>-th block in the first layer, we can simultaneously process the <span class="math notranslate nohighlight">\((j-1)\)</span>-th block in the 2nd layer, and <span class="math notranslate nohighlight">\((j-2)\)</span>-th block in the 3rd layer, etc.. That is, the blocks along a diagonal can be computed simultaneously. Hence, the computation progress from bottom left to top right of the <span class="math notranslate nohighlight">\(L \times t\)</span> grid, and the maximum length of a diagonal is <span class="math notranslate nohighlight">\(O(L+t)\)</span></p>
-</div>
-<div class="section" id="truncated-bptt">
+</section>
+<section id="truncated-bptt">
 <span id="rnn-truncated-bptt"></span><h2>Truncated BPTT<a class="headerlink" href="#truncated-bptt" title="Permalink to this headline">¶</a></h2>
 <p>In RNNs, we must store every <span class="math notranslate nohighlight">\(\boldsymbol{h} _j\)</span> in order to compute the gradient in the backward propagation. If <span class="math notranslate nohighlight">\(t\)</span> is large, then there is no enough memory. To solve this, we do Truncated Backpropagation Through Time. The main idea is that we run forward propagation and backward propagation w.r.t. each segment, instead of w.r.t. a whole sequence.</p>
 <p>We chop a sequence into chunks of vectors. In a segment covering time <span class="math notranslate nohighlight">\(j+1, \ldots, k\)</span>, suppose the last vector is <span class="math notranslate nohighlight">\(\boldsymbol{x} _{k}\)</span>, and the hidden vector from last segment is <span class="math notranslate nohighlight">\(h_{j}\)</span>, we do</p>
@@ -1084,22 +1093,24 @@
 <li><p>Run backpropagation from <span class="math notranslate nohighlight">\(k\)</span> to <span class="math notranslate nohighlight">\(j+1\)</span>, where we will use <span class="math notranslate nohighlight">\((\boldsymbol{h} _{j+1}, \ldots, \boldsymbol{h} _{k-1})\)</span>. After the gradient of <span class="math notranslate nohighlight">\(\boldsymbol{W}, \boldsymbol{b}\)</span> is updated, we can <strong>drop</strong> <span class="math notranslate nohighlight">\((\boldsymbol{h} _{j+1}, \ldots, \boldsymbol{h} _{k-1})\)</span>.</p></li>
 <li><p>Feed <span class="math notranslate nohighlight">\(\boldsymbol{h} _k\)</span> to the next segment.</p></li>
 </ul>
-<div class="margin sidebar">
+<aside class="margin sidebar">
 <p class="sidebar-title">Analogy</p>
 <p>If you are familiar with biology, these segments are analogous to <a class="reference external" href="https://en.wikipedia.org/wiki/Okazaki_fragments">Okazaki fragments</a> in DNA replication!</p>
-</div>
-<div class="figure align-default" id="rnn-truncated-bptt-fig">
+</aside>
+<figure class="align-default" id="rnn-truncated-bptt-fig">
 <a class="reference internal image-reference" href="../_images/rnn-truncated-bptt.png"><img alt="" src="../_images/rnn-truncated-bptt.png" style="width: 70%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 140 </span><span class="caption-text">RNN with Truncated BPTT [Varma and Das, 2018]</span><a class="headerlink" href="#rnn-truncated-bptt-fig" title="Permalink to this image">¶</a></p>
-</div>
-</div>
-<div class="section" id="long-short-term-memory">
+<figcaption>
+<p><span class="caption-number">Fig. 140 </span><span class="caption-text">RNN with Truncated BPTT [Varma and Das, 2018]</span><a class="headerlink" href="#rnn-truncated-bptt-fig" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="long-short-term-memory">
 <h2>Long Short-term Memory<a class="headerlink" href="#long-short-term-memory" title="Permalink to this headline">¶</a></h2>
 <p>LSTM (Hochreiter and Schmidhuber, 1997) is an effective variation of RNN. It has more operations in each iteration.</p>
-<div class="margin sidebar">
+<aside class="margin sidebar">
 <p class="sidebar-title">Why don’t use <span class="math notranslate nohighlight">\(\operatorname{ReLU}\)</span>?</p>
 <p>Probably since <span class="math notranslate nohighlight">\(\operatorname{ReLU}\)</span> hasn’t been proposed by 1997.</p>
-</div>
+</aside>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{array}{ll}
@@ -1110,10 +1121,12 @@
 \end{split}\]</div>
 <p>where <span class="math notranslate nohighlight">\(*\)</span> stands for element-wise product.</p>
 <p>Pictorially, it can be shown below. Each green rectangle (block) stands for an iteration to process <span class="math notranslate nohighlight">\(\boldsymbol{x} _j\)</span>.</p>
-<div class="figure align-default" id="lstm-structure">
+<figure class="align-default" id="lstm-structure">
 <a class="reference internal image-reference" href="../_images/lstm-structure.png"><img alt="" src="../_images/lstm-structure.png" style="width: 70%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 141 </span><span class="caption-text">Illustration of LSTM structure [Chris Olah]</span><a class="headerlink" href="#lstm-structure" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">Fig. 141 </span><span class="caption-text">Illustration of LSTM structure [Chris Olah]</span><a class="headerlink" href="#lstm-structure" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <p>Compared to RNN, LSTM</p>
 <ul>
 <li><p>Stores the information in a <strong>cell</strong> vector <span class="math notranslate nohighlight">\(\boldsymbol{c}_t\)</span>, which corresponds to the hidden state <span class="math notranslate nohighlight">\(\boldsymbol{h} _t\)</span> in RNN but is improved. It first computes a temporary cell <span class="math notranslate nohighlight">\(\tilde{\boldsymbol{c} }_t\)</span> by the same formula in RNN <span class="math notranslate nohighlight">\(\tilde{\boldsymbol{c} }_t = \operatorname{tanh} (\boldsymbol{W}_c [\boldsymbol{h}_{t-1}; \boldsymbol{x} _t] + \boldsymbol{b}_c )\)</span>, where the parameters <span class="math notranslate nohighlight">\((\boldsymbol{W} _c, \boldsymbol{b} _c)\)</span> are specific to this computation for <span class="math notranslate nohighlight">\(\tilde{\boldsymbol{c} }_t\)</span>.</p></li>
@@ -1135,8 +1148,8 @@
 </li>
 </ul>
 <p>The name “Long Short-term” does not mean long-term and short-term memory, but means LSTM tries to make the memory in RNN, which is short, <strong>longer</strong>. But actually, LSTM (language models) still only maintain the information from very recent history, i.e., less than 20 tokens, well [Khandelwal et al. 2019]. The next improvement is adding attention mechanism on top of hidden states [Lin et al. 2017]. More recent models are transformers.</p>
-</div>
-<div class="section" id="gated-recurrent-units">
+</section>
+<section id="gated-recurrent-units">
 <h2>Gated Recurrent Units<a class="headerlink" href="#gated-recurrent-units" title="Permalink to this headline">¶</a></h2>
 <p>GRU is another variation of RNN.</p>
 <p>One can understand GRU as a variation from LSTM that combines forget gate <span class="math notranslate nohighlight">\(\boldsymbol{f}\)</span> with input gate <span class="math notranslate nohighlight">\(\boldsymbol{i}\)</span>, and remove output gate <span class="math notranslate nohighlight">\(\boldsymbol{o}\)</span>.</p>
@@ -1150,12 +1163,14 @@
 \end{aligned}
 \end{split}\]</div>
 <p>Note the <span class="math notranslate nohighlight">\(\boldsymbol{r}\)</span> vector which is used for element-wise dot product with <span class="math notranslate nohighlight">\(\boldsymbol{h} _{t-1}\)</span> in computing <span class="math notranslate nohighlight">\(\tilde{\boldsymbol{h} }_t\)</span>.</p>
-<div class="figure align-default" id="gru-structure">
+<figure class="align-default" id="gru-structure">
 <a class="reference internal image-reference" href="../_images/gru-structure.png"><img alt="" src="../_images/gru-structure.png" style="width: 70%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 142 </span><span class="caption-text">Illustration of GRU structure [Chris Olah]</span><a class="headerlink" href="#gru-structure" title="Permalink to this image">¶</a></p>
-</div>
-</div>
-<div class="section" id="sequence-to-sequence">
+<figcaption>
+<p><span class="caption-number">Fig. 142 </span><span class="caption-text">Illustration of GRU structure [Chris Olah]</span><a class="headerlink" href="#gru-structure" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="sequence-to-sequence">
 <h2>Sequence to Sequence<a class="headerlink" href="#sequence-to-sequence" title="Permalink to this headline">¶</a></h2>
 <p>Consider a sequence to sequence task, e.g. translation, email auto-response. Given an input sentence <span class="math notranslate nohighlight">\(\boldsymbol{s} = (s_1, \ldots, s_t)\)</span>, we want an output <span class="math notranslate nohighlight">\((w_1, \ldots, w_k)\)</span>, where <span class="math notranslate nohighlight">\(k\)</span> is not known. To model the next word <span class="math notranslate nohighlight">\(w_i\)</span>, we use</p>
 <div class="math notranslate nohighlight">
@@ -1169,14 +1184,16 @@
 </ul>
 </li>
 </ul>
-<div class="figure align-default" id="seq2seq-structure">
+<figure class="align-default" id="seq2seq-structure">
 <a class="reference internal image-reference" href="../_images/seq2seq-structure.png"><img alt="" src="../_images/seq2seq-structure.png" style="width: 80%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 143 </span><span class="caption-text">Sequence to sequence model illustration [Sachin Abeywardana]</span><a class="headerlink" href="#seq2seq-structure" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">Fig. 143 </span><span class="caption-text">Sequence to sequence model illustration [Sachin Abeywardana]</span><a class="headerlink" href="#seq2seq-structure" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <p>To use the gold sentence in training, in the decoder, we use every gold word as input to each block of decoder, instead of using the generated word from last block, which may be nonsensical. This is called <strong>teacher-forcing</strong>.</p>
 <p>.</p>
-</div>
-</div>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {

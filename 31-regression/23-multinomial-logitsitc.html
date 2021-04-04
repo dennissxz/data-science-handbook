@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
     <title>Multinomial Logistic Regression &#8212; Data Science Handbook</title>
     
   <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
@@ -93,7 +94,7 @@
   </a>
  </li>
 </ul>
-<p class="caption collapsible-parent">
+<p>
  <span class="caption-text">
   Foundations
  </span>
@@ -314,7 +315,7 @@
   </i>
  </li>
 </ul>
-<p class="caption collapsible-parent">
+<p>
  <span class="caption-text">
   Algorithms
  </span>
@@ -462,7 +463,7 @@
   </i>
  </li>
 </ul>
-<p class="caption collapsible-parent">
+<p>
  <span class="caption-text">
   Machine Learning
  </span>
@@ -939,7 +940,7 @@
         
               <div>
                 
-  <div class="section" id="multinomial-logistic-regression">
+  <section id="multinomial-logistic-regression">
 <h1>Multinomial Logistic Regression<a class="headerlink" href="#multinomial-logistic-regression" title="Permalink to this headline">¶</a></h1>
 <p>Aka multinomial GLM, or multinomial logit in short.</p>
 <p>A generalization of binomial GLM is multinomial GLM, where we have <span class="math notranslate nohighlight">\(c\)</span> categories. In particular,</p>
@@ -947,7 +948,7 @@
 <li><p>if the categories have internal order, we use <a class="reference internal" href="24-ordinal-logistic.html"><span class="doc std std-doc">ordinal</span></a> logistic regression</p></li>
 <li><p>if the categories are nested (train/car/bus and then red/blue bus), we use nested logit models.</p></li>
 </ul>
-<div class="section" id="data-structure">
+<section id="data-structure">
 <h2>Data Structure<a class="headerlink" href="#data-structure" title="Permalink to this headline">¶</a></h2>
 <p>In this chapter we express models in terms of such ungrouped data. As with binary data, however, with discrete explanatory variables it is better to group the <span class="math notranslate nohighlight">\(N\)</span> observations according to their multicategory trial indices <span class="math notranslate nohighlight">\(\left\{ n_{i}\right\}\)</span> before forming the deviance and other goodness-of-fit statistics and residuals.</p>
 <p>For subject <span class="math notranslate nohighlight">\(i\)</span>, let <span class="math notranslate nohighlight">\(\pi_{ij}\)</span> denote the probability of response in category <span class="math notranslate nohighlight">\(j\)</span>, with <span class="math notranslate nohighlight">\({\sum_{j=1}^{c}\pi_{ij}=1}\)</span>. The observation is a vector of binary entries <span class="math notranslate nohighlight">\({\boldsymbol{y}_{i}=\left(y_{i1},\ldots,y_{ic}\right)}\)</span>, where <span class="math notranslate nohighlight">\(y_{ij}=1\)</span> when the response is in category <span class="math notranslate nohighlight">\(j\)</span> and <span class="math notranslate nohighlight">\(y_{ij}=0\)</span> otherwise, then <span class="math notranslate nohighlight">\({\sum_{j}y_{ij}=1}\)</span>. The probability distribution is</p>
@@ -956,10 +957,10 @@
 {p\left(y_{i1},\ldots, y_{ic}\right)=\pi_{i1}^{y_{i1}}\cdots\pi_{ic}^{y_{i}}}
 \]</div>
 <p>If there is no order in the categories, the response is called nominal response. Otherwise, it’s called ordinal response.</p>
-</div>
-<div class="section" id="baseline-category-logit-model">
+</section>
+<section id="baseline-category-logit-model">
 <h2>Baseline-Category Logit Model<a class="headerlink" href="#baseline-category-logit-model" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="link-function">
+<section id="link-function">
 <h3>Link Function<a class="headerlink" href="#link-function" title="Permalink to this headline">¶</a></h3>
 <p>We construct a multinomial logistic model by pairing each response category with a baseline category, such as the last category <span class="math notranslate nohighlight">\(c\)</span>. Like in logistic regression We use a linear predictor to model the log odds:</p>
 <div class="math notranslate nohighlight">
@@ -974,8 +975,8 @@ g_{j}(\boldsymbol{\pi}_{i})=\log\frac{\pi_{ij}}{\pi_{ic}}=\boldsymbol{x}_i ^\top
 \]</div>
 <p>If <span class="math notranslate nohighlight">\(c=2\)</span>, this formula simplifies to the probability for logistic regression.</p>
 <p>By convention <span class="math notranslate nohighlight">\(\boldsymbol{\beta}_{c}=\boldsymbol{0}\)</span> and <span class="math notranslate nohighlight">\(\pi_{ic}=\frac{1}{1+\sum_{h=1}^{c-1}\exp(\boldsymbol{x}_{i}^{\top}\boldsymbol{\beta}_{h})}\)</span>.</p>
-</div>
-<div class="section" id="interpretation">
+</section>
+<section id="interpretation">
 <h3>Interpretation<a class="headerlink" href="#interpretation" title="Permalink to this headline">¶</a></h3>
 <p>Recall there are <span class="math notranslate nohighlight">\((c-1)\times p\)</span> number of <span class="math notranslate nohighlight">\(\beta\)</span>’s. Interpretation of the overall effects for <span class="math notranslate nohighlight">\(\boldsymbol{\beta}_{j}\)</span> is not simple, since in the above formula we see <span class="math notranslate nohighlight">\(\pi_{ij}\)</span> also depends on other <span class="math notranslate nohighlight">\(\boldsymbol{\beta}_{h}\)</span>. The derivative of <span class="math notranslate nohighlight">\(\pi_{ij}\)</span> w.r.t. the <span class="math notranslate nohighlight">\(k\)</span>-th covariate <span class="math notranslate nohighlight">\(x_{ik}\)</span> is</p>
 <div class="math notranslate nohighlight">
@@ -990,8 +991,8 @@ g_{j}(\boldsymbol{\pi}_{i})=\log\frac{\pi_{ij}}{\pi_{ic}}=\boldsymbol{x}_i ^\top
 \frac{\pi_{ij}}{\pi_{ic}}=\exp\left(\boldsymbol{x}_i ^\top \boldsymbol{\beta} _{j}\right)
 \]</div>
 <p>If <span class="math notranslate nohighlight">\(x_{ik}\)</span> increases 1 unit, the odds is multiplied by <span class="math notranslate nohighlight">\(\exp(\beta_{jk})\)</span>, similar to the meaning in logistic regression.</p>
-</div>
-<div class="section" id="multivariate-exponential-families">
+</section>
+<section id="multivariate-exponential-families">
 <h3>Multivariate Exponential Families<a class="headerlink" href="#multivariate-exponential-families" title="Permalink to this headline">¶</a></h3>
 <p>Multivariate here means <span class="math notranslate nohighlight">\(\boldsymbol{y}\)</span> is a vector. The PDF is</p>
 <div class="math notranslate nohighlight">
@@ -1034,11 +1035,11 @@ g_{c-1}(\boldsymbol{\mu}_{i})
 \[
 g_{j}(\boldsymbol{\mu}_{i})=\log\left(\frac{\pi_{ij}}{\pi_{ic}}\right),\ j=1,2,\ldots,{c-1}
 \]</div>
-</div>
-</div>
-<div class="section" id="estimation">
+</section>
+</section>
+<section id="estimation">
 <h2>Estimation<a class="headerlink" href="#estimation" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="score-equations">
+<section id="score-equations">
 <h3>Score Equations<a class="headerlink" href="#score-equations" title="Permalink to this headline">¶</a></h3>
 <p>The log-likelihood for subject <span class="math notranslate nohighlight">\(i\)</span> is</p>
 <div class="math notranslate nohighlight">
@@ -1069,8 +1070,8 @@ g_{j}(\boldsymbol{\mu}_{i})=\log\left(\frac{\pi_{ij}}{\pi_{ic}}\right),\ j=1,2,\
 \]</div>
 <p>for <span class="math notranslate nohighlight">\(j=1, \ldots, c-1\)</span> and <span class="math notranslate nohighlight">\(k=1\ldots,p\)</span>.</p>
 <p>Again, the score equations equate the sufficient statistics to their expected value.</p>
-</div>
-<div class="section" id="computation">
+</section>
+<section id="computation">
 <h3>Computation<a class="headerlink" href="#computation" title="Permalink to this headline">¶</a></h3>
 <p>We derive the Hessian matrix.</p>
 <p>Note that for two coefficients <span class="math notranslate nohighlight">\(\beta_{jk}\)</span> and <span class="math notranslate nohighlight">\(\beta_{jh}\)</span> in <span class="math notranslate nohighlight">\(\boldsymbol{\beta}_{j}\)</span>,</p>
@@ -1089,11 +1090,11 @@ g_{j}(\boldsymbol{\mu}_{i})=\log\left(\frac{\pi_{ij}}{\pi_{ic}}\right),\ j=1,2,\
 {-\frac{\partial^{2}\ell(\boldsymbol{\beta},\boldsymbol{y})}{\partial\boldsymbol{\beta}_{j}\partial\boldsymbol{\beta}_{h}^{\mathrm{\top}}}=\sum_{i=1}^{N}\pi_{ij}\left[\mathbb{I}\left\{ j=h\right\} -\pi_{ij^{\prime}}\right]\boldsymbol{x}_{i}^{\top}\boldsymbol{x}_{i}}
 \]</div>
 <p>The Hessian is negative-definite, so the log-likelihood function is concave and has a unique maximum. The observed and expected information are identical, so the Newton-Raphson method is equivalent to Fisher scoring for finding the ML parameter estimates, a consequence of the link function being the canonical one. Convergence is usually fast unless at least one estimate is infinite or does not exist (see Note 6.2).</p>
-</div>
-</div>
-<div class="section" id="hypothesis-testing">
+</section>
+</section>
+<section id="hypothesis-testing">
 <h2>Hypothesis Testing<a class="headerlink" href="#hypothesis-testing" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="test-the-effect-of-x-k">
+<section id="test-the-effect-of-x-k">
 <h3>Test the Effect of <span class="math notranslate nohighlight">\(x_{k}\)</span><a class="headerlink" href="#test-the-effect-of-x-k" title="Permalink to this headline">¶</a></h3>
 <p>To test the effect of the <span class="math notranslate nohighlight">\(k\)</span>-th covariate is to test all the coefficients
 of it, namely <span class="math notranslate nohighlight">\(\beta_{jk}\)</span> for category <span class="math notranslate nohighlight">\(j=1,2,\ldots,{c-1}\)</span>. There are <span class="math notranslate nohighlight">\(k\)</span> constraints</p>
@@ -1104,8 +1105,8 @@ of it, namely <span class="math notranslate nohighlight">\(\beta_{jk}\)</span> f
 <p>The likelihood ratio test can be applied, with <span class="math notranslate nohighlight">\(df=c-1\)</span>. The likelihood-ratio
 test statistic equals the difference in the deviance values for comparing
 the models.</p>
-</div>
-<div class="section" id="deviance">
+</section>
+<section id="deviance">
 <h3>Deviance<a class="headerlink" href="#deviance" title="Permalink to this headline">¶</a></h3>
 <p>We will use grouped data for summary of goodness-of-fit. Now <span class="math notranslate nohighlight">\(\boldsymbol{y}_{i}\sim\frac{1}{n_{i}} \operatorname{Multinomial} (n_{i},\boldsymbol{\pi}_{i})\)</span>. That is, <span class="math notranslate nohighlight">\(y_{ij}\)</span> is the proportion of the observations in category <span class="math notranslate nohighlight">\(j\)</span>.</p>
 <p>The deviance compares log-likelihood of a fit <span class="math notranslate nohighlight">\(\left\{ \hat{\pi}_{ij}\right\}\)</span>
@@ -1123,8 +1124,8 @@ which is</p>
 \]</div>
 <p>For ungrouped data, the above formula remains valid and is used to
 compare nested unsaturated models.</p>
-</div>
-<div class="section" id="pearson-statistic">
+</section>
+<section id="pearson-statistic">
 <h3>Pearson Statistic<a class="headerlink" href="#pearson-statistic" title="Permalink to this headline">¶</a></h3>
 <p>The Pearson statistic is</p>
 <div class="math notranslate nohighlight">
@@ -1146,9 +1147,9 @@ and <span class="math notranslate nohighlight">\(\#\text{parameters}=p(c-1)\)</s
 <li><p>the sums are taken over all observed counts <span class="math notranslate nohighlight">\({\left\{ n_{i}y_{ij}\right\} }\)</span>. This explains why the sums are taken over <span class="math notranslate nohighlight">\(2N\)</span> success and failures in the deviance and Pearson statistic for logistic regression.</p></li>
 </ul>
 </div>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {

@@ -19,7 +19,7 @@ Also recall the definitions of conditional expectation and conditional variance:
 $$\begin{align}
  \operatorname{\mathbb{E}}(X \mid Y=y)
  &= \sum_{x} x P(X=x \mid Y=y) \\
- &\text{or} \int_{-\infty}^{\infty} x f_{X \mid Y}(x, y) \mathrm{~d} x \\
+ &\text{or} \int_{-\infty}^{\infty} x f_{X \mid Y}(x \mid y) \mathrm{~d} x \\
 \operatorname{Var}\left( X \mid Y=y \right)
  &= \operatorname{\mathbb{E}}\left[ (X-\mu_{X\mid Y=y})^{2} \mid Y=y \right] \\
 \end{align}$$
@@ -54,6 +54,7 @@ Be careful about the notations $\sigma_X ^2$ and $\sigma_{X,X}$
 
 $$
 \sigma_X^2 = \operatorname{Var}\left( X \right) = \operatorname{Cov}\left( X, X \right) = \sigma_{X,X}
+$$
 ```
 
 
@@ -385,24 +386,26 @@ Some variation:
 
 ### Chernoff Bound
 
-Suppose $X_{1}, \cdots, X_{n}$ are independent r.v. with $X_{i} \in[0,1]$. Let $S=\sum_{i} X_{i}$ and $\mu_S=\mathbb{E}[X]$. Then for $\lambda \in (0,1)$,
+Chernoff bound gives bounds of the sum of $n$ random variables over $[0,1]$ (not necessarily independent).
+
+Suppose $X_{1}, \cdots, X_{n}$ are independent random variables with $X_{i} \in[0,1]$. Let $S=\sum_{i} X_{i}$ and $\mu=\mathbb{E}[S]$ be the expected sum. Then for $\lambda \in (0,1)$,
 
 $$
-\operatorname{\mathbb{P}} \left[ S>(1+\lambda) \mu_S \right]<e^{-\frac{\lambda^{2} \mu_S}{3}} \qquad \text{(upper tail)}
+\operatorname{\mathbb{P}} \left[ S>(1+\lambda) \mu \right]<e^{-\frac{\lambda^{2} \mu}{3}} \qquad \text{(upper tail)}
 $$
 
 and,
 
 $$
-\operatorname{\mathbb{P}} \left[ S<(1-\lambda) \mu_S  \right]<e^{-\frac{\lambda^{2} \mu_S}{2}} \qquad \text{(lower tail)}
+\operatorname{\mathbb{P}} \left[ S<(1-\lambda) \mu  \right]<e^{-\frac{\lambda^{2} \mu}{2}} \qquad \text{(lower tail)}
 $$
 
 Together:
 
 
 $$\begin{aligned}
-\mathbb{P}(|S-\mu _S|>\lambda \mu_S)
-& \leq 2 e^{-\lambda^{2} \mu_S / 3}\\
+\mathbb{P}(|S-\mu |>\lambda \mu)
+& \leq 2 e^{-\lambda^{2} \mu / 3}\\
 \end{aligned}$$
 
 ### Cauchy-Schewarz Inequality in Probability

@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
     <title>Generalized Linear Models &#8212; Data Science Handbook</title>
     
   <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
@@ -93,7 +94,7 @@
   </a>
  </li>
 </ul>
-<p class="caption collapsible-parent">
+<p>
  <span class="caption-text">
   Foundations
  </span>
@@ -314,7 +315,7 @@
   </i>
  </li>
 </ul>
-<p class="caption collapsible-parent">
+<p>
  <span class="caption-text">
   Algorithms
  </span>
@@ -462,7 +463,7 @@
   </i>
  </li>
 </ul>
-<p class="caption collapsible-parent">
+<p>
  <span class="caption-text">
   Machine Learning
  </span>
@@ -1037,13 +1038,13 @@
         
               <div>
                 
-  <div class="section" id="generalized-linear-models">
+  <section id="generalized-linear-models">
 <h1>Generalized Linear Models<a class="headerlink" href="#generalized-linear-models" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="from-lm-to-glm">
+<section id="from-lm-to-glm">
 <h2>From LM to GLM<a class="headerlink" href="#from-lm-to-glm" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="one-parameter-exponential-family">
+<section id="one-parameter-exponential-family">
 <h3>One-parameter Exponential Family<a class="headerlink" href="#one-parameter-exponential-family" title="Permalink to this headline">¶</a></h3>
-<div class="section" id="definition">
+<section id="definition">
 <h4>Definition<a class="headerlink" href="#definition" title="Permalink to this headline">¶</a></h4>
 <p>Consider a random variable <span class="math notranslate nohighlight">\(Y\)</span> with probability density function parameterized by <span class="math notranslate nohighlight">\(\theta \in \mathbb{R}\)</span>. If its PDF can be written in the form</p>
 <div class="math notranslate nohighlight">
@@ -1094,8 +1095,8 @@
 <li><p><span class="math notranslate nohighlight">\(y\)</span>: sufficient statistics</p></li>
 <li><p><span class="math notranslate nohighlight">\(b(\theta)\)</span>: normalizing or cumulant function</p></li>
 </ul>
-</div>
-<div class="section" id="moments-relations">
+</section>
+<section id="moments-relations">
 <h4>Moments Relations<a class="headerlink" href="#moments-relations" title="Permalink to this headline">¶</a></h4>
 <p>Distributions in one-parameter exponential family has some nice properties</p>
 <ul>
@@ -1125,8 +1126,8 @@ b ^\prime (\theta) e ^{b(\theta)}
 \end{aligned}\end{split}\]</div>
 <p>With a similar approach we can find <span class="math notranslate nohighlight">\(b ^{\prime \prime }(\theta) = \operatorname{Var}\left( Y \right)\)</span></p>
 </div>
-</div>
-<div class="section" id="likelihood">
+</section>
+<section id="likelihood">
 <h4>Likelihood<a class="headerlink" href="#likelihood" title="Permalink to this headline">¶</a></h4>
 <p>Consider observations <span class="math notranslate nohighlight">\(y_1, y_2, \ldots, y_n\)</span>, each from a one-parameter exponential distribution parameterized by <span class="math notranslate nohighlight">\(\theta_i\)</span>. The log-likelihood of <span class="math notranslate nohighlight">\(\theta_1, \theta_2, \ldots \theta_n\)</span> is</p>
 <div class="math notranslate nohighlight">
@@ -1135,9 +1136,9 @@ b ^\prime (\theta) e ^{b(\theta)}
 &amp;= \log \prod_{i=1}^n f(y_i ;\theta)\\
 &amp;= \sum_{i=1}^n \left\{ y_i \theta_i - b(\theta_i) + \ln f_0 (y_i) \right\}\\
 \end{aligned}\end{split}\]</div>
-</div>
-</div>
-<div class="section" id="limitation-of-linear-models">
+</section>
+</section>
+<section id="limitation-of-linear-models">
 <h3>Limitation of Linear Models<a class="headerlink" href="#limitation-of-linear-models" title="Permalink to this headline">¶</a></h3>
 <p>Recall a linear model is</p>
 <div class="math notranslate nohighlight">
@@ -1146,8 +1147,8 @@ b ^\prime (\theta) e ^{b(\theta)}
 <div class="math notranslate nohighlight">
 \[\operatorname{E}\left( Y_i \right) = \boldsymbol{x}_i ^\top \boldsymbol{\beta}\]</div>
 <p>Clearly, the range of RHS is <span class="math notranslate nohighlight">\(\mathbb{R}\)</span>, while our LHS response may not be so. It can be binary, discrete non-negatives, or other form. Thus, we need more capable models to model these particular data types.</p>
-</div>
-<div class="section" id="model-form">
+</section>
+<section id="model-form">
 <h3>Model Form<a class="headerlink" href="#model-form" title="Permalink to this headline">¶</a></h3>
 <p>A generalized linear model has the form</p>
 <div class="math notranslate nohighlight">
@@ -1173,15 +1174,15 @@ g\left( \operatorname{E}\left( Y_{i} \right) \right) =\boldsymbol{x}_i ^\top \bo
 <li><p>For logistics regression, <span class="math notranslate nohighlight">\(Y_i \in \operatorname{Ber}(p)\)</span> where <span class="math notranslate nohighlight">\(p=\mu\)</span>, then <span class="math notranslate nohighlight">\(\theta = \ln \frac{\mu}{1-\mu}\)</span>, hence <span class="math notranslate nohighlight">\(g(\mu) = \ln \frac{\mu}{1-\mu}\)</span>, and <span class="math notranslate nohighlight">\(\ln \frac{\boldsymbol{P}\left( Y_i=1\vert \boldsymbol{x} _i \right) }{\boldsymbol{P}\left( Y_i=0 \vert \boldsymbol{x} _i\right) } = \boldsymbol{x} _i^\top \boldsymbol{\beta}\)</span></p></li>
 <li><p>For poisson regression, <span class="math notranslate nohighlight">\(\theta = \ln(\mu)\)</span>, hence <span class="math notranslate nohighlight">\(g(\mu) = \ln \mu\)</span>, and <span class="math notranslate nohighlight">\(\ln \operatorname{E}\left( Y_i \right)  = \boldsymbol{x} _i^\top \boldsymbol{\beta}\)</span></p></li>
 </ul>
-</div>
-</div>
-<div class="section" id="estimation">
+</section>
+</section>
+<section id="estimation">
 <h2>Estimation<a class="headerlink" href="#estimation" title="Permalink to this headline">¶</a></h2>
 <p>Usually, we estimate the parameters by maximum likelihood.</p>
 <p>First, we consider using the canonical link, such that <span class="math notranslate nohighlight">\(\theta_i = \boldsymbol{x}_i ^\top \boldsymbol{\beta}\)</span>.</p>
-<div class="section" id="score-function">
+<section id="score-function">
 <h3>Score Function<a class="headerlink" href="#score-function" title="Permalink to this headline">¶</a></h3>
-<div class="section" id="canonical-link">
+<section id="canonical-link">
 <h4>Canonical Link<a class="headerlink" href="#canonical-link" title="Permalink to this headline">¶</a></h4>
 <p>As discussed above, the log-likelihood of parameter <span class="math notranslate nohighlight">\(\theta\)</span> is</p>
 <div class="math notranslate nohighlight">
@@ -1237,13 +1238,13 @@ part involving both data and parameter is</p>
 </li>
 </ul>
 </div>
-</div>
-<div class="section" id="general-link">
+</section>
+<section id="general-link">
 <h4>General Link<a class="headerlink" href="#general-link" title="Permalink to this headline">¶</a></h4>
-<div class="margin sidebar">
+<aside class="margin sidebar">
 <p class="sidebar-title"></p>
 <p>The likelihood \ell(\boldsymbol{\beta}) may not be concave if we use non-canonical link.</p>
-</div>
+</aside>
 <p>If we use general link, then the score function is</p>
 <div class="math notranslate nohighlight">
 \[
@@ -1314,33 +1315,33 @@ $<span class="math notranslate nohighlight">\(
 <p class="admonition-title"> More on <span class="math notranslate nohighlight">\(\operatorname{Var}\left( Y_i \right)\)</span></p>
 <p>That is, the variance is a function of <span class="math notranslate nohighlight">\(\mu\)</span>. The relation <span class="math notranslate nohighlight">\(v(\cdot)\)</span> uniquely characterized an exponential family distribution. For instance <span class="math notranslate nohighlight">\(v(\mu_{i})=\mu\)</span> for Poisson and <span class="math notranslate nohighlight">\(v(\mu_{i})=\sigma^{2}\)</span> (constant) for the normal. If we do not assume <span class="math notranslate nohighlight">\(Y_{i}\)</span> is from the exponential families, can we specify our own mean-variance relation? We will see the answer in Quasi-Likelihood section.</p>
 </div>
-</div>
-</div>
-<div class="section" id="computation">
+</section>
+</section>
+<section id="computation">
 <h3>Computation<a class="headerlink" href="#computation" title="Permalink to this headline">¶</a></h3>
 <p>There are several ways to solve the score equations for <span class="math notranslate nohighlight">\(\widehat{\boldsymbol{\beta}} _{ML}\)</span>: Newton’s Method, Fisher Scoring, Iterative Reweighted Least Squares.</p>
-</div>
-</div>
-<div class="section" id="inference">
+</section>
+</section>
+<section id="inference">
 <h2>Inference<a class="headerlink" href="#inference" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="asymptotic-distribution-of-mle">
+<section id="asymptotic-distribution-of-mle">
 <h3>Asymptotic Distribution of MLE<a class="headerlink" href="#asymptotic-distribution-of-mle" title="Permalink to this headline">¶</a></h3>
-</div>
-<div class="section" id="test-boldsymbol-beta-boldsymbol-beta-0">
+</section>
+<section id="test-boldsymbol-beta-boldsymbol-beta-0">
 <h3>Test <span class="math notranslate nohighlight">\(\boldsymbol{\beta} = \boldsymbol{\beta} _0\)</span><a class="headerlink" href="#test-boldsymbol-beta-boldsymbol-beta-0" title="Permalink to this headline">¶</a></h3>
-<div class="section" id="wald-test">
+<section id="wald-test">
 <h4>Wald Test<a class="headerlink" href="#wald-test" title="Permalink to this headline">¶</a></h4>
-</div>
-<div class="section" id="likelihood-ratio-test">
+</section>
+<section id="likelihood-ratio-test">
 <h4>Likelihood Ratio Test<a class="headerlink" href="#likelihood-ratio-test" title="Permalink to this headline">¶</a></h4>
-</div>
-<div class="section" id="score-test">
+</section>
+<section id="score-test">
 <h4>Score Test<a class="headerlink" href="#score-test" title="Permalink to this headline">¶</a></h4>
-</div>
-</div>
-<div class="section" id="deviance">
+</section>
+</section>
+<section id="deviance">
 <h3>Deviance<a class="headerlink" href="#deviance" title="Permalink to this headline">¶</a></h3>
-<div class="section" id="saturated-models">
+<section id="saturated-models">
 <h4>Saturated Models<a class="headerlink" href="#saturated-models" title="Permalink to this headline">¶</a></h4>
 <p>First we define saturated models.</p>
 <dl class="simple myst">
@@ -1379,8 +1380,8 @@ So for any other fit <span class="math notranslate nohighlight">\(\hat{\boldsymb
 \[
 \ell(\tilde{\boldsymbol{\mu} } \vert\boldsymbol{y})\ge\ell( \hat{\boldsymbol{\mu}}\vert\boldsymbol{y})
 \]</div>
-</div>
-<div class="section" id="goodness-of-fit-by-deviance">
+</section>
+<section id="goodness-of-fit-by-deviance">
 <h4>Goodness-of-fit by Deviance<a class="headerlink" href="#goodness-of-fit-by-deviance" title="Permalink to this headline">¶</a></h4>
 <p>As its name suggests, goodness-of-fit measures the goodness of fit
 of a chosen model. In the test, the null hypothesis is</p>
@@ -1427,10 +1428,12 @@ G^2 := {D(\boldsymbol{y},\hat{\boldsymbol{\mu}})={\color{red}2}\sum}\text{observ
 </dd>
 </dl>
 <p>In sum, deviance is the <span class="math notranslate nohighlight">\(2\)</span> times the distance from log-likelihood of some estimate <span class="math notranslate nohighlight">\(\hat{\boldsymbol{\mu}}\)</span> to the log-likelihood of the saturated estimate <span class="math notranslate nohighlight">\(\tilde{\boldsymbol{\mu} } = \boldsymbol{y}\)</span>, as illustrated below.</p>
-<div class="figure align-default" id="glm-deviance-likelihood">
+<figure class="align-default" id="glm-deviance-likelihood">
 <a class="reference internal image-reference" href="../_images/glm-deviance-likelihood.png"><img alt="" src="../_images/glm-deviance-likelihood.png" style="width: 50%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 52 </span><span class="caption-text">Likelihood curve and deviance computation for saturated model <span class="math notranslate nohighlight">\(\boldsymbol{\mu}_{\text{saturated} } = \tilde{\boldsymbol{\mu}} = \boldsymbol{y}\)</span>, some model <span class="math notranslate nohighlight">\(\hat{\boldsymbol{\mu} }\)</span>, and null model <span class="math notranslate nohighlight">\(\boldsymbol{\mu}_{\text{null} } = \bar{\boldsymbol{y}}\)</span></span><a class="headerlink" href="#glm-deviance-likelihood" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">Fig. 52 </span><span class="caption-text">Likelihood curve and deviance computation for saturated model <span class="math notranslate nohighlight">\(\boldsymbol{\mu}_{\text{saturated} } = \tilde{\boldsymbol{\mu}} = \boldsymbol{y}\)</span>, some model <span class="math notranslate nohighlight">\(\hat{\boldsymbol{\mu} }\)</span>, and null model <span class="math notranslate nohighlight">\(\boldsymbol{\mu}_{\text{null} } = \bar{\boldsymbol{y}}\)</span></span><a class="headerlink" href="#glm-deviance-likelihood" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <dl class="simple myst">
 <dt>Example (Deviance for Normal with <span class="math notranslate nohighlight">\(\sigma=1\)</span>)</dt><dd><p>The deviance for normal distribution is</p>
 <div class="math notranslate nohighlight">
@@ -1455,8 +1458,8 @@ G^2 := {D(\boldsymbol{y},\hat{\boldsymbol{\mu}})={\color{red}2}\sum}\text{observ
 \[
 R^{2}=1-\frac{RSS}{TSS}=1-\frac{D(\boldsymbol{y},\hat{\boldsymbol{\mu}})}{D(\boldsymbol{y},\bar{\boldsymbol{y}})}
 \]</div>
-</div>
-<div class="section" id="compare-two-nested-models-by-deviance">
+</section>
+<section id="compare-two-nested-models-by-deviance">
 <h4>Compare Two Nested Models by Deviance<a class="headerlink" href="#compare-two-nested-models-by-deviance" title="Permalink to this headline">¶</a></h4>
 <p>To compare two nested models <span class="math notranslate nohighlight">\(M_{\text{reduced} }:\boldsymbol{\beta}=\boldsymbol{\beta}_{\text{reduced} }\)</span>
 v.s. <span class="math notranslate nohighlight">\(M_{\text{full} }:\boldsymbol{\beta}=\boldsymbol{\beta}_{\text{full} }\)</span>, in linear models we use <span class="math notranslate nohighlight">\(F\)</span>-test, in GLM we can can compare their deviances.</p>
@@ -1469,14 +1472,16 @@ G^{2}(M_{r}\vert M_f) &amp; =D(\boldsymbol{y},\hat{\boldsymbol{\mu}}_{r})-D(\bol
  &amp; \sim\chi_{p_f-p_r}^2
 \end{aligned}\end{split}\]</div>
 <p>Note the <strong>reduced</strong> model has a <strong>larger</strong> deviance so <span class="math notranslate nohighlight">\(D(\boldsymbol{y},\hat{\boldsymbol{\mu}}_{r})&gt;D(\boldsymbol{y},\hat{\boldsymbol{\mu}}_{f})\)</span>. This is analogous to the fact that a reduced model has a larger <span class="math notranslate nohighlight">\(RSS\)</span> in <a class="reference internal" href="12-lm-inference.html#lm-rss-nonincreasing"><span class="std std-ref">linear models</span></a>.</p>
-<div class="figure align-default" id="glm-deviance-test">
+<figure class="align-default" id="glm-deviance-test">
 <a class="reference internal image-reference" href="../_images/glm-deviance-test.png"><img alt="" src="../_images/glm-deviance-test.png" style="width: 50%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 53 </span><span class="caption-text">The likelihood test statistic <span class="math notranslate nohighlight">\(G^{2}(M_{r}\vert M_f)\)</span> is the difference in log-likelihood, or deviance.</span><a class="headerlink" href="#glm-deviance-test" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">Fig. 53 </span><span class="caption-text">The likelihood test statistic <span class="math notranslate nohighlight">\(G^{2}(M_{r}\vert M_f)\)</span> is the difference in log-likelihood, or deviance.</span><a class="headerlink" href="#glm-deviance-test" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <p>When we want to compare multiple models, in linear models we use ANOVA. In GLM, we can use deviance analysis table.</p>
-</div>
-</div>
-<div class="section" id="generalized-pearson-statistic">
+</section>
+</section>
+<section id="generalized-pearson-statistic">
 <h3>Generalized Pearson Statistic<a class="headerlink" href="#generalized-pearson-statistic" title="Permalink to this headline">¶</a></h3>
 <p>In addition to deviance, generalized Pearson statistic is another quantity used to check goodness-of-fit.</p>
 <dl class="simple myst">
@@ -1493,37 +1498,37 @@ statistic, which is defined as</p>
 GLMs.</p>
 </dd>
 </dl>
-<div class="margin sidebar">
+<aside class="margin sidebar">
 <p class="sidebar-title"></p>
 <p>In the book, this generalized Pearson statistic is often called <em>Pearson statistic</em> in short, which is quite confusing with <em>Pearson’s Chi-square statistic</em> for testing independence of categorical variables in contingency tables.</p>
-</div>
-</div>
-<div class="section" id="residuals">
+</aside>
+</section>
+<section id="residuals">
 <h3>Residuals<a class="headerlink" href="#residuals" title="Permalink to this headline">¶</a></h3>
 <p>To detect a model’s lack of fit, any particular type of residual <span class="math notranslate nohighlight">\(\hat{\boldsymbol{\varepsilon}}\)</span> below
 can be plotted against the fitted values <span class="math notranslate nohighlight">\(\hat{\boldsymbol{\mu}}\)</span>
 and against each explanatory variables.</p>
-<div class="section" id="asymptotically-uncorrelated-with-hat-boldsymbol-mu">
+<section id="asymptotically-uncorrelated-with-hat-boldsymbol-mu">
 <h4>Asymptotically Uncorrelated with <span class="math notranslate nohighlight">\(\hat{\boldsymbol{\mu} }\)</span><a class="headerlink" href="#asymptotically-uncorrelated-with-hat-boldsymbol-mu" title="Permalink to this headline">¶</a></h4>
 <p>In LM, residuals <span class="math notranslate nohighlight">\(\hat{\boldsymbol{\varepsilon}}  =\boldsymbol{y}-\hat{\boldsymbol{y}}\)</span> and fitted values <span class="math notranslate nohighlight">\(\hat{\boldsymbol{y}}\)</span> are orthogonal, or uncorrelated, regardless of sample size <span class="math notranslate nohighlight">\(n\)</span>.</p>
 <p>But in GLM, <span class="math notranslate nohighlight">\(\hat{\boldsymbol{\varepsilon}} = \boldsymbol{y}-\hat{\boldsymbol{\boldsymbol{\mu}}}\)</span> and
 <span class="math notranslate nohighlight">\(\hat{\boldsymbol{\boldsymbol{\mu}}}\)</span> are <strong>asymptotically</strong> uncorrelated. See Section 4.4.5 for details.</p>
-</div>
-<div class="section" id="pearson-residuals">
+</section>
+<section id="pearson-residuals">
 <h4>Pearson Residuals<a class="headerlink" href="#pearson-residuals" title="Permalink to this headline">¶</a></h4>
 <p>The Pearson residual for observation <span class="math notranslate nohighlight">\(i\)</span> is defined as</p>
 <div class="math notranslate nohighlight">
 \[e_{i}=\frac{y_{i}-\hat{\mu}_{i}}{\sqrt{v(\hat{\mu}_{i})}}\]</div>
 <p>Their squared values sum to the generalized Pearson statistic.</p>
-</div>
-<div class="section" id="deviance-residual">
+</section>
+<section id="deviance-residual">
 <h4>Deviance Residual<a class="headerlink" href="#deviance-residual" title="Permalink to this headline">¶</a></h4>
 <p>Let <span class="math notranslate nohighlight">\(D(\boldsymbol{y},\boldsymbol{\hat{\boldsymbol{\mu}}})=\sum_{i}d_{i}\)</span>. The deviance residual for observation <span class="math notranslate nohighlight">\(i\)</span> is defined as</p>
 <div class="math notranslate nohighlight">
 \[e_{i}=\sqrt{d_{i}} \operatorname{sign} (y_{i}-\hat{\mu}_{i})\]</div>
 <p>Their squared values sum to the deviance.</p>
-</div>
-<div class="section" id="standardized-residuals">
+</section>
+<section id="standardized-residuals">
 <h4>Standardized Residuals<a class="headerlink" href="#standardized-residuals" title="Permalink to this headline">¶</a></h4>
 <p>The standardized residual divides each raw residual <span class="math notranslate nohighlight">\((y_{i}-\hat{\mu}_{i})\)</span>
 by its standard error. Let <span class="math notranslate nohighlight">\(h_{ii}\)</span> be the diagonal element of the
@@ -1534,10 +1539,10 @@ Then, the standardized residual for observation <span class="math notranslate no
 r_{i}=\frac{y_{i}-\hat{\mu}_{i}}{\sqrt{v(\hat{\mu}_{i})(1-\hat{h}_{ii})}}=\frac{e_{i}}{\sqrt{1-\hat{h}_{ii}}}
 \]</div>
 <p>Their squared values sum to the deviance.</p>
-</div>
-</div>
-</div>
-<div class="section" id="summary">
+</section>
+</section>
+</section>
+<section id="summary">
 <h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
 <p>Recall definitions</p>
 <ul>
@@ -1617,8 +1622,8 @@ r_{i}=\frac{y_{i}-\hat{\mu}_{i}}{\sqrt{v(\hat{\mu}_{i})(1-\hat{h}_{ii})}}=\frac{
 </tr>
 </tbody>
 </table>
-</div>
-</div>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {

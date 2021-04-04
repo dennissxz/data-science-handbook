@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
     <title>Streaming Model &#8212; Data Science Handbook</title>
     
   <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
@@ -93,7 +94,7 @@
   </a>
  </li>
 </ul>
-<p class="caption collapsible-parent">
+<p>
  <span class="caption-text">
   Foundations
  </span>
@@ -314,7 +315,7 @@
   </i>
  </li>
 </ul>
-<p class="caption collapsible-parent">
+<p>
  <span class="caption-text">
   Algorithms
  </span>
@@ -462,7 +463,7 @@
   </i>
  </li>
 </ul>
-<p class="caption collapsible-parent">
+<p>
  <span class="caption-text">
   Machine Learning
  </span>
@@ -870,6 +871,28 @@
     \(\ell_0\)
    </span>
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#trivial-solution">
+     Trivial Solution
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#fm-algorithm">
+     FM Algorithm
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#fm">
+     FM+
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id1">
+     FM++
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#estimate-ell-1">
@@ -885,46 +908,43 @@
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#id1">
+    <a class="reference internal nav-link" href="#id2">
      Morris+
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#id2">
+    <a class="reference internal nav-link" href="#id3">
      Morris++
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#problem">
-     Problem
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#trivial-solution">
-     Trivial Solution
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#approximation">
-     Approximation
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#l-2-norm-estimation">
+  <a class="reference internal nav-link" href="#estimate-ell-2">
+   Estimate
    <span class="math notranslate nohighlight">
-    \(L_2\)
+    \(\ell_2\)
    </span>
-   Norm Estimation
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ams">
+     AMS
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id4">
+     AMS++
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#x-i-estimation">
+  <a class="reference internal nav-link" href="#estimate-x-i">
+   Estimate
    <span class="math notranslate nohighlight">
     \(x_i\)
    </span>
-   Estimation
   </a>
  </li>
 </ul>
@@ -939,9 +959,9 @@
         
               <div>
                 
-  <div class="section" id="streaming-model">
+  <section id="streaming-model">
 <h1>Streaming Model<a class="headerlink" href="#streaming-model" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="background">
+<section id="background">
 <h2>Background<a class="headerlink" href="#background" title="Permalink to this headline">¶</a></h2>
 <p>Problem</p>
 <ul class="simple">
@@ -978,6 +998,33 @@
 </ul>
 </li>
 </ul>
+<p>Overall algorithm design intuition:</p>
+<ul class="simple">
+<li><p>maintain in memory some quantity <span class="math notranslate nohighlight">\(Q\)</span> (can be a scalar, vector, matrix)</p></li>
+<li><p>upon receiving new <span class="math notranslate nohighlight">\(y_i\)</span>, update <span class="math notranslate nohighlight">\(Q\)</span> <strong>probabilistically</strong>, rather than deterministically:</p>
+<ul>
+<li><p>update <span class="math notranslate nohighlight">\(Q\)</span> with some probability</p>
+<ul>
+<li><p>depending on <span class="math notranslate nohighlight">\(Q\)</span> (Morris for <span class="math notranslate nohighlight">\(\ell_1\)</span>)</p></li>
+<li><p>depending on <span class="math notranslate nohighlight">\(y_i\)</span> (FM for <span class="math notranslate nohighlight">\(\ell_0\)</span>)</p></li>
+</ul>
+</li>
+<li><p>update <span class="math notranslate nohighlight">\(Q \mathrel{+}= q\)</span> with some random quantity <span class="math notranslate nohighlight">\(q\)</span> (AMS, CountMin, etc.)</p></li>
+</ul>
+</li>
+<li><p>output some transformation <span class="math notranslate nohighlight">\(f(Q)\)</span> of <span class="math notranslate nohighlight">\(Q\)</span>, such that</p>
+<ul>
+<li><p>unbiasedness: <span class="math notranslate nohighlight">\(\mathbb{E} [f(Q)] = \ell_p\)</span>.</p></li>
+<li><p>good concentration probability <span class="math notranslate nohighlight">\(\mathbb{P}[ \vert f(Q) - \ell_p \vert&gt; \epsilon \ell_p ] &lt; \delta\)</span>.</p></li>
+</ul>
+</li>
+<li><p>improvement</p>
+<ul>
+<li><p>repeat <span class="math notranslate nohighlight">\(s\)</span> instantiations to obtain <span class="math notranslate nohighlight">\(Q_1, \ldots, Q_s\)</span>, report their average <span class="math notranslate nohighlight">\(Q_+\)</span> (FM+, Morris+, AMS)</p></li>
+<li><p>repeat <span class="math notranslate nohighlight">\(t\)</span> instantiations of <span class="math notranslate nohighlight">\(Q_+\)</span>, report their median (FM++, Morris++, AMS++).</p></li>
+</ul>
+</li>
+</ul>
 <p>Metrics for reviewing algorithms</p>
 <ul class="simple">
 <li><p>memory usage</p></li>
@@ -991,15 +1038,138 @@
 <li><p>Insertion and deletion (dynamic): also allow <span class="math notranslate nohighlight">\(\texttt{Delete(i)}: x_i \mathrel{-}= 1\)</span>, e.g. numbers, edges of graphs, etc. Assume that <span class="math notranslate nohighlight">\(\#\operatorname{deletions} (i) \le \#\operatorname{insertions} (i)\)</span> such that <span class="math notranslate nohighlight">\(x_i \ge 0\)</span>.</p></li>
 <li><p>Turnstile: more general case for vectors and matrices, with operation <span class="math notranslate nohighlight">\(\texttt{Add}(i,\Delta): x_i \mathrel{+}= \Delta\)</span></p></li>
 </ul>
+<p>References</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.mit.edu/~mahabadi/courses/Algorithms_for_Massive_Data_SP21/">TTIC 41000</a>: Algorithms for Massive Data, Spring 2021</p></li>
+<li><p><a class="reference external" href="https://www.sketchingbigdata.org/fall17/">Harvard CS 226/MIT 6.889</a>: Sketching Algorithms for Big Data, Fall 2017</p></li>
+</ul>
+<p>Note: section <a class="reference internal" href="#streaming-estimate-l1"><span class="std std-ref">Estimate <span class="math notranslate nohighlight">\(\ell_1\)</span></span></a> might be a better appetizer than <a class="reference internal" href="#streaming-estimate-l0"><span class="std std-ref">Estimate <span class="math notranslate nohighlight">\(\ell_0\)</span></span></a>.</p>
+</section>
+<section id="estimate-ell-0">
+<span id="streaming-estimate-l0"></span><h2>Estimate <span class="math notranslate nohighlight">\(\ell_0\)</span><a class="headerlink" href="#estimate-ell-0" title="Permalink to this headline">¶</a></h2>
+<p>How many distinct <span class="math notranslate nohighlight">\(y_i\)</span> are there? Aka distinct element counting problem. For instance, <span class="math notranslate nohighlight">\(m = 10\)</span>, input stream is <span class="math notranslate nohighlight">\((3,6,9,3,4,5,4)\)</span>, output <span class="math notranslate nohighlight">\(5\)</span>.</p>
+<p>Reference: https://www.sketchingbigdata.org/fall17/lec/lec2.pdf</p>
+<section id="trivial-solution">
+<h3>Trivial Solution<a class="headerlink" href="#trivial-solution" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>One trivial solution is to keep a bitvector counter <span class="math notranslate nohighlight">\(\boldsymbol{c}\)</span> of size <span class="math notranslate nohighlight">\(m\)</span>. For each number <span class="math notranslate nohighlight">\(i \in [m]\)</span>, if <span class="math notranslate nohighlight">\(c_i = 0\)</span>, then increase <span class="math notranslate nohighlight">\(x_i\)</span> from 0 to 1.</p></li>
+<li><p>Another trivial solution is to just store the stream, which takes <span class="math notranslate nohighlight">\(\min(m, n) \log m\)</span> bits.</p></li>
+</ul>
+<p>These methods are not efficient if <span class="math notranslate nohighlight">\(m, n\)</span> are large.</p>
+</section>
+<section id="fm-algorithm">
+<h3>FM Algorithm<a class="headerlink" href="#fm-algorithm" title="Permalink to this headline">¶</a></h3>
+<!-- Let $k$ be the true number of distinct element. We find an estimate $\hat{k}$ such that
+
+$$
+\mathbb{P}\left( \left\vert \hat{k} - k  \right\vert > \epsilon k\right) < \delta
+$$
+
+Consider a decision problem: given a number $d$, return YES if $k \ge d(1 + \epsilon)$ and NO otherwise. If we can solve this decision problem, then we can run $d$ for $(1, 1 + \epsilon, \ldots, (1 + \epsilon)^i, \ldots, n)$ to find where $k$ is.
+
+Algorithms to solve the decision problem:
+- sample each of $m$ coordinate w.p. $\frac{1}{d} \ge 1$, obtain $S = \left\{ i_1, \ldots \right\}$
+- if a number $i \in S$ is shown in the stream, increase $x_i$
+- if $x_i = 0$ for all $i \in S$, return NO, else YES.
+
+Analysis:
+
+
+$$\begin{aligned}
+\mathbb{P}\left( \text{NO}  \right)
+&= \mathbb{P}\left( \text{all $k$ elements in the stream are not sampled}  \right)\\
+&= \left( 1 - \frac{1}{d}  \right)^k \\
+&\approx \exp \left( - \frac{k}{d}  \right)\\
+\end{aligned}$$
+
+For small enough $\epsilon$,
+- if $k > (1 + \epsilon) d$ then $e^{-(1+\epsilon)}<\frac{1}{\mathrm{e}}-\frac{\epsilon}{3}$
+- if $k < (1 - \epsilon) d$ then $e^{-(1-\epsilon)}>\frac{1}{\mathrm{e}}+\frac{\epsilon}{3}$
+
+ -->
+<p>We introduce the FM algorithm.</p>
+<hr class="docutils" />
+<p><strong>Algorithms</strong>: Flajolet-Martin (FM)</p>
+<hr class="docutils" />
+<ul class="simple">
+<li><p>Pick a random hash function <span class="math notranslate nohighlight">\(h: [m] \rightarrow [0,1]\)</span>.</p></li>
+<li><p>Maintain in memory the smallest hash we’ve seen so far: <span class="math notranslate nohighlight">\(X = \min_{i \in \text{stream} } h(i)\)</span></p></li>
+<li><p>Upon <span class="math notranslate nohighlight">\(\texttt{query()}\)</span>, output <span class="math notranslate nohighlight">\(\frac{1}{X} - 1\)</span></p></li>
+</ul>
+<hr class="docutils" />
+<div class="tip admonition">
+<p class="admonition-title"> Intuition</p>
+<ul class="simple">
+<li><p>Random hash result can be viewed as uniform random variable.</p></li>
+<li><p>We are partitioning the interval <span class="math notranslate nohighlight">\([0, 1]\)</span> into bins of size <span class="math notranslate nohighlight">\(\frac{1}{\ell_0+1}\)</span></p></li>
+<li><p>Taking advantage of the property of the minimum of <span class="math notranslate nohighlight">\(\ell_0\)</span> uniform r.v.</p></li>
+</ul>
 </div>
-<div class="section" id="estimate-ell-0">
-<h2>Estimate <span class="math notranslate nohighlight">\(\ell_0\)</span><a class="headerlink" href="#estimate-ell-0" title="Permalink to this headline">¶</a></h2>
-<p>How many distinct <span class="math notranslate nohighlight">\(y_i\)</span> are there? Aka distinct element counting problem.</p>
+<p>Correctness</p>
+<ul>
+<li><p>Unbiasedness <span class="math notranslate nohighlight">\(\mathbb{E} [X] = \frac{1}{t+1}\)</span>, and hope that <span class="math notranslate nohighlight">\(\frac{1}{X} - 1\)</span> is close to <span class="math notranslate nohighlight">\(t\)</span>.</p>
+<div class="dropdown seealso admonition">
+<p class="admonition-title"> <em>Proof</em></p>
+<p>We can view each <span class="math notranslate nohighlight">\(h(i)\)</span> as a uniform random variable.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+  \begin{aligned}
+  \mathbb{E}[X] &amp;=\int_{0}^{\infty} \mathbb{P}(X&gt;\lambda) d \lambda \quad \text{(property of positive r.v.)} \\
+  &amp;=\int_{0}^{\infty} \mathbb{P}(\forall i \in \operatorname{stream}, h(i)&gt;\lambda) \mathrm{~d} \lambda \\
+  &amp;=\int_{0}^{\infty} \prod_{\text{distinct } i \in \text { stream }} \mathbb{P}(h(i)&gt;\lambda) \mathrm{~d} \lambda \\
+  &amp;=\int_{0}^{1}(1-\lambda)^{\ell_0} \mathrm{~d} \lambda \\
+  &amp;=\frac{1}{\ell_0+1}
+  \end{aligned}
+  \end{split}\]</div>
 </div>
-<div class="section" id="estimate-ell-1">
-<h2>Estimate <span class="math notranslate nohighlight">\(\ell_1\)</span><a class="headerlink" href="#estimate-ell-1" title="Permalink to this headline">¶</a></h2>
+<p>The variance is small <span class="math notranslate nohighlight">\(\operatorname{Var}\left( X \right) = \frac{\ell}{(\ell_0+1)^{2}(\ell_0+2)}\)</span>.</p>
+<div class="dropdown seealso admonition">
+<p class="admonition-title"> <em>Proof</em></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+  \begin{aligned}
+  \mathbb{E}\left[X^{2}\right] &amp;=\int_{0}^{\infty} \mathbb{P}\left(X^{2}&gt;\lambda\right)\mathrm{~d}\lambda \\
+  &amp;=\int_{0}^{\infty} \mathbb{P}(X&gt;\sqrt{\lambda})\mathrm{~d}\lambda \\
+  &amp;=\int_{0}^{1}(1-\sqrt{\lambda})^{\ell}\mathrm{~d}\lambda \\
+  &amp;=2 \int_{0}^{1} u^{\ell}(1-u)\mathrm{~d}u \quad u=q - \sqrt{\lambda} \\
+  &amp;= \frac{2}{(\ell_0+1)(\ell_0+2)}
+  \end{aligned}
+  \end{split}\]</div>
+<div class="math notranslate nohighlight">
+\[
+  \operatorname{Var}[X]=\frac{2}{(\ell_0+1)(\ell_0+2)}-\frac{1}{(\ell_0+1)^{2}}=\frac{\ell}{(\ell_0+1)^{2}(\ell_0+2)}
+  \]</div>
+</div>
+</li>
+</ul>
+</section>
+<section id="fm">
+<h3>FM+<a class="headerlink" href="#fm" title="Permalink to this headline">¶</a></h3>
+<p>Similarly to the Morris+, we can upgrade our basic algorithm into FM+ by running it <span class="math notranslate nohighlight">\(s = \frac{1}{\epsilon^2\eta}\)</span> times in parallel to obtain <span class="math notranslate nohighlight">\(X_1, X_2, \ldots, X_s\)</span>. The output is</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{1}{\frac{1}{s} \sum_{i=1}^{s} X_{i}}-1
+\]</div>
+<p>By Chebyshev’s inequality</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+\mathbb{P}\left(\left|\frac{1}{s} \sum_{i=1}^{s} X_{i}-\frac{1}{\ell_0+1}\right|&gt;\frac{\varepsilon}{\ell_0+1}\right) &amp;&lt;\frac{\operatorname{Var}\left[\frac{1}{s} \sum_{i} X_{i}\right]}{\frac{\varepsilon^{2}}{(\ell_0+1)^{2}}} \\
+&amp;&lt;\frac{1}{\varepsilon^{2} s}=\eta
+\end{aligned}
+\end{split}\]</div>
+<p>Total space is <span class="math notranslate nohighlight">\(\mathcal{O} (\frac{1}{\epsilon^2 \eta})\)</span>.</p>
+</section>
+<section id="id1">
+<h3>FM++<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<p>Run <span class="math notranslate nohighlight">\(t = \Theta(\log \frac{1}{\eta} )\)</span> independent copies of FM+, each with <span class="math notranslate nohighlight">\(\eta = \frac{1}{3}\)</span>. Output the median of <span class="math notranslate nohighlight">\(t\)</span> FM+ estimates.</p>
+<p>Total space is <span class="math notranslate nohighlight">\(\mathcal{O} (\log \frac{1}{\delta} \cdot \frac{1}{\epsilon^2}  )\)</span>.</p>
+</section>
+</section>
+<section id="estimate-ell-1">
+<span id="streaming-estimate-l1"></span><h2>Estimate <span class="math notranslate nohighlight">\(\ell_1\)</span><a class="headerlink" href="#estimate-ell-1" title="Permalink to this headline">¶</a></h2>
 <p>How many <span class="math notranslate nohighlight">\(y_i\)</span> are there, i.e. How large is <span class="math notranslate nohighlight">\(n\)</span>? Aka counting problem. A trivial solution is to maintain a counter, which requires space <span class="math notranslate nohighlight">\(\mathcal{O}(\log n)\)</span> bits. But when <span class="math notranslate nohighlight">\(n\)</span> is large, can we do better? We introduce Morris counter in insertion-only streams. Morris algorithm was developed in 1970s, when memory was expensive.</p>
-<div class="section" id="morris">
+<section id="morris">
 <h3>Morris<a class="headerlink" href="#morris" title="Permalink to this headline">¶</a></h3>
 <p>The Morris algorithms is</p>
 <hr class="docutils" />
@@ -1011,7 +1181,14 @@
 <li><p>Return <span class="math notranslate nohighlight">\(\hat{n} = 2^X - 1\)</span></p></li>
 </ul>
 <hr class="docutils" />
-<p>Intuition: <span class="math notranslate nohighlight">\(X\)</span> is attempting to store a value that is roughly <span class="math notranslate nohighlight">\(\log n\)</span>. Hence, the amount of space required to store <span class="math notranslate nohighlight">\(X\)</span> is <span class="math notranslate nohighlight">\(O(\log \log n)\)</span></p>
+<div class="tip admonition">
+<p class="admonition-title"></p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(X\)</span> is attempting to store a value that is roughly <span class="math notranslate nohighlight">\(\log n\)</span>. Hence, the amount of space required to store <span class="math notranslate nohighlight">\(X\)</span> is <span class="math notranslate nohighlight">\(O(\log \log n)\)</span></p></li>
+<li><p>To achieve, this, update the counter <span class="math notranslate nohighlight">\(X\)</span> probabilistically</p></li>
+<li><p>Since <span class="math notranslate nohighlight">\(X \ll \ell_0\)</span>, output some large number <span class="math notranslate nohighlight">\(\gg X\)</span>, e.g. <span class="math notranslate nohighlight">\(2^X\)</span></p></li>
+</ul>
+</div>
 <p>Correctness</p>
 <ul>
 <li><p>Unbiasedness: Let <span class="math notranslate nohighlight">\(X_n\)</span> denote <span class="math notranslate nohighlight">\(X\)</span> after <span class="math notranslate nohighlight">\(n\)</span> updates. Then <span class="math notranslate nohighlight">\(\mathbb{E}\left[ 2 ^{X_n} \right]  = n + 1\)</span>. Hence <span class="math notranslate nohighlight">\(\mathbb{E} [\hat{n}_1] = 2^{\mathbb{E} [X_n]} - 1\)</span> is an unbiased estimator of <span class="math notranslate nohighlight">\(\ell_1 = n\)</span>.</p>
@@ -1053,17 +1230,18 @@
 </li>
 </ul>
 <p>However, the upper bound <span class="math notranslate nohighlight">\(\delta = \frac{1}{2\epsilon^2}\)</span> is not very meaningful. We only have <span class="math notranslate nohighlight">\(\delta &lt; 1\)</span> when <span class="math notranslate nohighlight">\(\epsilon &gt; 1\)</span>, for which we can simply return 0. Is there any way to find a smaller upper bound? Currently <span class="math notranslate nohighlight">\(\operatorname{Var}\left( \hat{n} \right) = \Theta(n^2)\)</span>, can we find another estimate that does better?</p>
-</div>
-<div class="section" id="id1">
-<h3>Morris+<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="id2">
+<h3>Morris+<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
 <p>Run in parallel: <span class="math notranslate nohighlight">\(s\)</span> independent instantiations of Morris estimator <span class="math notranslate nohighlight">\(\hat{n}\)</span>, then return the average, denoted <span class="math notranslate nohighlight">\(\hat{n}_+\)</span>. Hence</p>
 <div class="math notranslate nohighlight">
 \[\operatorname{Var}\left( \hat{n}_+ \right) = \operatorname{Var}\left( \frac{1}{s} \sum_{k=1}^s \hat{n}_k \right) = \frac{1}{s} \operatorname{Var}\left( \hat{n} \right)\]</div>
 <p>Note that <span class="math notranslate nohighlight">\(\mathbb{E} [\hat{n}_+]\)</span> is still unbiased. The upper bound now becomes <span class="math notranslate nohighlight">\(\frac{1}{s}\cdot \frac{1}{2\epsilon^2}\)</span>. How to choose <span class="math notranslate nohighlight">\(s\)</span>? To ensure failure probability is less than <span class="math notranslate nohighlight">\(\delta\)</span>, we can set <span class="math notranslate nohighlight">\(s \ge \frac{1}{2\epsilon ^2 \delta}\)</span>. Equivalently, we say that we can set <span class="math notranslate nohighlight">\(s = \Theta \left( \frac{1}{\epsilon^2 \delta}  \right)\)</span>, for suitable constant.</p>
 <p>In total there are <span class="math notranslate nohighlight">\(s\)</span> number of <span class="math notranslate nohighlight">\(X\)</span>, each <span class="math notranslate nohighlight">\(X\)</span> takes <span class="math notranslate nohighlight">\(\mathcal{O} (\log \log n)\)</span>. The total space for an Morris++ estimator <span class="math notranslate nohighlight">\(\hat{n}\)</span> with <span class="math notranslate nohighlight">\((\epsilon, \delta)\)</span> guarantee is then <span class="math notranslate nohighlight">\(\Theta\left( \frac{1}{\epsilon^{2} \delta} \cdot \log \log n\right)\)</span>.</p>
-</div>
-<div class="section" id="id2">
-<h3>Morris++<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<p>We can further improve the result by using Morris++.</p>
+</section>
+<section id="id3">
+<h3>Morris++<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
 <p>Run in parallel: <span class="math notranslate nohighlight">\(t\)</span> independent instantiations of Morris+ estimator <span class="math notranslate nohighlight">\(\hat{n}_{+}\)</span> with failure probability at most <span class="math notranslate nohighlight">\(\frac{1}{3}\)</span>, by setting <span class="math notranslate nohighlight">\(s = \Theta \left( \frac{1}{\epsilon^2\frac{1}{3} }  \right) =  \Theta \left( \frac{1}{\epsilon^2} \right)\)</span>. Then return their median, denoted as <span class="math notranslate nohighlight">\(\hat{n}_{+ +}\)</span>.</p>
 <p>What’s the failure probability of the median <span class="math notranslate nohighlight">\(\hat{n}_{+ +}\)</span>? If it fails, then at least half of <span class="math notranslate nohighlight">\(\hat{n}_{+}\)</span> fails, i.e. at most half succeed. Formally, define</p>
 <div class="math notranslate nohighlight">
@@ -1083,74 +1261,130 @@ Y_{i}=\left\{\begin{array}{ll}
 &amp;\le e^{- t/48} \\
 \end{aligned}\end{split}\]</div>
 <p>To get the failure probability at most <span class="math notranslate nohighlight">\(\delta\)</span>, we can set <span class="math notranslate nohighlight">\(t = \Theta(\log \frac{1}{\delta})\)</span>.</p>
-<p>In total there are <span class="math notranslate nohighlight">\(t \times s\)</span> number of <span class="math notranslate nohighlight">\(X\)</span>. The total space of Morris++ with success probability <span class="math notranslate nohighlight">\(\delta\)</span> is then <span class="math notranslate nohighlight">\(\Theta\left(\log \frac{1}{\delta} \cdot \frac{1}{\epsilon^{2}} \cdot \log \log n\right)\)</span>.</p>
-</div>
-<div class="section" id="problem">
-<h3>Problem<a class="headerlink" href="#problem" title="Permalink to this headline">¶</a></h3>
-<p>Input</p>
-<ul class="simple">
-<li><p>a stream of <span class="math notranslate nohighlight">\(n\)</span> number from <span class="math notranslate nohighlight">\([m]\)</span></p></li>
-</ul>
-<p>Goal</p>
-<ul class="simple">
-<li><p>estimate the number of distinct elements in the stream</p></li>
-</ul>
-<p>For instance, <span class="math notranslate nohighlight">\(m = 10\)</span>, input stream is <span class="math notranslate nohighlight">\((3,6,9,3,4,5,4)\)</span>, output <span class="math notranslate nohighlight">\(5\)</span>.</p>
-</div>
-<div class="section" id="trivial-solution">
-<h3>Trivial Solution<a class="headerlink" href="#trivial-solution" title="Permalink to this headline">¶</a></h3>
-<p><span class="math notranslate nohighlight">\(L_0\)</span>: non-zero coordinates.</p>
-<p>A trivial solution is to keep a counter <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> of size <span class="math notranslate nohighlight">\(m\)</span>. For each number <span class="math notranslate nohighlight">\(i \in [m]\)</span>, if <span class="math notranslate nohighlight">\(x_i = 0\)</span>, then increase <span class="math notranslate nohighlight">\(x_i\)</span> from 0 to 1. Note that we need to store (??) all seen numbers, which takes <span class="math notranslate nohighlight">\(\mathcal{O} (n \log m)\)</span> bits. The counter takes <span class="math notranslate nohighlight">\(m\)</span> bits. So overall <span class="math notranslate nohighlight">\(\mathcal{O} (\min(m, n \log m))\)</span>.</p>
-<p>This is not efficient if <span class="math notranslate nohighlight">\(m, n\)</span> are large.</p>
-</div>
-<div class="section" id="approximation">
-<h3>Approximation<a class="headerlink" href="#approximation" title="Permalink to this headline">¶</a></h3>
-<p>Let <span class="math notranslate nohighlight">\(k\)</span> be the true number of distinct element. We find an estimate <span class="math notranslate nohighlight">\(\hat{k}\)</span> such that</p>
-<div class="math notranslate nohighlight">
-\[
-\mathbb{P}\left( \left\vert \hat{k} - k  \right\vert &gt; \epsilon k\right) &lt; \delta
-\]</div>
-<p>Consider a decision problem: given a number <span class="math notranslate nohighlight">\(d\)</span>, return YES if <span class="math notranslate nohighlight">\(k \ge d(1 + \epsilon)\)</span> and NO otherwise. If we can solve this decision problem, then we can run <span class="math notranslate nohighlight">\(d\)</span> for <span class="math notranslate nohighlight">\((1, 1 + \epsilon, \ldots, (1 + \epsilon)^i, \ldots, n)\)</span> to find where <span class="math notranslate nohighlight">\(k\)</span> is.</p>
-<p>Algorithms to solve the decision problem:</p>
-<ul class="simple">
-<li><p>sample each of <span class="math notranslate nohighlight">\(m\)</span> coordinate w.p. <span class="math notranslate nohighlight">\(\frac{1}{d} \ge 1\)</span>, obtain <span class="math notranslate nohighlight">\(S = \left\{ i_1, \ldots \right\}\)</span></p></li>
-<li><p>if a number <span class="math notranslate nohighlight">\(i \in S\)</span> is shown in the stream, increase <span class="math notranslate nohighlight">\(x_i\)</span></p></li>
-<li><p>if <span class="math notranslate nohighlight">\(x_i = 0\)</span> for all <span class="math notranslate nohighlight">\(i \in S\)</span>, return NO, else YES.</p></li>
-</ul>
-<p>Analysis:</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{aligned}
-\mathbb{P}\left( \text{NO}  \right)
-&amp;= \mathbb{P}\left( \text{all $k$ elements in the stream are not sampled}  \right)\\
-&amp;= \left( 1 - \frac{1}{d}  \right)^k \\
-&amp;\approx \exp \left( - \frac{k}{d}  \right)\\
-\end{aligned}\end{split}\]</div>
-<p>For small enough <span class="math notranslate nohighlight">\(\epsilon\)</span>,</p>
-<ul class="simple">
-<li><p>if <span class="math notranslate nohighlight">\(k &gt; (1 + \epsilon) d\)</span> then <span class="math notranslate nohighlight">\(e^{-(1+\epsilon)}&lt;\frac{1}{\mathrm{e}}-\frac{\epsilon}{3}\)</span></p></li>
-<li><p>if <span class="math notranslate nohighlight">\(k &lt; (1 - \epsilon) d\)</span> then <span class="math notranslate nohighlight">\(e^{-(1-\epsilon)}&gt;\frac{1}{\mathrm{e}}+\frac{\epsilon}{3}\)</span></p></li>
-</ul>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-</div>
-</div>
-<div class="section" id="l-2-norm-estimation">
-<h2><span class="math notranslate nohighlight">\(L_2\)</span> Norm Estimation<a class="headerlink" href="#l-2-norm-estimation" title="Permalink to this headline">¶</a></h2>
+<p>In total there are <span class="math notranslate nohighlight">\(t \times s\)</span> number of <span class="math notranslate nohighlight">\(X\)</span>. The total space of Morris++ with success probability <span class="math notranslate nohighlight">\(\delta\)</span> is then <span class="math notranslate nohighlight">\(\Theta\left(\log \frac{1}{\delta} \cdot \frac{1}{\epsilon^{2}} \cdot \log \log n\right)\)</span>. In particular, for constant <span class="math notranslate nohighlight">\(\epsilon, \delta\)</span> (say each 1/100), the total space complexity is <span class="math notranslate nohighlight">\(\mathcal{O} (\log \log n)\)</span> with constant probability. This is exponentially better than the <span class="math notranslate nohighlight">\(\mathcal{O} (\log n)\)</span> space achieved by storing a counter.</p>
+</section>
+</section>
+<section id="estimate-ell-2">
+<h2>Estimate <span class="math notranslate nohighlight">\(\ell_2\)</span><a class="headerlink" href="#estimate-ell-2" title="Permalink to this headline">¶</a></h2>
 <p>AMS algorithm.</p>
 <p>maintain a single number <span class="math notranslate nohighlight">\(z = \sum_{i=1}^n s_i x_i\)</span>.</p>
 <p>2-wise independent, 4-wise independent??</p>
 <p><span class="math notranslate nohighlight">\(k\)</span>-wise independent requires <span class="math notranslate nohighlight">\(k\log m\)</span> bits.</p>
+<p>Consider turnstile model: a stream of <span class="math notranslate nohighlight">\(n\)</span> input <span class="math notranslate nohighlight">\((i, \Delta)\)</span> to update <span class="math notranslate nohighlight">\(x_i \mathrel{+}=\Delta\)</span>. We want to approximate <span class="math notranslate nohighlight">\(\ell_2 = \left\| \boldsymbol{x}  \right\| _2\)</span>. In statistics, this is related to the second order moment of <span class="math notranslate nohighlight">\(X\)</span>, which describe how disperse the distribution is.</p>
+<p>We introduce Alon-Matias-Szegedy’96 (AMS) Algorithm to estimate <span class="math notranslate nohighlight">\(\ell_2 ^2 = \left\| \boldsymbol{x}  \right\| _2 ^2\)</span>.
+For another method Johnson-Lindenstrauss (JL) Lemma, see <a class="reference external" href="https://www.sketchingbigdata.org/fall17/lec/lec3.pdf">here</a>. For <span class="math notranslate nohighlight">\(\ell_p\)</span>-norm approximation, see here [https://www.sketchingbigdata.org/fall17/lec/lec4.pdf].</p>
+<section id="ams">
+<h3>AMS<a class="headerlink" href="#ams" title="Permalink to this headline">¶</a></h3>
+<p>Let <span class="math notranslate nohighlight">\(s_i \in \left\{ -1, 1 \right\}\)</span> with equal probability.</p>
+<hr class="docutils" />
+<p><strong>Algorithms</strong>: (part of) Alon-Matias-Szegedy’96 (AMS)</p>
+<hr class="docutils" />
+<ul class="simple">
+<li><p>Generate <span class="math notranslate nohighlight">\(s_1, \ldots, s_m\)</span> for each coordinates. Initialize <span class="math notranslate nohighlight">\(Z=0\)</span>.</p></li>
+<li><p>Upon <span class="math notranslate nohighlight">\(\texttt{add}(i, \Delta)\)</span>, update <span class="math notranslate nohighlight">\(Z \mathrel{+}= s_i \cdot \Delta\)</span></p></li>
+<li><p>Upon <span class="math notranslate nohighlight">\(\texttt{query()}\)</span>, output <span class="math notranslate nohighlight">\(Z^2\)</span></p></li>
+</ul>
+<hr class="docutils" />
+<div class="tip admonition">
+<p class="admonition-title"> Intuition</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(Z = \sum_{i=1}^m s_i x_i = \boldsymbol{s} ^{\top} \boldsymbol{x}\)</span> where <span class="math notranslate nohighlight">\(s_i = \pm 1\)</span> with equal probability.</p></li>
+</ul>
 </div>
-<div class="section" id="x-i-estimation">
-<h2><span class="math notranslate nohighlight">\(x_i\)</span> Estimation<a class="headerlink" href="#x-i-estimation" title="Permalink to this headline">¶</a></h2>
+<p>Correctness</p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(\mathbb{E} [Z^2] =\left\| \boldsymbol{x}  \right\| _2 ^2\)</span></p>
+<div class="dropdown seealso admonition">
+<p class="admonition-title"> <em>Proof</em></p>
+<div class="math notranslate nohighlight">
+\[
+  \mathbb{E}\left(Z^{2}\right)=\mathbb{E}\left(\boldsymbol{x}^{T} \boldsymbol{s} \boldsymbol{s}^{T} \boldsymbol{x}\right)=\boldsymbol{x}^{T} \mathbb{E}\left(\boldsymbol{s} \boldsymbol{s}^{T}\right) \boldsymbol{x}=\boldsymbol{x}^{T} \boldsymbol{x}=\|\boldsymbol{x}\|_{2}^{2}
+  \]</div>
+<p>where we use <span class="math notranslate nohighlight">\(s_i \perp s_j, \mathbb{E} [s^2_i]\)</span>. In fact, 2-wise independence is enough.</p>
 </div>
+</li>
+<li><p>Good concentration <span class="math notranslate nohighlight">\(\operatorname{Pr}\left[\left|Z^{2}-\ell_2^2\right| \geq \sqrt{2}c \ell_2^2\right] \le \frac{1}{c^{2}}\)</span></p>
+<div class="dropdown seealso admonition">
+<p class="admonition-title"> <em>Proof</em></p>
+<p>We use <span class="math notranslate nohighlight">\(\operatorname{Var}\left(Z^{2}\right)=\mathbb{E}\left[Z^{4}\right]-\mathbb{E}\left[Z^{2}\right]^{2}\)</span></p>
+<p>To compute <span class="math notranslate nohighlight">\(\mathbb{E}\left[Z^{4}\right]\)</span>, note that for distinct <span class="math notranslate nohighlight">\(i,j,k,l\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+  x_{i} x_{j}^{2} x_{k} \mathbb{E}\left[s_{i} s_{j}^{2} s_{k}\right] &amp;=0 \\
+  x_{i} x_{j} x_{k} x_{l} \mathbb{E}\left[s_{i} s_{j} s_{k} s_{l}\right]&amp;=0 \\
+  \end{aligned}\end{split}\]</div>
+<p>which can be shown using iterative conditioning. Thus,</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+  \mathbb{E}\left[Z^{4}\right] &amp;=\mathbb{E}\left[\left(\sum_{i} s_{i} x_{i}\right)^{4}\right] \\
+  &amp; =\mathbb{E}\left[\sum_{i}\left(s_{i} x_{i}\right)^{4}\right]+3 \cdot \mathbb{E}\left[\sum_{i \ne j}\left(s_{i} s_{j} x_{i} x_{j}\right)^{2}\right]+0 \\
+  &amp;= \mathbb{E}\left[\sum_{i} x_{i}^{4}\right]+\mathbb{E}\left[\sum_{i \neq j}\left(x_{i} x_{j}\right)^{2}\right] \\
+  &amp;= \sum_{i} x_{i}^{4} + 3 \sum_{i \neq j}\left(x_{i} x_{j}\right)^{2} \\
+  &amp;\le 3 \left( \sum_{i} x_{i}^{4} + \sum_{i \neq j}\left(x_{i} x_{j}\right)^{2}  \right) \\
+  &amp;= 3 \left\| \boldsymbol{x}  \right\| _2 ^4
+  \end{aligned}\end{split}\]</div>
+<p>In sum, we have</p>
+<div class="math notranslate nohighlight">
+\[
+  \operatorname{Var}\left(Z^{2}\right)
+  \le 3 \left\| \boldsymbol{x}  \right\|_2 ^4 - \left\| \boldsymbol{x}  \right\|_2 ^4 \le 2 \left\| \boldsymbol{x}  \right\| _2 ^4
+  \]</div>
+<p>By Chebyshev,</p>
+<div class="math notranslate nohighlight">
+\[
+  \operatorname{Pr}\left[\left|Z^{2}-\|x\|_{2}^{2}\right| \geq \sqrt{2} \epsilon\|x\|_{2}^{2}\right] \leq 1 / \epsilon^{2}
+  \]</div>
+<p>In fact, 4-wise independence is enough since the maximum degree of the polynomial in <span class="math notranslate nohighlight">\(s_i\)</span> is 4.</p>
 </div>
+</li>
+</ul>
+<p>This bound is too loose to be informative. The overall AMS algorithm keep multiple estimators <span class="math notranslate nohighlight">\(Z_1, \ldots, Z_k\)</span>. And output the average of squared values, <span class="math notranslate nohighlight">\(Z ^\prime = Z_1 ^2, \ldots, Z_k^2\)</span>. It is easy to see that</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbb{E}\left[Z^{\prime}\right]=\mathbb{E}\left[\frac{\sum_{i} z_{i}^{2}}{k}\right]=\mathbb{E}\left[Z_{1}\right]=\|x\|_{2}^{2}
+\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[
+\operatorname{Var}\left(Z^{\prime}\right)=\operatorname{Var}\left(\frac{\sum_{i} Z_{i}^{2}}{k}\right)=\frac{\sum \operatorname{Var}\left(Z_{i}^{2}\right)}{k^{2}}=\frac{\operatorname{Var}\left(Z_{1}^{2}\right)}{k} \le \frac{2\|x\|_{2}^{4}}{k}
+\]</div>
+<p>Hence,</p>
+<div class="math notranslate nohighlight">
+\[\operatorname{Pr}\left[\left|Z^{\prime}-\ell_{2}^{2}\right| \geq c \sqrt{2/k}\ell_{2}^{2}\right] \leq 1 / c ^{2}\]</div>
+<p>If we set <span class="math notranslate nohighlight">\(c=\Theta(1)\)</span> and <span class="math notranslate nohighlight">\(k=\Theta\left(1 / \varepsilon^{2}\right)\)</span>, we get a <span class="math notranslate nohighlight">\((1 \pm \epsilon)\)</span> approximation with constant probability.</p>
+<p>Note that we need 4-wise independence of <span class="math notranslate nohighlight">\(s_1, \ldots, s_m\)</span> to bound <span class="math notranslate nohighlight">\(\mathbb{E} \left[ \left( \sum_{i=1}^m s_i x_i \right)^2 \right]\)</span>, which requires <span class="math notranslate nohighlight">\(\mathcal{O} (\log m)\)</span> random bits. (<span class="math notranslate nohighlight">\(p\log m\)</span> random bits for <span class="math notranslate nohighlight">\(p\)</span>-wise independence). Besides, there are <span class="math notranslate nohighlight">\(\mathcal{O} (\frac{1}{\epsilon^2})\)</span> number of <span class="math notranslate nohighlight">\(Z\)</span>’s, with maximum value <span class="math notranslate nohighlight">\(nm\)</span>, so total we need <span class="math notranslate nohighlight">\(\mathcal{O} (\frac{1}{\epsilon^2} \log(mn))\)</span> bits.</p>
+<p>We can formulate our algorithm in vector form. Let <span class="math notranslate nohighlight">\(\boldsymbol{S}\)</span> be an <span class="math notranslate nohighlight">\(k \times n\)</span> matrix where <span class="math notranslate nohighlight">\(s_{ij} = \pm 1\)</span> with equal probability, then basically we are just maintaining the vector <span class="math notranslate nohighlight">\(\boldsymbol{Z} = \boldsymbol{S} \boldsymbol{x}\)</span> throughout the algorithm and answering the query by outputting <span class="math notranslate nohighlight">\(\left\| \boldsymbol{Z}  \right\|_2 ^2 / k\)</span>. Here <span class="math notranslate nohighlight">\(\boldsymbol{Z}\)</span> is a <strong>linear sketch</strong> <span class="math notranslate nohighlight">\(C(\boldsymbol{x})\)</span> of <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span>.</p>
+</section>
+<section id="id4">
+<h3>AMS++<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<aside class="margin sidebar">
+<p class="sidebar-title"></p>
+<p>Since AMS already use averaging, we denote AMS++ for taking median, as in FM++ and Morris ++.</p>
+</aside>
+<p>To get a <span class="math notranslate nohighlight">\((\epsilon, \delta)\)</span> approximation, we run <span class="math notranslate nohighlight">\(t = \mathcal{O} (\log \frac{1}{\delta})\)</span> independent instantiations of AMS and take the median, similar to FM++ and Morris++.</p>
+<p>There are <span class="math notranslate nohighlight">\(\mathcal{O} (\log \frac{1}{\delta} \cdot \frac{1}{\epsilon^2} )\)</span> number of <span class="math notranslate nohighlight">\(Z\)</span>’s, and <span class="math notranslate nohighlight">\(\mathcal{O} (\log m)\)</span> random bits for sign <span class="math notranslate nohighlight">\(s\)</span>’s.</p>
+</section>
+</section>
+<section id="estimate-x-i">
+<h2>Estimate <span class="math notranslate nohighlight">\(x_i\)</span><a class="headerlink" href="#estimate-x-i" title="Permalink to this headline">¶</a></h2>
+<p>(Review <span class="math notranslate nohighlight">\(k\)</span>-wise independent hash function <a class="reference external" href="https://www.sketchingbigdata.org/fall17/lec/lec2.pdf">here</a>)</p>
+<p>Now we want to estimate the frequency <span class="math notranslate nohighlight">\(x_i\)</span> of <span class="math notranslate nohighlight">\(i\)</span>.</p>
+<p>Two algorithms:</p>
+<ul class="simple">
+<li><p><strong>CountMin</strong>: keep track of all coordinates with additive error, i.e., for each coordinate report <span class="math notranslate nohighlight">\(\hat{x}_i\)</span> that is within <span class="math notranslate nohighlight">\(x_{i} \pm \frac{\|x\|_{1}}{k}\)</span></p></li>
+<li><p><strong>CountSketch</strong>: keep track of all coordinates with additive error, i.e., for each coordinate report <span class="math notranslate nohighlight">\(\hat{x}_i\)</span> that is within <span class="math notranslate nohighlight">\(x_{i} \pm \frac{\|x\|_{2}}{\sqrt{k}}\)</span></p></li>
+</ul>
+<p>See <a class="reference external" href="https://www.mit.edu/~mahabadi/courses/Algorithms_for_Massive_Data_SP21/Lec2.pdf">here</a>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {

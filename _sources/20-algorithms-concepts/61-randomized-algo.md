@@ -2,6 +2,9 @@
 
 Randomized algorithms requires no assumption of distribution of input instance. For any input instance, a randomized algorithm is good in the sense that its expected running time is polynomial, and it gives a near optimal solution with high probability.
 
+Reference
+- UBC Randomized Algorithms (Winter 2015) [link](https://www.cs.ubc.ca/~nickhar/W15/)
+
 
 ## Max Exact 3SAT
 
