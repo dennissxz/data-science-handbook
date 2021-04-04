@@ -102,7 +102,7 @@ Illustration of AlphaFold
 ## Reference
 
 - ML + Graphs
-  - Stanford CS244W: Machine Learning with Graphs [[link]((http://web.stanford.edu/class/cs224w/slides/01-intro.pdf))]
+  - Stanford CS244W: Machine Learning with Graphs [[link](http://web.stanford.edu/class/cs224w/slides/01-intro.pdf)]
 - Theory
   - Lingyuan Lu: Selected topics in spectral graph theory [[link](https://people.math.sc.edu/lu/talks/nankai_2014/)]
 - More application using graphs and networks
