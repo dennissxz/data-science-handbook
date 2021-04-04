@@ -333,28 +333,37 @@ Properties
   \end{array}\right.\\
   \end{aligned}$$
 
-  Note that $L^\mathrm{rw}$ and $L^\mathrm{sym}$ are similar:
-
-  $$
-  \underbrace{\boldsymbol{D}^{-1} \boldsymbol{L}}_{\boldsymbol{L}^{\mathrm{rw}}}=\underbrace{\boldsymbol{D}^{-1 / 2}}_{\boldsymbol{P}^{-1}} \underbrace{\boldsymbol{D}^{-1 / 2} \boldsymbol{L} \boldsymbol{D}^{-1 / 2}}_{\boldsymbol{L}^{\mathrm{sym}}} \underbrace{\boldsymbol{D}^{1 / 2}}_{\boldsymbol{P} }
-  $$
-
-  which implies that
-  - both matrices have the same eigenvalues
+  - As its name suggests, it is related to random walk. The matrix $\boldsymbol{D} ^{-1} \boldsymbol{A} = \boldsymbol{I} - \boldsymbol{L} ^{\mathrm{rw}}$ is row stochastic: every row sum = 1, which can be used as an transition matrix $\boldsymbol{P}$. Precisely,
 
     $$
-    0=\lambda_{1} \leq \lambda_{2} \leq \cdots \leq \lambda_{n}
+    p_{ij} = \left\{\begin{array}{ll}
+    1/d_i, & \text { if } (i,j) \in E \\
+    0, & \text { otherwise }
+    \end{array}\right.
     $$
 
-    Additionally, it can be shown that the multiplicity of the zero eigenvalue is also equal to the number of connected components in the graph.
-
-  - a vector $\boldsymbol{v}$ is an eigenvector of $\boldsymbol{L} ^\mathrm{rw}$ if and only if the vector $\boldsymbol{D} ^{1/2}\boldsymbol{v}$ is an eigenvector of $\boldsymbol{L} ^\mathrm{sym}$.
+  - $L^\mathrm{rw}$ and $L^\mathrm{sym}$ are similar:
 
     $$
-    \underbrace{\boldsymbol{D}^{-1} \boldsymbol{L}}_{\boldsymbol{L}_{\mathrm{rw}}} \boldsymbol{v}=\lambda \boldsymbol{v} \Longleftrightarrow \underbrace{\boldsymbol{D}^{-1 / 2} \boldsymbol{L} \boldsymbol{D}^{-1 / 2}}_{\boldsymbol{L}^{\mathrm{sym}}} (\boldsymbol{D}^{1 / 2} \boldsymbol{v})=\lambda (\boldsymbol{D}^{1 / 2} \boldsymbol{v} )
+    \underbrace{\boldsymbol{D}^{-1} \boldsymbol{L}}_{\boldsymbol{L}^{\mathrm{rw}}}=\underbrace{\boldsymbol{D}^{-1 / 2}}_{\boldsymbol{P}^{-1}} \underbrace{\boldsymbol{D}^{-1 / 2} \boldsymbol{L} \boldsymbol{D}^{-1 / 2}}_{\boldsymbol{L}^{\mathrm{sym}}} \underbrace{\boldsymbol{D}^{1 / 2}}_{\boldsymbol{P} }
     $$
 
-    In particular, for the eigenvalue 0, the associated eigenvectors for $L^\mathrm{rw}$ and $L^\mathrm{sym}$ are $\boldsymbol{1}$ and $\boldsymbol{D} ^{1/2}\boldsymbol{1}$ respectively.
+    which implies that
+    - both matrices have the same eigenvalues
+
+      $$
+      0=\lambda_{1} \leq \lambda_{2} \leq \cdots \leq \lambda_{n}
+      $$
+
+      Additionally, it can be shown that the multiplicity of the zero eigenvalue is also equal to the number of connected components in the graph.
+
+    - a vector $\boldsymbol{v}$ is an eigenvector of $\boldsymbol{L} ^\mathrm{rw}$ if and only if the vector $\boldsymbol{D} ^{1/2}\boldsymbol{v}$ is an eigenvector of $\boldsymbol{L} ^\mathrm{sym}$.
+
+      $$
+      \underbrace{\boldsymbol{D}^{-1} \boldsymbol{L}}_{\boldsymbol{L}_{\mathrm{rw}}} \boldsymbol{v}=\lambda \boldsymbol{v} \Longleftrightarrow \underbrace{\boldsymbol{D}^{-1 / 2} \boldsymbol{L} \boldsymbol{D}^{-1 / 2}}_{\boldsymbol{L}^{\mathrm{sym}}} (\boldsymbol{D}^{1 / 2} \boldsymbol{v})=\lambda (\boldsymbol{D}^{1 / 2} \boldsymbol{v} )
+      $$
+
+      In particular, for the eigenvalue 0, the associated eigenvectors for $L^\mathrm{rw}$ and $L^\mathrm{sym}$ are $\boldsymbol{1}$ and $\boldsymbol{D} ^{1/2}\boldsymbol{1}$ respectively.
 
 - The **additive normalized Laplacian** is defined as
 
