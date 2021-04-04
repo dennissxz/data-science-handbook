@@ -320,6 +320,12 @@ Properties
   \end{array}\right.\\
   \end{aligned}$$
 
+  The matrix $\boldsymbol{I} - \boldsymbol{L} ^{\mathrm{sym}}$ is similar to $\boldsymbol{D} ^{-1} \boldsymbol{A}$:
+
+  $$
+  \boldsymbol{D} ^{-1} \boldsymbol{A} = \boldsymbol{D} ^{-1/2} (\boldsymbol{I} - \boldsymbol{L} ^{\mathrm{sym}}) \boldsymbol{D} ^{1/2}  
+  $$
+
 - The **random-walk normalized Laplacian** matrix is defined as
 
   $$\begin{aligned}
