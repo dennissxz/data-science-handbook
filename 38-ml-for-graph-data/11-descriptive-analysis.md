@@ -294,7 +294,7 @@ The task of verifying whether a graph is connected and, if not, identifying its 
 
 ### Small World
 
-Often it is the case that one of the connected components in a graph G dominates the others in magnitude, in that it contains the vast majority of the vertices in $G$. We call it the giant component. Depending on the task at hand, it may be sensible to restrict attention to that component alone in carrying out further analysis and modeling.
+Often it is the case that one of the connected components in a graph G dominates the others in magnitude, in that it contains the vast majority of the vertices in $G$. We call it the **giant component**. Depending on the task at hand, it may be sensible to restrict attention to that component alone in carrying out further analysis and modeling.
 
 The giant component of many real-world networks enjoys the small world property. This concept is traced back to Stanley Milgram's experiment in 1960's: people are only separated by roughly six acquaintances (i.e., by 'six degrees of separation'). That is, despite the enormous size of the giant component, the typical number of ‘hops’ along shortest paths between any two vertices would be quite small.
 
@@ -304,9 +304,9 @@ $$
 \bar{l}=\frac{1}{N_{v}\left(N_{v}+1\right) / 2} \sum_{u \neq v \in V} \operatorname{dist}(u, v)
 $$
 
-We say it is small if $\bar{l}$ scales as $\mathcal{O} (\log N_v)$ or less.
+We say it is small if $\bar{l}$ scales as $\mathcal{O} (\log N_v)$ or less. A necessary result is $\operatorname{diam}(G) = \mathcal{O} (\log N_v)$.
 
-Besides, small average distance is often accompanied by a high clutering coefficient $\operatorname{clus}(G)$ or $\operatorname{clus} _T (G)$. These two properties joint define the term 'small world', which is related to communication upon them, e.g. information in a social network, disease in an epidemiological network, etc.
+Besides, small average distance is often accompanied by a high clustering coefficient $\operatorname{clus}(G)$ or $\operatorname{clus} _T (G)$ (but not necessary). These two properties (or the first alone) joint define the term 'small world', which is related to communication upon them, e.g. information in a social network, disease in an epidemiological network, etc.
 
 ### Vertex and Edge Connectivity and Cut
 
