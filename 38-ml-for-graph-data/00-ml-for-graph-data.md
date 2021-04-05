@@ -105,6 +105,7 @@ Illustration of AlphaFold
   - Stanford CS244W: Machine Learning with Graphs [[link](http://web.stanford.edu/class/cs224w/slides/01-intro.pdf)]
 - Theory
   - Lingyuan Lu: Selected topics in spectral graph theory [[link](https://people.math.sc.edu/lu/talks/nankai_2014/)]
+  - John D. Cook: Ten spectral graph theory posts [link](https://www.johndcook.com/blog/2016/06/05/ten-spectral-graph-theory-posts/)
 - More application using graphs and networks
   - National Research University Higher School of Economics: Structural Analysis and Visualization of Networks, Winter-Spring 2015 [[link](http://www.leonidzhukov.net/hse/2015/networks/)]
 

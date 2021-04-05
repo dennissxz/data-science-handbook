@@ -307,6 +307,7 @@ $$
 
 Hence under star sampling, it simply use the relation $\bar{d} = \frac{2N_e}{N_v}$ to the sample. In contrast, under induced subgraph sampling, the analogous result (sample average degree) is scaled up by the factor $\frac{N_v - 1}{n-1}$ to account for $d_{i, indu}^* \le d_i$.
 
+(sampling-hidden-pop-size)=
 #### Hidden Population Size
 
 The term 'hidden population' generally refers to one in which the individuals do not wish to expose themselves to view. For example, humans of socially sensitive status, such as illegal drug usage or prostitution. Two issues:
