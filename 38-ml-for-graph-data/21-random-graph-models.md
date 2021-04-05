@@ -36,7 +36,7 @@ If $\eta(G^{obs})$ is found to be sufficiently unlikely under this distribution,
 
 Some issues:
 - How to choose $\mathcal{G}$?
-- Usually it is not possible to enumerate all elements in $\mathcal{G}$, hence, cannot compute $\mathbb{P}_{\eta, \mathcal{G}} (t)$ exactly $\rightarrow$ approximation.
+- Usually it is not possible to enumerate all elements in $\mathcal{G}$, hence, cannot compute $\mathbb{P}_{\eta, \mathcal{G}} (t)$ exactly $\rightarrow$ sol: approximation.
 
 ## Classical Random Graph Models
 
@@ -97,7 +97,7 @@ For some models it is actually possible to produce samples in linear time; for o
 
 - $\mathcal{G} (N_v, p)$
 
-  A trivial solution is to store $\binom{N_v}{2} = \mathcal{O} (N_v^2)$ independent Bernoulli random variables, each with success probability $p$. When $p$ is small, majority of these variables will be $0$, hence $\mathcal{O} (N_v^2)$ seems a waste. Can we do better? Hint: for a given vertex $i$, consider a sequence of its $N_v-1$ neighbors $j$, such that $a_{ij} \sim \operatorname{Ber}(p)$, what the expected number of 0's between two 1's?
+  A trivial solution is to store $\binom{N_v}{2} = \mathcal{O} (N_v^2)$ independent Bernoulli random variables, each with success probability $p$. When $p$ is small, majority of these variables will be $0$, hence $\mathcal{O} (N_v^2)$ seems a waste. Can we do better? Hint: for a given vertex $i$, consider a sequence of its $N_v-1$ neighbors $j$, such that $a_{ij} \sim \operatorname{Ber}(p)$, what's the expected number of 0's between two 1's?
 
 
 - $\mathcal{G} (N_v, N_e)$
@@ -108,25 +108,67 @@ See [Batagelj and Brandes](http://www.cosinproject.eu/publications/batagelj-pre7
 
 ### Generalized RGM
 
-.
+Sampling GRGM is more challenging since there are more constraints. We focus our discussion upon the case that the degree sequence $D = \left\{d_{(1)}, \ldots, d_{\left(N_{v}\right)}\right\}$ is be fixed.
 
 
-.
+#### Matching Algorithm
+
+Input: $V, D$, output: $E$
+
+- create a list containing $d_{(i)}$ copies of $v_{(1)}$
+
+  $$
+  L = \{ \underbrace{v_{(1)}, \ldots, v_{(1)}}_{d_{(1)} \text{ copies} }, v_{(2)}, \ldots, v_{(N_v)} \}
+  $$
+
+- randomly choose pairs of elements from $L$ into $E$, removing each pair from $L$ once chosen.
+- return $E$
+
+Obviously, there can be are multi-edges or loops in $E$, hence the corresponding graph is a multi-graph. If that's the case, just discard that graph and then repeat. Under appropriate conditions on the degree sequence, it can be argued that this algorithm will generate graphs from $\mathcal{G}$ with equal probability. See [SAND 282].
 
 
-.
+However, when the degree distribution is skewed, e.g. $d_{(1)}$ is large, it is quite likely to obtain repeated pairs $(v_{(1)}, v_{(j)})$ or $(v_{(1)}, v_{(1)})$. A solution is to monitor the pairs of vertices being selected and, if a candidate pair matches one in $E$, it is rejected and another candidate pair is selected instead. This modification will introduce **bias** into the sampling, and the graphs $G$ thus generated will no longer correspond to a strictly uniform sampling.
 
+Alternatively, we can instead sample so as to avoid repeating existing matches in the first place. See [SAND 81] that developed for uniformly sampling $r \times c$ matrices $\boldsymbol{M}$ of non-negative integers with fixed marginal totals.
 
-.
+#### Switching Algorithm
 
+Aka rewiring algorithms.
 
-.
+Switching algorithms begin with a graph that has the prescribed degree sequence, and then modify the connectivity of that graph through a succession of simple changes named 'switching': a pari of edges in the current graph $e_1 = (u_1, v_1)$ and $e_2 = (u_2, v_2)$ are randomly selected and replaced by the new edges $\left\{ u_1, v_2 \right\}$ and $\left\{ u_2, v_1 \right\}$. If either of the latter already exists, then the proposed switch is abandoned.
 
+It falls within the realm of MCMC methods. In practice, it is typical to let the algorithm run for some time before beginning to collect sample graphs $G$. There is currently no  theory to indicate just how long of a preliminary period is necessary. Milo et al. [SAND 279] cite empirical evidence to suggest a factor of $100 N_e$ can be more than sufficient.
 
-.
+To ensure that the algorithm asymptotically yields strictly uniform sampling from $\mathcal{G}$, there are some certain formal conditions. See [SAND 322].
 
+MCMC can be used to generate GRG uniformly from other types of collections $\mathcal{G}$ with additional characteristics beyond the degree sequence. However, that development of the corresponding theory, verifying the assumptions underlying Markov chain **convergence**, currently appears to lag far behind the pace of algorithm development.
 
-.
+## Application
 
+### Hidden Population Size
 
-.
+In previous section we derived a design-based [estimator](sampling-hidden-pop-size) of hidden population size. Here, we describe a model-based estimator using random graphs.
+
+Assume that the hidden population graph $G = (V, E)$ is from a collection $\mathcal{G} (N_v, p)$ of random graphs.
+
+Note that now, $A_{ij}$ is also a random variables, i.e. $A_{ij} = \mathbb{I} \left\{ (i, j) \in E  \right\}$ with success probability $p$. Moreover, $A_{ij}$ are independent with $Z_i$. Hence, the moments are
+
+$$
+\begin{aligned}
+\mathbb{E}\left(N_{v}^{*}\right) &=\mathbb{E}\left(\sum_{i} Z_{i}\right)=N_{v} p_{0} \\
+\mathbb{E}\left(M_{1}\right) &=\mathbb{E}\left(\sum_{i \neq j} Z_{i} Z_{j} A_{i j}\right)= p_{0}^{2} \cdot N_v\left(N_{v}-1\right)p \\
+\mathbb{E}\left(M_{2}\right) &=\mathbb{E}\left(\sum_{i \neq j} Z_{i}\left(1-Z_{j}\right) A_{i j}\right)= p_{0}\left(1-p_{0}\right) \cdot N_v\left(N_{v}-1\right)p
+\end{aligned}
+$$
+
+After setting RHS equal to the observed values $n, m_1, m_2$ of LHS, we have
+
+$$
+\begin{aligned}
+\hat{p}_{0} &=m_{1} /\left(m_{1}+m_{2}\right) \\
+\hat{N}_{v} &=n\left(m_{1}+m_{2}\right) / m_{1}
+\hat{p} &=m_{1}\left(m_{1}+m_{2}\right) / n\left[(n-1) m_{1}+n m_{2}\right] \\
+\end{aligned}
+$$
+
+Note that the estimates of $p_0$ and $N_v$ are the same as those in the design-based method. There is another method using maximum conditional likelihood, see [SAND 154].
