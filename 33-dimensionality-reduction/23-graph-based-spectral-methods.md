@@ -273,6 +273,121 @@ $\mathbb{M}  = \boldsymbol{D} ^{-1} \boldsymbol{W}$ is a rwo stochastic matrix.
 where $\mathbb{M} \boldsymbol{1} = \boldsymbol{1}, \mathbb{M} \ge 0, \lambda(\mathbb{M}) \le 1$. -->
 
 
+### Seriation Problem
+
+[Wikipedia](https://en.wikipedia.org/wiki/Seriation_(archaeology))
+
+Now there are some archeological pieces $i = 1, \ldots, n$. Want to time order them $\pi(i)$. Have in hand is there similarity $w_{ij}$.
+
+The problem can be formulated as
+
+$$
+
+$$
+
+Permutation is hard. Spectral relaxation drop the permutation constraint.
+
+Hope that the relative order in $f^*$ can tell $\boldsymbol{\pi}$.
+
+What if we have some information, say $i$ is in some year for some $i$'s? Can we use this information?
+
+
+
+## Randomized SVD-based Methods
+
+Lemma (Johnson-Lindenstrauss)
+: Let $x_1, x_2, \ldots, x_n \in \mathbb{R} ^d$, tolerance $\epsilon \in (0, \frac{1}{2} )$, there exists a Lipshitz mapping $f: \mathbb{R} ^d \rightarrow \mathbb{R} ^k$, where $k = \frac{24 \log n}{\epsilon^2}$ such that
+
+$$
+(1 - \epsilon) \left\| \boldsymbol{x}_i - \boldsymbol{x}_j  \right\| ^2 \le \left\| f(\boldsymbol{x}_i ) - f(\boldsymbol{x}_j )\right\| \le (1 + \epsilon) \left\| \boldsymbol{x}_i - \boldsymbol{x}_j  \right\| ^2
+$$
+
+How do we construct $f$? Guess: $f(u) = \frac{1}{\sqrt{k}} \boldsymbol{A} \boldsymbol{u}$ for some $\boldsymbol{A} \in \mathbb{R} ^{k \times d}$ where $k < d$ and $a_{ij} \overset{\text{iid}}{\sim} \mathcal{N} (0, 1)$.
+
+Intuition: the columns of $\boldsymbol{A}$ are orthogonal to each other in in expectation. If indeed orthogonal, then $\left\| \boldsymbol{A} \boldsymbol{u}  \right\| = \left\| \boldsymbol{u}  \right\|$.
+
+Lemma (Norm preserving)
+: Fix a vector $\boldsymbol{u} \in \mathbb{R} ^d$, then $\boldsymbol{A}$ preserves the norm in expectation.
+$$
+\mathbb{E} [\left\| \frac{1}{\sqrt{k}} \boldsymbol{A} \boldsymbol{u}   \right\|^2]  = \mathbb{E} [(\left\| \boldsymbol{u}  \right\|^2)]
+$$
+
+:::{admonition,dropdown,seealso} *Proof*
+
+
+$$\begin{aligned}
+\frac{1}{k} \mathbb{E} [\left\| \boldsymbol{A} \boldsymbol{u}  \right\| ^2]  
+&= \frac{1}{k} \boldsymbol{u} ^{\top} \mathbb{E} [\boldsymbol{A} ^{\top} \boldsymbol{A} ] \boldsymbol{u}    \\
+&= \frac{1}{k} \boldsymbol{u} ^{\top} k \boldsymbol{I}_{n \times n} \boldsymbol{u}     \\
+&= \left\| \boldsymbol{u}  \right\|   ^2 \\
+\mathbb{E} [\boldsymbol{a} _i ^{\top} \boldsymbol{a} _i]
+&= \sum_{p=1}^k \mathbb{E} [a_{ik}^2] \\
+&= \sum_{p=1}^k 1  \\
+&=k \\
+\end{aligned}$$
+
+:::
+
+Lemma (concentration)
+: Blessing of high dimensionality: things concentrate around mean
+
+$$
+\mathbb{P} (\left\| \frac{1}{k} \boldsymbol{A} \boldsymbol{u}   \right\| ^2 > (1 + \epsilon) \left\| \boldsymbol{u}  \right\|  ^2)  \le \exp \left( \frac{k}{2} \left( \frac{\epsilon^2}{2} - \frac{\epsilon^3}{2}  \right) \right)
+$$
+
+:::{admonition,dropdown,seealso} *Proof*
+
+Let $\boldsymbol{v} = \frac{\boldsymbol{A} \boldsymbol{u} }{\left\| \boldsymbol{u}  \right\| } \in \mathbb{R} ^k$, it is easy to see $V_i \sim \mathcal{N} (0, 1)$. In this case,
+
+
+$$\begin{aligned}
+\mathbb{P}\left( \left\| \boldsymbol{v} \right\| ^2 > (1 + \epsilon) k\right)
+&= \mathbb{P}\left( \exp (\lambda \left\| \boldsymbol{v}  \right\| ^2) > \exp (1+ \epsilon) k \lambda \right)  \\
+&\le \frac{\mathbb{E} [\exp (\lambda \left\| \boldsymbol{v}  \right\| ^2)] }{\exp [ (1+ \epsilon) k\lambda]}  \quad \because \text{Markov inequality} \\
+&\le \frac{[\mathbb{E} [\exp (\lambda V_i^2)]]^k }{\exp [ (1+ \epsilon) k\lambda]}  \quad \because V_i \text{ are i.i.d.}  \\
+&=  \exp [-(1 + \epsilon) k \lambda] \left( \frac{1}{1-2\lambda}  \right)^{k/2} \quad \because \mathbb{E} [e^{tX}] = \sqrt{\frac{1}{1- 2t} } \text{ for } X \sim \chi ^2 _1 \\
+\end{aligned}$$
+
+If we choose $\lambda = \frac{\epsilon}{2(1+\epsilon)} < \frac{1}{2}$, then
+
+
+$$
+\mathbb{P} (\left\| \boldsymbol{v}  \right\| > (1 + \epsilon)k)  \le \left[ (1+\epsilon)e^{- \epsilon} \right]^{k/2}.
+$$
+
+Then it remains to show $1+\epsilon \le \exp(\epsilon - \frac{\epsilon^2}{2} +  \frac{\epsilon^3}{2})$ for $\epsilon > 0$, which is true by derivative test. Plug in this inequality we get the required inequality.
+
+:::
+
+Lemma (Two sided)
+: Similarly, we can find the other bound. Hence, by union bound
+
+$$
+\mathbb{P}\left( \left\| \boldsymbol{v}  \right\| > (1 + \epsilon) k \text{ or }  \left\| \boldsymbol{v}  \right\| < (1 - \epsilon) k \right) \le 2 \exp \left(\frac{k}{2}\left(\frac{\epsilon^{2}}{2}-\frac{\epsilon^{3}}{2}\right)\right)
+$$
+
+:::{admonition,dropdown,seealso} *Proof of JL*
+
+The probability we fail to find an $\epsilon$-distortion map for any $i, j$ is
+
+$$\begin{aligned}
+&= \mathbb{P} \left( \exists i, j: \left\| \boldsymbol{A} \boldsymbol{x}_i - \boldsymbol{A} \boldsymbol{x}_j  \right\|^2 > (1 + \epsilon) \left\| \boldsymbol{x}_i - \boldsymbol{x}_j  \right\|  ^2  \text{ or } < (1 - \epsilon) \left\| \boldsymbol{x}_i - \boldsymbol{x}_j  \right\|  ^2 \right)   \\
+&= \mathbb{P} \left( \cup_{(i,j)} \right)  \\
+&\le \binom{n}{2} 2  \exp \left(\frac{k}{2}\left(\frac{\epsilon^{2}}{2}-\frac{\epsilon^{3}}{2}\right)\right)\quad \because \text{union bound} \\
+&\le 2 n^2 \exp \left(\frac{k}{2}\left(\frac{\epsilon^{2}}{2}-\frac{\epsilon^{3}}{2}\right)\right)\\
+\end{aligned}$$
+
+With some choice of $k$, this upper bound is $1 - \frac{1}{n}$, i.e. there is an $\frac{1}{n}$ chance we get a map with $\epsilon$ distortion.
+
+What if we want a higher probability?
+
+For some $\alpha$, if we set, $k \ge (4 + 2\alpha) \left( \frac{\epsilon^{2}}{2}-\frac{\epsilon^{3}}{2} \right) ^{-1} \log(n)$, then the embedding $f(\boldsymbol{x} ) = \frac{1}{\sqrt{k}} \boldsymbol{A} \boldsymbol{x}$ succeeds with probability at least $1 - \frac{1}{n^\alpha}$.
+
+:::
+
+
+
+
 ## Locally Linear Embedding
 
 Locally linear embedding learns a mapping in which each point can be expressed as a **linear function** of its nearest neighbors.
