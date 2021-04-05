@@ -172,3 +172,39 @@ $$
 $$
 
 Note that the estimates of $p_0$ and $N_v$ are the same as those in the design-based method. There is another method using maximum conditional likelihood, see [SAND 154].
+
+### Assessing Significance
+
+As described, given $\eta(G^{obs})$, we want to find how in some sense unusual or unexpected it is. An important issue is determining which $\mathcal{G}$ to use as reference. For instance, to assess the significance of the number of distinct triangles in $G^{obs}$, a reasonable reference $\mathcal{G}$ should have the same number of edges as that of $G^{obs}$. In practice,
+- it is common to control for the degree sequence observed in $G^{obs}$.
+- sometimes also control other factors: if we knew that certain groups were present within the vertex set $V^{obs}$, we might wish to maintain the number of edges between and within each group.
+
+
+For example, for an observed graph $G^{obs}$, we find that $\operatorname{clus}_T(G^{obs}) = 0.2257$. A reference collection $\mathcal{G}$ can be
+1. $\mathcal{G} (N_v, N_e)$, or
+2. $\mathcal{G} (N_v, N_e, d)$, where $d$ is the degree distribution.
+
+Note $\left\vert \mathcal{G} (N_v, N_e) \right\vert = \binom{\binom{N_v}{2} }{N_e}$ is quite large, and $\left\vert \mathcal{G} (N_v, N_e, f_d) \right\vert$ is much smaller than the former but also large, we use MCMC to simulate the uniform sampling of $10,000$ random graphs $G$ from $\mathcal{G}$, and compute $\eta(G) = \operatorname{clus}_T(G)$
+
+- in the first case, when the number of edges was fixed, only 3 of our 10,000 samples resulted in a graph with higher clustering coefficient,
+- whereas in the second case, when the degree distribution was fixed, all of the samples resulted in lower clustering coefficient.
+
+We therefore have strong evidence to reject the hypothesis that the network can be viewed as a uniform sample under either random graph model. As a result, we conclude that the network graph shows **markedly** greater transitivity than random graphs of comparable magnitude (i.e., with respect to order and size) or connectivity (i.e., with respect to degree distribution).
+
+:::{figure} graph-karate
+<img src="../imgs/graph-karate.png" width = "50%" alt=""/>
+
+Observed graph of Zachary’s ‘karate club [Kolaczyk 2009]
+:::
+
+:::{figure} rgm-assess-clustering
+<img src="../imgs/rgm-assess-clustering.png" width = "80%" alt=""/>
+
+Histograms of simulated clustering coefficients with fixed $N_v, N_e$ (left) and $f_d$ (right).
+:::
+
+It's also worth observing that the right distribution is bimodal.
+- those in in the right-hand mode tended to often be characterized by two large and somewhat distinct clusters, as in the original network.
+- those in the left appeared to have more diffuse clusters or even just one large cluster.
+
+Meanwhile, for the $\mathcal{G} (N_v, N_e, d)$ case, due to conditioning on degree, coupled with the invariance of $\operatorname{clus} _T$ under isomorphism, the effective size of the sample space becomes quite small. In the 10,000 trials run, there were only 25 different values of $\operatorname{clus} _T$, and 17 of them takes 99% of the mass.
