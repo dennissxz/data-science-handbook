@@ -208,3 +208,85 @@ It's also worth observing that the right distribution is bimodal.
 - those in the left appeared to have more diffuse clusters or even just one large cluster.
 
 Meanwhile, for the $\mathcal{G} (N_v, N_e, d)$ case, due to conditioning on degree, coupled with the invariance of $\operatorname{clus} _T$ under isomorphism, the effective size of the sample space becomes quite small. In the 10,000 trials run, there were only 25 different values of $\operatorname{clus} _T$, and 17 of them takes 99% of the mass.
+
+### Detecting Network Motifs
+
+Definition (motif)
+: Motif defined by [SAND 218, 278] are small subgraphs occurring **far more frequently** in a given network than in comparable random graphs.
+
+Motivation: many large, complex networks may perhaps be constructed (at least in part) of smaller, comparatively simple ‘building blocks'. Network motif detection seeks to identify possible subgraph configurations of this nature.
+
+Let
+- $\mathcal{G} _k (G) =\left\{ G ^\prime  \in G: \left\vert V(G) \right\vert= k  \right\}$ be a collection of all possible $k$-vertex subgraphs with cardinality $L_k = \left\vert \mathcal{G} _k (G) \right\vert$
+  - undirected: $L_2 = 2, L_3 = 2^3, L_k = 2^{k(k-1)/2}$ (??)
+  - directed: $L_k = 2^{k(k-1)}$
+- $N_i$ be the number of occurrences of the $i$-th element $G ^\prime _i \in \mathcal{G} _k$ in $G$.
+
+Define a proportion as our $\eta(G)$:
+
+$$
+F_i = \frac{N_i}{\sum_{i^\prime =1}^{L_k} N_{i ^\prime}}
+$$
+
+Then, analogous to what was described in the previous section, each value $F_i$ is compared to an appropriate reference distribution $\mathbb{P}_{\mathcal{G} } (i)$. Subgraphs for whom the value $F_i$ is found to be extreme are declared to be network motifs for building $G^{obs}$.
+
+Note that we for a given choice of $k$, we need to count the number $N_i$ for $i = 1,\ldots, L_k$, but $L_k$ grows quite large with $k$. To overcome this, some sampling techniques can be used. Specifically, if $k$-vertex subgraphs $H$ are sampled in some fasion, then an unbiased estimate of the total number $N_i$ of a given subgraph type is just
+
+$$
+\widehat{N}_i = \sum_{H\text{ of type }i } \pi_H^{-1}
+$$
+
+where $\pi_H$ is the inclusion probability for $H$. Natural (although biased) estimates $\hat{F}_i$ of the corresponding relative frequencies $F_i$ are obtained through direct substitution of $\hat{N}_i$ to the previous equation.
+
+For other sampling method, see SAND pg.168.
+
+
+
+.
+
+
+.
+
+
+.
+
+
+.
+
+
+.
+
+
+.
+
+
+.
+
+
+.
+
+
+-
+
+.
+
+
+.
+
+
+.
+
+
+.
+
+
+.
+
+
+.
+
+
+.
+
+
+.
