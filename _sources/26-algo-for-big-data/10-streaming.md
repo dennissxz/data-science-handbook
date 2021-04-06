@@ -20,11 +20,17 @@ Goal
   - good concentration
       - $(\epsilon, \delta)$ approximation (guarantee): given $0 < \epsilon, \delta< 1$, want the probability of deviation from true value $\ell_p$ by $\epsilon \ell_p$ to be no larger than $\delta$. This event can be viewed as a failure output, and its probability is called failure probability.
 
-        $$\mathbb{P}[ \vert \hat{\ell}_p - \ell_p \vert> \epsilon \ell_p ] < \delta$$
+        $$\mathbb{P}[ \hat{\ell}_p \in ( 1 \pm \epsilon) \ell_p ] = \mathbb{P}[ \vert \hat{\ell}_p - \ell_p \vert> \epsilon \ell_p ] < \delta$$
 
         Often, given required $\epsilon$, we want to find good $\hat{\ell}_p$ that gives lower $\delta$.
 
       - constant approximation
+
+        $$
+        \mathbb{P} [\hat{\ell}_p \ge c \ell _p ] \le \delta
+        $$
+
+        we can then repeat the procedures to boost the success probability.
 
 Overall algorithm design intuition:
 - maintain in memory some quantity $Q$ (can be a scalar, vector, matrix)
@@ -353,7 +359,7 @@ Correctness
   :::{admonition,dropdown,seealso} *Proof*
 
   $$
-  \mathbb{E}\left(Z^{2}\right)=\mathbb{E}\left(\boldsymbol{x}^{T} \boldsymbol{s} \boldsymbol{s}^{T} \boldsymbol{x}\right)=\boldsymbol{x}^{T} \mathbb{E}\left(\boldsymbol{s} \boldsymbol{s}^{T}\right) \boldsymbol{x}=\boldsymbol{x}^{T} \boldsymbol{x}=\|\boldsymbol{x}\|_{2}^{2}
+  \mathbb{E}\left(Z^{2}\right)=\mathbb{E}\left(\boldsymbol{x}^{\top} \boldsymbol{s} \boldsymbol{s}^{\top} \boldsymbol{x}\right)=\boldsymbol{x}^{\top} \mathbb{E}\left(\boldsymbol{s} \boldsymbol{s}^{\top}\right) \boldsymbol{x}=\boldsymbol{x}^{\top} \boldsymbol{x}=\|\boldsymbol{x}\|_{2}^{2}
   $$
 
   where we use $s_i \perp s_j, \mathbb{E} [s^2_i]$. In fact, 2-wise independence is enough.
@@ -421,7 +427,8 @@ If we set $c=\Theta(1)$ and $k=\Theta\left(1 / \varepsilon^{2}\right)$, we get a
 
 Note that we need 4-wise independence of $s_1, \ldots, s_m$ to bound $\mathbb{E} \left[ \left( \sum_{i=1}^m s_i x_i \right)^2 \right]$, which requires $\mathcal{O} (\log m)$ random bits. ($p\log m$ random bits for $p$-wise independence). Besides, there are $\mathcal{O} (\frac{1}{\epsilon^2})$ number of $Z$'s, with maximum value $nm$, so total we need $\mathcal{O} (\frac{1}{\epsilon^2} \log(mn))$ bits.
 
-We can formulate our algorithm in vector form. Let $\boldsymbol{S}$ be an $k \times n$ matrix where $s_{ij} = \pm 1$ with equal probability, then basically we are just maintaining the vector $\boldsymbol{Z} = \boldsymbol{S} \boldsymbol{x}$ throughout the algorithm and answering the query by outputting $\left\| \boldsymbol{Z}  \right\|_2 ^2 / k$. Here $\boldsymbol{Z}$ is a **linear sketch** $C(\boldsymbol{x})$ of $\boldsymbol{x}$.
+We can formulate our algorithm in vector form. Let $\boldsymbol{S}$ be an $k \times n$ matrix where $s_{ij} = \pm 1$ with equal probability, then basically we are just maintaining the vector $\boldsymbol{Z} = \boldsymbol{S} \boldsymbol{y}$ throughout the algorithm and answering the query by outputting $\left\| \boldsymbol{Z}  \right\|_2 ^2 / k$. Here $\boldsymbol{Z}$ is a **linear sketch** $C(\boldsymbol{y})$ of $\boldsymbol{y}$.
+
 
 
 ### AMS++
@@ -439,15 +446,107 @@ There are $\mathcal{O} (\log \frac{1}{\delta} \cdot \frac{1}{\epsilon^2} )$ numb
 
 (Review $k$-wise independent hash function [here](https://www.sketchingbigdata.org/fall17/lec/lec2.pdf))
 
-Now we want to estimate the frequency $x_i$ of $i$.
+Now we want to estimate the frequency $x_i$ of $i$. Aka coordinate approximation.
 
 Two algorithms:
 - **CountMin**: keep track of all coordinates with additive error, i.e., for each coordinate report $\hat{x}_i$ that is within $x_{i} \pm \frac{\|x\|_{1}}{k}$
 - **CountSketch**: keep track of all coordinates with additive error, i.e., for each coordinate report $\hat{x}_i$ that is within $x_{i} \pm \frac{\|x\|_{2}}{\sqrt{k}}$
 
 
-See [here](https://www.mit.edu/~mahabadi/courses/Algorithms_for_Massive_Data_SP21/Lec2.pdf).
+For details see [here](https://www.mit.edu/~mahabadi/courses/Algorithms_for_Massive_Data_SP21/Lec2.pdf).
 
+Count-min is a linear sketch. Suppose data vector $\boldsymbol{y} \in \mathbb{R} ^n$, then the sketch is $C(\boldsymbol{y}) = \boldsymbol{M} \boldsymbol{y}$ where $\boldsymbol{M} \in \mathbb{R} ^{\log \frac{1}{\delta} \cdot \frac{1}{\epsilon}  \times n}$
+
+Each column of $M_{i} \in \mathbb{R}^{\left(\frac{1}{\epsilon}\right) \times n}$ has a 1 in a random row.
+
+$$
+\left(\begin{array}{l}
+1,0,0,0,1,0,0,0 \\
+0,0,1,1,0,0,0,1 \\
+0,1,0,0,0,1,1,0
+\end{array}\right)\left(\begin{array}{l}
+y_{1} \\
+y_{2} \\
+\cdot \\
+\cdot \\
+y_{8}
+\end{array}\right)=\left(\begin{array}{l}
+y_{1}+y_{5} \\
+y_{3}+y_{4}+y_{8} \\
+y_{2}+y_{6}+y_{7}
+\end{array}\right)
+$$
+
+Count-sketch is a linear sketch
+
+- Sketch: $f(\boldsymbol{y})= \boldsymbol{M}  \cdot \boldsymbol{x}$ where $M \in \mathbb{R}^{\left(\log \frac{1}{\delta} \cdot \frac{1}{\epsilon}\right) \times n}$
+- Each column of $M_{i} \in \mathbb{R}^{\left(\frac{1}{\epsilon^{2}}\right) \times m}$ has a random $\pm 1$ in a random row
+
+
+$$
+\begin{array}{l}
+\left(\begin{array}{l}
+1,0,0,0,-1,0,0,0 \\
+0,0,1,-1,0,0,0,1 \\
+0,-1,0,0,0,1,-1,0
+\end{array}\right)\left(\begin{array}{l}
+y_{1} \\
+y_{2} \\
+\cdot \\
+\cdot \\
+\cdot \\
+y_{8}
+\end{array}\right)=\left(\begin{array}{l}
+y_{1}-y_{5} \\
+y_{3}-y_{4}+y_{8} \\
+-y_{2}+y_{6}-y_{7}
+\end{array}\right) \\
+\end{array}
+$$
+
+## $L_p$-sampler
+
+Suppose we want to sample
+
+
+### $L_0$-sampler
+
+Want: sample one of the non-zero coordinates with uniform probability $\frac{1}{\|x\|_{0}}+n^{-c}$.
+
+Assume each $x_i \in [-W, W]$ where $W = \log(n)$.
+
+For $0 \le i \le \log n$, let $S_i$ be a set where each element is picked independently w.p. $\frac{1}{2^i}$. If $S_i$ only contains a single non-zero element $x$, we output that element. How to test $S_i$ has a single non-zero coordinate?
+
+Compute
+
+- $A_i = \sum_{j \in s_i} x_j$
+- $B_i = \sum_{j \in s_i} j \cdot x_j$
+- $C_i = \sum_{j \in s_i} x_j r^j \mod p$ where
+  - $p = \mathcal{O} (\operatorname{poly}(n))$ is a prime number
+  - $r$ is a chosen uniformly at random from $\left\{ 1, 2, \ldots, p-1 \right\}$
+
+Then we test
+
+- $\frac{B_i}{A_i} \in [n]$
+- $C_i = A_i r^{b_i/A_i} \mod p$
+
+Clearly,
+
+- If $S_i$ has one non-zero coordinate, it passes the test
+- else if it has more than one non-zero coordinate, it fails with high probability
+
+How to maintain $S_i$? Use $k$-wise independent hash function.
+
+## Graph Streaming
+
+Consider a graph arrival model: edge arrival or vertex arrival in a stream. It may be insertion-only or dynamic.
+
+For instance, problems include:
+- find a connected component
+- decide: is the graph $k$-edge connected?
+- maximum matching
+
+See [link](https://www.sketchingbigdata.org/fall17/lec/lec18.pdf).
 
 .
 

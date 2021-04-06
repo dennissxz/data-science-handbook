@@ -273,6 +273,150 @@ $\mathbb{M}  = \boldsymbol{D} ^{-1} \boldsymbol{W}$ is a rwo stochastic matrix.
 where $\mathbb{M} \boldsymbol{1} = \boldsymbol{1}, \mathbb{M} \ge 0, \lambda(\mathbb{M}) \le 1$. -->
 
 
+### Seriation Problem
+
+[Wikipedia](https://en.wikipedia.org/wiki/Seriation_(archaeology))
+
+Now there are some archeological pieces $i = 1, \ldots, n$. Want to time order them $\pi(i)$. Have in hand is there similarity $w_{ij}$.
+
+The problem can be formulated as
+
+$$
+
+$$
+
+Permutation is hard. Spectral relaxation drop the permutation constraint.
+
+Hope that the relative order in $f^*$ can tell $\boldsymbol{\pi}$.
+
+What if we have some information, say $i$ is in some year for some $i$'s? Can we use this information?
+
+
+
+## Randomized SVD-based Methods
+
+### Johnson-Lindenstrauss Lemma
+
+Lemma (Johnson-Lindenstrauss)
+: For data vectors be $\boldsymbol{x} _1, \boldsymbol{x} _2, \ldots, \boldsymbol{x} _n \in \mathbb{R} ^d$ and  tolerance $\epsilon \in (0, \frac{1}{2} )$, there exists a Lipshitz mapping $f: \mathbb{R} ^d \rightarrow \mathbb{R} ^k$, where $k = \lfloor \frac{24 \log n}{\epsilon^2} \rfloor$ such that
+
+  $$
+  (1 - \epsilon) \left\| \boldsymbol{x}_i - \boldsymbol{x}_j  \right\| ^2 \le \left\| f(\boldsymbol{x}_i ) - f(\boldsymbol{x}_j )\right\| \le (1 + \epsilon) \left\| \boldsymbol{x}_i - \boldsymbol{x}_j  \right\| ^2
+  $$
+
+How do we construct $f$? Consider a random linear mapping: $f(\boldsymbol{u}) = \frac{1}{\sqrt{k}} \boldsymbol{A} \boldsymbol{u}$ for some $\boldsymbol{A} \in \mathbb{R} ^{k \times d}$ where $k < d$ and $a_{ij} \overset{\text{iid}}{\sim} \mathcal{N} (0, 1)$. The intuition: the columns of $\boldsymbol{A}$ are orthogonal to each other in expectation. If indeed orthogonal, then $\left\| \frac{1}{\sqrt{k}} \boldsymbol{A} \boldsymbol{u}  \right\| = \left\| \boldsymbol{u}  \right\|$.
+
+To prove it, we need the following lemma.
+
+Lemma (Norm preserving)
+: Fix a vector $\boldsymbol{u} \in \mathbb{R} ^d$, then $\boldsymbol{A}$ preserves its norm in expectation.
+
+  $$
+  \mathbb{E} \left[ \left\| \frac{1}{\sqrt{k}} \boldsymbol{A} \boldsymbol{u}   \right\|^2 \right]  = \mathbb{E} [\left\| \boldsymbol{u}  \right\|^2]
+  $$
+
+  :::{admonition,dropdown,seealso} *Proof*
+
+
+  $$\begin{aligned}
+  \frac{1}{k} \mathbb{E} [\left\| \boldsymbol{A} \boldsymbol{u}  \right\| ^2]  
+  &= \frac{1}{k} \boldsymbol{u} ^{\top} \mathbb{E} [\boldsymbol{A} ^{\top} \boldsymbol{A} ] \boldsymbol{u}    \\
+  &= \frac{1}{k} \boldsymbol{u} ^{\top} k \boldsymbol{I}_{n \times n} \boldsymbol{u}     \\
+  &= \left\| \boldsymbol{u}  \right\|   ^2 \\
+  \end{aligned}$$
+
+  The second equality holds since
+
+
+  $$
+  \mathbb{E} [\boldsymbol{a} _i ^{\top} \boldsymbol{a} _j] = \left\{\begin{array}{ll}
+  \sum_{p=1}^k \mathbb{E} [a_{ik}^2] = \sum_{p=1}^k 1 =k , & \text { if } i=j \\
+  0, & \text { otherwise }
+  \end{array}\right.
+  $$
+
+  :::
+
+Lemma (Concentration)
+: Blessing of high dimensionality: things concentrate around mean. The probability of deviation is bounded. We first prove one-side deviation probability. The proof for the other side is similar.
+
+  $$
+  \mathbb{P} \left( \left\| \frac{1}{\sqrt{k}} \boldsymbol{A} \boldsymbol{u}   \right\| ^2 > (1 + \epsilon) \left\| \boldsymbol{u}  \right\|  ^2 \right)  \le \exp \left( \frac{k}{2} \left( \frac{\epsilon^2}{2} - \frac{\epsilon^3}{2}  \right) \right)
+  $$
+
+  :::{admonition,dropdown,seealso} *Proof*
+
+  Let $\boldsymbol{v} = \frac{\boldsymbol{A} \boldsymbol{u} }{\left\| \boldsymbol{u}  \right\| } \in \mathbb{R} ^k$, it is easy to see $V_i \sim \mathcal{N} (0, 1)$. In this case,
+
+  $$\begin{aligned}
+  \mathbb{P}\left( \left\| \boldsymbol{v} \right\| ^2 > (1 + \epsilon) k\right)
+  &= \mathbb{P}\left( \exp (\lambda \left\| \boldsymbol{v}  \right\| ^2) > \exp (1+ \epsilon) k \lambda \right)  \\
+  &\le \frac{\mathbb{E} [\exp (\lambda \left\| \boldsymbol{v}  \right\| ^2)] }{\exp [ (1+ \epsilon) k\lambda]}  \quad \because \text{Markov inequality} \\
+  &\le \frac{[\mathbb{E} [\exp (\lambda V_i^2)]]^k }{\exp [ (1+ \epsilon) k\lambda]}  \quad \because V_i \text{ are i.i.d.}  \\
+  &=  \exp [-(1 + \epsilon) k \lambda] \left( \frac{1}{1-2\lambda}  \right)^{k/2} \\
+  \end{aligned}$$
+
+  The last equality holds since by moment generating function $\mathbb{E} [e^{tX}] = \frac{1}{\sqrt{1- 2t} }$ for $X \sim \chi ^2 _1$.
+
+  If we choose $\lambda = \frac{\epsilon}{2(1+\epsilon)} < \frac{1}{2}$, then
+
+
+  $$
+  \mathbb{P} (\left\| \boldsymbol{v}  \right\| > (1 + \epsilon)k)  \le \left[ (1+\epsilon)e^{- \epsilon} \right]^{k/2}.
+  $$
+
+  Then it remains to show $1+\epsilon \le \exp(\epsilon - \frac{\epsilon^2}{2} +  \frac{\epsilon^3}{2})$ for $\epsilon > 0$, which is true by derivative test. Plug in this inequality we get the required inequality.
+
+
+  Then by union bound,
+
+  $$
+  \mathbb{P}\left( \left\| \boldsymbol{v}  \right\| > (1 + \epsilon) k \text{ or }  \left\| \boldsymbol{v}  \right\| < (1 - \epsilon) k \right) \le 2 \exp \left(\frac{k}{2}\left(\frac{\epsilon^{2}}{2}-\frac{\epsilon^{3}}{2}\right)\right)
+  $$
+
+  :::
+
+Now we prove the JL lemma.
+
+:::{admonition,dropdown,seealso} *Proof of JL*
+
+The probability we fail to find an $\epsilon$-distortion map for any $(i, j)$ pair is
+
+$$\begin{aligned}
+&= \mathbb{P} \left( \exists i, j: \left\| \boldsymbol{A} \boldsymbol{x}_i - \boldsymbol{A} \boldsymbol{x}_j  \right\|^2 > (1 + \epsilon) \left\| \boldsymbol{x}_i - \boldsymbol{x}_j  \right\|  ^2  \text{ or } < (1 - \epsilon) \left\| \boldsymbol{x}_i - \boldsymbol{x}_j  \right\|  ^2 \right)   \\
+&= \mathbb{P} \left( \cup_{(i,j)} \right)  \\
+&\le \binom{n}{2} 2  \exp \left(\frac{k}{2}\left(\frac{\epsilon^{2}}{2}-\frac{\epsilon^{3}}{2}\right)\right)\quad \because \text{union bound} \\
+&\le 2 n^2 \exp \left(\frac{k}{2}\left(\frac{\epsilon^{2}}{2}-\frac{\epsilon^{3}}{2}\right)\right)\\
+\end{aligned}$$
+
+With some choice of $k$, this upper bound is $1 - \frac{1}{n}$, i.e. there is an $\frac{1}{n}$ chance we get a map with $\epsilon$ distortion. What if we want a higher probability?
+
+For some $\alpha$, if we set, $k \ge (4 + 2\alpha) \left( \frac{\epsilon^{2}}{2}-\frac{\epsilon^{3}}{2} \right) ^{-1} \log(n)$, then the embedding $f(\boldsymbol{x} ) = \frac{1}{\sqrt{k}} \boldsymbol{A} \boldsymbol{x}$ succeeds with probability at least $1 - \frac{1}{n^\alpha}$.
+
+:::
+
+### Randomized SVD
+
+SVD for $\boldsymbol{A} \in \mathbb{R} ^{n \times n}$ takes $\mathcal{O} (n^3)$, can we use this intuition for doing faster? References: Gu & Eisenstat, Tygert & Rokhlin, Martin Sison, Halto.
+
+A vanilla algorithm,
+
+- create $\boldsymbol{\Omega}\in \mathbb{R} ^{n \times k}$ with $\Omega_{ij} \overset{\text{iid}}{\sim} \mathcal{N} (0, 1)$
+- compute $\boldsymbol{Y} = \boldsymbol{A} \boldsymbol{\Omega} \in \mathbb{R} ^{n \times k}$, which takes $\mathcal{O} (n^2 k)$. That is, we randomly project $\boldsymbol{A}$ onto $\mathbb{R} ^{ n\times k}$, preserving $\operatorname{rank}(\boldsymbol{A})$.
+- compute QR decomposition $\boldsymbol{Y} = \boldsymbol{Q} \boldsymbol{R}$, which takes $\mathcal{O} (nk ^2)$. We want $\operatorname{range}(\boldsymbol{Q} ) = \operatorname{range} (\boldsymbol{A} )$
+- compute $\tilde{\boldsymbol{A}}  = \boldsymbol{Q} (\boldsymbol{Q} ^{\top} \boldsymbol{A} ) = \boldsymbol{Q} \boldsymbol{B}$ which takes $\mathcal{O} (n^2k )$. If indeed the ranges are the same, then $\boldsymbol{A} = \boldsymbol{Q}  \boldsymbol{Q} ^{\top} \boldsymbol{A}$
+- SVD of $\boldsymbol{B} = \tilde{\boldsymbol{U} } \boldsymbol{\Sigma} \boldsymbol{V} ^{\top}$, which takes $\mathcal{O} (nk^2 + k^3)$
+- return $\tilde{\boldsymbol{A} } = (\boldsymbol{Q} \tilde{\boldsymbol{U} }) \boldsymbol{\Sigma} \boldsymbol{V} ^{\top} = \boldsymbol{U} \boldsymbol{\Sigma} \boldsymbol{V} ^{\top}$.
+
+If $\tilde{\boldsymbol{A}} \approx \boldsymbol{A}$ then we have the total time is $\mathcal{O} (n^2 k)$.
+
+There can by other choices of $\boldsymbol{\Omega}$. For instance, in fast JL algorithm, $\boldsymbol{\Omega} = \boldsymbol{S} \boldsymbol{F} \boldsymbol{D}$, where
+- $\boldsymbol{S}$ is a $k \times n$ sampling matrix having on non-zero entry in each row at random
+- $\boldsymbol{F}$ is an $n \times n$ Fourier matrix
+- $\boldsymbol{D}$ is an $n \times n$ diagonal matrix $d_i \pm 1$ entires with equal probability
+
+The total complexity if $\mathcal{O} (k + n\log n + n)$.
+
 ## Locally Linear Embedding
 
 Locally linear embedding learns a mapping in which each point can be expressed as a **linear function** of its nearest neighbors.
@@ -282,3 +426,27 @@ Locally linear embedding learns a mapping in which each point can be expressed a
 Maximum variance unfolding tries to maximize the variance of the data (like PCA) while respecting neighborhood relationships.
 
 ref: https://www.youtube.com/watch?v=DW3lSYltfzo
+
+
+.
+
+
+.
+
+
+.
+
+
+.
+
+
+.
+
+
+.
+
+
+.
+
+
+.

@@ -108,6 +108,7 @@ Unfortunately, although not surprisingly, inclusion probabilities for snowball s
 Two-stage snowball sampling (left) where $V_0^*$ in yellow, $V_1^*$ in orange, and $V_2^*$ in red. Traceroute sampling (right) for sources $\left\{ s_1, s_2 \right\}$ and targets $\left\{ t_1, t_2 \right\}$ in yellow, observed vertices and edges in orange.
 :::
 
+(link-tracing)=
 ### Link Tracing
 
 Many of the other sampling designs fall under link tracing designs: after some selection of an initial sample, some **subset** of the edges ('links') from vertices in this sample are traced to additional vertices.
@@ -141,7 +142,11 @@ With appropriate choice of population $U$ and unit values $y_i$ for $i \in U$, m
 
 To estimate the total from a sampled graph $G^* = (V^*, E^*)$ where $V^* \subseteq V, E^* \subseteq E$, we can use generalization of the Horvitz-Thompson estimator.
 
-### Totals on Vertex
+### Types
+
+Many estimation problems can be classified to totals over some order of vertex set $V^(k)$.
+
+#### Totals on Vertex
 
 Let $U=V$, we can define $y_i$ according to the total we are interested.
 
@@ -159,7 +164,7 @@ Note that
 - on the other hand, the graph structure matters, e.g. in snowball sampling the structure determines $V^*$ and hence the calculation of $\pi_i$.
 
 (total-on-vertex-pairs)=
-### Totals on Vertex Pairs
+#### Totals on Vertex Pairs
 
 Now we are interested in $U = V^{(2)}$, the total is
 
@@ -206,7 +211,7 @@ Note that these quantities can become increasingly complicated to compute under 
 Histograms of estimates $\hat{N}_e$ of $N_e$ = 31201 and its estimated standard errors (right), under induced subgraph sampling, with Bernoulli sampling of vertices using $p=0.1, 0.2, 0.3$ based on 10000 trials. [Kolaczyk 2009]
 :::
 
-### Totals of Higher Order
+#### Totals of Higher Order
 
 The expressions for higher order cases are more complicated. We introduce the case of triples, where $U = V^{(3)}$ and $\tau=\sum_{(i, j, k) \in V^{(3)}} y_{i j k}$. The sample Horvitz-Thompson estimator is
 
@@ -256,7 +261,11 @@ There are three conditions to make the estimation feasible
 2. the values $y$ must be either observed or obtainable from the available measurements
 3. the inclusion probabilities $\pi$ must be computable for the sampling design
 
-But it is not always the case that all three elements are present at the same time.
+But it is not always the case that all three elements are present at the same time. As the first example shown below.
+
+In fact, many estimation problems can be viewed as species problems.
+- average degree: how many (distinct) edges for each observed vertex?
+- $N_e$ via link tracing: how many distinct edges on multiple paths?
 
 ### Examples
 
@@ -298,6 +307,7 @@ $$
 
 Hence under star sampling, it simply use the relation $\bar{d} = \frac{2N_e}{N_v}$ to the sample. In contrast, under induced subgraph sampling, the analogous result (sample average degree) is scaled up by the factor $\frac{N_v - 1}{n-1}$ to account for $d_{i, indu}^* \le d_i$.
 
+(sampling-hidden-pop-size)=
 #### Hidden Population Size
 
 The term 'hidden population' generally refers to one in which the individuals do not wish to expose themselves to view. For example, humans of socially sensitive status, such as illegal drug usage or prostitution. Two issues:
@@ -349,33 +359,59 @@ $$
 
 #### Graph Size via Link Tracing
 
+We can estimate graph size via [link tracing](link-tracing) (traceroute sampling).
+
+Let $V_{(-j)}^{*}$ denote the number of vertices discovered on sampled paths to targets other than $t_{j},$ and define $\delta_{j}= \mathbb{I} \left\{t_{j} \notin V_{(-j)}^{*}\right\}$ to be the indicator of the event that target $t_{j}$ is not 'discovered' on sampled paths to any other target. Write the total number of such targets as $X=\sum_{j} \delta_{j}$. We want to find $\mathbb{E} [X]$, i.e. the average tendency of targets to be missed by other paths.
+
+Given a set of pre-selected source nodes $S=\left\{s_{1}, \ldots, s_{n_{s}}\right\}$ (chosen either randomly or not), if the target nodes in $T=\left\{t_{1}, \ldots, t_{n_{t}}\right\}$ are chosen by simple random sampling without replacement from $V \backslash S$, the probability that target $t_{j}$ is **not** discovered on the paths to other targets is given by
 
 $$
-\mathbb{P}\left(\delta_{j}=1 \mid V_{(-j)}^{*}\right)=\frac{N_{v}-N_{(-j)}^{*}}{N_{v}-n_{s}-n_{t}+1}
+\begin{align*}
+\mathbb{P}\left(\delta_{j}=1 \mid V_{(-j)}^{*}\right)=\frac{N_{v}-N_{(-j)}^{*}}{N_{v}-n_{s}-(n_{t}-1)}
+\end{align*}
 $$
 
+where $N_{(-j)}^{*}=\left|V_{(-j)}^{*}\right|$. Note that, by symmetry under simple random sampling for $t_j \in T$, the expectation $\mathbb{E}[N_{(-j)}^{*}]$ is the same for all $j .$ We denote this quantity by $\mathbb{E}[N_{(-)}^{*}]$ and, as a result, we obtain
 
+$$
+\begin{align*}
+\mathbb{E}[X]=\sum_{j=1}^{n_{t}} \mathbb{P}\left(\delta_{j}=1 \mid V_{(-j)}^{*}\right)=\frac{n_{t}\left[N_{v}-\mathbb{E}[N_{(-)}^{*}]\right]}{N_{v}-n_{s}-n_{t}+1}
+\end{align*}
+$$
 
+The only unknown quantity in this equation is $N_v$, while others can be pre-set or estimated. Rewriting this equation we have
 
-.
+$$
+N_{v}=\frac{n_{t} \mathbb{E}[N_{(-)}^{*}]-\left(n_{s}+n_{t}-1\right) \mathbb{E}[X]}{n_{t}-\mathbb{E}[X]}
+$$
 
+Hence, we have a method-of-moments estimator for $N_v$. In a run of link tracing, an unbiased estimator of $\mathbb{E} [X]$ is the $X$ itself, and that of $\mathbb{E}[N_{(-)}^{*}]$ is the average of $N_{(-i)}^*$. However, if $X = n_t$, then RHS denominator is not well defined.
 
-.
+To solve this, under a slight variation of this idea and ignoring trivial terms and factors, Viger et al. [SAND 388] arrive at an estimator of the form
 
+$$
+\hat{N}_{v}=\left(n_{S}+n_{t}\right)+\frac{N_{v}^{*}-\left(n_{S}+n_{t}\right)}{1-w^{*}}
+$$
 
-.
+where $w^{*}=X /\left(n_{t}+1\right)$, hence the denominator can be viewed as the average tendency of targets to be **discovered** by other paths. A simple estimate of the variance of this by delta-method is
 
+$$
+\widehat{\mathbb{V}}\left(\hat{N}_{v}\right) \approx \frac{\left(N_{v}^{*}-n_{S}-n_{t}\right)^{2} w^{*}}{\left(1-w^{*}\right)^{3} n_{t}}
+$$
 
-.
+### Issues
 
+Usually, we want to estimate some characteristic $\eta(G)$ of a graph $G$ through sampled subgraph $G^*$. Some sampling designs give biased characteristic $\eta(G^*) \ne \eta(G)$ but can be adjusted, like the average degree example above. But if $\eta$ is more involved, this is no trivial. For instance, many sampling designs induce degree distribution unrepresentative of the true underlying degree distribution [SAND pg.150].
 
-.
+Let $f_d$ and $f_d^*$ be the true and observed frequencies of degree $d$ nodes in $G$ and $G^*$, respectively. Frank [SAND 153] shows under induced subgraph sampling,
 
+$$
+\mathbb{E}\left(f_{d}^{*}\right)=\sum_{d^{\prime}=0}^{N_{v}-1} P\left(d, d^{\prime}\right) f_{d^{\prime}}, \quad \text{where}  P\left(d, d^{\prime}\right)=\frac{\binom{d^{\prime}}{d}\binom{N_{v}-1-d^{\prime}}{n-1-d}}{\binom{N_{v}-1}{n-1}}
+$$
 
-.
+where $\binom{n}{k} = 0$ if $k >n$. In principle, to find $f_d$, we can substitute $f_d^*$ to LHS, and obtain a system of equations for unknowns $(f_0, \ldots, f_N)$. But since $n < N$, this is system of equations is under-determined unless it is known that $d_\max < n$. Even this is true, the solution is not guaranteed to be non-negative, and the variance of this estimator would not be easy to derive.
 
-
-.
-
-
-.
+Other issues
+- analysis of non-traditional sampling designs (e.g., particularly adaptive designs)
+- the estimation of quantities not easily expressed as totals (e.g., degree distribution exponents)
+- the incorporation of effects of sampling error and missingness

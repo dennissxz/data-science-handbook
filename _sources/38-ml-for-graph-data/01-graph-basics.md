@@ -273,6 +273,7 @@ The closer this value is to zero, the more similar are the elements of $\boldsym
 Properties
 - $\boldsymbol{L}$ is positive semi-definite, as seen from the above equation
 - $\boldsymbol{L} \boldsymbol{1} = \boldsymbol{0}$, i.e. its smallest eigenvalue is 0, with an eigenvector of $\boldsymbol{1}$. The second smallest eigenvalue is non-trivial, and the arguably most important of all of the eigenvalues, which gives information about its connectivity. In short, the multiplicity of $0$ equals the number of connected components in $G$.
+- Spectra of Laplacian for some common graphs [link](https://ocw.mit.edu/courses/mathematics/18-409-topics-in-theoretical-computer-science-an-algorithmists-toolkit-fall-2009/lecture-notes/MIT18_409F09_scribe2.pdf)
 - The equation above can also be written as
 
   $$

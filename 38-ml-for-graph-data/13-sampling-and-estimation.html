@@ -58,7 +58,7 @@
     <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="For Causal Inference" href="../39-causal/00-causal-intro.html" />
+    <link rel="next" title="Random Graph Models" href="21-random-graph-models.html" />
     <link rel="prev" title="Descriptive Analysis" href="11-descriptive-analysis.html" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -672,6 +672,11 @@
   </a>
   <ul class="collapse-ul">
    <li class="toctree-l2">
+    <a class="reference internal" href="../35-graphical-models/03-random-walks.html">
+     Random Walks in Graphs
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="../35-graphical-models/11-hidden-markov-models.html">
      Hidden Markov Models
     </a>
@@ -752,6 +757,11 @@
    <li class="toctree-l2 current active">
     <a class="current reference internal" href="#">
      Sampling and Estimation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="21-random-graph-models.html">
+     Random Graph Models
     </a>
    </li>
   </ul>
@@ -897,19 +907,26 @@
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#totals-on-vertex">
-     Totals on Vertex
+    <a class="reference internal nav-link" href="#types">
+     Types
     </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#totals-on-vertex-pairs">
-     Totals on Vertex Pairs
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#totals-of-higher-order">
-     Totals of Higher Order
-    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#totals-on-vertex">
+       Totals on Vertex
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#totals-on-vertex-pairs">
+       Totals on Vertex Pairs
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#totals-of-higher-order">
+       Totals of Higher Order
+      </a>
+     </li>
+    </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#summary">
@@ -937,6 +954,11 @@
       </a>
      </li>
     </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#issues">
+     Issues
+    </a>
    </li>
   </ul>
  </li>
@@ -1061,7 +1083,7 @@ Instead of selecting <span class="math notranslate nohighlight">\(n\)</span> ver
 </figure>
 </section>
 <section id="link-tracing">
-<h3>Link Tracing<a class="headerlink" href="#link-tracing" title="Permalink to this headline">¶</a></h3>
+<span id="id1"></span><h3>Link Tracing<a class="headerlink" href="#link-tracing" title="Permalink to this headline">¶</a></h3>
 <p>Many of the other sampling designs fall under link tracing designs: after some selection of an initial sample, some <strong>subset</strong> of the edges (‘links’) from vertices in this sample are traced to additional vertices.</p>
 <p>Snowball sampling is a special case of link tracing, in that all edges are observed. Sometimes this is not feasible, for example, in sampling social contact networks, it may be that individuals are unaware of or cannot recall all of their contacts, or that they do not wish to divulge some of them.</p>
 <p>We introduce <strong>traceroute</strong> sampling.</p>
@@ -1089,8 +1111,11 @@ Instead of selecting <span class="math notranslate nohighlight">\(n\)</span> ver
 <p>(Review the <a class="reference internal" href="../12-probabilities/71-sampling.html#estimation-mean-total"><span class="std std-ref">estimation of total</span></a> section)</p>
 <p>With appropriate choice of population <span class="math notranslate nohighlight">\(U\)</span> and unit values <span class="math notranslate nohighlight">\(y_i\)</span> for <span class="math notranslate nohighlight">\(i \in U\)</span>, many of the quantities <span class="math notranslate nohighlight">\(\eta(G)\)</span> of graph <span class="math notranslate nohighlight">\(G\)</span>, e.g. average degree, <span class="math notranslate nohighlight">\(N_e\)</span>, or even centrality, can be written in a form of population total <span class="math notranslate nohighlight">\(\sum_{i \in U} y_i\)</span>, as introduced below.</p>
 <p>To estimate the total from a sampled graph <span class="math notranslate nohighlight">\(G^* = (V^*, E^*)\)</span> where <span class="math notranslate nohighlight">\(V^* \subseteq V, E^* \subseteq E\)</span>, we can use generalization of the Horvitz-Thompson estimator.</p>
+<section id="types">
+<h3>Types<a class="headerlink" href="#types" title="Permalink to this headline">¶</a></h3>
+<p>Many estimation problems can be classified to totals over some order of vertex set <span class="math notranslate nohighlight">\(V^(k)\)</span>.</p>
 <section id="totals-on-vertex">
-<h3>Totals on Vertex<a class="headerlink" href="#totals-on-vertex" title="Permalink to this headline">¶</a></h3>
+<h4>Totals on Vertex<a class="headerlink" href="#totals-on-vertex" title="Permalink to this headline">¶</a></h4>
 <p>Let <span class="math notranslate nohighlight">\(U=V\)</span>, we can define <span class="math notranslate nohighlight">\(y_i\)</span> according to the total we are interested.</p>
 <ul class="simple">
 <li><p>average degree: let <span class="math notranslate nohighlight">\(y_i = d_i\)</span>, then the average degree <span class="math notranslate nohighlight">\(\bar{d}\)</span> equals the population total <span class="math notranslate nohighlight">\(\sum_{i \in V} d_i\)</span> divided by <span class="math notranslate nohighlight">\(N_v\)</span></p></li>
@@ -1108,7 +1133,7 @@ Instead of selecting <span class="math notranslate nohighlight">\(n\)</span> ver
 </ul>
 </section>
 <section id="totals-on-vertex-pairs">
-<span id="total-on-vertex-pairs"></span><h3>Totals on Vertex Pairs<a class="headerlink" href="#totals-on-vertex-pairs" title="Permalink to this headline">¶</a></h3>
+<span id="total-on-vertex-pairs"></span><h4>Totals on Vertex Pairs<a class="headerlink" href="#totals-on-vertex-pairs" title="Permalink to this headline">¶</a></h4>
 <p>Now we are interested in <span class="math notranslate nohighlight">\(U = V^{(2)}\)</span>, the total is</p>
 <div class="math notranslate nohighlight">
 \[
@@ -1155,7 +1180,7 @@ Instead of selecting <span class="math notranslate nohighlight">\(n\)</span> ver
 </figure>
 </section>
 <section id="totals-of-higher-order">
-<h3>Totals of Higher Order<a class="headerlink" href="#totals-of-higher-order" title="Permalink to this headline">¶</a></h3>
+<h4>Totals of Higher Order<a class="headerlink" href="#totals-of-higher-order" title="Permalink to this headline">¶</a></h4>
 <p>The expressions for higher order cases are more complicated. We introduce the case of triples, where <span class="math notranslate nohighlight">\(U = V^{(3)}\)</span> and <span class="math notranslate nohighlight">\(\tau=\sum_{(i, j, k) \in V^{(3)}} y_{i j k}\)</span>. The sample Horvitz-Thompson estimator is</p>
 <div class="math notranslate nohighlight">
 \[
@@ -1191,6 +1216,7 @@ Instead of selecting <span class="math notranslate nohighlight">\(n\)</span> ver
 <p>and similarly <span class="math notranslate nohighlight">\(\hat{\tau}_{\wedge}^+(G) = p^{-3}\tau_{\wedge}^+(G^*)\)</span>.</p>
 <p>We can then substitute these two values to obtain a plug-in estimator of transitivity <span class="math notranslate nohighlight">\(\operatorname{clus}_T (G)\)</span>. Note that the coefficient <span class="math notranslate nohighlight">\(p^{-3}\)</span> cancel out, hence <span class="math notranslate nohighlight">\(\widehat{\operatorname{clus}}_T (G) = \operatorname{clus} _T (G^*)\)</span>.</p>
 </section>
+</section>
 <section id="summary">
 <h3>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h3>
 <p>There are three conditions to make the estimation feasible</p>
@@ -1199,7 +1225,12 @@ Instead of selecting <span class="math notranslate nohighlight">\(n\)</span> ver
 <li><p>the values <span class="math notranslate nohighlight">\(y\)</span> must be either observed or obtainable from the available measurements</p></li>
 <li><p>the inclusion probabilities <span class="math notranslate nohighlight">\(\pi\)</span> must be computable for the sampling design</p></li>
 </ol>
-<p>But it is not always the case that all three elements are present at the same time.</p>
+<p>But it is not always the case that all three elements are present at the same time. As the first example shown below.</p>
+<p>In fact, many estimation problems can be viewed as species problems.</p>
+<ul class="simple">
+<li><p>average degree: how many (distinct) edges for each observed vertex?</p></li>
+<li><p><span class="math notranslate nohighlight">\(N_e\)</span> via link tracing: how many distinct edges on multiple paths?</p></li>
+</ul>
 </section>
 <section id="examples">
 <h3>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h3>
@@ -1232,7 +1263,7 @@ Instead of selecting <span class="math notranslate nohighlight">\(n\)</span> ver
 <p>Hence under star sampling, it simply use the relation <span class="math notranslate nohighlight">\(\bar{d} = \frac{2N_e}{N_v}\)</span> to the sample. In contrast, under induced subgraph sampling, the analogous result (sample average degree) is scaled up by the factor <span class="math notranslate nohighlight">\(\frac{N_v - 1}{n-1}\)</span> to account for <span class="math notranslate nohighlight">\(d_{i, indu}^* \le d_i\)</span>.</p>
 </section>
 <section id="hidden-population-size">
-<h4>Hidden Population Size<a class="headerlink" href="#hidden-population-size" title="Permalink to this headline">¶</a></h4>
+<span id="sampling-hidden-pop-size"></span><h4>Hidden Population Size<a class="headerlink" href="#hidden-population-size" title="Permalink to this headline">¶</a></h4>
 <p>The term ‘hidden population’ generally refers to one in which the individuals do not wish to expose themselves to view. For example, humans of socially sensitive status, such as illegal drug usage or prostitution. Two issues:</p>
 <ul class="simple">
 <li><p>they will not be inclined to disclose themselves</p></li>
@@ -1281,19 +1312,55 @@ sample <span class="math notranslate nohighlight">\(V_0^*\)</span> selected thro
 </section>
 <section id="graph-size-via-link-tracing">
 <h4>Graph Size via Link Tracing<a class="headerlink" href="#graph-size-via-link-tracing" title="Permalink to this headline">¶</a></h4>
+<p>We can estimate graph size via <a class="reference internal" href="#link-tracing"><span class="std std-ref">link tracing</span></a> (traceroute sampling).</p>
+<p>Let <span class="math notranslate nohighlight">\(V_{(-j)}^{*}\)</span> denote the number of vertices discovered on sampled paths to targets other than <span class="math notranslate nohighlight">\(t_{j},\)</span> and define <span class="math notranslate nohighlight">\(\delta_{j}= \mathbb{I} \left\{t_{j} \notin V_{(-j)}^{*}\right\}\)</span> to be the indicator of the event that target <span class="math notranslate nohighlight">\(t_{j}\)</span> is not ‘discovered’ on sampled paths to any other target. Write the total number of such targets as <span class="math notranslate nohighlight">\(X=\sum_{j} \delta_{j}\)</span>. We want to find <span class="math notranslate nohighlight">\(\mathbb{E} [X]\)</span>, i.e. the average tendency of targets to be missed by other paths.</p>
+<p>Given a set of pre-selected source nodes <span class="math notranslate nohighlight">\(S=\left\{s_{1}, \ldots, s_{n_{s}}\right\}\)</span> (chosen either randomly or not), if the target nodes in <span class="math notranslate nohighlight">\(T=\left\{t_{1}, \ldots, t_{n_{t}}\right\}\)</span> are chosen by simple random sampling without replacement from <span class="math notranslate nohighlight">\(V \backslash S\)</span>, the probability that target <span class="math notranslate nohighlight">\(t_{j}\)</span> is <strong>not</strong> discovered on the paths to other targets is given by</p>
 <div class="math notranslate nohighlight">
 \[
-\mathbb{P}\left(\delta_{j}=1 \mid V_{(-j)}^{*}\right)=\frac{N_{v}-N_{(-j)}^{*}}{N_{v}-n_{s}-n_{t}+1}
+\begin{align*}
+\mathbb{P}\left(\delta_{j}=1 \mid V_{(-j)}^{*}\right)=\frac{N_{v}-N_{(-j)}^{*}}{N_{v}-n_{s}-(n_{t}-1)}
+\end{align*}
 \]</div>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
+<p>where <span class="math notranslate nohighlight">\(N_{(-j)}^{*}=\left|V_{(-j)}^{*}\right|\)</span>. Note that, by symmetry under simple random sampling for <span class="math notranslate nohighlight">\(t_j \in T\)</span>, the expectation <span class="math notranslate nohighlight">\(\mathbb{E}[N_{(-j)}^{*}]\)</span> is the same for all <span class="math notranslate nohighlight">\(j .\)</span> We denote this quantity by <span class="math notranslate nohighlight">\(\mathbb{E}[N_{(-)}^{*}]\)</span> and, as a result, we obtain</p>
+<div class="math notranslate nohighlight">
+\[
+\begin{align*}
+\mathbb{E}[X]=\sum_{j=1}^{n_{t}} \mathbb{P}\left(\delta_{j}=1 \mid V_{(-j)}^{*}\right)=\frac{n_{t}\left[N_{v}-\mathbb{E}[N_{(-)}^{*}]\right]}{N_{v}-n_{s}-n_{t}+1}
+\end{align*}
+\]</div>
+<p>The only unknown quantity in this equation is <span class="math notranslate nohighlight">\(N_v\)</span>, while others can be pre-set or estimated. Rewriting this equation we have</p>
+<div class="math notranslate nohighlight">
+\[
+N_{v}=\frac{n_{t} \mathbb{E}[N_{(-)}^{*}]-\left(n_{s}+n_{t}-1\right) \mathbb{E}[X]}{n_{t}-\mathbb{E}[X]}
+\]</div>
+<p>Hence, we have a method-of-moments estimator for <span class="math notranslate nohighlight">\(N_v\)</span>. In a run of link tracing, an unbiased estimator of <span class="math notranslate nohighlight">\(\mathbb{E} [X]\)</span> is the <span class="math notranslate nohighlight">\(X\)</span> itself, and that of <span class="math notranslate nohighlight">\(\mathbb{E}[N_{(-)}^{*}]\)</span> is the average of <span class="math notranslate nohighlight">\(N_{(-i)}^*\)</span>. However, if <span class="math notranslate nohighlight">\(X = n_t\)</span>, then RHS denominator is not well defined.</p>
+<p>To solve this, under a slight variation of this idea and ignoring trivial terms and factors, Viger et al. [SAND 388] arrive at an estimator of the form</p>
+<div class="math notranslate nohighlight">
+\[
+\hat{N}_{v}=\left(n_{S}+n_{t}\right)+\frac{N_{v}^{*}-\left(n_{S}+n_{t}\right)}{1-w^{*}}
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(w^{*}=X /\left(n_{t}+1\right)\)</span>, hence the denominator can be viewed as the average tendency of targets to be <strong>discovered</strong> by other paths. A simple estimate of the variance of this by delta-method is</p>
+<div class="math notranslate nohighlight">
+\[
+\widehat{\mathbb{V}}\left(\hat{N}_{v}\right) \approx \frac{\left(N_{v}^{*}-n_{S}-n_{t}\right)^{2} w^{*}}{\left(1-w^{*}\right)^{3} n_{t}}
+\]</div>
 </section>
+</section>
+<section id="issues">
+<h3>Issues<a class="headerlink" href="#issues" title="Permalink to this headline">¶</a></h3>
+<p>Usually, we want to estimate some characteristic <span class="math notranslate nohighlight">\(\eta(G)\)</span> of a graph <span class="math notranslate nohighlight">\(G\)</span> through sampled subgraph <span class="math notranslate nohighlight">\(G^*\)</span>. Some sampling designs give biased characteristic <span class="math notranslate nohighlight">\(\eta(G^*) \ne \eta(G)\)</span> but can be adjusted, like the average degree example above. But if <span class="math notranslate nohighlight">\(\eta\)</span> is more involved, this is no trivial. For instance, many sampling designs induce degree distribution unrepresentative of the true underlying degree distribution [SAND pg.150].</p>
+<p>Let <span class="math notranslate nohighlight">\(f_d\)</span> and <span class="math notranslate nohighlight">\(f_d^*\)</span> be the true and observed frequencies of degree <span class="math notranslate nohighlight">\(d\)</span> nodes in <span class="math notranslate nohighlight">\(G\)</span> and <span class="math notranslate nohighlight">\(G^*\)</span>, respectively. Frank [SAND 153] shows under induced subgraph sampling,</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbb{E}\left(f_{d}^{*}\right)=\sum_{d^{\prime}=0}^{N_{v}-1} P\left(d, d^{\prime}\right) f_{d^{\prime}}, \quad \text{where}  P\left(d, d^{\prime}\right)=\frac{\binom{d^{\prime}}{d}\binom{N_{v}-1-d^{\prime}}{n-1-d}}{\binom{N_{v}-1}{n-1}}
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\binom{n}{k} = 0\)</span> if <span class="math notranslate nohighlight">\(k &gt;n\)</span>. In principle, to find <span class="math notranslate nohighlight">\(f_d\)</span>, we can substitute <span class="math notranslate nohighlight">\(f_d^*\)</span> to LHS, and obtain a system of equations for unknowns <span class="math notranslate nohighlight">\((f_0, \ldots, f_N)\)</span>. But since <span class="math notranslate nohighlight">\(n &lt; N\)</span>, this is system of equations is under-determined unless it is known that <span class="math notranslate nohighlight">\(d_\max &lt; n\)</span>. Even this is true, the solution is not guaranteed to be non-negative, and the variance of this estimator would not be easy to derive.</p>
+<p>Other issues</p>
+<ul class="simple">
+<li><p>analysis of non-traditional sampling designs (e.g., particularly adaptive designs)</p></li>
+<li><p>the estimation of quantities not easily expressed as totals (e.g., degree distribution exponents)</p></li>
+<li><p>the incorporation of effects of sampling error and missingness</p></li>
+</ul>
 </section>
 </section>
 </section>
@@ -1324,7 +1391,7 @@ sample <span class="math notranslate nohighlight">\(V_0^*\)</span> selected thro
         <div class='prev-next-bottom'>
             
     <a class='left-prev' id="prev-link" href="11-descriptive-analysis.html" title="previous page">Descriptive Analysis</a>
-    <a class='right-next' id="next-link" href="../39-causal/00-causal-intro.html" title="next page">For Causal Inference</a>
+    <a class='right-next' id="next-link" href="21-random-graph-models.html" title="next page">Random Graph Models</a>
 
         </div>
         

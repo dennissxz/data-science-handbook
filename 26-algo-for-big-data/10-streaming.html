@@ -672,6 +672,11 @@
   </a>
   <ul class="collapse-ul">
    <li class="toctree-l2">
+    <a class="reference internal" href="../35-graphical-models/03-random-walks.html">
+     Random Walks in Graphs
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="../35-graphical-models/11-hidden-markov-models.html">
      Hidden Markov Models
     </a>
@@ -752,6 +757,11 @@
    <li class="toctree-l2">
     <a class="reference internal" href="../38-ml-for-graph-data/13-sampling-and-estimation.html">
      Sampling and Estimation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../38-ml-for-graph-data/21-random-graph-models.html">
+     Random Graph Models
     </a>
    </li>
   </ul>
@@ -947,6 +957,29 @@
    </span>
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#l-p-sampler">
+   <span class="math notranslate nohighlight">
+    \(L_p\)
+   </span>
+   -sampler
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#l-0-sampler">
+     <span class="math notranslate nohighlight">
+      \(L_0\)
+     </span>
+     -sampler
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#graph-streaming">
+   Graph Streaming
+  </a>
+ </li>
 </ul>
 
         </nav>
@@ -989,10 +1022,16 @@
 <ul>
 <li><p><span class="math notranslate nohighlight">\((\epsilon, \delta)\)</span> approximation (guarantee): given <span class="math notranslate nohighlight">\(0 &lt; \epsilon, \delta&lt; 1\)</span>, want the probability of deviation from true value <span class="math notranslate nohighlight">\(\ell_p\)</span> by <span class="math notranslate nohighlight">\(\epsilon \ell_p\)</span> to be no larger than <span class="math notranslate nohighlight">\(\delta\)</span>. This event can be viewed as a failure output, and its probability is called failure probability.</p>
 <div class="math notranslate nohighlight">
-\[\mathbb{P}[ \vert \hat{\ell}_p - \ell_p \vert&gt; \epsilon \ell_p ] &lt; \delta\]</div>
+\[\mathbb{P}[ \hat{\ell}_p \in ( 1 \pm \epsilon) \ell_p ] = \mathbb{P}[ \vert \hat{\ell}_p - \ell_p \vert&gt; \epsilon \ell_p ] &lt; \delta\]</div>
 <p>Often, given required <span class="math notranslate nohighlight">\(\epsilon\)</span>, we want to find good <span class="math notranslate nohighlight">\(\hat{\ell}_p\)</span> that gives lower <span class="math notranslate nohighlight">\(\delta\)</span>.</p>
 </li>
-<li><p>constant approximation</p></li>
+<li><p>constant approximation</p>
+<div class="math notranslate nohighlight">
+\[
+        \mathbb{P} [\hat{\ell}_p \ge c \ell _p ] \le \delta
+        \]</div>
+<p>we can then repeat the procedures to boost the success probability.</p>
+</li>
 </ul>
 </li>
 </ul>
@@ -1298,7 +1337,7 @@ For another method Johnson-Lindenstrauss (JL) Lemma, see <a class="reference ext
 <p class="admonition-title"> <em>Proof</em></p>
 <div class="math notranslate nohighlight">
 \[
-  \mathbb{E}\left(Z^{2}\right)=\mathbb{E}\left(\boldsymbol{x}^{T} \boldsymbol{s} \boldsymbol{s}^{T} \boldsymbol{x}\right)=\boldsymbol{x}^{T} \mathbb{E}\left(\boldsymbol{s} \boldsymbol{s}^{T}\right) \boldsymbol{x}=\boldsymbol{x}^{T} \boldsymbol{x}=\|\boldsymbol{x}\|_{2}^{2}
+  \mathbb{E}\left(Z^{2}\right)=\mathbb{E}\left(\boldsymbol{x}^{\top} \boldsymbol{s} \boldsymbol{s}^{\top} \boldsymbol{x}\right)=\boldsymbol{x}^{\top} \mathbb{E}\left(\boldsymbol{s} \boldsymbol{s}^{\top}\right) \boldsymbol{x}=\boldsymbol{x}^{\top} \boldsymbol{x}=\|\boldsymbol{x}\|_{2}^{2}
   \]</div>
 <p>where we use <span class="math notranslate nohighlight">\(s_i \perp s_j, \mathbb{E} [s^2_i]\)</span>. In fact, 2-wise independence is enough.</p>
 </div>
@@ -1353,7 +1392,7 @@ For another method Johnson-Lindenstrauss (JL) Lemma, see <a class="reference ext
 \[\operatorname{Pr}\left[\left|Z^{\prime}-\ell_{2}^{2}\right| \geq c \sqrt{2/k}\ell_{2}^{2}\right] \leq 1 / c ^{2}\]</div>
 <p>If we set <span class="math notranslate nohighlight">\(c=\Theta(1)\)</span> and <span class="math notranslate nohighlight">\(k=\Theta\left(1 / \varepsilon^{2}\right)\)</span>, we get a <span class="math notranslate nohighlight">\((1 \pm \epsilon)\)</span> approximation with constant probability.</p>
 <p>Note that we need 4-wise independence of <span class="math notranslate nohighlight">\(s_1, \ldots, s_m\)</span> to bound <span class="math notranslate nohighlight">\(\mathbb{E} \left[ \left( \sum_{i=1}^m s_i x_i \right)^2 \right]\)</span>, which requires <span class="math notranslate nohighlight">\(\mathcal{O} (\log m)\)</span> random bits. (<span class="math notranslate nohighlight">\(p\log m\)</span> random bits for <span class="math notranslate nohighlight">\(p\)</span>-wise independence). Besides, there are <span class="math notranslate nohighlight">\(\mathcal{O} (\frac{1}{\epsilon^2})\)</span> number of <span class="math notranslate nohighlight">\(Z\)</span>’s, with maximum value <span class="math notranslate nohighlight">\(nm\)</span>, so total we need <span class="math notranslate nohighlight">\(\mathcal{O} (\frac{1}{\epsilon^2} \log(mn))\)</span> bits.</p>
-<p>We can formulate our algorithm in vector form. Let <span class="math notranslate nohighlight">\(\boldsymbol{S}\)</span> be an <span class="math notranslate nohighlight">\(k \times n\)</span> matrix where <span class="math notranslate nohighlight">\(s_{ij} = \pm 1\)</span> with equal probability, then basically we are just maintaining the vector <span class="math notranslate nohighlight">\(\boldsymbol{Z} = \boldsymbol{S} \boldsymbol{x}\)</span> throughout the algorithm and answering the query by outputting <span class="math notranslate nohighlight">\(\left\| \boldsymbol{Z}  \right\|_2 ^2 / k\)</span>. Here <span class="math notranslate nohighlight">\(\boldsymbol{Z}\)</span> is a <strong>linear sketch</strong> <span class="math notranslate nohighlight">\(C(\boldsymbol{x})\)</span> of <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span>.</p>
+<p>We can formulate our algorithm in vector form. Let <span class="math notranslate nohighlight">\(\boldsymbol{S}\)</span> be an <span class="math notranslate nohighlight">\(k \times n\)</span> matrix where <span class="math notranslate nohighlight">\(s_{ij} = \pm 1\)</span> with equal probability, then basically we are just maintaining the vector <span class="math notranslate nohighlight">\(\boldsymbol{Z} = \boldsymbol{S} \boldsymbol{y}\)</span> throughout the algorithm and answering the query by outputting <span class="math notranslate nohighlight">\(\left\| \boldsymbol{Z}  \right\|_2 ^2 / k\)</span>. Here <span class="math notranslate nohighlight">\(\boldsymbol{Z}\)</span> is a <strong>linear sketch</strong> <span class="math notranslate nohighlight">\(C(\boldsymbol{y})\)</span> of <span class="math notranslate nohighlight">\(\boldsymbol{y}\)</span>.</p>
 </section>
 <section id="id4">
 <h3>AMS++<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
@@ -1368,13 +1407,102 @@ For another method Johnson-Lindenstrauss (JL) Lemma, see <a class="reference ext
 <section id="estimate-x-i">
 <h2>Estimate <span class="math notranslate nohighlight">\(x_i\)</span><a class="headerlink" href="#estimate-x-i" title="Permalink to this headline">¶</a></h2>
 <p>(Review <span class="math notranslate nohighlight">\(k\)</span>-wise independent hash function <a class="reference external" href="https://www.sketchingbigdata.org/fall17/lec/lec2.pdf">here</a>)</p>
-<p>Now we want to estimate the frequency <span class="math notranslate nohighlight">\(x_i\)</span> of <span class="math notranslate nohighlight">\(i\)</span>.</p>
+<p>Now we want to estimate the frequency <span class="math notranslate nohighlight">\(x_i\)</span> of <span class="math notranslate nohighlight">\(i\)</span>. Aka coordinate approximation.</p>
 <p>Two algorithms:</p>
 <ul class="simple">
 <li><p><strong>CountMin</strong>: keep track of all coordinates with additive error, i.e., for each coordinate report <span class="math notranslate nohighlight">\(\hat{x}_i\)</span> that is within <span class="math notranslate nohighlight">\(x_{i} \pm \frac{\|x\|_{1}}{k}\)</span></p></li>
 <li><p><strong>CountSketch</strong>: keep track of all coordinates with additive error, i.e., for each coordinate report <span class="math notranslate nohighlight">\(\hat{x}_i\)</span> that is within <span class="math notranslate nohighlight">\(x_{i} \pm \frac{\|x\|_{2}}{\sqrt{k}}\)</span></p></li>
 </ul>
-<p>See <a class="reference external" href="https://www.mit.edu/~mahabadi/courses/Algorithms_for_Massive_Data_SP21/Lec2.pdf">here</a>.</p>
+<p>For details see <a class="reference external" href="https://www.mit.edu/~mahabadi/courses/Algorithms_for_Massive_Data_SP21/Lec2.pdf">here</a>.</p>
+<p>Count-min is a linear sketch. Suppose data vector <span class="math notranslate nohighlight">\(\boldsymbol{y} \in \mathbb{R} ^n\)</span>, then the sketch is <span class="math notranslate nohighlight">\(C(\boldsymbol{y}) = \boldsymbol{M} \boldsymbol{y}\)</span> where <span class="math notranslate nohighlight">\(\boldsymbol{M} \in \mathbb{R} ^{\log \frac{1}{\delta} \cdot \frac{1}{\epsilon}  \times n}\)</span></p>
+<p>Each column of <span class="math notranslate nohighlight">\(M_{i} \in \mathbb{R}^{\left(\frac{1}{\epsilon}\right) \times n}\)</span> has a 1 in a random row.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\left(\begin{array}{l}
+1,0,0,0,1,0,0,0 \\
+0,0,1,1,0,0,0,1 \\
+0,1,0,0,0,1,1,0
+\end{array}\right)\left(\begin{array}{l}
+y_{1} \\
+y_{2} \\
+\cdot \\
+\cdot \\
+y_{8}
+\end{array}\right)=\left(\begin{array}{l}
+y_{1}+y_{5} \\
+y_{3}+y_{4}+y_{8} \\
+y_{2}+y_{6}+y_{7}
+\end{array}\right)
+\end{split}\]</div>
+<p>Count-sketch is a linear sketch</p>
+<ul class="simple">
+<li><p>Sketch: <span class="math notranslate nohighlight">\(f(\boldsymbol{y})= \boldsymbol{M}  \cdot \boldsymbol{x}\)</span> where <span class="math notranslate nohighlight">\(M \in \mathbb{R}^{\left(\log \frac{1}{\delta} \cdot \frac{1}{\epsilon}\right) \times n}\)</span></p></li>
+<li><p>Each column of <span class="math notranslate nohighlight">\(M_{i} \in \mathbb{R}^{\left(\frac{1}{\epsilon^{2}}\right) \times m}\)</span> has a random <span class="math notranslate nohighlight">\(\pm 1\)</span> in a random row</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{array}{l}
+\left(\begin{array}{l}
+1,0,0,0,-1,0,0,0 \\
+0,0,1,-1,0,0,0,1 \\
+0,-1,0,0,0,1,-1,0
+\end{array}\right)\left(\begin{array}{l}
+y_{1} \\
+y_{2} \\
+\cdot \\
+\cdot \\
+\cdot \\
+y_{8}
+\end{array}\right)=\left(\begin{array}{l}
+y_{1}-y_{5} \\
+y_{3}-y_{4}+y_{8} \\
+-y_{2}+y_{6}-y_{7}
+\end{array}\right) \\
+\end{array}
+\end{split}\]</div>
+</section>
+<section id="l-p-sampler">
+<h2><span class="math notranslate nohighlight">\(L_p\)</span>-sampler<a class="headerlink" href="#l-p-sampler" title="Permalink to this headline">¶</a></h2>
+<p>Suppose we want to sample</p>
+<section id="l-0-sampler">
+<h3><span class="math notranslate nohighlight">\(L_0\)</span>-sampler<a class="headerlink" href="#l-0-sampler" title="Permalink to this headline">¶</a></h3>
+<p>Want: sample one of the non-zero coordinates with uniform probability <span class="math notranslate nohighlight">\(\frac{1}{\|x\|_{0}}+n^{-c}\)</span>.</p>
+<p>Assume each <span class="math notranslate nohighlight">\(x_i \in [-W, W]\)</span> where <span class="math notranslate nohighlight">\(W = \log(n)\)</span>.</p>
+<p>For <span class="math notranslate nohighlight">\(0 \le i \le \log n\)</span>, let <span class="math notranslate nohighlight">\(S_i\)</span> be a set where each element is picked independently w.p. <span class="math notranslate nohighlight">\(\frac{1}{2^i}\)</span>. If <span class="math notranslate nohighlight">\(S_i\)</span> only contains a single non-zero element <span class="math notranslate nohighlight">\(x\)</span>, we output that element. How to test <span class="math notranslate nohighlight">\(S_i\)</span> has a single non-zero coordinate?</p>
+<p>Compute</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(A_i = \sum_{j \in s_i} x_j\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(B_i = \sum_{j \in s_i} j \cdot x_j\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(C_i = \sum_{j \in s_i} x_j r^j \mod p\)</span> where</p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(p = \mathcal{O} (\operatorname{poly}(n))\)</span> is a prime number</p></li>
+<li><p><span class="math notranslate nohighlight">\(r\)</span> is a chosen uniformly at random from <span class="math notranslate nohighlight">\(\left\{ 1, 2, \ldots, p-1 \right\}\)</span></p></li>
+</ul>
+</li>
+</ul>
+<p>Then we test</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\frac{B_i}{A_i} \in [n]\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(C_i = A_i r^{b_i/A_i} \mod p\)</span></p></li>
+</ul>
+<p>Clearly,</p>
+<ul class="simple">
+<li><p>If <span class="math notranslate nohighlight">\(S_i\)</span> has one non-zero coordinate, it passes the test</p></li>
+<li><p>else if it has more than one non-zero coordinate, it fails with high probability</p></li>
+</ul>
+<p>How to maintain <span class="math notranslate nohighlight">\(S_i\)</span>? Use <span class="math notranslate nohighlight">\(k\)</span>-wise independent hash function.</p>
+</section>
+</section>
+<section id="graph-streaming">
+<h2>Graph Streaming<a class="headerlink" href="#graph-streaming" title="Permalink to this headline">¶</a></h2>
+<p>Consider a graph arrival model: edge arrival or vertex arrival in a stream. It may be insertion-only or dynamic.</p>
+<p>For instance, problems include:</p>
+<ul class="simple">
+<li><p>find a connected component</p></li>
+<li><p>decide: is the graph <span class="math notranslate nohighlight">\(k\)</span>-edge connected?</p></li>
+<li><p>maximum matching</p></li>
+</ul>
+<p>See <a class="reference external" href="https://www.sketchingbigdata.org/fall17/lec/lec18.pdf">link</a>.</p>
 <p>.</p>
 <p>.</p>
 <p>.</p>
