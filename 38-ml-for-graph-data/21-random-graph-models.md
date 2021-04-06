@@ -265,6 +265,44 @@ For other sampling method, see SAND pg.168.
 
 .
 
+## Small-World Models
+
+Developed by Watts and Strogatz that mimic certain observed 'real-world' properties: **high** levels of clustering, but **small** distances between most nodes.
+
+To model this, consider starting with a lattice, and randomly rewiring a a few edges. Specifically,
+1. begin with a set of $N_v$ vertices, arranged in a 'ring'-like fashion
+2. join each vertex to a $r$ of its neighbors to each side.
+3. for each edge, w.p. $p$, independently move one of its end to be incident to another uniformly randomly chosen vertex, but avoid loops and multi-edges.
+
+:::{figure} graph-WS-lattice
+<img src="../imgs/graph-WS-lattice.png" width = "30%" alt=""/>
+
+Example of a Watts-Strogatz 'small-world' network graph. [Kolaczyk 2009]
+:::
+
+For a lattice $G$ with parameter $r$ described above, it is easy to find
+- high level of clustering: $\operatorname{clus}_T (G) = \frac{3r-3}{4r-2} \approx \frac{3}{4}$
+- long diameter: $\operatorname{diam}(G) = \frac{N_v}{2r}$
+- long average distance: $\bar{l} = \frac{N_v}{4r}$
+
+But, addition of a few randomly rewired edges has the effect of
+producing ‘short-cuts’ in the graph. In numerical simulation shown below, after rewiring with some small $p$, we have $\bar{l} = \mathcal{O} (\log N_v)$ while keep clustering coefficient close to $\frac{3}{4}$.
+
+:::{figure} graph-WS-simulation
+<img src="../imgs/graph-WS-simulation.png" width = "30%" alt=""/>
+
+Simulation results of clustering coefficient $\operatorname{clus}(G)$ (solid) and $\bar{l}$ (dashed) as a function of $p$, both have been
+normalized by their largest values
+:::
+
+However, the closed form for $\operatorname{clus}(G)$ and $\bar{l}$ are still open problems.
+
+Variation:
+- both ends of an edge are rewired [SAND 23]
+- no edges are rewired, but some small number of new edges are added to randomly selected pairs of vertices [SAND 284, 298]
+- add edge $(u, v)$ w.p. inversely proportional to $\operatorname{dist} (u,v)$, i.e. $p \propto (\operatorname{dist} )^{-r}$ for some $r > 0$. [SAND 229, 231].
+
+
 
 -
 
