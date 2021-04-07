@@ -1,5 +1,7 @@
 # Linear Algebra
 
+reference:
+- Numerical Linear Algebra, Volker Mehrmann [link](http://www.hamilton.ie/ollie/Downloads/NLA10.pdf)
 
 ## Matrix Operations
 
@@ -416,3 +418,114 @@ Theorem
 
 
 ### Schur Decomposition
+
+## Advanced Topics
+
+### Randomized SVD
+
+SVD for $\boldsymbol{A} \in \mathbb{R} ^{n \times n}$ takes $\mathcal{O} (n^3)$, can we use this intuition for doing faster? References: Gu & Eisenstat, Tygert & Rokhlin, Martin Sison, Halto. Survey of randomized SVD: https://arxiv.org/pdf/0909.4061.pdf
+
+A vanilla algorithm,
+
+- create $\boldsymbol{\Omega}\in \mathbb{R} ^{n \times k}$ with $\Omega_{ij} \overset{\text{iid}}{\sim} \mathcal{N} (0, 1)$
+- (find range) compute $\boldsymbol{Y} = \boldsymbol{A} \boldsymbol{\Omega} \in \mathbb{R} ^{n \times k}$, which takes $\mathcal{O} (n^2 k)$. That is, we randomly project $\boldsymbol{A}$ onto $\mathbb{R} ^{ n\times k}$, roughly preserve ranges of $\boldsymbol{A}$, and hence $\operatorname{rank}(\boldsymbol{A})$.
+- (store ranges) compute QR decomposition $\boldsymbol{Y} = \boldsymbol{Q} \boldsymbol{R}$, which takes $\mathcal{O} (nk ^2)$. We want $\operatorname{range}(\boldsymbol{Q} ) = \operatorname{range} (\boldsymbol{A} )$
+- compute $\tilde{\boldsymbol{A}}  = \boldsymbol{Q} (\boldsymbol{Q} ^{\top} \boldsymbol{A} ) = \boldsymbol{Q} \boldsymbol{B}$ which takes $\mathcal{O} (n^2k )$. If indeed the ranges of $\boldsymbol{Q}$ and $\boldsymbol{A}$ are the same, then $\tilde{\boldsymbol{A}} = \boldsymbol{Q}  \boldsymbol{Q} ^{\top} \boldsymbol{A}$
+- SVD of $\boldsymbol{B} = \tilde{\boldsymbol{U} } \boldsymbol{\Sigma} \boldsymbol{V} ^{\top}$, which takes $\mathcal{O} (nk^2 + k^3)$
+- return $\tilde{\boldsymbol{A} } = (\boldsymbol{Q} \tilde{\boldsymbol{U} }) \boldsymbol{\Sigma} \boldsymbol{V} ^{\top} = \boldsymbol{U} \boldsymbol{\Sigma} \boldsymbol{V} ^{\top}$.
+
+If $\tilde{\boldsymbol{A}} \approx \boldsymbol{A}$ then we have the total time is $\mathcal{O} (n^2 k)$. How to improve this?
+
+There can by other choices of $\boldsymbol{\Omega}$. For instance, in fast JL algorithm, $\boldsymbol{\Omega} = \boldsymbol{S} \boldsymbol{F} \boldsymbol{D}$, where
+- $\boldsymbol{S}$ is a $k \times n$ sampling matrix having on non-zero entry in each row at random
+- $\boldsymbol{F}$ is an $n \times n$ Fourier matrix
+- $\boldsymbol{D}$ is an $n \times n$ diagonal matrix $d_i \pm 1$ entires with equal probability
+
+The total complexity if $\mathcal{O} (k + n\log n + n)$.
+
+### Analysis and Speed Up
+
+Lemma 1
+
+Let
+- $\boldsymbol{A} = \boldsymbol{U} \boldsymbol{\Sigma} \boldsymbol{V} ^{\top}$
+- usually $l \ge k$
+- assume $\boldsymbol{\Omega}_1$ has full row rank
+- $\boldsymbol{\Sigma} _1 = \boldsymbol{\Sigma} _{[:k, :k]}, \boldsymbol{\Sigma} _2 = \boldsymbol{\Sigma} _{[k+1:, k+1:]}$
+- $V^{*} \Omega=\left[\begin{array}{l}
+V_{1}^{*} \\
+V_{2}^{*}
+\end{array}\right] \Omega=\left[\begin{array}{l}
+\Omega_{1} \\
+\Omega_{2}
+\end{array}\right]$
+- $\boldsymbol{\Omega} _1 = \boldsymbol{\Omega} _{[:k, :]}, \boldsymbol{\Omega} _2 = \boldsymbol{\Omega} _{[k+1:, :]}$
+- $\boldsymbol{P} _Y = \boldsymbol{Q} \boldsymbol{Q} ^{\top}$
+
+Error after projection
+
+$$
+\left\| \boldsymbol{A} - \boldsymbol{P}_Y \boldsymbol{A} \right\| ^2 \le \left\| \boldsymbol{\Sigma} _2 \right\| ^2 + \left\| \boldsymbol{\Sigma} _2 \boldsymbol{\Omega}_2 \boldsymbol{\Omega}_1 ^{\dagger}  \right\| ^2
+$$
+
+where $\left\| \cdot \right\|$ is $\left\| \cdot \right\| _2$ or $\left\| \cdot \right\| _F$.
+
+Implication:
+Suppose $\boldsymbol{A} _v$ is indeed rank $k$, then $\boldsymbol{\Sigma} _2 = 0$, as long as ... Error = 0.
+
+In $\boldsymbol{A} \boldsymbol{\Omega}$ We are forming random linear combinations of columns of $\boldsymbol{A}$.
+
+Long proof!
+
+
+Lemma 2
+: Let $\boldsymbol{G}$ of size $k \times (k + p)$ be a standard Gaussian random matrix, with $p \ge 2$. Then $\mathbb{E} [\left\| \boldsymbol{G} ^ \dagger  \right\|_F^2 ]^{1/2} = \sqrt{\frac{k}{p-1} }$.
+
+Lemma 3
+: Let $\boldsymbol{Z}$ be $n \times n$ a random matrix with independent standard normal entires, $\boldsymbol{A}$ and $\boldsymbol{B}$ be constant matrices of appropriate sizes, then since Frobenius norm is consistent
+
+
+$$\begin{aligned}
+\mathbb{E} \left[ \left\| \boldsymbol{A} \boldsymbol{Z} \boldsymbol{B}  \right\| _F^2  \right] &\le \left\| \boldsymbol{A} \right\| _F^2\mathbb{E} \left[  \left\|\boldsymbol{Z} \right\| _F^2 \right]\left\| \boldsymbol{B}  \right\| _F^2  \\
+&\le \left\| \boldsymbol{A} \right\| _F^2\mathbb{E} \left[ \operatorname{tr}\left( \boldsymbol{Z} ^{\top} \boldsymbol{Z} \right) \right]\left\| \boldsymbol{B}  \right\| _F^2 \\
+&\le \left\| \boldsymbol{A} \right\| _F^2\mathbb{E} \left[ \operatorname{tr}\left( \boldsymbol{Z} ^{\top} \boldsymbol{Z} \right) \right]\left\| \boldsymbol{B}  \right\| _F^2
+\end{aligned}$$
+
+
+Theorem
+: By Lemma 1 and Lemma 2
+
+$$
+\mathbb{E} [\left\| (\boldsymbol{I} - \boldsymbol{P}_Y ) \boldsymbol{A} \right\|_F ]  \le \left( 1 + \frac{k}{p-1}  \right)^{1/2} \left( \sum_{j > k} \sigma^2 _j  \right)^{1/2}
+$$
+
+
+:::{admonition,dropdown,seealso} *Proof*
+
+Since $\boldsymbol{V} ^*$ is orthogonal, $\boldsymbol{V} ^* \boldsymbol{\Omega}$ has independent $\mathcal{N} (0, 1)$ entires. Hence, $\boldsymbol{\Omega}$ and $\boldsymbol{\Omega}$ are independent,
+
+$$\begin{aligned}
+\mathbb{E} \left[ \left\| \boldsymbol{A} \boldsymbol{Z} \boldsymbol{B}  \right\| _F^2  \right] &\le \left\| \boldsymbol{A} \right\| _F^2\mathbb{E} \left[  \left\|\boldsymbol{Z} \right\| _F^2 \right]\left\| \boldsymbol{B}  \right\| _F^2  \\
+&\le \left\| \boldsymbol{A} \right\| _F^2\mathbb{E} \left[ \operatorname{tr}\left( \boldsymbol{Z} ^{\top} \boldsymbol{Z} \right) \right]\left\| \boldsymbol{B}  \right\| _F^2 \\
+&\le \left\| \boldsymbol{A} \right\| _F^2\mathbb{E} \left[ \operatorname{tr}\left( \boldsymbol{Z} ^{\top} \boldsymbol{Z} \right) \right]\left\| \boldsymbol{B}  \right\| _F^2
+\end{aligned}$$
+
+:::
+
+Conclusion: not bad as first $k$ approximation.
+
+### Interpolative Decomposition
+
+Less accurate.
+
+Fourier matrix + sparse vector = dense vector with a spike.
+
+### Low-rank Approximation
+
+Problem:
+
+$$
+\text { minimize over } \widehat{A} \quad\|A-\widehat{A}\|_{\mathrm{F}} \quad \text { subject to } \quad \operatorname{rank}(\widehat{A}) \leq r
+$$
+
+Eckart–Young–Mirsky theorem: We claim that the best rank $r$ approximation to $\boldsymbol{A}$ in the Frobenius norm, denoted by $A_{r}=\sum_{i=1}^{k} \sigma_{i} u_{i} v_{i}^{\top}$
