@@ -302,9 +302,82 @@ Variation:
 - no edges are rewired, but some small number of new edges are added to randomly selected pairs of vertices [SAND 284, 298]
 - add edge $(u, v)$ w.p. inversely proportional to $\operatorname{dist} (u,v)$, i.e. $p \propto (\operatorname{dist} )^{-r}$ for some $r > 0$. [SAND 229, 231].
 
+## Growth Models
 
+Many networks grow or otherwise evolve in time, e.g. WWW and citation networks. Problems of interest include
 
--
+- how the graph changes? how to model?
+  - vertex preference, fitness, copying, etc
+- as $t$ goes large, some properties emerge
+
+### Preferential Attachment
+
+- principle: the rich get richer.
+  - observe: in WWW, often web pages to which many other pages point will tend to accumulate increasingly greater numbers of links as time goes on.
+- want to mimic: broad degree distributions, as observed in many large, real-world networks
+
+We introduce Barabasi-Albert Model, which view degree as 'richness'.
+
+- Start with an initial graph $G{(0)}$ of $N(0)_v$ vertices and $N^{(0)}_e$ edges.
+- At stage $t = 1,2, \ldots$, the current graph $G^{(t−1)}$ is modified to create a new graph $G^{t}$ by
+  - adding a new vertex of degree $m\ge 1$, where the $m$ new edges are attached to $m$ different vertices in $G^{(t−1)}$, with probability $\frac{d_v}{\sum_{v ^\prime \in V} d_{v ^\prime}}$ for $v$ to be connected (preferential to those with **higher** degrees).
+  - $G^{t}$ will have $N_v^{(t)} = N_v^{(0)} + t$ vertices and $N_e^{(t)} = N_e^{(0)} + tm$ edges
+
+We would expect that a number of vertices of comparatively high degree ("rich") should gradually emerge as $t$ increases.
+
+How to select $m$ vertices exactly? We introduce the linearized-chord diagram (LCD) model. For simulation of LCS in linear time, see [SAND 23].
+
+For the case $m=1$,
+- begin with $G^{(1)}$ consisting of a single vertex with a loop
+- for $t = 2, 3 \ldots,$
+  - add the vertex $v_t$ to $G^{(t-1)}$ with an edge to a vertex $v_s$ for $1 \le s \le t$ chosen randomly w.p.
+
+  $$
+  \mathbb{P}(s=j)=\left\{\begin{array}{ll}
+  d_{G(t-1)}\left(v_{j}\right) /(2 t-1), & \text { if } 1 \leq j \leq t-1 ， \\
+  1 /(2 t-1), & \text { if } j=t,
+  \end{array}\right.
+  $$
+
+  where $d_{G^{(t-1)}}\left(v_{j}\right)$ is the degree of $v_j$ at time $t-1$.
+
+For the case $m > 1$, we repeat the above process for $m$ steps, after which we contract the added $m$ vertices into one, with the $m$ edges retained. Clearly, this formulation allows for loops and multi-edges. However, these should occur relatively rarely, and the precision gained by this formulation is necessary for rigorously deriving mathematical results regarding model properties for $G^{(t)}$:
+
+- **connected w.h.p.** (not connected if, e.g., $m=1, j=t$ self-loop).
+- **power-law degree w.h.p.** $t$ tends to infinity, $G^{(t)}$ have degree distributions that tend to a power-law form $d^{-\alpha}$ with $\alpha = 3$. It can be shown that w.h.p. for any $\epsilon$ and every $0 \le d\le \left(N_{v}^{(t)}\right)^{1 / 5}$,
+
+  $$
+  f_{d}\left(G^{(t)}\right) \in (1 \pm \varepsilon) f_{d, m} \quad \text{where } f_{d, m}= \frac{2m(m+1)}{(d+2)(d+1) d}
+  $$
+
+  which behaves like $d^{-3}$ for $d$ large relative to $m$.
+- **small diameter**: when $m=1$, diameter $\operatorname{diam}(G^{(t)}) = \mathcal{O} (\log N_v^{(t)})$. when $m>1$, it is $\mathcal{O} \left( \frac{\log N_v^{(t)}}{\log \log N_v^{(t)}} \right)$, which is a bit smaller still.
+- **less clustering**
+
+  $$
+  \mathbb{E} [\operatorname{clus}_T (G^{(t)}) ]  = \mathcal{O} \left( \frac{m-1}{8} \frac{\left(\log N_{v}^{(t)}\right)^{2}}{N_{v}^{(t)}} \right)
+  $$
+
+  which is only a little better than $N_v^{-1}$ behavior in the case of classical random graph models.
+
+There many extensions and variations, such as
+- clustering, diameter, etc
+- consider other ‘fitness’ or inherent quality of vertices as 'richness'?
+- allow $m$ to vary, or dynamic addition and removal of eges?
+- add offset $d^*$ to $d_v + d^*$, or use powers $d_v^\gamma$.
+
+The main concern include
+- whether or not a power-law limiting distribution is achieved?
+- if so, how is $\alpha$ related to model parameters?
+
+See [SAND 6, 296, 41].
+
+### Copying Models
+
+Copying model is distinct from preferential attachment but can also produce power-law degree distributions.
+
+Beginning with an initial 
+
 
 .
 
