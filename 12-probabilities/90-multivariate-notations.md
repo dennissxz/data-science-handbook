@@ -89,12 +89,14 @@ In matrix form,
 
 $$
 \begin{align}
-\operatorname{Var}(\boldsymbol{x})
+\boldsymbol{\Sigma}
 &=\operatorname{\mathbb{E}}\left[(\boldsymbol{x}-\operatorname{\mathbb{E}}(\boldsymbol{x}))(\boldsymbol{x}-\operatorname{\mathbb{E}}(\boldsymbol{x}))^{\top}\right] \\
 &=\operatorname{\mathbb{E}}\left(\boldsymbol{x} \boldsymbol{x}^{\top}\right)-\operatorname{\mathbb{E}}(\boldsymbol{x}) \operatorname{\mathbb{E}}(\boldsymbol{x}) \\
-&=\operatorname{\mathbb{E}}\left(\boldsymbol{x} \boldsymbol{x}^{\top}\right)-\mu \mu ^\top
+&=\operatorname{\mathbb{E}}\left(\boldsymbol{x} \boldsymbol{x}^{\top}\right)- \boldsymbol{\mu}  \boldsymbol{\mu} ^\top
 \end{align}
 $$
+
+which is a multivariate extension of $\mathbb{V} [X] = \mathbb{E} [X^2] - \mathbb{E} [X] ^2$.
 
 **Properties**
 
