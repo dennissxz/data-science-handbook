@@ -419,7 +419,15 @@ Theorem
 
 ### Schur Decomposition
 
-## Advanced Topics
+
+## More Topics
+
+### Matrix Norms
+
+- Matrix Norm https://www.uio.no/studier/emner/matnat/ifi/nedlagte-emner/INF-MAT4350/h09/undervisningsmateriale/lecture7.pdf
+- Frobenius Norm http://mlwiki.org/index.php/Frobenius_Norm
+
+
 
 ### Randomized SVD
 
