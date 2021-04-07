@@ -17,3 +17,6 @@ In the intersection of machine learning and causal inference, there are two bran
   - dependence of irrelevant features: change some feature value (word in sentence), prediction (sentiment) changes.
 
   Can use causal inference to solve these issues?
+
+Reference:
+- Advanced Data Analysis from an Elementary Point of View Part III[link](https://www.stat.cmu.edu/~cshalizi/ADAfaEPoV/)
