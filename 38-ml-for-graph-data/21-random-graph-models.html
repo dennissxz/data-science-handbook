@@ -58,7 +58,6 @@
     <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="For Causal Inference" href="../39-causal/00-causal-intro.html" />
     <link rel="prev" title="Sampling and Estimation" href="13-sampling-and-estimation.html" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -768,20 +767,6 @@
   <i class="fas fa-chevron-down">
   </i>
  </li>
- <li class="toctree-l1 collapsible-parent">
-  <a class="reference internal" href="../39-causal/00-causal-intro.html">
-   For Causal Inference
-  </a>
-  <ul class="collapse-ul">
-   <li class="toctree-l2">
-    <a class="reference internal" href="../39-causal/11-causal-estimation.html">
-     Causal Estimation
-    </a>
-   </li>
-  </ul>
-  <i class="fas fa-chevron-down">
-  </i>
- </li>
 </ul>
 
 </nav> <!-- To handle the deprecated key -->
@@ -969,6 +954,23 @@
   <a class="reference internal nav-link" href="#small-world-models">
    Small-World Models
   </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#growth-models">
+   Growth Models
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#preferential-attachment">
+     Preferential Attachment
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#copying-models">
+     Copying Models
+    </a>
+   </li>
+  </ul>
  </li>
 </ul>
 
@@ -1260,8 +1262,95 @@ normalized by their largest values</span><a class="headerlink" href="#graph-ws-s
 <li><p>both ends of an edge are rewired [SAND 23]</p></li>
 <li><p>no edges are rewired, but some small number of new edges are added to randomly selected pairs of vertices [SAND 284, 298]</p></li>
 <li><p>add edge <span class="math notranslate nohighlight">\((u, v)\)</span> w.p. inversely proportional to <span class="math notranslate nohighlight">\(\operatorname{dist} (u,v)\)</span>, i.e. <span class="math notranslate nohighlight">\(p \propto (\operatorname{dist} )^{-r}\)</span> for some <span class="math notranslate nohighlight">\(r &gt; 0\)</span>. [SAND 229, 231].</p></li>
-<li></li>
 </ul>
+</section>
+<section id="growth-models">
+<h2>Growth Models<a class="headerlink" href="#growth-models" title="Permalink to this headline">¶</a></h2>
+<p>Many networks grow or otherwise evolve in time, e.g. WWW and citation networks. Problems of interest include</p>
+<ul class="simple">
+<li><p>how the graph changes? how to model?</p>
+<ul>
+<li><p>vertex preference, fitness, copying, etc</p></li>
+</ul>
+</li>
+<li><p>as <span class="math notranslate nohighlight">\(t\)</span> goes large, some properties emerge</p></li>
+</ul>
+<section id="preferential-attachment">
+<h3>Preferential Attachment<a class="headerlink" href="#preferential-attachment" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>principle: the rich get richer.</p>
+<ul>
+<li><p>observe: in WWW, often web pages to which many other pages point will tend to accumulate increasingly greater numbers of links as time goes on.</p></li>
+</ul>
+</li>
+<li><p>want to mimic: broad degree distributions, as observed in many large, real-world networks</p></li>
+</ul>
+<p>We introduce Barabasi-Albert Model, which view degree as ‘richness’.</p>
+<ul class="simple">
+<li><p>Start with an initial graph <span class="math notranslate nohighlight">\(G{(0)}\)</span> of <span class="math notranslate nohighlight">\(N(0)_v\)</span> vertices and <span class="math notranslate nohighlight">\(N^{(0)}_e\)</span> edges.</p></li>
+<li><p>At stage <span class="math notranslate nohighlight">\(t = 1,2, \ldots\)</span>, the current graph <span class="math notranslate nohighlight">\(G^{(t−1)}\)</span> is modified to create a new graph <span class="math notranslate nohighlight">\(G^{t}\)</span> by</p>
+<ul>
+<li><p>adding a new vertex of degree <span class="math notranslate nohighlight">\(m\ge 1\)</span>, where the <span class="math notranslate nohighlight">\(m\)</span> new edges are attached to <span class="math notranslate nohighlight">\(m\)</span> different vertices in <span class="math notranslate nohighlight">\(G^{(t−1)}\)</span>, with probability <span class="math notranslate nohighlight">\(\frac{d_v}{\sum_{v ^\prime \in V} d_{v ^\prime}}\)</span> for <span class="math notranslate nohighlight">\(v\)</span> to be connected (preferential to those with <strong>higher</strong> degrees).</p></li>
+<li><p><span class="math notranslate nohighlight">\(G^{t}\)</span> will have <span class="math notranslate nohighlight">\(N_v^{(t)} = N_v^{(0)} + t\)</span> vertices and <span class="math notranslate nohighlight">\(N_e^{(t)} = N_e^{(0)} + tm\)</span> edges</p></li>
+</ul>
+</li>
+</ul>
+<p>We would expect that a number of vertices of comparatively high degree (“rich”) should gradually emerge as <span class="math notranslate nohighlight">\(t\)</span> increases.</p>
+<p>How to select <span class="math notranslate nohighlight">\(m\)</span> vertices exactly? We introduce the linearized-chord diagram (LCD) model. For simulation of LCS in linear time, see [SAND 23].</p>
+<p>For the case <span class="math notranslate nohighlight">\(m=1\)</span>,</p>
+<ul>
+<li><p>begin with <span class="math notranslate nohighlight">\(G^{(1)}\)</span> consisting of a single vertex with a loop</p></li>
+<li><p>for <span class="math notranslate nohighlight">\(t = 2, 3 \ldots,\)</span></p>
+<ul class="simple">
+<li><p>add the vertex <span class="math notranslate nohighlight">\(v_t\)</span> to <span class="math notranslate nohighlight">\(G^{(t-1)}\)</span> with an edge to a vertex <span class="math notranslate nohighlight">\(v_s\)</span> for <span class="math notranslate nohighlight">\(1 \le s \le t\)</span> chosen randomly w.p.</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+  \mathbb{P}(s=j)=\left\{\begin{array}{ll}
+  d_{G(t-1)}\left(v_{j}\right) /(2 t-1), &amp; \text { if } 1 \leq j \leq t-1 ， \\
+  1 /(2 t-1), &amp; \text { if } j=t,
+  \end{array}\right.
+  \end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(d_{G^{(t-1)}}\left(v_{j}\right)\)</span> is the degree of <span class="math notranslate nohighlight">\(v_j\)</span> at time <span class="math notranslate nohighlight">\(t-1\)</span>.</p>
+</li>
+</ul>
+<p>For the case <span class="math notranslate nohighlight">\(m &gt; 1\)</span>, we repeat the above process for <span class="math notranslate nohighlight">\(m\)</span> steps, after which we contract the added <span class="math notranslate nohighlight">\(m\)</span> vertices into one, with the <span class="math notranslate nohighlight">\(m\)</span> edges retained. Clearly, this formulation allows for loops and multi-edges. However, these should occur relatively rarely, and the precision gained by this formulation is necessary for rigorously deriving mathematical results regarding model properties for <span class="math notranslate nohighlight">\(G^{(t)}\)</span>:</p>
+<ul>
+<li><p><strong>connected w.h.p.</strong> (not connected if, e.g., <span class="math notranslate nohighlight">\(m=1, j=t\)</span> self-loop).</p></li>
+<li><p><strong>power-law degree w.h.p.</strong> <span class="math notranslate nohighlight">\(t\)</span> tends to infinity, <span class="math notranslate nohighlight">\(G^{(t)}\)</span> have degree distributions that tend to a power-law form <span class="math notranslate nohighlight">\(d^{-\alpha}\)</span> with <span class="math notranslate nohighlight">\(\alpha = 3\)</span>. It can be shown that w.h.p. for any <span class="math notranslate nohighlight">\(\epsilon\)</span> and every <span class="math notranslate nohighlight">\(0 \le d\le \left(N_{v}^{(t)}\right)^{1 / 5}\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[
+  f_{d}\left(G^{(t)}\right) \in (1 \pm \varepsilon) f_{d, m} \quad \text{where } f_{d, m}= \frac{2m(m+1)}{(d+2)(d+1) d}
+  \]</div>
+<p>which behaves like <span class="math notranslate nohighlight">\(d^{-3}\)</span> for <span class="math notranslate nohighlight">\(d\)</span> large relative to <span class="math notranslate nohighlight">\(m\)</span>.</p>
+</li>
+<li><p><strong>small diameter</strong>: when <span class="math notranslate nohighlight">\(m=1\)</span>, diameter <span class="math notranslate nohighlight">\(\operatorname{diam}(G^{(t)}) = \mathcal{O} (\log N_v^{(t)})\)</span>. when <span class="math notranslate nohighlight">\(m&gt;1\)</span>, it is <span class="math notranslate nohighlight">\(\mathcal{O} \left( \frac{\log N_v^{(t)}}{\log \log N_v^{(t)}} \right)\)</span>, which is a bit smaller still.</p></li>
+<li><p><strong>less clustering</strong></p>
+<div class="math notranslate nohighlight">
+\[
+  \mathbb{E} [\operatorname{clus}_T (G^{(t)}) ]  = \mathcal{O} \left( \frac{m-1}{8} \frac{\left(\log N_{v}^{(t)}\right)^{2}}{N_{v}^{(t)}} \right)
+  \]</div>
+<p>which is only a little better than <span class="math notranslate nohighlight">\(N_v^{-1}\)</span> behavior in the case of classical random graph models.</p>
+</li>
+</ul>
+<p>There many extensions and variations, such as</p>
+<ul class="simple">
+<li><p>clustering, diameter, etc</p></li>
+<li><p>consider other ‘fitness’ or inherent quality of vertices as ‘richness’?</p></li>
+<li><p>allow <span class="math notranslate nohighlight">\(m\)</span> to vary, or dynamic addition and removal of eges?</p></li>
+<li><p>add offset <span class="math notranslate nohighlight">\(d^*\)</span> to <span class="math notranslate nohighlight">\(d_v + d^*\)</span>, or use powers <span class="math notranslate nohighlight">\(d_v^\gamma\)</span>.</p></li>
+</ul>
+<p>The main concern include</p>
+<ul class="simple">
+<li><p>whether or not a power-law limiting distribution is achieved?</p></li>
+<li><p>if so, how is <span class="math notranslate nohighlight">\(\alpha\)</span> related to model parameters?</p></li>
+</ul>
+<p>See [SAND 6, 296, 41].</p>
+</section>
+<section id="copying-models">
+<h3>Copying Models<a class="headerlink" href="#copying-models" title="Permalink to this headline">¶</a></h3>
+<p>Copying model is distinct from preferential attachment but can also produce power-law degree distributions.</p>
+<p>Beginning with an initial</p>
 <p>.</p>
 <p>.</p>
 <p>.</p>
@@ -1270,6 +1359,7 @@ normalized by their largest values</span><a class="headerlink" href="#graph-ws-s
 <p>.</p>
 <p>.</p>
 <p>.</p>
+</section>
 </section>
 </section>
 
@@ -1299,7 +1389,6 @@ normalized by their largest values</span><a class="headerlink" href="#graph-ws-s
         <div class='prev-next-bottom'>
             
     <a class='left-prev' id="prev-link" href="13-sampling-and-estimation.html" title="previous page">Sampling and Estimation</a>
-    <a class='right-next' id="next-link" href="../39-causal/00-causal-intro.html" title="next page">For Causal Inference</a>
 
         </div>
         
