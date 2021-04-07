@@ -15,6 +15,7 @@ Techniques
 
 Reference
 - https://www.sketchingbigdata.org/fall17/lec/lec1.pdf
+- CMPSCI 711: More Advanced Algorithms. [link](https://people.cs.umass.edu/~mcgregor/CS711S18/index.html)
 
 Terms:
 
