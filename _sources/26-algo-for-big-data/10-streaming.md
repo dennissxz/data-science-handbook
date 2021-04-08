@@ -548,6 +548,21 @@ For instance, problems include:
 
 See [link](https://www.sketchingbigdata.org/fall17/lec/lec18.pdf).
 
+## Other Problems
+
+Set cover: subsets come in a stream, cannot store all of them.
+
+Offline: $\mathcal{O} (\log n)$-approximation.
+
+- greedy: store all subsets and output compare largest-cardinality one
+- greedy: $n$ passes, in each pass select  ..
+- $T = 2^i$
+- sampling-based
+  - Set sampling: un-sampled elements have low degree
+  - Element sampling:
+
+Multiplicative Weights Update Method
+
 .
 
 

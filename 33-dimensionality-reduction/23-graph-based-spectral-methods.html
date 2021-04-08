@@ -904,11 +904,6 @@
      Johnson-Lindenstrauss Lemma
     </a>
    </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#randomized-svd">
-     Randomized SVD
-    </a>
-   </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -1193,7 +1188,7 @@ where $\mathbb{M} \boldsymbol{1} = \boldsymbol{1}, \mathbb{M} \ge 0, \lambda(\ma
 <section id="johnson-lindenstrauss-lemma">
 <h3>Johnson-Lindenstrauss Lemma<a class="headerlink" href="#johnson-lindenstrauss-lemma" title="Permalink to this headline">¶</a></h3>
 <dl class="simple myst">
-<dt>Lemma (Johnson-Lindenstrauss)</dt><dd><p>For data vectors be <span class="math notranslate nohighlight">\(\boldsymbol{x} _1, \boldsymbol{x} _2, \ldots, \boldsymbol{x} _n \in \mathbb{R} ^d\)</span> and  tolerance <span class="math notranslate nohighlight">\(\epsilon \in (0, \frac{1}{2} )\)</span>, there exists a Lipshitz mapping <span class="math notranslate nohighlight">\(f: \mathbb{R} ^d \rightarrow \mathbb{R} ^k\)</span>, where <span class="math notranslate nohighlight">\(k = \lfloor \frac{24 \log n}{\epsilon^2} \rfloor\)</span> such that</p>
+<dt>Lemma (Johnson-Lindenstrauss)</dt><dd><p>For data vectors be <span class="math notranslate nohighlight">\(\boldsymbol{x} _1, \boldsymbol{x} _2, \ldots, \boldsymbol{x} _n \in \mathbb{R} ^d\)</span> and  tolerance <span class="math notranslate nohighlight">\(\epsilon \in (0, \frac{1}{2} )\)</span>, there exists a Lipschitz mapping <span class="math notranslate nohighlight">\(f: \mathbb{R} ^d \rightarrow \mathbb{R} ^k\)</span>, where <span class="math notranslate nohighlight">\(k = \lfloor \frac{24 \log n}{\epsilon^2} \rfloor\)</span> such that</p>
 <div class="math notranslate nohighlight">
 \[
   (1 - \epsilon) \left\| \boldsymbol{x}_i - \boldsymbol{x}_j  \right\| ^2 \le \left\| f(\boldsymbol{x}_i ) - f(\boldsymbol{x}_j )\right\| \le (1 + \epsilon) \left\| \boldsymbol{x}_i - \boldsymbol{x}_j  \right\| ^2
@@ -1272,27 +1267,6 @@ where $\mathbb{M} \boldsymbol{1} = \boldsymbol{1}, \mathbb{M} \ge 0, \lambda(\ma
 <p>With some choice of <span class="math notranslate nohighlight">\(k\)</span>, this upper bound is <span class="math notranslate nohighlight">\(1 - \frac{1}{n}\)</span>, i.e. there is an <span class="math notranslate nohighlight">\(\frac{1}{n}\)</span> chance we get a map with <span class="math notranslate nohighlight">\(\epsilon\)</span> distortion. What if we want a higher probability?</p>
 <p>For some <span class="math notranslate nohighlight">\(\alpha\)</span>, if we set, <span class="math notranslate nohighlight">\(k \ge (4 + 2\alpha) \left( \frac{\epsilon^{2}}{2}-\frac{\epsilon^{3}}{2} \right) ^{-1} \log(n)\)</span>, then the embedding <span class="math notranslate nohighlight">\(f(\boldsymbol{x} ) = \frac{1}{\sqrt{k}} \boldsymbol{A} \boldsymbol{x}\)</span> succeeds with probability at least <span class="math notranslate nohighlight">\(1 - \frac{1}{n^\alpha}\)</span>.</p>
 </div>
-</section>
-<section id="randomized-svd">
-<h3>Randomized SVD<a class="headerlink" href="#randomized-svd" title="Permalink to this headline">¶</a></h3>
-<p>SVD for <span class="math notranslate nohighlight">\(\boldsymbol{A} \in \mathbb{R} ^{n \times n}\)</span> takes <span class="math notranslate nohighlight">\(\mathcal{O} (n^3)\)</span>, can we use this intuition for doing faster? References: Gu &amp; Eisenstat, Tygert &amp; Rokhlin, Martin Sison, Halto.</p>
-<p>A vanilla algorithm,</p>
-<ul class="simple">
-<li><p>create <span class="math notranslate nohighlight">\(\boldsymbol{\Omega}\in \mathbb{R} ^{n \times k}\)</span> with <span class="math notranslate nohighlight">\(\Omega_{ij} \overset{\text{iid}}{\sim} \mathcal{N} (0, 1)\)</span></p></li>
-<li><p>compute <span class="math notranslate nohighlight">\(\boldsymbol{Y} = \boldsymbol{A} \boldsymbol{\Omega} \in \mathbb{R} ^{n \times k}\)</span>, which takes <span class="math notranslate nohighlight">\(\mathcal{O} (n^2 k)\)</span>. That is, we randomly project <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> onto <span class="math notranslate nohighlight">\(\mathbb{R} ^{ n\times k}\)</span>, preserving <span class="math notranslate nohighlight">\(\operatorname{rank}(\boldsymbol{A})\)</span>.</p></li>
-<li><p>compute QR decomposition <span class="math notranslate nohighlight">\(\boldsymbol{Y} = \boldsymbol{Q} \boldsymbol{R}\)</span>, which takes <span class="math notranslate nohighlight">\(\mathcal{O} (nk ^2)\)</span>. We want <span class="math notranslate nohighlight">\(\operatorname{range}(\boldsymbol{Q} ) = \operatorname{range} (\boldsymbol{A} )\)</span></p></li>
-<li><p>compute <span class="math notranslate nohighlight">\(\tilde{\boldsymbol{A}}  = \boldsymbol{Q} (\boldsymbol{Q} ^{\top} \boldsymbol{A} ) = \boldsymbol{Q} \boldsymbol{B}\)</span> which takes <span class="math notranslate nohighlight">\(\mathcal{O} (n^2k )\)</span>. If indeed the ranges are the same, then <span class="math notranslate nohighlight">\(\boldsymbol{A} = \boldsymbol{Q}  \boldsymbol{Q} ^{\top} \boldsymbol{A}\)</span></p></li>
-<li><p>SVD of <span class="math notranslate nohighlight">\(\boldsymbol{B} = \tilde{\boldsymbol{U} } \boldsymbol{\Sigma} \boldsymbol{V} ^{\top}\)</span>, which takes <span class="math notranslate nohighlight">\(\mathcal{O} (nk^2 + k^3)\)</span></p></li>
-<li><p>return <span class="math notranslate nohighlight">\(\tilde{\boldsymbol{A} } = (\boldsymbol{Q} \tilde{\boldsymbol{U} }) \boldsymbol{\Sigma} \boldsymbol{V} ^{\top} = \boldsymbol{U} \boldsymbol{\Sigma} \boldsymbol{V} ^{\top}\)</span>.</p></li>
-</ul>
-<p>If <span class="math notranslate nohighlight">\(\tilde{\boldsymbol{A}} \approx \boldsymbol{A}\)</span> then we have the total time is <span class="math notranslate nohighlight">\(\mathcal{O} (n^2 k)\)</span>.</p>
-<p>There can by other choices of <span class="math notranslate nohighlight">\(\boldsymbol{\Omega}\)</span>. For instance, in fast JL algorithm, <span class="math notranslate nohighlight">\(\boldsymbol{\Omega} = \boldsymbol{S} \boldsymbol{F} \boldsymbol{D}\)</span>, where</p>
-<ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(\boldsymbol{S}\)</span> is a <span class="math notranslate nohighlight">\(k \times n\)</span> sampling matrix having on non-zero entry in each row at random</p></li>
-<li><p><span class="math notranslate nohighlight">\(\boldsymbol{F}\)</span> is an <span class="math notranslate nohighlight">\(n \times n\)</span> Fourier matrix</p></li>
-<li><p><span class="math notranslate nohighlight">\(\boldsymbol{D}\)</span> is an <span class="math notranslate nohighlight">\(n \times n\)</span> diagonal matrix <span class="math notranslate nohighlight">\(d_i \pm 1\)</span> entires with equal probability</p></li>
-</ul>
-<p>The total complexity if <span class="math notranslate nohighlight">\(\mathcal{O} (k + n\log n + n)\)</span>.</p>
 </section>
 </section>
 <section id="locally-linear-embedding">

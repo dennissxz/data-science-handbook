@@ -295,10 +295,11 @@ What if we have some information, say $i$ is in some year for some $i$'s? Can we
 
 ## Randomized SVD-based Methods
 
+
 ### Johnson-Lindenstrauss Lemma
 
 Lemma (Johnson-Lindenstrauss)
-: For data vectors be $\boldsymbol{x} _1, \boldsymbol{x} _2, \ldots, \boldsymbol{x} _n \in \mathbb{R} ^d$ and  tolerance $\epsilon \in (0, \frac{1}{2} )$, there exists a Lipshitz mapping $f: \mathbb{R} ^d \rightarrow \mathbb{R} ^k$, where $k = \lfloor \frac{24 \log n}{\epsilon^2} \rfloor$ such that
+: For data vectors be $\boldsymbol{x} _1, \boldsymbol{x} _2, \ldots, \boldsymbol{x} _n \in \mathbb{R} ^d$ and  tolerance $\epsilon \in (0, \frac{1}{2} )$, there exists a Lipschitz mapping $f: \mathbb{R} ^d \rightarrow \mathbb{R} ^k$, where $k = \lfloor \frac{24 \log n}{\epsilon^2} \rfloor$ such that
 
   $$
   (1 - \epsilon) \left\| \boldsymbol{x}_i - \boldsymbol{x}_j  \right\| ^2 \le \left\| f(\boldsymbol{x}_i ) - f(\boldsymbol{x}_j )\right\| \le (1 + \epsilon) \left\| \boldsymbol{x}_i - \boldsymbol{x}_j  \right\| ^2
@@ -395,27 +396,6 @@ For some $\alpha$, if we set, $k \ge (4 + 2\alpha) \left( \frac{\epsilon^{2}}{2}
 
 :::
 
-### Randomized SVD
-
-SVD for $\boldsymbol{A} \in \mathbb{R} ^{n \times n}$ takes $\mathcal{O} (n^3)$, can we use this intuition for doing faster? References: Gu & Eisenstat, Tygert & Rokhlin, Martin Sison, Halto.
-
-A vanilla algorithm,
-
-- create $\boldsymbol{\Omega}\in \mathbb{R} ^{n \times k}$ with $\Omega_{ij} \overset{\text{iid}}{\sim} \mathcal{N} (0, 1)$
-- compute $\boldsymbol{Y} = \boldsymbol{A} \boldsymbol{\Omega} \in \mathbb{R} ^{n \times k}$, which takes $\mathcal{O} (n^2 k)$. That is, we randomly project $\boldsymbol{A}$ onto $\mathbb{R} ^{ n\times k}$, preserving $\operatorname{rank}(\boldsymbol{A})$.
-- compute QR decomposition $\boldsymbol{Y} = \boldsymbol{Q} \boldsymbol{R}$, which takes $\mathcal{O} (nk ^2)$. We want $\operatorname{range}(\boldsymbol{Q} ) = \operatorname{range} (\boldsymbol{A} )$
-- compute $\tilde{\boldsymbol{A}}  = \boldsymbol{Q} (\boldsymbol{Q} ^{\top} \boldsymbol{A} ) = \boldsymbol{Q} \boldsymbol{B}$ which takes $\mathcal{O} (n^2k )$. If indeed the ranges are the same, then $\boldsymbol{A} = \boldsymbol{Q}  \boldsymbol{Q} ^{\top} \boldsymbol{A}$
-- SVD of $\boldsymbol{B} = \tilde{\boldsymbol{U} } \boldsymbol{\Sigma} \boldsymbol{V} ^{\top}$, which takes $\mathcal{O} (nk^2 + k^3)$
-- return $\tilde{\boldsymbol{A} } = (\boldsymbol{Q} \tilde{\boldsymbol{U} }) \boldsymbol{\Sigma} \boldsymbol{V} ^{\top} = \boldsymbol{U} \boldsymbol{\Sigma} \boldsymbol{V} ^{\top}$.
-
-If $\tilde{\boldsymbol{A}} \approx \boldsymbol{A}$ then we have the total time is $\mathcal{O} (n^2 k)$.
-
-There can by other choices of $\boldsymbol{\Omega}$. For instance, in fast JL algorithm, $\boldsymbol{\Omega} = \boldsymbol{S} \boldsymbol{F} \boldsymbol{D}$, where
-- $\boldsymbol{S}$ is a $k \times n$ sampling matrix having on non-zero entry in each row at random
-- $\boldsymbol{F}$ is an $n \times n$ Fourier matrix
-- $\boldsymbol{D}$ is an $n \times n$ diagonal matrix $d_i \pm 1$ entires with equal probability
-
-The total complexity if $\mathcal{O} (k + n\log n + n)$.
 
 ## Locally Linear Embedding
 

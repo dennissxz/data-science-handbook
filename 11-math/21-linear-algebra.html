@@ -976,6 +976,38 @@
    </li>
   </ul>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#more-topics">
+   More Topics
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#matrix-norms">
+     Matrix Norms
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#randomized-svd">
+     Randomized SVD
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#analysis-and-speed-up">
+     Analysis and Speed Up
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#interpolative-decomposition">
+     Interpolative Decomposition
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#low-rank-approximation">
+     Low-rank Approximation
+    </a>
+   </li>
+  </ul>
+ </li>
 </ul>
 
         </nav>
@@ -990,6 +1022,10 @@
                 
   <section id="linear-algebra">
 <h1>Linear Algebra<a class="headerlink" href="#linear-algebra" title="Permalink to this headline">¶</a></h1>
+<p>reference:</p>
+<ul class="simple">
+<li><p>Numerical Linear Algebra, Volker Mehrmann <a class="reference external" href="http://www.hamilton.ie/ollie/Downloads/NLA10.pdf">link</a></p></li>
+</ul>
 <section id="matrix-operations">
 <h2>Matrix Operations<a class="headerlink" href="#matrix-operations" title="Permalink to this headline">¶</a></h2>
 <section id="transpose">
@@ -1417,6 +1453,112 @@
 </section>
 <section id="schur-decomposition">
 <h3>Schur Decomposition<a class="headerlink" href="#schur-decomposition" title="Permalink to this headline">¶</a></h3>
+</section>
+</section>
+<section id="more-topics">
+<h2>More Topics<a class="headerlink" href="#more-topics" title="Permalink to this headline">¶</a></h2>
+<section id="matrix-norms">
+<h3>Matrix Norms<a class="headerlink" href="#matrix-norms" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Matrix Norm https://www.uio.no/studier/emner/matnat/ifi/nedlagte-emner/INF-MAT4350/h09/undervisningsmateriale/lecture7.pdf</p></li>
+<li><p>Frobenius Norm http://mlwiki.org/index.php/Frobenius_Norm</p></li>
+</ul>
+</section>
+<section id="randomized-svd">
+<h3>Randomized SVD<a class="headerlink" href="#randomized-svd" title="Permalink to this headline">¶</a></h3>
+<p>SVD for <span class="math notranslate nohighlight">\(\boldsymbol{A} \in \mathbb{R} ^{n \times n}\)</span> takes <span class="math notranslate nohighlight">\(\mathcal{O} (n^3)\)</span>, can we use this intuition for doing faster? References: Gu &amp; Eisenstat, Tygert &amp; Rokhlin, Martin Sison, Halto. Survey of randomized SVD: https://arxiv.org/pdf/0909.4061.pdf</p>
+<p>A vanilla algorithm,</p>
+<ul class="simple">
+<li><p>create <span class="math notranslate nohighlight">\(\boldsymbol{\Omega}\in \mathbb{R} ^{n \times k}\)</span> with <span class="math notranslate nohighlight">\(\Omega_{ij} \overset{\text{iid}}{\sim} \mathcal{N} (0, 1)\)</span></p></li>
+<li><p>(find range) compute <span class="math notranslate nohighlight">\(\boldsymbol{Y} = \boldsymbol{A} \boldsymbol{\Omega} \in \mathbb{R} ^{n \times k}\)</span>, which takes <span class="math notranslate nohighlight">\(\mathcal{O} (n^2 k)\)</span>. That is, we randomly project <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> onto <span class="math notranslate nohighlight">\(\mathbb{R} ^{ n\times k}\)</span>, roughly preserve ranges of <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span>, and hence <span class="math notranslate nohighlight">\(\operatorname{rank}(\boldsymbol{A})\)</span>.</p></li>
+<li><p>(store ranges) compute QR decomposition <span class="math notranslate nohighlight">\(\boldsymbol{Y} = \boldsymbol{Q} \boldsymbol{R}\)</span>, which takes <span class="math notranslate nohighlight">\(\mathcal{O} (nk ^2)\)</span>. We want <span class="math notranslate nohighlight">\(\operatorname{range}(\boldsymbol{Q} ) = \operatorname{range} (\boldsymbol{A} )\)</span></p></li>
+<li><p>compute <span class="math notranslate nohighlight">\(\tilde{\boldsymbol{A}}  = \boldsymbol{Q} (\boldsymbol{Q} ^{\top} \boldsymbol{A} ) = \boldsymbol{Q} \boldsymbol{B}\)</span> which takes <span class="math notranslate nohighlight">\(\mathcal{O} (n^2k )\)</span>. If indeed the ranges of <span class="math notranslate nohighlight">\(\boldsymbol{Q}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> are the same, then <span class="math notranslate nohighlight">\(\tilde{\boldsymbol{A}} = \boldsymbol{Q}  \boldsymbol{Q} ^{\top} \boldsymbol{A}\)</span></p></li>
+<li><p>SVD of <span class="math notranslate nohighlight">\(\boldsymbol{B} = \tilde{\boldsymbol{U} } \boldsymbol{\Sigma} \boldsymbol{V} ^{\top}\)</span>, which takes <span class="math notranslate nohighlight">\(\mathcal{O} (nk^2 + k^3)\)</span></p></li>
+<li><p>return <span class="math notranslate nohighlight">\(\tilde{\boldsymbol{A} } = (\boldsymbol{Q} \tilde{\boldsymbol{U} }) \boldsymbol{\Sigma} \boldsymbol{V} ^{\top} = \boldsymbol{U} \boldsymbol{\Sigma} \boldsymbol{V} ^{\top}\)</span>.</p></li>
+</ul>
+<p>If <span class="math notranslate nohighlight">\(\tilde{\boldsymbol{A}} \approx \boldsymbol{A}\)</span> then we have the total time is <span class="math notranslate nohighlight">\(\mathcal{O} (n^2 k)\)</span>. How to improve this?</p>
+<p>There can by other choices of <span class="math notranslate nohighlight">\(\boldsymbol{\Omega}\)</span>. For instance, in fast JL algorithm, <span class="math notranslate nohighlight">\(\boldsymbol{\Omega} = \boldsymbol{S} \boldsymbol{F} \boldsymbol{D}\)</span>, where</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{S}\)</span> is a <span class="math notranslate nohighlight">\(k \times n\)</span> sampling matrix having on non-zero entry in each row at random</p></li>
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{F}\)</span> is an <span class="math notranslate nohighlight">\(n \times n\)</span> Fourier matrix</p></li>
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{D}\)</span> is an <span class="math notranslate nohighlight">\(n \times n\)</span> diagonal matrix <span class="math notranslate nohighlight">\(d_i \pm 1\)</span> entires with equal probability</p></li>
+</ul>
+<p>The total complexity if <span class="math notranslate nohighlight">\(\mathcal{O} (k + n\log n + n)\)</span>.</p>
+</section>
+<section id="analysis-and-speed-up">
+<h3>Analysis and Speed Up<a class="headerlink" href="#analysis-and-speed-up" title="Permalink to this headline">¶</a></h3>
+<p>Lemma 1</p>
+<p>Let</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{A} = \boldsymbol{U} \boldsymbol{\Sigma} \boldsymbol{V} ^{\top}\)</span></p></li>
+<li><p>usually <span class="math notranslate nohighlight">\(l \ge k\)</span></p></li>
+<li><p>assume <span class="math notranslate nohighlight">\(\boldsymbol{\Omega}_1\)</span> has full row rank</p></li>
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{\Sigma} _1 = \boldsymbol{\Sigma} _{[:k, :k]}, \boldsymbol{\Sigma} _2 = \boldsymbol{\Sigma} _{[k+1:, k+1:]}\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(V^{*} \Omega=\left[\begin{array}{l}
+V_{1}^{*} \\
+V_{2}^{*}
+\end{array}\right] \Omega=\left[\begin{array}{l}
+\Omega_{1} \\
+\Omega_{2}
+\end{array}\right]\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{\Omega} _1 = \boldsymbol{\Omega} _{[:k, :]}, \boldsymbol{\Omega} _2 = \boldsymbol{\Omega} _{[k+1:, :]}\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{P} _Y = \boldsymbol{Q} \boldsymbol{Q} ^{\top}\)</span></p></li>
+</ul>
+<p>Error after projection</p>
+<div class="math notranslate nohighlight">
+\[
+\left\| \boldsymbol{A} - \boldsymbol{P}_Y \boldsymbol{A} \right\| ^2 \le \left\| \boldsymbol{\Sigma} _2 \right\| ^2 + \left\| \boldsymbol{\Sigma} _2 \boldsymbol{\Omega}_2 \boldsymbol{\Omega}_1 ^{\dagger}  \right\| ^2
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\left\| \cdot \right\|\)</span> is <span class="math notranslate nohighlight">\(\left\| \cdot \right\| _2\)</span> or <span class="math notranslate nohighlight">\(\left\| \cdot \right\| _F\)</span>.</p>
+<p>Implication:
+Suppose <span class="math notranslate nohighlight">\(\boldsymbol{A} _v\)</span> is indeed rank <span class="math notranslate nohighlight">\(k\)</span>, then <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma} _2 = 0\)</span>, as long as … Error = 0.</p>
+<p>In <span class="math notranslate nohighlight">\(\boldsymbol{A} \boldsymbol{\Omega}\)</span> We are forming random linear combinations of columns of <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span>.</p>
+<p>Long proof!</p>
+<dl class="simple myst">
+<dt>Lemma 2</dt><dd><p>Let <span class="math notranslate nohighlight">\(\boldsymbol{G}\)</span> of size <span class="math notranslate nohighlight">\(k \times (k + p)\)</span> be a standard Gaussian random matrix, with <span class="math notranslate nohighlight">\(p \ge 2\)</span>. Then <span class="math notranslate nohighlight">\(\mathbb{E} [\left\| \boldsymbol{G} ^ \dagger  \right\|_F^2 ]^{1/2} = \sqrt{\frac{k}{p-1} }\)</span>.</p>
+</dd>
+<dt>Lemma 3</dt><dd><p>Let <span class="math notranslate nohighlight">\(\boldsymbol{Z}\)</span> be <span class="math notranslate nohighlight">\(n \times n\)</span> a random matrix with independent standard normal entires, <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{B}\)</span> be constant matrices of appropriate sizes, then since Frobenius norm is consistent</p>
+</dd>
+</dl>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\mathbb{E} \left[ \left\| \boldsymbol{A} \boldsymbol{Z} \boldsymbol{B}  \right\| _F^2  \right] &amp;\le \left\| \boldsymbol{A} \right\| _F^2\mathbb{E} \left[  \left\|\boldsymbol{Z} \right\| _F^2 \right]\left\| \boldsymbol{B}  \right\| _F^2  \\
+&amp;\le \left\| \boldsymbol{A} \right\| _F^2\mathbb{E} \left[ \operatorname{tr}\left( \boldsymbol{Z} ^{\top} \boldsymbol{Z} \right) \right]\left\| \boldsymbol{B}  \right\| _F^2 \\
+&amp;\le \left\| \boldsymbol{A} \right\| _F^2\mathbb{E} \left[ \operatorname{tr}\left( \boldsymbol{Z} ^{\top} \boldsymbol{Z} \right) \right]\left\| \boldsymbol{B}  \right\| _F^2
+\end{aligned}\end{split}\]</div>
+<dl class="simple myst">
+<dt>Theorem</dt><dd><p>By Lemma 1 and Lemma 2</p>
+</dd>
+</dl>
+<div class="math notranslate nohighlight">
+\[
+\mathbb{E} [\left\| (\boldsymbol{I} - \boldsymbol{P}_Y ) \boldsymbol{A} \right\|_F ]  \le \left( 1 + \frac{k}{p-1}  \right)^{1/2} \left( \sum_{j &gt; k} \sigma^2 _j  \right)^{1/2}
+\]</div>
+<div class="dropdown seealso admonition">
+<p class="admonition-title"> <em>Proof</em></p>
+<p>Since <span class="math notranslate nohighlight">\(\boldsymbol{V} ^*\)</span> is orthogonal, <span class="math notranslate nohighlight">\(\boldsymbol{V} ^* \boldsymbol{\Omega}\)</span> has independent <span class="math notranslate nohighlight">\(\mathcal{N} (0, 1)\)</span> entires. Hence, <span class="math notranslate nohighlight">\(\boldsymbol{\Omega}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{\Omega}\)</span> are independent,</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\mathbb{E} \left[ \left\| \boldsymbol{A} \boldsymbol{Z} \boldsymbol{B}  \right\| _F^2  \right] &amp;\le \left\| \boldsymbol{A} \right\| _F^2\mathbb{E} \left[  \left\|\boldsymbol{Z} \right\| _F^2 \right]\left\| \boldsymbol{B}  \right\| _F^2  \\
+&amp;\le \left\| \boldsymbol{A} \right\| _F^2\mathbb{E} \left[ \operatorname{tr}\left( \boldsymbol{Z} ^{\top} \boldsymbol{Z} \right) \right]\left\| \boldsymbol{B}  \right\| _F^2 \\
+&amp;\le \left\| \boldsymbol{A} \right\| _F^2\mathbb{E} \left[ \operatorname{tr}\left( \boldsymbol{Z} ^{\top} \boldsymbol{Z} \right) \right]\left\| \boldsymbol{B}  \right\| _F^2
+\end{aligned}\end{split}\]</div>
+</div>
+<p>Conclusion: not bad as first <span class="math notranslate nohighlight">\(k\)</span> approximation.</p>
+</section>
+<section id="interpolative-decomposition">
+<h3>Interpolative Decomposition<a class="headerlink" href="#interpolative-decomposition" title="Permalink to this headline">¶</a></h3>
+<p>Less accurate.</p>
+<p>Fourier matrix + sparse vector = dense vector with a spike.</p>
+</section>
+<section id="low-rank-approximation">
+<h3>Low-rank Approximation<a class="headerlink" href="#low-rank-approximation" title="Permalink to this headline">¶</a></h3>
+<p>Problem:</p>
+<div class="math notranslate nohighlight">
+\[
+\text { minimize over } \widehat{A} \quad\|A-\widehat{A}\|_{\mathrm{F}} \quad \text { subject to } \quad \operatorname{rank}(\widehat{A}) \leq r
+\]</div>
+<p>Eckart–Young–Mirsky theorem: We claim that the best rank <span class="math notranslate nohighlight">\(r\)</span> approximation to <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> in the Frobenius norm, denoted by <span class="math notranslate nohighlight">\(A_{r}=\sum_{i=1}^{k} \sigma_{i} u_{i} v_{i}^{\top}\)</span></p>
 </section>
 </section>
 </section>
