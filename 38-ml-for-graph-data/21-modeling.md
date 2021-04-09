@@ -1,6 +1,8 @@
-# Random Graph Models
+# Modeling
 
-## Background
+## Random Graph Models
+
+### Background
 
 By a model for a graph we mean a collection
 
@@ -13,7 +15,7 @@ where
 - $\mathbb{P}_\theta$ is a probability distribution on $\mathcal{G}$
 - $\theta$ is a vector of parameters ranging over values in $\Theta$.
 
-### Estimate $\eta(G)$
+#### Estimate $\eta(G)$
 
 In traditional statistical sampling theory, there are two main approaches to constructing estimates of population parameters $\eta(G)$ from a sample $G^*$: design-based and model-based.
 - design-based: inference is based entirely on the random mechanism by which
@@ -22,14 +24,14 @@ a subset of elements were selected from the population to create the sample. We 
 
 In more recent decades, the distinction between these two approaches has become more blurred.
 
-### Assess Significance of $\eta(G^{obs})$
+#### Assess Significance of $\eta(G^{obs})$
 
 Suppose that we have a graph $G^{obs}$ derived from observations of some sort (i.e., **not** necessarily through a formal network sampling mechanism). We often interested in whether $\eta(G^{obs})$ is 'significant', in the sense that unusual or unexpected.
 
 To measure this, we need a reference, like a 'null hypothesis' in hypothesis testing. A RGM can be used to create a reference distribution which, under the accompanying assumption of uniform likelihood of elements in $\mathcal{G}$, takes the form,
 
 $$
-\mathbb{P}_{\eta, \mathcal{G}} (t)  = \frac{\# \left\{ G \in \mathcal{G}: \eta(G) \le t \right\}}{\left\vert \mathcal{G} \right\vert}
+\mathbb{P}_{\eta, \mathcal{G}} (t)  = \frac{\## \left\{ G \in \mathcal{G}: \eta(G) \le t \right\}}{\left\vert \mathcal{G} \right\vert}
 $$
 
 If $\eta(G^{obs})$ is found to be sufficiently unlikely under this distribution, this is taken as evidence **against** the hypothesis that Gobs is a uniform draw from $G$.
@@ -38,9 +40,9 @@ Some issues:
 - How to choose $\mathcal{G}$?
 - Usually it is not possible to enumerate all elements in $\mathcal{G}$, hence, cannot compute $\mathbb{P}_{\eta, \mathcal{G}} (t)$ exactly $\rightarrow$ sol: approximation.
 
-## Classical Random Graph Models
+### Classical Random Graph Models
 
-### Erdos and Renyi
+#### Erdos and Renyi
 
 Equal probability on all graphs of a given order and size:
 
@@ -50,7 +52,7 @@ It is easy to find $\left\vert \mathcal{G} (N_v, N_e) \right\vert = \binom{\bino
 
 $$\mathbb{P} (G) = \binom{\binom{N_v}{2}}{N_e} ^{-1}$$
 
-### Gilbert
+#### Gilbert
 
 A collection $\mathcal{G} (N_v, p)$ is defined to consist of all graphs $G$ of order $N_v$ that may be obtained by assigning an edge **independently** to each pair of distinct vertices with probability $p$.
 
@@ -74,7 +76,7 @@ Thus, we observe
 - **low clustering**: recall that assortativity is the probability that two neighbors of a randomly chosen vertex are linked is just $p$, which tend to zero as $N_v$ grows.
 - **small-world property**: the diameter of the graph very like $\mathcal{O} (\log N_v)$ w.h.p as $N_v \rightarrow \infty$.
 
-## Generalized Random Graph Models
+### Generalized Random Graph Models
 
 Equal probability on all graphs of a given order and some particular characteristic(s) $\eta^*$:
 
@@ -89,9 +91,9 @@ Some results
   - if $\alpha \in (2,3)$, the diameter is $\mathcal{O} (\log N_v)$ and average distance $\mathcal{O} (\log \log N_v)$ w.h.p. under mild conditions [SAND 87]
   - if $\alpha \in (\frac{7}{3}, 3 )$, assortativity is $\mathcal{O} (N_v ^{- \beta})$ where $\beta = \frac{3\alpha - 7}{\alpha - 1}$, i.e. the rate is slower than $N_v ^{-1}$ [SAND 296.IV.B].
 
-## Simulation
+### Simulation
 
-### Classical RGM
+#### Classical RGM
 
 For some models it is actually possible to produce samples in linear time; for others, it appears that Markov chain Monte Carlo (MCMC) methods are the only realistic alternative.
 
@@ -99,21 +101,20 @@ For some models it is actually possible to produce samples in linear time; for o
 
   A trivial solution is to store $\binom{N_v}{2} = \mathcal{O} (N_v^2)$ independent Bernoulli random variables, each with success probability $p$. When $p$ is small, majority of these variables will be $0$, hence $\mathcal{O} (N_v^2)$ seems a waste. Can we do better? Hint: for a given vertex $i$, consider a sequence of its $N_v-1$ neighbors $j$, such that $a_{ij} \sim \operatorname{Ber}(p)$, what's the expected number of 0's between two 1's?
 
-
 - $\mathcal{G} (N_v, N_e)$
 
   It is more cumbersome to use the skipping trick above since edges are correlated: $\sum_{i\ne j=1}^n a_{ij} = N_e$. We simply draw $N_e$ number of distinct pairs from $(i, j) \in V^{(2)}, i\ne j$, which is a variant of coupon collector's problem with stopping criteria of reaching $N_e \le \binom{N_v}{2}$. This running time is $\mathcal{O} (N_v + N_e)$ in expectation.
 
 See [Batagelj and Brandes](http://www.cosinproject.eu/publications/batagelj-pre71-2005.pdf).
 
-### Generalized RGM
+#### Generalized RGM
 
-Sampling GRGM is more challenging since there are more constraints. We focus our discussion upon the case that the degree sequence $D = \left\{d_{(1)}, \ldots, d_{\left(N_{v}\right)}\right\}$ is be fixed.
+Sampling GRGM is more challenging since there are more constraints. We focus our discussion upon the case that the degree sequence $D = \left\{d_{(1)}, \ldots, d_{\left(N_{v}\right)}\right\}$ is be fixed. We introduce two algorithms with input: $V, D$ and output: $E$.
 
+---
+**Matching Algorithm**
 
-#### Matching Algorithm
-
-Input: $V, D$, output: $E$
+---
 
 - create a list containing $d_{(i)}$ copies of $v_{(1)}$
 
@@ -124,18 +125,23 @@ Input: $V, D$, output: $E$
 - randomly choose pairs of elements from $L$ into $E$, removing each pair from $L$ once chosen.
 - return $E$
 
-Obviously, there can be are multi-edges or loops in $E$, hence the corresponding graph is a multi-graph. If that's the case, just discard that graph and then repeat. Under appropriate conditions on the degree sequence, it can be argued that this algorithm will generate graphs from $\mathcal{G}$ with equal probability. See [SAND 282].
+---
 
+Obviously, there can be are multi-edges or loops in $E$, hence the corresponding graph is a multi-graph. If that's the case, just **discard that graph** and then repeat. Under appropriate conditions on the degree sequence, it can be argued that this algorithm will generate graphs from $\mathcal{G}$ with equal probability. See [SAND 282].
 
-However, when the degree distribution is skewed, e.g. $d_{(1)}$ is large, it is quite likely to obtain repeated pairs $(v_{(1)}, v_{(j)})$ or $(v_{(1)}, v_{(1)})$. A solution is to monitor the pairs of vertices being selected and, if a candidate pair matches one in $E$, it is rejected and another candidate pair is selected instead. This modification will introduce **bias** into the sampling, and the graphs $G$ thus generated will no longer correspond to a strictly uniform sampling.
+However, when the degree distribution is skewed, e.g. $d_{(1)}$ is large, it is quite likely to obtain repeated pairs $(v_{(1)}, v_{(j)})$ or $(v_{(1)}, v_{(1)})$. A solution is to monitor the pairs of vertices being selected and, if a candidate pair matches one in $E$, it is **rejected** and another candidate pair is selected instead. This modification will introduce **bias** into the sampling, and the graphs $G$ thus generated will no longer correspond to a strictly uniform sampling.
 
 Alternatively, we can instead sample so as to avoid repeating existing matches in the first place. See [SAND 81] that developed for uniformly sampling $r \times c$ matrices $\boldsymbol{M}$ of non-negative integers with fixed marginal totals.
 
-#### Switching Algorithm
+---
+**Switching Algorithm** (Aka rewiring algorithms)
 
-Aka rewiring algorithms.
+---
 
-Switching algorithms begin with a graph that has the prescribed degree sequence, and then modify the connectivity of that graph through a succession of simple changes named 'switching': a pari of edges in the current graph $e_1 = (u_1, v_1)$ and $e_2 = (u_2, v_2)$ are randomly selected and replaced by the new edges $\left\{ u_1, v_2 \right\}$ and $\left\{ u_2, v_1 \right\}$. If either of the latter already exists, then the proposed switch is abandoned.
+- begin with a graph that has the prescribed degree sequence
+- modify the connectivity of that graph through a succession of simple changes named 'switching': a pair of edges in the current graph $e_1 = (u_1, v_1)$ and $e_2 = (u_2, v_2)$ are randomly selected and replaced by the new edges $\left\{ u_1, v_2 \right\}$ and $\left\{ u_2, v_1 \right\}$. If either of the latter already exists, then the proposed switch is abandoned.
+
+---
 
 It falls within the realm of MCMC methods. In practice, it is typical to let the algorithm run for some time before beginning to collect sample graphs $G$. There is currently no  theory to indicate just how long of a preliminary period is necessary. Milo et al. [SAND 279] cite empirical evidence to suggest a factor of $100 N_e$ can be more than sufficient.
 
@@ -143,9 +149,9 @@ To ensure that the algorithm asymptotically yields strictly uniform sampling fro
 
 MCMC can be used to generate GRG uniformly from other types of collections $\mathcal{G}$ with additional characteristics beyond the degree sequence. However, that development of the corresponding theory, verifying the assumptions underlying Markov chain **convergence**, currently appears to lag far behind the pace of algorithm development.
 
-## Application
+### Application
 
-### Hidden Population Size
+#### Hidden Population Size
 
 In previous section we derived a design-based [estimator](sampling-hidden-pop-size) of hidden population size. Here, we describe a model-based estimator using random graphs.
 
@@ -173,7 +179,7 @@ $$
 
 Note that the estimates of $p_0$ and $N_v$ are the same as those in the design-based method. There is another method using maximum conditional likelihood, see [SAND 154].
 
-### Assessing Significance
+#### Assessing Significance
 
 As described, given $\eta(G^{obs})$, we want to find how in some sense unusual or unexpected it is. An important issue is determining which $\mathcal{G}$ to use as reference. For instance, to assess the significance of the number of distinct triangles in $G^{obs}$, a reasonable reference $\mathcal{G}$ should have the same number of edges as that of $G^{obs}$. In practice,
 - it is common to control for the degree sequence observed in $G^{obs}$.
@@ -209,7 +215,7 @@ It's also worth observing that the right distribution is bimodal.
 
 Meanwhile, for the $\mathcal{G} (N_v, N_e, d)$ case, due to conditioning on degree, coupled with the invariance of $\operatorname{clus} _T$ under isomorphism, the effective size of the sample space becomes quite small. In the 10,000 trials run, there were only 25 different values of $\operatorname{clus} _T$, and 17 of them takes 99% of the mass.
 
-### Detecting Network Motifs
+#### Detecting Network Motifs
 
 Definition (motif)
 : Motif defined by [SAND 218, 278] are small subgraphs occurring **far more frequently** in a given network than in comparable random graphs.
@@ -239,31 +245,6 @@ $$
 where $\pi_H$ is the inclusion probability for $H$. Natural (although biased) estimates $\hat{F}_i$ of the corresponding relative frequencies $F_i$ are obtained through direct substitution of $\hat{N}_i$ to the previous equation.
 
 For other sampling method, see SAND pg.168.
-
-
-
-.
-
-
-.
-
-
-.
-
-
-.
-
-
-.
-
-
-.
-
-
-.
-
-
-.
 
 ## Small-World Models
 
@@ -316,7 +297,7 @@ Many networks grow or otherwise evolve in time, e.g. WWW and citation networks. 
   - observe: in WWW, often web pages to which many other pages point will tend to accumulate increasingly greater numbers of links as time goes on.
 - want to mimic: broad degree distributions, as observed in many large, real-world networks
 
-We introduce Barabasi-Albert Model, which view degree as 'richness'.
+We introduce **Barabasi-Albert Model**, which view degree as 'richness'.
 
 - Start with an initial graph $G{(0)}$ of $N(0)_v$ vertices and $N^{(0)}_e$ edges.
 - At stage $t = 1,2, \ldots$, the current graph $G^{(t−1)}$ is modified to create a new graph $G^{t}$ by
@@ -325,7 +306,7 @@ We introduce Barabasi-Albert Model, which view degree as 'richness'.
 
 We would expect that a number of vertices of comparatively high degree ("rich") should gradually emerge as $t$ increases.
 
-How to select $m$ vertices exactly? We introduce the linearized-chord diagram (LCD) model. For simulation of LCS in linear time, see [SAND 23].
+How to select $m$ vertices exactly? We introduce the **linearized-chord diagram** (LCD) model. For simulation of LCD in linear time, see [SAND 23].
 
 For the case $m=1$,
 - begin with $G^{(1)}$ consisting of a single vertex with a loop
@@ -363,7 +344,7 @@ For the case $m > 1$, we repeat the above process for $m$ steps, after which we 
 There many extensions and variations, such as
 - clustering, diameter, etc
 - consider other ‘fitness’ or inherent quality of vertices as 'richness'?
-- allow $m$ to vary, or dynamic addition and removal of eges?
+- allow $m$ to vary, or dynamic addition and removal of edges?
 - add offset $d^*$ to $d_v + d^*$, or use powers $d_v^\gamma$.
 
 The main concern include
@@ -376,7 +357,32 @@ See [SAND 6, 296, 41].
 
 Copying model is distinct from preferential attachment but can also produce power-law degree distributions.
 
-Beginning with an initial 
+```{margin}
+When $p=1$, each new vertex $v$ is connected to $G ^{(t-1)}$ by fully copying the edges of the randomly chosen vertex $u$, hence it is named 'copying' model.
+```
+
+- beginning with an initial graph $G^{(0)}$,
+- for $t = 1, \ldots,$
+  - choose a vertex $u$ from graph $g^{(t)}$
+  - add a new vertex $v$, join it with each of the neighbors of $u$ independently w.p. $p$
+
+The degree distribution $f_d{G ^{(t)} }$ will tend to a power-law form $d^{-\alpha}$ w.h.p,, where $\alpha$ satisfying
+
+$$
+p(\alpha - 1) = 1- p^{\alpha - 1}
+$$
+
+This equation will have two solutions $\alpha$ for any given $p$, but only one will be stable.
+- For $p > 0.5671 \ldots$, the stable solution is $\alpha = 1$
+- For $p=1/2$, it is $\alpha = 2$
+- For $p=1$, no power-law behavior. To achieve power-law, it is sufficient to allow partial duplication to occur some fraction $q \in (0,1)$ of the times.∏
+
+:::{figure} graph-copying
+<img src="../imgs/graph-copying.png" width = "30%" alt=""/>
+
+Power-law exponent $\alpha$ as a function of $p$ in copying model. [Kolaczyk 2009]
+:::
+
 
 
 .
@@ -401,3 +407,5 @@ Beginning with an initial
 
 
 .
+
+## Exponential Random Graph Models
