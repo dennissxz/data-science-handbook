@@ -533,7 +533,11 @@ Fourier matrix + sparse vector = dense vector with a spike.
 Problem:
 
 $$
-\text { minimize over } \widehat{A} \quad\|A-\widehat{A}\|_{\mathrm{F}} \quad \text { subject to } \quad \operatorname{rank}(\widehat{A}) \leq r
+\text { minimize over } \widehat{A} \quad\|A-\widehat{A}\|_{F} \quad \text { s.t. } \quad \operatorname{rank}(\widehat{A}) \leq r
 $$
 
-Eckart–Young–Mirsky theorem: We claim that the best rank $r$ approximation to $\boldsymbol{A}$ in the Frobenius norm, denoted by $A_{r}=\sum_{i=1}^{k} \sigma_{i} u_{i} v_{i}^{\top}$
+Eckart–Young–Mirsky theorem: We claim that the best rank $r$ approximation to $\boldsymbol{A}$ in the Frobenius norm, denoted by $A_{r}=\sum_{i=1}^{k} \sigma_{i} u_{i} v_{i}^{\top}$. The minimum equals
+
+$$
+\left\|A-A_{r}\right\|_{F}^{2}=\left\|\sum_{i=r+1}^{n} \sigma_{i} u_{i} v_{i}^{\top}\right\|_{F}^{2}=\sum_{i=r+1}^{n} \sigma_{i}^{2}
+$$
