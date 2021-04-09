@@ -80,3 +80,6 @@ In general, after imputation
 ## Normality
 
 Some model or methods assume normality of data. If some variables are not from normal distribution, we can try to transform them to normal, e.g. Box-Cox transformation.
+
+ref
+- preprocessing [link](https://mp.weixin.qq.com/s/SCmCY3joCmn6FJcKYwtlwg?utm_medium=email&_hsmi=120495215&_hsenc=p2ANqtz-8IbhySDq8KZwn2MNO0fqXLg0vL7SYTAIiAOHDsWSV5An-vlSjm7VtKDbhA7A-9nsS-IfCqqcJ3Wvs5DNLzgl4I8XCt5A&utm_content=120495215&utm_source=hs_email)
