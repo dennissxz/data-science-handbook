@@ -1,7 +1,84 @@
+# Python
 
-# Data Structures
+In this section we introduce **intermediate** python programming and some packages e.g. `numpy`, `pandas`.
 
-## Mutable vs Immutable
+- references
+  - https://github.com/yasoob/intermediatePython
+  - https://www.liaoxuefeng.com/wiki/1016959663602400 (Chinese)
+  - https://wiki.python.org/moin/Powerful%20Python%20One-Liners
+
+
+## Programmer Tools
+
+### Debugging
+- methods
+  - `pdb.set_trace()` to pause running. now use `breakpoint()` after 3.7
+  - `assert x == 2, 'msg'`
+  - `logging` and output specific msg type
+- see [details](https://www.liaoxuefeng.com/wiki/1016959663602400/1017602696742912)
+
+
+### Object Introspection
+
+- `dir()`
+  - return a list of attributes and methods belonging to an object
+- `type()`
+- `id()`
+- `inspect.getmembers()`
+
+
+### Decorators and Decorator Classes
+
+- see [details](https://github.com/yasoob/intermediatePython/blob/master/decorators.rst)
+  - note the methods `__init__` and `__call__`
+- `@lru_cache(maxsize=32)` to cache the values of function calls
+  - not execute the function if the function has been called with the same args before
+  - returns value in cash
+  - saves time and effort
+
+
+## Syntax
+
+### exceptions
+  - `try, except, else, finally`
+  - `try, except E1 as e, except E2 as e` to catch multiple error one by one
+  - `try, except Exception as e` to catch multiple errors at once
+
+
+### for/else
+- `else` clause is executes after the loop completes normally (without `break`)
+- e.g. loop to search, if found then `break`, if not found then go to `else`
+
+
+### tenery operator
+- `x = 1 if a > 1 else a`
+- `name = 'a' or 'b'` return `a`.
+- dynamic default name
+```python
+def my_function(real_name, optional_display_name=None):
+    optional_display_name = optional_display_name or real_name
+```
+
+### `*args` and `**kwargs`
+- when define `def fun(*arg, **kwarg)`
+  - `args` passes an unspecified number of non-keyworded arguments in a **list**
+  - `kwargs` passes an unspecified number of keyworded arguments in a **dictionary**
+  - e.g. pass plot arguments to `plt.plot()` in self-defined plot functions.
+- when call `fun(*arg, **kwarg)`
+  - `args` can be a pre-defined tuple
+  - `kwargs` can be a pre-defined dictionary, with arg-value being the key-value pair
+  - `*` and `**` is used to unpack
+
+### `open()` and context managers
+- see
+  - https://github.com/yasoob/intermediatePython/blob/master/open_function.rst
+  - https://github.com/yasoob/intermediatePython/blob/master/context_managers.rst
+
+
+
+## Data Structures
+
+### Mutable vs Immutable
 
 - identity, type, and value
   - an object’s identity never changes once it has been created; you may think of it as the object’s address in memory.
@@ -17,24 +94,25 @@
 
 
 - difference between mutable and immutable objects arises when you assign a variable to another variable
+
   ```python
-  a = 1 # int is immutable
+  a = 1 ## int is immutable
   b = a
-  print(b is a) # True
+  print(b is a) ## True
   idb_before = id(b)
   b = b + 1
-  id(b) == idb_before # False, a new object is created
-  print(a is b) # False
-  print(a) # 1
+  id(b) == idb_before ## False, a new object is created
+  print(a is b) ## False
+  print(a) ## 1
 
-  a = [1] # list is mutable
+  a = [1] ## list is mutable
   b = a
-  print(b is a) # True
+  print(b is a) ## True
   idb_before = id(b)
   b.append([2])
-  id(b) == idb_before # True, only the value is changed
-  print(a is b) # True
-  print(a) # [1,2], changed
+  id(b) == idb_before ## True, only the value is changed
+  print(a is b) ## True
+  print(a) ## [1,2], changed
   ```
 
 - there is also difference if we set the default argument to be a mutable object in a function
@@ -43,10 +121,10 @@
       target.append(num)
       return target
 
-  add_to(1) # [1]
-  add_to(2) # [1, 2]
-  add_to(3, target=[4]) # [4, 3]
-  add_to(5) # [1, 2, 5]
+  add_to(1) ## [1]
+  add_to(2) ## [1, 2]
+  add_to(3, target=[4]) ## [4, 3]
+  add_to(5) ## [1, 2, 5]
   ```
   - in Python, the default arguments are evaluated (and their identities are created in the memory) once the function is defined, not each time the function is called
   - `add_to(1)` used the default value of target `[]` which is created in the memory when the function is defined, and changed it to `[1]`
@@ -71,8 +149,7 @@
   - https://towardsdatascience.com/https-towardsdatascience-com-python-basics-mutable-vs-immutable-objects-829a0cb1530a
 
 
-## Classes and Magic Methods
-
+### Classes and Magic Methods
 
 - class variables vs instance variables
   - instance variables are unique to every object
@@ -92,16 +169,16 @@
 
     foo = SuperClass('foo')
     bar = SuperClass('bar')
-    foo.name # 'foo'
-    bar.name # 'bar'
+    foo.name ## 'foo'
+    bar.name ## 'bar'
 
     foo.pi = 10
-    print(foo.pi) # 10
-    print(bar.pi) # 3.14
+    print(foo.pi) ## 10
+    print(bar.pi) ## 3.14
 
     foo.add_superpower('fly')
-    bar.superpowers # ['fly']
-    foo.superpowers # ['fly']
+    bar.superpowers ## ['fly']
+    foo.superpowers ## ['fly']
     ```
 
 - magic methods
@@ -123,7 +200,7 @@
       ```
     - ref: https://stackoverflow.com/questions/472000/usage-of-slots
 
-## Iterables, Iterators, Generators and Coroutines
+### Iterables, Iterators, Generators and Coroutines
 
 - An `iteratble` is any object in Python which has an `__iter__` or a `__getitem__` method defined, which returns an iterator or can take indexes
 - An `iterator` is any object in Python which has a `__next__` method defined
@@ -132,7 +209,7 @@
   ```python
   my_string = "Yasoob"
   my_iter = iter(my_string)
-  print(next(my_iter)) # 'Y'
+  print(next(my_iter)) ## 'Y'
   ```
 
 - An `generator` is an `iterator`, but you can only iterate over it once. They do not store all he values in memory, they generate the values on the fly.
@@ -143,9 +220,9 @@
       for i in range(3):
           yield i
   gen = generator_function()
-  print(next(gen)) # 0
+  print(next(gen)) ## 0
   for i in gen:
-      print(i) # 1,2
+      print(i) ## 1,2
   ```
 
 - coroutines are similar to generators but it takes value from input
@@ -156,7 +233,7 @@
   - see https://github.com/yasoob/intermediatePython/blob/master/coroutines.rst
 
 
-## `collections` module
+### `collections` module
 - the `collections` python module contains a number of useful container data types
 
 - `defaultdict`
@@ -167,10 +244,10 @@
     from collections import defaultdict
     def default_value():
         return "Not Present"
-    d = defaultdict(def_value) # or defaultdict(lambda: "Not Present")
+    d = defaultdict(def_value) ## or defaultdict(lambda: "Not Present")
     d["a"] = 1
-    print(d["a"]) # 1
-    print(d["b"]) # "Not Present"
+    print(d["a"]) ## 1
+    print(d["b"]) ## "Not Present"
     ```
 
 - `OrderedDict`
@@ -206,12 +283,12 @@
   - A named tuple has two required argument: `tuple name` and the `field_names`. e.g.
     ```python
       from collections import namedtuple
-      Animal = namedtuple('Animal', 'name age type') # tuple name and field names
+      Animal = namedtuple('Animal', 'name age type') ## tuple name and field names
       perry = Animal(name='perry', age=31, type='cat')
-      print(perry[0]) # 'perry', index by integer like a regular tuple
-      print(perry.name) # 'perry', index by key like a dictionary
-      print(perry._asdict()) # convert to an OrderedDict
-      perry.age = 42 # error, since it is immutable
+      print(perry[0]) ## 'perry', index by integer like a regular tuple
+      print(perry.name) ## 'perry', index by key like a dictionary
+      print(perry._asdict()) ## convert to an OrderedDict
+      perry.age = 42 ## error, since it is immutable
     ```
 
 - `Enum`
@@ -221,16 +298,100 @@
     class Weekday(Enum):
         Mon = 1
         Tue = 2
-        Mon = 4 # error, duplicate keys are not allowed
-        Monday = 1 # alias keys are allowed. can use @unique to disable them
+        Mon = 4 ## error, duplicate keys are not allowed
+        Monday = 1 ## alias keys are allowed. can use @unique to disable them
 
-    Weekday.Mon = 1 # error, immutable
-    Weekday.Monday # output: Weekday.Mon
+    Weekday.Mon = 1 ## error, immutable
+    Weekday.Monday ## output: Weekday.Mon
     ```
   - To get enumeration members, use `Weekday(1), Weekday['Mon']` or `Weekday.Mon`
   - To get member names and values, use `member.name` and `member.value`
   - A one-liner to define an `Enum` class (indexing from 1 by default)
     ```python
     Weekday = Enum('Day', ('Mon', 'Tue', 'Wed', 'Th', 'Fri', 'Sat', 'Sun'))
-    print(Weekday.Mon.value) # 1
+    print(Weekday.Mon.value) ## 1
     ```
+
+
+
+## Functional Programming
+
+### `enumerate()`
+- can take an optional argument to specify the starting index `enumerate(my_list, 1)`
+- can also be used to create a list of tuples `list(enumerate(my_list, 1))`
+
+
+### `lambda`
+
+- used to define a anonymous function
+- e.g. sort a list of tuples by the first element in that tuple
+  ```python
+  a = [(1, 2), (4, 1), (9, 10)]
+  a.sort(key=lambda x: x[1])
+  ```
+
+
+### `sorted()`
+
+- the `list.sort()` method is only defined for lists.
+- in contrast, the `sorted()` function accepts any iterable.
+- e.g. sort words in a sentence in alphabet order.
+  ```python
+  sorted("This is a test string from Andrew".split(), key=str.lower)
+  ```
+- the key-function can be `itemgetter()` or `attrgetter()` from the `operator` module.
+- see https://docs.python.org/3/howto/sorting.html
+
+
+### `map(), filter()` and `reduce()`
+
+- `map(fun, iterable)` may be faster than list comprehension if `fun` is pre-defined (not through `lambda`)
+- `filter(fun, iterable)` is used for masking, where `fun` should return `True/False`
+- `reduce(fun, iterable, initilizer=None)` applies a particular function passed in its argument to all of the list elements mentioned in the sequence passed along.
+
+  ```python
+  def reduce(function, iterable, initializer=None):  roughly equivalent
+      it = iter(iterable)
+      if initializer is None:
+          value = next(it)
+      else:
+          value = initializer
+      for element in it:
+          value = function(value, element)
+      return value
+
+  from functools import reduce
+  reduce(lambda a, b: a + b, l)  sum(l)
+  reduce(lambda a, b : a if a > b else b, l)  max(l)
+  reduce(lambda z, x: z + [y + [x] for y in z], l, [[]])  all subsets of l
+  ```
+
+
+### Comprehensions
+
+- `list` comprehensions: `squared = [x**2 for x in range(10)]`
+- `set` comprehensions: `{x**2 for x in [1, 1, 2]}`
+- `dict` comprehensions: `{key: value for ... }`
+  - e.g. swap keys and values `{v: k for k, v in some_dict.items()}`
+- `generator` comprehensions
+  - don't allocate memory for the whole list but generate one item at a time, thus more memory efficient.
+  ```python
+  my_gen = (i for i in range(30) if i % 3 == 0)
+  for x in my_gen:
+    ...
+  ```
+
+## Numpy
+
+- `isin`
+- `repeat` vs `tile`
+- `concatenate`, `vstack` and `hstack`
+- `strides`
+- `empty`
+- `array` vs `asarray`
+
+
+## Pandas
+
+- Indexing
+- String Column Operation
