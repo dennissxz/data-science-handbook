@@ -361,6 +361,10 @@ Copying model is distinct from preferential attachment but can also produce powe
 When $p=1$, each new vertex $v$ is connected to $G ^{(t-1)}$ by fully copying the edges of the randomly chosen vertex $u$, hence it is named 'copying' model.
 ```
 
+#### Full Copying
+
+Chung, Lu, Dewey, and Galas [SAND 89]
+
 - beginning with an initial graph $G^{(0)}$,
 - for $t = 1, \ldots,$
   - choose a vertex $u$ from graph $g^{(t)}$
@@ -383,29 +387,57 @@ This equation will have two solutions $\alpha$ for any given $p$, but only one w
 Power-law exponent $\alpha$ as a function of $p$ in copying model. [Kolaczyk 2009]
 :::
 
+#### Partial Copying
+
+Kleinberg et al. [SAND 232] and by Kumar et al. [SAND 241]
+
+- for $i=1, \ldots, m$, w.p. $1-\beta$ copying the $i$-th neighbor of $u$, and w.p. $\beta$ to form edge between $v$ and some vertex uniformly selected from $G^{(t-1)}$. [SAND 232 241].
 
 
-.
+Intuition
 
+- In WWW, when an individual setting up a new web page,
+  - On the one hand, the web page is likely being set up in the context of some established topic(s), and thus will probably include a number of established links in that topic.
+  - On the other hand, an individual also brings their own perspective to the topic, and will be expected to generate some previously unseen links as well
+- In protein interaction networks, structure of genes associated with the proteins as typically evolving through duplication, as above, but periodically arising instead through mutation.
 
-.
+Properties
 
+- The degree distribution $\left\{ f_d(G ^{(t)} ) \right\}$ also tends to a power law. For each $d >0$, as $t \rightarrow \infty$,
 
-.
+  $$
+  f_{d} \rightarrow f_{0} \prod_{j=1}^{d}  \frac{1+\beta /(j(1-\beta))}{1+2 /(j(1-\beta))}
+  $$
 
+  which behave like $d ^{-\alpha}$ for $\alpha = \frac{2-\beta}{1-\beta}$.
+- generates many more dense bipartite subgraphs than are found in comparable classical random graphs, which is encountered in real web graphs.
 
-.
+### Fitting
 
+We need to observe how the graph change over time, i.e. a sequence of 'snap-shots' of the graph. But often we only have the final shot. In this situation, we can still do fitting. See [SAND 407] which makes clever usage of their recursive nature to get around this lack of multiple snap-shots.
 
-.
-
-
-.
-
-
-.
-
-
-.
 
 ## Exponential Random Graph Models
+
+.
+
+
+.
+
+
+.
+
+
+.
+
+
+.
+
+
+.
+
+
+.
+
+
+.
