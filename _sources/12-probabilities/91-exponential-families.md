@@ -48,6 +48,11 @@ where
     \end{aligned}
     $$
 
+    :::{figure,myclass} gaussian-marginal-conditional
+    <img src="../imgs/gaussian-marginal-conditional.png" width = "80%" alt=""/>
+
+    Marginal Gaussian and conditional Gaussian are also Gaussians [Shi 2021]
+    :::
 
 - Since $\boldsymbol{\Sigma} = \boldsymbol{U} \boldsymbol{\Lambda} \boldsymbol{U} ^\top$, then $\left\vert \boldsymbol{\Sigma}  \right\vert = \left\vert \boldsymbol{U} \boldsymbol{\Lambda} \boldsymbol{U} ^\top  \right\vert = \left\vert \boldsymbol{\Lambda}  \right\vert$
 - For every multivariate Gaussian $\boldsymbol{x} \sim N(\boldsymbol{\mu} , \boldsymbol{\Sigma} )$ with $\Sigma
@@ -70,11 +75,7 @@ where
   which is a product of PDFs of univariate Gaussians, since $\boldsymbol{\Lambda}$ is diagonal. Geometrically, $U$ rotate the axes of the distribution but keep the function value intact.
 
 
-:::{figure,myclass} gaussian-marginal-conditional [Shi 2021]
-<img src="../imgs/gaussian-marginal-conditional.png" width = "80%" alt=""/>
 
-Marginal Gaussian and conditional Gaussian are also Gaussians [Shi 2020]
-:::
 
 ### Visualization
 

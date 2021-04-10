@@ -954,6 +954,18 @@
   <a class="reference internal nav-link" href="#exponential-random-graph-models">
    Exponential Random Graph Models
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#bernoulli-random-graphs">
+     Bernoulli Random Graphs
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#markov-random-graphs">
+     Markov Random Graphs
+    </a>
+   </li>
+  </ul>
  </li>
 </ul>
 
@@ -1000,7 +1012,7 @@ a subset of elements were selected from the population to create the sample. We 
 <p>To measure this, we need a reference, like a ‘null hypothesis’ in hypothesis testing. A RGM can be used to create a reference distribution which, under the accompanying assumption of uniform likelihood of elements in <span class="math notranslate nohighlight">\(\mathcal{G}\)</span>, takes the form,</p>
 <div class="math notranslate nohighlight">
 \[
-\mathbb{P}_{\eta, \mathcal{G}} (t)  = \frac{\## \left\{ G \in \mathcal{G}: \eta(G) \le t \right\}}{\left\vert \mathcal{G} \right\vert}
+\mathbb{P}_{\eta, \mathcal{G}} (t)  = \frac{\# \left\{ G \in \mathcal{G}: \eta(G) \le t \right\}}{\left\vert \mathcal{G} \right\vert}
 \]</div>
 <p>If <span class="math notranslate nohighlight">\(\eta(G^{obs})\)</span> is found to be sufficiently unlikely under this distribution, this is taken as evidence <strong>against</strong> the hypothesis that Gobs is a uniform draw from <span class="math notranslate nohighlight">\(G\)</span>.</p>
 <p>Some issues:</p>
@@ -1359,7 +1371,7 @@ p(\alpha - 1) = 1- p^{\alpha - 1}
 <li><p>For <span class="math notranslate nohighlight">\(p=1\)</span>, no power-law behavior. To achieve power-law, it is sufficient to allow partial duplication to occur some fraction <span class="math notranslate nohighlight">\(q \in (0,1)\)</span> of the times.∏</p></li>
 </ul>
 <figure class="align-default" id="graph-copying">
-<a class="reference internal image-reference" href="imgs/graph-copying.png"><img alt="" src="imgs/graph-copying.png" style="width: 30%;" /></a>
+<a class="reference internal image-reference" href="../_images/graph-copying.png"><img alt="" src="../_images/graph-copying.png" style="width: 30%;" /></a>
 <figcaption>
 <p><span class="caption-number">Fig. 172 </span><span class="caption-text">Power-law exponent <span class="math notranslate nohighlight">\(\alpha\)</span> as a function of <span class="math notranslate nohighlight">\(p\)</span> in copying model. [Kolaczyk 2009]</span><a class="headerlink" href="#graph-copying" title="Permalink to this image">¶</a></p>
 </figcaption>
@@ -1401,6 +1413,59 @@ p(\alpha - 1) = 1- p^{\alpha - 1}
 </section>
 <section id="exponential-random-graph-models">
 <h2>Exponential Random Graph Models<a class="headerlink" href="#exponential-random-graph-models" title="Permalink to this headline">¶</a></h2>
+<p>ERGM are better than the above models, in construction, estimation, comparison etc.</p>
+<p>Consider a random graph <span class="math notranslate nohighlight">\(G = (V, E)\)</span>, let <span class="math notranslate nohighlight">\(\boldsymbol{Y}\)</span> be the random adjacency matrix. An ERGM is a model specified in exponential family form for the joint distribution of the elements <span class="math notranslate nohighlight">\(y_{ij}\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbb{P} _\theta (\boldsymbol{Y} = \boldsymbol{y} ) = \frac{1}{\kappa} \exp \left\{ \sum_H \theta_H \cdot g_H(\boldsymbol{y}) \right\}
+\]</div>
+<p>where</p>
+<ul class="simple">
+<li><p>each <span class="math notranslate nohighlight">\(H\)</span> is a <strong>configuration</strong>: a set of possible edges among a subset of the vertices in <span class="math notranslate nohighlight">\(G\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(g_{H}(\mathbf{y})=\prod_{y_{i j} \in H} y_{i j}\)</span>, which is <span class="math notranslate nohighlight">\(1\)</span> if the configuration <span class="math notranslate nohighlight">\(H\)</span> occurs in <span class="math notranslate nohighlight">\(\boldsymbol{y}\)</span>, or <span class="math notranslate nohighlight">\(0\)</span> otherwise.</p></li>
+<li><p>a non-zero value for <span class="math notranslate nohighlight">\(\theta_H\)</span> means that the <span class="math notranslate nohighlight">\(Y_{ij}\)</span> are independent in <span class="math notranslate nohighlight">\(H\)</span>, conditional upon the rest of the graph</p></li>
+<li><p><span class="math notranslate nohighlight">\(\kappa = \kappa(\theta)=\sum_{\mathbf{y}} \exp \left\{\sum_{H} \theta_{H} g_{H}(\mathbf{y})\right\}\)</span> is a normalization constant.</p></li>
+</ul>
+<p>Note that</p>
+<ul class="simple">
+<li><p>The summation implies a certain (in)dependency structure among <span class="math notranslate nohighlight">\(Y_{ij}\)</span>. For given index set <span class="math notranslate nohighlight">\(\mathcal{A}, \mathcal{B}, \mathcal{C}\)</span>, the random variables <span class="math notranslate nohighlight">\(\left\{ Y_{i, j} \right\}_{(i, j) \in \mathcal{A}}\)</span> and independent of <span class="math notranslate nohighlight">\(\left\{ Y_{i, j} \right\}_{(i, j) \in \mathcal{B}}\)</span>, given the values of <span class="math notranslate nohighlight">\(\left\{ Y_{i, j} \right\}_{(i, j) \in \mathcal{C}}\)</span>.</p></li>
+<li><p>Conversely, we can begin with a collection of (in)dependence relations among subsets of elements in <span class="math notranslate nohighlight">\(\boldsymbol{Y}\)</span> and try to develop a model. But certain conditions need to be satisfied, that are formalized in the Hammersley-Clifford theorem [SAND 36].</p></li>
+</ul>
+<section id="bernoulli-random-graphs">
+<h3>Bernoulli Random Graphs<a class="headerlink" href="#bernoulli-random-graphs" title="Permalink to this headline">¶</a></h3>
+<p>If we assume each edge <span class="math notranslate nohighlight">\(e(i, j)\)</span> is formed independently with probability <span class="math notranslate nohighlight">\(p_{ij}\)</span>, i.e. <span class="math notranslate nohighlight">\(y_{ij} \sim \operatorname{Ber}(p_{ij})\)</span> and <span class="math notranslate nohighlight">\(y_{i,j} \perp y_{i ^\prime , j ^\prime}\)</span> for any <span class="math notranslate nohighlight">\((i, j)\ne (i ^\prime , j ^\prime)\)</span>, then</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\theta_H = 0\)</span> for all configurations <span class="math notranslate nohighlight">\(H\)</span> involving three or more vertices.</p></li>
+<li><p><span class="math notranslate nohighlight">\(g_H(\boldsymbol{y}) = g_{ij}(\boldsymbol{y}) = y_{ij}\)</span>.</p></li>
+</ul>
+<p>The ERGM model reduces to</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbb{P}_{\theta}(\mathbf{Y}=\mathbf{y})=\left(\frac{1}{\kappa} \right) \exp \left\{\sum_{i, j} \theta_{i j} y_{i j}\right\}
+\]</div>
+<p>which is another way of writing <span class="math notranslate nohighlight">\(p_{ij} = \frac{\exp(\theta_{ij})}{1+\exp(\theta_{ij})}\)</span>.</p>
+<p>Obviously, this is <span class="math notranslate nohighlight">\(\mathcal{O} (N_v^2)\)</span> number of parameters. It is common to impose an assumption of homogeneity across vertex pairs, e.g. <span class="math notranslate nohighlight">\(\theta_{ij} \equiv \theta\)</span> for all <span class="math notranslate nohighlight">\((i, j)\)</span>. Hence</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbb{P}_{\theta}(\mathbf{Y}=\mathbf{y})=\left(\frac{1}{\kappa} \right) \exp \left\{\theta\sum_{i, j}  y_{i j}\right\}=\left(\frac{1}{\kappa} \right) \exp \left\{\theta N_e\right\}
+\]</div>
+<p>which is exactly the random graph model <span class="math notranslate nohighlight">\(\mathcal{G} (N_v, p)\)</span> with <span class="math notranslate nohighlight">\(p = \frac{\exp(\theta)}{\exp(\theta)}\)</span>.</p>
+<p>More generally, we can consider a partition of two sets <span class="math notranslate nohighlight">\((S_1, S_2)\)</span> of vertices, and impose homogeneity within and between sets, i.e. 3 kinds of <span class="math notranslate nohighlight">\(\theta\)</span> values. The model is then</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbb{P}_{\theta}(\mathbf{Y}=\mathbf{y})=\left(\frac{1}{\kappa} \right) \exp \left\{\theta_{11}L_{11}(\boldsymbol{y})+ \theta_{12}L_{12}(\boldsymbol{y})+ \theta_{22}L_{22}(\boldsymbol{y})\right\}
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(L_{11}(\boldsymbol{y})\)</span> and <span class="math notranslate nohighlight">\(L_{22}(\boldsymbol{y})\)</span> are the number within-set edges for <span class="math notranslate nohighlight">\(S_1\)</span> and <span class="math notranslate nohighlight">\(S_2\)</span> respectively, and <span class="math notranslate nohighlight">\(L_{12}(\boldsymbol{y})\)</span> is the number of across-set edges.</p>
+<p>Cons</p>
+<ul class="simple">
+<li><p>assumption of complete independence is untenable in practice</p></li>
+<li><p>Bernoulli-like random graphs lack many characteristics of real-world graphs</p></li>
+</ul>
+</section>
+<section id="markov-random-graphs">
+<h3>Markov Random Graphs<a class="headerlink" href="#markov-random-graphs" title="Permalink to this headline">¶</a></h3>
+<p>[SAND 155]</p>
+<p>Markov dependence: two possible edges are dependent whenever they share a vertex, conditional on all other possible edges. That is, the presence or absence of <span class="math notranslate nohighlight">\((i, j)\)</span> depends on that of <span class="math notranslate nohighlight">\((i, k)\)</span> for <span class="math notranslate nohighlight">\(k\ne j\)</span>, given information on all other edges. A random graph G arising under Markov dependence conditions is called a Markov graph.</p>
 <p>.</p>
 <p>.</p>
 <p>.</p>
@@ -1409,6 +1474,7 @@ p(\alpha - 1) = 1- p^{\alpha - 1}
 <p>.</p>
 <p>.</p>
 <p>.</p>
+</section>
 </section>
 </section>
 
