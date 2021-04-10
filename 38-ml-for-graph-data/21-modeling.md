@@ -31,7 +31,7 @@ Suppose that we have a graph $G^{obs}$ derived from observations of some sort (i
 To measure this, we need a reference, like a 'null hypothesis' in hypothesis testing. A RGM can be used to create a reference distribution which, under the accompanying assumption of uniform likelihood of elements in $\mathcal{G}$, takes the form,
 
 $$
-\mathbb{P}_{\eta, \mathcal{G}} (t)  = \frac{\## \left\{ G \in \mathcal{G}: \eta(G) \le t \right\}}{\left\vert \mathcal{G} \right\vert}
+\mathbb{P}_{\eta, \mathcal{G}} (t)  = \frac{\# \left\{ G \in \mathcal{G}: \eta(G) \le t \right\}}{\left\vert \mathcal{G} \right\vert}
 $$
 
 If $\eta(G^{obs})$ is found to be sufficiently unlikely under this distribution, this is taken as evidence **against** the hypothesis that Gobs is a uniform draw from $G$.
@@ -418,6 +418,67 @@ We need to observe how the graph change over time, i.e. a sequence of 'snap-shot
 
 
 ## Exponential Random Graph Models
+
+ERGM are better than the above models, in construction, estimation, comparison etc.
+
+Consider a random graph $G = (V, E)$, let $\boldsymbol{Y}$ be the random adjacency matrix. An ERGM is a model specified in exponential family form for the joint distribution of the elements $y_{ij}$:
+
+$$
+\mathbb{P} _\theta (\boldsymbol{Y} = \boldsymbol{y} ) = \frac{1}{\kappa} \exp \left\{ \sum_H \theta_H \cdot g_H(\boldsymbol{y}) \right\}
+$$
+
+where
+- each $H$ is a **configuration**: a set of possible edges among a subset of the vertices in $G$
+- $g_{H}(\mathbf{y})=\prod_{y_{i j} \in H} y_{i j}$, which is $1$ if the configuration $H$ occurs in $\boldsymbol{y}$, or $0$ otherwise.
+- a non-zero value for $\theta_H$ means that the $Y_{ij}$ are independent in $H$, conditional upon the rest of the graph
+- $\kappa = \kappa(\theta)=\sum_{\mathbf{y}} \exp \left\{\sum_{H} \theta_{H} g_{H}(\mathbf{y})\right\}$ is a normalization constant.
+
+Note that
+- The summation implies a certain (in)dependency structure among $Y_{ij}$. For given index set $\mathcal{A}, \mathcal{B}, \mathcal{C}$, the random variables $\left\{ Y_{i, j} \right\}_{(i, j) \in \mathcal{A}}$ and independent of $\left\{ Y_{i, j} \right\}_{(i, j) \in \mathcal{B}}$, given the values of $\left\{ Y_{i, j} \right\}_{(i, j) \in \mathcal{C}}$.
+- Conversely, we can begin with a collection of (in)dependence relations among subsets of elements in $\boldsymbol{Y}$ and try to develop a model. But certain conditions need to be satisfied, that are formalized in the Hammersley-Clifford theorem [SAND 36].
+
+### Bernoulli Random Graphs
+
+If we assume each edge $e(i, j)$ is formed independently with probability $p_{ij}$, i.e. $y_{ij} \sim \operatorname{Ber}(p_{ij})$ and $y_{i,j} \perp y_{i ^\prime , j ^\prime}$ for any $(i, j)\ne (i ^\prime , j ^\prime)$, then
+
+- $\theta_H = 0$ for all configurations $H$ involving three or more vertices.
+- $g_H(\boldsymbol{y}) = g_{ij}(\boldsymbol{y}) = y_{ij}$.
+
+The ERGM model reduces to
+
+$$
+\mathbb{P}_{\theta}(\mathbf{Y}=\mathbf{y})=\left(\frac{1}{\kappa} \right) \exp \left\{\sum_{i, j} \theta_{i j} y_{i j}\right\}
+$$
+
+which is another way of writing $p_{ij} = \frac{\exp(\theta_{ij})}{1+\exp(\theta_{ij})}$.
+
+Obviously, this is $\mathcal{O} (N_v^2)$ number of parameters. It is common to impose an assumption of homogeneity across vertex pairs, e.g. $\theta_{ij} \equiv \theta$ for all $(i, j)$. Hence
+
+$$
+\mathbb{P}_{\theta}(\mathbf{Y}=\mathbf{y})=\left(\frac{1}{\kappa} \right) \exp \left\{\theta\sum_{i, j}  y_{i j}\right\}=\left(\frac{1}{\kappa} \right) \exp \left\{\theta N_e\right\}
+$$
+
+which is exactly the random graph model $\mathcal{G} (N_v, p)$ with $p = \frac{\exp(\theta)}{\exp(\theta)}$.
+
+More generally, we can consider a partition of two sets $(S_1, S_2)$ of vertices, and impose homogeneity within and between sets, i.e. 3 kinds of $\theta$ values. The model is then
+
+
+$$
+\mathbb{P}_{\theta}(\mathbf{Y}=\mathbf{y})=\left(\frac{1}{\kappa} \right) \exp \left\{\theta_{11}L_{11}(\boldsymbol{y})+ \theta_{12}L_{12}(\boldsymbol{y})+ \theta_{22}L_{22}(\boldsymbol{y})\right\}
+$$
+
+where $L_{11}(\boldsymbol{y})$ and $L_{22}(\boldsymbol{y})$ are the number within-set edges for $S_1$ and $S_2$ respectively, and $L_{12}(\boldsymbol{y})$ is the number of across-set edges.
+
+Cons
+- assumption of complete independence is untenable in practice
+- Bernoulli-like random graphs lack many characteristics of real-world graphs
+
+### Markov Random Graphs
+
+[SAND 155]
+
+Markov dependence: two possible edges are dependent whenever they share a vertex, conditional on all other possible edges. That is, the presence or absence of $(i, j)$ depends on that of $(i, k)$ for $k\ne j$, given information on all other edges. A random graph G arising under Markov dependence conditions is called a Markov graph.
+
 
 .
 
