@@ -479,6 +479,69 @@ Cons
 
 Markov dependence: two possible edges are dependent whenever they share a vertex, conditional on all other possible edges. That is, the presence or absence of $(i, j)$ depends on that of $(i, k)$ for $k\ne j$, given information on all other edges. A random graph G arising under Markov dependence conditions is called a Markov graph.
 
+What's the joint distribution? Using the Hammersley-Clifford theorem, $G$ is a Markov graph if and only if the joint distribution can be expressed as
+
+$$
+\mathbb{P}_{\theta}(\mathbf{Y}=\mathbf{y})=\left(\frac{1}{\kappa} \right) \exp \left\{\sum_{k=1}^{N_{v}-1} \theta_{k} S_{k}(\mathbf{y})+\theta_{\tau} T(\mathbf{y})\right\}
+$$
+
+where
+- $S_1(\boldsymbol{y} )=N_e$
+- $S_k(\boldsymbol{y})$ is the number of $k$-stars (a tree with one vertex of degree $k$ and $k$ neighbors of degree 1).
+- $T(\boldsymbol{y})$ is the number of triangles
+
+Note that
+- the statistics $S_k$ and $S_{k ^\prime}$ are expected to be correlated ($k$ stars implies $k ^\prime$-stars for $k ^\prime < k$)
+- $S_k$ and $T$ are also correlated
+- fitting higher order of $k$ is hard
+
+### Fitting
+
+The MLEs $\hat{\theta}_H$ of $\theta_H$ are well defined but the calculation is non-trivial. There is no developed theory for CI, testing, due to the highly dependent nature of observations.
+
+
+The log-likelihood is
+
+$$
+\ell(\theta)=\theta^{T} \mathbf{g}(\mathbf{y})-\psi(\theta)
+$$
+
+where $\psi(\theta) = \log \kappa (\theta)$ and $\kappa(\theta)=\sum_{\mathbf{y}} \exp \left\{\theta^{T} \mathbf{g}(\mathbf{y})\right\}$. Taking derivative w.r.t. $\theta$ on both sides gives
+
+$$
+\mathbf{g}(\mathbf{y}) = \frac{\partial \psi(\theta)}{\partial \theta}
+$$
+
+Note the fact $\mathbb{E}_{\theta}[\mathbf{g}(\mathbf{Y})]=\partial \psi(\theta) / \partial \theta$. Hence the MLE can be expressed as the solution to the system of equations
+
+$$
+\mathbf{g}(\mathbf{y}) = \mathbb{E}_{\theta}[\mathbf{g}(\mathbf{Y})]
+$$
+
+#### Approximate Log-likelihood
+
+However, $\psi(\theta)$ is hard to evaluate since it involves $\sum_{\boldsymbol{y}}$ over $2^{\binom{N_v}{2} }$ possible choice of $\boldsymbol{y}$, for each $\theta$. Two Monte Carlo approaches are used
+
+- stochastic approximation of the log-likelihood $\ell(\boldsymbol{\theta} )$ [SAND 209]
+- stochastic approximation to solutions of systems of equations $\mathbf{g}(\mathbf{y}) = \frac{\partial \psi(\theta)}{\partial \theta}$ by Robbins-Monro algorithm [SAND 324].
+
+#### Log-psudo-likelihood
+
+A disadvantage of both of the methods above is their computationally intensive nature. To date they have been applied to networks with at most a few thousand vertices. An alternative is to estimate $\theta$ by maximizing the log-pseudo-likelihood
+
+$$
+\sum_{\{i, j\}} \log \mathbb{P}_{\theta}\left(Y_{i j}=1 \mid \mathbf{Y}_{(-i j)}=\mathbf{y}_{(-i j)}\right)
+$$
+
+pros
+- work best when dependencies among the elements of $\boldsymbol{y}$ are relatively weak.
+- computationally expedient
+
+cons
+- the above condition does not hold in many real-world contexts
+
+
+### Goodness-of-fit 
 
 .
 
