@@ -139,7 +139,7 @@ $$
 \operatorname{sim}(i, j)  = \rho_{ij} = \frac{\sigma_{ij}}{\sqrt{\sigma_{ii}\sigma_{jj}}}
 $$
 
-#### Setup
+#### Buildup
 
 Suppose for each vertex, we have $n$ independent observations $\left\{ x_{i1}, \ldots, x_{in} \right\}$, e.g. gene expression levels from $n$ experiments. We can then form an $n \times N_v$ matrix $\boldsymbol{X}$, and compute the sample covariance matrix $\hat{\Sigma}=\frac{1}{n-1}(\mathbf{X}-\overline{\mathbf{X}})^{\top}(\mathbf{X}-\overline{\mathbf{X}})$, and hence obtain the entries $\hat{\sigma}$ and compute $\hat{\rho}$.
 
@@ -192,8 +192,106 @@ When dependency of tests [??] exists, the first method still holds, and there ar
 
 If it is felt desirable to construct a graph $G$ where the inferred edges are more reflective of direct influence among vertices, rather than indirect influence through some common neighbor, the notion of partial correlation becomes relevant.
 
+#### Partial Correlation
+
 Definition (Partial correlation)
-: The partial correlation of attributes $X_i$ and $X_j$ of vertices $i, j \in V$ w.r.t. the attributes $X_{k_1}, \ldots, $
+: The partial correlation of attributes $X_i$ and $X_j$ of vertices $i, j \in V$ w.r.t. the attributes $X_{k_1}, \ldots, X_{k_m}$ of vertices $k_1, \ldots, k_m \in V \setminus \left\{ i, j \right\}$, is the correlation between $X_i$ and $X_j$ left over, after adjusting for those effects common to both. Let $S_m = \left\{ k_1, \ldots, k_m \right\}$, the partial correlation of $X_i$ and $X_j$ adjusting for $\boldsymbol{X} _{S_m} = (X_{k_1}, \ldots, X_{k_m}) ^{\top}$ is defined as
+
+  $$
+  \rho_{i j \mid S_{m}}=\frac{\sigma_{i j \mid S_{m}}}{\sqrt{\sigma_{i i\mid S_{m}} \sigma_{j j \mid S_{m}}} }
+  $$
+
+To compute it, let $\boldsymbol{W} _1 = (X_i, X_j) ^{\top}$ and $\boldsymbol{W} _2 = \boldsymbol{X} _{S_m}$. We can partition the covariance matrix to
+
+$$
+\operatorname{Cov}\left(\begin{array}{l}
+\mathbf{W}_{1} \\
+\mathbf{W}_{2}
+\end{array}\right)=\left[\begin{array}{ll}
+\boldsymbol{\Sigma}_{11} & \boldsymbol{\Sigma}_{12} \\
+\boldsymbol{\Sigma}_{21} & \boldsymbol{\Sigma}_{22}
+\end{array}\right]
+$$
+
+Then the $2 \times 2$ partial covariance matrix is
+
+$$
+\boldsymbol{\Sigma}_{11 \mid 2}=\boldsymbol{\Sigma}_{11}-\boldsymbol{\Sigma}_{12} \boldsymbol{\Sigma}_{22}^{-1} \boldsymbol{\Sigma}_{21}
+$$
+
+The values $\sigma_{ii\vert S_m}, \sigma_{jj\vert S_m}$ and $\sigma_{ij\vert S_m} = \sigma_{ji\vert S_m}$ are diagonal and off-diagonal elements of $\boldsymbol{\Sigma}_{11 \mid 2}$
+
+In particular,
+- if $m=0$, the partial correlation reduces to the Pearson correlation.
+- if $\left(X_{i}, X_{j}, X_{k_{1}}, \ldots, X_{k_{m}}\right)^{\top}$ has a multivariate Gaussian, then $\rho_{ij \vert S_m}=0$ if and only if $X_i$ and $X_j$ are independent conditional on $\boldsymbol{X} _{S_m}$.
+
+
+:::{admonition,note} Computation Issue of $\hat{\rho}_{i j \mid S_{m}}$
+
+- To compute $\rho_{ij \mid S_m}$ for all $S_m$ is hard. It is more computationally efficient to use recursive expressions between $\rho_{ij \mid S_m}$ and $\rho_{ij \mid S_{m-1}}$, see Anderson [SAND 11].
+- If $m <n$ is large w.r.t. $n$, then $\hat{\rho}_{i j \mid S_{m}}$ is a bad poor estimates of $\rho_{i j \mid S_{m}}$.
+- $m=2$ is advocated in the context of inference of biochemical networks.
+- An algorithmic definition of this value is that it is the result of
+  1. performing separate multiple linear regressions of the observations of $X_i$ and $X_j$, respectively, on the observed values of $\boldsymbol{X} _{S_m}$, and then
+  1. computing the empirical Pearson correlation between the two resulting sets of residuals.
+
+:::
+
+For more general distributions, however, zero partial correlation will not necessarily imply independence (the converse, of course, is still true).
+
+#### Buildup
+
+Given $m$, there are many ways to define edge set using partial correlations. For instance, there is an edge $e(i,j)$ iff the partial correlation $\rho_{i j \mid S_{m}} \neq 0$ regardless of which $m$ other vertices are conditioned upon.
+
+  $$E=\left\{\{i, j\} \in V^{(2)}: \rho_{i j \mid S_{m}} \neq 0 \ \forall \ S_{m} \in V_{\backslash\{i, j\}}^{(m)}\right\}$$
+
+The testing problem is then
+
+$$
+H_{0}: \rho_{i j \mid S_{m}}=0 \quad \text { for some } \quad S_{m} \in V_{\backslash\{i, j\}}^{(m)}
+$$
+
+versus
+
+$$
+H_{1}: \rho_{i j \mid S_{m}} \neq 0 \quad \text { for all } \quad S_{m} \in V_{\backslash\{i, j\}}^{(m)}
+$$
+
+Then we select a test statistic, construct an appropriate null distribution, and adjust for multiple testing, as the correlation networks above.
+
+#### $p$-value
+
+The above test can be considered as a collection of smaller testing sub-problems of the form
+
+$$
+H_{0}^{\prime}: \rho_{i j \mid S_{m}}=0 \quad \text { versus } \quad H_{1}^{\prime}: \rho_{i j \mid S_{m}} \neq 0
+$$
+
+Under the joint Gaussian assumption, the null empirical distribution $\hat{\rho}_{ij \mid S_m}$ is known but hard to compute the $p$-value. Fisher transformation can also be used here
+
+$$z_{i j \vert S_m}=\tanh ^{-1}\left(\hat{\rho}_{i j\vert S_m}\right)=\frac{1}{2} \log \left[\frac{\left(1+\hat{\rho}_{i j\vert S_m}\right)}{\left(1-\hat{\rho}_{i j\vert S_m}\right)} \right] \rightarrow \mathcal{N} \left( 0, \frac{1}{n-m-3} \right)$$
+
+Then, we can aggregate the $p$-values from sub-problems and define
+
+$$
+p_{i j, \max }=\max \left\{p_{i j \mid S_{m}}: S_{m} \in V_{\backslash\{i, j\}}^{(m)}\right\}
+$$
+
+to be the $p$-value for the original testing problem.
+
+:::{admonition,warning} Different from Correlation
+
+In practice, we may see
+- significant $\rho_{ij} > 0$ but insignificant $\rho_{ij \mid S_m}$, or
+- both significant $\rho_{ij} > 0$ and $\rho_{ij \mid S_m} < 0$, i.e. reverse sign after conditioning.
+
+:::
+
+#### Multiple Testing
+
+Given the full collection of $\left\{ p_{ij, \max} \right\}$, over all potential edges $(i, j)$, an FDR procedure may be applied to this collection to choose an appropriate testing threshold, analogous to the manner described above.
+
+
 
 
 
@@ -211,6 +309,9 @@ Definition
 Measurements
 - The relative levels of RNA expression of genes in a cell, under a given set of conditions, can be measured efficiently on a genome-wide scale using **microarray** technologies.
 - In particular, for each gene $i$, the vertex attribute vector $\boldsymbol{x}_i \in \mathbb{R} ^m$ typically consists of RNA relative expression levels measured for that gene over a compendium of $m$ experiments.
+
+Challenge
+- a TF can actually be a target of another TF. And so direct correlation between measurements of a TF and a gene target may actually just be a reflection of the regulation of that TF by another TF. Sol: use partial correlation
 
 ## Tomographic Inference
 
