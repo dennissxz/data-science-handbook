@@ -531,7 +531,7 @@ However, $\psi(\theta)$ is hard to evaluate since it involves $\sum_{\boldsymbol
 - stochastic approximation of the log-likelihood $\ell(\boldsymbol{\theta} )$ [SAND 209]
 - stochastic approximation to solutions of systems of equations $\boldsymbol{g}(\boldsymbol{y}) = \frac{\partial \psi(\theta)}{\partial \theta}$ by Robbins-Monro algorithm [SAND 324].
 
-#### Log-psudo-likelihood
+#### Log-pseudo-likelihood
 
 A disadvantage of both of the methods above is their computationally intensive nature. To date they have been applied to networks with at most a few thousand vertices. An alternative is to estimate $\theta$ by maximizing the log-pseudo-likelihood
 
@@ -575,27 +575,4 @@ For a case study see [SAND pg.188].
 Related topics
 - dynamical/complex systems
 - agent-based modeling (economics, sociology)
-- graphical Models
-
-.
-
-
-.
-
-
-.
-
-
-.
-
-
-.
-
-
-.
-
-
-.
-
-
-.
+- graphical models
