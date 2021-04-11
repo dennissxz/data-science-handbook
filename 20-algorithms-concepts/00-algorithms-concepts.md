@@ -26,3 +26,6 @@ If the optimal solution under the new setting corresponds to an optimal solution
 
 
 ## Charging Scheme
+
+Reference
+- [Khan Academy](https://www.khanacademy.org/computing/computer-science/algorithms)
