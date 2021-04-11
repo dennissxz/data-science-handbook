@@ -59,9 +59,11 @@ $$
 \right]=\beta^{\top} \mathbf{z}
 $$
 
-- $\boldsymbol{Z} _{ij}$ is a vector of explanatory variables indexed in the unordered pairs $(i, j)$.
-  - the explanatory variables can be score functions introduced above, or
-  - some transformation of $\boldsymbol{Y} ^{obs}_{(-ij)}$ and $\boldsymbol{X}$: $\mathbf{Z}_{i j}=\left(g_{1}\left(\mathbf{Y}_{(-i j)}^{o b s}, \mathbf{X}\right), \ldots, g_{K}\left(\mathbf{Y}_{(-i j)}^{o b s}, \mathbf{X}\right)\right)^{\top}$
+- $\boldsymbol{Z} _{ij}$ is a vector of explanatory variables indexed in the unordered pairs $(i, j)$. In general it is some transformation of $\boldsymbol{Y} ^{obs}_{(-ij)}$ and/or $\boldsymbol{X}$: $\mathbf{Z}_{i j}=\left(g_{1}\left(\mathbf{Y}_{(-i j)}^{o b s}, \mathbf{X}\right), \ldots, g_{K}\left(\mathbf{Y}_{(-i j)}^{o b s}, \mathbf{X}\right)\right)^{\top}$
+  - network structure measures using $\boldsymbol{Y} ^{obs}_{-ij}$, e.g. score functions introduced above
+  - similarity measures between $X_{ik}$ and $X_{jk}$ for some (univariate) vertex attribute $k$.
+    - additive $X_{ik} + X_{jk}$ for continuous values
+    - indicator $\mathbb{I} \left\{ X_{ik} = X_{jk} \right\}$ for discrete values
 - the coefficient $\boldsymbol{\beta}$ is assumed common to all pairs.
 
 In prediction, we compare the predicted value vs some threshold, e.g. 0.5
@@ -92,7 +94,7 @@ $$
 M_{ij} = \boldsymbol{u} _i ^{\top} \boldsymbol{\Lambda} \boldsymbol{u} _j + \epsilon_{ij}
 $$
 
-Intuition: The latent variable matrix $\boldsymbol{M}$ is intended to capture effects of network structural characteristics or processes not already described by the observed explanatory variables $\boldsymbol{Z} _{ij}$. We add $M_{ij}$ as an explanatory variable. The model becomes
+Intuition: The latent variable matrix $\boldsymbol{M}$ is intended to capture effects of network structural characteristics or processes not already described by the observed explanatory variables $\boldsymbol{Z} _{ij}$. We add $M_{ij}$ as an explanatory variable (random??). The model becomes
 
 $$
 \log \left[
@@ -116,7 +118,7 @@ $$
 
 Cons: MCMC computation cost, mainly driven by the need to draw $N_v ^2$ unobserved variables $U_{ij}$. Sol: let $\boldsymbol{U}$ have only $K$ non-zero column vectors for $K \ll N_v$, hence low-rank of $\boldsymbol{M}$. In fact $K=2, 3$ work well in practice. [SAND 200 201]
 
-For a case study see [SAND pg.205]
+For a case study see [SAND pg.205].
 
 ## Association Networks
 
@@ -124,10 +126,91 @@ Non-trivial level of association (e.g. correlation) between certain characterist
 
 Given
 - no knowledge of edge status anywhere
-- relevant measurements at all of the vertices
+- relevant measurements at all of the vertices $\left\{ \boldsymbol{x}_1, \ldots, \boldsymbol{x}_{N_v} \right\}$
 
 Infer
-- edge status using these measurements
+- edge status $\boldsymbol{Y}$ using these measurements $\boldsymbol{x}$
+
+### Correlation Networks
+
+An intuitive measure of similarity between a vertex pair $(i, j)$ is correlation.
+
+$$
+\operatorname{sim}(i, j)  = \rho_{ij} = \frac{\sigma_{ij}}{\sqrt{\sigma_{ii}\sigma_{jj}}}
+$$
+
+#### Setup
+
+Suppose for each vertex, we have $n$ independent observations $\left\{ x_{i1}, \ldots, x_{in} \right\}$, e.g. gene expression levels from $n$ experiments. We can then form an $n \times N_v$ matrix $\boldsymbol{X}$, and compute the sample covariance matrix $\hat{\Sigma}=\frac{1}{n-1}(\mathbf{X}-\overline{\mathbf{X}})^{\top}(\mathbf{X}-\overline{\mathbf{X}})$, and hence obtain the entries $\hat{\sigma}$ and compute $\hat{\rho}$.
+
+The corresponding association graph $G$ is the graph with edge set
+
+$$
+E=\left\{\{i, j\} \in V^{(2)}: \rho_{i j} \neq 0\right\}
+$$
+
+Hence, the the task is to infer the set of non-zero correlations, which can be approached through hypotheses testing
+
+
+$$
+H_{0}: \rho_{i j}=0 \quad \text { versus } \quad H_{1}: \rho_{i j} \neq 0
+$$
+
+Problems
+- what test statistics?
+- whats the null distribution of that test statistic?
+- there are $N_v (N_v - 1)/2$ potential edges, which implies multiple testing problem.
+
+#### $p$-value
+
+If $(X_i, X_j)$ follow bivariate Gaussian, then $\hat{\rho}_{ij}$ under $H_0: \rho_{ij}=0$ has a closed-form but the computation of $p$-values is hard. Therefore, some transformed versions of $\hat{\rho}_{ij}$ may be preferable
+- $z_{i j}=\frac{\hat{\rho}_{i j} \sqrt{n-2}}{\sqrt{1-\hat{\rho}_{i j}^{2}}} \sim t_{n-1}$, and under $H_0$ is it robust to departures of $X_i$ from Gaussianity.
+- $z_{i j}=\tanh ^{-1}\left(\hat{\rho}_{i j}\right)=\frac{1}{2} \log \left[\frac{\left(1+\hat{\rho}_{i j}\right)}{\left(1-\hat{\rho}_{i j}\right)} \right]$ Fisher transformation.
+  - for bivariate Gaussian pairs, the distribution of $z_{ij}$ does not have a simple exact form. But under $H_0$ this distribution is well approximated by $\mathcal{N} (0, \frac{1}{n-3} )$ even for moderately large $n$.
+
+Permutation methods can also be used, but is computationally intensive for large $N_v$.
+
+#### Multiple Testing
+
+Recall the false discovery rate is defined to be
+
+$$
+\mathrm{FDR}=\mathbb{E}\left(\frac{R_{\text {false }}}{R} \mid R>0\right) \mathbb{P}(R>0)
+$$
+
+where $R$ is the number of rejections among our tests and $R_{\text {false }}$ is the number of false rejections.
+
+To guarantee $\mathrm{FDR} \le \gamma$, we use the original method proposed by Benjamini and Hochberg [SAND 33],
+- sort the $p$-values from our $N =N_v (N_v−1)/2$ tests, yielding a sequence $p_{(1)}\le p_{(2)} \le \ldots \le p_{(N)}$,
+- reject the null hypothesis for all potential edges for which $p_{(k)} \leq(k / N) \gamma$.
+
+Alternatively, we can use Storey [SAND 370] method and declare edges to be present using a particular $q$-value. Then only $qN$ of the edges will be included erroneously.
+
+When dependency of tests [??] exists, the first method still holds, and there are other methods.
+
+### Partial Correlation Networks
+
+If it is felt desirable to construct a graph $G$ where the inferred edges are more reflective of direct influence among vertices, rather than indirect influence through some common neighbor, the notion of partial correlation becomes relevant.
+
+Definition (Partial correlation)
+: The partial correlation of attributes $X_i$ and $X_j$ of vertices $i, j \in V$ w.r.t. the attributes $X_{k_1}, \ldots, $
+
+
+
+### Case Study of Gene
+
+Example: Though experimentally infeasible, can we construct the gene regulatory (activation or repression) networks as a problem of network inference, given measurements sufficiently reflective of gene regulatory activity?
+
+Definition
+: - **Genes** are sets of segments of DNA that encode information necessary to the proper functioning of a cell.
+  - such information is utilized in the **expression** of genes, whereby biochemical products, in the form of RNA or proteins, are created
+  - The **regulation** of a gene refers to the control of its expression.
+  - A gene that plays a role in controlling gene expression at transcription stage (DNA is copied to RNA) is called a **transcription factor** (TF), and the genes that are controlled by it, gene **targets**.
+  - The problem of inferring regulatory interactions among genes in this context refers to the identification of **TF/target gene pairs**.
+
+Measurements
+- The relative levels of RNA expression of genes in a cell, under a given set of conditions, can be measured efficiently on a genome-wide scale using **microarray** technologies.
+- In particular, for each gene $i$, the vertex attribute vector $\boldsymbol{x}_i \in \mathbb{R} ^m$ typically consists of RNA relative expression levels measured for that gene over a compendium of $m$ experiments.
 
 ## Tomographic Inference
 
