@@ -4,8 +4,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Modeling &#8212; Data Science Handbook</title>
     
   <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
@@ -93,7 +92,7 @@
   </a>
  </li>
 </ul>
-<p>
+<p class="caption collapsible-parent">
  <span class="caption-text">
   Foundations
  </span>
@@ -280,7 +279,7 @@
   </i>
  </li>
 </ul>
-<p>
+<p class="caption collapsible-parent">
  <span class="caption-text">
   Algorithms
  </span>
@@ -428,7 +427,7 @@
   </i>
  </li>
 </ul>
-<p>
+<p class="caption collapsible-parent">
  <span class="caption-text">
   Machine Learning
  </span>
@@ -965,7 +964,39 @@
      Markov Random Graphs
     </a>
    </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id1">
+     Fitting
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#approximate-log-likelihood">
+       Approximate Log-likelihood
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#log-pseudo-likelihood">
+       Log-pseudo-likelihood
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#goodness-of-fit">
+     Goodness-of-fit
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#model-degeneracy">
+     Model Degeneracy
+    </a>
+   </li>
   </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#challenges">
+   Challenges
+  </a>
  </li>
 </ul>
 
@@ -979,11 +1010,11 @@
         
               <div>
                 
-  <section id="modeling">
+  <div class="section" id="modeling">
 <h1>Modeling<a class="headerlink" href="#modeling" title="Permalink to this headline">¶</a></h1>
-<section id="random-graph-models">
+<div class="section" id="random-graph-models">
 <h2>Random Graph Models<a class="headerlink" href="#random-graph-models" title="Permalink to this headline">¶</a></h2>
-<section id="background">
+<div class="section" id="background">
 <h3>Background<a class="headerlink" href="#background" title="Permalink to this headline">¶</a></h3>
 <p>By a model for a graph we mean a collection</p>
 <div class="math notranslate nohighlight">
@@ -996,7 +1027,7 @@
 <li><p><span class="math notranslate nohighlight">\(\mathbb{P}_\theta\)</span> is a probability distribution on <span class="math notranslate nohighlight">\(\mathcal{G}\)</span></p></li>
 <li><p><span class="math notranslate nohighlight">\(\theta\)</span> is a vector of parameters ranging over values in <span class="math notranslate nohighlight">\(\Theta\)</span>.</p></li>
 </ul>
-<section id="estimate-eta-g">
+<div class="section" id="estimate-eta-g">
 <h4>Estimate <span class="math notranslate nohighlight">\(\eta(G)\)</span><a class="headerlink" href="#estimate-eta-g" title="Permalink to this headline">¶</a></h4>
 <p>In traditional statistical sampling theory, there are two main approaches to constructing estimates of population parameters <span class="math notranslate nohighlight">\(\eta(G)\)</span> from a sample <span class="math notranslate nohighlight">\(G^*\)</span>: design-based and model-based.</p>
 <ul class="simple">
@@ -1005,8 +1036,8 @@ a subset of elements were selected from the population to create the sample. We 
 <li><p>model-based approach: on the other hand, a model is given to specify a relationship between the sample and the population. Model-based estimation strategies including least-squares, method-of-moments, maximum-likelihood, etc are then used for constructing estimators for <span class="math notranslate nohighlight">\(\eta(G)\)</span>.</p></li>
 </ul>
 <p>In more recent decades, the distinction between these two approaches has become more blurred.</p>
-</section>
-<section id="assess-significance-of-eta-g-obs">
+</div>
+<div class="section" id="assess-significance-of-eta-g-obs">
 <h4>Assess Significance of <span class="math notranslate nohighlight">\(\eta(G^{obs})\)</span><a class="headerlink" href="#assess-significance-of-eta-g-obs" title="Permalink to this headline">¶</a></h4>
 <p>Suppose that we have a graph <span class="math notranslate nohighlight">\(G^{obs}\)</span> derived from observations of some sort (i.e., <strong>not</strong> necessarily through a formal network sampling mechanism). We often interested in whether <span class="math notranslate nohighlight">\(\eta(G^{obs})\)</span> is ‘significant’, in the sense that unusual or unexpected.</p>
 <p>To measure this, we need a reference, like a ‘null hypothesis’ in hypothesis testing. A RGM can be used to create a reference distribution which, under the accompanying assumption of uniform likelihood of elements in <span class="math notranslate nohighlight">\(\mathcal{G}\)</span>, takes the form,</p>
@@ -1020,11 +1051,11 @@ a subset of elements were selected from the population to create the sample. We 
 <li><p>How to choose <span class="math notranslate nohighlight">\(\mathcal{G}\)</span>?</p></li>
 <li><p>Usually it is not possible to enumerate all elements in <span class="math notranslate nohighlight">\(\mathcal{G}\)</span>, hence, cannot compute <span class="math notranslate nohighlight">\(\mathbb{P}_{\eta, \mathcal{G}} (t)\)</span> exactly <span class="math notranslate nohighlight">\(\rightarrow\)</span> sol: approximation.</p></li>
 </ul>
-</section>
-</section>
-<section id="classical-random-graph-models">
+</div>
+</div>
+<div class="section" id="classical-random-graph-models">
 <h3>Classical Random Graph Models<a class="headerlink" href="#classical-random-graph-models" title="Permalink to this headline">¶</a></h3>
-<section id="erdos-and-renyi">
+<div class="section" id="erdos-and-renyi">
 <h4>Erdos and Renyi<a class="headerlink" href="#erdos-and-renyi" title="Permalink to this headline">¶</a></h4>
 <p>Equal probability on all graphs of a given order and size:</p>
 <div class="math notranslate nohighlight">
@@ -1032,8 +1063,8 @@ a subset of elements were selected from the population to create the sample. We 
 <p>It is easy to find <span class="math notranslate nohighlight">\(\left\vert \mathcal{G} (N_v, N_e) \right\vert = \binom{\binom{N_v}{2}}{N_e}\)</span>, hence</p>
 <div class="math notranslate nohighlight">
 \[\mathbb{P} (G) = \binom{\binom{N_v}{2}}{N_e} ^{-1}\]</div>
-</section>
-<section id="gilbert">
+</div>
+<div class="section" id="gilbert">
 <h4>Gilbert<a class="headerlink" href="#gilbert" title="Permalink to this headline">¶</a></h4>
 <p>A collection <span class="math notranslate nohighlight">\(\mathcal{G} (N_v, p)\)</span> is defined to consist of all graphs <span class="math notranslate nohighlight">\(G\)</span> of order <span class="math notranslate nohighlight">\(N_v\)</span> that may be obtained by assigning an edge <strong>independently</strong> to each pair of distinct vertices with probability <span class="math notranslate nohighlight">\(p\)</span>.</p>
 <div class="math notranslate nohighlight">
@@ -1055,9 +1086,9 @@ a subset of elements were selected from the population to create the sample. We 
 <li><p><strong>low clustering</strong>: recall that assortativity is the probability that two neighbors of a randomly chosen vertex are linked is just <span class="math notranslate nohighlight">\(p\)</span>, which tend to zero as <span class="math notranslate nohighlight">\(N_v\)</span> grows.</p></li>
 <li><p><strong>small-world property</strong>: the diameter of the graph very like <span class="math notranslate nohighlight">\(\mathcal{O} (\log N_v)\)</span> w.h.p as <span class="math notranslate nohighlight">\(N_v \rightarrow \infty\)</span>.</p></li>
 </ul>
-</section>
-</section>
-<section id="generalized-random-graph-models">
+</div>
+</div>
+<div class="section" id="generalized-random-graph-models">
 <h3>Generalized Random Graph Models<a class="headerlink" href="#generalized-random-graph-models" title="Permalink to this headline">¶</a></h3>
 <p>Equal probability on all graphs of a given order and some particular characteristic(s) <span class="math notranslate nohighlight">\(\eta^*\)</span>:</p>
 <div class="math notranslate nohighlight">
@@ -1074,10 +1105,10 @@ a subset of elements were selected from the population to create the sample. We 
 </ul>
 </li>
 </ul>
-</section>
-<section id="simulation">
+</div>
+<div class="section" id="simulation">
 <h3>Simulation<a class="headerlink" href="#simulation" title="Permalink to this headline">¶</a></h3>
-<section id="classical-rgm">
+<div class="section" id="classical-rgm">
 <h4>Classical RGM<a class="headerlink" href="#classical-rgm" title="Permalink to this headline">¶</a></h4>
 <p>For some models it is actually possible to produce samples in linear time; for others, it appears that Markov chain Monte Carlo (MCMC) methods are the only realistic alternative.</p>
 <ul>
@@ -1089,8 +1120,8 @@ a subset of elements were selected from the population to create the sample. We 
 </li>
 </ul>
 <p>See <a class="reference external" href="http://www.cosinproject.eu/publications/batagelj-pre71-2005.pdf">Batagelj and Brandes</a>.</p>
-</section>
-<section id="generalized-rgm">
+</div>
+<div class="section" id="generalized-rgm">
 <h4>Generalized RGM<a class="headerlink" href="#generalized-rgm" title="Permalink to this headline">¶</a></h4>
 <p>Sampling GRGM is more challenging since there are more constraints. We focus our discussion upon the case that the degree sequence <span class="math notranslate nohighlight">\(D = \left\{d_{(1)}, \ldots, d_{\left(N_{v}\right)}\right\}\)</span> is be fixed. We introduce two algorithms with input: <span class="math notranslate nohighlight">\(V, D\)</span> and output: <span class="math notranslate nohighlight">\(E\)</span>.</p>
 <hr class="docutils" />
@@ -1121,11 +1152,11 @@ a subset of elements were selected from the population to create the sample. We 
 <p>It falls within the realm of MCMC methods. In practice, it is typical to let the algorithm run for some time before beginning to collect sample graphs <span class="math notranslate nohighlight">\(G\)</span>. There is currently no  theory to indicate just how long of a preliminary period is necessary. Milo et al. [SAND 279] cite empirical evidence to suggest a factor of <span class="math notranslate nohighlight">\(100 N_e\)</span> can be more than sufficient.</p>
 <p>To ensure that the algorithm asymptotically yields strictly uniform sampling from <span class="math notranslate nohighlight">\(\mathcal{G}\)</span>, there are some certain formal conditions. See [SAND 322].</p>
 <p>MCMC can be used to generate GRG uniformly from other types of collections <span class="math notranslate nohighlight">\(\mathcal{G}\)</span> with additional characteristics beyond the degree sequence. However, that development of the corresponding theory, verifying the assumptions underlying Markov chain <strong>convergence</strong>, currently appears to lag far behind the pace of algorithm development.</p>
-</section>
-</section>
-<section id="application">
+</div>
+</div>
+<div class="section" id="application">
 <h3>Application<a class="headerlink" href="#application" title="Permalink to this headline">¶</a></h3>
-<section id="hidden-population-size">
+<div class="section" id="hidden-population-size">
 <h4>Hidden Population Size<a class="headerlink" href="#hidden-population-size" title="Permalink to this headline">¶</a></h4>
 <p>In previous section we derived a design-based <a class="reference internal" href="13-sampling-and-estimation.html#sampling-hidden-pop-size"><span class="std std-ref">estimator</span></a> of hidden population size. Here, we describe a model-based estimator using random graphs.</p>
 <p>Assume that the hidden population graph <span class="math notranslate nohighlight">\(G = (V, E)\)</span> is from a collection <span class="math notranslate nohighlight">\(\mathcal{G} (N_v, p)\)</span> of random graphs.</p>
@@ -1148,8 +1179,8 @@ a subset of elements were selected from the population to create the sample. We 
 \end{aligned}
 \end{split}\]</div>
 <p>Note that the estimates of <span class="math notranslate nohighlight">\(p_0\)</span> and <span class="math notranslate nohighlight">\(N_v\)</span> are the same as those in the design-based method. There is another method using maximum conditional likelihood, see [SAND 154].</p>
-</section>
-<section id="assessing-significance">
+</div>
+<div class="section" id="assessing-significance">
 <h4>Assessing Significance<a class="headerlink" href="#assessing-significance" title="Permalink to this headline">¶</a></h4>
 <p>As described, given <span class="math notranslate nohighlight">\(\eta(G^{obs})\)</span>, we want to find how in some sense unusual or unexpected it is. An important issue is determining which <span class="math notranslate nohighlight">\(\mathcal{G}\)</span> to use as reference. For instance, to assess the significance of the number of distinct triangles in <span class="math notranslate nohighlight">\(G^{obs}\)</span>, a reasonable reference <span class="math notranslate nohighlight">\(\mathcal{G}\)</span> should have the same number of edges as that of <span class="math notranslate nohighlight">\(G^{obs}\)</span>. In practice,</p>
 <ul class="simple">
@@ -1167,26 +1198,22 @@ a subset of elements were selected from the population to create the sample. We 
 <li><p>whereas in the second case, when the degree distribution was fixed, all of the samples resulted in lower clustering coefficient.</p></li>
 </ul>
 <p>We therefore have strong evidence to reject the hypothesis that the network can be viewed as a uniform sample under either random graph model. As a result, we conclude that the network graph shows <strong>markedly</strong> greater transitivity than random graphs of comparable magnitude (i.e., with respect to order and size) or connectivity (i.e., with respect to degree distribution).</p>
-<figure class="align-default" id="graph-karate">
+<div class="figure align-default" id="graph-karate">
 <a class="reference internal image-reference" href="../_images/graph-karate.png"><img alt="" src="../_images/graph-karate.png" style="width: 50%;" /></a>
-<figcaption>
-<p><span class="caption-number">Fig. 168 </span><span class="caption-text">Observed graph of Zachary’s ‘karate club [Kolaczyk 2009]</span><a class="headerlink" href="#graph-karate" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
-<figure class="align-default" id="rgm-assess-clustering">
+<p class="caption"><span class="caption-number">Fig. 169 </span><span class="caption-text">Observed graph of Zachary’s ‘karate club [Kolaczyk 2009]</span><a class="headerlink" href="#graph-karate" title="Permalink to this image">¶</a></p>
+</div>
+<div class="figure align-default" id="rgm-assess-clustering">
 <a class="reference internal image-reference" href="../_images/rgm-assess-clustering.png"><img alt="" src="../_images/rgm-assess-clustering.png" style="width: 80%;" /></a>
-<figcaption>
-<p><span class="caption-number">Fig. 169 </span><span class="caption-text">Histograms of simulated clustering coefficients with fixed <span class="math notranslate nohighlight">\(N_v, N_e\)</span> (left) and <span class="math notranslate nohighlight">\(f_d\)</span> (right).</span><a class="headerlink" href="#rgm-assess-clustering" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
+<p class="caption"><span class="caption-number">Fig. 170 </span><span class="caption-text">Histograms of simulated clustering coefficients with fixed <span class="math notranslate nohighlight">\(N_v, N_e\)</span> (left) and <span class="math notranslate nohighlight">\(f_d\)</span> (right).</span><a class="headerlink" href="#rgm-assess-clustering" title="Permalink to this image">¶</a></p>
+</div>
 <p>It’s also worth observing that the right distribution is bimodal.</p>
 <ul class="simple">
 <li><p>those in in the right-hand mode tended to often be characterized by two large and somewhat distinct clusters, as in the original network.</p></li>
 <li><p>those in the left appeared to have more diffuse clusters or even just one large cluster.</p></li>
 </ul>
 <p>Meanwhile, for the <span class="math notranslate nohighlight">\(\mathcal{G} (N_v, N_e, d)\)</span> case, due to conditioning on degree, coupled with the invariance of <span class="math notranslate nohighlight">\(\operatorname{clus} _T\)</span> under isomorphism, the effective size of the sample space becomes quite small. In the 10,000 trials run, there were only 25 different values of <span class="math notranslate nohighlight">\(\operatorname{clus} _T\)</span>, and 17 of them takes 99% of the mass.</p>
-</section>
-<section id="detecting-network-motifs">
+</div>
+<div class="section" id="detecting-network-motifs">
 <h4>Detecting Network Motifs<a class="headerlink" href="#detecting-network-motifs" title="Permalink to this headline">¶</a></h4>
 <dl class="simple myst">
 <dt>Definition (motif)</dt><dd><p>Motif defined by [SAND 218, 278] are small subgraphs occurring <strong>far more frequently</strong> in a given network than in comparable random graphs.</p>
@@ -1216,10 +1243,10 @@ F_i = \frac{N_i}{\sum_{i^\prime =1}^{L_k} N_{i ^\prime}}
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(\pi_H\)</span> is the inclusion probability for <span class="math notranslate nohighlight">\(H\)</span>. Natural (although biased) estimates <span class="math notranslate nohighlight">\(\hat{F}_i\)</span> of the corresponding relative frequencies <span class="math notranslate nohighlight">\(F_i\)</span> are obtained through direct substitution of <span class="math notranslate nohighlight">\(\hat{N}_i\)</span> to the previous equation.</p>
 <p>For other sampling method, see SAND pg.168.</p>
-</section>
-</section>
-</section>
-<section id="small-world-models">
+</div>
+</div>
+</div>
+<div class="section" id="small-world-models">
 <h2>Small-World Models<a class="headerlink" href="#small-world-models" title="Permalink to this headline">¶</a></h2>
 <p>Developed by Watts and Strogatz that mimic certain observed ‘real-world’ properties: <strong>high</strong> levels of clustering, but <strong>small</strong> distances between most nodes.</p>
 <p>To model this, consider starting with a lattice, and randomly rewiring a a few edges. Specifically,</p>
@@ -1228,12 +1255,10 @@ F_i = \frac{N_i}{\sum_{i^\prime =1}^{L_k} N_{i ^\prime}}
 <li><p>join each vertex to a <span class="math notranslate nohighlight">\(r\)</span> of its neighbors to each side.</p></li>
 <li><p>for each edge, w.p. <span class="math notranslate nohighlight">\(p\)</span>, independently move one of its end to be incident to another uniformly randomly chosen vertex, but avoid loops and multi-edges.</p></li>
 </ol>
-<figure class="align-default" id="graph-ws-lattice">
+<div class="figure align-default" id="graph-ws-lattice">
 <a class="reference internal image-reference" href="../_images/graph-WS-lattice.png"><img alt="" src="../_images/graph-WS-lattice.png" style="width: 30%;" /></a>
-<figcaption>
-<p><span class="caption-number">Fig. 170 </span><span class="caption-text">Example of a Watts-Strogatz ‘small-world’ network graph. [Kolaczyk 2009]</span><a class="headerlink" href="#graph-ws-lattice" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
+<p class="caption"><span class="caption-number">Fig. 171 </span><span class="caption-text">Example of a Watts-Strogatz ‘small-world’ network graph. [Kolaczyk 2009]</span><a class="headerlink" href="#graph-ws-lattice" title="Permalink to this image">¶</a></p>
+</div>
 <p>For a lattice <span class="math notranslate nohighlight">\(G\)</span> with parameter <span class="math notranslate nohighlight">\(r\)</span> described above, it is easy to find</p>
 <ul class="simple">
 <li><p>high level of clustering: <span class="math notranslate nohighlight">\(\operatorname{clus}_T (G) = \frac{3r-3}{4r-2} \approx \frac{3}{4}\)</span></p></li>
@@ -1242,13 +1267,11 @@ F_i = \frac{N_i}{\sum_{i^\prime =1}^{L_k} N_{i ^\prime}}
 </ul>
 <p>But, addition of a few randomly rewired edges has the effect of
 producing ‘short-cuts’ in the graph. In numerical simulation shown below, after rewiring with some small <span class="math notranslate nohighlight">\(p\)</span>, we have <span class="math notranslate nohighlight">\(\bar{l} = \mathcal{O} (\log N_v)\)</span> while keep clustering coefficient close to <span class="math notranslate nohighlight">\(\frac{3}{4}\)</span>.</p>
-<figure class="align-default" id="graph-ws-simulation">
+<div class="figure align-default" id="graph-ws-simulation">
 <a class="reference internal image-reference" href="../_images/graph-WS-simulation.png"><img alt="" src="../_images/graph-WS-simulation.png" style="width: 30%;" /></a>
-<figcaption>
-<p><span class="caption-number">Fig. 171 </span><span class="caption-text">Simulation results of clustering coefficient <span class="math notranslate nohighlight">\(\operatorname{clus}(G)\)</span> (solid) and <span class="math notranslate nohighlight">\(\bar{l}\)</span> (dashed) as a function of <span class="math notranslate nohighlight">\(p\)</span>, both have been
+<p class="caption"><span class="caption-number">Fig. 172 </span><span class="caption-text">Simulation results of clustering coefficient <span class="math notranslate nohighlight">\(\operatorname{clus}(G)\)</span> (solid) and <span class="math notranslate nohighlight">\(\bar{l}\)</span> (dashed) as a function of <span class="math notranslate nohighlight">\(p\)</span>, both have been
 normalized by their largest values</span><a class="headerlink" href="#graph-ws-simulation" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
+</div>
 <p>However, the closed form for <span class="math notranslate nohighlight">\(\operatorname{clus}(G)\)</span> and <span class="math notranslate nohighlight">\(\bar{l}\)</span> are still open problems.</p>
 <p>Variation:</p>
 <ul class="simple">
@@ -1256,8 +1279,8 @@ normalized by their largest values</span><a class="headerlink" href="#graph-ws-s
 <li><p>no edges are rewired, but some small number of new edges are added to randomly selected pairs of vertices [SAND 284, 298]</p></li>
 <li><p>add edge <span class="math notranslate nohighlight">\((u, v)\)</span> w.p. inversely proportional to <span class="math notranslate nohighlight">\(\operatorname{dist} (u,v)\)</span>, i.e. <span class="math notranslate nohighlight">\(p \propto (\operatorname{dist} )^{-r}\)</span> for some <span class="math notranslate nohighlight">\(r &gt; 0\)</span>. [SAND 229, 231].</p></li>
 </ul>
-</section>
-<section id="growth-models">
+</div>
+<div class="section" id="growth-models">
 <h2>Growth Models<a class="headerlink" href="#growth-models" title="Permalink to this headline">¶</a></h2>
 <p>Many networks grow or otherwise evolve in time, e.g. WWW and citation networks. Problems of interest include</p>
 <ul class="simple">
@@ -1268,7 +1291,7 @@ normalized by their largest values</span><a class="headerlink" href="#graph-ws-s
 </li>
 <li><p>as <span class="math notranslate nohighlight">\(t\)</span> goes large, some properties emerge</p></li>
 </ul>
-<section id="preferential-attachment">
+<div class="section" id="preferential-attachment">
 <h3>Preferential Attachment<a class="headerlink" href="#preferential-attachment" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>principle: the rich get richer.</p>
@@ -1339,15 +1362,15 @@ normalized by their largest values</span><a class="headerlink" href="#graph-ws-s
 <li><p>if so, how is <span class="math notranslate nohighlight">\(\alpha\)</span> related to model parameters?</p></li>
 </ul>
 <p>See [SAND 6, 296, 41].</p>
-</section>
-<section id="copying-models">
+</div>
+<div class="section" id="copying-models">
 <h3>Copying Models<a class="headerlink" href="#copying-models" title="Permalink to this headline">¶</a></h3>
 <p>Copying model is distinct from preferential attachment but can also produce power-law degree distributions.</p>
-<aside class="margin sidebar">
+<div class="margin sidebar">
 <p class="sidebar-title"></p>
 <p>When <span class="math notranslate nohighlight">\(p=1\)</span>, each new vertex <span class="math notranslate nohighlight">\(v\)</span> is connected to <span class="math notranslate nohighlight">\(G ^{(t-1)}\)</span> by fully copying the edges of the randomly chosen vertex <span class="math notranslate nohighlight">\(u\)</span>, hence it is named ‘copying’ model.</p>
-</aside>
-<section id="full-copying">
+</div>
+<div class="section" id="full-copying">
 <h4>Full Copying<a class="headerlink" href="#full-copying" title="Permalink to this headline">¶</a></h4>
 <p>Chung, Lu, Dewey, and Galas [SAND 89]</p>
 <ul class="simple">
@@ -1368,16 +1391,14 @@ p(\alpha - 1) = 1- p^{\alpha - 1}
 <ul class="simple">
 <li><p>For <span class="math notranslate nohighlight">\(p &gt; 0.5671 \ldots\)</span>, the stable solution is <span class="math notranslate nohighlight">\(\alpha = 1\)</span></p></li>
 <li><p>For <span class="math notranslate nohighlight">\(p=1/2\)</span>, it is <span class="math notranslate nohighlight">\(\alpha = 2\)</span></p></li>
-<li><p>For <span class="math notranslate nohighlight">\(p=1\)</span>, no power-law behavior. To achieve power-law, it is sufficient to allow partial duplication to occur some fraction <span class="math notranslate nohighlight">\(q \in (0,1)\)</span> of the times.∏</p></li>
+<li><p>For <span class="math notranslate nohighlight">\(p=1\)</span>, no power-law behavior. To achieve power-law, it is sufficient to allow partial duplication to occur some fraction <span class="math notranslate nohighlight">\(q \in (0,1)\)</span> of the times.</p></li>
 </ul>
-<figure class="align-default" id="graph-copying">
+<div class="figure align-default" id="graph-copying">
 <a class="reference internal image-reference" href="../_images/graph-copying.png"><img alt="" src="../_images/graph-copying.png" style="width: 30%;" /></a>
-<figcaption>
-<p><span class="caption-number">Fig. 172 </span><span class="caption-text">Power-law exponent <span class="math notranslate nohighlight">\(\alpha\)</span> as a function of <span class="math notranslate nohighlight">\(p\)</span> in copying model. [Kolaczyk 2009]</span><a class="headerlink" href="#graph-copying" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
-</section>
-<section id="partial-copying">
+<p class="caption"><span class="caption-number">Fig. 173 </span><span class="caption-text">Power-law exponent <span class="math notranslate nohighlight">\(\alpha\)</span> as a function of <span class="math notranslate nohighlight">\(p\)</span> in copying model. [Kolaczyk 2009]</span><a class="headerlink" href="#graph-copying" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+<div class="section" id="partial-copying">
 <h4>Partial Copying<a class="headerlink" href="#partial-copying" title="Permalink to this headline">¶</a></h4>
 <p>Kleinberg et al. [SAND 232] and by Kumar et al. [SAND 241]</p>
 <ul class="simple">
@@ -1404,14 +1425,14 @@ p(\alpha - 1) = 1- p^{\alpha - 1}
 </li>
 <li><p>generates many more dense bipartite subgraphs than are found in comparable classical random graphs, which is encountered in real web graphs.</p></li>
 </ul>
-</section>
-</section>
-<section id="fitting">
+</div>
+</div>
+<div class="section" id="fitting">
 <h3>Fitting<a class="headerlink" href="#fitting" title="Permalink to this headline">¶</a></h3>
 <p>We need to observe how the graph change over time, i.e. a sequence of ‘snap-shots’ of the graph. But often we only have the final shot. In this situation, we can still do fitting. See [SAND 407] which makes clever usage of their recursive nature to get around this lack of multiple snap-shots.</p>
-</section>
-</section>
-<section id="exponential-random-graph-models">
+</div>
+</div>
+<div class="section" id="exponential-random-graph-models">
 <h2>Exponential Random Graph Models<a class="headerlink" href="#exponential-random-graph-models" title="Permalink to this headline">¶</a></h2>
 <p>ERGM are better than the above models, in construction, estimation, comparison etc.</p>
 <p>Consider a random graph <span class="math notranslate nohighlight">\(G = (V, E)\)</span>, let <span class="math notranslate nohighlight">\(\boldsymbol{Y}\)</span> be the random adjacency matrix. An ERGM is a model specified in exponential family form for the joint distribution of the elements <span class="math notranslate nohighlight">\(y_{ij}\)</span>:</p>
@@ -1422,16 +1443,22 @@ p(\alpha - 1) = 1- p^{\alpha - 1}
 <p>where</p>
 <ul class="simple">
 <li><p>each <span class="math notranslate nohighlight">\(H\)</span> is a <strong>configuration</strong>: a set of possible edges among a subset of the vertices in <span class="math notranslate nohighlight">\(G\)</span></p></li>
-<li><p><span class="math notranslate nohighlight">\(g_{H}(\mathbf{y})=\prod_{y_{i j} \in H} y_{i j}\)</span>, which is <span class="math notranslate nohighlight">\(1\)</span> if the configuration <span class="math notranslate nohighlight">\(H\)</span> occurs in <span class="math notranslate nohighlight">\(\boldsymbol{y}\)</span>, or <span class="math notranslate nohighlight">\(0\)</span> otherwise.</p></li>
+<li><p><span class="math notranslate nohighlight">\(g_{H}(\boldsymbol{y})=\prod_{y_{i j} \in H} y_{i j}\)</span>, which is <span class="math notranslate nohighlight">\(1\)</span> if the configuration <span class="math notranslate nohighlight">\(H\)</span> occurs in <span class="math notranslate nohighlight">\(\boldsymbol{y}\)</span>, or <span class="math notranslate nohighlight">\(0\)</span> otherwise.</p></li>
 <li><p>a non-zero value for <span class="math notranslate nohighlight">\(\theta_H\)</span> means that the <span class="math notranslate nohighlight">\(Y_{ij}\)</span> are independent in <span class="math notranslate nohighlight">\(H\)</span>, conditional upon the rest of the graph</p></li>
-<li><p><span class="math notranslate nohighlight">\(\kappa = \kappa(\theta)=\sum_{\mathbf{y}} \exp \left\{\sum_{H} \theta_{H} g_{H}(\mathbf{y})\right\}\)</span> is a normalization constant.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\kappa = \kappa(\theta)=\sum_{\boldsymbol{y}} \exp \left\{\sum_{H} \theta_{H} g_{H}(\boldsymbol{y})\right\}\)</span> is a normalization constant.</p></li>
 </ul>
 <p>Note that</p>
-<ul class="simple">
+<ul>
 <li><p>The summation implies a certain (in)dependency structure among <span class="math notranslate nohighlight">\(Y_{ij}\)</span>. For given index set <span class="math notranslate nohighlight">\(\mathcal{A}, \mathcal{B}, \mathcal{C}\)</span>, the random variables <span class="math notranslate nohighlight">\(\left\{ Y_{i, j} \right\}_{(i, j) \in \mathcal{A}}\)</span> and independent of <span class="math notranslate nohighlight">\(\left\{ Y_{i, j} \right\}_{(i, j) \in \mathcal{B}}\)</span>, given the values of <span class="math notranslate nohighlight">\(\left\{ Y_{i, j} \right\}_{(i, j) \in \mathcal{C}}\)</span>.</p></li>
 <li><p>Conversely, we can begin with a collection of (in)dependence relations among subsets of elements in <span class="math notranslate nohighlight">\(\boldsymbol{Y}\)</span> and try to develop a model. But certain conditions need to be satisfied, that are formalized in the Hammersley-Clifford theorem [SAND 36].</p></li>
+<li><p>One nice property:</p>
+<div class="math notranslate nohighlight">
+\[
+  \log \left[\frac{\mathbb{P}_{\theta}\left(Y_{i j}=1 \mid \boldsymbol{Y}_{(-i j)}=\boldsymbol{y}_{(-i j)}\right)}{\mathbb{P}_{\theta}\left(Y_{i j}=0 \mid \boldsymbol{Y}_{(-i j)}=\boldsymbol{y}_{(-i j)}\right)}\right]=\theta^{\top} \Delta_{i j}(\boldsymbol{y})
+  \]</div>
+</li>
 </ul>
-<section id="bernoulli-random-graphs">
+<div class="section" id="bernoulli-random-graphs">
 <h3>Bernoulli Random Graphs<a class="headerlink" href="#bernoulli-random-graphs" title="Permalink to this headline">¶</a></h3>
 <p>If we assume each edge <span class="math notranslate nohighlight">\(e(i, j)\)</span> is formed independently with probability <span class="math notranslate nohighlight">\(p_{ij}\)</span>, i.e. <span class="math notranslate nohighlight">\(y_{ij} \sim \operatorname{Ber}(p_{ij})\)</span> and <span class="math notranslate nohighlight">\(y_{i,j} \perp y_{i ^\prime , j ^\prime}\)</span> for any <span class="math notranslate nohighlight">\((i, j)\ne (i ^\prime , j ^\prime)\)</span>, then</p>
 <ul class="simple">
@@ -1441,19 +1468,19 @@ p(\alpha - 1) = 1- p^{\alpha - 1}
 <p>The ERGM model reduces to</p>
 <div class="math notranslate nohighlight">
 \[
-\mathbb{P}_{\theta}(\mathbf{Y}=\mathbf{y})=\left(\frac{1}{\kappa} \right) \exp \left\{\sum_{i, j} \theta_{i j} y_{i j}\right\}
+\mathbb{P}_{\theta}(\boldsymbol{Y}=\boldsymbol{y})=\left(\frac{1}{\kappa} \right) \exp \left\{\sum_{i, j} \theta_{i j} y_{i j}\right\}
 \]</div>
 <p>which is another way of writing <span class="math notranslate nohighlight">\(p_{ij} = \frac{\exp(\theta_{ij})}{1+\exp(\theta_{ij})}\)</span>.</p>
 <p>Obviously, this is <span class="math notranslate nohighlight">\(\mathcal{O} (N_v^2)\)</span> number of parameters. It is common to impose an assumption of homogeneity across vertex pairs, e.g. <span class="math notranslate nohighlight">\(\theta_{ij} \equiv \theta\)</span> for all <span class="math notranslate nohighlight">\((i, j)\)</span>. Hence</p>
 <div class="math notranslate nohighlight">
 \[
-\mathbb{P}_{\theta}(\mathbf{Y}=\mathbf{y})=\left(\frac{1}{\kappa} \right) \exp \left\{\theta\sum_{i, j}  y_{i j}\right\}=\left(\frac{1}{\kappa} \right) \exp \left\{\theta N_e\right\}
+\mathbb{P}_{\theta}(\boldsymbol{Y}=\boldsymbol{y})=\left(\frac{1}{\kappa} \right) \exp \left\{\theta\sum_{i, j}  y_{i j}\right\}=\left(\frac{1}{\kappa} \right) \exp \left\{\theta N_e\right\}
 \]</div>
 <p>which is exactly the random graph model <span class="math notranslate nohighlight">\(\mathcal{G} (N_v, p)\)</span> with <span class="math notranslate nohighlight">\(p = \frac{\exp(\theta)}{\exp(\theta)}\)</span>.</p>
 <p>More generally, we can consider a partition of two sets <span class="math notranslate nohighlight">\((S_1, S_2)\)</span> of vertices, and impose homogeneity within and between sets, i.e. 3 kinds of <span class="math notranslate nohighlight">\(\theta\)</span> values. The model is then</p>
 <div class="math notranslate nohighlight">
 \[
-\mathbb{P}_{\theta}(\mathbf{Y}=\mathbf{y})=\left(\frac{1}{\kappa} \right) \exp \left\{\theta_{11}L_{11}(\boldsymbol{y})+ \theta_{12}L_{12}(\boldsymbol{y})+ \theta_{22}L_{22}(\boldsymbol{y})\right\}
+\mathbb{P}_{\theta}(\boldsymbol{Y}=\boldsymbol{y})=\left(\frac{1}{\kappa} \right) \exp \left\{\theta_{11}L_{11}(\boldsymbol{y})+ \theta_{12}L_{12}(\boldsymbol{y})+ \theta_{22}L_{22}(\boldsymbol{y})\right\}
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(L_{11}(\boldsymbol{y})\)</span> and <span class="math notranslate nohighlight">\(L_{22}(\boldsymbol{y})\)</span> are the number within-set edges for <span class="math notranslate nohighlight">\(S_1\)</span> and <span class="math notranslate nohighlight">\(S_2\)</span> respectively, and <span class="math notranslate nohighlight">\(L_{12}(\boldsymbol{y})\)</span> is the number of across-set edges.</p>
 <p>Cons</p>
@@ -1461,22 +1488,111 @@ p(\alpha - 1) = 1- p^{\alpha - 1}
 <li><p>assumption of complete independence is untenable in practice</p></li>
 <li><p>Bernoulli-like random graphs lack many characteristics of real-world graphs</p></li>
 </ul>
-</section>
-<section id="markov-random-graphs">
+</div>
+<div class="section" id="markov-random-graphs">
 <h3>Markov Random Graphs<a class="headerlink" href="#markov-random-graphs" title="Permalink to this headline">¶</a></h3>
 <p>[SAND 155]</p>
 <p>Markov dependence: two possible edges are dependent whenever they share a vertex, conditional on all other possible edges. That is, the presence or absence of <span class="math notranslate nohighlight">\((i, j)\)</span> depends on that of <span class="math notranslate nohighlight">\((i, k)\)</span> for <span class="math notranslate nohighlight">\(k\ne j\)</span>, given information on all other edges. A random graph G arising under Markov dependence conditions is called a Markov graph.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-</section>
-</section>
-</section>
+<p>What’s the joint distribution? Using the Hammersley-Clifford theorem, <span class="math notranslate nohighlight">\(G\)</span> is a Markov graph if and only if the joint distribution can be expressed as</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbb{P}_{\theta}(\boldsymbol{Y}=\boldsymbol{y})=\left(\frac{1}{\kappa} \right) \exp \left\{\sum_{k=1}^{N_{v}-1} \theta_{k} S_{k}(\boldsymbol{y})+\theta_{\tau} T(\boldsymbol{y})\right\}
+\]</div>
+<p>where</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(S_1(\boldsymbol{y} )=N_e\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(S_k(\boldsymbol{y})\)</span> is the number of <span class="math notranslate nohighlight">\(k\)</span>-stars (a tree with one vertex of degree <span class="math notranslate nohighlight">\(k\)</span> and <span class="math notranslate nohighlight">\(k\)</span> neighbors of degree 1).</p></li>
+<li><p><span class="math notranslate nohighlight">\(T(\boldsymbol{y})\)</span> is the number of triangles</p></li>
+</ul>
+<p>Note that</p>
+<ul class="simple">
+<li><p>the statistics <span class="math notranslate nohighlight">\(S_k\)</span> and <span class="math notranslate nohighlight">\(S_{k ^\prime}\)</span> are expected to be correlated (<span class="math notranslate nohighlight">\(k\)</span> stars implies <span class="math notranslate nohighlight">\(k ^\prime\)</span>-stars for <span class="math notranslate nohighlight">\(k ^\prime &lt; k\)</span>)</p></li>
+<li><p><span class="math notranslate nohighlight">\(S_k\)</span> and <span class="math notranslate nohighlight">\(T\)</span> are also correlated</p></li>
+<li><p>fitting higher order of <span class="math notranslate nohighlight">\(k\)</span> is hard</p></li>
+</ul>
+</div>
+<div class="section" id="id1">
+<h3>Fitting<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<p>The MLEs <span class="math notranslate nohighlight">\(\hat{\theta}_H\)</span> of <span class="math notranslate nohighlight">\(\theta_H\)</span> are well defined but the calculation is non-trivial. There is no developed theory for CI, testing, due to the highly dependent nature of observations.</p>
+<p>The log-likelihood is</p>
+<div class="math notranslate nohighlight">
+\[
+\ell(\theta)=\theta^{\top} \boldsymbol{g}(\boldsymbol{y})-\psi(\theta)
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\psi(\theta) = \log \kappa (\theta)\)</span> and <span class="math notranslate nohighlight">\(\kappa(\theta)=\sum_{\boldsymbol{y}} \exp \left\{\theta^{\top} \boldsymbol{g}(\boldsymbol{y})\right\}\)</span>. Taking derivative w.r.t. <span class="math notranslate nohighlight">\(\theta\)</span> on both sides gives</p>
+<div class="math notranslate nohighlight">
+\[
+\boldsymbol{g}(\boldsymbol{y}) = \frac{\partial \psi(\theta)}{\partial \theta}
+\]</div>
+<p>Note the fact <span class="math notranslate nohighlight">\(\mathbb{E}_{\theta}[\boldsymbol{g}(\boldsymbol{Y})]=\partial \psi(\theta) / \partial \theta\)</span>. Hence the MLE can be expressed as the solution to the system of equations</p>
+<div class="math notranslate nohighlight">
+\[
+\boldsymbol{g}(\boldsymbol{y}) = \mathbb{E}_{\theta}[\boldsymbol{g}(\boldsymbol{Y})]
+\]</div>
+<div class="section" id="approximate-log-likelihood">
+<h4>Approximate Log-likelihood<a class="headerlink" href="#approximate-log-likelihood" title="Permalink to this headline">¶</a></h4>
+<p>However, <span class="math notranslate nohighlight">\(\psi(\theta)\)</span> is hard to evaluate since it involves <span class="math notranslate nohighlight">\(\sum_{\boldsymbol{y}}\)</span> over <span class="math notranslate nohighlight">\(2^{\binom{N_v}{2} }\)</span> possible choice of <span class="math notranslate nohighlight">\(\boldsymbol{y}\)</span>, for each <span class="math notranslate nohighlight">\(\theta\)</span>. Two Monte Carlo approaches are used</p>
+<ul class="simple">
+<li><p>stochastic approximation of the log-likelihood <span class="math notranslate nohighlight">\(\ell(\boldsymbol{\theta} )\)</span> [SAND 209]</p></li>
+<li><p>stochastic approximation to solutions of systems of equations <span class="math notranslate nohighlight">\(\boldsymbol{g}(\boldsymbol{y}) = \frac{\partial \psi(\theta)}{\partial \theta}\)</span> by Robbins-Monro algorithm [SAND 324].</p></li>
+</ul>
+</div>
+<div class="section" id="log-pseudo-likelihood">
+<h4>Log-pseudo-likelihood<a class="headerlink" href="#log-pseudo-likelihood" title="Permalink to this headline">¶</a></h4>
+<p>A disadvantage of both of the methods above is their computationally intensive nature. To date they have been applied to networks with at most a few thousand vertices. An alternative is to estimate <span class="math notranslate nohighlight">\(\theta\)</span> by maximizing the log-pseudo-likelihood</p>
+<div class="math notranslate nohighlight">
+\[
+\sum_{\{i, j\}} \log \mathbb{P}_{\theta}\left(Y_{i j}=1 \mid \boldsymbol{Y}_{(-i j)}=\boldsymbol{y}_{(-i j)}\right)
+\]</div>
+<p>pros</p>
+<ul class="simple">
+<li><p>work best when dependencies among the elements of <span class="math notranslate nohighlight">\(\boldsymbol{y}\)</span> are relatively weak.</p></li>
+<li><p>computationally expedient</p></li>
+</ul>
+<p>cons</p>
+<ul class="simple">
+<li><p>the above condition does not hold in many real-world contexts</p></li>
+</ul>
+<p>See [SAND 37, 372]</p>
+</div>
+</div>
+<div class="section" id="goodness-of-fit">
+<h3>Goodness-of-fit<a class="headerlink" href="#goodness-of-fit" title="Permalink to this headline">¶</a></h3>
+<p>Still not well developed for graph modeling contexts. Some practice steps are</p>
+<ul class="simple">
+<li><p>simulate numerous random graphs from the fitted model</p></li>
+<li><p>compare high-level summary characteristics of these graphs, with those of the originally observed graph</p></li>
+<li><p>if poor match, then this suggests systematic differences between the specified class of models and the data, i.e. lack of goodness-of-fit</p></li>
+</ul>
+</div>
+<div class="section" id="model-degeneracy">
+<h3>Model Degeneracy<a class="headerlink" href="#model-degeneracy" title="Permalink to this headline">¶</a></h3>
+<dl class="simple myst">
+<dt>Definition (Model degeneracy)</dt><dd><p>a probability distribution that places a disproportionately large amount of its mass on a correspondingly small set of outcomes.</p>
+<ul class="simple">
+<li><p>For instance, a number of simple but popular Markov graph models have been shown to be degenerate: places most of its mass on either the empty graph, the complete graph, or a mixture of the two, depending on the value of <span class="math notranslate nohighlight">\(\theta\)</span>.</p></li>
+</ul>
+</dd>
+</dl>
+<p>For degenerate models, the transition boundary (from empty, to mixture, to complete) of <span class="math notranslate nohighlight">\(\theta\)</span> is sharp. As a result, for poorly specified ERGMs, numerical algorithms like MCMC can have substantial difficulty converging.</p>
+<p>For a case study see [SAND pg.188].</p>
+</div>
+</div>
+<div class="section" id="challenges">
+<h2>Challenges<a class="headerlink" href="#challenges" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>How to incorporate our understanding of working of an underlying complex system into the model?</p></li>
+<li><p>inference</p></li>
+<li><p>model specification</p></li>
+</ul>
+<p>Related topics</p>
+<ul class="simple">
+<li><p>dynamical/complex systems</p></li>
+<li><p>agent-based modeling (economics, sociology)</p></li>
+<li><p>graphical models</p></li>
+</ul>
+</div>
+</div>
 
     <script type="text/x-thebe-config">
     {

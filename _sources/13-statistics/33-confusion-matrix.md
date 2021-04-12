@@ -64,3 +64,16 @@ Metrics defined by overall table
   $$
 
   where $K$ is the number of classes/labels.
+
+ROC curve: receiver operating characteristics curves,
+- y-axis: true positive rate, aka TPR, recall, sensitivity
+- x-axis: false positive rate, aka FPR, 1-specificity
+- varying a parameter controlling the discrimination between positives and negatives
+- classifiers with curves pushing more into the upper left-hand corner are generally considered more desirable. 45 degree line is random guessing.
+- AUC: area under the curve, close to 1 is good. 0.5 is random guessing.
+
+:::{figure} roc
+<img src="../imgs/roc.png" width = "70%" alt=""/>
+
+ROC curves [[Wikipedia](https://en.wikipedia.org/wiki/Receiver_operating_characteristic)]
+:::

@@ -4,8 +4,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Ordinal Logistic Regression &#8212; Data Science Handbook</title>
     
   <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
@@ -94,7 +93,7 @@
   </a>
  </li>
 </ul>
-<p>
+<p class="caption collapsible-parent">
  <span class="caption-text">
   Foundations
  </span>
@@ -281,7 +280,7 @@
   </i>
  </li>
 </ul>
-<p>
+<p class="caption collapsible-parent">
  <span class="caption-text">
   Algorithms
  </span>
@@ -429,7 +428,7 @@
   </i>
  </li>
 </ul>
-<p>
+<p class="caption collapsible-parent">
  <span class="caption-text">
   Machine Learning
  </span>
@@ -887,10 +886,10 @@
         
               <div>
                 
-  <section id="ordinal-logistic-regression">
+  <div class="section" id="ordinal-logistic-regression">
 <h1>Ordinal Logistic Regression<a class="headerlink" href="#ordinal-logistic-regression" title="Permalink to this headline">¶</a></h1>
 <p>Ordinal logistic regression is used to model ordinal response.</p>
-<section id="data-structure">
+<div class="section" id="data-structure">
 <h2>Data Structure<a class="headerlink" href="#data-structure" title="Permalink to this headline">¶</a></h2>
 <p>Ordinal data means that the response <span class="math notranslate nohighlight">\(y_{ij}\)</span> are ordered, such as “disagree, neutral and agree”.</p>
 <p>We assume that responses tend to fall in higher (or lower) categories as the value of an explanatory variable increases. By this assumption, the models are more parsimonious (many fewer parameters) than models for nominal responses.</p>
@@ -900,10 +899,10 @@
 \[
 {\operatorname{P}\left(y_{i}\leq j\right)=\pi_{i1}+\cdots+\pi_{ij},\quad j=1,\ldots,c}
 \]</div>
-</section>
-<section id="cumulative-logit-models">
+</div>
+<div class="section" id="cumulative-logit-models">
 <h2>Cumulative Logit Models<a class="headerlink" href="#cumulative-logit-models" title="Permalink to this headline">¶</a></h2>
-<section id="link-functions">
+<div class="section" id="link-functions">
 <h3>Link Functions<a class="headerlink" href="#link-functions" title="Permalink to this headline">¶</a></h3>
 <p>The cumulative logits are logits of these <strong>cumulative</strong> probabilities:</p>
 <div class="math notranslate nohighlight">
@@ -930,15 +929,13 @@ in which success means <span class="math notranslate nohighlight">\(Y_{i}\leq j\
 of the explanatory variables are the same for each cumulative logit. Hence, the total number of parameters is <span class="math notranslate nohighlight">\((c-1 + p)\)</span>.</p></li>
 <li><p>Consider a special case <span class="math notranslate nohighlight">\(p=1,c=4\)</span>, then we can plot <span class="math notranslate nohighlight">\(P(Y\le j)\)</span> versus <span class="math notranslate nohighlight">\(x\)</span>. The four curves have exactly the <strong>same</strong> shape and do not cross, which is called parallelism. This is due to the common effects <span class="math notranslate nohighlight">\(\boldsymbol{\beta}\)</span>. Moreover, we can also see from the graph that <span class="math notranslate nohighlight">\(P(Y=1)\)</span> is increasing in <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(P(Y=4)\)</span> is decreasing in <span class="math notranslate nohighlight">\(x\)</span>, while <span class="math notranslate nohighlight">\(P(Y=2)\)</span> and <span class="math notranslate nohighlight">\(P(Y=3)\)</span> are not monotonic in <span class="math notranslate nohighlight">\(x\)</span>.</p></li>
 </ul>
-<figure class="align-default" id="ordinal-cum-plot">
+<div class="figure align-default" id="ordinal-cum-plot">
 <a class="reference internal image-reference" href="../_images/ordinal-cum-plot.png"><img alt="" src="../_images/ordinal-cum-plot.png" style="width: 50%;" /></a>
-<figcaption>
-<p><span class="caption-number">Fig. 56 </span><span class="caption-text">Cumulative logit model with the same effect of <span class="math notranslate nohighlight">\(x\)</span> on each of three cumulative probabilities, for an ordinal response variable with <span class="math notranslate nohighlight">\(c = 4\)</span> categories [Agresti 2015]</span><a class="headerlink" href="#ordinal-cum-plot" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
+<p class="caption"><span class="caption-number">Fig. 57 </span><span class="caption-text">Cumulative logit model with the same effect of <span class="math notranslate nohighlight">\(x\)</span> on each of three cumulative probabilities, for an ordinal response variable with <span class="math notranslate nohighlight">\(c = 4\)</span> categories [Agresti 2015]</span><a class="headerlink" href="#ordinal-cum-plot" title="Permalink to this image">¶</a></p>
 </div>
-</section>
-<section id="latent-variable-approach">
+</div>
+</div>
+<div class="section" id="latent-variable-approach">
 <h3>Latent Variable Approach<a class="headerlink" href="#latent-variable-approach" title="Permalink to this headline">¶</a></h3>
 <p>We can derive the link function from a latent variable approach. Suppose there is a latent variable</p>
 <div class="math notranslate nohighlight">
@@ -963,8 +960,8 @@ of the explanatory variables are the same for each cumulative logit. Hence, the 
 <p>When we take <span class="math notranslate nohighlight">\(F\)</span> as the CDR of standard logistic/Gaussian distribution, we get the cumulative logit/probit models.</p>
 <p>If we let <span class="math notranslate nohighlight">\({Y_{i}^{*}=-\boldsymbol{x}_{i}^{\top}\boldsymbol{\beta}+\epsilon_{i}}\)</span>
 then we can write <span class="math notranslate nohighlight">\(\operatorname{P}\left(Y_{i}\leq k\right)=F\left(\alpha_{k}+\boldsymbol{x}_{i}^{\top}\boldsymbol{\beta}\right)\)</span>.</p>
-</section>
-<section id="interpretation-and-proportional-odds">
+</div>
+<div class="section" id="interpretation-and-proportional-odds">
 <h3>Interpretation and Proportional Odds<a class="headerlink" href="#interpretation-and-proportional-odds" title="Permalink to this headline">¶</a></h3>
 <p>From the link function we derive that, for subject <span class="math notranslate nohighlight">\(i\)</span>, if <span class="math notranslate nohighlight">\(\boldsymbol{x}_{i}\)</span>
 changes from <span class="math notranslate nohighlight">\(\boldsymbol{v}\)</span> to <span class="math notranslate nohighlight">\(\boldsymbol{u}\)</span>, then</p>
@@ -981,8 +978,8 @@ changes from <span class="math notranslate nohighlight">\(\boldsymbol{v}\)</span
 \frac{\operatorname{P}\left(Y_{i}\leq j\right)}{1-\operatorname{P}\left(Y_{i}\leq j\right)}=\exp(\alpha_{j}+\boldsymbol{x}_{i}^{\top}\boldsymbol{\beta})
 \]</div>
 <p>If <span class="math notranslate nohighlight">\(x_{ik}\)</span> increases 1 unit, the odds of <span class="math notranslate nohighlight">\(Y_{i}&lt;j\)</span> is multiplied by <span class="math notranslate nohighlight">\(\exp(\beta_{k})\)</span>. We can construct confidence interval for this multiplier.</p>
-</section>
-<section id="stochastic-ordering">
+</div>
+<div class="section" id="stochastic-ordering">
 <h3>Stochastic Ordering<a class="headerlink" href="#stochastic-ordering" title="Permalink to this headline">¶</a></h3>
 <p>From the equation above we can for two different values <span class="math notranslate nohighlight">\(\boldsymbol{u},\boldsymbol{v}\)</span> of <span class="math notranslate nohighlight">\(\boldsymbol{x}_{i}\)</span>, then either</p>
 <div class="math notranslate nohighlight">
@@ -1005,11 +1002,11 @@ When there is strong evidence against the common <span class="math notranslate n
 model is still often useful for describing overall effects, with the
 fit of the more general model pointing out ways to fine-tune the description
 of effects.</p>
-</section>
-</section>
-<section id="estimation">
+</div>
+</div>
+<div class="section" id="estimation">
 <h2>Estimation<a class="headerlink" href="#estimation" title="Permalink to this headline">¶</a></h2>
-<section id="score-equations">
+<div class="section" id="score-equations">
 <h3>Score Equations<a class="headerlink" href="#score-equations" title="Permalink to this headline">¶</a></h3>
 <p>Since <span class="math notranslate nohighlight">\({\operatorname{P}\left(Y_{i}\leq j\right) = F\left(\alpha_{j} + \boldsymbol{x}_{i} ^{\top}\boldsymbol{\beta}\right)}\)</span>, the likelihood for ungrouped data is</p>
 <div class="math notranslate nohighlight">
@@ -1031,13 +1028,13 @@ of effects.</p>
 \[
 {\frac{\partial\ell}{\partial\alpha_{j}}=\sum_{j=1}^{N}\left\{ \frac{y_{ik}f\left(\alpha_{j}+\boldsymbol{x}_{i}^{\top}\boldsymbol{\beta}\right)}{F\left(\alpha_{j}+\boldsymbol{x}_{i}^{\top}\boldsymbol{\beta}\right)-F\left(\alpha_{j-1}+\boldsymbol{x}_{i}^{\top}\boldsymbol{\beta}\right)}-\frac{y_{i,j+1}f\left(\alpha_{k}+\boldsymbol{x}_{i}^{\top}\boldsymbol{\beta}\right)}{F\left(\alpha_{j+1}+\boldsymbol{x}_{i}^{\top}\boldsymbol{\beta}\right)-F\left(\alpha_{j}+\boldsymbol{x}_{i}^{\top}\boldsymbol{\beta}\right)}\right\} =0}
 \]</div>
-</section>
-<section id="computation">
+</div>
+<div class="section" id="computation">
 <h3>Computation<a class="headerlink" href="#computation" title="Permalink to this headline">¶</a></h3>
 <p>The log-likelihood function is concave for many cumulative link models, including the logit and probit. The computation is complicated, but we can still use Fisher-scoring/Newton method to solve it and we can still calculate the asymptotic variances of <span class="math notranslate nohighlight">\(\beta_{k}\)</span> and each <span class="math notranslate nohighlight">\(\alpha_{j}\)</span>.</p>
-</section>
-</section>
-<section id="comparison-to-ols">
+</div>
+</div>
+<div class="section" id="comparison-to-ols">
 <h2>Comparison to OLS<a class="headerlink" href="#comparison-to-ols" title="Permalink to this headline">¶</a></h2>
 <p>Some researchers treat the ordinal responses as continuous and fit OLS. Disadvantages of OLS include</p>
 <ul class="simple">
@@ -1045,8 +1042,8 @@ of effects.</p>
 <li><p>Cannot provide <span class="math notranslate nohighlight">\(P(Y_{i}=j)\)</span></p></li>
 <li><p>Ignore that the variability in each category can be different. Some ceiling and flooring issues arise, leading to incorrect inference. See the example in section 6.2.5.</p></li>
 </ul>
-</section>
-</section>
+</div>
+</div>
 
     <script type="text/x-thebe-config">
     {

@@ -379,7 +379,7 @@ $$
 This equation will have two solutions $\alpha$ for any given $p$, but only one will be stable.
 - For $p > 0.5671 \ldots$, the stable solution is $\alpha = 1$
 - For $p=1/2$, it is $\alpha = 2$
-- For $p=1$, no power-law behavior. To achieve power-law, it is sufficient to allow partial duplication to occur some fraction $q \in (0,1)$ of the times.∏
+- For $p=1$, no power-law behavior. To achieve power-law, it is sufficient to allow partial duplication to occur some fraction $q \in (0,1)$ of the times.
 
 :::{figure} graph-copying
 <img src="../imgs/graph-copying.png" width = "30%" alt=""/>
@@ -429,13 +429,19 @@ $$
 
 where
 - each $H$ is a **configuration**: a set of possible edges among a subset of the vertices in $G$
-- $g_{H}(\mathbf{y})=\prod_{y_{i j} \in H} y_{i j}$, which is $1$ if the configuration $H$ occurs in $\boldsymbol{y}$, or $0$ otherwise.
+- $g_{H}(\boldsymbol{y})=\prod_{y_{i j} \in H} y_{i j}$, which is $1$ if the configuration $H$ occurs in $\boldsymbol{y}$, or $0$ otherwise.
 - a non-zero value for $\theta_H$ means that the $Y_{ij}$ are independent in $H$, conditional upon the rest of the graph
-- $\kappa = \kappa(\theta)=\sum_{\mathbf{y}} \exp \left\{\sum_{H} \theta_{H} g_{H}(\mathbf{y})\right\}$ is a normalization constant.
+- $\kappa = \kappa(\theta)=\sum_{\boldsymbol{y}} \exp \left\{\sum_{H} \theta_{H} g_{H}(\boldsymbol{y})\right\}$ is a normalization constant.
 
 Note that
 - The summation implies a certain (in)dependency structure among $Y_{ij}$. For given index set $\mathcal{A}, \mathcal{B}, \mathcal{C}$, the random variables $\left\{ Y_{i, j} \right\}_{(i, j) \in \mathcal{A}}$ and independent of $\left\{ Y_{i, j} \right\}_{(i, j) \in \mathcal{B}}$, given the values of $\left\{ Y_{i, j} \right\}_{(i, j) \in \mathcal{C}}$.
 - Conversely, we can begin with a collection of (in)dependence relations among subsets of elements in $\boldsymbol{Y}$ and try to develop a model. But certain conditions need to be satisfied, that are formalized in the Hammersley-Clifford theorem [SAND 36].
+- One nice property:
+
+  $$
+  \log \left[\frac{\mathbb{P}_{\theta}\left(Y_{i j}=1 \mid \boldsymbol{Y}_{(-i j)}=\boldsymbol{y}_{(-i j)}\right)}{\mathbb{P}_{\theta}\left(Y_{i j}=0 \mid \boldsymbol{Y}_{(-i j)}=\boldsymbol{y}_{(-i j)}\right)}\right]=\theta^{\top} \Delta_{i j}(\boldsymbol{y})
+  $$
+
 
 ### Bernoulli Random Graphs
 
@@ -447,7 +453,7 @@ If we assume each edge $e(i, j)$ is formed independently with probability $p_{ij
 The ERGM model reduces to
 
 $$
-\mathbb{P}_{\theta}(\mathbf{Y}=\mathbf{y})=\left(\frac{1}{\kappa} \right) \exp \left\{\sum_{i, j} \theta_{i j} y_{i j}\right\}
+\mathbb{P}_{\theta}(\boldsymbol{Y}=\boldsymbol{y})=\left(\frac{1}{\kappa} \right) \exp \left\{\sum_{i, j} \theta_{i j} y_{i j}\right\}
 $$
 
 which is another way of writing $p_{ij} = \frac{\exp(\theta_{ij})}{1+\exp(\theta_{ij})}$.
@@ -455,7 +461,7 @@ which is another way of writing $p_{ij} = \frac{\exp(\theta_{ij})}{1+\exp(\theta
 Obviously, this is $\mathcal{O} (N_v^2)$ number of parameters. It is common to impose an assumption of homogeneity across vertex pairs, e.g. $\theta_{ij} \equiv \theta$ for all $(i, j)$. Hence
 
 $$
-\mathbb{P}_{\theta}(\mathbf{Y}=\mathbf{y})=\left(\frac{1}{\kappa} \right) \exp \left\{\theta\sum_{i, j}  y_{i j}\right\}=\left(\frac{1}{\kappa} \right) \exp \left\{\theta N_e\right\}
+\mathbb{P}_{\theta}(\boldsymbol{Y}=\boldsymbol{y})=\left(\frac{1}{\kappa} \right) \exp \left\{\theta\sum_{i, j}  y_{i j}\right\}=\left(\frac{1}{\kappa} \right) \exp \left\{\theta N_e\right\}
 $$
 
 which is exactly the random graph model $\mathcal{G} (N_v, p)$ with $p = \frac{\exp(\theta)}{\exp(\theta)}$.
@@ -464,7 +470,7 @@ More generally, we can consider a partition of two sets $(S_1, S_2)$ of vertices
 
 
 $$
-\mathbb{P}_{\theta}(\mathbf{Y}=\mathbf{y})=\left(\frac{1}{\kappa} \right) \exp \left\{\theta_{11}L_{11}(\boldsymbol{y})+ \theta_{12}L_{12}(\boldsymbol{y})+ \theta_{22}L_{22}(\boldsymbol{y})\right\}
+\mathbb{P}_{\theta}(\boldsymbol{Y}=\boldsymbol{y})=\left(\frac{1}{\kappa} \right) \exp \left\{\theta_{11}L_{11}(\boldsymbol{y})+ \theta_{12}L_{12}(\boldsymbol{y})+ \theta_{22}L_{22}(\boldsymbol{y})\right\}
 $$
 
 where $L_{11}(\boldsymbol{y})$ and $L_{22}(\boldsymbol{y})$ are the number within-set edges for $S_1$ and $S_2$ respectively, and $L_{12}(\boldsymbol{y})$ is the number of across-set edges.
@@ -479,26 +485,94 @@ Cons
 
 Markov dependence: two possible edges are dependent whenever they share a vertex, conditional on all other possible edges. That is, the presence or absence of $(i, j)$ depends on that of $(i, k)$ for $k\ne j$, given information on all other edges. A random graph G arising under Markov dependence conditions is called a Markov graph.
 
+What's the joint distribution? Using the Hammersley-Clifford theorem, $G$ is a Markov graph if and only if the joint distribution can be expressed as
 
-.
+$$
+\mathbb{P}_{\theta}(\boldsymbol{Y}=\boldsymbol{y})=\left(\frac{1}{\kappa} \right) \exp \left\{\sum_{k=1}^{N_{v}-1} \theta_{k} S_{k}(\boldsymbol{y})+\theta_{\tau} T(\boldsymbol{y})\right\}
+$$
+
+where
+- $S_1(\boldsymbol{y} )=N_e$
+- $S_k(\boldsymbol{y})$ is the number of $k$-stars (a tree with one vertex of degree $k$ and $k$ neighbors of degree 1).
+- $T(\boldsymbol{y})$ is the number of triangles
+
+Note that
+- the statistics $S_k$ and $S_{k ^\prime}$ are expected to be correlated ($k$ stars implies $k ^\prime$-stars for $k ^\prime < k$)
+- $S_k$ and $T$ are also correlated
+- fitting higher order of $k$ is hard
+
+### Fitting
+
+The MLEs $\hat{\theta}_H$ of $\theta_H$ are well defined but the calculation is non-trivial. There is no developed theory for CI, testing, due to the highly dependent nature of observations.
 
 
-.
+The log-likelihood is
+
+$$
+\ell(\theta)=\theta^{\top} \boldsymbol{g}(\boldsymbol{y})-\psi(\theta)
+$$
+
+where $\psi(\theta) = \log \kappa (\theta)$ and $\kappa(\theta)=\sum_{\boldsymbol{y}} \exp \left\{\theta^{\top} \boldsymbol{g}(\boldsymbol{y})\right\}$. Taking derivative w.r.t. $\theta$ on both sides gives
+
+$$
+\boldsymbol{g}(\boldsymbol{y}) = \frac{\partial \psi(\theta)}{\partial \theta}
+$$
+
+Note the fact $\mathbb{E}_{\theta}[\boldsymbol{g}(\boldsymbol{Y})]=\partial \psi(\theta) / \partial \theta$. Hence the MLE can be expressed as the solution to the system of equations
+
+$$
+\boldsymbol{g}(\boldsymbol{y}) = \mathbb{E}_{\theta}[\boldsymbol{g}(\boldsymbol{Y})]
+$$
+
+#### Approximate Log-likelihood
+
+However, $\psi(\theta)$ is hard to evaluate since it involves $\sum_{\boldsymbol{y}}$ over $2^{\binom{N_v}{2} }$ possible choice of $\boldsymbol{y}$, for each $\theta$. Two Monte Carlo approaches are used
+
+- stochastic approximation of the log-likelihood $\ell(\boldsymbol{\theta} )$ [SAND 209]
+- stochastic approximation to solutions of systems of equations $\boldsymbol{g}(\boldsymbol{y}) = \frac{\partial \psi(\theta)}{\partial \theta}$ by Robbins-Monro algorithm [SAND 324].
+
+#### Log-pseudo-likelihood
+
+A disadvantage of both of the methods above is their computationally intensive nature. To date they have been applied to networks with at most a few thousand vertices. An alternative is to estimate $\theta$ by maximizing the log-pseudo-likelihood
+
+$$
+\sum_{\{i, j\}} \log \mathbb{P}_{\theta}\left(Y_{i j}=1 \mid \boldsymbol{Y}_{(-i j)}=\boldsymbol{y}_{(-i j)}\right)
+$$
+
+pros
+- work best when dependencies among the elements of $\boldsymbol{y}$ are relatively weak.
+- computationally expedient
+
+cons
+- the above condition does not hold in many real-world contexts
+
+See [SAND 37, 372]
+
+### Goodness-of-fit
+
+Still not well developed for graph modeling contexts. Some practice steps are
+- simulate numerous random graphs from the fitted model
+- compare high-level summary characteristics of these graphs, with those of the originally observed graph
+- if poor match, then this suggests systematic differences between the specified class of models and the data, i.e. lack of goodness-of-fit
+
+### Model Degeneracy
 
 
-.
+Definition (Model degeneracy)
+: a probability distribution that places a disproportionately large amount of its mass on a correspondingly small set of outcomes.
+  - For instance, a number of simple but popular Markov graph models have been shown to be degenerate: places most of its mass on either the empty graph, the complete graph, or a mixture of the two, depending on the value of $\theta$.
 
+For degenerate models, the transition boundary (from empty, to mixture, to complete) of $\theta$ is sharp. As a result, for poorly specified ERGMs, numerical algorithms like MCMC can have substantial difficulty converging.
 
-.
+For a case study see [SAND pg.188].
 
+## Challenges
 
-.
+- How to incorporate our understanding of working of an underlying complex system into the model?
+- inference
+- model specification
 
-
-.
-
-
-.
-
-
-.
+Related topics
+- dynamical/complex systems
+- agent-based modeling (economics, sociology)
+- graphical models

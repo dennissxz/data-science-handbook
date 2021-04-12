@@ -4,8 +4,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Streaming Model &#8212; Data Science Handbook</title>
     
   <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
@@ -94,7 +93,7 @@
   </a>
  </li>
 </ul>
-<p>
+<p class="caption collapsible-parent">
  <span class="caption-text">
   Foundations
  </span>
@@ -281,7 +280,7 @@
   </i>
  </li>
 </ul>
-<p>
+<p class="caption collapsible-parent">
  <span class="caption-text">
   Algorithms
  </span>
@@ -429,7 +428,7 @@
   </i>
  </li>
 </ul>
-<p>
+<p class="caption collapsible-parent">
  <span class="caption-text">
   Machine Learning
  </span>
@@ -949,9 +948,9 @@
         
               <div>
                 
-  <section id="streaming-model">
+  <div class="section" id="streaming-model">
 <h1>Streaming Model<a class="headerlink" href="#streaming-model" title="Permalink to this headline">¶</a></h1>
-<section id="background">
+<div class="section" id="background">
 <h2>Background<a class="headerlink" href="#background" title="Permalink to this headline">¶</a></h2>
 <p>Problem</p>
 <ul class="simple">
@@ -1040,20 +1039,20 @@
 <li><p><a class="reference external" href="https://www.sketchingbigdata.org/fall17/">Harvard CS 226/MIT 6.889</a>: Sketching Algorithms for Big Data, Fall 2017</p></li>
 </ul>
 <p>Note: section <a class="reference internal" href="#streaming-estimate-l1"><span class="std std-ref">Estimate <span class="math notranslate nohighlight">\(\ell_1\)</span></span></a> might be a better appetizer than <a class="reference internal" href="#streaming-estimate-l0"><span class="std std-ref">Estimate <span class="math notranslate nohighlight">\(\ell_0\)</span></span></a>.</p>
-</section>
-<section id="estimate-ell-0">
+</div>
+<div class="section" id="estimate-ell-0">
 <span id="streaming-estimate-l0"></span><h2>Estimate <span class="math notranslate nohighlight">\(\ell_0\)</span><a class="headerlink" href="#estimate-ell-0" title="Permalink to this headline">¶</a></h2>
 <p>How many distinct <span class="math notranslate nohighlight">\(y_i\)</span> are there? Aka distinct element counting problem. For instance, <span class="math notranslate nohighlight">\(m = 10\)</span>, input stream is <span class="math notranslate nohighlight">\((3,6,9,3,4,5,4)\)</span>, output <span class="math notranslate nohighlight">\(5\)</span>.</p>
 <p>Reference: https://www.sketchingbigdata.org/fall17/lec/lec2.pdf</p>
-<section id="trivial-solution">
+<div class="section" id="trivial-solution">
 <h3>Trivial Solution<a class="headerlink" href="#trivial-solution" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>One trivial solution is to keep a bitvector counter <span class="math notranslate nohighlight">\(\boldsymbol{c}\)</span> of size <span class="math notranslate nohighlight">\(m\)</span>. For each number <span class="math notranslate nohighlight">\(i \in [m]\)</span>, if <span class="math notranslate nohighlight">\(c_i = 0\)</span>, then increase <span class="math notranslate nohighlight">\(x_i\)</span> from 0 to 1.</p></li>
 <li><p>Another trivial solution is to just store the stream, which takes <span class="math notranslate nohighlight">\(\min(m, n) \log m\)</span> bits.</p></li>
 </ul>
 <p>These methods are not efficient if <span class="math notranslate nohighlight">\(m, n\)</span> are large.</p>
-</section>
-<section id="fm-algorithm">
+</div>
+<div class="section" id="fm-algorithm">
 <h3>FM Algorithm<a class="headerlink" href="#fm-algorithm" title="Permalink to this headline">¶</a></h3>
 <!-- Let $k$ be the true number of distinct element. We find an estimate $\hat{k}$ such that
 
@@ -1138,8 +1137,8 @@ For small enough $\epsilon$,
 </div>
 </li>
 </ul>
-</section>
-<section id="fm">
+</div>
+<div class="section" id="fm">
 <h3>FM+<a class="headerlink" href="#fm" title="Permalink to this headline">¶</a></h3>
 <p>Similarly to the Morris+, we can upgrade our basic algorithm into FM+ by running it <span class="math notranslate nohighlight">\(s = \frac{1}{\epsilon^2\eta}\)</span> times in parallel to obtain <span class="math notranslate nohighlight">\(X_1, X_2, \ldots, X_s\)</span>. The output is</p>
 <div class="math notranslate nohighlight">
@@ -1155,17 +1154,17 @@ For small enough $\epsilon$,
 \end{aligned}
 \end{split}\]</div>
 <p>Total space is <span class="math notranslate nohighlight">\(\mathcal{O} (\frac{1}{\epsilon^2 \eta})\)</span>.</p>
-</section>
-<section id="id1">
+</div>
+<div class="section" id="id1">
 <h3>FM++<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
 <p>Run <span class="math notranslate nohighlight">\(t = \Theta(\log \frac{1}{\eta} )\)</span> independent copies of FM+, each with <span class="math notranslate nohighlight">\(\eta = \frac{1}{3}\)</span>. Output the median of <span class="math notranslate nohighlight">\(t\)</span> FM+ estimates.</p>
 <p>Total space is <span class="math notranslate nohighlight">\(\mathcal{O} (\log \frac{1}{\delta} \cdot \frac{1}{\epsilon^2}  )\)</span>.</p>
-</section>
-</section>
-<section id="estimate-ell-1">
+</div>
+</div>
+<div class="section" id="estimate-ell-1">
 <span id="streaming-estimate-l1"></span><h2>Estimate <span class="math notranslate nohighlight">\(\ell_1\)</span><a class="headerlink" href="#estimate-ell-1" title="Permalink to this headline">¶</a></h2>
 <p>How many <span class="math notranslate nohighlight">\(y_i\)</span> are there, i.e. How large is <span class="math notranslate nohighlight">\(n\)</span>? Aka counting problem. A trivial solution is to maintain a counter, which requires space <span class="math notranslate nohighlight">\(\mathcal{O}(\log n)\)</span> bits. But when <span class="math notranslate nohighlight">\(n\)</span> is large, can we do better? We introduce Morris counter in insertion-only streams. Morris algorithm was developed in 1970s, when memory was expensive.</p>
-<section id="morris">
+<div class="section" id="morris">
 <h3>Morris<a class="headerlink" href="#morris" title="Permalink to this headline">¶</a></h3>
 <p>The Morris algorithms is</p>
 <hr class="docutils" />
@@ -1226,8 +1225,8 @@ For small enough $\epsilon$,
 </li>
 </ul>
 <p>However, the upper bound <span class="math notranslate nohighlight">\(\delta = \frac{1}{2\epsilon^2}\)</span> is not very meaningful. We only have <span class="math notranslate nohighlight">\(\delta &lt; 1\)</span> when <span class="math notranslate nohighlight">\(\epsilon &gt; 1\)</span>, for which we can simply return 0. Is there any way to find a smaller upper bound? Currently <span class="math notranslate nohighlight">\(\operatorname{Var}\left( \hat{n} \right) = \Theta(n^2)\)</span>, can we find another estimate that does better?</p>
-</section>
-<section id="id2">
+</div>
+<div class="section" id="id2">
 <h3>Morris+<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
 <p>Run in parallel: <span class="math notranslate nohighlight">\(s\)</span> independent instantiations of Morris estimator <span class="math notranslate nohighlight">\(\hat{n}\)</span>, then return the average, denoted <span class="math notranslate nohighlight">\(\hat{n}_+\)</span>. Hence</p>
 <div class="math notranslate nohighlight">
@@ -1235,8 +1234,8 @@ For small enough $\epsilon$,
 <p>Note that <span class="math notranslate nohighlight">\(\mathbb{E} [\hat{n}_+]\)</span> is still unbiased. The upper bound now becomes <span class="math notranslate nohighlight">\(\frac{1}{s}\cdot \frac{1}{2\epsilon^2}\)</span>. How to choose <span class="math notranslate nohighlight">\(s\)</span>? To ensure failure probability is less than <span class="math notranslate nohighlight">\(\delta\)</span>, we can set <span class="math notranslate nohighlight">\(s \ge \frac{1}{2\epsilon ^2 \delta}\)</span>. Equivalently, we say that we can set <span class="math notranslate nohighlight">\(s = \Theta \left( \frac{1}{\epsilon^2 \delta}  \right)\)</span>, for suitable constant.</p>
 <p>In total there are <span class="math notranslate nohighlight">\(s\)</span> number of <span class="math notranslate nohighlight">\(X\)</span>, each <span class="math notranslate nohighlight">\(X\)</span> takes <span class="math notranslate nohighlight">\(\mathcal{O} (\log \log n)\)</span>. The total space for an Morris++ estimator <span class="math notranslate nohighlight">\(\hat{n}\)</span> with <span class="math notranslate nohighlight">\((\epsilon, \delta)\)</span> guarantee is then <span class="math notranslate nohighlight">\(\Theta\left( \frac{1}{\epsilon^{2} \delta} \cdot \log \log n\right)\)</span>.</p>
 <p>We can further improve the result by using Morris++.</p>
-</section>
-<section id="id3">
+</div>
+<div class="section" id="id3">
 <h3>Morris++<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
 <p>Run in parallel: <span class="math notranslate nohighlight">\(t\)</span> independent instantiations of Morris+ estimator <span class="math notranslate nohighlight">\(\hat{n}_{+}\)</span> with failure probability at most <span class="math notranslate nohighlight">\(\frac{1}{3}\)</span>, by setting <span class="math notranslate nohighlight">\(s = \Theta \left( \frac{1}{\epsilon^2\frac{1}{3} }  \right) =  \Theta \left( \frac{1}{\epsilon^2} \right)\)</span>. Then return their median, denoted as <span class="math notranslate nohighlight">\(\hat{n}_{+ +}\)</span>.</p>
 <p>What’s the failure probability of the median <span class="math notranslate nohighlight">\(\hat{n}_{+ +}\)</span>? If it fails, then at least half of <span class="math notranslate nohighlight">\(\hat{n}_{+}\)</span> fails, i.e. at most half succeed. Formally, define</p>
@@ -1258,9 +1257,9 @@ Y_{i}=\left\{\begin{array}{ll}
 \end{aligned}\end{split}\]</div>
 <p>To get the failure probability at most <span class="math notranslate nohighlight">\(\delta\)</span>, we can set <span class="math notranslate nohighlight">\(t = \Theta(\log \frac{1}{\delta})\)</span>.</p>
 <p>In total there are <span class="math notranslate nohighlight">\(t \times s\)</span> number of <span class="math notranslate nohighlight">\(X\)</span>. The total space of Morris++ with success probability <span class="math notranslate nohighlight">\(\delta\)</span> is then <span class="math notranslate nohighlight">\(\Theta\left(\log \frac{1}{\delta} \cdot \frac{1}{\epsilon^{2}} \cdot \log \log n\right)\)</span>. In particular, for constant <span class="math notranslate nohighlight">\(\epsilon, \delta\)</span> (say each 1/100), the total space complexity is <span class="math notranslate nohighlight">\(\mathcal{O} (\log \log n)\)</span> with constant probability. This is exponentially better than the <span class="math notranslate nohighlight">\(\mathcal{O} (\log n)\)</span> space achieved by storing a counter.</p>
-</section>
-</section>
-<section id="estimate-ell-2">
+</div>
+</div>
+<div class="section" id="estimate-ell-2">
 <h2>Estimate <span class="math notranslate nohighlight">\(\ell_2\)</span><a class="headerlink" href="#estimate-ell-2" title="Permalink to this headline">¶</a></h2>
 <p>AMS algorithm.</p>
 <p>maintain a single number <span class="math notranslate nohighlight">\(z = \sum_{i=1}^n s_i x_i\)</span>.</p>
@@ -1269,7 +1268,7 @@ Y_{i}=\left\{\begin{array}{ll}
 <p>Consider turnstile model: a stream of <span class="math notranslate nohighlight">\(n\)</span> input <span class="math notranslate nohighlight">\((i, \Delta)\)</span> to update <span class="math notranslate nohighlight">\(x_i \mathrel{+}=\Delta\)</span>. We want to approximate <span class="math notranslate nohighlight">\(\ell_2 = \left\| \boldsymbol{x}  \right\| _2\)</span>. In statistics, this is related to the second order moment of <span class="math notranslate nohighlight">\(X\)</span>, which describe how disperse the distribution is.</p>
 <p>We introduce Alon-Matias-Szegedy’96 (AMS) Algorithm to estimate <span class="math notranslate nohighlight">\(\ell_2 ^2 = \left\| \boldsymbol{x}  \right\| _2 ^2\)</span>.
 For another method Johnson-Lindenstrauss (JL) Lemma, see <a class="reference external" href="https://www.sketchingbigdata.org/fall17/lec/lec3.pdf">here</a>. For <span class="math notranslate nohighlight">\(\ell_p\)</span>-norm approximation, see here [https://www.sketchingbigdata.org/fall17/lec/lec4.pdf].</p>
-<section id="ams">
+<div class="section" id="ams">
 <h3>AMS<a class="headerlink" href="#ams" title="Permalink to this headline">¶</a></h3>
 <p>Let <span class="math notranslate nohighlight">\(s_i \in \left\{ -1, 1 \right\}\)</span> with equal probability.</p>
 <hr class="docutils" />
@@ -1350,18 +1349,18 @@ For another method Johnson-Lindenstrauss (JL) Lemma, see <a class="reference ext
 <p>If we set <span class="math notranslate nohighlight">\(c=\Theta(1)\)</span> and <span class="math notranslate nohighlight">\(k=\Theta\left(1 / \varepsilon^{2}\right)\)</span>, we get a <span class="math notranslate nohighlight">\((1 \pm \epsilon)\)</span> approximation with constant probability.</p>
 <p>Note that we need 4-wise independence of <span class="math notranslate nohighlight">\(s_1, \ldots, s_m\)</span> to bound <span class="math notranslate nohighlight">\(\mathbb{E} \left[ \left( \sum_{i=1}^m s_i x_i \right)^2 \right]\)</span>, which requires <span class="math notranslate nohighlight">\(\mathcal{O} (\log m)\)</span> random bits. (<span class="math notranslate nohighlight">\(p\log m\)</span> random bits for <span class="math notranslate nohighlight">\(p\)</span>-wise independence). Besides, there are <span class="math notranslate nohighlight">\(\mathcal{O} (\frac{1}{\epsilon^2})\)</span> number of <span class="math notranslate nohighlight">\(Z\)</span>’s, with maximum value <span class="math notranslate nohighlight">\(nm\)</span>, so total we need <span class="math notranslate nohighlight">\(\mathcal{O} (\frac{1}{\epsilon^2} \log(mn))\)</span> bits.</p>
 <p>We can formulate our algorithm in vector form. Let <span class="math notranslate nohighlight">\(\boldsymbol{S}\)</span> be an <span class="math notranslate nohighlight">\(k \times n\)</span> matrix where <span class="math notranslate nohighlight">\(s_{ij} = \pm 1\)</span> with equal probability, then basically we are just maintaining the vector <span class="math notranslate nohighlight">\(\boldsymbol{Z} = \boldsymbol{S} \boldsymbol{y}\)</span> throughout the algorithm and answering the query by outputting <span class="math notranslate nohighlight">\(\left\| \boldsymbol{Z}  \right\|_2 ^2 / k\)</span>. Here <span class="math notranslate nohighlight">\(\boldsymbol{Z}\)</span> is a <strong>linear sketch</strong> <span class="math notranslate nohighlight">\(C(\boldsymbol{y})\)</span> of <span class="math notranslate nohighlight">\(\boldsymbol{y}\)</span>.</p>
-</section>
-<section id="id4">
+</div>
+<div class="section" id="id4">
 <h3>AMS++<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
-<aside class="margin sidebar">
+<div class="margin sidebar">
 <p class="sidebar-title"></p>
 <p>Since AMS already use averaging, we denote AMS++ for taking median, as in FM++ and Morris ++.</p>
-</aside>
+</div>
 <p>To get a <span class="math notranslate nohighlight">\((\epsilon, \delta)\)</span> approximation, we run <span class="math notranslate nohighlight">\(t = \mathcal{O} (\log \frac{1}{\delta})\)</span> independent instantiations of AMS and take the median, similar to FM++ and Morris++.</p>
 <p>There are <span class="math notranslate nohighlight">\(\mathcal{O} (\log \frac{1}{\delta} \cdot \frac{1}{\epsilon^2} )\)</span> number of <span class="math notranslate nohighlight">\(Z\)</span>’s, and <span class="math notranslate nohighlight">\(\mathcal{O} (\log m)\)</span> random bits for sign <span class="math notranslate nohighlight">\(s\)</span>’s.</p>
-</section>
-</section>
-<section id="estimate-x-i">
+</div>
+</div>
+<div class="section" id="estimate-x-i">
 <h2>Estimate <span class="math notranslate nohighlight">\(x_i\)</span><a class="headerlink" href="#estimate-x-i" title="Permalink to this headline">¶</a></h2>
 <p>(Review <span class="math notranslate nohighlight">\(k\)</span>-wise independent hash function <a class="reference external" href="https://www.sketchingbigdata.org/fall17/lec/lec2.pdf">here</a>)</p>
 <p>Now we want to estimate the frequency <span class="math notranslate nohighlight">\(x_i\)</span> of <span class="math notranslate nohighlight">\(i\)</span>. Aka coordinate approximation.</p>
@@ -1417,11 +1416,11 @@ y_{3}-y_{4}+y_{8} \\
 \end{array}\right) \\
 \end{array}
 \end{split}\]</div>
-</section>
-<section id="l-p-sampler">
+</div>
+<div class="section" id="l-p-sampler">
 <h2><span class="math notranslate nohighlight">\(L_p\)</span>-sampler<a class="headerlink" href="#l-p-sampler" title="Permalink to this headline">¶</a></h2>
 <p>Suppose we want to sample</p>
-<section id="l-0-sampler">
+<div class="section" id="l-0-sampler">
 <h3><span class="math notranslate nohighlight">\(L_0\)</span>-sampler<a class="headerlink" href="#l-0-sampler" title="Permalink to this headline">¶</a></h3>
 <p>Want: sample one of the non-zero coordinates with uniform probability <span class="math notranslate nohighlight">\(\frac{1}{\|x\|_{0}}+n^{-c}\)</span>.</p>
 <p>Assume each <span class="math notranslate nohighlight">\(x_i \in [-W, W]\)</span> where <span class="math notranslate nohighlight">\(W = \log(n)\)</span>.</p>
@@ -1448,9 +1447,9 @@ y_{3}-y_{4}+y_{8} \\
 <li><p>else if it has more than one non-zero coordinate, it fails with high probability</p></li>
 </ul>
 <p>How to maintain <span class="math notranslate nohighlight">\(S_i\)</span>? Use <span class="math notranslate nohighlight">\(k\)</span>-wise independent hash function.</p>
-</section>
-</section>
-<section id="graph-streaming">
+</div>
+</div>
+<div class="section" id="graph-streaming">
 <h2>Graph Streaming<a class="headerlink" href="#graph-streaming" title="Permalink to this headline">¶</a></h2>
 <p>Consider a graph arrival model: edge arrival or vertex arrival in a stream. It may be insertion-only or dynamic.</p>
 <p>For instance, problems include:</p>
@@ -1460,8 +1459,8 @@ y_{3}-y_{4}+y_{8} \\
 <li><p>maximum matching</p></li>
 </ul>
 <p>See <a class="reference external" href="https://www.sketchingbigdata.org/fall17/lec/lec18.pdf">link</a>.</p>
-</section>
-<section id="other-problems">
+</div>
+<div class="section" id="other-problems">
 <h2>Other Problems<a class="headerlink" href="#other-problems" title="Permalink to this headline">¶</a></h2>
 <p>Set cover: subsets come in a stream, cannot store all of them.</p>
 <p>Offline: <span class="math notranslate nohighlight">\(\mathcal{O} (\log n)\)</span>-approximation.</p>
@@ -1485,8 +1484,8 @@ y_{3}-y_{4}+y_{8} \\
 <p>.</p>
 <p>.</p>
 <p>.</p>
-</section>
-</section>
+</div>
+</div>
 
     <script type="text/x-thebe-config">
     {

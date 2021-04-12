@@ -4,8 +4,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Minimum Knapsack &#8212; Data Science Handbook</title>
     
   <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
@@ -94,7 +93,7 @@
   </a>
  </li>
 </ul>
-<p>
+<p class="caption collapsible-parent">
  <span class="caption-text">
   Foundations
  </span>
@@ -281,7 +280,7 @@
   </i>
  </li>
 </ul>
-<p>
+<p class="caption collapsible-parent">
  <span class="caption-text">
   Algorithms
  </span>
@@ -429,7 +428,7 @@
   </i>
  </li>
 </ul>
-<p>
+<p class="caption collapsible-parent">
  <span class="caption-text">
   Machine Learning
  </span>
@@ -882,9 +881,9 @@
         
               <div>
                 
-  <section id="minimum-knapsack">
+  <div class="section" id="minimum-knapsack">
 <h1>Minimum Knapsack<a class="headerlink" href="#minimum-knapsack" title="Permalink to this headline">¶</a></h1>
-<section id="problem">
+<div class="section" id="problem">
 <h2>Problem<a class="headerlink" href="#problem" title="Permalink to this headline">¶</a></h2>
 <dl class="simple myst">
 <dt>Input</dt><dd><p>There are <span class="math notranslate nohighlight">\(n\)</span> kinds of items, each kind of item has a value <span class="math notranslate nohighlight">\(v_i\)</span>, integer weight <span class="math notranslate nohighlight">\(w_i\)</span>, and infinite number of it.</p>
@@ -898,15 +897,15 @@
 \max &amp;\ \sum _{i=1}^n  v_i x_i \\
 \text{s.t.} &amp;\  \sum _{i=1}^n  w_i x_i \le b,\ x_i \in \mathbb{N}
 \end{aligned}\end{split}\]</div>
-</section>
-<section id="analysis">
+</div>
+<div class="section" id="analysis">
 <h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
 <p>Since the objective function and constraint are both linear in <span class="math notranslate nohighlight">\(x_i\)</span>, this is a linear programming problem.</p>
-<section id="subproblems">
+<div class="section" id="subproblems">
 <h3>Subproblems<a class="headerlink" href="#subproblems" title="Permalink to this headline">¶</a></h3>
 <p>The subproblem can be defined by <span class="math notranslate nohighlight">\(k\)</span> and <span class="math notranslate nohighlight">\(y\)</span>, where <span class="math notranslate nohighlight">\(k\)</span> is the first <span class="math notranslate nohighlight">\(k \le n\)</span> kinds of items, and <span class="math notranslate nohighlight">\(y\le b\)</span> is the weight constraint. When <span class="math notranslate nohighlight">\(k=n,y=b\)</span> then this is the original problem. The computational order can be <span class="math notranslate nohighlight">\(k=1,\ldots,n\)</span> and for each <span class="math notranslate nohighlight">\(k\)</span>, <span class="math notranslate nohighlight">\(y=1,\ldots,b\)</span>.</p>
-</section>
-<section id="iterative-relation">
+</div>
+<div class="section" id="iterative-relation">
 <h3>Iterative Relation<a class="headerlink" href="#iterative-relation" title="Permalink to this headline">¶</a></h3>
 <p>Let <span class="math notranslate nohighlight">\(F_{k,y}\)</span> the total optimized value of subproblem <span class="math notranslate nohighlight">\((k,b)\)</span>. Consider the last category <span class="math notranslate nohighlight">\(k\)</span>. We can either select none, or select one, at each selection step. The iterative relation is</p>
 <div class="math notranslate nohighlight">
@@ -931,9 +930,9 @@ F_{k,y}&amp;=-\infty, \quad y &lt; 0\\
 F_{k,y} = \max _{0 \le x_k \le \left\lfloor\frac{y}{w_{k}}\right\rfloor} \left\{ F_{k-1,y-x_k w_k} + x_k v_k \right\}
 \]</div>
 <p>But to compute <span class="math notranslate nohighlight">\(F_{k,y}\)</span>, this way needs <span class="math notranslate nohighlight">\(\left\lfloor\frac{y}{w_{k}}\right\rfloor\)</span> iterations over <span class="math notranslate nohighlight">\(x_k\)</span>, which can be <span class="math notranslate nohighlight">\(O(b)\)</span>, unlike <span class="math notranslate nohighlight">\(O(1)\)</span> two-value comparison in the previous way.</p>
-</section>
-</section>
-<section id="algorithm">
+</div>
+</div>
+<div class="section" id="algorithm">
 <h2>Algorithm<a class="headerlink" href="#algorithm" title="Permalink to this headline">¶</a></h2>
 <p>The DP table can be computed as discussed above. Here we discuss how to trace the solution <span class="math notranslate nohighlight">\(x_i, \ldots, x_n\)</span>.</p>
 <p>First we define a label function <span class="math notranslate nohighlight">\(i_{k,y}\)</span>. Let <span class="math notranslate nohighlight">\(i_{k,y}\)</span> be the maximum label of items added in the solution of subproblem <span class="math notranslate nohighlight">\((k,y)\)</span>. We can find that</p>
@@ -962,19 +961,15 @@ b=10
 \end{array}
 \end{split}\]</div>
 <p>The DP table <span class="math notranslate nohighlight">\(F_{k,y}\)</span> is</p>
-<figure class="align-default" id="knapsack-dp-table">
+<div class="figure align-default" id="knapsack-dp-table">
 <a class="reference internal image-reference" href="../_images/knapsack-dp-table.png"><img alt="" src="../_images/knapsack-dp-table.png" style="width: 50%;" /></a>
-<figcaption>
-<p><span class="caption-number">Fig. 15 </span><span class="caption-text">DP table</span><a class="headerlink" href="#knapsack-dp-table" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
+<p class="caption"><span class="caption-number">Fig. 16 </span><span class="caption-text">DP table</span><a class="headerlink" href="#knapsack-dp-table" title="Permalink to this image">¶</a></p>
+</div>
 <p>and the track table with values <span class="math notranslate nohighlight">\(i_{k,y}\)</span> is</p>
-<figure class="align-default" id="knapsack-track-table">
+<div class="figure align-default" id="knapsack-track-table">
 <a class="reference internal image-reference" href="../_images/knapsack-track-table.png"><img alt="" src="../_images/knapsack-track-table.png" style="width: 50%;" /></a>
-<figcaption>
-<p><span class="caption-number">Fig. 16 </span><span class="caption-text">Track table</span><a class="headerlink" href="#knapsack-track-table" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
+<p class="caption"><span class="caption-number">Fig. 17 </span><span class="caption-text">Track table</span><a class="headerlink" href="#knapsack-track-table" title="Permalink to this image">¶</a></p>
+</div>
 <p>To track a solution, we start from the right bottom entry,</p>
 <ul class="simple">
 <li><p>Since <span class="math notranslate nohighlight">\(i_{4,10} = 4\)</span>, this implies <span class="math notranslate nohighlight">\(x_4 \ge 1\)</span>. We then go to <span class="math notranslate nohighlight">\(i_{4,10-w_4} = i_{4,3}\)</span>, i.e. subproblem <span class="math notranslate nohighlight">\((4,3)\)</span></p></li>
@@ -1002,16 +997,16 @@ b=10
 </li>
 <li><p>If <span class="math notranslate nohighlight">\(i_{j,y}\ne 0\)</span> then goto 3</p></li>
 </ol>
-</section>
-<section id="complexity">
+</div>
+<div class="section" id="complexity">
 <h2>Complexity<a class="headerlink" href="#complexity" title="Permalink to this headline">¶</a></h2>
 <p>There are <span class="math notranslate nohighlight">\(O(nb)\)</span> entries, and each entry takes <span class="math notranslate nohighlight">\(O(1)\)</span> for the two-value max comparison.</p>
 <p>So total <span class="math notranslate nohighlight">\(O(nb)\)</span>.</p>
 <p>Note that this is pseudo-polynomial time, since <span class="math notranslate nohighlight">\(b\)</span> is not a problem size.</p>
-</section>
-<section id="extensions">
+</div>
+<div class="section" id="extensions">
 <h2>Extensions<a class="headerlink" href="#extensions" title="Permalink to this headline">¶</a></h2>
-<section id="number-constraints">
+<div class="section" id="number-constraints">
 <h3>Number Constraints<a class="headerlink" href="#number-constraints" title="Permalink to this headline">¶</a></h3>
 <p>For each kind of item, there is a maximum number to be added.</p>
 <div class="math notranslate nohighlight">
@@ -1025,13 +1020,13 @@ F_{k-1,y} &amp; \text { select none } \\
 F_{\color{red}{k-1},y-w_k} + v_k&amp; \text { select one }
 \end{array}\right\}
 \end{split}\]</div>
-</section>
-<section id="multiple-knapsacks">
+</div>
+<div class="section" id="multiple-knapsacks">
 <h3>Multiple Knapsacks<a class="headerlink" href="#multiple-knapsacks" title="Permalink to this headline">¶</a></h3>
 <p>There are multiple knapsack, each has weight constraint <span class="math notranslate nohighlight">\(b_j\)</span>.</p>
-</section>
-</section>
-</section>
+</div>
+</div>
+</div>
 
     <script type="text/x-thebe-config">
     {

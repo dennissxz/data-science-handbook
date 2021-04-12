@@ -4,8 +4,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sampling &#8212; Data Science Handbook</title>
     
   <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
@@ -94,7 +93,7 @@
   </a>
  </li>
 </ul>
-<p>
+<p class="caption collapsible-parent">
  <span class="caption-text">
   Foundations
  </span>
@@ -281,7 +280,7 @@
   </i>
  </li>
 </ul>
-<p>
+<p class="caption collapsible-parent">
  <span class="caption-text">
   Algorithms
  </span>
@@ -429,7 +428,7 @@
   </i>
  </li>
 </ul>
-<p>
+<p class="caption collapsible-parent">
  <span class="caption-text">
   Machine Learning
  </span>
@@ -972,7 +971,7 @@
         
               <div>
                 
-  <section id="sampling">
+  <div class="section" id="sampling">
 <h1>Sampling<a class="headerlink" href="#sampling" title="Permalink to this headline">¶</a></h1>
 <p>In this section we introduce some some sampling methods for various problem settings. Suppose we generate a sample <span class="math notranslate nohighlight">\(\left\{ x_1, x_2, \ldots, x_n \right\}\)</span> from some distribution <span class="math notranslate nohighlight">\(p(x)\)</span>.</p>
 <p>If the exact functional form of <span class="math notranslate nohighlight">\(p(x)\)</span> is unknown or hard to obtain, but we know some function <span class="math notranslate nohighlight">\(f(x)\)</span> that is proportional to <span class="math notranslate nohighlight">\(p(x)\)</span> up to some normalizing constant, then we can use <span class="math notranslate nohighlight">\(f(x)\)</span> to obtain the sample. Some methods include</p>
@@ -985,7 +984,7 @@
 </li>
 </ul>
 <p>For multivariate distributions, e.g. <span class="math notranslate nohighlight">\(d=2\)</span>, if we want to generate a sample <span class="math notranslate nohighlight">\(\left\{ (x_1, y_1), \ldots, (x_n, y_n) \right\}\)</span> from unknown <span class="math notranslate nohighlight">\(p(x,y)\)</span>, and <span class="math notranslate nohighlight">\(f(x \vert y )\propto p(x\vert y)\)</span> and <span class="math notranslate nohighlight">\(f(y \vert x )\propto p(x\vert y)\)</span> are known, then we can use <span class="math notranslate nohighlight">\(f(x \vert y)\)</span> and <span class="math notranslate nohighlight">\(f(y \vert x)\)</span> to obtain the sample. Gibbs sampling solve this problem setting.</p>
-<section id="estimation-of-mean-and-total">
+<div class="section" id="estimation-of-mean-and-total">
 <span id="estimation-mean-total"></span><h2>Estimation of Mean and Total<a class="headerlink" href="#estimation-of-mean-and-total" title="Permalink to this headline">¶</a></h2>
 <p>Setup</p>
 <ul class="simple">
@@ -995,9 +994,9 @@
 <li><p><span class="math notranslate nohighlight">\(S = \left\{ i_1, \ldots, i_n \right\}\)</span> is a sample of <span class="math notranslate nohighlight">\(n\)</span> units from <span class="math notranslate nohighlight">\(U\)</span>, and we can observe <span class="math notranslate nohighlight">\(y_i\)</span> for each <span class="math notranslate nohighlight">\(i \in S\)</span>.</p></li>
 </ul>
 <p>Estimation of population total <span class="math notranslate nohighlight">\(\tau\)</span> or average <span class="math notranslate nohighlight">\(\mu\)</span> from a random sample is an ubiquitous task.</p>
-<section id="equal-probability-sampling">
+<div class="section" id="equal-probability-sampling">
 <h3>Equal Probability Sampling<a class="headerlink" href="#equal-probability-sampling" title="Permalink to this headline">¶</a></h3>
-<section id="with-replacement">
+<div class="section" id="with-replacement">
 <h4>With Replacement<a class="headerlink" href="#with-replacement" title="Permalink to this headline">¶</a></h4>
 <p>Consider a sample <span class="math notranslate nohighlight">\(S\)</span> uniformly from <span class="math notranslate nohighlight">\(U\)</span> with replacement, then we have unbiased estimates</p>
 <div class="math notranslate nohighlight">
@@ -1010,8 +1009,8 @@
 \operatorname{Var}\left( \hat{\mu} \right) = \frac{\sigma^2}{n}  \quad \operatorname{Var}\left( \hat{\tau} \right) =  \frac{N_u^2\sigma^2}{n}
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(\sigma^2\)</span> is the population variance, which can be estimates by <span class="math notranslate nohighlight">\(s^2 = \frac{1}{n-1} \sum_{i \in S} (y_i - \bar{y})^2\)</span>.</p>
-</section>
-<section id="without-replacement">
+</div>
+<div class="section" id="without-replacement">
 <h4>Without Replacement<a class="headerlink" href="#without-replacement" title="Permalink to this headline">¶</a></h4>
 <p>Now consider sampling without replacement. The inclusion probability of unit <span class="math notranslate nohighlight">\(i\)</span> in a sample of size <span class="math notranslate nohighlight">\(n\)</span> is</p>
 <div class="math notranslate nohighlight">
@@ -1033,13 +1032,13 @@
 \[
 \operatorname{Var}\left( \hat{\mu}_\pi \right) = \frac{N_u - n}{N_u } \frac{ \sigma^2 }{n} &lt; \frac{\sigma^2 }{n}   \quad \operatorname{Var}\left( \hat{\tau}_\pi \right) = \frac{N_u (N_u - n) \sigma^2 }{n} &lt; \frac{N_u ^2 \sigma^2 }{n}  
 \]</div>
-</section>
-</section>
-<section id="unequal-probability-sampling">
+</div>
+</div>
+<div class="section" id="unequal-probability-sampling">
 <h3>Unequal Probability Sampling<a class="headerlink" href="#unequal-probability-sampling" title="Permalink to this headline">¶</a></h3>
 <p>In many situations, some units are more likely than others to be included in a sample, either by design or by accident, e.g. interviewing people on a street, locating homeless vs homeowners, etc. Sampling under designs of this sort is called <strong>unequal</strong> probability sampling.</p>
 <p>In this setting, the sample mean is a biased estimator for <span class="math notranslate nohighlight">\(\mu\)</span>. The Horvitz-Thompson estimator remedies this problem. Note that the Horvitz-Thompson estimator does not depend on the number of times a unit may be selected. Each distinct unit of the sample is utilized only once. We first consider sampling without replacement such that all units in <span class="math notranslate nohighlight">\(S\)</span> is distinct.</p>
-<section id="horvitz-thompson-estimate">
+<div class="section" id="horvitz-thompson-estimate">
 <h4>Horvitz-Thompson Estimate<a class="headerlink" href="#horvitz-thompson-estimate" title="Permalink to this headline">¶</a></h4>
 <p>Suppose that each unit <span class="math notranslate nohighlight">\(i \in U\)</span> has probability <span class="math notranslate nohighlight">\(\pi_i\)</span> of being included in a sample <span class="math notranslate nohighlight">\(S\)</span> of size <span class="math notranslate nohighlight">\(n\)</span>. The Horvitz-Thompson estimate of <span class="math notranslate nohighlight">\(\tau\)</span> and <span class="math notranslate nohighlight">\(\mu\)</span> is</p>
 <div class="math notranslate nohighlight">
@@ -1078,8 +1077,8 @@
 \[
 \mathbb{V}\left(\hat{\mu}_{\pi}\right)=\frac{1}{N_u^2}  \mathbb{V}\left(\hat{\tau}_{\pi}\right) \quad  \mathbb{V}\left(\hat{\mu}_{\pi}\right)=\frac{1}{N_u^2}  \widehat{\mathbb{V}}\left(\hat{\tau}_{\pi}\right)
 \]</div>
-</section>
-<section id="id1">
+</div>
+<div class="section" id="id1">
 <h4>With Replacement<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h4>
 <p>Now we consider sampling with replacement. We first obtain a sample <span class="math notranslate nohighlight">\(S\)</span> of size <span class="math notranslate nohighlight">\(n\)</span>, then find a set <span class="math notranslate nohighlight">\(S^*\)</span> of distinct units from <span class="math notranslate nohighlight">\(S\)</span>, and use <span class="math notranslate nohighlight">\(S^*\)</span> to compute the Horvitz-Thompson estimates.</p>
 <p>Let <span class="math notranslate nohighlight">\(p_i\)</span> be the probability of being selected in each of the <span class="math notranslate nohighlight">\(n\)</span> times for <span class="math notranslate nohighlight">\(i \in U\)</span>. It is easy to see that the inclusion probability in <span class="math notranslate nohighlight">\(S^*\)</span> (or equivalently, sample <span class="math notranslate nohighlight">\(S\)</span>) are</p>
@@ -1093,12 +1092,12 @@
 \end{aligned}\end{split}\]</div>
 <p>Horvitz-Thompson estimators can be computed with these values.</p>
 <p>If <span class="math notranslate nohighlight">\(p_i\)</span> is directly proportional to the values <span class="math notranslate nohighlight">\(c_i\)</span> of some characteristic of <span class="math notranslate nohighlight">\(i\)</span>, i.e., <span class="math notranslate nohighlight">\(p_i = \frac{c_i}{\sum c_i}\)</span> we call this <strong>probability proportional to size</strong> (PPS) sampling. For instance, households might be selected for a marketing survey by drawing names from a database, in which case those households with more members in the database have a larger chance of being included.</p>
-</section>
-</section>
-</section>
-<section id="estimation-of-group-size-and-species">
+</div>
+</div>
+</div>
+<div class="section" id="estimation-of-group-size-and-species">
 <h2>Estimation of Group Size and Species<a class="headerlink" href="#estimation-of-group-size-and-species" title="Permalink to this headline">¶</a></h2>
-<section id="group-size">
+<div class="section" id="group-size">
 <h3>Group Size<a class="headerlink" href="#group-size" title="Permalink to this headline">¶</a></h3>
 <p>The estimation of group total <span class="math notranslate nohighlight">\(\tau\)</span> above usually involve <span class="math notranslate nohighlight">\(N_u\)</span>, but often <span class="math notranslate nohighlight">\(N_u\)</span> is unknown, e.g. populations of endangered animal species. One method to estimate <span class="math notranslate nohighlight">\(N_u\)</span> is the class of <strong>capture-recapture</strong> estimators. The simplest version involves two stages</p>
 <ol class="simple">
@@ -1115,8 +1114,8 @@
 \widehat{V}\left(\hat{N}_{u}^{(c / r)}\right)=\frac{n_{1} n_{2}\left(n_{1}-m\right)\left(n_{2}-m\right)}{m^{3}}
 \]</div>
 <p>If <span class="math notranslate nohighlight">\(n_1\)</span> and <span class="math notranslate nohighlight">\(n_2\)</span> are fixed, then <span class="math notranslate nohighlight">\(m\)</span> follows a hypergeometric distribution, and the integer part of <span class="math notranslate nohighlight">\(\hat{N}_u^{(c/r)}\)</span> corresponds to MLE of <span class="math notranslate nohighlight">\(N_u\)</span>.</p>
-</section>
-<section id="group-species">
+</div>
+<div class="section" id="group-species">
 <h3>Group Species<a class="headerlink" href="#group-species" title="Permalink to this headline">¶</a></h3>
 <p>Aka species problem. Suppose there <span class="math notranslate nohighlight">\(N_s\)</span> number of species in the forest, how to estimate <span class="math notranslate nohighlight">\(N_s\)</span>? Similar problems include how many words did Shakespeare know based on his published works, and how many kinds of ancient coins minted by a society based on archaeological finds.</p>
 <p>It is possible that there are an arbitrary number of species in the population in arbitrarily small proportions. This fact allows for the species problem to potentially be quite ill-posed.</p>
@@ -1135,9 +1134,9 @@
 <ul class="simple">
 <li><p>suffer from significant bias and large variance in small samples</p></li>
 </ul>
-</section>
-</section>
-<section id="monte-carlo">
+</div>
+</div>
+<div class="section" id="monte-carlo">
 <h2>Monte Carlo<a class="headerlink" href="#monte-carlo" title="Permalink to this headline">¶</a></h2>
 <p>Given a random variable <span class="math notranslate nohighlight">\(X\)</span> with PDF <span class="math notranslate nohighlight">\(f\)</span>, sometimes we need to compute the expectation of <span class="math notranslate nohighlight">\(g(X)\)</span>:</p>
 <div class="math notranslate nohighlight">
@@ -1159,36 +1158,36 @@
 \[
 \widehat{\mathbb{E}}_{h}(g(X)) = \frac{(1 / n) \sum_{i=1}^{n} w\left(x_{i}\right) g\left(x_{i}\right)}{(1 / n) \sum_{i=1}^{n} w\left(x_{i}\right)}
 \]</div>
-</section>
-<section id="rejection-sampling">
+</div>
+<div class="section" id="rejection-sampling">
 <h2>Rejection Sampling<a class="headerlink" href="#rejection-sampling" title="Permalink to this headline">¶</a></h2>
-</section>
-<section id="markov-chain-monte-carlo">
+</div>
+<div class="section" id="markov-chain-monte-carlo">
 <h2>Markov Chain Monte Carlo<a class="headerlink" href="#markov-chain-monte-carlo" title="Permalink to this headline">¶</a></h2>
-<section id="general-setting">
+<div class="section" id="general-setting">
 <h3>General Setting<a class="headerlink" href="#general-setting" title="Permalink to this headline">¶</a></h3>
-</section>
-<section id="metropolis-hastings">
+</div>
+<div class="section" id="metropolis-hastings">
 <h3>Metropolis Hastings<a class="headerlink" href="#metropolis-hastings" title="Permalink to this headline">¶</a></h3>
 <p>MH is a particular case of MCMC.</p>
-</section>
-</section>
-<section id="gibbs-sampling">
+</div>
+</div>
+<div class="section" id="gibbs-sampling">
 <h2>Gibbs Sampling<a class="headerlink" href="#gibbs-sampling" title="Permalink to this headline">¶</a></h2>
-</section>
-<section id="others">
+</div>
+<div class="section" id="others">
 <h2>Others<a class="headerlink" href="#others" title="Permalink to this headline">¶</a></h2>
 <p>Finite Population Sampling</p>
-<section id="poisson-sampling">
+<div class="section" id="poisson-sampling">
 <h3>Poisson Sampling<a class="headerlink" href="#poisson-sampling" title="Permalink to this headline">¶</a></h3>
-</section>
-<section id="bernoulli-sampling">
+</div>
+<div class="section" id="bernoulli-sampling">
 <h3>Bernoulli Sampling<a class="headerlink" href="#bernoulli-sampling" title="Permalink to this headline">¶</a></h3>
-</section>
-</section>
-<section id="exercise">
+</div>
+</div>
+<div class="section" id="exercise">
 <h2>Exercise<a class="headerlink" href="#exercise" title="Permalink to this headline">¶</a></h2>
-<section id="sampling-from-a-triangle">
+<div class="section" id="sampling-from-a-triangle">
 <h3>Sampling from a Triangle<a class="headerlink" href="#sampling-from-a-triangle" title="Permalink to this headline">¶</a></h3>
 <p>Tags: TwoSigma, Quant, 20Q4</p>
 <p><em>How to generate uniformly distributed points in a triangle in a <span class="math notranslate nohighlight">\(xy\)</span>-plane, given the coordinates of the three vertices? Suppose that you have a generator that can generate uniformly distributed random values over the interval <span class="math notranslate nohighlight">\([0,1]\)</span> and you can use it twice.</em></p>
@@ -1310,9 +1309,9 @@ y_{32}
 <img alt="../_images/71-sampling_7_0.png" src="../_images/71-sampling_7_0.png" />
 </div>
 </div>
-</section>
-</section>
-</section>
+</div>
+</div>
+</div>
 
     <script type="text/x-thebe-config">
     {

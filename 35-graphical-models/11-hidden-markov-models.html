@@ -4,8 +4,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Hidden Markov Models &#8212; Data Science Handbook</title>
     
   <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
@@ -94,7 +93,7 @@
   </a>
  </li>
 </ul>
-<p>
+<p class="caption collapsible-parent">
  <span class="caption-text">
   Foundations
  </span>
@@ -281,7 +280,7 @@
   </i>
  </li>
 </ul>
-<p>
+<p class="caption collapsible-parent">
  <span class="caption-text">
   Algorithms
  </span>
@@ -429,7 +428,7 @@
   </i>
  </li>
 </ul>
-<p>
+<p class="caption collapsible-parent">
  <span class="caption-text">
   Machine Learning
  </span>
@@ -908,7 +907,7 @@
         
               <div>
                 
-  <section id="hidden-markov-models">
+  <div class="section" id="hidden-markov-models">
 <h1>Hidden Markov Models<a class="headerlink" href="#hidden-markov-models" title="Permalink to this headline">¶</a></h1>
 <p>A hidden Markov model has a two sequences: state <span class="math notranslate nohighlight">\(S_t\)</span> and observation <span class="math notranslate nohighlight">\(O_t\)</span>. The hidden, unobservable states <span class="math notranslate nohighlight">\(S_t\)</span> follow a Markov chain with transition probability <span class="math notranslate nohighlight">\(P(S_t \vert S_{t-1})\)</span> and the observation follows a conditional distribution <span class="math notranslate nohighlight">\(P(X_t \vert S_t=s_t)\)</span> parameterized by <span class="math notranslate nohighlight">\(s_t\)</span>.</p>
 <div class="math notranslate nohighlight">
@@ -924,17 +923,17 @@
 <li><p>Given a large number of observations, how could you learn a
 model of the conditional distribution <span class="math notranslate nohighlight">\(P(X_t\vert S_t)\)</span>? (the <strong>training</strong> problem)</p></li>
 </ul>
-<section id="problems">
+<div class="section" id="problems">
 <h2>Problems<a class="headerlink" href="#problems" title="Permalink to this headline">¶</a></h2>
 <p>Notations:</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(\boldsymbol{P}\)</span>: <span class="math notranslate nohighlight">\(n\times n\)</span> state transition probability matrix, where <span class="math notranslate nohighlight">\(p_{ij} = P(S_{t+1} = j\vert S_t = i)\)</span></p></li>
 <li><p><span class="math notranslate nohighlight">\(\boldsymbol{\pi}  = (\pi_1, \ldots, \pi_n)\)</span>: initial state distribution, where <span class="math notranslate nohighlight">\(\pi_s = P(S_1 = s)\)</span></p></li>
 </ul>
-<aside class="margin sidebar">
+<div class="margin sidebar">
 <p class="sidebar-title"></p>
 <p>Note that <span class="math notranslate nohighlight">\(x\)</span> can be a vector. For simplicity, we use unbold symbol.</p>
-</aside>
+</div>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(e _s(x)\)</span>: emission distribution in state <span class="math notranslate nohighlight">\(i\)</span>. <span class="math notranslate nohighlight">\(e_{i}(x) = P(X_{t} = x\vert S_t = s)\)</span>, where <span class="math notranslate nohighlight">\(x\)</span> is discrete, e.g. Poisson. If we want to model continuous observation, we can use continuous-density HMM, where <span class="math notranslate nohighlight">\(e_s(x)\)</span> can be a Gaussian or mixture of Gaussian (or neural networks), whose parameters depend on state <span class="math notranslate nohighlight">\(s\)</span>.</p></li>
 </ul>
@@ -946,13 +945,11 @@ model of the conditional distribution <span class="math notranslate nohighlight"
 <li><p>Training (learning): How to estimate the parameters <span class="math notranslate nohighlight">\(\boldsymbol{\theta} = \left\{ \boldsymbol{P} , \boldsymbol{e} ,\pi \right\}\)</span>? Baum-Welch algorithm (EM applied to HMMs)</p></li>
 </ul>
 <p>To better understand the algorithms above, we introduce two diagrams of state transition. The left graph encodes the transition matrix <span class="math notranslate nohighlight">\(\boldsymbol{P}\)</span>, and the right trellis shows state transition along time.</p>
-<figure class="align-default" id="markov-transition">
+<div class="figure align-default" id="markov-transition">
 <a class="reference internal image-reference" href="../_images/markov-transition.png"><img alt="" src="../_images/markov-transition.png" style="width: 80%;" /></a>
-<figcaption>
-<p><span class="caption-number">Fig. 101 </span><span class="caption-text">Markov transition illustration</span><a class="headerlink" href="#markov-transition" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
-<section id="scoring">
+<p class="caption"><span class="caption-number">Fig. 102 </span><span class="caption-text">Markov transition illustration</span><a class="headerlink" href="#markov-transition" title="Permalink to this image">¶</a></p>
+</div>
+<div class="section" id="scoring">
 <h3>Scoring<a class="headerlink" href="#scoring" title="Permalink to this headline">¶</a></h3>
 <p>Given <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span>, to compute <span class="math notranslate nohighlight">\(p(\boldsymbol{x} \vert \boldsymbol{\theta} )\)</span>, on may attempt to enumerate all possible transitions <span class="math notranslate nohighlight">\(\boldsymbol{s}\)</span></p>
 <div class="math notranslate nohighlight">
@@ -963,7 +960,7 @@ p(\boldsymbol{x} \vert \boldsymbol{\theta})
 &amp;= \sum _ \boldsymbol{s} \left[ e_{s_1}(x_1)e_{s_2}(x_2)\ldots e_{s_T}(x_T) \right] \left[ \pi_{s_1} p_{s_1 s_2} \ldots p_{s_{T-1} s_T} \right]\\
 \end{aligned}\end{split}\]</div>
 <p>Clearly, the computation is intractable, since the number of possible state sequences <span class="math notranslate nohighlight">\(\boldsymbol{s}\)</span> is <span class="math notranslate nohighlight">\(n^T\)</span>.</p>
-<section id="forward-algorithm">
+<div class="section" id="forward-algorithm">
 <h4>Forward Algorithm<a class="headerlink" href="#forward-algorithm" title="Permalink to this headline">¶</a></h4>
 <p>Forward algorithm is a dynamic programming algorithm to compute <span class="math notranslate nohighlight">\(p(\boldsymbol{x} \vert \boldsymbol{\theta})\)</span>.</p>
 <p>Define a forward probability, for time <span class="math notranslate nohighlight">\(1\le t \le T\)</span>, state <span class="math notranslate nohighlight">\(1\le s \le n\)</span>,</p>
@@ -1008,8 +1005,8 @@ p(\boldsymbol{x} \vert \boldsymbol{\theta} )&amp;= \boldsymbol{1} _n ^\top \bold
 </ul>
 <hr class="docutils" />
 <p>There are <span class="math notranslate nohighlight">\(n\times T\)</span> entries, and each entry takes <span class="math notranslate nohighlight">\(O(n)\)</span> to compute. So the total complexity is <span class="math notranslate nohighlight">\(O(n^2 T)\)</span>, much smaller than the brute force’s <span class="math notranslate nohighlight">\(O(n^T)\)</span>.</p>
-</section>
-<section id="backward-algorithm">
+</div>
+<div class="section" id="backward-algorithm">
 <h4>Backward Algorithm<a class="headerlink" href="#backward-algorithm" title="Permalink to this headline">¶</a></h4>
 <p>Backward algorithm is a dynamic programming algorithm to compute <span class="math notranslate nohighlight">\(p(\boldsymbol{x} \vert \boldsymbol{\theta})\)</span>.</p>
 <p>Define a backward probability, for time <span class="math notranslate nohighlight">\(1\le t \le T-1\)</span>, state <span class="math notranslate nohighlight">\(1\le s \le n\)</span>,</p>
@@ -1062,9 +1059,9 @@ p(\boldsymbol{x} \vert \boldsymbol{\theta} )&amp;=
 <li><p>The name “forward” and “backward” refer to the order of filling the entries in the DP table. In forward algorithm, we fill the entries by increasing order of <span class="math notranslate nohighlight">\(t\)</span>, so we call it “forward”. In backward algorithm, we fill the entries by decreasing order of <span class="math notranslate nohighlight">\(t\)</span>, so we call it “backward”.</p></li>
 </ul>
 </div>
-</section>
-</section>
-<section id="decoding">
+</div>
+</div>
+<div class="section" id="decoding">
 <h3>Decoding<a class="headerlink" href="#decoding" title="Permalink to this headline">¶</a></h3>
 <p>Recall the problem: given an observation sequence <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span>, what is the most probable underlying state sequence <span class="math notranslate nohighlight">\(\boldsymbol{s} = (s_1, \ldots, s_T)\)</span>?</p>
 <p>One attempt is to choose the individually most probable state by</p>
@@ -1077,7 +1074,7 @@ p(\boldsymbol{x} \vert \boldsymbol{\theta} )&amp;=
 \boldsymbol{s} ^* = \underset{\boldsymbol{s} }{\operatorname{argmax}}\, p(\boldsymbol{s} \vert \boldsymbol{x} , \boldsymbol{\theta} )
 \]</div>
 <p>Viterbi Algorithm can solve this problem.</p>
-<section id="viterbi-algorithm">
+<div class="section" id="viterbi-algorithm">
 <h4>Viterbi Algorithm<a class="headerlink" href="#viterbi-algorithm" title="Permalink to this headline">¶</a></h4>
 <p>Define probability <span class="math notranslate nohighlight">\(v_t(s)\)</span> as the probability of the most probable state path for the observation sequence <span class="math notranslate nohighlight">\((x_1, x_2, \ldots, x_t)\)</span> ending in state <span class="math notranslate nohighlight">\(s\)</span> at time <span class="math notranslate nohighlight">\(t\)</span>.</p>
 <div class="math notranslate nohighlight">
@@ -1108,16 +1105,16 @@ v_t(s) = e_s(x_t) \max _{1 \le k \le n } v_{t-1}(k) p_{ks}
 </ul>
 <hr class="docutils" />
 <p>As in forward algorithm, complexity is <span class="math notranslate nohighlight">\(n^2 T\)</span>.</p>
-</section>
-</section>
-<section id="training">
+</div>
+</div>
+<div class="section" id="training">
 <h3>Training<a class="headerlink" href="#training" title="Permalink to this headline">¶</a></h3>
 <p>Given an observation sequence <span class="math notranslate nohighlight">\(\boldsymbol{x} _t\)</span>, we to find parameters <span class="math notranslate nohighlight">\(\boldsymbol{\theta} = \left\{ \boldsymbol{P}, \boldsymbol{e} , \boldsymbol{\pi}   \right\}\)</span> that maximize the probability of the observations</p>
 <div class="math notranslate nohighlight">
 \[
 \boldsymbol{\theta} ^* = \underset{\boldsymbol{\theta} }{\operatorname{argmax}} \, p(\boldsymbol{x} \vert \boldsymbol{\theta} )
 \]</div>
-<section id="counting">
+<div class="section" id="counting">
 <h4>Counting<a class="headerlink" href="#counting" title="Permalink to this headline">¶</a></h4>
 <p>If the state sequence is given, then maximum likelihood for <span class="math notranslate nohighlight">\(p_{ij}\)</span> and <span class="math notranslate nohighlight">\(e_s(x)\)</span> is easy by counting.</p>
 <div class="math notranslate nohighlight">
@@ -1131,8 +1128,8 @@ n_s(x) &amp;= \text{number of $x$ emitted from state $s$}  &amp; e_s(x) &amp;= \
 \tilde{c}(i,j) &amp;= c(i,j) + r(i,j)  \\
 \tilde{n}_s(x) &amp;= n_s(x)  + r_s(x)
 \end{aligned}\end{split}\]</div>
-</section>
-<section id="baum-welch-algorithm">
+</div>
+<div class="section" id="baum-welch-algorithm">
 <h4>Baum-Welch algorithm<a class="headerlink" href="#baum-welch-algorithm" title="Permalink to this headline">¶</a></h4>
 <p>Usually the states are not given, so we provide initial guess, and iteratively update <span class="math notranslate nohighlight">\(\boldsymbol{\theta}\)</span>. Similar like Gaussian Mixture, we use an EM algorithm, and Baum-Welch algorithm does so.</p>
 <p>Consider a transition probability <span class="math notranslate nohighlight">\(p_t (i,j)\)</span> <strong>defined</strong> at time <span class="math notranslate nohighlight">\(t\)</span>. It can be found as</p>
@@ -1169,10 +1166,10 @@ p_t(i) := \operatorname{P} \left\{ S_t = i \vert \boldsymbol{x} _t, \boldsymbol{
 \end{aligned}\end{split}\]</div>
 <p>So we obtain new estimate <span class="math notranslate nohighlight">\(\hat{\boldsymbol{\theta} }\)</span>.</p>
 <p>It can be shown that <span class="math notranslate nohighlight">\(p(\boldsymbol{x} _t \vert \hat{\boldsymbol{\theta} }) \ge p(\boldsymbol{x} _t \vert \boldsymbol{\theta} )\)</span>, i.e. the likelihood is increased after re-estimation. Therefore, we can iterate the re-estimation formulas until some convergence threshold is reached. This algorithm is guaranteed to find a local maximum of the likelihood, but not a global one</p>
-</section>
-</section>
-</section>
-<section id="properties">
+</div>
+</div>
+</div>
+<div class="section" id="properties">
 <h2>Properties<a class="headerlink" href="#properties" title="Permalink to this headline">¶</a></h2>
 <p>An HMM is a model of the joint distribution of observation sequence <span class="math notranslate nohighlight">\(\boldsymbol{x} _T\)</span> and state sequence <span class="math notranslate nohighlight">\(\boldsymbol{s}_T\)</span>.</p>
 <div class="math notranslate nohighlight">
@@ -1182,7 +1179,7 @@ p(\boldsymbol{x} _T, \boldsymbol{s} _T)
 &amp;= \pi_{s_1} e_{s_1}(x_1) \prod _{t=2}^T p_{s_{t-1} s_t} e_{s_t}(x_t) \\
 \end{aligned}\end{split}\]</div>
 <p>We can deduce many properties of HMM. We should note whether the data we want to model with satisfy these properties.</p>
-<section id="independence">
+<div class="section" id="independence">
 <h3>Independence<a class="headerlink" href="#independence" title="Permalink to this headline">¶</a></h3>
 <p>Given the state at time <span class="math notranslate nohighlight">\(t\)</span>,</p>
 <ul>
@@ -1196,16 +1193,14 @@ p(\boldsymbol{x} _T, \boldsymbol{s} _T)
 </li>
 </ul>
 <p>Question: do natural languages satisfy these properties?</p>
-</section>
-<section id="state-duration-distribution">
+</div>
+<div class="section" id="state-duration-distribution">
 <h3>State Duration Distribution<a class="headerlink" href="#state-duration-distribution" title="Permalink to this headline">¶</a></h3>
 <p>The probability of staying in state <span class="math notranslate nohighlight">\(i\)</span> for <span class="math notranslate nohighlight">\(d\)</span> consecutive time steps and leave is <span class="math notranslate nohighlight">\(p_{ii}^{d-1} \times (1-p_{ii})\)</span>, which is a geometric distribution with monotonically decreasing density. In contrast, in real-life data, durations of “states” we want to to model often look nothing like that – example of phoneme durations.</p>
-<figure class="align-default" id="hmm-state-duration">
+<div class="figure align-default" id="hmm-state-duration">
 <a class="reference internal image-reference" href="../_images/hmm-state-duration.png"><img alt="" src="../_images/hmm-state-duration.png" style="width: 70%;" /></a>
-<figcaption>
-<p><span class="caption-number">Fig. 102 </span><span class="caption-text">State Duration Modeling</span><a class="headerlink" href="#hmm-state-duration" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
+<p class="caption"><span class="caption-number">Fig. 103 </span><span class="caption-text">State Duration Modeling</span><a class="headerlink" href="#hmm-state-duration" title="Permalink to this image">¶</a></p>
+</div>
 <p>Possible solutions:</p>
 <ul class="simple">
 <li><p>Replace transition probabilities with explicit duration distributions [Ostendorf ’96]</p>
@@ -1222,9 +1217,9 @@ transition structures</p></li>
 </ul>
 </li>
 </ul>
-</section>
-</section>
-<section id="applications">
+</div>
+</div>
+<div class="section" id="applications">
 <h2>Applications<a class="headerlink" href="#applications" title="Permalink to this headline">¶</a></h2>
 <p>HMM can be applied to anything that has “state” and “sequence” attributes.</p>
 <p><strong>Automatic speech recognition</strong></p>
@@ -1245,14 +1240,12 @@ transition structures</p></li>
 <li><p>As in speech recognition, the “activity” can be labeled or unlabeled</p></li>
 </ul>
 <p><strong>Speech Tagging</strong></p>
-<figure class="align-default" id="hmm-speech-tagging">
+<div class="figure align-default" id="hmm-speech-tagging">
 <a class="reference internal image-reference" href="../_images/hmm-speech-tagging.png"><img alt="" src="../_images/hmm-speech-tagging.png" style="width: 50%;" /></a>
-<figcaption>
-<p><span class="caption-number">Fig. 103 </span><span class="caption-text">HMM in part-of-speech tagging [Julia Hockenmeyer]</span><a class="headerlink" href="#hmm-speech-tagging" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
-</section>
-</section>
+<p class="caption"><span class="caption-number">Fig. 104 </span><span class="caption-text">HMM in part-of-speech tagging [Julia Hockenmeyer]</span><a class="headerlink" href="#hmm-speech-tagging" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+</div>
 
     <script type="text/x-thebe-config">
     {

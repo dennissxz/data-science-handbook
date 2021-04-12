@@ -4,8 +4,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Data Issues &#8212; Data Science Handbook</title>
     
   <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
@@ -94,7 +93,7 @@
   </a>
  </li>
 </ul>
-<p>
+<p class="caption collapsible-parent">
  <span class="caption-text">
   Foundations
  </span>
@@ -281,7 +280,7 @@
   </i>
  </li>
 </ul>
-<p>
+<p class="caption collapsible-parent">
  <span class="caption-text">
   Algorithms
  </span>
@@ -429,7 +428,7 @@
   </i>
  </li>
 </ul>
-<p>
+<p class="caption collapsible-parent">
  <span class="caption-text">
   Machine Learning
  </span>
@@ -899,14 +898,14 @@
         
               <div>
                 
-  <section id="data-issues">
+  <div class="section" id="data-issues">
 <h1>Data Issues<a class="headerlink" href="#data-issues" title="Permalink to this headline">¶</a></h1>
-<section id="missing-values">
+<div class="section" id="missing-values">
 <span id="id1"></span><h2>Missing Values<a class="headerlink" href="#missing-values" title="Permalink to this headline">¶</a></h2>
-<section id="types">
+<div class="section" id="types">
 <h3>Types<a class="headerlink" href="#types" title="Permalink to this headline">¶</a></h3>
 <p>An entry <span class="math notranslate nohighlight">\(x_{ij}\)</span> can be missing due to various reasons.</p>
-<section id="completely-at-random">
+<div class="section" id="completely-at-random">
 <h4>Completely at Random<a class="headerlink" href="#completely-at-random" title="Permalink to this headline">¶</a></h4>
 <p>Missing completely at random (MCAR) means for each variable <span class="math notranslate nohighlight">\(j\)</span>, every entry is equally likely to be missing</p>
 <div class="math notranslate nohighlight">
@@ -914,41 +913,41 @@
 \operatorname{P} (x_{ij} \text{ is missing} ) = p_j
 \]</div>
 <p>Then we have a smaller sample. This will increase the standard errors of estimators (lower precision), but it does not cause bias.</p>
-</section>
-<section id="at-random">
+</div>
+<div class="section" id="at-random">
 <h4>At Random<a class="headerlink" href="#at-random" title="Permalink to this headline">¶</a></h4>
 <p>Missing at random (MAR) means that the probability of missing can also depend on some attributes of the subject, say other values <span class="math notranslate nohighlight">\(x_{i, -j}\)</span></p>
 <div class="math notranslate nohighlight">
 \[
 \operatorname{P} (x_{ij} \text{ is missing} ) = f(x_{i, -j})
 \]</div>
-</section>
-<section id="not-at-random">
+</div>
+<div class="section" id="not-at-random">
 <h4>Not at Random<a class="headerlink" href="#not-at-random" title="Permalink to this headline">¶</a></h4>
 <p>Missing not at random (MNAR) means that the probability of missing can depends on some unobservable variables <span class="math notranslate nohighlight">\(Z_{ij}\)</span></p>
 <div class="math notranslate nohighlight">
 \[
 \operatorname{P} (x_{ij} \text{ is missing} ) = f(z_{ij})
 \]</div>
-</section>
-<section id="depends-on-response">
+</div>
+<div class="section" id="depends-on-response">
 <h4>Depends on Response<a class="headerlink" href="#depends-on-response" title="Permalink to this headline">¶</a></h4>
 <p>The probability of missing depends on the value of <span class="math notranslate nohighlight">\(y\)</span>.</p>
 <p>In this case, in the missing data, the relation estimated from the observed data may not hold.</p>
-</section>
-</section>
-<section id="imputation">
+</div>
+</div>
+<div class="section" id="imputation">
 <h3>Imputation<a class="headerlink" href="#imputation" title="Permalink to this headline">¶</a></h3>
 <p>Imputation means how we fill the missing entries.</p>
-<section id="drop">
+<div class="section" id="drop">
 <h4>Drop<a class="headerlink" href="#drop" title="Permalink to this headline">¶</a></h4>
 <p>Simple drop observation <span class="math notranslate nohighlight">\(i\)</span> if any entry <span class="math notranslate nohighlight">\(x_{ij}\)</span> is missing. This is acceptable when in MAR, MCAR and when the missing is infrequent.</p>
-</section>
-<section id="by-mean">
+</div>
+<div class="section" id="by-mean">
 <h4>By Mean<a class="headerlink" href="#by-mean" title="Permalink to this headline">¶</a></h4>
 <p>We can impute <span class="math notranslate nohighlight">\(x_{ij}\)</span> by the column mean <span class="math notranslate nohighlight">\(\bar{x}_{\cdot j}\)</span>. But if <span class="math notranslate nohighlight">\(x_{ij}\)</span> is deterministic on other variables, then after imputation this dependent relation does not hold.</p>
-</section>
-<section id="by-regression">
+</div>
+<div class="section" id="by-regression">
 <h4>By Regression<a class="headerlink" href="#by-regression" title="Permalink to this headline">¶</a></h4>
 <p>Suppose <span class="math notranslate nohighlight">\(X_j\)</span> is deterministic on other explanatory variables <span class="math notranslate nohighlight">\(X_{-j}\)</span>, we can estimate this relation by regression <span class="math notranslate nohighlight">\(x_j\)</span> over all other explanatory variables to maintain this dependent relation in the imputed data.</p>
 <div class="note admonition">
@@ -960,10 +959,10 @@
 <li><p><span class="math notranslate nohighlight">\(\hat{\sigma}^2\)</span> increases</p></li>
 </ul>
 </div>
-</section>
-</section>
-</section>
-<section id="imbalanced-data">
+</div>
+</div>
+</div>
+<div class="section" id="imbalanced-data">
 <h2>Imbalanced Data<a class="headerlink" href="#imbalanced-data" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>un/down sampling to make them balance in the data set</p>
@@ -973,16 +972,16 @@
 </li>
 <li><p>up/down weighting in the loss function</p></li>
 </ul>
-</section>
-<section id="normality">
+</div>
+<div class="section" id="normality">
 <h2>Normality<a class="headerlink" href="#normality" title="Permalink to this headline">¶</a></h2>
 <p>Some model or methods assume normality of data. If some variables are not from normal distribution, we can try to transform them to normal, e.g. Box-Cox transformation.</p>
 <p>ref</p>
 <ul class="simple">
 <li><p>preprocessing <a class="reference external" href="https://mp.weixin.qq.com/s/SCmCY3joCmn6FJcKYwtlwg?utm_medium=email&amp;_hsmi=120495215&amp;_hsenc=p2ANqtz-8IbhySDq8KZwn2MNO0fqXLg0vL7SYTAIiAOHDsWSV5An-vlSjm7VtKDbhA7A-9nsS-IfCqqcJ3Wvs5DNLzgl4I8XCt5A&amp;utm_content=120495215&amp;utm_source=hs_email">link</a></p></li>
 </ul>
-</section>
-</section>
+</div>
+</div>
 
     <script type="text/x-thebe-config">
     {

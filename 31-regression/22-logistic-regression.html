@@ -4,8 +4,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Logistic Regression &#8212; Data Science Handbook</title>
     
   <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
@@ -94,7 +93,7 @@
   </a>
  </li>
 </ul>
-<p>
+<p class="caption collapsible-parent">
  <span class="caption-text">
   Foundations
  </span>
@@ -281,7 +280,7 @@
   </i>
  </li>
 </ul>
-<p>
+<p class="caption collapsible-parent">
  <span class="caption-text">
   Algorithms
  </span>
@@ -429,7 +428,7 @@
   </i>
  </li>
 </ul>
-<p>
+<p class="caption collapsible-parent">
  <span class="caption-text">
   Machine Learning
  </span>
@@ -947,7 +946,7 @@
         
               <div>
                 
-  <section id="logistic-regression">
+  <div class="section" id="logistic-regression">
 <h1>Logistic Regression<a class="headerlink" href="#logistic-regression" title="Permalink to this headline">¶</a></h1>
 <p>Aka binomial GLM.</p>
 <p>Logistic regression is used to model binary response <span class="math notranslate nohighlight">\(Y_i \sim \operatorname{Ber}(p_i)\)</span>.</p>
@@ -964,17 +963,15 @@ Y_i &amp;= \boldsymbol{x}_i ^\top \boldsymbol{\beta} + \varepsilon_i \\
 <li><p>Error and <span class="math notranslate nohighlight">\(Y\)</span> are negatively correlated.</p></li>
 <li><p>Prediction: to predict a binary outcome, if predicted probability is larger than <span class="math notranslate nohighlight">\(0.5\)</span>, then output 1, else 0</p></li>
 </ul>
-<figure class="align-default" id="logistic-data-plot">
+<div class="figure align-default" id="logistic-data-plot">
 <a class="reference internal image-reference" href="../_images/logistic-data-plot.png"><img alt="" src="../_images/logistic-data-plot.png" style="width: 90%;" /></a>
-<figcaption>
-<p><span class="caption-number">Fig. 54 </span><span class="caption-text">Scatter plot (left) of binary <span class="math notranslate nohighlight">\(Y\)</span>, fitted line with 0.5 cutoff for prediction (middle) and residual plot (right) if we fit OLS [Meyer 2021]</span><a class="headerlink" href="#logistic-data-plot" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
+<p class="caption"><span class="caption-number">Fig. 55 </span><span class="caption-text">Scatter plot (left) of binary <span class="math notranslate nohighlight">\(Y\)</span>, fitted line with 0.5 cutoff for prediction (middle) and residual plot (right) if we fit OLS [Meyer 2021]</span><a class="headerlink" href="#logistic-data-plot" title="Permalink to this image">¶</a></p>
+</div>
 <p>But rather than <span class="math notranslate nohighlight">\(Y_i \sim \operatorname{Bin}(n_i, p_i)\)</span>, the book views <span class="math notranslate nohighlight">\(n_{i}Y_{i}\sim\operatorname{Bin}(n_i, \pi_i)\)</span>, or <span class="math notranslate nohighlight">\(Y_{i}\sim \frac{1}{n_i} \operatorname{Bin}(n_i, \pi_i)\)</span> as random component, where <span class="math notranslate nohighlight">\(Y_{i}\)</span> is the proportion of success and <span class="math notranslate nohighlight">\(\operatorname{E}(Y_i)=\pi_{i}\)</span>. It’s easier to define a link function as a function of <span class="math notranslate nohighlight">\(\operatorname{E}(Y_i)\)</span>.</p>
-<section id="data-structure">
+<div class="section" id="data-structure">
 <h2>Data Structure<a class="headerlink" href="#data-structure" title="Permalink to this headline">¶</a></h2>
 <p>Logistic regression can take two types of data structure as input.</p>
-<section id="ungrouped-data">
+<div class="section" id="ungrouped-data">
 <h3>Ungrouped Data<a class="headerlink" href="#ungrouped-data" title="Permalink to this headline">¶</a></h3>
 <p>For ungrouped data, suppose there are <span class="math notranslate nohighlight">\(N\)</span> observations, each observation <span class="math notranslate nohighlight">\(y_{i}\)</span> results from a single Bernoulli trial <span class="math notranslate nohighlight">\(Y_{i}\sim\operatorname{Ber}(p_i)\)</span> and equals 0 or 1.</p>
 <p>A large-sample means <span class="math notranslate nohighlight">\(N\rightarrow\infty\)</span>.</p>
@@ -982,8 +979,8 @@ Y_i &amp;= \boldsymbol{x}_i ^\top \boldsymbol{\beta} + \varepsilon_i \\
 covariates <span class="math notranslate nohighlight">\(\boldsymbol{x}_{i_{1}}=\boldsymbol{x}_{i_{2}}\)</span>. So they share
 the same underlying expectation <span class="math notranslate nohighlight">\(\pi_{i}\)</span>. Thus, we may consider group
 them together to obtain grouped data.</p>
-</section>
-<section id="grouped-data">
+</div>
+<div class="section" id="grouped-data">
 <h3>Grouped Data<a class="headerlink" href="#grouped-data" title="Permalink to this headline">¶</a></h3>
 <p>Suppose there are <span class="math notranslate nohighlight">\(n_{i}\)</span> is the number of observations at setting
 <span class="math notranslate nohighlight">\(i\)</span> of the covariates, <span class="math notranslate nohighlight">\(i=1, 2, \ldots, N\)</span>.</p>
@@ -1001,11 +998,11 @@ saturated model for ungrouped data requires <span class="math notranslate nohigh
 of test statistic is derived when <span class="math notranslate nohighlight">\(p\)</span> is fixed and <span class="math notranslate nohighlight">\(n\rightarrow\infty\)</span>.</p></li>
 </ul>
 </div>
-</section>
-</section>
-<section id="model-structure">
+</div>
+</div>
+<div class="section" id="model-structure">
 <h2>Model Structure<a class="headerlink" href="#model-structure" title="Permalink to this headline">¶</a></h2>
-<section id="derivation-of-link-function">
+<div class="section" id="derivation-of-link-function">
 <h3>Derivation of Link Function<a class="headerlink" href="#derivation-of-link-function" title="Permalink to this headline">¶</a></h3>
 <p>We have the random component <span class="math notranslate nohighlight">\(Y_{i}\sim\frac{1}{n_{i}} \operatorname{Bin}( {n_{i}}, {\pi_{i}})\)</span>
 and <span class="math notranslate nohighlight">\(\operatorname{E}(Y_i)=\pi_{i}\)</span>. Now we want to find a link function <span class="math notranslate nohighlight">\(g\)</span>
@@ -1067,8 +1064,8 @@ Y_{i}=\begin{cases}
 <div class="math notranslate nohighlight">
 \[\log\left(\frac{\pi_{i}}{1-\pi_{i}}\right)=\boldsymbol{x}_{i}^{\top}\boldsymbol{\beta}\]</div>
 <p>where <span class="math notranslate nohighlight">\(\pi_i = \operatorname{E}\left( Y_i \right)\)</span>.</p>
-</section>
-<section id="interpretation-of-boldsymbol-beta-as-odds-ratio">
+</div>
+<div class="section" id="interpretation-of-boldsymbol-beta-as-odds-ratio">
 <h3>Interpretation of <span class="math notranslate nohighlight">\(\boldsymbol{\beta}\)</span> as Odds Ratio<a class="headerlink" href="#interpretation-of-boldsymbol-beta-as-odds-ratio" title="Permalink to this headline">¶</a></h3>
 <p>Suppose we use logit link and <span class="math notranslate nohighlight">\(x_{j}\)</span> increases 1 unit. Let <span class="math notranslate nohighlight">\(p_{0}\)</span>
 be the original probability and <span class="math notranslate nohighlight">\(p_{1}\)</span> be the updated probability,
@@ -1086,11 +1083,11 @@ e^{\beta_{j}}=\frac{p_{1}/(1-p_{1})}{p_{0}/(1-p_{0})}
 ratio of two odds is called an <strong>odds ratio</strong>.</p>
 <p>Thus, the interpretation is: the odds multiplies by <span class="math notranslate nohighlight">\(e^{\beta_{j}}\)</span>
 per unit increase in <span class="math notranslate nohighlight">\(x_{j}\)</span>.</p>
-</section>
-</section>
-<section id="estimation">
+</div>
+</div>
+<div class="section" id="estimation">
 <h2>Estimation<a class="headerlink" href="#estimation" title="Permalink to this headline">¶</a></h2>
-<section id="score-equations">
+<div class="section" id="score-equations">
 <h3>Score Equations<a class="headerlink" href="#score-equations" title="Permalink to this headline">¶</a></h3>
 <p>Recall the general score equations are</p>
 <div class="math notranslate nohighlight">
@@ -1125,8 +1122,8 @@ per unit increase in <span class="math notranslate nohighlight">\(x_{j}\)</span>
 \]</div>
 <p>That is, the score equations equate the sufficient statistics to their
 expected values.</p>
-</section>
-<section id="covariance-of-mle">
+</div>
+<div class="section" id="covariance-of-mle">
 <h3>Covariance of MLE<a class="headerlink" href="#covariance-of-mle" title="Permalink to this headline">¶</a></h3>
 <p>Applying the general formula,</p>
 <div class="math notranslate nohighlight">
@@ -1134,14 +1131,14 @@ expected values.</p>
 \text{Var}(\hat{\boldsymbol{\beta}})=\left[\boldsymbol{X}^{\top} \boldsymbol{W} \boldsymbol{X} \right]^{-1}=\left[\boldsymbol{X}^{\top}\boldsymbol{V} \boldsymbol{X} \right]^{-1}=\left[\boldsymbol{X}^{\top}\text{diag}(n_{i}\pi_{i}(1-\pi_{i})) \boldsymbol{X} \right]^{-1}
 \]</div>
 <p>To estimate it, plug in <span class="math notranslate nohighlight">\(\hat{\pi}_{i}\)</span>.</p>
-</section>
-<section id="computation">
+</div>
+<div class="section" id="computation">
 <h3>Computation<a class="headerlink" href="#computation" title="Permalink to this headline">¶</a></h3>
 <p>For logistic regression, Newton’s method = Fisher scoring = IRLS.
 (Section 5.4.1)</p>
 <p>Note that some or all ML estimates may be infinite or may not even exist. See <a class="reference internal" href="#logistic-infinite"><span class="std std-ref">infinite parameter estimate</span></a>.</p>
-</section>
-<section id="comparison">
+</div>
+<div class="section" id="comparison">
 <h3>Comparison<a class="headerlink" href="#comparison" title="Permalink to this headline">¶</a></h3>
 <p>We can compare linear probability model, probit, and logit: how do the estimate the effect of a variable <span class="math notranslate nohighlight">\(X\)</span> on the binary response <span class="math notranslate nohighlight">\(Y\)</span>? Of course, the coefficient values are different, but,</p>
 <ul class="simple">
@@ -1149,17 +1146,15 @@ expected values.</p>
 <li><p>Roughly same significance</p></li>
 <li><p>Roughly same out-of-sample prediction accuracy</p></li>
 </ul>
-<figure class="align-default" id="logistic-effect-comparison">
+<div class="figure align-default" id="logistic-effect-comparison">
 <a class="reference internal image-reference" href="../_images/logistic-effect-comparison.png"><img alt="" src="../_images/logistic-effect-comparison.png" style="width: 30%;" /></a>
-<figcaption>
-<p><span class="caption-number">Fig. 55 </span><span class="caption-text">Comparison of estimate in different models for binary response</span><a class="headerlink" href="#logistic-effect-comparison" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
-</section>
-</section>
-<section id="hypothesis-testing">
+<p class="caption"><span class="caption-number">Fig. 56 </span><span class="caption-text">Comparison of estimate in different models for binary response</span><a class="headerlink" href="#logistic-effect-comparison" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+</div>
+<div class="section" id="hypothesis-testing">
 <h2>Hypothesis Testing<a class="headerlink" href="#hypothesis-testing" title="Permalink to this headline">¶</a></h2>
-<section id="wald-test-disadvantages">
+<div class="section" id="wald-test-disadvantages">
 <h3>Wald Test Disadvantages<a class="headerlink" href="#wald-test-disadvantages" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>First, its results depend on the scale for parameterization. Logit-scale
@@ -1170,8 +1165,8 @@ large, the Wald test is less powerful than the other methods and can
 show aberrant behavior, e.g. smaller p-value for stronger evidence.</p></li>
 </ul>
 <p>Better use likelihood ratio test or score test.</p>
-</section>
-<section id="deviance">
+</div>
+<div class="section" id="deviance">
 <h3>Deviance<a class="headerlink" href="#deviance" title="Permalink to this headline">¶</a></h3>
 <p>Note again that the goodness-of-fit test for ungrouped data is invalid,
 since the saturated model for ungrouped data requires <span class="math notranslate nohighlight">\(p=n\)</span> but
@@ -1200,8 +1195,8 @@ at the <span class="math notranslate nohighlight">\(N\)</span> settings, which s
 <li><p>For grouped data, the saturated model has a parameter at each <span class="math notranslate nohighlight">\(\boldsymbol{x}_i\)</span> setting for the explanatory variables. For ungrouped data, by contrast, it has a parameter for each subject <span class="math notranslate nohighlight">\(i\)</span>.</p></li>
 </ul>
 </div>
-</section>
-<section id="pearson-statistic">
+</div>
+<div class="section" id="pearson-statistic">
 <h3>Pearson Statistic<a class="headerlink" href="#pearson-statistic" title="Permalink to this headline">¶</a></h3>
 <p>It is also the sum over <span class="math notranslate nohighlight">\(2N\)</span> cells of successes and failures.</p>
 <div class="math notranslate nohighlight">
@@ -1226,9 +1221,9 @@ this if we regard binomial distribution as a multinomial distribution
 with <span class="math notranslate nohighlight">\(c=2\)</span>.</p></li>
 </ul>
 </div>
-</section>
-</section>
-<section id="infinite-parameter-estimate">
+</div>
+</div>
+<div class="section" id="infinite-parameter-estimate">
 <span id="logistic-infinite"></span><h2>Infinite Parameter Estimate<a class="headerlink" href="#infinite-parameter-estimate" title="Permalink to this headline">¶</a></h2>
 <p>One may sometimes see this warning message using R to solve the logistic
 regression:</p>
@@ -1238,7 +1233,7 @@ regression:</p>
 \]</div>
 <p>You may see very large estimates of <span class="math notranslate nohighlight">\(\boldsymbol{\beta}\)</span>. What happened?</p>
 <p>Suppose the data is ungrouped, where <span class="math notranslate nohighlight">\(y_{i}=0\)</span> or <span class="math notranslate nohighlight">\(1\)</span>.</p>
-<section id="complete-separation-perfect-discrimination">
+<div class="section" id="complete-separation-perfect-discrimination">
 <h3>Complete Separation / Perfect Discrimination<a class="headerlink" href="#complete-separation-perfect-discrimination" title="Permalink to this headline">¶</a></h3>
 <p>Suppose there exists <span class="math notranslate nohighlight">\(\boldsymbol{\beta}_{s}\)</span> such that if <span class="math notranslate nohighlight">\(\boldsymbol{x}_{i}^{\top}\boldsymbol{\beta}_{s}&gt;0\)</span> then <span class="math notranslate nohighlight">\(y_{i}=1\)</span> otherwise <span class="math notranslate nohighlight">\(y_{i}=0\)</span>, i.e. a hyperplane perfectly separate two types of points.</p>
 <p>If we let <span class="math notranslate nohighlight">\(\boldsymbol{\beta}=k\boldsymbol{\beta}_{s}\)</span>, as <span class="math notranslate nohighlight">\(k\rightarrow\infty\)</span>,</p>
@@ -1260,8 +1255,8 @@ regression:</p>
 <li><p>The reported log-likelihood value is 0 to any decimal places</p></li>
 <li><p>standard errors are unnaturally large.</p></li>
 </ul>
-</section>
-<section id="quasi-complete-separation">
+</div>
+<div class="section" id="quasi-complete-separation">
 <h3>Quasi-complete Separation<a class="headerlink" href="#quasi-complete-separation" title="Permalink to this headline">¶</a></h3>
 <p>Suppose there exists <span class="math notranslate nohighlight">\(\boldsymbol{\beta}_{s}\)</span> such that</p>
 <ul class="simple">
@@ -1305,8 +1300,8 @@ Then at least one estimate is infinite.</p>
 <li><p>The reported log-likelihood value is less than 0</p></li>
 <li><p>standard errors are unnaturally large.</p></li>
 </ul>
-</section>
-<section id="remedy">
+</div>
+<div class="section" id="remedy">
 <h3>Remedy<a class="headerlink" href="#remedy" title="Permalink to this headline">¶</a></h3>
 <p>Inference such as likelihood ratio test, confidence interval are possible.
 With quasi-complete separation, some parameter estimates and SE values
@@ -1314,9 +1309,9 @@ may be unaffected, and even Wald inference methods are available with
 them.</p>
 <p>To make estimtes finite, approches include smoothing the data, and
 maximizes a penalized likelihood function.</p>
-</section>
-</section>
-<section id="application-case-control-study">
+</div>
+</div>
+<div class="section" id="application-case-control-study">
 <h2>Application: Case-Control Study<a class="headerlink" href="#application-case-control-study" title="Permalink to this headline">¶</a></h2>
 <p>In some study, researchers want to find the effect of <span class="math notranslate nohighlight">\(X\)</span> on <span class="math notranslate nohighlight">\(Y\)</span>.
 Say, <span class="math notranslate nohighlight">\(Y\)</span> is lung cancer and <span class="math notranslate nohighlight">\(X\)</span> is smoking. There are two kinds
@@ -1366,8 +1361,8 @@ is the <strong>same</strong> as building the model using prospective samples.</p
 in two kinds of study. It does not say estimating other quantities
 is also equivalent, say probability.</p>
 </div>
-</section>
-</section>
+</div>
+</div>
 
     <script type="text/x-thebe-config">
     {

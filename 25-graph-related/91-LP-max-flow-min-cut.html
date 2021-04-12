@@ -4,8 +4,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>LP on Max-flow and Min-cut &#8212; Data Science Handbook</title>
     
   <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
@@ -94,7 +93,7 @@
   </a>
  </li>
 </ul>
-<p>
+<p class="caption collapsible-parent">
  <span class="caption-text">
   Foundations
  </span>
@@ -281,7 +280,7 @@
   </i>
  </li>
 </ul>
-<p>
+<p class="caption collapsible-parent">
  <span class="caption-text">
   Algorithms
  </span>
@@ -429,7 +428,7 @@
   </i>
  </li>
 </ul>
-<p>
+<p class="caption collapsible-parent">
  <span class="caption-text">
   Machine Learning
  </span>
@@ -855,11 +854,11 @@
         
               <div>
                 
-  <section id="lp-on-max-flow-and-min-cut">
+  <div class="section" id="lp-on-max-flow-and-min-cut">
 <h1>LP on Max-flow and Min-cut<a class="headerlink" href="#lp-on-max-flow-and-min-cut" title="Permalink to this headline">¶</a></h1>
-<section id="duality">
+<div class="section" id="duality">
 <h2>Duality<a class="headerlink" href="#duality" title="Permalink to this headline">¶</a></h2>
-<section id="lp-flow-and-lp-cut">
+<div class="section" id="lp-flow-and-lp-cut">
 <span id="lp-flow-cut"></span><h3>LP-flow and LP-cut<a class="headerlink" href="#lp-flow-and-lp-cut" title="Permalink to this headline">¶</a></h3>
 <p>Consider the path-defined flow. We can view each <span class="math notranslate nohighlight">\(f(P)\)</span> as a variable. Then the optimization problem</p>
 <div class="math notranslate nohighlight">
@@ -872,10 +871,10 @@
 <p>is equivalent to the max-flow problem. Call this LP-flow problem.</p>
 <p>Note the number of paths <span class="math notranslate nohighlight">\(\left\vert \mathcal{P} \right\vert\)</span> is exponential to the graph size. Let’s consider the dual.</p>
 <p>Let the multipliers be <span class="math notranslate nohighlight">\(\boldsymbol{y}\)</span>, where <span class="math notranslate nohighlight">\(y_e\)</span> is the multiplier for constraint of edge <span class="math notranslate nohighlight">\(e\)</span>. Note that in the primal, the coefficients of <span class="math notranslate nohighlight">\(f(P)\)</span> in the objective function and each constraint are <span class="math notranslate nohighlight">\(1\)</span>. Hence, the dual is</p>
-<aside class="margin sidebar">
+<div class="margin sidebar">
 <p class="sidebar-title"></p>
 <p>In the optimal solution, we must have <span class="math notranslate nohighlight">\(1 \ge y_e\)</span>, otherwise <span class="math notranslate nohighlight">\(\sum y_e &gt; 1\)</span> and we can down scale it to have a smaller objective value. Hence, we can add <span class="math notranslate nohighlight">\(1 \ge y_e\)</span> into the constraints.</p>
-</aside>
+</div>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{aligned}
 \min &amp;&amp; \sum _{e} c(e) y_e &amp;&amp;&amp; \\
@@ -900,9 +899,9 @@
 &amp;&amp; \boldsymbol{y}  &amp;\geq \boldsymbol{0}   &amp;&amp;
 \end{aligned}\end{split}\]</div>
 <p>which is consistent with our notation in the last section.</p>
-</section>
-</section>
-<section id="relaxation">
+</div>
+</div>
+<div class="section" id="relaxation">
 <h2>Relaxation<a class="headerlink" href="#relaxation" title="Permalink to this headline">¶</a></h2>
 <p>If we add integer constraint <span class="math notranslate nohighlight">\(y_e \in \left\{ 0,1 \right\}\)</span>, then the objective <span class="math notranslate nohighlight">\(\sum _{e} c(e) y_e\)</span> is a edge selection problem to minimize the total capacity, and the constraints <span class="math notranslate nohighlight">\(\sum_{e: e \in e(P)} y_e \le 1\)</span> implies that at least one edge is selected along every <span class="math notranslate nohighlight">\(s-t\)</span> path. In other words, we want to find minimum number of edges to disconnect <span class="math notranslate nohighlight">\(s\)</span> and <span class="math notranslate nohighlight">\(t\)</span>, which is exactly the min-cut problem.</p>
 <p>If <span class="math notranslate nohighlight">\(y_e \in \mathbb{R}\)</span>, then it is a relaxation to the integer constraint <span class="math notranslate nohighlight">\(y_e \in \left\{ 0, 1 \right\}\)</span>. Call this problem LP-cut, we say LP-cut is a relaxation of min-cut.</p>
@@ -913,8 +912,8 @@
 OPT(\text{max-flow} ) = OPT(\text{LP-flow} ) = OPT(\text{LP-cut}) \le OPT(\text{min-cut} )
 \]</div>
 <p>We have shown that <span class="math notranslate nohighlight">\(OPT(\text{max-flow} ) = OPT(\text{min-cut} )\)</span> in the <a class="reference internal" href="31-maximum-flow.html"><span class="doc std std-doc">max-flow</span></a> section. Hence the inequality <span class="math notranslate nohighlight">\(\le\)</span> above should be equality <span class="math notranslate nohighlight">\(=\)</span>. Let’s not use this fact, but just analyze this inequality itself.</p>
-</section>
-<section id="integrality-gap">
+</div>
+<div class="section" id="integrality-gap">
 <h2>Integrality Gap<a class="headerlink" href="#integrality-gap" title="Permalink to this headline">¶</a></h2>
 <p>Claim: The integrality gap between min-cut and LP-cut is 1</p>
 <p>We can prove a stronger condition: there exists an efficient algo that given any optimal fractional solution to <span class="math notranslate nohighlight">\(OPT_{LP}\)</span>, it returns an <strong>integral</strong> feasible solution whose cost is <strong>not</strong> higher than <span class="math notranslate nohighlight">\(OPT_{LP}\)</span> (i.e., LP-rounding algorithm).</p>
@@ -967,8 +966,8 @@ d(s,v_1) \le d(s,v_2) \le \ldots \le d(s, v_n)
 </ul>
 <p>Hence, the probability is always less than <span class="math notranslate nohighlight">\(y_e\)</span>, which proves that we can find <span class="math notranslate nohighlight">\(\rho^*\)</span> efficiently such that the resulting cut <span class="math notranslate nohighlight">\(c(A^*, B^*)\)</span> (integral solution) gives value no larger than the LP-cut value.</p>
 </div>
-</section>
-</section>
+</div>
+</div>
 
     <script type="text/x-thebe-config">
     {

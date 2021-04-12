@@ -4,8 +4,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Autoencoders &#8212; Data Science Handbook</title>
     
   <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
@@ -94,7 +93,7 @@
   </a>
  </li>
 </ul>
-<p>
+<p class="caption collapsible-parent">
  <span class="caption-text">
   Foundations
  </span>
@@ -281,7 +280,7 @@
   </i>
  </li>
 </ul>
-<p>
+<p class="caption collapsible-parent">
  <span class="caption-text">
   Algorithms
  </span>
@@ -429,7 +428,7 @@
   </i>
  </li>
 </ul>
-<p>
+<p class="caption collapsible-parent">
  <span class="caption-text">
   Machine Learning
  </span>
@@ -860,9 +859,9 @@
         
               <div>
                 
-  <section id="autoencoders">
+  <div class="section" id="autoencoders">
 <h1>Autoencoders<a class="headerlink" href="#autoencoders" title="Permalink to this headline">¶</a></h1>
-<section id="objective">
+<div class="section" id="objective">
 <h2>Objective<a class="headerlink" href="#objective" title="Permalink to this headline">¶</a></h2>
 <p>An autoencoder is a type of neural networks used to learn efficient data encodings/representations in an <strong>unsupervised</strong> manner. It is constituted by two main parts:</p>
 <ul class="simple">
@@ -870,12 +869,10 @@
 <li><p>a <em>decoder</em> <span class="math notranslate nohighlight">\(\boldsymbol{\psi} (\cdot)\)</span>} that maps the code <span class="math notranslate nohighlight">\(\boldsymbol{z}\)</span> to a reconstruction of the original input <span class="math notranslate nohighlight">\(\boldsymbol{x} ^\prime = \boldsymbol{\psi}(\boldsymbol{z})\)</span>.</p></li>
 </ul>
 <p>As a result, the output layer has the same number of nodes as the input layer. The structure is shown below</p>
-<figure class="align-default" id="ae-structure">
+<div class="figure align-default" id="ae-structure">
 <a class="reference internal image-reference" href="../_images/ae-structure.png"><img alt="" src="../_images/ae-structure.png" style="width: 70%;" /></a>
-<figcaption>
-<p><span class="caption-number">Fig. 127 </span><span class="caption-text">Structure of Autoencoders</span><a class="headerlink" href="#ae-structure" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
+<p class="caption"><span class="caption-number">Fig. 128 </span><span class="caption-text">Structure of Autoencoders</span><a class="headerlink" href="#ae-structure" title="Permalink to this image">¶</a></p>
+</div>
 <p>The objective is minimizing the difference between the input <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> and the output <span class="math notranslate nohighlight">\((\boldsymbol{\psi} \circ \boldsymbol{\phi} )\boldsymbol{x}\)</span>,</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -924,8 +921,8 @@ the <em>clean</em> input. The autoencoder learn to extract essential information
 <p>If <span class="math notranslate nohighlight">\(p(\boldsymbol{x} \mid \boldsymbol{z})\)</span> is, say, a spherical Gaussian with mean <span class="math notranslate nohighlight">\(\boldsymbol{\psi}(\boldsymbol{z} )\)</span>, then optimizing the likelihood over a training set is equivalent to the usual squared loss.</p>
 <p>Other distributions produce different losses.</p>
 </div>
-</section>
-<section id="variants-and-application">
+</div>
+<div class="section" id="variants-and-application">
 <h2>Variants and Application<a class="headerlink" href="#variants-and-application" title="Permalink to this headline">¶</a></h2>
 <p>The most traditional application was dimensionality reduction or feature learning. Several variants exist to the basic model, with the aim of forcing the learned representations of the input to assume useful properties. Examples are the</p>
 <ul>
@@ -942,7 +939,7 @@ the <em>clean</em> input. The autoencoder learn to extract essential information
 </li>
 </ul>
 <p>Here we introduce regularized autoencoders. Variational autoencoders are introduced in a separated <a class="reference internal" href="13-variational-autoencoders.html"><span class="doc std std-doc">section</span></a>.</p>
-<section id="sparse-autoencoders">
+<div class="section" id="sparse-autoencoders">
 <h3>Sparse Autoencoders<a class="headerlink" href="#sparse-autoencoders" title="Permalink to this headline">¶</a></h3>
 <p>Sparse autoencoder may include more hidden units than inputs, but only a small number of them are active at once, determined by the input <span class="math notranslate nohighlight">\(\boldsymbol{x}_{i}\)</span>. This sparsity constraint forces the model to respond to the unique statistical features of the input data used
 for training.</p>
@@ -957,8 +954,8 @@ on the code layer <span class="math notranslate nohighlight">\(\boldsymbol{z}\)<
 \[
 \mathcal{L}\left(\boldsymbol{x},\boldsymbol{x}^{\prime}\right)+\lambda\left\Vert \boldsymbol{z}\right\Vert
 \]</div>
-</section>
-<section id="denoising-autoencoders">
+</div>
+<div class="section" id="denoising-autoencoders">
 <h3>Denoising Autoencoders<a class="headerlink" href="#denoising-autoencoders" title="Permalink to this headline">¶</a></h3>
 <p>Instead of using the original input <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span>, we add noise and use the corrupted input <span class="math notranslate nohighlight">\(\tilde{\boldsymbol{x}}\)</span>. Denoising autoencoders take a partially correpted (noised) input <span class="math notranslate nohighlight">\(\tilde{\boldsymbol{x}}\)</span> and are trained to recover the original undistorted input. So it’s
 called <em>denoising</em>. There are two underlying assumptions</p>
@@ -988,8 +985,8 @@ called <em>denoising</em>. There are two underlying assumptions</p>
 </ul>
 <p>Finally, notice that the corruption of the input is performed only during the training phase of the. Once the model has learnt the optimal parameters, in order to extract the representations from the
 original data, <strong>no</strong> corruption is added.</p>
-</section>
-<section id="contractive-autoencoders">
+</div>
+<div class="section" id="contractive-autoencoders">
 <h3>Contractive Autoencoders<a class="headerlink" href="#contractive-autoencoders" title="Permalink to this headline">¶</a></h3>
 <p>Contractive autoencoder (CAE) adds an explicit regularizer in their objective function that forces the model to learn a function that is robust to slight variations of input values.</p>
 <p>This regularizer corresponds to the Frobenius norm of the Jacobian matrix of the encoder activations with respect to the input. Since the penalty is applied to training examples only, this term forces the model to learn useful information about the training distribution. Theobjective function has the following form:</p>
@@ -1003,9 +1000,9 @@ original data, <strong>no</strong> corruption is added.</p>
 <li><p>DAE make the reconstruction function resist <em>small but finite-sized</em> perturbations of the input,</p></li>
 <li><p>CAE make the extracted features resist <em>infinitesimal</em> perturbations of the input.</p></li>
 </ul>
-</section>
-</section>
-</section>
+</div>
+</div>
+</div>
 
     <script type="text/x-thebe-config">
     {
