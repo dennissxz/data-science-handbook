@@ -101,27 +101,60 @@ Properties
   \end{align}$$
 
 
-### Eigenvalues
+(eigenvalue-eigenvector)=
+### Eigenvalues and Eigenvectors
 
-Definition
-: Let $\boldsymbol{A}$ be an $n\times n$ square matrix and let $\boldsymbol{x}$ be an $n\times 1$ nonzero vector that $\boldsymbol{A} \boldsymbol{x} = \lambda \boldsymbol{x}$. Then, $\lambda$ is called an eigenvalue of $\boldsymbol{A}$ and $\boldsymbol{x}$ is called an eigenvector corresponding to eigenvalue $\lambda$. The eigenvalues are the solutions of the **characteristic function**
+```{margin}
+If we restricted to $\lambda \in \mathbb{R}$ then some matrices do not have real eigenvalues.
+```
+
+Definitions
+: Let $\boldsymbol{A}$ be an $n\times n$ square matrix and let $\boldsymbol{x}$ be an $n\times 1$ nonzero vector that $\boldsymbol{A} \boldsymbol{x} = \lambda \boldsymbol{x}$. Then, $\lambda \in \mathbb{C}$ is called an eigenvalue of $\boldsymbol{A}$ and $\boldsymbol{x}$ is called an eigenvector corresponding to eigenvalue $\lambda$. The eigenvalues are the solutions of the **characteristic function**
 
   $$
   \left\vert \boldsymbol{A} - \lambda \boldsymbol{I}  \right\vert = 0
   $$
 
+For a fixed $\lambda$, the non-zero solution $\boldsymbol{v}$ to $\boldsymbol{A} \boldsymbol{v} = \lambda \boldsymbol{v}$ is called an eigenvector of $\boldsymbol{A}$ corresponding to $\lambda$.
+
 Properties
-: For $\boldsymbol{A}_{n\times n}$ with eigenvalues $\lambda_1, \lambda_2, \ldots, \lambda_n$, we have
+: - For $\boldsymbol{A}_{n\times n}$ with eigenvalues $\lambda_1, \lambda_2, \ldots, \lambda_n$, we have
+    - $\operatorname{tr}(\boldsymbol{A}) =\sum_{i=1}^{n} \lambda_{i}$
+    - $|\boldsymbol{A}|=\prod_{i=1}^{n} \lambda_{i}$
+    - $\left|\boldsymbol{I}_{n} \pm \boldsymbol{A}\right|=\prod_{i=1}^{n}\left(1 \pm \lambda_{i}\right)$
+    - if $\lambda \in \mathbb{R}$ and $\lambda_1\ge \ldots, \ge \lambda_n$, we say $\boldsymbol{v}_1$ is the largest eigenvector and $\boldsymbol{v}_n$ is the smallest eigenvector.
+  - The nonzero eigenvalues of $\boldsymbol{A} \boldsymbol{B}$ are the same as those of $\boldsymbol{B} \boldsymbol{A}$
+  - If $\boldsymbol{A}  + \boldsymbol{B} = \boldsymbol{I}$, and $\boldsymbol{A}\boldsymbol{v} = \lambda \boldsymbol{v}$, then we can see $\boldsymbol{B} \boldsymbol{v} = (\boldsymbol{I} - \boldsymbol{A} )\boldsymbol{v} = (1-\lambda)\boldsymbol{v}$.
+    - if $\boldsymbol{A}$ has eigen pairs $(\lambda_i, \boldsymbol{v} _i)$ then $\boldsymbol{B}$ has eigen pairs $(1-\lambda_i, \boldsymbol{v} _i)$
+    - the sequence of pairs is reversed, e.g. the largest eigenvector of $\boldsymbol{A}$ is the smallest eigenvector of $\boldsymbol{B}$.
+
+:::{admonition,note} Uniqueness of eigenvalues and eigenvectors
+
+For an $N \times N$ square matrix $\boldsymbol{A}$,
+
+- Eigenvalues **may not** be unique. The characteristic function $p(\lambda)=\operatorname{det}(\boldsymbol{A}-\lambda \boldsymbol{I})=0$ can be written as
 
   $$
-  \begin{align}
-  \operatorname{tr}(\boldsymbol{A}) &=\sum_{i=1}^{n} \lambda_{i} \\
-  |\boldsymbol{A}|&=\prod_{i=1}^{n} \lambda_{i} \\
-  \left|\boldsymbol{I}_{n} \pm \boldsymbol{A}\right|&=\prod_{i=1}^{n}\left(1 \pm \lambda_{i}\right)
-  \end{align}
+  p(\lambda)=\left(\lambda-\lambda_{1}\right)^{n_{1}}\left(\lambda-\lambda_{2}\right)^{n_{2}} \cdots\left(\lambda-\lambda_{N_{\lambda}}\right)^{n_{N_{\lambda}}}=0
   $$
 
-  The nonzero eigenvalues of $\boldsymbol{A} \boldsymbol{B}$ are the same as those of $\boldsymbol{B} \boldsymbol{A}$
+  where $N_\lambda \le N$ is the number of distinct solutions.
+  - The integer $n_i$ is called the **algebraic multiplicity** of $\lambda_i$.
+  - If the field of scalars is algebraically closed, the algebraic multiplicities sum to $N$: $\sum_{i=1}^{N_{\lambda}} n_{i}=N$.
+
+- For a fixed eigenvalue $\lambda_i$, the solution to $\boldsymbol{v}$ to the eigenvalue equation $(\boldsymbol{A} - \lambda_i \boldsymbol{I} )\boldsymbol{v} = \boldsymbol{0}$ is not unique.
+  - Any scaling $c \boldsymbol{v}$ is also an solution.
+  - There may be $m_i$ linearly independent solutions. A linear combinations of the $m_i$ solutions is also an solution. The number $m_i$ is called the **geometric multiplicity** of $\lambda_i$. We have $m_i \le n_i$.
+  - The total number of linearly independent eigenvectors can be calculated by summing the geometric multiplicities $\sum_{i=1}^{N_{\lambda}} m_{i}=N_{\boldsymbol{v}} \le N$ with equality iff $m_i = n_i$ for all $i$.
+  - $E=\{\boldsymbol{v}:(\boldsymbol{A} -\lambda_i \boldsymbol{I} ) \boldsymbol{v}=\boldsymbol{0}\}$ is called the **eigenspace** of $\boldsymbol{A}$ associated with $\lambda_i$. We have $\operatorname{dim}(E)=m_i$.
+
+Claims
+- eigenvectors corresponds to distinct eigenvalues are independent.
+
+For more details see [Wikipedia](https://en.wikipedia.org/wiki/Eigenvalues_and_eigenvectors#Eigenvalues_and_eigenvectors_of_matrices).
+
+:::
+
 
 ## Special Matrices
 
@@ -331,46 +364,32 @@ Properties
 Summary table
 
 (eigen-decomposition)=
-### Eigenvalue Decomposition
+### Spectral Decomposition
 
-[detail] If $\boldsymbol{A}$  has $n$ independent eigenvectors, then is has EVD.
+Aka eigendecomposition.
 
-[detail] $\boldsymbol{A}$ is symmetric $\Leftrightarrow$ there exists an orthogonal matrix $\boldsymbol{U} = \left[ \boldsymbol{u} _1, \boldsymbol{u} _2, \ldots, \boldsymbol{u} _n \right]$ such that
+```{margin}
+For discussion of uniqueness and independence of eigenvectors, see previous [section](eigenvalue-eigenvector).
+```
+
+If a square matrix $\boldsymbol{A}$ has $n$ independent eigenvectors, then it can be written as $\boldsymbol{A} = \boldsymbol{U} \boldsymbol{A} \boldsymbol{U} ^{-1}$. The columns in the matrix $\boldsymbol{U}$ are the eigenvectors of $\boldsymbol{A}$ and $\boldsymbol{\Lambda}$ is a diagonal matrix of eigenvalues. We say $\boldsymbol{A}$ has eigendecomposition (EVD), and is diagonalizable.
+
+In particular, if $\boldsymbol{A}$ is symmetric, then $\boldsymbol{U}$ is a orthogonal matrix, and hence $\boldsymbol{A} = \boldsymbol{U} \boldsymbol{\Lambda} \boldsymbol{U} ^{\top}$. Moreover, $\lambda$ are all real.
+
+:::{admonition,dropdown,seealso} *Proof*
+
+Suppose that $(\lambda, \boldsymbol{v})$ is a (possibly complex) eigenvalue and eigenvector pair of the a symmetric matrix $\boldsymbol{A}$. Using the fact that $\overline{\boldsymbol{A}  \boldsymbol{v}} = \overline{\lambda \boldsymbol{v}} \Rightarrow \boldsymbol{A}  \overline{\boldsymbol{v}} = \overline{\lambda} \overline{\boldsymbol{v}}$ and  $\boldsymbol{A} ^{\top} = \boldsymbol{A}$, we have
 
 $$
-\boldsymbol{U}^{\top} \boldsymbol{A} \boldsymbol{U}=\boldsymbol{\Lambda} = \left[\begin{array}{cccc}
-\lambda_{1} & 0 & \cdots & 0 \\
-0 & \lambda_{2} & \cdots & 0 \\
-\vdots & \vdots & \ddots & \vdots \\
-0 & 0 & \cdots & \lambda_{n}
-\end{array}\right]
+\begin{aligned}
+\overline{\boldsymbol{v}}^{\top} \boldsymbol{A} \boldsymbol{v}=\overline{\boldsymbol{v}}^{\top}(\boldsymbol{A} \boldsymbol{v})=\overline{\boldsymbol{v}}^{\top}(\lambda \boldsymbol{v})=\lambda(\overline{\boldsymbol{v}} \cdot \boldsymbol{v}) \\
+\overline{\boldsymbol{v}}^{\top} \boldsymbol{A} \boldsymbol{v}=(\boldsymbol{A} \overline{\boldsymbol{v}})^{\top} \boldsymbol{v}=(\bar{\lambda} \overline{\boldsymbol{v}})^{\top} \boldsymbol{v}=\bar{\lambda}(\overline{\boldsymbol{v}} \cdot \boldsymbol{v})
+\end{aligned}
 $$
 
-or
+Since $\boldsymbol{v} \neq \boldsymbol{0}$, we have $\overline{\boldsymbol{v}} \cdot \boldsymbol{v} \neq 0$. Thus $\lambda=\bar{\lambda}$, which means $\lambda \in \mathbb{R}$.
 
-$$
-\boldsymbol{A} = \boldsymbol{U} \boldsymbol{\Lambda} \boldsymbol{U} ^\top
-$$
-
-where $\lambda_1, \lambda_2, \ldots, \lambda_n$ are eigenvalues of $\boldsymbol{A}$ and $\boldsymbol{u}  _i$ are their corresponding eigenvectors.
-
-Corollary
-: The eigenvalues of real symmetric matrices are real.
-
-  :::{admonition,dropdown,seealso} *Proof*
-
-  Suppose that $(\lambda, \boldsymbol{v})$ is a (possibly complex) eigenvalue and eigenvector pair of the a symmetric matrix $\boldsymbol{A}$. Using the fact that $\overline{\boldsymbol{A}  \boldsymbol{v}} = \overline{\lambda \boldsymbol{v}} \Rightarrow \boldsymbol{A}  \overline{\boldsymbol{v}} = \overline{\lambda} \overline{\boldsymbol{v}}$ and  $\boldsymbol{A} ^{\top} = \boldsymbol{A}$, we have
-
-  $$
-  \begin{aligned}
-  \overline{\boldsymbol{v}}^{\top} \boldsymbol{A} \boldsymbol{v}=\overline{\boldsymbol{v}}^{\top}(\boldsymbol{A} \boldsymbol{v})=\overline{\boldsymbol{v}}^{\top}(\lambda \boldsymbol{v})=\lambda(\overline{\boldsymbol{v}} \cdot \boldsymbol{v}) \\
-  \overline{\boldsymbol{v}}^{\top} \boldsymbol{A} \boldsymbol{v}=(\boldsymbol{A} \overline{\boldsymbol{v}})^{\top} \boldsymbol{v}=(\bar{\lambda} \overline{\boldsymbol{v}})^{\top} \boldsymbol{v}=\bar{\lambda}(\overline{\boldsymbol{v}} \cdot \boldsymbol{v})
-  \end{aligned}
-  $$
-
-  Since $\boldsymbol{v} \neq \boldsymbol{0}$, we have $\overline{\boldsymbol{v}} \cdot \boldsymbol{v} \neq 0$. Thus $\lambda=\bar{\lambda}$, which means $\lambda \in \mathbb{R}$.
-
-  :::
+:::
 
 ### Cholesky Decomposition
 
@@ -424,9 +443,14 @@ Theorem
 
 ### Matrix Norms
 
-- Matrix Norm https://www.uio.no/studier/emner/matnat/ifi/nedlagte-emner/INF-MAT4350/h09/undervisningsmateriale/lecture7.pdf
-- Frobenius Norm http://mlwiki.org/index.php/Frobenius_Norm
+- Matrix Norm [link](https://www.uio.no/studier/emner/matnat/ifi/nedlagte-emner/INF-MAT4350/h09/undervisningsmateriale/lecture7.pdf)
+- Frobenius Norm [link](http://mlwiki.org/index.php/Frobenius_Norm)
 
+- For $\boldsymbol{a} , \boldsymbol{b} \in [m]^d$
+
+  $$
+  \|\boldsymbol{a}-\boldsymbol{b}\|_{\infty} \leq\|\boldsymbol{a}-\boldsymbol{b}\|_{2} \leq\|\boldsymbol{a}-\boldsymbol{b}\|_{1} \leq \sqrt{d}\|\boldsymbol{a}-\boldsymbol{b}\|_{2} \leq d\|\boldsymbol{a}-\boldsymbol{b}\|_{\infty}
+  $$
 
 
 ### Randomized SVD
@@ -451,7 +475,7 @@ There can by other choices of $\boldsymbol{\Omega}$. For instance, in fast JL al
 
 The total complexity if $\mathcal{O} (k + n\log n + n)$.
 
-### Analysis and Speed Up
+#### Analysis and Speed Up
 
 Lemma 1
 
