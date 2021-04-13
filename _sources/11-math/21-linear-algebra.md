@@ -237,8 +237,30 @@ Definition(Projection matrices)
 - onto a subspace $\boldsymbol{U}$ with orthonormal basis $\boldsymbol{u} _1, \ldots, \boldsymbol{u} _k$ forming matrix $\boldsymbol{A}$: $\boldsymbol{P}_A = \boldsymbol{A} \boldsymbol{A} ^{\top} = \sum_i \langle \boldsymbol{u} _i, \cdot \rangle \boldsymbol{u} _i$
 - onto subspace $\boldsymbol{U}$ with (not necessarily orthonormal) basis $\boldsymbol{u} _1, \ldots, \boldsymbol{u} _k$ forming matrix $\boldsymbol{A}$: $\boldsymbol{P} _{A}= \boldsymbol{A} \left( \boldsymbol{A} ^{\top} \boldsymbol{A}  \right) ^{-1} \boldsymbol{A} ^{\top}$. Such as that in linear regression.
 
+(similar-matrix)=
+### Similar Matrices
+
+Two square matrices $\boldsymbol{A}$ and $\boldsymbol{B}$ are called similar if there exists an invertible matrix $\boldsymbol{P}$ such that
+
+$$
+\boldsymbol{B}  = \boldsymbol{P} ^{-1} \boldsymbol{A} \boldsymbol{P}  
+$$
+
+Similar matrices represent the same linear operator under two (possibly) different bases, with P being the change of basis matrix. As a result, similar matrices share all properties of their shared underlying operator:
+
+- Rank
+- Characteristic polynomial, and attributes that can be derived from it:
+  - Eigenvalues, and their algebraic multiplicities
+  - Determinant
+  - Trace
+- Geometric multiplicities of eigenvalues (but not the eigenspaces, which are transformed according to the base change matrix P used).
+- Frobenius normal form
+- Jordan normal form, up to a permutation of the Jordan blocks
+
+Besides, $\boldsymbol{A}$ is called **diagonalizable** if it is similar to a diagonal matrix.
+
 (pd-matrix)=
-### Positive Semi-Definite and Positive Definite
+### Positive (Semi-)Definite
 
 Definitions
 : - A symmetric matrix $\boldsymbol{A}$ is **positive semi-defiinite** (p.s.d.) if $\boldsymbol{c}^\top \boldsymbol{A} \boldsymbol{c} \ge 0$ for all $\boldsymbol{c}$. This is denoted by $\boldsymbol{A} \succ \boldsymbol{0}$ or $\boldsymbol{A} \in \mathrm{PD}$.

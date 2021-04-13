@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Canonical Corerlation Analysis &#8212; Data Science Handbook</title>
+    <title>Canonical Correlation Analysis &#8212; Data Science Handbook</title>
     
   <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
 
@@ -563,7 +563,7 @@
    </li>
    <li class="toctree-l2 current active">
     <a class="current reference internal" href="#">
-     Canonical Corerlation Analysis
+     Canonical Correlation Analysis
     </a>
    </li>
    <li class="toctree-l2">
@@ -898,9 +898,16 @@
         
               <div>
                 
-  <p>{</p>
-<div class="section" id="canonical-corerlation-analysis">
-<h1>Canonical Corerlation Analysis<a class="headerlink" href="#canonical-corerlation-analysis" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="canonical-correlation-analysis">
+<h1>Canonical Correlation Analysis<a class="headerlink" href="#canonical-correlation-analysis" title="Permalink to this headline">¶</a></h1>
+<p>Can we quantify the associations between two sets of variables?</p>
+<ul class="simple">
+<li><p>Do last year’s labor data relate or explain this year’s labor situation?</p></li>
+<li><p>Are the math science performance<strong>s</strong> of students related to their reading performance<strong>s</strong>?</p></li>
+<li><p>Are there associations between government policie<strong>s</strong> and economic
+variable<strong>s</strong>?</p></li>
+<li><p>For decathlon athletes, is the track event performance<strong>s</strong> correlated with the performance in field event<strong>s</strong>?</p></li>
+</ul>
 <div class="section" id="objective">
 <h2>Objective<a class="headerlink" href="#objective" title="Permalink to this headline">¶</a></h2>
 <p>Hotelling (1936) extended the idea of multiple correlation to the problem of measuring linear association between two <strong>groups</strong> of variables, say <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{y}\)</span>. Thus we consider the simple correlation coefficient between every pair of <strong>linear combinations</strong> of elements of <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> and of <span class="math notranslate nohighlight">\(\boldsymbol{y}\)</span> and choose the maximum.</p>
@@ -973,13 +980,18 @@ U_{1}=\boldsymbol{v}_{1}^{\top} \boldsymbol{x} , \quad V_{1}=\boldsymbol{w}_{1}^
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
 \rho_{i}
- =\max _{\boldsymbol{v}, \boldsymbol{w}} &amp; \quad \operatorname{corr}\left(\boldsymbol{v}^{\top} \boldsymbol{x} , \boldsymbol{w}^{\top} \boldsymbol{y} \right) \\
+ =\max _{\boldsymbol{v}, \boldsymbol{w}} &amp; \quad \operatorname{Corr}\left(\boldsymbol{v}^{\top} \boldsymbol{x} , \boldsymbol{w}^{\top} \boldsymbol{y} \right) \\
  \text{s.t.} &amp;  \quad (\boldsymbol{v} ^\top \boldsymbol{x} , \boldsymbol{w} ^\top \boldsymbol{y} ) \text{ uncorrelated with } (U_1, V_1), \ldots, (U_{i-1}, V_{i-1}) \\
 \end{align}\end{split}\]</div>
 <p>If the maximum is achieved at <span class="math notranslate nohighlight">\(\boldsymbol{v} _i\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{w} _i\)</span>, then the first pair of canonical variables are defined as</p>
 <div class="math notranslate nohighlight">
 \[
 U_{i}=\boldsymbol{v}_{i}^{\top} \boldsymbol{x}_{i}, \quad V_{i}=\boldsymbol{w}_{i}^{\top} \boldsymbol{y}
+\]</div>
+<p>The uncorrelated constraint, for example, when solving for the second pair <span class="math notranslate nohighlight">\((U_2, V_2)\)</span>, are</p>
+<div class="math notranslate nohighlight">
+\[
+\operatorname{Cov}\left(U_{1}, U_{2}\right)=0, \quad \operatorname{Cov}\left(V_{1}, V_{2}\right)=0, \quad \operatorname{Cov}\left(U_{1}, V_{2}\right)=0, \quad \operatorname{Cov}\left(U_{2}, V_{1}\right)=0
 \]</div>
 </div>
 <div class="section" id="spectral-decomposition">
@@ -997,7 +1009,7 @@ the eigenvalues <span class="math notranslate nohighlight">\(\rho^2\)</span>’s
 \]</div>
 <p>is considered instead for the computational efficiency. Note that the two matrices possess the <strong>same</strong> eigenvalues and their eigenvectors are linearly related by <span class="math notranslate nohighlight">\(\boldsymbol{v} = \boldsymbol{\Sigma}_{{xx}}^{-1/2} \boldsymbol{u}\)</span>.</p>
 <p>Then we can find <span class="math notranslate nohighlight">\(\boldsymbol{w} \propto \boldsymbol{\Sigma}_{y y}^{-1} \boldsymbol{\Sigma}_{y x} \boldsymbol{v}\)</span> subject to the constraints.</p>
-<p>Note that the maximal embedding dimension is <span class="math notranslate nohighlight">\(\max(k) = \min(d_x, d_y)\)</span></p>
+<p>Note that the maximal embedding dimension is <span class="math notranslate nohighlight">\(\max(k) = \min(d_x, d_y)\)</span>.</p>
 <div class="dropdown seealso admonition">
 <p class="admonition-title"> <em>Derivation</em></p>
 <p>We consider the following maximization problem:</p>
@@ -1019,29 +1031,29 @@ the eigenvalues <span class="math notranslate nohighlight">\(\rho^2\)</span>’s
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{aligned}
-\frac{\partial f}{\partial \boldsymbol{v}} &amp;=\boldsymbol{\Sigma}_{xy} \boldsymbol{w}-\lambda_{x} \boldsymbol{\Sigma}_{\mathbf{x} \mathbf{x}} \boldsymbol{v}=\mathbf{0} \\
-\frac{\partial f}{\partial \boldsymbol{w}} &amp;=\boldsymbol{\Sigma}_{yx} \boldsymbol{v}-\lambda_{y} \boldsymbol{\Sigma}_{yy} \boldsymbol{w}=\mathbf{0}
+\frac{\partial f}{\partial \boldsymbol{v}} &amp;=\boldsymbol{\Sigma}_{xy} \boldsymbol{w}-\lambda_{x} \boldsymbol{\Sigma}_{xx} \boldsymbol{v}=\boldsymbol{0} \qquad (1)\\
+\frac{\partial f}{\partial \boldsymbol{w}} &amp;=\boldsymbol{\Sigma}_{yx} \boldsymbol{v}-\lambda_{y} \boldsymbol{\Sigma}_{yy} \boldsymbol{w}=\boldsymbol{0} \qquad (2)
 \end{aligned}
 \end{split}\]</div>
-<p>Premultiply the first condition by <span class="math notranslate nohighlight">\(\boldsymbol{v} ^\top\)</span> and the second condition by <span class="math notranslate nohighlight">\(\boldsymbol{w} ^\top\)</span>, we have</p>
+<p>Premultiply <span class="math notranslate nohighlight">\((1)\)</span> by <span class="math notranslate nohighlight">\(\boldsymbol{v} ^\top\)</span> and <span class="math notranslate nohighlight">\((2)\)</span> by <span class="math notranslate nohighlight">\(\boldsymbol{w} ^\top\)</span>, we have</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{aligned}
-0 &amp;=\boldsymbol{v}^{\prime} \boldsymbol{\Sigma}_{xy} \boldsymbol{w}-\boldsymbol{v}^{\prime} \lambda_{x} \boldsymbol{\Sigma}_{\mathbf{x} \mathbf{x}} \boldsymbol{v}-\boldsymbol{w}^{\prime} \boldsymbol{\Sigma}_{\mathbf{y} \mathbf{x}} \boldsymbol{v}+\boldsymbol{w}^{\prime} \lambda_{y} \boldsymbol{\Sigma}_{yy} \boldsymbol{w} \\
-&amp;=\lambda_{y} \boldsymbol{w}^{\prime} \boldsymbol{\Sigma}_{yy} \boldsymbol{w}-\lambda_{x} \boldsymbol{v}^{\prime} \boldsymbol{\Sigma}_{\mathbf{x x}} \boldsymbol{v}
+\boldsymbol{v}^{\top} \boldsymbol{\Sigma}_{xy} \boldsymbol{w} &amp;=\lambda_{x} \\
+\boldsymbol{w}^{\top} \boldsymbol{\Sigma}_{yx} \boldsymbol{v} &amp;= \lambda_{y} \\
 \end{aligned}
 \end{split}\]</div>
-<p>which together with the constraints implies that <span class="math notranslate nohighlight">\(\lambda_y - \lambda_x = 0\)</span>. Let <span class="math notranslate nohighlight">\(\lambda = \lambda_x = \lambda\)</span>. Suppose <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma} _{yy}\)</span> is invertible, then</p>
+<p>which implies that <span class="math notranslate nohighlight">\(\lambda_x = \lambda_y\)</span>. Let <span class="math notranslate nohighlight">\(\lambda_x = \lambda_y = \lambda\)</span>. Suppose <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma} _{yy}\)</span> is invertible, then <span class="math notranslate nohighlight">\((2)\)</span> gives</p>
 <div class="math notranslate nohighlight">
 \[
-\boldsymbol{w}=\frac{\boldsymbol{\Sigma}_{yy}^{-1} \boldsymbol{\Sigma}_{yx} \boldsymbol{v}}{\lambda}
+\boldsymbol{w}=\frac{\boldsymbol{\Sigma}_{yy}^{-1} \boldsymbol{\Sigma}_{yx} \boldsymbol{v}}{\lambda} \qquad (3)
 \]</div>
-<p>Substituting the the first order condition gives</p>
+<p>Substituting this into <span class="math notranslate nohighlight">\((1)\)</span> gives</p>
 <div class="math notranslate nohighlight">
 \[
 \frac{\boldsymbol{\Sigma}_{xy} \boldsymbol{\Sigma}_{yy}^{-1} \boldsymbol{\Sigma}_{yx} \boldsymbol{v}}{\lambda}-\lambda \boldsymbol{\Sigma}_{xx}\boldsymbol{v}=0
 \]</div>
-<p>or</p>
+<p>i.e.,</p>
 <div class="math notranslate nohighlight">
 \[
 \boldsymbol{\Sigma}_{xy} \boldsymbol{\Sigma}_{yy}^{-1} \boldsymbol{\Sigma}_{yx} \boldsymbol{v}=\lambda^{2} \boldsymbol{\Sigma}_{{xx}} \boldsymbol{v}
@@ -1051,7 +1063,7 @@ the eigenvalues <span class="math notranslate nohighlight">\(\rho^2\)</span>’s
 \[
 \boldsymbol{\Sigma}_{{xx}} ^{-1} \boldsymbol{\Sigma}_{xy} \boldsymbol{\Sigma}_{yy}^{-1} \boldsymbol{\Sigma}_{yx} \boldsymbol{v}=\lambda^{2}  \boldsymbol{v}
 \]</div>
-<p>Once the solution for <span class="math notranslate nohighlight">\(\boldsymbol{v}\)</span>  is obtained, the solution for <span class="math notranslate nohighlight">\(\boldsymbol{w}\)</span>  can be obtained by</p>
+<p>Once the solution for <span class="math notranslate nohighlight">\(\boldsymbol{v}\)</span>  is obtained, the solution for <span class="math notranslate nohighlight">\(\boldsymbol{w}\)</span>  can be obtained by <span class="math notranslate nohighlight">\((3)\)</span></p>
 <div class="math notranslate nohighlight">
 \[
 \begin{equation}
@@ -1065,7 +1077,7 @@ the eigenvalues <span class="math notranslate nohighlight">\(\rho^2\)</span>’s
 \boldsymbol{w}^{\top} \boldsymbol{\Sigma}_{yy} \boldsymbol{w}=1
 \end{equation}
 \]</div>
-<p>To convert the eigenproblem to be symmetric, we can write <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma} _{xx} = (\boldsymbol{\Sigma} _{xx} ^{1/2}) (\boldsymbol{\Sigma} _{xx} ^{1/2})\)</span> and let <span class="math notranslate nohighlight">\(\boldsymbol{u} = \boldsymbol{\Sigma} _{xx} ^{1/2} \boldsymbol{v}\)</span> or <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma} _{xx} ^{-1/2} \boldsymbol{u} = \boldsymbol{v}\)</span>. Substituting this into</p>
+<p>To convert the eigenproblem to be symmetric for computational efficiency, we can write <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma} _{xx} = (\boldsymbol{\Sigma} _{xx} ^{1/2}) (\boldsymbol{\Sigma} _{xx} ^{1/2})\)</span> and let <span class="math notranslate nohighlight">\(\boldsymbol{u} = \boldsymbol{\Sigma} _{xx} ^{1/2} \boldsymbol{v}\)</span> or <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma} _{xx} ^{-1/2} \boldsymbol{u} = \boldsymbol{v}\)</span>. Substituting this into</p>
 <div class="math notranslate nohighlight">
 \[
 \boldsymbol{\Sigma}_{xy} \boldsymbol{\Sigma}_{yy}^{-1} \boldsymbol{\Sigma}_{yx} \boldsymbol{v}=\lambda^{2} \boldsymbol{\Sigma}_{{xx}} \boldsymbol{v}
@@ -1082,10 +1094,20 @@ the eigenvalues <span class="math notranslate nohighlight">\(\rho^2\)</span>’s
 </div>
 <div class="section" id="properties">
 <h2>Properties<a class="headerlink" href="#properties" title="Permalink to this headline">¶</a></h2>
-<dl class="simple myst">
-<dt><strong>Invariance property</strong></dt><dd><p>Canonical correlations <span class="math notranslate nohighlight">\(\rho_i\)</span>’s between <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{y}\)</span> are the same as those between <span class="math notranslate nohighlight">\(\boldsymbol{A} _1 \boldsymbol{x}  + \boldsymbol{c}_1\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{A} _2 \boldsymbol{y}  + \boldsymbol{c} _2\)</span>, where both <span class="math notranslate nohighlight">\(\boldsymbol{A} _1\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{A} _2\)</span> are non-singular square matrices and their computation can be based on either the partitioned covariance matrix or the partitioned correlation matrix. However, the canonical coefficients contained in <span class="math notranslate nohighlight">\(\boldsymbol{v} _k\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{w} _k\)</span> are <strong>not</strong> invariant under the same transform, nor their estimates.</p>
-</dd>
-</dl>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\operatorname{Var}\left(U_{k}\right) = \operatorname{Var}\left(V_{k}\right)=1\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(0 = \operatorname{Cov}\left(U_{k}, U_{\ell}\right) = \operatorname{Cov}\left(V_{k}, V_{\ell}\right)=\operatorname{Cov}\left(U_{k}, V_{\ell}\right) = \operatorname{Cov}\left(U_{\ell}, V_{k}\right)\text { for } k \neq \ell\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\operatorname{Cov}\left(U_{i}, V_{i}\right)=\rho_{i}\)</span>, where <span class="math notranslate nohighlight">\(\rho_i^2\)</span> is the <span class="math notranslate nohighlight">\(i\)</span>-th largest eigenvalue of the following matrices</p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(d_x \times d_x \quad \boldsymbol{C} \boldsymbol{C}^{\top}=\boldsymbol{\Sigma}_{xx}^{-1 / 2} \boldsymbol{\Sigma}_{xy} \boldsymbol{\Sigma}_{yy}^{-1} \boldsymbol{\Sigma}_{yx} \boldsymbol{\Sigma}_{xx}^{-1 / 2}\)</span> where <span class="math notranslate nohighlight">\(\boldsymbol{C} =\boldsymbol{\Sigma}_{xx}^{-1 / 2} \boldsymbol{\Sigma}_{xy} \boldsymbol{\Sigma}_{yy}^{-1/2}\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(d_y \times d_y \quad \boldsymbol{C}^{\top} \boldsymbol{C}=\boldsymbol{\Sigma}_{yy}^{-1 / 2} \boldsymbol{\Sigma}_{yx} \boldsymbol{\Sigma}_{xx}^{-1} \boldsymbol{\Sigma}_{xy} \boldsymbol{\Sigma}_{yy}^{-1 / 2}\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(d_x \times d_x \quad \boldsymbol{A}=\boldsymbol{\Sigma}_{xx}^{-1} \boldsymbol{\Sigma}_{xy} \boldsymbol{\Sigma}_{yy}^{-1} \boldsymbol{\Sigma}_{yx}=\boldsymbol{\Sigma}_{xx}^{-1 / 2} \boldsymbol{C} \boldsymbol{C}^{\top} \boldsymbol{\Sigma}_{xx}^{1 / 2}\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(d_y \times d_y \quad \boldsymbol{B}=\boldsymbol{\Sigma}_{yy}^{-1} \boldsymbol{\Sigma}_{yx} \boldsymbol{\Sigma}_{xx}^{-1} \boldsymbol{\Sigma}_{xy}=\boldsymbol{\Sigma}_{yy}^{-1 / 2} \boldsymbol{C}^{\top} \boldsymbol{C} \boldsymbol{\Sigma}_{yy}^{1 / 2}\)</span></p></li>
+<li><p>In fact, they are <a class="reference internal" href="../11-math/21-linear-algebra.html#similar-matrix"><span class="std std-ref">similar</span></a> <span class="math notranslate nohighlight">\(\boldsymbol{A} \sim \boldsymbol{C} \boldsymbol{C} ^{\top}\)</span>, <span class="math notranslate nohighlight">\(\boldsymbol{B} \sim \boldsymbol{C} ^{\top} \boldsymbol{C}\)</span>, and <span class="math notranslate nohighlight">\(\boldsymbol{C} \boldsymbol{C} ^{\top}\)</span> share the same nonzero eigenvalues with <span class="math notranslate nohighlight">\(\boldsymbol{C} ^{\top} \boldsymbol{C}\)</span> (hint: SVD).</p></li>
+</ul>
+</li>
+<li><p>Invariance property: Canonical correlations <span class="math notranslate nohighlight">\(\rho_i\)</span>’s between <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{y}\)</span> are the same as those between <span class="math notranslate nohighlight">\(\boldsymbol{A} _1 \boldsymbol{x}  + \boldsymbol{c}_1\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{A} _2 \boldsymbol{y}  + \boldsymbol{c} _2\)</span>, where both <span class="math notranslate nohighlight">\(\boldsymbol{A} _1\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{A} _2\)</span> are non-singular square matrices and their computation can be based on either the partitioned covariance matrix or the partitioned correlation matrix. However, the canonical coefficients contained in <span class="math notranslate nohighlight">\(\boldsymbol{v} _k\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{w} _k\)</span> are <strong>not</strong> invariant under the same transform, nor their estimates.</p></li>
+</ul>
 </div>
 <div class="section" id="model-selection">
 <h2>Model Selection<a class="headerlink" href="#model-selection" title="Permalink to this headline">¶</a></h2>
@@ -1147,7 +1169,7 @@ H_{0}(k): \rho_{k+1}=\cdots=\rho_{k}=0
 <p>Unlike PCA, CCA has discriminative power in some cases. \boldsymbol{I}n the comparison below, in the first scatter-plot, the principal direction is the discriminative direction, while in the second plot it is not. The 3rd (same as the 2nd) and the 4th plots corresponds to <span class="math notranslate nohighlight">\(\boldsymbol{x} \in \mathbb{R} ^2\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{y} \in \mathbb{R} ^2\)</span>. The two colors means two kinds of data points in the <span class="math notranslate nohighlight">\(n\times 4\)</span> data set, but the color labels are shown to CCA. The CCA solutions to <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> (3rd plot) is the direction <span class="math notranslate nohighlight">\((-1,1)\)</span> and to <span class="math notranslate nohighlight">\(\boldsymbol{y}\)</span> (4th plot) is the direction <span class="math notranslate nohighlight">\((-1,-1)\)</span>. Because they are the highest correlation pair of directions.</p>
 <div class="myclass figure align-default" id="cca-has-disc-power">
 <a class="reference internal image-reference" href="../_images/cca-has-disc-power.png"><img alt="" src="../_images/cca-has-disc-power.png" style="width: 90%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 67 </span><span class="caption-text">CCA has discriminative power [Livescu 2021]</span><a class="headerlink" href="#cca-has-disc-power" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 68 </span><span class="caption-text">CCA has discriminative power [Livescu 2021]</span><a class="headerlink" href="#cca-has-disc-power" title="Permalink to this image">¶</a></p>
 </div>
 </div>
 <div class="section" id="overfitting">

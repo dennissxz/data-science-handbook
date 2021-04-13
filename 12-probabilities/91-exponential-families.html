@@ -563,7 +563,7 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../33-dimensionality-reduction/13-canonical-correlation-analysis.html">
-     Canonical Corerlation Analysis
+     Canonical Correlation Analysis
     </a>
    </li>
    <li class="toctree-l2">
@@ -831,14 +831,31 @@
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#visualization">
+     Visualization
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#properties">
      Properties
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#visualization">
-     Visualization
+    <a class="reference internal nav-link" href="#estimation-and-inference">
+     Estimation and Inference
     </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#mle">
+       MLE
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#wishart-distribution">
+       Wishart Distribution
+      </a>
+     </li>
+    </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#pros-and-cons">
@@ -853,8 +870,13 @@
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#transformation">
-     Transformation
+    <a class="reference internal nav-link" href="#test-normality">
+     Test Normality
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#transformation-to-near-normality">
+     Transformation to Near Normality
     </a>
    </li>
   </ul>
@@ -896,57 +918,6 @@ f(\boldsymbol{x} ;\boldsymbol{\mu}, \boldsymbol{\Sigma})=\frac{1}{(2 \pi)^{p / 2
 <li><p>The determinant <span class="math notranslate nohighlight">\(\left\vert \boldsymbol{\Sigma}  \right\vert = \operatorname{det}(\boldsymbol{\Sigma})\)</span> is called <a class="reference internal" href="90-multivariate-notations.html#id1"><span class="std std-ref">generalized variance</span></a>. It can be viewed as a higher dimension generalization of the scalar-valued <span class="math notranslate nohighlight">\(\sigma^2\)</span> in univariate case that measures uncertainty of the distribution. Hence we have the square root <span class="math notranslate nohighlight">\(\left\vert \cdot \right\vert ^{1/2}\)</span>, as <span class="math notranslate nohighlight">\(\sigma\)</span> in the univariate Gaussian density.</p></li>
 </ul>
 </div>
-<div class="section" id="properties">
-<h3>Properties<a class="headerlink" href="#properties" title="Permalink to this headline">¶</a></h3>
-<ul>
-<li><p><strong>Transformation</strong>: If <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> is <span class="math notranslate nohighlight">\(p\)</span>-variate normal, and <span class="math notranslate nohighlight">\(\boldsymbol{y} = \boldsymbol{A} \boldsymbol{x} + \boldsymbol{c}\)</span>, where <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> is a <span class="math notranslate nohighlight">\(k \times p\)</span> matrix and <span class="math notranslate nohighlight">\(\boldsymbol{c}\)</span> is a <span class="math notranslate nohighlight">\(k\)</span>-vector of constants, then <span class="math notranslate nohighlight">\(\boldsymbol{y}\)</span> is of <span class="math notranslate nohighlight">\(k\)</span>-variate normal.</p>
-<ul class="simple">
-<li><p>if <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> is standard normal, then <span class="math notranslate nohighlight">\(\boldsymbol{y} \sim \mathcal{N} (\boldsymbol{c} , \boldsymbol{A} \boldsymbol{A} ^{\top})\)</span>.</p></li>
-</ul>
-</li>
-<li><p><strong>Sub-vectors</strong>: if <span class="math notranslate nohighlight">\(\boldsymbol{x} \in \mathcal{N} _p (\boldsymbol{\mu} , \boldsymbol{\Sigma})\)</span>, let <span class="math notranslate nohighlight">\(\boldsymbol{x}_1\)</span> be its first <span class="math notranslate nohighlight">\(q &lt;p\)</span> components and <span class="math notranslate nohighlight">\(\boldsymbol{x} _2\)</span> be the rest, then</p>
-<ul>
-<li><p>sub-vectors are normal: <span class="math notranslate nohighlight">\(\boldsymbol{x}_{1} \sim \mathcal{N}_{q}\left(\boldsymbol{\mu}_{1}, \boldsymbol{\Sigma}_{11}\right),  \boldsymbol{x}_{2} \sim \mathcal{N}_{p-q}\left(\boldsymbol{\mu}_{2}, \boldsymbol{\Sigma} _{22}\right)\)</span></p></li>
-<li><p>conditional is normal:</p>
-<div class="math notranslate nohighlight">
-\[
-    \boldsymbol{x}_{1} \mid \boldsymbol{x}_{2} \sim  N_{q}\left(\boldsymbol{\mu}_{1}+\boldsymbol{\Sigma}_{12} \boldsymbol{\Sigma}_{22}^{-1}\left(\boldsymbol{x}_{2}-\boldsymbol{\mu}_{2}\right), \boldsymbol{\Sigma}_{11}-\boldsymbol{\Sigma}_{12} \boldsymbol{\Sigma}_{22}^{-1} \boldsymbol{\Sigma}_{21}\right)
-    \]</div>
-<p>For <span class="math notranslate nohighlight">\(p=2, q=2\)</span>,</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
-    \begin{aligned}
-    X_{1} \mid X_{2}=x_{2} \sim &amp; N\left(\mu_{1}+\frac{\sigma_{12}}{\sigma_{22}}\left(x_{2}-\mu_{2}\right), \sigma_{11}-\frac{\sigma_{12}^{2}}{\sigma_{22}}\right) \\
-    &amp;=N\left(\mu_{1}+\rho \frac{\sigma_{1}}{\sigma_{2}}\left(x_{2}-\mu_{2}\right), \sigma_{1}^{2}\left(1-\rho^{2}\right)\right)
-    \end{aligned}
-    \end{split}\]</div>
-<div class="myclass figure align-default" id="gaussian-marginal-conditional">
-<a class="reference internal image-reference" href="../_images/gaussian-marginal-conditional.png"><img alt="" src="../_images/gaussian-marginal-conditional.png" style="width: 80%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 9 </span><span class="caption-text">Marginal Gaussian and conditional Gaussian are also Gaussians [Shi 2021]</span><a class="headerlink" href="#gaussian-marginal-conditional" title="Permalink to this image">¶</a></p>
-</div>
-</li>
-</ul>
-</li>
-<li><p>Since <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma} = \boldsymbol{U} \boldsymbol{\Lambda} \boldsymbol{U} ^\top\)</span>, then <span class="math notranslate nohighlight">\(\left\vert \boldsymbol{\Sigma}  \right\vert = \left\vert \boldsymbol{U} \boldsymbol{\Lambda} \boldsymbol{U} ^\top  \right\vert = \left\vert \boldsymbol{\Lambda}  \right\vert\)</span></p></li>
-<li><p>For every multivariate Gaussian <span class="math notranslate nohighlight">\(\boldsymbol{x} \sim N(\boldsymbol{\mu} , \boldsymbol{\Sigma} )\)</span> with <span class="math notranslate nohighlight">\(\Sigma
-= \boldsymbol{U} \boldsymbol{\Lambda} \boldsymbol{U} ^\top\)</span>, there exists a transformation <span class="math notranslate nohighlight">\(\boldsymbol{x} ^\prime = \boldsymbol{U} ^\top \boldsymbol{x}, \boldsymbol{\mu} ^\prime= \boldsymbol{U} ^\top \boldsymbol{\mu}\)</span> such that</p>
-<div class="math notranslate nohighlight">
-\[
-  f(\boldsymbol{x} ; \boldsymbol{\mu}, \boldsymbol{\Sigma} ) = f(\boldsymbol{x} ^\prime; \boldsymbol{\mu} ^\prime, \boldsymbol{\Lambda})
-  \]</div>
-<p>where</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{align}
-  f(\boldsymbol{x} ^\prime; \boldsymbol{\mu} ^\prime, \boldsymbol{\Lambda})
-  &amp;= \frac{1}{(2 \pi)^{p / 2}|\boldsymbol{\Lambda}|^{1 / 2}} \exp \left(-\frac{1}{2}(\boldsymbol{x}^\prime-\boldsymbol{\mu} ^\prime)^{\top} \boldsymbol{\Lambda} ^{-1}(
-    \boldsymbol{x} ^\prime -\boldsymbol{\mu} ^\prime)\right) \\
-  &amp;=  \frac{1}{(2 \pi)^{p / 2}\Pi_{i=1}^p \lambda_i} \exp \left(-\sum_{i=1}^p\frac{1}{2\sigma^2}(x_i^\prime-\mu_i ^\prime)^2\right) \\
-  &amp;= \prod_{i=1}^{p} \frac{1}{(2 \pi)^{1 / 2} \lambda_{i}} \exp \left(-\frac{1}{2 \lambda_{i}^{2}}\left(x_{i}^{\prime}-\mu_{i}^{\prime}\right)^{2}\right)
-  \end{align}\end{split}\]</div>
-<p>which is a product of PDFs of univariate Gaussians, since <span class="math notranslate nohighlight">\(\boldsymbol{\Lambda}\)</span> is diagonal. Geometrically, <span class="math notranslate nohighlight">\(U\)</span> rotate the axes of the distribution but keep the function value intact.</p>
-</li>
-</ul>
-</div>
 <div class="section" id="visualization">
 <h3>Visualization<a class="headerlink" href="#visualization" title="Permalink to this headline">¶</a></h3>
 <p>All <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> satisfy the equality below is a contour. This contour is an ellipsoid.</p>
@@ -958,12 +929,155 @@ c = f(\boldsymbol{x} ;\boldsymbol{\mu}, \boldsymbol{\Sigma})
 <li><p><span class="math notranslate nohighlight">\(\boldsymbol{\mu}\)</span> determines the center of the ellipsoid.</p></li>
 <li><p><span class="math notranslate nohighlight">\(\boldsymbol{U}\)</span> determines the rotation angle of the ellipsoid. The vectors <span class="math notranslate nohighlight">\(\boldsymbol{u} _i\)</span> are the directions of the axes of the ellipsoid.</p></li>
 <li><p><span class="math notranslate nohighlight">\(\boldsymbol{\Lambda}\)</span> determines the lengths of the axes. The length should be proportional to <span class="math notranslate nohighlight">\(\sqrt{\lambda_i}\)</span>. If all eigenvalues are the same, the ellipsoid reduces to a ball.</p></li>
-<li><p>As shown above, the transformation <span class="math notranslate nohighlight">\(\boldsymbol{x} ^\prime = \boldsymbol{U} ^\top \boldsymbol{x}, \boldsymbol{\mu} ^\prime = \boldsymbol{U} ^\top \boldsymbol{\mu}, \boldsymbol{\Sigma} ^\prime = \boldsymbol{\Lambda}\)</span> will transform the distribution will change the center, align the ellipsoid axes to the coordinate axes (so the variables becomes independent and the joint PDF factorizes to univariate PDF), while keep the axes lengths intact (rotation preserve lengths and angles).</p></li>
+<li><p>As shown above, the transformation <span class="math notranslate nohighlight">\(\boldsymbol{x} ^\top = \boldsymbol{U} ^\top \boldsymbol{x}, \boldsymbol{\mu} ^\top = \boldsymbol{U} ^\top \boldsymbol{\mu}, \boldsymbol{\Sigma} ^\top = \boldsymbol{\Lambda}\)</span> will transform the distribution will change the center, align the ellipsoid axes to the coordinate axes (so the variables becomes independent and the joint PDF factorizes to univariate PDF), while keep the axes lengths intact (rotation preserve lengths and angles).</p></li>
 </ul>
 <p>In the 2-d case, an ellipsoid reduces to an ellipse.</p>
-<div class="myclass figure align-default" id="gaussian-contour-2d">
-<a class="reference internal image-reference" href="../_images/gaussian-2d.png"><img alt="" src="../_images/gaussian-2d.png" style="width: 50%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 10 </span><span class="caption-text">Gaussian ellipse in 2-d plane [Shi 2020]</span><a class="headerlink" href="#gaussian-contour-2d" title="Permalink to this image">¶</a></p>
+<div class="myclass figure align-default" id="gaussian-density-2d">
+<a class="reference internal image-reference" href="../_images/gaussian-density-2d.png"><img alt="" src="../_images/gaussian-density-2d.png" style="width: 80%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 9 </span><span class="caption-text">Bivariate Gaussian density and ellipse</span><a class="headerlink" href="#gaussian-density-2d" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+<div class="section" id="properties">
+<h3>Properties<a class="headerlink" href="#properties" title="Permalink to this headline">¶</a></h3>
+<ul>
+<li><p><strong>Transformation</strong>: If <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> is <span class="math notranslate nohighlight">\(p\)</span>-variate normal <span class="math notranslate nohighlight">\(\mathcal{N} (\boldsymbol{\mu} , \boldsymbol{\Sigma})\)</span>, and <span class="math notranslate nohighlight">\(\boldsymbol{y} = \boldsymbol{A} \boldsymbol{x} + \boldsymbol{c}\)</span>, where <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> is a <span class="math notranslate nohighlight">\(k \times p\)</span> matrix and <span class="math notranslate nohighlight">\(\boldsymbol{c}\)</span> is a <span class="math notranslate nohighlight">\(k\)</span>-vector of constants, then <span class="math notranslate nohighlight">\(\boldsymbol{y}\)</span> is of <span class="math notranslate nohighlight">\(k\)</span>-variate normal, with mean <span class="math notranslate nohighlight">\(\boldsymbol{A} \boldsymbol{\mu} + \boldsymbol{c}\)</span> and variance <span class="math notranslate nohighlight">\(\boldsymbol{A} \boldsymbol{\Sigma} \boldsymbol{A} ^{\top}\)</span>.</p>
+<ul class="simple">
+<li><p>If <span class="math notranslate nohighlight">\(k=1\)</span>, then <span class="math notranslate nohighlight">\(\boldsymbol{y} = \boldsymbol{a} ^{\top} \boldsymbol{x} \sim \mathcal{N} ( \boldsymbol{a} ^{\top} \boldsymbol{\mu} , \boldsymbol{a} ^{\top} \boldsymbol{\Sigma} \boldsymbol{a})\)</span></p></li>
+<li><p>if <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> is standard normal <span class="math notranslate nohighlight">\(\mathcal{N}(\boldsymbol{0}, \boldsymbol{I})\)</span>, then <span class="math notranslate nohighlight">\(\boldsymbol{y} \sim \mathcal{N} (\boldsymbol{c} , \boldsymbol{A} \boldsymbol{A} ^{\top})\)</span></p></li>
+</ul>
+</li>
+<li><p><strong>MGF</strong>: <span class="math notranslate nohighlight">\(M_{\boldsymbol{x}}(\boldsymbol{t})=\exp \left(\boldsymbol{t}^{\top} \boldsymbol{\mu}+\frac{1}{2} \boldsymbol{t}^{\top} \boldsymbol{\Sigma} \boldsymbol{t}\right)\)</span>.</p></li>
+<li><p><strong>Sum</strong>: if <span class="math notranslate nohighlight">\(\boldsymbol{x} \sim \mathcal{N} _p (\boldsymbol{\mu} _1, \boldsymbol{\Sigma} _1)\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{y} \sim \mathcal{N} _p (\boldsymbol{\mu} _2, \boldsymbol{\Sigma} _2)\)</span> are independent, then <span class="math notranslate nohighlight">\(\boldsymbol{x} + \boldsymbol{y}  \sim \mathcal{N} _p (\boldsymbol{\mu} _1 + \boldsymbol{\mu} _2, \boldsymbol{\Sigma} _1 + \boldsymbol{\Sigma} _2)\)</span>.</p></li>
+<li><p>What is the condition for a valid covariance matrix <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}\)</span>? Given a positive definite matrix <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}\)</span>, then <span class="math notranslate nohighlight">\(\boldsymbol{x} \sim \mathcal{N} _p (\boldsymbol{\mu} , \boldsymbol{\Sigma})\)</span> iff there exists a non-singular matrix <span class="math notranslate nohighlight">\(\boldsymbol{B}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{z} \sim \mathcal{N} _p (\boldsymbol{0} , \boldsymbol{I})\)</span> such that <span class="math notranslate nohighlight">\(\boldsymbol{x} = \boldsymbol{\mu} + \boldsymbol{B} \boldsymbol{z}\)</span>. In this case <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma} = \boldsymbol{B} \boldsymbol{B} ^{\top}\)</span>.</p></li>
+<li><p><strong>Sub-vectors</strong>: if <span class="math notranslate nohighlight">\(\boldsymbol{x} \in \mathcal{N} _{p + q} (\boldsymbol{\mu} , \boldsymbol{\Sigma})\)</span>, let <span class="math notranslate nohighlight">\(\boldsymbol{x}_1\)</span> be its first <span class="math notranslate nohighlight">\(p\)</span> components and <span class="math notranslate nohighlight">\(\boldsymbol{x} _2\)</span> be the rest <span class="math notranslate nohighlight">\(q\)</span> components, then</p>
+<ul>
+<li><p>still normal: <span class="math notranslate nohighlight">\(\boldsymbol{x}_{1} \sim \mathcal{N}_{p}\left(\boldsymbol{\mu}_{1}, \boldsymbol{\Sigma}_{11}\right),  \boldsymbol{x}_{2} \sim \mathcal{N}_{q}\left(\boldsymbol{\mu}_{2}, \boldsymbol{\Sigma} _{22}\right)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{x} _1\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{x} _2\)</span> are independent iff <span class="math notranslate nohighlight">\(\operatorname{Cov}\left( \boldsymbol{x} _1, \boldsymbol{x} _2 \right) = \boldsymbol{\Sigma} _{12} = \boldsymbol{0}_{p \times q}\)</span> (hint for <span class="math notranslate nohighlight">\(\Leftarrow\)</span>: use definition <span class="math notranslate nohighlight">\(f_{12} = f_1 f_2\)</span>)</p></li>
+<li><p><span class="math notranslate nohighlight">\((\boldsymbol{x} _1 - \boldsymbol{\Sigma} _{12} \boldsymbol{\Sigma} _{22} ^{-1} \boldsymbol{x} _2)\)</span> is independent of <span class="math notranslate nohighlight">\(\boldsymbol{x} _2\)</span> and is distributed as <span class="math notranslate nohighlight">\(\mathcal{N} _p (\boldsymbol{\mu} _1 -  \boldsymbol{\Sigma} _{12} \boldsymbol{\Sigma} _{22} ^{-1} \boldsymbol{\mu} _2, \boldsymbol{\Sigma} _{11}-  \boldsymbol{\Sigma} _{12} \boldsymbol{\Sigma} _{22} ^{-1} \boldsymbol{\Sigma} _{21})\)</span>.</p></li>
+<li><p>conditional distribution is normal:</p>
+<div class="math notranslate nohighlight">
+\[
+    \boldsymbol{x}_{1} \mid \boldsymbol{x}_{2} \sim  N_{p}\left(\boldsymbol{\mu}_{1}+\boldsymbol{\Sigma}_{12} \boldsymbol{\Sigma}_{22}^{-1}\left(\boldsymbol{x}_{2}-\boldsymbol{\mu}_{2}\right), \boldsymbol{\Sigma}_{11}-\boldsymbol{\Sigma}_{12} \boldsymbol{\Sigma}_{22}^{-1} \boldsymbol{\Sigma}_{21}\right)
+    \]</div>
+<p>note the variance does not change with <span class="math notranslate nohighlight">\(\boldsymbol{x} _2\)</span>. In particular, for <span class="math notranslate nohighlight">\(p=q=1\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+    \begin{aligned}
+    X_{1} \mid X_{2}=x_{2} \sim &amp; N\left(\mu_{1}+\frac{\sigma_{12}}{\sigma_{22}}\left(x_{2}-\mu_{2}\right), \sigma_{11}-\frac{\sigma_{12}^{2}}{\sigma_{22}}\right) \\
+    &amp;=N\left(\mu_{1}+\rho \frac{\sigma_{1}}{\sigma_{2}}\left(x_{2}-\mu_{2}\right), \sigma_{1}^{2}\left(1-\rho^{2}\right)\right)
+    \end{aligned}
+    \end{split}\]</div>
+<div class="myclass figure align-default" id="gaussian-marginal-conditional">
+<a class="reference internal image-reference" href="../_images/gaussian-marginal-conditional.png"><img alt="" src="../_images/gaussian-marginal-conditional.png" style="width: 80%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 10 </span><span class="caption-text">Marginal Gaussian and conditional Gaussian are also Gaussians [Shi 2021]</span><a class="headerlink" href="#gaussian-marginal-conditional" title="Permalink to this image">¶</a></p>
+</div>
+</li>
+</ul>
+</li>
+<li><p><strong>Quadratic form</strong>: if <span class="math notranslate nohighlight">\(\boldsymbol{x} \sim \mathcal{N} _p (\boldsymbol{\mu} , \boldsymbol{\Sigma})\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}\)</span> is p.d., then <span class="math notranslate nohighlight">\((\boldsymbol{x} - \boldsymbol{\mu} ) ^{\top} \boldsymbol{\Sigma} ^{-1} (\boldsymbol{x} - \boldsymbol{\mu} ) \sim \chi ^2 _p\)</span>.</p></li>
+<li><p>Independency after transformation: for any <span class="math notranslate nohighlight">\(m\times p\)</span> matrix <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> and <span class="math notranslate nohighlight">\(n\times p\)</span> matrix <span class="math notranslate nohighlight">\(\boldsymbol{B}\)</span>,</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{A} \boldsymbol{x}  \perp \boldsymbol{B} \boldsymbol{x} \Leftrightarrow \boldsymbol{A} \boldsymbol{\Sigma} \boldsymbol{B} ^{\top} = \boldsymbol{0}\)</span></p></li>
+<li><p>when <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> is symmetric, <span class="math notranslate nohighlight">\(\boldsymbol{x} ^{\top}\boldsymbol{A} \boldsymbol{x}  \perp \boldsymbol{B} \boldsymbol{x} \Leftrightarrow \boldsymbol{B} \boldsymbol{\Sigma} \boldsymbol{A} = \boldsymbol{0}\)</span></p></li>
+<li><p>when both <span class="math notranslate nohighlight">\(\boldsymbol{A}, \boldsymbol{B}\)</span> are symmetric, <span class="math notranslate nohighlight">\(\boldsymbol{x} ^{\top}\boldsymbol{A} \boldsymbol{x}  \perp \boldsymbol{x} ^{\top} \boldsymbol{B} \boldsymbol{x} \Leftrightarrow \boldsymbol{A} \boldsymbol{\Sigma} \boldsymbol{B} = \boldsymbol{0}\)</span></p></li>
+</ul>
+</li>
+<li><p>Since EVD <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma} = \boldsymbol{U} \boldsymbol{\Lambda} \boldsymbol{U} ^\top\)</span>, then <span class="math notranslate nohighlight">\(\left\vert \boldsymbol{\Sigma}  \right\vert = \left\vert \boldsymbol{U} \boldsymbol{\Lambda} \boldsymbol{U} ^\top  \right\vert = \left\vert \boldsymbol{\Lambda}  \right\vert\)</span></p></li>
+<li><p>For every multivariate Gaussian <span class="math notranslate nohighlight">\(\boldsymbol{x} \sim N(\boldsymbol{\mu} , \boldsymbol{\Sigma} )\)</span> with <span class="math notranslate nohighlight">\(\Sigma
+= \boldsymbol{U} \boldsymbol{\Lambda} \boldsymbol{U} ^\top\)</span>, there exists a transformation <span class="math notranslate nohighlight">\(\boldsymbol{x} ^\top = \boldsymbol{U} ^\top \boldsymbol{x}, \boldsymbol{\mu} ^\top= \boldsymbol{U} ^\top \boldsymbol{\mu}\)</span> such that</p>
+<div class="math notranslate nohighlight">
+\[
+  f(\boldsymbol{x} ; \boldsymbol{\mu}, \boldsymbol{\Sigma} ) = f(\boldsymbol{x} ^\top; \boldsymbol{\mu} ^\top, \boldsymbol{\Lambda})
+  \]</div>
+<p>where</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+  f(\boldsymbol{x} ^\top; \boldsymbol{\mu} ^\top, \boldsymbol{\Lambda})
+  &amp;= \frac{1}{(2 \pi)^{p / 2}|\boldsymbol{\Lambda}|^{1 / 2}} \exp \left(-\frac{1}{2}(\boldsymbol{x}^\top-\boldsymbol{\mu} ^\top)^{\top} \boldsymbol{\Lambda} ^{-1}(
+    \boldsymbol{x} ^\top -\boldsymbol{\mu} ^\top)\right) \\
+  &amp;=  \frac{1}{(2 \pi)^{p / 2}\Pi_{i=1}^p \lambda_i} \exp \left(-\sum_{i=1}^p\frac{1}{2\sigma^2}(x_i^\top-\mu_i ^\top)^2\right) \\
+  &amp;= \prod_{i=1}^{p} \frac{1}{(2 \pi)^{1 / 2} \lambda_{i}} \exp \left(-\frac{1}{2 \lambda_{i}^{2}}\left(x_{i}^{\top}-\mu_{i}^{\top}\right)^{2}\right)
+  \end{align}\end{split}\]</div>
+<p>which is a product of PDFs of univariate Gaussians, since <span class="math notranslate nohighlight">\(\boldsymbol{\Lambda}\)</span> is diagonal. Geometrically, <span class="math notranslate nohighlight">\(U\)</span> rotate the axes of the distribution but keep the function value intact.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="estimation-and-inference">
+<h3>Estimation and Inference<a class="headerlink" href="#estimation-and-inference" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="mle">
+<h4>MLE<a class="headerlink" href="#mle" title="Permalink to this headline">¶</a></h4>
+<p>The MLE of <span class="math notranslate nohighlight">\(\boldsymbol{\mu}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}\)</span> are respectively</p>
+<div class="margin sidebar">
+<p class="sidebar-title"></p>
+<p>For derivation see <a class="reference internal" href="../13-statistics/41-maximum-likelihood-estimation.html#mle-gaussian-derivation"><span class="std std-ref">here</span></a>=</p>
+</div>
+<div class="math notranslate nohighlight">
+\[
+\hat{\boldsymbol{\mu}}=\overline{\boldsymbol{x}} \text { and } \hat{\mathbf{\Sigma}}=\frac{\boldsymbol{W}}{n}=\frac{(n-1) \boldsymbol{S}}{n}
+\]</div>
+<p>Note that <span class="math notranslate nohighlight">\(\hat{\boldsymbol{\mu}}\)</span> is unbiased but <span class="math notranslate nohighlight">\(\hat{\boldsymbol{\Sigma} }\)</span> is unbiased. However, <span class="math notranslate nohighlight">\(\boldsymbol{S}\)</span> is unbiased for <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}\)</span>.</p>
+</div>
+<div class="section" id="wishart-distribution">
+<h4>Wishart Distribution<a class="headerlink" href="#wishart-distribution" title="Permalink to this headline">¶</a></h4>
+<p>Recall that for univariate i.i.d. standard Gaussians we have <span class="math notranslate nohighlight">\(\sum_{i=1}^k Z_i^2 \sim \sigma^2 \chi ^2 _n\)</span>. The multivariate extension of this chi-squared distribution is Wishart distribution.</p>
+<dl class="simple myst">
+<dt>Definition (Wishart distribution)</dt><dd><p>Suppose <span class="math notranslate nohighlight">\(\boldsymbol{x}_1, \ldots, \boldsymbol{x} _k\)</span> and independent <span class="math notranslate nohighlight">\(\mathcal{N} _p (\boldsymbol{\mu} _i, \boldsymbol{\Sigma})\)</span>. Define a symmetric <span class="math notranslate nohighlight">\(p \times p\)</span> matrix <span class="math notranslate nohighlight">\(\boldsymbol{V}\)</span> as</p>
+<div class="math notranslate nohighlight">
+\[
+  \boldsymbol{V} = \sum_{i=1}^k \boldsymbol{x} _i \boldsymbol{x}_i ^{\top} = \boldsymbol{X} ^{\top} \boldsymbol{X}
+  \]</div>
+<p>Then <span class="math notranslate nohighlight">\(\boldsymbol{V}\)</span> is said to follow a Wishart distribution <span class="math notranslate nohighlight">\(W_p(k, \boldsymbol{\Sigma} , \boldsymbol{\Psi})\)</span>, where</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(n\)</span> is the degree of freedom</p></li>
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}\)</span> is called the <strong>scaling matrix</strong></p></li>
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{\Psi} = \sum_{i=1}^k \boldsymbol{\mu} _i \boldsymbol{\mu} _i ^{\top}\)</span> is the <span class="math notranslate nohighlight">\(p \times p\)</span> symmetric <strong>non-centrality matrix</strong></p>
+<ul>
+<li><p>If <span class="math notranslate nohighlight">\(\boldsymbol{\Psi} = \boldsymbol{0}\)</span>, it is called the <strong>central</strong> Wishart distribution, denoted by <span class="math notranslate nohighlight">\(W_p(k, \boldsymbol{\Sigma})\)</span></p></li>
+</ul>
+</li>
+</ul>
+</dd>
+</dl>
+<p>When <span class="math notranslate nohighlight">\(p=1\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma} = \sigma^2\)</span>, it reduces to a non-central chi-sqaured distribution <span class="math notranslate nohighlight">\(\sigma^2 \chi ^2 (k, \sum_{i=1}^k  \boldsymbol{\mu} _i^2)\)</span>.</p>
+<dl class="simple myst">
+<dt>Properties</dt><dd><ul class="simple">
+<li><p><strong>sum of independent</strong>: if <span class="math notranslate nohighlight">\(\boldsymbol{V} _1 \sim W_p(k, \boldsymbol{\Sigma} , \boldsymbol{\Psi} _1)\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{V} _2 \sim W_p(k, \boldsymbol{\Sigma} , \boldsymbol{\Psi} _2)\)</span> are independent Wisharts, then <span class="math notranslate nohighlight">\(\boldsymbol{V} _1 + \boldsymbol{V} _2 \sim W_p (k_1 + k_2, \boldsymbol{\Sigma} , \boldsymbol{\Psi} _1 + \boldsymbol{\Psi} _2)\)</span>.</p></li>
+<li><p><strong>transformation</strong>: if <span class="math notranslate nohighlight">\(\boldsymbol{V} \sim W_p (k, \boldsymbol{\Sigma} , \boldsymbol{\Psi})\)</span>, then</p>
+<ul>
+<li><p>for any constant <span class="math notranslate nohighlight">\(q \times p\)</span> matrix <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span>, <span class="math notranslate nohighlight">\(\boldsymbol{A} \boldsymbol{V} \boldsymbol{A} ^{\top} \sim W_q (k, \boldsymbol{A} \boldsymbol{\Sigma} \boldsymbol{A} ^{\top} , \boldsymbol{A} \boldsymbol{\Psi} \boldsymbol{A} ^{\top})\)</span>.</p></li>
+<li><p>for any constant <span class="math notranslate nohighlight">\(\boldsymbol{a}\)</span>, <span class="math notranslate nohighlight">\(\boldsymbol{a}^{\top} \boldsymbol{V} \boldsymbol{a} / \boldsymbol{a}^{\top} \boldsymbol{\Sigma} \boldsymbol{a} \sim \chi^{2}\left(k, \boldsymbol{a}^{\top} \boldsymbol{\Psi} \boldsymbol{a}\right)\)</span>. In particular, <span class="math notranslate nohighlight">\(v_{ii}/\sigma_{ii} \sim \chi ^2 (k, \Phi_{ii})\)</span>.</p></li>
+<li><p>for any random vector <span class="math notranslate nohighlight">\(\boldsymbol{y}\)</span> independent of <span class="math notranslate nohighlight">\(\boldsymbol{V} \sim W_p(k, \boldsymbol{\Sigma})\)</span>,</p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{y}^{\top} \boldsymbol{V} \boldsymbol{y} / \boldsymbol{y}^{\top} \boldsymbol{\Sigma} \boldsymbol{y} \sim \chi^{2}(k)\)</span> and is independent of <span class="math notranslate nohighlight">\(\boldsymbol{y}\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{y}^{\top} \boldsymbol{\Sigma}^{-1} \boldsymbol{y} / \boldsymbol{y}^{\top} \boldsymbol{V}^{-1} \boldsymbol{y} \sim \chi^{2}(k-p+1)\)</span> if <span class="math notranslate nohighlight">\(k &gt; p\)</span>, and is independent of <span class="math notranslate nohighlight">\(\boldsymbol{y}\)</span>.</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>for random <span class="math notranslate nohighlight">\(k \times p\)</span> matrix <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span>,</p>
+<ul>
+<li><p>for a symmetric <span class="math notranslate nohighlight">\(\boldsymbol{A}: \boldsymbol{X}^{\top} \boldsymbol{A} \boldsymbol{X} \sim W_{p}(r, \boldsymbol{\Sigma}, \boldsymbol{\Psi}) \Leftrightarrow \boldsymbol{A} ^2 = \boldsymbol{A}\)</span> (idempotent), in which case <span class="math notranslate nohighlight">\(r=\operatorname{rank}(\boldsymbol{A})=\operatorname{tr}(\boldsymbol{A})\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{\Psi}=\boldsymbol{M}^{\top} \boldsymbol{A} \boldsymbol{M}\)</span></p></li>
+<li><p>for symmetric idempotent <span class="math notranslate nohighlight">\(\boldsymbol{A}, \boldsymbol{B}\)</span>, we have <span class="math notranslate nohighlight">\(\boldsymbol{X} ^{\top} \boldsymbol{A} \boldsymbol{X}  \perp \boldsymbol{X} ^{\top} \boldsymbol{B} \boldsymbol{X} \Leftrightarrow \boldsymbol{A} \boldsymbol{B} = \boldsymbol{0}\)</span>.</p></li>
+<li><p>for symmetric idempotent <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span>, we have <span class="math notranslate nohighlight">\(\boldsymbol{X} ^{\top} \boldsymbol{A} \boldsymbol{X}  \perp \boldsymbol{X} ^{\top} \boldsymbol{B} \Leftrightarrow \boldsymbol{A} \boldsymbol{B} = \boldsymbol{0}\)</span>.</p></li>
+</ul>
+</li>
+<li><p>Gaussian MLE</p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(\bar{\boldsymbol{x}} \sim \mathcal{N} _p (\boldsymbol{\mu} , \frac{1}{n} \boldsymbol{\Sigma} )\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\((n-1) \boldsymbol{S} = \boldsymbol{W} \sim W_p(n-1, \boldsymbol{\Sigma})\)</span>, extension of <span class="math notranslate nohighlight">\(\sum_{i=1}^n (x_i - \bar{x})^2 \sim \sigma^2\chi ^2 _{n-1}\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\bar{\boldsymbol{x} } \perp \boldsymbol{S}\)</span></p></li>
+</ul>
+</li>
+<li><p>In the Cholesky decomposition <span class="math notranslate nohighlight">\(\boldsymbol{V} = \boldsymbol{T} \boldsymbol{T}  ^{\top}\)</span> of <span class="math notranslate nohighlight">\(\boldsymbol{V} \sim W_p (k, \boldsymbol{\Sigma})\)</span>, where <span class="math notranslate nohighlight">\(\boldsymbol{T}\)</span> is lower triangular,</p>
+<ul>
+<li><p>off-diagonal <span class="math notranslate nohighlight">\(t_{ij} \sim \mathcal{N} (0,1)\)</span> for <span class="math notranslate nohighlight">\(i &gt;j\)</span></p></li>
+<li><p>diagonal <span class="math notranslate nohighlight">\(t_{ii} \sim \chi ^2 _{k-i+1}\)</span></p></li>
+<li><p>all non-zero elements are mutually independent</p></li>
+</ul>
+</li>
+</ul>
+</dd>
+</dl>
 </div>
 </div>
 <div class="section" id="pros-and-cons">
@@ -996,17 +1110,82 @@ c = f(\boldsymbol{x} ;\boldsymbol{\mu}, \boldsymbol{\Sigma})
 </div>
 <div class="section" id="univariate-gaussian">
 <h2>Univariate Gaussian<a class="headerlink" href="#univariate-gaussian" title="Permalink to this headline">¶</a></h2>
-<p>Test normality:</p>
+<div class="section" id="test-normality">
+<h3>Test Normality<a class="headerlink" href="#test-normality" title="Permalink to this headline">¶</a></h3>
+<p>For most multivariate analyses, it is important that the data indeed follow the multivariate normal, at least approximately if not exactly.</p>
+<ul>
+<li><p>QQ-plots (quantile-quantile plot)</p>
 <ul class="simple">
-<li><p>QQ-plots (quantile-quantile plot)</p></li>
-<li><p>Kolmogorov–Smirnov test</p></li>
-<li><p>Jarque–Bera test</p></li>
-<li><p>Shapiro–Wilk test</p></li>
+<li><p>Sample quantiles are plotted against the expected sample quantiles of a standard normal distribution</p></li>
+<li><p>a straight line indicates univariate normality</p></li>
+<li><p>non-linearity may indicate a need to transform the variable.</p></li>
 </ul>
-<div class="section" id="transformation">
-<h3>Transformation<a class="headerlink" href="#transformation" title="Permalink to this headline">¶</a></h3>
-<p>Power transform</p>
-<p>Box-Cox transformation</p>
+<div class="figure align-default" id="gaussian-qq-plot">
+<a class="reference internal image-reference" href="../_images/gaussian-qq-plot.png"><img alt="" src="../_images/gaussian-qq-plot.png" style="width: 80%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 11 </span><span class="caption-text">QQ-plots for Gaussian (left) and non-Gaussian (right)</span><a class="headerlink" href="#gaussian-qq-plot" title="Permalink to this image">¶</a></p>
+</div>
+</li>
+<li><p>P-P plot (probability against probability plot) that plots the sample CDF against the theoretical CDF.</p></li>
+<li><p>Shapiro–Wilk <span class="math notranslate nohighlight">\(W\)</span> test</p>
+<ul class="simple">
+<li><p>test statistic: a modified version of the squared sample correlation between the sample quantiles and the expected quantiles.</p></li>
+</ul>
+</li>
+<li><p>Kolmogorov–Smirnov test</p>
+<ul class="simple">
+<li><p>require: large sample, at least 100s</p></li>
+<li><p>test statistic: maximum difference between the empirical CDF and the normal CDF.</p></li>
+</ul>
+</li>
+<li><p>Jarque–Bera test</p></li>
+<li><p>Check whether the squared generalized distance as defined below follows a chi-squared distribution by a Q-Q plot (necessary and sufficient conditions for very large sample size))</p>
+<div class="math notranslate nohighlight">
+\[
+  d_{i}^{2}=\left(\boldsymbol{x}_{i}-\overline{\boldsymbol{x}}\right)^{\prime} \boldsymbol{S}^{-1}\left(\boldsymbol{x}_{i}-\overline{\boldsymbol{x}}\right)
+  \]</div>
+</li>
+<li><p>Check each Principal Component (PC) for univariate normality (necessary condition; and if the sample size n is large enough, a sufficient condition)</p></li>
+<li><p>Test for zero skewness, zero excess kurtosis.</p></li>
+</ul>
+</div>
+<div class="section" id="transformation-to-near-normality">
+<h3>Transformation to Near Normality<a class="headerlink" href="#transformation-to-near-normality" title="Permalink to this headline">¶</a></h3>
+<p>To achieve the multinormality of the data, univariate transformation is applied to each variable individually. After then, the multinormality of transformed variables is checked again (Notice that each of the <span class="math notranslate nohighlight">\(X_p\)</span> variables after transformation is normally distributed does not imply that they jointly follow a multivariate normal distribution).</p>
+<p>Assume <span class="math notranslate nohighlight">\(x &gt; 0\)</span>.</p>
+<ul>
+<li><p>common method <span class="math notranslate nohighlight">\(\log x\)</span></p></li>
+<li><p>based on theory:</p>
+<ul class="simple">
+<li><p>Poisson count: <span class="math notranslate nohighlight">\(\sqrt{x}\)</span></p></li>
+<li><p>Binomial proportion: <span class="math notranslate nohighlight">\(\sin ^{-1} \sqrt{x}\)</span></p></li>
+</ul>
+</li>
+<li><p>Box-Cox transformation</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+  x_{i}^{[\lambda]}=\left\{\begin{array}{lll}
+  \frac{x_{i}^{\lambda}-1}{\lambda} &amp; \text { for } \lambda \neq 0 &amp; , i=1, \ldots, n \\
+  \log x_{i} &amp; \text { for } \lambda=0 &amp; , i=1, \ldots, n
+  \end{array}\right.
+  \end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\lambda\)</span> is unknown. It can be chosen by priori information of <span class="math notranslate nohighlight">\(\lambda\)</span>, or search among some values <span class="math notranslate nohighlight">\(3,2,1,\frac{1}{2}, \frac{1}{3}, 0\)</span> and their negatives.</p>
+<p>Cons:</p>
+<ul class="simple">
+<li><p>Box-Cox transformation <strong>cannot</strong> guarantee that the transformed variable is close to the normal distribution.</p></li>
+<li><p>Choice of <span class="math notranslate nohighlight">\(\lambda\)</span> depends on scale of <span class="math notranslate nohighlight">\(x_i\)</span>. Sol: power transform</p></li>
+</ul>
+</li>
+<li><p>Power transform, where <span class="math notranslate nohighlight">\(G M(x)=\left(x_{1} x_{2} \cdots x_{n}\right)^{1 / n}\)</span> is the geometric mean of observations.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+  x_{i}^{[\lambda]}=\left\{\begin{array}{ll}
+  \frac{x_{i}^{\lambda}-1}{\lambda[G M(x)]^{\lambda-1}}, &amp; \text { if } \lambda \neq 0 \quad, i=1, \ldots, n \\
+  G M(x) \log x_{i}, &amp; \text { if } \lambda=0 \quad, i=1, \ldots, n
+  \end{array}\right.
+  \end{split}\]</div>
+<p>The optimal <span class="math notranslate nohighlight">\(\lambda\)</span> minimizes sample variance after transforamtion.</p>
+</li>
+</ul>
 <!-- ## Weibull Distribution -->
 </div>
 </div>

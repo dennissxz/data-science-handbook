@@ -563,7 +563,7 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../33-dimensionality-reduction/13-canonical-correlation-analysis.html">
-     Canonical Corerlation Analysis
+     Canonical Correlation Analysis
     </a>
    </li>
    <li class="toctree-l2">
@@ -826,6 +826,11 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#properties">
+   Properties
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#examples">
    Examples
   </a>
@@ -898,10 +903,16 @@
 \]</div>
 <p>and we can solve for <span class="math notranslate nohighlight">\(\theta_{MLE}\)</span>.</p>
 </div>
+<div class="section" id="properties">
+<h2>Properties<a class="headerlink" href="#properties" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Invariance: if MLE of <span class="math notranslate nohighlight">\(\theta\)</span> is <span class="math notranslate nohighlight">\(\hat{\theta}\)</span>, then MLE of <span class="math notranslate nohighlight">\(\phi=h(\theta)\)</span> is <span class="math notranslate nohighlight">\(\hat{\phi} = h(\hat{\theta})\)</span>, provided that <span class="math notranslate nohighlight">\(h(\cdot)\)</span> is a one-to-one function.</p></li>
+</ul>
+</div>
 <div class="section" id="examples">
 <h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="gaussian">
-<h3>Gaussian<a class="headerlink" href="#gaussian" title="Permalink to this headline">¶</a></h3>
+<span id="mle-gaussian-derivation"></span><h3>Gaussian<a class="headerlink" href="#gaussian" title="Permalink to this headline">¶</a></h3>
 <p>The log-likelihood function for multivariate Gaussian is</p>
 <div class="math notranslate nohighlight">
 \[
@@ -919,6 +930,42 @@
 \end{array}
 \end{equation}
 \end{split}\]</div>
+<div class="dropdown seealso admonition">
+<p class="admonition-title"> <em>Derivation</em></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+L(\boldsymbol{\mu}, \boldsymbol{\Sigma}) &amp;=f\left(\boldsymbol{x}_{1}, \boldsymbol{x}_{2}, \ldots, \boldsymbol{x}_{n}\right) \\
+&amp;=f\left(\boldsymbol{x}_{1}\right) f\left(\boldsymbol{x}_{2}\right) \cdots f\left(\boldsymbol{x}_{n}\right) \quad \boldsymbol{x}_{1}, \boldsymbol{x}_{2}, \ldots, \boldsymbol{x}_{n} \text { are independent } \\
+&amp;=\prod_{i=1}^{n} f\left(\boldsymbol{x}_{i}\right) \\
+&amp;=\prod_{i=1}^{n} \frac{1}{(2 \pi)^{\frac{p}{2}}|\boldsymbol{\Sigma}|^{\frac{1}{2}}} \exp \left\{-\frac{1}{2}\left(\boldsymbol{x}_{i}-\boldsymbol{\mu}\right)^{\prime} \boldsymbol{\Sigma}^{-1}\left(\boldsymbol{x}_{i}-\boldsymbol{\mu}\right)\right\} \\
+&amp;=\frac{1}{(2 \pi)^{\frac{n p}{2}}|\boldsymbol{\Sigma}|^{\frac{n}{2}}} \exp \left\{-\frac{1}{2} \sum_{i=1}^{n}\left(\boldsymbol{x}_{i}-\boldsymbol{\mu}\right)^{\prime} \boldsymbol{\Sigma}^{-1}\left(\boldsymbol{x}_{i}-\boldsymbol{\mu}\right)\right\}
+\end{aligned}\end{split}\]</div>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+\ell(\boldsymbol{\mu}, \boldsymbol{\Sigma}) &amp;=\log L(\boldsymbol{\mu}, \boldsymbol{\Sigma}) \\
+&amp;=-\frac{n p}{2} \log (2 \pi)-\frac{n}{2} \log |\boldsymbol{\Sigma}|-\frac{1}{2} \sum_{i=1}^{n}\left(\boldsymbol{x}_{i}-\boldsymbol{\mu}\right)^{\prime} \boldsymbol{\Sigma}^{-1}\left(\boldsymbol{x}_{i}-\boldsymbol{\mu}\right) \\
+&amp;=-\frac{n p}{2} \log (2 \pi)-\frac{n}{2} \log |\boldsymbol{\Sigma}|-\frac{1}{2} \sum_{i=1}^{n} \operatorname{tr}\left[\left(\boldsymbol{x}_{i}-\boldsymbol{\mu}\right)^{\prime} \boldsymbol{\Sigma}^{-1}\left(\boldsymbol{x}_{i}-\boldsymbol{\mu}\right)\right] \\
+&amp;=-\frac{n p}{2} \log (2 \pi)-\frac{n}{2} \log |\boldsymbol{\Sigma}|-\frac{1}{2} \operatorname{tr}\left[\boldsymbol{\Sigma}^{-1} \sum_{i=1}^{n}\left(\boldsymbol{x}_{i}-\boldsymbol{\mu}\right)\left(\boldsymbol{x}_{i}-\boldsymbol{\mu}\right)^{\prime}\right]
+\end{aligned}
+\end{split}\]</div>
+<p>By the method of completing squares,</p>
+<div class="math notranslate nohighlight">
+\[
+\sum_{i=1}^{n}\left(\boldsymbol{x}_{i}-\boldsymbol{\mu}\right)\left(\boldsymbol{x}_{i}-\boldsymbol{\mu}\right)^{\prime}=\sum_{i=1}^{n}\left(\boldsymbol{x}_{i}-\overline{\boldsymbol{x}}\right)\left(\boldsymbol{x}_{i}-\overline{\boldsymbol{x}}\right)^{\prime}+n(\overline{\boldsymbol{x}}-\boldsymbol{\mu})(\overline{\boldsymbol{x}}-\boldsymbol{\mu})^{\prime}=\boldsymbol{W}+n(\overline{\boldsymbol{x}}-\boldsymbol{\mu})(\overline{\boldsymbol{x}}-\boldsymbol{\mu}) ^{\top}
+\]</div>
+<p>We therefore have</p>
+<div class="math notranslate nohighlight">
+\[
+\ell(\boldsymbol{\mu}, \mathbf{\Sigma})=-\frac{n p}{2} \log (2 \pi)-\frac{n}{2}\left(\log |\boldsymbol{\Sigma}|+\operatorname{tr}\left(\boldsymbol{\Sigma}^{-1} \frac{\boldsymbol{W}}{n}\right)\right)-\frac{n}{2}(\overline{\boldsymbol{x}}-\boldsymbol{\mu})^{\prime} \boldsymbol{\Sigma}^{-1}(\overline{\boldsymbol{x}}-\boldsymbol{\mu})
+\]</div>
+<p>Now only the last tern involves <span class="math notranslate nohighlight">\(\boldsymbol{\mu}\)</span>. Since <span class="math notranslate nohighlight">\((\overline{\boldsymbol{x}}-\boldsymbol{\mu})^{\prime} \boldsymbol{\Sigma}^{-1}(\overline{\boldsymbol{x}}-\boldsymbol{\mu}) \geq 0\)</span> with equality iff <span class="math notranslate nohighlight">\(\boldsymbol{\mu} = \bar{\boldsymbol{x}}\)</span>, we have <span class="math notranslate nohighlight">\(\hat{\boldsymbol{\mu}} = \bar{\boldsymbol{x}}\)</span>. Now</p>
+<div class="math notranslate nohighlight">
+\[
+\ell(\overline{\boldsymbol{x}}, \mathbf{\Sigma})=-\frac{n p}{2} \log (2 \pi)-\frac{n}{2}\underbrace{\left(\log |\mathbf{\Sigma}|+\operatorname{tr}\left(\boldsymbol{\Sigma}^{-1} \frac{\boldsymbol{W}}{n}\right)\right)}_{g(\boldsymbol{\Sigma})}
+\]</div>
+<p>Since <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{W} /n\)</span> are p.d., the function <span class="math notranslate nohighlight">\(g(\boldsymbol{\Sigma})\)</span> attains its minimum at <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma} = \boldsymbol{W} /n\)</span>.</p>
+</div>
 </div>
 </div>
 </div>

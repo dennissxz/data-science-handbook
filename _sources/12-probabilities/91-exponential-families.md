@@ -26,20 +26,47 @@ where
 - The fraction $\frac{1}{(2 \pi)^{p / 2}|\boldsymbol{\Sigma}|^{1 / 2}}$ is a normalizing constant.
 - The determinant $\left\vert \boldsymbol{\Sigma}  \right\vert = \operatorname{det}(\boldsymbol{\Sigma})$ is called [generalized variance](covariance-matrix). It can be viewed as a higher dimension generalization of the scalar-valued $\sigma^2$ in univariate case that measures uncertainty of the distribution. Hence we have the square root $\left\vert \cdot \right\vert ^{1/2}$, as $\sigma$ in the univariate Gaussian density.
 
+### Visualization
+
+All $\boldsymbol{x}$ satisfy the equality below is a contour. This contour is an ellipsoid.
+
+$$
+c = f(\boldsymbol{x} ;\boldsymbol{\mu}, \boldsymbol{\Sigma})
+$$
+
+- $\boldsymbol{\mu}$ determines the center of the ellipsoid.
+- $\boldsymbol{U}$ determines the rotation angle of the ellipsoid. The vectors $\boldsymbol{u} _i$ are the directions of the axes of the ellipsoid.
+- $\boldsymbol{\Lambda}$ determines the lengths of the axes. The length should be proportional to $\sqrt{\lambda_i}$. If all eigenvalues are the same, the ellipsoid reduces to a ball.
+- As shown above, the transformation $\boldsymbol{x} ^\top = \boldsymbol{U} ^\top \boldsymbol{x}, \boldsymbol{\mu} ^\top = \boldsymbol{U} ^\top \boldsymbol{\mu}, \boldsymbol{\Sigma} ^\top = \boldsymbol{\Lambda}$ will transform the distribution will change the center, align the ellipsoid axes to the coordinate axes (so the variables becomes independent and the joint PDF factorizes to univariate PDF), while keep the axes lengths intact (rotation preserve lengths and angles).
+
+In the 2-d case, an ellipsoid reduces to an ellipse.
+
+:::{figure,myclass} gaussian-density-2d
+<img src="../imgs/gaussian-density-2d.png" width = "80%" alt=""/>
+
+Bivariate Gaussian density and ellipse
+:::
+
+
 ### Properties
 
-- **Transformation**: If $\boldsymbol{x}$ is $p$-variate normal, and $\boldsymbol{y} = \boldsymbol{A} \boldsymbol{x} + \boldsymbol{c}$, where $\boldsymbol{A}$ is a $k \times p$ matrix and $\boldsymbol{c}$ is a $k$-vector of constants, then $\boldsymbol{y}$ is of $k$-variate normal.
-  - if $\boldsymbol{x}$ is standard normal, then $\boldsymbol{y} \sim \mathcal{N} (\boldsymbol{c} , \boldsymbol{A} \boldsymbol{A} ^{\top})$.
-- **Sub-vectors**: if $\boldsymbol{x} \in \mathcal{N} _p (\boldsymbol{\mu} , \boldsymbol{\Sigma})$, let $\boldsymbol{x}_1$ be its first $q <p$ components and $\boldsymbol{x} _2$ be the rest, then
-  - sub-vectors are normal: $\boldsymbol{x}_{1} \sim \mathcal{N}_{q}\left(\boldsymbol{\mu}_{1}, \boldsymbol{\Sigma}_{11}\right),  \boldsymbol{x}_{2} \sim \mathcal{N}_{p-q}\left(\boldsymbol{\mu}_{2}, \boldsymbol{\Sigma} _{22}\right)$
-
-  - conditional is normal:
+- **Transformation**: If $\boldsymbol{x}$ is $p$-variate normal $\mathcal{N} (\boldsymbol{\mu} , \boldsymbol{\Sigma})$, and $\boldsymbol{y} = \boldsymbol{A} \boldsymbol{x} + \boldsymbol{c}$, where $\boldsymbol{A}$ is a $k \times p$ matrix and $\boldsymbol{c}$ is a $k$-vector of constants, then $\boldsymbol{y}$ is of $k$-variate normal, with mean $\boldsymbol{A} \boldsymbol{\mu} + \boldsymbol{c}$ and variance $\boldsymbol{A} \boldsymbol{\Sigma} \boldsymbol{A} ^{\top}$.
+  - If $k=1$, then $\boldsymbol{y} = \boldsymbol{a} ^{\top} \boldsymbol{x} \sim \mathcal{N} ( \boldsymbol{a} ^{\top} \boldsymbol{\mu} , \boldsymbol{a} ^{\top} \boldsymbol{\Sigma} \boldsymbol{a})$
+  - if $\boldsymbol{x}$ is standard normal $\mathcal{N}(\boldsymbol{0}, \boldsymbol{I})$, then $\boldsymbol{y} \sim \mathcal{N} (\boldsymbol{c} , \boldsymbol{A} \boldsymbol{A} ^{\top})$
+- **MGF**: $M_{\boldsymbol{x}}(\boldsymbol{t})=\exp \left(\boldsymbol{t}^{\top} \boldsymbol{\mu}+\frac{1}{2} \boldsymbol{t}^{\top} \boldsymbol{\Sigma} \boldsymbol{t}\right)$.
+- **Sum**: if $\boldsymbol{x} \sim \mathcal{N} _p (\boldsymbol{\mu} _1, \boldsymbol{\Sigma} _1)$ and $\boldsymbol{y} \sim \mathcal{N} _p (\boldsymbol{\mu} _2, \boldsymbol{\Sigma} _2)$ are independent, then $\boldsymbol{x} + \boldsymbol{y}  \sim \mathcal{N} _p (\boldsymbol{\mu} _1 + \boldsymbol{\mu} _2, \boldsymbol{\Sigma} _1 + \boldsymbol{\Sigma} _2)$.
+- What is the condition for a valid covariance matrix $\boldsymbol{\Sigma}$? Given a positive definite matrix $\boldsymbol{\Sigma}$, then $\boldsymbol{x} \sim \mathcal{N} _p (\boldsymbol{\mu} , \boldsymbol{\Sigma})$ iff there exists a non-singular matrix $\boldsymbol{B}$ and $\boldsymbol{z} \sim \mathcal{N} _p (\boldsymbol{0} , \boldsymbol{I})$ such that $\boldsymbol{x} = \boldsymbol{\mu} + \boldsymbol{B} \boldsymbol{z}$. In this case $\boldsymbol{\Sigma} = \boldsymbol{B} \boldsymbol{B} ^{\top}$.
+- **Sub-vectors**: if $\boldsymbol{x} \in \mathcal{N} _{p + q} (\boldsymbol{\mu} , \boldsymbol{\Sigma})$, let $\boldsymbol{x}_1$ be its first $p$ components and $\boldsymbol{x} _2$ be the rest $q$ components, then
+  - still normal: $\boldsymbol{x}_{1} \sim \mathcal{N}_{p}\left(\boldsymbol{\mu}_{1}, \boldsymbol{\Sigma}_{11}\right),  \boldsymbol{x}_{2} \sim \mathcal{N}_{q}\left(\boldsymbol{\mu}_{2}, \boldsymbol{\Sigma} _{22}\right)$
+  - $\boldsymbol{x} _1$ and $\boldsymbol{x} _2$ are independent iff $\operatorname{Cov}\left( \boldsymbol{x} _1, \boldsymbol{x} _2 \right) = \boldsymbol{\Sigma} _{12} = \boldsymbol{0}_{p \times q}$ (hint for $\Leftarrow$: use definition $f_{12} = f_1 f_2$)
+  - $(\boldsymbol{x} _1 - \boldsymbol{\Sigma} _{12} \boldsymbol{\Sigma} _{22} ^{-1} \boldsymbol{x} _2)$ is independent of $\boldsymbol{x} _2$ and is distributed as $\mathcal{N} _p (\boldsymbol{\mu} _1 -  \boldsymbol{\Sigma} _{12} \boldsymbol{\Sigma} _{22} ^{-1} \boldsymbol{\mu} _2, \boldsymbol{\Sigma} _{11}-  \boldsymbol{\Sigma} _{12} \boldsymbol{\Sigma} _{22} ^{-1} \boldsymbol{\Sigma} _{21})$.
+  - conditional distribution is normal:
 
     $$
-    \boldsymbol{x}_{1} \mid \boldsymbol{x}_{2} \sim  N_{q}\left(\boldsymbol{\mu}_{1}+\boldsymbol{\Sigma}_{12} \boldsymbol{\Sigma}_{22}^{-1}\left(\boldsymbol{x}_{2}-\boldsymbol{\mu}_{2}\right), \boldsymbol{\Sigma}_{11}-\boldsymbol{\Sigma}_{12} \boldsymbol{\Sigma}_{22}^{-1} \boldsymbol{\Sigma}_{21}\right)
+    \boldsymbol{x}_{1} \mid \boldsymbol{x}_{2} \sim  N_{p}\left(\boldsymbol{\mu}_{1}+\boldsymbol{\Sigma}_{12} \boldsymbol{\Sigma}_{22}^{-1}\left(\boldsymbol{x}_{2}-\boldsymbol{\mu}_{2}\right), \boldsymbol{\Sigma}_{11}-\boldsymbol{\Sigma}_{12} \boldsymbol{\Sigma}_{22}^{-1} \boldsymbol{\Sigma}_{21}\right)
     $$
 
-    For $p=2, q=2$,
+    note the variance does not change with $\boldsymbol{x} _2$. In particular, for $p=q=1$,
 
     $$
     \begin{aligned}
@@ -53,52 +80,89 @@ where
 
     Marginal Gaussian and conditional Gaussian are also Gaussians [Shi 2021]
     :::
-
-- Since $\boldsymbol{\Sigma} = \boldsymbol{U} \boldsymbol{\Lambda} \boldsymbol{U} ^\top$, then $\left\vert \boldsymbol{\Sigma}  \right\vert = \left\vert \boldsymbol{U} \boldsymbol{\Lambda} \boldsymbol{U} ^\top  \right\vert = \left\vert \boldsymbol{\Lambda}  \right\vert$
+- **Quadratic form**: if $\boldsymbol{x} \sim \mathcal{N} _p (\boldsymbol{\mu} , \boldsymbol{\Sigma})$ and $\boldsymbol{\Sigma}$ is p.d., then $(\boldsymbol{x} - \boldsymbol{\mu} ) ^{\top} \boldsymbol{\Sigma} ^{-1} (\boldsymbol{x} - \boldsymbol{\mu} ) \sim \chi ^2 _p$.
+- Independency after transformation: for any $m\times p$ matrix $\boldsymbol{A}$ and $n\times p$ matrix $\boldsymbol{B}$,
+  - $\boldsymbol{A} \boldsymbol{x}  \perp \boldsymbol{B} \boldsymbol{x} \Leftrightarrow \boldsymbol{A} \boldsymbol{\Sigma} \boldsymbol{B} ^{\top} = \boldsymbol{0}$
+  - when $\boldsymbol{A}$ is symmetric, $\boldsymbol{x} ^{\top}\boldsymbol{A} \boldsymbol{x}  \perp \boldsymbol{B} \boldsymbol{x} \Leftrightarrow \boldsymbol{B} \boldsymbol{\Sigma} \boldsymbol{A} = \boldsymbol{0}$
+  - when both $\boldsymbol{A}, \boldsymbol{B}$ are symmetric, $\boldsymbol{x} ^{\top}\boldsymbol{A} \boldsymbol{x}  \perp \boldsymbol{x} ^{\top} \boldsymbol{B} \boldsymbol{x} \Leftrightarrow \boldsymbol{A} \boldsymbol{\Sigma} \boldsymbol{B} = \boldsymbol{0}$
+- Since EVD $\boldsymbol{\Sigma} = \boldsymbol{U} \boldsymbol{\Lambda} \boldsymbol{U} ^\top$, then $\left\vert \boldsymbol{\Sigma}  \right\vert = \left\vert \boldsymbol{U} \boldsymbol{\Lambda} \boldsymbol{U} ^\top  \right\vert = \left\vert \boldsymbol{\Lambda}  \right\vert$
 - For every multivariate Gaussian $\boldsymbol{x} \sim N(\boldsymbol{\mu} , \boldsymbol{\Sigma} )$ with $\Sigma
-  = \boldsymbol{U} \boldsymbol{\Lambda} \boldsymbol{U} ^\top$, there exists a transformation $\boldsymbol{x} ^\prime = \boldsymbol{U} ^\top \boldsymbol{x}, \boldsymbol{\mu} ^\prime= \boldsymbol{U} ^\top \boldsymbol{\mu}$ such that
+  = \boldsymbol{U} \boldsymbol{\Lambda} \boldsymbol{U} ^\top$, there exists a transformation $\boldsymbol{x} ^\top = \boldsymbol{U} ^\top \boldsymbol{x}, \boldsymbol{\mu} ^\top= \boldsymbol{U} ^\top \boldsymbol{\mu}$ such that
 
   $$
-  f(\boldsymbol{x} ; \boldsymbol{\mu}, \boldsymbol{\Sigma} ) = f(\boldsymbol{x} ^\prime; \boldsymbol{\mu} ^\prime, \boldsymbol{\Lambda})
+  f(\boldsymbol{x} ; \boldsymbol{\mu}, \boldsymbol{\Sigma} ) = f(\boldsymbol{x} ^\top; \boldsymbol{\mu} ^\top, \boldsymbol{\Lambda})
   $$
 
   where
 
   $$\begin{align}
-  f(\boldsymbol{x} ^\prime; \boldsymbol{\mu} ^\prime, \boldsymbol{\Lambda})
-  &= \frac{1}{(2 \pi)^{p / 2}|\boldsymbol{\Lambda}|^{1 / 2}} \exp \left(-\frac{1}{2}(\boldsymbol{x}^\prime-\boldsymbol{\mu} ^\prime)^{\top} \boldsymbol{\Lambda} ^{-1}(
-    \boldsymbol{x} ^\prime -\boldsymbol{\mu} ^\prime)\right) \\
-  &=  \frac{1}{(2 \pi)^{p / 2}\Pi_{i=1}^p \lambda_i} \exp \left(-\sum_{i=1}^p\frac{1}{2\sigma^2}(x_i^\prime-\mu_i ^\prime)^2\right) \\
-  &= \prod_{i=1}^{p} \frac{1}{(2 \pi)^{1 / 2} \lambda_{i}} \exp \left(-\frac{1}{2 \lambda_{i}^{2}}\left(x_{i}^{\prime}-\mu_{i}^{\prime}\right)^{2}\right)
+  f(\boldsymbol{x} ^\top; \boldsymbol{\mu} ^\top, \boldsymbol{\Lambda})
+  &= \frac{1}{(2 \pi)^{p / 2}|\boldsymbol{\Lambda}|^{1 / 2}} \exp \left(-\frac{1}{2}(\boldsymbol{x}^\top-\boldsymbol{\mu} ^\top)^{\top} \boldsymbol{\Lambda} ^{-1}(
+    \boldsymbol{x} ^\top -\boldsymbol{\mu} ^\top)\right) \\
+  &=  \frac{1}{(2 \pi)^{p / 2}\Pi_{i=1}^p \lambda_i} \exp \left(-\sum_{i=1}^p\frac{1}{2\sigma^2}(x_i^\top-\mu_i ^\top)^2\right) \\
+  &= \prod_{i=1}^{p} \frac{1}{(2 \pi)^{1 / 2} \lambda_{i}} \exp \left(-\frac{1}{2 \lambda_{i}^{2}}\left(x_{i}^{\top}-\mu_{i}^{\top}\right)^{2}\right)
   \end{align}$$
 
   which is a product of PDFs of univariate Gaussians, since $\boldsymbol{\Lambda}$ is diagonal. Geometrically, $U$ rotate the axes of the distribution but keep the function value intact.
 
 
+### Estimation and Inference
 
+#### MLE
 
-### Visualization
+The MLE of $\boldsymbol{\mu}$ and $\boldsymbol{\Sigma}$ are respectively
 
-All $\boldsymbol{x}$ satisfy the equality below is a contour. This contour is an ellipsoid.
+```{margin}
+For derivation see [here](MLE-Gaussian-derivation)=
+```
 
 $$
-c = f(\boldsymbol{x} ;\boldsymbol{\mu}, \boldsymbol{\Sigma})
+\hat{\boldsymbol{\mu}}=\overline{\boldsymbol{x}} \text { and } \hat{\mathbf{\Sigma}}=\frac{\boldsymbol{W}}{n}=\frac{(n-1) \boldsymbol{S}}{n}
 $$
 
+Note that $\hat{\boldsymbol{\mu}}$ is unbiased but $\hat{\boldsymbol{\Sigma} }$ is unbiased. However, $\boldsymbol{S}$ is unbiased for $\boldsymbol{\Sigma}$.
 
-- $\boldsymbol{\mu}$ determines the center of the ellipsoid.
-- $\boldsymbol{U}$ determines the rotation angle of the ellipsoid. The vectors $\boldsymbol{u} _i$ are the directions of the axes of the ellipsoid.
-- $\boldsymbol{\Lambda}$ determines the lengths of the axes. The length should be proportional to $\sqrt{\lambda_i}$. If all eigenvalues are the same, the ellipsoid reduces to a ball.
-- As shown above, the transformation $\boldsymbol{x} ^\prime = \boldsymbol{U} ^\top \boldsymbol{x}, \boldsymbol{\mu} ^\prime = \boldsymbol{U} ^\top \boldsymbol{\mu}, \boldsymbol{\Sigma} ^\prime = \boldsymbol{\Lambda}$ will transform the distribution will change the center, align the ellipsoid axes to the coordinate axes (so the variables becomes independent and the joint PDF factorizes to univariate PDF), while keep the axes lengths intact (rotation preserve lengths and angles).
+#### Wishart Distribution
 
-In the 2-d case, an ellipsoid reduces to an ellipse.
+Recall that for univariate i.i.d. standard Gaussians we have $\sum_{i=1}^k Z_i^2 \sim \sigma^2 \chi ^2 _n$. The multivariate extension of this chi-squared distribution is Wishart distribution.
 
-:::{figure,myclass} gaussian-contour-2d
-<img src="../imgs/gaussian-2d.png" width = "50%" alt=""/>
+Definition (Wishart distribution)
+: Suppose $\boldsymbol{x}_1, \ldots, \boldsymbol{x} _k$ and independent $\mathcal{N} _p (\boldsymbol{\mu} _i, \boldsymbol{\Sigma})$. Define a symmetric $p \times p$ matrix $\boldsymbol{V}$ as
 
-Gaussian ellipse in 2-d plane [Shi 2020]
-:::
+  $$
+  \boldsymbol{V} = \sum_{i=1}^k \boldsymbol{x} _i \boldsymbol{x}_i ^{\top} = \boldsymbol{X} ^{\top} \boldsymbol{X}
+  $$
 
+  Then $\boldsymbol{V}$ is said to follow a Wishart distribution $W_p(k, \boldsymbol{\Sigma} , \boldsymbol{\Psi})$, where
+  - $n$ is the degree of freedom
+  - $\boldsymbol{\Sigma}$ is called the **scaling matrix**
+  - $\boldsymbol{\Psi} = \sum_{i=1}^k \boldsymbol{\mu} _i \boldsymbol{\mu} _i ^{\top}$ is the $p \times p$ symmetric **non-centrality matrix**
+    - If $\boldsymbol{\Psi} = \boldsymbol{0}$, it is called the **central** Wishart distribution, denoted by $W_p(k, \boldsymbol{\Sigma})$
+
+When $p=1$ and $\boldsymbol{\Sigma} = \sigma^2$, it reduces to a non-central chi-sqaured distribution $\sigma^2 \chi ^2 (k, \sum_{i=1}^k  \boldsymbol{\mu} _i^2)$.
+
+Properties
+: - **sum of independent**: if $\boldsymbol{V} _1 \sim W_p(k, \boldsymbol{\Sigma} , \boldsymbol{\Psi} _1)$ and $\boldsymbol{V} _2 \sim W_p(k, \boldsymbol{\Sigma} , \boldsymbol{\Psi} _2)$ are independent Wisharts, then $\boldsymbol{V} _1 + \boldsymbol{V} _2 \sim W_p (k_1 + k_2, \boldsymbol{\Sigma} , \boldsymbol{\Psi} _1 + \boldsymbol{\Psi} _2)$.
+  - **transformation**: if $\boldsymbol{V} \sim W_p (k, \boldsymbol{\Sigma} , \boldsymbol{\Psi})$, then
+      - for any constant $q \times p$ matrix $\boldsymbol{A}$, $\boldsymbol{A} \boldsymbol{V} \boldsymbol{A} ^{\top} \sim W_q (k, \boldsymbol{A} \boldsymbol{\Sigma} \boldsymbol{A} ^{\top} , \boldsymbol{A} \boldsymbol{\Psi} \boldsymbol{A} ^{\top})$.
+      - for any constant $\boldsymbol{a}$, $\boldsymbol{a}^{\top} \boldsymbol{V} \boldsymbol{a} / \boldsymbol{a}^{\top} \boldsymbol{\Sigma} \boldsymbol{a} \sim \chi^{2}\left(k, \boldsymbol{a}^{\top} \boldsymbol{\Psi} \boldsymbol{a}\right)$. In particular, $v_{ii}/\sigma_{ii} \sim \chi ^2 (k, \Phi_{ii})$.
+      - for any random vector $\boldsymbol{y}$ independent of $\boldsymbol{V} \sim W_p(k, \boldsymbol{\Sigma})$,
+        - $\boldsymbol{y}^{\top} \boldsymbol{V} \boldsymbol{y} / \boldsymbol{y}^{\top} \boldsymbol{\Sigma} \boldsymbol{y} \sim \chi^{2}(k)$ and is independent of $\boldsymbol{y}$.
+        - $\boldsymbol{y}^{\top} \boldsymbol{\Sigma}^{-1} \boldsymbol{y} / \boldsymbol{y}^{\top} \boldsymbol{V}^{-1} \boldsymbol{y} \sim \chi^{2}(k-p+1)$ if $k > p$, and is independent of $\boldsymbol{y}$.
+  - for random $k \times p$ matrix $\boldsymbol{X}$,
+    - for a symmetric $\boldsymbol{A}: \boldsymbol{X}^{\top} \boldsymbol{A} \boldsymbol{X} \sim W_{p}(r, \boldsymbol{\Sigma}, \boldsymbol{\Psi}) \Leftrightarrow \boldsymbol{A} ^2 = \boldsymbol{A}$ (idempotent), in which case $r=\operatorname{rank}(\boldsymbol{A})=\operatorname{tr}(\boldsymbol{A})$ and $\boldsymbol{\Psi}=\boldsymbol{M}^{\top} \boldsymbol{A} \boldsymbol{M}$
+    - for symmetric idempotent $\boldsymbol{A}, \boldsymbol{B}$, we have $\boldsymbol{X} ^{\top} \boldsymbol{A} \boldsymbol{X}  \perp \boldsymbol{X} ^{\top} \boldsymbol{B} \boldsymbol{X} \Leftrightarrow \boldsymbol{A} \boldsymbol{B} = \boldsymbol{0}$.
+    - for symmetric idempotent $\boldsymbol{A}$, we have $\boldsymbol{X} ^{\top} \boldsymbol{A} \boldsymbol{X}  \perp \boldsymbol{X} ^{\top} \boldsymbol{B} \Leftrightarrow \boldsymbol{A} \boldsymbol{B} = \boldsymbol{0}$.
+
+  - Gaussian MLE
+    - $\bar{\boldsymbol{x}} \sim \mathcal{N} _p (\boldsymbol{\mu} , \frac{1}{n} \boldsymbol{\Sigma} )$
+    - $(n-1) \boldsymbol{S} = \boldsymbol{W} \sim W_p(n-1, \boldsymbol{\Sigma})$, extension of $\sum_{i=1}^n (x_i - \bar{x})^2 \sim \sigma^2\chi ^2 _{n-1}$
+    - $\bar{\boldsymbol{x} } \perp \boldsymbol{S}$
+
+  - In the Cholesky decomposition $\boldsymbol{V} = \boldsymbol{T} \boldsymbol{T}  ^{\top}$ of $\boldsymbol{V} \sim W_p (k, \boldsymbol{\Sigma})$, where $\boldsymbol{T}$ is lower triangular,
+    - off-diagonal $t_{ij} \sim \mathcal{N} (0,1)$ for $i >j$
+    - diagonal $t_{ii} \sim \chi ^2 _{k-i+1}$
+    - all non-zero elements are mutually independent
 
 ### Pros and Cons
 
@@ -122,19 +186,77 @@ Cons
   - sol: assume special structure: diagonal, spherical
 
 
-  ## Univariate Gaussian
+## Univariate Gaussian
+### Test Normality
 
-  Test normality:
+For most multivariate analyses, it is important that the data indeed follow the multivariate normal, at least approximately if not exactly.
 
-  - QQ-plots (quantile-quantile plot)
-  - Kolmogorov–Smirnov test
-  - Jarque–Bera test
-  - Shapiro–Wilk test
+- QQ-plots (quantile-quantile plot)
 
-  ### Transformation
+  - Sample quantiles are plotted against the expected sample quantiles of a standard normal distribution
+  - a straight line indicates univariate normality
+  - non-linearity may indicate a need to transform the variable.
 
-  Power transform
+  :::{figure} gaussian-qq-plot
+  <img src="../imgs/gaussian-qq-plot.png" width = "80%" alt=""/>
 
-  Box-Cox transformation
+  QQ-plots for Gaussian (left) and non-Gaussian (right)
+  :::
 
-  <!-- ## Weibull Distribution -->
+- P-P plot (probability against probability plot) that plots the sample CDF against the theoretical CDF.
+
+
+- Shapiro–Wilk $W$ test
+  - test statistic: a modified version of the squared sample correlation between the sample quantiles and the expected quantiles.
+- Kolmogorov–Smirnov test
+  - require: large sample, at least 100s
+  - test statistic: maximum difference between the empirical CDF and the normal CDF.
+
+- Jarque–Bera test
+
+- Check whether the squared generalized distance as defined below follows a chi-squared distribution by a Q-Q plot (necessary and sufficient conditions for very large sample size))
+
+  $$
+  d_{i}^{2}=\left(\boldsymbol{x}_{i}-\overline{\boldsymbol{x}}\right)^{\prime} \boldsymbol{S}^{-1}\left(\boldsymbol{x}_{i}-\overline{\boldsymbol{x}}\right)
+  $$
+
+- Check each Principal Component (PC) for univariate normality (necessary condition; and if the sample size n is large enough, a sufficient condition)
+- Test for zero skewness, zero excess kurtosis.
+
+### Transformation to Near Normality
+
+To achieve the multinormality of the data, univariate transformation is applied to each variable individually. After then, the multinormality of transformed variables is checked again (Notice that each of the $X_p$ variables after transformation is normally distributed does not imply that they jointly follow a multivariate normal distribution).
+
+Assume $x > 0$.
+
+- common method $\log x$
+- based on theory:
+  - Poisson count: $\sqrt{x}$
+  - Binomial proportion: $\sin ^{-1} \sqrt{x}$
+- Box-Cox transformation
+
+  $$
+  x_{i}^{[\lambda]}=\left\{\begin{array}{lll}
+  \frac{x_{i}^{\lambda}-1}{\lambda} & \text { for } \lambda \neq 0 & , i=1, \ldots, n \\
+  \log x_{i} & \text { for } \lambda=0 & , i=1, \ldots, n
+  \end{array}\right.
+  $$
+
+  where $\lambda$ is unknown. It can be chosen by priori information of $\lambda$, or search among some values $3,2,1,\frac{1}{2}, \frac{1}{3}, 0$ and their negatives.
+
+  Cons:
+    - Box-Cox transformation **cannot** guarantee that the transformed variable is close to the normal distribution.
+    - Choice of $\lambda$ depends on scale of $x_i$. Sol: power transform
+
+- Power transform, where $G M(x)=\left(x_{1} x_{2} \cdots x_{n}\right)^{1 / n}$ is the geometric mean of observations.
+
+  $$
+  x_{i}^{[\lambda]}=\left\{\begin{array}{ll}
+  \frac{x_{i}^{\lambda}-1}{\lambda[G M(x)]^{\lambda-1}}, & \text { if } \lambda \neq 0 \quad, i=1, \ldots, n \\
+  G M(x) \log x_{i}, & \text { if } \lambda=0 \quad, i=1, \ldots, n
+  \end{array}\right.
+  $$
+
+  The optimal $\lambda$ minimizes sample variance after transforamtion.
+
+<!-- ## Weibull Distribution -->

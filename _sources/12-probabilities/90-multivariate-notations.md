@@ -104,15 +104,16 @@ which is a multivariate extension of $\mathbb{V} [X] = \mathbb{E} [X^2] - \mathb
 
     This holds unless $x_1, x_2, \ldots, x_p$ is linearly related, in which case we say that $\boldsymbol{x}$ is a **degenerated** random vector, i.e. its effective dimension is less than $p$; in other words, its joint distribution is concentrated in a subspace of lower dimension.
 
-1. $\operatorname{Var}\left( \boldsymbol{a}^\top \boldsymbol{x} + b \right) = \operatorname{Var}\left( \boldsymbol{a} ^\top \boldsymbol{x} \right) = \boldsymbol{a}^\top \boldsymbol{\Sigma} \boldsymbol{a} \ge 0$
+1. Transformation
+   - $\operatorname{Var}\left( \boldsymbol{a}^\top \boldsymbol{x} + b \right) = \operatorname{Var}\left( \boldsymbol{a} ^\top \boldsymbol{x} \right) = \boldsymbol{a}^\top \boldsymbol{\Sigma} \boldsymbol{a} \ge 0$
 
-    The equality holds iff $\boldsymbol{a} ^\top \boldsymbol{x}
-  \ne c$, a constant.
+      The equality holds iff $\boldsymbol{a} ^\top \boldsymbol{x} \ne c$, a constant.
 
-1. $\operatorname{Var}\left( \boldsymbol{A} \boldsymbol{x} + b \right) = \boldsymbol{A} \boldsymbol{\Sigma} \boldsymbol{A} ^\top$
+    - $\operatorname{Var}\left( \boldsymbol{A} \boldsymbol{x} + \boldsymbol{b} \right) = \boldsymbol{A} \boldsymbol{\Sigma} \boldsymbol{A} ^\top$
+
+1. Expectation of quadratic form: $\mathbb{E} [\boldsymbol{x} ^{\top} \boldsymbol{A} \boldsymbol{x} ] = \boldsymbol{\mu} ^{\top} \boldsymbol{A} \boldsymbol{\mu} + \operatorname{tr}(\boldsymbol{A} \boldsymbol{\Sigma} )$.
 
 1. $\sum_{j=1}^d \lambda_j = \sum_{j=1}^d \sigma_{ii}$: the sum of eigenvalues of $\boldsymbol{\Sigma}$ equals the sum of variances.
-
 1. The determinant of the covariance matrix $\left\vert \boldsymbol{\boldsymbol{\Sigma}}  \right\vert = \operatorname{det} (\boldsymbol{\boldsymbol{\Sigma}} )$ is called the generalized variance. It changes for scaling of variables like the case of univariate variance. Suppose $\boldsymbol{x}$ follows [multivariate Gaussian](multi-gaussian) $\boldsymbol{x} \sim \mathcal{N}_p(\boldsymbol{\mu} , \boldsymbol{\Sigma})$, then we have the following interpretation for $\operatorname{det} (\boldsymbol{\Sigma})$:
    - $\operatorname{det}(\boldsymbol{\Sigma})$ is a (indirect) measure of the entropy of the Gaussian density
 
