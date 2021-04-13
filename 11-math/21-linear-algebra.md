@@ -122,7 +122,7 @@ Properties
     - $\operatorname{tr}(\boldsymbol{A}) =\sum_{i=1}^{n} \lambda_{i}$
     - $|\boldsymbol{A}|=\prod_{i=1}^{n} \lambda_{i}$
     - $\left|\boldsymbol{I}_{n} \pm \boldsymbol{A}\right|=\prod_{i=1}^{n}\left(1 \pm \lambda_{i}\right)$
-    - if $\lambda \in \mathbb{R}$ and $\lambda_1\ge \ldots, \ge \lambda_n$, we say $\boldsymbol{v}_1$ is the largest eigenvector and $\boldsymbol{v}_n$ is the smallest eigenvector.
+    - if $\lambda \in \mathbb{R}$ and $\lambda_1\ge \ldots, \ge \lambda_n$, we say $\lambda_1$ is the **largest** (first, top) eigenvalue, and $\lambda_n$ is the **smallest** (last, bottom) eigenvalue. Same for corresponding eigenvectors.
   - The nonzero eigenvalues of $\boldsymbol{A} \boldsymbol{B}$ are the same as those of $\boldsymbol{B} \boldsymbol{A}$
   - If $\boldsymbol{A}  + \boldsymbol{B} = \boldsymbol{I}$, and $\boldsymbol{A}\boldsymbol{v} = \lambda \boldsymbol{v}$, then we can see $\boldsymbol{B} \boldsymbol{v} = (\boldsymbol{I} - \boldsymbol{A} )\boldsymbol{v} = (1-\lambda)\boldsymbol{v}$.
     - if $\boldsymbol{A}$ has eigen pairs $(\lambda_i, \boldsymbol{v} _i)$ then $\boldsymbol{B}$ has eigen pairs $(1-\lambda_i, \boldsymbol{v} _i)$
@@ -565,3 +565,108 @@ Eckart–Young–Mirsky theorem: We claim that the best rank $r$ approximation t
 $$
 \left\|A-A_{r}\right\|_{F}^{2}=\left\|\sum_{i=r+1}^{n} \sigma_{i} u_{i} v_{i}^{\top}\right\|_{F}^{2}=\sum_{i=r+1}^{n} \sigma_{i}^{2}
 $$
+
+(davis-kahan)=
+### Perturbation and Davis-Kahan Theorem
+
+[Reference](https://www.cs.columbia.edu/~djhsu/coms4772-f16/lectures/davis-kahan.pdf)
+
+Suppose we want to recover the top $r$ subspace of **symmetric** matrix $\boldsymbol{M}$ via $\hat{\boldsymbol{M}} = \boldsymbol{M} + \boldsymbol{H}$, where $\boldsymbol{H}$ is some small perturbation. Let their spectral decomposition be
+
+$$\begin{aligned}
+\boldsymbol{M} &= [\boldsymbol{U} _0 \ \boldsymbol{U} _1] \left[\begin{array}{cc}
+\boldsymbol{\Lambda} _0 & 0 \\
+0 & \boldsymbol{\Lambda} _1
+\end{array}\right] \left[\begin{array}{c}
+\boldsymbol{U} _0  ^{\top} \\
+\boldsymbol{U} _1 ^{\top}
+\end{array}\right] \\
+\widehat{\boldsymbol{M}} &= [\widehat{\boldsymbol{U}} _0 \ \widehat{\boldsymbol{U}} _1] \left[\begin{array}{cc}
+\widehat{\boldsymbol{\Lambda}} _0 & 0 \\
+0 & \widehat{\boldsymbol{\Lambda}} _1
+\end{array}\right] \left[\begin{array}{c}
+\widehat{\boldsymbol{U}} _0  ^{\top} \\
+\widehat{\boldsymbol{U}} _1 ^{\top}
+\end{array}\right]
+\end{aligned}$$
+
+where the partition is at $r$.
+
+We need a distance measure between subspaces $\boldsymbol{U} _0$ and $\widehat{\boldsymbol{U} }_0$, or in general, distance measure between two orthogonal matrices $\boldsymbol{X} = [\boldsymbol{X} _0 \ \boldsymbol{X} _1]$ and $\boldsymbol{Z} = [\boldsymbol{Z} _0 \ \boldsymbol{Z} _1]$. All norms below are spectral norms (maximum singular value of a matrix).
+- bad idea: $\operatorname{dist}(\boldsymbol{X} _0, \boldsymbol{Z} _0) = \left\| \boldsymbol{X} _0 - \boldsymbol{Z} _0 \right\|_2$
+  - $\boldsymbol{Z} _0$ and $\boldsymbol{Z} _0 \boldsymbol{Q}$ spans the same column space (rotation of bases) for all orthogonal transformation $\boldsymbol{Q}$
+  - after rotation, distance changes, not a good measure.
+- good idea: $\operatorname{dist}(\boldsymbol{X} _0, \boldsymbol{Z} _0) = \left\| \boldsymbol{X} _0 \boldsymbol{X} _0 ^{\top}  - \boldsymbol{Z} _0 \boldsymbol{Z} _0 ^{\top} \right\|_2$
+  - invariant to rotation transformation
+  - essentially compare projection
+
+Lemmas (of the good idea)
+1. The SVD of $\boldsymbol{X} _0 ^{\top} \boldsymbol{Z} _0$ can be expressed as $\boldsymbol{U} \cos (\Theta) \boldsymbol{V} ^{\top}$ where $\Theta = \operatorname{diag} (\theta_1, \ldots, \theta_r)$ is called the principal angles between two subspaces. (think about $r=1$ case). We have
+
+  $$\left\| X_0 ^{\top} \boldsymbol{Z} _1 \right\| = \left\| \sin \Theta \right\| = \max \left\{ |\sin \theta_1|, \ldots, |\sin \theta_r |\right\}$$
+
+2. $\operatorname{dist}(\boldsymbol{X} _0, \boldsymbol{Z} _0) = \left\| \boldsymbol{X} ^{\top} _0 \boldsymbol{Z} _1\right\| = \left\| \boldsymbol{Z} _0 ^{\top} \boldsymbol{X} _1 \right\|$
+   - in particular, if $\boldsymbol{X} _0 = \boldsymbol{Z} _0$, then the distance measure should be $0$, and the RHS is indeed 0.
+
+:::{admonition,note,dropdown} Example of Lemma 1
+
+Think about a simple case in $2$-d: $\boldsymbol{X} = \frac{1}{\sqrt{2}}  \left[\begin{array}{cc}
+1 & -1 \\
+1 & 1
+\end{array}\right]$ and $\boldsymbol{Z} = \left[\begin{array}{cc}
+1 & 0 \\
+0 & 1
+\end{array}\right]$, then
+- $\cos \theta_{( \boldsymbol{x} _0, \boldsymbol{z} _0 )} = \cos(\theta_1 = \frac{\pi}{4} ) = \boldsymbol{x} _0 ^{\top} \boldsymbol{z} _0$
+- $\cos \theta_{(\boldsymbol{x} _0, \boldsymbol{z} _1 )} = \cos(\frac{\pi}{2} - \theta_1 ) = \sin(\theta_1) = \boldsymbol{x} _0 ^{\top} \boldsymbol{z} _1$.
+
+:::
+
+:::{admonition,dropdown,seealso} *Proof*
+
+Lemma 1
+
+$$\begin{aligned}
+\left\| \boldsymbol{X} _0 ^{\top} \boldsymbol{Z} _1 \right\|
+&= \left\| \boldsymbol{X} _0 ^{\top} \boldsymbol{Z} _1 \boldsymbol{Z} _1 ^{\top} \boldsymbol{X} _0 \right\|^{1/2}  \quad \because \text{SVD} \\
+&= \left\| \boldsymbol{X} _0 (\boldsymbol{I} - \boldsymbol{Z} _0 \boldsymbol{Z} _0 ^{\top} ) \boldsymbol{X} _0 \right\|^{1/2} \\
+&= \left\| \boldsymbol{I} _{r} - \boldsymbol{X} _0 ^{\top}  \boldsymbol{Z} _0 \boldsymbol{Z} _0 ^{\top} \boldsymbol{X} _0 \right\|^{1/2} \\
+&= \left\| \boldsymbol{I} _{r} - \boldsymbol{U} [\cos \boldsymbol{\Theta}]^2 \boldsymbol{U} ^{\top} \right\|^{1/2} \\
+&= \left\| [\sin \boldsymbol{\Theta}]^2  \right\|^{1/2} \\
+&= \left\| \sin \boldsymbol{\Theta}  \right\|\\
+\end{aligned}$$
+
+Lemma 2
+
+By Lemma 1, it remains to show $\left\| \boldsymbol{X} _0 \boldsymbol{X} _0 ^{\top}  - \boldsymbol{Z} _0 \boldsymbol{Z} _0 ^{\top} \right\| = \left\| \sin \boldsymbol{\Theta} \right\|$. Write
+
+$$\boldsymbol{Z} _0 = \boldsymbol{X} \boldsymbol{X} ^{\top} \boldsymbol{Z} _0 = \boldsymbol{X} \left[\begin{array}{cc}
+\boldsymbol{X} _0 ^{\top}  \\
+\boldsymbol{X} _1 ^{\top}
+\end{array}\right] \boldsymbol{Z} _0 = \boldsymbol{X} \left[\begin{array}{cc}
+\boldsymbol{U} \cos(\boldsymbol{\Theta} ) \boldsymbol{V}  ^{\top}  \\
+\boldsymbol{\tilde{U}} \sin(\boldsymbol{\Theta} ) \boldsymbol{V}  ^{\top}
+\end{array}\right] $$
+
+...
+
+:::
+
+Theorem (Davis-Kahan $\sin(\boldsymbol{\Theta} )$)
+: If there exists $a$ and $\Delta >0$ such that $\lambda_r(\boldsymbol{M}) \ge a$ and $a - \Delta \ge \lambda_{r+1} (\widehat{\boldsymbol{M}})$, i.e. the two eigenvalues are at least $\Delta$ apart, then the perturbation error to subspaces is bounded by
+
+$$
+\left\| \boldsymbol{U}_0 \boldsymbol{U} _0 ^{\top} - \boldsymbol{\widehat{U}}_0 \boldsymbol{\widehat{U}} _0 ^{\top}  \right\| = \left\| \sin \boldsymbol{\Theta} \right\| \le \frac{\left\| \boldsymbol{H} \boldsymbol{U} _0\right\| }{\Delta} \le \frac{\left\| \boldsymbol{H} \right\| }{\Delta}
+$$
+
+The $\Delta$ term in the bound involves eigenvalues of $\boldsymbol{M}$ and $\widehat{\boldsymbol{M}}$, can we simplify that? By Weyl's inequality $\left\vert \lambda_i(\boldsymbol{M} )  - \lambda_i (\widehat{\boldsymbol{M}})\right\vert \le \left\| \boldsymbol{H}  \right\|$. Therefore, we can let
+
+$$\Delta = \lambda_r(\boldsymbol{M} ) - \lambda_{r+1} (\widehat{\boldsymbol{M}}) \ge \lambda_r(\boldsymbol{M} ) - \lambda_{r+1} (\boldsymbol{M} ) - \left\| \boldsymbol{H}  \right\| $$
+
+and hence the bound becomes
+
+$$
+\operatorname{dist}(\boldsymbol{U} _0, \boldsymbol{\widehat{\boldsymbol{U}}} _0) \le \frac{\left\| H \right\| }{\lambda_r(\boldsymbol{M} ) - \lambda_{r+1} (\boldsymbol{M} ) - \left\| \boldsymbol{H}  \right\|}  
+$$
+
+where $\lambda_r(\boldsymbol{M} ) - \lambda_{r+1} (\boldsymbol{M} )$ is the spectral gap.
