@@ -867,6 +867,23 @@
    Central Limit Theorem
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#bernstein-inequality">
+   Bernstein Inequality
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#univariate">
+     Univariate
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#random-matrices">
+     Random Matrices
+    </a>
+   </li>
+  </ul>
+ </li>
 </ul>
 
         </nav>
@@ -997,6 +1014,51 @@ Y_n=\frac{\sqrt{n}\left(\bar{X}_{n}-\mu\right)}{\sigma}\overset{\mathcal{D}}{\ri
 </div>
 </div>
 <p>In general, one can then sample from any normal distribution <span class="math notranslate nohighlight">\(\mathcal{N}(a,b^2)\)</span> by the transformation <span class="math notranslate nohighlight">\(Z = bY_n+a\)</span>.</p>
+</div>
+<div class="section" id="bernstein-inequality">
+<span id="id1"></span><h2>Bernstein Inequality<a class="headerlink" href="#bernstein-inequality" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="univariate">
+<h3>Univariate<a class="headerlink" href="#univariate" title="Permalink to this headline">¶</a></h3>
+<dl class="simple myst">
+<dt>Inequality (Berstein)</dt><dd><p>Let <span class="math notranslate nohighlight">\(X_1, X_2, \ldots, X_n \in \mathbb{R}\)</span> be i.i.d. random variables with mean 0 and value <span class="math notranslate nohighlight">\(\left\vert X_i \right\vert \le L\)</span>. Let their sum be <span class="math notranslate nohighlight">\(S = \sum_{i=1}^n X_i\)</span>. Then</p>
+<div class="math notranslate nohighlight">
+\[
+  \mathbb{P} (\left\vert S \right\vert \ge t)  \le 2 \exp \left( \frac{- t^2}{\operatorname{Var}\left( S \right) + L t /3}  \right)
+  \]</div>
+</dd>
+</dl>
+<p>If <span class="math notranslate nohighlight">\(n\)</span> is large, since <span class="math notranslate nohighlight">\(\operatorname{Var}\left( S \right) = n \sigma^2\)</span>, the bound becomes</p>
+<div class="math notranslate nohighlight">
+\[
+2 \exp \left( \frac{- t^2}{\operatorname{Var}\left( S \right) + L t /3}  \right) \rightarrow 2 \exp \left( \frac{- t^2}{n \sigma^2}  \right)
+\]</div>
+<p>Let <span class="math notranslate nohighlight">\(t = \sqrt{n \log n} \cdot \sigma\)</span>, then we have</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbb{P} (\left\vert S \right\vert \ge t)  \le \frac{2}{n}
+\]</div>
+<p>In other words, w.h.p., we have <span class="math notranslate nohighlight">\(\frac{1}{n} \left\vert S \right\vert \le \sqrt{\frac{\log n}{n}} \sigma\)</span>.</p>
+<p>The term <span class="math notranslate nohighlight">\(Lt/3\)</span> takes into account that each r.v. could be non-Gaussian like.</p>
+</div>
+<div class="section" id="random-matrices">
+<h3>Random Matrices<a class="headerlink" href="#random-matrices" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference external" href="https://arxiv.org/pdf/1501.01571.pdf">Reference</a></p>
+<dl class="simple myst">
+<dt>Inequality (Matrix Berstein)</dt><dd><p>Let <span class="math notranslate nohighlight">\(\boldsymbol{X}_1, \boldsymbol{X}_2, \ldots, \boldsymbol{X}_n \in \mathbb{R} ^\times {d_1 \times d_2}\)</span> be i.i.d. random matrices with mean 0 and spectral norm <span class="math notranslate nohighlight">\(\left\| \boldsymbol{X} _i \right\|  \le L\)</span>. Let their sum be <span class="math notranslate nohighlight">\(\boldsymbol{S} = \sum_{i=1}^n \boldsymbol{X}_i\)</span> and define the ‘variance’ as</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+  \operatorname{Var}\left( \boldsymbol{S} \right)
+  &amp;= \max \left\{ \left\| \mathbb{E} [\boldsymbol{S} \boldsymbol{S} ^{\top} ]  \right\|, \left\| \mathbb{E} [\boldsymbol{S} ^{\top} \boldsymbol{S} ]  \right\|   \right\}\\
+  &amp;= \max \left\{ \left\| \sum_{i=1}^n \mathbb{E} [\boldsymbol{X}_i \boldsymbol{X}_i ^{\top} ]  \right\|, \left\| \sum_{i=1}^n \mathbb{E} [\boldsymbol{X}_i ^{\top} \boldsymbol{X}_i ]  \right\|   \right\}\\
+  \end{aligned}\end{split}\]</div>
+<p>Then</p>
+<div class="math notranslate nohighlight">
+\[
+  \mathbb{P} (\left\vert \boldsymbol{S}  \right\vert \ge t)  \le (d_1 + d_2) \exp \left( \frac{- t^2}{\operatorname{Var}\left( \boldsymbol{S} \right) + L t /3}  \right)
+  \]</div>
+</dd>
+</dl>
+</div>
 </div>
 </div>
 

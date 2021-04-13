@@ -42,6 +42,7 @@ Some issues:
 
 ### Classical Random Graph Models
 
+(ER-random-graph)=
 #### Erdos and Renyi
 
 Equal probability on all graphs of a given order and size:
@@ -60,8 +61,9 @@ $$\mathcal{G} (N_v, p) = \left\{ G = (V, E): \left\vert V \right\vert = N_v, \le
 
 The level of connectivity is related to the relation between $p$ and $N_v$. Let $p = \frac{c}{N}$ for $c > 0$, then
 
+- $c < 1$: w.h.p. all components will have $\mathcal{O} (\log N_v)$ vertices.
 - $c > 1$: w.h.p. $G$ will have a single connected component ('giant component') consisting of $\alpha_c N_v$ vertices, for some constant $\alpha_c > 0$, with the remaining components having only on the order of $\mathcal{O} (\log N_v)$ vertices.
-- $c < 1$: w.h.p. all components will have on the order of $\mathcal{O} (\log N_v)$ vertices.
+- $c > \log n$: w.h.p. $G$ will be connected.
 
 In term of degree distribution, w.h.p.
 
@@ -69,12 +71,16 @@ $$
 (1-\varepsilon) \frac{c^{d} e^{-c}}{d !} \leq f_{d}(G) \leq(1+\varepsilon) \frac{c^{d} e^{-c}}{d !}
 $$
 
-That is, for large $N_v$, $G$ will have a degree distribution that is like a Poisson distribution with mean $c = p N_v$. This is intuitive since from the perspective of a vertex $i \in V$, it has edge $(i, j)$ w.p. $p$ for $N_v - 1$ number of $j$, hence its expected degree is $p(N_v - 1)$.
+That is, for large $N_v$, $G$ will have a degree distribution that is like a **Poisson** distribution with mean $c = p N_v$. This is intuitive since from the perspective of a vertex $i \in V$, it has edge $(i, j)$ w.p. $p$ for $N_v - 1$ number of $j$, hence its expected degree is $p(N_v - 1)$.
 
 Thus, we observe
 - **concentrated degree distribution** with exponentially decay tails, rather than broad degree distribution observed in many large-scale real-world networks.
 - **low clustering**: recall that assortativity is the probability that two neighbors of a randomly chosen vertex are linked is just $p$, which tend to zero as $N_v$ grows.
 - **small-world property**: the diameter of the graph very like $\mathcal{O} (\log N_v)$ w.h.p as $N_v \rightarrow \infty$.
+
+Reference
+- Notes on random graphs [CMU](https://www.cs.cmu.edu/~avrim/598/chap4only.pdf), [Sante Fe](http://tuvalu.santafe.edu/~aaronc/courses/5352/csci5352_2017_L3.pdf),
+
 
 ### Generalized Random Graph Models
 

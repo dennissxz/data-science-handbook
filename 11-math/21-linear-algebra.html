@@ -846,8 +846,8 @@
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#eigenvalues">
-     Eigenvalues
+    <a class="reference internal nav-link" href="#eigenvalues-and-eigenvectors">
+     Eigenvalues and Eigenvectors
     </a>
    </li>
   </ul>
@@ -905,8 +905,8 @@
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#eigenvalue-decomposition">
-     Eigenvalue Decomposition
+    <a class="reference internal nav-link" href="#spectral-decomposition">
+     Spectral Decomposition
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
@@ -955,11 +955,13 @@
     <a class="reference internal nav-link" href="#randomized-svd">
      Randomized SVD
     </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#analysis-and-speed-up">
-     Analysis and Speed Up
-    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#analysis-and-speed-up">
+       Analysis and Speed Up
+      </a>
+     </li>
+    </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#interpolative-decomposition">
@@ -969,6 +971,11 @@
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#low-rank-approximation">
      Low-rank Approximation
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#perturbation-and-davis-kahan-theorem">
+     Perturbation and Davis-Kahan Theorem
     </a>
    </li>
   </ul>
@@ -1092,27 +1099,71 @@
 </dd>
 </dl>
 </div>
-<div class="section" id="eigenvalues">
-<h3>Eigenvalues<a class="headerlink" href="#eigenvalues" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="eigenvalues-and-eigenvectors">
+<span id="eigenvalue-eigenvector"></span><h3>Eigenvalues and Eigenvectors<a class="headerlink" href="#eigenvalues-and-eigenvectors" title="Permalink to this headline">¶</a></h3>
+<div class="margin sidebar">
+<p class="sidebar-title"></p>
+<p>If we restricted to <span class="math notranslate nohighlight">\(\lambda \in \mathbb{R}\)</span> then some matrices do not have real eigenvalues.</p>
+</div>
 <dl class="simple myst">
-<dt>Definition</dt><dd><p>Let <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> be an <span class="math notranslate nohighlight">\(n\times n\)</span> square matrix and let <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> be an <span class="math notranslate nohighlight">\(n\times 1\)</span> nonzero vector that <span class="math notranslate nohighlight">\(\boldsymbol{A} \boldsymbol{x} = \lambda \boldsymbol{x}\)</span>. Then, <span class="math notranslate nohighlight">\(\lambda\)</span> is called an eigenvalue of <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> is called an eigenvector corresponding to eigenvalue <span class="math notranslate nohighlight">\(\lambda\)</span>. The eigenvalues are the solutions of the <strong>characteristic function</strong></p>
+<dt>Definitions</dt><dd><p>Let <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> be an <span class="math notranslate nohighlight">\(n\times n\)</span> square matrix and let <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> be an <span class="math notranslate nohighlight">\(n\times 1\)</span> nonzero vector that <span class="math notranslate nohighlight">\(\boldsymbol{A} \boldsymbol{x} = \lambda \boldsymbol{x}\)</span>. Then, <span class="math notranslate nohighlight">\(\lambda \in \mathbb{C}\)</span> is called an eigenvalue of <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> is called an eigenvector corresponding to eigenvalue <span class="math notranslate nohighlight">\(\lambda\)</span>. The eigenvalues are the solutions of the <strong>characteristic function</strong></p>
 <div class="math notranslate nohighlight">
 \[
   \left\vert \boldsymbol{A} - \lambda \boldsymbol{I}  \right\vert = 0
   \]</div>
 </dd>
-<dt>Properties</dt><dd><p>For <span class="math notranslate nohighlight">\(\boldsymbol{A}_{n\times n}\)</span> with eigenvalues <span class="math notranslate nohighlight">\(\lambda_1, \lambda_2, \ldots, \lambda_n\)</span>, we have</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
-  \begin{align}
-  \operatorname{tr}(\boldsymbol{A}) &amp;=\sum_{i=1}^{n} \lambda_{i} \\
-  |\boldsymbol{A}|&amp;=\prod_{i=1}^{n} \lambda_{i} \\
-  \left|\boldsymbol{I}_{n} \pm \boldsymbol{A}\right|&amp;=\prod_{i=1}^{n}\left(1 \pm \lambda_{i}\right)
-  \end{align}
-  \end{split}\]</div>
-<p>The nonzero eigenvalues of <span class="math notranslate nohighlight">\(\boldsymbol{A} \boldsymbol{B}\)</span> are the same as those of <span class="math notranslate nohighlight">\(\boldsymbol{B} \boldsymbol{A}\)</span></p>
+</dl>
+<p>For a fixed <span class="math notranslate nohighlight">\(\lambda\)</span>, the non-zero solution <span class="math notranslate nohighlight">\(\boldsymbol{v}\)</span> to <span class="math notranslate nohighlight">\(\boldsymbol{A} \boldsymbol{v} = \lambda \boldsymbol{v}\)</span> is called an eigenvector of <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> corresponding to <span class="math notranslate nohighlight">\(\lambda\)</span>.</p>
+<dl class="simple myst">
+<dt>Properties</dt><dd><ul class="simple">
+<li><p>For <span class="math notranslate nohighlight">\(\boldsymbol{A}_{n\times n}\)</span> with eigenvalues <span class="math notranslate nohighlight">\(\lambda_1, \lambda_2, \ldots, \lambda_n\)</span>, we have</p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(\operatorname{tr}(\boldsymbol{A}) =\sum_{i=1}^{n} \lambda_{i}\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(|\boldsymbol{A}|=\prod_{i=1}^{n} \lambda_{i}\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\left|\boldsymbol{I}_{n} \pm \boldsymbol{A}\right|=\prod_{i=1}^{n}\left(1 \pm \lambda_{i}\right)\)</span></p></li>
+<li><p>if <span class="math notranslate nohighlight">\(\lambda \in \mathbb{R}\)</span> and <span class="math notranslate nohighlight">\(\lambda_1\ge \ldots, \ge \lambda_n\)</span>, we say <span class="math notranslate nohighlight">\(\lambda_1\)</span> is the <strong>largest</strong> (first, top) eigenvalue, and <span class="math notranslate nohighlight">\(\lambda_n\)</span> is the <strong>smallest</strong> (last, bottom) eigenvalue. Same for corresponding eigenvectors.</p></li>
+</ul>
+</li>
+<li><p>The nonzero eigenvalues of <span class="math notranslate nohighlight">\(\boldsymbol{A} \boldsymbol{B}\)</span> are the same as those of <span class="math notranslate nohighlight">\(\boldsymbol{B} \boldsymbol{A}\)</span></p></li>
+<li><p>If <span class="math notranslate nohighlight">\(\boldsymbol{A}  + \boldsymbol{B} = \boldsymbol{I}\)</span>, and <span class="math notranslate nohighlight">\(\boldsymbol{A}\boldsymbol{v} = \lambda \boldsymbol{v}\)</span>, then we can see <span class="math notranslate nohighlight">\(\boldsymbol{B} \boldsymbol{v} = (\boldsymbol{I} - \boldsymbol{A} )\boldsymbol{v} = (1-\lambda)\boldsymbol{v}\)</span>.</p>
+<ul>
+<li><p>if <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> has eigen pairs <span class="math notranslate nohighlight">\((\lambda_i, \boldsymbol{v} _i)\)</span> then <span class="math notranslate nohighlight">\(\boldsymbol{B}\)</span> has eigen pairs <span class="math notranslate nohighlight">\((1-\lambda_i, \boldsymbol{v} _i)\)</span></p></li>
+<li><p>the sequence of pairs is reversed, e.g. the largest eigenvector of <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> is the smallest eigenvector of <span class="math notranslate nohighlight">\(\boldsymbol{B}\)</span>.</p></li>
+</ul>
+</li>
+</ul>
 </dd>
 </dl>
+<div class="note admonition">
+<p class="admonition-title"> Uniqueness of eigenvalues and eigenvectors</p>
+<p>For an <span class="math notranslate nohighlight">\(N \times N\)</span> square matrix <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span>,</p>
+<ul>
+<li><p>Eigenvalues <strong>may not</strong> be unique. The characteristic function <span class="math notranslate nohighlight">\(p(\lambda)=\operatorname{det}(\boldsymbol{A}-\lambda \boldsymbol{I})=0\)</span> can be written as</p>
+<div class="math notranslate nohighlight">
+\[
+  p(\lambda)=\left(\lambda-\lambda_{1}\right)^{n_{1}}\left(\lambda-\lambda_{2}\right)^{n_{2}} \cdots\left(\lambda-\lambda_{N_{\lambda}}\right)^{n_{N_{\lambda}}}=0
+  \]</div>
+<p>where <span class="math notranslate nohighlight">\(N_\lambda \le N\)</span> is the number of distinct solutions.</p>
+<ul class="simple">
+<li><p>The integer <span class="math notranslate nohighlight">\(n_i\)</span> is called the <strong>algebraic multiplicity</strong> of <span class="math notranslate nohighlight">\(\lambda_i\)</span>.</p></li>
+<li><p>If the field of scalars is algebraically closed, the algebraic multiplicities sum to <span class="math notranslate nohighlight">\(N\)</span>: <span class="math notranslate nohighlight">\(\sum_{i=1}^{N_{\lambda}} n_{i}=N\)</span>.</p></li>
+</ul>
+</li>
+<li><p>For a fixed eigenvalue <span class="math notranslate nohighlight">\(\lambda_i\)</span>, the solution to <span class="math notranslate nohighlight">\(\boldsymbol{v}\)</span> to the eigenvalue equation <span class="math notranslate nohighlight">\((\boldsymbol{A} - \lambda_i \boldsymbol{I} )\boldsymbol{v} = \boldsymbol{0}\)</span> is not unique.</p>
+<ul class="simple">
+<li><p>Any scaling <span class="math notranslate nohighlight">\(c \boldsymbol{v}\)</span> is also an solution.</p></li>
+<li><p>There may be <span class="math notranslate nohighlight">\(m_i\)</span> linearly independent solutions. A linear combinations of the <span class="math notranslate nohighlight">\(m_i\)</span> solutions is also an solution. The number <span class="math notranslate nohighlight">\(m_i\)</span> is called the <strong>geometric multiplicity</strong> of <span class="math notranslate nohighlight">\(\lambda_i\)</span>. We have <span class="math notranslate nohighlight">\(m_i \le n_i\)</span>.</p></li>
+<li><p>The total number of linearly independent eigenvectors can be calculated by summing the geometric multiplicities <span class="math notranslate nohighlight">\(\sum_{i=1}^{N_{\lambda}} m_{i}=N_{\boldsymbol{v}} \le N\)</span> with equality iff <span class="math notranslate nohighlight">\(m_i = n_i\)</span> for all <span class="math notranslate nohighlight">\(i\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(E=\{\boldsymbol{v}:(\boldsymbol{A} -\lambda_i \boldsymbol{I} ) \boldsymbol{v}=\boldsymbol{0}\}\)</span> is called the <strong>eigenspace</strong> of <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> associated with <span class="math notranslate nohighlight">\(\lambda_i\)</span>. We have <span class="math notranslate nohighlight">\(\operatorname{dim}(E)=m_i\)</span>.</p></li>
+</ul>
+</li>
+</ul>
+<p>Claims</p>
+<ul class="simple">
+<li><p>eigenvectors corresponds to distinct eigenvalues are independent.</p></li>
+</ul>
+<p>For more details see <a class="reference external" href="https://en.wikipedia.org/wiki/Eigenvalues_and_eigenvectors#Eigenvalues_and_eigenvectors_of_matrices">Wikipedia</a>.</p>
+</div>
 </div>
 </div>
 <div class="section" id="special-matrices">
@@ -1334,41 +1385,27 @@
 <div class="section" id="matrix-decomposition">
 <h2>Matrix Decomposition<a class="headerlink" href="#matrix-decomposition" title="Permalink to this headline">¶</a></h2>
 <p>Summary table</p>
-<div class="section" id="eigenvalue-decomposition">
-<span id="eigen-decomposition"></span><h3>Eigenvalue Decomposition<a class="headerlink" href="#eigenvalue-decomposition" title="Permalink to this headline">¶</a></h3>
-<p>[detail] If <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span>  has <span class="math notranslate nohighlight">\(n\)</span> independent eigenvectors, then is has EVD.</p>
-<p>[detail] <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> is symmetric <span class="math notranslate nohighlight">\(\Leftrightarrow\)</span> there exists an orthogonal matrix <span class="math notranslate nohighlight">\(\boldsymbol{U} = \left[ \boldsymbol{u} _1, \boldsymbol{u} _2, \ldots, \boldsymbol{u} _n \right]\)</span> such that</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
-\boldsymbol{U}^{\top} \boldsymbol{A} \boldsymbol{U}=\boldsymbol{\Lambda} = \left[\begin{array}{cccc}
-\lambda_{1} &amp; 0 &amp; \cdots &amp; 0 \\
-0 &amp; \lambda_{2} &amp; \cdots &amp; 0 \\
-\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
-0 &amp; 0 &amp; \cdots &amp; \lambda_{n}
-\end{array}\right]
-\end{split}\]</div>
-<p>or</p>
-<div class="math notranslate nohighlight">
-\[
-\boldsymbol{A} = \boldsymbol{U} \boldsymbol{\Lambda} \boldsymbol{U} ^\top
-\]</div>
-<p>where <span class="math notranslate nohighlight">\(\lambda_1, \lambda_2, \ldots, \lambda_n\)</span> are eigenvalues of <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{u}  _i\)</span> are their corresponding eigenvectors.</p>
-<dl class="simple myst">
-<dt>Corollary</dt><dd><p>The eigenvalues of real symmetric matrices are real.</p>
+<div class="section" id="spectral-decomposition">
+<span id="eigen-decomposition"></span><h3>Spectral Decomposition<a class="headerlink" href="#spectral-decomposition" title="Permalink to this headline">¶</a></h3>
+<p>Aka eigendecomposition.</p>
+<div class="margin sidebar">
+<p class="sidebar-title"></p>
+<p>For discussion of uniqueness and independence of eigenvectors, see previous <a class="reference internal" href="#eigenvalue-eigenvector"><span class="std std-ref">section</span></a>.</p>
+</div>
+<p>If a square matrix <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> has <span class="math notranslate nohighlight">\(n\)</span> independent eigenvectors, then it can be written as <span class="math notranslate nohighlight">\(\boldsymbol{A} = \boldsymbol{U} \boldsymbol{A} \boldsymbol{U} ^{-1}\)</span>. The columns in the matrix <span class="math notranslate nohighlight">\(\boldsymbol{U}\)</span> are the eigenvectors of <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{\Lambda}\)</span> is a diagonal matrix of eigenvalues. We say <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> has eigendecomposition (EVD), and is diagonalizable.</p>
+<p>In particular, if <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> is symmetric, then <span class="math notranslate nohighlight">\(\boldsymbol{U}\)</span> is a orthogonal matrix, and hence <span class="math notranslate nohighlight">\(\boldsymbol{A} = \boldsymbol{U} \boldsymbol{\Lambda} \boldsymbol{U} ^{\top}\)</span>. Moreover, <span class="math notranslate nohighlight">\(\lambda\)</span> are all real.</p>
 <div class="dropdown seealso admonition">
 <p class="admonition-title"> <em>Proof</em></p>
 <p>Suppose that <span class="math notranslate nohighlight">\((\lambda, \boldsymbol{v})\)</span> is a (possibly complex) eigenvalue and eigenvector pair of the a symmetric matrix <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span>. Using the fact that <span class="math notranslate nohighlight">\(\overline{\boldsymbol{A}  \boldsymbol{v}} = \overline{\lambda \boldsymbol{v}} \Rightarrow \boldsymbol{A}  \overline{\boldsymbol{v}} = \overline{\lambda} \overline{\boldsymbol{v}}\)</span> and  <span class="math notranslate nohighlight">\(\boldsymbol{A} ^{\top} = \boldsymbol{A}\)</span>, we have</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
-  \begin{aligned}
-  \overline{\boldsymbol{v}}^{\top} \boldsymbol{A} \boldsymbol{v}=\overline{\boldsymbol{v}}^{\top}(\boldsymbol{A} \boldsymbol{v})=\overline{\boldsymbol{v}}^{\top}(\lambda \boldsymbol{v})=\lambda(\overline{\boldsymbol{v}} \cdot \boldsymbol{v}) \\
-  \overline{\boldsymbol{v}}^{\top} \boldsymbol{A} \boldsymbol{v}=(\boldsymbol{A} \overline{\boldsymbol{v}})^{\top} \boldsymbol{v}=(\bar{\lambda} \overline{\boldsymbol{v}})^{\top} \boldsymbol{v}=\bar{\lambda}(\overline{\boldsymbol{v}} \cdot \boldsymbol{v})
-  \end{aligned}
-  \end{split}\]</div>
+\begin{aligned}
+\overline{\boldsymbol{v}}^{\top} \boldsymbol{A} \boldsymbol{v}=\overline{\boldsymbol{v}}^{\top}(\boldsymbol{A} \boldsymbol{v})=\overline{\boldsymbol{v}}^{\top}(\lambda \boldsymbol{v})=\lambda(\overline{\boldsymbol{v}} \cdot \boldsymbol{v}) \\
+\overline{\boldsymbol{v}}^{\top} \boldsymbol{A} \boldsymbol{v}=(\boldsymbol{A} \overline{\boldsymbol{v}})^{\top} \boldsymbol{v}=(\bar{\lambda} \overline{\boldsymbol{v}})^{\top} \boldsymbol{v}=\bar{\lambda}(\overline{\boldsymbol{v}} \cdot \boldsymbol{v})
+\end{aligned}
+\end{split}\]</div>
 <p>Since <span class="math notranslate nohighlight">\(\boldsymbol{v} \neq \boldsymbol{0}\)</span>, we have <span class="math notranslate nohighlight">\(\overline{\boldsymbol{v}} \cdot \boldsymbol{v} \neq 0\)</span>. Thus <span class="math notranslate nohighlight">\(\lambda=\bar{\lambda}\)</span>, which means <span class="math notranslate nohighlight">\(\lambda \in \mathbb{R}\)</span>.</p>
 </div>
-</dd>
-</dl>
 </div>
 <div class="section" id="cholesky-decomposition">
 <h3>Cholesky Decomposition<a class="headerlink" href="#cholesky-decomposition" title="Permalink to this headline">¶</a></h3>
@@ -1424,9 +1461,15 @@
 <h2>More Topics<a class="headerlink" href="#more-topics" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="matrix-norms">
 <h3>Matrix Norms<a class="headerlink" href="#matrix-norms" title="Permalink to this headline">¶</a></h3>
-<ul class="simple">
-<li><p>Matrix Norm https://www.uio.no/studier/emner/matnat/ifi/nedlagte-emner/INF-MAT4350/h09/undervisningsmateriale/lecture7.pdf</p></li>
-<li><p>Frobenius Norm http://mlwiki.org/index.php/Frobenius_Norm</p></li>
+<ul>
+<li><p>Matrix Norm <a class="reference external" href="https://www.uio.no/studier/emner/matnat/ifi/nedlagte-emner/INF-MAT4350/h09/undervisningsmateriale/lecture7.pdf">link</a></p></li>
+<li><p>Frobenius Norm <a class="reference external" href="http://mlwiki.org/index.php/Frobenius_Norm">link</a></p></li>
+<li><p>For <span class="math notranslate nohighlight">\(\boldsymbol{a} , \boldsymbol{b} \in [m]^d\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+  \|\boldsymbol{a}-\boldsymbol{b}\|_{\infty} \leq\|\boldsymbol{a}-\boldsymbol{b}\|_{2} \leq\|\boldsymbol{a}-\boldsymbol{b}\|_{1} \leq \sqrt{d}\|\boldsymbol{a}-\boldsymbol{b}\|_{2} \leq d\|\boldsymbol{a}-\boldsymbol{b}\|_{\infty}
+  \]</div>
+</li>
 </ul>
 </div>
 <div class="section" id="randomized-svd">
@@ -1449,9 +1492,8 @@
 <li><p><span class="math notranslate nohighlight">\(\boldsymbol{D}\)</span> is an <span class="math notranslate nohighlight">\(n \times n\)</span> diagonal matrix <span class="math notranslate nohighlight">\(d_i \pm 1\)</span> entires with equal probability</p></li>
 </ul>
 <p>The total complexity if <span class="math notranslate nohighlight">\(\mathcal{O} (k + n\log n + n)\)</span>.</p>
-</div>
 <div class="section" id="analysis-and-speed-up">
-<h3>Analysis and Speed Up<a class="headerlink" href="#analysis-and-speed-up" title="Permalink to this headline">¶</a></h3>
+<h4>Analysis and Speed Up<a class="headerlink" href="#analysis-and-speed-up" title="Permalink to this headline">¶</a></h4>
 <p>Lemma 1</p>
 <p>Let</p>
 <ul class="simple">
@@ -1511,6 +1553,7 @@ Suppose <span class="math notranslate nohighlight">\(\boldsymbol{A} _v\)</span> 
 </div>
 <p>Conclusion: not bad as first <span class="math notranslate nohighlight">\(k\)</span> approximation.</p>
 </div>
+</div>
 <div class="section" id="interpolative-decomposition">
 <h3>Interpolative Decomposition<a class="headerlink" href="#interpolative-decomposition" title="Permalink to this headline">¶</a></h3>
 <p>Less accurate.</p>
@@ -1528,6 +1571,113 @@ Suppose <span class="math notranslate nohighlight">\(\boldsymbol{A} _v\)</span> 
 \[
 \left\|A-A_{r}\right\|_{F}^{2}=\left\|\sum_{i=r+1}^{n} \sigma_{i} u_{i} v_{i}^{\top}\right\|_{F}^{2}=\sum_{i=r+1}^{n} \sigma_{i}^{2}
 \]</div>
+</div>
+<div class="section" id="perturbation-and-davis-kahan-theorem">
+<span id="davis-kahan"></span><h3>Perturbation and Davis-Kahan Theorem<a class="headerlink" href="#perturbation-and-davis-kahan-theorem" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference external" href="https://www.cs.columbia.edu/~djhsu/coms4772-f16/lectures/davis-kahan.pdf">Reference</a></p>
+<p>Suppose we want to recover the top <span class="math notranslate nohighlight">\(r\)</span> subspace of <strong>symmetric</strong> matrix <span class="math notranslate nohighlight">\(\boldsymbol{M}\)</span> via <span class="math notranslate nohighlight">\(\hat{\boldsymbol{M}} = \boldsymbol{M} + \boldsymbol{H}\)</span>, where <span class="math notranslate nohighlight">\(\boldsymbol{H}\)</span> is some small perturbation. Let their spectral decomposition be</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\boldsymbol{M} &amp;= [\boldsymbol{U} _0 \ \boldsymbol{U} _1] \left[\begin{array}{cc}
+\boldsymbol{\Lambda} _0 &amp; 0 \\
+0 &amp; \boldsymbol{\Lambda} _1
+\end{array}\right] \left[\begin{array}{c}
+\boldsymbol{U} _0  ^{\top} \\
+\boldsymbol{U} _1 ^{\top}
+\end{array}\right] \\
+\widehat{\boldsymbol{M}} &amp;= [\widehat{\boldsymbol{U}} _0 \ \widehat{\boldsymbol{U}} _1] \left[\begin{array}{cc}
+\widehat{\boldsymbol{\Lambda}} _0 &amp; 0 \\
+0 &amp; \widehat{\boldsymbol{\Lambda}} _1
+\end{array}\right] \left[\begin{array}{c}
+\widehat{\boldsymbol{U}} _0  ^{\top} \\
+\widehat{\boldsymbol{U}} _1 ^{\top}
+\end{array}\right]
+\end{aligned}\end{split}\]</div>
+<p>where the partition is at <span class="math notranslate nohighlight">\(r\)</span>.</p>
+<p>We need a distance measure between subspaces <span class="math notranslate nohighlight">\(\boldsymbol{U} _0\)</span> and <span class="math notranslate nohighlight">\(\widehat{\boldsymbol{U} }_0\)</span>, or in general, distance measure between two orthogonal matrices <span class="math notranslate nohighlight">\(\boldsymbol{X} = [\boldsymbol{X} _0 \ \boldsymbol{X} _1]\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{Z} = [\boldsymbol{Z} _0 \ \boldsymbol{Z} _1]\)</span>. All norms below are spectral norms (maximum singular value of a matrix).</p>
+<ul class="simple">
+<li><p>bad idea: <span class="math notranslate nohighlight">\(\operatorname{dist}(\boldsymbol{X} _0, \boldsymbol{Z} _0) = \left\| \boldsymbol{X} _0 - \boldsymbol{Z} _0 \right\|_2\)</span></p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{Z} _0\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{Z} _0 \boldsymbol{Q}\)</span> spans the same column space (rotation of bases) for all orthogonal transformation <span class="math notranslate nohighlight">\(\boldsymbol{Q}\)</span></p></li>
+<li><p>after rotation, distance changes, not a good measure.</p></li>
+</ul>
+</li>
+<li><p>good idea: <span class="math notranslate nohighlight">\(\operatorname{dist}(\boldsymbol{X} _0, \boldsymbol{Z} _0) = \left\| \boldsymbol{X} _0 \boldsymbol{X} _0 ^{\top}  - \boldsymbol{Z} _0 \boldsymbol{Z} _0 ^{\top} \right\|_2\)</span></p>
+<ul>
+<li><p>invariant to rotation transformation</p></li>
+<li><p>essentially compare projection</p></li>
+</ul>
+</li>
+</ul>
+<p>Lemmas (of the good idea)</p>
+<ol class="simple">
+<li><p>The SVD of <span class="math notranslate nohighlight">\(\boldsymbol{X} _0 ^{\top} \boldsymbol{Z} _0\)</span> can be expressed as <span class="math notranslate nohighlight">\(\boldsymbol{U} \cos (\Theta) \boldsymbol{V} ^{\top}\)</span> where <span class="math notranslate nohighlight">\(\Theta = \operatorname{diag} (\theta_1, \ldots, \theta_r)\)</span> is called the principal angles between two subspaces. (think about <span class="math notranslate nohighlight">\(r=1\)</span> case). We have</p></li>
+</ol>
+<div class="math notranslate nohighlight">
+\[\left\| X_0 ^{\top} \boldsymbol{Z} _1 \right\| = \left\| \sin \Theta \right\| = \max \left\{ |\sin \theta_1|, \ldots, |\sin \theta_r |\right\}\]</div>
+<ol class="simple">
+<li><p><span class="math notranslate nohighlight">\(\operatorname{dist}(\boldsymbol{X} _0, \boldsymbol{Z} _0) = \left\| \boldsymbol{X} ^{\top} _0 \boldsymbol{Z} _1\right\| = \left\| \boldsymbol{Z} _0 ^{\top} \boldsymbol{X} _1 \right\|\)</span></p>
+<ul class="simple">
+<li><p>in particular, if <span class="math notranslate nohighlight">\(\boldsymbol{X} _0 = \boldsymbol{Z} _0\)</span>, then the distance measure should be <span class="math notranslate nohighlight">\(0\)</span>, and the RHS is indeed 0.</p></li>
+</ul>
+</li>
+</ol>
+<div class="note dropdown admonition">
+<p class="admonition-title"> Example of Lemma 1</p>
+<p>Think about a simple case in <span class="math notranslate nohighlight">\(2\)</span>-d: <span class="math notranslate nohighlight">\(\boldsymbol{X} = \frac{1}{\sqrt{2}}  \left[\begin{array}{cc}
+1 &amp; -1 \\
+1 &amp; 1
+\end{array}\right]\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{Z} = \left[\begin{array}{cc}
+1 &amp; 0 \\
+0 &amp; 1
+\end{array}\right]\)</span>, then</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\cos \theta_{( \boldsymbol{x} _0, \boldsymbol{z} _0 )} = \cos(\theta_1 = \frac{\pi}{4} ) = \boldsymbol{x} _0 ^{\top} \boldsymbol{z} _0\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\cos \theta_{(\boldsymbol{x} _0, \boldsymbol{z} _1 )} = \cos(\frac{\pi}{2} - \theta_1 ) = \sin(\theta_1) = \boldsymbol{x} _0 ^{\top} \boldsymbol{z} _1\)</span>.</p></li>
+</ul>
+</div>
+<div class="dropdown seealso admonition">
+<p class="admonition-title"> <em>Proof</em></p>
+<p>Lemma 1</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\left\| \boldsymbol{X} _0 ^{\top} \boldsymbol{Z} _1 \right\|
+&amp;= \left\| \boldsymbol{X} _0 ^{\top} \boldsymbol{Z} _1 \boldsymbol{Z} _1 ^{\top} \boldsymbol{X} _0 \right\|^{1/2}  \quad \because \text{SVD} \\
+&amp;= \left\| \boldsymbol{X} _0 (\boldsymbol{I} - \boldsymbol{Z} _0 \boldsymbol{Z} _0 ^{\top} ) \boldsymbol{X} _0 \right\|^{1/2} \\
+&amp;= \left\| \boldsymbol{I} _{r} - \boldsymbol{X} _0 ^{\top}  \boldsymbol{Z} _0 \boldsymbol{Z} _0 ^{\top} \boldsymbol{X} _0 \right\|^{1/2} \\
+&amp;= \left\| \boldsymbol{I} _{r} - \boldsymbol{U} [\cos \boldsymbol{\Theta}]^2 \boldsymbol{U} ^{\top} \right\|^{1/2} \\
+&amp;= \left\| [\sin \boldsymbol{\Theta}]^2  \right\|^{1/2} \\
+&amp;= \left\| \sin \boldsymbol{\Theta}  \right\|\\
+\end{aligned}\end{split}\]</div>
+<p>Lemma 2</p>
+<p>By Lemma 1, it remains to show <span class="math notranslate nohighlight">\(\left\| \boldsymbol{X} _0 \boldsymbol{X} _0 ^{\top}  - \boldsymbol{Z} _0 \boldsymbol{Z} _0 ^{\top} \right\| = \left\| \sin \boldsymbol{\Theta} \right\|\)</span>. Write</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\boldsymbol{Z} _0 = \boldsymbol{X} \boldsymbol{X} ^{\top} \boldsymbol{Z} _0 = \boldsymbol{X} \left[\begin{array}{cc}
+\boldsymbol{X} _0 ^{\top}  \\
+\boldsymbol{X} _1 ^{\top}
+\end{array}\right] \boldsymbol{Z} _0 = \boldsymbol{X} \left[\begin{array}{cc}
+\boldsymbol{U} \cos(\boldsymbol{\Theta} ) \boldsymbol{V}  ^{\top}  \\
+\boldsymbol{\tilde{U}} \sin(\boldsymbol{\Theta} ) \boldsymbol{V}  ^{\top}
+\end{array}\right] \end{split}\]</div>
+<p>…</p>
+</div>
+<dl class="simple myst">
+<dt>Theorem (Davis-Kahan <span class="math notranslate nohighlight">\(\sin(\boldsymbol{\Theta} )\)</span>)</dt><dd><p>If there exists <span class="math notranslate nohighlight">\(a\)</span> and <span class="math notranslate nohighlight">\(\Delta &gt;0\)</span> such that <span class="math notranslate nohighlight">\(\lambda_r(\boldsymbol{M}) \ge a\)</span> and <span class="math notranslate nohighlight">\(a - \Delta \ge \lambda_{r+1} (\widehat{\boldsymbol{M}})\)</span>, i.e. the two eigenvalues are at least <span class="math notranslate nohighlight">\(\Delta\)</span> apart, then the perturbation error to subspaces is bounded by</p>
+</dd>
+</dl>
+<div class="math notranslate nohighlight">
+\[
+\left\| \boldsymbol{U}_0 \boldsymbol{U} _0 ^{\top} - \boldsymbol{\widehat{U}}_0 \boldsymbol{\widehat{U}} _0 ^{\top}  \right\| = \left\| \sin \boldsymbol{\Theta} \right\| \le \frac{\left\| \boldsymbol{H} \boldsymbol{U} _0\right\| }{\Delta} \le \frac{\left\| \boldsymbol{H} \right\| }{\Delta}
+\]</div>
+<p>The <span class="math notranslate nohighlight">\(\Delta\)</span> term in the bound involves eigenvalues of <span class="math notranslate nohighlight">\(\boldsymbol{M}\)</span> and <span class="math notranslate nohighlight">\(\widehat{\boldsymbol{M}}\)</span>, can we simplify that? By Weyl’s inequality <span class="math notranslate nohighlight">\(\left\vert \lambda_i(\boldsymbol{M} )  - \lambda_i (\widehat{\boldsymbol{M}})\right\vert \le \left\| \boldsymbol{H}  \right\|\)</span>. Therefore, we can let</p>
+<div class="math notranslate nohighlight">
+\[\Delta = \lambda_r(\boldsymbol{M} ) - \lambda_{r+1} (\widehat{\boldsymbol{M}}) \ge \lambda_r(\boldsymbol{M} ) - \lambda_{r+1} (\boldsymbol{M} ) - \left\| \boldsymbol{H}  \right\| \]</div>
+<p>and hence the bound becomes</p>
+<div class="math notranslate nohighlight">
+\[
+\operatorname{dist}(\boldsymbol{U} _0, \boldsymbol{\widehat{\boldsymbol{U}}} _0) \le \frac{\left\| H \right\| }{\lambda_r(\boldsymbol{M} ) - \lambda_{r+1} (\boldsymbol{M} ) - \left\| \boldsymbol{H}  \right\|}  
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\lambda_r(\boldsymbol{M} ) - \lambda_{r+1} (\boldsymbol{M} )\)</span> is the spectral gap.</p>
 </div>
 </div>
 </div>

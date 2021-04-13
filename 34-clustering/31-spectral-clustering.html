@@ -927,6 +927,23 @@
    </li>
   </ul>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#stochastic-block-models">
+   Stochastic Block Models
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#adjacency-matrix">
+     Adjacency Matrix
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#analysis">
+     Analysis
+    </a>
+   </li>
+  </ul>
+ </li>
 </ul>
 
         </nav>
@@ -997,14 +1014,14 @@
 <dt>Fact (Spectrum of graph adjacency matrices)</dt><dd><p>In the case of a graph <span class="math notranslate nohighlight">\(G\)</span> consisting of two <span class="math notranslate nohighlight">\(d\)</span>-regular graphs joined to each other by just a handful of vertices,</p>
 <ul class="simple">
 <li><p>the two largest eigenvalues <span class="math notranslate nohighlight">\(\lambda_1, \lambda_2\)</span> will be roughly equal to <span class="math notranslate nohighlight">\(d\)</span>, and the remaining eigenvalues will be of only <span class="math notranslate nohighlight">\(\mathcal{O} (d^{1/2})\)</span> in magnitude. Hence, there is a gap in the spectrum of eigenvalues, namely ‘spectral gap’.</p></li>
-<li><p>the two corresponding eigenvectors <span class="math notranslate nohighlight">\(\boldsymbol{v} _1, \boldsymbol{v} _2\)</span> are expected two have large positive entires on vertices of one <span class="math notranslate nohighlight">\(d\)</span>-‘regular’ graphs, and large negative entires on the vertices of the other.</p></li>
+<li><p>the second eigenvector <span class="math notranslate nohighlight">\(\boldsymbol{v} _2\)</span> are expected to have large positive entires on vertices of one <span class="math notranslate nohighlight">\(d\)</span>-‘regular’ graphs, and large negative entires on the vertices of the other. For details, see <a class="reference internal" href="#stochastic-block-models"><span class="std std-ref">stochastic block models</span></a>.</p></li>
 </ul>
 </dd>
 </dl>
 </div>
 <div class="section" id="bisection">
 <h3>Bisection<a class="headerlink" href="#bisection" title="Permalink to this headline">¶</a></h3>
-<p>Using this fact, to find two clusters in the data set, we can compute eigenvalues and eigenvectors of <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span>, then find the largest positive and largest negative entries in the two eigenvectors. Their respective neighbors are declared to be two clusters.</p>
+<p>Using this fact, to find two clusters in the data set, we can compute eigenvalues and eigenvectors of <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span>, then find the largest positive and largest negative entries in the 2nd eigenvector. Their respective neighbors are declared to be two clusters.</p>
 <p>For instance, in the plots below, We see that</p>
 <ul class="simple">
 <li><p>The first two eigenvalues are fairly distinct from the rest, indicating the possible presence of two sub-graphs.</p></li>
@@ -1015,10 +1032,10 @@
 <a class="reference internal image-reference" href="../_images/spectral-clustering-ex1.png"><img alt="" src="../_images/spectral-clustering-ex1.png" style="width: 70%;" /></a>
 <p class="caption"><span class="caption-number">Fig. 88 </span><span class="caption-text">Spectral analysis of the karate club network. Left: <span class="math notranslate nohighlight">\(\left\vert \lambda_i \right\vert\)</span>. Right: <span class="math notranslate nohighlight">\(\boldsymbol{v} _1, \boldsymbol{v} _2\)</span>, colored by subgroups. [Kolaczyk 2009]</span><a class="headerlink" href="#spectral-clustering-ex1" title="Permalink to this image">¶</a></p>
 </div>
-<p>For <span class="math notranslate nohighlight">\(K \ge 3\)</span>, we can</p>
+<p>For unkonwn <span class="math notranslate nohighlight">\(k\)</span>, we can</p>
 <ul class="simple">
-<li><p>Look for a spectral gap to determine <span class="math notranslate nohighlight">\(K\)</span></p></li>
-<li><p>Run <span class="math notranslate nohighlight">\(K\)</span>-NN using the first <span class="math notranslate nohighlight">\(K\)</span> eigenvectors to determine assignment</p></li>
+<li><p>Look for a spectral gap to determine <span class="math notranslate nohighlight">\(k\)</span></p></li>
+<li><p>Run <span class="math notranslate nohighlight">\(k\)</span>-means clustering using the first <span class="math notranslate nohighlight">\(k\)</span> eigenvectors to determine assignment</p></li>
 </ul>
 </div>
 <div class="section" id="pros-and-cons">
@@ -1028,6 +1045,7 @@
 <li><p>In reality, graphs are far from regular, so this method does not work well</p></li>
 <li><p>The partitions found through spectral analysis will tend to be ordered and separated by vertex degree, since the eigenvalues will mirror quite closely the underlying degree distribution. Normalizing the adjacency matrix to have unit row sums is a commonly proposed solution.</p></li>
 </ul>
+<p>For an analysis of this method, i.e. how well the discretization of empirical <span class="math notranslate nohighlight">\(\boldsymbol{v} _2\)</span> gives the correct binary label, see the <a class="reference internal" href="#stochastic-block-models"><span class="std std-ref">section</span></a>.</p>
 </div>
 </div>
 <div class="section" id="laplacian-matrix-based">
@@ -1251,6 +1269,93 @@ w_{i j}= \left\{\begin{array}{ll}
 <a class="reference internal image-reference" href="../_images/spectral-clustering-speech-sep.png"><img alt="" src="../_images/spectral-clustering-speech-sep.png" style="width: 80%;" /></a>
 <p class="caption"><span class="caption-number">Fig. 95 </span><span class="caption-text">Spectral clustering for speech separation [Bach &amp; Jordan]</span><a class="headerlink" href="#spectral-clustering-speech-sep" title="Permalink to this image">¶</a></p>
 </div>
+</div>
+</div>
+<div class="section" id="stochastic-block-models">
+<span id="id4"></span><h2>Stochastic Block Models<a class="headerlink" href="#stochastic-block-models" title="Permalink to this headline">¶</a></h2>
+<p>Aka planted partition model.</p>
+<div class="section" id="adjacency-matrix">
+<h3>Adjacency Matrix<a class="headerlink" href="#adjacency-matrix" title="Permalink to this headline">¶</a></h3>
+<p>Consider a perfect case: a graph consisting of <span class="math notranslate nohighlight">\(k\)</span> clusters of equal size <span class="math notranslate nohighlight">\(\frac{n}{k}\)</span>, each cluster is complete and there are no across-cluster edges, then the spectral decomposition of <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\boldsymbol{A} = \left[\begin{array}{ccc}
+\boldsymbol{1} \boldsymbol{1} ^{\top}  &amp; 0 &amp; 0\\
+0 &amp; \ddots &amp; 0 \\
+0 &amp; 0 &amp; \boldsymbol{1} \boldsymbol{1} ^{\top}
+\end{array}\right],
+\quad \boldsymbol{U} = \frac{1}{\sqrt{n/k}}  \left[\begin{array}{ccc}
+\boldsymbol{1}  &amp; 0 &amp; 0\\
+0 &amp; \ddots &amp; 0 \\
+0 &amp; 0 &amp; \boldsymbol{1}
+\end{array}\right] \boldsymbol{Q}, \quad \boldsymbol{\Lambda} = \frac{n}{k} \boldsymbol{I}
+\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\boldsymbol{1}\)</span> are a vector of size <span class="math notranslate nohighlight">\(\frac{n}{k}\)</span>. <span class="math notranslate nohighlight">\(\boldsymbol{Q}\)</span> is an orthogonal transform (does not change distance between a pair of embeddings).</p>
+<p>In practice, <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> is not that perfect. How imperfect <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> can be?</p>
+<p>Consider a stochastic block model (SBM), <span class="math notranslate nohighlight">\(k=2\)</span> clusters (each cluster has size <span class="math notranslate nohighlight">\(\frac{n}{2}\)</span>), and</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\mathbb{P} (A_{ij} = 1) = \left\{\begin{array}{ll}
+p, &amp; \text { if $i, j$ in same cluster}  \\
+q, &amp; \text { if $i, j$ in different cluster}  \\
+\end{array}\right.
+\end{split}\]</div>
+<div class="margin sidebar">
+<p class="sidebar-title"></p>
+<p>Conventionally <span class="math notranslate nohighlight">\(A_{ii}=0\)</span>, but when <span class="math notranslate nohighlight">\(n\)</span> is large this does not affect the analysis much.</p>
+</div>
+<p>Usually <span class="math notranslate nohighlight">\(p &gt;q\)</span>. Then the expectation of the random adjacency matrix is</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\mathbb{E} [\boldsymbol{A}] = \left[\begin{array}{cc}
+p \boldsymbol{1} \boldsymbol{1} ^{\top}  &amp; q \boldsymbol{1} \boldsymbol{1} ^{\top}  \\
+q \boldsymbol{1} \boldsymbol{1} ^{\top}  &amp; p \boldsymbol{1} \boldsymbol{1} ^{\top}  \\
+\end{array}\right] = \frac{p+q}{2} \boldsymbol{1}_n \boldsymbol{1}_n ^{\top} +  \frac{p-q}{2} \left[\begin{array}{cc}
+\boldsymbol{1}   \\
+-\boldsymbol{1}  
+\end{array}\right] [\boldsymbol{1} ^{\top} \ -\boldsymbol{1} ^{\top}]
+\end{split}\]</div>
+<p>and <span class="math notranslate nohighlight">\(\mathbb{E} [\boldsymbol{A}]\)</span> has rank 2 and two non-zero eigenvalues</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\lambda_1 &amp;= \frac{p+q}{2}n &amp; \boldsymbol{v} _1 &amp;= \frac{1}{\sqrt{n}} \boldsymbol{1} _n \\
+\lambda_2 &amp;= \frac{p-q}{2}n &amp; \boldsymbol{v} _2 &amp;= \frac{1}{\sqrt{n}}\left[\begin{array}{cc}
+\boldsymbol{1}   \\
+-\boldsymbol{1}  
+\end{array}\right] \\
+\end{aligned}\end{split}\]</div>
+<p>Hence, to give labels for 2-clustering, we can discretize <span class="math notranslate nohighlight">\(\boldsymbol{v} _2\)</span> of <span class="math notranslate nohighlight">\(\mathbb{E} [\boldsymbol{A}]\)</span> according to the signs of its entries. However, we only observe <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> rather than <span class="math notranslate nohighlight">\(\mathbb{E} [\boldsymbol{A}]\)</span>. Is the second eigenvector <span class="math notranslate nohighlight">\(\boldsymbol{\hat{v}} _2\)</span> of <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> a good estimator for <span class="math notranslate nohighlight">\(\boldsymbol{v} _2\)</span> of <span class="math notranslate nohighlight">\(\mathbb{E} [\boldsymbol{A}]\)</span>?</p>
+</div>
+<div class="section" id="analysis">
+<h3>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h3>
+<p>Suppose we know the parameters <span class="math notranslate nohighlight">\(p, q\)</span>. Now we analyze the discretization performance by quantify some ‘distance’ between <span class="math notranslate nohighlight">\(\boldsymbol{v} _2\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{\hat{v}}_2\)</span>.</p>
+<p>First, we can write <span class="math notranslate nohighlight">\(\boldsymbol{A} = \mathbb{E} [\boldsymbol{A} ] + (\boldsymbol{A} - \mathbb{E} [\boldsymbol{A} ] )\)</span> where the second term is noise. If noise <span class="math notranslate nohighlight">\(=0\)</span>, then the second eigenvectors of observed <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> is that of <span class="math notranslate nohighlight">\(\mathbb{E} [\boldsymbol{A}]\)</span>, which is <span class="math notranslate nohighlight">\(\frac{1}{\sqrt{n}} [\boldsymbol{1} ^{\top} \ -\boldsymbol{1} ^{\top}]\)</span>, whose its discretization perfectly reveals the label.</p>
+<p>But the second eigenvector is hard to analyze (since its computation depends on the 1st eigenvector, which is also random). We introduce an equivalent analysis: compute the first eigenvector of <span class="math notranslate nohighlight">\(\boldsymbol{A} - \frac{p+q}{2} \boldsymbol{1}_n \boldsymbol{1}_n ^{\top}\)</span>, denoted <span class="math notranslate nohighlight">\(\boldsymbol{\hat{u}}\)</span>. And assign the label according to the sign of the entries in <span class="math notranslate nohighlight">\(\boldsymbol{\hat{u}}\)</span>. Some interpretation</p>
+<ul class="simple">
+<li><p>avoid computing the first eigenvector which is not informative</p></li>
+<li><p>approximately equivalent to compute the top eigenvector of the ‘centered’ version of <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span>: <span class="math notranslate nohighlight">\(\boldsymbol{C} \boldsymbol{A} \boldsymbol{C}\)</span> where <span class="math notranslate nohighlight">\(\boldsymbol{C} = \boldsymbol{I} - \frac{1}{n}\boldsymbol{1} \boldsymbol{1} ^{\top}\)</span>.</p></li>
+</ul>
+<p>We expect <span class="math notranslate nohighlight">\(\boldsymbol{\hat{u}} \approx \frac{1}{\sqrt{n}} [\boldsymbol{1} \ -1]\)</span>. To analyze the error, let</p>
+<ul class="simple">
+<li><p>truth: <span class="math notranslate nohighlight">\(\boldsymbol{M} = \mathbb{E} [\boldsymbol{A}]  - \frac{p+q}{2} \boldsymbol{1}_n \boldsymbol{1}_n ^{\top}\)</span></p></li>
+<li><p>observed: <span class="math notranslate nohighlight">\(\widehat{\boldsymbol{M}} = \boldsymbol{A} - \frac{p+q}{2} \boldsymbol{1}_n \boldsymbol{1}_n ^{\top}\)</span>.</p></li>
+<li><p>perturbation: <span class="math notranslate nohighlight">\(\boldsymbol{H} =  \widehat{\boldsymbol{M}} - \boldsymbol{M} = \boldsymbol{A} - \mathbb{E} [\boldsymbol{A} ]\)</span>.</p></li>
+</ul>
+<p>By applying <a class="reference internal" href="../11-math/21-linear-algebra.html#davis-kahan"><span class="std std-ref">Davis-Kahan theorem</span></a> to SBM, let <span class="math notranslate nohighlight">\(r=1\)</span>, then</p>
+<div class="math notranslate nohighlight">
+\[
+\operatorname{dist}(\hat{\boldsymbol{u}}, \boldsymbol{u} ) = \left\| \hat{\boldsymbol{u}} ^{\top} \boldsymbol{\hat{u}} - \boldsymbol{u} ^{\top} \boldsymbol{u} \right\|_2 \le \frac{\left\| \boldsymbol{A} - \mathbb{E} [\boldsymbol{A} ] \right\|  }{\frac{p-q}{2} n - 0 - \left\| \boldsymbol{A} - \mathbb{E} [\boldsymbol{A}]  \right\|  }
+\]</div>
+<div class="margin sidebar">
+<p class="sidebar-title"></p>
+<p>The lower bound <span class="math notranslate nohighlight">\(\frac{b\log n}{n}\)</span> is to <a class="reference internal" href="../38-ml-for-graph-data/21-modeling.html#er-random-graph"><span class="std std-ref">ensure</span></a> the graph is connected, since most algorithms applied only to relatively dense graphs [<a class="reference external" href="https://arxiv.org/pdf/1202.1499.pdf">link</a> pg.3]. Also see <a class="reference external" href="https://arxiv.org/pdf/1311.4115.pdf">here</a> and <a class="reference external" href="https://arxiv.org/pdf/1502.06775.pdf">here</a>.</p>
+</div>
+<p>Hence if <span class="math notranslate nohighlight">\(p \gg q\)</span>, then the error is low. Can we quantify <span class="math notranslate nohighlight">\(\left\| \boldsymbol{A} - \mathbb{E} [\boldsymbol{A} ] \right\|\)</span>? By <a class="reference internal" href="../12-probabilities/91-large-sample-theory.html#bernstein-inequality"><span class="std std-ref">Bernstein inequality</span></a>, for <span class="math notranslate nohighlight">\(p &gt; q \ge \frac{b \log n}{n}\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{\left\| \boldsymbol{A} - \mathbb{E} [\boldsymbol{A} ] \right\|  }{\frac{p-q}{2} n - \left\| \boldsymbol{A} - \mathbb{E} [\boldsymbol{A}]  \right\|} \le \mathcal{O} \left( \frac{\sqrt{np \log n}}{(p-q)n}  \right)
+\]</div>
+<p>Hence, when <span class="math notranslate nohighlight">\((p-q)n \gg \sqrt{n p \log n}\)</span>, discretizing <span class="math notranslate nohighlight">\(\boldsymbol{\hat{u}}\)</span> exactly recover <span class="math notranslate nohighlight">\(\boldsymbol{u}\)</span>.</p>
 </div>
 </div>
 </div>

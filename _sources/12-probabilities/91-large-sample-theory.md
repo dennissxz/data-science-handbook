@@ -140,3 +140,50 @@ plt.show()
 ```
 
 In general, one can then sample from any normal distribution $\mathcal{N}(a,b^2)$ by the transformation $Z = bY_n+a$.
+
+(bernstein-inequality)=
+## Bernstein Inequality
+
+### Univariate
+
+Inequality (Berstein)
+: Let $X_1, X_2, \ldots, X_n \in \mathbb{R}$ be i.i.d. random variables with mean 0 and value $\left\vert X_i \right\vert \le L$. Let their sum be $S = \sum_{i=1}^n X_i$. Then
+
+  $$
+  \mathbb{P} (\left\vert S \right\vert \ge t)  \le 2 \exp \left( \frac{- t^2}{\operatorname{Var}\left( S \right) + L t /3}  \right)
+  $$
+
+If $n$ is large, since $\operatorname{Var}\left( S \right) = n \sigma^2$, the bound becomes
+
+$$
+2 \exp \left( \frac{- t^2}{\operatorname{Var}\left( S \right) + L t /3}  \right) \rightarrow 2 \exp \left( \frac{- t^2}{n \sigma^2}  \right)
+$$
+
+Let $t = \sqrt{n \log n} \cdot \sigma$, then we have
+
+$$
+\mathbb{P} (\left\vert S \right\vert \ge t)  \le \frac{2}{n}
+$$
+
+In other words, w.h.p., we have $\frac{1}{n} \left\vert S \right\vert \le \sqrt{\frac{\log n}{n}} \sigma$.
+
+The term $Lt/3$ takes into account that each r.v. could be non-Gaussian like.
+
+### Random Matrices
+
+[Reference](https://arxiv.org/pdf/1501.01571.pdf)
+
+Inequality (Matrix Berstein)
+: Let $\boldsymbol{X}_1, \boldsymbol{X}_2, \ldots, \boldsymbol{X}_n \in \mathbb{R} ^\times {d_1 \times d_2}$ be i.i.d. random matrices with mean 0 and spectral norm $\left\| \boldsymbol{X} _i \right\|  \le L$. Let their sum be $\boldsymbol{S} = \sum_{i=1}^n \boldsymbol{X}_i$ and define the 'variance' as
+
+  $$\begin{aligned}
+  \operatorname{Var}\left( \boldsymbol{S} \right)
+  &= \max \left\{ \left\| \mathbb{E} [\boldsymbol{S} \boldsymbol{S} ^{\top} ]  \right\|, \left\| \mathbb{E} [\boldsymbol{S} ^{\top} \boldsymbol{S} ]  \right\|   \right\}\\
+  &= \max \left\{ \left\| \sum_{i=1}^n \mathbb{E} [\boldsymbol{X}_i \boldsymbol{X}_i ^{\top} ]  \right\|, \left\| \sum_{i=1}^n \mathbb{E} [\boldsymbol{X}_i ^{\top} \boldsymbol{X}_i ]  \right\|   \right\}\\
+  \end{aligned}$$
+
+  Then
+
+  $$
+  \mathbb{P} (\left\vert \boldsymbol{S}  \right\vert \ge t)  \le (d_1 + d_2) \exp \left( \frac{- t^2}{\operatorname{Var}\left( \boldsymbol{S} \right) + L t /3}  \right)
+  $$

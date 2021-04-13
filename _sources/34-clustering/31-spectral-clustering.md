@@ -56,11 +56,11 @@ Let the eigen-pairs of an binary adjacency matrix $\boldsymbol{A}$ be $(\lambda_
 Fact (Spectrum of graph adjacency matrices)
 : In the case of a graph $G$ consisting of two $d$-regular graphs joined to each other by just a handful of vertices,
   - the two largest eigenvalues $\lambda_1, \lambda_2$ will be roughly equal to $d$, and the remaining eigenvalues will be of only $\mathcal{O} (d^{1/2})$ in magnitude. Hence, there is a gap in the spectrum of eigenvalues, namely 'spectral gap'.
-  - the two corresponding eigenvectors $\boldsymbol{v} _1, \boldsymbol{v} _2$ are expected two have large positive entires on vertices of one $d$-'regular' graphs, and large negative entires on the vertices of the other.
+  - the second eigenvector $\boldsymbol{v} _2$ are expected to have large positive entires on vertices of one $d$-'regular' graphs, and large negative entires on the vertices of the other. For details, see [stochastic block models](stochastic-block-models).
 
 ### Bisection
 
-Using this fact, to find two clusters in the data set, we can compute eigenvalues and eigenvectors of $\boldsymbol{A}$, then find the largest positive and largest negative entries in the two eigenvectors. Their respective neighbors are declared to be two clusters.
+Using this fact, to find two clusters in the data set, we can compute eigenvalues and eigenvectors of $\boldsymbol{A}$, then find the largest positive and largest negative entries in the 2nd eigenvector. Their respective neighbors are declared to be two clusters.
 
 For instance, in the plots below, We see that
 - The first two eigenvalues are fairly distinct from the rest, indicating the possible presence of two sub-graphs.
@@ -73,15 +73,17 @@ For instance, in the plots below, We see that
 Spectral analysis of the karate club network. Left: $\left\vert \lambda_i \right\vert$. Right: $\boldsymbol{v} _1, \boldsymbol{v} _2$, colored by subgroups. [Kolaczyk 2009]
 :::
 
-For $K \ge 3$, we can
-- Look for a spectral gap to determine $K$
-- Run $K$-NN using the first $K$ eigenvectors to determine assignment
+For unkonwn $k$, we can
+- Look for a spectral gap to determine $k$
+- Run $k$-means clustering using the first $k$ eigenvectors to determine assignment
 
 ### Pros and Cons
 
 Cons
 - In reality, graphs are far from regular, so this method does not work well
 - The partitions found through spectral analysis will tend to be ordered and separated by vertex degree, since the eigenvalues will mirror quite closely the underlying degree distribution. Normalizing the adjacency matrix to have unit row sums is a commonly proposed solution.
+
+For an analysis of this method, i.e. how well the discretization of empirical $\boldsymbol{v} _2$ gives the correct binary label, see the [section](stochastic-block-models).
 
 
 ## Laplacian Matrix-based
@@ -327,3 +329,101 @@ Speech separation (into speakers): Similar to image segmentation, where a “pix
 
 Spectral clustering for speech separation [Bach & Jordan]
 :::
+
+
+
+(stochastic-block-models)=
+## Stochastic Block Models
+
+Aka planted partition model.
+
+### Adjacency Matrix
+
+Consider a perfect case: a graph consisting of $k$ clusters of equal size $\frac{n}{k}$, each cluster is complete and there are no across-cluster edges, then the spectral decomposition of $\boldsymbol{A}$ is
+
+$$
+\boldsymbol{A} = \left[\begin{array}{ccc}
+\boldsymbol{1} \boldsymbol{1} ^{\top}  & 0 & 0\\
+0 & \ddots & 0 \\
+0 & 0 & \boldsymbol{1} \boldsymbol{1} ^{\top}
+\end{array}\right],
+\quad \boldsymbol{U} = \frac{1}{\sqrt{n/k}}  \left[\begin{array}{ccc}
+\boldsymbol{1}  & 0 & 0\\
+0 & \ddots & 0 \\
+0 & 0 & \boldsymbol{1}
+\end{array}\right] \boldsymbol{Q}, \quad \boldsymbol{\Lambda} = \frac{n}{k} \boldsymbol{I}
+$$
+
+where $\boldsymbol{1}$ are a vector of size $\frac{n}{k}$. $\boldsymbol{Q}$ is an orthogonal transform (does not change distance between a pair of embeddings).
+
+In practice, $\boldsymbol{A}$ is not that perfect. How imperfect $\boldsymbol{A}$ can be?
+
+Consider a stochastic block model (SBM), $k=2$ clusters (each cluster has size $\frac{n}{2}$), and
+
+$$
+\mathbb{P} (A_{ij} = 1) = \left\{\begin{array}{ll}
+p, & \text { if $i, j$ in same cluster}  \\
+q, & \text { if $i, j$ in different cluster}  \\
+\end{array}\right.
+$$
+
+```{margin}
+Conventionally $A_{ii}=0$, but when $n$ is large this does not affect the analysis much.
+```
+
+Usually $p >q$. Then the expectation of the random adjacency matrix is
+
+$$
+\mathbb{E} [\boldsymbol{A}] = \left[\begin{array}{cc}
+p \boldsymbol{1} \boldsymbol{1} ^{\top}  & q \boldsymbol{1} \boldsymbol{1} ^{\top}  \\
+q \boldsymbol{1} \boldsymbol{1} ^{\top}  & p \boldsymbol{1} \boldsymbol{1} ^{\top}  \\
+\end{array}\right] = \frac{p+q}{2} \boldsymbol{1}_n \boldsymbol{1}_n ^{\top} +  \frac{p-q}{2} \left[\begin{array}{cc}
+\boldsymbol{1}   \\
+-\boldsymbol{1}  
+\end{array}\right] [\boldsymbol{1} ^{\top} \ -\boldsymbol{1} ^{\top}]
+$$
+
+and $\mathbb{E} [\boldsymbol{A}]$ has rank 2 and two non-zero eigenvalues
+
+$$\begin{aligned}
+\lambda_1 &= \frac{p+q}{2}n & \boldsymbol{v} _1 &= \frac{1}{\sqrt{n}} \boldsymbol{1} _n \\
+\lambda_2 &= \frac{p-q}{2}n & \boldsymbol{v} _2 &= \frac{1}{\sqrt{n}}\left[\begin{array}{cc}
+\boldsymbol{1}   \\
+-\boldsymbol{1}  
+\end{array}\right] \\
+\end{aligned}$$
+
+Hence, to give labels for 2-clustering, we can discretize $\boldsymbol{v} _2$ of $\mathbb{E} [\boldsymbol{A}]$ according to the signs of its entries. However, we only observe $\boldsymbol{A}$ rather than $\mathbb{E} [\boldsymbol{A}]$. Is the second eigenvector $\boldsymbol{\hat{v}} _2$ of $\boldsymbol{A}$ a good estimator for $\boldsymbol{v} _2$ of $\mathbb{E} [\boldsymbol{A}]$?
+
+### Analysis
+
+Suppose we know the parameters $p, q$. Now we analyze the discretization performance by quantify some 'distance' between $\boldsymbol{v} _2$ and $\boldsymbol{\hat{v}}_2$.
+
+First, we can write $\boldsymbol{A} = \mathbb{E} [\boldsymbol{A} ] + (\boldsymbol{A} - \mathbb{E} [\boldsymbol{A} ] )$ where the second term is noise. If noise $=0$, then the second eigenvectors of observed $\boldsymbol{A}$ is that of $\mathbb{E} [\boldsymbol{A}]$, which is $\frac{1}{\sqrt{n}} [\boldsymbol{1} ^{\top} \ -\boldsymbol{1} ^{\top}]$, whose its discretization perfectly reveals the label.
+
+But the second eigenvector is hard to analyze (since its computation depends on the 1st eigenvector, which is also random). We introduce an equivalent analysis: compute the first eigenvector of $\boldsymbol{A} - \frac{p+q}{2} \boldsymbol{1}_n \boldsymbol{1}_n ^{\top}$, denoted $\boldsymbol{\hat{u}}$. And assign the label according to the sign of the entries in $\boldsymbol{\hat{u}}$. Some interpretation
+- avoid computing the first eigenvector which is not informative
+- approximately equivalent to compute the top eigenvector of the 'centered' version of $\boldsymbol{A}$: $\boldsymbol{C} \boldsymbol{A} \boldsymbol{C}$ where $\boldsymbol{C} = \boldsymbol{I} - \frac{1}{n}\boldsymbol{1} \boldsymbol{1} ^{\top}$.
+
+We expect $\boldsymbol{\hat{u}} \approx \frac{1}{\sqrt{n}} [\boldsymbol{1} \ -1]$. To analyze the error, let
+- truth: $\boldsymbol{M} = \mathbb{E} [\boldsymbol{A}]  - \frac{p+q}{2} \boldsymbol{1}_n \boldsymbol{1}_n ^{\top}$
+- observed: $\widehat{\boldsymbol{M}} = \boldsymbol{A} - \frac{p+q}{2} \boldsymbol{1}_n \boldsymbol{1}_n ^{\top}$.
+- perturbation: $\boldsymbol{H} =  \widehat{\boldsymbol{M}} - \boldsymbol{M} = \boldsymbol{A} - \mathbb{E} [\boldsymbol{A} ]$.
+
+By applying [Davis-Kahan theorem](davis-kahan) to SBM, let $r=1$, then
+
+$$
+\operatorname{dist}(\hat{\boldsymbol{u}}, \boldsymbol{u} ) = \left\| \hat{\boldsymbol{u}} ^{\top} \boldsymbol{\hat{u}} - \boldsymbol{u} ^{\top} \boldsymbol{u} \right\|_2 \le \frac{\left\| \boldsymbol{A} - \mathbb{E} [\boldsymbol{A} ] \right\|  }{\frac{p-q}{2} n - 0 - \left\| \boldsymbol{A} - \mathbb{E} [\boldsymbol{A}]  \right\|  }
+$$
+
+```{margin}
+The lower bound $\frac{b\log n}{n}$ is to [ensure](ER-random-graph) the graph is connected, since most algorithms applied only to relatively dense graphs [[link](https://arxiv.org/pdf/1202.1499.pdf) pg.3]. Also see [here](https://arxiv.org/pdf/1311.4115.pdf) and [here](https://arxiv.org/pdf/1502.06775.pdf).
+```
+
+Hence if $p \gg q$, then the error is low. Can we quantify $\left\| \boldsymbol{A} - \mathbb{E} [\boldsymbol{A} ] \right\|$? By [Bernstein inequality](bernstein-inequality), for $p > q \ge \frac{b \log n}{n}$,
+
+$$
+\frac{\left\| \boldsymbol{A} - \mathbb{E} [\boldsymbol{A} ] \right\|  }{\frac{p-q}{2} n - \left\| \boldsymbol{A} - \mathbb{E} [\boldsymbol{A}]  \right\|} \le \mathcal{O} \left( \frac{\sqrt{np \log n}}{(p-q)n}  \right)
+$$
+
+Hence, when $(p-q)n \gg \sqrt{n p \log n}$, discretizing $\boldsymbol{\hat{u}}$ exactly recover $\boldsymbol{u}$.

@@ -550,7 +550,9 @@ See [link](https://www.sketchingbigdata.org/fall17/lec/lec18.pdf).
 
 ## Other Problems
 
-Set cover: subsets come in a stream, cannot store all of them.
+### Set Cover
+
+Subsets come in a stream, cannot store all of them.
 
 Offline: $\mathcal{O} (\log n)$-approximation.
 
@@ -562,6 +564,16 @@ Offline: $\mathcal{O} (\log n)$-approximation.
   - Element sampling:
 
 Multiplicative Weights Update Method
+
+### Random MST
+
+Points over gird coming a stream
+- sol: randomly shifted grid
+  - embed points into a collection of trees
+
+### SVM Cost
+
+Points coming in a stream
 
 .
 

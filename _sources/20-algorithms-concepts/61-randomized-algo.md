@@ -5,6 +5,9 @@ Randomized algorithms requires no assumption of distribution of input instance. 
 Reference
 - UBC Randomized Algorithms (Winter 2015) [link](https://www.cs.ubc.ca/~nickhar/W15/)
 
+Useful tools:
+- $\max_{i} \mathbb{P} (E_i) \le \mathbb{P} (E_1 \cup E_2 \cup \ldots \cup E_n) \le \sum_i \mathbb{P} (E_i)$
+
 
 ## Max Exact 3SAT
 
