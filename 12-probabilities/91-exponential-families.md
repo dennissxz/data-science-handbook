@@ -186,3 +186,76 @@ Cons
 
 
 ## Univariate Gaussian
+### Test Normality
+
+For most multivariate analyses, it is important that the data indeed follow the multivariate normal, at least approximately if not exactly.
+
+- QQ-plots (quantile-quantile plot)
+
+  - Sample quantiles are plotted against the expected sample quantiles of a standard normal distribution
+  - a straight line indicates univariate normality
+  - non-linearity may indicate a need to transform the variable.
+
+  :::{figure} gaussian-qq-plot
+  <img src="../imgs/gaussian-qq-plot.png" width = "80%" alt=""/>
+
+  QQ-plots for Gaussian (left) and non-Gaussian (right)
+  :::
+
+- P-P plot (probability against probability plot) that plots the sample CDF against the theoretical CDF.
+
+
+- Shapiro–Wilk $W$ test
+  - test statistic: a modified version of the squared sample correlation between the sample quantiles and the expected quantiles.
+- Kolmogorov–Smirnov test
+  - require: large sample, at least 100s
+  - test statistic: maximum difference between the empirical CDF and the normal CDF.
+
+- Jarque–Bera test
+
+- Check whether the squared generalized distance as defined below follows a chi-squared distribution by a Q-Q plot (necessary and sufficient conditions for very large sample size))
+
+  $$
+  d_{i}^{2}=\left(\boldsymbol{x}_{i}-\overline{\boldsymbol{x}}\right)^{\prime} \boldsymbol{S}^{-1}\left(\boldsymbol{x}_{i}-\overline{\boldsymbol{x}}\right)
+  $$
+
+- Check each Principal Component (PC) for univariate normality (necessary condition; and if the sample size n is large enough, a sufficient condition)
+- Test for zero skewness, zero excess kurtosis.
+
+### Transformation to Near Normality
+
+To achieve the multinormality of the data, univariate transformation is applied to each variable individually. After then, the multinormality of transformed variables is checked again (Notice that each of the $X_p$ variables after transformation is normally distributed does not imply that they jointly follow a multivariate normal distribution).
+
+Assume $x > 0$.
+
+- common method $\log x$
+- based on theory:
+  - Poisson count: $\sqrt{x}$
+  - Binomial proportion: $\sin ^{-1} \sqrt{x}$
+- Box-Cox transformation
+
+  $$
+  x_{i}^{[\lambda]}=\left\{\begin{array}{lll}
+  \frac{x_{i}^{\lambda}-1}{\lambda} & \text { for } \lambda \neq 0 & , i=1, \ldots, n \\
+  \log x_{i} & \text { for } \lambda=0 & , i=1, \ldots, n
+  \end{array}\right.
+  $$
+
+  where $\lambda$ is unknown. It can be chosen by priori information of $\lambda$, or search among some values $3,2,1,\frac{1}{2}, \frac{1}{3}, 0$ and their negatives.
+
+  Cons:
+    - Box-Cox transformation **cannot** guarantee that the transformed variable is close to the normal distribution.
+    - Choice of $\lambda$ depends on scale of $x_i$. Sol: power transform
+
+- Power transform, where $G M(x)=\left(x_{1} x_{2} \cdots x_{n}\right)^{1 / n}$ is the geometric mean of observations.
+
+  $$
+  x_{i}^{[\lambda]}=\left\{\begin{array}{ll}
+  \frac{x_{i}^{\lambda}-1}{\lambda[G M(x)]^{\lambda-1}}, & \text { if } \lambda \neq 0 \quad, i=1, \ldots, n \\
+  G M(x) \log x_{i}, & \text { if } \lambda=0 \quad, i=1, \ldots, n
+  \end{array}\right.
+  $$
+
+  The optimal $\lambda$ minimizes sample variance after transforamtion.
+
+<!-- ## Weibull Distribution -->
