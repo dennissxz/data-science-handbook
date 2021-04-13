@@ -1,5 +1,12 @@
-{
-# Canonical Corerlation Analysis
+# Canonical Correlation Analysis
+
+Can we quantify the associations between two sets of variables?
+
+- Do last year’s labor data relate or explain this year’s labor situation?
+- Are the math science performance**s** of students related to their reading performance**s**?
+- Are there associations between government policie**s** and economic
+variable**s**?
+- For decathlon athletes, is the track event performance**s** correlated with the performance in field event**s**?
 
 ## Objective
 
@@ -84,7 +91,7 @@ Successively, for $i = 2, \ldots, k$, the $i$-th canonical correlation $\rho_i$ 
 
 $$\begin{align}
 \rho_{i}
- =\max _{\boldsymbol{v}, \boldsymbol{w}} & \quad \operatorname{corr}\left(\boldsymbol{v}^{\top} \boldsymbol{x} , \boldsymbol{w}^{\top} \boldsymbol{y} \right) \\
+ =\max _{\boldsymbol{v}, \boldsymbol{w}} & \quad \operatorname{Corr}\left(\boldsymbol{v}^{\top} \boldsymbol{x} , \boldsymbol{w}^{\top} \boldsymbol{y} \right) \\
  \text{s.t.} &  \quad (\boldsymbol{v} ^\top \boldsymbol{x} , \boldsymbol{w} ^\top \boldsymbol{y} ) \text{ uncorrelated with } (U_1, V_1), \ldots, (U_{i-1}, V_{i-1}) \\
 \end{align}$$
 
@@ -93,6 +100,12 @@ If the maximum is achieved at $\boldsymbol{v} _i$ and $\boldsymbol{w} _i$, then 
 
 $$
 U_{i}=\boldsymbol{v}_{i}^{\top} \boldsymbol{x}_{i}, \quad V_{i}=\boldsymbol{w}_{i}^{\top} \boldsymbol{y}
+$$
+
+The uncorrelated constraint, for example, when solving for the second pair $(U_2, V_2)$, are
+
+$$
+\operatorname{Cov}\left(U_{1}, U_{2}\right)=0, \quad \operatorname{Cov}\left(V_{1}, V_{2}\right)=0, \quad \operatorname{Cov}\left(U_{1}, V_{2}\right)=0, \quad \operatorname{Cov}\left(U_{2}, V_{1}\right)=0
 $$
 
 ### Spectral Decomposition
@@ -115,7 +128,7 @@ is considered instead for the computational efficiency. Note that the two matric
 
 Then we can find $\boldsymbol{w} \propto \boldsymbol{\Sigma}_{y y}^{-1} \boldsymbol{\Sigma}_{y x} \boldsymbol{v}$ subject to the constraints.
 
-Note that the maximal embedding dimension is $\max(k) = \min(d_x, d_y)$
+Note that the maximal embedding dimension is $\max(k) = \min(d_x, d_y)$.
 
 :::{admonition,dropdown,seealso} *Derivation*
 
@@ -139,38 +152,35 @@ $$
 
 The first order conditions are
 
-
 $$
 \begin{aligned}
-\frac{\partial f}{\partial \boldsymbol{v}} &=\boldsymbol{\Sigma}_{xy} \boldsymbol{w}-\lambda_{x} \boldsymbol{\Sigma}_{\mathbf{x} \mathbf{x}} \boldsymbol{v}=\mathbf{0} \\
-\frac{\partial f}{\partial \boldsymbol{w}} &=\boldsymbol{\Sigma}_{yx} \boldsymbol{v}-\lambda_{y} \boldsymbol{\Sigma}_{yy} \boldsymbol{w}=\mathbf{0}
+\frac{\partial f}{\partial \boldsymbol{v}} &=\boldsymbol{\Sigma}_{xy} \boldsymbol{w}-\lambda_{x} \boldsymbol{\Sigma}_{xx} \boldsymbol{v}=\boldsymbol{0} \qquad (1)\\
+\frac{\partial f}{\partial \boldsymbol{w}} &=\boldsymbol{\Sigma}_{yx} \boldsymbol{v}-\lambda_{y} \boldsymbol{\Sigma}_{yy} \boldsymbol{w}=\boldsymbol{0} \qquad (2)
 \end{aligned}
 $$
 
-Premultiply the first condition by $\boldsymbol{v} ^\top$ and the second condition by $\boldsymbol{w} ^\top$, we have
-
+Premultiply $(1)$ by $\boldsymbol{v} ^\top$ and $(2)$ by $\boldsymbol{w} ^\top$, we have
 
 $$
 \begin{aligned}
-0 &=\boldsymbol{v}^{\prime} \boldsymbol{\Sigma}_{xy} \boldsymbol{w}-\boldsymbol{v}^{\prime} \lambda_{x} \boldsymbol{\Sigma}_{\mathbf{x} \mathbf{x}} \boldsymbol{v}-\boldsymbol{w}^{\prime} \boldsymbol{\Sigma}_{\mathbf{y} \mathbf{x}} \boldsymbol{v}+\boldsymbol{w}^{\prime} \lambda_{y} \boldsymbol{\Sigma}_{yy} \boldsymbol{w} \\
-&=\lambda_{y} \boldsymbol{w}^{\prime} \boldsymbol{\Sigma}_{yy} \boldsymbol{w}-\lambda_{x} \boldsymbol{v}^{\prime} \boldsymbol{\Sigma}_{\mathbf{x x}} \boldsymbol{v}
+\boldsymbol{v}^{\top} \boldsymbol{\Sigma}_{xy} \boldsymbol{w} &=\lambda_{x} \\
+\boldsymbol{w}^{\top} \boldsymbol{\Sigma}_{yx} \boldsymbol{v} &= \lambda_{y} \\
 \end{aligned}
 $$
 
-which together with the constraints implies that $\lambda_y - \lambda_x = 0$. Let $\lambda = \lambda_x = \lambda$. Suppose $\boldsymbol{\Sigma} _{yy}$ is invertible, then
+which implies that $\lambda_x = \lambda_y$. Let $\lambda_x = \lambda_y = \lambda$. Suppose $\boldsymbol{\Sigma} _{yy}$ is invertible, then $(2)$ gives
 
 $$
-\boldsymbol{w}=\frac{\boldsymbol{\Sigma}_{yy}^{-1} \boldsymbol{\Sigma}_{yx} \boldsymbol{v}}{\lambda}
+\boldsymbol{w}=\frac{\boldsymbol{\Sigma}_{yy}^{-1} \boldsymbol{\Sigma}_{yx} \boldsymbol{v}}{\lambda} \qquad (3)
 $$
 
-Substituting the the first order condition gives
-
+Substituting this into $(1)$ gives
 
 $$
 \frac{\boldsymbol{\Sigma}_{xy} \boldsymbol{\Sigma}_{yy}^{-1} \boldsymbol{\Sigma}_{yx} \boldsymbol{v}}{\lambda}-\lambda \boldsymbol{\Sigma}_{xx}\boldsymbol{v}=0
 $$
 
-or
+i.e.,
 
 $$
 \boldsymbol{\Sigma}_{xy} \boldsymbol{\Sigma}_{yy}^{-1} \boldsymbol{\Sigma}_{yx} \boldsymbol{v}=\lambda^{2} \boldsymbol{\Sigma}_{{xx}} \boldsymbol{v}
@@ -182,7 +192,7 @@ $$
 \boldsymbol{\Sigma}_{{xx}} ^{-1} \boldsymbol{\Sigma}_{xy} \boldsymbol{\Sigma}_{yy}^{-1} \boldsymbol{\Sigma}_{yx} \boldsymbol{v}=\lambda^{2}  \boldsymbol{v}
 $$
 
-Once the solution for $\boldsymbol{v}$  is obtained, the solution for $\boldsymbol{w}$  can be obtained by
+Once the solution for $\boldsymbol{v}$  is obtained, the solution for $\boldsymbol{w}$  can be obtained by $(3)$
 
 $$
 \begin{equation}
@@ -198,7 +208,7 @@ $$
 \end{equation}
 $$
 
-To convert the eigenproblem to be symmetric, we can write $\boldsymbol{\Sigma} _{xx} = (\boldsymbol{\Sigma} _{xx} ^{1/2}) (\boldsymbol{\Sigma} _{xx} ^{1/2})$ and let $\boldsymbol{u} = \boldsymbol{\Sigma} _{xx} ^{1/2} \boldsymbol{v}$ or $\boldsymbol{\Sigma} _{xx} ^{-1/2} \boldsymbol{u} = \boldsymbol{v}$. Substituting this into
+To convert the eigenproblem to be symmetric for computational efficiency, we can write $\boldsymbol{\Sigma} _{xx} = (\boldsymbol{\Sigma} _{xx} ^{1/2}) (\boldsymbol{\Sigma} _{xx} ^{1/2})$ and let $\boldsymbol{u} = \boldsymbol{\Sigma} _{xx} ^{1/2} \boldsymbol{v}$ or $\boldsymbol{\Sigma} _{xx} ^{-1/2} \boldsymbol{u} = \boldsymbol{v}$. Substituting this into
 
 $$
 \boldsymbol{\Sigma}_{xy} \boldsymbol{\Sigma}_{yy}^{-1} \boldsymbol{\Sigma}_{yx} \boldsymbol{v}=\lambda^{2} \boldsymbol{\Sigma}_{{xx}} \boldsymbol{v}
@@ -218,9 +228,9 @@ Then the eigenproblem becomes symmetric and easier to solve. We can find $\bolds
 
 ## Properties
 
-**Invariance property**
-: Canonical correlations $\rho_i$'s between $\boldsymbol{x}$ and $\boldsymbol{y}$ are the same as those between $\boldsymbol{A} _1 \boldsymbol{x}  + \boldsymbol{c}_1$ and $\boldsymbol{A} _2 \boldsymbol{y}  + \boldsymbol{c} _2$, where both $\boldsymbol{A} _1$ and $\boldsymbol{A} _2$ are non-singular square matrices and their computation can be based on either the partitioned covariance matrix or the partitioned correlation matrix. However, the canonical coefficients contained in $\boldsymbol{v} _k$ and $\boldsymbol{w} _k$ are **not** invariant under the same transform, nor their estimates.
 
+
+- Invariance property: Canonical correlations $\rho_i$'s between $\boldsymbol{x}$ and $\boldsymbol{y}$ are the same as those between $\boldsymbol{A} _1 \boldsymbol{x}  + \boldsymbol{c}_1$ and $\boldsymbol{A} _2 \boldsymbol{y}  + \boldsymbol{c} _2$, where both $\boldsymbol{A} _1$ and $\boldsymbol{A} _2$ are non-singular square matrices and their computation can be based on either the partitioned covariance matrix or the partitioned correlation matrix. However, the canonical coefficients contained in $\boldsymbol{v} _k$ and $\boldsymbol{w} _k$ are **not** invariant under the same transform, nor their estimates.
 
 
 ## Model Selection
