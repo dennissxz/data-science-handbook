@@ -26,6 +26,28 @@ where
 - The fraction $\frac{1}{(2 \pi)^{p / 2}|\boldsymbol{\Sigma}|^{1 / 2}}$ is a normalizing constant.
 - The determinant $\left\vert \boldsymbol{\Sigma}  \right\vert = \operatorname{det}(\boldsymbol{\Sigma})$ is called [generalized variance](covariance-matrix). It can be viewed as a higher dimension generalization of the scalar-valued $\sigma^2$ in univariate case that measures uncertainty of the distribution. Hence we have the square root $\left\vert \cdot \right\vert ^{1/2}$, as $\sigma$ in the univariate Gaussian density.
 
+### Visualization
+
+All $\boldsymbol{x}$ satisfy the equality below is a contour. This contour is an ellipsoid.
+
+$$
+c = f(\boldsymbol{x} ;\boldsymbol{\mu}, \boldsymbol{\Sigma})
+$$
+
+- $\boldsymbol{\mu}$ determines the center of the ellipsoid.
+- $\boldsymbol{U}$ determines the rotation angle of the ellipsoid. The vectors $\boldsymbol{u} _i$ are the directions of the axes of the ellipsoid.
+- $\boldsymbol{\Lambda}$ determines the lengths of the axes. The length should be proportional to $\sqrt{\lambda_i}$. If all eigenvalues are the same, the ellipsoid reduces to a ball.
+- As shown above, the transformation $\boldsymbol{x} ^\top = \boldsymbol{U} ^\top \boldsymbol{x}, \boldsymbol{\mu} ^\top = \boldsymbol{U} ^\top \boldsymbol{\mu}, \boldsymbol{\Sigma} ^\top = \boldsymbol{\Lambda}$ will transform the distribution will change the center, align the ellipsoid axes to the coordinate axes (so the variables becomes independent and the joint PDF factorizes to univariate PDF), while keep the axes lengths intact (rotation preserve lengths and angles).
+
+In the 2-d case, an ellipsoid reduces to an ellipse.
+
+:::{figure,myclass} gaussian-density-2d
+<img src="../imgs/gaussian-density-2d.png" width = "80%" alt=""/>
+
+Bivariate Gaussian density and ellipse
+:::
+
+
 ### Properties
 
 - **Transformation**: If $\boldsymbol{x}$ is $p$-variate normal $\mathcal{N} (\boldsymbol{\mu} , \boldsymbol{\Sigma})$, and $\boldsymbol{y} = \boldsymbol{A} \boldsymbol{x} + \boldsymbol{c}$, where $\boldsymbol{A}$ is a $k \times p$ matrix and $\boldsymbol{c}$ is a $k$-vector of constants, then $\boldsymbol{y}$ is of $k$-variate normal, with mean $\boldsymbol{A} \boldsymbol{\mu} + \boldsymbol{c}$ and variance $\boldsymbol{A} \boldsymbol{\Sigma} \boldsymbol{A} ^{\top}$.
@@ -83,27 +105,6 @@ where
 
   which is a product of PDFs of univariate Gaussians, since $\boldsymbol{\Lambda}$ is diagonal. Geometrically, $U$ rotate the axes of the distribution but keep the function value intact.
 
-
-### Visualization
-
-All $\boldsymbol{x}$ satisfy the equality below is a contour. This contour is an ellipsoid.
-
-$$
-c = f(\boldsymbol{x} ;\boldsymbol{\mu}, \boldsymbol{\Sigma})
-$$
-
-- $\boldsymbol{\mu}$ determines the center of the ellipsoid.
-- $\boldsymbol{U}$ determines the rotation angle of the ellipsoid. The vectors $\boldsymbol{u} _i$ are the directions of the axes of the ellipsoid.
-- $\boldsymbol{\Lambda}$ determines the lengths of the axes. The length should be proportional to $\sqrt{\lambda_i}$. If all eigenvalues are the same, the ellipsoid reduces to a ball.
-- As shown above, the transformation $\boldsymbol{x} ^\top = \boldsymbol{U} ^\top \boldsymbol{x}, \boldsymbol{\mu} ^\top = \boldsymbol{U} ^\top \boldsymbol{\mu}, \boldsymbol{\Sigma} ^\top = \boldsymbol{\Lambda}$ will transform the distribution will change the center, align the ellipsoid axes to the coordinate axes (so the variables becomes independent and the joint PDF factorizes to univariate PDF), while keep the axes lengths intact (rotation preserve lengths and angles).
-
-In the 2-d case, an ellipsoid reduces to an ellipse.
-
-:::{figure,myclass} gaussian-density-2d
-<img src="../imgs/gaussian-density-2d.png" width = "80%" alt=""/>
-
-Bivariate Gaussian density and ellipse
-:::
 
 ### Estimation and Inference
 
