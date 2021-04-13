@@ -228,7 +228,14 @@ Then the eigenproblem becomes symmetric and easier to solve. We can find $\bolds
 
 ## Properties
 
-
+- $\operatorname{Var}\left(U_{k}\right) = \operatorname{Var}\left(V_{k}\right)=1$
+- $0 = \operatorname{Cov}\left(U_{k}, U_{\ell}\right) = \operatorname{Cov}\left(V_{k}, V_{\ell}\right)=\operatorname{Cov}\left(U_{k}, V_{\ell}\right) = \operatorname{Cov}\left(U_{\ell}, V_{k}\right)\text { for } k \neq \ell$
+- $\operatorname{Cov}\left(U_{i}, V_{i}\right)=\rho_{i}$, where $\rho_i^2$ is the $i$-th largest eigenvalue of the following matrices
+  - $d_x \times d_x \quad \boldsymbol{C} \boldsymbol{C}^{\top}=\boldsymbol{\Sigma}_{xx}^{-1 / 2} \boldsymbol{\Sigma}_{xy} \boldsymbol{\Sigma}_{yy}^{-1} \boldsymbol{\Sigma}_{yx} \boldsymbol{\Sigma}_{xx}^{-1 / 2}$ where $\boldsymbol{C} =\boldsymbol{\Sigma}_{xx}^{-1 / 2} \boldsymbol{\Sigma}_{xy} \boldsymbol{\Sigma}_{yy}^{-1/2}$
+  - $d_y \times d_y \quad \boldsymbol{C}^{\top} \boldsymbol{C}=\boldsymbol{\Sigma}_{yy}^{-1 / 2} \boldsymbol{\Sigma}_{yx} \boldsymbol{\Sigma}_{xx}^{-1} \boldsymbol{\Sigma}_{xy} \boldsymbol{\Sigma}_{yy}^{-1 / 2}$
+  - $d_x \times d_x \quad \boldsymbol{A}=\boldsymbol{\Sigma}_{xx}^{-1} \boldsymbol{\Sigma}_{xy} \boldsymbol{\Sigma}_{yy}^{-1} \boldsymbol{\Sigma}_{yx}=\boldsymbol{\Sigma}_{xx}^{-1 / 2} \boldsymbol{C} \boldsymbol{C}^{\top} \boldsymbol{\Sigma}_{xx}^{1 / 2}$
+  - $d_y \times d_y \quad \boldsymbol{B}=\boldsymbol{\Sigma}_{yy}^{-1} \boldsymbol{\Sigma}_{yx} \boldsymbol{\Sigma}_{xx}^{-1} \boldsymbol{\Sigma}_{xy}=\boldsymbol{\Sigma}_{yy}^{-1 / 2} \boldsymbol{C}^{\top} \boldsymbol{C} \boldsymbol{\Sigma}_{yy}^{1 / 2}$
+  - In fact, they are [similar](similar-matrix) $\boldsymbol{A} \sim \boldsymbol{C} \boldsymbol{C} ^{\top}$, $\boldsymbol{B} \sim \boldsymbol{C} ^{\top} \boldsymbol{C}$, and $\boldsymbol{C} \boldsymbol{C} ^{\top}$ share the same nonzero eigenvalues with $\boldsymbol{C} ^{\top} \boldsymbol{C}$ (hint: SVD).
 
 - Invariance property: Canonical correlations $\rho_i$'s between $\boldsymbol{x}$ and $\boldsymbol{y}$ are the same as those between $\boldsymbol{A} _1 \boldsymbol{x}  + \boldsymbol{c}_1$ and $\boldsymbol{A} _2 \boldsymbol{y}  + \boldsymbol{c} _2$, where both $\boldsymbol{A} _1$ and $\boldsymbol{A} _2$ are non-singular square matrices and their computation can be based on either the partitioned covariance matrix or the partitioned correlation matrix. However, the canonical coefficients contained in $\boldsymbol{v} _k$ and $\boldsymbol{w} _k$ are **not** invariant under the same transform, nor their estimates.
 
