@@ -29,7 +29,9 @@ Remember that failing to reject a null hypothesis does not necessarily mean that
 :::
 
 
-## $p$-value
+## Basic Concepts
+
+### $p$-value
 
 After we collected data and find the estimate, we want to know whether the estimate prefer $H_0$ or $H_1$. The $p$-value describe that how likely it is to observe more extreme cases than your current estimate, under the null hypothesis.
 
@@ -40,9 +42,9 @@ If the $p$-value is small, then it means your current estimate and the more extr
 The threshold is called significance level, which is the type I error we want to control, and set before the test.
 
 
-## Type I error and Type II error
+### Type I error and Type II error
 
-### Definitions
+#### Definitions
 
 **Type I error**, aka **size** of a test, denoted $\alpha$, is defined as
 
@@ -62,7 +64,7 @@ $$\begin{aligned}
 
 $\beta$ and power depends on the distribution of the parameter and the rejection rule (e.g., $\left\vert T \right\vert) > t_{df}^{(1-\alpha/2)}$). If $H_0$ is false, the distribution of the test statistic depends on the true parameter value, so do $\beta$ and power. Since the true parameter value is unknown, there is no easy formula for $\beta$ and power.
 
-### Error Control
+#### Error Control
 
 Both type I error and type II error are important. We want small $\alpha$ and small $\beta$ (large power). Though $\alpha$ can be pre-set, $\beta$ is hard to control. Recall the power is
 
@@ -109,7 +111,7 @@ Example (Linear regression $t$-test with different $\alpha$)
 In practice, to control both types of errors, usually we **fixed** on type I error $\alpha$ (the value is called significance level), and try to minimize type II error $\beta$ by some methods, such as increasing the sample size $n$.
 
 
-## Sample Size
+### Sample Size
 
 How to choose a sample size? This depends on how we want to control our errors.
 
@@ -134,7 +136,7 @@ To choose a sample size to ensure power is larger than some threshold, we need t
 
 1. solve the inequality for $n$
 
-## Confidence Interval
+### Confidence Interval
 
 A $(1-\alpha)$-confidence interval is an interval such that when you repeat the experiments many times, there is $(1-\alpha)$ of the times that the estimate falls into the interval.
 
@@ -144,8 +146,70 @@ $$\hat \theta \pm c_\alpha \cdot \mathrm{se}(\hat \theta)$$
 
 where $c_\alpha$ is a coefficient that depends on $\alpha$ such that the interval cover $(1-\alpha)$ of the cases.
 
-## Credible Interval
+
+:::{admonition,note} Duality of Hypothesis Testing and Confidence Interval
+
+Consider an example of testing $H_0: \mu = \mu_0$ against $H_1: \mu \ne \mu_0$. Suppose a random sample $X_1, X_2, \ldots, X_n$ drawn from a normal distribution with unknown mean $\mu$ and known variance $\sigma^2$. Intuitively, if $\left\vert \bar{X} - \mu_0 \right\vert$ is sufficiently large, say larger than $x_0$, then $H_0$ is favorable to be rejected based on the observed random sample. By picking $x_0 = z_{\alpha/2} \frac{\sigma}{\sqrt{n}}$, we assure that the probability of Type I error is $\alpha$. Then, $H_0$ **cannot** be rejected for $X = \left\{ X_1, X_2, \ldots, X_n \right\}$ over the set
+
+$$
+A=\left\{X:\left|\bar{X}-\mu_{0}\right| \leq z_{\alpha / 2} \frac{\sigma}{\sqrt{n}}\right\}
+$$
+
+Alternatively, this set can be rewritten as
+
+$$
+A=\left\{X: \bar{X}-z_{\alpha / 2} \frac{\sigma}{\sqrt{n}} \leq \mu_{0} \leq \bar{X}+z_{\alpha / 2} \frac{\sigma}{\sqrt{n}}\right\}
+$$
+
+On the other hand, consider $(1 − \alpha)100\%$ confidence interval for $\mu$.
+
+$$
+C=\left\{\mu: \bar{X}-z_{\alpha / 2} \frac{\sigma}{\sqrt{n}} \leq \mu \leq \bar{X}+z_{\alpha / 2} \frac{\sigma}{\sqrt{n}}\right\}
+$$
+
+Clearly, it can be checked that $X \in A$ **if and only if** $\mu_0 \in C$. In other words, the data $X$ falls within the non-rejection region $A$ under $H_0$ if and only if $\mu_0$ belongs to the confidence interval $C$ obtained from the data $X$. This relationship can be used to construct the confidence intervals from the tests of hypothesis and the tests of hypothesis from the confidence intervals.
+
+:::
+
+
+### Credible Interval
 
 In Bayesian statistics, a credible interval is constructed from the posterior distribution of the parameter of interest. The are various methods to choose which $(1-\alpha)$ interval to be the credible interval, e.g. equal tail $\alpha/2$, horizontal cutoff of the PDF, etc.
 
-## Bonferroni Correction
+
+
+### Bonferroni Correction
+
+## Likelihood Ratio Test
+
+The target statistic is
+
+$$
+\lambda\left(\boldsymbol{x}_{1}, \ldots, \boldsymbol{x}_{n}\right)=\frac{\max _{\boldsymbol{\theta} \in \boldsymbol{\omega}} L\left(\boldsymbol{\theta} ; \boldsymbol{x}_{1}, \ldots, \boldsymbol{x}_{n}\right)}{\max _{\boldsymbol{\theta} \in \boldsymbol{\Omega}} L\left(\boldsymbol{\theta} ; \boldsymbol{x}_{1}, \ldots, \boldsymbol{x}_{n}\right)}
+$$
+
+which is the ratio of two maximum likelihoods, one under the restriction imposed by $H_0$ and under the restriction imposed by ($H_0$ or $H_1$), where $\boldsymbol{\omega}$ and $\boldsymbol{\Omega}$ are the parameter sets under the restrictions imposed by $H_0$ and $H_0 \cup H_1$ respectively. Thus, this ratio has a value in the interval $(0, 1]$, and large values of the ratio are more favorable to $H_0$. Thus, we reject $H_0$ at significance level $\alpha$ if $\lambda\left(\boldsymbol{x}_{1}, \ldots, \boldsymbol{x}_{n}\right)< c_\alpha$ where $c _\alpha$, known as the **critical value**, is to be determined so that
+
+$$
+P\left(\text { reject } H_{0} \mid H_{0}\right)=\max _{\boldsymbol{\theta} \in \boldsymbol{\omega}} P\left(\lambda\left(\boldsymbol{x}_{1}, \ldots, \boldsymbol{x}_{n}\right)<c_{\alpha} \mid \boldsymbol{\theta}\right)=\alpha
+$$
+
+Or equivalently, if the p-value for an observed value, $\lambda_0$, of likelihood ratio is less than $\alpha$, i.e.
+
+$$
+p \text { -value }\left(\lambda_{0}\right)=P\left(\lambda\left(\boldsymbol{x}_{1}, \ldots, \boldsymbol{x}_{n}\right)<\lambda_{0} \mid H_{0}\right)<\alpha
+$$
+
+In practice, the sampling distribution of likelihood ratio λ is difficult to be determined, so we usually **express** λ in terms of an intermediate statistic which is related to a well-known distribution or which can facilitate easier computation of $p$-value (or critical value), so that the LRT will be more conveniently performed based on that statistic.
+
+When the sample size tends to infinity, the statistic, $−2log\lambda$, is distributed asymptotically as $\chi ^2 _k$ where the degree of freedom $k$ equals the number of free parameters under $H_0 \cup H_1$ minus that under $H_0$, or $k = \operatorname{dim}(\boldsymbol{\Omega} )  − \operatorname{dim}(\boldsymbol{\omega} )$. In other words, $k$ is the difference between the number of free parameters under unrestricted model and that under restricted model.
+
+:::{figure} test-chi
+<img src="../imgs/test-chi.png" width = "50%" alt=""/>
+
+Distribution of test statistic $-2\log \lambda$
+:::
+
+The “negative twice log likelihood ratio” was first called “$G^2$-statistic” by Sir R.A. Fisher and later re-named by McCullagh and Nelder as the **deviance** between the two models respectively under $H_0$ and $H_1$ in their theory of Generalized Linear Model.
+
+## Union Intersection Test (UIT) 
