@@ -212,4 +212,37 @@ Distribution of test statistic $-2\log \lambda$
 
 The “negative twice log likelihood ratio” was first called “$G^2$-statistic” by Sir R.A. Fisher and later re-named by McCullagh and Nelder as the **deviance** between the two models respectively under $H_0$ and $H_1$ in their theory of Generalized Linear Model.
 
-## Union Intersection Test (UIT) 
+## Union Intersection Test (UIT)
+
+Union intersection tests are used in multivariate setting. It express the multivariate null hypothesis as an intersection of the family of univariate null hypotheses in terms of all possible linear combinations of the $p$ variables. The multivariate null hypothesis is not rejected if and only if all the univariate null hypotheses are not rejected.
+
+For instance, consider $H_0: \boldsymbol{\mu} = \boldsymbol{\mu} _0$ versus $H_1: \boldsymbol{\mu} \ne \boldsymbol{\mu} _0$. Let $\bar{\boldsymbol{x}}, \boldsymbol{S}$ be the mean vector and covariance matrix of a random sample of $n$ observations from $\mathcal{N} _p(\boldsymbol{\mu} ,\boldsymbol{\Sigma})$. Then observe that
+
+$$
+\begin{array}{l}
+H_{0}: \boldsymbol{\mu}=\boldsymbol{\mu}_{0} \Leftrightarrow \bigcap_{\boldsymbol{a}}\left\{H_{0}(\boldsymbol{a}): \boldsymbol{a}^{\prime} \boldsymbol{\mu}=\boldsymbol{a}^{\prime} \boldsymbol{\mu}_{0}\right\} \\
+H_{1}: \boldsymbol{\mu} \neq \boldsymbol{\mu}_{0} \Leftrightarrow \bigcup_{\boldsymbol{a}}\left\{H_{1}(\boldsymbol{a}): \boldsymbol{a}^{\prime} \boldsymbol{\mu} \neq \boldsymbol{a}^{\prime} \boldsymbol{\mu}_{0}\right\} .
+\end{array}
+$$
+
+Consequently,
+
+$$\begin{aligned}
+\text{not reject }  H_{0} &\Leftrightarrow \text{ not reject } H_{0}(\boldsymbol{a}) \text{ for all }  \boldsymbol{a} \\ \text{ reject }  H_{0} &\Leftrightarrow \text{ reject }  H_{0}(\boldsymbol{a}) \text{ at least one }  \boldsymbol{a}
+\end{aligned}$$
+
+We recall that for any $\boldsymbol{a}$, the univariate null $H_0(\boldsymbol{a})$ will not be rejected for small values of
+
+
+$$
+t^{2}(\boldsymbol{a})=n\left(\boldsymbol{a}^{\prime} \overline{\boldsymbol{x}}-\boldsymbol{a}^{\prime} \boldsymbol{\mu}_{0}\right)^{2} / \boldsymbol{a}^{\prime} \boldsymbol{S} \boldsymbol{a}
+$$
+
+Note that $t^{2}(\boldsymbol{a})$ can be regarded as the squared $t$-statistic. Then, according to the above UIT argument, we do not reject $H_0$ when the following value is small
+
+
+$$
+\max _{a} t^{2}(\boldsymbol{a})=\max _{\boldsymbol{a}} \frac{n\left(\boldsymbol{a}^{\prime} \overline{\boldsymbol{x}}-\boldsymbol{a}^{\prime} \boldsymbol{\mu}_{0}\right)^{2}}{\boldsymbol{a}^{\prime} \boldsymbol{S} \boldsymbol{a}}=n\left(\overline{\boldsymbol{x}}-\boldsymbol{\mu}_{0}\right)^{\prime} \boldsymbol{S}^{-1}\left(\overline{\boldsymbol{x}}-\boldsymbol{\mu}_{0}\right)
+$$
+
+The test statistic is called the Hotelling’s $T^2$ whose distribution is related to the $F$ distribution follows. Note that the UIT is also the LRT for this case.
