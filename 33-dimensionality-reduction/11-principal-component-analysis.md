@@ -775,7 +775,7 @@ $$
 
 where $\boldsymbol{M} = \boldsymbol{W} ^\top \boldsymbol{W}  + \sigma^2 \boldsymbol{I}_k$.
 
-A reduced-dimansionality representation of $\boldsymbol{x}$ is given by the estimated conditional mean
+A reduced-dimensionality representation of $\boldsymbol{x}$ is given by the estimated conditional mean
 
 $$
 \widehat{\operatorname{E}}\left( \boldsymbol{z} \mid \boldsymbol{x}   \right) = \boldsymbol{M}  ^{-1} _{ML} \boldsymbol{W} ^\top _{ML}(\boldsymbol{x} - \bar{\boldsymbol{x}})
@@ -785,3 +785,78 @@ where $\boldsymbol{M} _{ML} = \boldsymbol{W} _{ML} ^\top \boldsymbol{W} _{ML}  +
 
 - As $\sigma^2 _{ML} \rightarrow 0$, the posterior mean approaches the standard PCA projection $\boldsymbol{ z } =  \boldsymbol{U}  ^\top (\boldsymbol{x}  - \bar{\boldsymbol{x} })$
 - As $\sigma^2 _{ML}> 0$, the posterior mean "shrinks" the solution in magnitude from standard PCA. Since we are less certain about the representation when the noise is large.
+
+## Extension: Spike Model
+
+Phase transition for detection in PCA.
+
+Suppose a $p$-variate random vector consists of signal and noise
+
+$$
+\boldsymbol{x} = \sqrt{\beta} g_0 \boldsymbol{u} + \boldsymbol{g}  
+$$
+
+where
+- $\boldsymbol{g} \sim \mathcal{N} (\boldsymbol{0} , \boldsymbol{I} _p)$ is noise
+- $\boldsymbol{u} \in \mathbb{R} ^p$ is some fixed signal
+- $g_0 \sim \mathcal{N} (0, 1)$, independent of $\boldsymbol{g}$, control randomness of signal
+- $\sqrt{\beta}$ control the variance of signal
+
+Can we detect the unknown $\boldsymbol{u}$ via PCA? That is, find some $\boldsymbol{v}$ such that $\langle \boldsymbol{u} , \boldsymbol{v} \rangle \ne 0$ w.h.p.?
+
+Consider the covariance matrix
+
+$$\begin{aligned}
+\boldsymbol{\Sigma}
+&= \mathbb{E} [\beta g_0^2 \boldsymbol{u} \boldsymbol{u} ^{\top} + \sqrt{\beta} g_0 \boldsymbol{u}  \boldsymbol{g} ^{\top} +\sqrt{\beta} g_0 \boldsymbol{g}  \boldsymbol{u} ^{\top} +  \boldsymbol{g} \boldsymbol{g} ^{\top}] \\
+&= \beta \boldsymbol{u} \boldsymbol{u} ^{\top} + \boldsymbol{I} _p \\
+\end{aligned}$$
+
+The sample covariance (actually $\frac{1}{n}$ CSSP) is
+
+$$
+\boldsymbol{S} _n = \frac{1}{n} \sum_{i=1}^n \boldsymbol{x} _i \boldsymbol{x} _i ^{\top}  
+$$
+
+It is easy to check that $\boldsymbol{x} \sim \boldsymbol{\Sigma}^{\frac{1}{2}} \boldsymbol{z}$ where $\boldsymbol{z} \sim \mathcal{N} (\boldsymbol{0} , \boldsymbol{I} _p)$. So $\boldsymbol{S}_n = \boldsymbol{\Sigma}^{\frac{1}{2}} \boldsymbol{Z} _n \boldsymbol{\Sigma}^{\frac{1}{2}}$ where $\boldsymbol{Z} _n = \frac{1}{n} \sum_{i=1}^n \boldsymbol{z} _i \boldsymbol{z} _i ^{\top}$.
+
+In expectation, $\mathbb{E} [\boldsymbol{S} _n] = \beta \boldsymbol{u} \boldsymbol{u} ^{\top} + \boldsymbol{I}$. Hence, the top eigenvector of $\mathbb{E} [\boldsymbol{S} _n]$ is indeed $\boldsymbol{u}$. How about the top eigenvector of $\boldsymbol{S} _n$?
+
+- Low-dimension regime: $\frac{p}{n} \rightarrow \gamma < 1$ as $n, p \rightarrow \infty$,
+- High-dimension regime: $\frac{p}{n} \rightarrow \gamma > 1$ as $n, p \rightarrow \infty$,
+
+For high-dim case, we analyze under what condition of $\beta$ and $\boldsymbol{u}$ can we detect $\boldsymbol{u}$, with random matrix theory.
+
+When $n \rightarrow \infty$, the eigenvalue $\lambda$ of $\boldsymbol{Z} _n$ has [Marchenko–Pastur distribution](https://en.wikipedia.org/wiki/Marchenko%E2%80%93Pastur_distribution).
+
+$$
+f_{\gamma}(\lambda)=\frac{1}{2 \pi} \frac{\sqrt{\left(\gamma_{+}-\lambda\right)\left(\lambda-\gamma_{-}\right)}}{\gamma \lambda}, \quad \lambda \in \left[\gamma_{-}, \gamma_{+}\right]
+$$
+
+where $\gamma_- = (1 - \sqrt{\gamma})^2, \gamma_+ = (1+\sqrt{\gamma})^2$.
+
+- When $\gamma > 1$, there is an additional point mass $(1- \frac{1}{\gamma} ) \delta(\lambda - 0)$ (??) at the origin.
+- When sample size increases, $\gamma \rightarrow 0$, and the interval $\left[\gamma_{-}, \gamma_{+}\right]$ is tighter, i.e. more concentrated.
+
+.
+
+
+.
+
+
+.
+
+
+.
+
+
+.
+
+
+.
+
+
+.
+
+
+.
