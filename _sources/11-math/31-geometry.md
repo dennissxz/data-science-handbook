@@ -91,6 +91,8 @@ Hence, the relation is $\boldsymbol{z} = \boldsymbol{A} ^{-1} \boldsymbol{b}$ an
 
 ### Ball
 
+[Wikipedia](https://en.wikipedia.org/wiki/Ball_(mathematics))
+
 For any $r >0$, the ellipsoid
 
 $$

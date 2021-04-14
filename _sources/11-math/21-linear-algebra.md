@@ -691,4 +691,7 @@ $$
 \operatorname{dist}(\boldsymbol{U} _0, \boldsymbol{\widehat{\boldsymbol{U}}} _0) \le \frac{\left\| H \right\| }{\lambda_r(\boldsymbol{M} ) - \lambda_{r+1} (\boldsymbol{M} ) - \left\| \boldsymbol{H}  \right\|}  
 $$
 
-where $\lambda_r(\boldsymbol{M} ) - \lambda_{r+1} (\boldsymbol{M} )$ is the spectral gap.
+where $\lambda_r(\boldsymbol{M} ) - \lambda_{r+1} (\boldsymbol{M} )$ is the spectral gap between the $r$-th and the $(r+1)$-th eigenvalues. We can see that the bound is smaller if there is a sharp gap, and increases as noise $\left\| \boldsymbol{H} \right\|$ increases.
+
+More topics
+- Wigner semicircle distribution of eigenvalues of a random Gaussian matrix [Wikipedia](https://en.wikipedia.org/wiki/Wigner_semicircle_distribution)

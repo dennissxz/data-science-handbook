@@ -105,7 +105,7 @@ $$
 The uncorrelated constraint, for example, when solving for the second pair $(U_2, V_2)$, are
 
 $$
-\operatorname{Cov}\left(U_{1}, U_{2}\right)=0, \quad \operatorname{Cov}\left(V_{1}, V_{2}\right)=0, \quad \operatorname{Cov}\left(U_{1}, V_{2}\right)=0, \quad \operatorname{Cov}\left(U_{2}, V_{1}\right)=0
+\operatorname{Cov}\left(U_{1}, U_{2}\right)=0, \ \operatorname{Cov}\left(V_{1}, V_{2}\right)=0, \ \operatorname{Cov}\left(U_{1}, V_{2}\right)=0, \ \operatorname{Cov}\left(U_{2}, V_{1}\right)=0
 $$
 
 ### Spectral Decomposition
@@ -124,9 +124,13 @@ $$
 \boldsymbol{\Sigma}_{xx}^{-1/2} \boldsymbol{\Sigma}_{xy} \boldsymbol{\Sigma}_{yy}^{-1} \boldsymbol{\Sigma}_{yx} \boldsymbol{\Sigma}_{xx}^{-1/2} \boldsymbol{u} = \rho^2 \boldsymbol{u}
 $$
 
-is considered instead for the computational efficiency. Note that the two matrices possess the **same** eigenvalues and their eigenvectors are linearly related by $\boldsymbol{v} = \boldsymbol{\Sigma}_{{xx}}^{-1/2} \boldsymbol{u}$.
+is considered instead for the computational efficiency. Note that the two matrices possess the **same** eigenvalues and their eigenvectors are linearly related by $\boldsymbol{v} = \boldsymbol{\Sigma}_{{xx}}^{-1/2} \boldsymbol{u}$. Note that $\boldsymbol{v}$ need to be normalized to satisfy the constraint $\boldsymbol{v}^{\top} \boldsymbol{\Sigma}_{x x} \boldsymbol{v}=1$.
 
-Then we can find $\boldsymbol{w} \propto \boldsymbol{\Sigma}_{y y}^{-1} \boldsymbol{\Sigma}_{y x} \boldsymbol{v}$ subject to the constraints.
+```{margin}
+After normalization, we may not have $\left\| \boldsymbol{v}  \right\| =1$ and $\left\| \boldsymbol{w}  \right\| = 1$.
+```
+
+Then we can find $\boldsymbol{w} \propto \boldsymbol{\Sigma}_{y y}^{-1} \boldsymbol{\Sigma}_{y x} \boldsymbol{v}$ subject to the constraint $\boldsymbol{w}^{\top} \boldsymbol{\Sigma}_{yy} \boldsymbol{w}=1$.
 
 Note that the maximal embedding dimension is $\max(k) = \min(d_x, d_y)$.
 
@@ -236,6 +240,23 @@ Then the eigenproblem becomes symmetric and easier to solve. We can find $\bolds
   - $d_x \times d_x \quad \boldsymbol{A}=\boldsymbol{\Sigma}_{xx}^{-1} \boldsymbol{\Sigma}_{xy} \boldsymbol{\Sigma}_{yy}^{-1} \boldsymbol{\Sigma}_{yx}=\boldsymbol{\Sigma}_{xx}^{-1 / 2} \boldsymbol{C} \boldsymbol{C}^{\top} \boldsymbol{\Sigma}_{xx}^{1 / 2}$
   - $d_y \times d_y \quad \boldsymbol{B}=\boldsymbol{\Sigma}_{yy}^{-1} \boldsymbol{\Sigma}_{yx} \boldsymbol{\Sigma}_{xx}^{-1} \boldsymbol{\Sigma}_{xy}=\boldsymbol{\Sigma}_{yy}^{-1 / 2} \boldsymbol{C}^{\top} \boldsymbol{C} \boldsymbol{\Sigma}_{yy}^{1 / 2}$
   - In fact, they are [similar](similar-matrix) $\boldsymbol{A} \sim \boldsymbol{C} \boldsymbol{C} ^{\top}$, $\boldsymbol{B} \sim \boldsymbol{C} ^{\top} \boldsymbol{C}$, and $\boldsymbol{C} \boldsymbol{C} ^{\top}$ share the same nonzero eigenvalues with $\boldsymbol{C} ^{\top} \boldsymbol{C}$ (hint: SVD).
+- The above identities can be summarized as
+
+  $$
+  \operatorname{Cov}\left([U_{1}, \cdots, U_{k}, V_{1}, \cdots, V_{k}]\right)=\left[\begin{array}{cc}
+  \boldsymbol{I}_{k} & \boldsymbol{R}_{k} \\
+  \boldsymbol{R}_{k} & \boldsymbol{I}_{k}
+  \end{array}\right], \quad \boldsymbol{R}_{k}=\operatorname{diag}\left[\rho_{1}^{*}, \cdots, \rho_{k}^{*}\right]
+  $$
+
+  If sort in canonical variate pairs,
+
+  $$
+  \operatorname{Cov}\left([U_{1}, V_{1}, \cdots, U_{k}, V_{k}]\right)=\operatorname{diag}\left[\boldsymbol{D}_{1}, \cdots, \boldsymbol{D}_{k}\right], \quad \boldsymbol{D}_{i}=\left[\begin{array}{cc}
+  1 & \rho_{i}^{*} \\
+  \rho_{i}^{*} & 1
+  \end{array}\right]
+  $$
 
 - Invariance property: Canonical correlations $\rho_i$'s between $\boldsymbol{x}$ and $\boldsymbol{y}$ are the same as those between $\boldsymbol{A} _1 \boldsymbol{x}  + \boldsymbol{c}_1$ and $\boldsymbol{A} _2 \boldsymbol{y}  + \boldsymbol{c} _2$, where both $\boldsymbol{A} _1$ and $\boldsymbol{A} _2$ are non-singular square matrices and their computation can be based on either the partitioned covariance matrix or the partitioned correlation matrix. However, the canonical coefficients contained in $\boldsymbol{v} _k$ and $\boldsymbol{w} _k$ are **not** invariant under the same transform, nor their estimates.
 

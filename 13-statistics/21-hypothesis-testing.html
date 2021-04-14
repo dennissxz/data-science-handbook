@@ -57,7 +57,7 @@
     <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Two Sample Mean Tests" href="25-two-sample-tests.html" />
+    <link rel="next" title="Common Tests" href="23-common-tests.html" />
     <link rel="prev" title="Randomized Controlled Trials" href="13-randomized-trial.html" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -213,8 +213,8 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="25-two-sample-tests.html">
-     Two Sample Mean Tests
+    <a class="reference internal" href="23-common-tests.html">
+     Common Tests
     </a>
    </li>
    <li class="toctree-l2">
@@ -595,6 +595,11 @@
      Kernel CCA
     </a>
    </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/41-factor-analysis.html">
+     Factor Analysis
+    </a>
+   </li>
   </ul>
   <i class="fas fa-chevron-down">
   </i>
@@ -729,6 +734,11 @@
      Modeling
     </a>
    </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../38-ml-for-graph-data/31-topology-inference.html">
+     Topology Inference
+    </a>
+   </li>
   </ul>
   <i class="fas fa-chevron-down">
   </i>
@@ -821,48 +831,65 @@
         <nav id="bd-toc-nav">
             <ul class="nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#p-value">
-   <span class="math notranslate nohighlight">
-    \(p\)
-   </span>
-   -value
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#type-i-error-and-type-ii-error">
-   Type I error and Type II error
+  <a class="reference internal nav-link" href="#basic-concepts">
+   Basic Concepts
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#definitions">
-     Definitions
+    <a class="reference internal nav-link" href="#p-value">
+     <span class="math notranslate nohighlight">
+      \(p\)
+     </span>
+     -value
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#error-control">
-     Error Control
+    <a class="reference internal nav-link" href="#type-i-error-and-type-ii-error">
+     Type I error and Type II error
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#definitions">
+       Definitions
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#error-control">
+       Error Control
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#sample-size">
+     Sample Size
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#confidence-interval">
+     Confidence Interval
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#credible-interval">
+     Credible Interval
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#bonferroni-correction">
+     Bonferroni Correction
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#sample-size">
-   Sample Size
+  <a class="reference internal nav-link" href="#likelihood-ratio-test">
+   Likelihood Ratio Test
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#confidence-interval">
-   Confidence Interval
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#credible-interval">
-   Credible Interval
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#bonferroni-correction">
-   Bonferroni Correction
+  <a class="reference internal nav-link" href="#union-intersection-test-uit">
+   Union Intersection Test (UIT)
   </a>
  </li>
 </ul>
@@ -901,8 +928,10 @@
 <p class="admonition-title"> Fail to reject <span class="math notranslate nohighlight">\(H_0\)</span></p>
 <p>Remember that failing to reject a null hypothesis does not necessarily mean that the null hypothesis is true. So we don’t say “accept the null”, instead we say “fail to reject the null” or “<span class="math notranslate nohighlight">\(H_0\)</span> is not rejected”.</p>
 </div>
+<div class="section" id="basic-concepts">
+<h2>Basic Concepts<a class="headerlink" href="#basic-concepts" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="p-value">
-<h2><span class="math notranslate nohighlight">\(p\)</span>-value<a class="headerlink" href="#p-value" title="Permalink to this headline">¶</a></h2>
+<h3><span class="math notranslate nohighlight">\(p\)</span>-value<a class="headerlink" href="#p-value" title="Permalink to this headline">¶</a></h3>
 <p>After we collected data and find the estimate, we want to know whether the estimate prefer <span class="math notranslate nohighlight">\(H_0\)</span> or <span class="math notranslate nohighlight">\(H_1\)</span>. The <span class="math notranslate nohighlight">\(p\)</span>-value describe that how likely it is to observe more extreme cases than your current estimate, under the null hypothesis.</p>
 <div class="math notranslate nohighlight">
 \[p\text{-value}=\operatorname{\mathbb{P}}(\text{more extreme cases of your estimate}\,\vert\, H_0)\]</div>
@@ -910,9 +939,9 @@
 <p>The threshold is called significance level, which is the type I error we want to control, and set before the test.</p>
 </div>
 <div class="section" id="type-i-error-and-type-ii-error">
-<h2>Type I error and Type II error<a class="headerlink" href="#type-i-error-and-type-ii-error" title="Permalink to this headline">¶</a></h2>
+<h3>Type I error and Type II error<a class="headerlink" href="#type-i-error-and-type-ii-error" title="Permalink to this headline">¶</a></h3>
 <div class="section" id="definitions">
-<h3>Definitions<a class="headerlink" href="#definitions" title="Permalink to this headline">¶</a></h3>
+<h4>Definitions<a class="headerlink" href="#definitions" title="Permalink to this headline">¶</a></h4>
 <p><strong>Type I error</strong>, aka <strong>size</strong> of a test, denoted <span class="math notranslate nohighlight">\(\alpha\)</span>, is defined as</p>
 <div class="math notranslate nohighlight">
 \[\alpha = \operatorname{\mathbb{P}}\left( H_0 \text{ is rejected} \,\vert\, H_0 \text{ is true}\right) \]</div>
@@ -929,7 +958,7 @@
 <p><span class="math notranslate nohighlight">\(\beta\)</span> and power depends on the distribution of the parameter and the rejection rule (e.g., <span class="math notranslate nohighlight">\(\left\vert T \right\vert) &gt; t_{df}^{(1-\alpha/2)}\)</span>). If <span class="math notranslate nohighlight">\(H_0\)</span> is false, the distribution of the test statistic depends on the true parameter value, so do <span class="math notranslate nohighlight">\(\beta\)</span> and power. Since the true parameter value is unknown, there is no easy formula for <span class="math notranslate nohighlight">\(\beta\)</span> and power.</p>
 </div>
 <div class="section" id="error-control">
-<h3>Error Control<a class="headerlink" href="#error-control" title="Permalink to this headline">¶</a></h3>
+<h4>Error Control<a class="headerlink" href="#error-control" title="Permalink to this headline">¶</a></h4>
 <p>Both type I error and type II error are important. We want small <span class="math notranslate nohighlight">\(\alpha\)</span> and small <span class="math notranslate nohighlight">\(\beta\)</span> (large power). Though <span class="math notranslate nohighlight">\(\alpha\)</span> can be pre-set, <span class="math notranslate nohighlight">\(\beta\)</span> is hard to control. Recall the power is</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{aligned}
@@ -966,7 +995,7 @@
 </div>
 </div>
 <div class="section" id="sample-size">
-<h2>Sample Size<a class="headerlink" href="#sample-size" title="Permalink to this headline">¶</a></h2>
+<h3>Sample Size<a class="headerlink" href="#sample-size" title="Permalink to this headline">¶</a></h3>
 <p>How to choose a sample size? This depends on how we want to control our errors.</p>
 <p>As discussed above, we first fixed <span class="math notranslate nohighlight">\(\alpha\)</span>, and then control <span class="math notranslate nohighlight">\(\beta\)</span>. Take <span class="math notranslate nohighlight">\(t\)</span>-test in simple linear regression as an example. The power <span class="math notranslate nohighlight">\((1-\beta)\)</span> is</p>
 <div class="math notranslate nohighlight">
@@ -986,19 +1015,110 @@
 </ol>
 </div>
 <div class="section" id="confidence-interval">
-<h2>Confidence Interval<a class="headerlink" href="#confidence-interval" title="Permalink to this headline">¶</a></h2>
+<h3>Confidence Interval<a class="headerlink" href="#confidence-interval" title="Permalink to this headline">¶</a></h3>
 <p>A <span class="math notranslate nohighlight">\((1-\alpha)\)</span>-confidence interval is an interval such that when you repeat the experiments many times, there is <span class="math notranslate nohighlight">\((1-\alpha)\)</span> of the times that the estimate falls into the interval.</p>
 <p>A <span class="math notranslate nohighlight">\((1-\alpha)\)</span>-confidence interval can be constructed with an estimate and its standard error.</p>
 <div class="math notranslate nohighlight">
 \[\hat \theta \pm c_\alpha \cdot \mathrm{se}(\hat \theta)\]</div>
 <p>where <span class="math notranslate nohighlight">\(c_\alpha\)</span> is a coefficient that depends on <span class="math notranslate nohighlight">\(\alpha\)</span> such that the interval cover <span class="math notranslate nohighlight">\((1-\alpha)\)</span> of the cases.</p>
+<div class="note dropdown admonition">
+<p class="admonition-title"> Duality of Hypothesis Testing and Confidence Interval</p>
+<p>Consider an example of testing <span class="math notranslate nohighlight">\(H_0: \mu = \mu_0\)</span> against <span class="math notranslate nohighlight">\(H_1: \mu \ne \mu_0\)</span>. Suppose a random sample <span class="math notranslate nohighlight">\(X_1, X_2, \ldots, X_n\)</span> drawn from a normal distribution with unknown mean <span class="math notranslate nohighlight">\(\mu\)</span> and known variance <span class="math notranslate nohighlight">\(\sigma^2\)</span>. Intuitively, if <span class="math notranslate nohighlight">\(\left\vert \bar{X} - \mu_0 \right\vert\)</span> is sufficiently large, say larger than <span class="math notranslate nohighlight">\(x_0\)</span>, then <span class="math notranslate nohighlight">\(H_0\)</span> is favorable to be rejected based on the observed random sample. By picking <span class="math notranslate nohighlight">\(x_0 = z_{\alpha/2} \frac{\sigma}{\sqrt{n}}\)</span>, we assure that the probability of Type I error is <span class="math notranslate nohighlight">\(\alpha\)</span>. Then, <span class="math notranslate nohighlight">\(H_0\)</span> <strong>cannot</strong> be rejected for <span class="math notranslate nohighlight">\(X = \left\{ X_1, X_2, \ldots, X_n \right\}\)</span> over the set</p>
+<div class="math notranslate nohighlight">
+\[
+A=\left\{X:\left|\bar{X}-\mu_{0}\right| \leq z_{\alpha / 2} \frac{\sigma}{\sqrt{n}}\right\}
+\]</div>
+<p>Alternatively, this set can be rewritten as</p>
+<div class="math notranslate nohighlight">
+\[
+A=\left\{X: \bar{X}-z_{\alpha / 2} \frac{\sigma}{\sqrt{n}} \leq \mu_{0} \leq \bar{X}+z_{\alpha / 2} \frac{\sigma}{\sqrt{n}}\right\}
+\]</div>
+<p>On the other hand, consider <span class="math notranslate nohighlight">\((1 − \alpha)100\%\)</span> confidence interval for <span class="math notranslate nohighlight">\(\mu\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[
+C=\left\{\mu: \bar{X}-z_{\alpha / 2} \frac{\sigma}{\sqrt{n}} \leq \mu \leq \bar{X}+z_{\alpha / 2} \frac{\sigma}{\sqrt{n}}\right\}
+\]</div>
+<p>Clearly, it can be checked that <span class="math notranslate nohighlight">\(X \in A\)</span> <strong>if and only if</strong> <span class="math notranslate nohighlight">\(\mu_0 \in C\)</span>. In other words, the data <span class="math notranslate nohighlight">\(X\)</span> falls within the non-rejection region <span class="math notranslate nohighlight">\(A\)</span> under <span class="math notranslate nohighlight">\(H_0\)</span> if and only if <span class="math notranslate nohighlight">\(\mu_0\)</span> belongs to the confidence interval <span class="math notranslate nohighlight">\(C\)</span> obtained from the data <span class="math notranslate nohighlight">\(X\)</span>. This relationship can be used to construct the confidence intervals from the tests of hypothesis and the tests of hypothesis from the confidence intervals.</p>
+</div>
+<p>In multivariate setting, the extension of confidence interval is confidence region. A <span class="math notranslate nohighlight">\(100(1-\alpha) \%\)</span> confidence region <span class="math notranslate nohighlight">\(R(\boldsymbol{X})\)</span> for parameter <span class="math notranslate nohighlight">\(\boldsymbol{\theta}\)</span> based on a <span class="math notranslate nohighlight">\(p\)</span>-variate random sample <span class="math notranslate nohighlight">\(\boldsymbol{X} = \left\{ \boldsymbol{x} _1, \ldots, \boldsymbol{x} _n \right\}\)</span> is defined as</p>
+<div class="math notranslate nohighlight">
+\[
+P(\boldsymbol{\theta} \in R(\boldsymbol{X}))=1-\alpha
+\]</div>
+<p>in the sense that among all possible sample data <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span>, the parameter vector <span class="math notranslate nohighlight">\(\boldsymbol{\theta}\)</span> is in the the region <span class="math notranslate nohighlight">\(R(\boldsymbol{X} )\)</span> for <span class="math notranslate nohighlight">\(100(1-\alpha) \%\)</span> of the time.</p>
+<p>The shape of the confidence region in <span class="math notranslate nohighlight">\(\mathbb{R} ^p\)</span> can be ellipsoid, or hyper-rectangular, etc.</p>
 </div>
 <div class="section" id="credible-interval">
-<h2>Credible Interval<a class="headerlink" href="#credible-interval" title="Permalink to this headline">¶</a></h2>
+<h3>Credible Interval<a class="headerlink" href="#credible-interval" title="Permalink to this headline">¶</a></h3>
 <p>In Bayesian statistics, a credible interval is constructed from the posterior distribution of the parameter of interest. The are various methods to choose which <span class="math notranslate nohighlight">\((1-\alpha)\)</span> interval to be the credible interval, e.g. equal tail <span class="math notranslate nohighlight">\(\alpha/2\)</span>, horizontal cutoff of the PDF, etc.</p>
 </div>
 <div class="section" id="bonferroni-correction">
-<h2>Bonferroni Correction<a class="headerlink" href="#bonferroni-correction" title="Permalink to this headline">¶</a></h2>
+<h3>Bonferroni Correction<a class="headerlink" href="#bonferroni-correction" title="Permalink to this headline">¶</a></h3>
+<p>When there are <span class="math notranslate nohighlight">\(p\)</span> confidence intervals <span class="math notranslate nohighlight">\(C_k\)</span> for parameter <span class="math notranslate nohighlight">\(\mu_k\)</span>, each of confidence level <span class="math notranslate nohighlight">\(\left(1-\alpha_{k}\right) 100 \%\)</span>, we like to consider them simultaneously: what’s the probability that <span class="math notranslate nohighlight">\(C_k\)</span> cover <span class="math notranslate nohighlight">\(\mu_k\)</span> for all <span class="math notranslate nohighlight">\(k=1, 2, \ldots, p\)</span>?</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+\mathbb{P} \left(C_{k}=\text { true }, k=1, \cdots, p\right) &amp;=1-\mathbb{P}\left(C_{k}=\text { false, for some } k\right) \\
+&amp; \geq 1-\sum_{k=1}^{p} \mathbb{P}\left(C_{k}=\text { false }\right) \\
+&amp; =1-\sum_{k=1}^{p}\left(1-\mathbb{P}\left(C_{k}=\text { true }\right)\right) \\
+&amp;=1-\sum_{k=1}^{p} \alpha_{k} \\
+\end{aligned}
+\end{split}\]</div>
+<p>Suppose we want them hold simultaneously w.p. at least <span class="math notranslate nohighlight">\(1-\alpha\)</span>, then a convenient choice is to pick <span class="math notranslate nohighlight">\(\alpha_k = \frac{\alpha}{p}\)</span> for all <span class="math notranslate nohighlight">\(k = 1, 2, \ldots, p\)</span>.</p>
+</div>
+</div>
+<div class="section" id="likelihood-ratio-test">
+<h2>Likelihood Ratio Test<a class="headerlink" href="#likelihood-ratio-test" title="Permalink to this headline">¶</a></h2>
+<p>The target statistic is</p>
+<div class="math notranslate nohighlight">
+\[
+\lambda\left(\boldsymbol{x}_{1}, \ldots, \boldsymbol{x}_{n}\right)=\frac{\max _{\boldsymbol{\theta} \in \boldsymbol{\omega}} L\left(\boldsymbol{\theta} ; \boldsymbol{x}_{1}, \ldots, \boldsymbol{x}_{n}\right)}{\max _{\boldsymbol{\theta} \in \boldsymbol{\Omega}} L\left(\boldsymbol{\theta} ; \boldsymbol{x}_{1}, \ldots, \boldsymbol{x}_{n}\right)}
+\]</div>
+<p>which is the ratio of two maximum likelihoods, one under the restriction imposed by <span class="math notranslate nohighlight">\(H_0\)</span> and under the restriction imposed by (<span class="math notranslate nohighlight">\(H_0\)</span> or <span class="math notranslate nohighlight">\(H_1\)</span>), where <span class="math notranslate nohighlight">\(\boldsymbol{\omega}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{\Omega}\)</span> are the parameter sets under the restrictions imposed by <span class="math notranslate nohighlight">\(H_0\)</span> and <span class="math notranslate nohighlight">\(H_0 \cup H_1\)</span> respectively. Thus, this ratio has a value in the interval <span class="math notranslate nohighlight">\((0, 1]\)</span>, and large values of the ratio are more favorable to <span class="math notranslate nohighlight">\(H_0\)</span>. Thus, we reject <span class="math notranslate nohighlight">\(H_0\)</span> at significance level <span class="math notranslate nohighlight">\(\alpha\)</span> if <span class="math notranslate nohighlight">\(\lambda\left(\boldsymbol{x}_{1}, \ldots, \boldsymbol{x}_{n}\right)&lt; c_\alpha\)</span> where <span class="math notranslate nohighlight">\(c _\alpha\)</span>, known as the <strong>critical value</strong>, is to be determined so that</p>
+<div class="math notranslate nohighlight">
+\[
+P\left(\text { reject } H_{0} \mid H_{0}\right)=\max _{\boldsymbol{\theta} \in \boldsymbol{\omega}} P\left(\lambda\left(\boldsymbol{x}_{1}, \ldots, \boldsymbol{x}_{n}\right)&lt;c_{\alpha} \mid \boldsymbol{\theta}\right)=\alpha
+\]</div>
+<p>Or equivalently, if the p-value for an observed value, <span class="math notranslate nohighlight">\(\lambda_0\)</span>, of likelihood ratio is less than <span class="math notranslate nohighlight">\(\alpha\)</span>, i.e.</p>
+<div class="math notranslate nohighlight">
+\[
+p \text { -value }\left(\lambda_{0}\right)=P\left(\lambda\left(\boldsymbol{x}_{1}, \ldots, \boldsymbol{x}_{n}\right)&lt;\lambda_{0} \mid H_{0}\right)&lt;\alpha
+\]</div>
+<p>In practice, the sampling distribution of likelihood ratio λ is difficult to be determined, so we usually <strong>express</strong> λ in terms of an intermediate statistic which is related to a well-known distribution or which can facilitate easier computation of <span class="math notranslate nohighlight">\(p\)</span>-value (or critical value), so that the LRT will be more conveniently performed based on that statistic.</p>
+<p>When the sample size tends to infinity, the statistic, <span class="math notranslate nohighlight">\(−2log\lambda\)</span>, is distributed asymptotically as <span class="math notranslate nohighlight">\(\chi ^2 _k\)</span> where the degree of freedom <span class="math notranslate nohighlight">\(k\)</span> equals the number of free parameters under <span class="math notranslate nohighlight">\(H_0 \cup H_1\)</span> minus that under <span class="math notranslate nohighlight">\(H_0\)</span>, or <span class="math notranslate nohighlight">\(k = \operatorname{dim}(\boldsymbol{\Omega} )  − \operatorname{dim}(\boldsymbol{\omega} )\)</span>. In other words, <span class="math notranslate nohighlight">\(k\)</span> is the difference between the number of free parameters under unrestricted model and that under restricted model.</p>
+<div class="figure align-default" id="test-chi">
+<a class="reference internal image-reference" href="../_images/test-chi.png"><img alt="" src="../_images/test-chi.png" style="width: 50%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 14 </span><span class="caption-text">Distribution of test statistic <span class="math notranslate nohighlight">\(-2\log \lambda\)</span></span><a class="headerlink" href="#test-chi" title="Permalink to this image">¶</a></p>
+</div>
+<p>The “negative twice log likelihood ratio” was first called “<span class="math notranslate nohighlight">\(G^2\)</span>-statistic” by Sir R.A. Fisher and later re-named by McCullagh and Nelder as the <strong>deviance</strong> between the two models respectively under <span class="math notranslate nohighlight">\(H_0\)</span> and <span class="math notranslate nohighlight">\(H_1\)</span> in their theory of Generalized Linear Model.</p>
+</div>
+<div class="section" id="union-intersection-test-uit">
+<span id="uit"></span><h2>Union Intersection Test (UIT)<a class="headerlink" href="#union-intersection-test-uit" title="Permalink to this headline">¶</a></h2>
+<p>Union intersection tests are used in multivariate setting. It express the multivariate null hypothesis as an intersection of the family of univariate null hypotheses in terms of all possible linear combinations of the <span class="math notranslate nohighlight">\(p\)</span> variables. The multivariate null hypothesis is not rejected if and only if all the univariate null hypotheses are not rejected.</p>
+<p>For instance, consider <span class="math notranslate nohighlight">\(H_0: \boldsymbol{\mu} = \boldsymbol{\mu} _0\)</span> versus <span class="math notranslate nohighlight">\(H_1: \boldsymbol{\mu} \ne \boldsymbol{\mu} _0\)</span>. Let <span class="math notranslate nohighlight">\(\bar{\boldsymbol{x}}, \boldsymbol{S}\)</span> be the mean vector and covariance matrix of a random sample of <span class="math notranslate nohighlight">\(n\)</span> observations from <span class="math notranslate nohighlight">\(\mathcal{N} _p(\boldsymbol{\mu} ,\boldsymbol{\Sigma})\)</span>. Then observe that</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{array}{l}
+H_{0}: \boldsymbol{\mu}=\boldsymbol{\mu}_{0} \Leftrightarrow \bigcap_{\boldsymbol{a}}\left\{H_{0}(\boldsymbol{a}): \boldsymbol{a}^{\prime} \boldsymbol{\mu}=\boldsymbol{a}^{\prime} \boldsymbol{\mu}_{0}\right\} \\
+H_{1}: \boldsymbol{\mu} \neq \boldsymbol{\mu}_{0} \Leftrightarrow \bigcup_{\boldsymbol{a}}\left\{H_{1}(\boldsymbol{a}): \boldsymbol{a}^{\prime} \boldsymbol{\mu} \neq \boldsymbol{a}^{\prime} \boldsymbol{\mu}_{0}\right\} .
+\end{array}
+\end{split}\]</div>
+<p>Consequently,</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\text{not reject }  H_{0} &amp;\Leftrightarrow \text{ not reject } H_{0}(\boldsymbol{a}) \text{ for all }  \boldsymbol{a} \\ \text{ reject }  H_{0} &amp;\Leftrightarrow \text{ reject }  H_{0}(\boldsymbol{a}) \text{ at least one }  \boldsymbol{a}
+\end{aligned}\end{split}\]</div>
+<p>We recall that for any <span class="math notranslate nohighlight">\(\boldsymbol{a}\)</span>, the univariate null <span class="math notranslate nohighlight">\(H_0(\boldsymbol{a})\)</span> will not be rejected for small values of</p>
+<div class="math notranslate nohighlight">
+\[
+t^{2}(\boldsymbol{a})=n\left(\boldsymbol{a}^{\prime} \overline{\boldsymbol{x}}-\boldsymbol{a}^{\prime} \boldsymbol{\mu}_{0}\right)^{2} / \boldsymbol{a}^{\prime} \boldsymbol{S} \boldsymbol{a}
+\]</div>
+<p>Note that <span class="math notranslate nohighlight">\(t^{2}(\boldsymbol{a})\)</span> can be regarded as the squared <span class="math notranslate nohighlight">\(t\)</span>-statistic. Then, according to the above UIT argument, we do not reject <span class="math notranslate nohighlight">\(H_0\)</span> when the following value is small</p>
+<div class="math notranslate nohighlight">
+\[
+\max _{a} t^{2}(\boldsymbol{a})=\max _{\boldsymbol{a}} \frac{n\left(\boldsymbol{a}^{\prime} \overline{\boldsymbol{x}}-\boldsymbol{a}^{\prime} \boldsymbol{\mu}_{0}\right)^{2}}{\boldsymbol{a}^{\prime} \boldsymbol{S} \boldsymbol{a}}=n\left(\overline{\boldsymbol{x}}-\boldsymbol{\mu}_{0}\right)^{\prime} \boldsymbol{S}^{-1}\left(\overline{\boldsymbol{x}}-\boldsymbol{\mu}_{0}\right)
+\]</div>
+<p>The test statistic is called the Hotelling’s <span class="math notranslate nohighlight">\(T^2\)</span> whose distribution is related to the <span class="math notranslate nohighlight">\(F\)</span> distribution follows. Note that the UIT is also the LRT for this case.</p>
 </div>
 </div>
 
@@ -1028,7 +1148,7 @@
         <div class='prev-next-bottom'>
             
     <a class='left-prev' id="prev-link" href="13-randomized-trial.html" title="previous page">Randomized Controlled Trials</a>
-    <a class='right-next' id="next-link" href="25-two-sample-tests.html" title="next page">Two Sample Mean Tests</a>
+    <a class='right-next' id="next-link" href="23-common-tests.html" title="next page">Common Tests</a>
 
         </div>
         

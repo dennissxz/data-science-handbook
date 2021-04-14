@@ -1,0 +1,1331 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Topology Inference &#8212; Data Science Handbook</title>
+    
+  <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+  <link rel="stylesheet"
+    href="../_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="../_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinx-book-theme.e7340bb3dbd8dde6db86f25597f54a1b.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/style.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.d3f166471bb80abb5163.js">
+
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/sphinx-book-theme.7d483ff0a819d6edff12ce0b1ead3928.js"></script>
+    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Modeling" href="21-modeling.html" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+
+
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+<a class="navbar-brand text-wrap" href="../index.html">
+  
+  
+  <h1 class="site-logo" id="site-title">Data Science Handbook</h1>
+  
+</a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form>
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+    <ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../index.html">
+   Data Science Handbook
+  </a>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Foundations
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../11-math/00-math.html">
+   Math
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/11-combinatorics.html">
+     Combinatorics
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/20-vector-spaces.html">
+     Vector Spaces
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/31-geometry.html">
+     Geometry
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/21-linear-algebra.html">
+     Linear Algebra
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/51-linear-programming.html">
+     Linear Programming
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/52-non-linear-programming.html">
+     Non-linear Programming
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/90-puzzles.html">
+     Puzzles
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../12-probabilities/00-probabilities.html">
+   Probabilities
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/11-expectation-and-variance.html">
+     Expectation and Variance
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/13-correlation-and-dependence.html">
+     Correlation and Dependence
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/31-bayesian-theorem.html">
+     Bayesian’s Theorem
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/51-markov-chain.html">
+     Markov Chain
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/71-sampling.html">
+     Sampling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/90-multivariate-notations.html">
+     Multivariate Notations
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/91-exponential-families.html">
+     Exponential Families
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../12-probabilities/91-large-sample-theory.html">
+     Large Sample Theory
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../13-statistics/00-statistics.html">
+   Statistics
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/11-sample-survey.html">
+     Sample Survey
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/13-randomized-trial.html">
+     Randomized Controlled Trials
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/21-hypothesis-testing.html">
+     Hypothesis Testing
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/23-common-tests.html">
+     Common Tests
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/33-confusion-matrix.html">
+     Confusion Matrix
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/41-maximum-likelihood-estimation.html">
+     Maximum Likelihood Estimator
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../13-statistics/43-estimators-evaluation.html">
+     Estimators Evaluation
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../15-programming/00-programming.html">
+   Programming
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../15-programming/11-python.html">
+     Python
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../15-programming/21-r.html">
+     R
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../15-programming/31-sql.html">
+     SQL
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../19-miscellaneous/00-miscellaneous.html">
+   Miscellaneous
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../19-miscellaneous/11-latex.html">
+     LaTeX
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../19-miscellaneous/13-myst.html">
+     MyST Markdown
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Algorithms
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../20-algorithms-concepts/00-algorithms-concepts.html">
+   Algorithms Concepts
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../20-algorithms-concepts/51-polynomial-reduction.html">
+     Polynomial Reduction
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../20-algorithms-concepts/53-P-and-NP.html">
+     <span class="math notranslate nohighlight">
+      \(P\)
+     </span>
+     and
+     <span class="math notranslate nohighlight">
+      \(NP\)
+     </span>
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../20-algorithms-concepts/61-randomized-algo.html">
+     Randomized Algorithms
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../21-greedy-algorithms/00-greedy-algorithms.html">
+   Greedy Algorithms
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../21-greedy-algorithms/11-interval-scheduling.html">
+     Interval Scheduling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../21-greedy-algorithms/31-huffman-coding.html">
+     Huffman Coding
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../23-dynamic-programming/00-dynamic-programming.html">
+   Dynamic Programming
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/11-weighted-interval-scheduling.html">
+     Weighted Interval Scheduling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/13-longest-common-subsequence.html">
+     Longest Common Subsequence
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/15-longest-increasing-subsequence.html">
+     Longest Increasing Subsequence
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/17-largest-sum-subsequence.html">
+     Largest Sum Subsequence
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/31-knapsack.html">
+     Minimum Knapsack
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../23-dynamic-programming/51-chain-matrix-multiplication.html">
+     Chain Matrix Multiplication
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../25-graph-related/00-graph-related.html">
+   Graph Related
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/13-shortest-path.html">
+     Shortest Path
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/21-minimum-spanning-tree.html">
+     Minimum Spanning Tree
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/31-maximum-flow.html">
+     Maximum Flow
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/32-matching.html">
+     Matching
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/42-maximum-independent-set.html">
+     Maximum Independent Set in Trees
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../25-graph-related/91-LP-max-flow-min-cut.html">
+     LP on Max-flow and Min-cut
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../26-algo-for-big-data/00-algo-for-big-data.html">
+   For Big Data
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../26-algo-for-big-data/10-streaming.html">
+     Streaming Model
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Machine Learning
+ </span>
+</p>
+<ul class="current nav sidenav_l1">
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../30-ml-basics/00-ml-basics.html">
+   Machine Learning Basics
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../30-ml-basics/02-taxonomy.html">
+     Taxonomy
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../30-ml-basics/03-information-theory.html">
+     Information Theory
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../30-ml-basics/05-kernels.html">
+     Kernels
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../30-ml-basics/11-data-issues.html">
+     Data Issues
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../30-ml-basics/51-semi-supervised.html">
+     Semi-supervised Learning
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../30-ml-basics/53-self-supervised.html">
+     Self-supervised Learning
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../30-ml-basics/61-fourier-transform.html">
+     Fourier Transform-based Representations
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../31-regression/00-regression.html">
+   Regression
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/11-lm-estimation.html">
+     Linear Models - Estimation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/12-lm-inference.html">
+     Linear Models - Inference
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/13-lm-diagnosis.html">
+     Linear Models - Diagnosis
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/14-lm-advanced.html">
+     Linear Models - Advanced Topics
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/21-generalized-linear-models.html">
+     Generalized Linear Models
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/22-logistic-regression.html">
+     Logistic Regression
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/23-multinomial-logitsitc.html">
+     Multinomial Logistic Regression
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/24-ordinal-logistic.html">
+     Ordinal Logistic Regression
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/25-poisson-regression.html">
+     Poisson Regression
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../32-classification/00-classification.html">
+   Classification
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../32-classification/11-support-vector-machine.html">
+     Support Vector Machine
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../32-classification/21-decision-tree.html">
+     Decision Tree
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../33-dimensionality-reduction/00-dimensionality-reduction.html">
+   Dimensionality Reduction
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/11-principal-component-analysis.html">
+     Principal Component Analysis
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/13-canonical-correlation-analysis.html">
+     Canonical Correlation Analysis
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/21-multidimensional-scaling.html">
+     Multidimensional Scaling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/23-graph-based-spectral-methods.html">
+     Graph-based Spectral Methods
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/25-t-SNE.html">
+     SNE and
+     <span class="math notranslate nohighlight">
+      \(t\)
+     </span>
+     -SNE
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/31-kernel-pca.html">
+     Kernel PCA
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/32-kernel-cca.html">
+     Kernel CCA
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../33-dimensionality-reduction/41-factor-analysis.html">
+     Factor Analysis
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../34-clustering/00-clustering.html">
+   Clustering
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../34-clustering/11-k-means.html">
+     <span class="math notranslate nohighlight">
+      \(k\)
+     </span>
+     -means clustering
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../34-clustering/13-agglomerative-methods.html">
+     Agglomerative Methods
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../34-clustering/31-spectral-clustering.html">
+     Spectral Clustering
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../34-clustering/41-gaussian-mixtures.html">
+     Gaussian Mixtures
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../35-graphical-models/00-graphical-models.html">
+   Graphical Models
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../35-graphical-models/03-random-walks.html">
+     Random Walks in Graphs
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../35-graphical-models/11-hidden-markov-models.html">
+     Hidden Markov Models
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../35-graphical-models/31-topic-models.html">
+     Topic Models
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../35-graphical-models/33-language-models.html">
+     Language Models
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../37-neural-networks/00-neural-networks.html">
+   Neural Networks
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/01-stochastic-gradient-descent.html">
+     Stochastic Gradient Descent
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/03-trainability.html">
+     Trainability
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/05-regularization.html">
+     Regularization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/11-autoencoders.html">
+     Autoencoders
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/13-variational-autoencoders.html">
+     Variational Autoencoders
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/31-sequential-models.html">
+     Sequential Models
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/41-GAN.html">
+     Generative Adversarial Networks
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 current active collapsible-parent">
+  <a class="reference internal" href="00-ml-for-graph-data.html">
+   For Graph-structured Data
+  </a>
+  <ul class="current collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="01-graph-basics.html">
+     Graph Basics
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="11-descriptive-analysis.html">
+     Descriptive Analysis
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="13-sampling-and-estimation.html">
+     Sampling and Estimation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="21-modeling.html">
+     Modeling
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     Topology Inference
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+</ul>
+
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../_sources/38-ml-for-graph-data/31-topology-inference.md"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.md</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/dennissxz/data-science-handbook"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/dennissxz/data-science-handbook/issues/new?title=Issue%20on%20page%20%2F38-ml-for-graph-data/31-topology-inference.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+            <a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+                    data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+                    title="Fullscreen mode"><i
+                        class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+        <div class="tocsection onthispage pt-5 pb-3">
+            <i class="fas fa-list"></i>
+            Contents
+        </div>
+        <nav id="bd-toc-nav">
+            <ul class="nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#link-prediction">
+   Link Prediction
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#scoring">
+     Scoring
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#classification">
+     Classification
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#logistic-regression">
+       Logistic Regression
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#latent-variables">
+       Latent Variables
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#association-networks">
+   Association Networks
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#correlation-networks">
+     Correlation Networks
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#buildup">
+       Buildup
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#p-value">
+       <span class="math notranslate nohighlight">
+        \(p\)
+       </span>
+       -value
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#multiple-testing">
+       Multiple Testing
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#partial-correlation-networks">
+     Partial Correlation Networks
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#partial-correlation">
+       Partial Correlation
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#id1">
+       Buildup
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#id2">
+       <span class="math notranslate nohighlight">
+        \(p\)
+       </span>
+       -value
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#id3">
+       Multiple Testing
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#case-study-of-gene">
+     Case Study of Gene
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#tomographic-inference">
+   Tomographic Inference
+  </a>
+ </li>
+</ul>
+
+        </nav>
+        
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="topology-inference">
+<h1>Topology Inference<a class="headerlink" href="#topology-inference" title="Permalink to this headline">¶</a></h1>
+<p>Can we do inference on graphs (e.g. connectivity) like we can do for usual data matrix? Do we have the concepts and tools such as statistical consistency, efficiency, and robustness? Unfortunately, there is at present no single coherent body of formal results on
+inference problems over graphs.</p>
+<p>The frameworks developed in these settings naturally take various forms, as dictated by context, with differences driven primarily by the nature of the topology to be inferred and the type of data available.</p>
+<div class="section" id="link-prediction">
+<h2>Link Prediction<a class="headerlink" href="#link-prediction" title="Permalink to this headline">¶</a></h2>
+<p>Given</p>
+<ul class="simple">
+<li><p>full knowledge of all the vertices attributes <span class="math notranslate nohighlight">\(\mathbf{x}=\left(x_{1}, \ldots, x_{N_{v}}\right)^{\top}\)</span></p></li>
+<li><p>status of some of the edges/non-edges <span class="math notranslate nohighlight">\(\boldsymbol{Y}^{obs}\)</span></p></li>
+</ul>
+<p>Infer</p>
+<ul class="simple">
+<li><p>the rest of the edges/non-edges <span class="math notranslate nohighlight">\(\boldsymbol{Y}^{miss}\)</span>, using <span class="math notranslate nohighlight">\(\boldsymbol{Y}^{obs}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span>.</p></li>
+</ul>
+<p>Sometimes we need additional modeling for the mechanisms of missingness.</p>
+<ul class="simple">
+<li><p>missing at random: probability of missing <span class="math notranslate nohighlight">\(Y_{ij}\)</span> only depends on the values of those other edge variables</p></li>
+<li><p>informative missingness: probability of missing <span class="math notranslate nohighlight">\(Y_{ij}\)</span> depends on themselves</p></li>
+</ul>
+<p>A basic framework:</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbb{P}\left(\mathbf{Y}^{m i s s} \mid \mathbf{Y}^{o b s}=\mathbf{y}^{o b s}, \mathbf{X}=\mathbf{x}\right)
+\]</div>
+<p>But there are many challenges to predict <span class="math notranslate nohighlight">\(Y_{ij}^{miss}\)</span> jointly. Many methods predict individual <span class="math notranslate nohighlight">\(Y_{ij}^{miss}\)</span>, as introduced below.</p>
+<div class="section" id="scoring">
+<h3>Scoring<a class="headerlink" href="#scoring" title="Permalink to this headline">¶</a></h3>
+<p>Scoring methods are based on the use of score functions. These methods are less formal than the model-based methods, but can be quite effective, and often serve as a useful starting point.</p>
+<p>For each potential edge <span class="math notranslate nohighlight">\((i, j) \in V^{(2)}_{miss}\)</span> , a score <span class="math notranslate nohighlight">\(s(i, j)\)</span> is computed. A set of predicted edges may then be returned by</p>
+<ul class="simple">
+<li><p>applying a threshold <span class="math notranslate nohighlight">\(s^*\)</span> to these scores, or</p></li>
+<li><p>ordering them and keeping those pairs with the top <span class="math notranslate nohighlight">\(n^*\)</span> values</p></li>
+</ul>
+<p>There are many scores, designed to assess certain structural characteristics of a graph <span class="math notranslate nohighlight">\(G^{obs}\)</span>.</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(- \operatorname{dist}_{G^{obs}}(i, j)\)</span>: inspired by the small-world principal, more close, more likely to form an edge</p></li>
+<li><p><span class="math notranslate nohighlight">\(\left\vert N_i^{obs} \cap N_j^{obs} \right\vert\)</span>: more common neighbors, more likely to form an edge</p></li>
+<li><p><span class="math notranslate nohighlight">\(\frac{\left\vert N_i^{obs} \cap N_j^{obs} \right\vert}{\left\vert N_i^{obs} \cup N_j^{obs} \right\vert}\)</span>: a standardized version of the above value, called <strong>Jaccard coefficient</strong></p></li>
+<li><p><span class="math notranslate nohighlight">\(\sum_{k \in N_{i}^{obs} \cap N_{j}^{o b s}} \log \frac{1}{\left|N_{k}^{o b s}\right|}\)</span>: variation of the above, weighting more heavily those common neighbors of <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(j\)</span> that are themselves <strong>not</strong> highly connected.</p></li>
+</ul>
+<p>There score functions only assess local structure in <span class="math notranslate nohighlight">\(G^{obs}\)</span>. For others defined through spectral characteristics of <span class="math notranslate nohighlight">\(G^{obs}\)</span>, see [SAND 261].</p>
+</div>
+<div class="section" id="classification">
+<h3>Classification<a class="headerlink" href="#classification" title="Permalink to this headline">¶</a></h3>
+<p>Can we approach link prediction as a classification problem?</p>
+<ul class="simple">
+<li><p>(binary) labels: <span class="math notranslate nohighlight">\(\boldsymbol{y} ^{obs}\)</span></p></li>
+<li><p>features: <span class="math notranslate nohighlight">\(\boldsymbol{x}^{obs}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{y} ^{obs}\)</span></p></li>
+<li><p>predict: <span class="math notranslate nohighlight">\(\boldsymbol{Y} ^{miss}\)</span>.</p></li>
+</ul>
+<div class="section" id="logistic-regression">
+<h4>Logistic Regression<a class="headerlink" href="#logistic-regression" title="Permalink to this headline">¶</a></h4>
+<p>A common choice is logistic regression.</p>
+<div class="math notranslate nohighlight">
+\[
+\log \left[
+\frac{\mathbb{P}_{\beta}\left(Y_{i j}=1 \mid \mathbf{Z}_{i j}=\mathbf{z}\right)}{\mathbb{P}_{\beta}\left(Y_{i j}=0 \mid \mathbf{Z}_{i j}=\mathbf{z}\right)}
+\right]=\beta^{\top} \mathbf{z}
+\]</div>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{Z} _{ij}\)</span> is a vector of explanatory variables indexed in the unordered pairs <span class="math notranslate nohighlight">\((i, j)\)</span>. In general it is some transformation of <span class="math notranslate nohighlight">\(\boldsymbol{Y} ^{obs}_{(-ij)}\)</span> and/or <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span>: <span class="math notranslate nohighlight">\(\mathbf{Z}_{i j}=\left(g_{1}\left(\mathbf{Y}_{(-i j)}^{o b s}, \mathbf{X}\right), \ldots, g_{K}\left(\mathbf{Y}_{(-i j)}^{o b s}, \mathbf{X}\right)\right)^{\top}\)</span></p>
+<ul>
+<li><p>network structure measures using <span class="math notranslate nohighlight">\(\boldsymbol{Y} ^{obs}_{-ij}\)</span>, e.g. score functions introduced above</p></li>
+<li><p>similarity measures between <span class="math notranslate nohighlight">\(X_{ik}\)</span> and <span class="math notranslate nohighlight">\(X_{jk}\)</span> for some (univariate) vertex attribute <span class="math notranslate nohighlight">\(k\)</span>.</p>
+<ul>
+<li><p>additive <span class="math notranslate nohighlight">\(X_{ik} + X_{jk}\)</span> for continuous values</p></li>
+<li><p>indicator <span class="math notranslate nohighlight">\(\mathbb{I} \left\{ X_{ik} = X_{jk} \right\}\)</span> for discrete values</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>the coefficient <span class="math notranslate nohighlight">\(\boldsymbol{\beta}\)</span> is assumed common to all pairs.</p></li>
+</ul>
+<p>In prediction, we compare the predicted value vs some threshold, e.g. 0.5</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbb{P}_{\hat{\beta}}\left(Y_{i j}^{m i s s}=1 \mid \mathbf{Z}_{i j}=\mathbf{z}\right)= \frac{\exp (\hat{\boldsymbol{\beta} } ^{\top} \boldsymbol{z} )}{1 + \exp (\hat{\boldsymbol{\beta} } ^{\top} \boldsymbol{z} )}
+\]</div>
+<p>Issues</p>
+<ul class="simple">
+<li><p>Need to consider the missing mechanism. If <span class="math notranslate nohighlight">\(\boldsymbol{Y} ^{miss}\)</span> is <strong>not</strong> at random, the accuracy of the classification approach is will suffer.</p></li>
+<li><p>In a graph <span class="math notranslate nohighlight">\(Y_{ij}\)</span> are usually not independent given explanatory variables <span class="math notranslate nohighlight">\(\boldsymbol{Z}\)</span>, which is assumed in logistic models (no formal work to date exploring the implications on prediction accuracy of ignoring possible dependencies in this manner). Introducing latent variable solve this issue, as discussed below</p></li>
+</ul>
+</div>
+<div class="section" id="latent-variables">
+<h4>Latent Variables<a class="headerlink" href="#latent-variables" title="Permalink to this headline">¶</a></h4>
+<p>The use of latent variables is an intuitively appealing way to indirectly model unobserved factors driving the formation of network structure. Let <span class="math notranslate nohighlight">\(\boldsymbol{M}\)</span> be an unknown random, symmetric <span class="math notranslate nohighlight">\(N_v \times N_v\)</span> matrix of latent variables, defined as</p>
+<div class="math notranslate nohighlight">
+\[
+\boldsymbol{M} = \boldsymbol{U} ^{\top} \boldsymbol{\Lambda} \boldsymbol{U} + \boldsymbol{E}
+\]</div>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{U}\)</span> is an <span class="math notranslate nohighlight">\(N_v \times N_v\)</span> random orthonormal matrix,</p></li>
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{\Lambda}\)</span> is an <span class="math notranslate nohighlight">\(N_v \times N_v\)</span> random diagonal matrix,</p></li>
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{E}\)</span> is a symmetric matrix of i.i.d. noise variables</p></li>
+</ul>
+<p>Then each entry of <span class="math notranslate nohighlight">\(\boldsymbol{M}\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[
+M_{ij} = \boldsymbol{u} _i ^{\top} \boldsymbol{\Lambda} \boldsymbol{u} _j + \epsilon_{ij}
+\]</div>
+<p>Intuition: The latent variable matrix <span class="math notranslate nohighlight">\(\boldsymbol{M}\)</span> is intended to capture effects of network structural characteristics or processes not already described by the observed explanatory variables <span class="math notranslate nohighlight">\(\boldsymbol{Z} _{ij}\)</span>. We add <span class="math notranslate nohighlight">\(M_{ij}\)</span> as an explanatory variable (random??). The model becomes</p>
+<div class="math notranslate nohighlight">
+\[
+\log \left[
+\frac{\mathbb{P}_{\beta}\left(Y_{i j}=1 \mid \mathbf{Z}_{i j}=\mathbf{z}, M_{ij}=m\right)}{\mathbb{P}_{\beta}\left(Y_{i j}=0 \mid \mathbf{Z}_{i j}=\mathbf{z}, M_{ij}=m\right)}
+\right]=\beta^{\top} \mathbf{z} + m
+\]</div>
+<p>Now <span class="math notranslate nohighlight">\(Y_{ij}\)</span> are conditionally independent given <span class="math notranslate nohighlight">\(\boldsymbol{Z} _{ij}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{M} _{ij}\)</span>, but conditionally <em>dependent</em> given only the <span class="math notranslate nohighlight">\(\boldsymbol{Z} _{ij}\)</span>.</p>
+<p>Distributions for <span class="math notranslate nohighlight">\(\boldsymbol{U} , \boldsymbol{\Lambda} , \boldsymbol{E}\)</span>.</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{U}\)</span>: uniform distribution on the space of all <span class="math notranslate nohighlight">\(N_v \times N_v\)</span> orthonormal matrices</p></li>
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{\Lambda} , \boldsymbol{E}\)</span>: multivariate Gaussian (facilitate MCMC sampling)</p></li>
+</ul>
+<p>Prediction: compare the expected probability of <span class="math notranslate nohighlight">\(Y_{ij}=1\)</span> with some threshold, which may be approximated numerically to any desired accuracy by the corresponding sample average of draws from the posterior indicated</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbb{E}\left(\frac{\exp \left\{\beta^{T} \mathbf{Z}_{i j}+M_{i j}\right\}
+}{1+\exp \left\{\beta^{T} \mathbf{Z}_{i j}+M_{i j}\right\}}
+ \mid \mathbf{Y}^{o b s}=\mathbf{y}^{o b s}, \mathbf{Z}_{i j}=\mathbf{z}\right)
+\]</div>
+<p>Cons: MCMC computation cost, mainly driven by the need to draw <span class="math notranslate nohighlight">\(N_v ^2\)</span> unobserved variables <span class="math notranslate nohighlight">\(U_{ij}\)</span>. Sol: let <span class="math notranslate nohighlight">\(\boldsymbol{U}\)</span> have only <span class="math notranslate nohighlight">\(K\)</span> non-zero column vectors for <span class="math notranslate nohighlight">\(K \ll N_v\)</span>, hence low-rank of <span class="math notranslate nohighlight">\(\boldsymbol{M}\)</span>. In fact <span class="math notranslate nohighlight">\(K=2, 3\)</span> work well in practice. [SAND 200 201]</p>
+<p>For a case study see [SAND pg.205].</p>
+</div>
+</div>
+</div>
+<div class="section" id="association-networks">
+<h2>Association Networks<a class="headerlink" href="#association-networks" title="Permalink to this headline">¶</a></h2>
+<p>Non-trivial level of association (e.g. correlation) between certain characteristics of the vertices, but is itself unobserved and must be inferred from measurements reflecting these characteristics.</p>
+<p>Given</p>
+<ul class="simple">
+<li><p>no knowledge of edge status anywhere</p></li>
+<li><p>relevant measurements at all of the vertices <span class="math notranslate nohighlight">\(\left\{ \boldsymbol{x}_1, \ldots, \boldsymbol{x}_{N_v} \right\}\)</span></p></li>
+</ul>
+<p>Infer</p>
+<ul class="simple">
+<li><p>edge status <span class="math notranslate nohighlight">\(\boldsymbol{Y}\)</span> using these measurements <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span></p></li>
+</ul>
+<div class="section" id="correlation-networks">
+<h3>Correlation Networks<a class="headerlink" href="#correlation-networks" title="Permalink to this headline">¶</a></h3>
+<p>An intuitive measure of similarity between a vertex pair <span class="math notranslate nohighlight">\((i, j)\)</span> is correlation.</p>
+<div class="math notranslate nohighlight">
+\[
+\operatorname{sim}(i, j)  = \rho_{ij} = \frac{\sigma_{ij}}{\sqrt{\sigma_{ii}\sigma_{jj}}}
+\]</div>
+<div class="section" id="buildup">
+<h4>Buildup<a class="headerlink" href="#buildup" title="Permalink to this headline">¶</a></h4>
+<p>Suppose for each vertex, we have <span class="math notranslate nohighlight">\(n\)</span> independent observations <span class="math notranslate nohighlight">\(\left\{ x_{i1}, \ldots, x_{in} \right\}\)</span>, e.g. gene expression levels from <span class="math notranslate nohighlight">\(n\)</span> experiments. We can then form an <span class="math notranslate nohighlight">\(n \times N_v\)</span> matrix <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span>, and compute the sample covariance matrix <span class="math notranslate nohighlight">\(\hat{\Sigma}=\frac{1}{n-1}(\mathbf{X}-\overline{\mathbf{X}})^{\top}(\mathbf{X}-\overline{\mathbf{X}})\)</span>, and hence obtain the entries <span class="math notranslate nohighlight">\(\hat{\sigma}\)</span> and compute <span class="math notranslate nohighlight">\(\hat{\rho}\)</span>.</p>
+<p>The corresponding association graph <span class="math notranslate nohighlight">\(G\)</span> is the graph with edge set</p>
+<div class="math notranslate nohighlight">
+\[
+E=\left\{\{i, j\} \in V^{(2)}: \rho_{i j} \neq 0\right\}
+\]</div>
+<p>Hence, the the task is to infer the set of non-zero correlations, which can be approached through hypotheses testing</p>
+<div class="math notranslate nohighlight">
+\[
+H_{0}: \rho_{i j}=0 \quad \text { versus } \quad H_{1}: \rho_{i j} \neq 0
+\]</div>
+<p>Problems</p>
+<ul class="simple">
+<li><p>what test statistics?</p></li>
+<li><p>whats the null distribution of that test statistic?</p></li>
+<li><p>there are <span class="math notranslate nohighlight">\(N_v (N_v - 1)/2\)</span> potential edges, which implies multiple testing problem.</p></li>
+</ul>
+</div>
+<div class="section" id="p-value">
+<h4><span class="math notranslate nohighlight">\(p\)</span>-value<a class="headerlink" href="#p-value" title="Permalink to this headline">¶</a></h4>
+<p>If <span class="math notranslate nohighlight">\((X_i, X_j)\)</span> follow bivariate Gaussian, then <span class="math notranslate nohighlight">\(\hat{\rho}_{ij}\)</span> under <span class="math notranslate nohighlight">\(H_0: \rho_{ij}=0\)</span> has a closed-form but the computation of <span class="math notranslate nohighlight">\(p\)</span>-values is hard. Therefore, some transformed versions of <span class="math notranslate nohighlight">\(\hat{\rho}_{ij}\)</span> may be preferable</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(z_{i j}=\frac{\hat{\rho}_{i j} \sqrt{n-2}}{\sqrt{1-\hat{\rho}_{i j}^{2}}} \sim t_{n-1}\)</span>, and under <span class="math notranslate nohighlight">\(H_0\)</span> is it robust to departures of <span class="math notranslate nohighlight">\(X_i\)</span> from Gaussianity.</p></li>
+<li><p><span class="math notranslate nohighlight">\(z_{i j}=\tanh ^{-1}\left(\hat{\rho}_{i j}\right)=\frac{1}{2} \log \left[\frac{\left(1+\hat{\rho}_{i j}\right)}{\left(1-\hat{\rho}_{i j}\right)} \right]\)</span> Fisher transformation.</p>
+<ul>
+<li><p>for bivariate Gaussian pairs, the distribution of <span class="math notranslate nohighlight">\(z_{ij}\)</span> does not have a simple exact form. But under <span class="math notranslate nohighlight">\(H_0\)</span> this distribution is well approximated by <span class="math notranslate nohighlight">\(\mathcal{N} (0, \frac{1}{n-3} )\)</span> even for moderately large <span class="math notranslate nohighlight">\(n\)</span>.</p></li>
+</ul>
+</li>
+</ul>
+<p>Permutation methods can also be used, but is computationally intensive for large <span class="math notranslate nohighlight">\(N_v\)</span>.</p>
+</div>
+<div class="section" id="multiple-testing">
+<h4>Multiple Testing<a class="headerlink" href="#multiple-testing" title="Permalink to this headline">¶</a></h4>
+<p>Recall the false discovery rate is defined to be</p>
+<div class="math notranslate nohighlight">
+\[
+\mathrm{FDR}=\mathbb{E}\left(\frac{R_{\text {false }}}{R} \mid R&gt;0\right) \mathbb{P}(R&gt;0)
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(R\)</span> is the number of rejections among our tests and <span class="math notranslate nohighlight">\(R_{\text {false }}\)</span> is the number of false rejections.</p>
+<p>To guarantee <span class="math notranslate nohighlight">\(\mathrm{FDR} \le \gamma\)</span>, we use the original method proposed by Benjamini and Hochberg [SAND 33],</p>
+<ul class="simple">
+<li><p>sort the <span class="math notranslate nohighlight">\(p\)</span>-values from our <span class="math notranslate nohighlight">\(N =N_v (N_v−1)/2\)</span> tests, yielding a sequence <span class="math notranslate nohighlight">\(p_{(1)}\le p_{(2)} \le \ldots \le p_{(N)}\)</span>,</p></li>
+<li><p>reject the null hypothesis for all potential edges for which <span class="math notranslate nohighlight">\(p_{(k)} \leq(k / N) \gamma\)</span>.</p></li>
+</ul>
+<p>Alternatively, we can use Storey [SAND 370] method and declare edges to be present using a particular <span class="math notranslate nohighlight">\(q\)</span>-value. Then only <span class="math notranslate nohighlight">\(qN\)</span> of the edges will be included erroneously.</p>
+<p>When dependency of tests [??] exists, the first method still holds, and there are other methods.</p>
+</div>
+</div>
+<div class="section" id="partial-correlation-networks">
+<h3>Partial Correlation Networks<a class="headerlink" href="#partial-correlation-networks" title="Permalink to this headline">¶</a></h3>
+<p>If it is felt desirable to construct a graph <span class="math notranslate nohighlight">\(G\)</span> where the inferred edges are more reflective of direct influence among vertices, rather than indirect influence through some common neighbor, the notion of partial correlation becomes relevant.</p>
+<div class="section" id="partial-correlation">
+<h4>Partial Correlation<a class="headerlink" href="#partial-correlation" title="Permalink to this headline">¶</a></h4>
+<dl class="simple myst">
+<dt>Definition (Partial correlation)</dt><dd><p>The partial correlation of attributes <span class="math notranslate nohighlight">\(X_i\)</span> and <span class="math notranslate nohighlight">\(X_j\)</span> of vertices <span class="math notranslate nohighlight">\(i, j \in V\)</span> w.r.t. the attributes <span class="math notranslate nohighlight">\(X_{k_1}, \ldots, X_{k_m}\)</span> of vertices <span class="math notranslate nohighlight">\(k_1, \ldots, k_m \in V \setminus \left\{ i, j \right\}\)</span>, is the correlation between <span class="math notranslate nohighlight">\(X_i\)</span> and <span class="math notranslate nohighlight">\(X_j\)</span> left over, after adjusting for those effects common to both. Let <span class="math notranslate nohighlight">\(S_m = \left\{ k_1, \ldots, k_m \right\}\)</span>, the partial correlation of <span class="math notranslate nohighlight">\(X_i\)</span> and <span class="math notranslate nohighlight">\(X_j\)</span> adjusting for <span class="math notranslate nohighlight">\(\boldsymbol{X} _{S_m} = (X_{k_1}, \ldots, X_{k_m}) ^{\top}\)</span> is defined as</p>
+<div class="math notranslate nohighlight">
+\[
+  \rho_{i j \mid S_{m}}=\frac{\sigma_{i j \mid S_{m}}}{\sqrt{\sigma_{i i\mid S_{m}} \sigma_{j j \mid S_{m}}} }
+  \]</div>
+</dd>
+</dl>
+<p>To compute it, let <span class="math notranslate nohighlight">\(\boldsymbol{W} _1 = (X_i, X_j) ^{\top}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{W} _2 = \boldsymbol{X} _{S_m}\)</span>. We can partition the covariance matrix to</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\operatorname{Cov}\left(\begin{array}{l}
+\mathbf{W}_{1} \\
+\mathbf{W}_{2}
+\end{array}\right)=\left[\begin{array}{ll}
+\boldsymbol{\Sigma}_{11} &amp; \boldsymbol{\Sigma}_{12} \\
+\boldsymbol{\Sigma}_{21} &amp; \boldsymbol{\Sigma}_{22}
+\end{array}\right]
+\end{split}\]</div>
+<p>Then the <span class="math notranslate nohighlight">\(2 \times 2\)</span> partial covariance matrix is</p>
+<div class="math notranslate nohighlight">
+\[
+\boldsymbol{\Sigma}_{11 \mid 2}=\boldsymbol{\Sigma}_{11}-\boldsymbol{\Sigma}_{12} \boldsymbol{\Sigma}_{22}^{-1} \boldsymbol{\Sigma}_{21}
+\]</div>
+<p>The values <span class="math notranslate nohighlight">\(\sigma_{ii\vert S_m}, \sigma_{jj\vert S_m}\)</span> and <span class="math notranslate nohighlight">\(\sigma_{ij\vert S_m} = \sigma_{ji\vert S_m}\)</span> are diagonal and off-diagonal elements of <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}_{11 \mid 2}\)</span></p>
+<p>In particular,</p>
+<ul class="simple">
+<li><p>if <span class="math notranslate nohighlight">\(m=0\)</span>, the partial correlation reduces to the Pearson correlation.</p></li>
+<li><p>if <span class="math notranslate nohighlight">\(\left(X_{i}, X_{j}, X_{k_{1}}, \ldots, X_{k_{m}}\right)^{\top}\)</span> has a multivariate Gaussian, then <span class="math notranslate nohighlight">\(\rho_{ij \vert S_m}=0\)</span> if and only if <span class="math notranslate nohighlight">\(X_i\)</span> and <span class="math notranslate nohighlight">\(X_j\)</span> are independent conditional on <span class="math notranslate nohighlight">\(\boldsymbol{X} _{S_m}\)</span>.</p></li>
+</ul>
+<div class="note admonition">
+<p class="admonition-title"> Computation Issue of <span class="math notranslate nohighlight">\(\hat{\rho}_{i j \mid S_{m}}\)</span></p>
+<ul class="simple">
+<li><p>To compute <span class="math notranslate nohighlight">\(\rho_{ij \mid S_m}\)</span> for all <span class="math notranslate nohighlight">\(S_m\)</span> is hard. It is more computationally efficient to use recursive expressions between <span class="math notranslate nohighlight">\(\rho_{ij \mid S_m}\)</span> and <span class="math notranslate nohighlight">\(\rho_{ij \mid S_{m-1}}\)</span>, see Anderson [SAND 11].</p></li>
+<li><p>If <span class="math notranslate nohighlight">\(m &lt;n\)</span> is large w.r.t. <span class="math notranslate nohighlight">\(n\)</span>, then <span class="math notranslate nohighlight">\(\hat{\rho}_{i j \mid S_{m}}\)</span> is a bad poor estimates of <span class="math notranslate nohighlight">\(\rho_{i j \mid S_{m}}\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(m=2\)</span> is advocated in the context of inference of biochemical networks.</p></li>
+<li><p>An algorithmic definition of this value is that it is the result of</p>
+<ol class="simple">
+<li><p>performing separate multiple linear regressions of the observations of <span class="math notranslate nohighlight">\(X_i\)</span> and <span class="math notranslate nohighlight">\(X_j\)</span>, respectively, on the observed values of <span class="math notranslate nohighlight">\(\boldsymbol{X} _{S_m}\)</span>, and then</p></li>
+<li><p>computing the empirical Pearson correlation between the two resulting sets of residuals.</p></li>
+</ol>
+</li>
+</ul>
+</div>
+<p>For more general distributions, however, zero partial correlation will not necessarily imply independence (the converse, of course, is still true).</p>
+</div>
+<div class="section" id="id1">
+<h4>Buildup<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h4>
+<p>Given <span class="math notranslate nohighlight">\(m\)</span>, there are many ways to define edge set using partial correlations. For instance, there is an edge <span class="math notranslate nohighlight">\(e(i,j)\)</span> iff the partial correlation <span class="math notranslate nohighlight">\(\rho_{i j \mid S_{m}} \neq 0\)</span> regardless of which <span class="math notranslate nohighlight">\(m\)</span> other vertices are conditioned upon.</p>
+<div class="math notranslate nohighlight">
+\[E=\left\{\{i, j\} \in V^{(2)}: \rho_{i j \mid S_{m}} \neq 0 \ \forall \ S_{m} \in V_{\backslash\{i, j\}}^{(m)}\right\}\]</div>
+<p>The testing problem is then</p>
+<div class="math notranslate nohighlight">
+\[
+H_{0}: \rho_{i j \mid S_{m}}=0 \quad \text { for some } \quad S_{m} \in V_{\backslash\{i, j\}}^{(m)}
+\]</div>
+<p>versus</p>
+<div class="math notranslate nohighlight">
+\[
+H_{1}: \rho_{i j \mid S_{m}} \neq 0 \quad \text { for all } \quad S_{m} \in V_{\backslash\{i, j\}}^{(m)}
+\]</div>
+<p>Then we select a test statistic, construct an appropriate null distribution, and adjust for multiple testing, as the correlation networks above.</p>
+</div>
+<div class="section" id="id2">
+<h4><span class="math notranslate nohighlight">\(p\)</span>-value<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h4>
+<p>The above test can be considered as a collection of smaller testing sub-problems of the form</p>
+<div class="math notranslate nohighlight">
+\[
+H_{0}^{\prime}: \rho_{i j \mid S_{m}}=0 \quad \text { versus } \quad H_{1}^{\prime}: \rho_{i j \mid S_{m}} \neq 0
+\]</div>
+<p>Under the joint Gaussian assumption, the null empirical distribution <span class="math notranslate nohighlight">\(\hat{\rho}_{ij \mid S_m}\)</span> is known but hard to compute the <span class="math notranslate nohighlight">\(p\)</span>-value. Fisher transformation can also be used here</p>
+<div class="math notranslate nohighlight">
+\[z_{i j \vert S_m}=\tanh ^{-1}\left(\hat{\rho}_{i j\vert S_m}\right)=\frac{1}{2} \log \left[\frac{\left(1+\hat{\rho}_{i j\vert S_m}\right)}{\left(1-\hat{\rho}_{i j\vert S_m}\right)} \right] \rightarrow \mathcal{N} \left( 0, \frac{1}{n-m-3} \right)\]</div>
+<p>Then, we can aggregate the <span class="math notranslate nohighlight">\(p\)</span>-values from sub-problems and define</p>
+<div class="math notranslate nohighlight">
+\[
+p_{i j, \max }=\max \left\{p_{i j \mid S_{m}}: S_{m} \in V_{\backslash\{i, j\}}^{(m)}\right\}
+\]</div>
+<p>to be the <span class="math notranslate nohighlight">\(p\)</span>-value for the original testing problem.</p>
+<div class="warning admonition">
+<p class="admonition-title"> Different from Correlation</p>
+<p>In practice, we may see</p>
+<ul class="simple">
+<li><p>significant <span class="math notranslate nohighlight">\(\rho_{ij} &gt; 0\)</span> but insignificant <span class="math notranslate nohighlight">\(\rho_{ij \mid S_m}\)</span>, or</p></li>
+<li><p>both significant <span class="math notranslate nohighlight">\(\rho_{ij} &gt; 0\)</span> and <span class="math notranslate nohighlight">\(\rho_{ij \mid S_m} &lt; 0\)</span>, i.e. reverse sign after conditioning.</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="id3">
+<h4>Multiple Testing<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h4>
+<p>Given the full collection of <span class="math notranslate nohighlight">\(\left\{ p_{ij, \max} \right\}\)</span>, over all potential edges <span class="math notranslate nohighlight">\((i, j)\)</span>, an FDR procedure may be applied to this collection to choose an appropriate testing threshold, analogous to the manner described above.</p>
+</div>
+</div>
+<div class="section" id="case-study-of-gene">
+<h3>Case Study of Gene<a class="headerlink" href="#case-study-of-gene" title="Permalink to this headline">¶</a></h3>
+<p>Example: Though experimentally infeasible, can we construct the gene regulatory (activation or repression) networks as a problem of network inference, given measurements sufficiently reflective of gene regulatory activity?</p>
+<dl class="simple myst">
+<dt>Definition</dt><dd><ul class="simple">
+<li><p><strong>Genes</strong> are sets of segments of DNA that encode information necessary to the proper functioning of a cell.</p></li>
+<li><p>such information is utilized in the <strong>expression</strong> of genes, whereby biochemical products, in the form of RNA or proteins, are created</p></li>
+<li><p>The <strong>regulation</strong> of a gene refers to the control of its expression.</p></li>
+<li><p>A gene that plays a role in controlling gene expression at transcription stage (DNA is copied to RNA) is called a <strong>transcription factor</strong> (TF), and the genes that are controlled by it, gene <strong>targets</strong>.</p></li>
+<li><p>The problem of inferring regulatory interactions among genes in this context refers to the identification of <strong>TF/target gene pairs</strong>.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Measurements</p>
+<ul class="simple">
+<li><p>The relative levels of RNA expression of genes in a cell, under a given set of conditions, can be measured efficiently on a genome-wide scale using <strong>microarray</strong> technologies.</p></li>
+<li><p>In particular, for each gene <span class="math notranslate nohighlight">\(i\)</span>, the vertex attribute vector <span class="math notranslate nohighlight">\(\boldsymbol{x}_i \in \mathbb{R} ^m\)</span> typically consists of RNA relative expression levels measured for that gene over a compendium of <span class="math notranslate nohighlight">\(m\)</span> experiments.</p></li>
+</ul>
+<p>Challenge</p>
+<ul class="simple">
+<li><p>a TF can actually be a target of another TF. And so direct correlation between measurements of a TF and a gene target may actually just be a reflection of the regulation of that TF by another TF. Sol: use partial correlation</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="tomographic-inference">
+<h2>Tomographic Inference<a class="headerlink" href="#tomographic-inference" title="Permalink to this headline">¶</a></h2>
+<p>Measurements are available only at vertices that are somehow at the ‘perimeter’ of the network, and it is necessary to infer the presence or absence of both edges and vertices in the ‘interior.’</p>
+<p>Given</p>
+<ul class="simple">
+<li><p>measurements at only a particular subset of vertices</p></li>
+</ul>
+<p>Infer</p>
+<ul class="simple">
+<li><p>topology of the rest</p></li>
+</ul>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./38-ml-for-graph-data"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        
+        <div class='prev-next-bottom'>
+            
+    <a class='left-prev' id="prev-link" href="21-modeling.html" title="previous page">Modeling</a>
+
+        </div>
+        
+        </div>
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By Dennis Zheng<br/>
+        
+            &copy; Copyright 2020.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+
+    
+  <script src="../_static/js/index.d3f166471bb80abb5163.js"></script>
+
+
+    
+  </body>
+</html>

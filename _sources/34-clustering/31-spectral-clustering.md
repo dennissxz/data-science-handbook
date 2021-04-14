@@ -399,26 +399,32 @@ Hence, to give labels for 2-clustering, we can discretize $\boldsymbol{v} _2$ of
 
 Suppose we know the parameters $p, q$. Now we analyze the discretization performance by quantify some 'distance' between $\boldsymbol{v} _2$ and $\boldsymbol{\hat{v}}_2$.
 
-First, we can write $\boldsymbol{A} = \mathbb{E} [\boldsymbol{A} ] + (\boldsymbol{A} - \mathbb{E} [\boldsymbol{A} ] )$ where the second term is noise. If noise $=0$, then the second eigenvectors of observed $\boldsymbol{A}$ is that of $\mathbb{E} [\boldsymbol{A}]$, which is $\frac{1}{\sqrt{n}} [\boldsymbol{1} ^{\top} \ -\boldsymbol{1} ^{\top}]$, whose its discretization perfectly reveals the label.
+First, we can write $\boldsymbol{A} = \mathbb{E} [\boldsymbol{A} ] + (\boldsymbol{A} - \mathbb{E} [\boldsymbol{A} ] )$ where the second term is noise. If noise $=0$, then the second eigenvectors of observed $\boldsymbol{A}$ is that of $\mathbb{E} [\boldsymbol{A}]$, which is $\frac{1}{\sqrt{n}} \left[\begin{array}{cc}
+\boldsymbol{1}   \\
+-\boldsymbol{1}  
+\end{array}\right]$, whose its discretization perfectly reveals the label.
 
 But the second eigenvector is hard to analyze (since its computation depends on the 1st eigenvector, which is also random). We introduce an equivalent analysis: compute the first eigenvector of $\boldsymbol{A} - \frac{p+q}{2} \boldsymbol{1}_n \boldsymbol{1}_n ^{\top}$, denoted $\boldsymbol{\hat{u}}$. And assign the label according to the sign of the entries in $\boldsymbol{\hat{u}}$. Some interpretation
 - avoid computing the first eigenvector which is not informative
 - approximately equivalent to compute the top eigenvector of the 'centered' version of $\boldsymbol{A}$: $\boldsymbol{C} \boldsymbol{A} \boldsymbol{C}$ where $\boldsymbol{C} = \boldsymbol{I} - \frac{1}{n}\boldsymbol{1} \boldsymbol{1} ^{\top}$.
 
-We expect $\boldsymbol{\hat{u}} \approx \frac{1}{\sqrt{n}} [\boldsymbol{1} \ -1]$. To analyze the error, let
-- truth: $\boldsymbol{M} = \mathbb{E} [\boldsymbol{A}]  - \frac{p+q}{2} \boldsymbol{1}_n \boldsymbol{1}_n ^{\top}$
+We expect $\boldsymbol{\hat{u}} \approx \frac{1}{\sqrt{n}} \left[\begin{array}{cc}
+\boldsymbol{1}   \\
+-\boldsymbol{1}  
+\end{array}\right]$. To analyze the error, let
+- truth: $\boldsymbol{M} = \mathbb{E} [\boldsymbol{A}]  - \frac{p+q}{2} \boldsymbol{1}_n \boldsymbol{1}_n ^{\top} = \frac{p-q}{2} \left[\begin{array}{cc}
+\boldsymbol{1}   \\
+-\boldsymbol{1}  
+\end{array}\right] [\boldsymbol{1} ^{\top} \ -\boldsymbol{1} ^{\top}]$
 - observed: $\widehat{\boldsymbol{M}} = \boldsymbol{A} - \frac{p+q}{2} \boldsymbol{1}_n \boldsymbol{1}_n ^{\top}$.
 - perturbation: $\boldsymbol{H} =  \widehat{\boldsymbol{M}} - \boldsymbol{M} = \boldsymbol{A} - \mathbb{E} [\boldsymbol{A} ]$.
 
-By applying [Davis-Kahan theorem](davis-kahan) to SBM, let $r=1$, then
+By applying [Davis-Kahan theorem](davis-kahan) to SBM and use the distance measure defined there, let $r=1$, then
 
 $$
-\operatorname{dist}(\hat{\boldsymbol{u}}, \boldsymbol{u} ) = \left\| \hat{\boldsymbol{u}} ^{\top} \boldsymbol{\hat{u}} - \boldsymbol{u} ^{\top} \boldsymbol{u} \right\|_2 \le \frac{\left\| \boldsymbol{A} - \mathbb{E} [\boldsymbol{A} ] \right\|  }{\frac{p-q}{2} n - 0 - \left\| \boldsymbol{A} - \mathbb{E} [\boldsymbol{A}]  \right\|  }
+\operatorname{dist}(\hat{\boldsymbol{u}}, \boldsymbol{u} ) = \left\| \hat{\boldsymbol{u}} \hat{\boldsymbol{u}}^{\top} - \boldsymbol{u}  \boldsymbol{u} ^{\top}\right\|_2 \le \frac{\left\| \boldsymbol{A} - \mathbb{E} [\boldsymbol{A} ] \right\|  }{\frac{p-q}{2} n - 0 - \left\| \boldsymbol{A} - \mathbb{E} [\boldsymbol{A}]  \right\|  }
 $$
 
-```{margin}
-The lower bound $\frac{b\log n}{n}$ is to [ensure](ER-random-graph) the graph is connected, since most algorithms applied only to relatively dense graphs [[link](https://arxiv.org/pdf/1202.1499.pdf) pg.3]. Also see [here](https://arxiv.org/pdf/1311.4115.pdf) and [here](https://arxiv.org/pdf/1502.06775.pdf).
-```
 
 Hence if $p \gg q$, then the error is low. Can we quantify $\left\| \boldsymbol{A} - \mathbb{E} [\boldsymbol{A} ] \right\|$? By [Bernstein inequality](bernstein-inequality), for $p > q \ge \frac{b \log n}{n}$,
 
@@ -426,4 +432,20 @@ $$
 \frac{\left\| \boldsymbol{A} - \mathbb{E} [\boldsymbol{A} ] \right\|  }{\frac{p-q}{2} n - \left\| \boldsymbol{A} - \mathbb{E} [\boldsymbol{A}]  \right\|} \le \mathcal{O} \left( \frac{\sqrt{np \log n}}{(p-q)n}  \right)
 $$
 
-Hence, when $(p-q)n \gg \sqrt{n p \log n}$, discretizing $\boldsymbol{\hat{u}}$ exactly recover $\boldsymbol{u}$.
+Therefore, when $(p-q)n \gg \sqrt{n p \log n}$, discretizing $\boldsymbol{\hat{u}}$ approximately recover $\boldsymbol{u}$.
+
+
+:::{admonition,note,dropdown} On distance measure
+
+If $\operatorname{dist}(\boldsymbol{u} , \hat{\boldsymbol{u} }) =\left\| \hat{\boldsymbol{u}} \hat{\boldsymbol{u}}^{\top} - \boldsymbol{u}  \boldsymbol{u} ^{\top}\right\|_2$ is small, then $\left\vert \langle \boldsymbol{u} , \hat{\boldsymbol{u}} \rangle \right\vert$ is large, but some entires of $\hat{\boldsymbol{u}}$ might have opposite sign as $\boldsymbol{u}$. Hence, it is better to use other distance measure, e.g. $\left\| \cdot \right\| _\infty$, as developed by Abbe, Fan, Wang [2020].
+
+:::
+
+:::{admonition,note,dropdown} On lower bound of $p, q$
+
+The lower bound $\frac{b\log n}{n}$ is to [ensure](ER-random-graph) the graph is connected, since most algorithms applied only to relatively dense graphs [[link](https://arxiv.org/pdf/1202.1499.pdf) pg.3]. Also see [here](https://arxiv.org/pdf/1311.4115.pdf) and [here](https://arxiv.org/pdf/1502.06775.pdf).
+
+- When $p = \frac{a \log n}{n} , q = \frac{b \log n}{n}$, (i.e., sparse regime), then $d_i = \mathcal{O} (\log n)$ ('constant' degree). Need $a-b \gg \sqrt{a}$ for the algorithm to successfully detect cluster.
+- When $p = \frac{a}{n}, q=\frac{b}{n}$ and $a - b \ge 2 \sqrt{a + b}$, then it is possible to detect cluster that is correlated with true cluster, otherwise impossible. [Mossel, Newman, Sly 2015]
+
+:::

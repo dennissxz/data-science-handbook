@@ -213,8 +213,8 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../13-statistics/25-two-sample-tests.html">
-     Two Sample Mean Tests
+    <a class="reference internal" href="../13-statistics/23-common-tests.html">
+     Common Tests
     </a>
    </li>
    <li class="toctree-l2">
@@ -595,6 +595,11 @@
      Kernel CCA
     </a>
    </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="41-factor-analysis.html">
+     Factor Analysis
+    </a>
+   </li>
   </ul>
   <i class="fas fa-chevron-down">
   </i>
@@ -727,6 +732,11 @@
    <li class="toctree-l2">
     <a class="reference internal" href="../38-ml-for-graph-data/21-modeling.html">
      Modeling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../38-ml-for-graph-data/31-topology-inference.html">
+     Topology Inference
     </a>
    </li>
   </ul>
@@ -991,7 +1001,7 @@ U_{i}=\boldsymbol{v}_{i}^{\top} \boldsymbol{x}_{i}, \quad V_{i}=\boldsymbol{w}_{
 <p>The uncorrelated constraint, for example, when solving for the second pair <span class="math notranslate nohighlight">\((U_2, V_2)\)</span>, are</p>
 <div class="math notranslate nohighlight">
 \[
-\operatorname{Cov}\left(U_{1}, U_{2}\right)=0, \quad \operatorname{Cov}\left(V_{1}, V_{2}\right)=0, \quad \operatorname{Cov}\left(U_{1}, V_{2}\right)=0, \quad \operatorname{Cov}\left(U_{2}, V_{1}\right)=0
+\operatorname{Cov}\left(U_{1}, U_{2}\right)=0, \ \operatorname{Cov}\left(V_{1}, V_{2}\right)=0, \ \operatorname{Cov}\left(U_{1}, V_{2}\right)=0, \ \operatorname{Cov}\left(U_{2}, V_{1}\right)=0
 \]</div>
 </div>
 <div class="section" id="spectral-decomposition">
@@ -1007,8 +1017,12 @@ the eigenvalues <span class="math notranslate nohighlight">\(\rho^2\)</span>’s
 \[
 \boldsymbol{\Sigma}_{xx}^{-1/2} \boldsymbol{\Sigma}_{xy} \boldsymbol{\Sigma}_{yy}^{-1} \boldsymbol{\Sigma}_{yx} \boldsymbol{\Sigma}_{xx}^{-1/2} \boldsymbol{u} = \rho^2 \boldsymbol{u}
 \]</div>
-<p>is considered instead for the computational efficiency. Note that the two matrices possess the <strong>same</strong> eigenvalues and their eigenvectors are linearly related by <span class="math notranslate nohighlight">\(\boldsymbol{v} = \boldsymbol{\Sigma}_{{xx}}^{-1/2} \boldsymbol{u}\)</span>.</p>
-<p>Then we can find <span class="math notranslate nohighlight">\(\boldsymbol{w} \propto \boldsymbol{\Sigma}_{y y}^{-1} \boldsymbol{\Sigma}_{y x} \boldsymbol{v}\)</span> subject to the constraints.</p>
+<p>is considered instead for the computational efficiency. Note that the two matrices possess the <strong>same</strong> eigenvalues and their eigenvectors are linearly related by <span class="math notranslate nohighlight">\(\boldsymbol{v} = \boldsymbol{\Sigma}_{{xx}}^{-1/2} \boldsymbol{u}\)</span>. Note that <span class="math notranslate nohighlight">\(\boldsymbol{v}\)</span> need to be normalized to satisfy the constraint <span class="math notranslate nohighlight">\(\boldsymbol{v}^{\top} \boldsymbol{\Sigma}_{x x} \boldsymbol{v}=1\)</span>.</p>
+<div class="margin sidebar">
+<p class="sidebar-title"></p>
+<p>After normalization, we may not have <span class="math notranslate nohighlight">\(\left\| \boldsymbol{v}  \right\| =1\)</span> and <span class="math notranslate nohighlight">\(\left\| \boldsymbol{w}  \right\| = 1\)</span>.</p>
+</div>
+<p>Then we can find <span class="math notranslate nohighlight">\(\boldsymbol{w} \propto \boldsymbol{\Sigma}_{y y}^{-1} \boldsymbol{\Sigma}_{y x} \boldsymbol{v}\)</span> subject to the constraint <span class="math notranslate nohighlight">\(\boldsymbol{w}^{\top} \boldsymbol{\Sigma}_{yy} \boldsymbol{w}=1\)</span>.</p>
 <p>Note that the maximal embedding dimension is <span class="math notranslate nohighlight">\(\max(k) = \min(d_x, d_y)\)</span>.</p>
 <div class="dropdown seealso admonition">
 <p class="admonition-title"> <em>Derivation</em></p>
@@ -1094,17 +1108,34 @@ the eigenvalues <span class="math notranslate nohighlight">\(\rho^2\)</span>’s
 </div>
 <div class="section" id="properties">
 <h2>Properties<a class="headerlink" href="#properties" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
+<ul>
 <li><p><span class="math notranslate nohighlight">\(\operatorname{Var}\left(U_{k}\right) = \operatorname{Var}\left(V_{k}\right)=1\)</span></p></li>
 <li><p><span class="math notranslate nohighlight">\(0 = \operatorname{Cov}\left(U_{k}, U_{\ell}\right) = \operatorname{Cov}\left(V_{k}, V_{\ell}\right)=\operatorname{Cov}\left(U_{k}, V_{\ell}\right) = \operatorname{Cov}\left(U_{\ell}, V_{k}\right)\text { for } k \neq \ell\)</span></p></li>
 <li><p><span class="math notranslate nohighlight">\(\operatorname{Cov}\left(U_{i}, V_{i}\right)=\rho_{i}\)</span>, where <span class="math notranslate nohighlight">\(\rho_i^2\)</span> is the <span class="math notranslate nohighlight">\(i\)</span>-th largest eigenvalue of the following matrices</p>
-<ul>
+<ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(d_x \times d_x \quad \boldsymbol{C} \boldsymbol{C}^{\top}=\boldsymbol{\Sigma}_{xx}^{-1 / 2} \boldsymbol{\Sigma}_{xy} \boldsymbol{\Sigma}_{yy}^{-1} \boldsymbol{\Sigma}_{yx} \boldsymbol{\Sigma}_{xx}^{-1 / 2}\)</span> where <span class="math notranslate nohighlight">\(\boldsymbol{C} =\boldsymbol{\Sigma}_{xx}^{-1 / 2} \boldsymbol{\Sigma}_{xy} \boldsymbol{\Sigma}_{yy}^{-1/2}\)</span></p></li>
 <li><p><span class="math notranslate nohighlight">\(d_y \times d_y \quad \boldsymbol{C}^{\top} \boldsymbol{C}=\boldsymbol{\Sigma}_{yy}^{-1 / 2} \boldsymbol{\Sigma}_{yx} \boldsymbol{\Sigma}_{xx}^{-1} \boldsymbol{\Sigma}_{xy} \boldsymbol{\Sigma}_{yy}^{-1 / 2}\)</span></p></li>
 <li><p><span class="math notranslate nohighlight">\(d_x \times d_x \quad \boldsymbol{A}=\boldsymbol{\Sigma}_{xx}^{-1} \boldsymbol{\Sigma}_{xy} \boldsymbol{\Sigma}_{yy}^{-1} \boldsymbol{\Sigma}_{yx}=\boldsymbol{\Sigma}_{xx}^{-1 / 2} \boldsymbol{C} \boldsymbol{C}^{\top} \boldsymbol{\Sigma}_{xx}^{1 / 2}\)</span></p></li>
 <li><p><span class="math notranslate nohighlight">\(d_y \times d_y \quad \boldsymbol{B}=\boldsymbol{\Sigma}_{yy}^{-1} \boldsymbol{\Sigma}_{yx} \boldsymbol{\Sigma}_{xx}^{-1} \boldsymbol{\Sigma}_{xy}=\boldsymbol{\Sigma}_{yy}^{-1 / 2} \boldsymbol{C}^{\top} \boldsymbol{C} \boldsymbol{\Sigma}_{yy}^{1 / 2}\)</span></p></li>
 <li><p>In fact, they are <a class="reference internal" href="../11-math/21-linear-algebra.html#similar-matrix"><span class="std std-ref">similar</span></a> <span class="math notranslate nohighlight">\(\boldsymbol{A} \sim \boldsymbol{C} \boldsymbol{C} ^{\top}\)</span>, <span class="math notranslate nohighlight">\(\boldsymbol{B} \sim \boldsymbol{C} ^{\top} \boldsymbol{C}\)</span>, and <span class="math notranslate nohighlight">\(\boldsymbol{C} \boldsymbol{C} ^{\top}\)</span> share the same nonzero eigenvalues with <span class="math notranslate nohighlight">\(\boldsymbol{C} ^{\top} \boldsymbol{C}\)</span> (hint: SVD).</p></li>
 </ul>
+</li>
+<li><p>The above identities can be summarized as</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+  \operatorname{Cov}\left([U_{1}, \cdots, U_{k}, V_{1}, \cdots, V_{k}]\right)=\left[\begin{array}{cc}
+  \boldsymbol{I}_{k} &amp; \boldsymbol{R}_{k} \\
+  \boldsymbol{R}_{k} &amp; \boldsymbol{I}_{k}
+  \end{array}\right], \quad \boldsymbol{R}_{k}=\operatorname{diag}\left[\rho_{1}^{*}, \cdots, \rho_{k}^{*}\right]
+  \end{split}\]</div>
+<p>If sort in canonical variate pairs,</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+  \operatorname{Cov}\left([U_{1}, V_{1}, \cdots, U_{k}, V_{k}]\right)=\operatorname{diag}\left[\boldsymbol{D}_{1}, \cdots, \boldsymbol{D}_{k}\right], \quad \boldsymbol{D}_{i}=\left[\begin{array}{cc}
+  1 &amp; \rho_{i}^{*} \\
+  \rho_{i}^{*} &amp; 1
+  \end{array}\right]
+  \end{split}\]</div>
 </li>
 <li><p>Invariance property: Canonical correlations <span class="math notranslate nohighlight">\(\rho_i\)</span>’s between <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{y}\)</span> are the same as those between <span class="math notranslate nohighlight">\(\boldsymbol{A} _1 \boldsymbol{x}  + \boldsymbol{c}_1\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{A} _2 \boldsymbol{y}  + \boldsymbol{c} _2\)</span>, where both <span class="math notranslate nohighlight">\(\boldsymbol{A} _1\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{A} _2\)</span> are non-singular square matrices and their computation can be based on either the partitioned covariance matrix or the partitioned correlation matrix. However, the canonical coefficients contained in <span class="math notranslate nohighlight">\(\boldsymbol{v} _k\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{w} _k\)</span> are <strong>not</strong> invariant under the same transform, nor their estimates.</p></li>
 </ul>
@@ -1169,7 +1200,7 @@ H_{0}(k): \rho_{k+1}=\cdots=\rho_{k}=0
 <p>Unlike PCA, CCA has discriminative power in some cases. \boldsymbol{I}n the comparison below, in the first scatter-plot, the principal direction is the discriminative direction, while in the second plot it is not. The 3rd (same as the 2nd) and the 4th plots corresponds to <span class="math notranslate nohighlight">\(\boldsymbol{x} \in \mathbb{R} ^2\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{y} \in \mathbb{R} ^2\)</span>. The two colors means two kinds of data points in the <span class="math notranslate nohighlight">\(n\times 4\)</span> data set, but the color labels are shown to CCA. The CCA solutions to <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> (3rd plot) is the direction <span class="math notranslate nohighlight">\((-1,1)\)</span> and to <span class="math notranslate nohighlight">\(\boldsymbol{y}\)</span> (4th plot) is the direction <span class="math notranslate nohighlight">\((-1,-1)\)</span>. Because they are the highest correlation pair of directions.</p>
 <div class="myclass figure align-default" id="cca-has-disc-power">
 <a class="reference internal image-reference" href="../_images/cca-has-disc-power.png"><img alt="" src="../_images/cca-has-disc-power.png" style="width: 90%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 68 </span><span class="caption-text">CCA has discriminative power [Livescu 2021]</span><a class="headerlink" href="#cca-has-disc-power" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 71 </span><span class="caption-text">CCA has discriminative power [Livescu 2021]</span><a class="headerlink" href="#cca-has-disc-power" title="Permalink to this image">¶</a></p>
 </div>
 </div>
 <div class="section" id="overfitting">
