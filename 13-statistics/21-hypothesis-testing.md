@@ -147,7 +147,7 @@ $$\hat \theta \pm c_\alpha \cdot \mathrm{se}(\hat \theta)$$
 where $c_\alpha$ is a coefficient that depends on $\alpha$ such that the interval cover $(1-\alpha)$ of the cases.
 
 
-:::{admonition,note} Duality of Hypothesis Testing and Confidence Interval
+:::{admonition,note,dropdown} Duality of Hypothesis Testing and Confidence Interval
 
 Consider an example of testing $H_0: \mu = \mu_0$ against $H_1: \mu \ne \mu_0$. Suppose a random sample $X_1, X_2, \ldots, X_n$ drawn from a normal distribution with unknown mean $\mu$ and known variance $\sigma^2$. Intuitively, if $\left\vert \bar{X} - \mu_0 \right\vert$ is sufficiently large, say larger than $x_0$, then $H_0$ is favorable to be rejected based on the observed random sample. By picking $x_0 = z_{\alpha/2} \frac{\sigma}{\sqrt{n}}$, we assure that the probability of Type I error is $\alpha$. Then, $H_0$ **cannot** be rejected for $X = \left\{ X_1, X_2, \ldots, X_n \right\}$ over the set
 
@@ -171,6 +171,16 @@ Clearly, it can be checked that $X \in A$ **if and only if** $\mu_0 \in C$. In o
 
 :::
 
+In multivariate setting, the extension of confidence interval is confidence region. A $100(1-\alpha) \%$ confidence region $R(\boldsymbol{X})$ for parameter $\boldsymbol{\theta}$ based on a $p$-variate random sample $\boldsymbol{X} = \left\{ \boldsymbol{x} _1, \ldots, \boldsymbol{x} _n \right\}$ is defined as
+
+$$
+P(\boldsymbol{\theta} \in R(\boldsymbol{X}))=1-\alpha
+$$
+
+in the sense that among all possible sample data $\boldsymbol{X}$, the parameter vector $\boldsymbol{\theta}$ is in the the region $R(\boldsymbol{X} )$ for $100(1-\alpha) \%$ of the time.
+
+The shape of the confidence region in $\mathbb{R} ^p$ can be ellipsoid, or hyper-rectangular, etc.
+
 
 ### Credible Interval
 
@@ -179,6 +189,20 @@ In Bayesian statistics, a credible interval is constructed from the posterior di
 
 
 ### Bonferroni Correction
+
+When there are $p$ confidence intervals $C_k$ for parameter $\mu_k$, each of confidence level $\left(1-\alpha_{k}\right) 100 \%$, we like to consider them simultaneously: what's the probability that $C_k$ cover $\mu_k$ for all $k=1, 2, \ldots, p$?
+
+$$
+\begin{aligned}
+\mathbb{P} \left(C_{k}=\text { true }, k=1, \cdots, p\right) &=1-\mathbb{P}\left(C_{k}=\text { false, for some } k\right) \\
+& \geq 1-\sum_{k=1}^{p} \mathbb{P}\left(C_{k}=\text { false }\right) \\
+& =1-\sum_{k=1}^{p}\left(1-\mathbb{P}\left(C_{k}=\text { true }\right)\right) \\
+&=1-\sum_{k=1}^{p} \alpha_{k} \\
+\end{aligned}
+$$
+
+Suppose we want them hold simultaneously w.p. at least $1-\alpha$, then a convenient choice is to pick $\alpha_k = \frac{\alpha}{p}$ for all $k = 1, 2, \ldots, p$.
+
 
 ## Likelihood Ratio Test
 
@@ -212,6 +236,7 @@ Distribution of test statistic $-2\log \lambda$
 
 The “negative twice log likelihood ratio” was first called “$G^2$-statistic” by Sir R.A. Fisher and later re-named by McCullagh and Nelder as the **deviance** between the two models respectively under $H_0$ and $H_1$ in their theory of Generalized Linear Model.
 
+(UIT)=
 ## Union Intersection Test (UIT)
 
 Union intersection tests are used in multivariate setting. It express the multivariate null hypothesis as an intersection of the family of univariate null hypotheses in terms of all possible linear combinations of the $p$ variables. The multivariate null hypothesis is not rejected if and only if all the univariate null hypotheses are not rejected.
