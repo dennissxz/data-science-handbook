@@ -59,6 +59,8 @@ How do we estimate $\boldsymbol{L}$ and $\boldsymbol{\Psi}$?
 
 ### Principal Component Method
 
+Aka principal component factor analysis (PCFA).
+
 The principal component method is easy to implement, thus commonly used in preliminary estimation of factor loadings. Consider EVD of $\boldsymbol{\Sigma}$:
 
 $$\boldsymbol{\Sigma} = \boldsymbol{U} \boldsymbol{\Lambda} \boldsymbol{U} ^{\top} = (\boldsymbol{U} \sqrt{\boldsymbol{\Lambda}})(\boldsymbol{U} \sqrt{\boldsymbol{\Lambda}}) ^{\top}$$
@@ -85,19 +87,34 @@ The proportion of the total sample variance due to the $j$-th common factor is $
 
 ### Maximum Likelihood Method
 
-Assume the common factors $\boldsymbol{F}$ and the specific factors $\boldsymbol{\varepsilon}$ are assumed to be normally distributed.
+Aka maximum likelihood factor analysis (MLFA).
 
-Smaller RSS.
+Assume the common factors $\boldsymbol{f}$ and the specific factors $\boldsymbol{\varepsilon}$ are to be normally distributed, then $\boldsymbol{x} \sim \mathcal{N} _d (\boldsymbol{\mu} , \boldsymbol{\Sigma})$, where $\boldsymbol{\Sigma} = \boldsymbol{L} \boldsymbol{L} ^{\top}  + \boldsymbol{\Psi}$. To estimate $\boldsymbol{\mu} , \boldsymbol{L},$ and $\boldsymbol{\Psi}$, first note that the non-uniqueness nature of $\boldsymbol{L}$: orthogonal transformation $\boldsymbol{L} \boldsymbol{Q}$ gives the same $\boldsymbol{\Sigma}$. Hence, we add the constraint $\boldsymbol{L} ^{\top} \boldsymbol{\Psi} ^{-1} \boldsymbol{L}$ is diagonal, i.e., the off-diagonal elements of the above matrix are restricted to zero, where $\frac{k(k-1)}{2}$ constraints are imposed. For details, see J&W section 9A on Pg. 527.
 
-J&W section 9A on Pg. 527.
+Note that
+- MLFA is scale-invariant.
+- In MLFA considering $d+1$ instead of $k$ factors may change the loadings of the first $k$ factors.
+- In general, different methods will yield different factor loadings $\boldsymbol{L}$. One may compare
+  - the Frobenius norm of the residual correlation matrix, which is defined as $\boldsymbol{S} - \hat{\boldsymbol{L}}\hat{\boldsymbol{L}} ^{\top} - \hat{\boldsymbol{\Psi}}$ or $\boldsymbol{R} − \hat{\boldsymbol{L}} \hat{\boldsymbol{L}} ^{\top}-\hat{\boldsymbol{\Psi}}$, depending on which matrix is being factorized.
+  - proportions of variation explained
+  - interpretability of loadings
 
 ## Relation to
 
 PCA
-
-- same: both for dimension reduction and easy interpretation.
-- distinct: While PCA is generally used as a mathematical technique, factor analysis is a statistical model.
+- similarity
+  - both for dimension reduction, easy interpretation, and beginning stage of exploratory data analysis
+  - PCFA and PCA both use EVD of covariance matrix
+- difference
+  - PCFA and PCA are NOT scale invariant, but MLFA is.
+  - In MLFA considering $d+1$ instead of $k$ factors may change the loadings of the first $k$ factors. In PCA and PCFA will not.
+  - Calculation of PCA scores $\boldsymbol{z}_i$ is relatively computational straightforward. Calculation of factor scores $\boldsymbol{f}_i$ is computationally more complex.
+  - PCA is generally used as a mathematical technique, factor analysis is a statistical model with many assumptions
+  - PCA focuses on mapping $\boldsymbol{W}$ from observed to latent, while FA focuses on mapping $\boldsymbol{L}$ from latent to observed.
 
 Others
+- Factor model is a type of latent variable model, which has been the origin of the development of many popular statistical models, including Structured Equation Models, Independent Component Analysis, and Probability Principal Component Analysis.
 
-Factor model is a type of latent variable model, which has been the origin of the development of many popular statistical models, including Structured Equation Models, Independent Component Analysis, and Probability Principal Component Analysis.
+More topics:
+- factor scores
+- factor rotation
