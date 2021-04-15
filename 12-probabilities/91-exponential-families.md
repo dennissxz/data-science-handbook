@@ -113,7 +113,7 @@ Bivariate Gaussian density and ellipse
 The MLE of $\boldsymbol{\mu}$ and $\boldsymbol{\Sigma}$ are respectively
 
 ```{margin}
-For derivation see [here](MLE-Gaussian-derivation)=
+For derivation see [here](MLE-Gaussian-derivation).
 ```
 
 $$
