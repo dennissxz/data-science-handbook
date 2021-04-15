@@ -377,10 +377,14 @@ Simultaneous confidence interval
 
   - Cons: Both Bonferroni and Scheffé intervals are **wider** (hence less accurate) than the ordinary confidence intervals which are constructed with separate confidence level of $(1-\alpha)$.
 
+    ```{margin}
+    Are Scheffe interval boundaries tangent to the ellipsoid confidence region??
+    ```
+
     :::{figure} test-multi-Bon-Sch
     <img src="../imgs/test-multi-Bon-Sch.png" width = "100%" alt=""/>
 
-    Bonferroni (left) and Scheffe (left) simultaneous C.I.s.
+    Bonferroni (left) and Scheffe (right) simultaneous C.I.s.
     :::
 
   - If we just want to conduct univariate tests of means $H_0: \mu_k = 0$ for each $k = 1, 2, \ldots, p$, i.e. $\boldsymbol{a} _k = \boldsymbol{e} _k$, then the C.I. has the general form $\bar{x}_{k} \pm c_{n, p, \alpha} \sqrt{\frac{s_{k k}}{n}}$ for some multiplier $c_{n, p, \alpha}$ depending on $n,p,\alpha$. The above methods can be summarized as follows
