@@ -62,3 +62,9 @@ Term 1
 
 Term 2
 : Definition
+
+## Hiding
+
+[docu](https://jupyterbook.org/interactive/hiding.html?highlight=hide)
+
+- add `:tags: [hide-input]` to code cell
