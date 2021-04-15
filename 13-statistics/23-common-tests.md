@@ -292,7 +292,7 @@ Properties
   - Invariant under transformation of $\boldsymbol{x}$:$\boldsymbol{C} \boldsymbol{x} + \boldsymbol{d}$, where $\boldsymbol{C}$ is non-singular.
 
   - Related to other distribution:
-    - $T^{2}(p, k)=\frac{k p}{k-p+1} F(p, k-p+1)$
+    - $T^{2}(p, k)=\frac{k p}{k-p+1} F(p, k-p+1)$, usually used to find quantile $T^2(\alpha)$.
     - $T^{2}(1, k)=t^{2}(k)=F(1, k)$
     - $T^{2}(p, \infty) \rightarrow \chi ^2 _p$ by CLT, without assuming normality of the distribution of $\boldsymbol{x}$
   - Related to Mahalanobis distance: $T^{2}=n D_{\boldsymbol{S}}^{2}(\overline{\boldsymbol{x}}, \boldsymbol{\mu})$
