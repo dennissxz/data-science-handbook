@@ -115,7 +115,7 @@ Definitions
   \left\vert \boldsymbol{A} - \lambda \boldsymbol{I}  \right\vert = 0
   $$
 
-For a fixed $\lambda$, the non-zero solution $\boldsymbol{v}$ to $\boldsymbol{A} \boldsymbol{v} = \lambda \boldsymbol{v}$ is called an eigenvector of $\boldsymbol{A}$ corresponding to $\lambda$.
+For a fixed $\lambda$, the non-zero solution $\boldsymbol{v}$ to $\boldsymbol{A} \boldsymbol{v} = \lambda \boldsymbol{v}$ is called an **eigenvector** of $\boldsymbol{A}$ corresponding to $\lambda$.
 
 Properties
 : - For $\boldsymbol{A}_{n\times n}$ with eigenvalues $\lambda_1, \lambda_2, \ldots, \lambda_n$, we have
@@ -273,12 +273,12 @@ Properties
 
   $$\begin{align}
   \boldsymbol{A} \in \mathrm{PD} &\Leftrightarrow \lambda_i(\boldsymbol{A}) > 0 \\
-  &\Leftrightarrow \exists \text{ non-singular } \boldsymbol{R}: \boldsymbol{A} = \boldsymbol{R} \boldsymbol{R} ^\top\\
+  &\Leftrightarrow \exists \text{ non-singular } \boldsymbol{R}: \boldsymbol{A} = \boldsymbol{R} \boldsymbol{R} ^\top ( \text{Cholesky decomposition} )\\
   &\Rightarrow \boldsymbol{A} = \boldsymbol{U} \boldsymbol{\Lambda}  \boldsymbol{U} ^{\top} \quad \text{EVD = SVD}\\
   &\Rightarrow \boldsymbol{A} ^{-1} = \boldsymbol{U} \boldsymbol{\Lambda} ^{-1} \boldsymbol{U} ^{\top} \text{ where } \operatorname{diag}(\boldsymbol{\Lambda} ^{-1} )=\frac{1}{\lambda_i}   \\
   &\Rightarrow \exists \boldsymbol{B} = \boldsymbol{U}
   \boldsymbol{\Lambda}^{1/2} \boldsymbol{U} ^{\top} \in \mathrm{PD}: \boldsymbol{B} ^2 = \boldsymbol{A}, \text{denoted } \boldsymbol{B} = \boldsymbol{A} ^{1/2}  = \sqrt{\boldsymbol{A}}\\
-  &\Rightarrow \sqrt{\boldsymbol{A} ^{-1} } = (\sqrt{\boldsymbol{A} })^{-1} \\
+  &\Rightarrow \sqrt{\boldsymbol{A} ^{-1} } = (\sqrt{\boldsymbol{A} })^{-1},\text{denoted } \boldsymbol{A} ^{-1/2} \\
   \boldsymbol{A} \in \mathrm{PSD} &\Leftrightarrow \lambda_i(\boldsymbol{A}) \ge 0 \\
   &\Leftrightarrow \exists \text{ square } \boldsymbol{R}, \operatorname{rank}\left( R \right) = \operatorname{rank}\left( \boldsymbol{A}  \right): \boldsymbol{A} = \boldsymbol{R} \boldsymbol{R} ^\top\\
   &\Rightarrow \exists \boldsymbol{B} = \boldsymbol{U}
@@ -288,20 +288,14 @@ Properties
   \end{align}$$
 
 
-```{note}
-If $\boldsymbol{A}$ is p.s.d. (p.d.) there exists a p.s.d. (p.d.) matrix $\boldsymbol{B}$ such that $\boldsymbol{A} = \boldsymbol{B} ^2$. The matrix $\boldsymbol{B}$ is written as $\boldsymbol{A} ^{\frac{1}{2} }$ notationally.
-```
-
 Inequalities
-: - If $\boldsymbol{A}$ is p.d., then for all $\boldsymbol{a}$
+ - If $\boldsymbol{A}$ is p.d., then
 
     $$
-    \frac{\left(\boldsymbol{a}^{\top} \boldsymbol{b} \right)^{2}}{\boldsymbol{a}^{\top} \boldsymbol{A} \boldsymbol{a}} \leq \boldsymbol{b} ^{\top} \boldsymbol{A}^{-1} \boldsymbol{b}
+    \max _{\boldsymbol{a}} \frac{\left(\boldsymbol{a}^{\top} \boldsymbol{b} \right)^{2}}{\boldsymbol{a}^{\top} \boldsymbol{A} \boldsymbol{a}} \leq \boldsymbol{b} ^{\top} \boldsymbol{A}^{-1} \boldsymbol{b}
     $$
 
-    The equality holds when $\boldsymbol{a} \propto \boldsymbol{R} ^{-1} \boldsymbol{b}$.
-
-    The inequality can be proved by Cauchy-Schwarz inequality where $\boldsymbol{u} = \boldsymbol{R} ^\top \boldsymbol{a} , \boldsymbol{v} = \boldsymbol{R} ^{-1} \boldsymbol{b}$.
+    The equality holds when $\boldsymbol{a} \propto \boldsymbol{R} ^{-1} \boldsymbol{b}$. This inequality can be proved by Cauchy-Schwarz inequality $\left(\boldsymbol{v}^{\top} \boldsymbol{w}\right)^{2} \leq\|\boldsymbol{v}\|^{2}\|\boldsymbol{w}\|^{2}=\left(\boldsymbol{v}^{\top} \boldsymbol{v}\right)\left(\boldsymbol{w}^{\top} \boldsymbol{w}\right)$ where $\boldsymbol{v} = \boldsymbol{A} ^{1/2} \boldsymbol{a} , \boldsymbol{w} = \boldsymbol{A} ^{-1/2} \boldsymbol{b}$.
 
   - If $\boldsymbol{A}$ is symmetric and $\boldsymbol{B}$ is p.d., both of size $n \times n$, then for all $\boldsymbol{a}$ ,
 
@@ -318,7 +312,7 @@ Inequalities
   - If $\boldsymbol{A}$ and $\boldsymbol{B}$ are p.d.,
 
     $$
-    \max _{a, b} \frac{\left(\boldsymbol{a}^{\top} \boldsymbol{D} \boldsymbol{b}\right)^{2}}{\boldsymbol{a}^{\top} \boldsymbol{A} \boldsymbol{a} \cdot \boldsymbol{b}^{\top} \boldsymbol{B} \boldsymbol{b}}=\theta
+    \max _{\boldsymbol{a} , \boldsymbol{b}} \frac{\left(\boldsymbol{a}^{\top} \boldsymbol{D} \boldsymbol{b}\right)^{2}}{\boldsymbol{a}^{\top} \boldsymbol{A} \boldsymbol{a} \cdot \boldsymbol{b}^{\top} \boldsymbol{B} \boldsymbol{b}}=\theta
     $$
 
     where $\theta$ is the largest eigenvalue of $\boldsymbol{A} ^{-1} \boldsymbol{D} \boldsymbol{B} ^{-1} \boldsymbol{D} ^\top$ or $\boldsymbol{B} ^{-1} \boldsymbol{D} ^\top \boldsymbol{A} ^{-1} \boldsymbol{D}$.
@@ -331,7 +325,7 @@ Inequalities
     f(\boldsymbol{\Sigma} ) = \log \left\vert \boldsymbol{\Sigma}  \right\vert + \operatorname{tr}\left( \boldsymbol{\Sigma} ^{-1} \boldsymbol{A}  \right)
     $$
 
-    is minimized uniquely at $\boldsymbol{\Sigma} =\boldsymbol{A}$.
+    is minimized uniquely at $\boldsymbol{\Sigma} =\boldsymbol{A}$. This is used in the derivation of MLE for multivariate Gaussian.
 
 ### Conditional Negative Definite
 
@@ -342,44 +336,6 @@ Theorem (Schoenberg)
 : A symmetric matrix $\boldsymbol{A}$ with zero diagonal entires is c.n.d. if and only if it can be realized as the square of the mutual Euclidean distance between points: $a_{ij} = \left\| \boldsymbol{x}_i - \boldsymbol{x}_j  \right\|$ for $i, j= 1, \ldots, n$ and some $\boldsymbol{x}_i \in \mathbb{R} ^d$.
 
 
-## Matrix Differentiation
-
-Definitions
-: $\ $
-
-  $$
-  \begin{array}{l}
-  \frac{\partial y}{\partial \boldsymbol{x}}=\left(\begin{array}{c}
-  \frac{\partial y}{\partial x_{1}} \\
-  \vdots \\
-  \frac{\partial y}{\partial x_{n}}
-  \end{array}\right) \\
-  \frac{\partial y}{\partial \boldsymbol{X}}=\left(\begin{array}{ccc}
-  \frac{\partial y}{\partial x_{11}} & \cdots & \frac{\partial y}{\partial x_{1 n}} \\
-  \vdots & & \vdots \\
-  \frac{\partial y}{\partial x_{n 1}} & \cdots & \frac{\partial y}{\partial x_{n n}}
-  \end{array}\right)
-  \end{array}
-  $$
-
-Properties
-: $\ $
-
-  $$
-  \begin{aligned}
-  \frac{\partial \boldsymbol{a}^{\top} \boldsymbol{x}}{\partial \boldsymbol{x}}&=\boldsymbol{a}\\
-  \frac{\partial \boldsymbol{x}^{\top} \boldsymbol{A} \boldsymbol{x}}{\partial \boldsymbol{x}}&=2 \boldsymbol{A} \boldsymbol{x} \text { if } \boldsymbol{A} \text { is symmetric. }\\
-  \frac{\partial \operatorname{tr}(\boldsymbol{X})}{\partial \boldsymbol{X}}&=\boldsymbol{I}\\
-  \frac{\partial \operatorname{tr}(\boldsymbol{A} \boldsymbol{X})}{\partial \boldsymbol{X}}&=\left\{\begin{array}{ll}
-  \boldsymbol{A}^{\top}  &\text { if all elements of } \boldsymbol{X} \text { are distinct } \\
-  \boldsymbol{A}+\boldsymbol{A}^{\top}-\operatorname{diag}(\boldsymbol{A})  &\text { if } \boldsymbol{X} \text { is symmetric. }
-  \end{array}\right.\\
-  \frac{\partial|\boldsymbol{X}|}{\partial \boldsymbol{X}}&=\left\{\begin{array}{ll}
-  |\boldsymbol{X}|\left(\boldsymbol{X}^{-1}\right)^{\top}  &\text { if all elements of } \boldsymbol{X} \text { are distinct } \\
-  |\boldsymbol{X}|\left(2 \boldsymbol{X}^{-1}-\operatorname{diag}\left(\boldsymbol{X}^{-1}\right)\right)^{\top}  &\text { if } \boldsymbol{X} \text { is symmetric. }
-  \end{array}\right.
-  \end{aligned}
-  $$
 
 ## Matrix Decomposition
 
@@ -412,6 +368,19 @@ $$
 Since $\boldsymbol{v} \neq \boldsymbol{0}$, we have $\overline{\boldsymbol{v}} \cdot \boldsymbol{v} \neq 0$. Thus $\lambda=\bar{\lambda}$, which means $\lambda \in \mathbb{R}$.
 
 :::
+
+We can write
+
+$$
+\boldsymbol{A} = \sum_{i=1}^n \lambda_i \boldsymbol{u} _i \boldsymbol{u} _i ^{\top}
+$$
+
+Let $\boldsymbol{P}_i = \boldsymbol{u} _i \boldsymbol{u} _i ^{\top}$, then
+- $\boldsymbol{P}_i$ is an orthogonal projection matrix (or projector) to the $1$-dimensional eigenspace $\left\{ c \boldsymbol{u} _i \right\}$
+- $\boldsymbol{P} _i$ is idempotent: $\boldsymbol{P}_i \boldsymbol{P}  _i = \boldsymbol{P} _i$
+- its complementary $\boldsymbol{I} - \boldsymbol{P}_i$ is a projector to $\left\{ c \boldsymbol{u} _i \right\} ^\bot$.
+
+
 
 ### Cholesky Decomposition
 
@@ -462,6 +431,48 @@ Theorem
 
 
 ## More Topics
+
+### Matrix Differentiation
+
+Definitions
+: $\ $
+
+  $$
+  \begin{array}{l}
+  \frac{\partial y}{\partial \boldsymbol{x}}=\left(\begin{array}{c}
+  \frac{\partial y}{\partial x_{1}} \\
+  \vdots \\
+  \frac{\partial y}{\partial x_{n}}
+  \end{array}\right) \\
+  \frac{\partial y}{\partial \boldsymbol{X}}=\left(\begin{array}{ccc}
+  \frac{\partial y}{\partial x_{11}} & \cdots & \frac{\partial y}{\partial x_{1 n}} \\
+  \vdots & & \vdots \\
+  \frac{\partial y}{\partial x_{n 1}} & \cdots & \frac{\partial y}{\partial x_{n n}}
+  \end{array}\right)
+  \end{array}
+  $$
+
+Properties
+: $\ $
+
+  $$
+  \begin{aligned}
+  \frac{\partial \boldsymbol{a}^{\top} \boldsymbol{x}}{\partial \boldsymbol{x}}&=\boldsymbol{a}\\
+  \frac{\partial \boldsymbol{A} \boldsymbol{x}}{\partial \boldsymbol{x}}&=\boldsymbol{A}\\
+  \frac{\partial \boldsymbol{x}^{\top} \boldsymbol{A} \boldsymbol{x}}{\partial \boldsymbol{x}}&=\boldsymbol{A} ^{\top} \boldsymbol{x} + \boldsymbol{A} \boldsymbol{x} \\
+  &=2 \boldsymbol{A} \boldsymbol{x} \text { if } \boldsymbol{A} \text { is symmetric. }\\
+  \frac{\partial \operatorname{tr}(\boldsymbol{X})}{\partial \boldsymbol{X}}&=\boldsymbol{I}\\
+  \frac{\partial \operatorname{tr}(\boldsymbol{A} \boldsymbol{X})}{\partial \boldsymbol{X}}&=\left\{\begin{array}{ll}
+  \boldsymbol{A}^{\top}  &\text { if all elements of } \boldsymbol{X} \text { are distinct } \\
+  \boldsymbol{A}+\boldsymbol{A}^{\top}-\operatorname{diag}(\boldsymbol{A})  &\text { if } \boldsymbol{X} \text { is symmetric. }
+  \end{array}\right.\\
+  \frac{\partial|\boldsymbol{X}|}{\partial \boldsymbol{X}}&=\left\{\begin{array}{ll}
+  |\boldsymbol{X}|\left(\boldsymbol{X}^{-1}\right)^{\top}  &\text { if all elements of } \boldsymbol{X} \text { are distinct } \\
+  |\boldsymbol{X}|\left(2 \boldsymbol{X}^{-1}-\operatorname{diag}\left(\boldsymbol{X}^{-1}\right)\right)^{\top}  &\text { if } \boldsymbol{X} \text { is symmetric. }
+  \end{array}\right.
+  \end{aligned}
+  $$
+
 
 ### Matrix Norms
 
