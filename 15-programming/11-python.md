@@ -395,3 +395,17 @@ def my_function(real_name, optional_display_name=None):
 
 - Indexing
 - String Column Operation
+
+## Plot
+
+- Equal axis aspect ratio [docu](https://matplotlib.org/stable/gallery/subplots_axes_and_figures/axis_equal_demo.html)
+  - `axs[0, 1].axis('equal')`
+  - `axs.set_aspect('equal', 'box')`
+
+- Spine placement [docu](https://matplotlib.org/stable/gallery/ticks_and_spines/spine_placement_demo.html)
+  ```
+  ax.spines.left.set_position('center')
+  ax.spines.bottom.set_position('center')
+  ax.spines.right.set_color('none')
+  ax.spines.top.set_color('none')
+  ```
