@@ -61,6 +61,7 @@ Properties
   \end{align}
   $$
 
+(matrix-inverse)=
 ### Inverse
 
 Definition
@@ -80,6 +81,26 @@ Properties
   \left|\boldsymbol{A}+\boldsymbol{c} \boldsymbol{d}^{\top}\right|&=|\boldsymbol{A}|\left(1+\boldsymbol{d}^{\top} \boldsymbol{A}^{-1} \boldsymbol{c}\right)
   \end{align}
   $$
+
+  If $
+  \boldsymbol{M}=\left[\begin{array}{cc}
+  \boldsymbol{A} & \boldsymbol{b} \\
+  \boldsymbol{b}^{\top} & c
+  \end{array}\right]
+  $ Then
+
+  $$
+  \boldsymbol{M}^{-1}=\left[\begin{array}{cc}
+  \left(\boldsymbol{A}-\frac{1}{c} \boldsymbol{b} \boldsymbol{b}^{\top}\right)^{-1} & -\frac{1}{k} \boldsymbol{A}^{-1} \boldsymbol{b} \\
+  -\frac{1}{k} \boldsymbol{b}^{\top} \boldsymbol{A}^{-1} & \frac{1}{k}
+  \end{array}\right]=\left[\begin{array}{cc}
+  \boldsymbol{A}^{-1}+\frac{1}{k} \boldsymbol{A}^{-1} \boldsymbol{b} \boldsymbol{b}^{\top} \boldsymbol{A}^{-1} & -\frac{1}{k} \boldsymbol{A}^{-1} \boldsymbol{b} \\
+  -\frac{1}{k} \boldsymbol{b}^{\top} \boldsymbol{A}^{-1} & \frac{1}{k}
+  \end{array}\right]
+  $$
+
+  where $k = c- \boldsymbol{b} ^\top \boldsymbol{A} ^{-1} \boldsymbol{b}$.
+
 
 ### Trace
 
@@ -172,13 +193,35 @@ Definition
 : A real square matrix $\boldsymbol{U}$ is **orthogonal** if $\boldsymbol{U} ^{-1} = \boldsymbol{U} ^\top$. Equivalently, if its columns and rows are orthonormal: $\boldsymbol{U} ^{\top} \boldsymbol{U} = \boldsymbol{U} \boldsymbol{U} ^{\top} = \boldsymbol{I}$.
 
 
+For instance, $\boldsymbol{R} =\left[\begin{array}{cc}
+\cos \theta & -\sin \theta \\
+\sin \theta & \cos \theta
+\end{array}\right]$ is a rotation matrix rotates points in the $xy$-plane counterclockwise through an angle $\theta$ with respect to the $x$ axis about the origin of a two-dimensional Cartesian coordinate system. Given a point $\boldsymbol{v} = (x, y)$, after rotation its coordinates becomes
+
+$$
+R \boldsymbol{v} =\left[\begin{array}{cc}
+\cos \theta & -\sin \theta \\
+\sin \theta & \cos \theta
+\end{array}\right]\left[\begin{array}{l}
+x \\
+y
+\end{array}\right]=\left[\begin{array}{l}
+x \cos \theta-y \sin \theta \\
+x \sin \theta+y \cos \theta
+\end{array}\right]
+$$
+
+
 Properties
-: Transformation by $\boldsymbol{U}$ preserves vector length and angle.
+: Transformation by $\boldsymbol{U}$ preserves the length of a vector $\boldsymbol{x}$, the angle between two vectors $\boldsymbol{x} , \boldsymbol{y}$.
 
   $$\begin{aligned}
-  \|\boldsymbol{U x}\| &=\|\boldsymbol{x}\| \\
+  \|\boldsymbol{U}\boldsymbol{x} \| &=\|\boldsymbol{x}\| \\
   (\boldsymbol{U x})^{\top} \boldsymbol{U} \boldsymbol{y} &=\boldsymbol{x}^{\top} \boldsymbol{y}
   \end{aligned}$$
+
+  For a distribution $f(\boldsymbol{x}; \boldsymbol{\theta})$, rotation $\boldsymbol{U} ^{\top} \boldsymbol{x}$ preserves its shape, i.e. we can find $\boldsymbol{\theta} ^\prime$ such that $f(\boldsymbol{x}; \boldsymbol{\theta}) = f(\boldsymbol{U} ^{\top} \boldsymbol{x}; \boldsymbol{\theta} ^\prime)$, for all $\boldsymbol{x}$.
+
 
 
 ### Idempotent Matrices
