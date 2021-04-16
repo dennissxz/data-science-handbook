@@ -837,7 +837,7 @@ x1 = signal1 + g
 x2 = signal2 + g
 x3 = signal3 + g
 
-fig, ax = plt.subplots(1,3, figsize=(9,3))
+fig, ax = plt.subplots(1,3, figsize=(9,3), dpi=200)
 s = 0.8
 
 ax[0].set_title(r'$u=[1,0.5], \sqrt{\beta}=0.25$')
