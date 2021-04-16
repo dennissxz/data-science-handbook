@@ -781,7 +781,10 @@
 
     <div class="dropdown-buttons">
         <!-- ipynb file if we had a myst markdown file -->
-        
+        <a class="dropdown-buttons"
+            href="../_sources/12-probabilities/91-exponential-families.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download notebook file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
         <!-- Download raw file -->
         <a class="dropdown-buttons" href="../_sources/12-probabilities/91-exponential-families.md"><button type="button"
                 class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
@@ -818,6 +821,23 @@
                         class="fas fa-expand"></i></button></a>
 
             <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/dennissxz/data-science-handbook/master?urlpath=tree/12-probabilities/91-exponential-families.md"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
 
         </div>
 
@@ -944,12 +964,50 @@ c &amp;= f(\boldsymbol{x} ;\boldsymbol{\mu}, \boldsymbol{\Sigma}) \\
 <li><p><span class="math notranslate nohighlight">\(\boldsymbol{\Lambda}\)</span> determines the lengths of the axes. The length should be proportional to <span class="math notranslate nohighlight">\(\sqrt{\lambda_i}\)</span>. If all eigenvalues are the same, the ellipsoid reduces to a ball.</p></li>
 </ul>
 </li>
-<li><p>(To be shown belowf) the transformation <span class="math notranslate nohighlight">\(\boldsymbol{x} ^\prime  = \boldsymbol{U} ^\top \boldsymbol{x}, \boldsymbol{\mu} ^\prime  = \boldsymbol{U} ^\top \boldsymbol{\mu}, \boldsymbol{\Sigma} ^\prime  = \boldsymbol{\Lambda}\)</span> will transform the distribution will change the center, align the ellipsoid axes to the coordinate axes (so the variables becomes independent and the joint PDF factorizes to univariate PDF), while keep the axes lengths intact (rotation preserve lengths and angles).</p></li>
+<li><p>(To be shown below) the rotation transformation <span class="math notranslate nohighlight">\(\boldsymbol{x} ^\prime  = \boldsymbol{U} ^\top \boldsymbol{x}, \boldsymbol{\mu} ^\prime  = \boldsymbol{U} ^\top \boldsymbol{\mu}, \boldsymbol{\Sigma} ^\prime  = \boldsymbol{\Lambda}\)</span> change the center, align the ellipsoid axes to the coordinate axes (so the variables becomes independent and the joint PDF factorizes to univariate PDF), while keep the axes lengths intact (rotation preserve lengths and angles).</p></li>
 </ul>
 <p>In the 2-d case, an ellipsoid reduces to an ellipse.</p>
 <div class="myclass figure align-default" id="gaussian-density-2d">
 <a class="reference internal image-reference" href="../_images/gaussian-density-2d.png"><img alt="" src="../_images/gaussian-density-2d.png" style="width: 80%;" /></a>
 <p class="caption"><span class="caption-number">Fig. 9 </span><span class="caption-text">Bivariate Gaussian density and ellipse</span><a class="headerlink" href="#gaussian-density-2d" title="Permalink to this image">¶</a></p>
+</div>
+<p>A numerical example to illustrate how <span class="math notranslate nohighlight">\(\boldsymbol{\mu}, \boldsymbol{\Lambda} , \boldsymbol{U}\)</span> jointly decide the distribution of <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span>, and the effect of rotation transformation (rotation) <span class="math notranslate nohighlight">\(\boldsymbol{U} ^{\top} \boldsymbol{x}\)</span></p>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span><span class="o">,</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span><span class="o">,</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="n">mu</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span>
+<span class="n">Lam</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">([</span><span class="mi">4</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">U</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+<span class="n">S</span> <span class="o">=</span> <span class="n">U</span> <span class="o">@</span> <span class="n">Lam</span> <span class="o">@</span> <span class="n">U</span><span class="o">.</span><span class="n">T</span>
+<span class="n">n</span> <span class="o">=</span> <span class="mi">10000</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">multivariate_normal</span><span class="p">(</span><span class="n">mean</span><span class="o">=</span><span class="n">mu</span><span class="p">,</span> <span class="n">cov</span><span class="o">=</span><span class="n">S</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">n</span><span class="p">)</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">spines</span><span class="o">.</span><span class="n">left</span><span class="o">.</span><span class="n">set_position</span><span class="p">(</span><span class="s1">&#39;zero&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">spines</span><span class="o">.</span><span class="n">bottom</span><span class="o">.</span><span class="n">set_position</span><span class="p">(</span><span class="s1">&#39;zero&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">spines</span><span class="o">.</span><span class="n">right</span><span class="o">.</span><span class="n">set_color</span><span class="p">(</span><span class="s1">&#39;none&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">spines</span><span class="o">.</span><span class="n">top</span><span class="o">.</span><span class="n">set_color</span><span class="p">(</span><span class="s1">&#39;none&#39;</span><span class="p">)</span>
+
+<span class="c1"># print(f&#39;new center: {mu @ U.T}&#39;)</span>
+<span class="n">X2</span> <span class="o">=</span> <span class="n">X</span> <span class="o">@</span> <span class="n">U</span><span class="o">.</span><span class="n">T</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X2</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">X2</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">spines</span><span class="o">.</span><span class="n">left</span><span class="o">.</span><span class="n">set_position</span><span class="p">(</span><span class="s1">&#39;zero&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">spines</span><span class="o">.</span><span class="n">bottom</span><span class="o">.</span><span class="n">set_position</span><span class="p">(</span><span class="s1">&#39;zero&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">spines</span><span class="o">.</span><span class="n">right</span><span class="o">.</span><span class="n">set_color</span><span class="p">(</span><span class="s1">&#39;none&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">spines</span><span class="o">.</span><span class="n">top</span><span class="o">.</span><span class="n">set_color</span><span class="p">(</span><span class="s1">&#39;none&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/91-exponential-families_1_0.png" src="../_images/91-exponential-families_1_0.png" />
+</div>
 </div>
 </div>
 <div class="section" id="properties">
@@ -974,14 +1032,19 @@ c &amp;= f(\boldsymbol{x} ;\boldsymbol{\mu}, \boldsymbol{\Sigma}) \\
 \[
     \boldsymbol{x}_{1} \mid \boldsymbol{x}_{2} \sim  N_{p}\left(\boldsymbol{\mu}_{1}+\boldsymbol{\Sigma}_{12} \boldsymbol{\Sigma}_{22}^{-1}\left(\boldsymbol{x}_{2}-\boldsymbol{\mu}_{2}\right), \boldsymbol{\Sigma}_{11}-\boldsymbol{\Sigma}_{12} \boldsymbol{\Sigma}_{22}^{-1} \boldsymbol{\Sigma}_{21}\right)
     \]</div>
-<p>note the variance does not change with <span class="math notranslate nohighlight">\(\boldsymbol{x} _2\)</span>. In particular, for <span class="math notranslate nohighlight">\(p=q=1\)</span>,</p>
+<p>Note the variance does not change with <span class="math notranslate nohighlight">\(\boldsymbol{x} _2\)</span>. In particular,</p>
+<ul>
+<li><p>for <span class="math notranslate nohighlight">\(p=q=1\)</span>,</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
-    \begin{aligned}
-    X_{1} \mid X_{2}=x_{2} \sim &amp; N\left(\mu_{1}+\frac{\sigma_{12}}{\sigma_{22}}\left(x_{2}-\mu_{2}\right), \sigma_{11}-\frac{\sigma_{12}^{2}}{\sigma_{22}}\right) \\
-    &amp;=N\left(\mu_{1}+\rho \frac{\sigma_{1}}{\sigma_{2}}\left(x_{2}-\mu_{2}\right), \sigma_{1}^{2}\left(1-\rho^{2}\right)\right)
-    \end{aligned}
-    \end{split}\]</div>
+      \begin{aligned}
+      X_{1} \mid X_{2}=x_{2} \sim &amp; N\left(\mu_{1}+\frac{\sigma_{12}}{\sigma_{22}}\left(x_{2}-\mu_{2}\right), \sigma_{11}-\frac{\sigma_{12}^{2}}{\sigma_{22}}\right) \\
+      &amp;=N\left(\mu_{1}+\rho \frac{\sigma_{1}}{\sigma_{2}}\left(x_{2}-\mu_{2}\right), \sigma_{1}^{2}\left(1-\rho^{2}\right)\right)
+      \end{aligned}
+      \end{split}\]</div>
+</li>
+<li><p>if <span class="math notranslate nohighlight">\(p=1\)</span>, then <span class="math notranslate nohighlight">\(x_1 = \mu_1 + \boldsymbol{\beta} ^{\top} (\boldsymbol{x} _2 - \boldsymbol{\mu} _2)\)</span>, i.e. a ‘regression’ model, where <span class="math notranslate nohighlight">\(\boldsymbol{\beta} ^{\top} = \boldsymbol{\Sigma}_{12} \boldsymbol{\Sigma}_{22}^{-1}\)</span>. Let <span class="math notranslate nohighlight">\(\boldsymbol{\Omega} = \boldsymbol{\Sigma} ^{-1}\)</span>, using block matrix inverse <a class="reference internal" href="../11-math/21-linear-algebra.html#matrix-inverse"><span class="std std-ref">formula</span></a>, it is easy to show that <span class="math notranslate nohighlight">\(\beta_j = - \omega_{1j}/\omega_{11}\)</span>.</p></li>
+</ul>
 <div class="myclass figure align-default" id="gaussian-marginal-conditional">
 <a class="reference internal image-reference" href="../_images/gaussian-marginal-conditional.png"><img alt="" src="../_images/gaussian-marginal-conditional.png" style="width: 80%;" /></a>
 <p class="caption"><span class="caption-number">Fig. 10 </span><span class="caption-text">Marginal Gaussian and conditional Gaussian are also Gaussians [Shi 2021]</span><a class="headerlink" href="#gaussian-marginal-conditional" title="Permalink to this image">¶</a></p>
@@ -1205,8 +1268,7 @@ c &amp;= f(\boldsymbol{x} ;\boldsymbol{\mu}, \boldsymbol{\Sigma}) \\
 <p>The optimal <span class="math notranslate nohighlight">\(\lambda\)</span> minimizes sample variance after transforamtion.</p>
 </li>
 </ul>
-<!-- ## Weibull Distribution -->
-</div>
+<!-- ## Weibull Distribution --></div>
 </div>
 </div>
 

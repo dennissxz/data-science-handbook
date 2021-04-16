@@ -1074,7 +1074,7 @@
 </dl>
 </div>
 <div class="section" id="inverse">
-<h3>Inverse<a class="headerlink" href="#inverse" title="Permalink to this headline">¶</a></h3>
+<span id="matrix-inverse"></span><h3>Inverse<a class="headerlink" href="#inverse" title="Permalink to this headline">¶</a></h3>
 <dl class="simple myst">
 <dt>Definition</dt><dd><p>The inverse of a square matrix is <span class="math notranslate nohighlight">\(\boldsymbol{A} ^{-1}\)</span> such that <span class="math notranslate nohighlight">\(\boldsymbol{A} \boldsymbol{A} ^{-1} = \boldsymbol{I}\)</span>.</p>
 </dd>
@@ -1091,6 +1091,23 @@
   \left|\boldsymbol{A}+\boldsymbol{c} \boldsymbol{d}^{\top}\right|&amp;=|\boldsymbol{A}|\left(1+\boldsymbol{d}^{\top} \boldsymbol{A}^{-1} \boldsymbol{c}\right)
   \end{align}
   \end{split}\]</div>
+<p>If <span class="math notranslate nohighlight">\(
+\boldsymbol{M}=\left[\begin{array}{cc}
+\boldsymbol{A} &amp; \boldsymbol{b} \\
+\boldsymbol{b}^{\top} &amp; c
+\end{array}\right]
+\)</span> Then</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+  \boldsymbol{M}^{-1}=\left[\begin{array}{cc}
+  \left(\boldsymbol{A}-\frac{1}{c} \boldsymbol{b} \boldsymbol{b}^{\top}\right)^{-1} &amp; -\frac{1}{k} \boldsymbol{A}^{-1} \boldsymbol{b} \\
+  -\frac{1}{k} \boldsymbol{b}^{\top} \boldsymbol{A}^{-1} &amp; \frac{1}{k}
+  \end{array}\right]=\left[\begin{array}{cc}
+  \boldsymbol{A}^{-1}+\frac{1}{k} \boldsymbol{A}^{-1} \boldsymbol{b} \boldsymbol{b}^{\top} \boldsymbol{A}^{-1} &amp; -\frac{1}{k} \boldsymbol{A}^{-1} \boldsymbol{b} \\
+  -\frac{1}{k} \boldsymbol{b}^{\top} \boldsymbol{A}^{-1} &amp; \frac{1}{k}
+  \end{array}\right]
+  \end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(k = c- \boldsymbol{b} ^\top \boldsymbol{A} ^{-1} \boldsymbol{b}\)</span>.</p>
 </dd>
 </dl>
 </div>
@@ -1196,12 +1213,32 @@
 <dl class="simple myst">
 <dt>Definition</dt><dd><p>A real square matrix <span class="math notranslate nohighlight">\(\boldsymbol{U}\)</span> is <strong>orthogonal</strong> if <span class="math notranslate nohighlight">\(\boldsymbol{U} ^{-1} = \boldsymbol{U} ^\top\)</span>. Equivalently, if its columns and rows are orthonormal: <span class="math notranslate nohighlight">\(\boldsymbol{U} ^{\top} \boldsymbol{U} = \boldsymbol{U} \boldsymbol{U} ^{\top} = \boldsymbol{I}\)</span>.</p>
 </dd>
-<dt>Properties</dt><dd><p>Transformation by <span class="math notranslate nohighlight">\(\boldsymbol{U}\)</span> preserves vector length and angle.</p>
+</dl>
+<p>For instance, <span class="math notranslate nohighlight">\(\boldsymbol{R} =\left[\begin{array}{cc}
+\cos \theta &amp; -\sin \theta \\
+\sin \theta &amp; \cos \theta
+\end{array}\right]\)</span> is a rotation matrix rotates points in the <span class="math notranslate nohighlight">\(xy\)</span>-plane counterclockwise through an angle <span class="math notranslate nohighlight">\(\theta\)</span> with respect to the <span class="math notranslate nohighlight">\(x\)</span> axis about the origin of a two-dimensional Cartesian coordinate system. Given a point <span class="math notranslate nohighlight">\(\boldsymbol{v} = (x, y)\)</span>, after rotation its coordinates becomes</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+R \boldsymbol{v} =\left[\begin{array}{cc}
+\cos \theta &amp; -\sin \theta \\
+\sin \theta &amp; \cos \theta
+\end{array}\right]\left[\begin{array}{l}
+x \\
+y
+\end{array}\right]=\left[\begin{array}{l}
+x \cos \theta-y \sin \theta \\
+x \sin \theta+y \cos \theta
+\end{array}\right]
+\end{split}\]</div>
+<dl class="simple myst">
+<dt>Properties</dt><dd><p>Transformation by <span class="math notranslate nohighlight">\(\boldsymbol{U}\)</span> preserves the length of a vector <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span>, the angle between two vectors <span class="math notranslate nohighlight">\(\boldsymbol{x} , \boldsymbol{y}\)</span>.</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{aligned}
-  \|\boldsymbol{U x}\| &amp;=\|\boldsymbol{x}\| \\
+  \|\boldsymbol{U}\boldsymbol{x} \| &amp;=\|\boldsymbol{x}\| \\
   (\boldsymbol{U x})^{\top} \boldsymbol{U} \boldsymbol{y} &amp;=\boldsymbol{x}^{\top} \boldsymbol{y}
   \end{aligned}\end{split}\]</div>
+<p>For a distribution <span class="math notranslate nohighlight">\(f(\boldsymbol{x}; \boldsymbol{\theta})\)</span>, rotation <span class="math notranslate nohighlight">\(\boldsymbol{U} ^{\top} \boldsymbol{x}\)</span> preserves its shape, i.e. we can find <span class="math notranslate nohighlight">\(\boldsymbol{\theta} ^\prime\)</span> such that <span class="math notranslate nohighlight">\(f(\boldsymbol{x}; \boldsymbol{\theta}) = f(\boldsymbol{U} ^{\top} \boldsymbol{x}; \boldsymbol{\theta} ^\prime)\)</span>, for all <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span>.</p>
 </dd>
 </dl>
 </div>

@@ -969,6 +969,11 @@
    </li>
   </ul>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#sample-from-a-circle">
+   Sample from a Circle
+  </a>
+ </li>
 </ul>
 
         </nav>
@@ -1201,21 +1206,22 @@
 <h3>Sampling from a Triangle<a class="headerlink" href="#sampling-from-a-triangle" title="Permalink to this headline">¶</a></h3>
 <p>Tags: TwoSigma, Quant, 20Q4</p>
 <p><em>How to generate uniformly distributed points in a triangle in a <span class="math notranslate nohighlight">\(xy\)</span>-plane, given the coordinates of the three vertices? Suppose that you have a generator that can generate uniformly distributed random values over the interval <span class="math notranslate nohighlight">\([0,1]\)</span> and you can use it twice.</em></p>
-<p>We can first start from a special case and then generalize it: what if the three coordinates are <span class="math notranslate nohighlight">\((1,0), (0,1), (1,1)\)</span>? Call this triangle the basic triangle.</p>
-<p>We can draw a random point <span class="math notranslate nohighlight">\((x,y)\)</span> from the square with vertices <span class="math notranslate nohighlight">\((0,0), (0,1), (1,1), (1,0)\)</span>, using twice the random generator. If the point is inside the basic triangle, which is identified by <span class="math notranslate nohighlight">\(x+y&gt;1\)</span>, then we keep it, otherwise we keep its symmetric point <span class="math notranslate nohighlight">\((1-x, 1-y)\)</span> which is inside the basic triangle. The sampling process is implemented in the below python script.</p>
-<div class="cell docutils container">
+<p>We can first start from a special case and then generalize it: what if the three coordinates are <span class="math notranslate nohighlight">\((0,0), (0,1), (1,0)\)</span>? Call this triangle the basic triangle.</p>
+<p>We can draw a random point <span class="math notranslate nohighlight">\((x, y)\)</span> from the square with vertices <span class="math notranslate nohighlight">\((0,0), (0,1), (1,1), (1,0)\)</span>, using twice the random generator. If the point is inside the basic triangle, which is identified by <span class="math notranslate nohighlight">\(x+y&lt;1\)</span>, then we keep it, otherwise <span class="math notranslate nohighlight">\(x+y&gt;1\)</span> we keep its symmetric point <span class="math notranslate nohighlight">\((1-x, 1-y)\)</span> which is inside the basic triangle. The sampling process is implemented in the below python script.</p>
+<div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 
 <span class="k">def</span> <span class="nf">sample_basic_triangle</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
     <span class="n">points</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
-    <span class="n">inside</span> <span class="o">=</span> <span class="n">points</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">points</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">1</span>
-    <span class="n">new_points</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">inside</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)),</span> <span class="n">points</span><span class="p">,</span> <span class="mi">1</span><span class="o">-</span><span class="n">points</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">new_points</span>
+    <span class="n">inside</span> <span class="o">=</span> <span class="n">points</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">points</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">1</span>
+    <span class="n">sample</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">inside</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="n">points</span><span class="p">,</span> <span class="mi">1</span><span class="o">-</span><span class="n">points</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">sample</span>
 
-<span class="n">points</span> <span class="o">=</span> <span class="n">sample_basic_triangle</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">points</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">points</span><span class="p">[:,</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">points</span> <span class="o">=</span> <span class="n">sample_basic_triangle</span><span class="p">(</span><span class="mi">10000</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">points</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">points</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -1224,100 +1230,52 @@
 <img alt="../_images/71-sampling_2_0.png" src="../_images/71-sampling_2_0.png" />
 </div>
 </div>
-<p>Then we can map these uniform random points in the basic triangle to the target triangle, by an affine transformation.</p>
-<div class="math notranslate nohighlight">
-\[
-\boldsymbol{y}_i = A \boldsymbol{x}_i + \boldsymbol{b}
-\]</div>
-<p>where for <span class="math notranslate nohighlight">\(i=1,2,3\)</span></p>
-<ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(\boldsymbol{y}_i = (y_{i1}, y_{i2})\)</span> is vertex coordinate of the target triangle</p></li>
-<li><p><span class="math notranslate nohighlight">\(\boldsymbol{x}_i = (x_{i1}, y_{i2})\)</span> is vertex coordinate of the basic triangle</p></li>
-<li><p><span class="math notranslate nohighlight">\(A=\left[\begin{array}{cc}
-a_{11} &amp; a_{12}\\
-a_{21} &amp; a_{22}
-\end{array}\right]\)</span> is a matrix</p></li>
-<li><p><span class="math notranslate nohighlight">\(\boldsymbol{b}=\left[\begin{array}{c}
-b_{1}\\
-b_{2}
-\end{array}\right]\)</span> is a vector</p></li>
-</ul>
-<p>There are four unknown variables in <span class="math notranslate nohighlight">\(A\)</span> and 2 in <span class="math notranslate nohighlight">\(\boldsymbol{b}\)</span>, and there are six equations, so we are able to solve them. Rearranging the equations gives the standard form of a linear system</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
-\left[\begin{array}{cccccc}
-1 &amp; 0 &amp; 0 &amp; 0 &amp; 1 &amp; 0\\
-0 &amp; 1 &amp; 0 &amp; 0 &amp; 0 &amp; 1\\
-1 &amp; 1 &amp; 0 &amp; 0 &amp; 1 &amp; 0\\
-0 &amp; 0 &amp; 1 &amp; 1 &amp; 0 &amp; 1\\
-0 &amp; 0 &amp; 1 &amp; 0 &amp; 1 &amp; 0\\
-0 &amp; 0 &amp; 0 &amp; 1 &amp; 0 &amp; 1
-\end{array}\right]\left[\begin{array}{c}
-a_{11}\\
-a_{12}\\
-a_{21}\\
-a_{22}\\
-b_{1}\\
-b_{2}
-\end{array}\right]=\left[\begin{array}{c}
-y_{11}\\
-y_{12}\\
-y_{21}\\
-y_{22}\\
-y_{31}\\
-y_{32}
-\end{array}\right]
-\end{split}\]</div>
-<p>Below is a python script to solve for <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{b}\)</span></p>
-<div class="cell docutils container">
+<p>Then, for any triangle <span class="math notranslate nohighlight">\(ABC\)</span>, given the <span class="math notranslate nohighlight">\(xy\)</span>-coordinates of three vertices <span class="math notranslate nohighlight">\(A, B, C\)</span>, we can choose a reference point, say <span class="math notranslate nohighlight">\(A\)</span>, and two edges vectors <span class="math notranslate nohighlight">\(AB\)</span> and <span class="math notranslate nohighlight">\(AC\)</span>. Any random point inside the triangle <span class="math notranslate nohighlight">\(ABD\)</span> can be expressed as a linear combination of the two edge vectors <span class="math notranslate nohighlight">\(P = v \cdot AB + w \cdot AC\)</span>, where <span class="math notranslate nohighlight">\(v\)</span> and <span class="math notranslate nohighlight">\(w\)</span> are from independent uniform distribution. Modifying the above algorithm we have the required results.</p>
+<div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">numpy.linalg</span> <span class="kn">import</span> <span class="n">solve</span>
-<span class="k">def</span> <span class="nf">solve_affine</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    y: shape (3,2), the vertex coordinates of the target triangle</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">sample_any_triangle</span><span class="p">(</span><span class="n">vers</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+    <span class="n">points</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">inside</span> <span class="o">=</span> <span class="n">points</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">points</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">1</span>
+    <span class="n">ref</span> <span class="o">=</span> <span class="n">vers</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">e1</span> <span class="o">=</span> <span class="n">vers</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">ref</span>
+    <span class="n">e2</span> <span class="o">=</span> <span class="n">vers</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">ref</span>
+    <span class="n">scale</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">inside</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="n">points</span><span class="p">,</span> <span class="mi">1</span><span class="o">-</span><span class="n">points</span><span class="p">)</span>
+    <span class="n">sample</span> <span class="o">=</span> <span class="n">scale</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">e1</span><span class="p">,</span><span class="n">e2</span><span class="p">))</span> <span class="o">+</span> <span class="n">ref</span>
+    <span class="k">return</span> <span class="n">sample</span>
 
-    <span class="n">C</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span>
-                  <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span>
-                  <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span>
-                  <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span>
-                  <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span>
-                  <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]])</span>
-    <span class="n">Ab</span> <span class="o">=</span> <span class="n">solve</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="n">y</span><span class="o">.</span><span class="n">flatten</span><span class="p">())</span>               
-    <span class="n">A</span> <span class="o">=</span> <span class="n">Ab</span><span class="p">[:</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-    <span class="n">b</span> <span class="o">=</span> <span class="n">Ab</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:]</span>
-    <span class="k">return</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span>
-
-<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
-<span class="n">A</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">solve_affine</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>Finally we can write the function for the random generator.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">sample_triangle</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    sample from a triangle with vertex coordinates (0,1), (1,1), (1,0)</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">points</span> <span class="o">=</span> <span class="n">sample_basic_triangle</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
-    <span class="n">A</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">solve_affine</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
-    <span class="n">new_points</span> <span class="o">=</span> <span class="n">A</span> <span class="o">@</span> <span class="n">points</span><span class="o">.</span><span class="n">T</span> <span class="o">+</span> <span class="n">b</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">new_points</span><span class="o">.</span><span class="n">T</span>
-
-<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">3</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]])</span>
-<span class="n">n</span> <span class="o">=</span> <span class="mi">1000</span>
-<span class="n">points</span> <span class="o">=</span> <span class="n">sample_triangle</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">points</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">points</span><span class="p">[:,</span><span class="mi">1</span><span class="p">])</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
+<span class="n">vers</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]])</span> <span class="c1"># vertices coordinates</span>
+<span class="n">points</span> <span class="o">=</span> <span class="n">sample_any_triangle</span><span class="p">(</span><span class="n">vers</span><span class="p">,</span> <span class="mi">10000</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">points</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">points</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">vers</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">vers</span><span class="p">[:,</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/71-sampling_7_0.png" src="../_images/71-sampling_7_0.png" />
+<img alt="../_images/71-sampling_4_0.png" src="../_images/71-sampling_4_0.png" />
 </div>
+</div>
+</div>
+</div>
+<div class="section" id="sample-from-a-circle">
+<h2>Sample from a Circle<a class="headerlink" href="#sample-from-a-circle" title="Permalink to this headline">¶</a></h2>
+<p>How to uniformly sample points inside a circle? Can you take advantage of the above method of sampling from a triangle?</p>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span> <span class="o">=</span> <span class="mi">10000</span>
+<span class="n">vers</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]])</span>
+<span class="n">points</span> <span class="o">=</span> <span class="n">sample_any_triangle</span><span class="p">(</span><span class="n">vers</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+<span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="o">*</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span>
+<span class="n">Rs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)],</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)]])</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
+<span class="n">sample</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">@</span> <span class="n">Rs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">sample</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">sample</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">,</span> <span class="n">adjustable</span><span class="o">=</span><span class="s1">&#39;box&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/71-sampling_6_0.png" src="../_images/71-sampling_6_0.png" />
 </div>
 </div>
 </div>
