@@ -286,7 +286,7 @@ Definition (Hotelling's $T^2$ Distribution )
 Properties
 : - If $\bar{\boldsymbol{x}}$ and $\boldsymbol{S}$ are respectively the sample mean vector and sample covariance matrix of a random sample of size $n$ taken from $\mathcal{N} _p(\boldsymbol{\mu} , \boldsymbol{\Sigma} )$, then
 
-    $$n(\overline{\boldsymbol{x}}-\boldsymbol{\mu})^{\top} \boldsymbol{S}^{-1}(\overline{\boldsymbol{x}}-\boldsymbol{\mu}) \sim T^{2}(p, n-1)$$
+    $$n(\bar{\boldsymbol{x}}-\boldsymbol{\mu})^{\top} \boldsymbol{S}^{-1}(\bar{\boldsymbol{x}}-\boldsymbol{\mu}) \sim T^{2}(p, n-1)$$
 
   - The distribution of the quadratic form under non-normality is reasonably robust as long as the underlying multivariate distribution has pdf contours close to elliptical shape, but $T^2$ is sensitive to the departure from such elliptical symmetry of the distribution.
   - Invariant under transformation of $\boldsymbol{x}$:$\boldsymbol{C} \boldsymbol{x} + \boldsymbol{d}$, where $\boldsymbol{C}$ is non-singular.
@@ -295,7 +295,7 @@ Properties
     - $T^{2}(p, k)=\frac{k p}{k-p+1} F(p, k-p+1)$, usually used to find quantile $T^2(\alpha)$.
     - $T^{2}(1, k)=t^{2}(k)=F(1, k)$
     - $T^{2}(p, \infty) \rightarrow \chi ^2 _p$ by CLT, without assuming normality of the distribution of $\boldsymbol{x}$
-  - Related to Mahalanobis distance: $T^{2}=n D_{\boldsymbol{S}}^{2}(\overline{\boldsymbol{x}}, \boldsymbol{\mu})$
+  - Related to Mahalanobis distance: $T^{2}=n D_{\boldsymbol{S}}^{2}(\bar{\boldsymbol{x}}, \boldsymbol{\mu})$
 
 
 ### One-sample Mean
@@ -309,13 +309,13 @@ $$
 Test statistic under $H_0$
 : - $\boldsymbol{\Sigma}$ is known:   
 
-    $$T^{2}=n\left(\overline{\boldsymbol{x}}-\boldsymbol{\mu}_{0}\right)^{\top} \boldsymbol{\Sigma}^{-1}\left(\overline{\boldsymbol{x}}-\boldsymbol{\mu}_{0}\right) \sim \chi^{2}(p)$$
+    $$T^{2}=n\left(\bar{\boldsymbol{x}}-\boldsymbol{\mu}_{0}\right)^{\top} \boldsymbol{\Sigma}^{-1}\left(\bar{\boldsymbol{x}}-\boldsymbol{\mu}_{0}\right) \sim \chi^{2}(p)$$
 
   - $\boldsymbol{\Sigma}$ is unknown, estimated by $\boldsymbol{S}$:
 
 
     $$\begin{aligned}
-    T^{2}=n\left(\overline{\boldsymbol{x}}-\boldsymbol{\mu}_{0}\right)^{\top} \boldsymbol{S}^{-1}\left(\overline{\boldsymbol{x}}-\boldsymbol{\mu}_{0}\right) &\sim T^{2}(p, n-1) \\
+    T^{2}=n\left(\bar{\boldsymbol{x}}-\boldsymbol{\mu}_{0}\right)^{\top} \boldsymbol{S}^{-1}\left(\bar{\boldsymbol{x}}-\boldsymbol{\mu}_{0}\right) &\sim T^{2}(p, n-1) \\
     &\sim \frac{(n-1) p}{n-p} F(p, n-p) \\
     & \rightarrow \chi ^2 _p \quad \text{as } n \rightarrow \infty  
     \end{aligned}$$
@@ -334,7 +334,7 @@ Confidence Region
 : - A $(1-\alpha)100\%$ confidence region for $\boldsymbol{\mu}$ is a $p$-dimensional ellipsoid centered at $\bar{\boldsymbol{x}}$, i.e. a collection of all those $\boldsymbol{\mu}$ which will not be rejected by the above $T^2$ test at significance level $\alpha$.
 
     $$
-    \left\{\boldsymbol{\mu}: n(\overline{\boldsymbol{x}}-\boldsymbol{\mu})^{\top} \boldsymbol{S}^{-1}(\overline{\boldsymbol{x}}-\boldsymbol{\mu}) \leq T_{\alpha}^{2}(p, n-1)=c_{\alpha}\right\}
+    \left\{\boldsymbol{\mu}: n(\bar{\boldsymbol{x}}-\boldsymbol{\mu})^{\top} \boldsymbol{S}^{-1}(\bar{\boldsymbol{x}}-\boldsymbol{\mu}) \leq T_{\alpha}^{2}(p, n-1)=c_{\alpha}\right\}
     $$
 
     :::{figure} test-ellipsoid
@@ -360,7 +360,7 @@ Simultaneous confidence interval
   - The $(1-\alpha)100\%$ Bonferroni simultaneous C.I.s for $m$ **pre-determined** linear components of means, $\boldsymbol{a}_{i}^{\top} \boldsymbol{\mu}(i=1, \ldots, m)$, are given by
 
     $$
-    \boldsymbol{a}_{i}^{\top} \overline{\boldsymbol{x}} \pm t ^{\alpha/(2m)}_{n-1} \sqrt{\frac{\boldsymbol{a}_{i}^{\top} \boldsymbol{S} \boldsymbol{a}_{i}}{n}}
+    \boldsymbol{a}_{i}^{\top} \bar{\boldsymbol{x}} \pm t ^{\alpha/(2m)}_{n-1} \sqrt{\frac{\boldsymbol{a}_{i}^{\top} \boldsymbol{S} \boldsymbol{a}_{i}}{n}}
     $$
 
   ```{margin}
@@ -370,7 +370,7 @@ Simultaneous confidence interval
   - The $(1-\alpha)100\%$ Scheffe simultaneous C.I.s for **all possible** linear combinations of means $\boldsymbol{a} ^{\top} \boldsymbol{\mu}$ are given by
 
     $$
-    \boldsymbol{a}^{\top} \overline{\boldsymbol{x}} \pm \sqrt{T_{\alpha}^{2}(p, n-1)} \sqrt{\frac{\boldsymbol{a}^{\top} \boldsymbol{S a}}{n}}
+    \boldsymbol{a}^{\top} \bar{\boldsymbol{x}} \pm \sqrt{T_{\alpha}^{2}(p, n-1)} \sqrt{\frac{\boldsymbol{a}^{\top} \boldsymbol{S a}}{n}}
     $$
 
   - Pros: Compared with the advantages of ellipsoidal confidence regions, these hyper-rectangles (orthotopes) are easier to form and to compute.
@@ -392,3 +392,77 @@ Simultaneous confidence interval
     - Bonferroni simultaneous C.I. using $t$ statistics: $t_{n-1}^{\alpha/(2p)}$
     - Scheffe simultaneous C.I.: $\sqrt{T^2_\alpha (p, n-1)}$
     - Asymptotic simultaneous C.I. using $\chi ^2$ statistic as $n$ is large: $\sqrt{\chi ^2 _p (\alpha)}$
+
+### Two-sample Means
+
+Given two samples of $p$-variates, we are interest in whether their means are equal.
+
+$$
+H_0: \boldsymbol{\mu} _1 = \boldsymbol{\mu} _2,\quad H_1: \text{otherwise}
+$$
+
+#### Paired
+
+First, we consider paired comparison for two dependent samples.
+
+This is easy, we just define $\bar{\boldsymbol{d}} = \bar{\boldsymbol{x}}_1 - \bar{\boldsymbol{x}}_2$, and apply the above one-sample mean method to test $H_0: \boldsymbol{d} = \boldsymbol{0}$.
+
+More precisely, if $\boldsymbol{d} \sim \mathcal{N} _p (\boldsymbol{\delta}, \boldsymbol{\Sigma} _d)$
+
+$$
+T^{2}=n(\bar{\boldsymbol{d} }-\boldsymbol{\delta} ) ^{\top}  \boldsymbol{S} _d^{-1}(\bar{\boldsymbol{d} }-\boldsymbol{\delta} ) \sim T^2(p, n-1) \sim \frac{(n-1) p}{n-p} F_{p, n-p}
+$$
+
+
+#### Two Independent Samples
+
+We assume equal variance $\boldsymbol{\Sigma} _1 = \boldsymbol{\Sigma} _2 = \boldsymbol{\Sigma}$. The pooled sample covariance matrix is an unbiased estimator of it
+
+$$
+\boldsymbol{S}_{\text {pool }}=\frac{\left(n_{1}-1\right) \boldsymbol{S}_{1}+\left(n_{2}-1\right) \boldsymbol{S}_{2}}{n_{1}+n_{2}-2}, \quad \mathbb{E}\left(\boldsymbol{S}_{\text {pool }}\right)=\boldsymbol{\Sigma}
+$$
+
+By the independence between the two samples, the covariance of sample difference is
+
+$$
+\operatorname{Cov}\left(\bar{\boldsymbol{x}}_{1}-\bar{\boldsymbol{x}}_{2}\right)=\operatorname{Cov}\left(\bar{\boldsymbol{x}}_{1}\right)+\operatorname{Cov}\left(\bar{\boldsymbol{x}}_{2}\right)=\frac{1}{n_{1}} \boldsymbol{\Sigma} +\frac{1}{n_{2}} \boldsymbol{\Sigma}
+$$
+
+which can be estimated by $\left(\frac{1}{n_{1}}+\frac{1}{n_{2}}\right) \boldsymbol{S}_{\text {pool }}$ since
+
+$$
+\mathbb{E}\left[\left(\frac{1}{n_{1}}+\frac{1}{n_{2}}\right) \boldsymbol{S}_{\text {pool }}\right]=\left(\frac{1}{n_{1}}+\frac{1}{n_{2}}\right) \boldsymbol{\Sigma} =\operatorname{Cov}\left(\bar{\boldsymbol{x}}_{1}-\bar{\boldsymbol{x}}_{2}\right)
+$$
+
+Assume $\boldsymbol{x} _1 \sim \mathcal{N} _p (\boldsymbol{\mu} _1, \boldsymbol{\Sigma} ), \boldsymbol{x} _2 \sim \mathcal{N} _p (\boldsymbol{\mu} _2, \boldsymbol{\Sigma} )$, then under $H_0: \boldsymbol{\mu} _1 = \boldsymbol{\mu} _2$,
+
+$$\begin{aligned}
+T^{2} &\sim T^{2}\left(p, n_{1}+n_{2}-2\right) \\
+&\sim \frac{\left(n_{1}+n_{2}-2\right) p}{n_{1}+n_{2}-p-1} F_{p, n_{1}+n_{2}-p-1}
+\end{aligned}$$
+
+where
+
+$$
+T^{2}=\left[\left(\bar{\boldsymbol{x}}_{1}-\bar{\boldsymbol{x}}_{2}\right)-\left(\boldsymbol{\mu} _{1}-\boldsymbol{\mu} _{2}\right)\right]^{\top}\left[\left(\frac{1}{n_{1}}+\frac{1}{n_{2}}\right) \boldsymbol{S}_{\text {pool }}\right]^{-1}\left[\left(\bar{\boldsymbol{x}}_{1}-\bar{\boldsymbol{x}}_{2}\right)-\left(\boldsymbol{\mu} _{1}-\boldsymbol{\mu} _{2}\right)\right]
+$$
+
+The $(1-\alpha)\%$ Bonferroni simultaneous confidence interval for the difference of the $j$-th component means $\mu_{1j} - \mu_{2j}$ is
+
+$$
+\bar{x}_{1 j}-\bar{x}_{2 j} \pm t_{n_{1}+n_{2}-2}^{\alpha / (2 p)} \sqrt{\left(\frac{1}{n_{1}}+\frac{1}{n_{2}}\right) s_{j j, \text{pool} }}, \quad j=1, \cdots, p
+$$
+
+More generally,
+
+- $(1-\alpha)\%$ Bonferroni intervals for pre-determined $\boldsymbol{a}_{i}^{\top}\left(\boldsymbol{\mu}_{1}-\boldsymbol{\mu}_{2}\right), i=1, \ldots, k$ is
+
+  $$
+  \boldsymbol{a}_{i}^{\top}\left(\bar{\boldsymbol{x}}_{1}- \bar{\boldsymbol{x}}_{2}\right) \pm t_{n_{1}+n_{2}-2}^{\alpha / (2 k)} \sqrt{\left(\frac{1}{n_{1}}+\frac{1}{n_{2}}\right)\boldsymbol{a}_{i}^{\top} \boldsymbol{S}_{\text{pool} } \boldsymbol{a}_{i}}
+  $$
+
+- $(1-\alpha)\%$ Scheffe simultaneous intervals for  $\boldsymbol{a}^{\top}\left(\boldsymbol{\mu}_{1}-\boldsymbol{\mu}_{2}\right)$ for all $\boldsymbol{a}$ is
+
+  $$
+  \boldsymbol{a}^{\top}\left(\bar{\boldsymbol{x}}_{1}- \bar{\boldsymbol{x}}_{2}\right) \pm \sqrt{T_{\alpha}^{2}\left(p, n_{1}+n_{2}-2\right)} \sqrt{\left(\frac{1}{n_{1}}+\frac{1}{n_{2}}\right)\boldsymbol{a}^{\top} \boldsymbol{S}_{\text{pool} } \boldsymbol{a}}
+  $$
