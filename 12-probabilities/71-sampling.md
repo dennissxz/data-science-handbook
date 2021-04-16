@@ -256,114 +256,64 @@ Tags: TwoSigma, Quant, 20Q4
 
 +++
 
-We can first start from a special case and then generalize it: what if the three coordinates are $(1,0), (0,1), (1,1)$? Call this triangle the basic triangle.
+We can first start from a special case and then generalize it: what if the three coordinates are $(0,0), (0,1), (1,0)$? Call this triangle the basic triangle.
 
-We can draw a random point $(x,y)$ from the square with vertices $(0,0), (0,1), (1,1), (1,0)$, using twice the random generator. If the point is inside the basic triangle, which is identified by $x+y>1$, then we keep it, otherwise we keep its symmetric point $(1-x, 1-y)$ which is inside the basic triangle. The sampling process is implemented in the below python script.
+We can draw a random point $(x, y)$ from the square with vertices $(0,0), (0,1), (1,1), (1,0)$, using twice the random generator. If the point is inside the basic triangle, which is identified by $x+y<1$, then we keep it, otherwise $x+y>1$ we keep its symmetric point $(1-x, 1-y)$ which is inside the basic triangle. The sampling process is implemented in the below python script.
 
 ```{code-cell} python
+:tags: [hide-input]
+
 import numpy as np
 import matplotlib.pyplot as plt
 
 def sample_basic_triangle(n):
     points = np.random.rand(n,2)
-    inside = points[:,0] + points[:,1] > 1
-    new_points = np.where(np.tile(inside.reshape(n,1), (1,2)), points, 1-points)
-    return new_points
+    inside = points[:,0] + points[:,1] < 1
+    sample = np.where(inside.reshape(n,1), points, 1-points)
+    return sample
 
-points = sample_basic_triangle(1000)
-plt.scatter(points[:,0], points[:,1])
+points = sample_basic_triangle(10000)
+plt.scatter(points[:,0], points[:,1], s=0.5)
+plt.gca().set_aspect('equal')
 plt.show()
 ```
 
-Then we can map these uniform random points in the basic triangle to the target triangle, by an affine transformation.
-
-$$
-\boldsymbol{y}_i = A \boldsymbol{x}_i + \boldsymbol{b}
-$$
-
-where for $i=1,2,3$
-
-- $\boldsymbol{y}_i = (y_{i1}, y_{i2})$ is vertex coordinate of the target triangle
-- $\boldsymbol{x}_i = (x_{i1}, y_{i2})$ is vertex coordinate of the basic triangle
-- $A=\left[\begin{array}{cc}
-a_{11} & a_{12}\\
-a_{21} & a_{22}
-\end{array}\right]$ is a matrix
-- $\boldsymbol{b}=\left[\begin{array}{c}
-b_{1}\\
-b_{2}
-\end{array}\right]$ is a vector
-
-There are four unknown variables in $A$ and 2 in $\boldsymbol{b}$, and there are six equations, so we are able to solve them. Rearranging the equations gives the standard form of a linear system
-
-+++
-
-$$
-\left[\begin{array}{cccccc}
-1 & 0 & 0 & 0 & 1 & 0\\
-0 & 1 & 0 & 0 & 0 & 1\\
-1 & 1 & 0 & 0 & 1 & 0\\
-0 & 0 & 1 & 1 & 0 & 1\\
-0 & 0 & 1 & 0 & 1 & 0\\
-0 & 0 & 0 & 1 & 0 & 1
-\end{array}\right]\left[\begin{array}{c}
-a_{11}\\
-a_{12}\\
-a_{21}\\
-a_{22}\\
-b_{1}\\
-b_{2}
-\end{array}\right]=\left[\begin{array}{c}
-y_{11}\\
-y_{12}\\
-y_{21}\\
-y_{22}\\
-y_{31}\\
-y_{32}
-\end{array}\right]
-$$
-
-Below is a python script to solve for $A$ and $\boldsymbol{b}$
+Then, for any triangle $ABC$, given the $xy$-coordinates of three vertices $A, B, C$, we can choose a reference point, say $A$, and two edges vectors $AB$ and $AC$. Any random point inside the triangle $ABD$ can be expressed as a linear combination of the two edge vectors $P = v \cdot AB + w \cdot AC$, where $v$ and $w$ are from independent uniform distribution. Modifying the above algorithm we have the required results.
 
 ```{code-cell} python
-from numpy.linalg import solve
-def solve_affine(y):
-    """
-    y: shape (3,2), the vertex coordinates of the target triangle
-    """
+:tags: [hide-input]
 
-    C = np.array([[1,0,0,0,1,0],
-                  [0,1,0,0,0,1],
-                  [1,1,0,0,1,0],
-                  [0,0,1,1,0,1],
-                  [0,0,1,0,1,0],
-                  [0,0,0,1,0,1]])
-    Ab = solve(C, y.flatten())               
-    A = Ab[:4].reshape(2, 2)
-    b = Ab[-2:]
-    return A, b
+def sample_any_triangle(vers, n):
+    points = np.random.rand(n,2)
+    inside = points[:,0] + points[:,1] < 1
+    ref = vers[0]
+    e1 = vers[1] - ref
+    e2 = vers[2] - ref
+    scale = np.where(inside.reshape(n,1), points, 1-points)
+    sample = scale @ np.vstack((e1,e2)) + ref
+    return sample
 
-y = np.random.rand(3,2)
-A, b = solve_affine(y)
+vers = np.asarray([[1,1], [5,2], [2,3]]) # vertices coordinates
+points = sample_any_triangle(vers, 10000)
+plt.scatter(points[:,0], points[:,1], s=0.5)
+plt.scatter(vers[:,0], vers[:,1])
+plt.gca().set_aspect('equal')
+plt.show()
 ```
 
-Finally we can write the function for the random generator.
+## Sample from a Circle
+
+How to uniformly sample points inside a circle? Can you take advantage of the above method of sampling from a triangle?
 
 ```{code-cell} python
-def sample_triangle(n, y):
-    """
-    sample from a triangle with vertex coordinates (0,1), (1,1), (1,0)
-    """
-    points = sample_basic_triangle(n)
-    A, b = solve_affine(y)
-    new_points = A @ points.T + b.reshape(2,1)
-    return new_points.T
+:tags: [hide-input]
 
-y = np.array([[3,0], [3,1], [0,1]])
-n = 1000
-points = sample_triangle(n, y)
-plt.scatter(points[:,0], points[:,1])
-plt.axis('equal')
-plt.show()
-
+n = 10000
+vers = np.asarray([[0,0], [0,1], [0,1]])
+points = sample_any_triangle(vers, n)
+theta = np.random.rand(n)*2*np.pi
+Rs = np.array([[np.cos(theta), -np.sin(theta)], [np.sin(theta), np.cos(theta)]]).transpose()
+sample = np.array([points[i] @ Rs[i] for i in range(n)])
+plt.scatter(sample[:,0], sample[:,1], s=0.5)
+plt.gca().set_aspect('equal', adjustable='box')
 ```
