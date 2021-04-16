@@ -930,16 +930,21 @@ f(\boldsymbol{x} ;\boldsymbol{\mu}, \boldsymbol{\Sigma})=\frac{1}{(2 \pi)^{p / 2
 </div>
 <div class="section" id="visualization">
 <h3>Visualization<a class="headerlink" href="#visualization" title="Permalink to this headline">¶</a></h3>
-<p>All <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> satisfy the equality below is a contour. This contour is an ellipsoid.</p>
+<p>All <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> satisfy the equality below lies on a ellipsoid contour, with equal Mahalanobis distance to its center <span class="math notranslate nohighlight">\(\boldsymbol{\mu}\)</span>.</p>
 <div class="math notranslate nohighlight">
-\[
-c = f(\boldsymbol{x} ;\boldsymbol{\mu}, \boldsymbol{\Sigma})
-\]</div>
+\[\begin{split}\begin{aligned}
+c &amp;= f(\boldsymbol{x} ;\boldsymbol{\mu}, \boldsymbol{\Sigma}) \\
+\Leftrightarrow \qquad c ^\prime &amp;= (\boldsymbol{x}-\boldsymbol{\mu})^{\top} \boldsymbol{\Sigma}^{-1}(\boldsymbol{x}-\boldsymbol{\mu})
+\end{aligned}\end{split}\]</div>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(\boldsymbol{\mu}\)</span> determines the center of the ellipsoid.</p></li>
+<li><p>Let EVD <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma} = \boldsymbol{U} \boldsymbol{\Lambda} \boldsymbol{U}\)</span>, then</p>
+<ul>
 <li><p><span class="math notranslate nohighlight">\(\boldsymbol{U}\)</span> determines the rotation angle of the ellipsoid. The vectors <span class="math notranslate nohighlight">\(\boldsymbol{u} _i\)</span> are the directions of the axes of the ellipsoid.</p></li>
 <li><p><span class="math notranslate nohighlight">\(\boldsymbol{\Lambda}\)</span> determines the lengths of the axes. The length should be proportional to <span class="math notranslate nohighlight">\(\sqrt{\lambda_i}\)</span>. If all eigenvalues are the same, the ellipsoid reduces to a ball.</p></li>
-<li><p>As shown above, the transformation <span class="math notranslate nohighlight">\(\boldsymbol{x} ^\top = \boldsymbol{U} ^\top \boldsymbol{x}, \boldsymbol{\mu} ^\top = \boldsymbol{U} ^\top \boldsymbol{\mu}, \boldsymbol{\Sigma} ^\top = \boldsymbol{\Lambda}\)</span> will transform the distribution will change the center, align the ellipsoid axes to the coordinate axes (so the variables becomes independent and the joint PDF factorizes to univariate PDF), while keep the axes lengths intact (rotation preserve lengths and angles).</p></li>
+</ul>
+</li>
+<li><p>(To be shown belowf) the transformation <span class="math notranslate nohighlight">\(\boldsymbol{x} ^\prime  = \boldsymbol{U} ^\top \boldsymbol{x}, \boldsymbol{\mu} ^\prime  = \boldsymbol{U} ^\top \boldsymbol{\mu}, \boldsymbol{\Sigma} ^\prime  = \boldsymbol{\Lambda}\)</span> will transform the distribution will change the center, align the ellipsoid axes to the coordinate axes (so the variables becomes independent and the joint PDF factorizes to univariate PDF), while keep the axes lengths intact (rotation preserve lengths and angles).</p></li>
 </ul>
 <p>In the 2-d case, an ellipsoid reduces to an ellipse.</p>
 <div class="myclass figure align-default" id="gaussian-density-2d">
@@ -987,28 +992,32 @@ c = f(\boldsymbol{x} ;\boldsymbol{\mu}, \boldsymbol{\Sigma})
 <li><p><strong>Quadratic form</strong>: if <span class="math notranslate nohighlight">\(\boldsymbol{x} \sim \mathcal{N} _p (\boldsymbol{\mu} , \boldsymbol{\Sigma})\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}\)</span> is p.d., then <span class="math notranslate nohighlight">\((\boldsymbol{x} - \boldsymbol{\mu} ) ^{\top} \boldsymbol{\Sigma} ^{-1} (\boldsymbol{x} - \boldsymbol{\mu} ) \sim \chi ^2 _p\)</span>.</p></li>
 <li><p>Independency after transformation: for any <span class="math notranslate nohighlight">\(m\times p\)</span> matrix <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> and <span class="math notranslate nohighlight">\(n\times p\)</span> matrix <span class="math notranslate nohighlight">\(\boldsymbol{B}\)</span>,</p>
 <ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(\boldsymbol{A} \boldsymbol{x}  \perp \boldsymbol{B} \boldsymbol{x} \Leftrightarrow \boldsymbol{A} \boldsymbol{\Sigma} \boldsymbol{B} ^{\top} = \boldsymbol{0}\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{A} \boldsymbol{x}  \perp \boldsymbol{B} \boldsymbol{x} \Leftrightarrow \boldsymbol{A} \boldsymbol{\Sigma} \boldsymbol{B} ^{\top} = \boldsymbol{0}\)</span></p>
+<ul>
+<li><p>corollary: <span class="math notranslate nohighlight">\(X_i \perp X_j \Leftrightarrow \sigma_{ij} =0\)</span>.</p></li>
+</ul>
+</li>
 <li><p>when <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> is symmetric, <span class="math notranslate nohighlight">\(\boldsymbol{x} ^{\top}\boldsymbol{A} \boldsymbol{x}  \perp \boldsymbol{B} \boldsymbol{x} \Leftrightarrow \boldsymbol{B} \boldsymbol{\Sigma} \boldsymbol{A} = \boldsymbol{0}\)</span></p></li>
 <li><p>when both <span class="math notranslate nohighlight">\(\boldsymbol{A}, \boldsymbol{B}\)</span> are symmetric, <span class="math notranslate nohighlight">\(\boldsymbol{x} ^{\top}\boldsymbol{A} \boldsymbol{x}  \perp \boldsymbol{x} ^{\top} \boldsymbol{B} \boldsymbol{x} \Leftrightarrow \boldsymbol{A} \boldsymbol{\Sigma} \boldsymbol{B} = \boldsymbol{0}\)</span></p></li>
 </ul>
 </li>
 <li><p>Since EVD <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma} = \boldsymbol{U} \boldsymbol{\Lambda} \boldsymbol{U} ^\top\)</span>, then <span class="math notranslate nohighlight">\(\left\vert \boldsymbol{\Sigma}  \right\vert = \left\vert \boldsymbol{U} \boldsymbol{\Lambda} \boldsymbol{U} ^\top  \right\vert = \left\vert \boldsymbol{\Lambda}  \right\vert\)</span></p></li>
-<li><p>For every multivariate Gaussian <span class="math notranslate nohighlight">\(\boldsymbol{x} \sim N(\boldsymbol{\mu} , \boldsymbol{\Sigma} )\)</span> with <span class="math notranslate nohighlight">\(\Sigma
-= \boldsymbol{U} \boldsymbol{\Lambda} \boldsymbol{U} ^\top\)</span>, there exists a transformation <span class="math notranslate nohighlight">\(\boldsymbol{x} ^\top = \boldsymbol{U} ^\top \boldsymbol{x}, \boldsymbol{\mu} ^\top= \boldsymbol{U} ^\top \boldsymbol{\mu}\)</span> such that</p>
+<li><p>For every multivariate Gaussian <span class="math notranslate nohighlight">\(\boldsymbol{x} \sim N(\boldsymbol{\mu} , \boldsymbol{\Sigma} )\)</span> with <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}
+= \boldsymbol{U} \boldsymbol{\Lambda} \boldsymbol{U} ^\top\)</span>, there exists a transformation <span class="math notranslate nohighlight">\(\boldsymbol{x} ^\prime  = \boldsymbol{U} ^\top \boldsymbol{x}, \boldsymbol{\mu} ^\prime = \boldsymbol{U} ^\top \boldsymbol{\mu}\)</span> such that</p>
 <div class="math notranslate nohighlight">
 \[
-  f(\boldsymbol{x} ; \boldsymbol{\mu}, \boldsymbol{\Sigma} ) = f(\boldsymbol{x} ^\top; \boldsymbol{\mu} ^\top, \boldsymbol{\Lambda})
+  f(\boldsymbol{x} ; \boldsymbol{\mu}, \boldsymbol{\Sigma} ) = f(\boldsymbol{x} ^\prime ; \boldsymbol{\mu} ^\prime , \boldsymbol{\Lambda})
   \]</div>
 <p>where</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
-  f(\boldsymbol{x} ^\top; \boldsymbol{\mu} ^\top, \boldsymbol{\Lambda})
-  &amp;= \frac{1}{(2 \pi)^{p / 2}|\boldsymbol{\Lambda}|^{1 / 2}} \exp \left(-\frac{1}{2}(\boldsymbol{x}^\top-\boldsymbol{\mu} ^\top)^{\top} \boldsymbol{\Lambda} ^{-1}(
-    \boldsymbol{x} ^\top -\boldsymbol{\mu} ^\top)\right) \\
-  &amp;=  \frac{1}{(2 \pi)^{p / 2}\Pi_{i=1}^p \lambda_i} \exp \left(-\sum_{i=1}^p\frac{1}{2\sigma^2}(x_i^\top-\mu_i ^\top)^2\right) \\
-  &amp;= \prod_{i=1}^{p} \frac{1}{(2 \pi)^{1 / 2} \lambda_{i}} \exp \left(-\frac{1}{2 \lambda_{i}^{2}}\left(x_{i}^{\top}-\mu_{i}^{\top}\right)^{2}\right)
+  f(\boldsymbol{x} ^\prime ; \boldsymbol{\mu} ^\prime , \boldsymbol{\Lambda})
+  &amp;= \frac{1}{(2 \pi)^{p / 2}|\boldsymbol{\Lambda}|^{1 / 2}} \exp \left(-\frac{1}{2}(\boldsymbol{x}^\prime -\boldsymbol{\mu} ^\prime )^{\top} \boldsymbol{\Lambda} ^{-1}(
+    \boldsymbol{x} ^\prime  -\boldsymbol{\mu} ^\prime )\right) \\
+  &amp;=  \frac{1}{(2 \pi)^{p / 2}\Pi_{i=1}^p \lambda_i} \exp \left(-\sum_{i=1}^p\frac{1}{2\sigma_{ii}}(x_i^\prime -\mu_i ^\prime )^2\right) \\
+  &amp;= \prod_{i=1}^{p} \frac{1}{(2 \pi)^{1 / 2} \lambda_{i}} \exp \left(-\frac{1}{2 \lambda_{i}}\left(x_{i}^\prime -\mu_{i}^\prime \right)^{2}\right)
   \end{align}\end{split}\]</div>
-<p>which is a product of PDFs of univariate Gaussians, since <span class="math notranslate nohighlight">\(\boldsymbol{\Lambda}\)</span> is diagonal. Geometrically, <span class="math notranslate nohighlight">\(U\)</span> rotate the axes of the distribution but keep the function value intact.</p>
+<p>which is a product of PDFs of univariate Gaussians, i.e. dependency is dropped. Geometrically, <span class="math notranslate nohighlight">\(\boldsymbol{U}\)</span> rotate the axes of the distribution but keep the function value intact.</p>
 </li>
 </ul>
 </div>
@@ -1019,7 +1028,7 @@ c = f(\boldsymbol{x} ;\boldsymbol{\mu}, \boldsymbol{\Sigma})
 <p>The MLE of <span class="math notranslate nohighlight">\(\boldsymbol{\mu}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}\)</span> are respectively</p>
 <div class="margin sidebar">
 <p class="sidebar-title"></p>
-<p>For derivation see <a class="reference internal" href="../13-statistics/41-maximum-likelihood-estimation.html#mle-gaussian-derivation"><span class="std std-ref">here</span></a>=</p>
+<p>For derivation see <a class="reference internal" href="../13-statistics/41-maximum-likelihood-estimation.html#mle-gaussian-derivation"><span class="std std-ref">here</span></a>.</p>
 </div>
 <div class="math notranslate nohighlight">
 \[

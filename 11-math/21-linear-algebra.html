@@ -910,11 +910,6 @@
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#matrix-differentiation">
-   Matrix Differentiation
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#matrix-decomposition">
    Matrix Decomposition
   </a>
@@ -961,6 +956,11 @@
    More Topics
   </a>
   <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#matrix-differentiation">
+     Matrix Differentiation
+    </a>
+   </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#matrix-norms">
      Matrix Norms
@@ -1128,7 +1128,7 @@
   \]</div>
 </dd>
 </dl>
-<p>For a fixed <span class="math notranslate nohighlight">\(\lambda\)</span>, the non-zero solution <span class="math notranslate nohighlight">\(\boldsymbol{v}\)</span> to <span class="math notranslate nohighlight">\(\boldsymbol{A} \boldsymbol{v} = \lambda \boldsymbol{v}\)</span> is called an eigenvector of <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> corresponding to <span class="math notranslate nohighlight">\(\lambda\)</span>.</p>
+<p>For a fixed <span class="math notranslate nohighlight">\(\lambda\)</span>, the non-zero solution <span class="math notranslate nohighlight">\(\boldsymbol{v}\)</span> to <span class="math notranslate nohighlight">\(\boldsymbol{A} \boldsymbol{v} = \lambda \boldsymbol{v}\)</span> is called an <strong>eigenvector</strong> of <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> corresponding to <span class="math notranslate nohighlight">\(\lambda\)</span>.</p>
 <dl class="simple myst">
 <dt>Properties</dt><dd><ul class="simple">
 <li><p>For <span class="math notranslate nohighlight">\(\boldsymbol{A}_{n\times n}\)</span> with eigenvalues <span class="math notranslate nohighlight">\(\lambda_1, \lambda_2, \ldots, \lambda_n\)</span>, we have</p>
@@ -1311,12 +1311,12 @@
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
   \boldsymbol{A} \in \mathrm{PD} &amp;\Leftrightarrow \lambda_i(\boldsymbol{A}) &gt; 0 \\
-  &amp;\Leftrightarrow \exists \text{ non-singular } \boldsymbol{R}: \boldsymbol{A} = \boldsymbol{R} \boldsymbol{R} ^\top\\
+  &amp;\Leftrightarrow \exists \text{ non-singular } \boldsymbol{R}: \boldsymbol{A} = \boldsymbol{R} \boldsymbol{R} ^\top ( \text{Cholesky decomposition} )\\
   &amp;\Rightarrow \boldsymbol{A} = \boldsymbol{U} \boldsymbol{\Lambda}  \boldsymbol{U} ^{\top} \quad \text{EVD = SVD}\\
   &amp;\Rightarrow \boldsymbol{A} ^{-1} = \boldsymbol{U} \boldsymbol{\Lambda} ^{-1} \boldsymbol{U} ^{\top} \text{ where } \operatorname{diag}(\boldsymbol{\Lambda} ^{-1} )=\frac{1}{\lambda_i}   \\
   &amp;\Rightarrow \exists \boldsymbol{B} = \boldsymbol{U}
   \boldsymbol{\Lambda}^{1/2} \boldsymbol{U} ^{\top} \in \mathrm{PD}: \boldsymbol{B} ^2 = \boldsymbol{A}, \text{denoted } \boldsymbol{B} = \boldsymbol{A} ^{1/2}  = \sqrt{\boldsymbol{A}}\\
-  &amp;\Rightarrow \sqrt{\boldsymbol{A} ^{-1} } = (\sqrt{\boldsymbol{A} })^{-1} \\
+  &amp;\Rightarrow \sqrt{\boldsymbol{A} ^{-1} } = (\sqrt{\boldsymbol{A} })^{-1},\text{denoted } \boldsymbol{A} ^{-1/2} \\
   \boldsymbol{A} \in \mathrm{PSD} &amp;\Leftrightarrow \lambda_i(\boldsymbol{A}) \ge 0 \\
   &amp;\Leftrightarrow \exists \text{ square } \boldsymbol{R}, \operatorname{rank}\left( R \right) = \operatorname{rank}\left( \boldsymbol{A}  \right): \boldsymbol{A} = \boldsymbol{R} \boldsymbol{R} ^\top\\
   &amp;\Rightarrow \exists \boldsymbol{B} = \boldsymbol{U}
@@ -1326,19 +1326,14 @@
   \end{align}\end{split}\]</div>
 </dd>
 </dl>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>If <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> is p.s.d. (p.d.) there exists a p.s.d. (p.d.) matrix <span class="math notranslate nohighlight">\(\boldsymbol{B}\)</span> such that <span class="math notranslate nohighlight">\(\boldsymbol{A} = \boldsymbol{B} ^2\)</span>. The matrix <span class="math notranslate nohighlight">\(\boldsymbol{B}\)</span> is written as <span class="math notranslate nohighlight">\(\boldsymbol{A} ^{\frac{1}{2} }\)</span> notationally.</p>
-</div>
-<dl class="simple myst">
-<dt>Inequalities</dt><dd><ul>
-<li><p>If <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> is p.d., then for all <span class="math notranslate nohighlight">\(\boldsymbol{a}\)</span></p>
+<p>Inequalities</p>
+<ul>
+<li><p>If <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> is p.d., then</p>
 <div class="math notranslate nohighlight">
 \[
-    \frac{\left(\boldsymbol{a}^{\top} \boldsymbol{b} \right)^{2}}{\boldsymbol{a}^{\top} \boldsymbol{A} \boldsymbol{a}} \leq \boldsymbol{b} ^{\top} \boldsymbol{A}^{-1} \boldsymbol{b}
+    \max _{\boldsymbol{a}} \frac{\left(\boldsymbol{a}^{\top} \boldsymbol{b} \right)^{2}}{\boldsymbol{a}^{\top} \boldsymbol{A} \boldsymbol{a}} \leq \boldsymbol{b} ^{\top} \boldsymbol{A}^{-1} \boldsymbol{b}
     \]</div>
-<p>The equality holds when <span class="math notranslate nohighlight">\(\boldsymbol{a} \propto \boldsymbol{R} ^{-1} \boldsymbol{b}\)</span>.</p>
-<p>The inequality can be proved by Cauchy-Schwarz inequality where <span class="math notranslate nohighlight">\(\boldsymbol{u} = \boldsymbol{R} ^\top \boldsymbol{a} , \boldsymbol{v} = \boldsymbol{R} ^{-1} \boldsymbol{b}\)</span>.</p>
+<p>The equality holds when <span class="math notranslate nohighlight">\(\boldsymbol{a} \propto \boldsymbol{R} ^{-1} \boldsymbol{b}\)</span>. This inequality can be proved by Cauchy-Schwarz inequality <span class="math notranslate nohighlight">\(\left(\boldsymbol{v}^{\top} \boldsymbol{w}\right)^{2} \leq\|\boldsymbol{v}\|^{2}\|\boldsymbol{w}\|^{2}=\left(\boldsymbol{v}^{\top} \boldsymbol{v}\right)\left(\boldsymbol{w}^{\top} \boldsymbol{w}\right)\)</span> where <span class="math notranslate nohighlight">\(\boldsymbol{v} = \boldsymbol{A} ^{1/2} \boldsymbol{a} , \boldsymbol{w} = \boldsymbol{A} ^{-1/2} \boldsymbol{b}\)</span>.</p>
 </li>
 <li><p>If <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> is symmetric and <span class="math notranslate nohighlight">\(\boldsymbol{B}\)</span> is p.d., both of size <span class="math notranslate nohighlight">\(n \times n\)</span>, then for all <span class="math notranslate nohighlight">\(\boldsymbol{a}\)</span> ,</p>
 <div class="math notranslate nohighlight">
@@ -1354,7 +1349,7 @@
 <li><p>If <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{B}\)</span> are p.d.,</p>
 <div class="math notranslate nohighlight">
 \[
-    \max _{a, b} \frac{\left(\boldsymbol{a}^{\top} \boldsymbol{D} \boldsymbol{b}\right)^{2}}{\boldsymbol{a}^{\top} \boldsymbol{A} \boldsymbol{a} \cdot \boldsymbol{b}^{\top} \boldsymbol{B} \boldsymbol{b}}=\theta
+    \max _{\boldsymbol{a} , \boldsymbol{b}} \frac{\left(\boldsymbol{a}^{\top} \boldsymbol{D} \boldsymbol{b}\right)^{2}}{\boldsymbol{a}^{\top} \boldsymbol{A} \boldsymbol{a} \cdot \boldsymbol{b}^{\top} \boldsymbol{B} \boldsymbol{b}}=\theta
     \]</div>
 <p>where <span class="math notranslate nohighlight">\(\theta\)</span> is the largest eigenvalue of <span class="math notranslate nohighlight">\(\boldsymbol{A} ^{-1} \boldsymbol{D} \boldsymbol{B} ^{-1} \boldsymbol{D} ^\top\)</span> or <span class="math notranslate nohighlight">\(\boldsymbol{B} ^{-1} \boldsymbol{D} ^\top \boldsymbol{A} ^{-1} \boldsymbol{D}\)</span>.</p>
 <p>The maximum is obtained when <span class="math notranslate nohighlight">\(\boldsymbol{a}\)</span> is proportional to an eigenvector of <span class="math notranslate nohighlight">\(\boldsymbol{A} ^{-1} \boldsymbol{D} \boldsymbol{B} ^{-1} \boldsymbol{D} ^\top\)</span> corresponding to <span class="math notranslate nohighlight">\(\theta\)</span>, <span class="math notranslate nohighlight">\(\boldsymbol{b}\)</span> is proportional to an eigenvector of <span class="math notranslate nohighlight">\(\boldsymbol{B} ^{-1} \boldsymbol{D} ^\top \boldsymbol{A} ^{-1} \boldsymbol{D}\)</span> corresponding to <span class="math notranslate nohighlight">\(\theta\)</span>.</p>
@@ -1364,11 +1359,9 @@
 \[
     f(\boldsymbol{\Sigma} ) = \log \left\vert \boldsymbol{\Sigma}  \right\vert + \operatorname{tr}\left( \boldsymbol{\Sigma} ^{-1} \boldsymbol{A}  \right)
     \]</div>
-<p>is minimized uniquely at <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma} =\boldsymbol{A}\)</span>.</p>
+<p>is minimized uniquely at <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma} =\boldsymbol{A}\)</span>. This is used in the derivation of MLE for multivariate Gaussian.</p>
 </li>
 </ul>
-</dd>
-</dl>
 </div>
 <div class="section" id="conditional-negative-definite">
 <h3>Conditional Negative Definite<a class="headerlink" href="#conditional-negative-definite" title="Permalink to this headline">¶</a></h3>
@@ -1379,46 +1372,6 @@
 </dd>
 </dl>
 </div>
-</div>
-<div class="section" id="matrix-differentiation">
-<h2>Matrix Differentiation<a class="headerlink" href="#matrix-differentiation" title="Permalink to this headline">¶</a></h2>
-<dl class="simple myst">
-<dt>Definitions</dt><dd><p><span class="math notranslate nohighlight">\(\ \)</span></p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
-  \begin{array}{l}
-  \frac{\partial y}{\partial \boldsymbol{x}}=\left(\begin{array}{c}
-  \frac{\partial y}{\partial x_{1}} \\
-  \vdots \\
-  \frac{\partial y}{\partial x_{n}}
-  \end{array}\right) \\
-  \frac{\partial y}{\partial \boldsymbol{X}}=\left(\begin{array}{ccc}
-  \frac{\partial y}{\partial x_{11}} &amp; \cdots &amp; \frac{\partial y}{\partial x_{1 n}} \\
-  \vdots &amp; &amp; \vdots \\
-  \frac{\partial y}{\partial x_{n 1}} &amp; \cdots &amp; \frac{\partial y}{\partial x_{n n}}
-  \end{array}\right)
-  \end{array}
-  \end{split}\]</div>
-</dd>
-<dt>Properties</dt><dd><p><span class="math notranslate nohighlight">\(\ \)</span></p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
-  \begin{aligned}
-  \frac{\partial \boldsymbol{a}^{\top} \boldsymbol{x}}{\partial \boldsymbol{x}}&amp;=\boldsymbol{a}\\
-  \frac{\partial \boldsymbol{x}^{\top} \boldsymbol{A} \boldsymbol{x}}{\partial \boldsymbol{x}}&amp;=2 \boldsymbol{A} \boldsymbol{x} \text { if } \boldsymbol{A} \text { is symmetric. }\\
-  \frac{\partial \operatorname{tr}(\boldsymbol{X})}{\partial \boldsymbol{X}}&amp;=\boldsymbol{I}\\
-  \frac{\partial \operatorname{tr}(\boldsymbol{A} \boldsymbol{X})}{\partial \boldsymbol{X}}&amp;=\left\{\begin{array}{ll}
-  \boldsymbol{A}^{\top}  &amp;\text { if all elements of } \boldsymbol{X} \text { are distinct } \\
-  \boldsymbol{A}+\boldsymbol{A}^{\top}-\operatorname{diag}(\boldsymbol{A})  &amp;\text { if } \boldsymbol{X} \text { is symmetric. }
-  \end{array}\right.\\
-  \frac{\partial|\boldsymbol{X}|}{\partial \boldsymbol{X}}&amp;=\left\{\begin{array}{ll}
-  |\boldsymbol{X}|\left(\boldsymbol{X}^{-1}\right)^{\top}  &amp;\text { if all elements of } \boldsymbol{X} \text { are distinct } \\
-  |\boldsymbol{X}|\left(2 \boldsymbol{X}^{-1}-\operatorname{diag}\left(\boldsymbol{X}^{-1}\right)\right)^{\top}  &amp;\text { if } \boldsymbol{X} \text { is symmetric. }
-  \end{array}\right.
-  \end{aligned}
-  \end{split}\]</div>
-</dd>
-</dl>
 </div>
 <div class="section" id="matrix-decomposition">
 <h2>Matrix Decomposition<a class="headerlink" href="#matrix-decomposition" title="Permalink to this headline">¶</a></h2>
@@ -1444,6 +1397,17 @@
 \end{split}\]</div>
 <p>Since <span class="math notranslate nohighlight">\(\boldsymbol{v} \neq \boldsymbol{0}\)</span>, we have <span class="math notranslate nohighlight">\(\overline{\boldsymbol{v}} \cdot \boldsymbol{v} \neq 0\)</span>. Thus <span class="math notranslate nohighlight">\(\lambda=\bar{\lambda}\)</span>, which means <span class="math notranslate nohighlight">\(\lambda \in \mathbb{R}\)</span>.</p>
 </div>
+<p>We can write</p>
+<div class="math notranslate nohighlight">
+\[
+\boldsymbol{A} = \sum_{i=1}^n \lambda_i \boldsymbol{u} _i \boldsymbol{u} _i ^{\top}
+\]</div>
+<p>Let <span class="math notranslate nohighlight">\(\boldsymbol{P}_i = \boldsymbol{u} _i \boldsymbol{u} _i ^{\top}\)</span>, then</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{P}_i\)</span> is an orthogonal projection matrix (or projector) to the <span class="math notranslate nohighlight">\(1\)</span>-dimensional eigenspace <span class="math notranslate nohighlight">\(\left\{ c \boldsymbol{u} _i \right\}\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{P} _i\)</span> is idempotent: <span class="math notranslate nohighlight">\(\boldsymbol{P}_i \boldsymbol{P}  _i = \boldsymbol{P} _i\)</span></p></li>
+<li><p>its complementary <span class="math notranslate nohighlight">\(\boldsymbol{I} - \boldsymbol{P}_i\)</span> is a projector to <span class="math notranslate nohighlight">\(\left\{ c \boldsymbol{u} _i \right\} ^\bot\)</span>.</p></li>
+</ul>
 </div>
 <div class="section" id="cholesky-decomposition">
 <h3>Cholesky Decomposition<a class="headerlink" href="#cholesky-decomposition" title="Permalink to this headline">¶</a></h3>
@@ -1497,6 +1461,48 @@
 </div>
 <div class="section" id="more-topics">
 <h2>More Topics<a class="headerlink" href="#more-topics" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="matrix-differentiation">
+<h3>Matrix Differentiation<a class="headerlink" href="#matrix-differentiation" title="Permalink to this headline">¶</a></h3>
+<dl class="simple myst">
+<dt>Definitions</dt><dd><p><span class="math notranslate nohighlight">\(\ \)</span></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+  \begin{array}{l}
+  \frac{\partial y}{\partial \boldsymbol{x}}=\left(\begin{array}{c}
+  \frac{\partial y}{\partial x_{1}} \\
+  \vdots \\
+  \frac{\partial y}{\partial x_{n}}
+  \end{array}\right) \\
+  \frac{\partial y}{\partial \boldsymbol{X}}=\left(\begin{array}{ccc}
+  \frac{\partial y}{\partial x_{11}} &amp; \cdots &amp; \frac{\partial y}{\partial x_{1 n}} \\
+  \vdots &amp; &amp; \vdots \\
+  \frac{\partial y}{\partial x_{n 1}} &amp; \cdots &amp; \frac{\partial y}{\partial x_{n n}}
+  \end{array}\right)
+  \end{array}
+  \end{split}\]</div>
+</dd>
+<dt>Properties</dt><dd><p><span class="math notranslate nohighlight">\(\ \)</span></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+  \begin{aligned}
+  \frac{\partial \boldsymbol{a}^{\top} \boldsymbol{x}}{\partial \boldsymbol{x}}&amp;=\boldsymbol{a}\\
+  \frac{\partial \boldsymbol{A} \boldsymbol{x}}{\partial \boldsymbol{x}}&amp;=\boldsymbol{A}\\
+  \frac{\partial \boldsymbol{x}^{\top} \boldsymbol{A} \boldsymbol{x}}{\partial \boldsymbol{x}}&amp;=\boldsymbol{A} ^{\top} \boldsymbol{x} + \boldsymbol{A} \boldsymbol{x} \\
+  &amp;=2 \boldsymbol{A} \boldsymbol{x} \text { if } \boldsymbol{A} \text { is symmetric. }\\
+  \frac{\partial \operatorname{tr}(\boldsymbol{X})}{\partial \boldsymbol{X}}&amp;=\boldsymbol{I}\\
+  \frac{\partial \operatorname{tr}(\boldsymbol{A} \boldsymbol{X})}{\partial \boldsymbol{X}}&amp;=\left\{\begin{array}{ll}
+  \boldsymbol{A}^{\top}  &amp;\text { if all elements of } \boldsymbol{X} \text { are distinct } \\
+  \boldsymbol{A}+\boldsymbol{A}^{\top}-\operatorname{diag}(\boldsymbol{A})  &amp;\text { if } \boldsymbol{X} \text { is symmetric. }
+  \end{array}\right.\\
+  \frac{\partial|\boldsymbol{X}|}{\partial \boldsymbol{X}}&amp;=\left\{\begin{array}{ll}
+  |\boldsymbol{X}|\left(\boldsymbol{X}^{-1}\right)^{\top}  &amp;\text { if all elements of } \boldsymbol{X} \text { are distinct } \\
+  |\boldsymbol{X}|\left(2 \boldsymbol{X}^{-1}-\operatorname{diag}\left(\boldsymbol{X}^{-1}\right)\right)^{\top}  &amp;\text { if } \boldsymbol{X} \text { is symmetric. }
+  \end{array}\right.
+  \end{aligned}
+  \end{split}\]</div>
+</dd>
+</dl>
+</div>
 <div class="section" id="matrix-norms">
 <h3>Matrix Norms<a class="headerlink" href="#matrix-norms" title="Permalink to this headline">¶</a></h3>
 <ul>

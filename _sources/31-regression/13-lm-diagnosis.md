@@ -42,9 +42,14 @@ Unlike outliers which can be a univariate measure, leverage looks at the whole d
 ```
 
 Definition (Leverages and leverage points)
-: - Leverage of an observation $i$ is defined as $h_i = \boldsymbol{x}_i ^\top (\boldsymbol{X} ^\top \boldsymbol{X} ) ^{-1} \boldsymbol{x}_i$. It is the $i$-th diagonal entry of the projection matrix $\boldsymbol{H} = \boldsymbol{X} (\boldsymbol{X} ^\top \boldsymbol{X} )^{-1} \boldsymbol{X} ^\top = \boldsymbol{P}_{\operatorname{im} (\boldsymbol{X} )}$.
+: - Leverage (score) of an observation $i$ is defined as $h_i = \boldsymbol{x}_i ^\top (\boldsymbol{X} ^\top \boldsymbol{X} ) ^{-1} \boldsymbol{x}_i$. It is the $i$-th diagonal entry of the projection matrix $\boldsymbol{H} = \boldsymbol{X} (\boldsymbol{X} ^\top \boldsymbol{X} )^{-1} \boldsymbol{X} ^\top = \boldsymbol{P}_{\operatorname{im} (\boldsymbol{X} )}$.
   - If $h_i$ is large than some threshold, say $2p/n$, then we say $i$ is a **leverage point**.
 
+:::{figure} lr-leverage
+<img src="../imgs/lr-leverage.png" width = "50%" alt=""/>
+
+Leverage scores [Zhang+ 2018]
+:::
 
 Properties
 : - In particular, we have $0<h_i<1$ and $\sum_{i=1}^n h_i = p$, or $\bar{h} = p/n$

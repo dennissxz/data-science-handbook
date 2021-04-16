@@ -33,7 +33,7 @@ Definition (Quadratic forms)
 : Let $\boldsymbol{A}$ be a symmetric real matrix. A quadratic form corresponding to $\boldsymbol{A}$ is a function $Q: \mathbb{R} ^n \rightarrow \mathbb{R}$ with
 
   $$
-  Q_A(\boldsymbol{x}) = \boldsymbol{x} ^{\top} \boldsymbol{A} \boldsymbol{x}
+  Q_{\boldsymbol{A}}(\boldsymbol{x}) = \boldsymbol{x} ^{\top} \boldsymbol{A} \boldsymbol{x}
   $$
 
   A quadratic form is can be written as a polynomial with terms all of second order
@@ -48,38 +48,46 @@ Definition (Rayleigh quotient)
   - In addition, given a positive definite matrix $\boldsymbol{B}$ of the same size, the quantity $\frac{\boldsymbol{x} ^{\top} \boldsymbol{A} \boldsymbol{x} }{\boldsymbol{x} ^{\top} \boldsymbol{B} \boldsymbol{x} }$ is called a generalized Rayleigh quotient.
 
 Applications
-: - PCA: $\max _{\boldsymbol{v} \neq 0} \frac{\boldsymbol{v}^{T} \boldsymbol{\Sigma} \boldsymbol{v}}{\boldsymbol{v}^{T} \boldsymbol{v}}$ where $\boldsymbol{\Sigma}$ is a covariance matrix
-  - LDA: $\max _{\boldsymbol{v} \neq 0} \frac{\boldsymbol{v}^{T} \boldsymbol{S}_{b} \boldsymbol{v}}{\boldsymbol{v}^{T} \boldsymbol{S}_{w} \boldsymbol{v}}$ where $\boldsymbol{S} _b$ is a between-class scatter matrix, and $\boldsymbol{S} _w$ is a within-class scatter matrix
-  - Spectral clustering (relaxed Ncut): $\max _{\boldsymbol{v} \neq \boldsymbol{0}} \frac{\boldsymbol{v}^{T} \boldsymbol{L} \boldsymbol{v}}{\boldsymbol{v}^{T} \boldsymbol{D} \boldsymbol{v}} \quad {s.t.} \boldsymbol{v} ^{\top} \boldsymbol{D} \boldsymbol{1}  = 0$ where $\boldsymbol{L}$ is graph Laplacian and $\boldsymbol{D}$ is degree matrix.
+: - PCA: $\max _{\boldsymbol{v} \neq 0} \frac{\boldsymbol{v}^{\top} \boldsymbol{\Sigma} \boldsymbol{v}}{\boldsymbol{v}^{\top} \boldsymbol{v}}$ where $\boldsymbol{\Sigma}$ is a covariance matrix
+  - LDA: $\max _{\boldsymbol{v} \neq 0} \frac{\boldsymbol{v}^{\top} \boldsymbol{S}_{b} \boldsymbol{v}}{\boldsymbol{v}^{\top} \boldsymbol{S}_{w} \boldsymbol{v}}$ where $\boldsymbol{S} _b$ is a between-class scatter matrix, and $\boldsymbol{S} _w$ is a within-class scatter matrix
+  - Spectral clustering (relaxed Ncut): $\max _{\boldsymbol{v} \neq \boldsymbol{0}} \frac{\boldsymbol{v}^{\top} \boldsymbol{L} \boldsymbol{v}}{\boldsymbol{v}^{\top} \boldsymbol{D} \boldsymbol{v}} \quad {s.t.} \boldsymbol{v} ^{\top} \boldsymbol{D} \boldsymbol{1}  = 0$ where $\boldsymbol{L}$ is graph Laplacian and $\boldsymbol{D}$ is degree matrix.
 
 Theorem (Range of Rayleigh quotients)
 : For any symmetric matrix $\boldsymbol{A} \in \mathbb{R} {n \times n}$,
 
   $$\begin{aligned}
-  \max _{\boldsymbol{x} \in \mathbb{R}^{n}: \boldsymbol{x} \neq \boldsymbol{o}} \frac{\boldsymbol{x}^{T} \boldsymbol{A} \boldsymbol{x}}{\boldsymbol{x}^{T} \boldsymbol{x}} &=\lambda_{\max } \\
-  \min _{\boldsymbol{x} \in \mathbb{R}^{n}: \boldsymbol{x} \neq \boldsymbol{o}} \frac{\boldsymbol{x}^{T} \boldsymbol{A} \boldsymbol{x}}{\boldsymbol{x}^{T} \boldsymbol{x}} &=\lambda_{\min }
+  \max _{\boldsymbol{x} \in \mathbb{R}^{n}: \boldsymbol{x} \neq \boldsymbol{0}} \frac{\boldsymbol{x}^{\top} \boldsymbol{A} \boldsymbol{x}}{\boldsymbol{x}^{\top} \boldsymbol{x}} &=\lambda_{\max } \\
+  \min _{\boldsymbol{x} \in \mathbb{R}^{n}: \boldsymbol{x} \neq \boldsymbol{0}} \frac{\boldsymbol{x}^{\top} \boldsymbol{A} \boldsymbol{x}}{\boldsymbol{x}^{\top} \boldsymbol{x}} &=\lambda_{\min }
   \end{aligned}$$
 
-  That is, the smallest and largest eigenvalues of $\boldsymbol{A}$ gives the range for the Rayleigh quotient.
+  That is, the largest and the smallest eigenvalues of $\boldsymbol{A}$ gives the range for the Rayleigh quotient. The maximum and the minimum is attainted when $\boldsymbol{x}$ is the corresponding eigenvector.
+
+  In addition, if we add an orthogonal constraint that $\boldsymbol{x}$ is orthogonal to all the $j$ largest eigenvectors, then
+
+  $$
+  \max _{\boldsymbol{x} \in \mathbb{R}^{n}: \boldsymbol{x} \neq \boldsymbol{0}, \boldsymbol{x} \perp \boldsymbol{v} _1 \ldots, \boldsymbol{v} _j} \frac{\boldsymbol{x}^{\top} \boldsymbol{A} \boldsymbol{x}}{\boldsymbol{x}^{\top} \boldsymbol{x}} =\lambda_{j+1}
+  $$
+
+  and the maximum is achieved when $\boldsymbol{x} = \boldsymbol{v} _{j+1}$.
 
   :::{admonition,dropdown,seealso} *Proof: Linear algebra approach*
 
   Consider EVD of $\boldsymbol{A}$:
 
   $$
-  \boldsymbol{x}^{T} \boldsymbol{A} \boldsymbol{x}=\boldsymbol{x}^{T}\left(\boldsymbol{U} \boldsymbol{\Lambda} \boldsymbol{U}^{T}\right) \boldsymbol{x}=\left(\boldsymbol{x}^{T} \boldsymbol{U}\right) \boldsymbol{\Lambda}\left(\boldsymbol{U}^{T} \boldsymbol{x}\right)=\boldsymbol{y}^{T} \boldsymbol{\Lambda} \boldsymbol{y}
+  \boldsymbol{x}^{\top} \boldsymbol{A} \boldsymbol{x}=\boldsymbol{x}^{\top}\left(\boldsymbol{U} \boldsymbol{\Lambda} \boldsymbol{U}^{\top}\right) \boldsymbol{x}=\left(\boldsymbol{x}^{\top} \boldsymbol{U}\right) \boldsymbol{\Lambda}\left(\boldsymbol{U}^{\top} \boldsymbol{x}\right)=\boldsymbol{y}^{\top} \boldsymbol{\Lambda} \boldsymbol{y}
   $$
 
   where $\boldsymbol{y} = \boldsymbol{U} ^{\top} \boldsymbol{x}$ is also a unit vector since $\left\| \boldsymbol{y}  \right\| ^2 = 1$. The original optimization problem becomes
 
   $$
-  \max _{\boldsymbol{y} \in \mathbb{R}^{n}:\|\boldsymbol{y}\|=1} \quad \boldsymbol{y}^{T} \underbrace{\boldsymbol{\Lambda}}_{\text {diagonal }} \boldsymbol{y}
+  \max _{\boldsymbol{y} \in \mathbb{R}^{n}:\|\boldsymbol{y}\|=1} \quad \boldsymbol{y}^{\top} \underbrace{\boldsymbol{\Lambda}}_{\text {diagonal }} \boldsymbol{y}
   $$
 
   Note that the objective and constraint can be written as a weighted sum of eigenvalues
 
   $$
-  \boldsymbol{y}^{T} \boldsymbol{\Lambda} \boldsymbol{y}=\sum_{i=1}^{n} \underbrace{\lambda_{i}}_{\text {fixed }} y_{i}^{2} \quad \text { (subject to } y_{1}^{2}+y_{2}^{2}+\cdots+y_{n}^{2}=1)
+  \boldsymbol{y}^{\top} \boldsymbol{\Lambda} \boldsymbol{y}=\sum_{i=1}^{n} \underbrace{\lambda_{i}}_{\text {fixed }} y_{i}^{2} \quad \text { (subject to } y_{1}^{2}+y_{2}^{2}+\cdots+y_{n}^{2}=1)
   $$
 
   Let $\lambda_1 \ge \lambda_2 \ge \ldots \ge \lambda_n$, then when $y_1^2 = 1$ and $y_2^2 = \ldots = y_n ^2 = 0$, the objective function attains its maximum $\boldsymbol{y} ^{\top} \boldsymbol{\Lambda} \boldsymbol{y} = \lambda_1$. In terms of $\boldsymbol{x}$, the maximizer is
@@ -97,7 +105,7 @@ Theorem (Range of Rayleigh quotients)
   Alternatively, we can use the Method of Lagrange Multipliers to prove the theorem. First, we form the Lagrangian function
 
     $$
-    L(\boldsymbol{x}, \lambda)=\boldsymbol{x}^{T} \boldsymbol{A} \boldsymbol{x}-\lambda\left(\|\boldsymbol{x}\|^{2}-1\right)
+    L(\boldsymbol{x}, \lambda)=\boldsymbol{x}^{\top} \boldsymbol{A} \boldsymbol{x}-\lambda\left(\|\boldsymbol{x}\|^{2}-1\right)
     $$
 
     Differentiation gives
@@ -113,7 +121,7 @@ Theorem (Range of Rayleigh quotients)
 
 
     $$
-    \boldsymbol{v}_{i}^{T} \boldsymbol{A} \boldsymbol{v}_{i}=\boldsymbol{v}_{i}^{T}\left(\lambda_{i} \boldsymbol{v}_{i}\right)=\lambda_{i}\left\|\boldsymbol{v}_{i}\right\|^{2}=\lambda_{i}
+    \boldsymbol{v}_{i}^{\top} \boldsymbol{A} \boldsymbol{v}_{i}=\boldsymbol{v}_{i}^{\top}\left(\lambda_{i} \boldsymbol{v}_{i}\right)=\lambda_{i}\left\|\boldsymbol{v}_{i}\right\|^{2}=\lambda_{i}
     $$
 
     Therefore, the eigenvector $\boldsymbol{v} _1$ (corresponding to largest eigenvalue $\lambda_1$ of $\boldsymbol{A}$) is the global maximizer, and it yields the absolute maximum value $\lambda_1$.
@@ -121,7 +129,7 @@ Theorem (Range of Rayleigh quotients)
   :::
 
 Corollary (Generalized Rayleigh quotient problem)
-: For the generalized Rayleigh quotient $\frac{\boldsymbol{x}^{T} \boldsymbol{A} \boldsymbol{x}}{\boldsymbol{x}^{T} \boldsymbol{B} \boldsymbol{x}}$, the smallest and largest values $\lambda$ satisfy
+: For the generalized Rayleigh quotient $\frac{\boldsymbol{x}^{\top} \boldsymbol{A} \boldsymbol{x}}{\boldsymbol{x}^{\top} \boldsymbol{B} \boldsymbol{x}}$, the smallest and largest values $\lambda$ satisfy
 
   $$
   \boldsymbol{A v}=\lambda \boldsymbol{B v} \quad \Longleftrightarrow \quad \boldsymbol{B}^{-1} \boldsymbol{A v}=\lambda \boldsymbol{v}
@@ -136,7 +144,7 @@ Corollary (Generalized Rayleigh quotient problem)
     Since $\boldsymbol{B}$ is p.d., we have $\boldsymbol{B} ^{1/2}$. Let $\boldsymbol{y} = \boldsymbol{B} ^{1/2}\boldsymbol{x}$, then the denominator can be written as
 
     $$
-    \boldsymbol{x}^{T} \boldsymbol{B} \boldsymbol{x}=\boldsymbol{x}^{T} \boldsymbol{B}^{1 / 2} \boldsymbol{B}^{1 / 2} \boldsymbol{x}=\boldsymbol{y}^{T} \boldsymbol{y}
+    \boldsymbol{x}^{\top} \boldsymbol{B} \boldsymbol{x}=\boldsymbol{x}^{\top} \boldsymbol{B}^{1 / 2} \boldsymbol{B}^{1 / 2} \boldsymbol{x}=\boldsymbol{y}^{\top} \boldsymbol{y}
     $$
 
     Substitute $\boldsymbol{x}=\left(\boldsymbol{B}^{1 / 2}\right)^{-1} \boldsymbol{y} \stackrel{\text { denote }}{=} \boldsymbol{B}^{-1 / 2} \boldsymbol{y}$ y into the numerator to rewrite it
@@ -151,16 +159,16 @@ Corollary (Generalized Rayleigh quotient problem)
   - Lagrange multipliers:
 
     $$
-    \max _{\boldsymbol{x} \neq \boldsymbol{0}} \frac{\boldsymbol{x}^{T} \boldsymbol{A} \boldsymbol{x}}{\boldsymbol{x}^{T} \boldsymbol{B} \boldsymbol{x}}
+    \max _{\boldsymbol{x} \neq \boldsymbol{0}} \frac{\boldsymbol{x}^{\top} \boldsymbol{A} \boldsymbol{x}}{\boldsymbol{x}^{\top} \boldsymbol{B} \boldsymbol{x}}
     $$
 
     $$
-    \max _{\boldsymbol{x} \in \mathbb{R}^{n}} \boldsymbol{x}^{T} \boldsymbol{A} \boldsymbol{x} \quad \text { subject to } \boldsymbol{x}^{T} \boldsymbol{B} \boldsymbol{x}=1
+    \max _{\boldsymbol{x} \in \mathbb{R}^{n}} \boldsymbol{x}^{\top} \boldsymbol{A} \boldsymbol{x} \quad \text { subject to } \boldsymbol{x}^{\top} \boldsymbol{B} \boldsymbol{x}=1
     $$
 
 
     $$
-    L(\boldsymbol{x}, \lambda)=\boldsymbol{x}^{T} \boldsymbol{A} \boldsymbol{x}-\lambda\left(\boldsymbol{x}^{T} \boldsymbol{B} \boldsymbol{x}-1\right)
+    L(\boldsymbol{x}, \lambda)=\boldsymbol{x}^{\top} \boldsymbol{A} \boldsymbol{x}-\lambda\left(\boldsymbol{x}^{\top} \boldsymbol{B} \boldsymbol{x}-1\right)
     $$
 
     Then
@@ -173,5 +181,6 @@ Corollary (Generalized Rayleigh quotient problem)
     $$
 
   :::
+
 
 reference: [notes](https://www.sjsu.edu/faculty/guangliang.chen/Math253S20/lec4RayleighQuotient.pdf)

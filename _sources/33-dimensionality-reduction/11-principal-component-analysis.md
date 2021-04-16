@@ -1,3 +1,18 @@
+---
+jupytext:
+  cell_metadata_filter: -all
+  formats: md:myst
+  text_representation:
+    extension: .md
+    format_name: myst
+    format_version: 0.12
+    jupytext_version: 1.9.1
+kernelspec:
+  display_name: Python 3
+  language: python
+  name: python3
+---
+
 # Principal Component Analysis
 
 Proposed by Pearson in 1901 and further developed by Hotelling in 1993.
@@ -788,8 +803,6 @@ where $\boldsymbol{M} _{ML} = \boldsymbol{W} _{ML} ^\top \boldsymbol{W} _{ML}  +
 
 ## Extension: Spike Model
 
-Phase transition for detection in PCA.
-
 Suppose a $p$-variate random vector consists of signal and noise
 
 $$
@@ -797,37 +810,89 @@ $$
 $$
 
 where
-- $\boldsymbol{g} \sim \mathcal{N} (\boldsymbol{0} , \boldsymbol{I} _p)$ is noise
 - $\boldsymbol{u} \in \mathbb{R} ^p$ is some fixed signal
-- $g_0 \sim \mathcal{N} (0, 1)$, independent of $\boldsymbol{g}$, control randomness of signal
-- $\sqrt{\beta}$ control the variance of signal
+- $g_0 \sim \mathcal{N} (0, 1)$ and $\sqrt{\beta}$ control randomness and variation of signal
+- $\boldsymbol{g} \sim \mathcal{N} (\boldsymbol{0} , \boldsymbol{I} _p)$ is noise, independent of $g_0$
+- the distribution of $\boldsymbol{x}$ is still Gaussian
 
-Can we detect the unknown $\boldsymbol{u}$ via PCA? That is, find some $\boldsymbol{v}$ such that $\langle \boldsymbol{u} , \boldsymbol{v} \rangle \ne 0$ w.h.p.?
+For instance, when $p=2$, we observe $\boldsymbol{x}$ as follows. As we can see, if the signal $\left\| \boldsymbol{u} \right\|$ and $\beta$ is too small relative to noise (i.e. weak signal), then it is hard to distinguish them. We are interested in under what condition of $\beta$ and $\boldsymbol{u}$ can we detect $\boldsymbol{u}$ via PCA? Here detection means to find some $\boldsymbol{v}$ such that $\langle \boldsymbol{u} , \boldsymbol{v} \rangle \ne 0$ w.h.p.
 
-Consider the covariance matrix
+```{code-cell} python
+:tags: [hide-input]
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+n, p = 100, 2
+np.random.seed(1)
+b1, b2, b3 = 1/4, 1, 1
+u1 = u2 = np.array([1, 0.5]).reshape(1,2)
+u3 = np.array([2, 1]).reshape(1,2)
+g0 = np.random.normal(size=(100,1))
+g = np.random.normal(size=(100, 2))
+signal1 = np.sqrt(b1) * g0 * u1
+signal2 = np.sqrt(b2) * g0 * u2
+signal3 = np.sqrt(b3) * g0 * u3
+x1 = signal1 + g
+x2 = signal2 + g
+x3 = signal3 + g
+
+fig, ax = plt.subplots(1,3, figsize=(9,3))
+s = 0.8
+
+ax[0].set_title(r'$u=[1,0.5], \sqrt{\beta}=0.25$')
+ax[0].set(xlim=(-5, 5), ylim=(-5, 5))
+ax[0].set_aspect('equal', 'box')
+ax[0].scatter(signal1[:,0], signal1[:,1], s=s, c='C0', label='signal')
+ax[0].scatter(x1[:,0], x1[:,1], s=s, c='k', label='observed')
+ax[0].spines.left.set_position('center')
+ax[0].spines.bottom.set_position('center')
+ax[0].spines.right.set_color('none')
+ax[0].spines.top.set_color('none')
+
+ax[1].set_title(r'$u=[1,0.5], \sqrt{\beta}=1$')
+ax[1].set(xlim=(-5, 5), ylim=(-5, 5))
+ax[1].set_aspect('equal', 'box')
+ax[1].scatter(signal2[:,0], signal2[:,1], s=s, c='C0')
+ax[1].scatter(x2[:,0], x2[:,1], s=s, c='k')
+ax[1].spines.left.set_position('center')
+ax[1].spines.bottom.set_position('center')
+ax[1].spines.right.set_color('none')
+ax[1].spines.top.set_color('none')
+
+ax[2].set_title(r'$u=[2,1], \sqrt{\beta}=1$')
+ax[2].set(xlim=(-5, 5), ylim=(-5, 5))
+ax[2].set_aspect('equal', 'box')
+ax[2].scatter(signal3[:,0], signal3[:,1], s=s, c='C0')
+ax[2].scatter(x3[:,0], x3[:,1], s=s, c='k')
+ax[2].set_ylim
+ax[2].spines.left.set_position('center')
+ax[2].spines.bottom.set_position('center')
+ax[2].spines.right.set_color('none')
+ax[2].spines.top.set_color('none')
+
+fig.legend()
+plt.show()
+
+```
+
+Consider the mean and variance of the observed $\boldsymbol{x}$,
 
 $$\begin{aligned}
+\mathbb{E} [\boldsymbol{x}] &= \boldsymbol{0} \\
 \boldsymbol{\Sigma}
-&= \mathbb{E} [\beta g_0^2 \boldsymbol{u} \boldsymbol{u} ^{\top} + \sqrt{\beta} g_0 \boldsymbol{u}  \boldsymbol{g} ^{\top} +\sqrt{\beta} g_0 \boldsymbol{g}  \boldsymbol{u} ^{\top} +  \boldsymbol{g} \boldsymbol{g} ^{\top}] \\
+&= \beta \boldsymbol{u} \boldsymbol{u} ^{\top}  \operatorname{Var}\left( g_0 \right) + \operatorname{Cov}\left( \boldsymbol{g} \right) \\
 &= \beta \boldsymbol{u} \boldsymbol{u} ^{\top} + \boldsymbol{I} _p \\
 \end{aligned}$$
 
-The sample covariance (actually $\frac{1}{n}$ CSSP) is
-
-$$
-\boldsymbol{S} _n = \frac{1}{n} \sum_{i=1}^n \boldsymbol{x} _i \boldsymbol{x} _i ^{\top}  
-$$
-
-It is easy to check that $\boldsymbol{x} \sim \boldsymbol{\Sigma}^{\frac{1}{2}} \boldsymbol{z}$ where $\boldsymbol{z} \sim \mathcal{N} (\boldsymbol{0} , \boldsymbol{I} _p)$. So $\boldsymbol{S}_n = \boldsymbol{\Sigma}^{\frac{1}{2}} \boldsymbol{Z} _n \boldsymbol{\Sigma}^{\frac{1}{2}}$ where $\boldsymbol{Z} _n = \frac{1}{n} \sum_{i=1}^n \boldsymbol{z} _i \boldsymbol{z} _i ^{\top}$.
-
-In expectation, $\mathbb{E} [\boldsymbol{S} _n] = \beta \boldsymbol{u} \boldsymbol{u} ^{\top} + \boldsymbol{I}$. Hence, the top eigenvector of $\mathbb{E} [\boldsymbol{S} _n]$ is indeed $\boldsymbol{u}$. How about the top eigenvector of $\boldsymbol{S} _n$?
+It is easy to check $\boldsymbol{u}$ is the top eigenvector of $\boldsymbol{\Sigma}$. Let the (uncentered, biased) sample covariance matrix be $\boldsymbol{S} _n = \frac{1}{n} \sum_{i=1}^n \boldsymbol{x} _i \boldsymbol{x} _i ^{\top}$, where PCA (asymptotically??) works on. In expectation, $\mathbb{E} [\boldsymbol{S} _n] = \boldsymbol{\Sigma} = \beta \boldsymbol{u} \boldsymbol{u} ^{\top} + \boldsymbol{I}_p$. Hence, the top eigenvector of $\mathbb{E} [\boldsymbol{S} _n]$ is indeed $\boldsymbol{u}$. How about the top eigenvector of observed $\boldsymbol{S} _n$?
 
 - Low-dimension regime: $\frac{p}{n} \rightarrow \gamma < 1$ as $n, p \rightarrow \infty$,
 - High-dimension regime: $\frac{p}{n} \rightarrow \gamma > 1$ as $n, p \rightarrow \infty$,
 
 For high-dim case, we analyze under what condition of $\beta$ and $\boldsymbol{u}$ can we detect $\boldsymbol{u}$, with random matrix theory.
 
-When $n \rightarrow \infty$, the eigenvalue $\lambda$ of $\boldsymbol{Z} _n$ has [Marchenko–Pastur distribution](https://en.wikipedia.org/wiki/Marchenko%E2%80%93Pastur_distribution).
+It is easy to check that $\boldsymbol{x} \sim \boldsymbol{\Sigma}^{\frac{1}{2}} \boldsymbol{z}$ where $\boldsymbol{z} \sim \mathcal{N} (\boldsymbol{0} , \boldsymbol{I} _p)$. Then we can write $\boldsymbol{S}_n = \boldsymbol{\Sigma}^{\frac{1}{2}} \boldsymbol{Z} _n \boldsymbol{\Sigma}^{\frac{1}{2}}$ where $\boldsymbol{Z} _n = \frac{1}{n} \sum_{i=1}^n \boldsymbol{z} _i \boldsymbol{z} _i ^{\top}$. When $n \rightarrow \infty$, the eigenvalue $\lambda$ of $\boldsymbol{Z} _n$ has [Marchenko–Pastur distribution](https://en.wikipedia.org/wiki/Marchenko%E2%80%93Pastur_distribution).
 
 $$
 f_{\gamma}(\lambda)=\frac{1}{2 \pi} \frac{\sqrt{\left(\gamma_{+}-\lambda\right)\left(\lambda-\gamma_{-}\right)}}{\gamma \lambda}, \quad \lambda \in \left[\gamma_{-}, \gamma_{+}\right]
@@ -837,6 +902,8 @@ where $\gamma_- = (1 - \sqrt{\gamma})^2, \gamma_+ = (1+\sqrt{\gamma})^2$.
 
 - When $\gamma > 1$, there is an additional point mass $(1- \frac{1}{\gamma} ) \delta(\lambda - 0)$ (??) at the origin.
 - When sample size increases, $\gamma \rightarrow 0$, and the interval $\left[\gamma_{-}, \gamma_{+}\right]$ is tighter, i.e. more concentrated.
+
+How is eigen values of $\boldsymbol{Z} _n$ related to $\boldsymbol{u}$?
 
 .
 
