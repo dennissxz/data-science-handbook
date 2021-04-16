@@ -1,3 +1,18 @@
+---
+jupytext:
+  cell_metadata_filter: -all
+  formats: md:myst
+  text_representation:
+    extension: .md
+    format_name: myst
+    format_version: 0.12
+    jupytext_version: 1.9.1
+kernelspec:
+  display_name: Python 3
+  language: python
+  name: python3
+---
+
 # Exponential Families
 
 
@@ -40,7 +55,7 @@ c &= f(\boldsymbol{x} ;\boldsymbol{\mu}, \boldsymbol{\Sigma}) \\
 - Let EVD $\boldsymbol{\Sigma} = \boldsymbol{U} \boldsymbol{\Lambda} \boldsymbol{U}$, then
   - $\boldsymbol{U}$ determines the rotation angle of the ellipsoid. The vectors $\boldsymbol{u} _i$ are the directions of the axes of the ellipsoid.
   - $\boldsymbol{\Lambda}$ determines the lengths of the axes. The length should be proportional to $\sqrt{\lambda_i}$. If all eigenvalues are the same, the ellipsoid reduces to a ball.
-- (To be shown belowf) the transformation $\boldsymbol{x} ^\prime  = \boldsymbol{U} ^\top \boldsymbol{x}, \boldsymbol{\mu} ^\prime  = \boldsymbol{U} ^\top \boldsymbol{\mu}, \boldsymbol{\Sigma} ^\prime  = \boldsymbol{\Lambda}$ will transform the distribution will change the center, align the ellipsoid axes to the coordinate axes (so the variables becomes independent and the joint PDF factorizes to univariate PDF), while keep the axes lengths intact (rotation preserve lengths and angles).
+- (To be shown below) the rotation transformation $\boldsymbol{x} ^\prime  = \boldsymbol{U} ^\top \boldsymbol{x}, \boldsymbol{\mu} ^\prime  = \boldsymbol{U} ^\top \boldsymbol{\mu}, \boldsymbol{\Sigma} ^\prime  = \boldsymbol{\Lambda}$ change the center, align the ellipsoid axes to the coordinate axes (so the variables becomes independent and the joint PDF factorizes to univariate PDF), while keep the axes lengths intact (rotation preserve lengths and angles).
 
 In the 2-d case, an ellipsoid reduces to an ellipse.
 
@@ -49,6 +64,41 @@ In the 2-d case, an ellipsoid reduces to an ellipse.
 
 Bivariate Gaussian density and ellipse
 :::
+
+A numerical example to illustrate how $\boldsymbol{\mu}, \boldsymbol{\Lambda} , \boldsymbol{U}$ jointly decide the distribution of $\boldsymbol{x}$, and the effect of rotation transformation (rotation) $\boldsymbol{U} ^{\top} \boldsymbol{x}$
+
+
+```{code-cell} python
+:tags: [hide-input]
+import numpy as np, pandas as pd, matplotlib.pyplot as plt
+mu = [2,4]
+Lam = np.diag([4,1])
+U = np.asarray([[1,1], [1,-1]]/np.sqrt(2))
+S = U @ Lam @ U.T
+n = 10000
+np.random.seed(1)
+X = np.random.multivariate_normal(mean=mu, cov=S, size=n)
+fig, ax = plt.subplots(1,2, figsize=(8,3), dpi=200)
+ax[0].scatter(X[:,0], X[:,1], s=0.5)
+ax[0].set_ylim(-2, 10)
+ax[0].set_xlim(-4, 8)
+ax[0].spines.left.set_position('zero')
+ax[0].spines.bottom.set_position('zero')
+ax[0].spines.right.set_color('none')
+ax[0].spines.top.set_color('none')
+
+# print(f'new center: {mu @ U.T}')
+X2 = X @ U.T
+ax[1].scatter(X2[:,0], X2[:,1], s=0.5)
+ax[1].set_ylim(-6, 6)
+ax[1].set_xlim(-2, 10)
+ax[1].spines.left.set_position('zero')
+ax[1].spines.bottom.set_position('zero')
+ax[1].spines.right.set_color('none')
+ax[1].spines.top.set_color('none')
+
+plt.show()
+```
 
 
 ### Properties
@@ -69,14 +119,16 @@ Bivariate Gaussian density and ellipse
     \boldsymbol{x}_{1} \mid \boldsymbol{x}_{2} \sim  N_{p}\left(\boldsymbol{\mu}_{1}+\boldsymbol{\Sigma}_{12} \boldsymbol{\Sigma}_{22}^{-1}\left(\boldsymbol{x}_{2}-\boldsymbol{\mu}_{2}\right), \boldsymbol{\Sigma}_{11}-\boldsymbol{\Sigma}_{12} \boldsymbol{\Sigma}_{22}^{-1} \boldsymbol{\Sigma}_{21}\right)
     $$
 
-    note the variance does not change with $\boldsymbol{x} _2$. In particular, for $p=q=1$,
+    Note the variance does not change with $\boldsymbol{x} _2$. In particular,
+    - for $p=q=1$,
 
-    $$
-    \begin{aligned}
-    X_{1} \mid X_{2}=x_{2} \sim & N\left(\mu_{1}+\frac{\sigma_{12}}{\sigma_{22}}\left(x_{2}-\mu_{2}\right), \sigma_{11}-\frac{\sigma_{12}^{2}}{\sigma_{22}}\right) \\
-    &=N\left(\mu_{1}+\rho \frac{\sigma_{1}}{\sigma_{2}}\left(x_{2}-\mu_{2}\right), \sigma_{1}^{2}\left(1-\rho^{2}\right)\right)
-    \end{aligned}
-    $$
+      $$
+      \begin{aligned}
+      X_{1} \mid X_{2}=x_{2} \sim & N\left(\mu_{1}+\frac{\sigma_{12}}{\sigma_{22}}\left(x_{2}-\mu_{2}\right), \sigma_{11}-\frac{\sigma_{12}^{2}}{\sigma_{22}}\right) \\
+      &=N\left(\mu_{1}+\rho \frac{\sigma_{1}}{\sigma_{2}}\left(x_{2}-\mu_{2}\right), \sigma_{1}^{2}\left(1-\rho^{2}\right)\right)
+      \end{aligned}
+      $$
+    - if $p=1$, then $x_1 = \mu_1 + \boldsymbol{\beta} ^{\top} (\boldsymbol{x} _2 - \boldsymbol{\mu} _2)$, i.e. a 'regression' model, where $\boldsymbol{\beta} ^{\top} = \boldsymbol{\Sigma}_{12} \boldsymbol{\Sigma}_{22}^{-1}$. Let $\boldsymbol{\Omega} = \boldsymbol{\Sigma} ^{-1}$, using block matrix inverse [formula](matrix-inverse), it is easy to show that $\beta_j = - \omega_{1j}/\omega_{11}$.
 
     :::{figure,myclass} gaussian-marginal-conditional
     <img src="../imgs/gaussian-marginal-conditional.png" width = "80%" alt=""/>
