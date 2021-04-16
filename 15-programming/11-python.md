@@ -398,9 +398,11 @@ def my_function(real_name, optional_display_name=None):
 
 ## Plot
 
-- Equal axis aspect ratio [docu](https://matplotlib.org/stable/gallery/subplots_axes_and_figures/axis_equal_demo.html)
+- Equal axis aspect ratio using [ax](https://matplotlib.org/stable/gallery/subplots_axes_and_figures/axis_equal_demo.html) or [plt](https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.axis.html)
   - `axs[0, 1].axis('equal')`
   - `axs.set_aspect('equal', 'box')`
+  - `plt.gca().set_aspect('equal', adjustable='box')`
+  - `plt.axis('square')`
 
 - Spine placement [docu](https://matplotlib.org/stable/gallery/ticks_and_spines/spine_placement_demo.html)
   ```
