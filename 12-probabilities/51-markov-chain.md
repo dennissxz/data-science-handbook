@@ -169,9 +169,11 @@ The expected number is
 
 $$\operatorname{\mathbb{E}}(I_{10}) = [1,2,3,\ldots, n]^\top\boldsymbol{p}_{I_{10}} $$
 
-A python script to implement the above steps:
+By simulation, we get the result
 
 ```{code-cell}
+:tags: [hide-input]
+
 import numpy as np
 import scipy.sparse as sparse
 from scipy.special import comb, perm, factorial
@@ -195,9 +197,6 @@ Et = sum([i * distribution.toarray()[0, i] for i in range(1, n+1)])
 print(Et)
 ```
 
-+++
-
-+++
 
 #### Sol.2 Conditional Expectation
 
@@ -267,11 +266,12 @@ $$\operatorname{\mathbb{E}}\left( I_{t+1} \right) \approx \frac{2n-1}{n-1}\opera
 
 Note that this will lead to a larger result since $\operatorname{\mathbb{E}}\left( I_t^2 \right) - \left[ \operatorname{\mathbb{E}}\left( I_t \right) \right]^2 = \mathrm{Var}\left( I_t \right) \ge 0$. But since $\mathrm{Var}\left( I_t \right)$ is small, the positive error is also small.
 
-+++
 
-A python script of the iteration is
+By simulation, we get the result
 
 ```{code-cell}
+:tags: [hide-input]
+
 def f(n, t, I0=1):
     Is = [I0] # initial number of infected
     for _ in range(1, t+1):
@@ -311,6 +311,8 @@ For details, see [Logistic Map](https://mathworld.wolfram.com/LogisticMap.html).
 To verify the solutions above, we can simulate the infection process.
 
 ```{code-cell}
+:tags: [hide-input]
+
 import numpy as np
 
 class Population():
@@ -350,9 +352,11 @@ pop.infect(t)
 print(pop.count_infected())
 ```
 
-To get the expected number $E(I_{10})$, we can try to simulate $m$ times and take the average.
+To get the expected number $\mathbb{E}(I_{10}), we can try to simulate $m$ times and take the average.
 
 ```{code-cell}
+:tags: [hide-input]
+
 np.random.seed(0)
 m = 10000
 t = 10
@@ -363,11 +367,13 @@ for i in range(m):
 print(Its[:, 9].mean())
 ```
 
-We see the simulation result $642.286$ is quite close to the result $E(I_{10}) = 642.347$ in Solution 1.
+We see the simulation result $642.286$ is quite close to the result $\mathbb{E}(I_{10}) = 642.347$ in Solution 1.
 
 The plot below shows $m$ trajectories of $I_t$ in the simulation. We can see all lines are close to each other, which verifies that the variance is quite small.
 
 ```{code-cell}
+:tags: [hide-input]
+
 import matplotlib.pyplot as plt
 for row in range(m):
     plt.plot(Its[row], c='C0', alpha=0.1)
