@@ -429,10 +429,65 @@ Methods and Results
 
 ## Tomographic Inference
 
-Measurements are available only at vertices that are somehow at the ‘perimeter’ of the network, and it is necessary to infer the presence or absence of both edges and vertices in the ‘interior.’
+In tomographic network topology inference problems, measurements are available only at vertices that are somehow at the ‘exterior’ of the network, and it is necessary to infer the presence or absence of both edges and vertices in the ‘interior.’ Here ‘exterior’ and ‘interior’ are somewhat relative terms and generally are used simply to distinguish between vertices where it is and is not possible (or, at least, not convenient) to obtain measurements. For example, in computer networks, desktop and laptop computers are typical instances of ‘exterior’ vertices, while Internet routers to which we do not have access are effectively ‘interior’ vertices.
+
+The problem of tomographic network topology inference is just one instance of
+what are more broadly referred to as problems of **network tomography**.
+
+### Introduction
 
 Given
 - measurements at only a particular subset of vertices
 
 Infer
 - topology of the rest
+
+Challenge
+- For a given set of measurements, there are likely many network topologies that conceivably could have generated them
+- Without any further constraints on aspects like the number of internal vertices and edges, and the manner in which they connect to one another, we have no sensible way of choosing among these possible solutions.
+- The problem is thus an example of an ‘ill-posed inverse problem’ in mathematics – an inverse problem, in the sense of inverting the mapping
+from internal to external, and ill-posed, in the sense of that mapping being many-to-one.
+- In order to obtain useful solutions to such ill-posed problems, we impose assumptions on the internal structure.
+
+Assumption
+- a key structural simplification has been the restriction to inference of networks in the form of trees.
+
+Related fields
+- inference of phylogenies: to construct trees (i.e., phylogenies) from data, for the purpose of describing evolutionary relationships among biological species.
+- computer network analysis: to infer the tree formed by a set of paths along which traffic flows from a given origin Internet address to a set of destination addresses, including physical or logical topologies.
+
+### For Tree Topologies
+
+Given a tree $T=(V_T, E_T)$, let $r \in V_T$ be its root, $R \in V_T$ be its leaves, and $V \setminus \left\{ \left\{ r \right\} \cup \left\{ R \right\}\right\}$ be the **internal vertices**. The edges $E_T$ are often referred to as branches.
+
+A binary three is also called a **bifurcating tree**, where each internal vertex has at most two children. We will restrict our attention here almost entirely to binary trees. Trees with more general branching structure can always be represented as binary trees and, indeed, methods for their inference can be built upon inferential methods for binary trees.
+
+:::{figure} graph-topo-tree
+<img src="../imgs/graph-topo-tree.png" width = "40%" alt=""/>
+
+Schematic representation of a binary tree. Measurements are available at the leaves 1, 2, 3, 4, and 5 (<span style="color:yellow">yellow</span>). Other elements (possibly including the root $r$) are unknown.
+:::
+
+The leaves $R$ are known, but the internal vertices and the branches are not. The root $r$ may or may not be known. We associate with each branch a weight $w$, which we may or may not wish to infer.
+
+For a set of $N_\ell$ vertices, we have $n$ independent and identically distributed observations of some random variables $\left\{ X_1, X_2, \ldots, X_{N_\ell} \right\}$. Assume that these $N_\ell$ vertices can be identified with the leaves $R$ of a tree $T$, we aim to find that tree $T$ in the set $\mathcal{T}_{N_\ell}$ of all binary trees with $N_\ell$ labeled leaves that best explains the data, in some well-defined sense. If we have knowledge of a root $r$, then the roots of the trees in $\mathcal{T}_{N_\ell}$ will all be identified with $r$. In some contexts we may also be interested in inferring a set of weights $w$ for the branches in $T$.
+
+Example (Binary multicast tree)
+: For instance, consider a binary multicast tree $T$. There is a packet sending from root $r$ to all $N_\ell$ leaves. If the packet is 'lost' at an internal vertex, then all its descendants cannot receive the packet. Let $X_i$ be binary variables, which is $1$ if leave $i$ receives the packet and $0$ otherwise. We may send the packet for $n$ times, obtain $n$ binary vectors, and use them to infer the tree structure. Here are some properties of the tree which can be exploited in designing methods of inference:
+- For a subset $U \in R$ of leaves, let $a(U)$ be their closest common ancestor. If $X_{a(U)} = 0$, then $X_{u} = 0$ for all leaves $u \in U$.
+- For an internal vertex $v$, let $C(v)$ be its children. If $X_c = 1$ for at least one $c \in C(v)$, then $X_v = 1$.
+
+Example (Binary Phylogenetic tree)
+: Another example is DNA sequence. If we group DNA bases $\left\{ A, G, C, T \right\}$ in pairs $\left\{ A, G \right\}$ and $\left\{ C, T \right\}$, i.e. by purines and pyrimidines respectively, and coded $0$ and $1$. We can then use an $N_\ell$-tuple of measurements to indicate whether each of $N_\ell$ species being studied had a purine or pyrimidine at a given location in the genome. Repeat this for $n$ different locations.
+
+There are many methods for tomographic inference of tree topologies, which differ in
+- how the data are utilized (all or part)
+- criteria for assessing the merit of a candidate tree $T \in \mathcal{T} _{N\ell}$ in describing the data
+- the number in which the space $\mathcal{T} _{N_\ell}$ is searched in attempting to find a tree(s) best meeting this criteria.
+  - Note that the space $\mathcal{T} _{N_\ell}$ of (semi)labeled, rooted, binary trees is found to have $\left(2 N_{l}-3\right) !! \approx \left(N_{l}-1\right)^{N_{l}-1}$ elements. Hence, exhaustive search is unrealistic and alternative approaches, based on greedy or randomized search algorithms, are utilized
+  - maximum parsimony in phylogenetic inference, which seeks to construct a tree for data involving the minimum number of necessary evolutionary changes
+  - branch-and-bound
+
+Two popular classes of methods: hierarchical clustering-based, and likelihood-based. They both seek to exploit the supposition that, the closer two leaves are in the underlying tree, the more similar their observed characteristics (i.e., the measurements) will be.
+- the observed rate of shared losses of packets should be fairly indicative of how close two leaf vertices
+- two biological species are presumed to share more of their genome if they split from a common ancestor later in evolutionary time.
