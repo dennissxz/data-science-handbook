@@ -491,3 +491,46 @@ There are many methods for tomographic inference of tree topologies, which diffe
 Two popular classes of methods: hierarchical clustering-based, and likelihood-based. They both seek to exploit the supposition that, the closer two leaves are in the underlying tree, the more similar their observed characteristics (i.e., the measurements) will be.
 - the observed rate of shared losses of packets should be fairly indicative of how close two leaf vertices
 - two biological species are presumed to share more of their genome if they split from a common ancestor later in evolutionary time.
+
+### Hierarchical Clustering-based
+
+Hierarchical [clustering](clustering) method can be used to the $n \times N_\ell$ data matrix. Note that
+- traditional clustering methods aim to find cluster assignment, while here we want the hierarchical tree $\hat{T}$.
+- the (dis)similarity measure can be customized, e.g. (true) shared loss, or genetic distance.
+
+
+:::{admonition,note,dropdown} True, false and net shared loss in a multicast tree
+
+There are two different types of shared loss between a pair of leaf vertices $\left\{ j, k \right\}$ – termed ‘true’ and ‘false’ shared loss by Ratnasamy and McCanne [323].
+- The true shared losses are due to loss of packets on the path common to the vertices $j$ and $k$
+- while the false shared losses are due to loss on the parts of paths following after the closest common ancestor, $a(\left\{ j, k \right\})$.
+
+For example, in the above tree,
+- true shared losses for the leaves 1 and 3 would be losses incurred on the path from $r$ to the internal vertex $i_1$;
+- false shared losses would refer to cases where packets were lost separately on the two paths from $i_1$ to the vertices 1 and 3, respectively.
+
+Since the net shared loss rate (i.e., the fraction of packets commonly lost to $j$ and $k$) includes the contribution of **both** types of losses, it can be misleading to use this number as a similarity. Fortunately, it is possible to obtain information on the **true** loss rates from these net loss rates, through the use of a simple packet-loss model.
+
+:::
+
+
+Here we introduce a Markov cascade process for multicast data. Consider the cascade process $\left\{ X_j \right\}_{j \in V_T}$, assume $X_r=1$. For each internal vertex $k$, if $X_k =0$ then $X_j = 0$ for all child $j \in C(k)$. If $X_k = 1$, then we define
+
+$$
+\mathbb{P}\left(X_{j}=1 \mid X_{k}=1\right)=1-\mathbb{P}\left(X_{j}=0 \mid X_{k}=1\right)=\alpha_{j}
+$$
+
+and hence define
+- $A(k) = \prod_{j \succ k} \alpha_j$ to be the probability that a packet is transmitted from $r$ to $k$, where $j \succ k$ indicates ancestral vertices $j$ of $k$ on the path from $r$.
+- $1 - A(a(\left\{ j, k \right\}))$ to be the true shared losses rate, i.e. shared loss due to loss of packets on the path common to the two leaf vertices $j$ and $k$.
+- $R(k)$ to be the set of leaf vertices in $R$ that are descendants of internal vertex $k$
+- $\gamma(k)=\mathbb{P}\left(\cup_{j \in R(k)}\left\{X_{j}=1\right\}\right)$ be the probability that at least one of the **leaves** descended from $k$ receive a packet. This can be estimated by $n$ observations of $\boldsymbol{x}_i$, using the relative frequency $\hat{\gamma}(k)=(1 / n) \sum_{i=1}^{n}\left[\prod_{j \in R(k)} x_{ij}\right]$
+- $\gamma(U)=\mathbb{P}\left(\cup_{k \in U} \cup_{j \in R(k)}\left\{X_{j}=1\right\}\right)$ similarly, for an arbitrary set of vertices $U$. In particular, if $U = C(k)$, then $\gamma(U) = \gamma(k)$.
+
+Then, it is not difficult to show that for any $U \subseteq C(k)$, we have
+
+$$
+1- \frac{\gamma(U)}{A(k)}=\prod_{j \in U}\left[ 1- \frac{\gamma(j)}{A(k)} \right]
+$$
+
+Therefore, we can first estimate $\gamma(k)$ by $\hat{\gamma}(k)$, then solve the above function to obtain $\hat{A}(k)$ for all $k \in V_T$. To build a agglomerative clustering tree, we can use the true shared losses rate $1 - \hat{A}(a(\{j, k\}))$ as similarity measure. See [SAND 128] for consistency of the resulting estimator $T$ for recovering a binary multicast tree $T$, under the model assumptions.
