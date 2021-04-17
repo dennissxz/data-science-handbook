@@ -874,11 +874,8 @@
       </a>
      </li>
      <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#p-value">
-       <span class="math notranslate nohighlight">
-        \(p\)
-       </span>
-       -value
+      <a class="reference internal nav-link" href="#testing">
+       Testing
       </a>
      </li>
      <li class="toc-h4 nav-item toc-entry">
@@ -905,16 +902,50 @@
      </li>
      <li class="toc-h4 nav-item toc-entry">
       <a class="reference internal nav-link" href="#id2">
-       <span class="math notranslate nohighlight">
-        \(p\)
-       </span>
-       -value
+       Testing
       </a>
      </li>
      <li class="toc-h4 nav-item toc-entry">
       <a class="reference internal nav-link" href="#id3">
        Multiple Testing
       </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#gaussian-graphical-model-networks">
+     Gaussian Graphical Model Networks
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#id4">
+       Buildup
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#id5">
+       Testing
+      </a>
+      <ul class="nav section-nav flex-column">
+       <li class="toc-h5 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#standard-method">
+         Standard method
+        </a>
+       </li>
+       <li class="toc-h5 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#methods-based-on-z-i-j-mid-v-backslash-i-j">
+         Methods based on
+         <span class="math notranslate nohighlight">
+          \(z_{i j\mid V \backslash\{i, j\}}\)
+         </span>
+        </a>
+       </li>
+       <li class="toc-h5 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#methods-based-on-penalized-linear-regression">
+         Methods based on Penalized Linear Regression
+        </a>
+       </li>
+      </ul>
      </li>
     </ul>
    </li>
@@ -951,7 +982,7 @@ inference problems over graphs.</p>
 <h2>Link Prediction<a class="headerlink" href="#link-prediction" title="Permalink to this headline">¶</a></h2>
 <p>Given</p>
 <ul class="simple">
-<li><p>full knowledge of all the vertices attributes <span class="math notranslate nohighlight">\(\mathbf{x}=\left(x_{1}, \ldots, x_{N_{v}}\right)^{\top}\)</span></p></li>
+<li><p>full knowledge of all the vertices attributes <span class="math notranslate nohighlight">\(\boldsymbol{x}=\left(x_{1}, \ldots, x_{N_{v}}\right)^{\top}\)</span></p></li>
 <li><p>status of some of the edges/non-edges <span class="math notranslate nohighlight">\(\boldsymbol{Y}^{obs}\)</span></p></li>
 </ul>
 <p>Infer</p>
@@ -966,7 +997,7 @@ inference problems over graphs.</p>
 <p>A basic framework:</p>
 <div class="math notranslate nohighlight">
 \[
-\mathbb{P}\left(\mathbf{Y}^{m i s s} \mid \mathbf{Y}^{o b s}=\mathbf{y}^{o b s}, \mathbf{X}=\mathbf{x}\right)
+\mathbb{P}\left(\boldsymbol{Y}^{m i s s} \mid \boldsymbol{Y}^{o b s}=\boldsymbol{y}^{o b s}, \boldsymbol{X}=\boldsymbol{x}\right)
 \]</div>
 <p>But there are many challenges to predict <span class="math notranslate nohighlight">\(Y_{ij}^{miss}\)</span> jointly. Many methods predict individual <span class="math notranslate nohighlight">\(Y_{ij}^{miss}\)</span>, as introduced below.</p>
 <div class="section" id="scoring">
@@ -1000,14 +1031,17 @@ inference problems over graphs.</p>
 <div class="math notranslate nohighlight">
 \[
 \log \left[
-\frac{\mathbb{P}_{\beta}\left(Y_{i j}=1 \mid \mathbf{Z}_{i j}=\mathbf{z}\right)}{\mathbb{P}_{\beta}\left(Y_{i j}=0 \mid \mathbf{Z}_{i j}=\mathbf{z}\right)}
-\right]=\beta^{\top} \mathbf{z}
+\frac{\mathbb{P}_{\beta}\left(Y_{i j}=1 \mid \boldsymbol{Z}_{i j}=\boldsymbol{z}\right)}{\mathbb{P}_{\beta}\left(Y_{i j}=0 \mid \boldsymbol{Z}_{i j}=\boldsymbol{z}\right)}
+\right]=\boldsymbol{\beta}^{\top} \boldsymbol{z}
 \]</div>
-<ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(\boldsymbol{Z} _{ij}\)</span> is a vector of explanatory variables indexed in the unordered pairs <span class="math notranslate nohighlight">\((i, j)\)</span>. In general it is some transformation of <span class="math notranslate nohighlight">\(\boldsymbol{Y} ^{obs}_{(-ij)}\)</span> and/or <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span>: <span class="math notranslate nohighlight">\(\mathbf{Z}_{i j}=\left(g_{1}\left(\mathbf{Y}_{(-i j)}^{o b s}, \mathbf{X}\right), \ldots, g_{K}\left(\mathbf{Y}_{(-i j)}^{o b s}, \mathbf{X}\right)\right)^{\top}\)</span></p>
 <ul>
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{Z} _{ij}\)</span> is a vector of explanatory variables indexed in the unordered pairs <span class="math notranslate nohighlight">\((i, j)\)</span>. In general it is some transformation of <span class="math notranslate nohighlight">\(\boldsymbol{Y} ^{obs}_{(-ij)}\)</span> and/or <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\boldsymbol{Z}_{i j}=\left(g_{1}\left(\boldsymbol{Y}_{(-i j)}^{o b s}, \boldsymbol{X}\right), \ldots, g_{K}\left(\boldsymbol{Y}_{(-i j)}^{o b s}, \boldsymbol{X}\right)\right)^{\top}\]</div>
+<p>For instance, <span class="math notranslate nohighlight">\(g\)</span> can be</p>
+<ul class="simple">
 <li><p>network structure measures using <span class="math notranslate nohighlight">\(\boldsymbol{Y} ^{obs}_{-ij}\)</span>, e.g. score functions introduced above</p></li>
-<li><p>similarity measures between <span class="math notranslate nohighlight">\(X_{ik}\)</span> and <span class="math notranslate nohighlight">\(X_{jk}\)</span> for some (univariate) vertex attribute <span class="math notranslate nohighlight">\(k\)</span>.</p>
+<li><p>similarity measures between the <span class="math notranslate nohighlight">\(k\)</span>-th vertex attributes of vertex <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(j\)</span>,</p>
 <ul>
 <li><p>additive <span class="math notranslate nohighlight">\(X_{ik} + X_{jk}\)</span> for continuous values</p></li>
 <li><p>indicator <span class="math notranslate nohighlight">\(\mathbb{I} \left\{ X_{ik} = X_{jk} \right\}\)</span> for discrete values</p></li>
@@ -1017,20 +1051,23 @@ inference problems over graphs.</p>
 </li>
 <li><p>the coefficient <span class="math notranslate nohighlight">\(\boldsymbol{\beta}\)</span> is assumed common to all pairs.</p></li>
 </ul>
-<p>In prediction, we compare the predicted value vs some threshold, e.g. 0.5</p>
+<dl class="simple myst">
+<dt>Prediction</dt><dd><p>We compare the predicted value vs some threshold, e.g. 0.5, and then decide classification.</p>
 <div class="math notranslate nohighlight">
 \[
-\mathbb{P}_{\hat{\beta}}\left(Y_{i j}^{m i s s}=1 \mid \mathbf{Z}_{i j}=\mathbf{z}\right)= \frac{\exp (\hat{\boldsymbol{\beta} } ^{\top} \boldsymbol{z} )}{1 + \exp (\hat{\boldsymbol{\beta} } ^{\top} \boldsymbol{z} )}
-\]</div>
+  \mathbb{P}_{\hat{\beta}}\left(Y_{i j}^{miss}=1 \mid \boldsymbol{Z}_{i j}=\boldsymbol{z}\right)= \frac{\exp (\hat{\boldsymbol{\beta} } ^{\top} \boldsymbol{z} )}{1 + \exp (\hat{\boldsymbol{\beta} } ^{\top} \boldsymbol{z} )}
+  \]</div>
+</dd>
+</dl>
 <p>Issues</p>
 <ul class="simple">
-<li><p>Need to consider the missing mechanism. If <span class="math notranslate nohighlight">\(\boldsymbol{Y} ^{miss}\)</span> is <strong>not</strong> at random, the accuracy of the classification approach is will suffer.</p></li>
-<li><p>In a graph <span class="math notranslate nohighlight">\(Y_{ij}\)</span> are usually not independent given explanatory variables <span class="math notranslate nohighlight">\(\boldsymbol{Z}\)</span>, which is assumed in logistic models (no formal work to date exploring the implications on prediction accuracy of ignoring possible dependencies in this manner). Introducing latent variable solve this issue, as discussed below</p></li>
+<li><p>Need to consider the missing mechanism. If <span class="math notranslate nohighlight">\(\boldsymbol{Y} ^{miss}\)</span> is <strong>not</strong> at random, the accuracy of the classification approach will suffer.</p></li>
+<li><p>In a graph, <span class="math notranslate nohighlight">\(Y_{ij}\)</span> are usually not independent given explanatory variables <span class="math notranslate nohighlight">\(\boldsymbol{Z}\)</span>, which is assumed in logistic models (no formal work to date exploring the implications on prediction accuracy of ignoring possible dependencies in this manner). Introducing latent variable solve this issue, as discussed below</p></li>
 </ul>
 </div>
 <div class="section" id="latent-variables">
 <h4>Latent Variables<a class="headerlink" href="#latent-variables" title="Permalink to this headline">¶</a></h4>
-<p>The use of latent variables is an intuitively appealing way to indirectly model unobserved factors driving the formation of network structure. Let <span class="math notranslate nohighlight">\(\boldsymbol{M}\)</span> be an unknown random, symmetric <span class="math notranslate nohighlight">\(N_v \times N_v\)</span> matrix of latent variables, defined as</p>
+<p>The use of latent variables is an intuitively appealing way to indirectly model unobserved factors driving the formation of network structure. Let <span class="math notranslate nohighlight">\(\boldsymbol{M}\)</span> be an unknown, random, symmetric <span class="math notranslate nohighlight">\(N_v \times N_v\)</span> matrix of latent variables, defined as</p>
 <div class="math notranslate nohighlight">
 \[
 \boldsymbol{M} = \boldsymbol{U} ^{\top} \boldsymbol{\Lambda} \boldsymbol{U} + \boldsymbol{E}
@@ -1045,34 +1082,42 @@ inference problems over graphs.</p>
 \[
 M_{ij} = \boldsymbol{u} _i ^{\top} \boldsymbol{\Lambda} \boldsymbol{u} _j + \epsilon_{ij}
 \]</div>
-<p>Intuition: The latent variable matrix <span class="math notranslate nohighlight">\(\boldsymbol{M}\)</span> is intended to capture effects of network structural characteristics or processes not already described by the observed explanatory variables <span class="math notranslate nohighlight">\(\boldsymbol{Z} _{ij}\)</span>. We add <span class="math notranslate nohighlight">\(M_{ij}\)</span> as an explanatory variable (random??). The model becomes</p>
+<dl class="simple myst">
+<dt>Intuition</dt><dd><p>The latent variable matrix <span class="math notranslate nohighlight">\(\boldsymbol{M}\)</span> is intended to capture effects of network structural characteristics or processes not already described by the observed explanatory variables <span class="math notranslate nohighlight">\(\boldsymbol{Z} _{ij}\)</span>. We add <span class="math notranslate nohighlight">\(M_{ij}\)</span> as an explanatory variable (like that in random effect models). The model becomes</p>
 <div class="math notranslate nohighlight">
 \[
-\log \left[
-\frac{\mathbb{P}_{\beta}\left(Y_{i j}=1 \mid \mathbf{Z}_{i j}=\mathbf{z}, M_{ij}=m\right)}{\mathbb{P}_{\beta}\left(Y_{i j}=0 \mid \mathbf{Z}_{i j}=\mathbf{z}, M_{ij}=m\right)}
-\right]=\beta^{\top} \mathbf{z} + m
-\]</div>
+  \log \left[
+  \frac{\mathbb{P}_{\beta}\left(Y_{i j}=1 \mid \boldsymbol{Z}_{i j}=\boldsymbol{z}, M_{ij}=m\right)}{\mathbb{P}_{\beta}\left(Y_{i j}=0 \mid \boldsymbol{Z}_{i j}=\boldsymbol{z}, M_{ij}=m\right)}
+  \right]=\beta^{\top} \boldsymbol{z} + m
+  \]</div>
 <p>Now <span class="math notranslate nohighlight">\(Y_{ij}\)</span> are conditionally independent given <span class="math notranslate nohighlight">\(\boldsymbol{Z} _{ij}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{M} _{ij}\)</span>, but conditionally <em>dependent</em> given only the <span class="math notranslate nohighlight">\(\boldsymbol{Z} _{ij}\)</span>.</p>
-<p>Distributions for <span class="math notranslate nohighlight">\(\boldsymbol{U} , \boldsymbol{\Lambda} , \boldsymbol{E}\)</span>.</p>
+</dd>
+</dl>
+<p>Commonly used distributions for <span class="math notranslate nohighlight">\(\boldsymbol{U} , \boldsymbol{\Lambda} , \boldsymbol{E}\)</span>.</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(\boldsymbol{U}\)</span>: uniform distribution on the space of all <span class="math notranslate nohighlight">\(N_v \times N_v\)</span> orthonormal matrices</p></li>
 <li><p><span class="math notranslate nohighlight">\(\boldsymbol{\Lambda} , \boldsymbol{E}\)</span>: multivariate Gaussian (facilitate MCMC sampling)</p></li>
 </ul>
-<p>Prediction: compare the expected probability of <span class="math notranslate nohighlight">\(Y_{ij}=1\)</span> with some threshold, which may be approximated numerically to any desired accuracy by the corresponding sample average of draws from the posterior indicated</p>
+<dl class="simple myst">
+<dt>Prediction</dt><dd><p>Compare the expected probability of <span class="math notranslate nohighlight">\(Y_{ij}=1\)</span> with some threshold, which may be approximated numerically to any desired accuracy by the corresponding sample average of draws from the posterior indicated</p>
 <div class="math notranslate nohighlight">
 \[
-\mathbb{E}\left(\frac{\exp \left\{\beta^{T} \mathbf{Z}_{i j}+M_{i j}\right\}
-}{1+\exp \left\{\beta^{T} \mathbf{Z}_{i j}+M_{i j}\right\}}
- \mid \mathbf{Y}^{o b s}=\mathbf{y}^{o b s}, \mathbf{Z}_{i j}=\mathbf{z}\right)
-\]</div>
-<p>Cons: MCMC computation cost, mainly driven by the need to draw <span class="math notranslate nohighlight">\(N_v ^2\)</span> unobserved variables <span class="math notranslate nohighlight">\(U_{ij}\)</span>. Sol: let <span class="math notranslate nohighlight">\(\boldsymbol{U}\)</span> have only <span class="math notranslate nohighlight">\(K\)</span> non-zero column vectors for <span class="math notranslate nohighlight">\(K \ll N_v\)</span>, hence low-rank of <span class="math notranslate nohighlight">\(\boldsymbol{M}\)</span>. In fact <span class="math notranslate nohighlight">\(K=2, 3\)</span> work well in practice. [SAND 200 201]</p>
+  \mathbb{E}\left(\frac{\exp \left\{\beta^{T} \boldsymbol{Z}_{i j}+M_{i j}\right\}
+  }{1+\exp \left\{\beta^{T} \boldsymbol{Z}_{i j}+M_{i j}\right\}}
+   \mid \boldsymbol{Y}^{o b s}=\boldsymbol{y}^{o b s}, \boldsymbol{Z}_{i j}=\boldsymbol{z}\right)
+  \]</div>
+</dd>
+<dt>Cons</dt><dd><p>MCMC computation cost, mainly driven by the need to draw <span class="math notranslate nohighlight">\(N_v ^2\)</span> unobserved variables <span class="math notranslate nohighlight">\(U_{ij}\)</span>.
+Sol: let <span class="math notranslate nohighlight">\(\boldsymbol{U}\)</span> have only <span class="math notranslate nohighlight">\(K\)</span> non-zero column vectors for <span class="math notranslate nohighlight">\(K \ll N_v\)</span>, hence low-rank of <span class="math notranslate nohighlight">\(\boldsymbol{M}\)</span>. In fact <span class="math notranslate nohighlight">\(K=2, 3\)</span> work well in practice. [SAND 200, 201]</p>
+</dd>
+</dl>
 <p>For a case study see [SAND pg.205].</p>
 </div>
 </div>
 </div>
 <div class="section" id="association-networks">
 <h2>Association Networks<a class="headerlink" href="#association-networks" title="Permalink to this headline">¶</a></h2>
-<p>Non-trivial level of association (e.g. correlation) between certain characteristics of the vertices, but is itself unobserved and must be inferred from measurements reflecting these characteristics.</p>
+<p>We use non-trivial level of association (e.g. correlation) between certain characteristics of the vertices to decide edge assignment. But the association is itself unobserved and must be inferred from measurements reflecting these characteristics.</p>
 <p>Given</p>
 <ul class="simple">
 <li><p>no knowledge of edge status anywhere</p></li>
@@ -1091,7 +1136,7 @@ M_{ij} = \boldsymbol{u} _i ^{\top} \boldsymbol{\Lambda} \boldsymbol{u} _j + \eps
 \]</div>
 <div class="section" id="buildup">
 <h4>Buildup<a class="headerlink" href="#buildup" title="Permalink to this headline">¶</a></h4>
-<p>Suppose for each vertex, we have <span class="math notranslate nohighlight">\(n\)</span> independent observations <span class="math notranslate nohighlight">\(\left\{ x_{i1}, \ldots, x_{in} \right\}\)</span>, e.g. gene expression levels from <span class="math notranslate nohighlight">\(n\)</span> experiments. We can then form an <span class="math notranslate nohighlight">\(n \times N_v\)</span> matrix <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span>, and compute the sample covariance matrix <span class="math notranslate nohighlight">\(\hat{\Sigma}=\frac{1}{n-1}(\mathbf{X}-\overline{\mathbf{X}})^{\top}(\mathbf{X}-\overline{\mathbf{X}})\)</span>, and hence obtain the entries <span class="math notranslate nohighlight">\(\hat{\sigma}\)</span> and compute <span class="math notranslate nohighlight">\(\hat{\rho}\)</span>.</p>
+<p>Suppose for each vertex <span class="math notranslate nohighlight">\(i\)</span>, we have <span class="math notranslate nohighlight">\(n\)</span> independent observations <span class="math notranslate nohighlight">\(\left\{ x_{i1}, \ldots, x_{in} \right\}\)</span>, e.g. gene expression levels from <span class="math notranslate nohighlight">\(n\)</span> experiments. We can then form an <span class="math notranslate nohighlight">\(n \times N_v\)</span> matrix <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span>, and compute the <span class="math notranslate nohighlight">\(N_v \times N_v\)</span> sample covariance matrix <span class="math notranslate nohighlight">\(\boldsymbol{S}\)</span>, hence obtain the entries <span class="math notranslate nohighlight">\(\hat{\sigma}\)</span> and use that to compute <span class="math notranslate nohighlight">\(\hat{\rho}\)</span>.</p>
 <p>The corresponding association graph <span class="math notranslate nohighlight">\(G\)</span> is the graph with edge set</p>
 <div class="math notranslate nohighlight">
 \[
@@ -1105,16 +1150,16 @@ H_{0}: \rho_{i j}=0 \quad \text { versus } \quad H_{1}: \rho_{i j} \neq 0
 <p>Problems</p>
 <ul class="simple">
 <li><p>what test statistics?</p></li>
-<li><p>whats the null distribution of that test statistic?</p></li>
+<li><p>what is the null distribution of that test statistic?</p></li>
 <li><p>there are <span class="math notranslate nohighlight">\(N_v (N_v - 1)/2\)</span> potential edges, which implies multiple testing problem.</p></li>
 </ul>
 </div>
-<div class="section" id="p-value">
-<h4><span class="math notranslate nohighlight">\(p\)</span>-value<a class="headerlink" href="#p-value" title="Permalink to this headline">¶</a></h4>
-<p>If <span class="math notranslate nohighlight">\((X_i, X_j)\)</span> follow bivariate Gaussian, then <span class="math notranslate nohighlight">\(\hat{\rho}_{ij}\)</span> under <span class="math notranslate nohighlight">\(H_0: \rho_{ij}=0\)</span> has a closed-form but the computation of <span class="math notranslate nohighlight">\(p\)</span>-values is hard. Therefore, some transformed versions of <span class="math notranslate nohighlight">\(\hat{\rho}_{ij}\)</span> may be preferable</p>
+<div class="section" id="testing">
+<h4>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h4>
+<p>If <span class="math notranslate nohighlight">\((X_i, X_j)\)</span> follow bivariate Gaussian, then <span class="math notranslate nohighlight">\(\hat{\rho}_{ij}\)</span> under <span class="math notranslate nohighlight">\(H_0: \rho_{ij}=0\)</span> has a closed-form, but the computation of <span class="math notranslate nohighlight">\(p\)</span>-values is hard. Therefore, some transformed versions of <span class="math notranslate nohighlight">\(\hat{\rho}_{ij}\)</span> may be preferable</p>
 <ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(z_{i j}=\frac{\hat{\rho}_{i j} \sqrt{n-2}}{\sqrt{1-\hat{\rho}_{i j}^{2}}} \sim t_{n-1}\)</span>, and under <span class="math notranslate nohighlight">\(H_0\)</span> is it robust to departures of <span class="math notranslate nohighlight">\(X_i\)</span> from Gaussianity.</p></li>
-<li><p><span class="math notranslate nohighlight">\(z_{i j}=\tanh ^{-1}\left(\hat{\rho}_{i j}\right)=\frac{1}{2} \log \left[\frac{\left(1+\hat{\rho}_{i j}\right)}{\left(1-\hat{\rho}_{i j}\right)} \right]\)</span> Fisher transformation.</p>
+<li><p><span class="math notranslate nohighlight">\(z_{i j}=\frac{\hat{\rho}_{i j} \sqrt{n-2}}{\sqrt{1-\hat{\rho}_{i j}^{2}}} \sim t_{n-1}\)</span>, and under <span class="math notranslate nohighlight">\(H_0\)</span> it is robust to departures of <span class="math notranslate nohighlight">\(X_i\)</span> from Gaussianity.</p></li>
+<li><p><span class="math notranslate nohighlight">\(z_{i j}=\tanh ^{-1}\left(\hat{\rho}_{i j}\right)=\frac{1}{2} \log \left[\frac{\left(1+\hat{\rho}_{i j}\right)}{\left(1-\hat{\rho}_{i j}\right)} \right]\)</span>, aka Fisher transformation.</p>
 <ul>
 <li><p>for bivariate Gaussian pairs, the distribution of <span class="math notranslate nohighlight">\(z_{ij}\)</span> does not have a simple exact form. But under <span class="math notranslate nohighlight">\(H_0\)</span> this distribution is well approximated by <span class="math notranslate nohighlight">\(\mathcal{N} (0, \frac{1}{n-3} )\)</span> even for moderately large <span class="math notranslate nohighlight">\(n\)</span>.</p></li>
 </ul>
@@ -1141,23 +1186,24 @@ H_{0}: \rho_{i j}=0 \quad \text { versus } \quad H_{1}: \rho_{i j} \neq 0
 </div>
 <div class="section" id="partial-correlation-networks">
 <h3>Partial Correlation Networks<a class="headerlink" href="#partial-correlation-networks" title="Permalink to this headline">¶</a></h3>
-<p>If it is felt desirable to construct a graph <span class="math notranslate nohighlight">\(G\)</span> where the inferred edges are more reflective of direct influence among vertices, rather than indirect influence through some common neighbor, the notion of partial correlation becomes relevant.</p>
+<p>If it is felt desirable to construct a graph <span class="math notranslate nohighlight">\(G\)</span> where the inferred edges are more reflective of direct influence among vertices, rather than indirect influence through some common neighbor (confounders), the notion of partial correlation becomes relevant.</p>
 <div class="section" id="partial-correlation">
 <h4>Partial Correlation<a class="headerlink" href="#partial-correlation" title="Permalink to this headline">¶</a></h4>
+<p>Continuing from the setting of <span class="math notranslate nohighlight">\(n \times N_v\)</span> measurement matrix <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span>.</p>
 <dl class="simple myst">
-<dt>Definition (Partial correlation)</dt><dd><p>The partial correlation of attributes <span class="math notranslate nohighlight">\(X_i\)</span> and <span class="math notranslate nohighlight">\(X_j\)</span> of vertices <span class="math notranslate nohighlight">\(i, j \in V\)</span> w.r.t. the attributes <span class="math notranslate nohighlight">\(X_{k_1}, \ldots, X_{k_m}\)</span> of vertices <span class="math notranslate nohighlight">\(k_1, \ldots, k_m \in V \setminus \left\{ i, j \right\}\)</span>, is the correlation between <span class="math notranslate nohighlight">\(X_i\)</span> and <span class="math notranslate nohighlight">\(X_j\)</span> left over, after adjusting for those effects common to both. Let <span class="math notranslate nohighlight">\(S_m = \left\{ k_1, \ldots, k_m \right\}\)</span>, the partial correlation of <span class="math notranslate nohighlight">\(X_i\)</span> and <span class="math notranslate nohighlight">\(X_j\)</span> adjusting for <span class="math notranslate nohighlight">\(\boldsymbol{X} _{S_m} = (X_{k_1}, \ldots, X_{k_m}) ^{\top}\)</span> is defined as</p>
+<dt>Definition (Partial correlation)</dt><dd><p>The partial correlation of attributes <span class="math notranslate nohighlight">\(X_i\)</span> and <span class="math notranslate nohighlight">\(X_j\)</span> of vertices <span class="math notranslate nohighlight">\(i, j \in V\)</span> w.r.t. the attributes <span class="math notranslate nohighlight">\(X_{k_1}, \ldots, X_{k_m}\)</span> of vertices <span class="math notranslate nohighlight">\(k_1, \ldots, k_m \in V \setminus \left\{ i, j \right\}\)</span>, is the correlation between <span class="math notranslate nohighlight">\(X_i\)</span> and <span class="math notranslate nohighlight">\(X_j\)</span> left over, after adjusting for those effects common to both. Let <span class="math notranslate nohighlight">\(S_m = \left\{ k_1, \ldots, k_m \right\}\)</span>, the partial correlation of <span class="math notranslate nohighlight">\(X_i\)</span> and <span class="math notranslate nohighlight">\(X_j\)</span> adjusting for <span class="math notranslate nohighlight">\(\boldsymbol{X} _{S_m} = [X_{k_1}, \ldots, X_{k_m}] ^{\top}\)</span> is defined as</p>
 <div class="math notranslate nohighlight">
 \[
   \rho_{i j \mid S_{m}}=\frac{\sigma_{i j \mid S_{m}}}{\sqrt{\sigma_{i i\mid S_{m}} \sigma_{j j \mid S_{m}}} }
   \]</div>
 </dd>
 </dl>
-<p>To compute it, let <span class="math notranslate nohighlight">\(\boldsymbol{W} _1 = (X_i, X_j) ^{\top}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{W} _2 = \boldsymbol{X} _{S_m}\)</span>. We can partition the covariance matrix to</p>
+<p>To compute it, let <span class="math notranslate nohighlight">\(\boldsymbol{W} _1 = [X_i, X_j] ^{\top}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{W} _2 = \boldsymbol{X} _{S_m}\)</span>. We can partition the covariance matrix to</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \operatorname{Cov}\left(\begin{array}{l}
-\mathbf{W}_{1} \\
-\mathbf{W}_{2}
+\boldsymbol{W}_{1} \\
+\boldsymbol{W}_{2}
 \end{array}\right)=\left[\begin{array}{ll}
 \boldsymbol{\Sigma}_{11} &amp; \boldsymbol{\Sigma}_{12} \\
 \boldsymbol{\Sigma}_{21} &amp; \boldsymbol{\Sigma}_{22}
@@ -1168,18 +1214,19 @@ H_{0}: \rho_{i j}=0 \quad \text { versus } \quad H_{1}: \rho_{i j} \neq 0
 \[
 \boldsymbol{\Sigma}_{11 \mid 2}=\boldsymbol{\Sigma}_{11}-\boldsymbol{\Sigma}_{12} \boldsymbol{\Sigma}_{22}^{-1} \boldsymbol{\Sigma}_{21}
 \]</div>
-<p>The values <span class="math notranslate nohighlight">\(\sigma_{ii\vert S_m}, \sigma_{jj\vert S_m}\)</span> and <span class="math notranslate nohighlight">\(\sigma_{ij\vert S_m} = \sigma_{ji\vert S_m}\)</span> are diagonal and off-diagonal elements of <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}_{11 \mid 2}\)</span></p>
+<p>The values <span class="math notranslate nohighlight">\(\sigma_{ii\vert S_m}, \sigma_{jj\vert S_m}\)</span> and <span class="math notranslate nohighlight">\(\sigma_{ij\vert S_m} = \sigma_{ji\vert S_m}\)</span> are diagonal and off-diagonal elements of <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}_{11 \mid 2}\)</span>.</p>
 <p>In particular,</p>
 <ul class="simple">
-<li><p>if <span class="math notranslate nohighlight">\(m=0\)</span>, the partial correlation reduces to the Pearson correlation.</p></li>
-<li><p>if <span class="math notranslate nohighlight">\(\left(X_{i}, X_{j}, X_{k_{1}}, \ldots, X_{k_{m}}\right)^{\top}\)</span> has a multivariate Gaussian, then <span class="math notranslate nohighlight">\(\rho_{ij \vert S_m}=0\)</span> if and only if <span class="math notranslate nohighlight">\(X_i\)</span> and <span class="math notranslate nohighlight">\(X_j\)</span> are independent conditional on <span class="math notranslate nohighlight">\(\boldsymbol{X} _{S_m}\)</span>.</p></li>
+<li><p>if <span class="math notranslate nohighlight">\(m=0\)</span>, the partial correlation reduces to the Pearson correlation, i.e. unconditional case.</p></li>
+<li><p>if <span class="math notranslate nohighlight">\([X_{i}, X_{j}, X_{k_{1}}, \ldots, X_{k_{m}}]^{\top}\)</span> has a multivariate Gaussian, then <span class="math notranslate nohighlight">\(\rho_{ij \vert S_m}=0\)</span> if and only if <span class="math notranslate nohighlight">\(X_i\)</span> and <span class="math notranslate nohighlight">\(X_j\)</span> are independent conditional on <span class="math notranslate nohighlight">\(\boldsymbol{X} _{S_m}\)</span>. For more general distributions, however, zero partial correlation will not necessarily imply independence (the converse, of course, is still true).</p></li>
 </ul>
-<div class="note admonition">
+<div class="note dropdown admonition">
 <p class="admonition-title"> Computation Issue of <span class="math notranslate nohighlight">\(\hat{\rho}_{i j \mid S_{m}}\)</span></p>
 <ul class="simple">
 <li><p>To compute <span class="math notranslate nohighlight">\(\rho_{ij \mid S_m}\)</span> for all <span class="math notranslate nohighlight">\(S_m\)</span> is hard. It is more computationally efficient to use recursive expressions between <span class="math notranslate nohighlight">\(\rho_{ij \mid S_m}\)</span> and <span class="math notranslate nohighlight">\(\rho_{ij \mid S_{m-1}}\)</span>, see Anderson [SAND 11].</p></li>
-<li><p>If <span class="math notranslate nohighlight">\(m &lt;n\)</span> is large w.r.t. <span class="math notranslate nohighlight">\(n\)</span>, then <span class="math notranslate nohighlight">\(\hat{\rho}_{i j \mid S_{m}}\)</span> is a bad poor estimates of <span class="math notranslate nohighlight">\(\rho_{i j \mid S_{m}}\)</span>.</p></li>
-<li><p><span class="math notranslate nohighlight">\(m=2\)</span> is advocated in the context of inference of biochemical networks.</p></li>
+<li><p>If <span class="math notranslate nohighlight">\(m &gt; n\)</span>, then <span class="math notranslate nohighlight">\(\hat{\rho}_{i j \mid S_{m}}\)</span> is not well defined since <span class="math notranslate nohighlight">\(\hat{\boldsymbol{S}} _{22}\)</span> is note invertible.</p></li>
+<li><p>If <span class="math notranslate nohighlight">\(m &lt;n\)</span> and <span class="math notranslate nohighlight">\(m\)</span> is large w.r.t. the number <span class="math notranslate nohighlight">\(n\)</span> of measurements per vertex, then <span class="math notranslate nohighlight">\(\hat{\rho}_{i j \mid S_{m}}\)</span> is a poor estimate of <span class="math notranslate nohighlight">\(\rho_{i j \mid S_{m}}\)</span>.</p></li>
+<li><p>Computational costs grow exponentially in <span class="math notranslate nohighlight">\(m\)</span>. <span class="math notranslate nohighlight">\(m=2\)</span> is advocated in the context of inference of biochemical networks.</p></li>
 <li><p>An algorithmic definition of this value is that it is the result of</p>
 <ol class="simple">
 <li><p>performing separate multiple linear regressions of the observations of <span class="math notranslate nohighlight">\(X_i\)</span> and <span class="math notranslate nohighlight">\(X_j\)</span>, respectively, on the observed values of <span class="math notranslate nohighlight">\(\boldsymbol{X} _{S_m}\)</span>, and then</p></li>
@@ -1188,7 +1235,6 @@ H_{0}: \rho_{i j}=0 \quad \text { versus } \quad H_{1}: \rho_{i j} \neq 0
 </li>
 </ul>
 </div>
-<p>For more general distributions, however, zero partial correlation will not necessarily imply independence (the converse, of course, is still true).</p>
 </div>
 <div class="section" id="id1">
 <h4>Buildup<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h4>
@@ -1208,7 +1254,7 @@ H_{1}: \rho_{i j \mid S_{m}} \neq 0 \quad \text { for all } \quad S_{m} \in V_{\
 <p>Then we select a test statistic, construct an appropriate null distribution, and adjust for multiple testing, as the correlation networks above.</p>
 </div>
 <div class="section" id="id2">
-<h4><span class="math notranslate nohighlight">\(p\)</span>-value<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h4>
+<h4>Testing<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h4>
 <p>The above test can be considered as a collection of smaller testing sub-problems of the form</p>
 <div class="math notranslate nohighlight">
 \[
@@ -1224,10 +1270,10 @@ p_{i j, \max }=\max \left\{p_{i j \mid S_{m}}: S_{m} \in V_{\backslash\{i, j\}}^
 \]</div>
 <p>to be the <span class="math notranslate nohighlight">\(p\)</span>-value for the original testing problem.</p>
 <div class="warning admonition">
-<p class="admonition-title"> Different from Correlation</p>
-<p>In practice, we may see</p>
+<p class="admonition-title"> Change of conclusion after conditioning</p>
+<p>In practice, we may see examples where</p>
 <ul class="simple">
-<li><p>significant <span class="math notranslate nohighlight">\(\rho_{ij} &gt; 0\)</span> but insignificant <span class="math notranslate nohighlight">\(\rho_{ij \mid S_m}\)</span>, or</p></li>
+<li><p>significant <span class="math notranslate nohighlight">\(\rho_{ij} &gt; 0\)</span> but insignificant <span class="math notranslate nohighlight">\(\rho_{ij \mid S_m}\)</span> after conditioning, or</p></li>
 <li><p>both significant <span class="math notranslate nohighlight">\(\rho_{ij} &gt; 0\)</span> and <span class="math notranslate nohighlight">\(\rho_{ij \mid S_m} &lt; 0\)</span>, i.e. reverse sign after conditioning.</p></li>
 </ul>
 </div>
@@ -1235,6 +1281,95 @@ p_{i j, \max }=\max \left\{p_{i j \mid S_{m}}: S_{m} \in V_{\backslash\{i, j\}}^
 <div class="section" id="id3">
 <h4>Multiple Testing<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h4>
 <p>Given the full collection of <span class="math notranslate nohighlight">\(\left\{ p_{ij, \max} \right\}\)</span>, over all potential edges <span class="math notranslate nohighlight">\((i, j)\)</span>, an FDR procedure may be applied to this collection to choose an appropriate testing threshold, analogous to the manner described above.</p>
+</div>
+</div>
+<div class="section" id="gaussian-graphical-model-networks">
+<h3>Gaussian Graphical Model Networks<a class="headerlink" href="#gaussian-graphical-model-networks" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id4">
+<h4>Buildup<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h4>
+<p>A special case of the use of partial correlation coefficients: assume the vertex attributes have multivariate joint Gaussian, and set <span class="math notranslate nohighlight">\(m=N_v -2\)</span>, i.e. conditioning on all other vertices, then</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\rho_{i j \mid V \backslash\{i, j\}} \neq 0\)</span> iff <span class="math notranslate nohighlight">\(X_i \perp X_j \mid V \backslash\{i, j\}\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(E=\left\{\{i, j\} \in V^{(2)}: \rho_{i j \mid V \backslash\{i, j\}} \neq 0\right\}\)</span></p></li>
+</ul>
+<p>The resulting graph is called a <strong>conditional independence graph</strong>, where the edges encode conditional dependence, and the non-edges encode conditional independence. The overall model is called a <strong>Gaussian graphical model</strong>.</p>
+<p>Properties</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\rho_{i j \mid V \backslash\{i, j\}}=\frac{-\omega_{i j}}{\sqrt{\omega_{i i} \omega_{j j}}}\)</span> where <span class="math notranslate nohighlight">\(w_{ij}\)</span> is the entry of <span class="math notranslate nohighlight">\(\boldsymbol{\Omega} = \boldsymbol{\Sigma} ^{-1}\)</span>.</p></li>
+<li><p>The matrix <span class="math notranslate nohighlight">\(\boldsymbol{\Omega}\)</span> is known as the <strong>concentration</strong> or <strong>precision</strong> matrix, and its non-zero off-diagonal entries are linked in one-to-one correspondence with the edges in <span class="math notranslate nohighlight">\(G\)</span> as defined above, hence <span class="math notranslate nohighlight">\(G\)</span> is also called a <strong>concentration graph</strong>.</p></li>
+</ul>
+<p>The testing problem is then</p>
+<div class="math notranslate nohighlight">
+\[
+H_{0}: \rho_{i j \mid V \backslash\{i, j\}}=0 \quad vs \quad
+H_{1}: \rho_{i j \mid V \backslash\{i, j\}} \neq 0
+\]</div>
+</div>
+<div class="section" id="id5">
+<h4>Testing<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h4>
+<p>The problem of inferring <span class="math notranslate nohighlight">\(G\)</span> from data <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span> is known as the <strong>covariance selection problem</strong> [SAND 115]. There are many approaches with pros and cons.</p>
+<div class="section" id="standard-method">
+<h5>Standard method<a class="headerlink" href="#standard-method" title="Permalink to this headline">¶</a></h5>
+<p>[SAND 403, Ch. 6], [SAND 248, Ch. 5]</p>
+<p>A standard method is to employ a recursive, likelihood-based procedure. Given significance, level <span class="math notranslate nohighlight">\(\alpha\)</span>,</p>
+<ol class="simple">
+<li><p>Start with a complete graph on <span class="math notranslate nohighlight">\(N_v\)</span> vertices as an initial estimate <span class="math notranslate nohighlight">\(G ^{(0)}\)</span>, and sample covariance matrix <span class="math notranslate nohighlight">\(\boldsymbol{S}\)</span></p></li>
+<li><p>Given <span class="math notranslate nohighlight">\(G ^{(t)}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{S} ^{(t)}\)</span>, compute <span class="math notranslate nohighlight">\(\hat{\boldsymbol{\Omega}} = \boldsymbol{S} ^{-1}\)</span> and <span class="math notranslate nohighlight">\(\hat{\rho}_{i j \mid V \backslash\{i, j\}}\)</span>. If <span class="math notranslate nohighlight">\(H_0: \rho_{i j \mid V \backslash\{i, j\}}=0\)</span> is not rejected at level <span class="math notranslate nohighlight">\(\alpha\)</span>.</p>
+<ul class="simple">
+<li><p>Remove edge <span class="math notranslate nohighlight">\(e(i, j)\)</span>, obtain <span class="math notranslate nohighlight">\(G ^{(t+1)}\)</span></p></li>
+<li><p>Set <span class="math notranslate nohighlight">\(s_{ij}=0\)</span> in <span class="math notranslate nohighlight">\(\boldsymbol{S} ^{(t+1)}\)</span> (??)</p></li>
+</ul>
+</li>
+</ol>
+<p>Cons for large graphs</p>
+<ul class="simple">
+<li><p>computationally intensive</p></li>
+<li><p>no attention to multiple testing</p></li>
+<li><p>if <span class="math notranslate nohighlight">\(n \ll N_v\)</span>, then</p>
+<ul>
+<li><p>the sample covariance matrix <span class="math notranslate nohighlight">\(\boldsymbol{S}\)</span> is not invertible. Sol: use pseudo inverse <span class="math notranslate nohighlight">\(\boldsymbol{S} ^\dagger\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{S}\)</span> has large variance. Sol : to reduce variance, use bagging to sample rows from <span class="math notranslate nohighlight">\(n \times N_v\)</span> data matrix <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span> for <span class="math notranslate nohighlight">\(b=1, \ldots, B\)</span> times. Each time an estimate <span class="math notranslate nohighlight">\(\hat{\boldsymbol{S}}_b\)</span> is computed. Then compute a smoothed covariance estimate <span class="math notranslate nohighlight">\(\hat{\boldsymbol{S}}_{\text{bag} }\)</span>. For constructing the null distribution of <span class="math notranslate nohighlight">\(\hat{\rho}_{i j \mid V \setminus i, j\}}^{\text{bag} }\)</span>, see [SAND 340, 341].</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="methods-based-on-z-i-j-mid-v-backslash-i-j">
+<h5>Methods based on <span class="math notranslate nohighlight">\(z_{i j\mid V \backslash\{i, j\}}\)</span><a class="headerlink" href="#methods-based-on-z-i-j-mid-v-backslash-i-j" title="Permalink to this headline">¶</a></h5>
+<p>[SAND 127]</p>
+<p>Alternatively, we can turn to test the Fisher transformation <span class="math notranslate nohighlight">\(z_{i j\mid V \backslash\{i, j\}}\)</span>. We assign edge <span class="math notranslate nohighlight">\(e(i, j)\)</span> iff Fisher transformation</p>
+<div class="math notranslate nohighlight">
+\[\left\vert z_{i j \mid V \backslash\{i, j\}} \right\vert&gt;(n-N_v)^{-1 / 2} c_{N_{v}}(\alpha)\]</div>
+<p>where <span class="math notranslate nohighlight">\(c_{N_{v}}(\alpha)=\Phi^{-1}\left[0.5(1-\alpha)^{\left[2 / N_{v}\left(N_{v}-1\right)\right]}+0.5\right]\)</span>.</p>
+<p>These methods address the problem of multiple testing when <span class="math notranslate nohighlight">\(n &gt; N_v\)</span>. If <span class="math notranslate nohighlight">\(n \le N_v\)</span>, use the bagging remedy introduced above. The true <span class="math notranslate nohighlight">\(G\)</span> will be correctly inferred by this procedure with probability at least <span class="math notranslate nohighlight">\(1-\alpha\)</span>, for large <span class="math notranslate nohighlight">\(n\)</span>.</p>
+</div>
+<div class="section" id="methods-based-on-penalized-linear-regression">
+<h5>Methods based on Penalized Linear Regression<a class="headerlink" href="#methods-based-on-penalized-linear-regression" title="Permalink to this headline">¶</a></h5>
+<p>There is a link between this inference problem and linear regression. <a class="reference internal" href="../12-probabilities/91-exponential-families.html#multi-gaussian"><span class="std std-ref">Recall</span></a> that for multivariate Gaussians with zero means, the conditional expectation of the <span class="math notranslate nohighlight">\(i\)</span>-th variable can be written as a linear combination of other variables</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbb{E}\left[X_{i} \mid \boldsymbol{X}^{(-i)}=\boldsymbol{x}^{(-i)}\right]=\left(\boldsymbol{\beta} ^{(-i)}\right)^{\top} \boldsymbol{x}^{(-i)}
+\]</div>
+<p>where</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{X}^{(-i)}=\left(X_{1}, \ldots, X_{i-1}, X_{i+1}, \ldots, X_{N_{v}}\right)^{\top}\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}_{i, -i} \boldsymbol{\Sigma} _{-i,-i} ^{-1} = \boldsymbol{\beta} ^{(-i)} \in \mathbb{R}^{N_{v}-1}\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\beta_j^{(-i)} = - \omega_{ij}/\omega_{ii}\)</span></p></li>
+</ul>
+<p>Therefore, <span class="math notranslate nohighlight">\(\rho_{i j \mid V \backslash\{i, j\}}=\frac{-\omega_{i j}}{\sqrt{\omega_{i i} \omega_{j j}}} = 0\)</span> if and only if <span class="math notranslate nohighlight">\(\beta_j^{(-i)} = 0\)</span>. The problem of testing <span class="math notranslate nohighlight">\(\rho_{i j \mid V \backslash\{i, j\}}=\frac{-\omega_{i j}}{\sqrt{\omega_{i i} \omega_{j j}}} = 0\)</span> is now transformed to testing <span class="math notranslate nohighlight">\(\beta_j^{(-i)} = 0\)</span>, which can be done using regression-based methods of estimation and variable selection. More precisely, we regress <span class="math notranslate nohighlight">\(n\)</span> observations of <span class="math notranslate nohighlight">\(X_i\)</span> over all other <span class="math notranslate nohighlight">\(N_v -1\)</span> variables <span class="math notranslate nohighlight">\(\boldsymbol{X} ^{(-i)}\)</span>.</p>
+<p>When <span class="math notranslate nohighlight">\(n \ll N_v\)</span>, a penalized regression strategy is prudent. For instance, we can use LASSO with penalty coefficient <span class="math notranslate nohighlight">\(\lambda\)</span>, that performs simultaneous estimation and variable selection.</p>
+<p>We repeat this process for all vertices <span class="math notranslate nohighlight">\(i \in V\)</span>. Note that <span class="math notranslate nohighlight">\(\hat{\boldsymbol{\beta}}_{j}^{(-i)} \neq 0\)</span> does not necessarily imply <span class="math notranslate nohighlight">\(\hat{\boldsymbol{\beta}}_{i}^{(-j)} \neq 0\)</span>. One can then assign edge <span class="math notranslate nohighlight">\((i, j)\)</span> if</p>
+<ul class="simple">
+<li><p>either one is non-zero</p></li>
+<li><p>both are non-zero</p></li>
+</ul>
+<p>Meinshausen and Buhlmann [SAND 275], show that under conditions on <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma} , \lambda, N_v\)</span> and <span class="math notranslate nohighlight">\(n\)</span>, the true graph <span class="math notranslate nohighlight">\(G\)</span> will be inferred with high probability using either of these conventions, even in cases where <span class="math notranslate nohighlight">\(n \ll N_v\)</span>. Meanwhile, the choice of <span class="math notranslate nohighlight">\(\lambda\)</span> is important. They show that selecting <span class="math notranslate nohighlight">\(\lambda\)</span> by cross-validation will yield provably <strong>bad</strong> results, because the goal is one of variable selection and not prediction.</p>
+<p>Other related study using penalized regression methods for inferring <span class="math notranslate nohighlight">\(G\)</span></p>
+<ul class="simple">
+<li><p>Bayesian approach [SAND 119]</p></li>
+<li><p>Lasso-like penalized logistic regression [SAND 390]</p></li>
+<li><p>penalized maximum likelihood [SAND 410], which can be solved by graphical lasso [SAND 161]</p></li>
+</ul>
+</div>
 </div>
 </div>
 <div class="section" id="case-study-of-gene">

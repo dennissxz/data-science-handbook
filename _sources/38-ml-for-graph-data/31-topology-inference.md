@@ -8,7 +8,7 @@ The frameworks developed in these settings naturally take various forms, as dict
 ## Link Prediction
 
 Given
-- full knowledge of all the vertices attributes $\mathbf{x}=\left(x_{1}, \ldots, x_{N_{v}}\right)^{\top}$
+- full knowledge of all the vertices attributes $\boldsymbol{x}=\left(x_{1}, \ldots, x_{N_{v}}\right)^{\top}$
 - status of some of the edges/non-edges $\boldsymbol{Y}^{obs}$
 
 Infer
@@ -21,7 +21,7 @@ Sometimes we need additional modeling for the mechanisms of missingness.
 A basic framework:
 
 $$
-\mathbb{P}\left(\mathbf{Y}^{m i s s} \mid \mathbf{Y}^{o b s}=\mathbf{y}^{o b s}, \mathbf{X}=\mathbf{x}\right)
+\mathbb{P}\left(\boldsymbol{Y}^{m i s s} \mid \boldsymbol{Y}^{o b s}=\boldsymbol{y}^{o b s}, \boldsymbol{X}=\boldsymbol{x}\right)
 $$
 
 But there are many challenges to predict $Y_{ij}^{miss}$ jointly. Many methods predict individual $Y_{ij}^{miss}$, as introduced below.
@@ -55,30 +55,36 @@ A common choice is logistic regression.
 
 $$
 \log \left[
-\frac{\mathbb{P}_{\beta}\left(Y_{i j}=1 \mid \mathbf{Z}_{i j}=\mathbf{z}\right)}{\mathbb{P}_{\beta}\left(Y_{i j}=0 \mid \mathbf{Z}_{i j}=\mathbf{z}\right)}
-\right]=\beta^{\top} \mathbf{z}
+\frac{\mathbb{P}_{\beta}\left(Y_{i j}=1 \mid \boldsymbol{Z}_{i j}=\boldsymbol{z}\right)}{\mathbb{P}_{\beta}\left(Y_{i j}=0 \mid \boldsymbol{Z}_{i j}=\boldsymbol{z}\right)}
+\right]=\boldsymbol{\beta}^{\top} \boldsymbol{z}
 $$
 
-- $\boldsymbol{Z} _{ij}$ is a vector of explanatory variables indexed in the unordered pairs $(i, j)$. In general it is some transformation of $\boldsymbol{Y} ^{obs}_{(-ij)}$ and/or $\boldsymbol{X}$: $\mathbf{Z}_{i j}=\left(g_{1}\left(\mathbf{Y}_{(-i j)}^{o b s}, \mathbf{X}\right), \ldots, g_{K}\left(\mathbf{Y}_{(-i j)}^{o b s}, \mathbf{X}\right)\right)^{\top}$
+- $\boldsymbol{Z} _{ij}$ is a vector of explanatory variables indexed in the unordered pairs $(i, j)$. In general it is some transformation of $\boldsymbol{Y} ^{obs}_{(-ij)}$ and/or $\boldsymbol{X}$:
+
+  $$\boldsymbol{Z}_{i j}=\left(g_{1}\left(\boldsymbol{Y}_{(-i j)}^{o b s}, \boldsymbol{X}\right), \ldots, g_{K}\left(\boldsymbol{Y}_{(-i j)}^{o b s}, \boldsymbol{X}\right)\right)^{\top}$$
+
+  For instance, $g$ can be
+
   - network structure measures using $\boldsymbol{Y} ^{obs}_{-ij}$, e.g. score functions introduced above
-  - similarity measures between $X_{ik}$ and $X_{jk}$ for some (univariate) vertex attribute $k$.
+  - similarity measures between the $k$-th vertex attributes of vertex $i$ and $j$,
     - additive $X_{ik} + X_{jk}$ for continuous values
     - indicator $\mathbb{I} \left\{ X_{ik} = X_{jk} \right\}$ for discrete values
 - the coefficient $\boldsymbol{\beta}$ is assumed common to all pairs.
 
-In prediction, we compare the predicted value vs some threshold, e.g. 0.5
+Prediction
+: We compare the predicted value vs some threshold, e.g. 0.5, and then decide classification.
 
-$$
-\mathbb{P}_{\hat{\beta}}\left(Y_{i j}^{m i s s}=1 \mid \mathbf{Z}_{i j}=\mathbf{z}\right)= \frac{\exp (\hat{\boldsymbol{\beta} } ^{\top} \boldsymbol{z} )}{1 + \exp (\hat{\boldsymbol{\beta} } ^{\top} \boldsymbol{z} )}
-$$
+  $$
+  \mathbb{P}_{\hat{\beta}}\left(Y_{i j}^{miss}=1 \mid \boldsymbol{Z}_{i j}=\boldsymbol{z}\right)= \frac{\exp (\hat{\boldsymbol{\beta} } ^{\top} \boldsymbol{z} )}{1 + \exp (\hat{\boldsymbol{\beta} } ^{\top} \boldsymbol{z} )}
+  $$
 
 Issues
-- Need to consider the missing mechanism. If $\boldsymbol{Y} ^{miss}$ is **not** at random, the accuracy of the classification approach is will suffer.
-- In a graph $Y_{ij}$ are usually not independent given explanatory variables $\boldsymbol{Z}$, which is assumed in logistic models (no formal work to date exploring the implications on prediction accuracy of ignoring possible dependencies in this manner). Introducing latent variable solve this issue, as discussed below
+- Need to consider the missing mechanism. If $\boldsymbol{Y} ^{miss}$ is **not** at random, the accuracy of the classification approach will suffer.
+- In a graph, $Y_{ij}$ are usually not independent given explanatory variables $\boldsymbol{Z}$, which is assumed in logistic models (no formal work to date exploring the implications on prediction accuracy of ignoring possible dependencies in this manner). Introducing latent variable solve this issue, as discussed below
 
 #### Latent Variables
 
-The use of latent variables is an intuitively appealing way to indirectly model unobserved factors driving the formation of network structure. Let $\boldsymbol{M}$ be an unknown random, symmetric $N_v \times N_v$ matrix of latent variables, defined as
+The use of latent variables is an intuitively appealing way to indirectly model unobserved factors driving the formation of network structure. Let $\boldsymbol{M}$ be an unknown, random, symmetric $N_v \times N_v$ matrix of latent variables, defined as
 
 $$
 \boldsymbol{M} = \boldsymbol{U} ^{\top} \boldsymbol{\Lambda} \boldsymbol{U} + \boldsymbol{E}
@@ -94,35 +100,39 @@ $$
 M_{ij} = \boldsymbol{u} _i ^{\top} \boldsymbol{\Lambda} \boldsymbol{u} _j + \epsilon_{ij}
 $$
 
-Intuition: The latent variable matrix $\boldsymbol{M}$ is intended to capture effects of network structural characteristics or processes not already described by the observed explanatory variables $\boldsymbol{Z} _{ij}$. We add $M_{ij}$ as an explanatory variable (random??). The model becomes
+Intuition
+: The latent variable matrix $\boldsymbol{M}$ is intended to capture effects of network structural characteristics or processes not already described by the observed explanatory variables $\boldsymbol{Z} _{ij}$. We add $M_{ij}$ as an explanatory variable (like that in random effect models). The model becomes
 
-$$
-\log \left[
-\frac{\mathbb{P}_{\beta}\left(Y_{i j}=1 \mid \mathbf{Z}_{i j}=\mathbf{z}, M_{ij}=m\right)}{\mathbb{P}_{\beta}\left(Y_{i j}=0 \mid \mathbf{Z}_{i j}=\mathbf{z}, M_{ij}=m\right)}
-\right]=\beta^{\top} \mathbf{z} + m
-$$
+  $$
+  \log \left[
+  \frac{\mathbb{P}_{\beta}\left(Y_{i j}=1 \mid \boldsymbol{Z}_{i j}=\boldsymbol{z}, M_{ij}=m\right)}{\mathbb{P}_{\beta}\left(Y_{i j}=0 \mid \boldsymbol{Z}_{i j}=\boldsymbol{z}, M_{ij}=m\right)}
+  \right]=\beta^{\top} \boldsymbol{z} + m
+  $$
 
-Now $Y_{ij}$ are conditionally independent given $\boldsymbol{Z} _{ij}$ and $\boldsymbol{M} _{ij}$, but conditionally *dependent* given only the $\boldsymbol{Z} _{ij}$.
+  Now $Y_{ij}$ are conditionally independent given $\boldsymbol{Z} _{ij}$ and $\boldsymbol{M} _{ij}$, but conditionally *dependent* given only the $\boldsymbol{Z} _{ij}$.
 
-Distributions for $\boldsymbol{U} , \boldsymbol{\Lambda} , \boldsymbol{E}$.
+Commonly used distributions for $\boldsymbol{U} , \boldsymbol{\Lambda} , \boldsymbol{E}$.
 - $\boldsymbol{U}$: uniform distribution on the space of all $N_v \times N_v$ orthonormal matrices
 - $\boldsymbol{\Lambda} , \boldsymbol{E}$: multivariate Gaussian (facilitate MCMC sampling)
 
-Prediction: compare the expected probability of $Y_{ij}=1$ with some threshold, which may be approximated numerically to any desired accuracy by the corresponding sample average of draws from the posterior indicated
+Prediction
+: Compare the expected probability of $Y_{ij}=1$ with some threshold, which may be approximated numerically to any desired accuracy by the corresponding sample average of draws from the posterior indicated
 
-$$
-\mathbb{E}\left(\frac{\exp \left\{\beta^{T} \mathbf{Z}_{i j}+M_{i j}\right\}
-}{1+\exp \left\{\beta^{T} \mathbf{Z}_{i j}+M_{i j}\right\}}
- \mid \mathbf{Y}^{o b s}=\mathbf{y}^{o b s}, \mathbf{Z}_{i j}=\mathbf{z}\right)
-$$
+  $$
+  \mathbb{E}\left(\frac{\exp \left\{\beta^{T} \boldsymbol{Z}_{i j}+M_{i j}\right\}
+  }{1+\exp \left\{\beta^{T} \boldsymbol{Z}_{i j}+M_{i j}\right\}}
+   \mid \boldsymbol{Y}^{o b s}=\boldsymbol{y}^{o b s}, \boldsymbol{Z}_{i j}=\boldsymbol{z}\right)
+  $$
 
-Cons: MCMC computation cost, mainly driven by the need to draw $N_v ^2$ unobserved variables $U_{ij}$. Sol: let $\boldsymbol{U}$ have only $K$ non-zero column vectors for $K \ll N_v$, hence low-rank of $\boldsymbol{M}$. In fact $K=2, 3$ work well in practice. [SAND 200 201]
+Cons
+: MCMC computation cost, mainly driven by the need to draw $N_v ^2$ unobserved variables $U_{ij}$.
+  Sol: let $\boldsymbol{U}$ have only $K$ non-zero column vectors for $K \ll N_v$, hence low-rank of $\boldsymbol{M}$. In fact $K=2, 3$ work well in practice. [SAND 200, 201]
 
 For a case study see [SAND pg.205].
 
 ## Association Networks
 
-Non-trivial level of association (e.g. correlation) between certain characteristics of the vertices, but is itself unobserved and must be inferred from measurements reflecting these characteristics.
+We use non-trivial level of association (e.g. correlation) between certain characteristics of the vertices to decide edge assignment. But the association is itself unobserved and must be inferred from measurements reflecting these characteristics.
 
 Given
 - no knowledge of edge status anywhere
@@ -141,7 +151,7 @@ $$
 
 #### Buildup
 
-Suppose for each vertex, we have $n$ independent observations $\left\{ x_{i1}, \ldots, x_{in} \right\}$, e.g. gene expression levels from $n$ experiments. We can then form an $n \times N_v$ matrix $\boldsymbol{X}$, and compute the sample covariance matrix $\hat{\Sigma}=\frac{1}{n-1}(\mathbf{X}-\overline{\mathbf{X}})^{\top}(\mathbf{X}-\overline{\mathbf{X}})$, and hence obtain the entries $\hat{\sigma}$ and compute $\hat{\rho}$.
+Suppose for each vertex $i$, we have $n$ independent observations $\left\{ x_{i1}, \ldots, x_{in} \right\}$, e.g. gene expression levels from $n$ experiments. We can then form an $n \times N_v$ matrix $\boldsymbol{X}$, and compute the $N_v \times N_v$ sample covariance matrix $\boldsymbol{S}$, hence obtain the entries $\hat{\sigma}$ and use that to compute $\hat{\rho}$.
 
 The corresponding association graph $G$ is the graph with edge set
 
@@ -158,14 +168,14 @@ $$
 
 Problems
 - what test statistics?
-- whats the null distribution of that test statistic?
+- what is the null distribution of that test statistic?
 - there are $N_v (N_v - 1)/2$ potential edges, which implies multiple testing problem.
 
-#### $p$-value
+#### Testing
 
-If $(X_i, X_j)$ follow bivariate Gaussian, then $\hat{\rho}_{ij}$ under $H_0: \rho_{ij}=0$ has a closed-form but the computation of $p$-values is hard. Therefore, some transformed versions of $\hat{\rho}_{ij}$ may be preferable
-- $z_{i j}=\frac{\hat{\rho}_{i j} \sqrt{n-2}}{\sqrt{1-\hat{\rho}_{i j}^{2}}} \sim t_{n-1}$, and under $H_0$ is it robust to departures of $X_i$ from Gaussianity.
-- $z_{i j}=\tanh ^{-1}\left(\hat{\rho}_{i j}\right)=\frac{1}{2} \log \left[\frac{\left(1+\hat{\rho}_{i j}\right)}{\left(1-\hat{\rho}_{i j}\right)} \right]$ Fisher transformation.
+If $(X_i, X_j)$ follow bivariate Gaussian, then $\hat{\rho}_{ij}$ under $H_0: \rho_{ij}=0$ has a closed-form, but the computation of $p$-values is hard. Therefore, some transformed versions of $\hat{\rho}_{ij}$ may be preferable
+- $z_{i j}=\frac{\hat{\rho}_{i j} \sqrt{n-2}}{\sqrt{1-\hat{\rho}_{i j}^{2}}} \sim t_{n-1}$, and under $H_0$ it is robust to departures of $X_i$ from Gaussianity.
+- $z_{i j}=\tanh ^{-1}\left(\hat{\rho}_{i j}\right)=\frac{1}{2} \log \left[\frac{\left(1+\hat{\rho}_{i j}\right)}{\left(1-\hat{\rho}_{i j}\right)} \right]$, aka Fisher transformation.
   - for bivariate Gaussian pairs, the distribution of $z_{ij}$ does not have a simple exact form. But under $H_0$ this distribution is well approximated by $\mathcal{N} (0, \frac{1}{n-3} )$ even for moderately large $n$.
 
 Permutation methods can also be used, but is computationally intensive for large $N_v$.
@@ -190,23 +200,25 @@ When dependency of tests [??] exists, the first method still holds, and there ar
 
 ### Partial Correlation Networks
 
-If it is felt desirable to construct a graph $G$ where the inferred edges are more reflective of direct influence among vertices, rather than indirect influence through some common neighbor, the notion of partial correlation becomes relevant.
+If it is felt desirable to construct a graph $G$ where the inferred edges are more reflective of direct influence among vertices, rather than indirect influence through some common neighbor (confounders), the notion of partial correlation becomes relevant.
 
 #### Partial Correlation
 
+Continuing from the setting of $n \times N_v$ measurement matrix $\boldsymbol{X}$.
+
 Definition (Partial correlation)
-: The partial correlation of attributes $X_i$ and $X_j$ of vertices $i, j \in V$ w.r.t. the attributes $X_{k_1}, \ldots, X_{k_m}$ of vertices $k_1, \ldots, k_m \in V \setminus \left\{ i, j \right\}$, is the correlation between $X_i$ and $X_j$ left over, after adjusting for those effects common to both. Let $S_m = \left\{ k_1, \ldots, k_m \right\}$, the partial correlation of $X_i$ and $X_j$ adjusting for $\boldsymbol{X} _{S_m} = (X_{k_1}, \ldots, X_{k_m}) ^{\top}$ is defined as
+: The partial correlation of attributes $X_i$ and $X_j$ of vertices $i, j \in V$ w.r.t. the attributes $X_{k_1}, \ldots, X_{k_m}$ of vertices $k_1, \ldots, k_m \in V \setminus \left\{ i, j \right\}$, is the correlation between $X_i$ and $X_j$ left over, after adjusting for those effects common to both. Let $S_m = \left\{ k_1, \ldots, k_m \right\}$, the partial correlation of $X_i$ and $X_j$ adjusting for $\boldsymbol{X} _{S_m} = [X_{k_1}, \ldots, X_{k_m}] ^{\top}$ is defined as
 
   $$
   \rho_{i j \mid S_{m}}=\frac{\sigma_{i j \mid S_{m}}}{\sqrt{\sigma_{i i\mid S_{m}} \sigma_{j j \mid S_{m}}} }
   $$
 
-To compute it, let $\boldsymbol{W} _1 = (X_i, X_j) ^{\top}$ and $\boldsymbol{W} _2 = \boldsymbol{X} _{S_m}$. We can partition the covariance matrix to
+To compute it, let $\boldsymbol{W} _1 = [X_i, X_j] ^{\top}$ and $\boldsymbol{W} _2 = \boldsymbol{X} _{S_m}$. We can partition the covariance matrix to
 
 $$
 \operatorname{Cov}\left(\begin{array}{l}
-\mathbf{W}_{1} \\
-\mathbf{W}_{2}
+\boldsymbol{W}_{1} \\
+\boldsymbol{W}_{2}
 \end{array}\right)=\left[\begin{array}{ll}
 \boldsymbol{\Sigma}_{11} & \boldsymbol{\Sigma}_{12} \\
 \boldsymbol{\Sigma}_{21} & \boldsymbol{\Sigma}_{22}
@@ -219,25 +231,26 @@ $$
 \boldsymbol{\Sigma}_{11 \mid 2}=\boldsymbol{\Sigma}_{11}-\boldsymbol{\Sigma}_{12} \boldsymbol{\Sigma}_{22}^{-1} \boldsymbol{\Sigma}_{21}
 $$
 
-The values $\sigma_{ii\vert S_m}, \sigma_{jj\vert S_m}$ and $\sigma_{ij\vert S_m} = \sigma_{ji\vert S_m}$ are diagonal and off-diagonal elements of $\boldsymbol{\Sigma}_{11 \mid 2}$
+The values $\sigma_{ii\vert S_m}, \sigma_{jj\vert S_m}$ and $\sigma_{ij\vert S_m} = \sigma_{ji\vert S_m}$ are diagonal and off-diagonal elements of $\boldsymbol{\Sigma}_{11 \mid 2}$.
 
 In particular,
-- if $m=0$, the partial correlation reduces to the Pearson correlation.
-- if $\left(X_{i}, X_{j}, X_{k_{1}}, \ldots, X_{k_{m}}\right)^{\top}$ has a multivariate Gaussian, then $\rho_{ij \vert S_m}=0$ if and only if $X_i$ and $X_j$ are independent conditional on $\boldsymbol{X} _{S_m}$.
+- if $m=0$, the partial correlation reduces to the Pearson correlation, i.e. unconditional case.
+- if $[X_{i}, X_{j}, X_{k_{1}}, \ldots, X_{k_{m}}]^{\top}$ has a multivariate Gaussian, then $\rho_{ij \vert S_m}=0$ if and only if $X_i$ and $X_j$ are independent conditional on $\boldsymbol{X} _{S_m}$. For more general distributions, however, zero partial correlation will not necessarily imply independence (the converse, of course, is still true).
 
 
-:::{admonition,note} Computation Issue of $\hat{\rho}_{i j \mid S_{m}}$
+:::{admonition,note,dropdown} Computation Issue of $\hat{\rho}_{i j \mid S_{m}}$
 
 - To compute $\rho_{ij \mid S_m}$ for all $S_m$ is hard. It is more computationally efficient to use recursive expressions between $\rho_{ij \mid S_m}$ and $\rho_{ij \mid S_{m-1}}$, see Anderson [SAND 11].
-- If $m <n$ is large w.r.t. $n$, then $\hat{\rho}_{i j \mid S_{m}}$ is a bad poor estimates of $\rho_{i j \mid S_{m}}$.
-- $m=2$ is advocated in the context of inference of biochemical networks.
+- If $m > n$, then $\hat{\rho}_{i j \mid S_{m}}$ is not well defined since $\hat{\boldsymbol{S}} _{22}$ is note invertible.
+- If $m <n$ and $m$ is large w.r.t. the number $n$ of measurements per vertex, then $\hat{\rho}_{i j \mid S_{m}}$ is a poor estimate of $\rho_{i j \mid S_{m}}$.
+- Computational costs grow exponentially in $m$. $m=2$ is advocated in the context of inference of biochemical networks.
 - An algorithmic definition of this value is that it is the result of
   1. performing separate multiple linear regressions of the observations of $X_i$ and $X_j$, respectively, on the observed values of $\boldsymbol{X} _{S_m}$, and then
   1. computing the empirical Pearson correlation between the two resulting sets of residuals.
 
 :::
 
-For more general distributions, however, zero partial correlation will not necessarily imply independence (the converse, of course, is still true).
+
 
 #### Buildup
 
@@ -259,7 +272,7 @@ $$
 
 Then we select a test statistic, construct an appropriate null distribution, and adjust for multiple testing, as the correlation networks above.
 
-#### $p$-value
+#### Testing
 
 The above test can be considered as a collection of smaller testing sub-problems of the form
 
@@ -279,10 +292,10 @@ $$
 
 to be the $p$-value for the original testing problem.
 
-:::{admonition,warning} Different from Correlation
+:::{admonition,warning} Change of conclusion after conditioning
 
-In practice, we may see
-- significant $\rho_{ij} > 0$ but insignificant $\rho_{ij \mid S_m}$, or
+In practice, we may see examples where
+- significant $\rho_{ij} > 0$ but insignificant $\rho_{ij \mid S_m}$ after conditioning, or
 - both significant $\rho_{ij} > 0$ and $\rho_{ij \mid S_m} < 0$, i.e. reverse sign after conditioning.
 
 :::
@@ -291,6 +304,89 @@ In practice, we may see
 
 Given the full collection of $\left\{ p_{ij, \max} \right\}$, over all potential edges $(i, j)$, an FDR procedure may be applied to this collection to choose an appropriate testing threshold, analogous to the manner described above.
 
+
+### Gaussian Graphical Model Networks
+
+#### Buildup
+
+A special case of the use of partial correlation coefficients: assume the vertex attributes have multivariate joint Gaussian, and set $m=N_v -2$, i.e. conditioning on all other vertices, then
+- $\rho_{i j \mid V \backslash\{i, j\}} \neq 0$ iff $X_i \perp X_j \mid V \backslash\{i, j\}$
+- $E=\left\{\{i, j\} \in V^{(2)}: \rho_{i j \mid V \backslash\{i, j\}} \neq 0\right\}$
+
+The resulting graph is called a **conditional independence graph**, where the edges encode conditional dependence, and the non-edges encode conditional independence. The overall model is called a **Gaussian graphical model**.
+
+Properties
+- $\rho_{i j \mid V \backslash\{i, j\}}=\frac{-\omega_{i j}}{\sqrt{\omega_{i i} \omega_{j j}}}$ where $w_{ij}$ is the entry of $\boldsymbol{\Omega} = \boldsymbol{\Sigma} ^{-1}$.
+- The matrix $\boldsymbol{\Omega}$ is known as the **concentration** or **precision** matrix, and its non-zero off-diagonal entries are linked in one-to-one correspondence with the edges in $G$ as defined above, hence $G$ is also called a **concentration graph**.
+
+The testing problem is then
+
+$$
+H_{0}: \rho_{i j \mid V \backslash\{i, j\}}=0 \quad vs \quad
+H_{1}: \rho_{i j \mid V \backslash\{i, j\}} \neq 0
+$$
+
+
+#### Testing
+
+The problem of inferring $G$ from data $\boldsymbol{X}$ is known as the **covariance selection problem** [SAND 115]. There are many approaches with pros and cons.
+
+##### Standard method
+
+[SAND 403, Ch. 6], [SAND 248, Ch. 5]
+
+A standard method is to employ a recursive, likelihood-based procedure. Given significance, level $\alpha$,
+
+1. Start with a complete graph on $N_v$ vertices as an initial estimate $G ^{(0)}$, and sample covariance matrix $\boldsymbol{S}$
+2. Given $G ^{(t)}$ and $\boldsymbol{S} ^{(t)}$, compute $\hat{\boldsymbol{\Omega}} = \boldsymbol{S} ^{-1}$ and $\hat{\rho}_{i j \mid V \backslash\{i, j\}}$. If $H_0: \rho_{i j \mid V \backslash\{i, j\}}=0$ is not rejected at level $\alpha$.
+   - Remove edge $e(i, j)$, obtain $G ^{(t+1)}$
+   - Set $s_{ij}=0$ in $\boldsymbol{S} ^{(t+1)}$ (??)
+
+Cons for large graphs
+- computationally intensive
+- no attention to multiple testing
+- if $n \ll N_v$, then
+  - the sample covariance matrix $\boldsymbol{S}$ is not invertible. Sol: use pseudo inverse $\boldsymbol{S} ^\dagger$.
+  - $\boldsymbol{S}$ has large variance. Sol : to reduce variance, use bagging to sample rows from $n \times N_v$ data matrix $\boldsymbol{X}$ for $b=1, \ldots, B$ times. Each time an estimate $\hat{\boldsymbol{S}}_b$ is computed. Then compute a smoothed covariance estimate $\hat{\boldsymbol{S}}_{\text{bag} }$. For constructing the null distribution of $\hat{\rho}_{i j \mid V \setminus i, j\}}^{\text{bag} }$, see [SAND 340, 341].
+
+##### Methods based on $z_{i j\mid V \backslash\{i, j\}}$
+[SAND 127]
+
+Alternatively, we can turn to test the Fisher transformation $z_{i j\mid V \backslash\{i, j\}}$. We assign edge $e(i, j)$ iff Fisher transformation
+
+$$\left\vert z_{i j \mid V \backslash\{i, j\}} \right\vert>(n-N_v)^{-1 / 2} c_{N_{v}}(\alpha)$$
+
+where $c_{N_{v}}(\alpha)=\Phi^{-1}\left[0.5(1-\alpha)^{\left[2 / N_{v}\left(N_{v}-1\right)\right]}+0.5\right]$.
+
+These methods address the problem of multiple testing when $n > N_v$. If $n \le N_v$, use the bagging remedy introduced above. The true $G$ will be correctly inferred by this procedure with probability at least $1-\alpha$, for large $n$.
+
+##### Methods based on Penalized Linear Regression
+
+There is a link between this inference problem and linear regression. [Recall](multi-gaussian) that for multivariate Gaussians with zero means, the conditional expectation of the $i$-th variable can be written as a linear combination of other variables
+
+$$
+\mathbb{E}\left[X_{i} \mid \boldsymbol{X}^{(-i)}=\boldsymbol{x}^{(-i)}\right]=\left(\boldsymbol{\beta} ^{(-i)}\right)^{\top} \boldsymbol{x}^{(-i)}
+$$
+
+where
+- $\boldsymbol{X}^{(-i)}=\left(X_{1}, \ldots, X_{i-1}, X_{i+1}, \ldots, X_{N_{v}}\right)^{\top}$
+- $\boldsymbol{\Sigma}_{i, -i} \boldsymbol{\Sigma} _{-i,-i} ^{-1} = \boldsymbol{\beta} ^{(-i)} \in \mathbb{R}^{N_{v}-1}$
+- $\beta_j^{(-i)} = - \omega_{ij}/\omega_{ii}$
+
+Therefore, $\rho_{i j \mid V \backslash\{i, j\}}=\frac{-\omega_{i j}}{\sqrt{\omega_{i i} \omega_{j j}}} = 0$ if and only if $\beta_j^{(-i)} = 0$. The problem of testing $\rho_{i j \mid V \backslash\{i, j\}}=\frac{-\omega_{i j}}{\sqrt{\omega_{i i} \omega_{j j}}} = 0$ is now transformed to testing $\beta_j^{(-i)} = 0$, which can be done using regression-based methods of estimation and variable selection. More precisely, we regress $n$ observations of $X_i$ over all other $N_v -1$ variables $\boldsymbol{X} ^{(-i)}$.
+
+When $n \ll N_v$, a penalized regression strategy is prudent. For instance, we can use LASSO with penalty coefficient $\lambda$, that performs simultaneous estimation and variable selection.
+
+We repeat this process for all vertices $i \in V$. Note that $\hat{\boldsymbol{\beta}}_{j}^{(-i)} \neq 0$ does not necessarily imply $\hat{\boldsymbol{\beta}}_{i}^{(-j)} \neq 0$. One can then assign edge $(i, j)$ if
+- either one is non-zero
+- both are non-zero
+
+Meinshausen and Buhlmann [SAND 275], show that under conditions on $\boldsymbol{\Sigma} , \lambda, N_v$ and $n$, the true graph $G$ will be inferred with high probability using either of these conventions, even in cases where $n \ll N_v$. Meanwhile, the choice of $\lambda$ is important. They show that selecting $\lambda$ by cross-validation will yield provably **bad** results, because the goal is one of variable selection and not prediction.
+
+Other related study using penalized regression methods for inferring $G$
+- Bayesian approach [SAND 119]
+- Lasso-like penalized logistic regression [SAND 390]
+- penalized maximum likelihood [SAND 410], which can be solved by graphical lasso [SAND 161]
 
 
 
