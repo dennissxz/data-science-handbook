@@ -301,9 +301,9 @@ plt.gca().set_aspect('equal')
 plt.show()
 ```
 
-## Sample from a Circle
+## Sample from a Disk
 
-How to uniformly sample points inside a circle? Can you take advantage of the above method of sampling from a triangle?
+How to uniformly sample points inside a disk? Can you take advantage of the above method of sampling from a triangle?
 
 ```{code-cell} python
 :tags: [hide-input]
