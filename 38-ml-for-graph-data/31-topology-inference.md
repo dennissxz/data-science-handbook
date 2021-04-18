@@ -649,6 +649,26 @@ to yield the likelihoods on larger sub-trees containing them, until the likeliho
 
 ### Summarizing Collections of Trees
 
+All the above inference method output a single tree $\hat{T}$, like a point estimate. Can we output a collection of trees, in the spirit of an interval estimate? In practice, such collections arise in various ways, such as
+- listing a number of trees of nearly maximum likelihood, rather than simply a single maximum-likelihood tree, or
+- from bootstrap re-sampling in an effort to assess the variability in an inferred tree, output $\{\widehat{T}^{(b)}\}_{b=1}^{B}$, or
+- from MCMC sampling of an appropriate posterior distribution on $\mathcal{T} _{N_\ell}$
+
+Given such a collection of trees, how can we usefully summarize the information
+therein? How they are similar or different?
+- For similarity, we can use **consensus tree**. A consensus tree is a single tree that aims to summarize the information in a collection of trees in a ‘representative’ manner. There are many methods to define such trees,
+  - Margush and McMorris [SAND 268] defined $M_\ell$-trees indexed by $\ell \in [0.5, 1]$, which contains all groups of leaves $U \subseteq R$ that occur in more than a fraction $\ell$ of the trees in a collection.
+    - $\ell=1$, it is called strict consensus tree
+    - $\ell=0.5$, it is called majority-rule consensus tree
+  - additional information can be added to a consensus tree in the form of branch weights
+- For differences, there are various notions of distance between pairs of trees
+  - **symmetric difference** works by counting branches.
+  - **nearest-neighbor interchange** (NNI) counts the number of swaps of adjacent branches that must be made to transform one tree into the other (computationally daunting)
+  - both are metrics
+- Relationships: if we define a **median tree** in a collection to be a tree $T$ whose total distance – based on the symmetric difference – to all other trees is a minimum, then this tree is equivalent to the majority-rule tree, when the number of trees $t$ in the collection is odd [SAND 21].
+
+.
+
 .
 
 
