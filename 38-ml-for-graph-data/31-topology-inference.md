@@ -478,7 +478,7 @@ Example (Binary multicast tree)
 - For an internal vertex $v$, let $C(v)$ be its children. If $X_c = 1$ for at least one $c \in C(v)$, then $X_v = 1$.
 
 Example (Binary Phylogenetic tree)
-: Another example is DNA sequence. If we group DNA bases $\left\{ A, G, C, T \right\}$ in pairs $\left\{ A, G \right\}$ and $\left\{ C, T \right\}$, i.e. by purines and pyrimidines respectively, and coded $0$ and $1$. We can then use an $N_\ell$-tuple of measurements to indicate whether each of $N_\ell$ species being studied had a purine or pyrimidine at a given location in the genome. Repeat this for $n$ different locations.
+: Another example is DNA sequence. If we group DNA bases $\left\{ A, G, C, T \right\}$ in pairs $\left\{ A, G \right\}$ and $\left\{ C, T \right\}$, i.e. by purines and pyrimidines respectively, and coded $0$ and $1$. We can then use an $N_\ell$-tuple of measurements to indicate whether each of $N_\ell$ species being studied had a purine or pyrimidine at a given location in the genome. Repeat this for $n$ different locations. Then we can form the notion of a tree-based evolutionary process generating sequence data at the leaves.
 
 There are many methods for tomographic inference of tree topologies, which differ in
 - how the data are utilized (all or part)
@@ -534,3 +534,140 @@ $$
 $$
 
 Therefore, we can first estimate $\gamma(k)$ by $\hat{\gamma}(k)$, then solve the above function to obtain $\hat{A}(k)$ for all $k \in V_T$. To build a agglomerative clustering tree, we can use the true shared losses rate $1 - \hat{A}(a(\{j, k\}))$ as similarity measure. See [SAND 128] for consistency of the resulting estimator $T$ for recovering a binary multicast tree $T$, under the model assumptions.
+
+
+### Likelihood-based
+
+We can specify a conditional density or PMF $f(\boldsymbol{x} \vert T)$ for the $N_\ell$-length vector of random variables $\boldsymbol{x} = [X_1, \ldots, X_{N_\ell}]$, given a tree-topology $T$. If we assumed independence among the $n$ observations, the likelihood has the form
+
+$$
+L(T) = \prod_{i=1}^n f(\boldsymbol{x} _i \vert T)
+$$
+
+and the MLE tree is simple $\hat{T}_{ML} = \arg \max _{T \in \mathcal{T} _{N_\ell}} L(T)$. However, it is typically that there are parameters $\boldsymbol{\theta}$ relating to the evolution of a tree $T$. Hence, the likelihood has an integrated form
+
+$$
+L(T) = \prod_{i=1}^{n} \int f\left(\mathbf{x}_i \mid T, \theta\right) f(\theta \mid T) d \theta
+$$
+
+where $f(\theta \vert T)$ is an appropriately defined distribution on $\theta$, given $T$. Depending on the nature of their integrands, the integrals may or may not lend themselves well to computational evaluation.
+
+Definition (Profile likelihood)
+: An alternative that can be more computationally tractable, or that can be used
+when we cannot or do not wish to specify a distribution $f(\theta \vert T)$, is to define $\hat{T}$ through maximization of a profile likelihood. Let
+
+  $$
+  L(T, \theta) =\prod_{i=1}^{n} f\left(\mathbf{x}_{i} \mid T, \theta\right)
+  $$
+
+  Then define
+
+  $$\begin{aligned}
+  \hat{\theta}_{T}
+  &= \arg \max _{\theta} L(T, \theta)\\
+  \widehat{T}_{PL}&=\arg \max _{T \in \mathscr{T}_{N_\ell}} L\left(T, \hat{\theta}_{T}\right) \\
+  \end{aligned}$$
+
+  where $L\left(T, \hat{\theta}_{T}\right)$ is called the **profile likelihood**, and  $\widehat{T}_{PL}$ is called the **maximum profile likelihood estimator**.
+
+For instance, for the multicast three model, $\theta = \left\{ \alpha_j \right\}$, the profile likelihood is
+
+$$
+L(T, \alpha)=\prod_{i=1}^{n} \prod_{j \in V_{T}} \eta_{j}^{(i)}
+$$
+
+```{margin}
+For detail about the chain rule factorization, see [graphical models](graphical-models). But how to we know $x_{p a(j)}^{(i)}$??
+```
+
+where by chain rule factorization,
+
+$$
+\eta_{j}^{(i)}=\left\{\begin{array}{ll}
+1, & \text { if } j=r, \\
+\mathbb{P} (x_j ^{(i)} \vert x_{pa(j)}^{(i)}, \alpha_j) = \left\{\begin{array}{ll}
+\alpha_{j}^{x_{j}^{(i)}}\left(1-\alpha_{j}\right)^{1-x_{j}^{(i)}}, & \text { if } x_{p a(j)}^{(i)}=1 \\
+1, & \text { if } x_{p a(j)}^{(i)}=0
+\end{array}\right.
+\end{array}\right.
+$$
+
+and $pa(j)$ denotes the parent of $j$ in $T$.
+
+The profile MLE is $\widehat{T}_{P L}=\arg \max _{T \in \mathcal{T}_{N_{l}}} L\left(T, \hat{\alpha}_{T}\right)$, where $\hat{\alpha}_{T}=\arg \max _{\alpha} L(T, \alpha)$. [SAND 128] prove its consistency under appropriate conditions.
+
+
+:::{admonition,note,dropdown} Computation
+
+Implementation of this estimator is non-trivial. For example, consider the estimation of $\boldsymbol{\alpha}$, a parameter vector of potentially quite large dimension. An efficient, recursive estimation algorithm is proposed [SAND 71] using the relation
+
+$$
+\alpha_j = \mathbb{P}\left(X_{j}=1 \mid X_{pa(j)}=1\right) = \frac{A(j)}{A(pa(j))}
+$$
+
+And recall that $A(k)$ may be obtained from $\gamma(k)$ and $\gamma(k)$ can be estimated by frequencies. Although the resulting estimator $\tilde{\alpha}_k$ is not strictly the maximum likelihood estimate, Caceres et al. [SAND 71] show that, when $\alpha_k \in (0, 1)$ for all $k$, we nevertheless have $\tilde{\boldsymbol{\alpha}} = \hat{\boldsymbol{\alpha}}$ with high probability.
+
+For the optimization of the profile likelihood $L\left(T, \hat{\alpha}_{T}\right)$ for $T \in \mathcal{T} _{N_\ell}$, if $N_\ell$ is small (<5) we can use simulation for exhaustive search of $\mathcal{T} _{N_\ell}$, else we can use greedy techniques or MCMC-based techniques.
+
+:::
+
+In the phylogenetic tree example, we assume independence between measurements $\boldsymbol{x}_i$ (e.g. between locations in the measured DNA sequence) and use Markov-like cascade model to capture the effects of evolution through time. By coding purines and pyrimidines as 0 and 1 respectively, we use a symmetric model of change between the two states of zero and one, in traversing from one end of a branch to the other, according to probability
+
+$$
+\mathbb{P}\left(X_{j}=1 \mid X_{k}=0\right)=\frac{1}{2}\left(1-e^{-2 w_{j}}\right)
+$$
+
+parameterized by $w_j$, the length of brach leading from $k$ to $j$, where $j \in C(k)$.
+
+The likelihood corresponding to this model is
+
+
+$$
+L(T, \mathbf{w})=\prod_{i=1}^{n} \sum_{\left\{x_{j}^{(i)}\right\}_{j \in V_{T} \backslash R}} \prod_{j \in V_{T}} \eta_{j}^{(i)}
+$$
+
+where
+
+$$
+\eta_{j}^{(i)}=\left\{\begin{array}{ll}
+\frac{1}{2}\left(1-e^{-2 w_{j}}\right), & \text { if } x_{j}^{(i)} \neq x_{p a(j)}^{(i)} \\
+\frac{1}{2}\left(1+e^{-2 w_{j}}\right), & \text { if } x_{j}^{(i)}=x_{p a(j)}^{(i)}
+\end{array}\right.
+$$
+
+Note that the summation (i.e. marginalization) is over all possible ways that the states zero or one can be assigned to the internal vertices of the tree $T$, and is absent in the case of multicast data because of the hereditary constraints on the process $\left\{ X_j \right\}j \in V_T$ (but still have multiple assignments??).
+
+
+:::{admonition,note} Computation
+
+- Likelihood: in general, the presence of such product-sum combinations can be problematic from a computational perspective. However, in this particular case, the likelihood can be calculated efficiently using a dynamic programming algorithm – the so-called **pruning algorithm** – proposed by Felsenstein [SAND 142]. Working recursively from the leaves towards the root, components of the likelihood are computed on sub-trees and combined in a clever fashion
+to yield the likelihoods on larger sub-trees containing them, until the likelihood for the entire tree is obtained.
+
+- Optimization in $(\widehat{T}, \hat{\mathbf{w}})$ is NP hard. In practice, a profile maximum likelihood method typically is used (??). See [SAND 143]. MCMC can also be pursued.
+
+:::
+
+### Summarizing Collections of Trees
+
+.
+
+
+.
+
+
+.
+
+
+.
+
+
+.
+
+
+.
+
+
+.
+
+
+.
