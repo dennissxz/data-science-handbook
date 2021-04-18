@@ -1,3 +1,4 @@
+(graphical-models)=
 # Graphical Models
 
 Graphical models us graphical language for representing and reasoning about random variables and their distributions. The edge represents dependence structure.
