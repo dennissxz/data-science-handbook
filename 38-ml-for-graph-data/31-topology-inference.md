@@ -667,27 +667,23 @@ therein? How they are similar or different?
   - both are metrics
 - Relationships: if we define a **median tree** in a collection to be a tree $T$ whose total distance – based on the symmetric difference – to all other trees is a minimum, then this tree is equivalent to the majority-rule tree, when the number of trees $t$ in the collection is odd [SAND 21].
 
-.
+## More
 
-.
+More examples
+- link prediction / association networks
+  - inferring networks from so-called co-occurrence data, e.g. telecommunications and genetics [SAND 318, 319]
+  - protein complexes [SAND 343]
+  - inferring networks with links defined according to the dynamic interactions of elements in a system (e.g., such as of information passing between neurons firing in sequence). [SAND 355]
+- tomographic inference
+  - infer coalescent trees, which have to do with the evolution of genes within a population (i.e., below the level of species). See Felsenstein [141, Ch. 26].
 
+More measurements
+- association networks
+  - Spearman rank correlation and partial correlation might be used as robust alternatives to Pearson correlation [350.sec.3.9], [110]
+  - Or a measure capable of summarizing nonlinear association, such as mutual information [140]
+- computer networks
+  - mean delay, see the sandwich probing in case study 7.4.5.
 
-.
-
-
-.
-
-
-.
-
-
-.
-
-
-.
-
-
-.
-
-
-.
+Open problems
+- basic questions of consistency, consensus, robustness, beyond trees?
+- how to best characterize the merit of partially accurate estimates $\hat{G}$? e.g. focusing on the accuracy with which small subgraphs (e.g., network motifs) or paths are recovered.
