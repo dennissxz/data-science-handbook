@@ -1,3 +1,4 @@
+(kernel-pca)=
 # Kernel PCA
 
 Kernel PCA is a nonlinear extension of PCA where dot products are replaced with generalized dot products in feature space computed by a kernel function.
