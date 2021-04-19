@@ -57,6 +57,7 @@
     <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Processes on Graphs" href="41-processes.html" />
     <link rel="prev" title="Modeling" href="21-modeling.html" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -236,41 +237,32 @@
   </i>
  </li>
  <li class="toctree-l1 collapsible-parent">
-  <a class="reference internal" href="../15-programming/00-programming.html">
-   Programming
+  <a class="reference internal" href="../15-tools/00-tools.html">
+   Tools
   </a>
   <ul class="collapse-ul">
    <li class="toctree-l2">
-    <a class="reference internal" href="../15-programming/11-python.html">
+    <a class="reference internal" href="../15-tools/11-python.html">
      Python
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../15-programming/21-r.html">
+    <a class="reference internal" href="../15-tools/21-r.html">
      R
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../15-programming/31-sql.html">
+    <a class="reference internal" href="../15-tools/31-sql.html">
      SQL
     </a>
    </li>
-  </ul>
-  <i class="fas fa-chevron-down">
-  </i>
- </li>
- <li class="toctree-l1 collapsible-parent">
-  <a class="reference internal" href="../19-miscellaneous/00-miscellaneous.html">
-   Miscellaneous
-  </a>
-  <ul class="collapse-ul">
    <li class="toctree-l2">
-    <a class="reference internal" href="../19-miscellaneous/11-latex.html">
+    <a class="reference internal" href="../15-tools/41-latex.html">
      LaTeX
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../19-miscellaneous/13-myst.html">
+    <a class="reference internal" href="../15-tools/51-myst.html">
      MyST Markdown
     </a>
    </li>
@@ -537,6 +529,11 @@
   </a>
   <ul class="collapse-ul">
    <li class="toctree-l2">
+    <a class="reference internal" href="../32-classification/09-k-nearest-neighbors.html">
+     K-nearest neighbors
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="../32-classification/11-support-vector-machine.html">
      Support Vector Machine
     </a>
@@ -736,6 +733,11 @@
    <li class="toctree-l2 current active">
     <a class="current reference internal" href="#">
      Topology Inference
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="41-processes.html">
+     Processes on Graphs
     </a>
    </li>
   </ul>
@@ -959,6 +961,38 @@
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#tomographic-inference">
    Tomographic Inference
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#introduction">
+     Introduction
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#for-tree-topologies">
+     For Tree Topologies
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#hierarchical-clustering-based">
+     Hierarchical Clustering-based
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#likelihood-based">
+     Likelihood-based
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#summarizing-collections-of-trees">
+     Summarizing Collections of Trees
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#more">
+   More
   </a>
  </li>
 </ul>
@@ -1388,17 +1422,39 @@ H_{1}: \rho_{i j \mid V \backslash\{i, j\}} \neq 0
 <p>Measurements</p>
 <ul class="simple">
 <li><p>The relative levels of RNA expression of genes in a cell, under a given set of conditions, can be measured efficiently on a genome-wide scale using <strong>microarray</strong> technologies.</p></li>
-<li><p>In particular, for each gene <span class="math notranslate nohighlight">\(i\)</span>, the vertex attribute vector <span class="math notranslate nohighlight">\(\boldsymbol{x}_i \in \mathbb{R} ^m\)</span> typically consists of RNA relative expression levels measured for that gene over a compendium of <span class="math notranslate nohighlight">\(m\)</span> experiments.</p></li>
+<li><p>In particular, for each gene <span class="math notranslate nohighlight">\(i\)</span>, the vertex attribute vector <span class="math notranslate nohighlight">\(\boldsymbol{x}_i \in \mathbb{R} ^m\)</span> typically consists of RNA relative expression levels measured for that gene over a compendium of <span class="math notranslate nohighlight">\(m\)</span> experiments, e.g. changes in pH, growing media, heat, oxygen concentrations, and genetic composition.</p></li>
 </ul>
+<p>Observation</p>
+<ul class="simple">
+<li><p>Due to the nature of the regulation process, the expression levels of TFs and their targets often can be expected to be highly correlated with each other</p></li>
+<li><p>Given that many TFs have multiple targets, including other TFs, the expression levels among many of the TFs can be expected to be highly correlated as well</p></li>
+<li><p>Such correlations are evident in the image plot, where the order of the
+genes (rows) and experiments (columns) has been chosen using a cluster analysis, to enhance the visual assessment of correlation.</p></li>
+</ul>
+<div class="figure align-default" id="graph-gene-exp">
+<a class="reference internal image-reference" href="../_images/graph-gene-exp.png"><img alt="" src="../_images/graph-gene-exp.png" style="width: 70%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 180 </span><span class="caption-text">Image representation of 445 microarray expression profiles collected for E. coli, under various conditions, for the 153 genes that are listed as known transcription factors (TF) in the RegulonDB, using blue-organge scale. [Kolaczyk 2009]
+database.</span><a class="headerlink" href="#graph-gene-exp" title="Permalink to this image">¶</a></p>
+</div>
 <p>Challenge</p>
 <ul class="simple">
-<li><p>a TF can actually be a target of another TF. And so direct correlation between measurements of a TF and a gene target may actually just be a reflection of the regulation of that TF by another TF. Sol: use partial correlation</p></li>
+<li><p>A TF can actually be a target of another TF. And so direct correlation between measurements of a TF and a gene target may actually just be a reflection of the regulation of that TF by another TF. Sol: use partial correlation.</p></li>
+</ul>
+<p>Methods and Results</p>
+<ul class="simple">
+<li><p>Use three methods above, all use Fisher transformation for testing. See SAND pg.221-223</p></li>
+<li><p>All methods have high precision and low recall. Faith et al. [SAND 140] have argued that the low recall is due primarily to limitations in both the number and the diversity of the expression profiles produced by the available experiments.</p></li>
+<li><p>Takeaway: high precision model is still good for prediction purpose, though not good at recover old true labels (low recall).</p></li>
 </ul>
 </div>
 </div>
 <div class="section" id="tomographic-inference">
 <h2>Tomographic Inference<a class="headerlink" href="#tomographic-inference" title="Permalink to this headline">¶</a></h2>
-<p>Measurements are available only at vertices that are somehow at the ‘perimeter’ of the network, and it is necessary to infer the presence or absence of both edges and vertices in the ‘interior.’</p>
+<p>In tomographic network topology inference problems, measurements are available only at vertices that are somehow at the ‘exterior’ of the network, and it is necessary to infer the presence or absence of both edges and vertices in the ‘interior.’ Here ‘exterior’ and ‘interior’ are somewhat relative terms and generally are used simply to distinguish between vertices where it is and is not possible (or, at least, not convenient) to obtain measurements. For example, in computer networks, desktop and laptop computers are typical instances of ‘exterior’ vertices, while Internet routers to which we do not have access are effectively ‘interior’ vertices.</p>
+<p>The problem of tomographic network topology inference is just one instance of
+what are more broadly referred to as problems of <strong>network tomography</strong>.</p>
+<div class="section" id="introduction">
+<h3>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h3>
 <p>Given</p>
 <ul class="simple">
 <li><p>measurements at only a particular subset of vertices</p></li>
@@ -1406,6 +1462,265 @@ H_{1}: \rho_{i j \mid V \backslash\{i, j\}} \neq 0
 <p>Infer</p>
 <ul class="simple">
 <li><p>topology of the rest</p></li>
+</ul>
+<p>Challenge</p>
+<ul class="simple">
+<li><p>For a given set of measurements, there are likely many network topologies that conceivably could have generated them</p></li>
+<li><p>Without any further constraints on aspects like the number of internal vertices and edges, and the manner in which they connect to one another, we have no sensible way of choosing among these possible solutions.</p></li>
+<li><p>The problem is thus an example of an ‘ill-posed inverse problem’ in mathematics – an inverse problem, in the sense of inverting the mapping
+from internal to external, and ill-posed, in the sense of that mapping being many-to-one.</p></li>
+<li><p>In order to obtain useful solutions to such ill-posed problems, we impose assumptions on the internal structure.</p></li>
+</ul>
+<p>Assumption</p>
+<ul class="simple">
+<li><p>a key structural simplification has been the restriction to inference of networks in the form of trees.</p></li>
+</ul>
+<p>Related fields</p>
+<ul class="simple">
+<li><p>inference of phylogenies: to construct trees (i.e., phylogenies) from data, for the purpose of describing evolutionary relationships among biological species.</p></li>
+<li><p>computer network analysis: to infer the tree formed by a set of paths along which traffic flows from a given origin Internet address to a set of destination addresses, including physical or logical topologies.</p></li>
+</ul>
+</div>
+<div class="section" id="for-tree-topologies">
+<h3>For Tree Topologies<a class="headerlink" href="#for-tree-topologies" title="Permalink to this headline">¶</a></h3>
+<p>Given a tree <span class="math notranslate nohighlight">\(T=(V_T, E_T)\)</span>, let <span class="math notranslate nohighlight">\(r \in V_T\)</span> be its root, <span class="math notranslate nohighlight">\(R \in V_T\)</span> be its leaves, and <span class="math notranslate nohighlight">\(V \setminus \left\{ \left\{ r \right\} \cup \left\{ R \right\}\right\}\)</span> be the <strong>internal vertices</strong>. The edges <span class="math notranslate nohighlight">\(E_T\)</span> are often referred to as branches.</p>
+<p>A binary three is also called a <strong>bifurcating tree</strong>, where each internal vertex has at most two children. We will restrict our attention here almost entirely to binary trees. Trees with more general branching structure can always be represented as binary trees and, indeed, methods for their inference can be built upon inferential methods for binary trees.</p>
+<div class="figure align-default" id="graph-topo-tree">
+<a class="reference internal image-reference" href="../_images/graph-topo-tree.png"><img alt="" src="../_images/graph-topo-tree.png" style="width: 40%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 181 </span><span class="caption-text">Schematic representation of a binary tree. Measurements are available at the leaves 1, 2, 3, 4, and 5 (<span style="color:yellow">yellow</span>). Other elements (possibly including the root <span class="math notranslate nohighlight">\(r\)</span>) are unknown.</span><a class="headerlink" href="#graph-topo-tree" title="Permalink to this image">¶</a></p>
+</div>
+<p>The leaves <span class="math notranslate nohighlight">\(R\)</span> are known, but the internal vertices and the branches are not. The root <span class="math notranslate nohighlight">\(r\)</span> may or may not be known. We associate with each branch a weight <span class="math notranslate nohighlight">\(w\)</span>, which we may or may not wish to infer.</p>
+<p>For a set of <span class="math notranslate nohighlight">\(N_\ell\)</span> vertices, we have <span class="math notranslate nohighlight">\(n\)</span> independent and identically distributed observations of some random variables <span class="math notranslate nohighlight">\(\left\{ X_1, X_2, \ldots, X_{N_\ell} \right\}\)</span>. Assume that these <span class="math notranslate nohighlight">\(N_\ell\)</span> vertices can be identified with the leaves <span class="math notranslate nohighlight">\(R\)</span> of a tree <span class="math notranslate nohighlight">\(T\)</span>, we aim to find that tree <span class="math notranslate nohighlight">\(T\)</span> in the set <span class="math notranslate nohighlight">\(\mathcal{T}_{N_\ell}\)</span> of all binary trees with <span class="math notranslate nohighlight">\(N_\ell\)</span> labeled leaves that best explains the data, in some well-defined sense. If we have knowledge of a root <span class="math notranslate nohighlight">\(r\)</span>, then the roots of the trees in <span class="math notranslate nohighlight">\(\mathcal{T}_{N_\ell}\)</span> will all be identified with <span class="math notranslate nohighlight">\(r\)</span>. In some contexts we may also be interested in inferring a set of weights <span class="math notranslate nohighlight">\(w\)</span> for the branches in <span class="math notranslate nohighlight">\(T\)</span>.</p>
+<dl class="simple myst">
+<dt>Example (Binary multicast tree)</dt><dd><p>For instance, consider a binary multicast tree <span class="math notranslate nohighlight">\(T\)</span>. There is a packet sending from root <span class="math notranslate nohighlight">\(r\)</span> to all <span class="math notranslate nohighlight">\(N_\ell\)</span> leaves. If the packet is ‘lost’ at an internal vertex, then all its descendants cannot receive the packet. Let <span class="math notranslate nohighlight">\(X_i\)</span> be binary variables, which is <span class="math notranslate nohighlight">\(1\)</span> if leave <span class="math notranslate nohighlight">\(i\)</span> receives the packet and <span class="math notranslate nohighlight">\(0\)</span> otherwise. We may send the packet for <span class="math notranslate nohighlight">\(n\)</span> times, obtain <span class="math notranslate nohighlight">\(n\)</span> binary vectors, and use them to infer the tree structure. Here are some properties of the tree which can be exploited in designing methods of inference:</p>
+</dd>
+</dl>
+<ul class="simple">
+<li><p>For a subset <span class="math notranslate nohighlight">\(U \in R\)</span> of leaves, let <span class="math notranslate nohighlight">\(a(U)\)</span> be their closest common ancestor. If <span class="math notranslate nohighlight">\(X_{a(U)} = 0\)</span>, then <span class="math notranslate nohighlight">\(X_{u} = 0\)</span> for all leaves <span class="math notranslate nohighlight">\(u \in U\)</span>.</p></li>
+<li><p>For an internal vertex <span class="math notranslate nohighlight">\(v\)</span>, let <span class="math notranslate nohighlight">\(C(v)\)</span> be its children. If <span class="math notranslate nohighlight">\(X_c = 1\)</span> for at least one <span class="math notranslate nohighlight">\(c \in C(v)\)</span>, then <span class="math notranslate nohighlight">\(X_v = 1\)</span>.</p></li>
+</ul>
+<dl class="simple myst">
+<dt>Example (Binary Phylogenetic tree)</dt><dd><p>Another example is DNA sequence. If we group DNA bases <span class="math notranslate nohighlight">\(\left\{ A, G, C, T \right\}\)</span> in pairs <span class="math notranslate nohighlight">\(\left\{ A, G \right\}\)</span> and <span class="math notranslate nohighlight">\(\left\{ C, T \right\}\)</span>, i.e. by purines and pyrimidines respectively, and coded <span class="math notranslate nohighlight">\(0\)</span> and <span class="math notranslate nohighlight">\(1\)</span>. We can then use an <span class="math notranslate nohighlight">\(N_\ell\)</span>-tuple of measurements to indicate whether each of <span class="math notranslate nohighlight">\(N_\ell\)</span> species being studied had a purine or pyrimidine at a given location in the genome. Repeat this for <span class="math notranslate nohighlight">\(n\)</span> different locations. Then we can form the notion of a tree-based evolutionary process generating sequence data at the leaves.</p>
+</dd>
+</dl>
+<p>There are many methods for tomographic inference of tree topologies, which differ in</p>
+<ul class="simple">
+<li><p>how the data are utilized (all or part)</p></li>
+<li><p>criteria for assessing the merit of a candidate tree <span class="math notranslate nohighlight">\(T \in \mathcal{T} _{N\ell}\)</span> in describing the data</p></li>
+<li><p>the number in which the space <span class="math notranslate nohighlight">\(\mathcal{T} _{N_\ell}\)</span> is searched in attempting to find a tree(s) best meeting this criteria.</p>
+<ul>
+<li><p>Note that the space <span class="math notranslate nohighlight">\(\mathcal{T} _{N_\ell}\)</span> of (semi)labeled, rooted, binary trees is found to have <span class="math notranslate nohighlight">\(\left(2 N_{l}-3\right) !! \approx \left(N_{l}-1\right)^{N_{l}-1}\)</span> elements. Hence, exhaustive search is unrealistic and alternative approaches, based on greedy or randomized search algorithms, are utilized</p></li>
+<li><p>maximum parsimony in phylogenetic inference, which seeks to construct a tree for data involving the minimum number of necessary evolutionary changes</p></li>
+<li><p>branch-and-bound</p></li>
+</ul>
+</li>
+</ul>
+<p>Two popular classes of methods: hierarchical clustering-based, and likelihood-based. They both seek to exploit the supposition that, the closer two leaves are in the underlying tree, the more similar their observed characteristics (i.e., the measurements) will be.</p>
+<ul class="simple">
+<li><p>the observed rate of shared losses of packets should be fairly indicative of how close two leaf vertices</p></li>
+<li><p>two biological species are presumed to share more of their genome if they split from a common ancestor later in evolutionary time.</p></li>
+</ul>
+</div>
+<div class="section" id="hierarchical-clustering-based">
+<h3>Hierarchical Clustering-based<a class="headerlink" href="#hierarchical-clustering-based" title="Permalink to this headline">¶</a></h3>
+<p>Hierarchical <a class="reference internal" href="../34-clustering/00-clustering.html#clustering"><span class="std std-ref">clustering</span></a> method can be used to the <span class="math notranslate nohighlight">\(n \times N_\ell\)</span> data matrix. Note that</p>
+<ul class="simple">
+<li><p>traditional clustering methods aim to find cluster assignment, while here we want the hierarchical tree <span class="math notranslate nohighlight">\(\hat{T}\)</span>.</p></li>
+<li><p>the (dis)similarity measure can be customized, e.g. (true) shared loss, or genetic distance.</p></li>
+</ul>
+<div class="note dropdown admonition">
+<p class="admonition-title"> True, false and net shared loss in a multicast tree</p>
+<p>There are two different types of shared loss between a pair of leaf vertices <span class="math notranslate nohighlight">\(\left\{ j, k \right\}\)</span> – termed ‘true’ and ‘false’ shared loss by Ratnasamy and McCanne [323].</p>
+<ul class="simple">
+<li><p>The true shared losses are due to loss of packets on the path common to the vertices <span class="math notranslate nohighlight">\(j\)</span> and <span class="math notranslate nohighlight">\(k\)</span></p></li>
+<li><p>while the false shared losses are due to loss on the parts of paths following after the closest common ancestor, <span class="math notranslate nohighlight">\(a(\left\{ j, k \right\})\)</span>.</p></li>
+</ul>
+<p>For example, in the above tree,</p>
+<ul class="simple">
+<li><p>true shared losses for the leaves 1 and 3 would be losses incurred on the path from <span class="math notranslate nohighlight">\(r\)</span> to the internal vertex <span class="math notranslate nohighlight">\(i_1\)</span>;</p></li>
+<li><p>false shared losses would refer to cases where packets were lost separately on the two paths from <span class="math notranslate nohighlight">\(i_1\)</span> to the vertices 1 and 3, respectively.</p></li>
+</ul>
+<p>Since the net shared loss rate (i.e., the fraction of packets commonly lost to <span class="math notranslate nohighlight">\(j\)</span> and <span class="math notranslate nohighlight">\(k\)</span>) includes the contribution of <strong>both</strong> types of losses, it can be misleading to use this number as a similarity. Fortunately, it is possible to obtain information on the <strong>true</strong> loss rates from these net loss rates, through the use of a simple packet-loss model.</p>
+</div>
+<p>Here we introduce a Markov cascade process for multicast data. Consider the cascade process <span class="math notranslate nohighlight">\(\left\{ X_j \right\}_{j \in V_T}\)</span>, assume <span class="math notranslate nohighlight">\(X_r=1\)</span>. For each internal vertex <span class="math notranslate nohighlight">\(k\)</span>, if <span class="math notranslate nohighlight">\(X_k =0\)</span> then <span class="math notranslate nohighlight">\(X_j = 0\)</span> for all child <span class="math notranslate nohighlight">\(j \in C(k)\)</span>. If <span class="math notranslate nohighlight">\(X_k = 1\)</span>, then we define</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbb{P}\left(X_{j}=1 \mid X_{k}=1\right)=1-\mathbb{P}\left(X_{j}=0 \mid X_{k}=1\right)=\alpha_{j}
+\]</div>
+<p>and hence define</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(A(k) = \prod_{j \succ k} \alpha_j\)</span> to be the probability that a packet is transmitted from <span class="math notranslate nohighlight">\(r\)</span> to <span class="math notranslate nohighlight">\(k\)</span>, where <span class="math notranslate nohighlight">\(j \succ k\)</span> indicates ancestral vertices <span class="math notranslate nohighlight">\(j\)</span> of <span class="math notranslate nohighlight">\(k\)</span> on the path from <span class="math notranslate nohighlight">\(r\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(1 - A(a(\left\{ j, k \right\}))\)</span> to be the true shared losses rate, i.e. shared loss due to loss of packets on the path common to the two leaf vertices <span class="math notranslate nohighlight">\(j\)</span> and <span class="math notranslate nohighlight">\(k\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(R(k)\)</span> to be the set of leaf vertices in <span class="math notranslate nohighlight">\(R\)</span> that are descendants of internal vertex <span class="math notranslate nohighlight">\(k\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\gamma(k)=\mathbb{P}\left(\cup_{j \in R(k)}\left\{X_{j}=1\right\}\right)\)</span> be the probability that at least one of the <strong>leaves</strong> descended from <span class="math notranslate nohighlight">\(k\)</span> receive a packet. This can be estimated by <span class="math notranslate nohighlight">\(n\)</span> observations of <span class="math notranslate nohighlight">\(\boldsymbol{x}_i\)</span>, using the relative frequency <span class="math notranslate nohighlight">\(\hat{\gamma}(k)=(1 / n) \sum_{i=1}^{n}\left[\prod_{j \in R(k)} x_{ij}\right]\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\gamma(U)=\mathbb{P}\left(\cup_{k \in U} \cup_{j \in R(k)}\left\{X_{j}=1\right\}\right)\)</span> similarly, for an arbitrary set of vertices <span class="math notranslate nohighlight">\(U\)</span>. In particular, if <span class="math notranslate nohighlight">\(U = C(k)\)</span>, then <span class="math notranslate nohighlight">\(\gamma(U) = \gamma(k)\)</span>.</p></li>
+</ul>
+<p>Then, it is not difficult to show that for any <span class="math notranslate nohighlight">\(U \subseteq C(k)\)</span>, we have</p>
+<div class="math notranslate nohighlight">
+\[
+1- \frac{\gamma(U)}{A(k)}=\prod_{j \in U}\left[ 1- \frac{\gamma(j)}{A(k)} \right]
+\]</div>
+<p>Therefore, we can first estimate <span class="math notranslate nohighlight">\(\gamma(k)\)</span> by <span class="math notranslate nohighlight">\(\hat{\gamma}(k)\)</span>, then solve the above function to obtain <span class="math notranslate nohighlight">\(\hat{A}(k)\)</span> for all <span class="math notranslate nohighlight">\(k \in V_T\)</span>. To build a agglomerative clustering tree, we can use the true shared losses rate <span class="math notranslate nohighlight">\(1 - \hat{A}(a(\{j, k\}))\)</span> as similarity measure. See [SAND 128] for consistency of the resulting estimator <span class="math notranslate nohighlight">\(T\)</span> for recovering a binary multicast tree <span class="math notranslate nohighlight">\(T\)</span>, under the model assumptions.</p>
+</div>
+<div class="section" id="likelihood-based">
+<h3>Likelihood-based<a class="headerlink" href="#likelihood-based" title="Permalink to this headline">¶</a></h3>
+<p>We can specify a conditional density or PMF <span class="math notranslate nohighlight">\(f(\boldsymbol{x} \vert T)\)</span> for the <span class="math notranslate nohighlight">\(N_\ell\)</span>-length vector of random variables <span class="math notranslate nohighlight">\(\boldsymbol{x} = [X_1, \ldots, X_{N_\ell}]\)</span>, given a tree-topology <span class="math notranslate nohighlight">\(T\)</span>. If we assumed independence among the <span class="math notranslate nohighlight">\(n\)</span> observations, the likelihood has the form</p>
+<div class="math notranslate nohighlight">
+\[
+L(T) = \prod_{i=1}^n f(\boldsymbol{x} _i \vert T)
+\]</div>
+<p>and the MLE tree is simple <span class="math notranslate nohighlight">\(\hat{T}_{ML} = \arg \max _{T \in \mathcal{T} _{N_\ell}} L(T)\)</span>. However, it is typically that there are parameters <span class="math notranslate nohighlight">\(\boldsymbol{\theta}\)</span> relating to the evolution of a tree <span class="math notranslate nohighlight">\(T\)</span>. Hence, the likelihood has an integrated form</p>
+<div class="math notranslate nohighlight">
+\[
+L(T) = \prod_{i=1}^{n} \int f\left(\mathbf{x}_i \mid T, \theta\right) f(\theta \mid T) d \theta
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(f(\theta \vert T)\)</span> is an appropriately defined distribution on <span class="math notranslate nohighlight">\(\theta\)</span>, given <span class="math notranslate nohighlight">\(T\)</span>. Depending on the nature of their integrands, the integrals may or may not lend themselves well to computational evaluation.</p>
+<dl class="simple myst">
+<dt>Definition (Profile likelihood)</dt><dd><p>An alternative that can be more computationally tractable, or that can be used
+when we cannot or do not wish to specify a distribution <span class="math notranslate nohighlight">\(f(\theta \vert T)\)</span>, is to define <span class="math notranslate nohighlight">\(\hat{T}\)</span> through maximization of a profile likelihood. Let</p>
+<div class="math notranslate nohighlight">
+\[
+  L(T, \theta) =\prod_{i=1}^{n} f\left(\mathbf{x}_{i} \mid T, \theta\right)
+  \]</div>
+<p>Then define</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+  \hat{\theta}_{T}
+  &amp;= \arg \max _{\theta} L(T, \theta)\\
+  \widehat{T}_{PL}&amp;=\arg \max _{T \in \mathscr{T}_{N_\ell}} L\left(T, \hat{\theta}_{T}\right) \\
+  \end{aligned}\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(L\left(T, \hat{\theta}_{T}\right)\)</span> is called the <strong>profile likelihood</strong>, and  <span class="math notranslate nohighlight">\(\widehat{T}_{PL}\)</span> is called the <strong>maximum profile likelihood estimator</strong>.</p>
+</dd>
+</dl>
+<p>For instance, for the multicast three model, <span class="math notranslate nohighlight">\(\theta = \left\{ \alpha_j \right\}\)</span>, the profile likelihood is</p>
+<div class="math notranslate nohighlight">
+\[
+L(T, \alpha)=\prod_{i=1}^{n} \prod_{j \in V_{T}} \eta_{j}^{(i)}
+\]</div>
+<div class="margin sidebar">
+<p class="sidebar-title"></p>
+<p>For detail about the chain rule factorization, see <a class="reference internal" href="../35-graphical-models/00-graphical-models.html#graphical-models"><span class="std std-ref">graphical models</span></a>. But how to we know <span class="math notranslate nohighlight">\(x_{p a(j)}^{(i)}\)</span>??</p>
+</div>
+<p>where by chain rule factorization,</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\eta_{j}^{(i)}=\left\{\begin{array}{ll}
+1, &amp; \text { if } j=r, \\
+\mathbb{P} (x_j ^{(i)} \vert x_{pa(j)}^{(i)}, \alpha_j) = \left\{\begin{array}{ll}
+\alpha_{j}^{x_{j}^{(i)}}\left(1-\alpha_{j}\right)^{1-x_{j}^{(i)}}, &amp; \text { if } x_{p a(j)}^{(i)}=1 \\
+1, &amp; \text { if } x_{p a(j)}^{(i)}=0
+\end{array}\right.
+\end{array}\right.
+\end{split}\]</div>
+<p>and <span class="math notranslate nohighlight">\(pa(j)\)</span> denotes the parent of <span class="math notranslate nohighlight">\(j\)</span> in <span class="math notranslate nohighlight">\(T\)</span>.</p>
+<p>The profile MLE is <span class="math notranslate nohighlight">\(\widehat{T}_{P L}=\arg \max _{T \in \mathcal{T}_{N_{l}}} L\left(T, \hat{\alpha}_{T}\right)\)</span>, where <span class="math notranslate nohighlight">\(\hat{\alpha}_{T}=\arg \max _{\alpha} L(T, \alpha)\)</span>. [SAND 128] prove its consistency under appropriate conditions.</p>
+<div class="note dropdown admonition">
+<p class="admonition-title"> Computation</p>
+<p>Implementation of this estimator is non-trivial. For example, consider the estimation of <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}\)</span>, a parameter vector of potentially quite large dimension. An efficient, recursive estimation algorithm is proposed [SAND 71] using the relation</p>
+<div class="math notranslate nohighlight">
+\[
+\alpha_j = \mathbb{P}\left(X_{j}=1 \mid X_{pa(j)}=1\right) = \frac{A(j)}{A(pa(j))}
+\]</div>
+<p>And recall that <span class="math notranslate nohighlight">\(A(k)\)</span> may be obtained from <span class="math notranslate nohighlight">\(\gamma(k)\)</span> and <span class="math notranslate nohighlight">\(\gamma(k)\)</span> can be estimated by frequencies. Although the resulting estimator <span class="math notranslate nohighlight">\(\tilde{\alpha}_k\)</span> is not strictly the maximum likelihood estimate, Caceres et al. [SAND 71] show that, when <span class="math notranslate nohighlight">\(\alpha_k \in (0, 1)\)</span> for all <span class="math notranslate nohighlight">\(k\)</span>, we nevertheless have <span class="math notranslate nohighlight">\(\tilde{\boldsymbol{\alpha}} = \hat{\boldsymbol{\alpha}}\)</span> with high probability.</p>
+<p>For the optimization of the profile likelihood <span class="math notranslate nohighlight">\(L\left(T, \hat{\alpha}_{T}\right)\)</span> for <span class="math notranslate nohighlight">\(T \in \mathcal{T} _{N_\ell}\)</span>, if <span class="math notranslate nohighlight">\(N_\ell\)</span> is small (&lt;5) we can use simulation for exhaustive search of <span class="math notranslate nohighlight">\(\mathcal{T} _{N_\ell}\)</span>, else we can use greedy techniques or MCMC-based techniques.</p>
+</div>
+<p>In the phylogenetic tree example, we assume independence between measurements <span class="math notranslate nohighlight">\(\boldsymbol{x}_i\)</span> (e.g. between locations in the measured DNA sequence) and use Markov-like cascade model to capture the effects of evolution through time. By coding purines and pyrimidines as 0 and 1 respectively, we use a symmetric model of change between the two states of zero and one, in traversing from one end of a branch to the other, according to probability</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbb{P}\left(X_{j}=1 \mid X_{k}=0\right)=\frac{1}{2}\left(1-e^{-2 w_{j}}\right)
+\]</div>
+<p>parameterized by <span class="math notranslate nohighlight">\(w_j\)</span>, the length of brach leading from <span class="math notranslate nohighlight">\(k\)</span> to <span class="math notranslate nohighlight">\(j\)</span>, where <span class="math notranslate nohighlight">\(j \in C(k)\)</span>.</p>
+<p>The likelihood corresponding to this model is</p>
+<div class="math notranslate nohighlight">
+\[
+L(T, \mathbf{w})=\prod_{i=1}^{n} \sum_{\left\{x_{j}^{(i)}\right\}_{j \in V_{T} \backslash R}} \prod_{j \in V_{T}} \eta_{j}^{(i)}
+\]</div>
+<p>where</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\eta_{j}^{(i)}=\left\{\begin{array}{ll}
+\frac{1}{2}\left(1-e^{-2 w_{j}}\right), &amp; \text { if } x_{j}^{(i)} \neq x_{p a(j)}^{(i)} \\
+\frac{1}{2}\left(1+e^{-2 w_{j}}\right), &amp; \text { if } x_{j}^{(i)}=x_{p a(j)}^{(i)}
+\end{array}\right.
+\end{split}\]</div>
+<p>Note that the summation (i.e. marginalization) is over all possible ways that the states zero or one can be assigned to the internal vertices of the tree <span class="math notranslate nohighlight">\(T\)</span>, and is absent in the case of multicast data because of the hereditary constraints on the process <span class="math notranslate nohighlight">\(\left\{ X_j \right\}j \in V_T\)</span> (but still have multiple assignments??).</p>
+<div class="note admonition">
+<p class="admonition-title"> Computation</p>
+<ul class="simple">
+<li><p>Likelihood: in general, the presence of such product-sum combinations can be problematic from a computational perspective. However, in this particular case, the likelihood can be calculated efficiently using a dynamic programming algorithm – the so-called <strong>pruning algorithm</strong> – proposed by Felsenstein [SAND 142]. Working recursively from the leaves towards the root, components of the likelihood are computed on sub-trees and combined in a clever fashion
+to yield the likelihoods on larger sub-trees containing them, until the likelihood for the entire tree is obtained.</p></li>
+<li><p>Optimization in <span class="math notranslate nohighlight">\((\widehat{T}, \hat{\mathbf{w}})\)</span> is NP hard. In practice, a profile maximum likelihood method typically is used (??). See [SAND 143]. MCMC can also be pursued.</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="summarizing-collections-of-trees">
+<h3>Summarizing Collections of Trees<a class="headerlink" href="#summarizing-collections-of-trees" title="Permalink to this headline">¶</a></h3>
+<p>All the above inference method output a single tree <span class="math notranslate nohighlight">\(\hat{T}\)</span>, like a point estimate. Can we output a collection of trees, in the spirit of an interval estimate? In practice, such collections arise in various ways, such as</p>
+<ul class="simple">
+<li><p>listing a number of trees of nearly maximum likelihood, rather than simply a single maximum-likelihood tree, or</p></li>
+<li><p>from bootstrap re-sampling in an effort to assess the variability in an inferred tree, output <span class="math notranslate nohighlight">\(\{\widehat{T}^{(b)}\}_{b=1}^{B}\)</span>, or</p></li>
+<li><p>from MCMC sampling of an appropriate posterior distribution on <span class="math notranslate nohighlight">\(\mathcal{T} _{N_\ell}\)</span></p></li>
+</ul>
+<p>Given such a collection of trees, how can we usefully summarize the information
+therein? How they are similar or different?</p>
+<ul class="simple">
+<li><p>For similarity, we can use <strong>consensus tree</strong>. A consensus tree is a single tree that aims to summarize the information in a collection of trees in a ‘representative’ manner. There are many methods to define such trees,</p>
+<ul>
+<li><p>Margush and McMorris [SAND 268] defined <span class="math notranslate nohighlight">\(M_\ell\)</span>-trees indexed by <span class="math notranslate nohighlight">\(\ell \in [0.5, 1]\)</span>, which contains all groups of leaves <span class="math notranslate nohighlight">\(U \subseteq R\)</span> that occur in more than a fraction <span class="math notranslate nohighlight">\(\ell\)</span> of the trees in a collection.</p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(\ell=1\)</span>, it is called strict consensus tree</p></li>
+<li><p><span class="math notranslate nohighlight">\(\ell=0.5\)</span>, it is called majority-rule consensus tree</p></li>
+</ul>
+</li>
+<li><p>additional information can be added to a consensus tree in the form of branch weights</p></li>
+</ul>
+</li>
+<li><p>For differences, there are various notions of distance between pairs of trees</p>
+<ul>
+<li><p><strong>symmetric difference</strong> works by counting branches.</p></li>
+<li><p><strong>nearest-neighbor interchange</strong> (NNI) counts the number of swaps of adjacent branches that must be made to transform one tree into the other (computationally daunting)</p></li>
+<li><p>both are metrics</p></li>
+</ul>
+</li>
+<li><p>Relationships: if we define a <strong>median tree</strong> in a collection to be a tree <span class="math notranslate nohighlight">\(T\)</span> whose total distance – based on the symmetric difference – to all other trees is a minimum, then this tree is equivalent to the majority-rule tree, when the number of trees <span class="math notranslate nohighlight">\(t\)</span> in the collection is odd [SAND 21].</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="more">
+<h2>More<a class="headerlink" href="#more" title="Permalink to this headline">¶</a></h2>
+<p>More examples</p>
+<ul class="simple">
+<li><p>link prediction / association networks</p>
+<ul>
+<li><p>inferring networks from so-called co-occurrence data, e.g. telecommunications and genetics [SAND 318, 319]</p></li>
+<li><p>protein complexes [SAND 343]</p></li>
+<li><p>inferring networks with links defined according to the dynamic interactions of elements in a system (e.g., such as of information passing between neurons firing in sequence). [SAND 355]</p></li>
+</ul>
+</li>
+<li><p>tomographic inference</p>
+<ul>
+<li><p>infer coalescent trees, which have to do with the evolution of genes within a population (i.e., below the level of species). See Felsenstein [141, Ch. 26].</p></li>
+</ul>
+</li>
+</ul>
+<p>More measurements</p>
+<ul class="simple">
+<li><p>association networks</p>
+<ul>
+<li><p>Spearman rank correlation and partial correlation might be used as robust alternatives to Pearson correlation [350.sec.3.9], [110]</p></li>
+<li><p>Or a measure capable of summarizing nonlinear association, such as mutual information [140]</p></li>
+</ul>
+</li>
+<li><p>computer networks</p>
+<ul>
+<li><p>mean delay, see the sandwich probing in case study 7.4.5.</p></li>
+</ul>
+</li>
+</ul>
+<p>Open problems</p>
+<ul class="simple">
+<li><p>basic questions of consistency, consensus, robustness, beyond trees?</p></li>
+<li><p>how to best characterize the merit of partially accurate estimates <span class="math notranslate nohighlight">\(\hat{G}\)</span>? e.g. focusing on the accuracy with which small subgraphs (e.g., network motifs) or paths are recovered.</p></li>
 </ul>
 </div>
 </div>
@@ -1436,6 +1751,7 @@ H_{1}: \rho_{i j \mid V \backslash\{i, j\}} \neq 0
         <div class='prev-next-bottom'>
             
     <a class='left-prev' id="prev-link" href="21-modeling.html" title="previous page">Modeling</a>
+    <a class='right-next' id="next-link" href="41-processes.html" title="next page">Processes on Graphs</a>
 
         </div>
         

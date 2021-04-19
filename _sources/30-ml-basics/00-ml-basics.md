@@ -94,3 +94,28 @@ Speech processing = getting machines to do everything humans do when listening t
 - Clustering $\approx$ discrete representation learning
 
 Is unsupervised learning all representation learning? Is it all density estimation? How about graph-based methods?
+
+## Advanced
+
+The study of machine learning can be categorized as theories, models, and applications.
+- Model
+  - How to model a problem?
+- Theory
+  - Why does this model work?
+  - Under **what** conditions will it have **what** performance?
+- Application
+  - Fit the model or its variants to various type of data
+
+Usually a model can be used for multiple problem. Take principal component analysis as an example,
+- Problems
+  - dimension reduction
+  - estimate latent variables
+  - visualization
+- Model: principal component analysis
+- Theories
+  - Identifiability: What is the weakest signal can we detect? Use random matrix theory.
+- Application:
+  - Variants: probabilistic PCA, kernel PCA, ...
+  - Fitting: data for various domains ...
+
+We will focus on introducing models, but will also discuss the theories to analyze them.

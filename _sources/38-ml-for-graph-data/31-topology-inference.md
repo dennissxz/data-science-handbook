@@ -404,17 +404,286 @@ Definition
 
 Measurements
 - The relative levels of RNA expression of genes in a cell, under a given set of conditions, can be measured efficiently on a genome-wide scale using **microarray** technologies.
-- In particular, for each gene $i$, the vertex attribute vector $\boldsymbol{x}_i \in \mathbb{R} ^m$ typically consists of RNA relative expression levels measured for that gene over a compendium of $m$ experiments.
+- In particular, for each gene $i$, the vertex attribute vector $\boldsymbol{x}_i \in \mathbb{R} ^m$ typically consists of RNA relative expression levels measured for that gene over a compendium of $m$ experiments, e.g. changes in pH, growing media, heat, oxygen concentrations, and genetic composition.
+
+Observation
+- Due to the nature of the regulation process, the expression levels of TFs and their targets often can be expected to be highly correlated with each other
+- Given that many TFs have multiple targets, including other TFs, the expression levels among many of the TFs can be expected to be highly correlated as well
+- Such correlations are evident in the image plot, where the order of the
+genes (rows) and experiments (columns) has been chosen using a cluster analysis, to enhance the visual assessment of correlation.
+
+:::{figure} graph-gene-exp
+<img src="../imgs/graph-gene-exp.png" width = "70%" alt=""/>
+
+Image representation of 445 microarray expression profiles collected for E. coli, under various conditions, for the 153 genes that are listed as known transcription factors (TF) in the RegulonDB, using blue-organge scale. [Kolaczyk 2009]
+database.
+:::
 
 Challenge
-- a TF can actually be a target of another TF. And so direct correlation between measurements of a TF and a gene target may actually just be a reflection of the regulation of that TF by another TF. Sol: use partial correlation
+- A TF can actually be a target of another TF. And so direct correlation between measurements of a TF and a gene target may actually just be a reflection of the regulation of that TF by another TF. Sol: use partial correlation.
+
+Methods and Results
+- Use three methods above, all use Fisher transformation for testing. See SAND pg.221-223
+- All methods have high precision and low recall. Faith et al. [SAND 140] have argued that the low recall is due primarily to limitations in both the number and the diversity of the expression profiles produced by the available experiments.
+- Takeaway: high precision model is still good for prediction purpose, though not good at recover old true labels (low recall).
 
 ## Tomographic Inference
 
-Measurements are available only at vertices that are somehow at the ‘perimeter’ of the network, and it is necessary to infer the presence or absence of both edges and vertices in the ‘interior.’
+In tomographic network topology inference problems, measurements are available only at vertices that are somehow at the ‘exterior’ of the network, and it is necessary to infer the presence or absence of both edges and vertices in the ‘interior.’ Here ‘exterior’ and ‘interior’ are somewhat relative terms and generally are used simply to distinguish between vertices where it is and is not possible (or, at least, not convenient) to obtain measurements. For example, in computer networks, desktop and laptop computers are typical instances of ‘exterior’ vertices, while Internet routers to which we do not have access are effectively ‘interior’ vertices.
+
+The problem of tomographic network topology inference is just one instance of
+what are more broadly referred to as problems of **network tomography**.
+
+### Introduction
 
 Given
 - measurements at only a particular subset of vertices
 
 Infer
 - topology of the rest
+
+Challenge
+- For a given set of measurements, there are likely many network topologies that conceivably could have generated them
+- Without any further constraints on aspects like the number of internal vertices and edges, and the manner in which they connect to one another, we have no sensible way of choosing among these possible solutions.
+- The problem is thus an example of an ‘ill-posed inverse problem’ in mathematics – an inverse problem, in the sense of inverting the mapping
+from internal to external, and ill-posed, in the sense of that mapping being many-to-one.
+- In order to obtain useful solutions to such ill-posed problems, we impose assumptions on the internal structure.
+
+Assumption
+- a key structural simplification has been the restriction to inference of networks in the form of trees.
+
+Related fields
+- inference of phylogenies: to construct trees (i.e., phylogenies) from data, for the purpose of describing evolutionary relationships among biological species.
+- computer network analysis: to infer the tree formed by a set of paths along which traffic flows from a given origin Internet address to a set of destination addresses, including physical or logical topologies.
+
+### For Tree Topologies
+
+Given a tree $T=(V_T, E_T)$, let $r \in V_T$ be its root, $R \in V_T$ be its leaves, and $V \setminus \left\{ \left\{ r \right\} \cup \left\{ R \right\}\right\}$ be the **internal vertices**. The edges $E_T$ are often referred to as branches.
+
+A binary three is also called a **bifurcating tree**, where each internal vertex has at most two children. We will restrict our attention here almost entirely to binary trees. Trees with more general branching structure can always be represented as binary trees and, indeed, methods for their inference can be built upon inferential methods for binary trees.
+
+:::{figure} graph-topo-tree
+<img src="../imgs/graph-topo-tree.png" width = "40%" alt=""/>
+
+Schematic representation of a binary tree. Measurements are available at the leaves 1, 2, 3, 4, and 5 (<span style="color:yellow">yellow</span>). Other elements (possibly including the root $r$) are unknown.
+:::
+
+The leaves $R$ are known, but the internal vertices and the branches are not. The root $r$ may or may not be known. We associate with each branch a weight $w$, which we may or may not wish to infer.
+
+For a set of $N_\ell$ vertices, we have $n$ independent and identically distributed observations of some random variables $\left\{ X_1, X_2, \ldots, X_{N_\ell} \right\}$. Assume that these $N_\ell$ vertices can be identified with the leaves $R$ of a tree $T$, we aim to find that tree $T$ in the set $\mathcal{T}_{N_\ell}$ of all binary trees with $N_\ell$ labeled leaves that best explains the data, in some well-defined sense. If we have knowledge of a root $r$, then the roots of the trees in $\mathcal{T}_{N_\ell}$ will all be identified with $r$. In some contexts we may also be interested in inferring a set of weights $w$ for the branches in $T$.
+
+Example (Binary multicast tree)
+: For instance, consider a binary multicast tree $T$. There is a packet sending from root $r$ to all $N_\ell$ leaves. If the packet is 'lost' at an internal vertex, then all its descendants cannot receive the packet. Let $X_i$ be binary variables, which is $1$ if leave $i$ receives the packet and $0$ otherwise. We may send the packet for $n$ times, obtain $n$ binary vectors, and use them to infer the tree structure. Here are some properties of the tree which can be exploited in designing methods of inference:
+- For a subset $U \in R$ of leaves, let $a(U)$ be their closest common ancestor. If $X_{a(U)} = 0$, then $X_{u} = 0$ for all leaves $u \in U$.
+- For an internal vertex $v$, let $C(v)$ be its children. If $X_c = 1$ for at least one $c \in C(v)$, then $X_v = 1$.
+
+Example (Binary Phylogenetic tree)
+: Another example is DNA sequence. If we group DNA bases $\left\{ A, G, C, T \right\}$ in pairs $\left\{ A, G \right\}$ and $\left\{ C, T \right\}$, i.e. by purines and pyrimidines respectively, and coded $0$ and $1$. We can then use an $N_\ell$-tuple of measurements to indicate whether each of $N_\ell$ species being studied had a purine or pyrimidine at a given location in the genome. Repeat this for $n$ different locations. Then we can form the notion of a tree-based evolutionary process generating sequence data at the leaves.
+
+There are many methods for tomographic inference of tree topologies, which differ in
+- how the data are utilized (all or part)
+- criteria for assessing the merit of a candidate tree $T \in \mathcal{T} _{N\ell}$ in describing the data
+- the number in which the space $\mathcal{T} _{N_\ell}$ is searched in attempting to find a tree(s) best meeting this criteria.
+  - Note that the space $\mathcal{T} _{N_\ell}$ of (semi)labeled, rooted, binary trees is found to have $\left(2 N_{l}-3\right) !! \approx \left(N_{l}-1\right)^{N_{l}-1}$ elements. Hence, exhaustive search is unrealistic and alternative approaches, based on greedy or randomized search algorithms, are utilized
+  - maximum parsimony in phylogenetic inference, which seeks to construct a tree for data involving the minimum number of necessary evolutionary changes
+  - branch-and-bound
+
+Two popular classes of methods: hierarchical clustering-based, and likelihood-based. They both seek to exploit the supposition that, the closer two leaves are in the underlying tree, the more similar their observed characteristics (i.e., the measurements) will be.
+- the observed rate of shared losses of packets should be fairly indicative of how close two leaf vertices
+- two biological species are presumed to share more of their genome if they split from a common ancestor later in evolutionary time.
+
+### Hierarchical Clustering-based
+
+Hierarchical [clustering](clustering) method can be used to the $n \times N_\ell$ data matrix. Note that
+- traditional clustering methods aim to find cluster assignment, while here we want the hierarchical tree $\hat{T}$.
+- the (dis)similarity measure can be customized, e.g. (true) shared loss, or genetic distance.
+
+
+:::{admonition,note,dropdown} True, false and net shared loss in a multicast tree
+
+There are two different types of shared loss between a pair of leaf vertices $\left\{ j, k \right\}$ – termed ‘true’ and ‘false’ shared loss by Ratnasamy and McCanne [323].
+- The true shared losses are due to loss of packets on the path common to the vertices $j$ and $k$
+- while the false shared losses are due to loss on the parts of paths following after the closest common ancestor, $a(\left\{ j, k \right\})$.
+
+For example, in the above tree,
+- true shared losses for the leaves 1 and 3 would be losses incurred on the path from $r$ to the internal vertex $i_1$;
+- false shared losses would refer to cases where packets were lost separately on the two paths from $i_1$ to the vertices 1 and 3, respectively.
+
+Since the net shared loss rate (i.e., the fraction of packets commonly lost to $j$ and $k$) includes the contribution of **both** types of losses, it can be misleading to use this number as a similarity. Fortunately, it is possible to obtain information on the **true** loss rates from these net loss rates, through the use of a simple packet-loss model.
+
+:::
+
+
+Here we introduce a Markov cascade process for multicast data. Consider the cascade process $\left\{ X_j \right\}_{j \in V_T}$, assume $X_r=1$. For each internal vertex $k$, if $X_k =0$ then $X_j = 0$ for all child $j \in C(k)$. If $X_k = 1$, then we define
+
+$$
+\mathbb{P}\left(X_{j}=1 \mid X_{k}=1\right)=1-\mathbb{P}\left(X_{j}=0 \mid X_{k}=1\right)=\alpha_{j}
+$$
+
+and hence define
+- $A(k) = \prod_{j \succ k} \alpha_j$ to be the probability that a packet is transmitted from $r$ to $k$, where $j \succ k$ indicates ancestral vertices $j$ of $k$ on the path from $r$.
+- $1 - A(a(\left\{ j, k \right\}))$ to be the true shared losses rate, i.e. shared loss due to loss of packets on the path common to the two leaf vertices $j$ and $k$.
+- $R(k)$ to be the set of leaf vertices in $R$ that are descendants of internal vertex $k$
+- $\gamma(k)=\mathbb{P}\left(\cup_{j \in R(k)}\left\{X_{j}=1\right\}\right)$ be the probability that at least one of the **leaves** descended from $k$ receive a packet. This can be estimated by $n$ observations of $\boldsymbol{x}_i$, using the relative frequency $\hat{\gamma}(k)=(1 / n) \sum_{i=1}^{n}\left[\prod_{j \in R(k)} x_{ij}\right]$
+- $\gamma(U)=\mathbb{P}\left(\cup_{k \in U} \cup_{j \in R(k)}\left\{X_{j}=1\right\}\right)$ similarly, for an arbitrary set of vertices $U$. In particular, if $U = C(k)$, then $\gamma(U) = \gamma(k)$.
+
+Then, it is not difficult to show that for any $U \subseteq C(k)$, we have
+
+$$
+1- \frac{\gamma(U)}{A(k)}=\prod_{j \in U}\left[ 1- \frac{\gamma(j)}{A(k)} \right]
+$$
+
+Therefore, we can first estimate $\gamma(k)$ by $\hat{\gamma}(k)$, then solve the above function to obtain $\hat{A}(k)$ for all $k \in V_T$. To build a agglomerative clustering tree, we can use the true shared losses rate $1 - \hat{A}(a(\{j, k\}))$ as similarity measure. See [SAND 128] for consistency of the resulting estimator $T$ for recovering a binary multicast tree $T$, under the model assumptions.
+
+
+### Likelihood-based
+
+We can specify a conditional density or PMF $f(\boldsymbol{x} \vert T)$ for the $N_\ell$-length vector of random variables $\boldsymbol{x} = [X_1, \ldots, X_{N_\ell}]$, given a tree-topology $T$. If we assumed independence among the $n$ observations, the likelihood has the form
+
+$$
+L(T) = \prod_{i=1}^n f(\boldsymbol{x} _i \vert T)
+$$
+
+and the MLE tree is simple $\hat{T}_{ML} = \arg \max _{T \in \mathcal{T} _{N_\ell}} L(T)$. However, it is typically that there are parameters $\boldsymbol{\theta}$ relating to the evolution of a tree $T$. Hence, the likelihood has an integrated form
+
+$$
+L(T) = \prod_{i=1}^{n} \int f\left(\mathbf{x}_i \mid T, \theta\right) f(\theta \mid T) d \theta
+$$
+
+where $f(\theta \vert T)$ is an appropriately defined distribution on $\theta$, given $T$. Depending on the nature of their integrands, the integrals may or may not lend themselves well to computational evaluation.
+
+Definition (Profile likelihood)
+: An alternative that can be more computationally tractable, or that can be used
+when we cannot or do not wish to specify a distribution $f(\theta \vert T)$, is to define $\hat{T}$ through maximization of a profile likelihood. Let
+
+  $$
+  L(T, \theta) =\prod_{i=1}^{n} f\left(\mathbf{x}_{i} \mid T, \theta\right)
+  $$
+
+  Then define
+
+  $$\begin{aligned}
+  \hat{\theta}_{T}
+  &= \arg \max _{\theta} L(T, \theta)\\
+  \widehat{T}_{PL}&=\arg \max _{T \in \mathscr{T}_{N_\ell}} L\left(T, \hat{\theta}_{T}\right) \\
+  \end{aligned}$$
+
+  where $L\left(T, \hat{\theta}_{T}\right)$ is called the **profile likelihood**, and  $\widehat{T}_{PL}$ is called the **maximum profile likelihood estimator**.
+
+For instance, for the multicast three model, $\theta = \left\{ \alpha_j \right\}$, the profile likelihood is
+
+$$
+L(T, \alpha)=\prod_{i=1}^{n} \prod_{j \in V_{T}} \eta_{j}^{(i)}
+$$
+
+```{margin}
+For detail about the chain rule factorization, see [graphical models](graphical-models). But how to we know $x_{p a(j)}^{(i)}$??
+```
+
+where by chain rule factorization,
+
+$$
+\eta_{j}^{(i)}=\left\{\begin{array}{ll}
+1, & \text { if } j=r, \\
+\mathbb{P} (x_j ^{(i)} \vert x_{pa(j)}^{(i)}, \alpha_j) = \left\{\begin{array}{ll}
+\alpha_{j}^{x_{j}^{(i)}}\left(1-\alpha_{j}\right)^{1-x_{j}^{(i)}}, & \text { if } x_{p a(j)}^{(i)}=1 \\
+1, & \text { if } x_{p a(j)}^{(i)}=0
+\end{array}\right.
+\end{array}\right.
+$$
+
+and $pa(j)$ denotes the parent of $j$ in $T$.
+
+The profile MLE is $\widehat{T}_{P L}=\arg \max _{T \in \mathcal{T}_{N_{l}}} L\left(T, \hat{\alpha}_{T}\right)$, where $\hat{\alpha}_{T}=\arg \max _{\alpha} L(T, \alpha)$. [SAND 128] prove its consistency under appropriate conditions.
+
+
+:::{admonition,note,dropdown} Computation
+
+Implementation of this estimator is non-trivial. For example, consider the estimation of $\boldsymbol{\alpha}$, a parameter vector of potentially quite large dimension. An efficient, recursive estimation algorithm is proposed [SAND 71] using the relation
+
+$$
+\alpha_j = \mathbb{P}\left(X_{j}=1 \mid X_{pa(j)}=1\right) = \frac{A(j)}{A(pa(j))}
+$$
+
+And recall that $A(k)$ may be obtained from $\gamma(k)$ and $\gamma(k)$ can be estimated by frequencies. Although the resulting estimator $\tilde{\alpha}_k$ is not strictly the maximum likelihood estimate, Caceres et al. [SAND 71] show that, when $\alpha_k \in (0, 1)$ for all $k$, we nevertheless have $\tilde{\boldsymbol{\alpha}} = \hat{\boldsymbol{\alpha}}$ with high probability.
+
+For the optimization of the profile likelihood $L\left(T, \hat{\alpha}_{T}\right)$ for $T \in \mathcal{T} _{N_\ell}$, if $N_\ell$ is small (<5) we can use simulation for exhaustive search of $\mathcal{T} _{N_\ell}$, else we can use greedy techniques or MCMC-based techniques.
+
+:::
+
+In the phylogenetic tree example, we assume independence between measurements $\boldsymbol{x}_i$ (e.g. between locations in the measured DNA sequence) and use Markov-like cascade model to capture the effects of evolution through time. By coding purines and pyrimidines as 0 and 1 respectively, we use a symmetric model of change between the two states of zero and one, in traversing from one end of a branch to the other, according to probability
+
+$$
+\mathbb{P}\left(X_{j}=1 \mid X_{k}=0\right)=\frac{1}{2}\left(1-e^{-2 w_{j}}\right)
+$$
+
+parameterized by $w_j$, the length of brach leading from $k$ to $j$, where $j \in C(k)$.
+
+The likelihood corresponding to this model is
+
+
+$$
+L(T, \mathbf{w})=\prod_{i=1}^{n} \sum_{\left\{x_{j}^{(i)}\right\}_{j \in V_{T} \backslash R}} \prod_{j \in V_{T}} \eta_{j}^{(i)}
+$$
+
+where
+
+$$
+\eta_{j}^{(i)}=\left\{\begin{array}{ll}
+\frac{1}{2}\left(1-e^{-2 w_{j}}\right), & \text { if } x_{j}^{(i)} \neq x_{p a(j)}^{(i)} \\
+\frac{1}{2}\left(1+e^{-2 w_{j}}\right), & \text { if } x_{j}^{(i)}=x_{p a(j)}^{(i)}
+\end{array}\right.
+$$
+
+Note that the summation (i.e. marginalization) is over all possible ways that the states zero or one can be assigned to the internal vertices of the tree $T$, and is absent in the case of multicast data because of the hereditary constraints on the process $\left\{ X_j \right\}j \in V_T$ (but still have multiple assignments??).
+
+
+:::{admonition,note} Computation
+
+- Likelihood: in general, the presence of such product-sum combinations can be problematic from a computational perspective. However, in this particular case, the likelihood can be calculated efficiently using a dynamic programming algorithm – the so-called **pruning algorithm** – proposed by Felsenstein [SAND 142]. Working recursively from the leaves towards the root, components of the likelihood are computed on sub-trees and combined in a clever fashion
+to yield the likelihoods on larger sub-trees containing them, until the likelihood for the entire tree is obtained.
+
+- Optimization in $(\widehat{T}, \hat{\mathbf{w}})$ is NP hard. In practice, a profile maximum likelihood method typically is used (??). See [SAND 143]. MCMC can also be pursued.
+
+:::
+
+### Summarizing Collections of Trees
+
+All the above inference method output a single tree $\hat{T}$, like a point estimate. Can we output a collection of trees, in the spirit of an interval estimate? In practice, such collections arise in various ways, such as
+- listing a number of trees of nearly maximum likelihood, rather than simply a single maximum-likelihood tree, or
+- from bootstrap re-sampling in an effort to assess the variability in an inferred tree, output $\{\widehat{T}^{(b)}\}_{b=1}^{B}$, or
+- from MCMC sampling of an appropriate posterior distribution on $\mathcal{T} _{N_\ell}$
+
+Given such a collection of trees, how can we usefully summarize the information
+therein? How they are similar or different?
+- For similarity, we can use **consensus tree**. A consensus tree is a single tree that aims to summarize the information in a collection of trees in a ‘representative’ manner. There are many methods to define such trees,
+  - Margush and McMorris [SAND 268] defined $M_\ell$-trees indexed by $\ell \in [0.5, 1]$, which contains all groups of leaves $U \subseteq R$ that occur in more than a fraction $\ell$ of the trees in a collection.
+    - $\ell=1$, it is called strict consensus tree
+    - $\ell=0.5$, it is called majority-rule consensus tree
+  - additional information can be added to a consensus tree in the form of branch weights
+- For differences, there are various notions of distance between pairs of trees
+  - **symmetric difference** works by counting branches.
+  - **nearest-neighbor interchange** (NNI) counts the number of swaps of adjacent branches that must be made to transform one tree into the other (computationally daunting)
+  - both are metrics
+- Relationships: if we define a **median tree** in a collection to be a tree $T$ whose total distance – based on the symmetric difference – to all other trees is a minimum, then this tree is equivalent to the majority-rule tree, when the number of trees $t$ in the collection is odd [SAND 21].
+
+## More
+
+More examples
+- link prediction / association networks
+  - inferring networks from so-called co-occurrence data, e.g. telecommunications and genetics [SAND 318, 319]
+  - protein complexes [SAND 343]
+  - inferring networks with links defined according to the dynamic interactions of elements in a system (e.g., such as of information passing between neurons firing in sequence). [SAND 355]
+- tomographic inference
+  - infer coalescent trees, which have to do with the evolution of genes within a population (i.e., below the level of species). See Felsenstein [141, Ch. 26].
+
+More measurements
+- association networks
+  - Spearman rank correlation and partial correlation might be used as robust alternatives to Pearson correlation [350.sec.3.9], [110]
+  - Or a measure capable of summarizing nonlinear association, such as mutual information [140]
+- computer networks
+  - mean delay, see the sandwich probing in case study 7.4.5.
+
+Open problems
+- basic questions of consistency, consensus, robustness, beyond trees?
+- how to best characterize the merit of partially accurate estimates $\hat{G}$? e.g. focusing on the accuracy with which small subgraphs (e.g., network motifs) or paths are recovered.

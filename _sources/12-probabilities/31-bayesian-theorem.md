@@ -1,5 +1,24 @@
 # Bayesian's Theorem
 
+For events $A$ and $B$,
+
+$$
+P(A \mid B)=\frac{P(B \mid A) P(A)}{P(B)}
+$$
+
+For random variables $X$ and $Y$,
+
+$$
+f_{X \mid Y=y}(x)=\frac{f_{Y \mid X=x}(y) f_{X}(x)}{f_{Y}(y)}
+$$
+
+It extends to more events/variables:
+
+$$
+P(X \mid Y, Z)=\frac{P(X, Y \mid Z)}{P(Y \mid Z)} = \frac{P(Y \mid X, Z)P(X \mid Z)}{P(Y \mid Z)}
+$$
+
+
 ## Boy or Girl Paradox
 
 *Q1: Mr. Smith has two children. At least one of them is a boy. What is the probability that both children are boys?*

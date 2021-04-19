@@ -68,3 +68,7 @@ Term 2
 [docu](https://jupyterbook.org/interactive/hiding.html?highlight=hide)
 
 - add `:tags: [hide-input]` to code cell
+
+## Coloring
+
+`<span style="color:red">colored text</span>`: <span style="color:red">colored text</span>

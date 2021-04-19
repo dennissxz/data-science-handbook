@@ -103,9 +103,6 @@ plt.show()
 
 ### Properties
 
-- **Transformation**: If $\boldsymbol{x}$ is $p$-variate normal $\mathcal{N} (\boldsymbol{\mu} , \boldsymbol{\Sigma})$, and $\boldsymbol{y} = \boldsymbol{A} \boldsymbol{x} + \boldsymbol{c}$, where $\boldsymbol{A}$ is a $k \times p$ matrix and $\boldsymbol{c}$ is a $k$-vector of constants, then $\boldsymbol{y}$ is of $k$-variate normal, with mean $\boldsymbol{A} \boldsymbol{\mu} + \boldsymbol{c}$ and variance $\boldsymbol{A} \boldsymbol{\Sigma} \boldsymbol{A} ^{\top}$.
-  - If $k=1$, then $\boldsymbol{y} = \boldsymbol{a} ^{\top} \boldsymbol{x} \sim \mathcal{N} ( \boldsymbol{a} ^{\top} \boldsymbol{\mu} , \boldsymbol{a} ^{\top} \boldsymbol{\Sigma} \boldsymbol{a})$
-  - if $\boldsymbol{x}$ is standard normal $\mathcal{N}(\boldsymbol{0}, \boldsymbol{I})$, then $\boldsymbol{y} \sim \mathcal{N} (\boldsymbol{c} , \boldsymbol{A} \boldsymbol{A} ^{\top})$
 - **MGF**: $M_{\boldsymbol{x}}(\boldsymbol{t})=\exp \left(\boldsymbol{t}^{\top} \boldsymbol{\mu}+\frac{1}{2} \boldsymbol{t}^{\top} \boldsymbol{\Sigma} \boldsymbol{t}\right)$.
 - **Sum**: if $\boldsymbol{x} \sim \mathcal{N} _p (\boldsymbol{\mu} _1, \boldsymbol{\Sigma} _1)$ and $\boldsymbol{y} \sim \mathcal{N} _p (\boldsymbol{\mu} _2, \boldsymbol{\Sigma} _2)$ are independent, then $\boldsymbol{x} + \boldsymbol{y}  \sim \mathcal{N} _p (\boldsymbol{\mu} _1 + \boldsymbol{\mu} _2, \boldsymbol{\Sigma} _1 + \boldsymbol{\Sigma} _2)$.
 - What is the condition for a valid covariance matrix $\boldsymbol{\Sigma}$? Given a positive definite matrix $\boldsymbol{\Sigma}$, then $\boldsymbol{x} \sim \mathcal{N} _p (\boldsymbol{\mu} , \boldsymbol{\Sigma})$ iff there exists a non-singular matrix $\boldsymbol{B}$ and $\boldsymbol{z} \sim \mathcal{N} _p (\boldsymbol{0} , \boldsymbol{I})$ such that $\boldsymbol{x} = \boldsymbol{\mu} + \boldsymbol{B} \boldsymbol{z}$. In this case $\boldsymbol{\Sigma} = \boldsymbol{B} \boldsymbol{B} ^{\top}$.
@@ -136,7 +133,10 @@ plt.show()
     Marginal Gaussian and conditional Gaussian are also Gaussians [Shi 2021]
     :::
 - **Quadratic form**: if $\boldsymbol{x} \sim \mathcal{N} _p (\boldsymbol{\mu} , \boldsymbol{\Sigma})$ and $\boldsymbol{\Sigma}$ is p.d., then $(\boldsymbol{x} - \boldsymbol{\mu} ) ^{\top} \boldsymbol{\Sigma} ^{-1} (\boldsymbol{x} - \boldsymbol{\mu} ) \sim \chi ^2 _p$.
-- Independency after transformation: for any $m\times p$ matrix $\boldsymbol{A}$ and $n\times p$ matrix $\boldsymbol{B}$,
+- **Transformation**: If $\boldsymbol{x}$ is $p$-variate normal $\mathcal{N} (\boldsymbol{\mu} , \boldsymbol{\Sigma})$, and $\boldsymbol{y} = \boldsymbol{A} \boldsymbol{x} + \boldsymbol{c}$, where $\boldsymbol{A}$ is a $k \times p$ matrix and $\boldsymbol{c}$ is a $k$-vector of constants, then $\boldsymbol{y}$ is of $k$-variate normal, with mean $\boldsymbol{A} \boldsymbol{\mu} + \boldsymbol{c}$ and variance $\boldsymbol{A} \boldsymbol{\Sigma} \boldsymbol{A} ^{\top}$.
+  - If $k=1$, then $\boldsymbol{y} = \boldsymbol{a} ^{\top} \boldsymbol{x} \sim \mathcal{N} ( \boldsymbol{a} ^{\top} \boldsymbol{\mu} , \boldsymbol{a} ^{\top} \boldsymbol{\Sigma} \boldsymbol{a})$
+  - if $\boldsymbol{x}$ is standard normal $\mathcal{N}(\boldsymbol{0}, \boldsymbol{I})$, then $\boldsymbol{y} \sim \mathcal{N} (\boldsymbol{c} , \boldsymbol{A} \boldsymbol{A} ^{\top})$
+- **Independency** after transformation: for any $m\times p$ matrix $\boldsymbol{A}$ and $n\times p$ matrix $\boldsymbol{B}$,
   - $\boldsymbol{A} \boldsymbol{x}  \perp \boldsymbol{B} \boldsymbol{x} \Leftrightarrow \boldsymbol{A} \boldsymbol{\Sigma} \boldsymbol{B} ^{\top} = \boldsymbol{0}$
     - corollary: $X_i \perp X_j \Leftrightarrow \sigma_{ij} =0$.
   - when $\boldsymbol{A}$ is symmetric, $\boldsymbol{x} ^{\top}\boldsymbol{A} \boldsymbol{x}  \perp \boldsymbol{B} \boldsymbol{x} \Leftrightarrow \boldsymbol{B} \boldsymbol{\Sigma} \boldsymbol{A} = \boldsymbol{0}$
@@ -160,9 +160,33 @@ plt.show()
   \end{align}$$
 
   which is a product of PDFs of univariate Gaussians, i.e. dependency is dropped. Geometrically, $\boldsymbol{U}$ rotate the axes of the distribution but keep the function value intact.
+- Sum of squared univariate Gaussian $Y = \left\| \boldsymbol{x}  \right\| ^2 = \sum_{j=1}^p X_i^2 \sim \chi ^2 _p$
+- Related to unit surface: if $\boldsymbol{x}$ follow spherical Gaussian $\mathcal{N}_p (\boldsymbol{0} , \sigma^2 \boldsymbol{I} _p)$, let the norm be $R = \left\| \boldsymbol{x}\right\|$, then its density is
+
+    $$
+    f_p(r) = \frac{S_p}{  (2 \pi \sigma^2)^{p / 2}} r^{p -1} \exp \left( -\frac{r^2}{2 \sigma^2 }  \right), \quad r \ge 0
+    $$
+
+    where $S_p=\frac{2 \pi^{p / 2}}{\Gamma(p / 2)}$ is the surface area of the unit sphere in $p$-dimensions.
+    - When $r= \sqrt{\sigma^2 (p-1)}$, $f_p(r)$ achieves its maximum. That is, it characterizes the unit spherical shell that has the 'most' points on it among all unit spherical shells in $\mathbb{R} ^p$.
+    - if $\sigma^2$ is fixed, then the optimal radius scales sub-linearly in $d$, i.e. $r^* = \mathcal{O}(\sqrt{p})$
+    - if we set $\sigma^2 = 1/d$, then $r = \sqrt{(p-1)/p} \approx 1$. See below.
+
+- In high-dimensional case, as $p \rightarrow \infty$,
+  - independent Gaussian points with variance $\frac{1}{p}$ concentrate on the surface of sphere $S^{p-1}$, i.e.
+
+    $$\mathcal{N} _p (\boldsymbol{0} , p ^{-1}  \boldsymbol{I} _p) \approx \operatorname{Unif} (S^{p-1})$$
+
+  - for $\boldsymbol{x} , \boldsymbol{y} \sim \mathcal{N} _p(\boldsymbol{0} , \frac{1}{p} \boldsymbol{I} _p)$, we have
+      - $\mathbb{E} [\boldsymbol{x} ^{\top} \boldsymbol{x} ] = \sum_{i=1}^p \mathbb{E} [X_j^2] = \sum_{j=1}^p \frac{1}{p} = 1$
+      - $\mathbb{E} [\boldsymbol{x} ^{\top} \boldsymbol{y} ] = \sum_{j=1}^p \mathbb{E} [X_j Y_j]  = \sum_{j=1}^p \mathbb{E} [X_j] \mathbb{E} [Y_j] = 0$.
+      - $\mathbb{E} [\left\| \boldsymbol{a} ^{\top} \boldsymbol{x} \right\| ^2 ] = \sum_{j=1}^p a_j ^2 \mathbb{E} [X_j^2] + \sum_{j\ne k}^p a_j a_k \mathbb{E} [X_j X_k]  = \sum_{j=1}^p \frac{a_j^2}{p}  = \frac{1}{p} \left\| \boldsymbol{a}  \right\|^2$
+      - $\left\| \boldsymbol{x}  \right\| \rightarrow 1$
+      - $\boldsymbol{x} ^{\top} \boldsymbol{y} \rightarrow 0$
+      - $\boldsymbol{a} ^{\top} \boldsymbol{x} \rightarrow 0$ for $\left\| \boldsymbol{a}  \right\| =1$.
 
 
-### Estimation and Inference
+### Estimation
 
 #### MLE
 
@@ -220,6 +244,7 @@ Properties
     - diagonal $t_{ii} \sim \chi ^2 _{k-i+1}$
     - all non-zero elements are mutually independent
 
+  - If $\boldsymbol{x}_i \sim \mathcal{N} (\boldsymbol{0} , \boldsymbol{I} _p)$, then the eigenvalues of a $\frac{1}{n} \boldsymbol{X} ^{\top} \boldsymbol{X}$, as $p, n \rightarrow \infty$, follows [Marchenko–Pastur distribution](marchenko-pastur-distribution).
 ### Pros and Cons
 
 Pros
@@ -313,6 +338,6 @@ Assume $x > 0$.
   \end{array}\right.
   $$
 
-  The optimal $\lambda$ minimizes sample variance after transforamtion.
+  The optimal $\lambda$ minimizes sample variance after transformation.
 
 <!-- ## Weibull Distribution -->

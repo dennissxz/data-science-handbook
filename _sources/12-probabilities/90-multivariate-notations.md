@@ -126,7 +126,7 @@ which is a multivariate extension of $\mathbb{V} [X] = \mathbb{E} [X^2] - \mathb
 
    The interpretation for other distributions is analogous.
 
-### Sample Covariance Matrix and CSSP
+### Sample Covariance Matrix
 
 The following sample covariance matrix $\boldsymbol{S}$ is an unbiased estimate of the population covariance matrix $\boldsymbol{\Sigma}$
 
@@ -159,7 +159,7 @@ $$
 \boldsymbol{W}_{p \times p}=\boldsymbol{X}^{\top} \boldsymbol{X}-n \overline{\boldsymbol{x}} \overline{\boldsymbol{x}}^{\top}=\sum_{i=1}^{n}\left(\boldsymbol{x}_{i}-\overline{\boldsymbol{x}}\right)\left(\boldsymbol{x}_{i}-\overline{\boldsymbol{x}}\right)^{\top}
 $$
 
-is called the corrected (centered) sums of squares and products matrix (CSSP). One can view it as a multivariate generalization of the corrected (centered) sum of squares $\sum_i \left( x_i - \bar{x} \right)^2$ in the univariate case.
+is called the **corrected (centered) sums of squares and products matrix** (CSSP) or **scatter matrix**. One can view it as a multivariate generalization of the corrected (centered) sum of squares $\sum_i \left( x_i - \bar{x} \right)^2$ in the univariate case.
 
 The determinant of the sample covariance $\left\vert \boldsymbol{S}  \right\vert = \operatorname{det} (\boldsymbol{S} )$ is called the generalized sample variance. It changes for scaling of variables like the case of univariate sample variance. Since $\boldsymbol{S}$ is an estimator for $\boldsymbol{\Sigma}$, the interpretations of $\operatorname{det}(\boldsymbol{S} )$ and $\operatorname{det}(\boldsymbol{\Sigma} )$ are similar. See the above section for $\operatorname{det} (\boldsymbol{\Sigma})$.
 
