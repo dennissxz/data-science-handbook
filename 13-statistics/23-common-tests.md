@@ -273,7 +273,7 @@ $$
 ### Hotelling's $T^2$ Distribution
 
 Definition (Hotelling's $T^2$ Distribution )
-: Suppose $\boldsymbol{x} \sim \mathcal{N} _p(\boldsymbol{0} , \boldsymbol{\Sigma} )$ and $\boldsymbol{V} \sim W_p(k, \boldsymbol{\Sigma} )$ are independent. Define
+: Suppose random zero-mean Gaussian $\boldsymbol{x} \sim \mathcal{N} _p(\boldsymbol{0} , \boldsymbol{\Sigma} )$ and Wishart random matrix $\boldsymbol{V} \sim W_p(k, \boldsymbol{\Sigma} )$ are independent. Define
 
   $$
   T^2 = k \boldsymbol{x} ^{\top} \boldsymbol{V} ^{-1} \boldsymbol{x}
@@ -281,7 +281,7 @@ Definition (Hotelling's $T^2$ Distribution )
 
   Then $T^2$ is said to follow a Hotelling's $T^2$ distribution with parameter $p$ and $k$, denoted as $T^2(p, k)$.
 
-  In univariate sense, the Hotelling’s $T^2$ statistic can be reduced to the squared $t$-statistic.
+  In univariate sense, the Hotelling’s $T^2$ statistic can be reduced to the **squared** $t$-statistic. Hence it can be seen as multivariate generalization of (squared) $t$-distribution.
 
 Properties
 : - If $\bar{\boldsymbol{x}}$ and $\boldsymbol{S}$ are respectively the sample mean vector and sample covariance matrix of a random sample of size $n$ taken from $\mathcal{N} _p(\boldsymbol{\mu} , \boldsymbol{\Sigma} )$, then
@@ -294,7 +294,7 @@ Properties
   - Related to other distribution:
     - $T^{2}(p, k)=\frac{k p}{k-p+1} F(p, k-p+1)$, usually used to find quantile $T^2(\alpha)$.
     - $T^{2}(1, k)=t^{2}(k)=F(1, k)$
-    - $T^{2}(p, \infty) \rightarrow \chi ^2 _p$ by CLT, without assuming normality of the distribution of $\boldsymbol{x}$
+    - $T^{2}(p, \infty) \rightarrow \chi ^2 _p$ by multivariate [CLT](CLT), **without** assuming normality of the distribution of $\boldsymbol{x}$
   - Related to Mahalanobis distance: $T^{2}=n D_{\boldsymbol{S}}^{2}(\bar{\boldsymbol{x}}, \boldsymbol{\mu})$
 
 
@@ -345,18 +345,15 @@ Confidence Region
 
   - This confidence ellipsoid above is the most precise confidence region of the vector $\boldsymbol{\mu}$, in the sense that any other form of confidence region for $\boldsymbol{\mu}$ with the same confidence level $(1-\alpha)$ will have **larger volume** in the $p$-dimensional space of $\boldsymbol{\mu}$ and hence less precise.
 
-Simultaneous confidence interval
-: - Individual CI: Sometimes people get used to confidence intervals for individual components, such as
+Simultaneous confidence intervals for each component
+: - Individual CIs: Sometimes people get used to confidence intervals for individual components, such as
 
     $$
     \bar{x}_{j}-t^{\alpha / 2}_{n-1} \frac{s_j}{\sqrt{n}} <\mu_{j}<\bar{x}_{j}+t^{\alpha / 2}_{n-1} \frac{s_j}{\sqrt{n}}
     $$
 
-    where $\bar{x}_j$ and $s_j$ are respectively the sample mean and standard deviation of the $j$-th variate that has mean $\mu_j$.
+    where $\bar{x}_j$ and $s_j$ are respectively the sample mean and standard deviation of the $j$-th variate that has mean $\mu_j$. But there are [multiple testing](multiple-testing) issues. We can then use Bonferroni or Scheffe simultaneous C.I.s to correct this.
 
-  - Problem: while each of the $p$ intervals has confidence level $(1-\alpha)$, the joint probability (joint confidence level) that all the $p$ statements are true simultaneously is less than $(1-\alpha)$.
-    - for instance, if all the $p$ variates are independent, then the joint confidence level is $(1-\alpha)^p$.
-    - to correct this, we can use Bonferroni or Scheffe's simultaneous C.I., which forms a hyper-rectangular region in $\mathbb{R} ^p$.
   - The $(1-\alpha)100\%$ Bonferroni simultaneous C.I.s for $m$ **pre-determined** linear components of means, $\boldsymbol{a}_{i}^{\top} \boldsymbol{\mu}(i=1, \ldots, m)$, are given by
 
     $$
@@ -466,3 +463,5 @@ More generally,
   $$
   \boldsymbol{a}^{\top}\left(\bar{\boldsymbol{x}}_{1}- \bar{\boldsymbol{x}}_{2}\right) \pm \sqrt{T_{\alpha}^{2}\left(p, n_{1}+n_{2}-2\right)} \sqrt{\left(\frac{1}{n_{1}}+\frac{1}{n_{2}}\right)\boldsymbol{a}^{\top} \boldsymbol{S}_{\text{pool} } \boldsymbol{a}}
   $$
+
+(manova)=
