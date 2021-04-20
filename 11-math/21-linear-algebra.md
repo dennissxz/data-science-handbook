@@ -776,27 +776,4 @@ $$
 Marchenko-Pastur distribution with $\gamma=2$ (left, with a point mass at origin) and $\gamma = 0.5$ (rigt). [Yao]
 :::
 
-
-
-.
-
-
-.
-
-
-.
-
-
-.
-
-
-.
-
-
-.
-
-
-.
-
-
-.
+Note that when $p$ is fixed and sample size $n$ increases, $\gamma \rightarrow 0$, the interval $\left[\gamma_{-}, \gamma_{+}\right]$ is tighter, i.e. more concentrated.
