@@ -188,6 +188,13 @@ In Bayesian statistics, a credible interval is constructed from the posterior di
 
 
 
+(multiple-testing)=
+## Multiple Testing Issues
+
+Suppose we want to construct $p$ confidence intervals simultaneously. While each of the $p$ intervals has confidence level $(1-\alpha)$, the joint probability (joint confidence level) that **all** the $p$ statements are true simultaneously is less than $(1-\alpha)$. For instance, if all the $p$ variates are independent, then the joint confidence level is $(1-\alpha)^p$.
+
+To correct this, we can use Bonferroni or Scheffe's simultaneous C.I., which forms a hyper-rectangular region in $\mathbb{R} ^p$.
+
 ### Bonferroni Correction
 
 When there are $p$ confidence intervals $C_k$ for parameter $\mu_k$, each of confidence level $\left(1-\alpha_{k}\right) 100 \%$, we like to consider them simultaneously: what's the probability that $C_k$ cover $\mu_k$ for all $k=1, 2, \ldots, p$?
