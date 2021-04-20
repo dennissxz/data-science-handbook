@@ -519,6 +519,11 @@
      Poisson Regression
     </a>
    </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/31-multivariate-regression.html">
+     Multivariate Regression
+    </a>
+   </li>
   </ul>
   <i class="fas fa-chevron-down">
   </i>
@@ -890,6 +895,23 @@
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#anova">
+   ANOVA
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#model">
+     Model
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#test-statistic">
+     Test Statistic
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#multivariate-settings">
    Multivariate Settings
   </a>
@@ -921,6 +943,33 @@
      <li class="toc-h4 nav-item toc-entry">
       <a class="reference internal nav-link" href="#two-independent-samples">
        Two Independent Samples
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#manova">
+     MANOVA
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#id5">
+       Model
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#id6">
+       Test Statistic
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#c-i-for-difference-in-two-means">
+       C.I. for Difference in Two Means
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#test-for-equal-covariance">
+       Test for Equal Covariance
       </a>
      </li>
     </ul>
@@ -1187,18 +1236,107 @@ H_0: \mu_X - \mu_Y = 0
 </table>
 </div>
 </div>
+<div class="section" id="anova">
+<h2>ANOVA<a class="headerlink" href="#anova" title="Permalink to this headline">¶</a></h2>
+<p>Analysis of variance is used to compare several univariate sample means. For instance, in the plot below, we have five levels and observed the response <span class="math notranslate nohighlight">\(y\)</span>. We are interested in whether the five means are equal.</p>
+<div class="figure align-default" id="test-one-way">
+<a class="reference internal image-reference" href="../_images/test-one-way.png"><img alt="" src="../_images/test-one-way.png" style="width: 70%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 16 </span><span class="caption-text">One-way Layout</span><a class="headerlink" href="#test-one-way" title="Permalink to this image">¶</a></p>
+</div>
+<div class="section" id="model">
+<h3>Model<a class="headerlink" href="#model" title="Permalink to this headline">¶</a></h3>
+<p>There are <span class="math notranslate nohighlight">\(n_\ell\)</span> observations from population or treatment group <span class="math notranslate nohighlight">\(\ell = 1, 2, \ldots, g\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+X_{\ell j}=\mu+\tau_{\ell}+e_{\ell j}, \quad \ell=1, \cdots, g, \quad j=1, \cdots, n_{\ell}
+\]</div>
+<p>where</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\mu\)</span> is the <strong>overall mean</strong> parameter.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\tau_{\ell}\)</span> is the <strong>treatment effect</strong> parameter of the <span class="math notranslate nohighlight">\(\ell\)</span> th population or <span class="math notranslate nohighlight">\(\ell\)</span> th treatment group.</p></li>
+<li><p><span class="math notranslate nohighlight">\(e_{\ell j} \sim N\left(0, \sigma^{2}\right)\)</span> is individual specific homogenous noise.</p></li>
+<li><p>Parameter constraints: There should be constraints on the parameters such as <span class="math notranslate nohighlight">\(\sum_{\ell=1}^{g} n_{\ell} \tau_{\ell}=0\)</span>, to avoid redundancy or unidentifiability.</p></li>
+</ul>
+<p>To detect differences in treatment effects among the groups,
+the first test of interest is</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\left\{\begin{array}{ll}
+H_{0}: &amp; \tau_{1}=\cdots=\tau_{g}=0 \\
+H_{1}: &amp; \tau_{\ell} \neq 0, \text { for some } \ell=1, \cdots, g
+\end{array}\right.
+\end{split}\]</div>
+</div>
+<div class="section" id="test-statistic">
+<h3>Test Statistic<a class="headerlink" href="#test-statistic" title="Permalink to this headline">¶</a></h3>
+<p>First, we decompose the observations as</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+x_{\ell j} &amp;= \bar{x} + \left(\bar{x}_{\ell}-\bar{x}\right)+\left(x_{\ell j}-\bar{x}_{\ell}\right) \\
+&amp;= \hat{\mu} + \hat{\tau}_\ell + \hat{e}_{\ell j}\\
+\end{aligned}\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\bar{x}\)</span> is the overall mean, <span class="math notranslate nohighlight">\(\bar{x}_\ell\)</span> is the <span class="math notranslate nohighlight">\(\ell\)</span>-th group mean. Hence, the observation can be seen as estimated overall mean + estimated treatment effect + estimated noise. Equivalently,</p>
+<div class="math notranslate nohighlight">
+\[
+\left(x_{\ell j}-\bar{x}\right)=\left(\bar{x}_{\ell}-\bar{x}\right)+\left(x_{\ell j}-\bar{x}_{\ell}\right)
+\]</div>
+<p>Summing up all <strong>squared</strong> terms, noticing that <span class="math notranslate nohighlight">\(\sum_{\ell=1}^{g} \sum_{j=1}^{n_{\ell}}\left(\bar{x}_{\ell}-\bar{x}\right)\left(x_{\ell j}-\bar{x}_{\ell}\right)=0\)</span>, we have</p>
+<div class="math notranslate nohighlight">
+\[
+\sum_{\ell=1}^{g} \sum_{j=1}^{n_{\ell}}\left(x_{\ell j}-\bar{x}\right)^{2}=\sum_{\ell=1}^{g} n_{\ell}\left(\bar{x}_{\ell}-\bar{x}\right)^{2}+\sum_{\ell=1}^{g} \sum_{j=1}^{n_{\ell}}\left(x_{\ell j}-\bar{x}_{\ell}\right)^{2}
+\]</div>
+<p>The decomposition can be stated as</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\sum(\text { total variation })^{2}=\sum\left(\begin{array}{c}
+\text { between-group } \\
+\text { treatment variation }
+\end{array}\right)^{2}+\sum\left(\begin{array}{c}
+\text { within-group } \\
+\text { residual variation }
+\end{array}\right)^{2}
+\end{split}\]</div>
+<p>The corresponding numbers of independent quantities of each term, i.e. the degrees of freedom, have the relation</p>
+<div class="math notranslate nohighlight">
+\[
+\sum_{\ell=1}^{g} n_{\ell}-1=(g-1)+\sum_{\ell=1}^{g}\left(n_{\ell}-1\right)
+\]</div>
+<p>Therefore, we obtain the analysis of variance table</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{array}{c|c|c|c}
+\hline \begin{array}{c}
+\text { Source } \\
+\text { of variation }
+\end{array} &amp; \text { SS (sum of squares) } &amp; \text { d.f. } &amp; \begin{array}{c}
+F \text {-value } \\
+\text { (variance ratio) }
+\end{array} \\
+\hline \text { Treatments } &amp; S S_{t r t}=\sum_{\ell=1}^{g} \sum_{j=1}^{n_{\ell}}\left(\bar{x}_{\ell}-\bar{x}\right)^{2} &amp; g-1 &amp; S S_{t r t} /(g-1) \\
+\text { Residuals } &amp; S S_{\text {res }}=\sum_{\ell=1}^{g} \sum_{j=1}^{n_{\ell}}\left(x_{\ell j}-\bar{x}_{\ell}\right)^{2} &amp; \sum_{\ell=1}^{g} n_{\ell}-g &amp; \\
+\hline \text { Total } &amp; S S_{t o t}=\sum_{\ell=1}^{g} \sum_{j=1}^{n_{\ell}}\left(x_{\ell j}-\bar{x}\right)^{2} &amp; \sum_{\ell=1}^{g} n_{\ell}-1 &amp; \\
+\hline
+\end{array}
+\end{split}\]</div>
+<p>At test level <span class="math notranslate nohighlight">\(\alpha\)</span>, the null <span class="math notranslate nohighlight">\(H_0: \tau_{1}=\cdots=\tau_{g}=0\)</span> is rejected if</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{S S_{t r t} /(g-1)}{S S_{\text {res }} /\left(\sum_{\ell=1}^{g} n_{\ell}-g\right)}&gt;F_{g-1, \sum_{\ell=1}^{g} n_{\ell}-g}(\alpha)
+\]</div>
+</div>
+</div>
 <div class="section" id="multivariate-settings">
 <h2>Multivariate Settings<a class="headerlink" href="#multivariate-settings" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="hotelling-s-t-2-distribution">
 <h3>Hotelling’s <span class="math notranslate nohighlight">\(T^2\)</span> Distribution<a class="headerlink" href="#hotelling-s-t-2-distribution" title="Permalink to this headline">¶</a></h3>
 <dl class="simple myst">
-<dt>Definition (Hotelling’s <span class="math notranslate nohighlight">\(T^2\)</span> Distribution )</dt><dd><p>Suppose <span class="math notranslate nohighlight">\(\boldsymbol{x} \sim \mathcal{N} _p(\boldsymbol{0} , \boldsymbol{\Sigma} )\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{V} \sim W_p(k, \boldsymbol{\Sigma} )\)</span> are independent. Define</p>
+<dt>Definition (Hotelling’s <span class="math notranslate nohighlight">\(T^2\)</span> Distribution )</dt><dd><p>Suppose random zero-mean Gaussian <span class="math notranslate nohighlight">\(\boldsymbol{x} \sim \mathcal{N} _p(\boldsymbol{0} , \boldsymbol{\Sigma} )\)</span> and Wishart random matrix <span class="math notranslate nohighlight">\(\boldsymbol{V} \sim W_p(k, \boldsymbol{\Sigma} )\)</span> are independent. Define</p>
 <div class="math notranslate nohighlight">
 \[
   T^2 = k \boldsymbol{x} ^{\top} \boldsymbol{V} ^{-1} \boldsymbol{x}
   \]</div>
 <p>Then <span class="math notranslate nohighlight">\(T^2\)</span> is said to follow a Hotelling’s <span class="math notranslate nohighlight">\(T^2\)</span> distribution with parameter <span class="math notranslate nohighlight">\(p\)</span> and <span class="math notranslate nohighlight">\(k\)</span>, denoted as <span class="math notranslate nohighlight">\(T^2(p, k)\)</span>.</p>
-<p>In univariate sense, the Hotelling’s <span class="math notranslate nohighlight">\(T^2\)</span> statistic can be reduced to the squared <span class="math notranslate nohighlight">\(t\)</span>-statistic.</p>
+<p>In univariate sense, the Hotelling’s <span class="math notranslate nohighlight">\(T^2\)</span> statistic can be reduced to the <strong>squared</strong> <span class="math notranslate nohighlight">\(t\)</span>-statistic. Hence it can be seen as multivariate generalization of (squared) <span class="math notranslate nohighlight">\(t\)</span>-distribution.</p>
 </dd>
 <dt>Properties</dt><dd><ul>
 <li><p>If <span class="math notranslate nohighlight">\(\bar{\boldsymbol{x}}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{S}\)</span> are respectively the sample mean vector and sample covariance matrix of a random sample of size <span class="math notranslate nohighlight">\(n\)</span> taken from <span class="math notranslate nohighlight">\(\mathcal{N} _p(\boldsymbol{\mu} , \boldsymbol{\Sigma} )\)</span>, then</p>
@@ -1211,7 +1349,7 @@ H_0: \mu_X - \mu_Y = 0
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(T^{2}(p, k)=\frac{k p}{k-p+1} F(p, k-p+1)\)</span>, usually used to find quantile <span class="math notranslate nohighlight">\(T^2(\alpha)\)</span>.</p></li>
 <li><p><span class="math notranslate nohighlight">\(T^{2}(1, k)=t^{2}(k)=F(1, k)\)</span></p></li>
-<li><p><span class="math notranslate nohighlight">\(T^{2}(p, \infty) \rightarrow \chi ^2 _p\)</span> by CLT, without assuming normality of the distribution of <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(T^{2}(p, \infty) \rightarrow \chi ^2 _p\)</span> by multivariate <a class="reference internal" href="../12-probabilities/91-large-sample-theory.html#clt"><span class="std std-ref">CLT</span></a>, <strong>without</strong> assuming normality of the distribution of <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span></p></li>
 </ul>
 </li>
 <li><p>Related to Mahalanobis distance: <span class="math notranslate nohighlight">\(T^{2}=n D_{\boldsymbol{S}}^{2}(\bar{\boldsymbol{x}}, \boldsymbol{\mu})\)</span></p></li>
@@ -1259,25 +1397,19 @@ H_{0}: \boldsymbol{\mu}=\boldsymbol{\mu}_{0} \operatorname{vs } H_{1}: \boldsymb
     \]</div>
 <div class="figure align-default" id="test-ellipsoid">
 <a class="reference internal image-reference" href="../_images/test-ellipsoid.png"><img alt="" src="../_images/test-ellipsoid.png" style="width: 50%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 16 </span><span class="caption-text">Confidence region</span><a class="headerlink" href="#test-ellipsoid" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 17 </span><span class="caption-text">Confidence region</span><a class="headerlink" href="#test-ellipsoid" title="Permalink to this image">¶</a></p>
 </div>
 </li>
 <li><p>This confidence ellipsoid above is the most precise confidence region of the vector <span class="math notranslate nohighlight">\(\boldsymbol{\mu}\)</span>, in the sense that any other form of confidence region for <span class="math notranslate nohighlight">\(\boldsymbol{\mu}\)</span> with the same confidence level <span class="math notranslate nohighlight">\((1-\alpha)\)</span> will have <strong>larger volume</strong> in the <span class="math notranslate nohighlight">\(p\)</span>-dimensional space of <span class="math notranslate nohighlight">\(\boldsymbol{\mu}\)</span> and hence less precise.</p></li>
 </ul>
 </dd>
-<dt>Simultaneous confidence interval</dt><dd><ul>
-<li><p>Individual CI: Sometimes people get used to confidence intervals for individual components, such as</p>
+<dt>Simultaneous confidence intervals for each component</dt><dd><ul>
+<li><p>Individual CIs: Sometimes people get used to confidence intervals for individual components, such as</p>
 <div class="math notranslate nohighlight">
 \[
     \bar{x}_{j}-t^{\alpha / 2}_{n-1} \frac{s_j}{\sqrt{n}} &lt;\mu_{j}&lt;\bar{x}_{j}+t^{\alpha / 2}_{n-1} \frac{s_j}{\sqrt{n}}
     \]</div>
-<p>where <span class="math notranslate nohighlight">\(\bar{x}_j\)</span> and <span class="math notranslate nohighlight">\(s_j\)</span> are respectively the sample mean and standard deviation of the <span class="math notranslate nohighlight">\(j\)</span>-th variate that has mean <span class="math notranslate nohighlight">\(\mu_j\)</span>.</p>
-</li>
-<li><p>Problem: while each of the <span class="math notranslate nohighlight">\(p\)</span> intervals has confidence level <span class="math notranslate nohighlight">\((1-\alpha)\)</span>, the joint probability (joint confidence level) that all the <span class="math notranslate nohighlight">\(p\)</span> statements are true simultaneously is less than <span class="math notranslate nohighlight">\((1-\alpha)\)</span>.</p>
-<ul class="simple">
-<li><p>for instance, if all the <span class="math notranslate nohighlight">\(p\)</span> variates are independent, then the joint confidence level is <span class="math notranslate nohighlight">\((1-\alpha)^p\)</span>.</p></li>
-<li><p>to correct this, we can use Bonferroni or Scheffe’s simultaneous C.I., which forms a hyper-rectangular region in <span class="math notranslate nohighlight">\(\mathbb{R} ^p\)</span>.</p></li>
-</ul>
+<p>where <span class="math notranslate nohighlight">\(\bar{x}_j\)</span> and <span class="math notranslate nohighlight">\(s_j\)</span> are respectively the sample mean and standard deviation of the <span class="math notranslate nohighlight">\(j\)</span>-th variate that has mean <span class="math notranslate nohighlight">\(\mu_j\)</span>. But there are <a class="reference internal" href="21-hypothesis-testing.html#multiple-testing"><span class="std std-ref">multiple testing</span></a> issues. We can then use Bonferroni or Scheffe simultaneous C.I.s to correct this.</p>
 </li>
 <li><p>The <span class="math notranslate nohighlight">\((1-\alpha)100\%\)</span> Bonferroni simultaneous C.I.s for <span class="math notranslate nohighlight">\(m\)</span> <strong>pre-determined</strong> linear components of means, <span class="math notranslate nohighlight">\(\boldsymbol{a}_{i}^{\top} \boldsymbol{\mu}(i=1, \ldots, m)\)</span>, are given by</p>
 <div class="math notranslate nohighlight">
@@ -1305,7 +1437,7 @@ H_{0}: \boldsymbol{\mu}=\boldsymbol{\mu}_{0} \operatorname{vs } H_{1}: \boldsymb
 </div>
 <div class="figure align-default" id="test-multi-bon-sch">
 <a class="reference internal image-reference" href="../_images/test-multi-Bon-Sch.png"><img alt="" src="../_images/test-multi-Bon-Sch.png" style="width: 100%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 17 </span><span class="caption-text">Bonferroni (left) and Scheffe (right) simultaneous C.I.s.</span><a class="headerlink" href="#test-multi-bon-sch" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 18 </span><span class="caption-text">Bonferroni (left) and Scheffe (right) simultaneous C.I.s.</span><a class="headerlink" href="#test-multi-bon-sch" title="Permalink to this image">¶</a></p>
 </div>
 </li>
 <li><p>If we just want to conduct univariate tests of means <span class="math notranslate nohighlight">\(H_0: \mu_k = 0\)</span> for each <span class="math notranslate nohighlight">\(k = 1, 2, \ldots, p\)</span>, i.e. <span class="math notranslate nohighlight">\(\boldsymbol{a} _k = \boldsymbol{e} _k\)</span>, then the C.I. has the general form <span class="math notranslate nohighlight">\(\bar{x}_{k} \pm c_{n, p, \alpha} \sqrt{\frac{s_{k k}}{n}}\)</span> for some multiplier <span class="math notranslate nohighlight">\(c_{n, p, \alpha}\)</span> depending on <span class="math notranslate nohighlight">\(n,p,\alpha\)</span>. The above methods can be summarized as follows</p>
@@ -1385,6 +1517,208 @@ T^{2}=\left[\left(\bar{\boldsymbol{x}}_{1}-\bar{\boldsymbol{x}}_{2}\right)-\left
   \]</div>
 </li>
 </ul>
+</div>
+</div>
+<div class="section" id="manova">
+<span id="id4"></span><h3>MANOVA<a class="headerlink" href="#manova" title="Permalink to this headline">¶</a></h3>
+<p>If there are multiple samples of multivariate observations, we use Multivariate Analysis of Variance (MANOVA). The data are treated as <span class="math notranslate nohighlight">\(g\)</span> sample groups of observed sample values, each sample group is from one of <span class="math notranslate nohighlight">\(g\)</span> populations.</p>
+<div class="section" id="id5">
+<h4>Model<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h4>
+<p>The MANOVA model, generalized from ANOVA, becomes</p>
+<div class="math notranslate nohighlight">
+\[
+\boldsymbol{X}_{\ell j}=\boldsymbol{\mu}+\boldsymbol{\tau}_{\ell}+\boldsymbol{e}_{\ell j}, \quad j=1, \cdots, n_{\ell}, \quad \ell=1, \cdots, g
+\]</div>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{\mu}\)</span> is the <strong>overall mean</strong> vector,</p></li>
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{\tau} _{\ell}\)</span> is the <strong>treatment effect</strong> vector of the <span class="math notranslate nohighlight">\(\ell\)</span> th population or treatment group,</p></li>
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{e}_{\ell j} \sim N_{p}(0, \Sigma)\)</span> is individual specific homogenous noise.</p></li>
+<li><p>The parameter constraint here is <span class="math notranslate nohighlight">\(\sum_{\ell=1}^{g} n_{\ell} \boldsymbol{\tau}_{\ell}=0\)</span>.</p></li>
+</ul>
+</div>
+<div class="section" id="id6">
+<h4>Test Statistic<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h4>
+<p>Analogous to the univariate case, the test of interest is</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\left\{\begin{array}{ll}
+H_{0}: &amp; \boldsymbol{\tau}_{1}=\cdots=\boldsymbol{\tau}_{g}=\boldsymbol{0}_{p} \\
+H_{1}: &amp; \boldsymbol{\tau}_{\ell} \neq 0_{p}, \text { for some } \ell=1, \cdots, g .
+\end{array}\right.
+\end{split}\]</div>
+<p>The data can be decomposed similarly,</p>
+<div class="math notranslate nohighlight">
+\[
+\boldsymbol{x}_{\ell j}=\bar{\boldsymbol{x}}+\left(\bar{\boldsymbol{x}}_{\ell}-\bar{\boldsymbol{x}}\right)+\left(\boldsymbol{x}_{\ell j}-\bar{\boldsymbol{x}}_{\ell}\right)
+\]</div>
+<p>or</p>
+<div class="math notranslate nohighlight">
+\[
+(\boldsymbol{x}_{\ell j}-\bar{\boldsymbol{x}})=\left(\bar{\boldsymbol{x}}_{\ell}-\bar{\boldsymbol{x}}\right)+\left(\boldsymbol{x}_{\ell j}-\bar{\boldsymbol{x}}_{\ell}\right)
+\]</div>
+<p>Then</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+\left(\boldsymbol{x}_{\ell j}-\bar{\boldsymbol{x}}\right)\left(\boldsymbol{x}_{\ell j}-\bar{\boldsymbol{x}}\right)^{\prime}=&amp;\left(\bar{\boldsymbol{x}}_{\ell}-\bar{\boldsymbol{x}}\right)\left(\bar{\boldsymbol{x}}_{\ell}-\bar{\boldsymbol{x}}\right)^{\prime}+\left(\bar{\boldsymbol{x}}_{\ell}-\bar{\boldsymbol{x}}\right)\left(\boldsymbol{x}_{\ell j}-\bar{\boldsymbol{x}}_{\ell}\right)^{\prime} \\
+&amp;+\left(\boldsymbol{x}_{\ell j}-\bar{\boldsymbol{x}}_{\ell}\right)\left(\bar{\boldsymbol{x}}_{\ell}-\bar{\boldsymbol{x}}\right)^{\prime}+\left(\boldsymbol{x}_{\ell j}-\bar{\boldsymbol{x}}_{\ell}\right)\left(\boldsymbol{x}_{\ell j}-\bar{\boldsymbol{x}}_{\ell}\right)^{\prime}
+\end{aligned}
+\end{split}\]</div>
+<p>Summing up, we have</p>
+<div class="math notranslate nohighlight">
+\[
+\sum_{\ell=1}^{g} \sum_{j=1}^{n_{\ell}}\left(\boldsymbol{x}_{\ell j}-\overline{\boldsymbol{x}}\right)\left(\boldsymbol{x}_{\ell j}-\overline{\boldsymbol{x}}\right)^{\prime}=\sum_{\ell=1}^{g} \sum_{j=1}^{n_{\ell}}\left(\overline{\boldsymbol{x}}_{\ell}-\overline{\boldsymbol{x}}\right)\left(\overline{\boldsymbol{x}}_{\ell}-\overline{\boldsymbol{x}}\right)^{\prime}+\sum_{\ell=1}^{g} \sum_{j=1}^{n_{\ell}}\left(\boldsymbol{x}_{\ell j}-\overline{\mathbf{x}}_{\ell}\right)\left(\boldsymbol{x}_{\ell_{j}}-\overline{\boldsymbol{x}}_{\ell}\right)^{\prime}
+\]</div>
+<p>since</p>
+<div class="math notranslate nohighlight">
+\[
+\sum_{\ell=1}^{g} \sum_{j=1}^{n_{\ell}}\left(\overline{\boldsymbol{x}}_{\ell}-\overline{\boldsymbol{x}}\right)\left(\boldsymbol{x}_{\ell j}-\overline{\boldsymbol{x}}_{\ell}\right)^{\prime}=\boldsymbol{0}_{p \times p}, \quad \sum_{\ell=1}^{g} \sum_{j=1}^{n_{\ell}}\left(\boldsymbol{x}_{\ell j}-\overline{\boldsymbol{x}}_{\ell}\right)\left(\overline{\boldsymbol{x}}_{\ell}-\overline{\boldsymbol{x}}\right)^{\prime}=\boldsymbol{0}_{p \times p}
+\]</div>
+<p>The decomposition can be stated as</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\sum(\text { total variation })^{2}=\sum\left(\begin{array}{c}
+\text { &quot;between-group&quot; } \\
+\text { treatment variation }
+\end{array}\right)^{2}+\sum\left(\begin{array}{c}
+\text { &quot;within-group&quot; } \\
+\text { residual variation }
+\end{array}\right)^{2}
+\end{split}\]</div>
+<p>with corresponding degrees of freedom</p>
+<div class="math notranslate nohighlight">
+\[
+\sum_{\ell=1}^{g} n_{\ell}-1=(g-1)+\sum_{\ell=1}^{g}\left(n_{\ell}-1\right)
+\]</div>
+<p>Now we analyze the test statistic</p>
+<p>Denote the between group (or between population) sum of squares and
+cross products matrix as</p>
+<div class="math notranslate nohighlight">
+\[
+\boldsymbol{B}=\sum_{\ell=1}^{g} n_{\ell}\left(\overline{\boldsymbol{x}}_{\ell}-\overline{\boldsymbol{x}}\right)\left(\overline{\boldsymbol{x}}_{\ell}-\overline{\boldsymbol{x}}\right)^{\prime}
+\]</div>
+<p>and the within group sum of squares and cross products matrix as</p>
+<div class="math notranslate nohighlight">
+\[
+\boldsymbol{W}=\sum_{\ell=1}^{g} \sum_{j=1}^{n_{\ell}}\left(\boldsymbol{x}_{\ell j}-\overline{\boldsymbol{x}}_{\ell}\right)\left(\boldsymbol{x}_{\ell j}-\overline{\boldsymbol{x}}_{\ell}\right)^{\prime}=\left(n_{1}-1\right) \boldsymbol{S}_{1}+\cdots+\left(n_{g}-1\right) \boldsymbol{S}_{g}
+\]</div>
+<p>In fact <span class="math notranslate nohighlight">\(\boldsymbol{W}\)</span> is related to the pooled covariance matrix,</p>
+<div class="math notranslate nohighlight">
+\[
+\boldsymbol{S}_{\text {pool }}=\frac{1}{\sum_{\ell=1}^{g}\left(n_{\ell}-1\right)}\left[\left(n_{1}-1\right) \boldsymbol{S}_{1}+\cdots+\left(n_{g}-1\right) \boldsymbol{S}_{g}\right]=\frac{1}{n-\mathrm{g}} \boldsymbol{W}
+\]</div>
+<p>The MANOVA table is then</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{array}{c|c|c}
+\hline \begin{array}{c}
+\text { Source } \\
+\text { of variation }
+\end{array} &amp; \begin{array}{c}
+\text { Matrix of sum of squares } \\
+\text { and cross-products }
+\end{array} &amp; \begin{array}{c}
+\text { Degrees } \\
+\text { of freedom }
+\end{array} \\
+\hline \text { Treatments } &amp; \boldsymbol{B}=\sum_{\ell=1}^{g} n_{\ell}\left(\overline{\boldsymbol{x}}_{\ell}-\bar{x}\right)\left(\overline{\boldsymbol{x}}_{\ell}-\bar{x}\right)^{\prime} &amp; g-1 \\
+\text { Residuals } &amp; \boldsymbol{W}=\sum_{\ell=1}^{g} \sum_{j=1}^{n_{\ell}}\left(\boldsymbol{x}_{\ell j}-\overline{\boldsymbol{x}}_{\ell}\right)\left(\boldsymbol{x}_{\ell j}-\overline{\mathbf{x}}_{\ell}\right)^{\prime} &amp; \sum_{\ell=1}^{g} n_{\ell}-\mathrm{g} \\
+\hline \text { Total } &amp; \boldsymbol{B}+\boldsymbol{W}=\sum_{\ell=1}^{g} \sum_{j=1}^{n_{\ell}}\left(\boldsymbol{x}_{\ell j}-\overline{\boldsymbol{x}}\right)\left(\boldsymbol{x}_{\ell j}-\overline{\boldsymbol{x}}\right)^{\prime} &amp; \sum_{\ell=1}^{g} n_{\ell}-1 \\
+\hline
+\end{array}
+\end{split}\]</div>
+<p>Since <span class="math notranslate nohighlight">\(\boldsymbol{B}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{W}\)</span> are <span class="math notranslate nohighlight">\(p \times p\)</span> covariance matrices, the test statistic uses their determinants, or the generalized variances.</p>
+<p>We introduce Wilks’ Lambda</p>
+<div class="math notranslate nohighlight">
+\[
+\Lambda^{*}=\frac{\operatorname{det}(\boldsymbol{W})}{\operatorname{det}(\boldsymbol{B}+\boldsymbol{W})}=\frac{\left|\sum_{\ell=1}^{g} \sum_{j=1}^{n_{\ell}}\left(\boldsymbol{x}_{\ell j}-\overline{\boldsymbol{x}}_{\ell}\right)\left(\boldsymbol{x}_{\ell j}-\overline{\mathbf{x}}_{\ell}\right)^{\prime}\right|}{\left|\sum_{\ell=1}^{g} \sum_{j=1}^{n_{\ell}}\left(\boldsymbol{x}_{\ell_{j}}-\overline{\boldsymbol{x}}\right)\left(\boldsymbol{x}_{\ell_{j}}-\overline{\boldsymbol{x}}\right)^{\prime}\right|}
+\]</div>
+<p>which is the ratio of generalized variance of residual / generalized variance of total.</p>
+<p>The distribution of <span class="math notranslate nohighlight">\(\Lambda^{*}\)</span> depends on <span class="math notranslate nohighlight">\(p, g, n_\ell\)</span> and is related to <span class="math notranslate nohighlight">\(F\)</span> distribution. When <span class="math notranslate nohighlight">\(n = \sum n_\ell\)</span> is large, Bartlett gives a simple chi-square approximation</p>
+<div class="math notranslate nohighlight">
+\[
+-\left(n-1-\frac{p+g}{2}\right) \ln \Lambda^{*} \sim \chi_{p(g-1)}^{2}
+\]</div>
+<p>Even for moderate sample size, it is good practice to check and compare both tests.</p>
+<p>Note</p>
+<ul>
+<li><p>We reject the null hypothesis that all group means are equal if the value of <span class="math notranslate nohighlight">\(\Lambda^{*}\)</span> is too “small”.</p></li>
+<li><p>Wilks’ lambda is equivalent to the likelihood ratio test statistic.</p></li>
+<li><p>Under the null Wilks’ lambda is of its own <span class="math notranslate nohighlight">\(\Lambda^{*}\)</span>-distribution, which is derived from the ratio of two random matrices <span class="math notranslate nohighlight">\(\boldsymbol{W}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{B} + \boldsymbol{W}\)</span>, each is of <a class="reference internal" href="../12-probabilities/91-exponential-families.html#wishart-distribution"><span class="std std-ref">Wishart distribution</span></a></p></li>
+<li><p>We can express Wilks’ lambda by eigenvalues of <span class="math notranslate nohighlight">\(\boldsymbol{B} \boldsymbol{W} ^{-1}\)</span>, which can be seen as signal-noise ratio. If it is large, then <span class="math notranslate nohighlight">\(\lambda\)</span> is large, and <span class="math notranslate nohighlight">\(\Lambda^{*}\)</span> is small.</p>
+<div class="math notranslate nohighlight">
+\[
+  \Lambda^{*}=\frac{|\boldsymbol{W}|}{|\boldsymbol{B}+\boldsymbol{W}|}=\frac{1}{\left|\boldsymbol{W}^{-1} \boldsymbol{B}+\boldsymbol{l}\right|}=\prod_{k=1}^{p} \frac{1}{1+\lambda_{k}}
+  \]</div>
+</li>
+</ul>
+<p>Other test statistics using the eigenvalues of <span class="math notranslate nohighlight">\(\boldsymbol{B} \boldsymbol{W} ^{-1}\)</span> include</p>
+<ul class="simple">
+<li><p>Hotelling-Lawley’s Trace: <span class="math notranslate nohighlight">\(\operatorname{trace}\left(\mathbf{B W}^{-1}\right)=\sum_{k=1}^{p} \lambda_{k}\)</span></p></li>
+<li><p>Pillai’s Trace:  <span class="math notranslate nohighlight">\(\operatorname{trace}\left(\boldsymbol{B}(\boldsymbol{B}+\boldsymbol{W})^{-1}\right)=\operatorname{trace}\left(\boldsymbol{B} \boldsymbol{W}^{-1}\left(\boldsymbol{B} \boldsymbol{W}^{-1}+I\right)^{-1}\right)=\sum_{k=1}^{p} \frac{\lambda_{k}}{1+\lambda_{k}}\)</span></p></li>
+<li><p>Roy’s Largest Root: <span class="math notranslate nohighlight">\(\max _{k}\left\{\lambda_{k}\right\}=\left\|\boldsymbol{B} \boldsymbol{W}^{-1}\right\|_{\infty}\)</span> which gives an upper bound</p></li>
+</ul>
+</div>
+<div class="section" id="c-i-for-difference-in-two-means">
+<h4>C.I. for Difference in Two Means<a class="headerlink" href="#c-i-for-difference-in-two-means" title="Permalink to this headline">¶</a></h4>
+<p>If the null hypothesis of MANOVA is rejected, a natural question is, <strong>which</strong> treatments have significant effects?</p>
+<p>To compare the effect of treatment <span class="math notranslate nohighlight">\(k\)</span> and treatment <span class="math notranslate nohighlight">\(\ell\)</span>, the quantity of interests is the difference of the vectors <span class="math notranslate nohighlight">\(\boldsymbol{\tau}_k - \boldsymbol{\tau}_\ell\)</span> which is the same as <span class="math notranslate nohighlight">\(\boldsymbol{\mu} _k - \boldsymbol{\mu} _\ell\)</span>. For two fixed <span class="math notranslate nohighlight">\(k, \ell\)</span>, there are <span class="math notranslate nohighlight">\(p\)</span> variables to compare. For each variable <span class="math notranslate nohighlight">\(i\)</span>, we want a confidence interval for <span class="math notranslate nohighlight">\(\tau_{ki} - \tau_{\ell i}\)</span>, which have the form</p>
+<div class="math notranslate nohighlight">
+\[
+\hat{\tau}_{k i}-\hat{\tau}_{\ell i} \pm c \times \sqrt{\widehat{\operatorname{Var}}\left(\hat{\tau}_{k i}-\hat{\tau}_{\ell i}\right)}
+\]</div>
+<p>where the multiplier <span class="math notranslate nohighlight">\(c\)</span> depends on the level and the type of the confidence interval.</p>
+<p>Assuming mutual independence and equal variance <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}\)</span> among the <span class="math notranslate nohighlight">\(g\)</span> samples, using Bonferroni correction, we have</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(c = t_{n-g}^{\alpha/2m}\)</span>, where <span class="math notranslate nohighlight">\(m= p \binom{g}{2}\)</span> is the number of simultaneous confidence intervals.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\widehat{\operatorname{Var}}\left(\hat{\tau}_{k i}-\hat{\tau}_{\ell i}\right)=\frac{w_{i i}}{n-g}\left(\frac{1}{n_{k}}+\frac{1}{n_{\ell}}\right)\)</span> where <span class="math notranslate nohighlight">\(w_{ii}\)</span> is the diagonal entry of <span class="math notranslate nohighlight">\(\boldsymbol{W}\)</span>.</p></li>
+</ul>
+<p>Note that</p>
+<ul class="simple">
+<li><p>The Bonferroni method often gives confidence intervals too wide to be practical even for moderate <span class="math notranslate nohighlight">\(p\)</span> and <span class="math notranslate nohighlight">\(g\)</span>.</p></li>
+<li><p>The equal variance can be tested.</p></li>
+</ul>
+</div>
+<div class="section" id="test-for-equal-covariance">
+<h4>Test for Equal Covariance<a class="headerlink" href="#test-for-equal-covariance" title="Permalink to this headline">¶</a></h4>
+<p>Are the variables in the <span class="math notranslate nohighlight">\(g\)</span> population groups sharing the same
+covariance structure?</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\left\{\begin{array}{ll}
+H_{0}: &amp; \boldsymbol{\Sigma}_{1}=\boldsymbol{\Sigma}_{2}=\cdots=\boldsymbol{\Sigma}_{g}=\boldsymbol{\Sigma} \\
+H_{1}: &amp; \boldsymbol{\Sigma}_{i} \neq \boldsymbol{\Sigma}_{j} \quad \text { for some } i \neq j
+\end{array}\right.
+\end{split}\]</div>
+<p>Box’s <span class="math notranslate nohighlight">\(M\)</span>-test for equal covariance structure is a likelihood-ratio type of test. Denote</p>
+<div class="math notranslate nohighlight">
+\[
+\Lambda=\prod_{\ell=1}^{g}\left(\frac{\left|\boldsymbol{S}_{\ell}\right|}{\left|\boldsymbol{S}_{\text {pool }}\right|}\right)^{\left(n_{\ell}-1\right) / 2}
+\]</div>
+<p>where</p>
+<div class="math notranslate nohighlight">
+\[
+\boldsymbol{S}_{\text {pool }}=\frac{1}{\sum_{\ell=1}^{g}\left(n_{\ell}-1\right)}\left[\left(n_{1}-1\right) \boldsymbol{S}_{1}+\cdots+\left(n_{g}-1\right) \boldsymbol{S}_{g}\right]=\frac{1}{n-\mathrm{g}} \boldsymbol{W}
+\]</div>
+<p>Box’s test is based on an approximation that the sampling distribution of <span class="math notranslate nohighlight">\(\ln \Lambda\)</span> is approximately of <span class="math notranslate nohighlight">\(\chi ^2\)</span> distribution under the equal covariance matrix hypothesis. Box’s <span class="math notranslate nohighlight">\(M\)</span> is defined as</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+M &amp;=-2 \ln \Lambda \\
+&amp;=(n-g) \ln \left|\boldsymbol{S}_{\text {pool }}\right|-\sum_{\ell=1}^{g}\left[\left(n_{\ell}-1\right) \ln \left|\boldsymbol{S}_{\ell}\right|\right]
+\end{aligned}
+\end{split}\]</div>
+<p>Under the hypothesis <span class="math notranslate nohighlight">\(H_0\)</span> of equal covariance, approximately</p>
+<div class="math notranslate nohighlight">
+\[
+(1-u) M \sim \chi_{v}^{2}
+\]</div>
+<p>where</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(u = \left(\sum_{\ell=1}^{g} \frac{1}{n_{\ell}-1}-\frac{1}{n-g}\right) \frac{2 p^{2}+3 p-1}{6(p+1)(g-1)}\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(v = p(p+1)(g-1)/2\)</span></p></li>
+</ul>
+<p><span class="math notranslate nohighlight">\(H_0\)</span> is rejected if <span class="math notranslate nohighlight">\((1-u) M &gt; \chi_{v}^{2}(\alpha)\)</span>. Box’s M-test works well for small <span class="math notranslate nohighlight">\(p\)</span> and <span class="math notranslate nohighlight">\(g\)</span> <span class="math notranslate nohighlight">\((\le 5)\)</span> and moderate to large <span class="math notranslate nohighlight">\(n_\ell\)</span> <span class="math notranslate nohighlight">\((\ge 20)\)</span>.</p>
 </div>
 </div>
 </div>

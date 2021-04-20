@@ -518,6 +518,11 @@
      Poisson Regression
     </a>
    </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/31-multivariate-regression.html">
+     Multivariate Regression
+    </a>
+   </li>
   </ul>
   <i class="fas fa-chevron-down">
   </i>
@@ -872,6 +877,11 @@
        Mean-field Methods
       </a>
      </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#auto-gaussian">
+       Auto-Gaussian
+      </a>
+     </li>
     </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
@@ -1065,9 +1075,30 @@ U(\boldsymbol{x}; \alpha, \beta)=\sum_{i \in V} \alpha x_{i}+\sum_{\{i, j\} \in 
 </div>
 <div class="section" id="coding-methods">
 <h4>Coding Methods<a class="headerlink" href="#coding-methods" title="Permalink to this headline">¶</a></h4>
+<p>Form <span class="math notranslate nohighlight">\(K\)</span> disjoint independent set of vertices <span class="math notranslate nohighlight">\(S_1, \ldots, S_K\)</span>. The log-likelihood of <span class="math notranslate nohighlight">\(\left\{ X_i: i \in S_k \right\}\)</span> is then (??)</p>
+<div class="math notranslate nohighlight">
+\[
+\log \mathbb{P}_\theta (\boldsymbol{X}_{S_k} = \boldsymbol{x}_{S_k} )  = \sum_{i \in S_k} \log \mathbb{P}_{\theta}\left(X_{i}=x_{i} \mid \mathbf{X}_{\mathscr{N}_{i}}=\mathbf{x}_{\mathscr{N}_{i}}\right)
+\]</div>
+<p>Optimization of this expression produces and MLE <span class="math notranslate nohighlight">\(\hat{\theta}_k\)</span>, on a reduced subset of the data. An average of <span class="math notranslate nohighlight">\(\hat{\theta}_k\)</span> over <span class="math notranslate nohighlight">\(k\)</span> is often used as the final estimate.</p>
 </div>
 <div class="section" id="mean-field-methods">
 <h4>Mean-field Methods<a class="headerlink" href="#mean-field-methods" title="Permalink to this headline">¶</a></h4>
+<p>Replace <span class="math notranslate nohighlight">\(\boldsymbol{x} _{\mathscr{N} _i}\)</span> by its expected value in all equations</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbb{P}\left(X_{i}=x_{i} \mid \boldsymbol{X}_{(-i)}=\boldsymbol{x}_{(-i)}\right)=\mathbb{P}\left(X_{i}=x_{i} \mid \boldsymbol{X}_{\mathscr{N}_{i}}=\mathbb{E} [\boldsymbol{X}_{\mathscr{N}_{i}}] \right)
+\]</div>
+<p>This gives a way to approximate the partition function <span class="math notranslate nohighlight">\(\kappa(\boldsymbol{\theta} )\)</span> as a product of local partition functions (??). It sets up an iterative method for calculation of the likelihood <span class="math notranslate nohighlight">\(\mathbb{P} _\theta(\boldsymbol{X} = \boldsymbol{x})\)</span>, which may then be maximized numerically. See [258].</p>
+</div>
+<div class="section" id="auto-gaussian">
+<h4>Auto-Gaussian<a class="headerlink" href="#auto-gaussian" title="Permalink to this headline">¶</a></h4>
+<p>In auto-Gaussian model, the joint distribution of <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span> is known in closed form. In this case, MLE can be computationally tractable. Consider the homogeneous model where the mean is a constant <span class="math notranslate nohighlight">\(\alpha\)</span> across the network and the covariance is <span class="math notranslate nohighlight">\(\sigma^2 ( \boldsymbol{I} - \beta \boldsymbol{A} ) ^{-1}\)</span>. The parameters <span class="math notranslate nohighlight">\(\boldsymbol{\theta} = (\alpha, \sigma^2 , \beta)\)</span> can be estimated alternately:</p>
+<ul class="simple">
+<li><p>maximizing the likelihood as a function of <span class="math notranslate nohighlight">\((\alpha, \sigma^2 )\)</span> given <span class="math notranslate nohighlight">\(\beta\)</span>,</p></li>
+<li><p>then of <span class="math notranslate nohighlight">\(\beta\)</span>, given <span class="math notranslate nohighlight">\((\alpha, \sigma^2 )\)</span>.</p></li>
+</ul>
+<p>The first set of estimates can be found in closed form, while the second estimates can be obtained using Newton-Raphson algorithm. See [102.Ch.7.2.2].</p>
 </div>
 </div>
 <div class="section" id="prediction">

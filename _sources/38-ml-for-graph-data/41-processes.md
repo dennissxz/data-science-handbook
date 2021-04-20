@@ -195,11 +195,31 @@ Other parameterization and variation of auto-logistic model have analogous formu
 
 #### Coding Methods
 
+Form $K$ disjoint independent set of vertices $S_1, \ldots, S_K$. The log-likelihood of $\left\{ X_i: i \in S_k \right\}$ is then (??)
 
+$$
+\log \mathbb{P}_\theta (\boldsymbol{X}_{S_k} = \boldsymbol{x}_{S_k} )  = \sum_{i \in S_k} \log \mathbb{P}_{\theta}\left(X_{i}=x_{i} \mid \mathbf{X}_{\mathscr{N}_{i}}=\mathbf{x}_{\mathscr{N}_{i}}\right)
+$$
 
+Optimization of this expression produces and MLE $\hat{\theta}_k$, on a reduced subset of the data. An average of $\hat{\theta}_k$ over $k$ is often used as the final estimate.
 
 #### Mean-field Methods
 
+Replace $\boldsymbol{x} _{\mathscr{N} _i}$ by its expected value in all equations
+
+$$
+\mathbb{P}\left(X_{i}=x_{i} \mid \boldsymbol{X}_{(-i)}=\boldsymbol{x}_{(-i)}\right)=\mathbb{P}\left(X_{i}=x_{i} \mid \boldsymbol{X}_{\mathscr{N}_{i}}=\mathbb{E} [\boldsymbol{X}_{\mathscr{N}_{i}}] \right)
+$$
+
+This gives a way to approximate the partition function $\kappa(\boldsymbol{\theta} )$ as a product of local partition functions (??). It sets up an iterative method for calculation of the likelihood $\mathbb{P} _\theta(\boldsymbol{X} = \boldsymbol{x})$, which may then be maximized numerically. See [258].
+
+#### Auto-Gaussian
+
+In auto-Gaussian model, the joint distribution of $\boldsymbol{X}$ is known in closed form. In this case, MLE can be computationally tractable. Consider the homogeneous model where the mean is a constant $\alpha$ across the network and the covariance is $\sigma^2 ( \boldsymbol{I} - \beta \boldsymbol{A} ) ^{-1}$. The parameters $\boldsymbol{\theta} = (\alpha, \sigma^2 , \beta)$ can be estimated alternately:
+- maximizing the likelihood as a function of $(\alpha, \sigma^2 )$ given $\beta$,
+- then of $\beta$, given $(\alpha, \sigma^2 )$.
+
+The first set of estimates can be found in closed form, while the second estimates can be obtained using Newton-Raphson algorithm. See [102.Ch.7.2.2].
 
 
 ### Prediction

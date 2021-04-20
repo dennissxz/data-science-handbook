@@ -1,6 +1,7 @@
 # Multidimensional Scaling
 
-In this section we introduce (metric) multidimensional scaling (MDS). It finds some representation of input data, which can be used for dimension reduction or visualization. In addition to a $n \times d$ data matrix $\boldsymbol{X}$, MDS can also take as input
+In this section we introduce (metric) multidimensional scaling (MDS). It finds some representation of input data, which can be used for dimension reduction or visualization. In addition to a $n \times d$ data matrix $\boldsymbol{X}$, MDS can also take pairwise relations, aka **proximity** data, as input, such as
+
 - pairwise dissimilarity measures of data points as input, denoted $\boldsymbol{D} \in \mathbb{R} ^{n \times n}$
   - a matrix of Euclidean distances between points
   - survey results of customers' perception of dissimilarity between products
@@ -12,6 +13,9 @@ In this section we introduce (metric) multidimensional scaling (MDS). It finds s
   - co-occurrence counts of words between documents
   - an adjacency matrix of web pages (MDS as a graph layout technique)
   - survey results of customers' perception of similarity between products
+
+- Usually the diagonal entires of a dissimilarity matrix are $0$, and those of a similarity matrix are 1. A dissimilarity measure can be created based on the given similarity measure,
+and vice versa.
 
 In all, there are four types of MDS: {metric, non-metric} $\times$ {distance, classical}.
 
@@ -48,7 +52,7 @@ $$
 It interprets the similarities as inner product data, and guarantee $d_{ii} = 0$. -->
 
 
-- Given data matrix $\boldsymbol{X} \in \mathbb{R} ^{n \times n}$, MDS seeks a $k$-dimensional representation $\boldsymbol{Z} \in \mathbb{R} ^{n \times k}$ that preserves inner products (similarity) between pairs of data points $(\boldsymbol{x_i}, \boldsymbol{x}_j)$
+- Given data matrix $\boldsymbol{X} \in \mathbb{R} ^{n \times d}$, like PCA, MDS seeks a $k$-dimensional representation $\boldsymbol{Z} \in \mathbb{R} ^{n \times k}$ that preserves inner products (similarity) between pairs of data points $(\boldsymbol{x_i}, \boldsymbol{x}_j)$
 
   $$
   \min \sum_{i, j}\left(\boldsymbol{x}_{i} ^\top  \boldsymbol{x}_{j}-\boldsymbol{z}_{i} ^\top  \boldsymbol{z}_{j}\right)^{2}

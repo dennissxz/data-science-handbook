@@ -90,6 +90,7 @@ $$
 - In some cases, the strong law does not hold, but the weak law does.
 ```
 
+(CLT)=
 ## Central Limit Theorem
 
 The Central Limit Theorem, in probability theory, when independent random variables are added, their properly normalized sum tends toward a normal distribution (informally a "bell curve") even if the original variables themselves are not normally distributed.
@@ -140,6 +141,13 @@ plt.show()
 ```
 
 In general, one can then sample from any normal distribution $\mathcal{N}(a,b^2)$ by the transformation $Z = bY_n+a$.
+
+In multivariate case, when $n-p$ is large, approximately,
+
+
+$$
+\sqrt{n}\left(\bar{\boldsymbol{x}}-\boldsymbol{\mu} \right)\overset{\mathcal{D}}{\rightarrow} \mathcal{N}(\boldsymbol{0},\boldsymbol{\Sigma})  
+$$
 
 (bernstein-inequality)=
 ## Bernstein Inequality

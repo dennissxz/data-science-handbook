@@ -519,6 +519,11 @@
      Poisson Regression
     </a>
    </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/31-multivariate-regression.html">
+     Multivariate Regression
+    </a>
+   </li>
   </ul>
   <i class="fas fa-chevron-down">
   </i>
@@ -1014,6 +1019,7 @@ c &amp;= f(\boldsymbol{x} ;\boldsymbol{\mu}, \boldsymbol{\Sigma}) \\
 <div class="section" id="properties">
 <h3>Properties<a class="headerlink" href="#properties" title="Permalink to this headline">¶</a></h3>
 <ul>
+<li><p>Sometimes <span class="math notranslate nohighlight">\(\boldsymbol{\varepsilon} \sim \mathcal{N} (\boldsymbol{0} , \boldsymbol{I} _p)\)</span> is called <strong>white noise</strong>. If the off-diagonal entires are non-zero, we say there is ‘color’.</p></li>
 <li><p><strong>MGF</strong>: <span class="math notranslate nohighlight">\(M_{\boldsymbol{x}}(\boldsymbol{t})=\exp \left(\boldsymbol{t}^{\top} \boldsymbol{\mu}+\frac{1}{2} \boldsymbol{t}^{\top} \boldsymbol{\Sigma} \boldsymbol{t}\right)\)</span>.</p></li>
 <li><p><strong>Sum</strong>: if <span class="math notranslate nohighlight">\(\boldsymbol{x} \sim \mathcal{N} _p (\boldsymbol{\mu} _1, \boldsymbol{\Sigma} _1)\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{y} \sim \mathcal{N} _p (\boldsymbol{\mu} _2, \boldsymbol{\Sigma} _2)\)</span> are independent, then <span class="math notranslate nohighlight">\(\boldsymbol{x} + \boldsymbol{y}  \sim \mathcal{N} _p (\boldsymbol{\mu} _1 + \boldsymbol{\mu} _2, \boldsymbol{\Sigma} _1 + \boldsymbol{\Sigma} _2)\)</span>.</p></li>
 <li><p>What is the condition for a valid covariance matrix <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}\)</span>? Given a positive definite matrix <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}\)</span>, then <span class="math notranslate nohighlight">\(\boldsymbol{x} \sim \mathcal{N} _p (\boldsymbol{\mu} , \boldsymbol{\Sigma})\)</span> iff there exists a non-singular matrix <span class="math notranslate nohighlight">\(\boldsymbol{B}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{z} \sim \mathcal{N} _p (\boldsymbol{0} , \boldsymbol{I})\)</span> such that <span class="math notranslate nohighlight">\(\boldsymbol{x} = \boldsymbol{\mu} + \boldsymbol{B} \boldsymbol{z}\)</span>. In this case <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma} = \boldsymbol{B} \boldsymbol{B} ^{\top}\)</span>.</p></li>
@@ -1047,7 +1053,6 @@ c &amp;= f(\boldsymbol{x} ;\boldsymbol{\mu}, \boldsymbol{\Sigma}) \\
 </li>
 </ul>
 </li>
-<li><p><strong>Quadratic form</strong>: if <span class="math notranslate nohighlight">\(\boldsymbol{x} \sim \mathcal{N} _p (\boldsymbol{\mu} , \boldsymbol{\Sigma})\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}\)</span> is p.d., then <span class="math notranslate nohighlight">\((\boldsymbol{x} - \boldsymbol{\mu} ) ^{\top} \boldsymbol{\Sigma} ^{-1} (\boldsymbol{x} - \boldsymbol{\mu} ) \sim \chi ^2 _p\)</span>.</p></li>
 <li><p><strong>Transformation</strong>: If <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> is <span class="math notranslate nohighlight">\(p\)</span>-variate normal <span class="math notranslate nohighlight">\(\mathcal{N} (\boldsymbol{\mu} , \boldsymbol{\Sigma})\)</span>, and <span class="math notranslate nohighlight">\(\boldsymbol{y} = \boldsymbol{A} \boldsymbol{x} + \boldsymbol{c}\)</span>, where <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> is a <span class="math notranslate nohighlight">\(k \times p\)</span> matrix and <span class="math notranslate nohighlight">\(\boldsymbol{c}\)</span> is a <span class="math notranslate nohighlight">\(k\)</span>-vector of constants, then <span class="math notranslate nohighlight">\(\boldsymbol{y}\)</span> is of <span class="math notranslate nohighlight">\(k\)</span>-variate normal, with mean <span class="math notranslate nohighlight">\(\boldsymbol{A} \boldsymbol{\mu} + \boldsymbol{c}\)</span> and variance <span class="math notranslate nohighlight">\(\boldsymbol{A} \boldsymbol{\Sigma} \boldsymbol{A} ^{\top}\)</span>.</p>
 <ul class="simple">
 <li><p>If <span class="math notranslate nohighlight">\(k=1\)</span>, then <span class="math notranslate nohighlight">\(\boldsymbol{y} = \boldsymbol{a} ^{\top} \boldsymbol{x} \sim \mathcal{N} ( \boldsymbol{a} ^{\top} \boldsymbol{\mu} , \boldsymbol{a} ^{\top} \boldsymbol{\Sigma} \boldsymbol{a})\)</span></p></li>
@@ -1083,7 +1088,12 @@ c &amp;= f(\boldsymbol{x} ;\boldsymbol{\mu}, \boldsymbol{\Sigma}) \\
   \end{align}\end{split}\]</div>
 <p>which is a product of PDFs of univariate Gaussians, i.e. dependency is dropped. Geometrically, <span class="math notranslate nohighlight">\(\boldsymbol{U}\)</span> rotate the axes of the distribution but keep the function value intact.</p>
 </li>
-<li><p>Sum of squared univariate Gaussian <span class="math notranslate nohighlight">\(Y = \left\| \boldsymbol{x}  \right\| ^2 = \sum_{j=1}^p X_i^2 \sim \chi ^2 _p\)</span></p></li>
+<li><p><strong>Quadratic form</strong>: if <span class="math notranslate nohighlight">\(\boldsymbol{x} \sim \mathcal{N} _p (\boldsymbol{\mu} , \boldsymbol{\Sigma})\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}\)</span> is p.d., then <span class="math notranslate nohighlight">\((\boldsymbol{x} - \boldsymbol{\mu} ) ^{\top} \boldsymbol{\Sigma} ^{-1} (\boldsymbol{x} - \boldsymbol{\mu} ) \sim \chi ^2 _p\)</span>.</p>
+<ul class="simple">
+<li><p>For standard Gaussian <span class="math notranslate nohighlight">\(\boldsymbol{z} \sim \mathcal{N} _p (\boldsymbol{0} , \boldsymbol{I})\)</span>: $<span class="math notranslate nohighlight">\(\boldsymbol{z} ^{\top} \boldsymbol{z} = \sum_{j=1}^p Z_i^2 \sim \chi ^2 _p\)</span>$</p></li>
+<li><p>In sample data, as <span class="math notranslate nohighlight">\(n\)</span> is large, <span class="math notranslate nohighlight">\(n(\bar{\boldsymbol{x}}-\boldsymbol{\mu})^{\prime} \boldsymbol{S}^{-1}(\bar{\boldsymbol{x}}-\boldsymbol{\mu}) \sim \chi_{p}^{2}\)</span></p></li>
+</ul>
+</li>
 <li><p>Related to unit surface: if <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> follow spherical Gaussian <span class="math notranslate nohighlight">\(\mathcal{N}_p (\boldsymbol{0} , \sigma^2 \boldsymbol{I} _p)\)</span>, let the norm be <span class="math notranslate nohighlight">\(R = \left\| \boldsymbol{x}\right\|\)</span>, then its density is</p>
 <div class="math notranslate nohighlight">
 \[
@@ -1132,7 +1142,7 @@ c &amp;= f(\boldsymbol{x} ;\boldsymbol{\mu}, \boldsymbol{\Sigma}) \\
 <p>Note that <span class="math notranslate nohighlight">\(\hat{\boldsymbol{\mu}}\)</span> is unbiased but <span class="math notranslate nohighlight">\(\hat{\boldsymbol{\Sigma} }\)</span> is unbiased. However, <span class="math notranslate nohighlight">\(\boldsymbol{S}\)</span> is unbiased for <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}\)</span>.</p>
 </div>
 <div class="section" id="wishart-distribution">
-<h4>Wishart Distribution<a class="headerlink" href="#wishart-distribution" title="Permalink to this headline">¶</a></h4>
+<span id="id1"></span><h4>Wishart Distribution<a class="headerlink" href="#wishart-distribution" title="Permalink to this headline">¶</a></h4>
 <p>Recall that for univariate i.i.d. standard Gaussians we have <span class="math notranslate nohighlight">\(\sum_{i=1}^k Z_i^2 \sim \sigma^2 \chi ^2 _n\)</span>. The multivariate extension of this chi-squared distribution is Wishart distribution.</p>
 <dl class="simple myst">
 <dt>Definition (Wishart distribution)</dt><dd><p>Suppose <span class="math notranslate nohighlight">\(\boldsymbol{x}_1, \ldots, \boldsymbol{x} _k\)</span> and independent <span class="math notranslate nohighlight">\(\mathcal{N} _p (\boldsymbol{\mu} _i, \boldsymbol{\Sigma})\)</span>. Define a symmetric <span class="math notranslate nohighlight">\(p \times p\)</span> matrix <span class="math notranslate nohighlight">\(\boldsymbol{V}\)</span> as</p>

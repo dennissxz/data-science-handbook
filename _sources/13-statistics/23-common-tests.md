@@ -268,12 +268,115 @@ $$
 | Independent with unequal variance | $\frac{\left( \bar{X}-\bar{Y} \right)-\left(\mu_{X}-\mu_{Y}\right)}{\sqrt{\frac{S_{X}^{2}}{n}+\frac{S_{Y}^{2}}{m}}}$ | / | $\stackrel{\mathcal{D}}{\longrightarrow} t_v$ |
 
 
+## ANOVA
+
+Analysis of variance is used to compare several univariate sample means. For instance, in the plot below, we have five levels and observed the response $y$. We are interested in whether the five means are equal.
+
+:::{figure} test-one-way
+<img src="../imgs/test-one-way.png" width = "70%" alt=""/>
+
+One-way Layout
+:::
+
+### Model
+
+There are $n_\ell$ observations from population or treatment group $\ell = 1, 2, \ldots, g$
+
+$$
+X_{\ell j}=\mu+\tau_{\ell}+e_{\ell j}, \quad \ell=1, \cdots, g, \quad j=1, \cdots, n_{\ell}
+$$
+
+where
+- $\mu$ is the **overall mean** parameter.
+- $\tau_{\ell}$ is the **treatment effect** parameter of the $\ell$ th population or $\ell$ th treatment group.
+- $e_{\ell j} \sim N\left(0, \sigma^{2}\right)$ is individual specific homogenous noise.
+- Parameter constraints: There should be constraints on the parameters such as $\sum_{\ell=1}^{g} n_{\ell} \tau_{\ell}=0$, to avoid redundancy or unidentifiability.
+
+
+To detect differences in treatment effects among the groups,
+the first test of interest is
+
+$$
+\left\{\begin{array}{ll}
+H_{0}: & \tau_{1}=\cdots=\tau_{g}=0 \\
+H_{1}: & \tau_{\ell} \neq 0, \text { for some } \ell=1, \cdots, g
+\end{array}\right.
+$$
+
+### Test Statistic
+
+First, we decompose the observations as
+
+$$\begin{aligned}
+x_{\ell j} &= \bar{x} + \left(\bar{x}_{\ell}-\bar{x}\right)+\left(x_{\ell j}-\bar{x}_{\ell}\right) \\
+&= \hat{\mu} + \hat{\tau}_\ell + \hat{e}_{\ell j}\\
+\end{aligned}$$
+
+
+where $\bar{x}$ is the overall mean, $\bar{x}_\ell$ is the $\ell$-th group mean. Hence, the observation can be seen as estimated overall mean + estimated treatment effect + estimated noise. Equivalently,
+
+$$
+\left(x_{\ell j}-\bar{x}\right)=\left(\bar{x}_{\ell}-\bar{x}\right)+\left(x_{\ell j}-\bar{x}_{\ell}\right)
+$$
+
+Summing up all **squared** terms, noticing that $\sum_{\ell=1}^{g} \sum_{j=1}^{n_{\ell}}\left(\bar{x}_{\ell}-\bar{x}\right)\left(x_{\ell j}-\bar{x}_{\ell}\right)=0$, we have
+
+$$
+\sum_{\ell=1}^{g} \sum_{j=1}^{n_{\ell}}\left(x_{\ell j}-\bar{x}\right)^{2}=\sum_{\ell=1}^{g} n_{\ell}\left(\bar{x}_{\ell}-\bar{x}\right)^{2}+\sum_{\ell=1}^{g} \sum_{j=1}^{n_{\ell}}\left(x_{\ell j}-\bar{x}_{\ell}\right)^{2}
+$$
+
+The decomposition can be stated as
+
+$$
+\sum(\text { total variation })^{2}=\sum\left(\begin{array}{c}
+\text { between-group } \\
+\text { treatment variation }
+\end{array}\right)^{2}+\sum\left(\begin{array}{c}
+\text { within-group } \\
+\text { residual variation }
+\end{array}\right)^{2}
+$$
+
+The corresponding numbers of independent quantities of each term, i.e. the degrees of freedom, have the relation
+
+$$
+\sum_{\ell=1}^{g} n_{\ell}-1=(g-1)+\sum_{\ell=1}^{g}\left(n_{\ell}-1\right)
+$$
+
+Therefore, we obtain the analysis of variance table
+
+$$
+\begin{array}{c|c|c|c}
+\hline \begin{array}{c}
+\text { Source } \\
+\text { of variation }
+\end{array} & \text { SS (sum of squares) } & \text { d.f. } & \begin{array}{c}
+F \text {-value } \\
+\text { (variance ratio) }
+\end{array} \\
+\hline \text { Treatments } & S S_{t r t}=\sum_{\ell=1}^{g} \sum_{j=1}^{n_{\ell}}\left(\bar{x}_{\ell}-\bar{x}\right)^{2} & g-1 & S S_{t r t} /(g-1) \\
+\text { Residuals } & S S_{\text {res }}=\sum_{\ell=1}^{g} \sum_{j=1}^{n_{\ell}}\left(x_{\ell j}-\bar{x}_{\ell}\right)^{2} & \sum_{\ell=1}^{g} n_{\ell}-g & \\
+\hline \text { Total } & S S_{t o t}=\sum_{\ell=1}^{g} \sum_{j=1}^{n_{\ell}}\left(x_{\ell j}-\bar{x}\right)^{2} & \sum_{\ell=1}^{g} n_{\ell}-1 & \\
+\hline
+\end{array}
+$$
+
+At test level $\alpha$, the null $H_0: \tau_{1}=\cdots=\tau_{g}=0$ is rejected if
+
+
+$$
+\frac{S S_{t r t} /(g-1)}{S S_{\text {res }} /\left(\sum_{\ell=1}^{g} n_{\ell}-g\right)}>F_{g-1, \sum_{\ell=1}^{g} n_{\ell}-g}(\alpha)
+$$
+
+
+
+
 ## Multivariate Settings
 
 ### Hotelling's $T^2$ Distribution
 
 Definition (Hotelling's $T^2$ Distribution )
-: Suppose $\boldsymbol{x} \sim \mathcal{N} _p(\boldsymbol{0} , \boldsymbol{\Sigma} )$ and $\boldsymbol{V} \sim W_p(k, \boldsymbol{\Sigma} )$ are independent. Define
+: Suppose random zero-mean Gaussian $\boldsymbol{x} \sim \mathcal{N} _p(\boldsymbol{0} , \boldsymbol{\Sigma} )$ and Wishart random matrix $\boldsymbol{V} \sim W_p(k, \boldsymbol{\Sigma} )$ are independent. Define
 
   $$
   T^2 = k \boldsymbol{x} ^{\top} \boldsymbol{V} ^{-1} \boldsymbol{x}
@@ -281,7 +384,7 @@ Definition (Hotelling's $T^2$ Distribution )
 
   Then $T^2$ is said to follow a Hotelling's $T^2$ distribution with parameter $p$ and $k$, denoted as $T^2(p, k)$.
 
-  In univariate sense, the Hotelling’s $T^2$ statistic can be reduced to the squared $t$-statistic.
+  In univariate sense, the Hotelling’s $T^2$ statistic can be reduced to the **squared** $t$-statistic. Hence it can be seen as multivariate generalization of (squared) $t$-distribution.
 
 Properties
 : - If $\bar{\boldsymbol{x}}$ and $\boldsymbol{S}$ are respectively the sample mean vector and sample covariance matrix of a random sample of size $n$ taken from $\mathcal{N} _p(\boldsymbol{\mu} , \boldsymbol{\Sigma} )$, then
@@ -294,7 +397,7 @@ Properties
   - Related to other distribution:
     - $T^{2}(p, k)=\frac{k p}{k-p+1} F(p, k-p+1)$, usually used to find quantile $T^2(\alpha)$.
     - $T^{2}(1, k)=t^{2}(k)=F(1, k)$
-    - $T^{2}(p, \infty) \rightarrow \chi ^2 _p$ by CLT, without assuming normality of the distribution of $\boldsymbol{x}$
+    - $T^{2}(p, \infty) \rightarrow \chi ^2 _p$ by multivariate [CLT](CLT), **without** assuming normality of the distribution of $\boldsymbol{x}$
   - Related to Mahalanobis distance: $T^{2}=n D_{\boldsymbol{S}}^{2}(\bar{\boldsymbol{x}}, \boldsymbol{\mu})$
 
 
@@ -345,18 +448,15 @@ Confidence Region
 
   - This confidence ellipsoid above is the most precise confidence region of the vector $\boldsymbol{\mu}$, in the sense that any other form of confidence region for $\boldsymbol{\mu}$ with the same confidence level $(1-\alpha)$ will have **larger volume** in the $p$-dimensional space of $\boldsymbol{\mu}$ and hence less precise.
 
-Simultaneous confidence interval
-: - Individual CI: Sometimes people get used to confidence intervals for individual components, such as
+Simultaneous confidence intervals for each component
+: - Individual CIs: Sometimes people get used to confidence intervals for individual components, such as
 
     $$
     \bar{x}_{j}-t^{\alpha / 2}_{n-1} \frac{s_j}{\sqrt{n}} <\mu_{j}<\bar{x}_{j}+t^{\alpha / 2}_{n-1} \frac{s_j}{\sqrt{n}}
     $$
 
-    where $\bar{x}_j$ and $s_j$ are respectively the sample mean and standard deviation of the $j$-th variate that has mean $\mu_j$.
+    where $\bar{x}_j$ and $s_j$ are respectively the sample mean and standard deviation of the $j$-th variate that has mean $\mu_j$. But there are [multiple testing](multiple-testing) issues. We can then use Bonferroni or Scheffe simultaneous C.I.s to correct this.
 
-  - Problem: while each of the $p$ intervals has confidence level $(1-\alpha)$, the joint probability (joint confidence level) that all the $p$ statements are true simultaneously is less than $(1-\alpha)$.
-    - for instance, if all the $p$ variates are independent, then the joint confidence level is $(1-\alpha)^p$.
-    - to correct this, we can use Bonferroni or Scheffe's simultaneous C.I., which forms a hyper-rectangular region in $\mathbb{R} ^p$.
   - The $(1-\alpha)100\%$ Bonferroni simultaneous C.I.s for $m$ **pre-determined** linear components of means, $\boldsymbol{a}_{i}^{\top} \boldsymbol{\mu}(i=1, \ldots, m)$, are given by
 
     $$
@@ -466,3 +566,226 @@ More generally,
   $$
   \boldsymbol{a}^{\top}\left(\bar{\boldsymbol{x}}_{1}- \bar{\boldsymbol{x}}_{2}\right) \pm \sqrt{T_{\alpha}^{2}\left(p, n_{1}+n_{2}-2\right)} \sqrt{\left(\frac{1}{n_{1}}+\frac{1}{n_{2}}\right)\boldsymbol{a}^{\top} \boldsymbol{S}_{\text{pool} } \boldsymbol{a}}
   $$
+
+(manova)=
+### MANOVA
+
+If there are multiple samples of multivariate observations, we use Multivariate Analysis of Variance (MANOVA). The data are treated as $g$ sample groups of observed sample values, each sample group is from one of $g$ populations.
+
+#### Model
+
+The MANOVA model, generalized from ANOVA, becomes
+
+$$
+\boldsymbol{X}_{\ell j}=\boldsymbol{\mu}+\boldsymbol{\tau}_{\ell}+\boldsymbol{e}_{\ell j}, \quad j=1, \cdots, n_{\ell}, \quad \ell=1, \cdots, g
+$$
+
+- $\boldsymbol{\mu}$ is the **overall mean** vector,
+- $\boldsymbol{\tau} _{\ell}$ is the **treatment effect** vector of the $\ell$ th population or treatment group,
+- $\boldsymbol{e}_{\ell j} \sim N_{p}(0, \Sigma)$ is individual specific homogenous noise.
+- The parameter constraint here is $\sum_{\ell=1}^{g} n_{\ell} \boldsymbol{\tau}_{\ell}=0$.
+
+
+#### Test Statistic
+
+Analogous to the univariate case, the test of interest is
+
+$$
+\left\{\begin{array}{ll}
+H_{0}: & \boldsymbol{\tau}_{1}=\cdots=\boldsymbol{\tau}_{g}=\boldsymbol{0}_{p} \\
+H_{1}: & \boldsymbol{\tau}_{\ell} \neq 0_{p}, \text { for some } \ell=1, \cdots, g .
+\end{array}\right.
+$$
+
+The data can be decomposed similarly,
+
+$$
+\boldsymbol{x}_{\ell j}=\bar{\boldsymbol{x}}+\left(\bar{\boldsymbol{x}}_{\ell}-\bar{\boldsymbol{x}}\right)+\left(\boldsymbol{x}_{\ell j}-\bar{\boldsymbol{x}}_{\ell}\right)
+$$
+
+or
+
+$$
+(\boldsymbol{x}_{\ell j}-\bar{\boldsymbol{x}})=\left(\bar{\boldsymbol{x}}_{\ell}-\bar{\boldsymbol{x}}\right)+\left(\boldsymbol{x}_{\ell j}-\bar{\boldsymbol{x}}_{\ell}\right)
+$$
+
+Then
+
+$$
+\begin{aligned}
+\left(\boldsymbol{x}_{\ell j}-\bar{\boldsymbol{x}}\right)\left(\boldsymbol{x}_{\ell j}-\bar{\boldsymbol{x}}\right)^{\prime}=&\left(\bar{\boldsymbol{x}}_{\ell}-\bar{\boldsymbol{x}}\right)\left(\bar{\boldsymbol{x}}_{\ell}-\bar{\boldsymbol{x}}\right)^{\prime}+\left(\bar{\boldsymbol{x}}_{\ell}-\bar{\boldsymbol{x}}\right)\left(\boldsymbol{x}_{\ell j}-\bar{\boldsymbol{x}}_{\ell}\right)^{\prime} \\
+&+\left(\boldsymbol{x}_{\ell j}-\bar{\boldsymbol{x}}_{\ell}\right)\left(\bar{\boldsymbol{x}}_{\ell}-\bar{\boldsymbol{x}}\right)^{\prime}+\left(\boldsymbol{x}_{\ell j}-\bar{\boldsymbol{x}}_{\ell}\right)\left(\boldsymbol{x}_{\ell j}-\bar{\boldsymbol{x}}_{\ell}\right)^{\prime}
+\end{aligned}
+$$
+
+Summing up, we have
+
+$$
+\sum_{\ell=1}^{g} \sum_{j=1}^{n_{\ell}}\left(\boldsymbol{x}_{\ell j}-\overline{\boldsymbol{x}}\right)\left(\boldsymbol{x}_{\ell j}-\overline{\boldsymbol{x}}\right)^{\prime}=\sum_{\ell=1}^{g} \sum_{j=1}^{n_{\ell}}\left(\overline{\boldsymbol{x}}_{\ell}-\overline{\boldsymbol{x}}\right)\left(\overline{\boldsymbol{x}}_{\ell}-\overline{\boldsymbol{x}}\right)^{\prime}+\sum_{\ell=1}^{g} \sum_{j=1}^{n_{\ell}}\left(\boldsymbol{x}_{\ell j}-\overline{\mathbf{x}}_{\ell}\right)\left(\boldsymbol{x}_{\ell_{j}}-\overline{\boldsymbol{x}}_{\ell}\right)^{\prime}
+$$
+
+since
+
+$$
+\sum_{\ell=1}^{g} \sum_{j=1}^{n_{\ell}}\left(\overline{\boldsymbol{x}}_{\ell}-\overline{\boldsymbol{x}}\right)\left(\boldsymbol{x}_{\ell j}-\overline{\boldsymbol{x}}_{\ell}\right)^{\prime}=\boldsymbol{0}_{p \times p}, \quad \sum_{\ell=1}^{g} \sum_{j=1}^{n_{\ell}}\left(\boldsymbol{x}_{\ell j}-\overline{\boldsymbol{x}}_{\ell}\right)\left(\overline{\boldsymbol{x}}_{\ell}-\overline{\boldsymbol{x}}\right)^{\prime}=\boldsymbol{0}_{p \times p}
+$$
+
+The decomposition can be stated as
+
+$$
+\sum(\text { total variation })^{2}=\sum\left(\begin{array}{c}
+\text { "between-group" } \\
+\text { treatment variation }
+\end{array}\right)^{2}+\sum\left(\begin{array}{c}
+\text { "within-group" } \\
+\text { residual variation }
+\end{array}\right)^{2}
+$$
+
+with corresponding degrees of freedom
+
+$$
+\sum_{\ell=1}^{g} n_{\ell}-1=(g-1)+\sum_{\ell=1}^{g}\left(n_{\ell}-1\right)
+$$
+
+Now we analyze the test statistic
+
+Denote the between group (or between population) sum of squares and
+cross products matrix as
+
+$$
+\boldsymbol{B}=\sum_{\ell=1}^{g} n_{\ell}\left(\overline{\boldsymbol{x}}_{\ell}-\overline{\boldsymbol{x}}\right)\left(\overline{\boldsymbol{x}}_{\ell}-\overline{\boldsymbol{x}}\right)^{\prime}
+$$
+
+and the within group sum of squares and cross products matrix as
+
+$$
+\boldsymbol{W}=\sum_{\ell=1}^{g} \sum_{j=1}^{n_{\ell}}\left(\boldsymbol{x}_{\ell j}-\overline{\boldsymbol{x}}_{\ell}\right)\left(\boldsymbol{x}_{\ell j}-\overline{\boldsymbol{x}}_{\ell}\right)^{\prime}=\left(n_{1}-1\right) \boldsymbol{S}_{1}+\cdots+\left(n_{g}-1\right) \boldsymbol{S}_{g}
+$$
+
+In fact $\boldsymbol{W}$ is related to the pooled covariance matrix,
+
+
+$$
+\boldsymbol{S}_{\text {pool }}=\frac{1}{\sum_{\ell=1}^{g}\left(n_{\ell}-1\right)}\left[\left(n_{1}-1\right) \boldsymbol{S}_{1}+\cdots+\left(n_{g}-1\right) \boldsymbol{S}_{g}\right]=\frac{1}{n-\mathrm{g}} \boldsymbol{W}
+$$
+
+The MANOVA table is then
+
+$$
+\begin{array}{c|c|c}
+\hline \begin{array}{c}
+\text { Source } \\
+\text { of variation }
+\end{array} & \begin{array}{c}
+\text { Matrix of sum of squares } \\
+\text { and cross-products }
+\end{array} & \begin{array}{c}
+\text { Degrees } \\
+\text { of freedom }
+\end{array} \\
+\hline \text { Treatments } & \boldsymbol{B}=\sum_{\ell=1}^{g} n_{\ell}\left(\overline{\boldsymbol{x}}_{\ell}-\bar{x}\right)\left(\overline{\boldsymbol{x}}_{\ell}-\bar{x}\right)^{\prime} & g-1 \\
+\text { Residuals } & \boldsymbol{W}=\sum_{\ell=1}^{g} \sum_{j=1}^{n_{\ell}}\left(\boldsymbol{x}_{\ell j}-\overline{\boldsymbol{x}}_{\ell}\right)\left(\boldsymbol{x}_{\ell j}-\overline{\mathbf{x}}_{\ell}\right)^{\prime} & \sum_{\ell=1}^{g} n_{\ell}-\mathrm{g} \\
+\hline \text { Total } & \boldsymbol{B}+\boldsymbol{W}=\sum_{\ell=1}^{g} \sum_{j=1}^{n_{\ell}}\left(\boldsymbol{x}_{\ell j}-\overline{\boldsymbol{x}}\right)\left(\boldsymbol{x}_{\ell j}-\overline{\boldsymbol{x}}\right)^{\prime} & \sum_{\ell=1}^{g} n_{\ell}-1 \\
+\hline
+\end{array}
+$$
+
+Since $\boldsymbol{B}$ and $\boldsymbol{W}$ are $p \times p$ covariance matrices, the test statistic uses their determinants, or the generalized variances.
+
+We introduce Wilks' Lambda
+
+$$
+\Lambda^{*}=\frac{\operatorname{det}(\boldsymbol{W})}{\operatorname{det}(\boldsymbol{B}+\boldsymbol{W})}=\frac{\left|\sum_{\ell=1}^{g} \sum_{j=1}^{n_{\ell}}\left(\boldsymbol{x}_{\ell j}-\overline{\boldsymbol{x}}_{\ell}\right)\left(\boldsymbol{x}_{\ell j}-\overline{\mathbf{x}}_{\ell}\right)^{\prime}\right|}{\left|\sum_{\ell=1}^{g} \sum_{j=1}^{n_{\ell}}\left(\boldsymbol{x}_{\ell_{j}}-\overline{\boldsymbol{x}}\right)\left(\boldsymbol{x}_{\ell_{j}}-\overline{\boldsymbol{x}}\right)^{\prime}\right|}
+$$
+
+which is the ratio of generalized variance of residual / generalized variance of total.
+
+The distribution of $\Lambda^{*}$ depends on $p, g, n_\ell$ and is related to $F$ distribution. When $n = \sum n_\ell$ is large, Bartlett gives a simple chi-square approximation
+
+$$
+-\left(n-1-\frac{p+g}{2}\right) \ln \Lambda^{*} \sim \chi_{p(g-1)}^{2}
+$$
+
+Even for moderate sample size, it is good practice to check and compare both tests.
+
+Note
+
+- We reject the null hypothesis that all group means are equal if the value of $\Lambda^{*}$ is too “small”.
+- Wilks’ lambda is equivalent to the likelihood ratio test statistic.
+- Under the null Wilks’ lambda is of its own $\Lambda^{*}$-distribution, which is derived from the ratio of two random matrices $\boldsymbol{W}$ and $\boldsymbol{B} + \boldsymbol{W}$, each is of [Wishart distribution](wishart-distribution)
+- We can express Wilks' lambda by eigenvalues of $\boldsymbol{B} \boldsymbol{W} ^{-1}$, which can be seen as signal-noise ratio. If it is large, then $\lambda$ is large, and $\Lambda^{*}$ is small.
+
+  $$
+  \Lambda^{*}=\frac{|\boldsymbol{W}|}{|\boldsymbol{B}+\boldsymbol{W}|}=\frac{1}{\left|\boldsymbol{W}^{-1} \boldsymbol{B}+\boldsymbol{l}\right|}=\prod_{k=1}^{p} \frac{1}{1+\lambda_{k}}
+  $$
+
+Other test statistics using the eigenvalues of $\boldsymbol{B} \boldsymbol{W} ^{-1}$ include
+- Hotelling-Lawley’s Trace: $\operatorname{trace}\left(\mathbf{B W}^{-1}\right)=\sum_{k=1}^{p} \lambda_{k}$
+- Pillai’s Trace:  $\operatorname{trace}\left(\boldsymbol{B}(\boldsymbol{B}+\boldsymbol{W})^{-1}\right)=\operatorname{trace}\left(\boldsymbol{B} \boldsymbol{W}^{-1}\left(\boldsymbol{B} \boldsymbol{W}^{-1}+I\right)^{-1}\right)=\sum_{k=1}^{p} \frac{\lambda_{k}}{1+\lambda_{k}}$
+- Roy's Largest Root: $\max _{k}\left\{\lambda_{k}\right\}=\left\|\boldsymbol{B} \boldsymbol{W}^{-1}\right\|_{\infty}$ which gives an upper bound
+
+#### C.I. for Difference in Two Means
+
+If the null hypothesis of MANOVA is rejected, a natural question is, **which** treatments have significant effects?
+
+To compare the effect of treatment $k$ and treatment $\ell$, the quantity of interests is the difference of the vectors $\boldsymbol{\tau}_k - \boldsymbol{\tau}_\ell$ which is the same as $\boldsymbol{\mu} _k - \boldsymbol{\mu} _\ell$. For two fixed $k, \ell$, there are $p$ variables to compare. For each variable $i$, we want a confidence interval for $\tau_{ki} - \tau_{\ell i}$, which have the form
+
+$$
+\hat{\tau}_{k i}-\hat{\tau}_{\ell i} \pm c \times \sqrt{\widehat{\operatorname{Var}}\left(\hat{\tau}_{k i}-\hat{\tau}_{\ell i}\right)}
+$$
+
+where the multiplier $c$ depends on the level and the type of the confidence interval.
+
+Assuming mutual independence and equal variance $\boldsymbol{\Sigma}$ among the $g$ samples, using Bonferroni correction, we have
+- $c = t_{n-g}^{\alpha/2m}$, where $m= p \binom{g}{2}$ is the number of simultaneous confidence intervals.
+- $\widehat{\operatorname{Var}}\left(\hat{\tau}_{k i}-\hat{\tau}_{\ell i}\right)=\frac{w_{i i}}{n-g}\left(\frac{1}{n_{k}}+\frac{1}{n_{\ell}}\right)$ where $w_{ii}$ is the diagonal entry of $\boldsymbol{W}$.
+
+Note that
+- The Bonferroni method often gives confidence intervals too wide to be practical even for moderate $p$ and $g$.
+- The equal variance can be tested.
+
+#### Test for Equal Covariance
+
+Are the variables in the $g$ population groups sharing the same
+covariance structure?
+
+$$
+\left\{\begin{array}{ll}
+H_{0}: & \boldsymbol{\Sigma}_{1}=\boldsymbol{\Sigma}_{2}=\cdots=\boldsymbol{\Sigma}_{g}=\boldsymbol{\Sigma} \\
+H_{1}: & \boldsymbol{\Sigma}_{i} \neq \boldsymbol{\Sigma}_{j} \quad \text { for some } i \neq j
+\end{array}\right.
+$$
+
+Box’s $M$-test for equal covariance structure is a likelihood-ratio type of test. Denote
+
+$$
+\Lambda=\prod_{\ell=1}^{g}\left(\frac{\left|\boldsymbol{S}_{\ell}\right|}{\left|\boldsymbol{S}_{\text {pool }}\right|}\right)^{\left(n_{\ell}-1\right) / 2}
+$$
+
+where
+
+$$
+\boldsymbol{S}_{\text {pool }}=\frac{1}{\sum_{\ell=1}^{g}\left(n_{\ell}-1\right)}\left[\left(n_{1}-1\right) \boldsymbol{S}_{1}+\cdots+\left(n_{g}-1\right) \boldsymbol{S}_{g}\right]=\frac{1}{n-\mathrm{g}} \boldsymbol{W}
+$$
+
+Box’s test is based on an approximation that the sampling distribution of $\ln \Lambda$ is approximately of $\chi ^2$ distribution under the equal covariance matrix hypothesis. Box's $M$ is defined as
+
+$$
+\begin{aligned}
+M &=-2 \ln \Lambda \\
+&=(n-g) \ln \left|\boldsymbol{S}_{\text {pool }}\right|-\sum_{\ell=1}^{g}\left[\left(n_{\ell}-1\right) \ln \left|\boldsymbol{S}_{\ell}\right|\right]
+\end{aligned}
+$$
+
+Under the hypothesis $H_0$ of equal covariance, approximately
+
+$$
+(1-u) M \sim \chi_{v}^{2}
+$$
+
+where
+- $u = \left(\sum_{\ell=1}^{g} \frac{1}{n_{\ell}-1}-\frac{1}{n-g}\right) \frac{2 p^{2}+3 p-1}{6(p+1)(g-1)}$
+- $v = p(p+1)(g-1)/2$
+
+$H_0$ is rejected if $(1-u) M > \chi_{v}^{2}(\alpha)$. Box’s M-test works well for small $p$ and $g$ $(\le 5)$ and moderate to large $n_\ell$ $(\ge 20)$.
