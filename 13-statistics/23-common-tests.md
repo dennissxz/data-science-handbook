@@ -268,6 +268,109 @@ $$
 | Independent with unequal variance | $\frac{\left( \bar{X}-\bar{Y} \right)-\left(\mu_{X}-\mu_{Y}\right)}{\sqrt{\frac{S_{X}^{2}}{n}+\frac{S_{Y}^{2}}{m}}}$ | / | $\stackrel{\mathcal{D}}{\longrightarrow} t_v$ |
 
 
+## ANOVA
+
+Analysis of variance is used to compare several univariate sample means. For instance, in the plot below, we have five levels and observed the response $y$. We are interested in whether the five means are equal.
+
+:::{figure} test-one-way
+<img src="../imgs/test-one-way.png" width = "70%" alt=""/>
+
+One-way Layout
+:::
+
+### Model
+
+There are $n_\ell$ observations from population or treatment group $\ell = 1, 2, \ldots, g$
+
+$$
+X_{\ell j}=\mu+\tau_{\ell}+e_{\ell j}, \quad \ell=1, \cdots, g, \quad j=1, \cdots, n_{\ell}
+$$
+
+where
+- $\mu$ is the **overall mean** parameter.
+- $\tau_{\ell}$ is the **treatment effect** parameter of the $\ell$ th population or $\ell$ th treatment group.
+- $e_{\ell j} \sim N\left(0, \sigma^{2}\right)$ is individual specific homogenous noise.
+- Parameter constraints: There should be constraints on the parameters such as $\sum_{\ell=1}^{g} n_{\ell} \tau_{\ell}=0$, to avoid redundancy or unidentifiability.
+
+
+To detect differences in treatment effects among the groups,
+the first test of interest is
+
+$$
+\left\{\begin{array}{ll}
+H_{0}: & \tau_{1}=\cdots=\tau_{g}=0 \\
+H_{1}: & \tau_{\ell} \neq 0, \text { for some } \ell=1, \cdots, g
+\end{array}\right.
+$$
+
+### Test Statistic
+
+First, we decompose the observations as
+
+$$\begin{aligned}
+x_{\ell j} &= \bar{x} + \left(\bar{x}_{\ell}-\bar{x}\right)+\left(x_{\ell j}-\bar{x}_{\ell}\right) \\
+&= \hat{\mu} + \hat{\tau}_\ell + \hat{e}_{\ell j}\\
+\end{aligned}$$
+
+
+where $\bar{x}$ is the overall mean, $\bar{x}_\ell$ is the $\ell$-th group mean. Hence, the observation can be seen as estimated overall mean + estimated treatment effect + estimated noise. Equivalently,
+
+$$
+\left(x_{\ell j}-\bar{x}\right)=\left(\bar{x}_{\ell}-\bar{x}\right)+\left(x_{\ell j}-\bar{x}_{\ell}\right)
+$$
+
+Summing up all **squared** terms, noticing that $\sum_{\ell=1}^{g} \sum_{j=1}^{n_{\ell}}\left(\bar{x}_{\ell}-\bar{x}\right)\left(x_{\ell j}-\bar{x}_{\ell}\right)=0$, we have
+
+$$
+\sum_{\ell=1}^{g} \sum_{j=1}^{n_{\ell}}\left(x_{\ell j}-\bar{x}\right)^{2}=\sum_{\ell=1}^{g} n_{\ell}\left(\bar{x}_{\ell}-\bar{x}\right)^{2}+\sum_{\ell=1}^{g} \sum_{j=1}^{n_{\ell}}\left(x_{\ell j}-\bar{x}_{\ell}\right)^{2}
+$$
+
+The decomposition can be stated as
+
+$$
+\sum(\text { total variation })^{2}=\sum\left(\begin{array}{c}
+\text { between-group } \\
+\text { treatment variation }
+\end{array}\right)^{2}+\sum\left(\begin{array}{c}
+\text { within-group } \\
+\text { residual variation }
+\end{array}\right)^{2}
+$$
+
+The corresponding numbers of independent quantities of each term, i.e. the degrees of freedom, have the relation
+
+$$
+\sum_{\ell=1}^{g} n_{\ell}-1=(g-1)+\sum_{\ell=1}^{g}\left(n_{\ell}-1\right)
+$$
+
+Therefore, we obtain the analysis of variance table
+
+$$
+\begin{array}{c|c|c|c}
+\hline \begin{array}{c}
+\text { Source } \\
+\text { of variation }
+\end{array} & \text { SS (sum of squares) } & \text { d.f. } & \begin{array}{c}
+F \text {-value } \\
+\text { (variance ratio) }
+\end{array} \\
+\hline \text { Treatments } & S S_{t r t}=\sum_{\ell=1}^{g} \sum_{j=1}^{n_{\ell}}\left(\bar{x}_{\ell}-\bar{x}\right)^{2} & g-1 & S S_{t r t} /(g-1) \\
+\text { Residuals } & S S_{\text {res }}=\sum_{\ell=1}^{g} \sum_{j=1}^{n_{\ell}}\left(x_{\ell j}-\bar{x}_{\ell}\right)^{2} & \sum_{\ell=1}^{g} n_{\ell}-g & \\
+\hline \text { Total } & S S_{t o t}=\sum_{\ell=1}^{g} \sum_{j=1}^{n_{\ell}}\left(x_{\ell j}-\bar{x}\right)^{2} & \sum_{\ell=1}^{g} n_{\ell}-1 & \\
+\hline
+\end{array}
+$$
+
+At test level $\alpha$, the null $H_0: \tau_{1}=\cdots=\tau_{g}=0$ is rejected if
+
+
+$$
+\frac{S S_{t r t} /(g-1)}{S S_{\text {res }} /\left(\sum_{\ell=1}^{g} n_{\ell}-g\right)}>F_{g-1, \sum_{\ell=1}^{g} n_{\ell}-g}(\alpha)
+$$
+
+
+
+
 ## Multivariate Settings
 
 ### Hotelling's $T^2$ Distribution
