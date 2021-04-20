@@ -19,6 +19,8 @@ Proposed by Pearson in 1901 and further developed by Hotelling in 1993.
 
 ## Objective
 
+### Tasks
+
 Given $X_1, X_2, \ldots, X_d$, we want to extract the most useful information of $p$ measurements such that
 
 1. **explore underlying dimension** behind the $p$ original measurements to explain the variation of $p$ original measurements, which may have interesting or revealing interpretations, such as size, shape and contrasts in natural science;
@@ -28,6 +30,7 @@ social behavioral sciences.
 
 3. **simplify the dimension** of the observed data set. Lower dimension can be chosen from the data set such that the variations of measurements can be captured with an acceptable level. For example, $k \ll d$ latent variables are chosen to capture 90% of variation of $p$ original measurements. Indeed, this can be regarded as the data reduction or dimension reduction.
 
+### Formulation based on Distribution
 
 Consider a $d$-dimensional random vector $\boldsymbol{x} = \left( X_1, X_2, \ldots, X_d \right)^\top$ with mean vector $\boldsymbol{\mu} = \left( \mu_1, \ldots, \mu_d \right)^\top$ and covariance matrix $\boldsymbol{\Sigma}$. PCA aims to obtain the variables $Z_1, Z_2, \ldots, Z_k$ which are the **linear combinations** of $X_1, X_2, \ldots, X_d$ and $k \le d$, such that
 
@@ -45,9 +48,9 @@ Consider a $d$-dimensional random vector $\boldsymbol{x} = \left( X_1, X_2, \ldo
 
 - The linear combinations $Z_i$ and $Z_j$ are **uncorrelated** for $i\ne j$. This imply that each variable in $\boldsymbol{z} = \left( Z_1, Z_2, \ldots, Z_k \right)^\top$ can be analyzed by using **univariate** techniques.
 
+### Formulation based on Data
 
-Other formulations of PCA based on sample data matrix $\boldsymbol{X}$: Find a linear mapping $\mathbb{R} ^d \rightarrow \mathbb{R} ^k$ (assume $\boldsymbol{X}$ is centered) to project the data matrix $\boldsymbol{X}_{n \times d}$ to a lower dimensional embedding matrix $\boldsymbol{Z}_{n \times k}$.
-
+Other formulations of PCA based on sample data matrix $\boldsymbol{X}$ aim to find a linear mapping $\mathbb{R} ^d \rightarrow \mathbb{R} ^k$ (assume $\boldsymbol{X}$ is centered) to project the data matrix $\boldsymbol{X}_{n \times d}$ to a lower dimensional embedding matrix $\boldsymbol{Z}_{n \times k}$.
 
 $$\begin{aligned}
 \boldsymbol{z}_i &= \boldsymbol{W}_{d \times k} ^\top \boldsymbol{x}_i \\
@@ -55,6 +58,8 @@ $$\begin{aligned}
 \end{aligned}$$
 
 The mapping $\boldsymbol{W} _{d \times k}$ are also called **loadings**, and the embeddings $\boldsymbol{Z} _{n \times k}$ are called **scores**. The loadings can be used to visualize how the original variables $X_j$ contributes to each principal component $Z_j$. The scores $\boldsymbol{Z} _{n \times k}$ can then be used for downstream tasks, e.g. visualization.
+
+There are various equivalent formulations of the loadings $\boldsymbol{W}$:
 
 - Maximize the total variances $\sum_i \operatorname{Var}\left( Z_i \right)$ of the projected data $\boldsymbol{Z} =  \boldsymbol{X}  \boldsymbol{W}$ (similar to the population formulation above)
 
@@ -223,7 +228,7 @@ $$
 
 where $\boldsymbol{U} _{[:k]}$ means the matrix consisting of the first $k$ columns of $\boldsymbol{U}$.
 
-## Properties
+### Properties
 
 1. All principal components are uncorrelated, i.e., $\operatorname{Cov}\left( Z_i, Z_j \right) = 0$ for $i \ne j$
 
@@ -331,8 +336,9 @@ where $\boldsymbol{U} _{[:k]}$ means the matrix consisting of the first $k$ colu
 
 
 
+## Practical Issues
 
-## Tuning
+### Tuning
 
 There are several ways to choose the number of principal components to retain.
 
@@ -394,9 +400,9 @@ There are several ways to choose the number of principal components to retain.
     Use the performance of the downstream task to choose an optimal number of principal components.
 
 
-## Interpretation
+### Interpretation
 
-### Geometric Meaning: Direction of Variation
+#### Geometric Meaning: Direction of Variation
 
 For the distribution of $\boldsymbol{x}$, thelcenter location is determined by $\boldsymbol{\mu} _ X$ and the variation is captured by each principal direction $\boldsymbol{u} _i$
 
@@ -436,7 +442,7 @@ Another example is hand written digits. Suppose $\boldsymbol{\mu} _ \boldsymbol{
 Reconstruction of digits with mean and scaled principal components [Livescu 2021]
 :::
 
-### Proportion Explained
+#### Proportion Explained
 
 The proportion of total variance explained by $Z_i$, which is
 
@@ -444,7 +450,7 @@ $$\frac{\lambda_i}{\sum_{j=1}^d \lambda_j}$$
 
 is considered as a measure of **importance** of $Z_i$ in a more parsimonious description of the system.
 
-### Score of an Observation in Sample Data
+#### Score of an Observation in Sample Data
 
 For a data set of $n$ observations, we decompose the sample covariance matrix $S$ as
 
@@ -504,9 +510,9 @@ $$\bar{\boldsymbol{x}}, \boldsymbol{S} , \boldsymbol{R} , \ell_i, \boldsymbol{a}
 
 
 
-## Special Cases
+### Special Cases
 
-### Variables are Uncorrelated
+#### Variables are Uncorrelated
 
 If $\boldsymbol{X_i}$ are uncorrelated, then $\boldsymbol{\Sigma}$ is a diagonal matrix, i.e., $\boldsymbol{\Sigma} = \operatorname{diag}\left( \sigma_{11}, \sigma_{22}, \ldots, \sigma_{dd} \right)$. Without loss of generality, assume $\sigma_{11} > \sigma_{22} > \ldots > \sigma_{dd}$, then from its spectral decomposition $\boldsymbol{\Sigma} = \boldsymbol{U} ^\top \boldsymbol{\Lambda} \boldsymbol{U}$, we have
 - $\boldsymbol{U} = \boldsymbol{I}$
@@ -520,7 +526,7 @@ $$
 
 Clearly, it is **not** necessary to perform PCA in this case.
 
-### Variables are Perfectly Correlated
+#### Variables are Perfectly Correlated
 
 In this case, the covariance matrix is not of full rank, i.e., $\left\vert \boldsymbol{\Sigma}  \right\vert = 0$. Then, some eiganvalues equal zero. In other words,
 
@@ -530,7 +536,7 @@ $$
 
 Only $m$ eigenvectors $\boldsymbol{u} _i$ can be obtained with $\left\Vert \boldsymbol{u}_i  \right\Vert _2 ^2 =  1$ .
 
-### Few Variables Have Extremely Large Variances
+#### Few Variables Have Extremely Large Variances
 
 If a few variables have extremely large variances in comparison with other variables, they will dominate the first few principal components and give the foregone conclusion that a few principal components is sufficient in summarizing information. That conclusion may even be spurious, as the measurement scales, which affect the variances, are quite arbitrary in a lot of applications.
 
@@ -543,28 +549,24 @@ $$
 before performing PCA.
 
 
-## Cons
+### Cons
 
-**Sensitive to Variable Transformation**
+- Sensitive to variable transformation
+  - The results of PCA are not invariant under a linear transformation and, even worse, there is no easy correspondence between the two sets of results $\boldsymbol{z}$ and $\boldsymbol{z} ^\top$, before and after the linear transformation. For example, the PCA using $\boldsymbol{\Sigma}$ is not the same as the PCA using $\boldsymbol{\rho}$ and we cannot use the PCA from $\boldsymbol{\rho}$ to get the PCA results from the original variables.
+  - If the two sets of results are consistent to each other, the PCA based on $\boldsymbol{\Sigma}$  may be preferred in some situation. If they are very different, or even contradictory, subject-matter knowledge and/or wisdom are needed to make a choice.
+  - The PCA based on covariance matrix is preferred when the original measurements units are very important, like in many applications in natural sciences. However, when the units of measurement are of artificial nature, like scores in some questions as frequently used in social sciences, the PCA based on correlation matrix is preferred.
 
-The results of PCA are not invariant under a linear transformation and, even worse, there is no easy correspondence between the two sets of results $\boldsymbol{z}$ and $\boldsymbol{z} ^\top$, before and after the linear transformation. For example, the PCA using $\boldsymbol{\Sigma}$ is not the same as the PCA using $\boldsymbol{\rho}$ and we cannot use the PCA from $\boldsymbol{\rho}$ to get the PCA results from the original variables.
+- Direction of variance may not be discriminative
 
-If the two sets of results are consistent to each other, the PCA based on $\boldsymbol{\Sigma}$  may be preferred in some situation. If they are very different, or even contradictory, subject-matter knowledge and/or wisdom are needed to make a choice.
+  But note that the direction of largest variance need not to be the most discriminative direction. See the example below.
 
-The PCA based on covariance matrix is preferred when the original measurements units are very important, like in many applications in
-natural sciences. However, when the units of measurement are of artificial nature, like scores in some questions as frequently used in social sciences, the PCA based on correlation matrix is preferred.
+  :::{figure,myclass} pca-not-discriminative
+  <img src="../imgs/pca-classification.png" width = "80%" alt=""/>
 
-**Direction of Variance may not be Discriminative**
+  PCA may not be discriminative [Livescu 2021]
+  :::
 
-But note that the direction of largest variance need not to be the most discriminative direction. See the example below.
-
-:::{figure,myclass} pca-not-discriminative
-<img src="../imgs/pca-classification.png" width = "80%" alt=""/>
-
-PCA may not be discriminative [Livescu 2021]
-:::
-
-If we knew the labels, we could use a supervised dimensionality reduction, e.g. linear discriminant analysis.
+  If we knew the labels, we could use a supervised dimensionality reduction, e.g. linear discriminant analysis.
 
 ## Relation to
 
@@ -664,11 +666,11 @@ Hence we can construct a neural network as follows
   - The activation function is simply the identity function
 
 
-## Extension: Probabilistic PCA
+## Extension
+
+We introduce an extension of PCA: probabilistic PCA. For another extension Kernel PCA, see [here](kernel-pca).
 
 *Independently proposed by [Tipping & Bishop 1997, 1999] and [Roweis 1998]*
-
-
 
 Probabilistic PCA adds a probabilistic component (interpretation) to the PCA model. It provides
 
@@ -801,21 +803,49 @@ where $\boldsymbol{M} _{ML} = \boldsymbol{W} _{ML} ^\top \boldsymbol{W} _{ML}  +
 - As $\sigma^2 _{ML} \rightarrow 0$, the posterior mean approaches the standard PCA projection $\boldsymbol{ z } =  \boldsymbol{U}  ^\top (\boldsymbol{x}  - \bar{\boldsymbol{x} })$
 - As $\sigma^2 _{ML}> 0$, the posterior mean "shrinks" the solution in magnitude from standard PCA. Since we are less certain about the representation when the noise is large.
 
-## Extension: Spike Model
+## Advanced Topics
 
-Suppose a $p$-variate random vector consists of signal and noise
+### Large Sample Inference
+
+Assume that $\boldsymbol{x}_i \overset{\text{iid}}{\sim}\mathcal{N} _p(\boldsymbol{\mu} , \boldsymbol{\Sigma} )$, let $(\lambda_i, \boldsymbol{u} _i)$ and $(\hat{\lambda}_i, \hat{\boldsymbol{u}} _i)$ be respectively the eigen pair of population covariance matrix $\boldsymbol{\Sigma}$ and of sample covariance matrix $\boldsymbol{S}$. Let $d_i = \sqrt{n-1} (\hat{\lambda}_i - \lambda_i)$ be a difference measure between the two eigenvalues, and $\boldsymbol{z} _i = \sqrt{n-1}(\hat{\boldsymbol{u}} _i - \boldsymbol{u} _i)$ be a difference measure between the two eigenvectors, then we have the following asymptotic results as $(n - 1 - p) \rightarrow \infty$,
+- $[d_1, \ldots, d_p]$ is independent of $[\boldsymbol{z} _1, \ldots, \boldsymbol{z} _p]$
+- $d_i$'s are independently $\mathcal{N} (0, 2\lambda_i^2)$.
+- $\boldsymbol{z} _i \sim \mathcal{N} _p(\boldsymbol{0} , \sum_{k=1 \atop k \neq i}^{p} \frac{\lambda_{i} \lambda_{k}}{\left(\lambda_{i}-\lambda_{k}\right)^{2}} \boldsymbol{u}_{k} \boldsymbol{u}_{k}^{\top})$ and $\operatorname{Cov}\left(\boldsymbol{z}_{i}, \boldsymbol{z}_{j}\right)=-\frac{\lambda_{i} \lambda_{j}}{\left(\lambda_{i}-\lambda_{j}\right)^{2}} \boldsymbol{u}_{j} \boldsymbol{u}_{i}^{\top}$
+
+### Identifiability
+
+PCA use EVD of sample covariance matrix $\boldsymbol{S}$. As $n \rightarrow \infty$, by the Law of Large numbers, $\boldsymbol{S} \rightarrow \boldsymbol{\Sigma}$ hence its eigenvalues also converges to those of $\boldsymbol{\Sigma}$, i.e. we are able to recover the signal subspace. However, in high dimensional setting where $p$ is large, is this still true?
+
+Let $\gamma = \lim_{n ,p \rightarrow \infty} \frac{p}{n}$. If $\gamma > 0$, the top eigenvectors of sample covariance matrices might not reflect the subspace of signals. In fact, there is a threshold of signal-noise ratio.
+- below a threshold of SNR, PCA fails w.h.p.
+- above SNR, PCA approximate the signal subspace w.h.p.
+
+We illustrate this using a simplest rank-1 (spike) signal model. Suppose a $p$-variate random vector consists of signal and noise
 
 $$
-\boldsymbol{x} = \sqrt{\beta} g_0 \boldsymbol{u} + \boldsymbol{g}  
+\boldsymbol{x} = g_0 \boldsymbol{u} + \boldsymbol{g}  
 $$
 
 where
-- $\boldsymbol{u} \in \mathbb{R} ^p$ is some fixed signal
-- $g_0 \sim \mathcal{N} (0, 1)$ and $\sqrt{\beta}$ control randomness and variation of signal
-- $\boldsymbol{g} \sim \mathcal{N} (\boldsymbol{0} , \boldsymbol{I} _p)$ is noise, independent of $g_0$
-- the distribution of $\boldsymbol{x}$ is still Gaussian
+- $\boldsymbol{u} \in \mathbb{R} ^p$ is some fixed signal **direction**, w.l.o.g. set $\left\| \boldsymbol{u}  \right\| = 1$.
+- $g_0 \sim \mathcal{N} (0, \beta)$ and $\beta$ control randomness and variation (**energy**) of signal
+- $\boldsymbol{g} \sim \mathcal{N} (\boldsymbol{0} , \sigma^2 _{\epsilon}\boldsymbol{I} _p)$ is white noise, independent of $g_0$.
 
-For instance, when $p=2$, we observe $\boldsymbol{x}$ as follows. As we can see, if the signal $\left\| \boldsymbol{u} \right\|$ and $\beta$ is too small relative to noise (i.e. weak signal), then it is hard to distinguish them. We are interested in under what condition of $\beta$ and $\boldsymbol{u}$ can we detect $\boldsymbol{u}$ via PCA? Here detection means to find some $\boldsymbol{v}$ such that $\langle \boldsymbol{u} , \boldsymbol{v} \rangle \ne 0$ w.h.p.
+Can we recover signal direction $\boldsymbol{u}$ from principal component analysis on noisy measurements $\boldsymbol{x}$? First note the distribution of $\boldsymbol{x}$ is still Gaussian, with mean and variance
+
+$$\begin{aligned}
+\mathbb{E} [\boldsymbol{x}] &= \boldsymbol{0} \\
+\boldsymbol{\Sigma}
+&= \beta \boldsymbol{u} \boldsymbol{u} ^{\top} + \sigma^2 _{\epsilon}\boldsymbol{I} _p \\
+\end{aligned}$$
+
+Define the signal-noise ratio
+
+$$
+SNR = \frac{\beta}{\sigma^2 _{\epsilon}}
+$$
+
+For simplicity we assume that $\sigma^2 _{\epsilon}=1$ w.l.o.g. Then $SNR = \beta$. Intuitively, if $\beta$ is small, then the sample variance matrix is like meaningless $\boldsymbol{I} _p$. PCA fail to distinguish $\boldsymbol{u}$ from noise $\boldsymbol{g}$. Pictorially, when $p=2$, the signal and data points are shown below. If $\beta$ is too small, then it is hard to distinguish the signal direction from the data points. As $\beta$ increases, the overall data points suggests a direction aligned with the signal direction.
 
 ```{code-cell} python
 :tags: [hide-input]
@@ -825,9 +855,8 @@ import matplotlib.pyplot as plt
 
 n, p = 100, 2
 np.random.seed(1)
-b1, b2, b3 = 1/4, 1, 1
-u1 = u2 = np.array([1, 0.5]).reshape(1,2)
-u3 = np.array([2, 1]).reshape(1,2)
+b1, b2, b3 = 1/4, 1, 4
+u1 = u2 = u3 = np.array([1, 0.5]).reshape(1,2)
 g0 = np.random.normal(size=(100,1))
 g = np.random.normal(size=(100, 2))
 signal1 = np.sqrt(b1) * g0 * u1
@@ -840,7 +869,7 @@ x3 = signal3 + g
 fig, ax = plt.subplots(1,3, figsize=(9,3), dpi=200)
 s = 0.8
 
-ax[0].set_title(r'$u=[1,0.5], \sqrt{\beta}=0.25$')
+ax[0].set_title(r'$\beta=0.25$')
 ax[0].set(xlim=(-5, 5), ylim=(-5, 5))
 ax[0].set_aspect('equal', 'box')
 ax[0].scatter(signal1[:,0], signal1[:,1], s=s, c='C0', label='signal')
@@ -850,7 +879,7 @@ ax[0].spines.bottom.set_position('center')
 ax[0].spines.right.set_color('none')
 ax[0].spines.top.set_color('none')
 
-ax[1].set_title(r'$u=[1,0.5], \sqrt{\beta}=1$')
+ax[1].set_title(r'$\beta=1$')
 ax[1].set(xlim=(-5, 5), ylim=(-5, 5))
 ax[1].set_aspect('equal', 'box')
 ax[1].scatter(signal2[:,0], signal2[:,1], s=s, c='C0')
@@ -860,7 +889,7 @@ ax[1].spines.bottom.set_position('center')
 ax[1].spines.right.set_color('none')
 ax[1].spines.top.set_color('none')
 
-ax[2].set_title(r'$u=[2,1], \sqrt{\beta}=1$')
+ax[2].set_title(r'$\beta=4$')
 ax[2].set(xlim=(-5, 5), ylim=(-5, 5))
 ax[2].set_aspect('equal', 'box')
 ax[2].scatter(signal3[:,0], signal3[:,1], s=s, c='C0')
@@ -876,54 +905,60 @@ plt.show()
 
 ```
 
-Consider the mean and variance of the observed $\boldsymbol{x}$,
+We are interested in high-dimensional setting $n, p \rightarrow \infty$, under what conditions of $\beta$ and $\gamma$ can we detect $\boldsymbol{u}$ via PCA from the observed data $\boldsymbol{X}$. Let $\widehat{\boldsymbol{\Sigma}}_{n} = \frac{1}{n} \boldsymbol{X} ^{\top} \boldsymbol{X}$ and $(\hat{\lambda}, \hat{\boldsymbol{u}})$ be its top eigen pair, here detection means
+- the top eigenvalue $\hat{\lambda}$ due to signal $\boldsymbol{u}$ is distinguishable from those due to noise $\boldsymbol{g}$
+- the estimated signal direction $\hat{\boldsymbol{u}}$ is close to the true signal direction $\boldsymbol{u}$, measured by $\langle \hat{\boldsymbol{u}} , \boldsymbol{u} \rangle \ne 0$ w.h.p.
 
-$$\begin{aligned}
-\mathbb{E} [\boldsymbol{x}] &= \boldsymbol{0} \\
-\boldsymbol{\Sigma}
-&= \beta \boldsymbol{u} \boldsymbol{u} ^{\top}  \operatorname{Var}\left( g_0 \right) + \operatorname{Cov}\left( \boldsymbol{g} \right) \\
-&= \beta \boldsymbol{u} \boldsymbol{u} ^{\top} + \boldsymbol{I} _p \\
-\end{aligned}$$
+#### Phase Transition
 
-It is easy to check $\boldsymbol{u}$ is the top eigenvector of $\boldsymbol{\Sigma}$. Let the (uncentered, biased) sample covariance matrix be $\boldsymbol{S} _n = \frac{1}{n} \sum_{i=1}^n \boldsymbol{x} _i \boldsymbol{x} _i ^{\top}$, where PCA (asymptotically??) works on. In expectation, $\mathbb{E} [\boldsymbol{S} _n] = \boldsymbol{\Sigma} = \beta \boldsymbol{u} \boldsymbol{u} ^{\top} + \boldsymbol{I}_p$. Hence, the top eigenvector of $\mathbb{E} [\boldsymbol{S} _n]$ is indeed $\boldsymbol{u}$. How about the top eigenvector of observed $\boldsymbol{S} _n$?
+With random matrix theory, using the [Marchenko-pastur Distribution](marchenko-pastur-distribution), we have the following conclusions:
 
-- Low-dimension regime: $\frac{p}{n} \rightarrow \gamma < 1$ as $n, p \rightarrow \infty$,
-- High-dimension regime: $\frac{p}{n} \rightarrow \gamma > 1$ as $n, p \rightarrow \infty$,
+- The largest eigenvalue $\hat{\lambda}$ satisfies
 
-For high-dim case, we analyze under what condition of $\beta$ and $\boldsymbol{u}$ can we detect $\boldsymbol{u}$, with random matrix theory.
+  $$
+  \lambda_{\max }\left(\widehat{\boldsymbol{\Sigma}}_{n}\right) \rightarrow\left\{\begin{array}{ll}
+  (1+\sqrt{\gamma})^{2}=\gamma_{+}, & \beta \leq \sqrt{\gamma} \\
+  \left(1+\beta\right)\left(1+\frac{\gamma}{\beta}\right) > \gamma_{+}, & \beta>\sqrt{\gamma}
+  \end{array}\right.
+  $$
 
-It is easy to check that $\boldsymbol{x} \sim \boldsymbol{\Sigma}^{\frac{1}{2}} \boldsymbol{z}$ where $\boldsymbol{z} \sim \mathcal{N} (\boldsymbol{0} , \boldsymbol{I} _p)$. Then we can write $\boldsymbol{S}_n = \boldsymbol{\Sigma}^{\frac{1}{2}} \boldsymbol{Z} _n \boldsymbol{\Sigma}^{\frac{1}{2}}$ where $\boldsymbol{Z} _n = \frac{1}{n} \sum_{i=1}^n \boldsymbol{z} _i \boldsymbol{z} _i ^{\top}$. When $n \rightarrow \infty$, the eigenvalue $\lambda$ of $\boldsymbol{Z} _n$ has [Marchenko–Pastur distribution](https://en.wikipedia.org/wiki/Marchenko%E2%80%93Pastur_distribution).
+  - if signal energy (or SNR) $\beta$ is smaller than $\sqrt{\gamma}$, the top eigenvalue of sample covariance matrix never 'pops up' from those of noise random matrix $\operatorname{Cov}\left( \boldsymbol{g}  \right)$, which follows M-P distribution in range $[\gamma_{-}, \gamma_{+}]$. That is, we don't know whether it is due to signal $\boldsymbol{u}$ or due to noise $\boldsymbol{g}$.
+  - only if the signal energy $\beta$ is beyond the phase transition threshold $\sqrt{\gamma}$, the top eigenvalue can be separated from noise random matrix eigenvalues. However, even in the latter case it is a **biased** estimation of the top eigenvalue $(1 + \beta)$.
+
+- The estimated signal direction $\hat{\boldsymbol{u} }$ satisfies
+
+  $$
+  \left|\left\langle \boldsymbol{u} , \hat{\boldsymbol{u} }\right\rangle\right|^{2} \rightarrow\left\{\begin{array}{ll}
+  0 & \beta \leq \sqrt{\gamma} \\
+  \frac{1-\gamma/\beta^2}{1+\gamma/\beta^2}  & \beta>\sqrt{\gamma}
+  \end{array}\right.
+  $$
+
+  - if signal is of low energy, the estimated top eigenvector is **orthogonal** to the true direction $\boldsymbol{u}$. PCA will tell us nothing about the true signal. In the extreme case $\beta = 0$, the largest eigenvector returned by PCA is just that from $\operatorname{Cov}\left( \boldsymbol{g}  \right) = \boldsymbol{I} _p$, which is purely a random direction.
+  - if the signal is of high energy, PCA will return a **biased** estimation which lies in a **cone** whose angle with the true signal is no more than $\arccos \left( \frac{1-\gamma/\beta^2}{1+\gamma/\beta^2}  \right)$.
+
+
+For derivation, see Yao's [notes](https://github.com/yao-lab/yao-lab.github.io/blob/master/book_datasci.pdf).
+
+Key techniques:
+- use 'whitening' $\boldsymbol{Z} = \boldsymbol{\Sigma} ^{-1/2} \boldsymbol{X} \sim \mathcal{N} (\boldsymbol{0} , \boldsymbol{I} _p)$ and then $\hat{\boldsymbol{\Sigma} }_{n}=\frac{1}{n} \boldsymbol{X} \boldsymbol{X} ^{T}=\boldsymbol{\Sigma} ^{1 / 2}\left(\frac{1}{n} \boldsymbol{Z} \boldsymbol{Z} ^{T}\right) \boldsymbol{\Sigma} ^{1 / 2}$ to relate the eigenvalue $\hat{\lambda}$ of $\hat{\boldsymbol{\Sigma} }_n$ with M-P distribution for eigenvalues of $\frac{1}{n} \boldsymbol{Z} \boldsymbol{Z} ^{T}$.
+- use integration to approximate infinite summation, if the summation can be expressed as the expectation of some continuous random variable, with known distribution function. (But the possible change of solution??)
+
+#### Comparison to Davis-Kahan Theorem
+
+If we use [Davis-Kahan theorem](davis-kahan), by viewing $\frac{1}{n} \sum_{i=1}^n  \boldsymbol{g}_i \boldsymbol{g}_i ^{\top}$ as noise, we have
+
 
 $$
-f_{\gamma}(\lambda)=\frac{1}{2 \pi} \frac{\sqrt{\left(\gamma_{+}-\lambda\right)\left(\lambda-\gamma_{-}\right)}}{\gamma \lambda}, \quad \lambda \in \left[\gamma_{-}, \gamma_{+}\right]
+\operatorname{dist}(\hat{\boldsymbol{u}}, \boldsymbol{u})=\left\|\hat{\boldsymbol{u}} \hat{\boldsymbol{u}}^{\top}-\boldsymbol{u} \boldsymbol{u}^{\top}\right\|_{2} \leq \frac{\|\frac{1}{n} \sum_{i=1}^n  \boldsymbol{g}_i \boldsymbol{g}_i ^{\top}\|}{\lambda_1(\boldsymbol{\Sigma}) - \lambda_2(\boldsymbol{\Sigma} )-\|\frac{1}{n} \sum_{i=1}^n \boldsymbol{g}_i \boldsymbol{g}_i ^{\top}\|} = \frac{\gamma_{+}}{\lambda_1 - \lambda_2 - \gamma_{+}}
 $$
 
-where $\gamma_- = (1 - \sqrt{\gamma})^2, \gamma_+ = (1+\sqrt{\gamma})^2$.
+where the spectral norm $\|\frac{1}{n} \boldsymbol{g}_i \boldsymbol{g}_i ^{\top}\| = \gamma_{+}$ since the upper bound of the M-P distribution is $\gamma_{+}$.
 
-- When $\gamma > 1$, there is an additional point mass $(1- \frac{1}{\gamma} ) \delta(\lambda - 0)$ (??) at the origin.
-- When sample size increases, $\gamma \rightarrow 0$, and the interval $\left[\gamma_{-}, \gamma_{+}\right]$ is tighter, i.e. more concentrated.
+If we want to $\operatorname{dist}(\hat{\boldsymbol{u}}, \boldsymbol{u})$ has some upper bound, then it is equivalent to let the denominator has some lower bound, i.e. $\lambda_1 - \lambda_2 \gg \gamma_{+}$. In the spike model, $\lambda_1 - \lambda_2 = \beta$. Hence, the condition for detection is
 
-How is eigen values of $\boldsymbol{Z} _n$ related to $\boldsymbol{u}$?
+$$
+\beta \gg \gamma_{+} = (1 + \sqrt{\gamma})^2
+$$
 
-.
-
-
-.
-
-
-.
-
-
-.
-
-
-.
-
-
-.
-
-
-.
-
-
-.
+This condition is more **conservative** than the above result: $\beta > \sqrt{\gamma}$ is ok.
