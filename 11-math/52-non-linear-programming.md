@@ -184,3 +184,212 @@ Corollary (Generalized Rayleigh quotient problem)
 
 
 reference: [notes](https://www.sjsu.edu/faculty/guangliang.chen/Math253S20/lec4RayleighQuotient.pdf)
+## Semi-definite Programming
+
+We introduce semi-definite programming in max-cut problem.
+
+### Max-cut Problem
+
+In a graph $G = (V, E)$ with edge weights $\boldsymbol{W}$, we want to find a maximum bisection cut
+
+$$
+\operatorname{cut} (\boldsymbol{W}) = \max_{\boldsymbol{x} \in \left\{ \pm 1 \right\}^n} \frac{1}{2} \sum_{i,j=1}^n w_{ij} (1 - x_i x_j)
+$$
+
+where the product $x_i x_j$ is an indicator variable that equals 1 if two vertices $i, j$ are in the same part, and $-1$ otherwise. Hence, the summation only involves the case when $x_i x_j = -1$, and we divide it by half since $(1- x_i x_j)=2$.
+
+Denote $\boldsymbol{X} = \boldsymbol{x} \boldsymbol{x} ^{\top} \in \mathbb{R} ^{n \times n}$. Then the domain $\boldsymbol{x} \in \left\{ \pm 1 \right\}^n$ is bijective to $\Omega = \left\{ \boldsymbol{X} \in \mathbb{R} ^{n \times n} : \boldsymbol{X} \succeq 0, X_{ii}=1, \operatorname{rank}\left( \boldsymbol{X}  \right) = 1 \right\}$. The optimization problem can then be expressed as
+
+$$\begin{aligned}
+\operatorname{cut} (\boldsymbol{W})
+&= \max_{\boldsymbol{X} \in \Omega} \frac{1}{2}  \operatorname{tr}\left( \boldsymbol{W} (\boldsymbol{1} \boldsymbol{1} ^{\top}  - \boldsymbol{X}) \right) \\
+\end{aligned}$$
+
+Solving this integer optimization is NP-hard. We work with relaxation of $\Omega$.
+
+### Relaxation
+
+#### Spectral Relaxation
+
+Two relaxations:
+- drop the rank 1-constraint $\operatorname{rank}\left( \boldsymbol{X} \right) = 1$
+- replace the diagonal constraint $X_{ii}=1$ by $\operatorname{tr}\left( \boldsymbol{X}  \right) = n$
+
+To solve it, it is equivalent to solve
+
+$$
+\max\ \operatorname{tr}\left( -\boldsymbol{W}\boldsymbol{X} \right) \qquad \text{s.t. }\boldsymbol{X} \succeq \boldsymbol{0} , \operatorname{tr}\left( \boldsymbol{X} \right) = n
+$$
+
+which has the form
+
+$$
+\max\ \operatorname{tr}\left( \boldsymbol{C} \boldsymbol{X} \right) \qquad \text{s.t. }\boldsymbol{X} \succeq \boldsymbol{0} , \operatorname{tr}\left( \boldsymbol{X} \right) = n
+$$
+
+which is equivalent (what if $\operatorname{rank} (\boldsymbol{X})=2$ ??) to
+
+$$
+\max\ \boldsymbol{x} ^{\top} \boldsymbol{C} \boldsymbol{x} \qquad \text{s.t.}  \left\| \boldsymbol{x}  \right\| = \sqrt{n}
+$$
+
+#### SDP Relaxation
+
+Only one relaxation: drop the rank-1 constraint, which is non-convex. The remaining two constraints forms a domain
+
+$$\Omega_{SDP} = \left\{ \boldsymbol{X} \in \mathbb{R} ^{n \times n}:  \boldsymbol{X} \succeq 0, X_{ii}=1 \right\}$$
+
+The optimization problem is then
+
+$$
+\operatorname{SDP} (\boldsymbol{W}) = \max_{\boldsymbol{X} \in \Omega_{SDP}} \frac{1}{2}  \sum_{i,j=1}^n w_{ij} (1 - X_{ij})
+$$
+
+Note that after we drop the rank-1 constraint,
+- $\operatorname{SDP}(\boldsymbol{W} ) \ge \operatorname{cut} (\boldsymbol{W})$.
+- The solution $\boldsymbol{X} ^*$ to $\operatorname{SDP} (\boldsymbol{W})$ may not be rank-1. If it is rank-1 then the above equality holds.
+
+It remains to solve $\operatorname{SDP} (\boldsymbol{W})$ for $\boldsymbol{X}$, and then find a way to obtain the binary partition assignment $\hat{\boldsymbol{x}} \in \left\{ \pm 1 \right\}^n$ from $\boldsymbol{X}$.
+
+
+:::{admonition,note,dropdown} Lifting
+
+$\Omega_{SDP}$ is equivalent to $\left\{\boldsymbol{X} \in \mathbb{R} ^{n \times n}: \boldsymbol{X} = \boldsymbol{V} ^{\top} \boldsymbol{V}, \left\| \boldsymbol{v} _i \right\| ^2 = 1 \right\}$. In this way, we convert a scalar constraint $X_{ii}$ to a vector constraint $\left\| \boldsymbol{v} _i \right\| =1$, aka 'lifting'.
+
+:::
+
+
+### Random Rounding
+
+#### Algorithm
+
+- Solve $\operatorname{SDP} (\boldsymbol{W})$ and obtain $\hat{\boldsymbol{X}}$
+- Decompose $\hat{\boldsymbol{X}} = \hat{\boldsymbol{V}} ^{\top} \boldsymbol{\hat{V}}$, e.g. using EVD $\boldsymbol{\hat{X}} ^{\top}  = \boldsymbol{\hat{U}} \sqrt{\boldsymbol{\hat{\Lambda}}}$, or using Cholesky. Note that $\left\| \boldsymbol{\hat{v}} _i \right\| =1$ always holds, due to the constraint $\hat{X}_{ii}=1$.
+- Sample a direction $\boldsymbol{r}$ uniformly from $\boldsymbol{S}^{n-1}$
+- Return binary partition assignment $\hat{\boldsymbol{x}} = \operatorname{sign} (\boldsymbol{\hat{V}} ^{\top} \boldsymbol{r} )$
+
+#### Intuition
+
+- Randomly sample a hyperplane in $\mathbb{R} ^n$ characterized by vector $\boldsymbol{r}$. If $\hat{\boldsymbol{v}} _i$ lies on the same side of the hyperplane with $\boldsymbol{r}$, then set $\hat{x}_i =1$, else $\hat{x}_i = -1$.
+- If there are indeed a partition $I$ and $J$ of vertices, then the two groups of directions $\boldsymbol{v} _i$'s and $\boldsymbol{v} _j$'s should point to opposite direction since $\boldsymbol{v} _i ^{\top} \boldsymbol{v} _j = x_i x_j = -1$. After random rounding, they should be well separated. Hence, if $\hat{\boldsymbol{v}}_i ^{\top} \hat{\boldsymbol{v} }_j$ recovers $\boldsymbol{v}_i ^{* \top} \boldsymbol{v}^* _j$ well enough, then $\hat{\boldsymbol{x}}$ well recovers $\boldsymbol{x}^*$, the optimal max-cut in $\operatorname{cut}(\boldsymbol{W})$.
+
+#### Analysis
+
+How well the algorithm does, in expectation? We define Geomans-Williams quantity, which is the expected cut value returned by the algorithm, where randomness comes from random direction $\boldsymbol{r}$.
+
+$$\operatorname{GW} (\boldsymbol{W}) = \mathbb{E}_{\boldsymbol{r}}  \left[ \frac{1}{2} \sum_{i,j=1}^n w_{ij} (1 - \hat{x}_i \hat{x}_j)\right]$$
+
+Obviously $\operatorname{GW} (\boldsymbol{W}) \le \operatorname{cut} (\boldsymbol{W})$, since we are averaging the value of feasible solutions $\hat{\boldsymbol{x}}$ in $\left\{ \pm 1\right\}^n$, and each of them is $\le \operatorname{cut} (\boldsymbol{W})$. But how small can $\operatorname{GW} (\boldsymbol{W})$ be?
+
+Theorem
+: $\operatorname{GW}(\boldsymbol{W})  \ge \alpha \operatorname{cut}(\boldsymbol{W})$ where $\alpha \approx 0.87$. That is, the random rounding algorithm return a cut value not too small than the optimal value, in expectation.
+
+:::{admonition,dropdown,seealso} *Proof*
+
+$$\begin{aligned}
+\mathbb{E} \left[ \frac{1}{2}(1 - \hat{x}_i \hat{x}_j) \right]
+&= \mathbb{P} (\boldsymbol{v} _i, \boldsymbol{v} _j \text{ lie on different side of hyperplane}) \\
+&= \frac{\text{angle btw } \boldsymbol{v} _i, \boldsymbol{v} _j }{2 \pi} \times 2 \quad \because \text{ two cones for }\boldsymbol{r} \\\
+&= \frac{\arccos (\boldsymbol{v} _i ^{\top} \boldsymbol{v} _j)}{\pi} \\
+\end{aligned}$$
+
+Now we compare $\operatorname{GW}(\boldsymbol{W}) =  \sum_{i,j}^n w_{ij} \frac{1}{\pi}\arccos (\boldsymbol{v} _i ^{\top} \boldsymbol{v} _j)$ and $\operatorname{SDP} (\boldsymbol{W}) = \sum_{i,j}^n w_{ij} \frac{1}{2} (1 - \boldsymbol{v} _i ^{\top} \boldsymbol{v} _j)$.
+
+Let's first see two functions $f(y) = \frac{1}{\pi}\arccos(y)$ and $g(y) = \frac{1}{2}(1-y)$ for $-1 \le y \le 1$. Let $\alpha = \min_{-1 \le y \le 1} \frac{f(y)}{g(y)}$, then $\alpha \approx 0.87$.
+
+addimg
+
+Therefore, let $y_{ij} = \boldsymbol{v} _i \boldsymbol{v} _j$, since $w_{ij} \ge 0$, we have $\operatorname{GW} (\boldsymbol{W}) \ge \alpha \operatorname{SDP} (\boldsymbol{W})$. Using the SDP relaxation inequality $\operatorname{SDP} (\boldsymbol{W}) \ge \operatorname{cut} (\boldsymbol{W})$, we have $\operatorname{GW} (\boldsymbol{W}) \ge \alpha \operatorname{cut} (\boldsymbol{W})$.
+
+Note that we require $w_{ij} \ge \boldsymbol{0}$.
+
+:::
+
+How large can the SDP relaxation value $\operatorname{SDP} (\boldsymbol{W})$ be? **Grothendieck's Inequality** says
+
+$$
+\operatorname{SDP}(\boldsymbol{W}) \le K \operatorname{cut}(\boldsymbol{W})  
+$$
+
+where $K \approx 1.7$. Hence, the SDP relaxation $\Omega_{SDP}$ does not relax the original domain $\Omega$ too much (otherwise we may see $\operatorname{SDP}(\boldsymbol{W}) \gg \operatorname{cut}(\boldsymbol{W})$). Hence $\hat{\boldsymbol{v}}_i ^{\top} \boldsymbol{\hat{v}} _j$ should recover binary $x_i^* x_j^*$ well.
+
+### For SBM
+
+The above inequalities applies to any problem instance $G=(V, E, \boldsymbol{W})$. It may give too generous or useless guarantee for some particular model. Let's see SBM case.
+
+We work with the mean-shifted matrix $\boldsymbol{B} = 2\boldsymbol{A} - \boldsymbol{1} \boldsymbol{1} ^{\top}$, where
+
+$$
+b_{ij} = \left\{\begin{array}{ll}
+1, & \text { if } a_{ij}=1 \\
+-1, & \text { if } a_{ij}=0
+\end{array}\right.
+$$
+
+Actually $\boldsymbol{B}$ just re-codes connectivity from 1/0 to 1/-1. Note that $\boldsymbol{B}$ is random. The problem is then
+
+$$
+\max _{\boldsymbol{X} \succeq 0, X_{ii}=1} \operatorname{tr}\left( \boldsymbol{B} \boldsymbol{X} \right) = \sum_{i,j}^n b_{ij} x_{ij} = \langle \boldsymbol{B} , \boldsymbol{X} \rangle
+$$
+
+i.e. we want $\boldsymbol{X}$ looks like $\boldsymbol{B}$, such that we can recover the binary assignment label from analyzing $\boldsymbol{X}$. (why don't directly analyze $\boldsymbol{B}$??)
+
+Now we show that the solution to the above problem $\hat{\boldsymbol{X}}$ is exactly rank-1, even without the rank-1 constraint.
+
+:::{admonition,dropdown,seealso} *Proof*
+
+First we change it to a minimization problem
+
+$$
+\max _{\boldsymbol{X} \succeq 0, X_{ii}=1} \operatorname{tr}\left( \boldsymbol{B} \boldsymbol{X} \right)
+$$
+
+The Lagrangean is
+
+$$
+\mathcal{L} (\boldsymbol{X} ; \boldsymbol{z} , \boldsymbol{\Lambda})= - \langle \boldsymbol{B} , \boldsymbol{X} \rangle - \langle \boldsymbol{z} , \operatorname{diag}\left( \boldsymbol{X}  \right)  - \boldsymbol{1}\rangle - \langle \boldsymbol{\Lambda} , \boldsymbol{X} \rangle
+$$
+
+where $\boldsymbol{z} \in \mathbb{R} ^n$ and $\boldsymbol{\Lambda} \succeq \boldsymbol{0}$ are dual variables (??). Then
+
+$$
+\min_{\boldsymbol{X}} \max _{\boldsymbol{\Lambda}, \boldsymbol{z}} \mathcal{L} (\boldsymbol{X} ; \boldsymbol{z} , \boldsymbol{\Lambda}) \ge \max _{\boldsymbol{\Lambda}, \boldsymbol{z}}\min_{\boldsymbol{X}}  \mathcal{L} (\boldsymbol{X} ; \boldsymbol{z} , \boldsymbol{\Lambda})
+$$
+
+Now we solve the RHS dual problem. For the inner minimization problem $\min_{\boldsymbol{X}}  \mathcal{L} (\boldsymbol{X} ; \boldsymbol{z} , \boldsymbol{\Lambda})$,
+
+$$
+\frac{\partial \mathcal{L} }{\partial \boldsymbol{X}} = - \boldsymbol{B} - \operatorname{diag}\left( \boldsymbol{z}  \right) - \boldsymbol{\Lambda} = \boldsymbol{0}
+$$
+
+Plug this identity to $\mathcal{L}$ gives the RHS outer maximization problem
+
+$$
+\max _{\boldsymbol{\Lambda} \succeq \boldsymbol{0} , \boldsymbol{z}}\ \boldsymbol{z} ^{\top} \boldsymbol{1}
+$$
+
+
+
+:::
+.
+
+
+.
+
+
+.
+
+
+.
+
+
+.
+
+
+.
+
+
+.
+
+
+.
