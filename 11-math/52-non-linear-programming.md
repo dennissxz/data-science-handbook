@@ -277,7 +277,7 @@ $\Omega_{SDP}$ is equivalent to $\left\{\boldsymbol{X} \in \mathbb{R} ^{n \times
 
 -   Solve $\operatorname{SDP} (\boldsymbol{W})$ and obtain $\hat{\boldsymbol{X}}$
 -   Decompose $\hat{\boldsymbol{X}} = \hat{\boldsymbol{V}} ^{\top} \boldsymbol{\hat{V}}$, e.g. using EVD $\boldsymbol{\hat{X}} ^{\top} = \boldsymbol{\hat{U}} \sqrt{\boldsymbol{\hat{\Lambda}}}$, or using Cholesky. Note that $\left\| \boldsymbol{\hat{v}} _i \right\| =1$ always holds, due to the constraint $\hat{X}_{ii}=1$.
--   Sample a direction $\boldsymbol{r}$ uniformly from $\boldsymbol{S}^{n-1}$
+-   Sample a direction $\boldsymbol{r}$ uniformly from $S^{p-1}$
 -   Return binary partition assignment $\hat{\boldsymbol{x}} = \operatorname{sign} (\boldsymbol{\hat{V}} ^{\top} \boldsymbol{r} )$
 
 #### Intuition
@@ -320,12 +320,20 @@ $\operatorname{GW}(\boldsymbol{W}) \ge \alpha \operatorname{cut}(\boldsymbol{W})
 
 ::::{admonition,dropdown,seealso} *Proof*
 
+We randomly sample direction $\boldsymbol{r}$ from unit sphere $S^{p-1}$. If $\boldsymbol{v} _i$ and $\boldsymbol{v} _j$ lie on different side of hyperplane characterized by $\boldsymbol{r}$, we call such direction 'good'.
+
+In $p=2$ case, we sample from a unit circle. All good $\boldsymbol{r}$ lie on two arcs on the circle, whose length are related to the angle between $\boldsymbol{v} _i$ and $\boldsymbol{v} _j$, denoted $\theta$. The probability of sampling good equals the ratio between the total length of the two arcs and the circumference. Thus,
+
 $$\begin{aligned}
 \mathbb{E} \left[ \frac{1}{2}(1 - \hat{x}_i \hat{x}_j) \right]
+&= \mathbb{P} (\hat{x}_i \hat{x}_j = -1) \\
 &= \mathbb{P} (\boldsymbol{v} _i, \boldsymbol{v} _j \text{ lie on different side of hyperplane}) \\
-&= \frac{\text{angle btw } \boldsymbol{v} _i, \boldsymbol{v} _j }{2 \pi} \times 2 \quad \because \text{ two cones for }\boldsymbol{r} \\\
+&= \frac{\theta}{2 \pi} \times 2  \\
 &= \frac{\arccos (\boldsymbol{v} _i ^{\top} \boldsymbol{v} _j)}{\pi} \\
 \end{aligned}$$
+
+In $p = 3$ case, we sample $\boldsymbol{r}$ from a unit sphere. All good $\boldsymbol{r}$ lie on a 'belt' on the sphere. The probability of sampling good $\boldsymbol{r}$ equals the ratio between the area of the belt and the area of the sphere. Consider partitioning the sphere into a collection of infinite many semicircles (like longitude arcs), then the probability for each semicircle is $\theta/\pi$. Hence, the overall probability for the sphere is still $\theta/\pi$. It remains constant in higher dimensional cases.
+
 
 Now we compare $\operatorname{GW}(\boldsymbol{W}) = \sum_{i,j}^n w_{ij} \frac{1}{\pi}\arccos (\boldsymbol{v} _i ^{\top} \boldsymbol{v} _j)$ and $\operatorname{SDP} (\boldsymbol{W}) = \sum_{i,j}^n w_{ij} \frac{1}{2} (1 - \boldsymbol{v} _i ^{\top} \boldsymbol{v} _j)$.
 
