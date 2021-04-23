@@ -3,7 +3,8 @@
 In this section we introduce (metric) multidimensional scaling (MDS). It finds some representation of input data, which can be used for dimension reduction or visualization. In addition to a $n \times d$ data matrix $\boldsymbol{X}$, MDS can also take pairwise relations, aka **proximity** data, as input, such as
 
 - pairwise dissimilarity measures of data points as input, denoted $\boldsymbol{D} \in \mathbb{R} ^{n \times n}$
-  - a matrix of Euclidean distances between points
+  - a matrix of Euclidean distances between data points
+  - a matrix of city-city airline distance (not necessarily Euclidean)
   - survey results of customers' perception of dissimilarity between products
 
   Note that the input dissimilarity matrix $\boldsymbol{D}$ may not be exactly euclidean distance, hence it does not enjoy all properties that a distance matrix has.
@@ -130,7 +131,7 @@ Note the inner product matrix $\boldsymbol{G}_{n\times n} = \boldsymbol{X} \bold
   \boldsymbol{G} = - \frac{1}{2} \boldsymbol{C}  (\boldsymbol{D} * \boldsymbol{D} )\boldsymbol{C} ^{\top}
   $$
 
-  where $[\boldsymbol{D} * \boldsymbol{D}]_{ij} = d_{ij}^2$. Then we can run MDS over $\boldsymbol{G}$ to obtain $k$-dimensional representation.
+  where $[\boldsymbol{D} * \boldsymbol{D}]_{ij} = d_{ij}^2$. Then we can run MDS over $\boldsymbol{G}$ to obtain $k$-dimensional representation. Note that since $\boldsymbol{G}$ is row-centered, it has an eigenvalue 0. Hence, the maximal possible value of $k$ is $d-1$, rather than $d$.
 
   :::{admonition,dropdown,seealso} *Proof*
 
@@ -147,9 +148,16 @@ Note the inner product matrix $\boldsymbol{G}_{n\times n} = \boldsymbol{X} \bold
 
   :::
 
+
 - Motivated by this, if the input matrix is dissimilarity (not necessarily Euclidean distance) matrix $\boldsymbol{D}$, we can run the above algorithm over $\boldsymbol{B} = - \frac{1}{2} \boldsymbol{C} \boldsymbol{D} \boldsymbol{C}$, where $\boldsymbol{B}$ approximates $\boldsymbol{G}$.
 
   Hence can see, this spectral method is particularly appropriate when the dissimilarities are actually or at least approximately Euclidean distances.
+
+  :::{admonition,warning} Warning
+
+  Since the dissimilarity measure may not be Euclidean, $\boldsymbol{B}$ may have some negative eigenvalues. The maximal possible value of $k$ is then the number of of positive eigenvalues of $\boldsymbol{B}$.
+
+  :::
 
 This spectral method also uses principal components (eigenvectors) like PCA. Therefore sometimes classical MDS is also called “principal coordinates analysis”.
 
