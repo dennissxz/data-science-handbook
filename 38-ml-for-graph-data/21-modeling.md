@@ -61,9 +61,16 @@ $$\mathcal{G} (N_v, p) = \left\{ G = (V, E): \left\vert V \right\vert = N_v, \le
 
 The level of connectivity is related to the relation between $p$ and $N_v$. Let $p = \frac{c}{N}$ for $c > 0$, then
 
-- $c < 1$: w.h.p. all components will have $\mathcal{O} (\log N_v)$ vertices.
+- $c < 1$: w.h.p. all components will have $\mathcal{O} (\log N_v)$ vertices. The largest component is a tree. No circles in the graph.
 - $c > 1$: w.h.p. $G$ will have a single connected component ('giant component') consisting of $\alpha_c N_v$ vertices, for some constant $\alpha_c > 0$, with the remaining components having only on the order of $\mathcal{O} (\log N_v)$ vertices.
 - $c > \log n$: w.h.p. $G$ will be connected.
+
+:::{figure} graph-random-transitions
+<img src="../imgs/graph-random-transitions.png" width = "30%" alt=""/>
+
+Thresholds of exponent [Barabasi 2002]
+:::
+
 
 In term of degree distribution, w.h.p.
 
@@ -79,7 +86,7 @@ Thus, we observe
 - **small-world property**: the diameter of the graph very like $\mathcal{O} (\log N_v)$ w.h.p as $N_v \rightarrow \infty$.
 
 Reference
-- Notes on random graphs [CMU](https://www.cs.cmu.edu/~avrim/598/chap4only.pdf), [Sante Fe](http://tuvalu.santafe.edu/~aaronc/courses/5352/csci5352_2017_L3.pdf),
+- Notes on random graphs [CMU](https://www.cs.cmu.edu/~avrim/598/chap4only.pdf), [Sante Fe](http://tuvalu.santafe.edu/~aaronc/courses/5352/csci5352_2017_L3.pdf), [HSE video](https://www.youtube.com/watch?v=AmZ_MOQ-XwA&ab_channel=LeonidZhukov)
 
 
 ### Generalized Random Graph Models
