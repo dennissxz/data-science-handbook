@@ -171,6 +171,7 @@ For an $N \times N$ square matrix $\boldsymbol{A}$,
 
 Claims
 - eigenvectors corresponds to distinct eigenvalues are independent.
+- Perron-Frobenius theorem: If $\boldsymbol{A} \in \mathbb{R} ^{n \times n}$ has all entries positive $a_{ij} > 0$, then it has a unique largest eigenvalue, and the corresponding eigenvector can be chosen to have all entires positive.
 
 For more details see [Wikipedia](https://en.wikipedia.org/wiki/Eigenvalues_and_eigenvectors#Eigenvalues_and_eigenvectors_of_matrices).
 
