@@ -21,11 +21,11 @@ k\left(x_{n}, x_{1}\right), \ldots, k\left(x_{n}, x_{n}\right)
 $$
 
 Examples
-: Dot product $k(\boldsymbol{x}, \boldsymbol{y})=\boldsymbol{x}^{*} \boldsymbol{y}$, where $\boldsymbol{x}, \boldsymbol{y} \in \mathbb{C}^{d}$, is a PSD kernel, since the matrix $\boldsymbol{X}$ is PSD because $\boldsymbol{u} ^* \boldsymbol{C} \boldsymbol{u} =  \boldsymbol{u} ^* \boldsymbol{X} ^* \boldsymbol{X} \boldsymbol{u} \ge 0$.
+: - Dot product $k(\boldsymbol{x}, \boldsymbol{y})=\boldsymbol{x}^{*} \boldsymbol{y}$, where $\boldsymbol{x}, \boldsymbol{y} \in \mathbb{C}^{d}$, is a PSD kernel, since the matrix $\boldsymbol{X}$ is PSD because $\boldsymbol{u} ^* \boldsymbol{C} \boldsymbol{u} =  \boldsymbol{u} ^* \boldsymbol{X} ^* \boldsymbol{X} \boldsymbol{u} \ge 0$.
 
-: In general, $k(x, y) \triangleq \boldsymbol{\phi}(x) ^\top \boldsymbol{\phi}(y)$, with arbitrary map $\boldsymbol{\phi}: \mathcal{S} \rightarrow \mathbb{R}^{d}$, is a PSD kernel,
+  - In general, $k(x, y) \triangleq \boldsymbol{\phi}(x) ^\top \boldsymbol{\phi}(y)$, with arbitrary map $\boldsymbol{\phi}: \mathcal{S} \rightarrow \mathbb{R}^{d}$, is a PSD kernel,
 
-: More generally, $k(x, y) \triangleq\langle\boldsymbol{\phi}(x), \boldsymbol{\phi}(y)\rangle_{\mathcal{H}}$, with $\boldsymbol{\phi}: \mathcal{S} \rightarrow \mathcal{H}$, is a PSD kernel.
+  - More generally, $k(x, y) \triangleq\langle\boldsymbol{\phi}(x), \boldsymbol{\phi}(y)\rangle_{\mathcal{H}}$, with $\boldsymbol{\phi}: \mathcal{S} \rightarrow \mathcal{H}$, is a PSD kernel.
 
 ## Construction of PSD Kernels
 If $k, k_1, k_2$  are real PSD kernels on some arbitrary set $\mathcal{S}$, the following ones are also real PSD kernels.
@@ -47,14 +47,35 @@ If $k, k_1, k_2$  are real PSD kernels on some arbitrary set $\mathcal{S}$, the 
 
 - Gaussian (RBF) kernel: $k\left(\boldsymbol{x}, \boldsymbol{y} ; \sigma^{2}\right)=\exp \left(-\frac{\|\boldsymbol{x}-\boldsymbol{y}\|^{2}}{2 \sigma^{2}}\right)$
 
-All three are PSD kernels, and we can use them to construct PSD kernels.
+- Laplacian kernel: $k\left(\boldsymbol{x}, \boldsymbol{y}\right)=\exp \left(-\|\boldsymbol{x}-\boldsymbol{y}\|_{1}\right)$
 
+- Cauchy kernel: $k\left(\boldsymbol{x}, \boldsymbol{y}\right) = (1 + \left\| \boldsymbol{x} - \boldsymbol{y}  \right\|^2 ) ^{-1}$
+
+All these kernels are PSD kernels, and we can use them to construct PSD kernels.
+
+For the last three, the entry value is in range $(0, 1]$, and is larger if $\boldsymbol{x}$ is close to $\boldsymbol{y}$. Hence the corresponding kernel matrix work like a similarity matrix.
+
+## Computation Problems
+
+- Compute sum of matrix $\sum_{i,j}^n K_{ij}$. Exists $(1+\epsilon)$-approximate algorithm
+
+- Compute kernel alignment of two kernel matrices $\boldsymbol{K} _1$ and $\boldsymbol{K} _2$.
+
+  $$
+  \frac{\langle \boldsymbol{K} _1 , \boldsymbol{K} _2 \rangle}{ \sqrt{ \langle \boldsymbol{K} _1, \boldsymbol{K} _1 \rangle \times \langle \boldsymbol{K} _2, \boldsymbol{K} _2 \rangle}}
+  $$
+
+  Exists sub-linear time for Gaussian or Laplacian $\boldsymbol{K}$
+
+- Top eigenvalue of $\boldsymbol{K}$. Exists $(1+\epsilon)$-approximate algorithm.
+
+- Kernel density estimation: $F(\boldsymbol{y}) = \frac{1}{m} \sum_i k(\boldsymbol{x} _i, \boldsymbol{y})$. Exists $(1+\epsilon)$-approximate algorithm.
+
+See [Faster Kernel Matrix Algebra via Density Estimation](https://arxiv.org/abs/2102.08341).
 
 ## Why Using Kernels
 
-
 Kernels are popular. Why? Let's first see two theorems.
-
 
 (ml-mercers-theorem)=
 ### Mercer's Theorem

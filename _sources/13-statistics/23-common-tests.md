@@ -369,6 +369,11 @@ $$
 $$
 
 
+:::{admonition,warning} Warning
+
+In `manova()` function in R, if the group variable $\ell$ is in numerical value, it is necessary to coerce it as data type `factor` by calling `as.factor()`.
+
+:::
 
 
 ## Multivariate Settings
