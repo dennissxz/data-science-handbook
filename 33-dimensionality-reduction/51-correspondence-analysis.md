@@ -72,3 +72,21 @@ Correspondence analysis plot [[Tim Bock](https://www.displayr.com/interpret-corr
 :::
 
 See these two articles for interpretation and case studies [1](https://www.displayr.com/how-correspondence-analysis-works/), [2](https://www.displayr.com/interpret-correspondence-analysis-plots-probably-isnt-way-think/).
+
+## R.t. Weighted Least Squares
+
+Essentially SVD is solving a low-rank approximation problem to $\boldsymbol{R}$
+
+$$
+\min\ \left\| \boldsymbol{R} - \hat{\boldsymbol{R}}  \right\| _F ^2 \qquad \text{s.t. } \operatorname{rank}\left( \boldsymbol{R} \right) = k
+$$
+
+where $\boldsymbol{R} = \boldsymbol{D} _r ^{-1/2} (\boldsymbol{P} - \boldsymbol{r} \boldsymbol{c} ^{\top}    ) \boldsymbol{D} _c ^{-1/2}$. Let $\hat{\boldsymbol{R}} = \boldsymbol{D} _r ^{-1/2} (\hat{\boldsymbol{P}} - \boldsymbol{r} \boldsymbol{c} ^{\top}    ) \boldsymbol{D} _c ^{-1/2}$, then we have
+
+$$\begin{aligned}
+\left\| \boldsymbol{R} - \hat{\boldsymbol{R}}  \right\| _F ^2
+&= \left\| \boldsymbol{D} _r ^{-1/2} (\boldsymbol{P} - \hat{\boldsymbol{P}) } \boldsymbol{D} _c ^{-1/2}    \right\| _F^2 \\
+&= \sum_{i=1}^{I} \sum_{j=1}^{J} \frac{\left(p_{i j}-\hat{p}_{i j}\right)^{2}}{r_{i} c_{j}}
+\end{aligned}$$
+
+which is a weighted lease squares problem.
