@@ -51,4 +51,24 @@ $$
 
 Then the columns in $\boldsymbol{D} _r ^{-1/2} \boldsymbol{U}$ give the coordinates of row variables, and the columns in $\boldsymbol{D} _c ^{-1/2} \boldsymbol{V}$ give the coordinates of column variables. There coordinates are called **standard** coordinates. There are principal coordinates, which scale the standard coordinates by singular values: $\boldsymbol{D} _r ^{-1/2} \boldsymbol{U} \boldsymbol{\Sigma}$ and $\boldsymbol{D} _c ^{-1/2} \boldsymbol{V} \boldsymbol{\Sigma}$.
 
-If we pick the first 2-d coordinates for row variables, and those for column variables, then we can plot them together. Closer (row, column) pair implies stronger association.
+The maximal possible value of $k$ is the rank of $\boldsymbol{R}$, i.e. number of non-zero singular values.
+
+## Interpretation
+
+
+If we pick the first 2-d coordinates for row variables, and those for column variables, then we can plot them together.
+
+To interpret the plot, rather than looking at the closeness of the points, we look at the vectors from the connecting the origin to these points.
+- If the vector to some row variable is longer, then this row variable is discriminated from the rest row variables. Similar for columns.
+- If two vectors to a row and a column variable has a smaller angle, then there exists some association between them. But the strength of the association depends on the length of the vector.
+- In sum, if a row variable and a column variable are away from origin and has a small angle between them, then there exist strong association between them.
+
+If the contingency table vary along time, then we can also plot and see how the points move in the plot, i.e. how association changes.
+
+:::{figure} ca-case
+<img src="../imgs/ca-case.png" width = "80%" alt=""/>
+
+Correspondence analysis plot [[Tim Bock](https://www.displayr.com/interpret-correspondence-analysis-plots-probably-isnt-way-think/)].
+:::
+
+See these two articles for interpretation and case studies [1](https://www.displayr.com/how-correspondence-analysis-works/), [2](https://www.displayr.com/interpret-correspondence-analysis-plots-probably-isnt-way-think/).
