@@ -49,6 +49,7 @@ Examples
     \left\{\left(x_{1}, x_{2}, x_{3} \ldots\right) \in \mathbb{R}^{\infty} \mid \forall i \geq 1: x_{i}+x_{i+1}=x_{i+2}\right\}
     $$
 
+(metric)=
 ## Metric Spaces
 
 ### Definition
@@ -69,6 +70,11 @@ Examples:
   - $\mathbb{R}$ with absolute difference $d(x,y) = \left\vert x-y \right\vert$
   - $\mathbb{R} ^n$ with Euclidean distance
   - $\mathbb{R} _{>0}$ with $d(x, y) = \left\vert \log(y/x) \right\vert$
+
+In practice and in real life, all sensible dissimilarity measures fulfill 2, mostly 1. However it is not so uncommon that a dissimilarity measure fails to satisfy 3.
+
+If correlation $\rho(\boldsymbol{x}, \boldsymbol{y})$ is used for similarity measure, then $d(\boldsymbol{x}, \boldsymbol{y}) = \sqrt{2(1-\rho)}$ satisfies 2, 3 but not the $\Leftarrow$ part of 1. Such measure is called a **pseudo-metric**.
+
 
 ### Completeness
 
