@@ -48,3 +48,5 @@ $$
 
 - Each coefficient for covariate $x_r$ is a $p$-dimensional vector $\boldsymbol{\beta} _r$.
 - Since the dependence among the $Y_j$’s is of main interests, the error $\varepsilon_j$, usually are not independent. Therefore, their covariance matrix $\boldsymbol{\Sigma} _{p \times p}$ is NOT a diagonal matrix.
+
+In practice, the coefficient estimates $\hat{\boldsymbol{\beta}}$ are the same as if we run multiple linear regressions for each component in $\boldsymbol{y}$. But the estimate of interest is $\hat{\boldsymbol{\Sigma}}$, i.e. how the error is correlated.
