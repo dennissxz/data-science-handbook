@@ -39,6 +39,8 @@ Many non-linear dimensionality reduction methods are extension to MDS. MDS is a 
   \operatorname{Stress}_{D}\left(\boldsymbol{z}_{1}, \ldots, \boldsymbol{z}_{N}\right)=\left(\sum_{i \neq j=1}^n\left(d_{ij}-\left\|\boldsymbol{z}_{i}-\boldsymbol{z}_{j}\right\|\right)^{2}\right)^{1 / 2}
   $$
 
+- Find coordinates for the $n$ points in a low dimensional space such that the corresponding distances maintain the ordering in of pairwise distance in $\boldsymbol{D}$.
+
 <!--
 This can be solved by gradient descent. However, we can also transform $\boldsymbol{D}$ to a form $\boldsymbol{B}$ that is naturally fitted by inner product. The transformation satisfies $d_{ij} = b_{ii} - 2b_{ij} + b_{ij}$, thereby mimicking the corresponding identities for $\left\| \boldsymbol{x}_i - \boldsymbol{x}_j  \right\|$ and $\langle \boldsymbol{x} _i, \boldsymbol{x} _j \rangle$.
 
@@ -52,7 +54,7 @@ $$
 It interprets the similarities as inner product data, and guarantee $d_{ii} = 0$. -->
 
 
-- Given data matrix $\boldsymbol{X} \in \mathbb{R} ^{n \times d}$, like PCA, MDS seeks a $k$-dimensional representation $\boldsymbol{Z} \in \mathbb{R} ^{n \times k}$ that preserves inner products (similarity) between pairs of data points $(\boldsymbol{x_i}, \boldsymbol{x}_j)$
+- Given data matrix $\boldsymbol{X} \in \mathbb{R} ^{n \times d}$, as a dimensionality reduction method, MDS seeks a $k$-dimensional representation $\boldsymbol{Z} \in \mathbb{R} ^{n \times k}$ that preserves inner products (a similarity measure) between pairs of data points $(\boldsymbol{x_i}, \boldsymbol{x}_j)$
 
   $$
   \min \sum_{i, j}\left(\boldsymbol{x}_{i} ^\top  \boldsymbol{x}_{j}-\boldsymbol{z}_{i} ^\top  \boldsymbol{z}_{j}\right)^{2}
@@ -63,6 +65,8 @@ It interprets the similarities as inner product data, and guarantee $d_{ii} = 0$
   $$
   \min \left\Vert \boldsymbol{X} \boldsymbol{X} ^\top  - \boldsymbol{Z} \boldsymbol{Z} ^\top    \right\Vert _F^2
   $$
+
+  The lower-dimensional embeddings can be then used for downstream tasks, including clustering, classification, etc. It worths mentioning that the embeddings are exactly the same as PCA's. See the last section for proof.
 
 
 ## Learning
@@ -88,7 +92,7 @@ Note the inner product matrix $\boldsymbol{G}_{n\times n} = \boldsymbol{X} \bold
   For derivation see [here](http://www.math.uwaterloo.ca/~aghodsib/courses/f10stat946/notes/lec10-11.pdf). The reconstruction of $\boldsymbol{G}$ from $\boldsymbol{Z}$ is then $\widehat{\boldsymbol{G}} = \boldsymbol{Z} \boldsymbol{Z} ^\top$.
 
 
-- If the input is a similarity matrix $\boldsymbol{S}$, we can run the above algorithm by treating $\boldsymbol{S}$ as $\boldsymbol{G}$.
+- If the input is a similarity matrix $\boldsymbol{S}$, we can run the above algorithm by treating $\boldsymbol{S}$ as $\boldsymbol{G}$. Some other methods first convert a similarity measure to a distance measure and then analyze it. There are many ways for such conversion, e.g. $d = 10 \sqrt{2 (1-s)}$, which guarantees that the obtained dissimilarity order is exactly the inversion of the similarly order.
 
 - If the input is an **Euclidean** distance matrix $\boldsymbol{D}$, suppose the true data is $\boldsymbol{X}$, then by definition we have
 
@@ -122,6 +126,25 @@ Note the inner product matrix $\boldsymbol{G}_{n\times n} = \boldsymbol{X} \bold
 - Motivated by this, if the input matrix is dissimilarity (not necessarily Euclidean distance) matrix $\boldsymbol{D}$, we can run the above algorithm over $\boldsymbol{B} = - \frac{1}{2} \boldsymbol{C} \boldsymbol{D} \boldsymbol{C}$, where $\boldsymbol{B}$ approximates $\boldsymbol{G}$.
 
 
+### Tuning
+
+How to choose $k$?
+
+$k \le N-1$??, related to the rank of the distance matrix.
+
+### Goodness of Fit
+
+Scale stress to 1.
+
+Stress
+
+SStress
+
+Stress plot
+
+common practice: below 10%. May becomes higher if $k$ goes large.
+
+fitted vs recovered distance plot.
 
 ## Relation to PCA
 
