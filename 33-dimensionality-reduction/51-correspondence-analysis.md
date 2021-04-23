@@ -20,3 +20,35 @@ $$
 - The variables are represented as row and column variables.
 - $n_{ij}$ is the count of item belong to category $i$ of the row variable and
 category $j$ of the column variable.
+
+Reference: [Greenacre slides](http://statmath.wu.ac.at/courses/CAandRelMeth/CARME1.pdf)
+
+## Model
+
+Given the $I \times J$ contingency table $\boldsymbol{X}$, define
+- Cell percentage matrix $\boldsymbol{P} = \boldsymbol{X} /n = n_{ij}/n$
+- Row margin $\boldsymbol{r} = \boldsymbol{P} \boldsymbol{1}$ and column margin $\boldsymbol{c}= \boldsymbol{P} ^{\top} \boldsymbol{1}$, i.e. $r_i = n_{i\cdot}/n, c_j = n_{\cdot j}/n$.
+- Two diagonal matrices: $I\times I$ matrix $\boldsymbol{D} _r = \operatorname{diag}(\boldsymbol{r})$, and $J \times J$ matrix $\boldsymbol{D} _c = \operatorname{diag}(\boldsymbol{c})$.
+- Expected cell percentage $\boldsymbol{E} = \boldsymbol{r} \boldsymbol{c} ^{\top}$
+- Residual matrix $\boldsymbol{P} - \boldsymbol{E}$
+- standardized (Pearson) residual matrix
+
+  $$\boldsymbol{R} = \boldsymbol{D} _r ^{-1/2} (\boldsymbol{P} - \boldsymbol{E} ) \boldsymbol{D} _c ^{-1/2} = \left[ \frac{p_{ij} - r_i c_j}{\sqrt{r_i c_j}}  \right]$$
+
+  Large values $R_{ij}$ indicates associations between the row $i$ and column $j$.
+
+- Total inertia
+
+  $$\sum_{i=1}^{I} \sum_{j=1}^{J} \frac{\left(p_{i j}-r_{i} c_{j}\right)^{2}}{r_{i} c_{j}} = \operatorname{tr}\left( \boldsymbol{R} \boldsymbol{R} ^{\top} \right) = \operatorname{sum}(\boldsymbol{R} * \boldsymbol{R})$$
+
+  which is related to chi-squared statistic: total inertia = $\chi ^2 /n$.
+
+We apply (condensed) SVD to $\boldsymbol{R}$. Let $k = \min (I, J)$, then
+
+$$
+\boldsymbol{R}_{I \times J} = \boldsymbol{U}_{I \times k} \boldsymbol{\Sigma}_{k \times k} \boldsymbol{V}_{J \times k} ^{\top}
+$$
+
+Then the columns in $\boldsymbol{D} _r ^{-1/2} \boldsymbol{U}$ give the coordinates of row variables, and the columns in $\boldsymbol{D} _c ^{-1/2} \boldsymbol{V}$ give the coordinates of column variables. There coordinates are called **standard** coordinates. There are principal coordinates, which scale the standard coordinates by singular values: $\boldsymbol{D} _r ^{-1/2} \boldsymbol{U} \boldsymbol{\Sigma}$ and $\boldsymbol{D} _c ^{-1/2} \boldsymbol{V} \boldsymbol{\Sigma}$.
+
+If we pick the first 2-d coordinates for row variables, and those for column variables, then we can plot them together. Closer (row, column) pair implies stronger association.
