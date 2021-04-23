@@ -1,4 +1,4 @@
----
+<!-- ---
 jupytext:
   formats: md:myst
   text_representation:
@@ -10,9 +10,16 @@ kernelspec:
   display_name: R
   language: R
   name: ir
----
+--- -->
 
 # Non-linear Programming
+
+:::{figure} opt-hierarchy
+<img src="../imgs/opt-hierarchy.png" width = "30%" alt=""/>
+
+A hierarchy of convex optimization problems. (LP: linear program, QP: quadratic program, SOCP second-order cone program, SDP: semidefinite program, CP: cone program.) [[Wikipedia](https://en.wikipedia.org/wiki/Convex_optimization)]
+:::
+
 
 **TBC**
 
@@ -293,6 +300,22 @@ $$\begin{aligned}
 
 To see how $\boldsymbol{V}$ looks like for $\boldsymbol{x} \in \left\{ \pm 1 \right\} ^n$, let $\boldsymbol{x} = [1, 1, -1, -1, -1]$, then
 
+$$
+\boldsymbol{X} = \left[\begin{array}{rrrrr}
+1 & 1 & -1 & -1 & -1 \\
+1 & 1 & -1 & -1 & -1 \\
+-1 & -1 & 1 & 1 & 1 \\
+-1 & -1 & 1 & 1 & 1 \\
+-1 & -1 & 1 & 1 & 1
+\end{array}\right],\qquad \boldsymbol{V} = \left[ \begin{array}{rrrrr}
+-1 & -1 & 1 & 1 & 1 \\
+0 & 0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 & 0
+\end{array} \right]
+$$
+<!--
 ```{code-cell} R
 :tags: [hide-input]
 x = c(rep(1, 2), rep(-1, 3))
@@ -305,7 +328,7 @@ print(X)
 print('V:')
 print(round(V, 2))
 ```
-
+ -->
 
 #### Analysis
 
