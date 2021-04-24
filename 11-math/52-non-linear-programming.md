@@ -206,7 +206,46 @@ reference: [notes](https://www.sjsu.edu/faculty/guangliang.chen/Math253S20/lec4R
 
 ## Semi-definite Programming
 
-We introduce semi-definite programming in max-cut problem.
+We introduce semi-definite programming. Then use it solve max-cut problem, and analyze its performance for min-cut problem over stochastic block model.
+
+### Introduction
+
+A linear programming problem is one in which we wish to maximize or minimize a **linear** objective function of real variables over a polytope. In semidefinite programming, we instead use **real-valued vectors** and are allowed to take the **dot product** of vectors. In general, a SDP has a form
+
+$$
+\begin{array}{l}
+\min _{\boldsymbol{x}_{1}, \ldots, \boldsymbol{x}_{n} \in \mathbb{R}_{n}}& \sum_{i, j \in[n]} c_{ij} \langle \boldsymbol{x}_{i}, \boldsymbol{x}_{j} \rangle \\
+\text {s.t.} &\sum_{i, j \in[n]} a_{ijk}\langle \boldsymbol{x}_{i}, \boldsymbol{x}_{j} \rangle \leq b_{k} \text { for all } k
+\end{array}
+$$
+
+
+The array of real variables in LP is then replaced by an array of vector variables, which form a matrix variable. By using this notation, the problem can be written as
+
+
+$$
+\begin{aligned}
+\min _{\boldsymbol{X} \in \mathbb{R}^{n \times n}}\ &\langle \boldsymbol{C} , \boldsymbol{X} \rangle\\
+\text {s.t.}\ & \left\langle \boldsymbol{A} _{k}, \boldsymbol{X} \right\rangle\leq b_{k}, \quad k=1, \ldots, m \\
+& X_{ij} = \boldsymbol{x}_i ^{\top} \boldsymbol{x} _j
+\end{aligned}
+$$
+
+where $C_{ij} = (c_{ij} + c_{ji})/2, A_{ij}^{(k)} = (a_{ijk} + a_{jik})/2$ and $\langle \boldsymbol{P}, \boldsymbol{Q} \rangle = \operatorname{tr}\left(\boldsymbol{P}  ^{\top} \boldsymbol{Q} \right) = \sum_{i,j}^n p_{ij}q_{ij}$ is the [Frobenius inner product](https://en.wikipedia.org/wiki/Frobenius_inner_product).
+
+Note that an $n \times n$ matrix $\boldsymbol{M}$ is said to be positive semidefinite if it is the Gramian matrix of some vectors (i.e. if there exist vectors $\boldsymbol{v} _1, \ldots, \boldsymbol{v} _n$ such that $M_{ij} = \langle \boldsymbol{v} _i, \boldsymbol{v} _j \rangle$ for all $i,j$). Hence, the last constraint is just $\boldsymbol{X} \succeq \boldsymbol{0}$. That is, the nonnegativity constraints on real variables in LP are replaced by semidefiniteness constraints on matrix variables in SDP.
+
+$$
+\begin{aligned}
+\min _{\boldsymbol{X} \succeq \boldsymbol{0}}\ &\langle \boldsymbol{C} , \boldsymbol{X} \rangle\\
+\text {s.t.}\ & \left\langle \boldsymbol{A} _{k}, \boldsymbol{X} \right\rangle\leq b_{k}, \quad k=1, \ldots, m \\
+\end{aligned}
+$$
+
+All linear programs can be expressed as SDPs. SDPs are in fact a special case of cone programming and can be efficiently solved by interior point methods. Given the solution $\boldsymbol{X}^*$ to the SDP in the standard form, the vectors $\boldsymbol{v}_1, \ldots, \boldsymbol{v} _n$ can be recovered in $\mathcal{O} (n^3)$ time, e.g. by using an incomplete Cholesky decomposition of $\boldsymbol{X}^* = \boldsymbol{V} ^{\top} \boldsymbol{V}$ where $\boldsymbol{V} = [\boldsymbol{v} _1, \ldots \boldsymbol{v} _n]$.
+
+
+
 
 ### Max-cut Problem
 
