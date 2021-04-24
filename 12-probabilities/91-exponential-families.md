@@ -317,6 +317,7 @@ Multivariate case:
 - Check each Principal Component (PC) for univariate normality (necessary condition; and if the sample size n is large enough, a sufficient condition)
 
 
+(transform-normality)=
 ### Transformation to Near Normality
 
 To achieve the multinormality of the data, univariate transformation is applied to each variable individually. After then, the multinormality of transformed variables is checked again (Notice that each of the $X_p$ variables after transformation is normally distributed does not imply that they jointly follow a multivariate normal distribution).

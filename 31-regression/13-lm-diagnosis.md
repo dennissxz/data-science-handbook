@@ -325,6 +325,7 @@ Examples:
 
   The number of corporations is an intermediate outcome.
 
+(lm-multicollinearity)=
 ## Multicollinearity
 
 Definition (Multicollinearity)  
