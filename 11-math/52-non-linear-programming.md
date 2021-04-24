@@ -244,6 +244,7 @@ $$
 
 All linear programs can be expressed as SDPs. SDPs are in fact a special case of cone programming and can be efficiently solved by interior point methods. Given the solution $\boldsymbol{X}^*$ to the SDP in the standard form, the vectors $\boldsymbol{v}_1, \ldots, \boldsymbol{v} _n$ can be recovered in $\mathcal{O} (n^3)$ time, e.g. by using an incomplete Cholesky decomposition of $\boldsymbol{X}^* = \boldsymbol{V} ^{\top} \boldsymbol{V}$ where $\boldsymbol{V} = [\boldsymbol{v} _1, \ldots \boldsymbol{v} _n]$.
 
+(sdp-rq)=
 ### From Rayleigh Quotient
 
 Recall that an Rayleigh quotient can be formulated as
@@ -338,20 +339,17 @@ Two relaxations:
 To solve it, it is equivalent to solve
 
 $$
-\max\ \operatorname{tr}\left( -\boldsymbol{W}\boldsymbol{X} \right) \qquad \text{s.t. }\boldsymbol{X} \succeq \boldsymbol{0} , \operatorname{tr}\left( \boldsymbol{X} \right) = n
+\min\ \operatorname{tr}\left(\boldsymbol{W}\boldsymbol{X} \right) \qquad \text{s.t. }\boldsymbol{X} \succeq \boldsymbol{0} , \operatorname{tr}\left( \boldsymbol{X} \right) = n
 $$
 
-which has the form
+As proved [above](sdp-rq), this SDP can be solved by solving a Rayleigh quotient problem
 
 $$
-\max\ \operatorname{tr}\left( \boldsymbol{C} \boldsymbol{X} \right) \qquad \text{s.t. }\boldsymbol{X} \succeq \boldsymbol{0} , \operatorname{tr}\left( \boldsymbol{X} \right) = n
+\min_{\boldsymbol{y}}\ \boldsymbol{y} ^{\top} \boldsymbol{W} \boldsymbol{y} \qquad \text{s.t.}  \left\| \boldsymbol{y}  \right\| = \sqrt{n}
 $$
 
-which is equivalent (what if $\operatorname{rank} (\boldsymbol{X})=2$ ??) to
+The optimal solution $\boldsymbol{y} ^*$ is the last eigenvector of $\boldsymbol{W}$, and the objective value is the last eigenvalue of $\boldsymbol{W}$. The solution to the SDP problem is then $\boldsymbol{X} ^* = \boldsymbol{y}^* \boldsymbol{y} ^{*\top}$, with the same objective value. We can then round $\boldsymbol{y} ^*$ by its sign to decide partition assignment.
 
-$$
-\max\ \boldsymbol{x} ^{\top} \boldsymbol{C} \boldsymbol{x} \qquad \text{s.t.}  \left\| \boldsymbol{x}  \right\| = \sqrt{n}
-$$
 
 #### SDP Relaxation
 
