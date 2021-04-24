@@ -518,11 +518,15 @@ Properties
   $$
 
 
+(norm)=
 ### Matrix Norms
 
 - Matrix Norm [link](https://www.uio.no/studier/emner/matnat/ifi/nedlagte-emner/INF-MAT4350/h09/undervisningsmateriale/lecture7.pdf)
 - Frobenius Norm [link](http://mlwiki.org/index.php/Frobenius_Norm)
-
+- Spectral norm: $\left\| \boldsymbol{A} \right\| _2$ is the largest singular value of $\boldsymbol{A}$.
+  - Equals the largest eigenvalue of $\boldsymbol{A} ^{\top} \boldsymbol{A}$
+  - If $\left\| \boldsymbol{u} \right\| =1, \left\| \boldsymbol{v} \right\| =1$, let $\boldsymbol{A} = \boldsymbol{u} \boldsymbol{u} ^{\top}  - \boldsymbol{v} \boldsymbol{v} ^{\top}$, then $\left\| \boldsymbol{A} \right\| _2 = \sin \theta$, where $\theta$ is the angle between $\boldsymbol{u}$ and $\boldsymbol{v}$.
+    - To prove this, let $\alpha = \boldsymbol{u} ^{\top} \boldsymbol{v}$. It is easy to verify that $\boldsymbol{u}$, $\boldsymbol{v}$ are two eigenvectors of $\boldsymbol{A} ^{\top} \boldsymbol{A}$ with the same eigenvalue $1 - \alpha^2$. Hence $\left\| \boldsymbol{A}  \right\| _2 ^2 = 1 - \alpha^2 = 1 - \cos^2\theta$.
 - For $\boldsymbol{a} , \boldsymbol{b} \in [m]^d$
 
   $$
