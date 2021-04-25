@@ -1,16 +1,18 @@
-<!-- ---
+---
 jupytext:
+  cell_metadata_filter: -all
   formats: md:myst
   text_representation:
     extension: .md
     format_name: myst
     format_version: 0.12
-    jupytext_version: 1.8.2
+    jupytext_version: 1.9.1
 kernelspec:
-  display_name: R
-  language: R
-  name: ir
---- -->
+  display_name: Python 3
+  language: python
+  name: python3
+---
+
 
 # Non-linear Programming
 
@@ -206,7 +208,107 @@ reference: [notes](https://www.sjsu.edu/faculty/guangliang.chen/Math253S20/lec4R
 
 ## Semi-definite Programming
 
-We introduce semi-definite programming in max-cut problem.
+We introduce semi-definite programming. Then use it solve max-cut problem, and analyze its performance for min-cut problem over stochastic block model.
+
+### Introduction
+
+A linear programming problem is one in which we wish to maximize or minimize a **linear** objective function of real variables over a polytope. In semidefinite programming, we instead use **real-valued vectors** and are allowed to take the **dot product** of vectors. In general, a SDP has a form
+
+$$
+\begin{array}{l}
+\min _{\boldsymbol{x}_{1}, \ldots, \boldsymbol{x}_{n} \in \mathbb{R}_{n}}& \sum_{i, j \in[n]} c_{ij} \langle \boldsymbol{x}_{i}, \boldsymbol{x}_{j} \rangle \\
+\text {s.t.} &\sum_{i, j \in[n]} a_{ijk}\langle \boldsymbol{x}_{i}, \boldsymbol{x}_{j} \rangle \leq b_{k} \text { for all } k
+\end{array}
+$$
+
+
+The array of real variables in LP is then replaced by an array of vector variables, which form a matrix variable. By using this notation, the problem can be written as
+
+
+$$
+\begin{aligned}
+\min _{\boldsymbol{X} \in \mathbb{R}^{n \times n}}\ &\langle \boldsymbol{C} , \boldsymbol{X} \rangle\\
+\text {s.t.}\ & \left\langle \boldsymbol{A} _{k}, \boldsymbol{X} \right\rangle\leq b_{k}, \quad k=1, \ldots, m \\
+& X_{ij} = \boldsymbol{x}_i ^{\top} \boldsymbol{x} _j
+\end{aligned}
+$$
+
+where $C_{ij} = (c_{ij} + c_{ji})/2, A_{ij}^{(k)} = (a_{ijk} + a_{jik})/2$ and $\langle \boldsymbol{P}, \boldsymbol{Q} \rangle = \operatorname{tr}\left(\boldsymbol{P}  ^{\top} \boldsymbol{Q} \right) = \sum_{i,j}^n p_{ij}q_{ij}$ is the [Frobenius inner product](https://en.wikipedia.org/wiki/Frobenius_inner_product).
+
+Note that an $n \times n$ matrix $\boldsymbol{M}$ is said to be positive semidefinite if it is the Gramian matrix of some vectors (i.e. if there exist vectors $\boldsymbol{v} _1, \ldots, \boldsymbol{v} _n$ such that $M_{ij} = \langle \boldsymbol{v} _i, \boldsymbol{v} _j \rangle$ for all $i,j$). Hence, the last constraint is just $\boldsymbol{X} \succeq \boldsymbol{0}$. That is, the nonnegativity constraints on real variables in LP are replaced by semidefiniteness constraints on matrix variables in SDP.
+
+$$
+\begin{aligned}
+\min _{\boldsymbol{X} \succeq \boldsymbol{0}}\ &\langle \boldsymbol{C} , \boldsymbol{X} \rangle\\
+\text {s.t.}\ & \left\langle \boldsymbol{A} _{k}, \boldsymbol{X} \right\rangle\leq b_{k}, \quad k=1, \ldots, m \\
+\end{aligned}
+$$
+
+All linear programs can be expressed as SDPs. SDPs are in fact a special case of cone programming and can be efficiently solved by interior point methods. Given the solution $\boldsymbol{X}^*$ to the SDP in the standard form, the vectors $\boldsymbol{v}_1, \ldots, \boldsymbol{v} _n$ can be recovered in $\mathcal{O} (n^3)$ time, e.g. by using an incomplete Cholesky decomposition of $\boldsymbol{X}^* = \boldsymbol{V} ^{\top} \boldsymbol{V}$ where $\boldsymbol{V} = [\boldsymbol{v} _1, \ldots \boldsymbol{v} _n]$.
+
+(sdp-rq)=
+### From Rayleigh Quotient
+
+Recall that an Rayleigh quotient can be formulated as
+
+$$
+\max\  \boldsymbol{x} ^{\top} \boldsymbol{A} \boldsymbol{x}  \qquad \mathrm{s.t.}\ \boldsymbol{x} ^{\top} \boldsymbol{x} = 1
+$$
+
+Since both the objective and the constraint are scalar valued, we can re-write them using trace
+
+$$
+\max\  \operatorname{tr}\left( \boldsymbol{x} ^{\top} \boldsymbol{A} \boldsymbol{x}  \right) \qquad \mathrm{s.t.}\ \operatorname{tr}\left( \boldsymbol{x} ^{\top} \boldsymbol{x} \right) = 1
+$$
+
+Then, by the property of trace, we have
+
+$$
+\max\  \operatorname{tr}\left(\boldsymbol{A} \boldsymbol{x} \boldsymbol{x} ^{\top}  \right) \qquad \mathrm{s.t.}\ \operatorname{tr}\left( \boldsymbol{x} \boldsymbol{x} ^{\top} \right) = 1
+$$
+
+Let $\boldsymbol{X} = \boldsymbol{x} \boldsymbol{x} ^{\top}$, then the variable $\boldsymbol{x}$ can be replaced by a rank-1 matrix $\boldsymbol{X} = \boldsymbol{x} \boldsymbol{x} ^{\top}$
+
+
+$$
+\max\  \operatorname{tr}\left(\boldsymbol{A} \boldsymbol{X} \right) \qquad \mathrm{s.t.}\ \operatorname{tr}\left( \boldsymbol{X}  \right) = 1, \boldsymbol{X} = x
+\boldsymbol{x} ^{\top}
+$$
+
+Note that $\boldsymbol{X} = \boldsymbol{x} \boldsymbol{x} ^{\top}$ if and only if $\operatorname{rank}\left( \boldsymbol{X}  \right)=1$ and $\boldsymbol{X} \succeq \boldsymbol{0}$, hence the constraints are equivalent to.
+
+
+$$
+\max\  \operatorname{tr}\left(\boldsymbol{A} \boldsymbol{X} \right) \qquad \mathrm{s.t.}\ \operatorname{tr}\left( \boldsymbol{X}  \right) = 1, \operatorname{rank}\left( \boldsymbol{X}  \right)=1, \boldsymbol{X} \succeq 0 \qquad (RQ)
+$$
+
+Call this problem RQ, if we drop the rank 1 constraint, then this would be a semidefinite program, where $\operatorname{tr}\left( \boldsymbol{X} \right)$ can be viewed as $\langle \boldsymbol{I} , \boldsymbol{X} \rangle = 1$.
+
+$$
+\max\  \operatorname{tr}\left(\boldsymbol{A} \boldsymbol{X} \right) \qquad \mathrm{s.t.}\ \operatorname{tr}\left( \boldsymbol{X}  \right) = 1, \boldsymbol{X} \succeq 0 \qquad (SDP)
+$$
+
+In fact, any optimal solution $\boldsymbol{X} _{SDP}^*$ to this SDP can always be convert to an rank-1 matrix $\boldsymbol{X} _{RQ}^*$ with the same optimal value. Hence, solving the SDP is equivalent to solving the RQ.
+
+:::{admonition,dropdown,seealso} *Proof*
+
+In SDP, since $\boldsymbol{X} \succeq \boldsymbol{0}$, let its EVD be $\boldsymbol{X} = \sum_{i=1}^n \lambda_i \boldsymbol{u}_i \boldsymbol{u}_i ^{\top}$, then the objective function is
+
+$$
+\operatorname{tr}\left( \boldsymbol{A} \sum_{i=1}^n \lambda_i \boldsymbol{u} _i \boldsymbol{u} _i ^{\top} \right) = \sum_{i=1}^n \lambda_i \operatorname{tr}\left( \boldsymbol{A} \boldsymbol{u} _i \boldsymbol{u} _i ^{\top} \right)
+$$
+
+Note that $1 = \operatorname{tr}\left( \boldsymbol{X} \right) = \sum_{i=1}^n \lambda_i$ and $\lambda_i \ge 0$. Thus, the objective function is a convex combination of $\operatorname{tr}\left( \boldsymbol{A} \boldsymbol{u} _i \boldsymbol{u} _i ^{\top} \right)$. Hence, for any feasible solution $\boldsymbol{X} _{SDP} =\sum_{i=1}^n \lambda_i \boldsymbol{u}_i \boldsymbol{u}_i ^{\top}$, we can formulate another rank-1 feasible solution, by selecting $j = \arg\max_i \operatorname{tr}\left( \boldsymbol{A} \boldsymbol{u} _i \boldsymbol{u} _i ^{\top} \right)$, and setting $\lambda_j=1$ while $\lambda_{-j}=0$. The rank-1 feasible solution is then $\boldsymbol{X} _{RQ} = \boldsymbol{u}_j \boldsymbol{u}_j ^{\top}$, and has a better objective value $\operatorname{tr}\left( \boldsymbol{A} \boldsymbol{X} _{RQ} \right) \ge \operatorname{tr}\left( \boldsymbol{A} \boldsymbol{X} _{SDP}\right)$. Therefore, for any optimal solution $\boldsymbol{X} _{SDP}^*$, we can find a rank-1 matrix $\boldsymbol{X} _{RQ}^*$, such that it is still optimal, since $\operatorname{tr}(\boldsymbol{A} \boldsymbol{X} _{SDP}^* ) = \operatorname{tr}(\boldsymbol{A} \boldsymbol{X} _{RQ}^* )$.
+
+In this way, the optimal value is then
+
+$$\max \operatorname{tr}\left( \boldsymbol{A} \boldsymbol{u} _j \boldsymbol{u} _j ^{\top} \right) = \max \boldsymbol{u} _j ^{\top} \boldsymbol{A} \boldsymbol{u} _j = \lambda_{\max}(\boldsymbol{A})$$
+
+where the eigenvector $\left\| \boldsymbol{u} \right\| =1$. This goes back to the formulation of Rayleigh quotient.
+
+:::
+
+
 
 ### Max-cut Problem
 
@@ -239,20 +341,17 @@ Two relaxations:
 To solve it, it is equivalent to solve
 
 $$
-\max\ \operatorname{tr}\left( -\boldsymbol{W}\boldsymbol{X} \right) \qquad \text{s.t. }\boldsymbol{X} \succeq \boldsymbol{0} , \operatorname{tr}\left( \boldsymbol{X} \right) = n
+\min\ \operatorname{tr}\left(\boldsymbol{W}\boldsymbol{X} \right) \qquad \text{s.t. }\boldsymbol{X} \succeq \boldsymbol{0} , \operatorname{tr}\left( \boldsymbol{X} \right) = n
 $$
 
-which has the form
+As proved [above](sdp-rq), this SDP can be solved by solving a Rayleigh quotient problem
 
 $$
-\max\ \operatorname{tr}\left( \boldsymbol{C} \boldsymbol{X} \right) \qquad \text{s.t. }\boldsymbol{X} \succeq \boldsymbol{0} , \operatorname{tr}\left( \boldsymbol{X} \right) = n
+\min_{\boldsymbol{y}}\ \boldsymbol{y} ^{\top} \boldsymbol{W} \boldsymbol{y} \qquad \text{s.t.}  \left\| \boldsymbol{y}  \right\| = \sqrt{n}
 $$
 
-which is equivalent (what if $\operatorname{rank} (\boldsymbol{X})=2$ ??) to
+The optimal solution $\boldsymbol{y} ^*$ is the last eigenvector of $\boldsymbol{W}$, and the objective value is the last eigenvalue of $\boldsymbol{W}$. The solution to the SDP problem is then $\boldsymbol{X} ^* = \boldsymbol{y}^* \boldsymbol{y} ^{*\top}$, with the same objective value. We can then round $\boldsymbol{y} ^*$ by its sign to decide partition assignment.
 
-$$
-\max\ \boldsymbol{x} ^{\top} \boldsymbol{C} \boldsymbol{x} \qquad \text{s.t.}  \left\| \boldsymbol{x}  \right\| = \sqrt{n}
-$$
 
 #### SDP Relaxation
 
@@ -338,8 +437,7 @@ $$\operatorname{GW} (\boldsymbol{W}) = \mathbb{E}_{\boldsymbol{r}} [f_{\boldsymb
 
 Obviously $\operatorname{GW} (\boldsymbol{W}) \le \operatorname{cut} (\boldsymbol{W})$, since we are averaging the value of feasible solutions $\hat{\boldsymbol{x}}$ in $\left\{ \pm 1\right\}^n$, and each of them is $\le \operatorname{cut} (\boldsymbol{W})$. But how small can $\operatorname{GW} (\boldsymbol{W})$ be?
 
-Theorem  
-$\operatorname{GW}(\boldsymbol{W}) \ge \alpha \operatorname{cut}(\boldsymbol{W})$ where $\alpha \approx 0.87$. That is, the random rounding algorithm return a cut value not too small than the optimal value, in expectation.
+It can be shown that $\operatorname{GW}(\boldsymbol{W}) \ge \alpha \operatorname{cut}(\boldsymbol{W})$ where $\alpha \approx 0.87$. That is, the random rounding algorithm return a cut value not too small than the optimal value, in expectation.
 
 ::::{admonition,dropdown,seealso} *Proof*
 
@@ -355,8 +453,13 @@ $$\begin{aligned}
 &= \frac{\arccos (\boldsymbol{v} _i ^{\top} \boldsymbol{v} _j)}{\pi} \\
 \end{aligned}$$
 
-In $p = 3$ case, we sample $\boldsymbol{r}$ from a unit sphere. All good $\boldsymbol{r}$ lie on a 'belt' on the sphere. The probability of sampling good $\boldsymbol{r}$ equals the ratio between the area of the belt and the area of the sphere. Consider partitioning the sphere into a collection of infinite many semicircles (like longitude arcs), then the probability for each semicircle is $\theta/\pi$. Hence, the overall probability for the sphere is still $\theta/\pi$. It remains constant in higher dimensional cases.
+In $p = 3$ case, we sample $\boldsymbol{r}$ from a unit sphere. All good $\boldsymbol{r}$ lie on two [spherical wedges](https://en.wikipedia.org/wiki/Spherical_wedge), with angle $\theta$. An example is given below. The ratio between the area of each spherical wedge and the area of the sphere is $\theta/2\pi$.
 
+:::{figure} max-cut-gw-3d
+<img src="../imgs/max-cut-gw-3d.png" width = "70%" alt=""/>
+
+Two vectors $\boldsymbol{v}_1, \boldsymbol{v} _2$ (red, green) and random directions $\boldsymbol{r}$ (blue) from unit sphere whose corresponding hyperplane separates the two vectors.
+:::
 
 Now we compare $\operatorname{GW}(\boldsymbol{W}) = \sum_{i,j}^n w_{ij} \frac{1}{\pi}\arccos (\boldsymbol{v} _i ^{\top} \boldsymbol{v} _j)$ and $\operatorname{SDP} (\boldsymbol{W}) = \sum_{i,j}^n w_{ij} \frac{1}{2} (1 - \boldsymbol{v} _i ^{\top} \boldsymbol{v} _j)$.
 
@@ -374,13 +477,41 @@ Note that we require $w_{ij} \ge 0$.
 
 ::::
 
+<!--
+```{code-cell} python
+:tags: [hide-input]
+
+import numpy as np
+import plotly.express as px
+import plotly.io as pio
+import plotly.offline as py
+
+pio.renderers.default = "png"
+
+v = np.array([[1,0,3], [-1,0,3]])
+v = v/np.linalg.norm(v, 2, axis=1)[:, np.newaxis]
+n = 3000
+np.random.seed(1)
+x = np.random.normal(size=(n,3))
+x = x / np.linalg.norm(x, 2, axis=1)[:, np.newaxis]
+x = x[np.dot(x,v[0])*np.dot(x,v[1]) <0, :]
+print(f'v1 = {np.round(v[0],3)}, \nv2 = {np.round(v[1],3)}')
+print(f'arccos(v1,v2)/pi = {np.round(np.arccos(v[0] @ v[1].T)/np.pi,3)}')
+print(f'simulated result = {np.round(len(x)/n,3)}')
+fig = px.scatter_3d(x=x[:,0], y=x[:,1], z=x[:,2], size=np.ones(len(x)), range_z=[-1,1])
+fig.add_scatter3d(x=[0, v[0,0]], y=[0, v[0,1]], z=[0, v[0,2]], name='v1')
+fig.add_scatter3d(x=[0, v[1,0]], y=[0, v[1,1]], z=[0, v[1,2]], name='v2')
+fig.show()
+``` -->
+
 How large can the SDP relaxation value $\operatorname{SDP} (\boldsymbol{W})$ be? **Grothendieck’s Inequality** says
 
 $$
-\operatorname{SDP}(\boldsymbol{W}) \le K \operatorname{cut}(\boldsymbol{W})  
+K \operatorname{cut}(\boldsymbol{W})   \ge \operatorname{SDP}(\boldsymbol{W})
 $$
 
 where $K \approx 1.7$. Hence, the SDP relaxation $\Omega_{SDP}$ does not relax the original domain $\Omega$ too much (otherwise we may see $\operatorname{SDP}(\boldsymbol{W}) \gg \operatorname{cut}(\boldsymbol{W})$). Hence $\hat{\boldsymbol{v}}_i ^{\top} \boldsymbol{\hat{v}} _j$ should recover binary $x_i^* x_j^*$ well.
+
 
 ### For SBM
 

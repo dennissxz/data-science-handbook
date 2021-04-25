@@ -52,6 +52,7 @@
     <script async="async" src="../_static/sphinx-thebe.js"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Semi-supervised Learning" href="51-semi-supervised.html" />
@@ -134,6 +135,11 @@
    <li class="toctree-l2">
     <a class="reference internal" href="../11-math/52-non-linear-programming.html">
      Non-linear Programming
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/test.html">
+     Interactive data visualizations
     </a>
    </li>
    <li class="toctree-l2">
@@ -932,8 +938,8 @@
       </a>
      </li>
      <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#by-mean">
-       By Mean
+      <a class="reference internal nav-link" href="#by-mean-or-mode">
+       By Mean or Mode
       </a>
      </li>
      <li class="toc-h4 nav-item toc-entry">
@@ -955,6 +961,11 @@
    Normality
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#standardization">
+   Standardization
+  </a>
+ </li>
 </ul>
 
             </nav>
@@ -968,6 +979,10 @@
                 
   <div class="section" id="data-issues">
 <h1>Data Issues<a class="headerlink" href="#data-issues" title="Permalink to this headline">¶</a></h1>
+<p>Reference</p>
+<ul class="simple">
+<li><p>preprocessing <a class="reference external" href="https://mp.weixin.qq.com/s/SCmCY3joCmn6FJcKYwtlwg?utm_medium=email&amp;_hsmi=120495215&amp;_hsenc=p2ANqtz-8IbhySDq8KZwn2MNO0fqXLg0vL7SYTAIiAOHDsWSV5An-vlSjm7VtKDbhA7A-9nsS-IfCqqcJ3Wvs5DNLzgl4I8XCt5A&amp;utm_content=120495215&amp;utm_source=hs_email">link</a></p></li>
+</ul>
 <div class="section" id="missing-values">
 <span id="id1"></span><h2>Missing Values<a class="headerlink" href="#missing-values" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="types">
@@ -1011,17 +1026,16 @@
 <h4>Drop<a class="headerlink" href="#drop" title="Permalink to this headline">¶</a></h4>
 <p>Simple drop observation <span class="math notranslate nohighlight">\(i\)</span> if any entry <span class="math notranslate nohighlight">\(x_{ij}\)</span> is missing. This is acceptable when in MAR, MCAR and when the missing is infrequent.</p>
 </div>
-<div class="section" id="by-mean">
-<h4>By Mean<a class="headerlink" href="#by-mean" title="Permalink to this headline">¶</a></h4>
-<p>We can impute <span class="math notranslate nohighlight">\(x_{ij}\)</span> by the column mean <span class="math notranslate nohighlight">\(\bar{x}_{\cdot j}\)</span>. But if <span class="math notranslate nohighlight">\(x_{ij}\)</span> is deterministic on other variables, then after imputation this dependent relation does not hold.</p>
+<div class="section" id="by-mean-or-mode">
+<h4>By Mean or Mode<a class="headerlink" href="#by-mean-or-mode" title="Permalink to this headline">¶</a></h4>
+<p>We can impute <span class="math notranslate nohighlight">\(x_{ij}\)</span> by the column mean <span class="math notranslate nohighlight">\(\bar{x}_{\cdot j}\)</span> or column mode. But if <span class="math notranslate nohighlight">\(x_{ij}\)</span> is deterministic on other variables, then after imputation this dependent relation does not hold.</p>
 </div>
 <div class="section" id="by-regression">
 <h4>By Regression<a class="headerlink" href="#by-regression" title="Permalink to this headline">¶</a></h4>
 <p>Suppose <span class="math notranslate nohighlight">\(X_j\)</span> is deterministic on other explanatory variables <span class="math notranslate nohighlight">\(X_{-j}\)</span>, we can estimate this relation by regression <span class="math notranslate nohighlight">\(x_j\)</span> over all other explanatory variables to maintain this dependent relation in the imputed data.</p>
 <div class="note admonition">
-<p class="admonition-title"> In linear regression</p>
-<p>Clearly, this method increases <span class="math notranslate nohighlight">\(\operatorname{VIF}_j\)</span>.</p>
-<p>In general, after imputation</p>
+<p class="admonition-title"> Side-effect</p>
+<p>Clearly, this method increases <a class="reference internal" href="../31-regression/13-lm-diagnosis.html#lm-multicollinearity"><span class="std std-ref">multicollinearity</span></a> among the variables, measured by <span class="math notranslate nohighlight">\(\operatorname{VIF}_j\)</span>. In general, in linear regression, after imputation</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(\left\vert \hat{\beta}_j \right\vert\)</span> decreases</p></li>
 <li><p><span class="math notranslate nohighlight">\(\hat{\sigma}^2\)</span> increases</p></li>
@@ -1043,10 +1057,15 @@
 </div>
 <div class="section" id="normality">
 <h2>Normality<a class="headerlink" href="#normality" title="Permalink to this headline">¶</a></h2>
-<p>Some model or methods assume normality of data. If some variables are not from normal distribution, we can try to transform them to normal, e.g. Box-Cox transformation.</p>
-<p>ref</p>
+<p>Some model or methods assume normality of data. If some variables are not from normal distribution, we can try to <a class="reference internal" href="../12-probabilities/91-exponential-families.html#transform-normality"><span class="std std-ref">transform</span></a> them to normal.</p>
+</div>
+<div class="section" id="standardization">
+<h2>Standardization<a class="headerlink" href="#standardization" title="Permalink to this headline">¶</a></h2>
+<p>When will we use standardization?</p>
 <ul class="simple">
-<li><p>preprocessing <a class="reference external" href="https://mp.weixin.qq.com/s/SCmCY3joCmn6FJcKYwtlwg?utm_medium=email&amp;_hsmi=120495215&amp;_hsenc=p2ANqtz-8IbhySDq8KZwn2MNO0fqXLg0vL7SYTAIiAOHDsWSV5An-vlSjm7VtKDbhA7A-9nsS-IfCqqcJ3Wvs5DNLzgl4I8XCt5A&amp;utm_content=120495215&amp;utm_source=hs_email">link</a></p></li>
+<li><p>For algorithms using Euclidean distance, e.g. k-means</p></li>
+<li><p>For dimension reduction method involves variance, e.g. PCA</p></li>
+<li><p>For gradient descent, to reduce noise in the trajectory</p></li>
 </ul>
 </div>
 </div>
@@ -1102,6 +1121,16 @@
   <script src="../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
 
 
+    
+    <!-- Google Analytics -->
+    <script>
+      window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+      ga('create', 'UA-150740237-2', 'auto');
+      ga('set', 'anonymizeIp', true);
+      ga('send', 'pageview');
+    </script>
+    <script async src='https://www.google-analytics.com/analytics.js'></script>
+    <!-- End Google Analytics -->
     
   </body>
 </html>

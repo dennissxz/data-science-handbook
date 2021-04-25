@@ -52,6 +52,7 @@
     <script async="async" src="../_static/sphinx-thebe.js"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Large Sample Theory" href="91-large-sample-theory.html" />
@@ -134,6 +135,11 @@
    <li class="toctree-l2">
     <a class="reference internal" href="../11-math/52-non-linear-programming.html">
      Non-linear Programming
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/test.html">
+     Interactive data visualizations
     </a>
    </li>
    <li class="toctree-l2">
@@ -1027,7 +1033,7 @@ c &amp;= f(\boldsymbol{x} ;\boldsymbol{\mu}, \boldsymbol{\Sigma}) \\
 <p>In the 2-d case, an ellipsoid reduces to an ellipse.</p>
 <div class="myclass figure align-default" id="gaussian-density-2d">
 <a class="reference internal image-reference" href="../_images/gaussian-density-2d.png"><img alt="" src="../_images/gaussian-density-2d.png" style="width: 80%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 12 </span><span class="caption-text">Bivariate Gaussian density and ellipse</span><a class="headerlink" href="#gaussian-density-2d" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 13 </span><span class="caption-text">Bivariate Gaussian density and ellipse</span><a class="headerlink" href="#gaussian-density-2d" title="Permalink to this image">¶</a></p>
 </div>
 <p>A numerical example to illustrate how <span class="math notranslate nohighlight">\(\boldsymbol{\mu}, \boldsymbol{\Lambda} , \boldsymbol{U}\)</span> jointly decide the distribution of <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span>, and the effect of rotation transformation (rotation) <span class="math notranslate nohighlight">\(\boldsymbol{U} ^{\top} \boldsymbol{x}\)</span></p>
 <div class="cell tag_hide-input docutils container">
@@ -1100,7 +1106,7 @@ c &amp;= f(\boldsymbol{x} ;\boldsymbol{\mu}, \boldsymbol{\Sigma}) \\
 </ul>
 <div class="myclass figure align-default" id="gaussian-marginal-conditional">
 <a class="reference internal image-reference" href="../_images/gaussian-marginal-conditional.png"><img alt="" src="../_images/gaussian-marginal-conditional.png" style="width: 80%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 13 </span><span class="caption-text">Marginal Gaussian and conditional Gaussian are also Gaussians [Shi 2021]</span><a class="headerlink" href="#gaussian-marginal-conditional" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 14 </span><span class="caption-text">Marginal Gaussian and conditional Gaussian are also Gaussians [Shi 2021]</span><a class="headerlink" href="#gaussian-marginal-conditional" title="Permalink to this image">¶</a></p>
 </div>
 </li>
 </ul>
@@ -1294,12 +1300,12 @@ c &amp;= f(\boldsymbol{x} ;\boldsymbol{\mu}, \boldsymbol{\Sigma}) \\
 <li><p>QQ-plots (quantile-quantile plot)</p>
 <ul class="simple">
 <li><p>Sample quantiles are plotted against the expected sample quantiles of a standard normal distribution</p></li>
-<li><p>a straight line indicates univariate normality</p></li>
+<li><p>If the points lie on a straight line, then it indicates univariate normality. In addition to measure this linearity by eye, we can also use correlation coefficient to quantify it.</p></li>
 <li><p>non-linearity may indicate a need to transform the variable.</p></li>
 </ul>
 <div class="figure align-default" id="gaussian-qq-plot">
 <a class="reference internal image-reference" href="../_images/gaussian-qq-plot.png"><img alt="" src="../_images/gaussian-qq-plot.png" style="width: 80%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 14 </span><span class="caption-text">QQ-plots for Gaussian (left) and non-Gaussian (right)</span><a class="headerlink" href="#gaussian-qq-plot" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 15 </span><span class="caption-text">QQ-plots for Gaussian (left) and non-Gaussian (right)</span><a class="headerlink" href="#gaussian-qq-plot" title="Permalink to this image">¶</a></p>
 </div>
 </li>
 <li><p>P-P plot (probability against probability plot) that plots the sample CDF against the theoretical CDF.</p></li>
@@ -1315,18 +1321,22 @@ c &amp;= f(\boldsymbol{x} ;\boldsymbol{\mu}, \boldsymbol{\Sigma}) \\
 </ul>
 </li>
 <li><p>Jarque–Bera test</p></li>
+<li><p>Test for zero skewness, zero excess kurtosis.</p></li>
+</ul>
+<p>Multivariate case:</p>
+<ul>
 <li><p>Check whether the squared generalized distance as defined below follows a chi-squared distribution by a Q-Q plot (necessary and sufficient conditions for very large sample size))</p>
 <div class="math notranslate nohighlight">
 \[
   d_{i}^{2}=\left(\boldsymbol{x}_{i}-\overline{\boldsymbol{x}}\right)^{\prime} \boldsymbol{S}^{-1}\left(\boldsymbol{x}_{i}-\overline{\boldsymbol{x}}\right)
   \]</div>
+<p>Again, correlation coefficient can be used to quantity the linearity of the points.</p>
 </li>
 <li><p>Check each Principal Component (PC) for univariate normality (necessary condition; and if the sample size n is large enough, a sufficient condition)</p></li>
-<li><p>Test for zero skewness, zero excess kurtosis.</p></li>
 </ul>
 </div>
 <div class="section" id="transformation-to-near-normality">
-<h3>Transformation to Near Normality<a class="headerlink" href="#transformation-to-near-normality" title="Permalink to this headline">¶</a></h3>
+<span id="transform-normality"></span><h3>Transformation to Near Normality<a class="headerlink" href="#transformation-to-near-normality" title="Permalink to this headline">¶</a></h3>
 <p>To achieve the multinormality of the data, univariate transformation is applied to each variable individually. After then, the multinormality of transformed variables is checked again (Notice that each of the <span class="math notranslate nohighlight">\(X_p\)</span> variables after transformation is normally distributed does not imply that they jointly follow a multivariate normal distribution).</p>
 <p>Assume <span class="math notranslate nohighlight">\(x &gt; 0\)</span>.</p>
 <ul>
@@ -1418,6 +1428,16 @@ c &amp;= f(\boldsymbol{x} ;\boldsymbol{\mu}, \boldsymbol{\Sigma}) \\
   <script src="../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
 
 
+    
+    <!-- Google Analytics -->
+    <script>
+      window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+      ga('create', 'UA-150740237-2', 'auto');
+      ga('set', 'anonymizeIp', true);
+      ga('send', 'pageview');
+    </script>
+    <script async src='https://www.google-analytics.com/analytics.js'></script>
+    <!-- End Google Analytics -->
     
   </body>
 </html>

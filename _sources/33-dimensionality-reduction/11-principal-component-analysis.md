@@ -839,7 +839,9 @@ $$\begin{aligned}
 &= \beta \boldsymbol{u} \boldsymbol{u} ^{\top} + \sigma^2 _{\epsilon}\boldsymbol{I} _p \\
 \end{aligned}$$
 
-Define the signal-noise ratio
+It is easy to see that the first eigen pair of $\boldsymbol{\Sigma}$ is $(\beta +\sigma^2 _\epsilon, \boldsymbol{u})$ and the other eigenvalues are all 1.
+
+How the size of $\beta$ and $\sigma^2 _\epsilon$ affect the identifiability of the signal direction $\boldsymbol{u}$? Define the signal-noise ratio
 
 $$
 SNR = \frac{\beta}{\sigma^2 _{\epsilon}}
@@ -911,7 +913,7 @@ We are interested in high-dimensional setting $n, p \rightarrow \infty$, under w
 
 #### Phase Transition
 
-With random matrix theory, using the [Marchenko-pastur Distribution](marchenko-pastur-distribution), we have the following conclusions:
+With random matrix theory, using the [Marchenko-pastur Distribution](marchenko-pastur-distribution), we have the following conclusions, as $n, p \rightarrow \infty$:
 
 - The largest eigenvalue $\hat{\lambda}$ satisfies
 
@@ -934,31 +936,38 @@ With random matrix theory, using the [Marchenko-pastur Distribution](marchenko-p
   \end{array}\right.
   $$
 
-  - if signal is of low energy, the estimated top eigenvector is **orthogonal** to the true direction $\boldsymbol{u}$. PCA will tell us nothing about the true signal. In the extreme case $\beta = 0$, the largest eigenvector returned by PCA is just that from $\operatorname{Cov}\left( \boldsymbol{g}  \right) = \boldsymbol{I} _p$, which is purely a random direction.
-  - if the signal is of high energy, PCA will return a **biased** estimation which lies in a **cone** whose angle with the true signal is no more than $\arccos \left( \frac{1-\gamma/\beta^2}{1+\gamma/\beta^2}  \right)$.
+  - if signal is of low energy $(\beta \le \sqrt{\gamma})$, the estimated top eigenvector is **orthogonal** to the true direction $\boldsymbol{u}$. PCA will tell us nothing about the true signal. In the extreme case $\beta = 0$, the largest eigenvector returned by PCA is just that from $\operatorname{Cov}\left( \boldsymbol{g}  \right) = \boldsymbol{I} _p$, which is purely a random direction.
+  - if the signal is of high energy $(\beta \ge \sqrt{\gamma})$, PCA will return a **biased** estimation which lies over a lateral surface of a **cone** whose angle with the true signal is $\arccos \left( \sqrt{\frac{1-\gamma/\beta^2}{1+\gamma/\beta^2} } \right)$.
 
 
-For derivation, see Yao's [notes](https://github.com/yao-lab/yao-lab.github.io/blob/master/book_datasci.pdf).
+For derivation when $\beta > \sqrt{\gamma}$ case, see Yao's [notes](https://github.com/yao-lab/yao-lab.github.io/blob/master/book_datasci.pdf) (there are some typos). For the limiting distribution of $\lambda_{max}$, see [Johnstone](https://arxiv.org/pdf/math/0611589.pdf) p.16-17.
 
-Key techniques:
-- use 'whitening' $\boldsymbol{Z} = \boldsymbol{\Sigma} ^{-1/2} \boldsymbol{X} \sim \mathcal{N} (\boldsymbol{0} , \boldsymbol{I} _p)$ and then $\hat{\boldsymbol{\Sigma} }_{n}=\frac{1}{n} \boldsymbol{X} \boldsymbol{X} ^{T}=\boldsymbol{\Sigma} ^{1 / 2}\left(\frac{1}{n} \boldsymbol{Z} \boldsymbol{Z} ^{T}\right) \boldsymbol{\Sigma} ^{1 / 2}$ to relate the eigenvalue $\hat{\lambda}$ of $\hat{\boldsymbol{\Sigma} }_n$ with M-P distribution for eigenvalues of $\frac{1}{n} \boldsymbol{Z} \boldsymbol{Z} ^{T}$.
-- use integration to approximate infinite summation, if the summation can be expressed as the expectation of some continuous random variable, with known distribution function. (But the possible change of solution??)
+Key techniques in Yao's notes:
+- Use 'whitening' $\boldsymbol{Z} = \boldsymbol{\Sigma} ^{-1/2} \boldsymbol{X} \sim \mathcal{N} (\boldsymbol{0} , \boldsymbol{I} _p)$ and then $\hat{\boldsymbol{\Sigma} }_{n}=\frac{1}{n} \boldsymbol{X} \boldsymbol{X} ^{T}=\boldsymbol{\Sigma} ^{1 / 2}\left(\frac{1}{n} \boldsymbol{Z} \boldsymbol{Z} ^{T}\right) \boldsymbol{\Sigma} ^{1 / 2}$ to relate the eigenvalue $\hat{\lambda}$ of $\hat{\boldsymbol{\Sigma} }_n$ with M-P distribution for eigenvalues of $\frac{1}{n} \boldsymbol{Z} \boldsymbol{Z} ^{T}$.
+- Use integration to approximate infinite summation, if
+  - The summation can be expressed as the expectation of some continuous random variable with known distribution function
+  - The number of terms in the summation, denoted $p$, is large enough, $p \rightarrow \infty$
+  - No term 'explode' to $\infty$. For instance, for the summation $\sum_{i=1}^p \frac{c}{\lambda - \lambda_j}$ where $\lambda_j \sim f_{MP}$ over $[\gamma_-, \gamma_+]$, if $\lambda \in [\gamma_-, \gamma_+]$, then as $p \rightarrow \infty$, some denominator $\lambda - \lambda_j$ will be infinitely small, and that term explode.
 
 #### Comparison to Davis-Kahan Theorem
 
-If we use [Davis-Kahan theorem](davis-kahan), by viewing $\frac{1}{n} \sum_{i=1}^n  \boldsymbol{g}_i \boldsymbol{g}_i ^{\top}$ as noise, we have
+Recall that $\boldsymbol{x}_i = g_0 \boldsymbol{u} + \boldsymbol{g} _i$. If we use [Davis-Kahan theorem](davis-kahan), by viewing
+- truth: $\boldsymbol{\Sigma} = \beta \boldsymbol{u} \boldsymbol{u} ^{\top} + \boldsymbol{I} _p$
+- noise: $\boldsymbol{H} = \frac{1}{n} \sum_{i=1}^n  \boldsymbol{g}_i \boldsymbol{g}_i ^{\top}$
+- observed: $\widehat{\boldsymbol{\Sigma}} _n = \frac{1}{n} \sum_{i=1}^n \boldsymbol{x}_i \boldsymbol{x}_i ^{\top}$
 
+The distance between the first eigenvector $\hat{\boldsymbol{u}}$ of $\widehat{\boldsymbol{\Sigma}} _n$ and $\boldsymbol{u}$ of the truth $\boldsymbol{\Sigma}$ is
 
 $$
-\operatorname{dist}(\hat{\boldsymbol{u}}, \boldsymbol{u})=\left\|\hat{\boldsymbol{u}} \hat{\boldsymbol{u}}^{\top}-\boldsymbol{u} \boldsymbol{u}^{\top}\right\|_{2} \leq \frac{\|\frac{1}{n} \sum_{i=1}^n  \boldsymbol{g}_i \boldsymbol{g}_i ^{\top}\|}{\lambda_1(\boldsymbol{\Sigma}) - \lambda_2(\boldsymbol{\Sigma} )-\|\frac{1}{n} \sum_{i=1}^n \boldsymbol{g}_i \boldsymbol{g}_i ^{\top}\|} = \frac{\gamma_{+}}{\lambda_1 - \lambda_2 - \gamma_{+}}
+\operatorname{dist}(\hat{\boldsymbol{u}}, \boldsymbol{u})=\left\|\hat{\boldsymbol{u}} \hat{\boldsymbol{u}}^{\top}-\boldsymbol{u} \boldsymbol{u}^{\top}\right\|_{2} \leq \frac{\|\boldsymbol{H}\|}{\lambda_1(\boldsymbol{\Sigma}) - \lambda_2(\boldsymbol{\Sigma} )-\|\boldsymbol{H} \|} = \frac{\gamma_{+}}{\lambda_1 - \lambda_2 - \gamma_{+}}
 $$
 
 where the spectral norm $\|\frac{1}{n} \boldsymbol{g}_i \boldsymbol{g}_i ^{\top}\| = \gamma_{+}$ since the upper bound of the M-P distribution is $\gamma_{+}$.
 
-If we want to $\operatorname{dist}(\hat{\boldsymbol{u}}, \boldsymbol{u})$ has some upper bound, then it is equivalent to let the denominator has some lower bound, i.e. $\lambda_1 - \lambda_2 \gg \gamma_{+}$. In the spike model, $\lambda_1 - \lambda_2 = \beta$. Hence, the condition for detection is
+If we want $|\langle \boldsymbol{u} ,  \hat{\boldsymbol{u}}\rangle| ^2 > c$, then it is equivalent to $\left\|\hat{\boldsymbol{u}} \hat{\boldsymbol{u}}^{\top}-\boldsymbol{u} \boldsymbol{u}^{\top}\right\|_{2}^2 < 1-c$ since they [sum up to](norm) 1. That is, the denominator has some lower bound, i.e. $\lambda_1 - \lambda_2 - \gamma_{+}>  b$. In the spike model, $\lambda_1 - \lambda_2 = (1+\beta) - 1 = \beta$. Hence, the condition for $\beta$ is
 
 $$
-\beta \gg \gamma_{+} = (1 + \sqrt{\gamma})^2
+\beta > (1 + \sqrt{\gamma})^2 + b
 $$
 
-This condition is more **conservative** than the above result: $\beta > \sqrt{\gamma}$ is ok.
+This condition is stronger than the above result: $\beta > \sqrt{\gamma}$ is ok.

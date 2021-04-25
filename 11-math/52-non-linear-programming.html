@@ -52,9 +52,10 @@
     <script async="async" src="../_static/sphinx-thebe.js"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Puzzles" href="90-puzzles.html" />
+    <link rel="next" title="Interactive data visualizations" href="test.html" />
     <link rel="prev" title="Linear Programming" href="51-linear-programming.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
@@ -134,6 +135,11 @@
    <li class="toctree-l2 current active">
     <a class="current reference internal" href="#">
      Non-linear Programming
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="test.html">
+     Interactive data visualizations
     </a>
    </li>
    <li class="toctree-l2">
@@ -841,7 +847,10 @@
 
     <div class="dropdown-buttons">
         <!-- ipynb file if we had a myst markdown file -->
-        
+        <a class="dropdown-buttons"
+            href="../_sources/11-math/52-non-linear-programming.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download notebook file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
         <!-- Download raw file -->
         <a class="dropdown-buttons" href="../_sources/11-math/52-non-linear-programming.md"><button type="button"
                 class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
@@ -879,6 +888,23 @@
 
             <!-- Launch buttons -->
 
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/dennissxz/data-science-handbook/master?urlpath=tree/11-math/52-non-linear-programming.md"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
         </div>
 
         <!-- Table of contents -->
@@ -899,6 +925,16 @@
    Semi-definite Programming
   </a>
   <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#introduction">
+     Introduction
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#from-rayleigh-quotient">
+     From Rayleigh Quotient
+    </a>
+   </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#max-cut-problem">
      Max-cut Problem
@@ -961,20 +997,7 @@
         
               <div>
                 
-  <!-- ---
-jupytext:
-  formats: md:myst
-  text_representation:
-    extension: .md
-    format_name: myst
-    format_version: 0.12
-    jupytext_version: 1.8.2
-kernelspec:
-  display_name: R
-  language: R
-  name: ir
---- -->
-<div class="section" id="non-linear-programming">
+  <div class="section" id="non-linear-programming">
 <h1>Non-linear Programming<a class="headerlink" href="#non-linear-programming" title="Permalink to this headline">¶</a></h1>
 <div class="figure align-default" id="opt-hierarchy">
 <a class="reference internal image-reference" href="../_images/opt-hierarchy.png"><img alt="" src="../_images/opt-hierarchy.png" style="width: 30%;" /></a>
@@ -1149,7 +1172,85 @@ been solved.</p>
 </div>
 <div class="section" id="semi-definite-programming">
 <h2>Semi-definite Programming<a class="headerlink" href="#semi-definite-programming" title="Permalink to this headline">¶</a></h2>
-<p>We introduce semi-definite programming in max-cut problem.</p>
+<p>We introduce semi-definite programming. Then use it solve max-cut problem, and analyze its performance for min-cut problem over stochastic block model.</p>
+<div class="section" id="introduction">
+<h3>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h3>
+<p>A linear programming problem is one in which we wish to maximize or minimize a <strong>linear</strong> objective function of real variables over a polytope. In semidefinite programming, we instead use <strong>real-valued vectors</strong> and are allowed to take the <strong>dot product</strong> of vectors. In general, a SDP has a form</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{array}{l}
+\min _{\boldsymbol{x}_{1}, \ldots, \boldsymbol{x}_{n} \in \mathbb{R}_{n}}&amp; \sum_{i, j \in[n]} c_{ij} \langle \boldsymbol{x}_{i}, \boldsymbol{x}_{j} \rangle \\
+\text {s.t.} &amp;\sum_{i, j \in[n]} a_{ijk}\langle \boldsymbol{x}_{i}, \boldsymbol{x}_{j} \rangle \leq b_{k} \text { for all } k
+\end{array}
+\end{split}\]</div>
+<p>The array of real variables in LP is then replaced by an array of vector variables, which form a matrix variable. By using this notation, the problem can be written as</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+\min _{\boldsymbol{X} \in \mathbb{R}^{n \times n}}\ &amp;\langle \boldsymbol{C} , \boldsymbol{X} \rangle\\
+\text {s.t.}\ &amp; \left\langle \boldsymbol{A} _{k}, \boldsymbol{X} \right\rangle\leq b_{k}, \quad k=1, \ldots, m \\
+&amp; X_{ij} = \boldsymbol{x}_i ^{\top} \boldsymbol{x} _j
+\end{aligned}
+\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(C_{ij} = (c_{ij} + c_{ji})/2, A_{ij}^{(k)} = (a_{ijk} + a_{jik})/2\)</span> and <span class="math notranslate nohighlight">\(\langle \boldsymbol{P}, \boldsymbol{Q} \rangle = \operatorname{tr}\left(\boldsymbol{P}  ^{\top} \boldsymbol{Q} \right) = \sum_{i,j}^n p_{ij}q_{ij}\)</span> is the <a class="reference external" href="https://en.wikipedia.org/wiki/Frobenius_inner_product">Frobenius inner product</a>.</p>
+<p>Note that an <span class="math notranslate nohighlight">\(n \times n\)</span> matrix <span class="math notranslate nohighlight">\(\boldsymbol{M}\)</span> is said to be positive semidefinite if it is the Gramian matrix of some vectors (i.e. if there exist vectors <span class="math notranslate nohighlight">\(\boldsymbol{v} _1, \ldots, \boldsymbol{v} _n\)</span> such that <span class="math notranslate nohighlight">\(M_{ij} = \langle \boldsymbol{v} _i, \boldsymbol{v} _j \rangle\)</span> for all <span class="math notranslate nohighlight">\(i,j\)</span>). Hence, the last constraint is just <span class="math notranslate nohighlight">\(\boldsymbol{X} \succeq \boldsymbol{0}\)</span>. That is, the nonnegativity constraints on real variables in LP are replaced by semidefiniteness constraints on matrix variables in SDP.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+\min _{\boldsymbol{X} \succeq \boldsymbol{0}}\ &amp;\langle \boldsymbol{C} , \boldsymbol{X} \rangle\\
+\text {s.t.}\ &amp; \left\langle \boldsymbol{A} _{k}, \boldsymbol{X} \right\rangle\leq b_{k}, \quad k=1, \ldots, m \\
+\end{aligned}
+\end{split}\]</div>
+<p>All linear programs can be expressed as SDPs. SDPs are in fact a special case of cone programming and can be efficiently solved by interior point methods. Given the solution <span class="math notranslate nohighlight">\(\boldsymbol{X}^*\)</span> to the SDP in the standard form, the vectors <span class="math notranslate nohighlight">\(\boldsymbol{v}_1, \ldots, \boldsymbol{v} _n\)</span> can be recovered in <span class="math notranslate nohighlight">\(\mathcal{O} (n^3)\)</span> time, e.g. by using an incomplete Cholesky decomposition of <span class="math notranslate nohighlight">\(\boldsymbol{X}^* = \boldsymbol{V} ^{\top} \boldsymbol{V}\)</span> where <span class="math notranslate nohighlight">\(\boldsymbol{V} = [\boldsymbol{v} _1, \ldots \boldsymbol{v} _n]\)</span>.</p>
+</div>
+<div class="section" id="from-rayleigh-quotient">
+<span id="sdp-rq"></span><h3>From Rayleigh Quotient<a class="headerlink" href="#from-rayleigh-quotient" title="Permalink to this headline">¶</a></h3>
+<p>Recall that an Rayleigh quotient can be formulated as</p>
+<div class="math notranslate nohighlight">
+\[
+\max\  \boldsymbol{x} ^{\top} \boldsymbol{A} \boldsymbol{x}  \qquad \mathrm{s.t.}\ \boldsymbol{x} ^{\top} \boldsymbol{x} = 1
+\]</div>
+<p>Since both the objective and the constraint are scalar valued, we can re-write them using trace</p>
+<div class="math notranslate nohighlight">
+\[
+\max\  \operatorname{tr}\left( \boldsymbol{x} ^{\top} \boldsymbol{A} \boldsymbol{x}  \right) \qquad \mathrm{s.t.}\ \operatorname{tr}\left( \boldsymbol{x} ^{\top} \boldsymbol{x} \right) = 1
+\]</div>
+<p>Then, by the property of trace, we have</p>
+<div class="math notranslate nohighlight">
+\[
+\max\  \operatorname{tr}\left(\boldsymbol{A} \boldsymbol{x} \boldsymbol{x} ^{\top}  \right) \qquad \mathrm{s.t.}\ \operatorname{tr}\left( \boldsymbol{x} \boldsymbol{x} ^{\top} \right) = 1
+\]</div>
+<p>Let <span class="math notranslate nohighlight">\(\boldsymbol{X} = \boldsymbol{x} \boldsymbol{x} ^{\top}\)</span>, then the variable <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> can be replaced by a rank-1 matrix <span class="math notranslate nohighlight">\(\boldsymbol{X} = \boldsymbol{x} \boldsymbol{x} ^{\top}\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+\max\  \operatorname{tr}\left(\boldsymbol{A} \boldsymbol{X} \right) \qquad \mathrm{s.t.}\ \operatorname{tr}\left( \boldsymbol{X}  \right) = 1, \boldsymbol{X} = x
+\boldsymbol{x} ^{\top}
+\]</div>
+<p>Note that <span class="math notranslate nohighlight">\(\boldsymbol{X} = \boldsymbol{x} \boldsymbol{x} ^{\top}\)</span> if and only if <span class="math notranslate nohighlight">\(\operatorname{rank}\left( \boldsymbol{X}  \right)=1\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{X} \succeq \boldsymbol{0}\)</span>, hence the constraints are equivalent to.</p>
+<div class="math notranslate nohighlight">
+\[
+\max\  \operatorname{tr}\left(\boldsymbol{A} \boldsymbol{X} \right) \qquad \mathrm{s.t.}\ \operatorname{tr}\left( \boldsymbol{X}  \right) = 1, \operatorname{rank}\left( \boldsymbol{X}  \right)=1, \boldsymbol{X} \succeq 0 \qquad (RQ)
+\]</div>
+<p>Call this problem RQ, if we drop the rank 1 constraint, then this would be a semidefinite program, where <span class="math notranslate nohighlight">\(\operatorname{tr}\left( \boldsymbol{X} \right)\)</span> can be viewed as <span class="math notranslate nohighlight">\(\langle \boldsymbol{I} , \boldsymbol{X} \rangle = 1\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[
+\max\  \operatorname{tr}\left(\boldsymbol{A} \boldsymbol{X} \right) \qquad \mathrm{s.t.}\ \operatorname{tr}\left( \boldsymbol{X}  \right) = 1, \boldsymbol{X} \succeq 0 \qquad (SDP)
+\]</div>
+<p>In fact, any optimal solution <span class="math notranslate nohighlight">\(\boldsymbol{X} _{SDP}^*\)</span> to this SDP can always be convert to an rank-1 matrix <span class="math notranslate nohighlight">\(\boldsymbol{X} _{RQ}^*\)</span> with the same optimal value. Hence, solving the SDP is equivalent to solving the RQ.</p>
+<div class="dropdown seealso admonition">
+<p class="admonition-title"> <em>Proof</em></p>
+<p>In SDP, since <span class="math notranslate nohighlight">\(\boldsymbol{X} \succeq \boldsymbol{0}\)</span>, let its EVD be <span class="math notranslate nohighlight">\(\boldsymbol{X} = \sum_{i=1}^n \lambda_i \boldsymbol{u}_i \boldsymbol{u}_i ^{\top}\)</span>, then the objective function is</p>
+<div class="math notranslate nohighlight">
+\[
+\operatorname{tr}\left( \boldsymbol{A} \sum_{i=1}^n \lambda_i \boldsymbol{u} _i \boldsymbol{u} _i ^{\top} \right) = \sum_{i=1}^n \lambda_i \operatorname{tr}\left( \boldsymbol{A} \boldsymbol{u} _i \boldsymbol{u} _i ^{\top} \right)
+\]</div>
+<p>Note that <span class="math notranslate nohighlight">\(1 = \operatorname{tr}\left( \boldsymbol{X} \right) = \sum_{i=1}^n \lambda_i\)</span> and <span class="math notranslate nohighlight">\(\lambda_i \ge 0\)</span>. Thus, the objective function is a convex combination of <span class="math notranslate nohighlight">\(\operatorname{tr}\left( \boldsymbol{A} \boldsymbol{u} _i \boldsymbol{u} _i ^{\top} \right)\)</span>. Hence, for any feasible solution <span class="math notranslate nohighlight">\(\boldsymbol{X} _{SDP} =\sum_{i=1}^n \lambda_i \boldsymbol{u}_i \boldsymbol{u}_i ^{\top}\)</span>, we can formulate another rank-1 feasible solution, by selecting <span class="math notranslate nohighlight">\(j = \arg\max_i \operatorname{tr}\left( \boldsymbol{A} \boldsymbol{u} _i \boldsymbol{u} _i ^{\top} \right)\)</span>, and setting <span class="math notranslate nohighlight">\(\lambda_j=1\)</span> while <span class="math notranslate nohighlight">\(\lambda_{-j}=0\)</span>. The rank-1 feasible solution is then <span class="math notranslate nohighlight">\(\boldsymbol{X} _{RQ} = \boldsymbol{u}_j \boldsymbol{u}_j ^{\top}\)</span>, and has a better objective value <span class="math notranslate nohighlight">\(\operatorname{tr}\left( \boldsymbol{A} \boldsymbol{X} _{RQ} \right) \ge \operatorname{tr}\left( \boldsymbol{A} \boldsymbol{X} _{SDP}\right)\)</span>. Therefore, for any optimal solution <span class="math notranslate nohighlight">\(\boldsymbol{X} _{SDP}^*\)</span>, we can find a rank-1 matrix <span class="math notranslate nohighlight">\(\boldsymbol{X} _{RQ}^*\)</span>, such that it is still optimal, since <span class="math notranslate nohighlight">\(\operatorname{tr}(\boldsymbol{A} \boldsymbol{X} _{SDP}^* ) = \operatorname{tr}(\boldsymbol{A} \boldsymbol{X} _{RQ}^* )\)</span>.</p>
+<p>In this way, the optimal value is then</p>
+<div class="math notranslate nohighlight">
+\[\max \operatorname{tr}\left( \boldsymbol{A} \boldsymbol{u} _j \boldsymbol{u} _j ^{\top} \right) = \max \boldsymbol{u} _j ^{\top} \boldsymbol{A} \boldsymbol{u} _j = \lambda_{\max}(\boldsymbol{A})\]</div>
+<p>where the eigenvector <span class="math notranslate nohighlight">\(\left\| \boldsymbol{u} \right\| =1\)</span>. This goes back to the formulation of Rayleigh quotient.</p>
+</div>
+</div>
 <div class="section" id="max-cut-problem">
 <h3>Max-cut Problem<a class="headerlink" href="#max-cut-problem" title="Permalink to this headline">¶</a></h3>
 <p>In a graph <span class="math notranslate nohighlight">\(G = (V, E)\)</span> with edge weights <span class="math notranslate nohighlight">\(\boldsymbol{W}\)</span>, we want to find a maximum bisection cut</p>
@@ -1178,18 +1279,14 @@ been solved.</p>
 <p>To solve it, it is equivalent to solve</p>
 <div class="math notranslate nohighlight">
 \[
-\max\ \operatorname{tr}\left( -\boldsymbol{W}\boldsymbol{X} \right) \qquad \text{s.t. }\boldsymbol{X} \succeq \boldsymbol{0} , \operatorname{tr}\left( \boldsymbol{X} \right) = n
+\min\ \operatorname{tr}\left(\boldsymbol{W}\boldsymbol{X} \right) \qquad \text{s.t. }\boldsymbol{X} \succeq \boldsymbol{0} , \operatorname{tr}\left( \boldsymbol{X} \right) = n
 \]</div>
-<p>which has the form</p>
+<p>As proved <a class="reference internal" href="#sdp-rq"><span class="std std-ref">above</span></a>, this SDP can be solved by solving a Rayleigh quotient problem</p>
 <div class="math notranslate nohighlight">
 \[
-\max\ \operatorname{tr}\left( \boldsymbol{C} \boldsymbol{X} \right) \qquad \text{s.t. }\boldsymbol{X} \succeq \boldsymbol{0} , \operatorname{tr}\left( \boldsymbol{X} \right) = n
+\min_{\boldsymbol{y}}\ \boldsymbol{y} ^{\top} \boldsymbol{W} \boldsymbol{y} \qquad \text{s.t.}  \left\| \boldsymbol{y}  \right\| = \sqrt{n}
 \]</div>
-<p>which is equivalent (what if <span class="math notranslate nohighlight">\(\operatorname{rank} (\boldsymbol{X})=2\)</span> ??) to</p>
-<div class="math notranslate nohighlight">
-\[
-\max\ \boldsymbol{x} ^{\top} \boldsymbol{C} \boldsymbol{x} \qquad \text{s.t.}  \left\| \boldsymbol{x}  \right\| = \sqrt{n}
-\]</div>
+<p>The optimal solution <span class="math notranslate nohighlight">\(\boldsymbol{y} ^*\)</span> is the last eigenvector of <span class="math notranslate nohighlight">\(\boldsymbol{W}\)</span>, and the objective value is the last eigenvalue of <span class="math notranslate nohighlight">\(\boldsymbol{W}\)</span>. The solution to the SDP problem is then <span class="math notranslate nohighlight">\(\boldsymbol{X} ^* = \boldsymbol{y}^* \boldsymbol{y} ^{*\top}\)</span>, with the same objective value. We can then round <span class="math notranslate nohighlight">\(\boldsymbol{y} ^*\)</span> by its sign to decide partition assignment.</p>
 </div>
 <div class="section" id="sdp-relaxation">
 <h4>SDP Relaxation<a class="headerlink" href="#sdp-relaxation" title="Permalink to this headline">¶</a></h4>
@@ -1274,8 +1371,7 @@ print(round(V, 2))
 <div class="math notranslate nohighlight">
 \[\operatorname{GW} (\boldsymbol{W}) = \mathbb{E}_{\boldsymbol{r}} [f_{\boldsymbol{W} }(\hat{\boldsymbol{x}}) ] = \mathbb{E}_{\boldsymbol{r}}  \left[ \frac{1}{2} \sum_{i,j=1}^n w_{ij} (1 - \hat{x}_i \hat{x}_j)\right]\]</div>
 <p>Obviously <span class="math notranslate nohighlight">\(\operatorname{GW} (\boldsymbol{W}) \le \operatorname{cut} (\boldsymbol{W})\)</span>, since we are averaging the value of feasible solutions <span class="math notranslate nohighlight">\(\hat{\boldsymbol{x}}\)</span> in <span class="math notranslate nohighlight">\(\left\{ \pm 1\right\}^n\)</span>, and each of them is <span class="math notranslate nohighlight">\(\le \operatorname{cut} (\boldsymbol{W})\)</span>. But how small can <span class="math notranslate nohighlight">\(\operatorname{GW} (\boldsymbol{W})\)</span> be?</p>
-<p>Theorem<br />
-<span class="math notranslate nohighlight">\(\operatorname{GW}(\boldsymbol{W}) \ge \alpha \operatorname{cut}(\boldsymbol{W})\)</span> where <span class="math notranslate nohighlight">\(\alpha \approx 0.87\)</span>. That is, the random rounding algorithm return a cut value not too small than the optimal value, in expectation.</p>
+<p>It can be shown that <span class="math notranslate nohighlight">\(\operatorname{GW}(\boldsymbol{W}) \ge \alpha \operatorname{cut}(\boldsymbol{W})\)</span> where <span class="math notranslate nohighlight">\(\alpha \approx 0.87\)</span>. That is, the random rounding algorithm return a cut value not too small than the optimal value, in expectation.</p>
 <div class="dropdown seealso admonition">
 <p class="admonition-title"> <em>Proof</em></p>
 <p>We randomly sample direction <span class="math notranslate nohighlight">\(\boldsymbol{r}\)</span> from unit sphere <span class="math notranslate nohighlight">\(S^{p-1}\)</span>. If <span class="math notranslate nohighlight">\(\boldsymbol{v} _i\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{v} _j\)</span> lie on different side of hyperplane characterized by <span class="math notranslate nohighlight">\(\boldsymbol{r}\)</span>, we call such direction ‘good’.</p>
@@ -1288,20 +1384,50 @@ print(round(V, 2))
 &amp;= \frac{\theta}{2 \pi} \times 2  \\
 &amp;= \frac{\arccos (\boldsymbol{v} _i ^{\top} \boldsymbol{v} _j)}{\pi} \\
 \end{aligned}\end{split}\]</div>
-<p>In <span class="math notranslate nohighlight">\(p = 3\)</span> case, we sample <span class="math notranslate nohighlight">\(\boldsymbol{r}\)</span> from a unit sphere. All good <span class="math notranslate nohighlight">\(\boldsymbol{r}\)</span> lie on a ‘belt’ on the sphere. The probability of sampling good <span class="math notranslate nohighlight">\(\boldsymbol{r}\)</span> equals the ratio between the area of the belt and the area of the sphere. Consider partitioning the sphere into a collection of infinite many semicircles (like longitude arcs), then the probability for each semicircle is <span class="math notranslate nohighlight">\(\theta/\pi\)</span>. Hence, the overall probability for the sphere is still <span class="math notranslate nohighlight">\(\theta/\pi\)</span>. It remains constant in higher dimensional cases.</p>
+<p>In <span class="math notranslate nohighlight">\(p = 3\)</span> case, we sample <span class="math notranslate nohighlight">\(\boldsymbol{r}\)</span> from a unit sphere. All good <span class="math notranslate nohighlight">\(\boldsymbol{r}\)</span> lie on two <a class="reference external" href="https://en.wikipedia.org/wiki/Spherical_wedge">spherical wedges</a>, with angle <span class="math notranslate nohighlight">\(\theta\)</span>. An example is given below. The ratio between the area of each spherical wedge and the area of the sphere is <span class="math notranslate nohighlight">\(\theta/2\pi\)</span>.</p>
+<div class="figure align-default" id="max-cut-gw-3d">
+<a class="reference internal image-reference" href="../_images/max-cut-gw-3d.png"><img alt="" src="../_images/max-cut-gw-3d.png" style="width: 70%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 10 </span><span class="caption-text">Two vectors <span class="math notranslate nohighlight">\(\boldsymbol{v}_1, \boldsymbol{v} _2\)</span> (red, green) and random directions <span class="math notranslate nohighlight">\(\boldsymbol{r}\)</span> (blue) from unit sphere whose corresponding hyperplane separates the two vectors.</span><a class="headerlink" href="#max-cut-gw-3d" title="Permalink to this image">¶</a></p>
+</div>
 <p>Now we compare <span class="math notranslate nohighlight">\(\operatorname{GW}(\boldsymbol{W}) = \sum_{i,j}^n w_{ij} \frac{1}{\pi}\arccos (\boldsymbol{v} _i ^{\top} \boldsymbol{v} _j)\)</span> and <span class="math notranslate nohighlight">\(\operatorname{SDP} (\boldsymbol{W}) = \sum_{i,j}^n w_{ij} \frac{1}{2} (1 - \boldsymbol{v} _i ^{\top} \boldsymbol{v} _j)\)</span>.</p>
 <p>Let’s first see two functions <span class="math notranslate nohighlight">\(f(y) = \frac{1}{\pi}\arccos(y)\)</span> and <span class="math notranslate nohighlight">\(g(y) = \frac{1}{2}(1-y)\)</span> for <span class="math notranslate nohighlight">\(-1 \le y \le 1\)</span>. Let <span class="math notranslate nohighlight">\(\alpha = \min_{-1 \le y \le 1} \frac{f(y)}{g(y)}\)</span>, then it is easy to find <span class="math notranslate nohighlight">\(\alpha \approx 0.87\)</span>.</p>
 <div class="figure align-default" id="max-cut-gw-thm">
 <a class="reference internal image-reference" href="../_images/max-cut-gw-thm.png"><img alt="" src="../_images/max-cut-gw-thm.png" style="width: 50%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 10 </span><span class="caption-text">Plots of <span class="math notranslate nohighlight">\(f(y)\)</span> and <span class="math notranslate nohighlight">\(g(y)\)</span></span><a class="headerlink" href="#max-cut-gw-thm" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 11 </span><span class="caption-text">Plots of <span class="math notranslate nohighlight">\(f(y)\)</span> and <span class="math notranslate nohighlight">\(g(y)\)</span></span><a class="headerlink" href="#max-cut-gw-thm" title="Permalink to this image">¶</a></p>
 </div>
 <p>Therefore, let <span class="math notranslate nohighlight">\(y_{ij} = \boldsymbol{v} _i \boldsymbol{v} _j\)</span>, since <span class="math notranslate nohighlight">\(w_{ij} \ge 0\)</span>, we have <span class="math notranslate nohighlight">\(\operatorname{GW} (\boldsymbol{W}) \ge \alpha \operatorname{SDP} (\boldsymbol{W})\)</span>. Using the SDP relaxation inequality <span class="math notranslate nohighlight">\(\operatorname{SDP} (\boldsymbol{W}) \ge \operatorname{cut} (\boldsymbol{W})\)</span>, we have <span class="math notranslate nohighlight">\(\operatorname{GW} (\boldsymbol{W}) \ge \alpha \operatorname{cut} (\boldsymbol{W})\)</span>.</p>
 <p>Note that we require <span class="math notranslate nohighlight">\(w_{ij} \ge 0\)</span>.</p>
 </div>
+<!--
+```{code-cell} python
+:tags: [hide-input]
+
+import numpy as np
+import plotly.express as px
+import plotly.io as pio
+import plotly.offline as py
+
+pio.renderers.default = "png"
+
+v = np.array([[1,0,3], [-1,0,3]])
+v = v/np.linalg.norm(v, 2, axis=1)[:, np.newaxis]
+n = 3000
+np.random.seed(1)
+x = np.random.normal(size=(n,3))
+x = x / np.linalg.norm(x, 2, axis=1)[:, np.newaxis]
+x = x[np.dot(x,v[0])*np.dot(x,v[1]) <0, :]
+print(f'v1 = {np.round(v[0],3)}, \nv2 = {np.round(v[1],3)}')
+print(f'arccos(v1,v2)/pi = {np.round(np.arccos(v[0] @ v[1].T)/np.pi,3)}')
+print(f'simulated result = {np.round(len(x)/n,3)}')
+fig = px.scatter_3d(x=x[:,0], y=x[:,1], z=x[:,2], size=np.ones(len(x)), range_z=[-1,1])
+fig.add_scatter3d(x=[0, v[0,0]], y=[0, v[0,1]], z=[0, v[0,2]], name='v1')
+fig.add_scatter3d(x=[0, v[1,0]], y=[0, v[1,1]], z=[0, v[1,2]], name='v2')
+fig.show()
+``` -->
 <p>How large can the SDP relaxation value <span class="math notranslate nohighlight">\(\operatorname{SDP} (\boldsymbol{W})\)</span> be? <strong>Grothendieck’s Inequality</strong> says</p>
 <div class="math notranslate nohighlight">
 \[
-\operatorname{SDP}(\boldsymbol{W}) \le K \operatorname{cut}(\boldsymbol{W})  
+K \operatorname{cut}(\boldsymbol{W})   \ge \operatorname{SDP}(\boldsymbol{W})
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(K \approx 1.7\)</span>. Hence, the SDP relaxation <span class="math notranslate nohighlight">\(\Omega_{SDP}\)</span> does not relax the original domain <span class="math notranslate nohighlight">\(\Omega\)</span> too much (otherwise we may see <span class="math notranslate nohighlight">\(\operatorname{SDP}(\boldsymbol{W}) \gg \operatorname{cut}(\boldsymbol{W})\)</span>). Hence <span class="math notranslate nohighlight">\(\hat{\boldsymbol{v}}_i ^{\top} \boldsymbol{\hat{v}} _j\)</span> should recover binary <span class="math notranslate nohighlight">\(x_i^* x_j^*\)</span> well.</p>
 </div>
@@ -1388,7 +1514,7 @@ b_{ij} = \left\{\begin{array}{ll}
         <div class='prev-next-bottom'>
             
     <a class='left-prev' id="prev-link" href="51-linear-programming.html" title="previous page">Linear Programming</a>
-    <a class='right-next' id="next-link" href="90-puzzles.html" title="next page">Puzzles</a>
+    <a class='right-next' id="next-link" href="test.html" title="next page">Interactive data visualizations</a>
 
         </div>
         
@@ -1413,6 +1539,16 @@ b_{ij} = \left\{\begin{array}{ll}
   <script src="../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
 
 
+    
+    <!-- Google Analytics -->
+    <script>
+      window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+      ga('create', 'UA-150740237-2', 'auto');
+      ga('set', 'anonymizeIp', true);
+      ga('send', 'pageview');
+    </script>
+    <script async src='https://www.google-analytics.com/analytics.js'></script>
+    <!-- End Google Analytics -->
     
   </body>
 </html>

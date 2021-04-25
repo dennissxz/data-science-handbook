@@ -50,6 +50,7 @@
         const thebe_selector_output = ".output"
     </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="SQL" href="31-sql.html" />
@@ -132,6 +133,11 @@
    <li class="toctree-l2">
     <a class="reference internal" href="../11-math/52-non-linear-programming.html">
      Non-linear Programming
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../11-math/test.html">
+     Interactive data visualizations
     </a>
    </li>
    <li class="toctree-l2">
@@ -1326,6 +1332,12 @@ the existing data frame. To store the output, add it at the front</p>
 </ul>
 </li>
 <li><p><code class="docutils literal notranslate"><span class="pre">select_all()</span></code> function allows changes to all columns, and takes a function as an argument, e.g. <code class="docutils literal notranslate"><span class="pre">select_all(tolower)</span> </code> upfront, or wrap it inside funs()</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">slice</span></code>: pick rows using index(es)</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">slice(c(7,8,14:15))</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">slice(-c(7,8,14:15))</span></code></p></li>
+</ul>
+</li>
 <li><p><code class="docutils literal notranslate"><span class="pre">filter</span></code>: pick rows matching criteria</p>
 <ul>
 <li><p>can use <code class="docutils literal notranslate"><span class="pre">AND,</span> <span class="pre">OR</span></code> and <code class="docutils literal notranslate"><span class="pre">NOT</span></code>, or below styles</p></li>
@@ -1335,16 +1347,11 @@ the existing data frame. To store the output, add it at the front</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">filter(xor(condition1,</span> <span class="pre">condition2)</span></code> will return all rows where only one of the conditions is met, and not when both conditions are met.</p></li>
 </ul>
 </li>
-<li><p><code class="docutils literal notranslate"><span class="pre">slice</span></code>: pick rows using index(es)</p>
-<ul>
-<li><p><code class="docutils literal notranslate"><span class="pre">slice(c(7,8,14:15))</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">slice(-c(7,8,14:15))</span></code></p></li>
-</ul>
-</li>
-<li><p><code class="docutils literal notranslate"><span class="pre">arrange</span></code>: order rows by values of column(s), default asending</p>
+<li><p><code class="docutils literal notranslate"><span class="pre">arrange</span></code>: order rows by values of column(s), default ascending.</p>
 <ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">arrange(col1)</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">arrange(desc(col1),</span> <span class="pre">col2)</span></code></p></li>
+<li><p>If <code class="docutils literal notranslate"><span class="pre">col1</span></code> in <code class="docutils literal notranslate"><span class="pre">desc(col1)</span></code> is a character variable, then sort from Z to A.</p></li>
 </ul>
 </li>
 <li><p><code class="docutils literal notranslate"><span class="pre">rename</span></code>: rename specific columns</p>
@@ -1360,25 +1367,43 @@ the existing data frame. To store the output, add it at the front</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">mutate(col2</span> <span class="pre">=</span> <span class="pre">case_when(col1&gt;80</span> <span class="pre">~</span> <span class="pre">'great',</span> <span class="pre">col1&gt;60</span> <span class="pre">~</span> <span class="pre">'good',</span> <span class="pre">TRUE~'others')</span></code> works like multi-level <code class="docutils literal notranslate"><span class="pre">ifelse</span></code>.</p></li>
 </ul>
 </li>
-<li><p><code class="docutils literal notranslate"><span class="pre">mutate_at</span></code> applies a function to one or several columns, like <code class="docutils literal notranslate"><span class="pre">sapply</span></code>. It does <strong>not</strong> create new columns</p>
+<li><p><code class="docutils literal notranslate"><span class="pre">mutate_at</span></code> applies a function to one or several columns, like <code class="docutils literal notranslate"><span class="pre">sapply</span></code>. It does <strong>not</strong> create new columns.</p>
 <ul>
-<li><p><code class="docutils literal notranslate"><span class="pre">mutate_at(c('col1',</span> <span class="pre">'col2'),</span> <span class="pre">~</span> <span class="pre">.-mean(.))</span></code>, note that column names are in quotes</p></li>
-<li><p>can also use <code class="docutils literal notranslate"><span class="pre">%&gt;%</span></code> inside, <code class="docutils literal notranslate"><span class="pre">mutate_at(cols,</span> <span class="pre">~</span> <span class="pre">.-mean(.)</span> <span class="pre">%&gt;%</span> <span class="pre">round(2))</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mutate_at(c('col1',</span> <span class="pre">'col2'),</span> <span class="pre">~</span> <span class="pre">.-mean(.))</span></code>, note that column names are in quotes.</p></li>
+<li><p>can also use <code class="docutils literal notranslate"><span class="pre">%&gt;%</span></code> inside, <code class="docutils literal notranslate"><span class="pre">mutate_at(cols,</span> <span class="pre">~</span> <span class="pre">.-mean(.)</span> <span class="pre">%&gt;%</span> <span class="pre">round(2))</span></code>.</p></li>
 </ul>
 </li>
-<li><p><code class="docutils literal notranslate"><span class="pre">transmute_at</span></code> return a new data frame with <strong>only</strong> the mutated variables</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">bind_cols</span></code>, <code class="docutils literal notranslate"><span class="pre">bind_rows</span></code>: bind multiple data frames by row and column</p>
+<li><p><code class="docutils literal notranslate"><span class="pre">transmute_at</span></code> return a new data frame with <strong>only</strong> the mutated variables.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bind_cols</span></code>, <code class="docutils literal notranslate"><span class="pre">bind_rows</span></code>: bind multiple data frames by row and column.</p>
 <ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">%&gt;%</span> <span class="pre">bind_cols(.,</span> <span class="pre">df2)</span></code></p></li>
 </ul>
 </li>
-<li><p><code class="docutils literal notranslate"><span class="pre">group_by</span></code>: create groups of rows according to a condition</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">summarise</span></code>: apply computations across groups of rows</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">count</span></code>: return frequency of discrete variables. Add <code class="docutils literal notranslate"><span class="pre">sort=TRUE</span></code> to sort by counts.</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">%&gt;%</span> <span class="pre">count(col1,</span> <span class="pre">col2,</span> <span class="pre">sort=TRUE)</span></code></p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">group_by</span></code>: create groups of rows according to a condition. Use <code class="docutils literal notranslate"><span class="pre">ungroup</span></code> to recover</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">summarise</span></code>: apply computations across groups of rows, used with aggregation functions</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">n</span></code>, <code class="docutils literal notranslate"><span class="pre">n_distinct</span></code>, <code class="docutils literal notranslate"><span class="pre">sum</span></code>, <code class="docutils literal notranslate"><span class="pre">max</span></code>, <code class="docutils literal notranslate"><span class="pre">min</span></code>, <code class="docutils literal notranslate"><span class="pre">mean</span></code>, <code class="docutils literal notranslate"><span class="pre">median</span></code>, <code class="docutils literal notranslate"><span class="pre">sd</span></code></p></li>
+</ul>
+</li>
 <li><p><code class="docutils literal notranslate"><span class="pre">gather</span></code>: make wide data longer</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">spread</span></code>: make long data wider</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">separate</span></code>: separate a character column by separator.</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">separate(col,</span> <span class="pre">c('new-col1-name',</span> <span class="pre">'new-col1-name'),</span> <span class="pre">sep='</span> <span class="pre">')</span></code></p></li>
+</ul>
+</li>
 <li><p><code class="docutils literal notranslate"><span class="pre">map</span></code>: apply computations across columns, related <code class="docutils literal notranslate"><span class="pre">map_dbl</span></code>, <code class="docutils literal notranslate"><span class="pre">map_dfr</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">pmap</span></code>: apply computations across rows, related <code class="docutils literal notranslate"><span class="pre">pmap_dbl</span></code>, <code class="docutils literal notranslate"><span class="pre">pmap_dfr</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">*_join</span></code> where <code class="docutils literal notranslate"><span class="pre">*</span></code> can be <code class="docutils literal notranslate"><span class="pre">inner</span></code>, <code class="docutils literal notranslate"><span class="pre">left</span></code>, <code class="docutils literal notranslate"><span class="pre">right</span></code>, or <code class="docutils literal notranslate"><span class="pre">full</span></code>: join two data frames together according to common values in certain columns, and <code class="docutils literal notranslate"><span class="pre">*</span></code> indicates how many rows to keep.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">*_join</span></code> where <code class="docutils literal notranslate"><span class="pre">*</span></code> can be <code class="docutils literal notranslate"><span class="pre">inner</span></code>, <code class="docutils literal notranslate"><span class="pre">left</span></code>, <code class="docutils literal notranslate"><span class="pre">right</span></code>, or <code class="docutils literal notranslate"><span class="pre">full</span></code>: join two data frames together according to common values in certain columns, and <code class="docutils literal notranslate"><span class="pre">*</span></code> indicates how many rows to keep.</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">*_join(df2,</span> <span class="pre">by='key')</span></code>. If column names differ, use <code class="docutils literal notranslate"><span class="pre">by=c(&quot;df1.name&quot;=&quot;df2.name&quot;)</span></code></p></li>
+</ul>
+</li>
 </ul>
 </div>
 <div class="section" id="comparison-with-sql">
@@ -1550,6 +1575,16 @@ the existing data frame. To store the output, add it at the front</p>
   <script src="../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
 
 
+    
+    <!-- Google Analytics -->
+    <script>
+      window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+      ga('create', 'UA-150740237-2', 'auto');
+      ga('set', 'anonymizeIp', true);
+      ga('send', 'pageview');
+    </script>
+    <script async src='https://www.google-analytics.com/analytics.js'></script>
+    <!-- End Google Analytics -->
     
   </body>
 </html>

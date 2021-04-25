@@ -282,7 +282,7 @@ For most multivariate analyses, it is important that the data indeed follow the 
 - QQ-plots (quantile-quantile plot)
 
   - Sample quantiles are plotted against the expected sample quantiles of a standard normal distribution
-  - a straight line indicates univariate normality
+  - If the points lie on a straight line, then it indicates univariate normality. In addition to measure this linearity by eye, we can also use correlation coefficient to quantify it.
   - non-linearity may indicate a need to transform the variable.
 
   :::{figure} gaussian-qq-plot
@@ -302,15 +302,22 @@ For most multivariate analyses, it is important that the data indeed follow the 
 
 - Jarque–Bera test
 
+- Test for zero skewness, zero excess kurtosis.
+
+Multivariate case:
+
 - Check whether the squared generalized distance as defined below follows a chi-squared distribution by a Q-Q plot (necessary and sufficient conditions for very large sample size))
 
   $$
   d_{i}^{2}=\left(\boldsymbol{x}_{i}-\overline{\boldsymbol{x}}\right)^{\prime} \boldsymbol{S}^{-1}\left(\boldsymbol{x}_{i}-\overline{\boldsymbol{x}}\right)
   $$
 
-- Check each Principal Component (PC) for univariate normality (necessary condition; and if the sample size n is large enough, a sufficient condition)
-- Test for zero skewness, zero excess kurtosis.
+  Again, correlation coefficient can be used to quantity the linearity of the points.
 
+- Check each Principal Component (PC) for univariate normality (necessary condition; and if the sample size n is large enough, a sufficient condition)
+
+
+(transform-normality)=
 ### Transformation to Near Normality
 
 To achieve the multinormality of the data, univariate transformation is applied to each variable individually. After then, the multinormality of transformed variables is checked again (Notice that each of the $X_p$ variables after transformation is normally distributed does not imply that they jointly follow a multivariate normal distribution).
