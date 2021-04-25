@@ -1,17 +1,18 @@
 ---
-jupytext:
-  cell_metadata_filter: -all
-  text_representation:
-    extension: .md
-    format_name: myst
-    format_version: 0.12
-    jupytext_version: 1.8.2
-kernelspec:
-  display_name: Python 3
-  language: python
-  name: python3
+jupyter:
+  jupytext:
+    text_representation:
+      extension: .md
+      format_name: markdown
+      format_version: '1.2'
+      jupytext_version: 1.8.2
+  kernelspec:
+    display_name: Python 3
+    language: python
+    name: python3
 ---
 
+<!-- #region -->
 # Non-linear Programming
 
 :::{figure} opt-hierarchy
@@ -471,7 +472,9 @@ Note that we require $w_{ij} \ge 0$.
 
 Test plot 
 
-```{code-cell} ipython3
+<!-- #endregion -->
+
+```python
 import plotly.io as pio
 import plotly.express as px
 import plotly.offline as py
@@ -483,9 +486,7 @@ fig.show()
 
 An example of random rounding is given below. Two vectors $\boldsymbol{v}_1, \boldsymbol{v} _2$ (red, green) and random directions $\boldsymbol{r}$ (blue) from unit sphere whose corresponding hyperplane separates the two vectors.
 
-```{code-cell} ipython3
-:tags: [hide-input]
-
+```python tags=["hide-input"]
 import numpy as np
 import plotly.express as px
 import plotly.io as pio
@@ -509,6 +510,7 @@ fig.add_scatter3d(x=[0, v[1,0]], y=[0, v[1,1]], z=[0, v[1,2]], name='v2')
 fig.show()
 ```
 
+<!-- #region -->
 Besides, how large can the SDP relaxation value $\operatorname{SDP} (\boldsymbol{W})$ be? **Grothendieck’s Inequality** says
 
 $$
@@ -587,3 +589,4 @@ $$
 .
 
 .
+<!-- #endregion -->
