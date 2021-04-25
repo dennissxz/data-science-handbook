@@ -453,13 +453,7 @@ $$\begin{aligned}
 &= \frac{\arccos (\boldsymbol{v} _i ^{\top} \boldsymbol{v} _j)}{\pi} \\
 \end{aligned}$$
 
-In $p = 3$ case, we sample $\boldsymbol{r}$ from a unit sphere. All good $\boldsymbol{r}$ lie on two [spherical wedges](https://en.wikipedia.org/wiki/Spherical_wedge), with angle $\theta$. An example is given below. The ratio between the area of each spherical wedge and the area of the sphere is $\theta/2\pi$.
-
-:::{figure} max-cut-gw-3d
-<img src="../imgs/max-cut-gw-3d.png" width = "70%" alt=""/>
-
-Two vectors $\boldsymbol{v}_1, \boldsymbol{v} _2$ (red, green) and random directions $\boldsymbol{r}$ (blue) from unit sphere whose corresponding hyperplane separates the two vectors.
-:::
+In $p = 3$ case, we sample $\boldsymbol{r}$ from a unit sphere. All good $\boldsymbol{r}$ lie on two [spherical wedges](https://en.wikipedia.org/wiki/Spherical_wedge), with angle $\theta$. The ratio between the area of each spherical wedge and the area of the sphere is $\theta/2\pi$. An example is given after the proof.
 
 Now we compare $\operatorname{GW}(\boldsymbol{W}) = \sum_{i,j}^n w_{ij} \frac{1}{\pi}\arccos (\boldsymbol{v} _i ^{\top} \boldsymbol{v} _j)$ and $\operatorname{SDP} (\boldsymbol{W}) = \sum_{i,j}^n w_{ij} \frac{1}{2} (1 - \boldsymbol{v} _i ^{\top} \boldsymbol{v} _j)$.
 
@@ -477,7 +471,8 @@ Note that we require $w_{ij} \ge 0$.
 
 ::::
 
-<!--
+An example of random rounding is given below. Two vectors $\boldsymbol{v}_1, \boldsymbol{v} _2$ (red, green) and random directions $\boldsymbol{r}$ (blue) from unit sphere whose corresponding hyperplane separates the two vectors.
+
 ```{code-cell} python
 :tags: [hide-input]
 
@@ -502,9 +497,9 @@ fig = px.scatter_3d(x=x[:,0], y=x[:,1], z=x[:,2], size=np.ones(len(x)), range_z=
 fig.add_scatter3d(x=[0, v[0,0]], y=[0, v[0,1]], z=[0, v[0,2]], name='v1')
 fig.add_scatter3d(x=[0, v[1,0]], y=[0, v[1,1]], z=[0, v[1,2]], name='v2')
 fig.show()
-``` -->
+```
 
-How large can the SDP relaxation value $\operatorname{SDP} (\boldsymbol{W})$ be? **Grothendieck’s Inequality** says
+Besides, how large can the SDP relaxation value $\operatorname{SDP} (\boldsymbol{W})$ be? **Grothendieck’s Inequality** says
 
 $$
 K \operatorname{cut}(\boldsymbol{W})   \ge \operatorname{SDP}(\boldsymbol{W})
