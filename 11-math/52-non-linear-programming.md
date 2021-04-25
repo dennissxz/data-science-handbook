@@ -1,16 +1,18 @@
-<!-- ---
+---
 jupytext:
+  cell_metadata_filter: -all
   formats: md:myst
   text_representation:
     extension: .md
     format_name: myst
     format_version: 0.12
-    jupytext_version: 1.8.2
+    jupytext_version: 1.9.1
 kernelspec:
-  display_name: R
-  language: R
-  name: ir
---- -->
+  display_name: Python 3
+  language: python
+  name: python3
+---
+
 
 # Non-linear Programming
 
@@ -435,8 +437,7 @@ $$\operatorname{GW} (\boldsymbol{W}) = \mathbb{E}_{\boldsymbol{r}} [f_{\boldsymb
 
 Obviously $\operatorname{GW} (\boldsymbol{W}) \le \operatorname{cut} (\boldsymbol{W})$, since we are averaging the value of feasible solutions $\hat{\boldsymbol{x}}$ in $\left\{ \pm 1\right\}^n$, and each of them is $\le \operatorname{cut} (\boldsymbol{W})$. But how small can $\operatorname{GW} (\boldsymbol{W})$ be?
 
-Theorem  
-$\operatorname{GW}(\boldsymbol{W}) \ge \alpha \operatorname{cut}(\boldsymbol{W})$ where $\alpha \approx 0.87$. That is, the random rounding algorithm return a cut value not too small than the optimal value, in expectation.
+It can be shown that $\operatorname{GW}(\boldsymbol{W}) \ge \alpha \operatorname{cut}(\boldsymbol{W})$ where $\alpha \approx 0.87$. That is, the random rounding algorithm return a cut value not too small than the optimal value, in expectation.
 
 ::::{admonition,dropdown,seealso} *Proof*
 
@@ -452,8 +453,13 @@ $$\begin{aligned}
 &= \frac{\arccos (\boldsymbol{v} _i ^{\top} \boldsymbol{v} _j)}{\pi} \\
 \end{aligned}$$
 
-In $p = 3$ case, we sample $\boldsymbol{r}$ from a unit sphere. All good $\boldsymbol{r}$ lie on a 'belt' on the sphere. The probability of sampling good $\boldsymbol{r}$ equals the ratio between the area of the belt and the area of the sphere. Consider partitioning the sphere into a collection of infinite many semicircles (like longitude arcs), then the probability for each semicircle is $\theta/\pi$. Hence, the overall probability for the sphere is still $\theta/\pi$. It remains constant in higher dimensional cases.
+In $p = 3$ case, we sample $\boldsymbol{r}$ from a unit sphere. All good $\boldsymbol{r}$ lie on two [spherical wedges](https://en.wikipedia.org/wiki/Spherical_wedge), with angle $\theta$. An example is given below. The ratio between the area of each spherical wedge and the area of the sphere is $\theta/2\pi$.
 
+:::{figure} max-cut-gw-3d
+<img src="../imgs/max-cut-gw-3d.png" width = "70%" alt=""/>
+
+Two vectors $\boldsymbol{v}_1, \boldsymbol{v} _2$ (red, green) and random directions $\boldsymbol{r}$ (blue) from unit sphere whose corresponding hyperplane separates the two vectors.
+:::
 
 Now we compare $\operatorname{GW}(\boldsymbol{W}) = \sum_{i,j}^n w_{ij} \frac{1}{\pi}\arccos (\boldsymbol{v} _i ^{\top} \boldsymbol{v} _j)$ and $\operatorname{SDP} (\boldsymbol{W}) = \sum_{i,j}^n w_{ij} \frac{1}{2} (1 - \boldsymbol{v} _i ^{\top} \boldsymbol{v} _j)$.
 
@@ -471,13 +477,41 @@ Note that we require $w_{ij} \ge 0$.
 
 ::::
 
+<!--
+```{code-cell} python
+:tags: [hide-input]
+
+import numpy as np
+import plotly.express as px
+import plotly.io as pio
+import plotly.offline as py
+
+pio.renderers.default = "png"
+
+v = np.array([[1,0,3], [-1,0,3]])
+v = v/np.linalg.norm(v, 2, axis=1)[:, np.newaxis]
+n = 3000
+np.random.seed(1)
+x = np.random.normal(size=(n,3))
+x = x / np.linalg.norm(x, 2, axis=1)[:, np.newaxis]
+x = x[np.dot(x,v[0])*np.dot(x,v[1]) <0, :]
+print(f'v1 = {np.round(v[0],3)}, \nv2 = {np.round(v[1],3)}')
+print(f'arccos(v1,v2)/pi = {np.round(np.arccos(v[0] @ v[1].T)/np.pi,3)}')
+print(f'simulated result = {np.round(len(x)/n,3)}')
+fig = px.scatter_3d(x=x[:,0], y=x[:,1], z=x[:,2], size=np.ones(len(x)), range_z=[-1,1])
+fig.add_scatter3d(x=[0, v[0,0]], y=[0, v[0,1]], z=[0, v[0,2]], name='v1')
+fig.add_scatter3d(x=[0, v[1,0]], y=[0, v[1,1]], z=[0, v[1,2]], name='v2')
+fig.show()
+``` -->
+
 How large can the SDP relaxation value $\operatorname{SDP} (\boldsymbol{W})$ be? **Grothendieck’s Inequality** says
 
 $$
-\operatorname{SDP}(\boldsymbol{W}) \le K \operatorname{cut}(\boldsymbol{W})  
+K \operatorname{cut}(\boldsymbol{W})   \ge \operatorname{SDP}(\boldsymbol{W})
 $$
 
 where $K \approx 1.7$. Hence, the SDP relaxation $\Omega_{SDP}$ does not relax the original domain $\Omega$ too much (otherwise we may see $\operatorname{SDP}(\boldsymbol{W}) \gg \operatorname{cut}(\boldsymbol{W})$). Hence $\hat{\boldsymbol{v}}_i ^{\top} \boldsymbol{\hat{v}} _j$ should recover binary $x_i^* x_j^*$ well.
+
 
 ### For SBM
 
