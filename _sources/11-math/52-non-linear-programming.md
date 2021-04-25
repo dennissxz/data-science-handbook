@@ -481,7 +481,7 @@ import plotly.express as px
 import plotly.io as pio
 import plotly.offline as py
 
-pio.renderers.default = "png"
+pio.renderers.default = "notebook"
 
 v = np.array([[1,0,3], [-1,0,3]])
 v = v/np.linalg.norm(v, 2, axis=1)[:, np.newaxis]
