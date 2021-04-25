@@ -50,6 +50,8 @@
         const thebe_selector_output = ".output"
     </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -920,6 +922,72 @@
    Plotly
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#rayleigh-quotients">
+   Rayleigh Quotients
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#semi-definite-programming">
+   Semi-definite Programming
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#introduction">
+     Introduction
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#from-rayleigh-quotient">
+     From Rayleigh Quotient
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#max-cut-problem">
+     Max-cut Problem
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#relaxation">
+     Relaxation
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#spectral-relaxation">
+       Spectral Relaxation
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#sdp-relaxation">
+       SDP Relaxation
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#random-rounding">
+     Random Rounding
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#algorithm">
+       Algorithm
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#intuition">
+       Intuition
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#analysis">
+       Analysis
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
 </ul>
 
             </nav>
@@ -1046,6 +1114,403 @@ when you display a plot. Experiment with renderers to get the output you want.</
 </pre></div>
 </div>
 </div>
+<div class="figure align-default" id="opt-hierarchy">
+<a class="reference internal image-reference" href="../_images/opt-hierarchy.png"><img alt="" src="../_images/opt-hierarchy.png" style="width: 30%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 11 </span><span class="caption-text">A hierarchy of convex optimization problems. (LP: linear program, QP: quadratic program, SOCP second-order cone program, SDP: semidefinite program, CP: cone program.) [<a class="reference external" href="https://en.wikipedia.org/wiki/Convex_optimization">Wikipedia</a>]</span><a class="headerlink" href="#opt-hierarchy" title="Permalink to this image">¶</a></p>
+</div>
+<p><strong>TBC</strong></p>
+<p>Primal and Dual short <a class="reference external" href="https://zhuanlan.zhihu.com/p/46944722">intro</a>.</p>
+<p>Lagrange multiplier:</p>
+<ul class="simple">
+<li><p>geometric <a class="reference external" href="https://www.youtube.com/watch?v=yuqB-d5MjZA&amp;t=16s&amp;ab_channel=KhanAcademy">motivation</a> of the method: align tangency of the objective function and the constraints.</p></li>
+<li><p><a class="reference external" href="https://www.youtube.com/watch?v=hQ4UNu1P2kw&amp;t=311s&amp;ab_channel=KhanAcademy">formulation</a> of Lagrangean <span class="math notranslate nohighlight">\(\mathcal{L}\)</span>: combining all equations to <span class="math notranslate nohighlight">\(\nabla\mathcal{L} = 0\)</span>.</p></li>
+<li><p><a class="reference external" href="https://www.youtube.com/watch?v=m-G3K2GPmEQ&amp;t=185s&amp;ab_channel=KhanAcademy">interpretation</a> and <a class="reference external" href="https://www.youtube.com/watch?v=b9B2FZ5cqbM&amp;ab_channel=KhanAcademy">proof</a> of the Lagrange multiplier <span class="math notranslate nohighlight">\(\lambda\)</span> as <span class="math notranslate nohighlight">\(\frac{\partial f}{\partial c}\)</span>, e.g. if budget change, how much will revenue change?</p></li>
+</ul>
+</div>
+<div class="section" id="rayleigh-quotients">
+<span id="rayleigh-quotient"></span><h2>Rayleigh Quotients<a class="headerlink" href="#rayleigh-quotients" title="Permalink to this headline">¶</a></h2>
+<p>Consider the following constrained optimization:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\max_{\boldsymbol{x}} &amp;&amp; \boldsymbol{x} ^{\top} \boldsymbol{A} \boldsymbol{x}  &amp; \\
+\mathrm{s.t.}
+&amp;&amp; \left\| \boldsymbol{x}  \right\|^2 &amp;= 1  \\
+\end{aligned}\end{split}\]</div>
+<p>An equivalent unconstrained problem is</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\max_{\boldsymbol{x} \ne \boldsymbol{0}} &amp;&amp; \frac{\boldsymbol{x} ^{\top} \boldsymbol{A} \boldsymbol{x} }{\boldsymbol{x} ^{\top} \boldsymbol{x} }  &amp; \\
+\end{aligned}\end{split}\]</div>
+<p>which makes the objective function invariant to scaling of <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span>. How do we solve this?</p>
+<p>Definition (Quadratic forms)<br />
+Let <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> be a symmetric real matrix. A quadratic form corresponding to <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> is a function <span class="math notranslate nohighlight">\(Q: \mathbb{R} ^n \rightarrow \mathbb{R}\)</span> with</p>
+<div class="math notranslate nohighlight">
+\[
+  Q_{\boldsymbol{A}}(\boldsymbol{x}) = \boldsymbol{x} ^{\top} \boldsymbol{A} \boldsymbol{x}
+  \]</div>
+<p>A quadratic form is can be written as a polynomial with terms all of second order</p>
+<div class="math notranslate nohighlight">
+\[
+  \boldsymbol{x} ^{\top} \boldsymbol{A} \boldsymbol{x}  = \sum_{i, j=1}^n a_{ij} x_i x_j
+  \]</div>
+<p>Definition (Rayleigh quotient)</p>
+<ul class="simple">
+<li><p>For a fixed symmetric matrix <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span>, the normalized quadratic form <span class="math notranslate nohighlight">\(\frac{\boldsymbol{x} ^{\top} \boldsymbol{A} \boldsymbol{x}}{\boldsymbol{x} ^{\top} \boldsymbol{x} }\)</span> is called a Rayleigh quotient.</p>
+<ul>
+<li><p>In addition, given a positive definite matrix <span class="math notranslate nohighlight">\(\boldsymbol{B}\)</span> of the same size, the quantity <span class="math notranslate nohighlight">\(\frac{\boldsymbol{x} ^{\top} \boldsymbol{A} \boldsymbol{x} }{\boldsymbol{x} ^{\top} \boldsymbol{B} \boldsymbol{x} }\)</span> is called a generalized Rayleigh quotient.</p></li>
+</ul>
+</li>
+</ul>
+<p>Applications</p>
+<ul class="simple">
+<li><p>PCA: <span class="math notranslate nohighlight">\(\max _{\boldsymbol{v} \neq 0} \frac{\boldsymbol{v}^{\top} \boldsymbol{\Sigma} \boldsymbol{v}}{\boldsymbol{v}^{\top} \boldsymbol{v}}\)</span> where <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}\)</span> is a covariance matrix</p>
+<ul>
+<li><p>LDA: <span class="math notranslate nohighlight">\(\max _{\boldsymbol{v} \neq 0} \frac{\boldsymbol{v}^{\top} \boldsymbol{S}_{b} \boldsymbol{v}}{\boldsymbol{v}^{\top} \boldsymbol{S}_{w} \boldsymbol{v}}\)</span> where <span class="math notranslate nohighlight">\(\boldsymbol{S} _b\)</span> is a between-class scatter matrix, and <span class="math notranslate nohighlight">\(\boldsymbol{S} _w\)</span> is a within-class scatter matrix</p></li>
+<li><p>Spectral clustering (relaxed Ncut): <span class="math notranslate nohighlight">\(\max _{\boldsymbol{v} \neq \boldsymbol{0}} \frac{\boldsymbol{v}^{\top} \boldsymbol{L} \boldsymbol{v}}{\boldsymbol{v}^{\top} \boldsymbol{D} \boldsymbol{v}} \quad {s.t.} \boldsymbol{v} ^{\top} \boldsymbol{D} \boldsymbol{1} = 0\)</span> where <span class="math notranslate nohighlight">\(\boldsymbol{L}\)</span> is graph Laplacian and <span class="math notranslate nohighlight">\(\boldsymbol{D}\)</span> is degree matrix.</p></li>
+</ul>
+</li>
+</ul>
+<p>Theorem (Range of Rayleigh quotients)<br />
+For any symmetric matrix <span class="math notranslate nohighlight">\(\boldsymbol{A} \in \mathbb{R} {n \times n}\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+  \max _{\boldsymbol{x} \in \mathbb{R}^{n}: \boldsymbol{x} \neq \boldsymbol{0}} \frac{\boldsymbol{x}^{\top} \boldsymbol{A} \boldsymbol{x}}{\boldsymbol{x}^{\top} \boldsymbol{x}} &amp;=\lambda_{\max } \\
+  \min _{\boldsymbol{x} \in \mathbb{R}^{n}: \boldsymbol{x} \neq \boldsymbol{0}} \frac{\boldsymbol{x}^{\top} \boldsymbol{A} \boldsymbol{x}}{\boldsymbol{x}^{\top} \boldsymbol{x}} &amp;=\lambda_{\min }
+  \end{aligned}\end{split}\]</div>
+<p>That is, the largest and the smallest eigenvalues of <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> gives the range for the Rayleigh quotient. The maximum and the minimum is attainted when <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> is the corresponding eigenvector.</p>
+<p>In addition, if we add an orthogonal constraint that <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> is orthogonal to all the <span class="math notranslate nohighlight">\(j\)</span> largest eigenvectors, then</p>
+<div class="math notranslate nohighlight">
+\[
+  \max _{\boldsymbol{x} \in \mathbb{R}^{n}: \boldsymbol{x} \neq \boldsymbol{0}, \boldsymbol{x} \perp \boldsymbol{v} _1 \ldots, \boldsymbol{v} _j} \frac{\boldsymbol{x}^{\top} \boldsymbol{A} \boldsymbol{x}}{\boldsymbol{x}^{\top} \boldsymbol{x}} =\lambda_{j+1}
+  \]</div>
+<p>and the maximum is achieved when <span class="math notranslate nohighlight">\(\boldsymbol{x} = \boldsymbol{v} _{j+1}\)</span>.</p>
+<div class="dropdown seealso admonition">
+<p class="admonition-title"> <em>Proof: Linear algebra approach</em></p>
+<p>Consider EVD of <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+  \boldsymbol{x}^{\top} \boldsymbol{A} \boldsymbol{x}=\boldsymbol{x}^{\top}\left(\boldsymbol{U} \boldsymbol{\Lambda} \boldsymbol{U}^{\top}\right) \boldsymbol{x}=\left(\boldsymbol{x}^{\top} \boldsymbol{U}\right) \boldsymbol{\Lambda}\left(\boldsymbol{U}^{\top} \boldsymbol{x}\right)=\boldsymbol{y}^{\top} \boldsymbol{\Lambda} \boldsymbol{y}
+  \]</div>
+<p>where <span class="math notranslate nohighlight">\(\boldsymbol{y} = \boldsymbol{U} ^{\top} \boldsymbol{x}\)</span> is also a unit vector since <span class="math notranslate nohighlight">\(\left\| \boldsymbol{y} \right\| ^2 = 1\)</span>. The original optimization problem becomes</p>
+<div class="math notranslate nohighlight">
+\[
+  \max _{\boldsymbol{y} \in \mathbb{R}^{n}:\|\boldsymbol{y}\|=1} \quad \boldsymbol{y}^{\top} \underbrace{\boldsymbol{\Lambda}}_{\text {diagonal }} \boldsymbol{y}
+  \]</div>
+<p>Note that the objective and constraint can be written as a weighted sum of eigenvalues</p>
+<div class="math notranslate nohighlight">
+\[
+  \boldsymbol{y}^{\top} \boldsymbol{\Lambda} \boldsymbol{y}=\sum_{i=1}^{n} \underbrace{\lambda_{i}}_{\text {fixed }} y_{i}^{2} \quad \text { (subject to } y_{1}^{2}+y_{2}^{2}+\cdots+y_{n}^{2}=1)
+  \]</div>
+<p>Let <span class="math notranslate nohighlight">\(\lambda_1 \ge \lambda_2 \ge \ldots \ge \lambda_n\)</span>, then when <span class="math notranslate nohighlight">\(y_1^2 = 1\)</span> and <span class="math notranslate nohighlight">\(y_2^2 = \ldots = y_n ^2 = 0\)</span>, the objective function attains its maximum <span class="math notranslate nohighlight">\(\boldsymbol{y} ^{\top} \boldsymbol{\Lambda} \boldsymbol{y} = \lambda_1\)</span>. In terms of <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span>, the maximizer is</p>
+<div class="math notranslate nohighlight">
+\[
+  \boldsymbol{x} ^* = \boldsymbol{U} \boldsymbol{y} ^* = \boldsymbol{U} (\pm \boldsymbol{e} _1) = \pm \boldsymbol{u}_1   
+  \]</div>
+<p>In conclusion, when <span class="math notranslate nohighlight">\(\boldsymbol{x} = \pm \boldsymbol{u} _1\)</span>, i.e. the largest eigenvector, <span class="math notranslate nohighlight">\(\boldsymbol{x} ^{\top} \boldsymbol{A} \boldsymbol{x}\)</span> attains its maximum value <span class="math notranslate nohighlight">\(\lambda_1\)</span></p>
+</div>
+<div class="dropdown seealso admonition">
+<p class="admonition-title"> <em>Proof: Multivariable calculus approach</em></p>
+<p>Alternatively, we can use the Method of Lagrange Multipliers to prove the theorem. First, we form the Lagrangian function</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$$
+L(\boldsymbol{x}, \lambda)=\boldsymbol{x}^{\top} \boldsymbol{A} \boldsymbol{x}-\lambda\left(\|\boldsymbol{x}\|^{2}-1\right)
+$$
+
+Differentiation gives
+
+$$
+\begin{aligned}
+\frac{\partial L}{\partial \boldsymbol{x}} &amp;=2 \boldsymbol{A} \boldsymbol{x}-\lambda(2 \boldsymbol{x})=0 &amp; \longrightarrow &amp; \boldsymbol{A} \boldsymbol{x}=\lambda \boldsymbol{x} \\
+\frac{\partial L}{\partial \lambda} &amp;=\|\boldsymbol{x}\|^{2}-1=0 &amp; \longrightarrow &amp;\|\boldsymbol{x}\|^{2}=1
+\end{aligned}
+$$
+
+This implies that $\boldsymbol{x}$ and $\lambda$ must be an eigenpair of $\boldsymbol{A}$. Moreover, for any solution $\lambda=\lambda_{i}, \boldsymbol{x}=\boldsymbol{v}_{i}$, the objective function takes the value
+
+
+$$
+\boldsymbol{v}_{i}^{\top} \boldsymbol{A} \boldsymbol{v}_{i}=\boldsymbol{v}_{i}^{\top}\left(\lambda_{i} \boldsymbol{v}_{i}\right)=\lambda_{i}\left\|\boldsymbol{v}_{i}\right\|^{2}=\lambda_{i}
+$$
+
+Therefore, the eigenvector $\boldsymbol{v} _1$ (corresponding to largest eigenvalue $\lambda_1$ of $\boldsymbol{A}$) is the global maximizer, and it yields the absolute maximum value $\lambda_1$.
+</pre></div>
+</div>
+</div>
+<p>Corollary (Generalized Rayleigh quotient problem)<br />
+For the generalized Rayleigh quotient <span class="math notranslate nohighlight">\(\frac{\boldsymbol{x}^{\top} \boldsymbol{A} \boldsymbol{x}}{\boldsymbol{x}^{\top} \boldsymbol{B} \boldsymbol{x}}\)</span>, the smallest and largest values <span class="math notranslate nohighlight">\(\lambda\)</span> satisfy</p>
+<div class="math notranslate nohighlight">
+\[
+  \boldsymbol{A v}=\lambda \boldsymbol{B v} \quad \Longleftrightarrow \quad \boldsymbol{B}^{-1} \boldsymbol{A v}=\lambda \boldsymbol{v}
+  \]</div>
+<p>That is, the smallest/largest quotient value equals the smallest/largest eigenvalue of <span class="math notranslate nohighlight">\((\boldsymbol{B} ^{-1} \boldsymbol{A})\)</span>. The left equation is called a generalized eigenvalue problem.</p>
+<div class="dropdown seealso admonition">
+<p class="admonition-title"> <em>Proof</em></p>
+<ul>
+<li><p>Substitution approach</p>
+<p>Since <span class="math notranslate nohighlight">\(\boldsymbol{B}\)</span> is p.d., we have <span class="math notranslate nohighlight">\(\boldsymbol{B} ^{1/2}\)</span>. Let <span class="math notranslate nohighlight">\(\boldsymbol{y} = \boldsymbol{B} ^{1/2}\boldsymbol{x}\)</span>, then the denominator can be written as</p>
+<div class="math notranslate nohighlight">
+\[
+    \boldsymbol{x}^{\top} \boldsymbol{B} \boldsymbol{x}=\boldsymbol{x}^{\top} \boldsymbol{B}^{1 / 2} \boldsymbol{B}^{1 / 2} \boldsymbol{x}=\boldsymbol{y}^{\top} \boldsymbol{y}
+    \]</div>
+<p>Substitute <span class="math notranslate nohighlight">\(\boldsymbol{x}=\left(\boldsymbol{B}^{1 / 2}\right)^{-1} \boldsymbol{y} \stackrel{\text { denote }}{=} \boldsymbol{B}^{-1 / 2} \boldsymbol{y}\)</span> y into the numerator to rewrite it
+in terms of the new variable <span class="math notranslate nohighlight">\(\boldsymbol{y}\)</span>. This will convert the generalized Rayleigh
+quotient problem back to a regular Rayleigh quotient problem, which has
+been solved.</p>
+<div class="math notranslate nohighlight">
+\[
+    \frac{\boldsymbol{y} \boldsymbol{B} ^{-1/2} \boldsymbol{A} \boldsymbol{B} ^{-1/2} \boldsymbol{y} }{\boldsymbol{y} ^{\top} \boldsymbol{y}}
+    \]</div>
+</li>
+<li><p>Lagrange multipliers:</p>
+<div class="math notranslate nohighlight">
+\[
+    \max _{\boldsymbol{x} \neq \boldsymbol{0}} \frac{\boldsymbol{x}^{\top} \boldsymbol{A} \boldsymbol{x}}{\boldsymbol{x}^{\top} \boldsymbol{B} \boldsymbol{x}}
+    \]</div>
+<div class="math notranslate nohighlight">
+\[
+    \max _{\boldsymbol{x} \in \mathbb{R}^{n}} \boldsymbol{x}^{\top} \boldsymbol{A} \boldsymbol{x} \quad \text { subject to } \boldsymbol{x}^{\top} \boldsymbol{B} \boldsymbol{x}=1
+    \]</div>
+<div class="math notranslate nohighlight">
+\[
+    L(\boldsymbol{x}, \lambda)=\boldsymbol{x}^{\top} \boldsymbol{A} \boldsymbol{x}-\lambda\left(\boldsymbol{x}^{\top} \boldsymbol{B} \boldsymbol{x}-1\right)
+    \]</div>
+<p>Then</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+    \begin{aligned}
+    \frac{\partial L}{\partial \boldsymbol{x}} &amp;=2 \boldsymbol{A} \boldsymbol{x}-2\lambda \boldsymbol{B}  \boldsymbol{x}=0 &amp; \longrightarrow &amp; \boldsymbol{A} \boldsymbol{x}=\lambda \boldsymbol{B}\boldsymbol{x} \\
+    \frac{\partial L}{\partial \lambda} &amp;=0 &amp; \longrightarrow &amp; \boldsymbol{x} ^{\top} \boldsymbol{B} \boldsymbol{x} =1
+    \end{aligned}
+    \end{split}\]</div>
+</li>
+</ul>
+</div>
+<p>reference: <a class="reference external" href="https://www.sjsu.edu/faculty/guangliang.chen/Math253S20/lec4RayleighQuotient.pdf">notes</a></p>
+</div>
+<div class="section" id="semi-definite-programming">
+<h2>Semi-definite Programming<a class="headerlink" href="#semi-definite-programming" title="Permalink to this headline">¶</a></h2>
+<p>We introduce semi-definite programming. Then use it solve max-cut problem, and analyze its performance for min-cut problem over stochastic block model.</p>
+<div class="section" id="introduction">
+<h3>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h3>
+<p>A linear programming problem is one in which we wish to maximize or minimize a <strong>linear</strong> objective function of real variables over a polytope. In semidefinite programming, we instead use <strong>real-valued vectors</strong> and are allowed to take the <strong>dot product</strong> of vectors. In general, a SDP has a form</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{array}{l}
+\min _{\boldsymbol{x}_{1}, \ldots, \boldsymbol{x}_{n} \in \mathbb{R}_{n}}&amp; \sum_{i, j \in[n]} c_{ij} \langle \boldsymbol{x}_{i}, \boldsymbol{x}_{j} \rangle \\
+\text {s.t.} &amp;\sum_{i, j \in[n]} a_{ijk}\langle \boldsymbol{x}_{i}, \boldsymbol{x}_{j} \rangle \leq b_{k} \text { for all } k
+\end{array}
+\end{split}\]</div>
+<p>The array of real variables in LP is then replaced by an array of vector variables, which form a matrix variable. By using this notation, the problem can be written as</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+\min _{\boldsymbol{X} \in \mathbb{R}^{n \times n}}\ &amp;\langle \boldsymbol{C} , \boldsymbol{X} \rangle\\
+\text {s.t.}\ &amp; \left\langle \boldsymbol{A} _{k}, \boldsymbol{X} \right\rangle\leq b_{k}, \quad k=1, \ldots, m \\
+&amp; X_{ij} = \boldsymbol{x}_i ^{\top} \boldsymbol{x} _j
+\end{aligned}
+\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(C_{ij} = (c_{ij} + c_{ji})/2, A_{ij}^{(k)} = (a_{ijk} + a_{jik})/2\)</span> and <span class="math notranslate nohighlight">\(\langle \boldsymbol{P}, \boldsymbol{Q} \rangle = \operatorname{tr}\left(\boldsymbol{P}  ^{\top} \boldsymbol{Q} \right) = \sum_{i,j}^n p_{ij}q_{ij}\)</span> is the <a class="reference external" href="https://en.wikipedia.org/wiki/Frobenius_inner_product">Frobenius inner product</a>.</p>
+<p>Note that an <span class="math notranslate nohighlight">\(n \times n\)</span> matrix <span class="math notranslate nohighlight">\(\boldsymbol{M}\)</span> is said to be positive semidefinite if it is the Gramian matrix of some vectors (i.e. if there exist vectors <span class="math notranslate nohighlight">\(\boldsymbol{v} _1, \ldots, \boldsymbol{v} _n\)</span> such that <span class="math notranslate nohighlight">\(M_{ij} = \langle \boldsymbol{v} _i, \boldsymbol{v} _j \rangle\)</span> for all <span class="math notranslate nohighlight">\(i,j\)</span>). Hence, the last constraint is just <span class="math notranslate nohighlight">\(\boldsymbol{X} \succeq \boldsymbol{0}\)</span>. That is, the nonnegativity constraints on real variables in LP are replaced by semidefiniteness constraints on matrix variables in SDP.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+\min _{\boldsymbol{X} \succeq \boldsymbol{0}}\ &amp;\langle \boldsymbol{C} , \boldsymbol{X} \rangle\\
+\text {s.t.}\ &amp; \left\langle \boldsymbol{A} _{k}, \boldsymbol{X} \right\rangle\leq b_{k}, \quad k=1, \ldots, m \\
+\end{aligned}
+\end{split}\]</div>
+<p>All linear programs can be expressed as SDPs. SDPs are in fact a special case of cone programming and can be efficiently solved by interior point methods. Given the solution <span class="math notranslate nohighlight">\(\boldsymbol{X}^*\)</span> to the SDP in the standard form, the vectors <span class="math notranslate nohighlight">\(\boldsymbol{v}_1, \ldots, \boldsymbol{v} _n\)</span> can be recovered in <span class="math notranslate nohighlight">\(\mathcal{O} (n^3)\)</span> time, e.g. by using an incomplete Cholesky decomposition of <span class="math notranslate nohighlight">\(\boldsymbol{X}^* = \boldsymbol{V} ^{\top} \boldsymbol{V}\)</span> where <span class="math notranslate nohighlight">\(\boldsymbol{V} = [\boldsymbol{v} _1, \ldots \boldsymbol{v} _n]\)</span>.</p>
+</div>
+<div class="section" id="from-rayleigh-quotient">
+<span id="sdp-rq"></span><h3>From Rayleigh Quotient<a class="headerlink" href="#from-rayleigh-quotient" title="Permalink to this headline">¶</a></h3>
+<p>Recall that an Rayleigh quotient can be formulated as</p>
+<div class="math notranslate nohighlight">
+\[
+\max\  \boldsymbol{x} ^{\top} \boldsymbol{A} \boldsymbol{x}  \qquad \mathrm{s.t.}\ \boldsymbol{x} ^{\top} \boldsymbol{x} = 1
+\]</div>
+<p>Since both the objective and the constraint are scalar valued, we can re-write them using trace</p>
+<div class="math notranslate nohighlight">
+\[
+\max\  \operatorname{tr}\left( \boldsymbol{x} ^{\top} \boldsymbol{A} \boldsymbol{x}  \right) \qquad \mathrm{s.t.}\ \operatorname{tr}\left( \boldsymbol{x} ^{\top} \boldsymbol{x} \right) = 1
+\]</div>
+<p>Then, by the property of trace, we have</p>
+<div class="math notranslate nohighlight">
+\[
+\max\  \operatorname{tr}\left(\boldsymbol{A} \boldsymbol{x} \boldsymbol{x} ^{\top}  \right) \qquad \mathrm{s.t.}\ \operatorname{tr}\left( \boldsymbol{x} \boldsymbol{x} ^{\top} \right) = 1
+\]</div>
+<p>Let <span class="math notranslate nohighlight">\(\boldsymbol{X} = \boldsymbol{x} \boldsymbol{x} ^{\top}\)</span>, then the variable <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> can be replaced by a rank-1 matrix <span class="math notranslate nohighlight">\(\boldsymbol{X} = \boldsymbol{x} \boldsymbol{x} ^{\top}\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+\max\  \operatorname{tr}\left(\boldsymbol{A} \boldsymbol{X} \right) \qquad \mathrm{s.t.}\ \operatorname{tr}\left( \boldsymbol{X}  \right) = 1, \boldsymbol{X} = x
+\boldsymbol{x} ^{\top}
+\]</div>
+<p>Note that <span class="math notranslate nohighlight">\(\boldsymbol{X} = \boldsymbol{x} \boldsymbol{x} ^{\top}\)</span> if and only if <span class="math notranslate nohighlight">\(\operatorname{rank}\left( \boldsymbol{X}  \right)=1\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{X} \succeq \boldsymbol{0}\)</span>, hence the constraints are equivalent to.</p>
+<div class="math notranslate nohighlight">
+\[
+\max\  \operatorname{tr}\left(\boldsymbol{A} \boldsymbol{X} \right) \qquad \mathrm{s.t.}\ \operatorname{tr}\left( \boldsymbol{X}  \right) = 1, \operatorname{rank}\left( \boldsymbol{X}  \right)=1, \boldsymbol{X} \succeq 0 \qquad (RQ)
+\]</div>
+<p>Call this problem RQ, if we drop the rank 1 constraint, then this would be a semidefinite program, where <span class="math notranslate nohighlight">\(\operatorname{tr}\left( \boldsymbol{X} \right)\)</span> can be viewed as <span class="math notranslate nohighlight">\(\langle \boldsymbol{I} , \boldsymbol{X} \rangle = 1\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[
+\max\  \operatorname{tr}\left(\boldsymbol{A} \boldsymbol{X} \right) \qquad \mathrm{s.t.}\ \operatorname{tr}\left( \boldsymbol{X}  \right) = 1, \boldsymbol{X} \succeq 0 \qquad (SDP)
+\]</div>
+<p>In fact, any optimal solution <span class="math notranslate nohighlight">\(\boldsymbol{X} _{SDP}^*\)</span> to this SDP can always be convert to an rank-1 matrix <span class="math notranslate nohighlight">\(\boldsymbol{X} _{RQ}^*\)</span> with the same optimal value. Hence, solving the SDP is equivalent to solving the RQ.</p>
+<div class="dropdown seealso admonition">
+<p class="admonition-title"> <em>Proof</em></p>
+<p>In SDP, since <span class="math notranslate nohighlight">\(\boldsymbol{X} \succeq \boldsymbol{0}\)</span>, let its EVD be <span class="math notranslate nohighlight">\(\boldsymbol{X} = \sum_{i=1}^n \lambda_i \boldsymbol{u}_i \boldsymbol{u}_i ^{\top}\)</span>, then the objective function is</p>
+<div class="math notranslate nohighlight">
+\[
+\operatorname{tr}\left( \boldsymbol{A} \sum_{i=1}^n \lambda_i \boldsymbol{u} _i \boldsymbol{u} _i ^{\top} \right) = \sum_{i=1}^n \lambda_i \operatorname{tr}\left( \boldsymbol{A} \boldsymbol{u} _i \boldsymbol{u} _i ^{\top} \right)
+\]</div>
+<p>Note that <span class="math notranslate nohighlight">\(1 = \operatorname{tr}\left( \boldsymbol{X} \right) = \sum_{i=1}^n \lambda_i\)</span> and <span class="math notranslate nohighlight">\(\lambda_i \ge 0\)</span>. Thus, the objective function is a convex combination of <span class="math notranslate nohighlight">\(\operatorname{tr}\left( \boldsymbol{A} \boldsymbol{u} _i \boldsymbol{u} _i ^{\top} \right)\)</span>. Hence, for any feasible solution <span class="math notranslate nohighlight">\(\boldsymbol{X} _{SDP} =\sum_{i=1}^n \lambda_i \boldsymbol{u}_i \boldsymbol{u}_i ^{\top}\)</span>, we can formulate another rank-1 feasible solution, by selecting <span class="math notranslate nohighlight">\(j = \arg\max_i \operatorname{tr}\left( \boldsymbol{A} \boldsymbol{u} _i \boldsymbol{u} _i ^{\top} \right)\)</span>, and setting <span class="math notranslate nohighlight">\(\lambda_j=1\)</span> while <span class="math notranslate nohighlight">\(\lambda_{-j}=0\)</span>. The rank-1 feasible solution is then <span class="math notranslate nohighlight">\(\boldsymbol{X} _{RQ} = \boldsymbol{u}_j \boldsymbol{u}_j ^{\top}\)</span>, and has a better objective value <span class="math notranslate nohighlight">\(\operatorname{tr}\left( \boldsymbol{A} \boldsymbol{X} _{RQ} \right) \ge \operatorname{tr}\left( \boldsymbol{A} \boldsymbol{X} _{SDP}\right)\)</span>. Therefore, for any optimal solution <span class="math notranslate nohighlight">\(\boldsymbol{X} _{SDP}^*\)</span>, we can find a rank-1 matrix <span class="math notranslate nohighlight">\(\boldsymbol{X} _{RQ}^*\)</span>, such that it is still optimal, since <span class="math notranslate nohighlight">\(\operatorname{tr}(\boldsymbol{A} \boldsymbol{X} _{SDP}^* ) = \operatorname{tr}(\boldsymbol{A} \boldsymbol{X} _{RQ}^* )\)</span>.</p>
+<p>In this way, the optimal value is then</p>
+<div class="math notranslate nohighlight">
+\[\max \operatorname{tr}\left( \boldsymbol{A} \boldsymbol{u} _j \boldsymbol{u} _j ^{\top} \right) = \max \boldsymbol{u} _j ^{\top} \boldsymbol{A} \boldsymbol{u} _j = \lambda_{\max}(\boldsymbol{A})\]</div>
+<p>where the eigenvector <span class="math notranslate nohighlight">\(\left\| \boldsymbol{u} \right\| =1\)</span>. This goes back to the formulation of Rayleigh quotient.</p>
+</div>
+</div>
+<div class="section" id="max-cut-problem">
+<h3>Max-cut Problem<a class="headerlink" href="#max-cut-problem" title="Permalink to this headline">¶</a></h3>
+<p>In a graph <span class="math notranslate nohighlight">\(G = (V, E)\)</span> with edge weights <span class="math notranslate nohighlight">\(\boldsymbol{W}\)</span>, we want to find a maximum bisection cut</p>
+<div class="math notranslate nohighlight">
+\[
+\operatorname{cut} (\boldsymbol{W}) = \max_{\boldsymbol{x} \in \left\{ \pm 1 \right\}^n} \frac{1}{2} \sum_{i,j=1}^n w_{ij} (1 - x_i x_j)
+\]</div>
+<p>where the product <span class="math notranslate nohighlight">\(x_i x_j\)</span> is an indicator variable that equals 1 if two vertices <span class="math notranslate nohighlight">\(i, j\)</span> are in the same part, and <span class="math notranslate nohighlight">\(-1\)</span> otherwise. Hence, the summation only involves the case when <span class="math notranslate nohighlight">\(x_i x_j = -1\)</span>, and we divide it by half since <span class="math notranslate nohighlight">\((1- x_i x_j)=2\)</span>.</p>
+<p>Denote <span class="math notranslate nohighlight">\(\boldsymbol{X} = \boldsymbol{x} \boldsymbol{x} ^{\top} \in \mathbb{R} ^{n \times n}\)</span>. Then the domain <span class="math notranslate nohighlight">\(\boldsymbol{x} \in \left\{ \pm 1 \right\}^n\)</span> is bijective to <span class="math notranslate nohighlight">\(\Omega = \left\{ \boldsymbol{X} \in \mathbb{R} ^{n \times n} : \boldsymbol{X} \succeq 0, X_{ii}=1, \operatorname{rank}\left( \boldsymbol{X} \right) = 1 \right\}\)</span>. The optimization problem can then be expressed as</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\operatorname{cut} (\boldsymbol{W})
+&amp;= \max_{\boldsymbol{X} \in \Omega} \frac{1}{2}  \operatorname{tr}\left( \boldsymbol{W} (\boldsymbol{1} \boldsymbol{1} ^{\top}  - \boldsymbol{X}) \right) \\
+\end{aligned}\end{split}\]</div>
+<p>Solving this integer optimization is NP-hard. We work with relaxation of <span class="math notranslate nohighlight">\(\Omega\)</span>.</p>
+</div>
+<div class="section" id="relaxation">
+<h3>Relaxation<a class="headerlink" href="#relaxation" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="spectral-relaxation">
+<h4>Spectral Relaxation<a class="headerlink" href="#spectral-relaxation" title="Permalink to this headline">¶</a></h4>
+<p>Two relaxations:</p>
+<ul class="simple">
+<li><p>drop the rank 1-constraint <span class="math notranslate nohighlight">\(\operatorname{rank}\left( \boldsymbol{X} \right) = 1\)</span></p></li>
+<li><p>replace the diagonal constraint <span class="math notranslate nohighlight">\(X_{ii}=1\)</span> by <span class="math notranslate nohighlight">\(\operatorname{tr}\left( \boldsymbol{X} \right) = n\)</span></p></li>
+</ul>
+<p>To solve it, it is equivalent to solve</p>
+<div class="math notranslate nohighlight">
+\[
+\min\ \operatorname{tr}\left(\boldsymbol{W}\boldsymbol{X} \right) \qquad \text{s.t. }\boldsymbol{X} \succeq \boldsymbol{0} , \operatorname{tr}\left( \boldsymbol{X} \right) = n
+\]</div>
+<p>As proved <a class="reference internal" href="#sdp-rq"><span class="std std-ref">above</span></a>, this SDP can be solved by solving a Rayleigh quotient problem</p>
+<div class="math notranslate nohighlight">
+\[
+\min_{\boldsymbol{y}}\ \boldsymbol{y} ^{\top} \boldsymbol{W} \boldsymbol{y} \qquad \text{s.t.}  \left\| \boldsymbol{y}  \right\| = \sqrt{n}
+\]</div>
+<p>The optimal solution <span class="math notranslate nohighlight">\(\boldsymbol{y} ^*\)</span> is the last eigenvector of <span class="math notranslate nohighlight">\(\boldsymbol{W}\)</span>, and the objective value is the last eigenvalue of <span class="math notranslate nohighlight">\(\boldsymbol{W}\)</span>. The solution to the SDP problem is then <span class="math notranslate nohighlight">\(\boldsymbol{X} ^* = \boldsymbol{y}^* \boldsymbol{y} ^{*\top}\)</span>, with the same objective value. We can then round <span class="math notranslate nohighlight">\(\boldsymbol{y} ^*\)</span> by its sign to decide partition assignment.</p>
+</div>
+<div class="section" id="sdp-relaxation">
+<h4>SDP Relaxation<a class="headerlink" href="#sdp-relaxation" title="Permalink to this headline">¶</a></h4>
+<p>Only one relaxation: drop the rank-1 constraint, which is non-convex. The remaining two constraints forms a domain</p>
+<div class="math notranslate nohighlight">
+\[\Omega_{SDP} = \left\{ \boldsymbol{X} \in \mathbb{R} ^{n \times n}:  \boldsymbol{X} \succeq 0, X_{ii}=1 \right\}\]</div>
+<p>The optimization problem is then</p>
+<div class="math notranslate nohighlight">
+\[
+\operatorname{SDP} (\boldsymbol{W}) = \max_{\boldsymbol{X} \in \Omega_{SDP}} \frac{1}{2}  \sum_{i,j=1}^n w_{ij} (1 - X_{ij})
+\]</div>
+<p>Note that after we drop the rank-1 constraint,</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\operatorname{SDP}(\boldsymbol{W} ) \ge \operatorname{cut} (\boldsymbol{W})\)</span>.</p></li>
+<li><p>The solution <span class="math notranslate nohighlight">\(\boldsymbol{X} ^*\)</span> to <span class="math notranslate nohighlight">\(\operatorname{SDP} (\boldsymbol{W})\)</span> may not be rank-1. If it is rank-1 then the above equality holds.</p></li>
+</ul>
+<p>It remains to solve <span class="math notranslate nohighlight">\(\operatorname{SDP} (\boldsymbol{W})\)</span> for <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span>, and then find a way to obtain the binary partition assignment <span class="math notranslate nohighlight">\(\hat{\boldsymbol{x}} \in \left\{ \pm 1 \right\}^n\)</span> from <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span>.</p>
+<div class="note dropdown admonition">
+<p class="admonition-title"> Lifting</p>
+<p><span class="math notranslate nohighlight">\(\Omega_{SDP}\)</span> is equivalent to <span class="math notranslate nohighlight">\(\left\{\boldsymbol{X} \in \mathbb{R} ^{n \times n}: \boldsymbol{X} = \boldsymbol{V} ^{\top} \boldsymbol{V}, \left\| \boldsymbol{v} _i \right\| ^2 = 1 \right\}\)</span>. In this way, we convert a scalar constraint <span class="math notranslate nohighlight">\(X_{ii}\)</span> to a vector constraint <span class="math notranslate nohighlight">\(\left\| \boldsymbol{v} _i \right\| =1\)</span>, aka ‘lifting’.</p>
+</div>
+</div>
+</div>
+<div class="section" id="random-rounding">
+<h3>Random Rounding<a class="headerlink" href="#random-rounding" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="algorithm">
+<h4>Algorithm<a class="headerlink" href="#algorithm" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p>Solve <span class="math notranslate nohighlight">\(\operatorname{SDP} (\boldsymbol{W})\)</span> and obtain <span class="math notranslate nohighlight">\(\hat{\boldsymbol{X}}\)</span></p></li>
+<li><p>Decompose <span class="math notranslate nohighlight">\(\hat{\boldsymbol{X}} = \hat{\boldsymbol{V}} ^{\top} \boldsymbol{\hat{V}}\)</span>, e.g. using EVD <span class="math notranslate nohighlight">\(\boldsymbol{\hat{X}} ^{\top} = \boldsymbol{\hat{U}} \sqrt{\boldsymbol{\hat{\Lambda}}}\)</span>, or using Cholesky. Note that <span class="math notranslate nohighlight">\(\left\| \boldsymbol{\hat{v}} _i \right\| =1\)</span> always holds, due to the constraint <span class="math notranslate nohighlight">\(\hat{X}_{ii}=1\)</span>.</p></li>
+<li><p>Sample a direction <span class="math notranslate nohighlight">\(\boldsymbol{r}\)</span> uniformly from <span class="math notranslate nohighlight">\(S^{p-1}\)</span></p></li>
+<li><p>Return binary partition assignment <span class="math notranslate nohighlight">\(\hat{\boldsymbol{x}} = \operatorname{sign} (\boldsymbol{\hat{V}} ^{\top} \boldsymbol{r} )\)</span></p></li>
+</ul>
+</div>
+<div class="section" id="intuition">
+<h4>Intuition<a class="headerlink" href="#intuition" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p>Randomly sample a hyperplane in <span class="math notranslate nohighlight">\(\mathbb{R} ^n\)</span> characterized by vector <span class="math notranslate nohighlight">\(\boldsymbol{r}\)</span>. If <span class="math notranslate nohighlight">\(\hat{\boldsymbol{v}} _i\)</span> lies on the same side of the hyperplane with <span class="math notranslate nohighlight">\(\boldsymbol{r}\)</span>, then set <span class="math notranslate nohighlight">\(\hat{x}_i =1\)</span>, else <span class="math notranslate nohighlight">\(\hat{x}_i = -1\)</span>.</p></li>
+<li><p>If there indeed exists a partition <span class="math notranslate nohighlight">\(I\)</span> and <span class="math notranslate nohighlight">\(J\)</span> of vertices characterizedd by <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span>, then the two groups of directions <span class="math notranslate nohighlight">\(\boldsymbol{v} _i\)</span>’s and <span class="math notranslate nohighlight">\(\boldsymbol{v} _j\)</span>’s should point to opposite direction since <span class="math notranslate nohighlight">\(\boldsymbol{v} _i ^{\top} \boldsymbol{v} _j = x_i x_j = -1\)</span>. After random rounding, they should be well separated. Hence, if <span class="math notranslate nohighlight">\(\hat{\boldsymbol{v}}_i ^{\top} \hat{\boldsymbol{v} }_j\)</span> recovers <span class="math notranslate nohighlight">\(\boldsymbol{v}_i ^{* \top} \boldsymbol{v}^* _j\)</span> well enough, then <span class="math notranslate nohighlight">\(\hat{\boldsymbol{x}}\)</span> well recovers <span class="math notranslate nohighlight">\(\boldsymbol{x}^*\)</span>, the optimal max-cut in <span class="math notranslate nohighlight">\(\operatorname{cut}(\boldsymbol{W})\)</span>.</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\boldsymbol{X} ^* \text{ to }  \operatorname{cut} \ &amp; \Leftrightarrow \quad  \boldsymbol{x} ^* \text{ to } \operatorname{cut}\\
+\text{SDP relaxation}\quad \downarrow \quad  &amp;\qquad \qquad \uparrow \text{recover} \\
+\boldsymbol{\hat{X}} \text{ to } \operatorname{SDP} &amp;  \xrightarrow[\text{rounding} ]{\text{random} } \hat{\boldsymbol{x}} = \operatorname{sign} (\boldsymbol{\hat{V}} ^{\top} \boldsymbol{r} )\\
+\end{aligned}\end{split}\]</div>
+<p>To see how <span class="math notranslate nohighlight">\(\boldsymbol{V}\)</span> looks like for <span class="math notranslate nohighlight">\(\boldsymbol{x} \in \left\{ \pm 1 \right\} ^n\)</span>, let <span class="math notranslate nohighlight">\(\boldsymbol{x} = [1, 1, -1, -1, -1]\)</span>, then</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\boldsymbol{X} = \left[\begin{array}{rrrrr}
+1 &amp; 1 &amp; -1 &amp; -1 &amp; -1 \\
+1 &amp; 1 &amp; -1 &amp; -1 &amp; -1 \\
+-1 &amp; -1 &amp; 1 &amp; 1 &amp; 1 \\
+-1 &amp; -1 &amp; 1 &amp; 1 &amp; 1 \\
+-1 &amp; -1 &amp; 1 &amp; 1 &amp; 1
+\end{array}\right],\qquad \boldsymbol{V} = \left[ \begin{array}{rrrrr}
+-1 &amp; -1 &amp; 1 &amp; 1 &amp; 1 \\
+0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\
+0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\
+0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\
+0 &amp; 0 &amp; 0 &amp; 0 &amp; 0
+\end{array} \right]
+\end{split}\]</div>
+<!--
+```{code-cell} R
+:tags: [hide-input]
+x = c(rep(1, 2), rep(-1, 3))
+X = x %*% t(x)
+Lam = diag(eigen(X)$value)
+U = eigen(X)$vectors
+V = t(U %*% sqrt(Lam))
+print('X:')
+print(X)
+print('V:')
+print(round(V, 2))
+```
+ -->
+</div>
+<div class="section" id="analysis">
+<h4>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h4>
+<p>How well the algorithm does, in expectation? We define Geomans-Williams quantity, which is the expected cut value returned by the algorithm, where randomness comes from random direction <span class="math notranslate nohighlight">\(\boldsymbol{r}\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[\operatorname{GW} (\boldsymbol{W}) = \mathbb{E}_{\boldsymbol{r}} [f_{\boldsymbol{W} }(\hat{\boldsymbol{x}}) ] = \mathbb{E}_{\boldsymbol{r}}  \left[ \frac{1}{2} \sum_{i,j=1}^n w_{ij} (1 - \hat{x}_i \hat{x}_j)\right]\]</div>
+<p>Obviously <span class="math notranslate nohighlight">\(\operatorname{GW} (\boldsymbol{W}) \le \operatorname{cut} (\boldsymbol{W})\)</span>, since we are averaging the value of feasible solutions <span class="math notranslate nohighlight">\(\hat{\boldsymbol{x}}\)</span> in <span class="math notranslate nohighlight">\(\left\{ \pm 1\right\}^n\)</span>, and each of them is <span class="math notranslate nohighlight">\(\le \operatorname{cut} (\boldsymbol{W})\)</span>. But how small can <span class="math notranslate nohighlight">\(\operatorname{GW} (\boldsymbol{W})\)</span> be?</p>
+<p>It can be shown that <span class="math notranslate nohighlight">\(\operatorname{GW}(\boldsymbol{W}) \ge \alpha \operatorname{cut}(\boldsymbol{W})\)</span> where <span class="math notranslate nohighlight">\(\alpha \approx 0.87\)</span>. That is, the random rounding algorithm return a cut value not too small than the optimal value, in expectation.</p>
+<div class="dropdown seealso admonition">
+<p class="admonition-title"> <em>Proof</em></p>
+<p>We randomly sample direction <span class="math notranslate nohighlight">\(\boldsymbol{r}\)</span> from unit sphere <span class="math notranslate nohighlight">\(S^{p-1}\)</span>. If <span class="math notranslate nohighlight">\(\boldsymbol{v} _i\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{v} _j\)</span> lie on different side of hyperplane characterized by <span class="math notranslate nohighlight">\(\boldsymbol{r}\)</span>, we call such direction ‘good’.</p>
+<p>In <span class="math notranslate nohighlight">\(p=2\)</span> case, we sample from a unit circle. All good <span class="math notranslate nohighlight">\(\boldsymbol{r}\)</span> lie on two arcs on the circle, whose length are related to the angle between <span class="math notranslate nohighlight">\(\boldsymbol{v} _i\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{v} _j\)</span>, denoted <span class="math notranslate nohighlight">\(\theta\)</span>. The probability of sampling good equals the ratio between the total length of the two arcs and the circumference. Thus,</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\mathbb{E} \left[ \frac{1}{2}(1 - \hat{x}_i \hat{x}_j) \right]
+&amp;= \mathbb{P} (\hat{x}_i \hat{x}_j = -1) \\
+&amp;= \mathbb{P} (\boldsymbol{v} _i, \boldsymbol{v} _j \text{ lie on different side of hyperplane}) \\
+&amp;= \frac{\theta}{2 \pi} \times 2  \\
+&amp;= \frac{\arccos (\boldsymbol{v} _i ^{\top} \boldsymbol{v} _j)}{\pi} \\
+\end{aligned}\end{split}\]</div>
+<p>In <span class="math notranslate nohighlight">\(p = 3\)</span> case, we sample <span class="math notranslate nohighlight">\(\boldsymbol{r}\)</span> from a unit sphere. All good <span class="math notranslate nohighlight">\(\boldsymbol{r}\)</span> lie on two <a class="reference external" href="https://en.wikipedia.org/wiki/Spherical_wedge">spherical wedges</a>, with angle <span class="math notranslate nohighlight">\(\theta\)</span>. The ratio between the area of each spherical wedge and the area of the sphere is <span class="math notranslate nohighlight">\(\theta/2\pi\)</span>. An example is given after the proof.</p>
+<p>Now we compare <span class="math notranslate nohighlight">\(\operatorname{GW}(\boldsymbol{W}) = \sum_{i,j}^n w_{ij} \frac{1}{\pi}\arccos (\boldsymbol{v} _i ^{\top} \boldsymbol{v} _j)\)</span> and <span class="math notranslate nohighlight">\(\operatorname{SDP} (\boldsymbol{W}) = \sum_{i,j}^n w_{ij} \frac{1}{2} (1 - \boldsymbol{v} _i ^{\top} \boldsymbol{v} _j)\)</span>.</p>
+<p>Let’s first see two functions <span class="math notranslate nohighlight">\(f(y) = \frac{1}{\pi}\arccos(y)\)</span> and <span class="math notranslate nohighlight">\(g(y) = \frac{1}{2}(1-y)\)</span> for <span class="math notranslate nohighlight">\(-1 \le y \le 1\)</span>. Let <span class="math notranslate nohighlight">\(\alpha = \min_{-1 \le y \le 1} \frac{f(y)}{g(y)}\)</span>, then it is easy to find <span class="math notranslate nohighlight">\(\alpha \approx 0.87\)</span>.</p>
+<div class="figure align-default" id="max-cut-gw-thm">
+<a class="reference internal image-reference" href="../_images/max-cut-gw-thm.png"><img alt="" src="../_images/max-cut-gw-thm.png" style="width: 50%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 12 </span><span class="caption-text">Plots of <span class="math notranslate nohighlight">\(f(y)\)</span> and <span class="math notranslate nohighlight">\(g(y)\)</span></span><a class="headerlink" href="#max-cut-gw-thm" title="Permalink to this image">¶</a></p>
+</div>
+<p>Therefore, let <span class="math notranslate nohighlight">\(y_{ij} = \boldsymbol{v} _i \boldsymbol{v} _j\)</span>, since <span class="math notranslate nohighlight">\(w_{ij} \ge 0\)</span>, we have <span class="math notranslate nohighlight">\(\operatorname{GW} (\boldsymbol{W}) \ge \alpha \operatorname{SDP} (\boldsymbol{W})\)</span>. Using the SDP relaxation inequality <span class="math notranslate nohighlight">\(\operatorname{SDP} (\boldsymbol{W}) \ge \operatorname{cut} (\boldsymbol{W})\)</span>, we have <span class="math notranslate nohighlight">\(\operatorname{GW} (\boldsymbol{W}) \ge \alpha \operatorname{cut} (\boldsymbol{W})\)</span>.</p>
+<p>Note that we require <span class="math notranslate nohighlight">\(w_{ij} \ge 0\)</span>.</p>
+</div>
+<p>Test plot</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">plotly.io</span> <span class="k">as</span> <span class="nn">pio</span>
@@ -1157,6 +1622,8 @@ if (outputEl) {{
 }}
 
                         })                };                });            </script>        </div></div></div>
+</div>
+</div>
 </div>
 </div>
 </div>
