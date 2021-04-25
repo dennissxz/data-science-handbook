@@ -469,6 +469,18 @@ Note that we require $w_{ij} \ge 0$.
 
 ::::
 
+Test plot 
+
+```{code-cell} ipython3
+import plotly.io as pio
+import plotly.express as px
+import plotly.offline as py
+pio.renderers.default = "notebook"
+df = px.data.iris()
+fig = px.scatter(df, x="sepal_width", y="sepal_length", color="species", size="sepal_length")
+fig.show()
+```
+
 An example of random rounding is given below. Two vectors $\boldsymbol{v}_1, \boldsymbol{v} _2$ (red, green) and random directions $\boldsymbol{r}$ (blue) from unit sphere whose corresponding hyperplane separates the two vectors.
 
 ```{code-cell} ipython3
