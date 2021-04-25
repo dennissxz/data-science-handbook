@@ -17,37 +17,23 @@ Traceback (most recent call last):
     raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
 nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
 ------------------
-import numpy as np
-import plotly.express as px
 import plotly.io as pio
+import plotly.express as px
 import plotly.offline as py
-
 pio.renderers.default = "notebook"
-
-v = np.array([[1,0,3], [-1,0,3]])
-v = v/np.linalg.norm(v, 2, axis=1)[:, np.newaxis]
-n = 3000
-np.random.seed(1)
-x = np.random.normal(size=(n,3))
-x = x / np.linalg.norm(x, 2, axis=1)[:, np.newaxis]
-x = x[np.dot(x,v[0])*np.dot(x,v[1]) <0, :]
-print(f'v1 = {np.round(v[0],3)}, \nv2 = {np.round(v[1],3)}')
-print(f'arccos(v1,v2)/pi = {np.round(np.arccos(v[0] @ v[1].T)/np.pi,3)}')
-print(f'simulated result = {np.round(len(x)/n,3)}')
-fig = px.scatter_3d(x=x[:,0], y=x[:,1], z=x[:,2], size=np.ones(len(x)), range_z=[-1,1])
-fig.add_scatter3d(x=[0, v[0,0]], y=[0, v[0,1]], z=[0, v[0,2]], name='v1')
-fig.add_scatter3d(x=[0, v[1,0]], y=[0, v[1,1]], z=[0, v[1,2]], name='v2')
+df = px.data.iris()
+fig = px.scatter(df, x="sepal_width", y="sepal_length", color="species", size="sepal_length")
 fig.show()
 ------------------
 
 [0;31m---------------------------------------------------------------------------[0m
 [0;31mModuleNotFoundError[0m                       Traceback (most recent call last)
-[0;32m<ipython-input-1-b8b8eccabc23>[0m in [0;36m<module>[0;34m[0m
-[1;32m      1[0m [0;32mimport[0m [0mnumpy[0m [0;32mas[0m [0mnp[0m[0;34m[0m[0;34m[0m[0m
-[0;32m----> 2[0;31m [0;32mimport[0m [0mplotly[0m[0;34m.[0m[0mexpress[0m [0;32mas[0m [0mpx[0m[0;34m[0m[0;34m[0m[0m
-[0m[1;32m      3[0m [0;32mimport[0m [0mplotly[0m[0;34m.[0m[0mio[0m [0;32mas[0m [0mpio[0m[0;34m[0m[0;34m[0m[0m
-[1;32m      4[0m [0;32mimport[0m [0mplotly[0m[0;34m.[0m[0moffline[0m [0;32mas[0m [0mpy[0m[0;34m[0m[0;34m[0m[0m
-[1;32m      5[0m [0;34m[0m[0m
+[0;32m<ipython-input-1-6d75fd787417>[0m in [0;36m<module>[0;34m[0m
+[0;32m----> 1[0;31m [0;32mimport[0m [0mplotly[0m[0;34m.[0m[0mio[0m [0;32mas[0m [0mpio[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m      2[0m [0;32mimport[0m [0mplotly[0m[0;34m.[0m[0mexpress[0m [0;32mas[0m [0mpx[0m[0;34m[0m[0;34m[0m[0m
+[1;32m      3[0m [0;32mimport[0m [0mplotly[0m[0;34m.[0m[0moffline[0m [0;32mas[0m [0mpy[0m[0;34m[0m[0;34m[0m[0m
+[1;32m      4[0m [0mpio[0m[0;34m.[0m[0mrenderers[0m[0;34m.[0m[0mdefault[0m [0;34m=[0m [0;34m"notebook"[0m[0;34m[0m[0;34m[0m[0m
+[1;32m      5[0m [0mdf[0m [0;34m=[0m [0mpx[0m[0;34m.[0m[0mdata[0m[0;34m.[0m[0miris[0m[0;34m([0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
 
 [0;31mModuleNotFoundError[0m: No module named 'plotly'
 ModuleNotFoundError: No module named 'plotly'
