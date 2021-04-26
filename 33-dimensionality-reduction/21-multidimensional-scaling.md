@@ -168,6 +168,10 @@ If we have some non-trivial objective function, say some measure of the goodness
 
 ## Practical Issues
 
+```{margin}
+In R, if the input matrix `L` is in lower triangle format, use `as.dist(L)` before calling `cmdscale()` function.
+```
+
 ### Goodness of Fit
 
 We can use (scaled) stress [Kruskal 1964] to measure the goodness-of-fit of the lower dimensional representation, whose value is in range [0, 1].
