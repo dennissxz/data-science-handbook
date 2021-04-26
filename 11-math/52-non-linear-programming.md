@@ -33,6 +33,33 @@ Lagrange multiplier:
 -   [formulation](https://www.youtube.com/watch?v=hQ4UNu1P2kw&t=311s&ab_channel=KhanAcademy) of Lagrangean $\mathcal{L}$: combining all equations to $\nabla\mathcal{L} = 0$.
 -   [interpretation](https://www.youtube.com/watch?v=m-G3K2GPmEQ&t=185s&ab_channel=KhanAcademy) and [proof](https://www.youtube.com/watch?v=b9B2FZ5cqbM&ab_channel=KhanAcademy) of the Lagrange multiplier $\lambda$ as $\frac{\partial f}{\partial c}$, e.g. if budget change, how much will revenue change?
 
+## First Order Necessary Condition
+
+Consider a minimization problem
+
+$$\min\ f(\boldsymbol{x}) \qquad \text{s.t.}\ \boldsymbol{x} \in S$$
+
+For every $\boldsymbol{x} \in S$, we can define a [normal cone](normal-cones),
+
+$$
+N_{S}(\boldsymbol{x}) := \left\{ \boldsymbol{d} \mid \langle \boldsymbol{y} - \boldsymbol{x} , \boldsymbol{d}  \rangle \le 0, \forall \boldsymbol{y} \in S \right\}
+$$
+
+A **necessary** condition for optimality of $\boldsymbol{x} ^*$ for problem $\min f(\boldsymbol{x})$ is
+
+$$
+- \nabla f(\boldsymbol{x} ^*) \in N_S (\boldsymbol{x} ^*)
+$$
+
+Imagine that in steepest descent, the trajectory stops at the boundary of $S$. There is no way to go along the descent direction $- \nabla f(\boldsymbol{x} ^*)$.
+
+:::{figure}
+<img src="../imgs/geometry-normal-cones.png" width = "80%" alt=""/>
+
+Normal cones [[Friedlander and Joshi](https://friedlander.io/19T2-406/notes/Constrained_optimization/)]
+:::
+
+
 (rayleigh-quotient)=
 ## Rayleigh Quotients
 
@@ -53,31 +80,31 @@ $$\begin{aligned}
 which makes the objective function invariant to scaling of $\boldsymbol{x}$. How do we solve this?
 
 Definition (Quadratic forms)  
-Let $\boldsymbol{A}$ be a symmetric real matrix. A quadratic form corresponding to $\boldsymbol{A}$ is a function $Q: \mathbb{R} ^n \rightarrow \mathbb{R}$ with
+: Let $\boldsymbol{A}$ be a symmetric real matrix. A quadratic form corresponding to $\boldsymbol{A}$ is a function $Q: \mathbb{R} ^n \rightarrow \mathbb{R}$ with
 
-$$
+  $$
   Q_{\boldsymbol{A}}(\boldsymbol{x}) = \boldsymbol{x} ^{\top} \boldsymbol{A} \boldsymbol{x}
   $$
 
 A quadratic form is can be written as a polynomial with terms all of second order
 
 $$
-  \boldsymbol{x} ^{\top} \boldsymbol{A} \boldsymbol{x}  = \sum_{i, j=1}^n a_{ij} x_i x_j
-  $$
+\boldsymbol{x} ^{\top} \boldsymbol{A} \boldsymbol{x}  = \sum_{i, j=1}^n a_{ij} x_i x_j
+$$
 
 Definition (Rayleigh quotient)  
--   For a fixed symmetric matrix $\boldsymbol{A}$, the normalized quadratic form $\frac{\boldsymbol{x} ^{\top} \boldsymbol{A} \boldsymbol{x}}{\boldsymbol{x} ^{\top} \boldsymbol{x} }$ is called a Rayleigh quotient.
-    -   In addition, given a positive definite matrix $\boldsymbol{B}$ of the same size, the quantity $\frac{\boldsymbol{x} ^{\top} \boldsymbol{A} \boldsymbol{x} }{\boldsymbol{x} ^{\top} \boldsymbol{B} \boldsymbol{x} }$ is called a generalized Rayleigh quotient.
+: - For a fixed symmetric matrix $\boldsymbol{A}$, the normalized quadratic form $\frac{\boldsymbol{x} ^{\top} \boldsymbol{A} \boldsymbol{x}}{\boldsymbol{x} ^{\top} \boldsymbol{x} }$ is called a Rayleigh quotient.
+  - In addition, given a positive definite matrix $\boldsymbol{B}$ of the same size, the quantity $\frac{\boldsymbol{x} ^{\top} \boldsymbol{A} \boldsymbol{x} }{\boldsymbol{x} ^{\top} \boldsymbol{B} \boldsymbol{x} }$ is called a generalized Rayleigh quotient.
 
 Applications  
--   PCA: $\max _{\boldsymbol{v} \neq 0} \frac{\boldsymbol{v}^{\top} \boldsymbol{\Sigma} \boldsymbol{v}}{\boldsymbol{v}^{\top} \boldsymbol{v}}$ where $\boldsymbol{\Sigma}$ is a covariance matrix
-    -   LDA: $\max _{\boldsymbol{v} \neq 0} \frac{\boldsymbol{v}^{\top} \boldsymbol{S}_{b} \boldsymbol{v}}{\boldsymbol{v}^{\top} \boldsymbol{S}_{w} \boldsymbol{v}}$ where $\boldsymbol{S} _b$ is a between-class scatter matrix, and $\boldsymbol{S} _w$ is a within-class scatter matrix
-    -   Spectral clustering (relaxed Ncut): $\max _{\boldsymbol{v} \neq \boldsymbol{0}} \frac{\boldsymbol{v}^{\top} \boldsymbol{L} \boldsymbol{v}}{\boldsymbol{v}^{\top} \boldsymbol{D} \boldsymbol{v}} \quad {s.t.} \boldsymbol{v} ^{\top} \boldsymbol{D} \boldsymbol{1} = 0$ where $\boldsymbol{L}$ is graph Laplacian and $\boldsymbol{D}$ is degree matrix.
+- PCA: $\max _{\boldsymbol{v} \neq 0} \frac{\boldsymbol{v}^{\top} \boldsymbol{\Sigma} \boldsymbol{v}}{\boldsymbol{v}^{\top} \boldsymbol{v}}$ where $\boldsymbol{\Sigma}$ is a covariance matrix
+- LDA: $\max _{\boldsymbol{v} \neq 0} \frac{\boldsymbol{v}^{\top} \boldsymbol{S}_{b} \boldsymbol{v}}{\boldsymbol{v}^{\top} \boldsymbol{S}_{w} \boldsymbol{v}}$ where $\boldsymbol{S} _b$ is a between-class scatter matrix, and $\boldsymbol{S} _w$ is a within-class scatter matrix
+- Spectral clustering (relaxed Ncut): $\max _{\boldsymbol{v} \neq \boldsymbol{0}} \frac{\boldsymbol{v}^{\top} \boldsymbol{L} \boldsymbol{v}}{\boldsymbol{v}^{\top} \boldsymbol{D} \boldsymbol{v}} \quad {s.t.} \boldsymbol{v} ^{\top} \boldsymbol{D} \boldsymbol{1} = 0$ where $\boldsymbol{L}$ is graph Laplacian and $\boldsymbol{D}$ is degree matrix.
 
 Theorem (Range of Rayleigh quotients)  
-For any symmetric matrix $\boldsymbol{A} \in \mathbb{R} {n \times n}$,
+: For any symmetric matrix $\boldsymbol{A} \in \mathbb{R} {n \times n}$,
 
-$$\begin{aligned}
+  $$\begin{aligned}
   \max _{\boldsymbol{x} \in \mathbb{R}^{n}: \boldsymbol{x} \neq \boldsymbol{0}} \frac{\boldsymbol{x}^{\top} \boldsymbol{A} \boldsymbol{x}}{\boldsymbol{x}^{\top} \boldsymbol{x}} &=\lambda_{\max } \\
   \min _{\boldsymbol{x} \in \mathbb{R}^{n}: \boldsymbol{x} \neq \boldsymbol{0}} \frac{\boldsymbol{x}^{\top} \boldsymbol{A} \boldsymbol{x}}{\boldsymbol{x}^{\top} \boldsymbol{x}} &=\lambda_{\min }
   \end{aligned}$$
@@ -87,8 +114,8 @@ That is, the largest and the smallest eigenvalues of $\boldsymbol{A}$ gives the 
 In addition, if we add an orthogonal constraint that $\boldsymbol{x}$ is orthogonal to all the $j$ largest eigenvectors, then
 
 $$
-  \max _{\boldsymbol{x} \in \mathbb{R}^{n}: \boldsymbol{x} \neq \boldsymbol{0}, \boldsymbol{x} \perp \boldsymbol{v} _1 \ldots, \boldsymbol{v} _j} \frac{\boldsymbol{x}^{\top} \boldsymbol{A} \boldsymbol{x}}{\boldsymbol{x}^{\top} \boldsymbol{x}} =\lambda_{j+1}
-  $$
+\max _{\boldsymbol{x} \in \mathbb{R}^{n}: \boldsymbol{x} \neq \boldsymbol{0}, \boldsymbol{x} \perp \boldsymbol{v} _1 \ldots, \boldsymbol{v} _j} \frac{\boldsymbol{x}^{\top} \boldsymbol{A} \boldsymbol{x}}{\boldsymbol{x}^{\top} \boldsymbol{x}} =\lambda_{j+1}
+$$
 
 and the maximum is achieved when $\boldsymbol{x} = \boldsymbol{v} _{j+1}$.
 
@@ -97,26 +124,26 @@ and the maximum is achieved when $\boldsymbol{x} = \boldsymbol{v} _{j+1}$.
 Consider EVD of $\boldsymbol{A}$:
 
 $$
-  \boldsymbol{x}^{\top} \boldsymbol{A} \boldsymbol{x}=\boldsymbol{x}^{\top}\left(\boldsymbol{U} \boldsymbol{\Lambda} \boldsymbol{U}^{\top}\right) \boldsymbol{x}=\left(\boldsymbol{x}^{\top} \boldsymbol{U}\right) \boldsymbol{\Lambda}\left(\boldsymbol{U}^{\top} \boldsymbol{x}\right)=\boldsymbol{y}^{\top} \boldsymbol{\Lambda} \boldsymbol{y}
-  $$
+\boldsymbol{x}^{\top} \boldsymbol{A} \boldsymbol{x}=\boldsymbol{x}^{\top}\left(\boldsymbol{U} \boldsymbol{\Lambda} \boldsymbol{U}^{\top}\right) \boldsymbol{x}=\left(\boldsymbol{x}^{\top} \boldsymbol{U}\right) \boldsymbol{\Lambda}\left(\boldsymbol{U}^{\top} \boldsymbol{x}\right)=\boldsymbol{y}^{\top} \boldsymbol{\Lambda} \boldsymbol{y}
+$$
 
 where $\boldsymbol{y} = \boldsymbol{U} ^{\top} \boldsymbol{x}$ is also a unit vector since $\left\| \boldsymbol{y} \right\| ^2 = 1$. The original optimization problem becomes
 
 $$
-  \max _{\boldsymbol{y} \in \mathbb{R}^{n}:\|\boldsymbol{y}\|=1} \quad \boldsymbol{y}^{\top} \underbrace{\boldsymbol{\Lambda}}_{\text {diagonal }} \boldsymbol{y}
-  $$
+\max _{\boldsymbol{y} \in \mathbb{R}^{n}:\|\boldsymbol{y}\|=1} \quad \boldsymbol{y}^{\top} \underbrace{\boldsymbol{\Lambda}}_{\text {diagonal }} \boldsymbol{y}
+$$
 
 Note that the objective and constraint can be written as a weighted sum of eigenvalues
 
 $$
-  \boldsymbol{y}^{\top} \boldsymbol{\Lambda} \boldsymbol{y}=\sum_{i=1}^{n} \underbrace{\lambda_{i}}_{\text {fixed }} y_{i}^{2} \quad \text { (subject to } y_{1}^{2}+y_{2}^{2}+\cdots+y_{n}^{2}=1)
-  $$
+\boldsymbol{y}^{\top} \boldsymbol{\Lambda} \boldsymbol{y}=\sum_{i=1}^{n} \underbrace{\lambda_{i}}_{\text {fixed }} y_{i}^{2} \quad \text { (subject to } y_{1}^{2}+y_{2}^{2}+\cdots+y_{n}^{2}=1)
+$$
 
 Let $\lambda_1 \ge \lambda_2 \ge \ldots \ge \lambda_n$, then when $y_1^2 = 1$ and $y_2^2 = \ldots = y_n ^2 = 0$, the objective function attains its maximum $\boldsymbol{y} ^{\top} \boldsymbol{\Lambda} \boldsymbol{y} = \lambda_1$. In terms of $\boldsymbol{x}$, the maximizer is
 
 $$
-  \boldsymbol{x} ^* = \boldsymbol{U} \boldsymbol{y} ^* = \boldsymbol{U} (\pm \boldsymbol{e} _1) = \pm \boldsymbol{u}_1   
-  $$
+\boldsymbol{x} ^* = \boldsymbol{U} \boldsymbol{y} ^* = \boldsymbol{U} (\pm \boldsymbol{e} _1) = \pm \boldsymbol{u}_1   
+$$
 
 In conclusion, when $\boldsymbol{x} = \pm \boldsymbol{u} _1$, i.e. the largest eigenvector, $\boldsymbol{x} ^{\top} \boldsymbol{A} \boldsymbol{x}$ attains its maximum value $\lambda_1$
 
@@ -126,38 +153,38 @@ In conclusion, when $\boldsymbol{x} = \pm \boldsymbol{u} _1$, i.e. the largest 
 
 Alternatively, we can use the Method of Lagrange Multipliers to prove the theorem. First, we form the Lagrangian function
 
-    $$
-    L(\boldsymbol{x}, \lambda)=\boldsymbol{x}^{\top} \boldsymbol{A} \boldsymbol{x}-\lambda\left(\|\boldsymbol{x}\|^{2}-1\right)
-    $$
+$$
+L(\boldsymbol{x}, \lambda)=\boldsymbol{x}^{\top} \boldsymbol{A} \boldsymbol{x}-\lambda\left(\|\boldsymbol{x}\|^{2}-1\right)
+$$
 
-    Differentiation gives
+Differentiation gives
 
-    $$
-    \begin{aligned}
-    \frac{\partial L}{\partial \boldsymbol{x}} &=2 \boldsymbol{A} \boldsymbol{x}-\lambda(2 \boldsymbol{x})=0 & \longrightarrow & \boldsymbol{A} \boldsymbol{x}=\lambda \boldsymbol{x} \\
-    \frac{\partial L}{\partial \lambda} &=\|\boldsymbol{x}\|^{2}-1=0 & \longrightarrow &\|\boldsymbol{x}\|^{2}=1
-    \end{aligned}
-    $$
+$$
+\begin{aligned}
+\frac{\partial L}{\partial \boldsymbol{x}} &=2 \boldsymbol{A} \boldsymbol{x}-\lambda(2 \boldsymbol{x})=0 & \longrightarrow & \boldsymbol{A} \boldsymbol{x}=\lambda \boldsymbol{x} \\
+\frac{\partial L}{\partial \lambda} &=\|\boldsymbol{x}\|^{2}-1=0 & \longrightarrow &\|\boldsymbol{x}\|^{2}=1
+\end{aligned}
+$$
 
-    This implies that $\boldsymbol{x}$ and $\lambda$ must be an eigenpair of $\boldsymbol{A}$. Moreover, for any solution $\lambda=\lambda_{i}, \boldsymbol{x}=\boldsymbol{v}_{i}$, the objective function takes the value
+This implies that $\boldsymbol{x}$ and $\lambda$ must be an eigenpair of $\boldsymbol{A}$. Moreover, for any solution $\lambda=\lambda_{i}, \boldsymbol{x}=\boldsymbol{v}_{i}$, the objective function takes the value
 
 
-    $$
-    \boldsymbol{v}_{i}^{\top} \boldsymbol{A} \boldsymbol{v}_{i}=\boldsymbol{v}_{i}^{\top}\left(\lambda_{i} \boldsymbol{v}_{i}\right)=\lambda_{i}\left\|\boldsymbol{v}_{i}\right\|^{2}=\lambda_{i}
-    $$
+$$
+\boldsymbol{v}_{i}^{\top} \boldsymbol{A} \boldsymbol{v}_{i}=\boldsymbol{v}_{i}^{\top}\left(\lambda_{i} \boldsymbol{v}_{i}\right)=\lambda_{i}\left\|\boldsymbol{v}_{i}\right\|^{2}=\lambda_{i}
+$$
 
-    Therefore, the eigenvector $\boldsymbol{v} _1$ (corresponding to largest eigenvalue $\lambda_1$ of $\boldsymbol{A}$) is the global maximizer, and it yields the absolute maximum value $\lambda_1$.
+Therefore, the eigenvector $\boldsymbol{v} _1$ (corresponding to largest eigenvalue $\lambda_1$ of $\boldsymbol{A}$) is the global maximizer, and it yields the absolute maximum value $\lambda_1$.
 
 :::
 
 Corollary (Generalized Rayleigh quotient problem)  
-For the generalized Rayleigh quotient $\frac{\boldsymbol{x}^{\top} \boldsymbol{A} \boldsymbol{x}}{\boldsymbol{x}^{\top} \boldsymbol{B} \boldsymbol{x}}$, the smallest and largest values $\lambda$ satisfy
+: For the generalized Rayleigh quotient $\frac{\boldsymbol{x}^{\top} \boldsymbol{A} \boldsymbol{x}}{\boldsymbol{x}^{\top} \boldsymbol{B} \boldsymbol{x}}$ where $\boldsymbol{A}$ is symmetric and $\boldsymbol{B}$ is p.d., the smallest and largest values $\lambda$ of the quotient satisfy
 
 $$
-  \boldsymbol{A v}=\lambda \boldsymbol{B v} \quad \Longleftrightarrow \quad \boldsymbol{B}^{-1} \boldsymbol{A v}=\lambda \boldsymbol{v}
-  $$
+\boldsymbol{A v}=\lambda \boldsymbol{B v} \quad \Longleftrightarrow \quad \boldsymbol{B}^{-1} \boldsymbol{A v}=\lambda \boldsymbol{v}
+$$
 
-That is, the smallest/largest quotient value equals the smallest/largest eigenvalue of $(\boldsymbol{B} ^{-1} \boldsymbol{A})$. The left equation is called a generalized eigenvalue problem.
+That is, the smallest/largest quotient value equals the smallest/largest eigenvalue of $(\boldsymbol{B} ^{-1} \boldsymbol{A})$, and the solutions are the corresponding eigenvectors. The left equation is called a generalized eigenvalue problem.
 
 :::{admonition,dropdown,seealso} *Proof*
 
@@ -169,30 +196,39 @@ That is, the smallest/largest quotient value equals the smallest/largest eigenva
     \boldsymbol{x}^{\top} \boldsymbol{B} \boldsymbol{x}=\boldsymbol{x}^{\top} \boldsymbol{B}^{1 / 2} \boldsymbol{B}^{1 / 2} \boldsymbol{x}=\boldsymbol{y}^{\top} \boldsymbol{y}
     $$
 
-    Substitute $\boldsymbol{x}=\left(\boldsymbol{B}^{1 / 2}\right)^{-1} \boldsymbol{y} \stackrel{\text { denote }}{=} \boldsymbol{B}^{-1 / 2} \boldsymbol{y}$ y into the numerator to rewrite it
-    in terms of the new variable $\boldsymbol{y}$. This will convert the generalized Rayleigh
-    quotient problem back to a regular Rayleigh quotient problem, which has
-    been solved.
+    Substitute $\boldsymbol{x}=\left(\boldsymbol{B}^{1 / 2}\right)^{-1} \boldsymbol{y} \stackrel{\text { denote }}{=} \boldsymbol{B}^{-1 / 2} \boldsymbol{y}$ into the numerator to rewrite it in terms of the new variable $\boldsymbol{y}$. This will convert the generalized Rayleigh quotient problem back to a regular Rayleigh quotient problem, which has been solved above.
 
     $$
     \frac{\boldsymbol{y} \boldsymbol{B} ^{-1/2} \boldsymbol{A} \boldsymbol{B} ^{-1/2} \boldsymbol{y} }{\boldsymbol{y} ^{\top} \boldsymbol{y}}
     $$
 
--   Lagrange multipliers:
+    The optimum is the eigenvalue $\lambda$ of $\boldsymbol{C}$, which is also the eigenvalue of $\boldsymbol{B} ^{-1} \boldsymbol{A}$ since
+
+    $$
+    \boldsymbol{C} \boldsymbol{v} = \lambda \boldsymbol{v}  \quad \Longleftrightarrow \quad \boldsymbol{B} ^{-1} \boldsymbol{A} (\boldsymbol{B} ^{-1/2} \boldsymbol{v} )= \lambda(\boldsymbol{B} ^{-1/2} \boldsymbol{v} )
+    $$
+
+    The solution is given $\boldsymbol{y} ^* = \boldsymbol{v} ^*$, i.e. $\boldsymbol{x} ^* = \boldsymbol{B} ^{-1/2} \boldsymbol{y} ^* = \boldsymbol{B} ^{-1/2} \boldsymbol{v} ^*$, the smallest/largest eigenvectors of $\boldsymbol{B} ^{-1} \boldsymbol{A}$.
+
+-   Lagrange multipliers approach
 
     $$
     \max _{\boldsymbol{x} \neq \boldsymbol{0}} \frac{\boldsymbol{x}^{\top} \boldsymbol{A} \boldsymbol{x}}{\boldsymbol{x}^{\top} \boldsymbol{B} \boldsymbol{x}}
     $$
 
+    which is equivalent to
+
     $$
     \max _{\boldsymbol{x} \in \mathbb{R}^{n}} \boldsymbol{x}^{\top} \boldsymbol{A} \boldsymbol{x} \quad \text { subject to } \boldsymbol{x}^{\top} \boldsymbol{B} \boldsymbol{x}=1
     $$
+
+    The Lagrangean is
 
     $$
     L(\boldsymbol{x}, \lambda)=\boldsymbol{x}^{\top} \boldsymbol{A} \boldsymbol{x}-\lambda\left(\boldsymbol{x}^{\top} \boldsymbol{B} \boldsymbol{x}-1\right)
     $$
 
-    Then
+    First order conditions:
 
     $$
     \begin{aligned}
@@ -200,6 +236,8 @@ That is, the smallest/largest quotient value equals the smallest/largest eigenva
     \frac{\partial L}{\partial \lambda} &=0 & \longrightarrow & \boldsymbol{x} ^{\top} \boldsymbol{B} \boldsymbol{x} =1
     \end{aligned}
     $$
+
+    Hence, the objective is $\boldsymbol{x} ^{\top} \boldsymbol{A} \boldsymbol{x} = \lambda \boldsymbol{x} ^{\top} \boldsymbol{B} \boldsymbol{x} = \lambda$, where $\lambda$ satisfies $\boldsymbol{A} \boldsymbol{x}=\lambda \boldsymbol{B}\boldsymbol{x}$.
 
 :::
 
@@ -330,9 +368,9 @@ $$\begin{aligned}
 Solving this integer optimization is NP-hard. We work with relaxation of $\Omega$.
 
 
-### Relaxation
+#### Relaxation
 
-#### Spectral Relaxation
+##### Spectral Relaxation
 
 Two relaxations:
 - drop the rank 1-constraint $\operatorname{rank}\left( \boldsymbol{X} \right) = 1$
@@ -353,7 +391,7 @@ $$
 The optimal solution $\boldsymbol{y} ^*$ is the last eigenvector of $\boldsymbol{W}$, and the objective value is the last eigenvalue of $\boldsymbol{W}$. The solution to the SDP problem is then $\boldsymbol{X} ^* = \boldsymbol{y}^* \boldsymbol{y} ^{*\top}$, with the same objective value. We can then round $\boldsymbol{y} ^*$ by its sign to decide partition assignment.
 
 
-#### SDP Relaxation
+##### SDP Relaxation
 
 Only one relaxation: drop the rank-1 constraint, which is non-convex. The remaining two constraints forms a domain
 
@@ -377,16 +415,16 @@ $\Omega_{SDP}$ is equivalent to $\left\{\boldsymbol{X} \in \mathbb{R} ^{n \times
 
 :::
 
-### Random Rounding
+#### Random Rounding
 
-#### Algorithm
+##### Algorithm
 
 -   Solve $\operatorname{SDP} (\boldsymbol{W})$ and obtain $\hat{\boldsymbol{X}}$
 -   Decompose $\hat{\boldsymbol{X}} = \hat{\boldsymbol{V}} ^{\top} \boldsymbol{\hat{V}}$, e.g. using EVD $\boldsymbol{\hat{X}} ^{\top} = \boldsymbol{\hat{U}} \sqrt{\boldsymbol{\hat{\Lambda}}}$, or using Cholesky. Note that $\left\| \boldsymbol{\hat{v}} _i \right\| =1$ always holds, due to the constraint $\hat{X}_{ii}=1$.
 -   Sample a direction $\boldsymbol{r}$ uniformly from $S^{p-1}$
 -   Return binary partition assignment $\hat{\boldsymbol{x}} = \operatorname{sign} (\boldsymbol{\hat{V}} ^{\top} \boldsymbol{r} )$
 
-#### Intuition
+##### Intuition
 
 - Randomly sample a hyperplane in $\mathbb{R} ^n$ characterized by vector $\boldsymbol{r}$. If $\hat{\boldsymbol{v}} _i$ lies on the same side of the hyperplane with $\boldsymbol{r}$, then set $\hat{x}_i =1$, else $\hat{x}_i = -1$.
 - If there indeed exists a partition $I$ and $J$ of vertices characterizedd by $\boldsymbol{x}$, then the two groups of directions $\boldsymbol{v} _i$’s and $\boldsymbol{v} _j$’s should point to opposite direction since $\boldsymbol{v} _i ^{\top} \boldsymbol{v} _j = x_i x_j = -1$. After random rounding, they should be well separated. Hence, if $\hat{\boldsymbol{v}}_i ^{\top} \hat{\boldsymbol{v} }_j$ recovers $\boldsymbol{v}_i ^{* \top} \boldsymbol{v}^* _j$ well enough, then $\hat{\boldsymbol{x}}$ well recovers $\boldsymbol{x}^*$, the optimal max-cut in $\operatorname{cut}(\boldsymbol{W})$.
@@ -397,22 +435,22 @@ $$\begin{aligned}
 \boldsymbol{\hat{X}} \text{ to } \operatorname{SDP} &  \xrightarrow[\text{rounding} ]{\text{random} } \hat{\boldsymbol{x}} = \operatorname{sign} (\boldsymbol{\hat{V}} ^{\top} \boldsymbol{r} )\\
 \end{aligned}$$
 
-To see how $\boldsymbol{V}$ looks like for $\boldsymbol{x} \in \left\{ \pm 1 \right\} ^n$, let $\boldsymbol{x} = [1, 1, -1, -1, -1]$, then
+To see how $\boldsymbol{V}$ looks like for $\boldsymbol{x} \in \left\{ \pm 1 \right\} ^n$, let $\boldsymbol{x} = [1, 1, -1, -1] ^{\top}$, then
 
 $$
 \boldsymbol{X} = \left[\begin{array}{rrrrr}
-1 & 1 & -1 & -1 & -1 \\
-1 & 1 & -1 & -1 & -1 \\
--1 & -1 & 1 & 1 & 1 \\
--1 & -1 & 1 & 1 & 1 \\
--1 & -1 & 1 & 1 & 1
+1 & 1 & -1 & -1  \\
+1 & 1 & -1 & -1  \\
+-1 & -1 & 1 & 1  \\
+-1 & -1 & 1 & 1  \\
 \end{array}\right],\qquad \boldsymbol{V} = \left[ \begin{array}{rrrrr}
--1 & -1 & 1 & 1 & 1 \\
-0 & 0 & 0 & 0 & 0 \\
-0 & 0 & 0 & 0 & 0 \\
-0 & 0 & 0 & 0 & 0 \\
-0 & 0 & 0 & 0 & 0
-\end{array} \right]
+1 & 1 & -1 & -1  \\
+0 & 0 & 0 & 0  \\
+0 & 0 & 0 & 0  \\
+0 & 0 & 0 & 0  \\
+\end{array} \right], \qquad \boldsymbol{V} ^{\top}  = \left[\begin{array}{cccc}
+\boldsymbol{x} & \boldsymbol{0} &\boldsymbol{0} &\boldsymbol{0} \\
+\end{array}\right]
 $$
 <!--
 ```{code-cell} R
@@ -429,7 +467,7 @@ print(round(V, 2))
 ```
  -->
 
-#### Analysis
+##### Analysis
 
 How well the algorithm does, in expectation? We define Geomans-Williams quantity, which is the expected cut value returned by the algorithm, where randomness comes from random direction $\boldsymbol{r}$.
 
@@ -446,7 +484,7 @@ We randomly sample direction $\boldsymbol{r}$ from unit sphere $S^{p-1}$. If $\b
 In $p=2$ case, we sample from a unit circle. All good $\boldsymbol{r}$ lie on two arcs on the circle, whose length are related to the angle between $\boldsymbol{v} _i$ and $\boldsymbol{v} _j$, denoted $\theta$. The probability of sampling good equals the ratio between the total length of the two arcs and the circumference. Thus,
 
 $$\begin{aligned}
-\mathbb{E} \left[ \frac{1}{2}(1 - \hat{x}_i \hat{x}_j) \right]
+\frac{1}{2} \mathbb{E} \left[ (1 - \hat{x}_i \hat{x}_j) \right]
 &= \mathbb{P} (\hat{x}_i \hat{x}_j = -1) \\
 &= \mathbb{P} (\boldsymbol{v} _i, \boldsymbol{v} _j \text{ lie on different side of hyperplane}) \\
 &= \frac{\theta}{2 \pi} \times 2  \\
@@ -479,11 +517,8 @@ An example of random rounding is given below. Two vectors $\boldsymbol{v}_1, \bo
 import numpy as np
 import plotly.express as px
 import plotly.io as pio
-import plotly.offline as py
 
-pio.renderers.default = "notebook"
-
-v = np.array([[1,0,3], [-1,0,3]])
+v = np.array([[1,0,3], [-1,0,3]]) # v1, v2
 v = v/np.linalg.norm(v, 2, axis=1)[:, np.newaxis]
 n = 3000
 np.random.seed(1)
@@ -493,6 +528,8 @@ x = x[np.dot(x,v[0])*np.dot(x,v[1]) <0, :]
 print(f'v1 = {np.round(v[0],3)}, \nv2 = {np.round(v[1],3)}')
 print(f'arccos(v1,v2)/pi = {np.round(np.arccos(v[0] @ v[1].T)/np.pi,3)}')
 print(f'simulated result = {np.round(len(x)/n,3)}')
+
+pio.renderers.default = "notebook" # renderer
 fig = px.scatter_3d(x=x[:,0], y=x[:,1], z=x[:,2], size=np.ones(len(x)), range_z=[-1,1])
 fig.add_scatter3d(x=[0, v[0,0]], y=[0, v[0,1]], z=[0, v[0,2]], name='v1')
 fig.add_scatter3d(x=[0, v[1,0]], y=[0, v[1,1]], z=[0, v[1,2]], name='v2')
@@ -507,29 +544,50 @@ $$
 
 where $K \approx 1.7$. Hence, the SDP relaxation $\Omega_{SDP}$ does not relax the original domain $\Omega$ too much (otherwise we may see $\operatorname{SDP}(\boldsymbol{W}) \gg \operatorname{cut}(\boldsymbol{W})$). Hence $\hat{\boldsymbol{v}}_i ^{\top} \boldsymbol{\hat{v}} _j$ should recover binary $x_i^* x_j^*$ well.
 
+To analyze it more specifically, we impose some structural assumption of $\boldsymbol{W}$, e.g. that from SBM.
 
 ### For SBM
 
 The above inequalities applies to any problem instance $G=(V, E, \boldsymbol{W})$. It may give too generous or useless guarantee for some particular model. Let’s see its performance in [stochastic block models](stochastic-block-models).
 
-We work with the mean-shifted matrix $\boldsymbol{B} = 2\boldsymbol{A} - \boldsymbol{1} \boldsymbol{1} ^{\top}$, where
+Let $\boldsymbol{A}$ be a random SBM adjacency matrix. Recall that
 
 $$
-b_{ij} = \left\{\begin{array}{ll}
-1, & \text { if } a_{ij}=1 \\
--1, & \text { if } a_{ij}=0
-\end{array}\right.
+\mathbb{E} [\boldsymbol{A}] = \left[\begin{array}{cc}
+p \boldsymbol{1} \boldsymbol{1} ^{\top}  & q \boldsymbol{1} \boldsymbol{1} ^{\top}  \\
+q \boldsymbol{1} \boldsymbol{1} ^{\top}  & p \boldsymbol{1} \boldsymbol{1} ^{\top}  \\
+\end{array}\right] = \frac{p+q}{2} \boldsymbol{1}_n \boldsymbol{1}_n ^{\top} +  \frac{p-q}{2} \left[\begin{array}{cc}
+\boldsymbol{1}   \\
+-\boldsymbol{1}  
+\end{array}\right] [\boldsymbol{1} ^{\top} \ -\boldsymbol{1} ^{\top}]
 $$
 
-Essentially, $\boldsymbol{B}$ just re-codes the connectivity in $G$ from 1/0 to 1/-1. Note that in SBM, $\boldsymbol{B}$ is random, depending on parameters $p$ and $q$. In the perfect case, if $p=1, q=0$, then we can tell cluster label $\boldsymbol{x}\in \left\{ \pm 1 \right\}^n$ directly from $\boldsymbol{B}$, which can be expressed exactly as $\boldsymbol{B} = \boldsymbol{x} \boldsymbol{x} ^{\top}$. In general cases, $\boldsymbol{B}$ cannot be expressed as $\boldsymbol{x} \boldsymbol{x} ^{\top}$ for some $\boldsymbol{x} \in \left\{ \pm 1 \right\}^n$. We in turn want to find some $\boldsymbol{X} = \boldsymbol{x} \boldsymbol{x} ^{\top}$ that is close enough to $\boldsymbol{B}$, and then use $\boldsymbol{x}$ as the approximated cluster label.
+We work with another matrix $\boldsymbol{B} = \left( \boldsymbol{A} - \frac{p+q}{2}  \boldsymbol{1} \boldsymbol{1} ^{\top}  \right)$. In expectation,
 
-Similar to the max-cut case, we apply SDP relaxation that drops the rank-1 constraint to $\boldsymbol{X}$. The SDP problem is then
+$$\mathbb{E} [\boldsymbol{B}] = \frac{p-q}{2} \left[\begin{array}{cc}
+\boldsymbol{1}   \\
+-\boldsymbol{1}  
+\end{array}\right] [\boldsymbol{1} ^{\top} \ -\boldsymbol{1} ^{\top}]$$
+
+which is a rank-1 matrix. With noise $\boldsymbol{E}$, we observe $\boldsymbol{B} = \mathbb{E} [\boldsymbol{B}] + \boldsymbol{E}$, which is no longer rank-1. In this case, we approximate the unknown $\mathbb{E} [\boldsymbol{B}]$ with a rank-1 matrix $\boldsymbol{X} = \boldsymbol{x}
+\boldsymbol{x} ^{\top}$, by maximizing $\langle \boldsymbol{B}, \boldsymbol{X} \rangle$. We hope that the optimal solution looks like
+
+$$
+\boldsymbol{X} ^* = \left[\begin{array}{cc}
+\boldsymbol{1}   \\
+-\boldsymbol{1}  
+\end{array}\right] [\boldsymbol{1} ^{\top} \ -\boldsymbol{1} ^{\top}]
+$$
+
+which recovers the cluster label.
+
+Similar to the max-cut case, we apply SDP relaxation that drops the non-convex rank-1 constraint to $\boldsymbol{X}$. The SDP problem is then
 
 $$
 \max\ \operatorname{tr}\left( \boldsymbol{B} \boldsymbol{X} \right) \qquad \text{s.t. } \boldsymbol{X} \succeq 0, X_{ii}=1
 $$
 
-Note $\operatorname{tr}\left( \boldsymbol{B} \boldsymbol{X} \right) = \langle \boldsymbol{B} , \boldsymbol{X} \rangle = \sum_{i,j}^n b_{ij} x_{ij}$. Next, we show that the solution to the above problem $\hat{\boldsymbol{X}}$ is exactly rank-1, even we've dropped the rank-1 constraint.
+Note $\operatorname{tr}\left( \boldsymbol{B} \boldsymbol{X} \right) = \langle \boldsymbol{B} , \boldsymbol{X} \rangle = \sum_{i,j}^n b_{ij} x_{ij}$. Next, we show that the solution to the relaxed problem, denoted $\hat{\boldsymbol{X}}$, is exactly $\boldsymbol{X} ^*$. Hence, even though we've dropped the rank-1 constraint, we can still solve the relaxed problem and exactly recover the cluster labels.
 
 :::{admonition,dropdown,seealso} *Proof*
 
@@ -543,25 +601,59 @@ $$
 \mathcal{L} (\boldsymbol{X} ; \boldsymbol{z} , \boldsymbol{\Lambda})= - \langle \boldsymbol{B} , \boldsymbol{X} \rangle - \langle \boldsymbol{z} , \operatorname{diag}\left( \boldsymbol{X}  \right)  - \boldsymbol{1}\rangle - \langle \boldsymbol{\Lambda} , \boldsymbol{X} \rangle
 $$
 
-where $\boldsymbol{z} \in \mathbb{R} ^n$ and $\boldsymbol{\Lambda} \succeq \boldsymbol{0}$ are dual variables (??). Then
+where $\boldsymbol{z} \in \mathbb{R} ^n$ and $\boldsymbol{\Lambda} \succeq \boldsymbol{0}$ are dual variables. Then the constraint primal minimization problem is equivalent to the unconstraint min-max problem on the LHS below.
 
 $$
-\min_{\boldsymbol{X}} \max _{\boldsymbol{\Lambda}, \boldsymbol{z}} \mathcal{L} (\boldsymbol{X} ; \boldsymbol{z} , \boldsymbol{\Lambda}) \ge \max _{\boldsymbol{\Lambda}, \boldsymbol{z}}\min_{\boldsymbol{X}}  \mathcal{L} (\boldsymbol{X} ; \boldsymbol{z} , \boldsymbol{\Lambda})
+\min_{\boldsymbol{X}} \max _{\boldsymbol{\Lambda} \succeq \boldsymbol{0}, \boldsymbol{z}} \mathcal{L} (\boldsymbol{X} ; \boldsymbol{z} , \boldsymbol{\Lambda}) \ge \max _{\boldsymbol{\Lambda}\succeq \boldsymbol{0}, \boldsymbol{z}}\min_{\boldsymbol{X}}  \mathcal{L} (\boldsymbol{X} ; \boldsymbol{z} , \boldsymbol{\Lambda})
 $$
 
-Now we solve the RHS dual problem. For the inner minimization problem $\min_{\boldsymbol{X}} \mathcal{L} (\boldsymbol{X} ; \boldsymbol{z} , \boldsymbol{\Lambda})$,
+The above inequality is from minimax inequality (Sion's minimax theorem). In LP, the equality always holds. In SDP, under some mild condition (Slater's condition) it holds. Now we solve the RHS dual problem. For the inner minimization problem $\min_{\boldsymbol{X}} \mathcal{L} (\boldsymbol{X} ; \boldsymbol{z} , \boldsymbol{\Lambda})$, take partial derivative w.r.t. $\boldsymbol{X}$.
 
 $$
 \frac{\partial \mathcal{L} }{\partial \boldsymbol{X}} = - \boldsymbol{B} - \operatorname{diag}\left( \boldsymbol{z}  \right) - \boldsymbol{\Lambda} = \boldsymbol{0}
 $$
 
-Plug this identity to $\mathcal{L}$ gives the RHS outer maximization problem
+where $\operatorname{diag}(\boldsymbol{z})$ is an $n\times n$ diagonal matrix. Plug this identity back to $\mathcal{L}$ gives the RHS outer maximization problem
 
 $$
 \max _{\boldsymbol{\Lambda} \succeq \boldsymbol{0} , \boldsymbol{z}}\ \boldsymbol{z} ^{\top} \boldsymbol{1}
 $$
 
+There are conditions for optimality of primal and dual variables $(\boldsymbol{X} , \boldsymbol{z} , \boldsymbol{\Lambda})$, called KKT condition:
+- primal feasible: $\boldsymbol{X} \succeq \boldsymbol{0}, X_{ii}=1$
+- dual feasible: $\boldsymbol{\Lambda} \succeq \boldsymbol{0} , - \boldsymbol{B} - \operatorname{diag}\left( \boldsymbol{z}  \right) - \boldsymbol{\Lambda} = \boldsymbol{0}$
+- complementary slackness: $\langle \boldsymbol{\Lambda} , \boldsymbol{X}  \rangle = 0 \Leftrightarrow \boldsymbol{\Lambda} \boldsymbol{X} = \boldsymbol{0}$
+
+
+We then show that given $\boldsymbol{B} = \mathbb{E} [\boldsymbol{B}]  + \boldsymbol{E}$, there exists $\boldsymbol{\Lambda} , \boldsymbol{z}$ such that $(\boldsymbol{X} ^*, \boldsymbol{z} , \boldsymbol{\Lambda})$ satisfies KKT condition, together with one additional condition $\operatorname{rank}\left( \boldsymbol{\Lambda}  \right) + \operatorname{rank}\left( \boldsymbol{X} ^* \right) = n$, called **strict complementary condition**. If these conditions hold, then by some theory $\boldsymbol{X} ^*$ is the **unique** optimizer.
+
+- $\boldsymbol{z} , \boldsymbol{\Lambda}$ aka dual certificate
+- complementary slackness says $\operatorname{dim} (\operatorname{null}  (\boldsymbol{\Lambda})) \ge 1$, but the strict complementary condition says it is exactly $1$.
+
+To show that, we use first order necessary condition. Recall the problem is
+
+$$\min\ - \langle  \boldsymbol{B}, \boldsymbol{X} \rangle \qquad \text{s.t. } \boldsymbol{X} \succeq 0, X_{ii}=1$$
+
+The feasible region can be specified as
+
+$$
+S = \left\{ \boldsymbol{X} \mid\langle \boldsymbol{X} \succeq \boldsymbol{0}, \boldsymbol{C} _i, \boldsymbol{X}  \rangle = b_i, i \in [n] \right\}
+$$
+
+where $\boldsymbol{C} _i = \boldsymbol{e} _i \boldsymbol{e} _i ^{\top}, b_i = 1$. Similar to the $\boldsymbol{x} \in \mathbb{R} ^n$ [case](normal-cones), the normal cone of $\boldsymbol{S}$ at $\boldsymbol{x}$ is
+
+$$
+N_S(\boldsymbol{X}) = \left\{ \sum_{i=1}^n \lambda_i \boldsymbol{C} _i - \boldsymbol{\Lambda} \mid \boldsymbol{\Lambda} \succeq \boldsymbol{0}, \langle \boldsymbol{\Lambda} , \boldsymbol{X}  \rangle = 0\right\}
+$$
+
+Note that $- \nabla f(\boldsymbol{X}) = \boldsymbol{B}$. By the first order necessary condition $- \nabla f(\boldsymbol{X}) \in N_S(\boldsymbol{X})$, we have
+- $\boldsymbol{B} = \sum_{i=1}^n \lambda_i \boldsymbol{C} _i - \boldsymbol{\Lambda}$ for some $\lambda_i$.
+- $\boldsymbol{\Lambda} \succeq \boldsymbol{0}, \langle \boldsymbol{\Lambda} , \boldsymbol{X}  \rangle = 0$
+
 :::
+
+
+
 .
 
 .
