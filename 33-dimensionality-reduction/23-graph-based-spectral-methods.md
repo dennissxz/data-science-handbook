@@ -206,45 +206,13 @@ $$ -->
 
 ### Relation to Spectral Clustering
 
-Laplacian eigenmaps, as a dimension reduction that preserves locality, yields the same solution as [normalized cut](Ncut) in spectral clustering. By setting
+For the [normalized cut](Ncut) problem in spectral clustering, the cluster label is given by the 2nd smallest eigenvector of the generalized eigen problem
 
 $$
-x_{i}=\left\{\begin{array}{c}
-\frac{1}{\operatorname{vol}(A)}, \text { if } V_{i} \in A \\
--\frac{1}{\operatorname{vol}(B)}, \text { if } V_{i} \in B
-\end{array}\right.
+\boldsymbol{L} \boldsymbol{v}  = \lambda \boldsymbol{D} \boldsymbol{v}
 $$
 
-We can show that $\boldsymbol{x} ^{\top} \boldsymbol{D} \boldsymbol{1} = \boldsymbol{0}$ and
-
-$$
-\frac{\boldsymbol{x}^{\top} \boldsymbol{L} \boldsymbol{x}}{\boldsymbol{x}^{\top} \boldsymbol{D}  \boldsymbol{x}}=W(A, B)\left(\frac{1}{\operatorname{vol}(A) }+\frac{1}{\operatorname{vol}(B) }\right)=\operatorname{Ncut}(A, B)
-$$
-
-The relaxed problem is
-
-$$\begin{aligned}
-\min_{\boldsymbol{x}} && \frac{\boldsymbol{x}^{\top} \boldsymbol{L} \boldsymbol{x}}{\boldsymbol{x}^{\top} \boldsymbol{D}  \boldsymbol{x}} & &&\\
-\mathrm{s.t.}
-&& \boldsymbol{x} ^{\top} \boldsymbol{D} \boldsymbol{1}  &= 0  && \\
-\end{aligned}$$
-
-To solve this, let $\boldsymbol{y} = \boldsymbol{D} ^{1/2} \boldsymbol{x}$, where $\boldsymbol{D}$ is invertible if $G$ has no isolated vertices. Then $\boldsymbol{y} ^{\top} \boldsymbol{D}^{1/2} \boldsymbol{1} =0$ and
-
-$$
-\frac{\boldsymbol{x}^{\top} \boldsymbol{L} \boldsymbol{x}}{\boldsymbol{x}^{\top} \boldsymbol{D}}  = \frac{\boldsymbol{y} \boldsymbol{D} ^{-1/2}\boldsymbol{L} \boldsymbol{D} ^{-1/2}\boldsymbol{y} }{\boldsymbol{y} ^{\top} \boldsymbol{y}}
-$$
-
-Note that $\boldsymbol{D} ^{-1/2}\boldsymbol{L} \boldsymbol{D} ^{-1/2} = \boldsymbol{L} ^{\mathrm{sym}}$. The problem is then
-
-$$\begin{aligned}
-\min_{\boldsymbol{y}} && \frac{\boldsymbol{y} \boldsymbol{L}^{\mathrm{sym}} \boldsymbol{y} }{\boldsymbol{y} ^{\top} \boldsymbol{y}}& &&\\
-\mathrm{s.t.}
-&& \boldsymbol{y} ^{\top} \boldsymbol{D}^{1/2} \boldsymbol{1} &=0 && \\
-\end{aligned}$$
-
-The solution is given by the second smallest eigenvalue of $\boldsymbol{L}^{\mathrm{sym}}$, when $\boldsymbol{y}$ is the corresponding eigenvector.
-
+which is exactly the 1-dimensional representation of Laplacian eigenmaps. In this sense, the local approach to dimensionality reduction imposes a natural clustering of data.
 
 <!-- ### Interpretation
 
