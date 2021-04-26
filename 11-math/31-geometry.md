@@ -1,6 +1,63 @@
 # Geometry
 
-## Half-spaces
+## Hyperplanes and Half-spaces
+
+(hyperplanes)=
+### Hyperplanes
+
+For $\boldsymbol{x} \in \mathbb{R} ^n$, the equation $\boldsymbol{a} ^\top \boldsymbol{x} = b$ defines a hyperplane $H$ in $\mathbb{R} ^n$,
+
+$$
+H = \left\{ \boldsymbol{x} \in \mathbb{R} ^n \mid \boldsymbol{a} ^{\top} \boldsymbol{x} = b \right\}
+$$
+
+where
+- $\boldsymbol{a}$ is a normal vector of that hyperplane, meaning that it is orthogonal to the hyperplane, i.e. it is orthogonal to any vector on the hyperplane. Specifically, let $\boldsymbol{x} _1, \boldsymbol{x} _2$ be two points on the hyperplane, then $\boldsymbol{x} _1 - \boldsymbol{x} _2$ is a vector on the hyperplane, and hence $\boldsymbol{a} ^{\top} (\boldsymbol{x}_1 - \boldsymbol{x}_2) = 0$ for all $\boldsymbol{x} _1, \boldsymbol{x} _2 \in H$.
+- $b$ is the distance from the origin to this hyperplane.
+
+The distance from a point $\boldsymbol{y}$ to this hyperplane is
+
+$$
+\frac{1}{\left\Vert \boldsymbol{a}  \right\Vert } \left\vert \boldsymbol{a} ^\top  \boldsymbol{y}  - b  \right\vert
+$$
+
+note that the distance is always positive.
+
+:::{admonition,dropdown,seealso} *Derivation*
+
+For any two points with coordinates $\boldsymbol{x}_1, \boldsymbol{x}_2$ on the hyperplane we have
+
+$$\begin{align}
+\boldsymbol{a} ^\top \boldsymbol{x}_1 &= b \\
+\boldsymbol{a} ^\top \boldsymbol{x}_2 &= b
+\end{align}$$
+
+Hence,
+
+$$
+\boldsymbol{a} ^\top (\boldsymbol{x}_1 - \boldsymbol{x}_2)= 0
+$$
+
+which implies that the vector $\boldsymbol{a}$ is orthogonal to the hyperplane.
+
+The distance from an arbitrary point $\boldsymbol{y}$ to the hyperplane can be formulated as
+
+$$
+d = \left\vert  \langle \frac{\boldsymbol{a}}{\left\| \boldsymbol{a}  \right\| }, \boldsymbol{y} - \boldsymbol{x} \rangle \right\vert
+$$
+
+where $\frac{\boldsymbol{a}}{\left\Vert \boldsymbol{a}  \right\Vert }$ is a unit vector orthogonal to the hyperplane and $\boldsymbol{y} - \boldsymbol{x}$ is a vector pointing from point $\boldsymbol{x}$ (on the hyperplane) to point $\boldsymbol{y}$. The absolute value of this cross product is the length of the projection of vector $\boldsymbol{y} - \boldsymbol{x}$ onto the direction of $\boldsymbol{a}$.
+
+Substituting $\boldsymbol{a} ^\top \boldsymbol{x} = b$ to this equation gives
+
+$$
+d = \frac{1}{\left\Vert \boldsymbol{a}  \right\Vert}\left\vert \boldsymbol{a} ^\top \boldsymbol{y} - b \right\vert
+$$
+
+:::
+
+
+### Half-spaces
 
 A half-space is either of the two parts into which a hyperplane $(\boldsymbol{a} ^\top \boldsymbol{x} = b)$ divides an affine space.
 
