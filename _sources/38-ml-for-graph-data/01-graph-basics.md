@@ -370,7 +370,7 @@ Properties
       \underbrace{\boldsymbol{D}^{-1} \boldsymbol{L}}_{\boldsymbol{L}_{\mathrm{rw}}} \boldsymbol{v}=\lambda \boldsymbol{v} \Longleftrightarrow \underbrace{\boldsymbol{D}^{-1 / 2} \boldsymbol{L} \boldsymbol{D}^{-1 / 2}}_{\boldsymbol{L}^{\mathrm{sym}}} (\boldsymbol{D}^{1 / 2} \boldsymbol{v})=\lambda (\boldsymbol{D}^{1 / 2} \boldsymbol{v} )
       $$
 
-      In particular, for the eigenvalue 0, the associated eigenvectors for $L^\mathrm{rw}$ and $L^\mathrm{sym}$ are $\boldsymbol{1}$ and $\boldsymbol{D} ^{1/2}\boldsymbol{1}$ respectively.
+      In particular, for the eigenvalue 0, the associated eigenvectors for $\boldsymbol{L}^\mathrm{rw}$ and $\boldsymbol{L} ^\mathrm{sym}$ are $\boldsymbol{v} _1 = \boldsymbol{1}$ and $\boldsymbol{u} _1 = \boldsymbol{D} ^{1/2}\boldsymbol{1}$ respectively. Also note that $0 = \boldsymbol{u} _2 ^{\top} \boldsymbol{u} _1 = \boldsymbol{v} _2 ^{\top} \boldsymbol{D} \boldsymbol{v} _1 = \boldsymbol{v} _2 ^{\top} \boldsymbol{D} \boldsymbol{1}$.
 
 - The **additive normalized Laplacian** is defined as
 
@@ -381,7 +381,7 @@ Properties
   It has same eigenvectors with $\boldsymbol{L}$ but different eigenvalues
 
   $$
-  \boldsymbol{L}_{a} \boldsymbol{u}=\mu \boldsymbol{u} \Longleftrightarrow \boldsymbol{L} \boldsymbol{u}=\lambda \boldsymbol{u}\qquad \mu=1-\frac{\lambda}{d_{\max }}
+  \boldsymbol{L}^{\mathrm{add}} \boldsymbol{u}=\beta \boldsymbol{u} \Longleftrightarrow \boldsymbol{L} \boldsymbol{u}=\lambda \boldsymbol{u}\qquad \beta=1-\frac{\lambda}{d_{\max }}
   $$
 
 - The weighted analogies for $\boldsymbol{L} ^\mathrm{sym}, \boldsymbol{L} ^\mathrm{rw}, \boldsymbol{L} ^{\mathrm{add}}$ are defined accordingly.

@@ -891,18 +891,6 @@
             <nav id="bd-toc-nav">
                 <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#prerequisite">
-   Prerequisite
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#distance-from-a-point-to-a-hyperplane">
-     Distance from a Point to a Hyperplane
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#objective">
    Objective
   </a>
@@ -964,12 +952,15 @@
                 
   <div class="section" id="support-vector-machine">
 <h1>Support Vector Machine<a class="headerlink" href="#support-vector-machine" title="Permalink to this headline">¶</a></h1>
-<p>We first introduce the basic linear separable case (aka. hard margin), and introduce the linear non-separable case later (aka. soft margin).</p>
-<div class="section" id="prerequisite">
-<h2>Prerequisite<a class="headerlink" href="#prerequisite" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="distance-from-a-point-to-a-hyperplane">
-<h3>Distance from a Point to a Hyperplane<a class="headerlink" href="#distance-from-a-point-to-a-hyperplane" title="Permalink to this headline">¶</a></h3>
-<p>Suppose there is a hyperplane in <span class="math notranslate nohighlight">\(p\)</span>-dimensional space characterized by</p>
+<p>Support vector machine is used for binary classification tasks. We first introduce the basic linear separable case (aka. hard margin), and introduce the linear non-separable case later (aka. soft margin).</p>
+<div class="section" id="objective">
+<h2>Objective<a class="headerlink" href="#objective" title="Permalink to this headline">¶</a></h2>
+<p>SVM uses a hyperplane to separate two types of points.</p>
+<div class="myclass figure align-default" id="svm-hard-margin">
+<a class="reference internal image-reference" href="../_images/svm-hard-margin.png"><img alt="" src="../_images/svm-hard-margin.png" style="width: 30%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 69 </span><span class="caption-text">Draw a line to separate two clusters</span><a class="headerlink" href="#svm-hard-margin" title="Permalink to this image">¶</a></p>
+</div>
+<p>Suppose there is a hyperplane in <span class="math notranslate nohighlight">\(p\)</span>-dimensional space characterized by the equation</p>
 <div class="math notranslate nohighlight">
 \[
 w_{1} x_{1}+w_{2} x_{2}+\cdots+w_{p} x_{p} + b = 0
@@ -979,61 +970,25 @@ w_{1} x_{1}+w_{2} x_{2}+\cdots+w_{p} x_{p} + b = 0
 \[
 \boldsymbol{w} ^\top  \boldsymbol{x}  + b = 0
 \]</div>
-<p>then the distance from a point <span class="math notranslate nohighlight">\(X\)</span> with coordinates <span class="math notranslate nohighlight">\(\boldsymbol{x} = (x_1, x_2, \ldots, x_p)\)</span> to this hyperplane is</p>
+<p>Then the distance from any point <span class="math notranslate nohighlight">\(\boldsymbol{x} \in \mathbb{R} ^p\)</span> to this hyperplane can be <a class="reference internal" href="../11-math/31-geometry.html#hyperplanes"><span class="std std-ref">shown</span></a> to be</p>
 <div class="math notranslate nohighlight">
 \[
-\frac{1}{\left\Vert \boldsymbol{w}  \right\Vert } \left\vert \boldsymbol{w} ^\top  \boldsymbol{x}  + b  \right\vert
+d = \frac{1}{\left\Vert \boldsymbol{w}  \right\Vert}\left\vert \boldsymbol{w} ^\top \boldsymbol{x} + b\right\vert
 \]</div>
-<p>note that the distance is always positive.</p>
-<div class="dropdown seealso admonition">
-<p class="admonition-title"> <em>Derivation</em></p>
-<p>For any two points <span class="math notranslate nohighlight">\(Y,Z\)</span> with coordinates <span class="math notranslate nohighlight">\(\boldsymbol{y}, \boldsymbol{z}\)</span> on the hyperplane we have</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{align}
-\boldsymbol{w} ^\top \boldsymbol{y} + b &amp;= 0 \\
-\boldsymbol{w} ^\top \boldsymbol{z} + b &amp;= 0
-\end{align}\end{split}\]</div>
-<p>Hence,</p>
+<p>Given <span class="math notranslate nohighlight">\(n\)</span> points <span class="math notranslate nohighlight">\(\boldsymbol{x} _1, \ldots, \boldsymbol{x} _n\)</span>, for those points in the same side of the hyperplane, they have the same sign of <span class="math notranslate nohighlight">\(\boldsymbol{w} ^\top  \boldsymbol{x}_i  + b\)</span>. If we label the points with positive values of <span class="math notranslate nohighlight">\(\boldsymbol{w} ^\top  \boldsymbol{x}_i  + b\)</span> by <span class="math notranslate nohighlight">\(y_i = 1\)</span> and those with negative values by <span class="math notranslate nohighlight">\(y_i = -1\)</span>, then the distance can be written as</p>
 <div class="math notranslate nohighlight">
 \[
-\boldsymbol{w} ^\top (\boldsymbol{y} - \boldsymbol{z})= 0
+\frac{1}{\left\Vert \boldsymbol{w}  \right\Vert } y_i (\boldsymbol{w} ^\top  \boldsymbol{x}_i  + b )
 \]</div>
-<p>which implies that the vector <span class="math notranslate nohighlight">\(\boldsymbol{w}\)</span> is orthogonal to the hyperplane.</p>
-<p>The distance from an arbitrary point <span class="math notranslate nohighlight">\(X\)</span> to the hyperplane can be formulated as</p>
-<div class="math notranslate nohighlight">
-\[
-d = \left\vert \left( \frac{\boldsymbol{w}}{\left\Vert \boldsymbol{w}  \right\Vert } \right)  ^\top (\boldsymbol{x} - \boldsymbol{y}) \right\vert
-\]</div>
-<p>where <span class="math notranslate nohighlight">\(\frac{\boldsymbol{w}}{\left\Vert \boldsymbol{w}  \right\Vert }\)</span> is a unit vector orthogonal to the hyperplane and <span class="math notranslate nohighlight">\(\boldsymbol{x} - \boldsymbol{y}\)</span> is a vector pointing from point <span class="math notranslate nohighlight">\(Y\)</span> (on the hyperplane) to point <span class="math notranslate nohighlight">\(X\)</span>. The absolute value of this cross product is the length of the projection of vector <span class="math notranslate nohighlight">\(\boldsymbol{x} - \boldsymbol{y}\)</span> onto the direction of <span class="math notranslate nohighlight">\(\boldsymbol{w}\)</span>, i.e., <span class="math notranslate nohighlight">\(d\)</span>.</p>
-<p>Substituting <span class="math notranslate nohighlight">\(\boldsymbol{w} ^\top \boldsymbol{y} + b = 0\)</span> gives</p>
-<div class="math notranslate nohighlight">
-\[
-d = \frac{1}{\left\Vert \boldsymbol{w}  \right\Vert}\left\vert \boldsymbol{w} ^\top \boldsymbol{x} + \boldsymbol{b} \right\vert
-\]</div>
-</div>
-<p>Note that the points on the same side of the hyperplane have the same sign of <span class="math notranslate nohighlight">\(\boldsymbol{w} ^\top  \boldsymbol{x}_i  + b\)</span>. If we label the points with positive values of <span class="math notranslate nohighlight">\(\boldsymbol{w} ^\top  \boldsymbol{x}_i  + b\)</span> by <span class="math notranslate nohighlight">\(y_i = 1\)</span> and those with negative values by <span class="math notranslate nohighlight">\(y_i = -1\)</span>, then the distance can be written as</p>
-<div class="math notranslate nohighlight">
-\[
-\frac{1}{\left\Vert \boldsymbol{w}  \right\Vert } y_i (\boldsymbol{w} ^\top  \boldsymbol{x}  + b )
-\]</div>
-</div>
-</div>
-<div class="section" id="objective">
-<h2>Objective<a class="headerlink" href="#objective" title="Permalink to this headline">¶</a></h2>
-<p>Support vector machine is used for binary classification tasks.</p>
-<div class="myclass figure align-default" id="use-a-hyperplane-to-separate-two-types-of-points">
-<a class="reference internal image-reference" href="../_images/svm-hard-margin.png"><img alt="" src="../_images/svm-hard-margin.png" style="width: 30%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 67 </span><span class="caption-text">Draw a line to separate two clusters</span><a class="headerlink" href="#use-a-hyperplane-to-separate-two-types-of-points" title="Permalink to this image">¶</a></p>
-</div>
 <dl class="simple myst">
 <dt>Definition (Margin)</dt><dd><p>The margin is defined as the shortest distance from a point to the hyperplane.</p>
 </dd>
 </dl>
 <div class="math notranslate nohighlight">
 \[
-\min _{i} \frac{1}{|\boldsymbol{w}|} y_{i}\left(\boldsymbol{w}^{\top} \boldsymbol{x}_{i}+b\right)
+\min _{i} \frac{1}{\left\| \boldsymbol{w} \right\| } y_{i}\left(\boldsymbol{w}^{\top} \boldsymbol{x}_{i}+b\right)
 \]</div>
-<p>The objective of SVM is to find a hyperplane <span class="math notranslate nohighlight">\(\boldsymbol{w}^{\top} \boldsymbol{x}_{i}+b = 0\)</span> that separates two types of points and maximizes the margin.</p>
+<p>The objective of SVM is to find a hyperplane <span class="math notranslate nohighlight">\(\boldsymbol{w}^{\top} \boldsymbol{x}+b = 0\)</span> parameterized by <span class="math notranslate nohighlight">\(\boldsymbol{w}\)</span> and <span class="math notranslate nohighlight">\(b\)</span>, that separates two types of points and maximizes the margin.</p>
 <div class="math notranslate nohighlight">
 \[
 \max _{\boldsymbol{w}, b}\left\{\min _i \frac{1}{\|\boldsymbol{w}\|} y_{i}\left(\boldsymbol{w}^{\top} \boldsymbol{x}_{i}+b\right)\right\}
@@ -1182,7 +1137,7 @@ R(\boldsymbol{w} ,b, \boldsymbol{x}_i ,y_i) = \max \left\{ 0, 1 - y_{i}\left(\bo
 <p>which is called <strong>Hinge loss</strong>.</p>
 <div class="myclass figure align-default" id="hinge-loss">
 <a class="reference internal image-reference" href="../_images/svm-hinge-loss.png"><img alt="" src="../_images/svm-hinge-loss.png" style="width: 50%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 68 </span><span class="caption-text">Comparison of loss functions</span><a class="headerlink" href="#hinge-loss" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 70 </span><span class="caption-text">Comparison of loss functions</span><a class="headerlink" href="#hinge-loss" title="Permalink to this image">¶</a></p>
 </div>
 <p>Let <span class="math notranslate nohighlight">\(\xi_{i}=\max \left\{0,1-y_{i}\left(\boldsymbol{w}^{\top} x_{i}+w_{0}\right)\right\}\)</span>, then the objective is</p>
 <div class="math notranslate nohighlight">
@@ -1306,20 +1261,19 @@ R(\boldsymbol{w} ,b, \boldsymbol{x}_i ,y_i) = \max \left\{ 0, 1 - y_{i}\left(\bo
 
       </div>
     </div>
-    
+  
   <script src="../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
 
+  
+<script async="" src="https://www.google-analytics.com/analytics.js"></script>
+<script>
+                        window.ga = window.ga || function () {
+                            (ga.q = ga.q || []).push(arguments) };
+                        ga.l = +new Date;
+                        ga('create', 'UA-150740237-2', 'auto');
+                        ga('set', 'anonymizeIp', true);
+                        ga('send', 'pageview');
+                    </script>
 
-    
-    <!-- Google Analytics -->
-    <script>
-      window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-      ga('create', 'UA-150740237-2', 'auto');
-      ga('set', 'anonymizeIp', true);
-      ga('send', 'pageview');
-    </script>
-    <script async src='https://www.google-analytics.com/analytics.js'></script>
-    <!-- End Google Analytics -->
-    
   </body>
 </html>

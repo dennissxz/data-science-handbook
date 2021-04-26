@@ -930,18 +930,6 @@
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#randomized-svd-based-methods">
-   Randomized SVD-based Methods
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#johnson-lindenstrauss-lemma">
-     Johnson-Lindenstrauss Lemma
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#locally-linear-embedding">
    Locally Linear Embedding
   </a>
@@ -999,7 +987,7 @@
 \]</div>
 <div class="figure align-default" id="isomap-geodesic-distance">
 <a class="reference internal image-reference" href="../_images/gb-isomap-d3k2.png"><img alt="" src="../_images/gb-isomap-d3k2.png" style="width: 80%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 78 </span><span class="caption-text">Isomap with <span class="math notranslate nohighlight">\(d=3,k=2\)</span>. The blue line is the real geodesic distance and the red line is estimated.  [Livescu 2021]</span><a class="headerlink" href="#isomap-geodesic-distance" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 80 </span><span class="caption-text">Isomap with <span class="math notranslate nohighlight">\(d=3,k=2\)</span>. The blue line is the real geodesic distance and the red line is estimated.  [Livescu 2021]</span><a class="headerlink" href="#isomap-geodesic-distance" title="Permalink to this image">¶</a></p>
 </div>
 </div>
 <div class="section" id="pros-cons">
@@ -1013,13 +1001,13 @@
 <li><p>Can be sensitive to the <strong>neighborhood size</strong> used in graph construction, or equivalently to the noise in the data.</p>
 <div class="figure align-default" id="isomap-noise">
 <a class="reference internal image-reference" href="../_images/gb-isomap-failure.png"><img alt="" src="../_images/gb-isomap-failure.png" style="width: 70%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 79 </span><span class="caption-text">Isomap fails when there are noises [Livescu 2021]</span><a class="headerlink" href="#isomap-noise" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 81 </span><span class="caption-text">Isomap fails when there are noises [Livescu 2021]</span><a class="headerlink" href="#isomap-noise" title="Permalink to this image">¶</a></p>
 </div>
 </li>
 <li><p>Can’t handle <strong>holes</strong> in the manifold. Geodesic distance computation can break. This is because the two points (even with the same color/label) sit in opposite to the hole have large geodesic distance on the manifold, which leads to large Euclidean distance in the projected space.</p>
 <div class="figure align-default" id="gb-isomap-holes">
 <a class="reference internal image-reference" href="../_images/gb-isomap-holes.png"><img alt="" src="../_images/gb-isomap-holes.png" style="width: 80%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 80 </span><span class="caption-text">Isomap fails when there are holes [Livescu 2021]</span><a class="headerlink" href="#gb-isomap-holes" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 82 </span><span class="caption-text">Isomap fails when there are holes [Livescu 2021]</span><a class="headerlink" href="#gb-isomap-holes" title="Permalink to this image">¶</a></p>
 </div>
 </li>
 </ul>
@@ -1085,11 +1073,7 @@
 \[
 \boldsymbol{L} \boldsymbol{v} = \lambda \boldsymbol{D} \boldsymbol{v}
 \]</div>
-<div class="margin sidebar">
-<p class="sidebar-title"></p>
-<p>See <a class="reference internal" href="../38-ml-for-graph-data/01-graph-basics.html#graph-laplacian"><span class="std std-ref">graph Laplacians</span></a> for details about <span class="math notranslate nohighlight">\(\boldsymbol{L} ^\mathrm{rw}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{L} ^\mathrm{sym}\)</span>.</p>
-</div>
-<p>Or equivalently, the eigenvectors of random-walk graph Laplacian: <span class="math notranslate nohighlight">\(\boldsymbol{L} ^{\mathrm{rw}} = \boldsymbol{D} ^{-1} \boldsymbol{L}\)</span>.</p>
+<p>Or equivalently, the eigenvectors of random-walk graph Laplacian: <span class="math notranslate nohighlight">\(\boldsymbol{L} ^{\mathrm{rw}} = \boldsymbol{D} ^{-1} \boldsymbol{L}\)</span>. See <a class="reference internal" href="../38-ml-for-graph-data/01-graph-basics.html#graph-laplacian"><span class="std std-ref">graph Laplacians</span></a> for details about <span class="math notranslate nohighlight">\(\boldsymbol{L} ^\mathrm{rw}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{L} ^\mathrm{sym}\)</span>.</p>
 <p>To see why the two constraints come from, we can first see a <span class="math notranslate nohighlight">\(k=1\)</span> example, i.e. projection onto a line. Suppose the projections are <span class="math notranslate nohighlight">\(z_1, \ldots, z_n\)</span>, the problem is</p>
 <div class="math notranslate nohighlight">
 \[
@@ -1100,10 +1084,6 @@
 <li><p>arbitrary scaling: if <span class="math notranslate nohighlight">\(\boldsymbol{z}^*\)</span> is an optimal solution, then a new solution <span class="math notranslate nohighlight">\(c\boldsymbol{z}^*\)</span> where <span class="math notranslate nohighlight">\(0&lt;c&lt;1\)</span> gives a smaller function value, contradiction. Or we say <span class="math notranslate nohighlight">\(\boldsymbol{z} = \boldsymbol{0}\)</span> is a trivial solution.</p></li>
 <li><p>translational invariance: if <span class="math notranslate nohighlight">\(\boldsymbol{z} ^*\)</span> is an optimal solution, then a new solution <span class="math notranslate nohighlight">\(\boldsymbol{z} ^* + c\boldsymbol{1}\)</span> gives the same function value.</p></li>
 </ul>
-<div class="margin sidebar">
-<p class="sidebar-title"></p>
-<p>The matrix <span class="math notranslate nohighlight">\(\boldsymbol{D}\)</span> here is introduced by the authors in the original paper to reflect vertex importance. Actually replacing <span class="math notranslate nohighlight">\(\boldsymbol{D}\)</span> by <span class="math notranslate nohighlight">\(\boldsymbol{I}\)</span> also solve these two issues.</p>
-</div>
 <p>To solve these two issues, we add two constraints <span class="math notranslate nohighlight">\(\boldsymbol{z} ^{\top} \boldsymbol{D} \boldsymbol{z} = 1\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{z} ^{\top} \boldsymbol{D} \boldsymbol{1} = 0\)</span> respectively. The second constraint also removes a trivial solution <span class="math notranslate nohighlight">\(\boldsymbol{z} = c\boldsymbol{1}\)</span>, to be introduced soon. The problem becomes</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{aligned}
@@ -1112,17 +1092,18 @@
 &amp;&amp; \boldsymbol{z} ^{\top} \boldsymbol{D} \boldsymbol{z} &amp;= 1 &amp;&amp;  \\
 &amp;&amp; \boldsymbol{z} ^{\top} \boldsymbol{D} \boldsymbol{1} &amp;= 0 &amp;&amp; \\
 \end{aligned}\end{split}\]</div>
-<p>the solution is given by the 2nd smallest eigenvector of the generalized eigenproblem</p>
+<p>In fact, the matrix <span class="math notranslate nohighlight">\(\boldsymbol{D}\)</span> here is introduced by the authors in the original paper to reflect vertex importance. Actually replacing <span class="math notranslate nohighlight">\(\boldsymbol{D}\)</span> by <span class="math notranslate nohighlight">\(\boldsymbol{I}\)</span> also solve these two issues.</p>
+<p>The solution is given by the 2nd smallest eigenvector of the generalized eigenproblem</p>
 <div class="math notranslate nohighlight">
 \[
 \boldsymbol{L} \boldsymbol{v} = \lambda \boldsymbol{D} \boldsymbol{v}
 \]</div>
 <p>Note that <span class="math notranslate nohighlight">\(\boldsymbol{v} = c\boldsymbol{1}\)</span> is an eigenvector of <span class="math notranslate nohighlight">\(\boldsymbol{L}\)</span> but the constraint <span class="math notranslate nohighlight">\(\boldsymbol{z} ^{\top} \boldsymbol{D} \boldsymbol{1} =0\)</span> removes that.</p>
 <p>To generalize to <span class="math notranslate nohighlight">\(k\ge 2\)</span>, we generalize the constraints to <span class="math notranslate nohighlight">\(\boldsymbol{Z} ^{\top} \boldsymbol{D} \boldsymbol{Z} = \boldsymbol{I}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{Z} ^{\top} \boldsymbol{D} \boldsymbol{1} = \boldsymbol{0}\)</span> shown above. Note that if we move the second constraint (as in the paper), then the embedding in one of the <span class="math notranslate nohighlight">\(k\)</span> dimensions will be <span class="math notranslate nohighlight">\(c \boldsymbol{1}\)</span>, hence we actually obtain <span class="math notranslate nohighlight">\((k-1)\)</span>-dimensional embedding, but it is also helpful to distinguish points.</p>
+</div>
 <div class="figure align-default" id="gb-laplacian-eigenmap-nt">
 <a class="reference internal image-reference" href="../_images/gb-laplacian-eigenmap-Nt.png"><img alt="" src="../_images/gb-laplacian-eigenmap-Nt.png" style="width: 50%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 81 </span><span class="caption-text">Laplacian eigenmap with varing <span class="math notranslate nohighlight">\(N\)</span>-nearest-neighbors and temperature <span class="math notranslate nohighlight">\(t\)</span> [Livescu 2021]</span><a class="headerlink" href="#gb-laplacian-eigenmap-nt" title="Permalink to this image">¶</a></p>
-</div>
+<p class="caption"><span class="caption-number">Fig. 83 </span><span class="caption-text">Laplacian eigenmap with varing <span class="math notranslate nohighlight">\(N\)</span>-nearest-neighbors and temperature <span class="math notranslate nohighlight">\(t\)</span> [Livescu 2021]</span><a class="headerlink" href="#gb-laplacian-eigenmap-nt" title="Permalink to this image">¶</a></p>
 </div>
 <!-- Other formulation: find centered and unit-covariance projections $\boldsymbol{z}_i$ that solve the total projected pairwise distances weighted by $w_{ij}$ and scaled by $d_{ii}d_{jj}$
 
@@ -1139,39 +1120,12 @@ $$ -->
 </div>
 <div class="section" id="relation-to-spectral-clustering">
 <h3>Relation to Spectral Clustering<a class="headerlink" href="#relation-to-spectral-clustering" title="Permalink to this headline">¶</a></h3>
-<p>Laplacian eigenmaps, as a dimension reduction that preserves locality, yields the same solution as <a class="reference internal" href="../34-clustering/31-spectral-clustering.html#ncut"><span class="std std-ref">normalized cut</span></a> in spectral clustering. By setting</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
-x_{i}=\left\{\begin{array}{c}
-\frac{1}{\operatorname{vol}(A)}, \text { if } V_{i} \in A \\
--\frac{1}{\operatorname{vol}(B)}, \text { if } V_{i} \in B
-\end{array}\right.
-\end{split}\]</div>
-<p>We can show that <span class="math notranslate nohighlight">\(\boldsymbol{x} ^{\top} \boldsymbol{D} \boldsymbol{1} = \boldsymbol{0}\)</span> and</p>
+<p>For the <a class="reference internal" href="../34-clustering/31-spectral-clustering.html#ncut"><span class="std std-ref">normalized cut</span></a> problem in spectral clustering, the cluster label is given by the 2nd smallest eigenvector of the generalized eigen problem</p>
 <div class="math notranslate nohighlight">
 \[
-\frac{\boldsymbol{x}^{\top} \boldsymbol{L} \boldsymbol{x}}{\boldsymbol{x}^{\top} \boldsymbol{D}  \boldsymbol{x}}=W(A, B)\left(\frac{1}{\operatorname{vol}(A) }+\frac{1}{\operatorname{vol}(B) }\right)=\operatorname{Ncut}(A, B)
+\boldsymbol{L} \boldsymbol{v}  = \lambda \boldsymbol{D} \boldsymbol{v}
 \]</div>
-<p>The relaxed problem is</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{aligned}
-\min_{\boldsymbol{x}} &amp;&amp; \frac{\boldsymbol{x}^{\top} \boldsymbol{L} \boldsymbol{x}}{\boldsymbol{x}^{\top} \boldsymbol{D}  \boldsymbol{x}} &amp; &amp;&amp;\\
-\mathrm{s.t.}
-&amp;&amp; \boldsymbol{x} ^{\top} \boldsymbol{D} \boldsymbol{1}  &amp;= 0  &amp;&amp; \\
-\end{aligned}\end{split}\]</div>
-<p>To solve this, let <span class="math notranslate nohighlight">\(\boldsymbol{y} = \boldsymbol{D} ^{1/2} \boldsymbol{x}\)</span>, where <span class="math notranslate nohighlight">\(\boldsymbol{D}\)</span> is invertible if <span class="math notranslate nohighlight">\(G\)</span> has no isolated vertices. Then <span class="math notranslate nohighlight">\(\boldsymbol{y} ^{\top} \boldsymbol{D}^{1/2} \boldsymbol{1} =0\)</span> and</p>
-<div class="math notranslate nohighlight">
-\[
-\frac{\boldsymbol{x}^{\top} \boldsymbol{L} \boldsymbol{x}}{\boldsymbol{x}^{\top} \boldsymbol{D}}  = \frac{\boldsymbol{y} \boldsymbol{D} ^{-1/2}\boldsymbol{L} \boldsymbol{D} ^{-1/2}\boldsymbol{y} }{\boldsymbol{y} ^{\top} \boldsymbol{y}}
-\]</div>
-<p>Note that <span class="math notranslate nohighlight">\(\boldsymbol{D} ^{-1/2}\boldsymbol{L} \boldsymbol{D} ^{-1/2} = \boldsymbol{L} ^{\mathrm{sym}}\)</span>. The problem is then</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{aligned}
-\min_{\boldsymbol{y}} &amp;&amp; \frac{\boldsymbol{y} \boldsymbol{L}^{\mathrm{sym}} \boldsymbol{y} }{\boldsymbol{y} ^{\top} \boldsymbol{y}}&amp; &amp;&amp;\\
-\mathrm{s.t.}
-&amp;&amp; \boldsymbol{y} ^{\top} \boldsymbol{D}^{1/2} \boldsymbol{1} &amp;=0 &amp;&amp; \\
-\end{aligned}\end{split}\]</div>
-<p>The solution is given by the second smallest eigenvalue of <span class="math notranslate nohighlight">\(\boldsymbol{L}^{\mathrm{sym}}\)</span>, when <span class="math notranslate nohighlight">\(\boldsymbol{y}\)</span> is the corresponding eigenvector.</p>
+<p>which is exactly the 1-dimensional representation of Laplacian eigenmaps. In this sense, the local approach to dimensionality reduction imposes a natural clustering of data.</p>
 <!-- ### Interpretation
 
 Consider data points on a circle.
@@ -1200,99 +1154,18 @@ where $\mathbb{M} \boldsymbol{1} = \boldsymbol{1}, \mathbb{M} \ge 0, \lambda(\ma
 <div class="section" id="seriation-problem">
 <h3>Seriation Problem<a class="headerlink" href="#seriation-problem" title="Permalink to this headline">¶</a></h3>
 <p><a class="reference external" href="https://en.wikipedia.org/wiki/Seriation_(archaeology)">Wikipedia</a></p>
-<p>Now there are some archeological pieces <span class="math notranslate nohighlight">\(i = 1, \ldots, n\)</span>. Want to time order them <span class="math notranslate nohighlight">\(\pi(i)\)</span>. Have in hand is there similarity <span class="math notranslate nohighlight">\(w_{ij}\)</span>.</p>
-<p>The problem can be formulated as</p>
-<div class="math notranslate nohighlight">
-\[\]</div>
-<p>Permutation is hard. Spectral relaxation drop the permutation constraint.</p>
-<p>Hope that the relative order in <span class="math notranslate nohighlight">\(f^*\)</span> can tell <span class="math notranslate nohighlight">\(\boldsymbol{\pi}\)</span>.</p>
-<p>What if we have some information, say <span class="math notranslate nohighlight">\(i\)</span> is in some year for some <span class="math notranslate nohighlight">\(i\)</span>’s? Can we use this information?</p>
-</div>
-</div>
-<div class="section" id="randomized-svd-based-methods">
-<h2>Randomized SVD-based Methods<a class="headerlink" href="#randomized-svd-based-methods" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="johnson-lindenstrauss-lemma">
-<h3>Johnson-Lindenstrauss Lemma<a class="headerlink" href="#johnson-lindenstrauss-lemma" title="Permalink to this headline">¶</a></h3>
-<dl class="simple myst">
-<dt>Lemma (Johnson-Lindenstrauss)</dt><dd><p>For data vectors be <span class="math notranslate nohighlight">\(\boldsymbol{x} _1, \boldsymbol{x} _2, \ldots, \boldsymbol{x} _n \in \mathbb{R} ^d\)</span> and  tolerance <span class="math notranslate nohighlight">\(\epsilon \in (0, \frac{1}{2} )\)</span>, there exists a Lipschitz mapping <span class="math notranslate nohighlight">\(f: \mathbb{R} ^d \rightarrow \mathbb{R} ^k\)</span>, where <span class="math notranslate nohighlight">\(k = \lfloor \frac{24 \log n}{\epsilon^2} \rfloor\)</span> such that</p>
+<p>Suppose there are <span class="math notranslate nohighlight">\(n\)</span> archeological pieces <span class="math notranslate nohighlight">\(i = 1, \ldots, n\)</span>. Want to time order them by finding some latent ordering <span class="math notranslate nohighlight">\(\pi(i)\)</span>, given some similarity measure <span class="math notranslate nohighlight">\(w_{ij}\)</span>. The problem can be formulated as</p>
 <div class="math notranslate nohighlight">
 \[
-  (1 - \epsilon) \left\| \boldsymbol{x}_i - \boldsymbol{x}_j  \right\| ^2 \le \left\| f(\boldsymbol{x}_i ) - f(\boldsymbol{x}_j )\right\| \le (1 + \epsilon) \left\| \boldsymbol{x}_i - \boldsymbol{x}_j  \right\| ^2
-  \]</div>
-</dd>
-</dl>
-<p>How do we construct <span class="math notranslate nohighlight">\(f\)</span>? Consider a random linear mapping: <span class="math notranslate nohighlight">\(f(\boldsymbol{u}) = \frac{1}{\sqrt{k}} \boldsymbol{A} \boldsymbol{u}\)</span> for some <span class="math notranslate nohighlight">\(\boldsymbol{A} \in \mathbb{R} ^{k \times d}\)</span> where <span class="math notranslate nohighlight">\(k &lt; d\)</span> and <span class="math notranslate nohighlight">\(a_{ij} \overset{\text{iid}}{\sim} \mathcal{N} (0, 1)\)</span>. The intuition: the columns of <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> are orthogonal to each other in expectation. If indeed orthogonal, then <span class="math notranslate nohighlight">\(\left\| \frac{1}{\sqrt{k}} \boldsymbol{A} \boldsymbol{u}  \right\| = \left\| \boldsymbol{u}  \right\|\)</span>.</p>
-<p>To prove it, we need the following lemma.</p>
-<dl class="simple myst">
-<dt>Lemma (Norm preserving)</dt><dd><p>Fix a vector <span class="math notranslate nohighlight">\(\boldsymbol{u} \in \mathbb{R} ^d\)</span>, then <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> preserves its norm in expectation.</p>
+\min_{\pi: [n] \rightarrow [n] }\ \sum_{i,j=1}^n w_{ij} \left\| \pi(i) - \pi(j)  \right\|  ^2
+\]</div>
+<p>Solving permutation is hard. Spectral relaxation drop the permutation constraint and solve</p>
 <div class="math notranslate nohighlight">
 \[
-  \mathbb{E} \left[ \left\| \frac{1}{\sqrt{k}} \boldsymbol{A} \boldsymbol{u}   \right\|^2 \right]  = \mathbb{E} [\left\| \boldsymbol{u}  \right\|^2]
-  \]</div>
-<div class="dropdown seealso admonition">
-<p class="admonition-title"> <em>Proof</em></p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{aligned}
-  \frac{1}{k} \mathbb{E} [\left\| \boldsymbol{A} \boldsymbol{u}  \right\| ^2]  
-  &amp;= \frac{1}{k} \boldsymbol{u} ^{\top} \mathbb{E} [\boldsymbol{A} ^{\top} \boldsymbol{A} ] \boldsymbol{u}    \\
-  &amp;= \frac{1}{k} \boldsymbol{u} ^{\top} k \boldsymbol{I}_{n \times n} \boldsymbol{u}     \\
-  &amp;= \left\| \boldsymbol{u}  \right\|   ^2 \\
-  \end{aligned}\end{split}\]</div>
-<p>The second equality holds since</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
-  \mathbb{E} [\boldsymbol{a} _i ^{\top} \boldsymbol{a} _j] = \left\{\begin{array}{ll}
-  \sum_{p=1}^k \mathbb{E} [a_{ik}^2] = \sum_{p=1}^k 1 =k , &amp; \text { if } i=j \\
-  0, &amp; \text { otherwise }
-  \end{array}\right.
-  \end{split}\]</div>
-</div>
-</dd>
-<dt>Lemma (Concentration)</dt><dd><p>Blessing of high dimensionality: things concentrate around mean. The probability of deviation is bounded. We first prove one-side deviation probability. The proof for the other side is similar.</p>
-<div class="math notranslate nohighlight">
-\[
-  \mathbb{P} \left( \left\| \frac{1}{\sqrt{k}} \boldsymbol{A} \boldsymbol{u}   \right\| ^2 &gt; (1 + \epsilon) \left\| \boldsymbol{u}  \right\|  ^2 \right)  \le \exp \left( \frac{k}{2} \left( \frac{\epsilon^2}{2} - \frac{\epsilon^3}{2}  \right) \right)
-  \]</div>
-<div class="dropdown seealso admonition">
-<p class="admonition-title"> <em>Proof</em></p>
-<p>Let <span class="math notranslate nohighlight">\(\boldsymbol{v} = \frac{\boldsymbol{A} \boldsymbol{u} }{\left\| \boldsymbol{u}  \right\| } \in \mathbb{R} ^k\)</span>, it is easy to see <span class="math notranslate nohighlight">\(V_i \sim \mathcal{N} (0, 1)\)</span>. In this case,</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{aligned}
-  \mathbb{P}\left( \left\| \boldsymbol{v} \right\| ^2 &gt; (1 + \epsilon) k\right)
-  &amp;= \mathbb{P}\left( \exp (\lambda \left\| \boldsymbol{v}  \right\| ^2) &gt; \exp (1+ \epsilon) k \lambda \right)  \\
-  &amp;\le \frac{\mathbb{E} [\exp (\lambda \left\| \boldsymbol{v}  \right\| ^2)] }{\exp [ (1+ \epsilon) k\lambda]}  \quad \because \text{Markov inequality} \\
-  &amp;\le \frac{[\mathbb{E} [\exp (\lambda V_i^2)]]^k }{\exp [ (1+ \epsilon) k\lambda]}  \quad \because V_i \text{ are i.i.d.}  \\
-  &amp;=  \exp [-(1 + \epsilon) k \lambda] \left( \frac{1}{1-2\lambda}  \right)^{k/2} \\
-  \end{aligned}\end{split}\]</div>
-<p>The last equality holds since by moment generating function <span class="math notranslate nohighlight">\(\mathbb{E} [e^{tX}] = \frac{1}{\sqrt{1- 2t} }\)</span> for <span class="math notranslate nohighlight">\(X \sim \chi ^2 _1\)</span>.</p>
-<p>If we choose <span class="math notranslate nohighlight">\(\lambda = \frac{\epsilon}{2(1+\epsilon)} &lt; \frac{1}{2}\)</span>, then</p>
-<div class="math notranslate nohighlight">
-\[
-  \mathbb{P} (\left\| \boldsymbol{v}  \right\| &gt; (1 + \epsilon)k)  \le \left[ (1+\epsilon)e^{- \epsilon} \right]^{k/2}.
-  \]</div>
-<p>Then it remains to show <span class="math notranslate nohighlight">\(1+\epsilon \le \exp(\epsilon - \frac{\epsilon^2}{2} +  \frac{\epsilon^3}{2})\)</span> for <span class="math notranslate nohighlight">\(\epsilon &gt; 0\)</span>, which is true by derivative test. Plug in this inequality we get the required inequality.</p>
-<p>Then by union bound,</p>
-<div class="math notranslate nohighlight">
-\[
-  \mathbb{P}\left( \left\| \boldsymbol{v}  \right\| &gt; (1 + \epsilon) k \text{ or }  \left\| \boldsymbol{v}  \right\| &lt; (1 - \epsilon) k \right) \le 2 \exp \left(\frac{k}{2}\left(\frac{\epsilon^{2}}{2}-\frac{\epsilon^{3}}{2}\right)\right)
-  \]</div>
-</div>
-</dd>
-</dl>
-<p>Now we prove the JL lemma.</p>
-<div class="dropdown seealso admonition">
-<p class="admonition-title"> <em>Proof of JL</em></p>
-<p>The probability we fail to find an <span class="math notranslate nohighlight">\(\epsilon\)</span>-distortion map for any <span class="math notranslate nohighlight">\((i, j)\)</span> pair is</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{aligned}
-&amp;= \mathbb{P} \left( \exists i, j: \left\| \boldsymbol{A} \boldsymbol{x}_i - \boldsymbol{A} \boldsymbol{x}_j  \right\|^2 &gt; (1 + \epsilon) \left\| \boldsymbol{x}_i - \boldsymbol{x}_j  \right\|  ^2  \text{ or } &lt; (1 - \epsilon) \left\| \boldsymbol{x}_i - \boldsymbol{x}_j  \right\|  ^2 \right)   \\
-&amp;= \mathbb{P} \left( \cup_{(i,j)} \right)  \\
-&amp;\le \binom{n}{2} 2  \exp \left(\frac{k}{2}\left(\frac{\epsilon^{2}}{2}-\frac{\epsilon^{3}}{2}\right)\right)\quad \because \text{union bound} \\
-&amp;\le 2 n^2 \exp \left(\frac{k}{2}\left(\frac{\epsilon^{2}}{2}-\frac{\epsilon^{3}}{2}\right)\right)\\
-\end{aligned}\end{split}\]</div>
-<p>With some choice of <span class="math notranslate nohighlight">\(k\)</span>, this upper bound is <span class="math notranslate nohighlight">\(1 - \frac{1}{n}\)</span>, i.e. there is an <span class="math notranslate nohighlight">\(\frac{1}{n}\)</span> chance we get a map with <span class="math notranslate nohighlight">\(\epsilon\)</span> distortion. What if we want a higher probability?</p>
-<p>For some <span class="math notranslate nohighlight">\(\alpha\)</span>, if we set, <span class="math notranslate nohighlight">\(k \ge (4 + 2\alpha) \left( \frac{\epsilon^{2}}{2}-\frac{\epsilon^{3}}{2} \right) ^{-1} \log(n)\)</span>, then the embedding <span class="math notranslate nohighlight">\(f(\boldsymbol{x} ) = \frac{1}{\sqrt{k}} \boldsymbol{A} \boldsymbol{x}\)</span> succeeds with probability at least <span class="math notranslate nohighlight">\(1 - \frac{1}{n^\alpha}\)</span>.</p>
-</div>
+\min_{f_1, \ldots, f_n  }\ \sum_{i,j=1}^n w_{ij} \left\| f_i  - f_j   \right\| ^2
+\]</div>
+<p>Hope that the relative order in <span class="math notranslate nohighlight">\(f^*\)</span> can tell information about <span class="math notranslate nohighlight">\(\pi^*\)</span>.</p>
+<p>What if we have some information, say some <span class="math notranslate nohighlight">\(i\)</span> is known to be in some year? Can we use this information?</p>
 </div>
 </div>
 <div class="section" id="locally-linear-embedding">
@@ -1361,20 +1234,19 @@ where $\mathbb{M} \boldsymbol{1} = \boldsymbol{1}, \mathbb{M} \ge 0, \lambda(\ma
 
       </div>
     </div>
-    
+  
   <script src="../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
 
+  
+<script async="" src="https://www.google-analytics.com/analytics.js"></script>
+<script>
+                        window.ga = window.ga || function () {
+                            (ga.q = ga.q || []).push(arguments) };
+                        ga.l = +new Date;
+                        ga('create', 'UA-150740237-2', 'auto');
+                        ga('set', 'anonymizeIp', true);
+                        ga('send', 'pageview');
+                    </script>
 
-    
-    <!-- Google Analytics -->
-    <script>
-      window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-      ga('create', 'UA-150740237-2', 'auto');
-      ga('set', 'anonymizeIp', true);
-      ga('send', 'pageview');
-    </script>
-    <script async src='https://www.google-analytics.com/analytics.js'></script>
-    <!-- End Google Analytics -->
-    
   </body>
 </html>

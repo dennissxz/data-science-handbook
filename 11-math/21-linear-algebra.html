@@ -1027,20 +1027,8 @@
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#randomized-svd">
-     Randomized SVD
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#analysis-and-speed-up">
-       Analysis and Speed Up
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#interpolative-decomposition">
-     Interpolative Decomposition
+    <a class="reference internal nav-link" href="#johnson-lindenstrauss-lemma">
+     Johnson-Lindenstrauss Lemma
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
@@ -1628,104 +1616,199 @@ x \sin \theta+y \cos \theta
 </li>
 </ul>
 </div>
-<div class="section" id="randomized-svd">
-<h3>Randomized SVD<a class="headerlink" href="#randomized-svd" title="Permalink to this headline">¶</a></h3>
-<p>SVD for <span class="math notranslate nohighlight">\(\boldsymbol{A} \in \mathbb{R} ^{n \times n}\)</span> takes <span class="math notranslate nohighlight">\(\mathcal{O} (n^3)\)</span>, can we use this intuition for doing faster? References: Gu &amp; Eisenstat, Tygert &amp; Rokhlin, Martin Sison, Halto. Survey of randomized SVD: https://arxiv.org/pdf/0909.4061.pdf</p>
-<p>A vanilla algorithm,</p>
-<ul class="simple">
-<li><p>create <span class="math notranslate nohighlight">\(\boldsymbol{\Omega}\in \mathbb{R} ^{n \times k}\)</span> with <span class="math notranslate nohighlight">\(\Omega_{ij} \overset{\text{iid}}{\sim} \mathcal{N} (0, 1)\)</span></p></li>
-<li><p>(find range) compute <span class="math notranslate nohighlight">\(\boldsymbol{Y} = \boldsymbol{A} \boldsymbol{\Omega} \in \mathbb{R} ^{n \times k}\)</span>, which takes <span class="math notranslate nohighlight">\(\mathcal{O} (n^2 k)\)</span>. That is, we randomly project <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> onto <span class="math notranslate nohighlight">\(\mathbb{R} ^{ n\times k}\)</span>, roughly preserve ranges of <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span>, and hence <span class="math notranslate nohighlight">\(\operatorname{rank}(\boldsymbol{A})\)</span>.</p></li>
-<li><p>(store ranges) compute QR decomposition <span class="math notranslate nohighlight">\(\boldsymbol{Y} = \boldsymbol{Q} \boldsymbol{R}\)</span>, which takes <span class="math notranslate nohighlight">\(\mathcal{O} (nk ^2)\)</span>. We want <span class="math notranslate nohighlight">\(\operatorname{range}(\boldsymbol{Q} ) = \operatorname{range} (\boldsymbol{A} )\)</span></p></li>
-<li><p>compute <span class="math notranslate nohighlight">\(\tilde{\boldsymbol{A}}  = \boldsymbol{Q} (\boldsymbol{Q} ^{\top} \boldsymbol{A} ) = \boldsymbol{Q} \boldsymbol{B}\)</span> which takes <span class="math notranslate nohighlight">\(\mathcal{O} (n^2k )\)</span>. If indeed the ranges of <span class="math notranslate nohighlight">\(\boldsymbol{Q}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> are the same, then <span class="math notranslate nohighlight">\(\tilde{\boldsymbol{A}} = \boldsymbol{Q}  \boldsymbol{Q} ^{\top} \boldsymbol{A}\)</span></p></li>
-<li><p>SVD of <span class="math notranslate nohighlight">\(\boldsymbol{B} = \tilde{\boldsymbol{U} } \boldsymbol{\Sigma} \boldsymbol{V} ^{\top}\)</span>, which takes <span class="math notranslate nohighlight">\(\mathcal{O} (nk^2 + k^3)\)</span></p></li>
-<li><p>return <span class="math notranslate nohighlight">\(\tilde{\boldsymbol{A} } = (\boldsymbol{Q} \tilde{\boldsymbol{U} }) \boldsymbol{\Sigma} \boldsymbol{V} ^{\top} = \boldsymbol{U} \boldsymbol{\Sigma} \boldsymbol{V} ^{\top}\)</span>.</p></li>
-</ul>
-<p>If <span class="math notranslate nohighlight">\(\tilde{\boldsymbol{A}} \approx \boldsymbol{A}\)</span> then we have the total time is <span class="math notranslate nohighlight">\(\mathcal{O} (n^2 k)\)</span>. How to improve this?</p>
-<p>There can by other choices of <span class="math notranslate nohighlight">\(\boldsymbol{\Omega}\)</span>. For instance, in fast JL algorithm, <span class="math notranslate nohighlight">\(\boldsymbol{\Omega} = \boldsymbol{S} \boldsymbol{F} \boldsymbol{D}\)</span>, where</p>
-<ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(\boldsymbol{S}\)</span> is a <span class="math notranslate nohighlight">\(k \times n\)</span> sampling matrix having on non-zero entry in each row at random</p></li>
-<li><p><span class="math notranslate nohighlight">\(\boldsymbol{F}\)</span> is an <span class="math notranslate nohighlight">\(n \times n\)</span> Fourier matrix</p></li>
-<li><p><span class="math notranslate nohighlight">\(\boldsymbol{D}\)</span> is an <span class="math notranslate nohighlight">\(n \times n\)</span> diagonal matrix <span class="math notranslate nohighlight">\(d_i \pm 1\)</span> entires with equal probability</p></li>
-</ul>
-<p>The total complexity if <span class="math notranslate nohighlight">\(\mathcal{O} (k + n\log n + n)\)</span>.</p>
-<div class="section" id="analysis-and-speed-up">
-<h4>Analysis and Speed Up<a class="headerlink" href="#analysis-and-speed-up" title="Permalink to this headline">¶</a></h4>
-<p>Lemma 1</p>
-<p>Let</p>
-<ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(\boldsymbol{A} = \boldsymbol{U} \boldsymbol{\Sigma} \boldsymbol{V} ^{\top}\)</span></p></li>
-<li><p>usually <span class="math notranslate nohighlight">\(l \ge k\)</span></p></li>
-<li><p>assume <span class="math notranslate nohighlight">\(\boldsymbol{\Omega}_1\)</span> has full row rank</p></li>
-<li><p><span class="math notranslate nohighlight">\(\boldsymbol{\Sigma} _1 = \boldsymbol{\Sigma} _{[:k, :k]}, \boldsymbol{\Sigma} _2 = \boldsymbol{\Sigma} _{[k+1:, k+1:]}\)</span></p></li>
-<li><p><span class="math notranslate nohighlight">\(V^{*} \Omega=\left[\begin{array}{l}
+<div class="section" id="johnson-lindenstrauss-lemma">
+<h3>Johnson-Lindenstrauss Lemma<a class="headerlink" href="#johnson-lindenstrauss-lemma" title="Permalink to this headline">¶</a></h3>
+<dl class="simple myst">
+<dt>Lemma (Johnson-Lindenstrauss)</dt><dd><p>For data vectors be <span class="math notranslate nohighlight">\(\boldsymbol{x} _1, \boldsymbol{x} _2, \ldots, \boldsymbol{x} _n \in \mathbb{R} ^d\)</span> and  tolerance <span class="math notranslate nohighlight">\(\epsilon \in (0, \frac{1}{2} )\)</span>, there exists a Lipschitz mapping <span class="math notranslate nohighlight">\(f: \mathbb{R} ^d \rightarrow \mathbb{R} ^k\)</span>, where <span class="math notranslate nohighlight">\(k = \lfloor \frac{24 \log n}{\epsilon^2} \rfloor\)</span> such that</p>
+<div class="math notranslate nohighlight">
+\[
+  (1 - \epsilon) \left\| \boldsymbol{x}_i - \boldsymbol{x}_j  \right\| ^2 \le \left\| f(\boldsymbol{x}_i ) - f(\boldsymbol{x}_j )\right\| \le (1 + \epsilon) \left\| \boldsymbol{x}_i - \boldsymbol{x}_j  \right\| ^2
+  \]</div>
+</dd>
+</dl>
+<p>How do we construct <span class="math notranslate nohighlight">\(f\)</span>? Consider a random linear mapping: <span class="math notranslate nohighlight">\(f(\boldsymbol{u}) = \frac{1}{\sqrt{k}} \boldsymbol{A} \boldsymbol{u}\)</span> for some <span class="math notranslate nohighlight">\(\boldsymbol{A} \in \mathbb{R} ^{k \times d}\)</span> where <span class="math notranslate nohighlight">\(k &lt; d\)</span> and <span class="math notranslate nohighlight">\(a_{ij} \overset{\text{iid}}{\sim} \mathcal{N} (0, 1)\)</span>. The intuition: the columns of <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> are orthogonal to each other in expectation. If indeed orthogonal, then <span class="math notranslate nohighlight">\(\left\| \frac{1}{\sqrt{k}} \boldsymbol{A} \boldsymbol{u}  \right\| = \left\| \boldsymbol{u}  \right\|\)</span>.</p>
+<p>To prove it, we need the following lemma.</p>
+<dl class="simple myst">
+<dt>Lemma (Norm preserving)</dt><dd><p>Fix a vector <span class="math notranslate nohighlight">\(\boldsymbol{u} \in \mathbb{R} ^d\)</span>, then <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> preserves its norm in expectation.</p>
+<div class="math notranslate nohighlight">
+\[
+  \mathbb{E} \left[ \left\| \frac{1}{\sqrt{k}} \boldsymbol{A} \boldsymbol{u}   \right\|^2 \right]  = \mathbb{E} [\left\| \boldsymbol{u}  \right\|^2]
+  \]</div>
+<div class="dropdown seealso admonition">
+<p class="admonition-title"> <em>Proof</em></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+  \frac{1}{k} \mathbb{E} [\left\| \boldsymbol{A} \boldsymbol{u}  \right\| ^2]  
+  &amp;= \frac{1}{k} \boldsymbol{u} ^{\top} \mathbb{E} [\boldsymbol{A} ^{\top} \boldsymbol{A} ] \boldsymbol{u}    \\
+  &amp;= \frac{1}{k} \boldsymbol{u} ^{\top} k \boldsymbol{I}_{n \times n} \boldsymbol{u}     \\
+  &amp;= \left\| \boldsymbol{u}  \right\|   ^2 \\
+  \end{aligned}\end{split}\]</div>
+<p>The second equality holds since</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+  \mathbb{E} [\boldsymbol{a} _i ^{\top} \boldsymbol{a} _j] = \left\{\begin{array}{ll}
+  \sum_{p=1}^k \mathbb{E} [a_{ik}^2] = \sum_{p=1}^k 1 =k , &amp; \text { if } i=j \\
+  0, &amp; \text { otherwise }
+  \end{array}\right.
+  \end{split}\]</div>
+</div>
+</dd>
+<dt>Lemma (Concentration)</dt><dd><p>Blessing of high dimensionality: things concentrate around mean. The probability of deviation is bounded. We first prove one-side deviation probability. The proof for the other side is similar.</p>
+<div class="math notranslate nohighlight">
+\[
+  \mathbb{P} \left( \left\| \frac{1}{\sqrt{k}} \boldsymbol{A} \boldsymbol{u}   \right\| ^2 &gt; (1 + \epsilon) \left\| \boldsymbol{u}  \right\|  ^2 \right)  \le \exp \left( \frac{k}{2} \left( \frac{\epsilon^2}{2} - \frac{\epsilon^3}{2}  \right) \right)
+  \]</div>
+<div class="dropdown seealso admonition">
+<p class="admonition-title"> <em>Proof</em></p>
+<p>Let <span class="math notranslate nohighlight">\(\boldsymbol{v} = \frac{\boldsymbol{A} \boldsymbol{u} }{\left\| \boldsymbol{u}  \right\| } \in \mathbb{R} ^k\)</span>, it is easy to see <span class="math notranslate nohighlight">\(V_i \sim \mathcal{N} (0, 1)\)</span>. In this case,</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+  \mathbb{P}\left( \left\| \boldsymbol{v} \right\| ^2 &gt; (1 + \epsilon) k\right)
+  &amp;= \mathbb{P}\left( \exp (\lambda \left\| \boldsymbol{v}  \right\| ^2) &gt; \exp (1+ \epsilon) k \lambda \right)  \\
+  &amp;\le \frac{\mathbb{E} [\exp (\lambda \left\| \boldsymbol{v}  \right\| ^2)] }{\exp [ (1+ \epsilon) k\lambda]}  \quad \because \text{Markov inequality} \\
+  &amp;\le \frac{[\mathbb{E} [\exp (\lambda V_i^2)]]^k }{\exp [ (1+ \epsilon) k\lambda]}  \quad \because V_i \text{ are i.i.d.}  \\
+  &amp;=  \exp [-(1 + \epsilon) k \lambda] \left( \frac{1}{1-2\lambda}  \right)^{k/2} \\
+  \end{aligned}\end{split}\]</div>
+<p>The last equality holds since by moment generating function <span class="math notranslate nohighlight">\(\mathbb{E} [e^{tX}] = \frac{1}{\sqrt{1- 2t} }\)</span> for <span class="math notranslate nohighlight">\(X \sim \chi ^2 _1\)</span>.</p>
+<p>If we choose <span class="math notranslate nohighlight">\(\lambda = \frac{\epsilon}{2(1+\epsilon)} &lt; \frac{1}{2}\)</span>, then</p>
+<div class="math notranslate nohighlight">
+\[
+  \mathbb{P} (\left\| \boldsymbol{v}  \right\| &gt; (1 + \epsilon)k)  \le \left[ (1+\epsilon)e^{- \epsilon} \right]^{k/2}.
+  \]</div>
+<p>Then it remains to show <span class="math notranslate nohighlight">\(1+\epsilon \le \exp(\epsilon - \frac{\epsilon^2}{2} +  \frac{\epsilon^3}{2})\)</span> for <span class="math notranslate nohighlight">\(\epsilon &gt; 0\)</span>, which is true by derivative test. Plug in this inequality we get the required inequality.</p>
+<p>Then by union bound,</p>
+<div class="math notranslate nohighlight">
+\[
+  \mathbb{P}\left( \left\| \boldsymbol{v}  \right\| &gt; (1 + \epsilon) k \text{ or }  \left\| \boldsymbol{v}  \right\| &lt; (1 - \epsilon) k \right) \le 2 \exp \left(\frac{k}{2}\left(\frac{\epsilon^{2}}{2}-\frac{\epsilon^{3}}{2}\right)\right)
+  \]</div>
+</div>
+</dd>
+</dl>
+<p>Now we prove the JL lemma.</p>
+<div class="dropdown seealso admonition">
+<p class="admonition-title"> <em>Proof of JL</em></p>
+<p>The probability we fail to find an <span class="math notranslate nohighlight">\(\epsilon\)</span>-distortion map for any <span class="math notranslate nohighlight">\((i, j)\)</span> pair is</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+&amp;= \mathbb{P} \left( \exists i, j: \left\| \boldsymbol{A} \boldsymbol{x}_i - \boldsymbol{A} \boldsymbol{x}_j  \right\|^2 &gt; (1 + \epsilon) \left\| \boldsymbol{x}_i - \boldsymbol{x}_j  \right\|  ^2  \text{ or } &lt; (1 - \epsilon) \left\| \boldsymbol{x}_i - \boldsymbol{x}_j  \right\|  ^2 \right)   \\
+&amp;= \mathbb{P} \left( \cup_{(i,j)} \right)  \\
+&amp;\le \binom{n}{2} 2  \exp \left(\frac{k}{2}\left(\frac{\epsilon^{2}}{2}-\frac{\epsilon^{3}}{2}\right)\right)\quad \because \text{union bound} \\
+&amp;\le 2 n^2 \exp \left(\frac{k}{2}\left(\frac{\epsilon^{2}}{2}-\frac{\epsilon^{3}}{2}\right)\right)\\
+\end{aligned}\end{split}\]</div>
+<p>With some choice of <span class="math notranslate nohighlight">\(k\)</span>, this upper bound is <span class="math notranslate nohighlight">\(1 - \frac{1}{n}\)</span>, i.e. there is an <span class="math notranslate nohighlight">\(\frac{1}{n}\)</span> chance we get a map with <span class="math notranslate nohighlight">\(\epsilon\)</span> distortion. What if we want a higher probability?</p>
+<p>For some <span class="math notranslate nohighlight">\(\alpha\)</span>, if we set, <span class="math notranslate nohighlight">\(k \ge (4 + 2\alpha) \left( \frac{\epsilon^{2}}{2}-\frac{\epsilon^{3}}{2} \right) ^{-1} \log(n)\)</span>, then the embedding <span class="math notranslate nohighlight">\(f(\boldsymbol{x} ) = \frac{1}{\sqrt{k}} \boldsymbol{A} \boldsymbol{x}\)</span> succeeds with probability at least <span class="math notranslate nohighlight">\(1 - \frac{1}{n^\alpha}\)</span>.</p>
+</div>
+<!-- #### Randomized SVD
+
+
+SVD for $\boldsymbol{A} \in \mathbb{R} ^{n \times n}$ takes $\mathcal{O} (n^3)$, can we use this intuition for doing faster? References: Gu & Eisenstat, Tygert & Rokhlin, Martin Sison, Halto. Survey of randomized SVD: https://arxiv.org/pdf/0909.4061.pdf
+
+A vanilla algorithm,
+
+- create $\boldsymbol{\Omega}\in \mathbb{R} ^{n \times k}$ with $\Omega_{ij} \overset{\text{iid}}{\sim} \mathcal{N} (0, 1)$
+- (find range) compute $\boldsymbol{Y} = \boldsymbol{A} \boldsymbol{\Omega} \in \mathbb{R} ^{n \times k}$, which takes $\mathcal{O} (n^2 k)$. That is, we randomly project $\boldsymbol{A}$ onto $\mathbb{R} ^{ n\times k}$, roughly preserve ranges of $\boldsymbol{A}$, and hence $\operatorname{rank}(\boldsymbol{A})$.
+- (store ranges) compute QR decomposition $\boldsymbol{Y} = \boldsymbol{Q} \boldsymbol{R}$, which takes $\mathcal{O} (nk ^2)$. We want $\operatorname{range}(\boldsymbol{Q} ) = \operatorname{range} (\boldsymbol{A} )$
+- compute $\tilde{\boldsymbol{A}}  = \boldsymbol{Q} (\boldsymbol{Q} ^{\top} \boldsymbol{A} ) = \boldsymbol{Q} \boldsymbol{B}$ which takes $\mathcal{O} (n^2k )$. If indeed the ranges of $\boldsymbol{Q}$ and $\boldsymbol{A}$ are the same, then $\tilde{\boldsymbol{A}} = \boldsymbol{Q}  \boldsymbol{Q} ^{\top} \boldsymbol{A}$
+- SVD of $\boldsymbol{B} = \tilde{\boldsymbol{U} } \boldsymbol{\Sigma} \boldsymbol{V} ^{\top}$, which takes $\mathcal{O} (nk^2 + k^3)$
+- return $\tilde{\boldsymbol{A} } = (\boldsymbol{Q} \tilde{\boldsymbol{U} }) \boldsymbol{\Sigma} \boldsymbol{V} ^{\top} = \boldsymbol{U} \boldsymbol{\Sigma} \boldsymbol{V} ^{\top}$.
+
+If $\tilde{\boldsymbol{A}} \approx \boldsymbol{A}$ then we have the total time is $\mathcal{O} (n^2 k)$. How to improve this?
+
+There can by other choices of $\boldsymbol{\Omega}$. For instance, in fast JL algorithm, $\boldsymbol{\Omega} = \boldsymbol{S} \boldsymbol{F} \boldsymbol{D}$, where
+- $\boldsymbol{S}$ is a $k \times n$ sampling matrix having on non-zero entry in each row at random
+- $\boldsymbol{F}$ is an $n \times n$ Fourier matrix
+- $\boldsymbol{D}$ is an $n \times n$ diagonal matrix $d_i \pm 1$ entires with equal probability
+
+The total complexity if $\mathcal{O} (k + n\log n + n)$.
+
+#### Analysis and Speed Up
+
+Lemma 1
+
+Let
+- $\boldsymbol{A} = \boldsymbol{U} \boldsymbol{\Sigma} \boldsymbol{V} ^{\top}$
+- usually $l \ge k$
+- assume $\boldsymbol{\Omega}_1$ has full row rank
+- $\boldsymbol{\Sigma} _1 = \boldsymbol{\Sigma} _{[:k, :k]}, \boldsymbol{\Sigma} _2 = \boldsymbol{\Sigma} _{[k+1:, k+1:]}$
+- $V^{*} \Omega=\left[\begin{array}{l}
 V_{1}^{*} \\
 V_{2}^{*}
 \end{array}\right] \Omega=\left[\begin{array}{l}
 \Omega_{1} \\
 \Omega_{2}
-\end{array}\right]\)</span></p></li>
-<li><p><span class="math notranslate nohighlight">\(\boldsymbol{\Omega} _1 = \boldsymbol{\Omega} _{[:k, :]}, \boldsymbol{\Omega} _2 = \boldsymbol{\Omega} _{[k+1:, :]}\)</span></p></li>
-<li><p><span class="math notranslate nohighlight">\(\boldsymbol{P} _Y = \boldsymbol{Q} \boldsymbol{Q} ^{\top}\)</span></p></li>
-</ul>
-<p>Error after projection</p>
-<div class="math notranslate nohighlight">
-\[
+\end{array}\right]$
+- $\boldsymbol{\Omega} _1 = \boldsymbol{\Omega} _{[:k, :]}, \boldsymbol{\Omega} _2 = \boldsymbol{\Omega} _{[k+1:, :]}$
+- $\boldsymbol{P} _Y = \boldsymbol{Q} \boldsymbol{Q} ^{\top}$
+
+Error after projection
+
+$$
 \left\| \boldsymbol{A} - \boldsymbol{P}_Y \boldsymbol{A} \right\| ^2 \le \left\| \boldsymbol{\Sigma} _2 \right\| ^2 + \left\| \boldsymbol{\Sigma} _2 \boldsymbol{\Omega}_2 \boldsymbol{\Omega}_1 ^{\dagger}  \right\| ^2
-\]</div>
-<p>where <span class="math notranslate nohighlight">\(\left\| \cdot \right\|\)</span> is <span class="math notranslate nohighlight">\(\left\| \cdot \right\| _2\)</span> or <span class="math notranslate nohighlight">\(\left\| \cdot \right\| _F\)</span>.</p>
-<p>Implication:
-Suppose <span class="math notranslate nohighlight">\(\boldsymbol{A} _v\)</span> is indeed rank <span class="math notranslate nohighlight">\(k\)</span>, then <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma} _2 = 0\)</span>, as long as … Error = 0.</p>
-<p>In <span class="math notranslate nohighlight">\(\boldsymbol{A} \boldsymbol{\Omega}\)</span> We are forming random linear combinations of columns of <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span>.</p>
-<p>Long proof!</p>
-<dl class="simple myst">
-<dt>Lemma 2</dt><dd><p>Let <span class="math notranslate nohighlight">\(\boldsymbol{G}\)</span> of size <span class="math notranslate nohighlight">\(k \times (k + p)\)</span> be a standard Gaussian random matrix, with <span class="math notranslate nohighlight">\(p \ge 2\)</span>. Then <span class="math notranslate nohighlight">\(\mathbb{E} [\left\| \boldsymbol{G} ^ \dagger  \right\|_F^2 ]^{1/2} = \sqrt{\frac{k}{p-1} }\)</span>.</p>
-</dd>
-<dt>Lemma 3</dt><dd><p>Let <span class="math notranslate nohighlight">\(\boldsymbol{Z}\)</span> be <span class="math notranslate nohighlight">\(n \times n\)</span> a random matrix with independent standard normal entires, <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{B}\)</span> be constant matrices of appropriate sizes, then since Frobenius norm is consistent</p>
-</dd>
-</dl>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{aligned}
-\mathbb{E} \left[ \left\| \boldsymbol{A} \boldsymbol{Z} \boldsymbol{B}  \right\| _F^2  \right] &amp;\le \left\| \boldsymbol{A} \right\| _F^2\mathbb{E} \left[  \left\|\boldsymbol{Z} \right\| _F^2 \right]\left\| \boldsymbol{B}  \right\| _F^2  \\
-&amp;\le \left\| \boldsymbol{A} \right\| _F^2\mathbb{E} \left[ \operatorname{tr}\left( \boldsymbol{Z} ^{\top} \boldsymbol{Z} \right) \right]\left\| \boldsymbol{B}  \right\| _F^2 \\
-&amp;\le \left\| \boldsymbol{A} \right\| _F^2\mathbb{E} \left[ \operatorname{tr}\left( \boldsymbol{Z} ^{\top} \boldsymbol{Z} \right) \right]\left\| \boldsymbol{B}  \right\| _F^2
-\end{aligned}\end{split}\]</div>
-<dl class="simple myst">
-<dt>Theorem</dt><dd><p>By Lemma 1 and Lemma 2</p>
-</dd>
-</dl>
-<div class="math notranslate nohighlight">
-\[
-\mathbb{E} [\left\| (\boldsymbol{I} - \boldsymbol{P}_Y ) \boldsymbol{A} \right\|_F ]  \le \left( 1 + \frac{k}{p-1}  \right)^{1/2} \left( \sum_{j &gt; k} \sigma^2 _j  \right)^{1/2}
-\]</div>
-<div class="dropdown seealso admonition">
-<p class="admonition-title"> <em>Proof</em></p>
-<p>Since <span class="math notranslate nohighlight">\(\boldsymbol{V} ^*\)</span> is orthogonal, <span class="math notranslate nohighlight">\(\boldsymbol{V} ^* \boldsymbol{\Omega}\)</span> has independent <span class="math notranslate nohighlight">\(\mathcal{N} (0, 1)\)</span> entires. Hence, <span class="math notranslate nohighlight">\(\boldsymbol{\Omega}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{\Omega}\)</span> are independent,</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{aligned}
-\mathbb{E} \left[ \left\| \boldsymbol{A} \boldsymbol{Z} \boldsymbol{B}  \right\| _F^2  \right] &amp;\le \left\| \boldsymbol{A} \right\| _F^2\mathbb{E} \left[  \left\|\boldsymbol{Z} \right\| _F^2 \right]\left\| \boldsymbol{B}  \right\| _F^2  \\
-&amp;\le \left\| \boldsymbol{A} \right\| _F^2\mathbb{E} \left[ \operatorname{tr}\left( \boldsymbol{Z} ^{\top} \boldsymbol{Z} \right) \right]\left\| \boldsymbol{B}  \right\| _F^2 \\
-&amp;\le \left\| \boldsymbol{A} \right\| _F^2\mathbb{E} \left[ \operatorname{tr}\left( \boldsymbol{Z} ^{\top} \boldsymbol{Z} \right) \right]\left\| \boldsymbol{B}  \right\| _F^2
-\end{aligned}\end{split}\]</div>
-</div>
-<p>Conclusion: not bad as first <span class="math notranslate nohighlight">\(k\)</span> approximation.</p>
-</div>
-</div>
-<div class="section" id="interpolative-decomposition">
-<h3>Interpolative Decomposition<a class="headerlink" href="#interpolative-decomposition" title="Permalink to this headline">¶</a></h3>
-<p>Less accurate.</p>
-<p>Fourier matrix + sparse vector = dense vector with a spike.</p>
+$$
+
+where $\left\| \cdot \right\|$ is $\left\| \cdot \right\| _2$ or $\left\| \cdot \right\| _F$.
+
+Implication:
+Suppose $\boldsymbol{A} _v$ is indeed rank $k$, then $\boldsymbol{\Sigma} _2 = 0$, as long as ... Error = 0.
+
+In $\boldsymbol{A} \boldsymbol{\Omega}$ We are forming random linear combinations of columns of $\boldsymbol{A}$.
+
+Long proof!
+
+
+Lemma 2
+: Let $\boldsymbol{G}$ of size $k \times (k + p)$ be a standard Gaussian random matrix, with $p \ge 2$. Then $\mathbb{E} [\left\| \boldsymbol{G} ^ \dagger  \right\|_F^2 ]^{1/2} = \sqrt{\frac{k}{p-1} }$.
+
+Lemma 3
+: Let $\boldsymbol{Z}$ be $n \times n$ a random matrix with independent standard normal entires, $\boldsymbol{A}$ and $\boldsymbol{B}$ be constant matrices of appropriate sizes, then since Frobenius norm is consistent
+
+
+$$\begin{aligned}
+\mathbb{E} \left[ \left\| \boldsymbol{A} \boldsymbol{Z} \boldsymbol{B}  \right\| _F^2  \right] &\le \left\| \boldsymbol{A} \right\| _F^2\mathbb{E} \left[  \left\|\boldsymbol{Z} \right\| _F^2 \right]\left\| \boldsymbol{B}  \right\| _F^2  \\
+&\le \left\| \boldsymbol{A} \right\| _F^2\mathbb{E} \left[ \operatorname{tr}\left( \boldsymbol{Z} ^{\top} \boldsymbol{Z} \right) \right]\left\| \boldsymbol{B}  \right\| _F^2 \\
+&\le \left\| \boldsymbol{A} \right\| _F^2\mathbb{E} \left[ \operatorname{tr}\left( \boldsymbol{Z} ^{\top} \boldsymbol{Z} \right) \right]\left\| \boldsymbol{B}  \right\| _F^2
+\end{aligned}$$
+
+
+Theorem
+: By Lemma 1 and Lemma 2
+
+$$
+\mathbb{E} [\left\| (\boldsymbol{I} - \boldsymbol{P}_Y ) \boldsymbol{A} \right\|_F ]  \le \left( 1 + \frac{k}{p-1}  \right)^{1/2} \left( \sum_{j > k} \sigma^2 _j  \right)^{1/2}
+$$
+
+
+:::{admonition,dropdown,seealso} *Proof*
+
+Since $\boldsymbol{V} ^*$ is orthogonal, $\boldsymbol{V} ^* \boldsymbol{\Omega}$ has independent $\mathcal{N} (0, 1)$ entires. Hence, $\boldsymbol{\Omega}$ and $\boldsymbol{\Omega}$ are independent,
+
+$$\begin{aligned}
+\mathbb{E} \left[ \left\| \boldsymbol{A} \boldsymbol{Z} \boldsymbol{B}  \right\| _F^2  \right] &\le \left\| \boldsymbol{A} \right\| _F^2\mathbb{E} \left[  \left\|\boldsymbol{Z} \right\| _F^2 \right]\left\| \boldsymbol{B}  \right\| _F^2  \\
+&\le \left\| \boldsymbol{A} \right\| _F^2\mathbb{E} \left[ \operatorname{tr}\left( \boldsymbol{Z} ^{\top} \boldsymbol{Z} \right) \right]\left\| \boldsymbol{B}  \right\| _F^2 \\
+&\le \left\| \boldsymbol{A} \right\| _F^2\mathbb{E} \left[ \operatorname{tr}\left( \boldsymbol{Z} ^{\top} \boldsymbol{Z} \right) \right]\left\| \boldsymbol{B}  \right\| _F^2
+\end{aligned}$$
+
+:::
+
+Conclusion: not bad as first $k$ approximation.
+
+### Interpolative Decomposition
+
+Less accurate.
+
+Fourier matrix + sparse vector = dense vector with a spike. -->
 </div>
 <div class="section" id="low-rank-approximation">
 <h3>Low-rank Approximation<a class="headerlink" href="#low-rank-approximation" title="Permalink to this headline">¶</a></h3>
 <p>Problem:</p>
 <div class="math notranslate nohighlight">
 \[
-\text { minimize over } \widehat{A} \quad\|A-\widehat{A}\|_{F} \quad \text { s.t. } \quad \operatorname{rank}(\widehat{A}) \leq r
+\min _{\widehat{\boldsymbol{A}}} \quad\|\boldsymbol{A}-\widehat{\boldsymbol{A}}\|_{F} \quad \text { s.t. } \quad \operatorname{rank}(\widehat{\boldsymbol{A}}) \leq r
 \]</div>
-<p>Eckart–Young–Mirsky theorem: We claim that the best rank <span class="math notranslate nohighlight">\(r\)</span> approximation to <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> in the Frobenius norm, denoted by <span class="math notranslate nohighlight">\(A_{r}=\sum_{i=1}^{k} \sigma_{i} u_{i} v_{i}^{\top}\)</span>. The minimum equals</p>
+<p>Eckart–Young–Mirsky theorem: We claim that the best rank <span class="math notranslate nohighlight">\(r\)</span> approximation to <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> in the Frobenius norm, denoted by <span class="math notranslate nohighlight">\(\boldsymbol{A}_{r}=\sum_{i=1}^{k} \sigma_{i} u_{i} v_{i}^{\top}\)</span>. The minimum equals</p>
 <div class="math notranslate nohighlight">
 \[
-\left\|A-A_{r}\right\|_{F}^{2}=\left\|\sum_{i=r+1}^{n} \sigma_{i} u_{i} v_{i}^{\top}\right\|_{F}^{2}=\sum_{i=r+1}^{n} \sigma_{i}^{2}
+\left\|\boldsymbol{A}-\boldsymbol{A}_{r}\right\|_{F}^{2}=\left\|\sum_{i=r+1}^{n} \sigma_{i} u_{i} v_{i}^{\top}\right\|_{F}^{2}=\sum_{i=r+1}^{n} \sigma_{i}^{2}
 \]</div>
 </div>
 <div class="section" id="perturbation-and-davis-kahan-theorem">
@@ -1860,7 +1943,7 @@ Suppose <span class="math notranslate nohighlight">\(\boldsymbol{A} _v\)</span> 
 </ul>
 <div class="figure align-default" id="mp-distribution">
 <a class="reference internal image-reference" href="../_images/mp-distribution.png"><img alt="" src="../_images/mp-distribution.png" style="width: 70%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 7 </span><span class="caption-text">Marchenko-Pastur distribution with <span class="math notranslate nohighlight">\(\gamma=2\)</span> (left, with a point mass at origin) and <span class="math notranslate nohighlight">\(\gamma = 0.5\)</span> (rigt). [Yao]</span><a class="headerlink" href="#mp-distribution" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 8 </span><span class="caption-text">Marchenko-Pastur distribution with <span class="math notranslate nohighlight">\(\gamma=2\)</span> (left, with a point mass at origin) and <span class="math notranslate nohighlight">\(\gamma = 0.5\)</span> (rigt). [Yao]</span><a class="headerlink" href="#mp-distribution" title="Permalink to this image">¶</a></p>
 </div>
 <p>Note that when <span class="math notranslate nohighlight">\(p\)</span> is fixed and sample size <span class="math notranslate nohighlight">\(n\)</span> increases, <span class="math notranslate nohighlight">\(\gamma \rightarrow 0\)</span>, the interval <span class="math notranslate nohighlight">\(\left[\gamma_{-}, \gamma_{+}\right]\)</span> is tighter, i.e. more concentrated.</p>
 </div>
@@ -1914,20 +1997,19 @@ Suppose <span class="math notranslate nohighlight">\(\boldsymbol{A} _v\)</span> 
 
       </div>
     </div>
-    
+  
   <script src="../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
 
+  
+<script async="" src="https://www.google-analytics.com/analytics.js"></script>
+<script>
+                        window.ga = window.ga || function () {
+                            (ga.q = ga.q || []).push(arguments) };
+                        ga.l = +new Date;
+                        ga('create', 'UA-150740237-2', 'auto');
+                        ga('set', 'anonymizeIp', true);
+                        ga('send', 'pageview');
+                    </script>
 
-    
-    <!-- Google Analytics -->
-    <script>
-      window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-      ga('create', 'UA-150740237-2', 'auto');
-      ga('set', 'anonymizeIp', true);
-      ga('send', 'pageview');
-    </script>
-    <script async src='https://www.google-analytics.com/analytics.js'></script>
-    <!-- End Google Analytics -->
-    
   </body>
 </html>

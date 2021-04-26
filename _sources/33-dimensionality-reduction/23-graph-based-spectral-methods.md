@@ -142,11 +142,7 @@ $$
 \boldsymbol{L} \boldsymbol{v} = \lambda \boldsymbol{D} \boldsymbol{v}
 $$
 
-```{margin}
-See [graph Laplacians](graph-laplacian) for details about $\boldsymbol{L} ^\mathrm{rw}$ and $\boldsymbol{L} ^\mathrm{sym}$.
-```
-
-Or equivalently, the eigenvectors of random-walk graph Laplacian: $\boldsymbol{L} ^{\mathrm{rw}} = \boldsymbol{D} ^{-1} \boldsymbol{L}$.
+Or equivalently, the eigenvectors of random-walk graph Laplacian: $\boldsymbol{L} ^{\mathrm{rw}} = \boldsymbol{D} ^{-1} \boldsymbol{L}$. See [graph Laplacians](graph-laplacian) for details about $\boldsymbol{L} ^\mathrm{rw}$ and $\boldsymbol{L} ^\mathrm{sym}$.
 
 To see why the two constraints come from, we can first see a $k=1$ example, i.e. projection onto a line. Suppose the projections are $z_1, \ldots, z_n$, the problem is
 
@@ -158,10 +154,6 @@ Note that there are two issues
 - arbitrary scaling: if $\boldsymbol{z}^*$ is an optimal solution, then a new solution $c\boldsymbol{z}^*$ where $0<c<1$ gives a smaller function value, contradiction. Or we say $\boldsymbol{z} = \boldsymbol{0}$ is a trivial solution.
 - translational invariance: if $\boldsymbol{z} ^*$ is an optimal solution, then a new solution $\boldsymbol{z} ^* + c\boldsymbol{1}$ gives the same function value.
 
-```{margin}
-The matrix $\boldsymbol{D}$ here is introduced by the authors in the original paper to reflect vertex importance. Actually replacing $\boldsymbol{D}$ by $\boldsymbol{I}$ also solve these two issues.
-```
-
 To solve these two issues, we add two constraints $\boldsymbol{z} ^{\top} \boldsymbol{D} \boldsymbol{z} = 1$ and $\boldsymbol{z} ^{\top} \boldsymbol{D} \boldsymbol{1} = 0$ respectively. The second constraint also removes a trivial solution $\boldsymbol{z} = c\boldsymbol{1}$, to be introduced soon. The problem becomes
 
 $$\begin{aligned}
@@ -171,7 +163,9 @@ $$\begin{aligned}
 && \boldsymbol{z} ^{\top} \boldsymbol{D} \boldsymbol{1} &= 0 && \\
 \end{aligned}$$
 
-the solution is given by the 2nd smallest eigenvector of the generalized eigenproblem
+In fact, the matrix $\boldsymbol{D}$ here is introduced by the authors in the original paper to reflect vertex importance. Actually replacing $\boldsymbol{D}$ by $\boldsymbol{I}$ also solve these two issues.
+
+The solution is given by the 2nd smallest eigenvector of the generalized eigenproblem
 
 $$
 \boldsymbol{L} \boldsymbol{v} = \lambda \boldsymbol{D} \boldsymbol{v}
@@ -182,7 +176,7 @@ Note that $\boldsymbol{v} = c\boldsymbol{1}$ is an eigenvector of $\boldsymbol{L
 
 To generalize to $k\ge 2$, we generalize the constraints to $\boldsymbol{Z} ^{\top} \boldsymbol{D} \boldsymbol{Z} = \boldsymbol{I}$ and $\boldsymbol{Z} ^{\top} \boldsymbol{D} \boldsymbol{1} = \boldsymbol{0}$ shown above. Note that if we move the second constraint (as in the paper), then the embedding in one of the $k$ dimensions will be $c \boldsymbol{1}$, hence we actually obtain $(k-1)$-dimensional embedding, but it is also helpful to distinguish points.
 
-
+:::
 
 :::{figure} gb-laplacian-eigenmap-Nt
 <img src="../imgs/gb-laplacian-eigenmap-Nt.png" width = "50%" alt=""/>
@@ -206,45 +200,13 @@ $$ -->
 
 ### Relation to Spectral Clustering
 
-Laplacian eigenmaps, as a dimension reduction that preserves locality, yields the same solution as [normalized cut](Ncut) in spectral clustering. By setting
+For the [normalized cut](Ncut) problem in spectral clustering, the cluster label is given by the 2nd smallest eigenvector of the generalized eigen problem
 
 $$
-x_{i}=\left\{\begin{array}{c}
-\frac{1}{\operatorname{vol}(A)}, \text { if } V_{i} \in A \\
--\frac{1}{\operatorname{vol}(B)}, \text { if } V_{i} \in B
-\end{array}\right.
+\boldsymbol{L} \boldsymbol{v}  = \lambda \boldsymbol{D} \boldsymbol{v}
 $$
 
-We can show that $\boldsymbol{x} ^{\top} \boldsymbol{D} \boldsymbol{1} = \boldsymbol{0}$ and
-
-$$
-\frac{\boldsymbol{x}^{\top} \boldsymbol{L} \boldsymbol{x}}{\boldsymbol{x}^{\top} \boldsymbol{D}  \boldsymbol{x}}=W(A, B)\left(\frac{1}{\operatorname{vol}(A) }+\frac{1}{\operatorname{vol}(B) }\right)=\operatorname{Ncut}(A, B)
-$$
-
-The relaxed problem is
-
-$$\begin{aligned}
-\min_{\boldsymbol{x}} && \frac{\boldsymbol{x}^{\top} \boldsymbol{L} \boldsymbol{x}}{\boldsymbol{x}^{\top} \boldsymbol{D}  \boldsymbol{x}} & &&\\
-\mathrm{s.t.}
-&& \boldsymbol{x} ^{\top} \boldsymbol{D} \boldsymbol{1}  &= 0  && \\
-\end{aligned}$$
-
-To solve this, let $\boldsymbol{y} = \boldsymbol{D} ^{1/2} \boldsymbol{x}$, where $\boldsymbol{D}$ is invertible if $G$ has no isolated vertices. Then $\boldsymbol{y} ^{\top} \boldsymbol{D}^{1/2} \boldsymbol{1} =0$ and
-
-$$
-\frac{\boldsymbol{x}^{\top} \boldsymbol{L} \boldsymbol{x}}{\boldsymbol{x}^{\top} \boldsymbol{D}}  = \frac{\boldsymbol{y} \boldsymbol{D} ^{-1/2}\boldsymbol{L} \boldsymbol{D} ^{-1/2}\boldsymbol{y} }{\boldsymbol{y} ^{\top} \boldsymbol{y}}
-$$
-
-Note that $\boldsymbol{D} ^{-1/2}\boldsymbol{L} \boldsymbol{D} ^{-1/2} = \boldsymbol{L} ^{\mathrm{sym}}$. The problem is then
-
-$$\begin{aligned}
-\min_{\boldsymbol{y}} && \frac{\boldsymbol{y} \boldsymbol{L}^{\mathrm{sym}} \boldsymbol{y} }{\boldsymbol{y} ^{\top} \boldsymbol{y}}& &&\\
-\mathrm{s.t.}
-&& \boldsymbol{y} ^{\top} \boldsymbol{D}^{1/2} \boldsymbol{1} &=0 && \\
-\end{aligned}$$
-
-The solution is given by the second smallest eigenvalue of $\boldsymbol{L}^{\mathrm{sym}}$, when $\boldsymbol{y}$ is the corresponding eigenvector.
-
+which is exactly the 1-dimensional representation of Laplacian eigenmaps. In this sense, the local approach to dimensionality reduction imposes a natural clustering of data.
 
 <!-- ### Interpretation
 
@@ -277,124 +239,21 @@ where $\mathbb{M} \boldsymbol{1} = \boldsymbol{1}, \mathbb{M} \ge 0, \lambda(\ma
 
 [Wikipedia](https://en.wikipedia.org/wiki/Seriation_(archaeology))
 
-Now there are some archeological pieces $i = 1, \ldots, n$. Want to time order them $\pi(i)$. Have in hand is there similarity $w_{ij}$.
-
-The problem can be formulated as
+Suppose there are $n$ archeological pieces $i = 1, \ldots, n$. Want to time order them by finding some latent ordering $\pi(i)$, given some similarity measure $w_{ij}$. The problem can be formulated as
 
 $$
-
+\min_{\pi: [n] \rightarrow [n] }\ \sum_{i,j=1}^n w_{ij} \left\| \pi(i) - \pi(j)  \right\|  ^2
 $$
 
-Permutation is hard. Spectral relaxation drop the permutation constraint.
+Solving permutation is hard. Spectral relaxation drop the permutation constraint and solve
 
-Hope that the relative order in $f^*$ can tell $\boldsymbol{\pi}$.
+$$
+\min_{f_1, \ldots, f_n  }\ \sum_{i,j=1}^n w_{ij} \left\| f_i  - f_j   \right\| ^2
+$$
 
-What if we have some information, say $i$ is in some year for some $i$'s? Can we use this information?
+Hope that the relative order in $f^*$ can tell information about $\pi^*$.
 
-
-
-## Randomized SVD-based Methods
-
-
-### Johnson-Lindenstrauss Lemma
-
-Lemma (Johnson-Lindenstrauss)
-: For data vectors be $\boldsymbol{x} _1, \boldsymbol{x} _2, \ldots, \boldsymbol{x} _n \in \mathbb{R} ^d$ and  tolerance $\epsilon \in (0, \frac{1}{2} )$, there exists a Lipschitz mapping $f: \mathbb{R} ^d \rightarrow \mathbb{R} ^k$, where $k = \lfloor \frac{24 \log n}{\epsilon^2} \rfloor$ such that
-
-  $$
-  (1 - \epsilon) \left\| \boldsymbol{x}_i - \boldsymbol{x}_j  \right\| ^2 \le \left\| f(\boldsymbol{x}_i ) - f(\boldsymbol{x}_j )\right\| \le (1 + \epsilon) \left\| \boldsymbol{x}_i - \boldsymbol{x}_j  \right\| ^2
-  $$
-
-How do we construct $f$? Consider a random linear mapping: $f(\boldsymbol{u}) = \frac{1}{\sqrt{k}} \boldsymbol{A} \boldsymbol{u}$ for some $\boldsymbol{A} \in \mathbb{R} ^{k \times d}$ where $k < d$ and $a_{ij} \overset{\text{iid}}{\sim} \mathcal{N} (0, 1)$. The intuition: the columns of $\boldsymbol{A}$ are orthogonal to each other in expectation. If indeed orthogonal, then $\left\| \frac{1}{\sqrt{k}} \boldsymbol{A} \boldsymbol{u}  \right\| = \left\| \boldsymbol{u}  \right\|$.
-
-To prove it, we need the following lemma.
-
-Lemma (Norm preserving)
-: Fix a vector $\boldsymbol{u} \in \mathbb{R} ^d$, then $\boldsymbol{A}$ preserves its norm in expectation.
-
-  $$
-  \mathbb{E} \left[ \left\| \frac{1}{\sqrt{k}} \boldsymbol{A} \boldsymbol{u}   \right\|^2 \right]  = \mathbb{E} [\left\| \boldsymbol{u}  \right\|^2]
-  $$
-
-  :::{admonition,dropdown,seealso} *Proof*
-
-
-  $$\begin{aligned}
-  \frac{1}{k} \mathbb{E} [\left\| \boldsymbol{A} \boldsymbol{u}  \right\| ^2]  
-  &= \frac{1}{k} \boldsymbol{u} ^{\top} \mathbb{E} [\boldsymbol{A} ^{\top} \boldsymbol{A} ] \boldsymbol{u}    \\
-  &= \frac{1}{k} \boldsymbol{u} ^{\top} k \boldsymbol{I}_{n \times n} \boldsymbol{u}     \\
-  &= \left\| \boldsymbol{u}  \right\|   ^2 \\
-  \end{aligned}$$
-
-  The second equality holds since
-
-
-  $$
-  \mathbb{E} [\boldsymbol{a} _i ^{\top} \boldsymbol{a} _j] = \left\{\begin{array}{ll}
-  \sum_{p=1}^k \mathbb{E} [a_{ik}^2] = \sum_{p=1}^k 1 =k , & \text { if } i=j \\
-  0, & \text { otherwise }
-  \end{array}\right.
-  $$
-
-  :::
-
-Lemma (Concentration)
-: Blessing of high dimensionality: things concentrate around mean. The probability of deviation is bounded. We first prove one-side deviation probability. The proof for the other side is similar.
-
-  $$
-  \mathbb{P} \left( \left\| \frac{1}{\sqrt{k}} \boldsymbol{A} \boldsymbol{u}   \right\| ^2 > (1 + \epsilon) \left\| \boldsymbol{u}  \right\|  ^2 \right)  \le \exp \left( \frac{k}{2} \left( \frac{\epsilon^2}{2} - \frac{\epsilon^3}{2}  \right) \right)
-  $$
-
-  :::{admonition,dropdown,seealso} *Proof*
-
-  Let $\boldsymbol{v} = \frac{\boldsymbol{A} \boldsymbol{u} }{\left\| \boldsymbol{u}  \right\| } \in \mathbb{R} ^k$, it is easy to see $V_i \sim \mathcal{N} (0, 1)$. In this case,
-
-  $$\begin{aligned}
-  \mathbb{P}\left( \left\| \boldsymbol{v} \right\| ^2 > (1 + \epsilon) k\right)
-  &= \mathbb{P}\left( \exp (\lambda \left\| \boldsymbol{v}  \right\| ^2) > \exp (1+ \epsilon) k \lambda \right)  \\
-  &\le \frac{\mathbb{E} [\exp (\lambda \left\| \boldsymbol{v}  \right\| ^2)] }{\exp [ (1+ \epsilon) k\lambda]}  \quad \because \text{Markov inequality} \\
-  &\le \frac{[\mathbb{E} [\exp (\lambda V_i^2)]]^k }{\exp [ (1+ \epsilon) k\lambda]}  \quad \because V_i \text{ are i.i.d.}  \\
-  &=  \exp [-(1 + \epsilon) k \lambda] \left( \frac{1}{1-2\lambda}  \right)^{k/2} \\
-  \end{aligned}$$
-
-  The last equality holds since by moment generating function $\mathbb{E} [e^{tX}] = \frac{1}{\sqrt{1- 2t} }$ for $X \sim \chi ^2 _1$.
-
-  If we choose $\lambda = \frac{\epsilon}{2(1+\epsilon)} < \frac{1}{2}$, then
-
-
-  $$
-  \mathbb{P} (\left\| \boldsymbol{v}  \right\| > (1 + \epsilon)k)  \le \left[ (1+\epsilon)e^{- \epsilon} \right]^{k/2}.
-  $$
-
-  Then it remains to show $1+\epsilon \le \exp(\epsilon - \frac{\epsilon^2}{2} +  \frac{\epsilon^3}{2})$ for $\epsilon > 0$, which is true by derivative test. Plug in this inequality we get the required inequality.
-
-
-  Then by union bound,
-
-  $$
-  \mathbb{P}\left( \left\| \boldsymbol{v}  \right\| > (1 + \epsilon) k \text{ or }  \left\| \boldsymbol{v}  \right\| < (1 - \epsilon) k \right) \le 2 \exp \left(\frac{k}{2}\left(\frac{\epsilon^{2}}{2}-\frac{\epsilon^{3}}{2}\right)\right)
-  $$
-
-  :::
-
-Now we prove the JL lemma.
-
-:::{admonition,dropdown,seealso} *Proof of JL*
-
-The probability we fail to find an $\epsilon$-distortion map for any $(i, j)$ pair is
-
-$$\begin{aligned}
-&= \mathbb{P} \left( \exists i, j: \left\| \boldsymbol{A} \boldsymbol{x}_i - \boldsymbol{A} \boldsymbol{x}_j  \right\|^2 > (1 + \epsilon) \left\| \boldsymbol{x}_i - \boldsymbol{x}_j  \right\|  ^2  \text{ or } < (1 - \epsilon) \left\| \boldsymbol{x}_i - \boldsymbol{x}_j  \right\|  ^2 \right)   \\
-&= \mathbb{P} \left( \cup_{(i,j)} \right)  \\
-&\le \binom{n}{2} 2  \exp \left(\frac{k}{2}\left(\frac{\epsilon^{2}}{2}-\frac{\epsilon^{3}}{2}\right)\right)\quad \because \text{union bound} \\
-&\le 2 n^2 \exp \left(\frac{k}{2}\left(\frac{\epsilon^{2}}{2}-\frac{\epsilon^{3}}{2}\right)\right)\\
-\end{aligned}$$
-
-With some choice of $k$, this upper bound is $1 - \frac{1}{n}$, i.e. there is an $\frac{1}{n}$ chance we get a map with $\epsilon$ distortion. What if we want a higher probability?
-
-For some $\alpha$, if we set, $k \ge (4 + 2\alpha) \left( \frac{\epsilon^{2}}{2}-\frac{\epsilon^{3}}{2} \right) ^{-1} \log(n)$, then the embedding $f(\boldsymbol{x} ) = \frac{1}{\sqrt{k}} \boldsymbol{A} \boldsymbol{x}$ succeeds with probability at least $1 - \frac{1}{n^\alpha}$.
-
-:::
+What if we have some information, say some $i$ is known to be in some year? Can we use this information?
 
 
 ## Locally Linear Embedding
