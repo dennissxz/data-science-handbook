@@ -160,3 +160,56 @@ E\left(\boldsymbol{z} , r^{2} I\right) &=\left\{\boldsymbol{x}  \in \mathbb{R}^{
 $$
 
 is called a **ball** centered at $\boldsymbol{z}$ of radius $r$.
+
+## Cones
+
+(normal-cones)=
+### Normal Cones
+
+The normal cone of a convex set $S$ at a point $\boldsymbol{x} \in S$ is defined as
+
+$$
+N_{S}(\boldsymbol{x}) := \left\{ \boldsymbol{d} \mid \langle \boldsymbol{y} - \boldsymbol{x} , \boldsymbol{d}  \rangle \le 0, \forall \boldsymbol{y} \in S  \right\}
+$$
+
+:::{figure} geometry-normal-cones
+<img src="../imgs/geometry-normal-cones.png" width = "80%" alt=""/>
+
+Normal cones [[Friedlander and Joshi](https://friedlander.io/19T2-406/notes/Constrained_optimization/)]
+:::
+
+
+For instance,
+- For an affine set
+
+  $$S = \left\{ \boldsymbol{x}  \mid \boldsymbol{c} _i ^{\top} \boldsymbol{x}  = b_i, i = 1, 2, \ldots, m \right\}$$
+
+  The normal cone is just a linear combination of all vectors perpendicular to the hyperplanes
+
+  $$N_S (\boldsymbol{x}) = \left\{ \sum_{i=1}^m \lambda_i \boldsymbol{c} _i \mid \lambda _i \in \mathbb{R} \right\}$$
+
+  It easy to see that $\boldsymbol{c} _i ^{\top} (\boldsymbol{y} - \boldsymbol{x} ) = 0$ for all $i$ and $\boldsymbol{y} \in S$. If we write $\boldsymbol{C} \boldsymbol{x}  = \boldsymbol{b}$, then the normal cone is the linear combination of rows of $\boldsymbol{C}$, i.e. $\operatorname{range} (\boldsymbol{C} ^{\top})$.
+
+- For a set of points with non-negative coordinates
+
+  $$S = \left\{ \boldsymbol{x} \in \mathbb{R} ^n \mid x_j \ge 0, \forall j = 1, 2, \ldots, n  \right\}$$
+
+  For a point $\boldsymbol{x} \in S$, define an active set $A(\boldsymbol{x}) = \left\{ j \mid x_j = 0 \right\}$ that consists of the indices of zero coordinates of $\boldsymbol{x}$. The normal cone of $S$ at $\boldsymbol{x}$ is
+
+  $$N_S (\boldsymbol{x} ) = \left\{ - \sum_{j \in A(\boldsymbol{x})} \mu_j \boldsymbol{e} _j \mid \mu_{j} \ge 0\right\}$$
+
+  where $\boldsymbol{e}_j$ are canonical vectors. The set can also be expressed as
+
+  $$N_S (\boldsymbol{x} ) = \left\{ - \sum_{j=1}^n \mu_j \boldsymbol{e} _j \mid \mu_{j} \ge 0, \sum_{j=1}^n\mu_j x_j =0\right\}$$
+
+  which states that $\mu_j = 0$ as long as $x_j \ne 0$. In matrix form, we can write it as
+
+  $$N_S (\boldsymbol{x} ) = \left\{ - \boldsymbol{\mu} \mid \boldsymbol{\mu} \ge 0, \langle \boldsymbol{\mu} , \boldsymbol{x}  \rangle > 0\right\}$$
+
+- More generally, combining them together,
+
+  $$S = \left\{ \boldsymbol{x}  \in \mathbb{R} ^n\mid \boldsymbol{c} _i ^{\top} \boldsymbol{x}  = b_i, x_j \ge 0 \ \forall i \in [m], j \in [n]\right\}$$
+
+  The normal cone is
+
+  $$N_S (\boldsymbol{x} ) = \left\{  \sum_{i=1}^m \lambda_i \boldsymbol{c} _i - \boldsymbol{\mu} \mid \lambda _i \in \mathbb{R}, \boldsymbol{\mu} \ge 0, \langle \boldsymbol{\mu} , \boldsymbol{x}  \rangle > 0\right\}$$
