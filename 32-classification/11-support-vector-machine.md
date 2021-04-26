@@ -1,13 +1,22 @@
 # Support Vector Machine
 
 
-We first introduce the basic linear separable case (aka. hard margin), and introduce the linear non-separable case later (aka. soft margin).
+Support vector machine is used for binary classification tasks. We first introduce the basic linear separable case (aka. hard margin), and introduce the linear non-separable case later (aka. soft margin).
 
-## Prerequisite
 
-### Distance from a Point to a Hyperplane
 
-Suppose there is a hyperplane in $p$-dimensional space characterized by
+## Objective
+
+SVM uses a hyperplane to separate two types of points.
+
+:::{figure,myclass} svm-hard-margin
+<img src="../imgs/svm-hard-margin.png" width = "30%" alt=""/>
+
+Draw a line to separate two clusters
+:::
+
+
+Suppose there is a hyperplane in $p$-dimensional space characterized by the equation
 
 $$
 w_{1} x_{1}+w_{2} x_{2}+\cdots+w_{p} x_{p} + b = 0
@@ -19,74 +28,28 @@ $$
 \boldsymbol{w} ^\top  \boldsymbol{x}  + b = 0
 $$
 
-then the distance from a point $X$ with coordinates $\boldsymbol{x} = (x_1, x_2, \ldots, x_p)$ to this hyperplane is
+Then the distance from any point $\boldsymbol{x} \in \mathbb{R} ^p$ to this hyperplane can be [shown](hyperplanes) to be
 
 $$
-\frac{1}{\left\Vert \boldsymbol{w}  \right\Vert } \left\vert \boldsymbol{w} ^\top  \boldsymbol{x}  + b  \right\vert
-$$
-
-note that the distance is always positive.
-
-:::{admonition,dropdown,seealso} *Derivation*
-
-For any two points $Y,Z$ with coordinates $\boldsymbol{y}, \boldsymbol{z}$ on the hyperplane we have
-
-$$\begin{align}
-\boldsymbol{w} ^\top \boldsymbol{y} + b &= 0 \\
-\boldsymbol{w} ^\top \boldsymbol{z} + b &= 0
-\end{align}$$
-
-Hence,
-
-$$
-\boldsymbol{w} ^\top (\boldsymbol{y} - \boldsymbol{z})= 0
-$$
-
-which implies that the vector $\boldsymbol{w}$ is orthogonal to the hyperplane.
-
-The distance from an arbitrary point $X$ to the hyperplane can be formulated as
-
-$$
-d = \left\vert \left( \frac{\boldsymbol{w}}{\left\Vert \boldsymbol{w}  \right\Vert } \right)  ^\top (\boldsymbol{x} - \boldsymbol{y}) \right\vert
-$$
-
-where $\frac{\boldsymbol{w}}{\left\Vert \boldsymbol{w}  \right\Vert }$ is a unit vector orthogonal to the hyperplane and $\boldsymbol{x} - \boldsymbol{y}$ is a vector pointing from point $Y$ (on the hyperplane) to point $X$. The absolute value of this cross product is the length of the projection of vector $\boldsymbol{x} - \boldsymbol{y}$ onto the direction of $\boldsymbol{w}$, i.e., $d$.
-
-Substituting $\boldsymbol{w} ^\top \boldsymbol{y} + b = 0$ gives
-
-$$
-d = \frac{1}{\left\Vert \boldsymbol{w}  \right\Vert}\left\vert \boldsymbol{w} ^\top \boldsymbol{x} + \boldsymbol{b} \right\vert
-$$
-
-:::
-
-Note that the points on the same side of the hyperplane have the same sign of $\boldsymbol{w} ^\top  \boldsymbol{x}_i  + b$. If we label the points with positive values of $\boldsymbol{w} ^\top  \boldsymbol{x}_i  + b$ by $y_i = 1$ and those with negative values by $y_i = -1$, then the distance can be written as
-
-
-$$
-\frac{1}{\left\Vert \boldsymbol{w}  \right\Vert } y_i (\boldsymbol{w} ^\top  \boldsymbol{x}  + b )
+d = \frac{1}{\left\Vert \boldsymbol{w}  \right\Vert}\left\vert \boldsymbol{w} ^\top \boldsymbol{x} + b\right\vert
 $$
 
 
+Given $n$ points $\boldsymbol{x} _1, \ldots, \boldsymbol{x} _n$, for those points in the same side of the hyperplane, they have the same sign of $\boldsymbol{w} ^\top  \boldsymbol{x}_i  + b$. If we label the points with positive values of $\boldsymbol{w} ^\top  \boldsymbol{x}_i  + b$ by $y_i = 1$ and those with negative values by $y_i = -1$, then the distance can be written as
 
-## Objective
 
-Support vector machine is used for binary classification tasks.
-
-:::{figure,myclass} Use a hyperplane to separate two types of points
-<img src="../imgs/svm-hard-margin.png" width = "30%" alt=""/>
-
-Draw a line to separate two clusters
-:::
+$$
+\frac{1}{\left\Vert \boldsymbol{w}  \right\Vert } y_i (\boldsymbol{w} ^\top  \boldsymbol{x}_i  + b )
+$$
 
 Definition (Margin)
 : The margin is defined as the shortest distance from a point to the hyperplane.
 
 $$
-\min _{i} \frac{1}{|\boldsymbol{w}|} y_{i}\left(\boldsymbol{w}^{\top} \boldsymbol{x}_{i}+b\right)
+\min _{i} \frac{1}{\left\| \boldsymbol{w} \right\| } y_{i}\left(\boldsymbol{w}^{\top} \boldsymbol{x}_{i}+b\right)
 $$
 
-The objective of SVM is to find a hyperplane $\boldsymbol{w}^{\top} \boldsymbol{x}_{i}+b = 0$ that separates two types of points and maximizes the margin.
+The objective of SVM is to find a hyperplane $\boldsymbol{w}^{\top} \boldsymbol{x}+b = 0$ parameterized by $\boldsymbol{w}$ and $b$, that separates two types of points and maximizes the margin.
 
 $$
 \max _{\boldsymbol{w}, b}\left\{\min _i \frac{1}{\|\boldsymbol{w}\|} y_{i}\left(\boldsymbol{w}^{\top} \boldsymbol{x}_{i}+b\right)\right\}
