@@ -204,6 +204,14 @@ $$\begin{aligned}
 
   To determine isomorphism of two graphs, we can start by comparing some properties, such as $N_v$, $N_e$, $r$-regular, number of non-adjacent vertices etc.
 
+- **Graphlets**: graphlets are rooted **connected** non-isomorphic subgraphs. For a given graph $G=(V, E)$, non-isomorphic roots node characterizes different graphlets. In the picture below, for 3-node graphs $G_1, G_2$, $G_1$ has two non-isomorphic roots, so two graphlets, and $G_2$ has only 1.
+
+  :::{figure} graphlets
+  <img src="../imgs/graphlets.png" width = "50%" alt=""/>
+
+  Graphlets [Przulj et al. 2004]
+  :::
+
 
 - A **decomposition** of a graph $G$ is a family $\mathcal{F}$ of edge-disjoint subgraphs of $G$ such that all edges in $G$ are in some subgraphs.
 
