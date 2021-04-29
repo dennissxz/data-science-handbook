@@ -243,7 +243,72 @@ Hierarchical Embeddings
 :::
 
 
+## Link Analysis
 
+### PageRank
+
+Consider page as nodes and hyperlinks as directed edges. We want to rank the importance of the pages.
+
+Assumption
+- a page is more important if it has more in-coming links
+- links from important pages worth more
+- all pages have at least one out-going links, $d_i \ge 1$
+- if a page $i$ with importance $r_i$ has $d_i$ out-links, each link gets $r_i/d_i$ importance.
+- page $j$'s own importance $r_j$ is the sum of the votes on its in-links. $r_j = \sum_{i: i \rightarrow  j} r_i/d_i$.
+- $\sum_{i=1}^{N_v} r_i =1$.
+
+Define a matrix $\boldsymbol{M}$ such that $M_{ij} = \frac{1}{d_j}$ if $j \rightarrow i$. We can see it is a column stochastic matrix. The above assumptions leads to the flow equation
+
+$$
+\boldsymbol{r} = \boldsymbol{M} \boldsymbol{r}  
+$$
+
+To solve $\boldsymbol{r}$, we can use a linear system, but not scalable.
+
+Note that the column stochastic matrix $\boldsymbol{M}$ can define a [random walk over graphs](rw-graph): a walker at $i$ follows an out-link from $i$ uniformly at random. Since $\boldsymbol{r} = \boldsymbol{M} \boldsymbol{r}$, we know that $\boldsymbol{r}$ is a stationary distribution for the random walk.
+
+:::{admonition,seealso} R.t. Eigenvector centrality
+
+Recall [eigenvector centrality](eig-centrality) $\boldsymbol{c}$ can be solved by the first eigenvector of adjacency matrix $\boldsymbol{A}$
+
+$$
+\boldsymbol{A} \boldsymbol{c} = \lambda \boldsymbol{c}
+$$
+
+In this problem, $\boldsymbol{M} = \boldsymbol{A} \boldsymbol{D} ^{-1}$ and $\boldsymbol{r}$ is the principal eigenvector (i.e. with eigenvalue 1) of $\boldsymbol{M}$.
+
+:::
+
+We can use power iteration to find $\boldsymbol{r}$. But
+- if there is a page $i$ without out-going links (aka 'dead end'), then $M_{\cdot i} = 0$, $\boldsymbol{M}$ is not column stochastic which violates the assumption;
+- if $i$ only has a self-loop (aka 'spider traps'), i.e. $M_{ii}=1$, then $\boldsymbol{r}$ is degenerate: $r_i = 1$ in $\boldsymbol{r}$, this page has dominates importance.
+
+To overcome these issues, we use teleport trick:
+- w.p. $\beta$ follow a link uniformly at random, usually $\beta = 0.8, 0.9$
+- w.p. $1-\beta$ jumpy to a random page in $V$
+
+Hence, the PageRank equation [Brin-Page 98] is
+
+$$
+r_j = \sum_{i: i \rightarrow j} \beta \frac{r_i}{d_i}  + (1-\beta) \frac{1}{N_v}
+$$
+
+or
+
+$$
+\boldsymbol{r} = \beta \boldsymbol{M} \boldsymbol{r} + (1-\beta)/N_v  \boldsymbol{1}  
+$$
+
+Note that this formulation assumes that $\boldsymbol{M}$ has no dead ends. We can either preprocess matrix $\boldsymbol{M}$ to remove all dead ends or explicitly follow random teleport links with probability 1 from dead-ends.
+
+Let $\boldsymbol{P} = \beta \boldsymbol{M} + (1- \boldsymbol{\beta} )/N_v \boldsymbol{1} \boldsymbol{1} ^{\top}$, then we have $\boldsymbol{r}  = \boldsymbol{P} \boldsymbol{r}$. The random walk characterized by column-stochastic matrix $\boldsymbol{P}$ has no dead ends or spider traps, hence we can use the power method over $\boldsymbol{P}$.
+
+
+### Personalized PageRank
+
+
+
+### Random Walk with Restarts
 
 
 .
