@@ -383,3 +383,208 @@ We can hierarchically cluster nodes in graphs, and sum/avg the node embeddings a
 
 Hierarchical Embeddings
 :::
+
+## Message Passing and Node Classification
+
+Consider a classification problem: Given a network with node features. Some node are labeled. How do we assign labels to all other non-labeled nodes in the network?
+
+One may use node embeddings to build a classifier. We also introduce a method called message passing.
+
+:::{figure} graph-node-classification
+<img src="../imgs/graph-node-classification.png" width = "50%" alt=""/>
+
+Node classification [Leskovec 2021]
+:::
+
+Notation
+- Labeled data of size $\ell$: $(\mathcal{X}_\ell, \mathcal{Y}_\ell) = \left\{ (x_{1:\ell}, y_{1:\ell}) \right\}$
+- Unlabeled data $\mathcal{X}_u = \left\{ x_{\ell + 1:n} \right\}$
+- adjacency matrix of $n$ nodes $\boldsymbol{A}$, from which we can have $\boldsymbol{A} _\ell$ and $\boldsymbol{A} _u$
+
+This can be viewed as a [semi-supervised](semi-supervised) method, where we use $\left\{ \mathcal{X} _\ell, \mathcal{Y} _\ell, \mathcal{X} _u, \boldsymbol{A} \right\}$ to predict $\mathcal{Y} _u$. It is also a collective classification method, which assigns labels to all nodes simultaneously.
+
+Key observation: correlation exists in networks, nearby nodes have the same characteristics. In social science, there are two concepts
+- Homophily: individual characteristics affect social connection. Individuals with similar characteristics tend to be close.
+- Influence: social connection affects individual characteristics. One node's characteristics can affect that of nearby nodes.
+
+Hence, the label of $v$ may depend on
+- its feature $x_v$
+- its nearby nodes' features $x_u$
+- its nearby nodes' labels $y_u$
+
+In general, collective classification has three steps
+1. Learn a **local** classifier to assign initial labels, using $\left\{ \mathcal{X} _\ell, \mathcal{Y} _\ell, \mathcal{X} _u \right\}$ without using network information $\boldsymbol{A}$
+2. Learn a **relational** classifier to label one node based on the labels and/or features of its neighbors. This step uses $\boldsymbol{A}$, and captures correlation between nodes.
+3. Collective inference: apply relational classifier to each node iteratively, until convergence of $\mathcal{Y}_\ell$.
+
+In the following we introduce some traditional methods, which are motivation for graphical neural networks.
+
+### Relational Classification
+
+Model: Class probability of a node equals the weighted average of class probability of its neighbors.
+
+
+$$\begin{aligned}
+\mathbb{P} \left(Y_{v}=c\right)
+&= \frac{1}{d_v} \sum_{u \in \mathscr{N} (v)} \mathbb{P} (Y_u = c) \\  
+&=\frac{1}{\sum_{(v, u) \in E} A_{v, u}} \sum_{(v, u) \in E} A_{v, u} \mathbb{P} \left(Y_{u}=c\right)
+\end{aligned}$$
+
+Algorithm
+- Initialize
+  - for labeled nodes, use ground-truth label $y_v$
+  - for unlabeled nodes, use $Y_v = 0.5$
+- Run iterations until convergence of labels or maximum number of iterations achieved
+  - Update labels of all non-labeled nodes in a random order
+
+:::{figure} graph-relational-classification
+<img src="../imgs/graph-relational-classification.png" width = "70%" alt=""/>
+
+Relational classification [Leskovec 2021]
+:::
+
+If edge weights is provided, we can replace $\boldsymbol{A}$ by $\boldsymbol{W}$
+
+Cons
+- Convergence is not guaranteed
+- This method do not use features $\mathcal{X}$.
+
+### Iterative Classification
+
+Iterative classification uses both features and labels.
+
+Train two classifiers
+- $\phi_1 (x _v)$ to predict node label $y_v$ based on node feature vector $x_v$
+- $\phi_w (f_v, z_v)$ to predict node label $y_v$ based on node feature vector $f_v$ and summary $z_v$ of labels of its neighbors $\mathscr{N} (v)$. $z_v$ can be
+  - relative frequencies of the number of each label in $\mathscr{N} (v)$
+  - most common label in $\mathscr{N} (v)$
+  - number of different labels in $\mathscr{N} (v)$
+
+Learning
+
+- Phase 1: train classifiers on a training set $\left\{ \mathcal{X} _\ell, \mathcal{Y} _\ell \right\}$
+  - $\phi_1 (x)$ using $\left\{ \mathcal{X} _\ell, \mathcal{Y} _\ell \right\}$
+  - compute $\mathcal{Z}_\ell$ using $\mathcal{Y} _\ell$ and network information $\boldsymbol{A} _\ell$
+  - $\phi_2 (x, z)$ using $\left\{ \mathcal{X} _\ell, \mathcal{Z}_\ell, \mathcal{Y} _\ell \right\}$
+
+- Phase 2: iteration
+  - on test set $\left\{ \mathcal{X} _u \right\}$
+    - initialize label $\hat{\mathcal{Y}}_{u, 1}$ by $\phi_1 (x_u)$
+    - compute $z_u$ by $\hat{\mathcal{Y}}_{u, 1}$ and network information $\boldsymbol{A} _u$
+    - update label $\hat{\mathcal{Y}}_{u, 2}$ by $\phi_2 (x_u, z_u)$
+  - repeat for **each** node until labels $\hat{\mathcal{Y}}_{u, 2}$ stabilize or max number of iterations is reached
+    - compute $z_u$ by $\hat{\mathcal{Y}}_{u, 2}$ and network information $\boldsymbol{A} _u$
+    - update label $\hat{\mathcal{Y}}_{u, 2}$ by $\phi_2 (x_u, z_u)$
+
+Remarks
+- training set is only used for training $\phi_1, \phi_2$, not involved in iteration
+- $\phi_1$ is used to initialize labels $\hat{\mathcal{Y}}_{u, 1}$, which is then used in iteration
+- the output $\hat{\mathcal{Y}}_{u, 2}$, obtained from $\phi_2$, use information from both node features and labels.
+- convergence is not guaranteed.
+
+### Belief Propagation
+
+Belief propagation is a dynamic programming approach to answering probability queries in a graph. It is an iterative process of passing messages to neighbors. The message sent from $i$ to $j$
+- depends on messages $i$ received from its neighbors
+- contains $i$'s belief of the state of $j$, e.g. when the state is label, the belief can be 'node $i$ believes node $j$ belong to class 1 with likelihood ...'.
+
+When consensus is reached, we can calculate final belief.
+
+#### In Acyclic Graphs
+
+We introduce belief on labels in acyclic graphs as an example. Define
+- $\mathcal{L}$ is the set of all classes/labels
+
+- **Label-label potential matrix** $\boldsymbol{\psi}$ over $\mathcal{L} \times \mathcal{L}$. The entry is
+
+  $$\psi(Y_i, Y_j) \propto \mathbb{P} (Y_j \mid Y_i)$$
+
+  is proportional to the probability of a node $j$ being in class $Y_j$ given that it has neighbor $i$ in class $Y_i$.
+- **Prior belief** $\phi$ over $\mathcal{L}$:
+
+  $$\phi(Y_i)\propto \mathbb{P} (Y_i)$$
+
+  is proportional to the probability that node $i$ being in class $Y_i$.
+
+- $m_{i \rightarrow j}(Y_j)$ is $i$'s belief/**message**/estimate of $j$ being in class $Y_j$, which can be compute by
+
+  $$
+  m_{i \rightarrow j}(Y_j) = \sum_{Y_i \in \mathcal{L}} \left[ \psi(Y_i, Y_j) \phi (Y_i) \prod_{k \in N_i \setminus j} m_{k \rightarrow i} (Y_i) \right] \quad \forall Y_j \in \mathcal{L}
+  $$
+
+  This message is a 'combination' of conditional probabilities, prior probabilities, and 'prior' message from $i$'s neighbors.
+
+:::{figure} graph-belief-prop
+<img src="../imgs/graph-belief-prop.png" width = "40%" alt=""/>
+
+Belief propagation [Leskovec 2021]
+:::
+
+Learning
+- Learn $\boldsymbol{\Psi}$ and $\boldsymbol{\phi}$ by some methods.
+- Initialize all messages $m$ to $1$
+- Since the graph is acyclic, we can define an ordering of nodes. Start from some node, we follow this ordering to compute $m$ for each node. Repeat until convergence
+- Compute self belief as output: node $i$'s belief of being in class $Y_i$
+  $$b_i (Y_i) = \phi(Y_i) \prod_{k \in N_i} m_{k \rightarrow  i} (Y_i)\quad \forall Y_j \in \mathcal{L}$$
+
+The messages in the starting node can be viewed as **separate evidence**, since they do not depend on each other.
+
+
+#### In Cyclic Graphs
+
+It is also called loopy belief propagation since people also used it over graphs with cycles.
+
+Problems in cyclic graphs
+- Messages from different subgraphs are no longer independent. There is no 'separate' evidence.
+- The initial belief of $i$ (which could be incorrect) is reinforced/amplified by a cycle, e.g. $i \rightarrow j \rightarrow k \rightarrow  u \rightarrow i$
+- convergence guarantee and the previous interpretation may be lost
+
+:::{figure} graph-belief-prop-cycle
+<img src="../imgs/graph-belief-prop-cycle.png" width = "50%" alt=""/>
+
+Loopy belief propagation on a cyclic graph
+:::
+
+In practice, Loopy BP is still a good heuristic for complex graphs which contain many branches, few cycles, or long cycles (weak ).
+
+Since there is no ordering, some modification of the algorithm is necessary.
+- start from arbitrary nodes.
+- follow the edges to update the neighboring nodes, like a random walker.
+
+#### Review
+
+Advantages:
+- Easy to program & parallelize
+- Generalize: can apply to any graph model with any form of potentials
+  - e.g. higher order: e.g. $\phi (Y_i, Y_j, Y_k)$
+
+- Challenges:
+  - Convergence is not guaranteed (when to stop?), especially if many closed loops
+  - Potential functions (parameters) need to be estimated
+
+
+
+
+
+.
+
+
+.
+
+
+.
+
+
+.
+
+
+.
+
+
+.
+
+
+.
+
+
+.
