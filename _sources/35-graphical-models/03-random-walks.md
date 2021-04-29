@@ -1,6 +1,11 @@
+(rw-graph)=
 # Random Walks in Graphs
 
+Review [Markov Chains](markov-chains).
+
 ## Regular Random Walks
+
+### Model
 
 In this section we consider random walks over undirected connected unweighted graphs. Let $\boldsymbol{A}$ be the ajacency matrix and $\boldsymbol{D}$ be the diagonal matrix of degrees, the transition matrix is defined as
 
@@ -28,14 +33,13 @@ $$
 $$
 
 Theorem (limiting distribution)
-: Random walk on connected non-bipartite graphs (??) converges to limiting distribution
+: A random walk on connected non-bipartite graphs converges to limiting distribution
 
   $$
-  \lim _{t \rightarrow \infty} \boldsymbol{\pi} ^{(t)} =\lim _{t \rightarrow \infty} \boldsymbol{\pi}  ^{(0)}\mathbf{P}^{t}= \boldsymbol{\pi}
+  \lim _{t \rightarrow \infty} \boldsymbol{\pi} ^{(t)} =\lim _{t \rightarrow \infty} \boldsymbol{\pi}  ^{(0)}\boldsymbol{P}^{t}= \boldsymbol{\pi}
   $$
 
-If limiting distribution $\boldsymbol{\pi}$ exists, then se have
-
+If limiting distribution $\boldsymbol{\pi}$ exists, then we have
 
 $$\begin{aligned}
 \lim _{t \rightarrow \infty} \boldsymbol{\pi} ^{(t + 1)}  
@@ -45,11 +49,17 @@ $$\begin{aligned}
 
 Hence $\boldsymbol{\pi}$ is also a stationary distribution of $\boldsymbol{P}$. Moreover, $\boldsymbol{\pi}$ is a **left** eigenvector of $\boldsymbol{P} = \boldsymbol{D} ^{-1} \boldsymbol{A}$ with eigenvalue $\lambda = 1$.
 
+The 'connected' condition corresponds to 'irreducible', and the 'non-bipartite' condition corresponds to 'aperiodic', in Markov Chains. If the two conditions fail, then we may have some stationary distribution $\boldsymbol{\pi}: \boldsymbol{\pi} = \boldsymbol{\pi} \boldsymbol{P}$, but no limiting distribution.
+
+### Computation
+
+Power iteration
+: Since $\boldsymbol{\pi} = \boldsymbol{\pi} ^{(0)}\lim _{t \rightarrow \infty} \boldsymbol{P} ^{(t)}$, we can start from arbitrary $\boldsymbol{\pi} ^{(0)}$, and then repeat $\boldsymbol{\pi} ^{(t)} \leftarrow \boldsymbol{\pi} ^{(t-1)} \boldsymbol{P}$ until convergence $\left\| \boldsymbol{\pi} ^{(t)}  - \boldsymbol{\pi} ^{(t-1)}  \right\| _1 < \epsilon$. Can also use $L_2$ norm. $t=50$ is sufficient.
 
 Definition (Reversible random walks)
 : A random walk with limiting distribution $\boldsymbol{\pi}$ is called reversible if for all $i, j:\pi_i p_{ij} = \pi _j p_{ji}$.
 
-This means that $\pi_i \frac{a_{ij}}{i}  = \pi_j \frac{a_{ji}}{j}$. For undirected graphs, since, $a_{ij} = a_{ji}$, we have $\frac{\pi_i}{d_i} = \frac{\pi_j}{d_j}$, i.e., $\frac{\pi_i}{d_i}$ is a constant, or $\pi_i \propto d_i$. Since $\sum_{i=1}^n \pi_i = 1$, we have $\pi_i = \frac{d_i}{\sum_{i=1}^n d_i} = \frac{d_i}{2 N_e}$. This gives a easy way to compute stationary distribution $\boldsymbol{\pi}$ for reversible random walks.
+This means that $\pi_i \frac{a_{ij}}{d_i}  = \pi_j \frac{a_{ji}}{d_j}$. For undirected graphs, since, $a_{ij} = a_{ji}$, we have $\frac{\pi_i}{d_i} = \frac{\pi_j}{d_j}$, i.e., $\frac{\pi_i}{d_i}$ is a constant, or $\pi_i \propto d_i$. Since $\sum_{i=1}^n \pi_i = 1$, we have $\pi_i = \frac{d_i}{\sum_{i=1}^n d_i} = \frac{d_i}{2 N_e}$. This gives a easy way to compute stationary distribution $\boldsymbol{\pi}$ for reversible random walks.
 
 ## Lazy Random Walk
 

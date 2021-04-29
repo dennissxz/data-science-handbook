@@ -35,12 +35,22 @@ For each potential edge $(i, j) \in V^{(2)}_{miss}$ , a score $s(i, j)$ is compu
 - ordering them and keeping those pairs with the top $n^*$ values
 
 There are many scores, designed to assess certain structural characteristics of a graph $G^{obs}$.
-- $- \operatorname{dist}_{G^{obs}}(i, j)$: inspired by the small-world principal, more close, more likely to form an edge
-- $\left\vert N_i^{obs} \cap N_j^{obs} \right\vert$: more common neighbors, more likely to form an edge
-- $\frac{\left\vert N_i^{obs} \cap N_j^{obs} \right\vert}{\left\vert N_i^{obs} \cup N_j^{obs} \right\vert}$: a standardized version of the above value, called **Jaccard coefficient**
-- $\sum_{k \in N_{i}^{obs} \cap N_{j}^{o b s}} \log \frac{1}{\left|N_{k}^{o b s}\right|}$: variation of the above, weighting more heavily those common neighbors of $i$ and $j$ that are themselves **not** highly connected.
+- negative shortest distance $- \operatorname{dist}_{G^{obs}}(i, j)$: inspired by the small-world principal, the closer the two nodes are, more likely to form an edge
+- #(common neighbors) $\left\vert N_i^{obs} \cap N_j^{obs} \right\vert$: more common neighbors, more likely to form an edge
+- **Jaccard coefficient** $\frac{\left\vert N_i^{obs} \cap N_j^{obs} \right\vert}{\left\vert N_i^{obs} \cup N_j^{obs} \right\vert}$: a standardized version of the above value.
+- **Adamic-Adar index** $\sum_{k \in N_{i}^{obs} \cap N_{j}^{o b s}} \log \frac{1}{\left|N_{k}^{o b s}\right|}$: variation of the above, weighting more heavily those common neighbors of $i$ and $j$ that are themselves **not** highly connected with other vertices.
 
-There score functions only assess local structure in $G^{obs}$. For others defined through spectral characteristics of $G^{obs}$, see [SAND 261].
+There score functions only assess local structure in $G^{obs}$. If two nodes do not have any common neighbors, then the score is 0, but they may potentially be connected in $G^{miss}$.
+
+To fix this, we an use global neighborhood overlap scores
+- **Katz index** $S(i,j) = \sum_{\ell=1}^\infty \beta^\ell [\boldsymbol{A} ^\ell]_{ij}$: count the number of paths of all lengths between a given pair of nodes, and then discounted by factor $\beta \in (0, 1)$ and sum up. To compute the number of paths, use powers of the graph adjacency matrix $\boldsymbol{A}$. In fact, it Katz index matrix can be computed in closed-form by geometric series of matrices
+
+
+  $$
+  \boldsymbol{S} = \sum_{\ell=1}^\infty \beta^\ell \boldsymbol{A} ^\ell = \sum_{\ell=0}^\infty \beta^\ell \boldsymbol{A} ^\ell  - \boldsymbol{I}  =  (\boldsymbol{I} - \beta \boldsymbol{A} ) ^{-1}  - \boldsymbol{I}
+  $$
+
+For others defined through spectral characteristics of $G^{obs}$, see [SAND 261]. Examples:
 
 ### Classification
 

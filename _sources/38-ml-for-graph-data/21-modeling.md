@@ -7,7 +7,7 @@
 By a model for a graph we mean a collection
 
 $$
-\left\{ \mathbb{P} \theta (G), G \in \mathcal{G}: \theta \in \Theta  \right\}
+\left\{ \mathbb{P} _\theta (G), G \in \mathcal{G}: \theta \in \Theta  \right\}
 $$
 
 where
@@ -236,10 +236,18 @@ Definition (motif)
 Motivation: many large, complex networks may perhaps be constructed (at least in part) of smaller, comparatively simple ‘building blocks'. Network motif detection seeks to identify possible subgraph configurations of this nature.
 
 Let
-- $\mathcal{G} _k (G) =\left\{ G ^\prime  \in G: \left\vert V(G) \right\vert= k  \right\}$ be a collection of all possible $k$-vertex subgraphs with cardinality $L_k = \left\vert \mathcal{G} _k (G) \right\vert$
-  - undirected: $L_2 = 2, L_3 = 2^3, L_k = 2^{k(k-1)/2}$ (??)
-  - directed: $L_k = 2^{k(k-1)}$
-- $N_i$ be the number of occurrences of the $i$-th element $G ^\prime _i \in \mathcal{G} _k$ in $G$.
+- $\mathcal{G} _k =\left\{ g: \left\vert V(g) \right\vert= k  \right\}$ be a collection of all possible non-isomorphic $k$-vertex connected subgraphs.
+- $L_k = \left\vert \mathcal{G} _k \right\vert$ be the cardinality
+- $N_i$ be the number of occurrences of the $i$-th element $g_i \in \mathcal{G} _k$ in $G$, for $i = 1, 2, \ldots, L_k$
+
+For instance, in directed graphs, when $k=3$, $\mathcal{G}_3$ is the collection of 13 connected subgraphs:
+
+:::{figure} graph-motif-k3
+<img src="../imgs/graph-motif-k3.png" width = "70%" alt=""/>
+
+Connected subgraphs when $k=3$ in directed graphs [[pic](http://pbil.univ-lyon1.fr/members/sagot/htdocs/coursesENS/motifs.pdf)]
+:::
+
 
 Define a proportion as our $\eta(G)$:
 
@@ -249,7 +257,7 @@ $$
 
 Then, analogous to what was described in the previous section, each value $F_i$ is compared to an appropriate reference distribution $\mathbb{P}_{\mathcal{G} } (i)$. Subgraphs for whom the value $F_i$ is found to be extreme are declared to be network motifs for building $G^{obs}$.
 
-Note that we for a given choice of $k$, we need to count the number $N_i$ for $i = 1,\ldots, L_k$, but $L_k$ grows quite large with $k$. To overcome this, some sampling techniques can be used. Specifically, if $k$-vertex subgraphs $H$ are sampled in some fasion, then an unbiased estimate of the total number $N_i$ of a given subgraph type is just
+Note that we for a given choice of $k$, we need to count the number $N_i$ for $i = 1,\ldots, L_k$, but $L_k$ grows quite large with $k$. As shown above, in directed graphs, $L_3=13$, and then $L_4 = 199, L_5 = 9364$. To overcome this, some sampling techniques can be used. Specifically, if $k$-vertex subgraphs $H$ are sampled in some fashion, then an unbiased estimate of the total number $N_i$ of a given subgraph type is just
 
 $$
 \widehat{N}_i = \sum_{H\text{ of type }i } \pi_H^{-1}

@@ -60,7 +60,8 @@ Tasks taxonomy in ML for graphs
   - Methods: DeepWalk, Node2Vec
 
 - Link prediction
-  - Predict whether there are missing links between two nodes
+  - Static graphs: predict whether there are missing links between two nodes
+  - Dynamic graphs: Given fixed $N_v$, predict new edges in the next stage 
   - Example: Knowledge graph completion, recommender systems, adverse side effect of drugs (impossible for real experiment)
 
 - Clustering

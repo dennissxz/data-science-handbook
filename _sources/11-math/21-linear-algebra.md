@@ -449,19 +449,24 @@ where $\boldsymbol{\Lambda} =\operatorname{diag}\left( \lambda_1, \lambda_2, \ld
 Definition
 : For any matrix $\boldsymbol{A} \in \mathbb{R} ^{n \times p}$, we can write $\boldsymbol{A} = \boldsymbol{U} \boldsymbol{\Sigma} \boldsymbol{V} ^\top$. where
 - $\boldsymbol{U} \in \mathbb{R} ^{n \times n}$ and $\boldsymbol{V} \in \mathbb{R} ^{p\times p}$ are orthogonal matrices.
-- $\boldsymbol{\Sigma}$ is a diagonal matrix.
+- $\boldsymbol{\Sigma}$ is an $n \times p$ matrix, where the diagonal entires are singular values $\sigma_{ii} > 0$ for $i = 1, 2, \ldots, r$, where $r = \operatorname{rank}(\boldsymbol{A})$.
 
 
 Properties
-: We can also write SVD as
+: - Due to the property of $\boldsymbol{\Sigma}$, we can write SVD as
 
-  $$
-  \boldsymbol{A}=\sigma_{1} \boldsymbol{u}_{1} \boldsymbol{v}_{1}^{\top}+\sigma_{2} \boldsymbol{u}_{2} \boldsymbol{v}_{2}^{\top}+\ldots+\sigma_{r} \boldsymbol{u}_{r} \boldsymbol{v}_{r}^{\top}
-  $$
+    $$
+    \boldsymbol{A}=\sigma_{1} \boldsymbol{u}_{1} \boldsymbol{v}_{1}^{\top}+\sigma_{2} \boldsymbol{u}_{2} \boldsymbol{v}_{2}^{\top}+\ldots+\sigma_{r} \boldsymbol{u}_{r} \boldsymbol{v}_{r}^{\top} = \tilde{\boldsymbol{U}}_{n \times r} \tilde{\boldsymbol{\Sigma}} _{r \times r} \tilde{\boldsymbol{V}}_{r \times r}
+    $$
 
-  where $r = \operatorname{rank}\left( \boldsymbol{A}  \right)$.
+    where $r = \operatorname{rank}\left( \boldsymbol{A}  \right)$.
 
-: As a result, $\boldsymbol{A} \boldsymbol{v}=\sigma \boldsymbol{u}, \boldsymbol{A}^{\top} \boldsymbol{u}=\sigma \boldsymbol{v}$.
+    As a result, $\boldsymbol{A} \boldsymbol{v}=\sigma \boldsymbol{u}, \boldsymbol{A}^{\top} \boldsymbol{u}=\sigma \boldsymbol{v}$.
+  - When $\boldsymbol{A}$ is symmetric, then its SVD $\boldsymbol{A} = \boldsymbol{U} \boldsymbol{\Sigma} \boldsymbol{V} ^{\top}$ can be obtained from its EVD $\boldsymbol{A} \boldsymbol{W} \boldsymbol{\Lambda} \boldsymbol{W} ^{\top}$.
+
+      $$\boldsymbol{A} = \boldsymbol{W} \boldsymbol{\Lambda} \boldsymbol{W} ^{\top} = \sum_{i=1}^n \lambda_i \boldsymbol{w} _i \boldsymbol{w}_i ^{\top} = \sum_{i=1}^r \underbrace{\left\vert \lambda_i \right\vert }_{\sigma_i} \underbrace{\operatorname{sign}(\lambda_i) \boldsymbol{w} _i \boldsymbol{w} _i ^{\top}}_{\boldsymbol{u} _i \boldsymbol{v} _i ^{\top}}$$
+
+      For instance, we can let $\boldsymbol{u} _i = \operatorname{sign}(\lambda_i) \boldsymbol{w} _i$ and $\boldsymbol{v} _i = \boldsymbol{w} _i$, or $\boldsymbol{u} _i = - \boldsymbol{w} _i$ and $\boldsymbol{v} _i = - \operatorname{sign}(\lambda_i) \boldsymbol{w}_i$, etc. Note that when $\lambda_\max > 0$, we may **not** have $\sigma_\max = \lambda_\max$.
 
 Theorem
 : Every matrix has SVD.
@@ -524,7 +529,8 @@ Properties
 - Matrix Norm [link](https://www.uio.no/studier/emner/matnat/ifi/nedlagte-emner/INF-MAT4350/h09/undervisningsmateriale/lecture7.pdf)
 - Frobenius Norm [link](http://mlwiki.org/index.php/Frobenius_Norm)
 - Spectral norm: $\left\| \boldsymbol{A} \right\| _2$ is the largest singular value of $\boldsymbol{A}$.
-  - Equals the largest eigenvalue of $\boldsymbol{A} ^{\top} \boldsymbol{A}$
+  - Equals the square root of the largest eigenvalue of $\boldsymbol{A} ^{\top} \boldsymbol{A}$
+  - Equals $\lambda_{\max}(\boldsymbol{A})$ if $\boldsymbol{A}$ is p.s.d.
   - If $\left\| \boldsymbol{u} \right\| =1, \left\| \boldsymbol{v} \right\| =1$, let $\boldsymbol{A} = \boldsymbol{u} \boldsymbol{u} ^{\top}  - \boldsymbol{v} \boldsymbol{v} ^{\top}$, then $\left\| \boldsymbol{A} \right\| _2 = \sin \theta$, where $\theta$ is the angle between $\boldsymbol{u}$ and $\boldsymbol{v}$.
     - To prove this, let $\alpha = \boldsymbol{u} ^{\top} \boldsymbol{v}$. It is easy to verify that $\boldsymbol{u}$, $\boldsymbol{v}$ are two eigenvectors of $\boldsymbol{A} ^{\top} \boldsymbol{A}$ with the same eigenvalue $1 - \alpha^2$. Hence $\left\| \boldsymbol{A}  \right\| _2 ^2 = 1 - \alpha^2 = 1 - \cos^2\theta$.
 - For $\boldsymbol{a} , \boldsymbol{b} \in [m]^d$

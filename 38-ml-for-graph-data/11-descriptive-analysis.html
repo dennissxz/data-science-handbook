@@ -801,6 +801,11 @@
      Processes on Graphs
     </a>
    </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="51-graph-rep-learning.html">
+     Graph Representation Learning
+    </a>
+   </li>
   </ul>
  </li>
 </ul>
@@ -995,6 +1000,11 @@
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#graphlet-degree-vector">
+     Graphlet Degree Vector
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#connectivity">
      Connectivity
     </a>
@@ -1044,9 +1054,33 @@
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#dynamic-graphs">
-   Dynamic Graphs
+  <a class="reference internal nav-link" href="#more">
+   More
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#dynamic-graphs">
+     Dynamic Graphs
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#graph-kernels">
+     Graph Kernels
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#graphlet-kernel">
+       Graphlet Kernel
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#weisfeiler-lehman-kernel">
+       Weisfeiler-Lehman Kernel
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
  </li>
 </ul>
 
@@ -1071,7 +1105,7 @@
 <p>For directed graphs, degree distributions may be defined analogously for in- and out-degrees.</p>
 <div class="figure align-default" id="graph-deg-dist">
 <a class="reference internal image-reference" href="../_images/graph-deg-dist.png"><img alt="" src="../_images/graph-deg-dist.png" style="width: 80%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 175 </span><span class="caption-text">Degree distributions in base-2 logarithmic scale [Kolaczyk 2009]</span><a class="headerlink" href="#graph-deg-dist" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 176 </span><span class="caption-text">Degree distributions in base-2 logarithmic scale [Kolaczyk 2009]</span><a class="headerlink" href="#graph-deg-dist" title="Permalink to this image">¶</a></p>
 </div>
 <p>In each plot, we can see that majority of vertices are of very low degree, a nevertheless non-trivial number of vertices are of much higher degree. The distribution is right skewed. There is roughly a linear decay, which suggests the presence of a power-law component to these distributions:</p>
 <div class="math notranslate nohighlight">
@@ -1102,7 +1136,7 @@ f(d) \propto d^{-\alpha}
 <p>where <span class="math notranslate nohighlight">\(d_{(1)} \leq \cdots \leq d_{\left(N_{v}\right)}\)</span> are the sorted vertex degrees and <span class="math notranslate nohighlight">\(k\)</span> is a value chosen by users. Typically, one can plot <span class="math notranslate nohighlight">\(\hat{\alpha}_k\)</span> for a range of <span class="math notranslate nohighlight">\(k\)</span>, and look for an area where the plot settle down to some stable values of <span class="math notranslate nohighlight">\(\hat{\alpha}\)</span>. If the decay is sharp and there is no flatten area, then it suggests that a simple power-law-like model is inappropriate.</p>
 <div class="figure align-default" id="graph-deg-hill-plot">
 <a class="reference internal image-reference" href="../_images/graph-deg-hill-plot.png"><img alt="" src="../_images/graph-deg-hill-plot.png" style="width: 80%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 176 </span><span class="caption-text">Hill plots of <span class="math notranslate nohighlight">\(\hat{\alpha}_k\)</span> over <span class="math notranslate nohighlight">\(k\)</span> for the two datasets above. Note different decay shapes. [Kolaczyk 2009]</span><a class="headerlink" href="#graph-deg-hill-plot" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 177 </span><span class="caption-text">Hill plots of <span class="math notranslate nohighlight">\(\hat{\alpha}_k\)</span> over <span class="math notranslate nohighlight">\(k\)</span> for the two datasets above. Note different decay shapes. [Kolaczyk 2009]</span><a class="headerlink" href="#graph-deg-hill-plot" title="Permalink to this image">¶</a></p>
 </div>
 </li>
 <li><p>mixtures of power-laws</p></li>
@@ -1127,7 +1161,7 @@ f(d) \propto d^{-\alpha}
 <p>In the plot below, we see that the joint distribution concentrate primarily where pairs <span class="math notranslate nohighlight">\((d_1, d_2)\)</span> are both low. However, we can see there is also noticeable tendency for the vertices of largest degree to be connected to low-degree vertices.</p>
 <div class="figure align-default" id="graph-deg-dist-joint">
 <a class="reference internal image-reference" href="../_images/graph-deg-dist-joint.png"><img alt="" src="../_images/graph-deg-dist-joint.png" style="width: 80%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 177 </span><span class="caption-text">Joint degree distributions for the two datasets. Colors range from blue (low relative frequency) to red (high relative frequency), with white indicating areas with no data. [Kolaczyk 2009]</span><a class="headerlink" href="#graph-deg-dist-joint" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 178 </span><span class="caption-text">Joint degree distributions for the two datasets. Colors range from blue (low relative frequency) to red (high relative frequency), with white indicating areas with no data. [Kolaczyk 2009]</span><a class="headerlink" href="#graph-deg-dist-joint" title="Permalink to this image">¶</a></p>
 </div>
 </div>
 <div class="section" id="conditional-degree-distribution">
@@ -1150,6 +1184,7 @@ f(d) \propto d^{-\alpha}
 <div class="section" id="centrality">
 <h2>Centrality<a class="headerlink" href="#centrality" title="Permalink to this headline">¶</a></h2>
 <p>The importance of a vertex <span class="math notranslate nohighlight">\(v\)</span> can be measured by centrality <span class="math notranslate nohighlight">\(c(v)\)</span>. There are many kinds of centrality measures. Degree is one of them. Deciding which are most appropriate for a given application clearly requires consideration of the context.</p>
+<p>Other measures like local clustering coefficient and graphlet degree vector can also be used to measure importance of node, which are introduced in the next section.</p>
 <div class="section" id="closeness-centrality">
 <h3>Closeness Centrality<a class="headerlink" href="#closeness-centrality" title="Permalink to this headline">¶</a></h3>
 <p>Closeness centrality measures how close a vertex is to other vertices.</p>
@@ -1182,7 +1217,7 @@ c_{bet}(v) = \sum_{s,t \in V, s\ne v, t \ne v}\frac{\sigma(s,t \mid v)}{\sigma(s
 </ul>
 </div>
 <div class="section" id="eigenvector-centrality">
-<h3>Eigenvector Centrality<a class="headerlink" href="#eigenvector-centrality" title="Permalink to this headline">¶</a></h3>
+<span id="eig-centrality"></span><h3>Eigenvector Centrality<a class="headerlink" href="#eigenvector-centrality" title="Permalink to this headline">¶</a></h3>
 <p>A vertex’s importance may depends on its neighbors’ importance. Eigenvector centrality captures this,</p>
 <div class="math notranslate nohighlight">
 \[
@@ -1328,6 +1363,20 @@ c = \frac{\sum_{v \in V} c^* - c(v)}{\max \sum_{v \in V} c^* - c(v)}
 </ul>
 <p>Higher-order clustering coefficients have also been proposed, involving cycles of length greater than three.</p>
 </div>
+<div class="section" id="graphlet-degree-vector">
+<h3>Graphlet Degree Vector<a class="headerlink" href="#graphlet-degree-vector" title="Permalink to this headline">¶</a></h3>
+<p>We can view</p>
+<ul class="simple">
+<li><p>degree counts #(edges) that a node touches</p></li>
+<li><p>clustering coefficient counts #(triangles) that a node touches (divided by neighbor pairs)</p></li>
+</ul>
+<p>GDV counts the number of graphlets that a node touches.</p>
+<div class="figure align-default" id="graph-gdv-ep">
+<a class="reference internal image-reference" href="../_images/graph-gdv-ep.png"><img alt="" src="../_images/graph-gdv-ep.png" style="width: 70%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 179 </span><span class="caption-text">Example of GDV [Leskovec 2021]</span><a class="headerlink" href="#graph-gdv-ep" title="Permalink to this image">¶</a></p>
+</div>
+<p>If we consider graphlets on 2 to 5 nodes, we get a vector of 73 coordinates, which can be used as a signature of a node that describes the topology of nodes’s neighborhood structure. This captures the structure out to a distance of 4 hops, better than degree and clustering coefficient which only do 1 hop.</p>
+</div>
 <div class="section" id="connectivity">
 <h3>Connectivity<a class="headerlink" href="#connectivity" title="Permalink to this headline">¶</a></h3>
 <p>The task of verifying whether a graph is connected and, if not, identifying its connected components can be done in <span class="math notranslate nohighlight">\(O(N_v + N_e)\)</span> time by DFS or BFS. If it does not, we might seek to quantify how close to being able to do so it is.</p>
@@ -1407,7 +1456,7 @@ c = \frac{\sum_{v \in V} c^* - c(v)}{\max \sum_{v \in V} c^* - c(v)}
 <p>In the vastly large Word Wide Web graph, Broder and colleagues found that the relative size of the first four parts of the bowtie in their giant component were in fact roughly equal in size.</p>
 <div class="figure align-default" id="graph-bowtie">
 <a class="reference internal image-reference" href="../_images/graph-bowtie.png"><img alt="" src="../_images/graph-bowtie.png" style="width: 90%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 178 </span><span class="caption-text">Bowtie illustration [Broder] and application to a network data set [Kolaczyk 2009]. Strongly connected component (yellow), in-component (blue), out-component (red), and tendrils (pink).</span><a class="headerlink" href="#graph-bowtie" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 180 </span><span class="caption-text">Bowtie illustration [Broder] and application to a network data set [Kolaczyk 2009]. Strongly connected component (yellow), in-component (blue), out-component (red), and tendrils (pink).</span><a class="headerlink" href="#graph-bowtie" title="Permalink to this image">¶</a></p>
 </div>
 </div>
 <div class="section" id="graph-partitioning">
@@ -1475,8 +1524,10 @@ r = \frac{\operatorname{Cov}\left( X, Y \right)}{\sqrt{\operatorname{Var}\left( 
 </ul>
 </div>
 </div>
+<div class="section" id="more">
+<h2>More<a class="headerlink" href="#more" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="dynamic-graphs">
-<h2>Dynamic Graphs<a class="headerlink" href="#dynamic-graphs" title="Permalink to this headline">¶</a></h2>
+<h3>Dynamic Graphs<a class="headerlink" href="#dynamic-graphs" title="Permalink to this headline">¶</a></h3>
 <p>Dynamic graphs refers to a collection <span class="math notranslate nohighlight">\(\left\{ G_{t} \right\}\)</span> of graphs indexed over times <span class="math notranslate nohighlight">\(t\)</span> in some set <span class="math notranslate nohighlight">\(T\)</span>.</p>
 <p>Settings</p>
 <ul class="simple">
@@ -1489,6 +1540,61 @@ r = \frac{\operatorname{Cov}\left( X, Y \right)}{\sqrt{\operatorname{Var}\left( 
 <li><p>combinatorial problems that incorporates time [SAND 285]</p></li>
 <li><p>evolution of static descriptive statistics over time: degrees, diameter, clustering behavior etc.</p></li>
 </ul>
+</div>
+<div class="section" id="graph-kernels">
+<h3>Graph Kernels<a class="headerlink" href="#graph-kernels" title="Permalink to this headline">¶</a></h3>
+<p>Recall that <a class="reference internal" href="../30-ml-basics/05-kernels.html#kernels"><span class="std std-ref">kernel functions</span></a> can be used as a similarity measures. Can we apply kernel function over graphs, i.e. <span class="math notranslate nohighlight">\(k(G, G ^\prime) \in \mathbb{R}\)</span>, to measure similarity between two graphs?</p>
+<p>A natural way to construct a graph-level feature vector is degree frequency. It counts the number of nodes that have some degree. This is a kind of bag-of * idea. Graphlet kernel and Weisfeiler-Lehman kernel both use this idea but * can be sophisticated.</p>
+<div class="section" id="graphlet-kernel">
+<h4>Graphlet Kernel<a class="headerlink" href="#graphlet-kernel" title="Permalink to this headline">¶</a></h4>
+<p>The * in graphlet kernel is graphlets. It counts the number of different graphlets in a graph. Note that the definition of graphlet here is different from that in node-level where we only consider rooted, connected, non-isomorphic subgraphs. Here we drop the fist two conditions. Let <span class="math notranslate nohighlight">\(\mathcal{G}_k = \left\{ g_1, g_2, \ldots g_{n_k} \right\}\)</span> be a list of graphlets of size <span class="math notranslate nohighlight">\(k\)</span>, with cardinality <span class="math notranslate nohighlight">\(n_k\)</span>. For instance,</p>
+<div class="figure align-default" id="graph-kernel-graphlet">
+<a class="reference internal image-reference" href="../_images/graph-kernel-graphlet.png"><img alt="" src="../_images/graph-kernel-graphlet.png" style="width: 70%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 181 </span><span class="caption-text">Non-isomorphic graphlets</span><a class="headerlink" href="#graph-kernel-graphlet" title="Permalink to this image">¶</a></p>
+</div>
+<p>Given a graph <span class="math notranslate nohighlight">\(G\)</span> and and a graphlet list <span class="math notranslate nohighlight">\(\mathcal{G}_k\)</span>, the graphlet frequency vector <span class="math notranslate nohighlight">\(\boldsymbol{f}_G \in \mathbb{R} ^{n_k}\)</span> is defined as</p>
+<div class="math notranslate nohighlight">
+\[
+[\boldsymbol{f}_G]_i = \#(g_i \subseteq G)\quad \text{for } i=1, 2, \ldots, n_k
+\]</div>
+<p>Since <span class="math notranslate nohighlight">\(G\)</span> and <span class="math notranslate nohighlight">\(G ^\prime\)</span> may have different sizes, it’s better to normalize <span class="math notranslate nohighlight">\(\boldsymbol{f}\)</span> by <span class="math notranslate nohighlight">\(\boldsymbol{h}_G = \frac{\boldsymbol{f}_G }{ \sum_{i=1}^{n_k} [\boldsymbol{f}_G]_i }\)</span>, i.e. use density rather than frequency. The graphlet kernel is then</p>
+<div class="math notranslate nohighlight">
+\[
+k(G, G ^\prime ) = \langle \boldsymbol{h}_G, \boldsymbol{h}_{G ^\prime} \rangle
+\]</div>
+<p>It is easy to see the counting step is expensive. In fact, subgraph isomorphism test (judging whether a graph is a subgraph of another graph) is NP-hard. If a graph’s node degree is bounded by <span class="math notranslate nohighlight">\(d_{\max}\)</span>, then an <span class="math notranslate nohighlight">\(\mathcal{O} (N_v d^{k-1}_{\max})\)</span> algorithm exists to count all the graphlets of size <span class="math notranslate nohighlight">\(k\)</span>.</p>
+</div>
+<div class="section" id="weisfeiler-lehman-kernel">
+<h4>Weisfeiler-Lehman Kernel<a class="headerlink" href="#weisfeiler-lehman-kernel" title="Permalink to this headline">¶</a></h4>
+<p>WL kernel uses neighborhood structure to iteratively enrich node vocabulary.</p>
+<p>Algorithm: WL isomorphism test, aka color refinement.</p>
+<ul>
+<li><p>Assign an initial color <span class="math notranslate nohighlight">\(c^{(0)}(v)\)</span> to each node <span class="math notranslate nohighlight">\(v\)</span></p></li>
+<li><p>For <span class="math notranslate nohighlight">\(k=1, 2, \ldots, K\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+  c^{(k+1)}(v) = \texttt{hash} \left( \left\{ c^{(k)}(v), \left\{ c^{(k)}(u) \right\}_{u \in \mathscr{N}(v)}  \right\} \right)
+  \]</div>
+<p>where <span class="math notranslate nohighlight">\(\texttt{hash}\)</span> maps different inputs to different colors.</p>
+</li>
+<li><p>Return a vector <span class="math notranslate nohighlight">\(\boldsymbol{\phi}\)</span> of bag-of-colors in the history, which is used as <span class="math notranslate nohighlight">\(\boldsymbol{\phi}\)</span> to construct the WL kernel.</p></li>
+</ul>
+<p>The number of steps <span class="math notranslate nohighlight">\(K\)</span> here is related to <span class="math notranslate nohighlight">\(K\)</span>-hop neighborhood structure. When <span class="math notranslate nohighlight">\(K=1\)</span>, then <span class="math notranslate nohighlight">\(\boldsymbol{\phi}\)</span> reduces to degree frequency. The algorithm runs in <span class="math notranslate nohighlight">\(\mathcal{O} (N_e)\)</span>.</p>
+<p>Other kernels</p>
+<ul class="simple">
+<li><p>random-walk kernel</p></li>
+<li><p>shortest-path kernel
+.</p></li>
+</ul>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+</div>
+</div>
 </div>
 </div>
 

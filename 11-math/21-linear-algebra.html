@@ -801,6 +801,11 @@
      Processes on Graphs
     </a>
    </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../38-ml-for-graph-data/51-graph-rep-learning.html">
+     Graph Representation Learning
+    </a>
+   </li>
   </ul>
  </li>
 </ul>
@@ -1523,17 +1528,24 @@ x \sin \theta+y \cos \theta
 </dl>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(\boldsymbol{U} \in \mathbb{R} ^{n \times n}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{V} \in \mathbb{R} ^{p\times p}\)</span> are orthogonal matrices.</p></li>
-<li><p><span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}\)</span> is a diagonal matrix.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}\)</span> is an <span class="math notranslate nohighlight">\(n \times p\)</span> matrix, where the diagonal entires are singular values <span class="math notranslate nohighlight">\(\sigma_{ii} &gt; 0\)</span> for <span class="math notranslate nohighlight">\(i = 1, 2, \ldots, r\)</span>, where <span class="math notranslate nohighlight">\(r = \operatorname{rank}(\boldsymbol{A})\)</span>.</p></li>
 </ul>
 <dl class="simple myst">
-<dt>Properties</dt><dd><p>We can also write SVD as</p>
+<dt>Properties</dt><dd><ul>
+<li><p>Due to the property of <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}\)</span>, we can write SVD as</p>
 <div class="math notranslate nohighlight">
 \[
-  \boldsymbol{A}=\sigma_{1} \boldsymbol{u}_{1} \boldsymbol{v}_{1}^{\top}+\sigma_{2} \boldsymbol{u}_{2} \boldsymbol{v}_{2}^{\top}+\ldots+\sigma_{r} \boldsymbol{u}_{r} \boldsymbol{v}_{r}^{\top}
-  \]</div>
+    \boldsymbol{A}=\sigma_{1} \boldsymbol{u}_{1} \boldsymbol{v}_{1}^{\top}+\sigma_{2} \boldsymbol{u}_{2} \boldsymbol{v}_{2}^{\top}+\ldots+\sigma_{r} \boldsymbol{u}_{r} \boldsymbol{v}_{r}^{\top} = \tilde{\boldsymbol{U}}_{n \times r} \tilde{\boldsymbol{\Sigma}} _{r \times r} \tilde{\boldsymbol{V}}_{r \times r}
+    \]</div>
 <p>where <span class="math notranslate nohighlight">\(r = \operatorname{rank}\left( \boldsymbol{A}  \right)\)</span>.</p>
-</dd>
-<dd><p>As a result, <span class="math notranslate nohighlight">\(\boldsymbol{A} \boldsymbol{v}=\sigma \boldsymbol{u}, \boldsymbol{A}^{\top} \boldsymbol{u}=\sigma \boldsymbol{v}\)</span>.</p>
+<p>As a result, <span class="math notranslate nohighlight">\(\boldsymbol{A} \boldsymbol{v}=\sigma \boldsymbol{u}, \boldsymbol{A}^{\top} \boldsymbol{u}=\sigma \boldsymbol{v}\)</span>.</p>
+</li>
+<li><p>When <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> is symmetric, then its SVD <span class="math notranslate nohighlight">\(\boldsymbol{A} = \boldsymbol{U} \boldsymbol{\Sigma} \boldsymbol{V} ^{\top}\)</span> can be obtained from its EVD <span class="math notranslate nohighlight">\(\boldsymbol{A} \boldsymbol{W} \boldsymbol{\Lambda} \boldsymbol{W} ^{\top}\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[\boldsymbol{A} = \boldsymbol{W} \boldsymbol{\Lambda} \boldsymbol{W} ^{\top} = \sum_{i=1}^n \lambda_i \boldsymbol{w} _i \boldsymbol{w}_i ^{\top} = \sum_{i=1}^r \underbrace{\left\vert \lambda_i \right\vert }_{\sigma_i} \underbrace{\operatorname{sign}(\lambda_i) \boldsymbol{w} _i \boldsymbol{w} _i ^{\top}}_{\boldsymbol{u} _i \boldsymbol{v} _i ^{\top}}\]</div>
+<p>For instance, we can let <span class="math notranslate nohighlight">\(\boldsymbol{u} _i = \operatorname{sign}(\lambda_i) \boldsymbol{w} _i\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{v} _i = \boldsymbol{w} _i\)</span>, or <span class="math notranslate nohighlight">\(\boldsymbol{u} _i = - \boldsymbol{w} _i\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{v} _i = - \operatorname{sign}(\lambda_i) \boldsymbol{w}_i\)</span>, etc. Note that when <span class="math notranslate nohighlight">\(\lambda_\max &gt; 0\)</span>, we may <strong>not</strong> have <span class="math notranslate nohighlight">\(\sigma_\max = \lambda_\max\)</span>.</p>
+</li>
+</ul>
 </dd>
 <dt>Theorem</dt><dd><p>Every matrix has SVD.</p>
 </dd>
@@ -1600,7 +1612,8 @@ x \sin \theta+y \cos \theta
 <li><p>Frobenius Norm <a class="reference external" href="http://mlwiki.org/index.php/Frobenius_Norm">link</a></p></li>
 <li><p>Spectral norm: <span class="math notranslate nohighlight">\(\left\| \boldsymbol{A} \right\| _2\)</span> is the largest singular value of <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span>.</p>
 <ul class="simple">
-<li><p>Equals the largest eigenvalue of <span class="math notranslate nohighlight">\(\boldsymbol{A} ^{\top} \boldsymbol{A}\)</span></p></li>
+<li><p>Equals the square root of the largest eigenvalue of <span class="math notranslate nohighlight">\(\boldsymbol{A} ^{\top} \boldsymbol{A}\)</span></p></li>
+<li><p>Equals <span class="math notranslate nohighlight">\(\lambda_{\max}(\boldsymbol{A})\)</span> if <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> is p.s.d.</p></li>
 <li><p>If <span class="math notranslate nohighlight">\(\left\| \boldsymbol{u} \right\| =1, \left\| \boldsymbol{v} \right\| =1\)</span>, let <span class="math notranslate nohighlight">\(\boldsymbol{A} = \boldsymbol{u} \boldsymbol{u} ^{\top}  - \boldsymbol{v} \boldsymbol{v} ^{\top}\)</span>, then <span class="math notranslate nohighlight">\(\left\| \boldsymbol{A} \right\| _2 = \sin \theta\)</span>, where <span class="math notranslate nohighlight">\(\theta\)</span> is the angle between <span class="math notranslate nohighlight">\(\boldsymbol{u}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{v}\)</span>.</p>
 <ul>
 <li><p>To prove this, let <span class="math notranslate nohighlight">\(\alpha = \boldsymbol{u} ^{\top} \boldsymbol{v}\)</span>. It is easy to verify that <span class="math notranslate nohighlight">\(\boldsymbol{u}\)</span>, <span class="math notranslate nohighlight">\(\boldsymbol{v}\)</span> are two eigenvectors of <span class="math notranslate nohighlight">\(\boldsymbol{A} ^{\top} \boldsymbol{A}\)</span> with the same eigenvalue <span class="math notranslate nohighlight">\(1 - \alpha^2\)</span>. Hence <span class="math notranslate nohighlight">\(\left\| \boldsymbol{A}  \right\| _2 ^2 = 1 - \alpha^2 = 1 - \cos^2\theta\)</span>.</p></li>

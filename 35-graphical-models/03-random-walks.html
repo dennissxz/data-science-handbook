@@ -801,6 +801,11 @@
      Processes on Graphs
     </a>
    </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../38-ml-for-graph-data/51-graph-rep-learning.html">
+     Graph Representation Learning
+    </a>
+   </li>
   </ul>
  </li>
 </ul>
@@ -894,6 +899,18 @@
   <a class="reference internal nav-link" href="#regular-random-walks">
    Regular Random Walks
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#model">
+     Model
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#computation">
+     Computation
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#lazy-random-walk">
@@ -917,9 +934,12 @@
               <div>
                 
   <div class="section" id="random-walks-in-graphs">
-<h1>Random Walks in Graphs<a class="headerlink" href="#random-walks-in-graphs" title="Permalink to this headline">¶</a></h1>
+<span id="rw-graph"></span><h1>Random Walks in Graphs<a class="headerlink" href="#random-walks-in-graphs" title="Permalink to this headline">¶</a></h1>
+<p>Review <a class="reference internal" href="../12-probabilities/51-markov-chain.html#markov-chains"><span class="std std-ref">Markov Chains</span></a>.</p>
 <div class="section" id="regular-random-walks">
 <h2>Regular Random Walks<a class="headerlink" href="#regular-random-walks" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="model">
+<h3>Model<a class="headerlink" href="#model" title="Permalink to this headline">¶</a></h3>
 <p>In this section we consider random walks over undirected connected unweighted graphs. Let <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> be the ajacency matrix and <span class="math notranslate nohighlight">\(\boldsymbol{D}\)</span> be the diagonal matrix of degrees, the transition matrix is defined as</p>
 <div class="math notranslate nohighlight">
 \[
@@ -942,14 +962,14 @@ p_{ij} = \left\{\begin{array}{ll}
 \boldsymbol{\pi}  ^{(t)} = \boldsymbol{\pi}  ^{(t-1)} \boldsymbol{P}= \boldsymbol{\pi}  ^{(0)} \boldsymbol{P}^t.
 \]</div>
 <dl class="simple myst">
-<dt>Theorem (limiting distribution)</dt><dd><p>Random walk on connected non-bipartite graphs (??) converges to limiting distribution</p>
+<dt>Theorem (limiting distribution)</dt><dd><p>A random walk on connected non-bipartite graphs converges to limiting distribution</p>
 <div class="math notranslate nohighlight">
 \[
-  \lim _{t \rightarrow \infty} \boldsymbol{\pi} ^{(t)} =\lim _{t \rightarrow \infty} \boldsymbol{\pi}  ^{(0)}\mathbf{P}^{t}= \boldsymbol{\pi}
+  \lim _{t \rightarrow \infty} \boldsymbol{\pi} ^{(t)} =\lim _{t \rightarrow \infty} \boldsymbol{\pi}  ^{(0)}\boldsymbol{P}^{t}= \boldsymbol{\pi}
   \]</div>
 </dd>
 </dl>
-<p>If limiting distribution <span class="math notranslate nohighlight">\(\boldsymbol{\pi}\)</span> exists, then se have</p>
+<p>If limiting distribution <span class="math notranslate nohighlight">\(\boldsymbol{\pi}\)</span> exists, then we have</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{aligned}
 \lim _{t \rightarrow \infty} \boldsymbol{\pi} ^{(t + 1)}  
@@ -957,11 +977,18 @@ p_{ij} = \left\{\begin{array}{ll}
 \Rightarrow \boldsymbol{\pi} &amp;= \boldsymbol{\pi} \boldsymbol{P}  \\
 \end{aligned}\end{split}\]</div>
 <p>Hence <span class="math notranslate nohighlight">\(\boldsymbol{\pi}\)</span> is also a stationary distribution of <span class="math notranslate nohighlight">\(\boldsymbol{P}\)</span>. Moreover, <span class="math notranslate nohighlight">\(\boldsymbol{\pi}\)</span> is a <strong>left</strong> eigenvector of <span class="math notranslate nohighlight">\(\boldsymbol{P} = \boldsymbol{D} ^{-1} \boldsymbol{A}\)</span> with eigenvalue <span class="math notranslate nohighlight">\(\lambda = 1\)</span>.</p>
+<p>The ‘connected’ condition corresponds to ‘irreducible’, and the ‘non-bipartite’ condition corresponds to ‘aperiodic’, in Markov Chains. If the two conditions fail, then we may have some stationary distribution <span class="math notranslate nohighlight">\(\boldsymbol{\pi}: \boldsymbol{\pi} = \boldsymbol{\pi} \boldsymbol{P}\)</span>, but no limiting distribution.</p>
+</div>
+<div class="section" id="computation">
+<h3>Computation<a class="headerlink" href="#computation" title="Permalink to this headline">¶</a></h3>
 <dl class="simple myst">
+<dt>Power iteration</dt><dd><p>Since <span class="math notranslate nohighlight">\(\boldsymbol{\pi} = \boldsymbol{\pi} ^{(0)}\lim _{t \rightarrow \infty} \boldsymbol{P} ^{(t)}\)</span>, we can start from arbitrary <span class="math notranslate nohighlight">\(\boldsymbol{\pi} ^{(0)}\)</span>, and then repeat <span class="math notranslate nohighlight">\(\boldsymbol{\pi} ^{(t)} \leftarrow \boldsymbol{\pi} ^{(t-1)} \boldsymbol{P}\)</span> until convergence <span class="math notranslate nohighlight">\(\left\| \boldsymbol{\pi} ^{(t)}  - \boldsymbol{\pi} ^{(t-1)}  \right\| _1 &lt; \epsilon\)</span>. Can also use <span class="math notranslate nohighlight">\(L_2\)</span> norm. <span class="math notranslate nohighlight">\(t=50\)</span> is sufficient.</p>
+</dd>
 <dt>Definition (Reversible random walks)</dt><dd><p>A random walk with limiting distribution <span class="math notranslate nohighlight">\(\boldsymbol{\pi}\)</span> is called reversible if for all <span class="math notranslate nohighlight">\(i, j:\pi_i p_{ij} = \pi _j p_{ji}\)</span>.</p>
 </dd>
 </dl>
-<p>This means that <span class="math notranslate nohighlight">\(\pi_i \frac{a_{ij}}{i}  = \pi_j \frac{a_{ji}}{j}\)</span>. For undirected graphs, since, <span class="math notranslate nohighlight">\(a_{ij} = a_{ji}\)</span>, we have <span class="math notranslate nohighlight">\(\frac{\pi_i}{d_i} = \frac{\pi_j}{d_j}\)</span>, i.e., <span class="math notranslate nohighlight">\(\frac{\pi_i}{d_i}\)</span> is a constant, or <span class="math notranslate nohighlight">\(\pi_i \propto d_i\)</span>. Since <span class="math notranslate nohighlight">\(\sum_{i=1}^n \pi_i = 1\)</span>, we have <span class="math notranslate nohighlight">\(\pi_i = \frac{d_i}{\sum_{i=1}^n d_i} = \frac{d_i}{2 N_e}\)</span>. This gives a easy way to compute stationary distribution <span class="math notranslate nohighlight">\(\boldsymbol{\pi}\)</span> for reversible random walks.</p>
+<p>This means that <span class="math notranslate nohighlight">\(\pi_i \frac{a_{ij}}{d_i}  = \pi_j \frac{a_{ji}}{d_j}\)</span>. For undirected graphs, since, <span class="math notranslate nohighlight">\(a_{ij} = a_{ji}\)</span>, we have <span class="math notranslate nohighlight">\(\frac{\pi_i}{d_i} = \frac{\pi_j}{d_j}\)</span>, i.e., <span class="math notranslate nohighlight">\(\frac{\pi_i}{d_i}\)</span> is a constant, or <span class="math notranslate nohighlight">\(\pi_i \propto d_i\)</span>. Since <span class="math notranslate nohighlight">\(\sum_{i=1}^n \pi_i = 1\)</span>, we have <span class="math notranslate nohighlight">\(\pi_i = \frac{d_i}{\sum_{i=1}^n d_i} = \frac{d_i}{2 N_e}\)</span>. This gives a easy way to compute stationary distribution <span class="math notranslate nohighlight">\(\boldsymbol{\pi}\)</span> for reversible random walks.</p>
+</div>
 </div>
 <div class="section" id="lazy-random-walk">
 <h2>Lazy Random Walk<a class="headerlink" href="#lazy-random-walk" title="Permalink to this headline">¶</a></h2>

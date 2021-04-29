@@ -109,6 +109,8 @@ A closely related concept is [assortativity](graph-assortativity).
 
 The importance of a vertex $v$ can be measured by centrality $c(v)$. There are many kinds of centrality measures. Degree is one of them. Deciding which are most appropriate for a given application clearly requires consideration of the context.
 
+Other measures like local clustering coefficient and graphlet degree vector can also be used to measure importance of node, which are introduced in the next section.
+
 ### Closeness Centrality
 
 Closeness centrality measures how close a vertex is to other vertices.
@@ -139,6 +141,7 @@ Note
 - If all shortest paths are unique, i.e. $\sigma(s,t)=1$, then $c_{bet}(v)$ simple counts how many shortest paths going through $v$.
 - It can be normalized to $[0,1]$ through division by $(N_v - 1) (N_v - 2)/2$. For instance, it is 1 if $v$ is the center of a star.
 
+(eig-centrality)=
 ### Eigenvector Centrality
 
 A vertex's importance may depends on its neighbors' importance. Eigenvector centrality captures this,
@@ -287,6 +290,22 @@ Clustering coefficients have become a standard quantity used in the analysis of 
 - in large-scale networks with broad degree distributions, it has frequently been found that the local clustering coefficient $\operatorname{clus}(v)$ varies inversely with vertex degree.
 
 Higher-order clustering coefficients have also been proposed, involving cycles of length greater than three.
+
+### Graphlet Degree Vector
+
+We can view  
+- degree counts #(edges) that a node touches
+- clustering coefficient counts #(triangles) that a node touches (divided by neighbor pairs)
+
+GDV counts the number of graphlets that a node touches.
+
+:::{figure} graph-gdv-ep
+<img src="../imgs/graph-gdv-ep.png" width = "70%" alt=""/>
+
+Example of GDV [Leskovec 2021]
+:::
+
+If we consider graphlets on 2 to 5 nodes, we get a vector of 73 coordinates, which can be used as a signature of a node that describes the topology of nodes's neighborhood structure. This captures the structure out to a distance of 4 hops, better than degree and clustering coefficient which only do 1 hop.
 
 ### Connectivity
 
@@ -442,7 +461,9 @@ For details see SAND 4.4.
 - Testing: we can also test the significance of the changes. Note the multiple testing issue.
 
 
-## Dynamic Graphs
+## More
+
+### Dynamic Graphs
 
 Dynamic graphs refers to a collection $\left\{ G_{t} \right\}$ of graphs indexed over times $t$ in some set $T$.
 
@@ -455,3 +476,77 @@ Problems
 - extension of theorems in static graphs to dynamic graphs, e.g. Menger's theorem [SAND 224]
 - combinatorial problems that incorporates time [SAND 285]
 - evolution of static descriptive statistics over time: degrees, diameter, clustering behavior etc.
+
+### Graph Kernels
+
+Recall that [kernel functions](kernels) can be used as a similarity measures. Can we apply kernel function over graphs, i.e. $k(G, G ^\prime) \in \mathbb{R}$, to measure similarity between two graphs?
+
+A natural way to construct a graph-level feature vector is degree frequency. It counts the number of nodes that have some degree. This is a kind of bag-of * idea. Graphlet kernel and Weisfeiler-Lehman kernel both use this idea but * can be sophisticated.
+
+#### Graphlet Kernel
+
+The * in graphlet kernel is graphlets. It counts the number of different graphlets in a graph. Note that the definition of graphlet here is different from that in node-level where we only consider rooted, connected, non-isomorphic subgraphs. Here we drop the fist two conditions. Let $\mathcal{G}_k = \left\{ g_1, g_2, \ldots g_{n_k} \right\}$ be a list of graphlets of size $k$, with cardinality $n_k$. For instance,
+
+:::{figure} graph-kernel-graphlet
+<img src="../imgs/graph-kernel-graphlet.png" width = "70%" alt=""/>
+
+Non-isomorphic graphlets
+:::
+
+Given a graph $G$ and and a graphlet list $\mathcal{G}_k$, the graphlet frequency vector $\boldsymbol{f}_G \in \mathbb{R} ^{n_k}$ is defined as
+
+$$
+[\boldsymbol{f}_G]_i = \#(g_i \subseteq G)\quad \text{for } i=1, 2, \ldots, n_k
+$$
+
+Since $G$ and $G ^\prime$ may have different sizes, it's better to normalize $\boldsymbol{f}$ by $\boldsymbol{h}_G = \frac{\boldsymbol{f}_G }{ \sum_{i=1}^{n_k} [\boldsymbol{f}_G]_i }$, i.e. use density rather than frequency. The graphlet kernel is then
+
+$$
+k(G, G ^\prime ) = \langle \boldsymbol{h}_G, \boldsymbol{h}_{G ^\prime} \rangle
+$$
+
+It is easy to see the counting step is expensive. In fact, subgraph isomorphism test (judging whether a graph is a subgraph of another graph) is NP-hard. If a graph's node degree is bounded by $d_{\max}$, then an $\mathcal{O} (N_v d^{k-1}_{\max})$ algorithm exists to count all the graphlets of size $k$.
+
+#### Weisfeiler-Lehman Kernel
+
+WL kernel uses neighborhood structure to iteratively enrich node vocabulary.
+
+Algorithm: WL isomorphism test, aka color refinement.
+- Assign an initial color $c^{(0)}(v)$ to each node $v$
+- For $k=1, 2, \ldots, K$
+
+  $$
+  c^{(k+1)}(v) = \texttt{hash} \left( \left\{ c^{(k)}(v), \left\{ c^{(k)}(u) \right\}_{u \in \mathscr{N}(v)}  \right\} \right)
+  $$
+
+  where $\texttt{hash}$ maps different inputs to different colors.
+- Return a vector $\boldsymbol{\phi}$ of bag-of-colors in the history, which is used as $\boldsymbol{\phi}$ to construct the WL kernel.
+
+
+The number of steps $K$ here is related to $K$-hop neighborhood structure. When $K=1$, then $\boldsymbol{\phi}$ reduces to degree frequency. The algorithm runs in $\mathcal{O} (N_e)$.
+
+Other kernels
+- random-walk kernel
+- shortest-path kernel
+.
+
+
+.
+
+
+.
+
+
+.
+
+
+.
+
+
+.
+
+
+.
+
+
+.

@@ -801,6 +801,11 @@
      Processes on Graphs
     </a>
    </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../38-ml-for-graph-data/51-graph-rep-learning.html">
+     Graph Representation Learning
+    </a>
+   </li>
   </ul>
  </li>
 </ul>
@@ -919,11 +924,60 @@
     <a class="reference internal nav-link" href="#basics">
      Basics
     </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#stochastic-processes">
+       Stochastic Processes
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#id1">
+       Markov Chain
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#transition-matrix">
+       Transition Matrix
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#graphical-representation">
+       Graphical Representation
+      </a>
+     </li>
+    </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#irreducibility">
      Irreducibility
     </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#recurrence-and-transience">
+     Recurrence and Transience
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#definition">
+       Definition
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#number-of-revisits">
+       Number of Revisits
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#properties">
+       Properties
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#random-walks">
+       Random Walks
+      </a>
+     </li>
+    </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#periodicity">
@@ -933,9 +987,26 @@
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#stationary-distribution">
-   Stationary Distribution
+  <a class="reference internal nav-link" href="#distributions">
+   Distributions
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#stationary-distribution">
+     Stationary Distribution
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#limiting-distribution">
+     Limiting Distribution
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#fundamental-limit-theorems">
+     Fundamental Limit Theorems
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#exercise">
@@ -978,36 +1049,89 @@
               <div>
                 
   <div class="section" id="markov-chain">
-<h1>Markov Chain<a class="headerlink" href="#markov-chain" title="Permalink to this headline">¶</a></h1>
+<span id="markov-chains"></span><h1>Markov Chain<a class="headerlink" href="#markov-chain" title="Permalink to this headline">¶</a></h1>
+<p>Reference:</p>
+<ul class="simple">
+<li><p>Introduction to Probability Models <a class="reference external" href="https://galton.uchicago.edu/~yibi/teaching/stat317/2014/Lectures/">notes</a></p></li>
+<li><p>Transience and Recurrence <a class="reference external" href="https://brilliant.org/wiki/transience-and-recurrence/">link</a></p></li>
+</ul>
 <div class="section" id="definitions">
 <h2>Definitions<a class="headerlink" href="#definitions" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="basics">
 <h3>Basics<a class="headerlink" href="#basics" title="Permalink to this headline">¶</a></h3>
-<p>A <strong>stochastic process</strong> <span class="math notranslate nohighlight">\(\boldsymbol{X} = \left\{ X_t: t\in T \right\}\)</span> is a collection of random variables indexed by <span class="math notranslate nohighlight">\(t\)</span>. We call <span class="math notranslate nohighlight">\(X_t\)</span> the <strong>sate</strong> of the process at time <span class="math notranslate nohighlight">\(t\)</span>. If <span class="math notranslate nohighlight">\(T\)</span> is countable infinite, then we call <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span> a <strong>discrete</strong> time process.</p>
-<p>A discrete time process <span class="math notranslate nohighlight">\(\boldsymbol{X} = \left\{ X_0, X_1, \ldots \right\}\)</span> is called a <strong>Markov chain</strong> if, for any positive integer <span class="math notranslate nohighlight">\(t\)</span> and any states <span class="math notranslate nohighlight">\(i_0, \ldots, i_t, j\)</span>,</p>
+<div class="section" id="stochastic-processes">
+<h4>Stochastic Processes<a class="headerlink" href="#stochastic-processes" title="Permalink to this headline">¶</a></h4>
+<p>A <strong>stochastic process</strong> <span class="math notranslate nohighlight">\(\boldsymbol{X} = \left\{ X_t: t\in T \right\}\)</span> is a collection of random variables indexed by <span class="math notranslate nohighlight">\(t\)</span>.</p>
+<ul class="simple">
+<li><p>We call <span class="math notranslate nohighlight">\(X_t\)</span> the <strong>state</strong> of the process at time <span class="math notranslate nohighlight">\(t\)</span>. The set of values of the random variables is called the <strong>state space</strong> <span class="math notranslate nohighlight">\(\mathcal{X}\)</span>.</p></li>
+<li><p>If <span class="math notranslate nohighlight">\(T\)</span> is countable infinite, then we call <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span> a <strong>discrete</strong> time process.</p></li>
+</ul>
+<p>If <span class="math notranslate nohighlight">\(X_t = i, i \in \mathcal{X}\)</span>, we say the process is in state <span class="math notranslate nohighlight">\(i\)</span> at time <span class="math notranslate nohighlight">\(t\)</span>.</p>
+</div>
+<div class="section" id="id1">
+<h4>Markov Chain<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h4>
+<p>Let state space <span class="math notranslate nohighlight">\(\mathcal{X}\)</span> be a finite or countable set. For simplicity, we assume the discrete state space is given by the set of nonnegative integers <span class="math notranslate nohighlight">\(\left\{ 0,1,\ldots \right\}\)</span>.</p>
+<p>A discrete time process <span class="math notranslate nohighlight">\(\boldsymbol{X} = \left\{ X_0, X_1, \ldots \right\}\)</span> taking values in <span class="math notranslate nohighlight">\(\mathcal{X}\)</span> is called a <strong>Markov chain</strong> if, for any positive integer <span class="math notranslate nohighlight">\(t\)</span> and any states <span class="math notranslate nohighlight">\(i_0, \ldots, i_{t-1}, i, j\)</span>,</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \mathbb{P}\left(X_{t+1}=j \mid X_{t}=i, X_{t-1}=i_{t-1}, \ldots, X_{0}=i_{0}\right) =\mathbb{P}\left(X_{t+1}=j \mid X_{t}=i\right) \\
 \end{split}\]</div>
 <p>Verbally, we say that, given the past history of the process up through time <span class="math notranslate nohighlight">\(t\)</span>, the distribution of the process at time <span class="math notranslate nohighlight">\(t+1\)</span> depends only on the state at time <span class="math notranslate nohighlight">\(t\)</span>.</p>
-<p>We say a Markov chain has a <strong>discrete state space</strong> if the set of values of the random variables is countably infinite <span class="math notranslate nohighlight">\(\left\{ v_0, v_1, \ldots \right\}\)</span>. For simplicity, we assume the discrete state space is given by the set of nonnegative integers <span class="math notranslate nohighlight">\(\left\{ 0,1,\ldots \right\}\)</span>. We say a Markov chain is <strong>finite</strong> if the set of values of the random variables if a finite set <span class="math notranslate nohighlight">\(\left\{ v_0, v_1, \ldots, v_{n-1} \right\}\)</span>. In the following discussion we assume the Markov chains are finite.</p>
-<p>A Markov chain is <strong>homogeneous</strong> if <span class="math notranslate nohighlight">\(\mathbb{P}\left(X_{t+1}=j \mid X_{t}=i\right)=p_{i j}\)</span> for all <span class="math notranslate nohighlight">\(t\)</span>. This indicates that this conditional distribution does not very with <span class="math notranslate nohighlight">\(t\)</span>. The values <span class="math notranslate nohighlight">\(p_{ij}\)</span> are called <strong>transition probabilities</strong>, which can be stored in a transition matrix <span class="math notranslate nohighlight">\(\boldsymbol{P}\)</span>. We can find the <span class="math notranslate nohighlight">\(t\)</span>-step transition probability <span class="math notranslate nohighlight">\(p_{ij}^{(t)} = [\boldsymbol{P}^t] _{ij}\)</span>, which is the probability that, starting in state <span class="math notranslate nohighlight">\(i\)</span>, the Markov chain is found in state <span class="math notranslate nohighlight">\(j\)</span> after <span class="math notranslate nohighlight">\(t\)</span> transitions.</p>
+</div>
+<div class="section" id="transition-matrix">
+<h4>Transition Matrix<a class="headerlink" href="#transition-matrix" title="Permalink to this headline">¶</a></h4>
+<p>A Markov chain is called <strong>homogeneous</strong> or <strong>stationary</strong> if <span class="math notranslate nohighlight">\(\mathbb{P}\left(X_{t+1}=j \mid X_{t}=i\right)=p_{i j}\)</span> for all <span class="math notranslate nohighlight">\(t\)</span>. This indicates that this conditional distribution does not very with <span class="math notranslate nohighlight">\(t\)</span>. In the following discussion we only consider stationary Markov chains.</p>
+<p>The values <span class="math notranslate nohighlight">\(p_{ij}\)</span> are called <strong>transition probabilities</strong>, which can be stored in a transition matrix <span class="math notranslate nohighlight">\(\boldsymbol{P}\)</span>. We can show by induction that the <strong><span class="math notranslate nohighlight">\(n\)</span>-step transition probability</strong> is <span class="math notranslate nohighlight">\(p_{ij}^{(n)} = [\boldsymbol{P}^n] _{ij}\)</span>, which is the probability that, starting in state <span class="math notranslate nohighlight">\(i\)</span>, the Markov chain is found in state <span class="math notranslate nohighlight">\(j\)</span> after <span class="math notranslate nohighlight">\(n\)</span> transitions. In matrix form <span class="math notranslate nohighlight">\(\boldsymbol{P} ^{(n)} = \boldsymbol{P}^n\)</span>.</p>
+<dl class="simple myst">
+<dt>Chapman-Kolmogorov Equation</dt><dd><p>The <span class="math notranslate nohighlight">\((m+n)\)</span>-step transition probability from state <span class="math notranslate nohighlight">\(i\)</span> to <span class="math notranslate nohighlight">\(j\)</span>, satisfies</p>
+<div class="math notranslate nohighlight">
+\[
+  p_{ij}^{(m + n)} = \sum_{k \in \mathcal{X}} p_{ik}^{(m)}p_{kj}^{(n)}
+  \]</div>
+<p>In matrix form, <span class="math notranslate nohighlight">\(\boldsymbol{P}^{(m+n)} = \boldsymbol{P}^{(m)} \cdot \boldsymbol{P}^{(n)}\)</span></p>
+</dd>
+</dl>
+</div>
+<div class="section" id="graphical-representation">
+<h4>Graphical Representation<a class="headerlink" href="#graphical-representation" title="Permalink to this headline">¶</a></h4>
 <p>A Markov chain with state space <span class="math notranslate nohighlight">\(V\)</span> and transition matrix <span class="math notranslate nohighlight">\(\boldsymbol{P}\)</span> can be represented by a labeled directed graph, where edges are given by transitions with nonzero probability <span class="math notranslate nohighlight">\(E = \left\{ (u,v) \mid p_{u,v} &gt;0 \right\}\)</span>. Note that self-loops are allowed for <span class="math notranslate nohighlight">\(p_{ii} &gt; 0\)</span>.</p>
 <div class="figure align-default" id="mc-graph">
 <a class="reference internal image-reference" href="../_images/mc-graph.png"><img alt="" src="../_images/mc-graph.png" style="width: 70%;" /></a>
 <p class="caption"><span class="caption-number">Fig. 13 </span><span class="caption-text">Graphical representation of a Markov chain</span><a class="headerlink" href="#mc-graph" title="Permalink to this image">¶</a></p>
 </div>
 </div>
+</div>
 <div class="section" id="irreducibility">
 <h3>Irreducibility<a class="headerlink" href="#irreducibility" title="Permalink to this headline">¶</a></h3>
+<p>Consider a Markov chain <span class="math notranslate nohighlight">\(\left\{ X_t, t \ge 0 \right\}\)</span> with state space <span class="math notranslate nohighlight">\(\mathcal{X}\)</span>.</p>
 <dl class="simple myst">
 <dt>Definitions</dt><dd><ul>
-<li><p>A state <span class="math notranslate nohighlight">\(j\)</span> is <strong>accessible</strong> from state <span class="math notranslate nohighlight">\(i\)</span> if there exists some <span class="math notranslate nohighlight">\(n \ge 0\)</span> such that <span class="math notranslate nohighlight">\(p_{ij}^{(t)} &gt; 0\)</span>.</p></li>
-<li><p>Two states <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(j\)</span> <strong>communicate</strong> if they are accessible from each other, written as <span class="math notranslate nohighlight">\(i \leftrightarrow j\)</span>. In the graph-representation of the chain, we have <span class="math notranslate nohighlight">\(i \leftrightarrow j\)</span> if there are directed paths from <span class="math notranslate nohighlight">\(i\)</span> to <span class="math notranslate nohighlight">\(j\)</span> and from <span class="math notranslate nohighlight">\(j\)</span> to <span class="math notranslate nohighlight">\(i\)</span>.</p></li>
-<li><p>Some states form a <strong>communication class</strong> if all states in that class communicate.</p></li>
+<li><p>A state <span class="math notranslate nohighlight">\(j\)</span> is <strong>accessible</strong> from state <span class="math notranslate nohighlight">\(i\)</span> if there exists some <span class="math notranslate nohighlight">\(n \ge 0\)</span> such that <span class="math notranslate nohighlight">\(p_{ij}^{(n)} &gt; 0\)</span> for some <span class="math notranslate nohighlight">\(t\)</span>. In the graph-representation of the chain, we have <span class="math notranslate nohighlight">\(i \leftrightarrow j\)</span> iff there are directed paths from <span class="math notranslate nohighlight">\(i\)</span> to <span class="math notranslate nohighlight">\(j\)</span>.</p>
+<ul class="simple">
+<li><p>Accessibility is transitive: if <span class="math notranslate nohighlight">\(i \rightarrow j, j \rightarrow k\)</span> then <span class="math notranslate nohighlight">\(i \rightarrow k\)</span>.</p></li>
+</ul>
+</li>
+<li><p>Two states <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(j\)</span> <strong>communicate</strong> if they are accessible from each other, written as <span class="math notranslate nohighlight">\(i \leftrightarrow j\)</span>. In the graph-representation of the chain, we have <span class="math notranslate nohighlight">\(i \leftrightarrow j\)</span> if there are directed paths from <span class="math notranslate nohighlight">\(i\)</span> to <span class="math notranslate nohighlight">\(j\)</span> and from <span class="math notranslate nohighlight">\(j\)</span> to <span class="math notranslate nohighlight">\(i\)</span>.</p>
+<ul>
+<li><p>Communicability are</p>
+<ul class="simple">
+<li><p>reflective: <span class="math notranslate nohighlight">\(i \leftrightarrow j\)</span>, since <span class="math notranslate nohighlight">\(\boldsymbol{P}_{ii} ^0 = \mathbb{P} \left(X_{0}=i \mid X_{0}=i\right)=1&gt;0\)</span> by convention</p></li>
+<li><p>symmetric: <span class="math notranslate nohighlight">\(i \leftrightarrow j \Leftrightarrow j \leftrightarrow i\)</span></p></li>
+<li><p>transitive: if <span class="math notranslate nohighlight">\(i \leftrightarrow j\)</span> and <span class="math notranslate nohighlight">\(j \leftrightarrow k\)</span> then <span class="math notranslate nohighlight">\(i \leftrightarrow k\)</span>.</p></li>
+</ul>
+</li>
+<li><p>Thus communicability defines a partition of states.</p>
+<div class="math notranslate nohighlight">
+\[
+      \mathcal{X} = \mathcal{X} _1 \cup \mathcal{X} _2 \cdots \text{ and } \mathcal{X} _i \text{ are disjoint}  
+      \]</div>
+<p>Each <span class="math notranslate nohighlight">\(\mathcal{X} _i\)</span> is called a <strong>communication class</strong>. All states in that class communicate.</p>
+</li>
+</ul>
+</li>
 <li><p>A Markov chain is <strong>irreducible</strong> if any state is accessible from any other in some finite number of transitions, i.e.</p>
 <div class="math notranslate nohighlight">
-\[\forall i, j, \exists t: \quad p_{ij}^{(t)} &gt; 0\]</div>
+\[\forall i, j, \exists n: \quad p_{ij}^{(n)} &gt; 0\]</div>
 <p>Equivalently,</p>
 <ul class="simple">
 <li><p>all states belong to one communication class, or</p></li>
@@ -1018,15 +1142,119 @@
 </dd>
 </dl>
 </div>
+<div class="section" id="recurrence-and-transience">
+<h3>Recurrence and Transience<a class="headerlink" href="#recurrence-and-transience" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="definition">
+<h4>Definition<a class="headerlink" href="#definition" title="Permalink to this headline">¶</a></h4>
+<p>For a state <span class="math notranslate nohighlight">\(i \in \mathcal{X}\)</span>, define</p>
+<div class="math notranslate nohighlight">
+\[
+f_{i}=\mathbb{P}\left(X_{n}=i \text { for some } n&gt;0 \mid X_{0}=i\right)
+\]</div>
+<ul class="simple">
+<li><p>If <span class="math notranslate nohighlight">\(f_i = 1\)</span>, we say state <span class="math notranslate nohighlight">\(i\)</span> is <strong>recurrent</strong></p></li>
+<li><p>If <span class="math notranslate nohighlight">\(f_i &lt; 1\)</span>, we say state <span class="math notranslate nohighlight">\(i\)</span> is <strong>transient</strong></p></li>
+</ul>
+</div>
+<div class="section" id="number-of-revisits">
+<h4>Number of Revisits<a class="headerlink" href="#number-of-revisits" title="Permalink to this headline">¶</a></h4>
+<p>Let <span class="math notranslate nohighlight">\(N_i\)</span> be the number of times the process revisits state <span class="math notranslate nohighlight">\(i\)</span> after starting from <span class="math notranslate nohighlight">\(i\)</span>, then we can show</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbb{E}[N_i]=\sum_{n=1}^{\infty} p_{i i}^{(n)}
+\]</div>
+<p>We can use this expectation to characterize recurrent and transient states.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\text { State } i \text { is }\left\{\begin{array}{ll}
+\text { recurrent if } &amp; \sum_{n=1}^{\infty} P_{i i}^{(n)}=\infty \\
+\text { transient if } &amp; \sum_{n=1}^{\infty} P_{i i}^{(n)}&lt;\infty
+\end{array}\right.
+\end{split}\]</div>
+<p>Note that the chain may be infinite.</p>
+</div>
+<div class="section" id="properties">
+<h4>Properties<a class="headerlink" href="#properties" title="Permalink to this headline">¶</a></h4>
+<p>Equivalent conditions of recurrent:</p>
+<ul class="simple">
+<li><p>state <span class="math notranslate nohighlight">\(i\)</span> is recurrent</p></li>
+<li><p>the process revisits <span class="math notranslate nohighlight">\(i\)</span> w.p. <span class="math notranslate nohighlight">\(f_i = 1\)</span>, i.e. will always come back</p></li>
+<li><p>starting from state <span class="math notranslate nohighlight">\(i\)</span>, the process will revisit state <span class="math notranslate nohighlight">\(i\)</span> infinitely often: <span class="math notranslate nohighlight">\(\mathbb{E} [N_i] = \infty\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\sum_{n=1}^{\infty} p_{i i}^{(n)} = \infty\)</span></p></li>
+</ul>
+<p>For transient states,</p>
+<ul>
+<li><p>the process revisits <span class="math notranslate nohighlight">\(i\)</span> w.p. <span class="math notranslate nohighlight">\(f_i &lt; 1\)</span>, may not come back!</p></li>
+<li><p>starting from state <span class="math notranslate nohighlight">\(i\)</span>, the number of times the process revisits state <span class="math notranslate nohighlight">\(i\)</span> is finite, with geometric distribution</p>
+<div class="math notranslate nohighlight">
+\[
+  \mathrm{P}\left(N_{i}=k\right)=f_{i}^{k}\left(1-f_{i}\right),\quad k = 1, 2, \ldots,
+  \]</div>
+<p>That is, the process comes back <span class="math notranslate nohighlight">\(k\)</span> times and restart and then never comes back. Every start is a Bernoulli experiment with success probability <span class="math notranslate nohighlight">\(1- f_i\)</span>.</p>
+</li>
+<li><p><span class="math notranslate nohighlight">\(\mathbb{E} [N_i] = \frac{1}{1-f_i}\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\sum_{n=1}^{\infty} p_{i i}^{(n)} &lt; \infty\)</span></p></li>
+</ul>
+<p>Propositions</p>
+<ul class="simple">
+<li><p>States in a finite-state Markov chain CANNOT be all transient.</p></li>
+<li><p>If <span class="math notranslate nohighlight">\(i \leftrightarrow j\)</span>, and <span class="math notranslate nohighlight">\(i\)</span> is recurrent, then <span class="math notranslate nohighlight">\(j\)</span> is also recurrent.</p></li>
+<li><p>All states of a finite irreducible Markov chain are recurrent.</p></li>
+</ul>
+</div>
+<div class="section" id="random-walks">
+<h4>Random Walks<a class="headerlink" href="#random-walks" title="Permalink to this headline">¶</a></h4>
+<p>In a one-dimensional random walk,</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+X_{n+1}=\left\{\begin{array}{ll}
+X_{n}+1 &amp; \text { with prob. } p \\
+X_{n}-1 &amp; \text { with prob. } 1-p
+\end{array}\right.
+\end{split}\]</div>
+<ul class="simple">
+<li><p>State space is <span class="math notranslate nohighlight">\(\mathbb{Z}\)</span></p></li>
+<li><p>All states communicate, there is one class, Hence, states are all transient or all recurrent. It suffices to check whether <span class="math notranslate nohighlight">\(0\)</span> is recurrent or transient.</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+P_{00}^{(2 n+1)}&amp;=0 \\
+P_{00}^{(2 n)}&amp;= \binom{2n}{n}  p^{n}(1-p)^{n}\quad \text { by Stirlin's formula }\\
+&amp;=\frac{(2 n) !}{n ! n !} p^{n}(1-p)^{n} \quad n ! \approx n^{n+0.5} e^{-n} \sqrt{2 \pi} \\
+&amp;\approx \frac{(2 n)^{2 n+0.5} e^{-2 n} \sqrt{2 \pi}}{\left(n^{n+0.5} e^{-n} \sqrt{2 \pi}\right)^{2}} p^{n}(1-p)^{n} \\
+&amp;=\frac{1}{\sqrt{\pi n}}[4 p(1-p)]^{n}
+\end{aligned}
+\end{split}\]</div>
+<p>Thus,</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\sum_{n=1}^{\infty} P_{i i}^{2 n}=\sum_{n=1}^{\infty} \frac{1}{\sqrt{\pi n}}[4 p(1-p)]^{n}\left\{\begin{array}{ll}
+&lt;\infty &amp; \text { if } p \neq 1 / 2 \\
+=\infty &amp; \text { if } p=1 / 2
+\end{array}\right.
+\end{split}\]</div>
+<p>One-dimensional random walk is recurrent if <span class="math notranslate nohighlight">\(p=1/2\)</span>, and transient otherwise.</p>
+<p>In general, it can be shown that for a <span class="math notranslate nohighlight">\(d\)</span>-dimensional <strong>symmetric</strong> random walk</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\sum_{n=1}^{\infty} P_{00}^{(2 n)}\left\{\begin{array}{ll}
+=\infty &amp; \text { for } d=1 \text { or } 2 \\
+&lt;\infty &amp; \text { for } d \geq 3
+\end{array}\right.
+\end{split}\]</div>
+<p>“A drunken man will find his way home. A drunken bird might be lost forever.”</p>
+</div>
+</div>
 <div class="section" id="periodicity">
 <h3>Periodicity<a class="headerlink" href="#periodicity" title="Permalink to this headline">¶</a></h3>
 <dl class="simple myst">
 <dt>Definition (Period)</dt><dd><p>The period <span class="math notranslate nohighlight">\(d(i)\)</span> of a state <span class="math notranslate nohighlight">\(i\)</span> of a homogeneous Markov chain is defined as</p>
 <div class="math notranslate nohighlight">
 \[
-  d(i) = \mathrm{gcd} \left\{ t: p_{ii} ^{(t)} &gt;0 \right\}
+  d(i) = \mathrm{gcd} \left\{ t: p_{ii} ^{(n)} &gt;0 \right\}
   \]</div>
-<p>where <span class="math notranslate nohighlight">\(\mathrm{gcd}\)</span> stands for greatest common divisor.</p>
+<p>where <span class="math notranslate nohighlight">\(\mathrm{gcd}\)</span> stands for greatest common divisor. In other words, <span class="math notranslate nohighlight">\(p_{ii}^t = 0\)</span> whenever <span class="math notranslate nohighlight">\(t\)</span> is not a multiple of <span class="math notranslate nohighlight">\(d(i)\)</span>.</p>
 </dd>
 <dt>Definition (Periodic and aperiodic)</dt><dd><ul class="simple">
 <li><p>If <span class="math notranslate nohighlight">\(d(i)&gt;1\)</span>, we say that state <span class="math notranslate nohighlight">\(i\)</span> is periodic. That is, there is a period <span class="math notranslate nohighlight">\(d(i)\)</span> such that starting in state <span class="math notranslate nohighlight">\(i\)</span>, the chain can return to <span class="math notranslate nohighlight">\(i\)</span> only at multiples of the period <span class="math notranslate nohighlight">\(d(i)\)</span>, and <span class="math notranslate nohighlight">\(d(i)\)</span> is the largest such integer.</p></li>
@@ -1034,17 +1262,18 @@
 <li><p>A Markov chain is aperiodic if all its states are aperiodic.</p></li>
 </ul>
 </dd>
-<dt>Claims</dt><dd><ul>
+<dt>Properties</dt><dd><ul>
 <li><p>If <span class="math notranslate nohighlight">\(p_{ii} &gt; 0\)</span> then <span class="math notranslate nohighlight">\(x\)</span> is aperiodic. Converse is not true.</p></li>
 <li><p>If <span class="math notranslate nohighlight">\(i \leftrightarrow j\)</span>, then <span class="math notranslate nohighlight">\(d(i) = d(j)\)</span>.</p></li>
+<li><p>Periodicity is a class property. That is, all states in the same class have the same period.</p></li>
 <li><p>If a finite Markov chain is aperiodic, then there exists a positive integer <span class="math notranslate nohighlight">\(m\)</span>, such that for all states <span class="math notranslate nohighlight">\(i\)</span>, it is guaranteed to return to that state in a finite number of transitions, i.e.</p>
 <div class="math notranslate nohighlight">
-\[\exists m, \forall i, t \ge m: \quad p_{ii}^{(t)} &gt; 0\]</div>
+\[\exists m, \forall i: \quad p_{ii}^{(n)} &gt; 0 \quad \text{ for some } n \ge m\]</div>
 </li>
 <li><p>If a Markov chain is irreducible and aperiodic, then there exists an integer <span class="math notranslate nohighlight">\(m\)</span>, such that any state is accessible from any other after at least <span class="math notranslate nohighlight">\(m\)</span> transitions, i.e.</p>
 <div class="math notranslate nohighlight">
 \[
-    \exists m, \forall i, t \ge m: \quad \quad p_{ij}^{(t)} &gt; 0
+    \exists m, \forall i: \quad p_{ij}^{(n)} &gt; 0 \quad \text{ for some } n \ge m
     \]</div>
 <p><em><strong>Proof</strong></em></p>
 <div class="math notranslate nohighlight">
@@ -1058,30 +1287,94 @@
 </dl>
 </div>
 </div>
+<div class="section" id="distributions">
+<h2>Distributions<a class="headerlink" href="#distributions" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="stationary-distribution">
-<h2>Stationary Distribution<a class="headerlink" href="#stationary-distribution" title="Permalink to this headline">¶</a></h2>
+<h3>Stationary Distribution<a class="headerlink" href="#stationary-distribution" title="Permalink to this headline">¶</a></h3>
 <dl class="simple myst">
-<dt>Definition (Stationary distribution)</dt><dd><p>A row vector <span class="math notranslate nohighlight">\(\boldsymbol{\pi} ^{\top}\)</span> is called a <strong>stationary distribution</strong> for a Markov chain with transition matrix <span class="math notranslate nohighlight">\(\boldsymbol{P}\)</span> if</p>
+<dt>Definition</dt><dd><p>A row vector <span class="math notranslate nohighlight">\(\boldsymbol{\pi} ^{\top}\)</span> is called a <strong>stationary distribution</strong> for a Markov chain with transition matrix <span class="math notranslate nohighlight">\(\boldsymbol{P}\)</span> if</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(\pi_j \ge 0\)</span> and <span class="math notranslate nohighlight">\(\sum_j\pi_j = 1\)</span></p></li>
 <li><p><span class="math notranslate nohighlight">\(\boldsymbol{\pi} ^{\top} \boldsymbol{P} = \boldsymbol{\pi}^{\top}\)</span></p></li>
 </ul>
 </dd>
+<dt>Existence?</dt><dd><p>Not all Markov chains have a stationary distribution. 1-dimensional symmetric random walk does not have a stationary distribution.</p>
+</dd>
+<dt>Uniqueness?</dt><dd><p>Stationary distribution may not be unique. For instance,</p>
+<ul class="simple">
+<li><p>when <span class="math notranslate nohighlight">\(\boldsymbol{P} = \boldsymbol{I}\)</span>, then every probability distribution on the states is a stationary probability distribution.</p></li>
+<li><p>when the process has two communication classes such that <span class="math notranslate nohighlight">\(\boldsymbol{P}\)</span> is a block diagonal matrix, then let <span class="math notranslate nohighlight">\(\boldsymbol{\pi} _1\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{\pi} _2\)</span> be the respective stationary distributions of the two sub-Markov chains, then <span class="math notranslate nohighlight">\(\boldsymbol{\pi} = [c \boldsymbol{\pi} _1, (1-c) \boldsymbol{\pi} _2]\)</span> is a stationary distribution of the whole train, for any <span class="math notranslate nohighlight">\(0&lt;c&lt;1\)</span>.</p></li>
+</ul>
+<p>In the next section we show sufficient conditions for uniqueness.</p>
+</dd>
 </dl>
-<p>For instance, when <span class="math notranslate nohighlight">\(\boldsymbol{P} = \boldsymbol{I}\)</span>, then every probability distribution on the states is a stationary probability distribution.</p>
+</div>
+<div class="section" id="limiting-distribution">
+<h3>Limiting Distribution<a class="headerlink" href="#limiting-distribution" title="Permalink to this headline">¶</a></h3>
 <dl class="simple myst">
-<dt>Existence and uniqueness</dt><dd><p>If a Markov chain is <strong>aperiodic</strong> and <strong>irreducible</strong>, then it has precisely <strong>one</strong> stationary distribution, in the sense that the limit</p>
+<dt>Definition</dt><dd><p>A Markov chain is said to have a limiting distribution if the limit of transition probability exits</p>
 <div class="math notranslate nohighlight">
 \[
   \lim _{n \rightarrow \infty} p_{ij}^{(n)} = \pi _j
   \]</div>
-<p>exists for each state <span class="math notranslate nohighlight">\(j\)</span> with <span class="math notranslate nohighlight">\(\pi_j \ge 0\)</span> and <span class="math notranslate nohighlight">\(\sum_j\pi_j = 1\)</span>, which is independent of starting state <span class="math notranslate nohighlight">\(i\)</span>. Equivalently,</p>
+<p>for each state <span class="math notranslate nohighlight">\(j\)</span> with <span class="math notranslate nohighlight">\(\pi_j \ge 0\)</span> and <span class="math notranslate nohighlight">\(\sum_j\pi_j = 1\)</span>, which is independent of starting state <span class="math notranslate nohighlight">\(i\)</span>. Equivalently,</p>
 <div class="math notranslate nohighlight">
 \[
   \lim _{n \rightarrow \infty} \boldsymbol{P}^n  = \boldsymbol{1} \boldsymbol{\pi} ^{\top}
   \]</div>
 </dd>
 </dl>
+<p>It is easy to verify that a limiting distribution is a stationary distribution.</p>
+<dl class="simple myst">
+<dt>Existence</dt><dd><p>Not all Markov chains have a stationary distribution.</p>
+</dd>
+<dt>Uniqueness</dt><dd><p>If a Markov Chain has a limiting distribution, then it is unique.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="fundamental-limit-theorems">
+<h3>Fundamental Limit Theorems<a class="headerlink" href="#fundamental-limit-theorems" title="Permalink to this headline">¶</a></h3>
+<p>For a Markov chain, consider the first return time to a recurrent state <span class="math notranslate nohighlight">\(i\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+T_{i}=\min \left\{n&gt;0: X_{n}=i \mid X_{0}=i\right\}
+\]</div>
+<p>We say a state is</p>
+<ul class="simple">
+<li><p><strong>positive recurrent</strong> if <span class="math notranslate nohighlight">\(\mathbb{E} [T_i] &lt; \infty\)</span></p></li>
+<li><p><strong>null recurrent</strong> if <span class="math notranslate nohighlight">\(\mathbb{P} (T_i &lt; \infty) =1\)</span> but <span class="math notranslate nohighlight">\(\mathbb{E} [T_i] = \infty\)</span></p></li>
+<li><p>transient if <span class="math notranslate nohighlight">\(\mathbb{P} (T_i &lt; \infty) &lt; 1\)</span>. Note that the event <span class="math notranslate nohighlight">\(\left\{ T_i &lt; \infty \right\}\)</span> is equivalent to <span class="math notranslate nohighlight">\(\left\{ X_{n}=i \text { for some } n&gt;0 \right\}\)</span>.</p></li>
+<li><p><strong>ergodic</strong> if it is aperiodic and positive recurrent.</p></li>
+</ul>
+<p>Properties</p>
+<ul class="simple">
+<li><p>Positive/null recurrence is also a class property.</p></li>
+<li><p>If a state <span class="math notranslate nohighlight">\(i\)</span> is null recurrent then <span class="math notranslate nohighlight">\(\lim _{n \rightarrow \infty} P_{j i}^{(n)}=0\)</span> for all <span class="math notranslate nohighlight">\(j \in \mathcal{X}\)</span></p></li>
+<li><p>In a finite-state Markov chain all recurrent states are positive recurrent.</p></li>
+</ul>
+<dl class="simple myst">
+<dt>Theorem 1</dt><dd><p>For a recurrent irreducible aperiodic Markov chain,</p>
+<div class="math notranslate nohighlight">
+\[\lim _{n \rightarrow \infty} p_{i j}^{(n)}=\frac{1}{\mathbb{E}\left[T_{j}\right]}\]</div>
+<p>In other words, a recurrent state <span class="math notranslate nohighlight">\(j\)</span> is null recurrent iff <span class="math notranslate nohighlight">\(\lim _{n \rightarrow \infty} p_{i j}^{(n)}=0\)</span>.</p>
+<p>If the Markov chain is, in addition, positive recurrent (hence irreducible and ergodic), then</p>
+<div class="math notranslate nohighlight">
+\[
+  \pi_{i}=\lim _{n \rightarrow \infty} p_{i j}^{(n)}=\frac{1}{\mathbb{E}\left[T_{i}\right]}
+  \]</div>
+<p>where <span class="math notranslate nohighlight">\(\boldsymbol{\pi}\)</span> is the <strong>unique</strong> stationary distribution of the chain.</p>
+</dd>
+<dt>Theorem 2</dt><dd><p>If a Markov chain is irreducible, then there will be a unique stationary distribution <span class="math notranslate nohighlight">\(\boldsymbol{\pi}\)</span> if and only if the Markov chain is positive recurrent, which can be found by the limit</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+  \pi_{j}=\left\{\begin{array}{ll}
+  \lim _{n \rightarrow \infty} \frac{1}{n} \sum_{k=1}^{n} p_{i j}^{(k)} &amp; \text { if the chain is periodic } \\
+  \lim _{n \rightarrow \infty} p_{i j}^{(n)} &amp; \text { if the chain is aperiodic }
+  \end{array}\right.
+  \end{split}\]</div>
+</dd>
+</dl>
+</div>
 </div>
 <div class="section" id="exercise">
 <h2>Exercise<a class="headerlink" href="#exercise" title="Permalink to this headline">¶</a></h2>
