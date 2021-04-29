@@ -63,7 +63,7 @@ Normal cones [[Friedlander and Joshi](https://friedlander.io/19T2-406/notes/Cons
 (rayleigh-quotient)=
 ## Rayleigh Quotients
 
-Consider the following constrained optimization:
+Consider the following constrained optimization where $\boldsymbol{A}$ is a real symmetric matrix:
 
 $$\begin{aligned}
 \max_{\boldsymbol{x}} && \boldsymbol{x} ^{\top} \boldsymbol{A} \boldsymbol{x}  & \\
@@ -550,6 +550,8 @@ To analyze it more specifically, we impose some structural assumption of $\bolds
 
 The above inequalities applies to any problem instance $G=(V, E, \boldsymbol{W})$. It may give too generous or useless guarantee for some particular model. Let’s see its performance in [stochastic block models](stochastic-block-models).
 
+#### Formulation
+
 Let $\boldsymbol{A}$ be a random SBM adjacency matrix. Recall that
 
 $$
@@ -570,7 +572,14 @@ $$\mathbb{E} [\boldsymbol{B}] = \frac{p-q}{2} \left[\begin{array}{cc}
 \end{array}\right] [\boldsymbol{1} ^{\top} \ -\boldsymbol{1} ^{\top}]$$
 
 which is a rank-1 matrix. With noise $\boldsymbol{E}$, we observe $\boldsymbol{B} = \mathbb{E} [\boldsymbol{B}] + \boldsymbol{E}$, which is no longer rank-1. In this case, we approximate the unknown $\mathbb{E} [\boldsymbol{B}]$ with a rank-1 matrix $\boldsymbol{X} = \boldsymbol{x}
-\boldsymbol{x} ^{\top}$, by maximizing $\langle \boldsymbol{B}, \boldsymbol{X} \rangle$. We hope that the optimal solution looks like
+\boldsymbol{x} ^{\top}$, by maximizing $\langle \boldsymbol{B}, \boldsymbol{X} \rangle$.
+
+$$
+\max\ \operatorname{tr}\left( \boldsymbol{B} \boldsymbol{X} \right) \qquad \text{s.t. } \boldsymbol{X} = \boldsymbol{x} \boldsymbol{x} ^{\top}
+$$
+
+
+We hope that the optimal solution looks like
 
 $$
 \boldsymbol{X} ^* = \left[\begin{array}{cc}
@@ -579,17 +588,15 @@ $$
 \end{array}\right] [\boldsymbol{1} ^{\top} \ -\boldsymbol{1} ^{\top}]
 $$
 
-which recovers the cluster label.
-
-Similar to the max-cut case, we apply SDP relaxation that drops the non-convex rank-1 constraint to $\boldsymbol{X}$. The SDP problem is then
+which recovers the cluster label. Similar to the max-cut case, we apply SDP relaxation that drops the non-convex rank-1 constraint to $\boldsymbol{X}$. The SDP problem is then
 
 $$
 \max\ \operatorname{tr}\left( \boldsymbol{B} \boldsymbol{X} \right) \qquad \text{s.t. } \boldsymbol{X} \succeq 0, X_{ii}=1
 $$
 
-Note $\operatorname{tr}\left( \boldsymbol{B} \boldsymbol{X} \right) = \langle \boldsymbol{B} , \boldsymbol{X} \rangle = \sum_{i,j}^n b_{ij} x_{ij}$. Next, we show that the solution to the relaxed problem, denoted $\hat{\boldsymbol{X}}$, is exactly $\boldsymbol{X} ^*$. Hence, even though we've dropped the rank-1 constraint, we can still solve the relaxed problem and exactly recover the cluster labels.
+Note $\operatorname{tr}\left( \boldsymbol{B} \boldsymbol{X} \right) = \langle \boldsymbol{B} , \boldsymbol{X} \rangle = \sum_{i,j}^n b_{ij} x_{ij}$. Next, we show that the solution to the relaxed problem, denoted $\hat{\boldsymbol{X}}$, is exactly $\boldsymbol{X} ^*$. Hence, even though we've dropped the rank-1 constraint, we can still solve the relaxed problem and **exactly** recover the cluster labels.
 
-:::{admonition,dropdown,seealso} *Proof*
+#### Dual Problem
 
 First we convert it to an equivalent minimization problem
 
@@ -616,7 +623,7 @@ $$
 where $\operatorname{diag}(\boldsymbol{z})$ is an $n\times n$ diagonal matrix. Plug this identity back to $\mathcal{L}$ gives the RHS outer maximization problem
 
 $$
-\max _{\boldsymbol{\Lambda} \succeq \boldsymbol{0} , \boldsymbol{z}}\ \boldsymbol{z} ^{\top} \boldsymbol{1}
+\max _{\boldsymbol{\Lambda} \succeq \boldsymbol{0} , \boldsymbol{z}}\ \boldsymbol{z} ^{\top} \boldsymbol{1} \qquad \text{s.t. } - \boldsymbol{B} - \operatorname{diag}\left( \boldsymbol{z}  \right) - \boldsymbol{\Lambda} = \boldsymbol{0}
 $$
 
 There are conditions for optimality of primal and dual variables $(\boldsymbol{X} , \boldsymbol{z} , \boldsymbol{\Lambda})$, called KKT condition:
@@ -624,11 +631,18 @@ There are conditions for optimality of primal and dual variables $(\boldsymbol{X
 - dual feasible: $\boldsymbol{\Lambda} \succeq \boldsymbol{0} , - \boldsymbol{B} - \operatorname{diag}\left( \boldsymbol{z}  \right) - \boldsymbol{\Lambda} = \boldsymbol{0}$
 - complementary slackness: $\langle \boldsymbol{\Lambda} , \boldsymbol{X}  \rangle = 0 \Leftrightarrow \boldsymbol{\Lambda} \boldsymbol{X} = \boldsymbol{0}$
 
+Next we show
 
-We then show that given $\boldsymbol{B} = \mathbb{E} [\boldsymbol{B}]  + \boldsymbol{E}$, there exists $\boldsymbol{\Lambda} , \boldsymbol{z}$ such that $(\boldsymbol{X} ^*, \boldsymbol{z} , \boldsymbol{\Lambda})$ satisfies KKT condition, together with one additional condition $\operatorname{rank}\left( \boldsymbol{\Lambda}  \right) + \operatorname{rank}\left( \boldsymbol{X} ^* \right) = n$, called **strict complementary condition**. If these conditions hold, then by some theory $\boldsymbol{X} ^*$ is the **unique** optimizer.
+1. Given $\boldsymbol{B} = \mathbb{E} [\boldsymbol{B}]  + \boldsymbol{E}$, there exists $\boldsymbol{z}, \boldsymbol{\Lambda}$ such that $(\boldsymbol{X} ^*, \boldsymbol{z} , \boldsymbol{\Lambda})$ satisfies KKT condition. Hence $\boldsymbol{X} ^*$ is an optimal solution to the relaxed problem.
+2. This triple also satisfies one additional condition $\operatorname{rank}\left( \boldsymbol{\Lambda}  \right) + \operatorname{rank}\left( \boldsymbol{X} ^* \right) = n$, called **strict complementary condition**.
+3. If KKT conditions and this strict complementary condition hold, $\boldsymbol{X} ^*$ is the **unique** optimizer.
 
-- $\boldsymbol{z} , \boldsymbol{\Lambda}$ aka dual certificate
-- complementary slackness says $\operatorname{dim} (\operatorname{null}  (\boldsymbol{\Lambda})) \ge 1$, but the strict complementary condition says it is exactly $1$.
+Note that in the above setting
+
+- such $\boldsymbol{z} , \boldsymbol{\Lambda}$ aka dual certificate
+- complementary slackness $\boldsymbol{\Lambda} \boldsymbol{X} = \boldsymbol{0}$ says has some null space, i.e. $\operatorname{dim} (\operatorname{null}  (\boldsymbol{\Lambda})) \ge 1$, but the strict complementary condition says it is exactly $1$.
+
+#### KKT Satisfied
 
 To show that, we use first order necessary condition. Recall the problem is
 
@@ -637,7 +651,7 @@ $$\min\ - \langle  \boldsymbol{B}, \boldsymbol{X} \rangle \qquad \text{s.t. } \b
 The feasible region can be specified as
 
 $$
-S = \left\{ \boldsymbol{X} \mid\langle \boldsymbol{X} \succeq \boldsymbol{0}, \boldsymbol{C} _i, \boldsymbol{X}  \rangle = b_i, i \in [n] \right\}
+S = \left\{ \boldsymbol{X} \mid \boldsymbol{X} \succeq \boldsymbol{0}, \langle\boldsymbol{C} _i, \boldsymbol{X}  \rangle = b_i, i \in [n] \right\}
 $$
 
 where $\boldsymbol{C} _i = \boldsymbol{e} _i \boldsymbol{e} _i ^{\top}, b_i = 1$. Similar to the $\boldsymbol{x} \in \mathbb{R} ^n$ [case](normal-cones), the normal cone of $\boldsymbol{S}$ at $\boldsymbol{x}$ is
@@ -650,7 +664,140 @@ Note that $- \nabla f(\boldsymbol{X}) = \boldsymbol{B}$. By the first order nece
 - $\boldsymbol{B} = \sum_{i=1}^n \lambda_i \boldsymbol{C} _i - \boldsymbol{\Lambda}$ for some $\lambda_i$.
 - $\boldsymbol{\Lambda} \succeq \boldsymbol{0}, \langle \boldsymbol{\Lambda} , \boldsymbol{X}  \rangle = 0$
 
+...
+
+#### Uniqueness
+
+KKT implies optimality of $\boldsymbol{X}^*$. To show why the additional strict complementary condition implies uniqueness, let $\boldsymbol{X} = \boldsymbol{X} ^* + \Delta$ be another optimizer. Then
+
+$$\begin{aligned}
+0
+&= \langle -\boldsymbol{B} , \boldsymbol{X} - \boldsymbol{X} ^* \rangle  \\
+&= \langle \boldsymbol{\Lambda} + \operatorname{diag}(\boldsymbol{z})  , \boldsymbol{X} - \boldsymbol{X} ^* \rangle \quad \because \text{KKT.dual} \\
+&= \langle \boldsymbol{\Lambda} , \boldsymbol{X} - \boldsymbol{X} ^* \rangle + \langle \boldsymbol{z} , \operatorname{diag}(\boldsymbol{X}) - \operatorname{diag}(\boldsymbol{X} ^*)   \rangle\\
+&= \langle \boldsymbol{\Lambda} , \boldsymbol{X} - \boldsymbol{X} ^* \rangle \quad \because \text{KKT.primal}\\
+\end{aligned}$$
+
+
+:::{admonition,hint} Proof idea
+
+The idea is to decompose $\Delta = \boldsymbol{X} - \boldsymbol{X}^*$ into two orthogonal components, parallel component $P_{\boldsymbol{X} ^{*\parallel}} (\Delta)$ to $\boldsymbol{X} ^*$ and orthogonal component $P_{\boldsymbol{X} ^{* \perp}} (\Delta)$ to $\boldsymbol{X} ^*$. Then show $P_{\boldsymbol{X}^ {* \perp}} (\Delta)$ is zero. Hence only the parallel component remains, i.e. $\boldsymbol{X}$ is some 'scaling' of $\boldsymbol{X}^*$.
+
 :::
+
+Let $\boldsymbol{u} = \frac{1}{\sqrt{n}} \left[\begin{array}{cc}
+\boldsymbol{1}   \\
+-\boldsymbol{1}
+\end{array}\right]$ to be normalized $\boldsymbol{x} ^*$, and let $\boldsymbol{U} \in \mathbb{R} ^{n \times (n-1)}$ be orthonormal basis of subspace of $\mathbb{R} ^n$ that is orthogonal to $\boldsymbol{u}$. By KKT.3 $\boldsymbol{\Lambda} \boldsymbol{X} ^* = \boldsymbol{0}$, then $\boldsymbol{\Lambda} \boldsymbol{u} =0$, i.e. $\boldsymbol{u} \in \operatorname{null} (\boldsymbol{\Lambda})$, we can write $\boldsymbol{\Lambda} = \boldsymbol{U} \tilde{\boldsymbol{\Lambda} } \boldsymbol{U} ^{\top}$ where $\tilde{\boldsymbol{\Lambda}} \in \mathbb{S}_+ ^{n-1}$. Substituting this back to the above equation gives
+
+$$
+0 = \langle \boldsymbol{U} \tilde{\boldsymbol{\Lambda} } \boldsymbol{U} ^{\top}, \boldsymbol{X} - \boldsymbol{X} ^* \rangle =  \langle \tilde{\boldsymbol{\Lambda}}, \boldsymbol{U} ^{\top} (\boldsymbol{X} - \boldsymbol{X} ^*) \boldsymbol{U} \rangle
+$$
+
+Note two facts
+1. Recall that  $\boldsymbol{X} = \boldsymbol{X} ^* + \Delta$, we have
+
+    $$\begin{aligned}
+    \boldsymbol{U} ^{\top} \Delta \boldsymbol{U}
+    &=\boldsymbol{U} ^{\top} (\boldsymbol{X} - \boldsymbol{X} ^*) \boldsymbol{U}   \\
+    &= \boldsymbol{U} ^{\top} \boldsymbol{X} \boldsymbol{U}  \quad \because \boldsymbol{U} ^{\top} \boldsymbol{u} = \boldsymbol{0}_{n-1}\\
+    &\succeq \boldsymbol{0}_{(n-1) \times n-1} \quad \because \boldsymbol{X} \succeq \boldsymbol{0}_{n \times n}
+    \end{aligned}$$
+
+    This observation states the difference $\Delta$ in orthogonal space spanned by $\boldsymbol{U}$ is p.s.d.
+
+2. By strict complementary condition, we have $\lambda_{\min}(\tilde{\boldsymbol{\Lambda}}) > 0$, otherwise $\boldsymbol{\Lambda}$ is rank-2 deficient, contradict to $\operatorname{rank}(\boldsymbol{\Lambda}) = n-1$.
+
+By these two facts, we have
+
+$$\begin{aligned}
+0
+&= \langle \tilde{\boldsymbol{\Lambda}}, \boldsymbol{U} ^{\top} (\boldsymbol{X} - \boldsymbol{X} ^*) \boldsymbol{U} \rangle  \\
+&\ge \lambda_\min (\tilde{\boldsymbol{\Lambda}}) \operatorname{tr}(\boldsymbol{U} ^{\top} \Delta \boldsymbol{U}) \quad \because \text{property of } \langle \mathbb{S}_+,\mathbb{S}_+  \rangle \\
+&\ge \operatorname{tr}(\boldsymbol{U} ^{\top} \Delta \boldsymbol{U}) \quad \because \lambda_{\min}(\tilde{\boldsymbol{\Lambda}}) > 0 \\
+\Rightarrow \boldsymbol{0}_{(n-1) \times (n-1)} &= \boldsymbol{U} ^{\top} \Delta \boldsymbol{U} \quad \because \boldsymbol{U} ^{\top} \Delta \boldsymbol{U} \succeq \boldsymbol{0}\\
+&= \boldsymbol{U} ^{\top} \boldsymbol{X} \boldsymbol{U} \quad \because \text{fact.1} \\
+\Rightarrow \boldsymbol{X} &=
+a \boldsymbol{u} \boldsymbol{u} ^{\top}  \text{ for some } a > 0  \\
+\end{aligned}$$
+
+Since $X_{ii} = 1$, we have $a=n$, i.e. $\boldsymbol{X} = \boldsymbol{X} ^*$.
+
+
+#### Solve Dual Variables
+
+To find $\boldsymbol{\Lambda}, \boldsymbol{z}$, by KKT.3, $\boldsymbol{\Lambda} \boldsymbol{x} ^* = \boldsymbol{0}$, hence
+
+$$
+(-\operatorname{diag}(\boldsymbol{z} ) - \boldsymbol{B}  ) \left[\begin{array}{cc}
+\boldsymbol{1}  \\
+- \boldsymbol{1}
+\end{array}\right] = \boldsymbol{0}
+$$
+
+Then we solve for $\boldsymbol{z}$
+
+$$
+\mathbb{I} _{\left\{ 1\le i \le \frac{n}{2}  \right\}} z_i = \sum_{j=1}^{n/2} B_{ij} - \sum_{j=n/2+1}^{n} B_{ij}
+$$
+
+where $\mathbb{I}= -1$ if $1\le i \le \frac{n}{2}$ and $1$ otherwise. Note that the two clusters have the same size $n/2$. We then substitute this to find $\boldsymbol{\Lambda}$.
+
+
+By construction, $\boldsymbol{z} , \boldsymbol{\Lambda}$ satisfies KKT.3 complementary slackness and 1st order necessary condition. We also need to show $\boldsymbol{\Lambda} \succeq \boldsymbol{0}$ and the strict complementary condition $\operatorname{rank}(\boldsymbol{\Lambda} ) = n -1$.
+
+Let $\boldsymbol{J} = \boldsymbol{I} - \frac{1}{n} \boldsymbol{x}^* \boldsymbol{x}^{* \top}$. Then $\boldsymbol{J}$ is a projection matrix to orthogonal space of $\boldsymbol{x}^*$.
+
+$$\begin{aligned}
+\boldsymbol{\Lambda}
+&= \boldsymbol{J} \boldsymbol{\Lambda} \boldsymbol{J}  \quad \because \boldsymbol{\Lambda} \boldsymbol{x} ^* = \boldsymbol{0}\\
+&= \boldsymbol{J} (- \operatorname{diag}(\boldsymbol{z}) - \boldsymbol{B} ) \boldsymbol{J}  \\
+&= \boldsymbol{J} (- \operatorname{diag}(\boldsymbol{z}) - \mathbb{E} [\boldsymbol{B} ] -  \boldsymbol{E} ) \boldsymbol{J}  \quad\because \boldsymbol{B} = \mathbb{E} [\boldsymbol{B}]  + \boldsymbol{E} \\
+&= \boldsymbol{J} (- \operatorname{diag}(\boldsymbol{z}) - \boldsymbol{E} ) \boldsymbol{J}  \quad\because \boldsymbol{J} \mathbb{E} [\boldsymbol{B}]  = \boldsymbol{0}  \\
+\end{aligned}$$
+
+If $(- \operatorname{diag}(\boldsymbol{z}) - \boldsymbol{E})$ is p.d, then $\boldsymbol{\Lambda} \succeq \boldsymbol{0}$ and $\operatorname{rank}(\boldsymbol{\Lambda} ) = n -1$. Now we show it indeed holds. It is equivalent to show that $- z_i \ge \left\| \boldsymbol{E}  \right\| _2$.
+
+Recall that
+- $A_{ij} \sim \operatorname{Ber}(p)$ or $\operatorname{Ber}(q)$.
+- $\boldsymbol{E} = \boldsymbol{A} - \mathbb{E} [\boldsymbol{A} ]  = \boldsymbol{B} - \mathbb{E} [\boldsymbol{B}]$.
+- $\left\| \boldsymbol{E}  \right\|_2  = \mathcal{O} (\sqrt{n p \log n})$ for $p > q \ge \frac{b \log n}{n}$.
+- $\mathbb{E} [\boldsymbol{B}] = \frac{p-q}{2} \left[\begin{array}{c}
+\boldsymbol{1}  \\
+-\boldsymbol{1}
+\end{array}\right] \left[\begin{array}{cc}
+\boldsymbol{1} ^{\top}  & - \boldsymbol{1} ^{\top} \\
+\end{array}\right]$
+
+The above equation gives
+
+$$\begin{aligned}
+- \operatorname{diag}\left( \boldsymbol{z} \right) \left[\begin{array}{cc}
+\boldsymbol{1}  \\
+-\boldsymbol{1}
+\end{array}\right]
+&= (\mathbb{E} [\boldsymbol{B} ]  + \boldsymbol{E} )\left[\begin{array}{cc}
+\boldsymbol{1}  \\
+-\boldsymbol{1}
+\end{array}\right] \\
+&= \frac{p-q}{2}n \left[\begin{array}{cc}
+\boldsymbol{1}  \\
+-\boldsymbol{1}
+\end{array}\right] + \boldsymbol{E}\left[\begin{array}{cc}
+\boldsymbol{1}  \\
+-\boldsymbol{1}
+\end{array}\right]  \\
+\end{aligned}$$
+
+In scalar form,
+
+$$\begin{aligned}
+\text{for } 1\le i \le \frac{n}{2}, \qquad - z_i &= \frac{p-q}{2} n + \sum_{j=1}^{n/2} E_{ij} - \sum_{j=n/2+1}^{n} E_{ij} \\
+\text{for } \frac{n}{2} +1\le i \le n, \qquad - z_i &= \frac{p-q}{2} n - \left( \sum_{j=1}^{n/2} E_{ij} - \sum_{j=n/2+1}^{n} E_{ij} \right) \\
+\end{aligned}$$
+
+It can be shown that $\left( \sum_{j=1}^{n/2} E_{ij} - \sum_{j=n/2+1}^{n} E_{ij} \right) = \mathcal{O} (1)$. Hence as long as $\frac{p-q}{2} n \ge \mathcal{O} (\sqrt{np \log n})$, then $-\boldsymbol{z} _i \ge \left\| \boldsymbol{E}  \right\| _2$.
+
 
 
 
