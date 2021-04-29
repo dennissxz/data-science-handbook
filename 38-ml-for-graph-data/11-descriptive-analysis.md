@@ -141,6 +141,7 @@ Note
 - If all shortest paths are unique, i.e. $\sigma(s,t)=1$, then $c_{bet}(v)$ simple counts how many shortest paths going through $v$.
 - It can be normalized to $[0,1]$ through division by $(N_v - 1) (N_v - 2)/2$. For instance, it is 1 if $v$ is the center of a star.
 
+(eig-centrality)=
 ### Eigenvector Centrality
 
 A vertex's importance may depends on its neighbors' importance. Eigenvector centrality captures this,
