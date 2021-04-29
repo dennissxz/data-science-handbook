@@ -160,6 +160,148 @@ Remarks
 - node2vec performs better on node classification, while alternative methods perform better on link prediction [Goyal & Ferrara 2017]
 - in practice, choose definition of node similarity that matches application
 
+
+### PageRank
+
+
+In WWWW, Consider page as nodes and hyperlinks as directed edges. We want to rank the importance of the pages. The importance can be seen as 1-dimensional node embeddings.
+
+#### Model
+
+Assumption
+- a page is more important if it has more in-coming links
+- links from important pages worth more
+- all pages have at least one out-going links, $d_i \ge 1$
+- if a page $i$ with importance $r_i$ has $d_i$ out-links, each link gets $r_i/d_i$ importance.
+- page $j$'s own importance $r_j$ is the sum of the votes on its in-links. $r_j = \sum_{i: i \rightarrow  j} r_i/d_i$.
+- $\sum_{i=1}^{N_v} r_i =1$.
+
+Define a matrix $\boldsymbol{M}$ such that $M_{ij} = \frac{1}{d_j}$ if $j \rightarrow i$. We can see it is a column stochastic matrix. The above assumptions leads to the flow equation
+
+$$
+\boldsymbol{r} = \boldsymbol{M} \boldsymbol{r}  
+$$
+
+#### Computation
+
+To solve $\boldsymbol{r}$, we can use a linear system, but not scalable.
+
+Note that the column stochastic matrix $\boldsymbol{M}$ can define a [random walk over graphs](rw-graph): a walker at $i$ follows an out-link from $i$ uniformly at random. Since $\boldsymbol{r} = \boldsymbol{M} \boldsymbol{r}$, we know that $\boldsymbol{r}$ is a stationary distribution for the random walk.
+
+:::{admonition,seealso} R.t. Eigenvector centrality
+
+Recall [eigenvector centrality](eig-centrality) $\boldsymbol{c}$ can be solved by the first eigenvector of adjacency matrix $\boldsymbol{A}$
+
+$$
+\boldsymbol{A} \boldsymbol{c} = \lambda \boldsymbol{c}
+$$
+
+In this problem, $\boldsymbol{M} = \boldsymbol{A} \boldsymbol{D} ^{-1}$ and $\boldsymbol{r}$ is the principal eigenvector (i.e. with eigenvalue 1) of $\boldsymbol{M}$.
+
+:::
+
+We can use power iteration to find $\boldsymbol{r}$. But
+- if there is a page $i$ without out-going links (aka 'dead end'), then $M_{\cdot i} = 0$, $\boldsymbol{M}$ is not column stochastic which violates the assumption;
+- if $i$ only has a self-loop (aka 'spider traps'), i.e. $M_{ii}=1$, then $\boldsymbol{r}$ is degenerate: $r_i = 1$ in $\boldsymbol{r}$, this page has dominates importance.
+
+To overcome these issues, we use teleport trick:
+- w.p. $\beta$ follow a link uniformly at random, usually $\beta = 0.8, 0.9$
+- w.p. $1-\beta$ jumpy to a random page in $V$
+
+Hence, the PageRank equation [Brin-Page 98] is
+
+$$
+r_j = \sum_{i: i \rightarrow j} \beta \frac{r_i}{d_i}  + (1-\beta) \frac{1}{N_v}
+$$
+
+or
+
+$$
+\boldsymbol{r} = \beta \boldsymbol{M} \boldsymbol{r} + (1-\beta)/N_v  \boldsymbol{1}  
+$$
+
+Note that this formulation assumes that $\boldsymbol{M}$ has no dead ends. We can either preprocess matrix $\boldsymbol{M}$ to remove all dead ends or explicitly follow random teleport links with probability 1 from dead-ends.
+
+Let $\boldsymbol{P} = \beta \boldsymbol{M} + (1- \boldsymbol{\beta} )/N_v \boldsymbol{1} \boldsymbol{1} ^{\top}$, then we have $\boldsymbol{r}  = \boldsymbol{P} \boldsymbol{r}$. The random walk characterized by column-stochastic matrix $\boldsymbol{P}$ has no dead ends or spider traps, hence we can use the power method over $\boldsymbol{P}$.
+
+
+#### Personalized PageRank
+
+Aka Topic-specific PageRank
+
+In personalized PageRank, a walker does not teleport to all nodes $V$, but to some subset $S$ of nodes.
+
+If $S$ is the start node, then we call this **random walks with restarts**. We can then use this kind of random walk to form a proximity measure of two nodes: simulate multiple random walk starting from node $s$ with restarts, and then count the number of visits to other nodes. Nodes with higher visit count have higher proximity.
+
+The relative frequencies can also be found using power iteration. The uniform teleport probability $(1-\beta)/N_v  \boldsymbol{1}$ in PageRank now becomes $\boldsymbol{e} _s$.
+
+This method also applies to a subset $S$ of multiple nodes. The teleport probability is non-zero for $v \in S$ but 0 otherwise.
+
+
+Random walks with restarts can be used in recommender systems. The user-item networks can be viewed as a bipartite graph. We can let $S$ be a subset of items, and run the above algorithm, but only count the number of visits to items. Than we obtain a proximity measure of items.
+
+pseudo-code:
+
+```python
+item = QUERY_NODES.sample_by_weight()
+for i in range( N_STEPS ):
+  user = item.get_random_neighbor()
+  item = user.get_random_neighbor()
+  item.visit_count += 1
+  if random( ) > beta:
+    item = QUERY_NODES.sample.by_weight ()
+```
+
+The similarity consider
+- multiple connections
+- multiple paths
+- direct and indirect connections
+- degree of the node
+
+
+### R.t. Matrix Factorization
+
+Consider two simple measures
+- $\operatorname{similarity}(u, v)$: two nodes are similar if they are adjacent.
+- $\operatorname{DEC(\boldsymbol{z} _u, \boldsymbol{z} _v)} = \boldsymbol{z} _u ^{\top} \boldsymbol{z} _v$
+
+Let our $d$-dimensional embeddings be $\boldsymbol{Z} \in \mathbb{R} ^{d \times n}$. Then we want to find $\boldsymbol{Z}$ such that $\boldsymbol{A} = \boldsymbol{Z} ^{\top} \boldsymbol{Z}$. However, exact factorization of $\boldsymbol{A}$ is generally impossible (unless it is p.s.d.). We can then approximate the adjacency matrix $\boldsymbol{A}$ by $\boldsymbol{Z} ^{\top} \boldsymbol{Z}$. The problem can be formulated as
+
+$$
+\min\ \left\| \boldsymbol{A} - \boldsymbol{Z} ^{\top} \boldsymbol{Z}  \right\| _F
+$$
+
+Conclusion: inner product decoder with node similarity defined by edge connectivity is equivalent to matrix factorization of $\boldsymbol{A}$.
+
+DeepWalk and node2vec can also be formulated as matrix factorization problem.
+
+
+$$
+\boldsymbol{M} = \log \left(\operatorname{vol}(G)\left(\frac{1}{T} \sum_{r=1}^{T}\left(D^{-1} A\right)^{r}\right) D^{-1}\right)-\log b
+$$
+
+- $\operatorname{vol}(G) = \sum_{i,j}^n a_{ij}$
+- $T = \left\vert N_R(u) \right\vert$ is the length of random walks
+- $b$ is the number of negative samples.
+
+The matrix for node2vec is more complex.
+
+Hence rather than simulating random walks and then use SGD to find $\boldsymbol{Z}$, we can solve the minimization problem $\min \left\| \boldsymbol{M} - \boldsymbol{Z} ^{\top} \boldsymbol{Z}  \right\| _F$.
+
+See Network Embedding as Matrix Factorization: Unifying DeepWalk, LINE, PTE, and node2vec [WSDM 18]
+
+
+### Limitations
+
+There are limitations of node embeddings via matrix factorization and random walks.
+
+- They learn the embeddings, not a function for embedding. Hence, they cannot obtain embeddings for nodes not in the training set. (similar problem happens in PCA, MDS).
+- Cannot capture structural similarity of two nodes. Hard to define $\operatorname{similarity} (u, v)$ to measure structural similarity of two nodes, e.g. both are a vertex in a triangle in two different subgraphs in the graph. Anonymous random walk introduced below solves this problem.
+- Cannot utilize node, edge and graph features. Sol: graph neural networks.
+
+
+
+
 ## Graph Embeddings
 
 Can we entire an entire graph $G$ or some subgraph? For instance, classification of molecules, or identifying anomalous graphs.
@@ -197,7 +339,7 @@ $$
 w_{1}=111, w_{2}=112, w_{3}=121, w_{4}=122, w_{5}=123
 $$
 
-The number $\eta_\ell$ grows exponentially with $\ell$.
+The number $\eta_\ell$ grows exponentially wicvvc th $\ell$.
 
 :::{figure} graph-emb-anon-walk-number
 <img src="../imgs/graph-emb-anon-walk-number.png" width = "70%" alt=""/>
@@ -241,95 +383,3 @@ We can hierarchically cluster nodes in graphs, and sum/avg the node embeddings a
 
 Hierarchical Embeddings
 :::
-
-
-## Link Analysis
-
-### PageRank
-
-Consider page as nodes and hyperlinks as directed edges. We want to rank the importance of the pages.
-
-Assumption
-- a page is more important if it has more in-coming links
-- links from important pages worth more
-- all pages have at least one out-going links, $d_i \ge 1$
-- if a page $i$ with importance $r_i$ has $d_i$ out-links, each link gets $r_i/d_i$ importance.
-- page $j$'s own importance $r_j$ is the sum of the votes on its in-links. $r_j = \sum_{i: i \rightarrow  j} r_i/d_i$.
-- $\sum_{i=1}^{N_v} r_i =1$.
-
-Define a matrix $\boldsymbol{M}$ such that $M_{ij} = \frac{1}{d_j}$ if $j \rightarrow i$. We can see it is a column stochastic matrix. The above assumptions leads to the flow equation
-
-$$
-\boldsymbol{r} = \boldsymbol{M} \boldsymbol{r}  
-$$
-
-To solve $\boldsymbol{r}$, we can use a linear system, but not scalable.
-
-Note that the column stochastic matrix $\boldsymbol{M}$ can define a [random walk over graphs](rw-graph): a walker at $i$ follows an out-link from $i$ uniformly at random. Since $\boldsymbol{r} = \boldsymbol{M} \boldsymbol{r}$, we know that $\boldsymbol{r}$ is a stationary distribution for the random walk.
-
-:::{admonition,seealso} R.t. Eigenvector centrality
-
-Recall [eigenvector centrality](eig-centrality) $\boldsymbol{c}$ can be solved by the first eigenvector of adjacency matrix $\boldsymbol{A}$
-
-$$
-\boldsymbol{A} \boldsymbol{c} = \lambda \boldsymbol{c}
-$$
-
-In this problem, $\boldsymbol{M} = \boldsymbol{A} \boldsymbol{D} ^{-1}$ and $\boldsymbol{r}$ is the principal eigenvector (i.e. with eigenvalue 1) of $\boldsymbol{M}$.
-
-:::
-
-We can use power iteration to find $\boldsymbol{r}$. But
-- if there is a page $i$ without out-going links (aka 'dead end'), then $M_{\cdot i} = 0$, $\boldsymbol{M}$ is not column stochastic which violates the assumption;
-- if $i$ only has a self-loop (aka 'spider traps'), i.e. $M_{ii}=1$, then $\boldsymbol{r}$ is degenerate: $r_i = 1$ in $\boldsymbol{r}$, this page has dominates importance.
-
-To overcome these issues, we use teleport trick:
-- w.p. $\beta$ follow a link uniformly at random, usually $\beta = 0.8, 0.9$
-- w.p. $1-\beta$ jumpy to a random page in $V$
-
-Hence, the PageRank equation [Brin-Page 98] is
-
-$$
-r_j = \sum_{i: i \rightarrow j} \beta \frac{r_i}{d_i}  + (1-\beta) \frac{1}{N_v}
-$$
-
-or
-
-$$
-\boldsymbol{r} = \beta \boldsymbol{M} \boldsymbol{r} + (1-\beta)/N_v  \boldsymbol{1}  
-$$
-
-Note that this formulation assumes that $\boldsymbol{M}$ has no dead ends. We can either preprocess matrix $\boldsymbol{M}$ to remove all dead ends or explicitly follow random teleport links with probability 1 from dead-ends.
-
-Let $\boldsymbol{P} = \beta \boldsymbol{M} + (1- \boldsymbol{\beta} )/N_v \boldsymbol{1} \boldsymbol{1} ^{\top}$, then we have $\boldsymbol{r}  = \boldsymbol{P} \boldsymbol{r}$. The random walk characterized by column-stochastic matrix $\boldsymbol{P}$ has no dead ends or spider traps, hence we can use the power method over $\boldsymbol{P}$.
-
-
-### Personalized PageRank
-
-
-
-### Random Walk with Restarts
-
-
-.
-
-
-.
-
-
-.
-
-
-.
-
-
-.
-
-
-.
-
-
-.
-
-
-.
