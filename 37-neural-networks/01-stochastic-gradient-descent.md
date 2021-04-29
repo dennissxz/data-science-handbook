@@ -51,7 +51,7 @@ $$
 \frac{1}{n} \sum_{i=1}^{n} \nabla_{\Theta} L\left(y_{i}, \boldsymbol{x}_{i} ; \Theta\right) \approx \frac{1}{|B|} \sum_{b \in B} \nabla_{\Theta} L\left(y_{b}, \boldsymbol{x}_{b} ; \Theta\right)
 $$
 
-In each epoch, we shuffle data, partition into batches, and iterate over batches.
+In each epoch, we shuffle data, partition into batches, and iterate over batches. In this case, each update over a mini-batch is counted as an **iteration**. The number of iterations in an epoch equals $n/\left\vert B \right\vert$.
 
 In theory, if computation power is not an issue, we should set $\left\vert B \right\vert$ as large as possible. But in practice, people found there are some advantages of small $\left\vert B \right\vert$. Using small $\left\vert B \right\vert$ works like adding noise to the gradient, which brings regularization effect and make the trained model more robust. Usually $\left\vert B \right\vert = 32, 64$ are used.
 

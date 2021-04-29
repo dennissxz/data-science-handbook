@@ -1,3 +1,4 @@
+(semi-supervised)=
 # Semi-supervised Learning
 
 (Figure credits: Jerry Zhu ICML 2007 tutorial unless otherwise indicated)
