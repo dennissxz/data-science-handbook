@@ -15,16 +15,30 @@ kernelspec:
 
 
 
-
+(markov-chains)=
 # Markov Chain
+
+Reference:
+- Introduction to Probability Models [notes](https://galton.uchicago.edu/~yibi/teaching/stat317/2014/Lectures/)
+- Transience and Recurrence [link](https://brilliant.org/wiki/transience-and-recurrence/)
 
 ## Definitions
 
 ### Basics
 
-A **stochastic process** $\boldsymbol{X} = \left\{ X_t: t\in T \right\}$ is a collection of random variables indexed by $t$. We call $X_t$ the **sate** of the process at time $t$. If $T$ is countable infinite, then we call $\boldsymbol{X}$ a **discrete** time process.
+#### Stochastic Processes
 
-A discrete time process $\boldsymbol{X} = \left\{ X_0, X_1, \ldots \right\}$ is called a **Markov chain** if, for any positive integer $t$ and any states $i_0, \ldots, i_t, j$,
+A **stochastic process** $\boldsymbol{X} = \left\{ X_t: t\in T \right\}$ is a collection of random variables indexed by $t$.
+- We call $X_t$ the **state** of the process at time $t$. The set of values of the random variables is called the **state space** $\mathcal{X}$.
+- If $T$ is countable infinite, then we call $\boldsymbol{X}$ a **discrete** time process.
+
+If $X_t = i, i \in \mathcal{X}$, we say the process is in state $i$ at time $t$.
+
+#### Markov Chain
+
+Let state space $\mathcal{X}$ be a finite or countable set. For simplicity, we assume the discrete state space is given by the set of nonnegative integers $\left\{ 0,1,\ldots \right\}$.
+
+A discrete time process $\boldsymbol{X} = \left\{ X_0, X_1, \ldots \right\}$ taking values in $\mathcal{X}$ is called a **Markov chain** if, for any positive integer $t$ and any states $i_0, \ldots, i_{t-1}, i, j$,
 
 $$
 \mathbb{P}\left(X_{t+1}=j \mid X_{t}=i, X_{t-1}=i_{t-1}, \ldots, X_{0}=i_{0}\right) =\mathbb{P}\left(X_{t+1}=j \mid X_{t}=i\right) \\
@@ -32,9 +46,23 @@ $$
 
 Verbally, we say that, given the past history of the process up through time $t$, the distribution of the process at time $t+1$ depends only on the state at time $t$.
 
-We say a Markov chain has a **discrete state space** if the set of values of the random variables is countably infinite $\left\{ v_0, v_1, \ldots \right\}$. For simplicity, we assume the discrete state space is given by the set of nonnegative integers $\left\{ 0,1,\ldots \right\}$. We say a Markov chain is **finite** if the set of values of the random variables if a finite set $\left\{ v_0, v_1, \ldots, v_{n-1} \right\}$. In the following discussion we assume the Markov chains are finite.
 
-A Markov chain is **homogeneous** if $\mathbb{P}\left(X_{t+1}=j \mid X_{t}=i\right)=p_{i j}$ for all $t$. This indicates that this conditional distribution does not very with $t$. The values $p_{ij}$ are called **transition probabilities**, which can be stored in a transition matrix $\boldsymbol{P}$. We can find the $t$-step transition probability $p_{ij}^{(t)} = [\boldsymbol{P}^t] _{ij}$, which is the probability that, starting in state $i$, the Markov chain is found in state $j$ after $t$ transitions.
+#### Transition Matrix
+
+A Markov chain is called **homogeneous** or **stationary** if $\mathbb{P}\left(X_{t+1}=j \mid X_{t}=i\right)=p_{i j}$ for all $t$. This indicates that this conditional distribution does not very with $t$. In the following discussion we only consider stationary Markov chains.
+
+The values $p_{ij}$ are called **transition probabilities**, which can be stored in a transition matrix $\boldsymbol{P}$. We can show by induction that the **$n$-step transition probability** is $p_{ij}^{(n)} = [\boldsymbol{P}^n] _{ij}$, which is the probability that, starting in state $i$, the Markov chain is found in state $j$ after $n$ transitions. In matrix form $\boldsymbol{P} ^{(n)} = \boldsymbol{P}^n$.
+
+Chapman-Kolmogorov Equation
+: The $(m+n)$-step transition probability from state $i$ to $j$, satisfies
+
+  $$
+  p_{ij}^{(m + n)} = \sum_{k \in \mathcal{X}} p_{ik}^{(m)}p_{kj}^{(n)}
+  $$
+
+  In matrix form, $\boldsymbol{P}^{(m+n)} = \boldsymbol{P}^{(m)} \cdot \boldsymbol{P}^{(n)}$
+
+#### Graphical Representation
 
 A Markov chain with state space $V$ and transition matrix $\boldsymbol{P}$ can be represented by a labeled directed graph, where edges are given by transitions with nonzero probability $E = \left\{ (u,v) \mid p_{u,v} >0 \right\}$. Note that self-loops are allowed for $p_{ii} > 0$.
 
@@ -46,17 +74,142 @@ Graphical representation of a Markov chain
 
 ### Irreducibility
 
+Consider a Markov chain $\left\{ X_t, t \ge 0 \right\}$ with state space $\mathcal{X}$.
+
 Definitions
-: - A state $j$ is **accessible** from state $i$ if there exists some $n \ge 0$ such that $p_{ij}^{(t)} > 0$.
+: - A state $j$ is **accessible** from state $i$ if there exists some $n \ge 0$ such that $p_{ij}^{(n)} > 0$ for some $t$. In the graph-representation of the chain, we have $i \leftrightarrow j$ iff there are directed paths from $i$ to $j$.
+
+    - Accessibility is transitive: if $i \rightarrow j, j \rightarrow k$ then $i \rightarrow k$.
+
   - Two states $i$ and $j$ **communicate** if they are accessible from each other, written as $i \leftrightarrow j$. In the graph-representation of the chain, we have $i \leftrightarrow j$ if there are directed paths from $i$ to $j$ and from $j$ to $i$.
-  - Some states form a **communication class** if all states in that class communicate.
+    - Communicability are
+      - reflective: $i \leftrightarrow j$, since $\boldsymbol{P}_{ii} ^0 = \mathbb{P} \left(X_{0}=i \mid X_{0}=i\right)=1>0$ by convention
+      - symmetric: $i \leftrightarrow j \Leftrightarrow j \leftrightarrow i$
+      - transitive: if $i \leftrightarrow j$ and $j \leftrightarrow k$ then $i \leftrightarrow k$.
+
+    - Thus communicability defines a partition of states.
+
+      $$
+      \mathcal{X} = \mathcal{X} _1 \cup \mathcal{X} _2 \cdots \text{ and } \mathcal{X} _i \text{ are disjoint}  
+      $$
+
+      Each $\mathcal{X} _i$ is called a **communication class**. All states in that class communicate.
+
   - A Markov chain is **irreducible** if any state is accessible from any other in some finite number of transitions, i.e.
 
-    $$\forall i, j, \exists t: \quad p_{ij}^{(t)} > 0$$
+    $$\forall i, j, \exists n: \quad p_{ij}^{(n)} > 0$$
 
     Equivalently,
     - all states belong to one communication class, or
     - its graph representation is a strongly connected graph.
+
+### Recurrence and Transience
+
+#### Definition
+
+For a state $i \in \mathcal{X}$, define
+
+$$
+f_{i}=\mathbb{P}\left(X_{n}=i \text { for some } n>0 \mid X_{0}=i\right)
+$$
+
+- If $f_i = 1$, we say state $i$ is **recurrent**
+- If $f_i < 1$, we say state $i$ is **transient**
+
+#### Number of Revisits
+
+Let $N_i$ be the number of times the process revisits state $i$ after starting from $i$, then we can show
+
+$$
+\mathbb{E}[N_i]=\sum_{n=1}^{\infty} p_{i i}^{(n)}
+$$
+
+We can use this expectation to characterize recurrent and transient states.
+
+
+$$
+\text { State } i \text { is }\left\{\begin{array}{ll}
+\text { recurrent if } & \sum_{n=1}^{\infty} P_{i i}^{(n)}=\infty \\
+\text { transient if } & \sum_{n=1}^{\infty} P_{i i}^{(n)}<\infty
+\end{array}\right.
+$$
+
+Note that the chain may be infinite.
+
+#### Properties
+
+Equivalent conditions of recurrent:
+- state $i$ is recurrent
+- the process revisits $i$ w.p. $f_i = 1$, i.e. will always come back
+- starting from state $i$, the process will revisit state $i$ infinitely often: $\mathbb{E} [N_i] = \infty$
+- $\sum_{n=1}^{\infty} p_{i i}^{(n)} = \infty$
+
+For transient states,
+- the process revisits $i$ w.p. $f_i < 1$, may not come back!
+- starting from state $i$, the number of times the process revisits state $i$ is finite, with geometric distribution
+
+  $$
+  \mathrm{P}\left(N_{i}=k\right)=f_{i}^{k}\left(1-f_{i}\right),\quad k = 1, 2, \ldots,
+  $$
+
+  That is, the process comes back $k$ times and restart and then never comes back. Every start is a Bernoulli experiment with success probability $1- f_i$.
+
+- $\mathbb{E} [N_i] = \frac{1}{1-f_i}$
+- $\sum_{n=1}^{\infty} p_{i i}^{(n)} < \infty$
+
+Propositions
+
+- States in a finite-state Markov chain CANNOT be all transient.
+- If $i \leftrightarrow j$, and $i$ is recurrent, then $j$ is also recurrent.
+- All states of a finite irreducible Markov chain are recurrent.
+
+#### Random Walks
+
+In a one-dimensional random walk,
+
+$$
+X_{n+1}=\left\{\begin{array}{ll}
+X_{n}+1 & \text { with prob. } p \\
+X_{n}-1 & \text { with prob. } 1-p
+\end{array}\right.
+$$
+
+- State space is $\mathbb{Z}$
+- All states communicate, there is one class, Hence, states are all transient or all recurrent. It suffices to check whether $0$ is recurrent or transient.
+
+
+$$
+\begin{aligned}
+P_{00}^{(2 n+1)}&=0 \\
+P_{00}^{(2 n)}&= \binom{2n}{n}  p^{n}(1-p)^{n}\quad \text { by Stirlin's formula }\\
+&=\frac{(2 n) !}{n ! n !} p^{n}(1-p)^{n} \quad n ! \approx n^{n+0.5} e^{-n} \sqrt{2 \pi} \\
+&\approx \frac{(2 n)^{2 n+0.5} e^{-2 n} \sqrt{2 \pi}}{\left(n^{n+0.5} e^{-n} \sqrt{2 \pi}\right)^{2}} p^{n}(1-p)^{n} \\
+&=\frac{1}{\sqrt{\pi n}}[4 p(1-p)]^{n}
+\end{aligned}
+$$
+
+Thus,
+
+$$
+\sum_{n=1}^{\infty} P_{i i}^{2 n}=\sum_{n=1}^{\infty} \frac{1}{\sqrt{\pi n}}[4 p(1-p)]^{n}\left\{\begin{array}{ll}
+<\infty & \text { if } p \neq 1 / 2 \\
+=\infty & \text { if } p=1 / 2
+\end{array}\right.
+$$
+
+One-dimensional random walk is recurrent if $p=1/2$, and transient otherwise.
+
+In general, it can be shown that for a $d$-dimensional **symmetric** random walk
+
+$$
+\sum_{n=1}^{\infty} P_{00}^{(2 n)}\left\{\begin{array}{ll}
+=\infty & \text { for } d=1 \text { or } 2 \\
+<\infty & \text { for } d \geq 3
+\end{array}\right.
+$$
+
+"A drunken man will find his way home. A drunken bird might be lost forever."
+
 
 ### Periodicity
 
@@ -64,28 +217,28 @@ Definition (Period)
 : The period $d(i)$ of a state $i$ of a homogeneous Markov chain is defined as
 
   $$
-  d(i) = \mathrm{gcd} \left\{ t: p_{ii} ^{(t)} >0 \right\}
+  d(i) = \mathrm{gcd} \left\{ t: p_{ii} ^{(n)} >0 \right\}
   $$
 
-  where $\mathrm{gcd}$ stands for greatest common divisor.
-
+  where $\mathrm{gcd}$ stands for greatest common divisor. In other words, $p_{ii}^t = 0$ whenever $t$ is not a multiple of $d(i)$.
 
 Definition (Periodic and aperiodic)
 : - If $d(i)>1$, we say that state $i$ is periodic. That is, there is a period $d(i)$ such that starting in state $i$, the chain can return to $i$ only at multiples of the period $d(i)$, and $d(i)$ is the largest such integer.
   - If $d(i)=1$, we say that state $i$ is aperiodic.
   - A Markov chain is aperiodic if all its states are aperiodic.
 
-Claims
+Properties
 : - If $p_{ii} > 0$ then $x$ is aperiodic. Converse is not true.
   - If $i \leftrightarrow j$, then $d(i) = d(j)$.
+  - Periodicity is a class property. That is, all states in the same class have the same period.
   - If a finite Markov chain is aperiodic, then there exists a positive integer $m$, such that for all states $i$, it is guaranteed to return to that state in a finite number of transitions, i.e.
 
-    $$\exists m, \forall i, t \ge m: \quad p_{ii}^{(t)} > 0$$
+    $$\exists m, \forall i: \quad p_{ii}^{(n)} > 0 \quad \text{ for some } n \ge m$$
 
   - If a Markov chain is irreducible and aperiodic, then there exists an integer $m$, such that any state is accessible from any other after at least $m$ transitions, i.e.
 
     $$
-    \exists m, \forall i, t \ge m: \quad \quad p_{ij}^{(t)} > 0
+    \exists m, \forall i: \quad p_{ij}^{(n)} > 0 \quad \text{ for some } n \ge m
     $$
 
     ***Proof***
@@ -96,28 +249,95 @@ Claims
 
     $\square$
 
-## Stationary Distribution
+## Distributions
 
-Definition (Stationary distribution)
+### Stationary Distribution
+
+Definition
 : A row vector $\boldsymbol{\pi} ^{\top}$ is called a **stationary distribution** for a Markov chain with transition matrix $\boldsymbol{P}$ if
   - $\pi_j \ge 0$ and $\sum_j\pi_j = 1$
   - $\boldsymbol{\pi} ^{\top} \boldsymbol{P} = \boldsymbol{\pi}^{\top}$
 
-For instance, when $\boldsymbol{P} = \boldsymbol{I}$, then every probability distribution on the states is a stationary probability distribution.
+Existence?
+: Not all Markov chains have a stationary distribution. 1-dimensional symmetric random walk does not have a stationary distribution.
 
+Uniqueness?
+: Stationary distribution may not be unique. For instance,
+  - when $\boldsymbol{P} = \boldsymbol{I}$, then every probability distribution on the states is a stationary probability distribution.
+  - when the process has two communication classes such that $\boldsymbol{P}$ is a block diagonal matrix, then let $\boldsymbol{\pi} _1$ and $\boldsymbol{\pi} _2$ be the respective stationary distributions of the two sub-Markov chains, then $\boldsymbol{\pi} = [c \boldsymbol{\pi} _1, (1-c) \boldsymbol{\pi} _2]$ is a stationary distribution of the whole train, for any $0<c<1$.
 
-Existence and uniqueness
-: If a Markov chain is **aperiodic** and **irreducible**, then it has precisely **one** stationary distribution, in the sense that the limit
+  In the next section we show sufficient conditions for uniqueness.
+
+### Limiting Distribution
+
+Definition
+: A Markov chain is said to have a limiting distribution if the limit of transition probability exits
 
   $$
   \lim _{n \rightarrow \infty} p_{ij}^{(n)} = \pi _j
   $$
 
-  exists for each state $j$ with $\pi_j \ge 0$ and $\sum_j\pi_j = 1$, which is independent of starting state $i$. Equivalently,
+  for each state $j$ with $\pi_j \ge 0$ and $\sum_j\pi_j = 1$, which is independent of starting state $i$. Equivalently,
 
   $$
   \lim _{n \rightarrow \infty} \boldsymbol{P}^n  = \boldsymbol{1} \boldsymbol{\pi} ^{\top}
   $$
+
+It is easy to verify that a limiting distribution is a stationary distribution.
+
+
+Existence
+: Not all Markov chains have a stationary distribution.
+
+Uniqueness
+: If a Markov Chain has a limiting distribution, then it is unique.
+
+### Fundamental Limit Theorems
+
+
+For a Markov chain, consider the first return time to a recurrent state $i$
+
+$$
+T_{i}=\min \left\{n>0: X_{n}=i \mid X_{0}=i\right\}
+$$
+
+We say a state is
+- **positive recurrent** if $\mathbb{E} [T_i] < \infty$
+- **null recurrent** if $\mathbb{P} (T_i < \infty) =1$ but $\mathbb{E} [T_i] = \infty$
+- transient if $\mathbb{P} (T_i < \infty) < 1$. Note that the event $\left\{ T_i < \infty \right\}$ is equivalent to $\left\{ X_{n}=i \text { for some } n>0 \right\}$.
+- **ergodic** if it is aperiodic and positive recurrent.
+
+Properties
+- Positive/null recurrence is also a class property.
+- If a state $i$ is null recurrent then $\lim _{n \rightarrow \infty} P_{j i}^{(n)}=0$ for all $j \in \mathcal{X}$
+- In a finite-state Markov chain all recurrent states are positive recurrent.
+
+
+Theorem 1
+: For a recurrent irreducible aperiodic Markov chain,
+
+  $$\lim _{n \rightarrow \infty} p_{i j}^{(n)}=\frac{1}{\mathbb{E}\left[T_{j}\right]}$$
+
+  In other words, a recurrent state $j$ is null recurrent iff $\lim _{n \rightarrow \infty} p_{i j}^{(n)}=0$.
+
+  If the Markov chain is, in addition, positive recurrent (hence irreducible and ergodic), then
+
+  $$
+  \pi_{i}=\lim _{n \rightarrow \infty} p_{i j}^{(n)}=\frac{1}{\mathbb{E}\left[T_{i}\right]}
+  $$
+
+  where $\boldsymbol{\pi}$ is the **unique** stationary distribution of the chain.
+
+Theorem 2
+: If a Markov chain is irreducible, then there will be a unique stationary distribution $\boldsymbol{\pi}$ if and only if the Markov chain is positive recurrent, which can be found by the limit
+
+  $$
+  \pi_{j}=\left\{\begin{array}{ll}
+  \lim _{n \rightarrow \infty} \frac{1}{n} \sum_{k=1}^{n} p_{i j}^{(k)} & \text { if the chain is periodic } \\
+  \lim _{n \rightarrow \infty} p_{i j}^{(n)} & \text { if the chain is aperiodic }
+  \end{array}\right.
+  $$
+
 
 ## Exercise
 
