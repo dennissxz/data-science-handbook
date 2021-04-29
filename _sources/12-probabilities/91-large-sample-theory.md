@@ -149,17 +149,43 @@ $$
 \sqrt{n}\left(\bar{\boldsymbol{x}}-\boldsymbol{\mu} \right)\overset{\mathcal{D}}{\rightarrow} \mathcal{N}(\boldsymbol{0},\boldsymbol{\Sigma})  
 $$
 
+(large-sample-inequalities)=
+## Inequalities
+
+### Chernoff Bound
+
+Chernoff bound gives bounds of the sum of $n$ random variables over $[0,1]$ (not necessarily independent).
+
+Suppose $X_{1}, \cdots, X_{n}$ are independent random variables with $X_{i} \in[0,1]$. Let $S=\sum_{i} X_{i}$ and $\mu=\mathbb{E}[S]$ be the expected sum. Then for $\lambda \in (0,1)$,
+
+$$
+\operatorname{\mathbb{P}} \left[ S>(1+\lambda) \mu \right]<e^{-\frac{\lambda^{2} \mu}{3}} \qquad \text{(upper tail)}
+$$
+
+and,
+
+$$
+\operatorname{\mathbb{P}} \left[ S<(1-\lambda) \mu  \right]<e^{-\frac{\lambda^{2} \mu}{2}} \qquad \text{(lower tail)}
+$$
+
+Together:
+
+$$\begin{aligned}
+\mathbb{P}(|S-\mu |>\lambda \mu)
+& \leq 2 e^{-\lambda^{2} \mu / 3}\\
+\end{aligned}$$
+
+
 (bernstein-inequality)=
-## Bernstein Inequality
+### Bernstein Inequality
 
-### Univariate
+#### Univariate Case
 
-Inequality (Berstein)
-: Let $X_1, X_2, \ldots, X_n \in \mathbb{R}$ be i.i.d. random variables with mean 0 and value $\left\vert X_i \right\vert \le L$. Let their sum be $S = \sum_{i=1}^n X_i$. Then
+Let $X_1, X_2, \ldots, X_n \in \mathbb{R}$ be i.i.d. random variables with mean 0 and value $\left\vert X_i \right\vert \le L$. Let their sum be $S = \sum_{i=1}^n X_i$. Then
 
-  $$
-  \mathbb{P} (\left\vert S \right\vert \ge t)  \le 2 \exp \left( \frac{- t^2}{\operatorname{Var}\left( S \right) + L t /3}  \right)
-  $$
+$$
+\mathbb{P} (\left\vert S \right\vert \ge t)  \le 2 \exp \left( \frac{- t^2}{\operatorname{Var}\left( S \right) + L t /3}  \right)
+$$
 
 If $n$ is large, since $\operatorname{Var}\left( S \right) = n \sigma^2$, the bound becomes
 
@@ -177,21 +203,36 @@ In other words, w.h.p., we have $\frac{1}{n} \left\vert S \right\vert \le \sqrt{
 
 The term $Lt/3$ takes into account that each r.v. could be non-Gaussian like.
 
-### Random Matrices
+#### Random Matrices Case
 
 [Reference](https://arxiv.org/pdf/1501.01571.pdf)
 
-Inequality (Matrix Berstein)
-: Let $\boldsymbol{X}_1, \boldsymbol{X}_2, \ldots, \boldsymbol{X}_n \in \mathbb{R} ^\times {d_1 \times d_2}$ be i.i.d. random matrices with mean 0 and spectral norm $\left\| \boldsymbol{X} _i \right\|  \le L$. Let their sum be $\boldsymbol{S} = \sum_{i=1}^n \boldsymbol{X}_i$ and define the 'variance' as
+Let $\boldsymbol{X}_1, \boldsymbol{X}_2, \ldots, \boldsymbol{X}_n \in \mathbb{R} ^\times {d_1 \times d_2}$ be i.i.d. random matrices with mean 0 and spectral norm $\left\| \boldsymbol{X} _i \right\|  \le L$. Let their sum be $\boldsymbol{S} = \sum_{i=1}^n \boldsymbol{X}_i$ and define the 'variance' as
 
-  $$\begin{aligned}
-  \operatorname{Var}\left( \boldsymbol{S} \right)
-  &= \max \left\{ \left\| \mathbb{E} [\boldsymbol{S} \boldsymbol{S} ^{\top} ]  \right\|, \left\| \mathbb{E} [\boldsymbol{S} ^{\top} \boldsymbol{S} ]  \right\|   \right\}\\
-  &= \max \left\{ \left\| \sum_{i=1}^n \mathbb{E} [\boldsymbol{X}_i \boldsymbol{X}_i ^{\top} ]  \right\|, \left\| \sum_{i=1}^n \mathbb{E} [\boldsymbol{X}_i ^{\top} \boldsymbol{X}_i ]  \right\|   \right\}\\
-  \end{aligned}$$
+$$\begin{aligned}
+\operatorname{Var}\left( \boldsymbol{S} \right)
+&= \max \left\{ \left\| \mathbb{E} [\boldsymbol{S} \boldsymbol{S} ^{\top} ]  \right\|, \left\| \mathbb{E} [\boldsymbol{S} ^{\top} \boldsymbol{S} ]  \right\|   \right\}\\
+&= \max \left\{ \left\| \sum_{i=1}^n \mathbb{E} [\boldsymbol{X}_i \boldsymbol{X}_i ^{\top} ]  \right\|, \left\| \sum_{i=1}^n \mathbb{E} [\boldsymbol{X}_i ^{\top} \boldsymbol{X}_i ]  \right\|   \right\}\\
+\end{aligned}$$
 
-  Then
+Then
 
-  $$
-  \mathbb{P} (\left\vert \boldsymbol{S}  \right\vert \ge t)  \le (d_1 + d_2) \exp \left( \frac{- t^2}{\operatorname{Var}\left( \boldsymbol{S} \right) + L t /3}  \right)
-  $$
+$$
+\mathbb{P} (\left\vert \boldsymbol{S}  \right\vert \ge t)  \le (d_1 + d_2) \exp \left( \frac{- t^2}{\operatorname{Var}\left( \boldsymbol{S} \right) + L t /3}  \right)
+$$
+
+### Hoeffding’s Inequality
+
+Let $Z_i, \ldots, Z_n$ be independent bounded random variables with $Z_i \in [a, b]$ for all $i$. Then
+
+$$
+\mathbb{P}\left(\frac{1}{n} \sum_{i=1}^{n}\left(Z_{i}-\mathbb{E}\left[Z_{i}\right]\right) \geq t\right) \leq \exp \left(-\frac{2 n t^{2}}{(b-a)^{2}}\right)
+$$
+
+and
+
+$$
+\mathbb{P}\left(\frac{1}{n} \sum_{i=1}^{n}\left(Z_{i}-\mathbb{E}\left[Z_{i}\right]\right) \leq - t\right) \leq \exp \left(-\frac{2 n t^{2}}{(b-a)^{2}}\right)
+$$
+
+for all $t$.

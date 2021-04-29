@@ -286,7 +286,7 @@ unless $\operatorname{Var}(\operatorname{\mathbb{E}}[X \mid A]) = 0$, which impl
 
 ## Inequalities
 
-There are two important inequalities that connect probability, expectation and variance.
+There are important inequalities that connect probability, expectation and variance. For more inequalities that also relates the sum/average of multiple variables, see [here](large-sample-inequalities).
 
 ### Markov's Inequality
 
@@ -383,30 +383,6 @@ Some variation:
 
 
 
-
-### Chernoff Bound
-
-Chernoff bound gives bounds of the sum of $n$ random variables over $[0,1]$ (not necessarily independent).
-
-Suppose $X_{1}, \cdots, X_{n}$ are independent random variables with $X_{i} \in[0,1]$. Let $S=\sum_{i} X_{i}$ and $\mu=\mathbb{E}[S]$ be the expected sum. Then for $\lambda \in (0,1)$,
-
-$$
-\operatorname{\mathbb{P}} \left[ S>(1+\lambda) \mu \right]<e^{-\frac{\lambda^{2} \mu}{3}} \qquad \text{(upper tail)}
-$$
-
-and,
-
-$$
-\operatorname{\mathbb{P}} \left[ S<(1-\lambda) \mu  \right]<e^{-\frac{\lambda^{2} \mu}{2}} \qquad \text{(lower tail)}
-$$
-
-Together:
-
-
-$$\begin{aligned}
-\mathbb{P}(|S-\mu |>\lambda \mu)
-& \leq 2 e^{-\lambda^{2} \mu / 3}\\
-\end{aligned}$$
 
 ### Cauchy-Schewarz Inequality in Probability
 

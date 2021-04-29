@@ -943,18 +943,35 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#bernstein-inequality">
-   Bernstein Inequality
+  <a class="reference internal nav-link" href="#inequalities">
+   Inequalities
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#univariate">
-     Univariate
+    <a class="reference internal nav-link" href="#chernoff-bound">
+     Chernoff Bound
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#random-matrices">
-     Random Matrices
+    <a class="reference internal nav-link" href="#bernstein-inequality">
+     Bernstein Inequality
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#univariate-case">
+       Univariate Case
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#random-matrices-case">
+       Random Matrices Case
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#hoeffdings-inequality">
+     Hoeffding’s Inequality
     </a>
    </li>
   </ul>
@@ -1094,18 +1111,37 @@ Y_n=\frac{\sqrt{n}\left(\bar{X}_{n}-\mu\right)}{\sigma}\overset{\mathcal{D}}{\ri
 \sqrt{n}\left(\bar{\boldsymbol{x}}-\boldsymbol{\mu} \right)\overset{\mathcal{D}}{\rightarrow} \mathcal{N}(\boldsymbol{0},\boldsymbol{\Sigma})  
 \]</div>
 </div>
-<div class="section" id="bernstein-inequality">
-<span id="id1"></span><h2>Bernstein Inequality<a class="headerlink" href="#bernstein-inequality" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="univariate">
-<h3>Univariate<a class="headerlink" href="#univariate" title="Permalink to this headline">¶</a></h3>
-<dl class="simple myst">
-<dt>Inequality (Berstein)</dt><dd><p>Let <span class="math notranslate nohighlight">\(X_1, X_2, \ldots, X_n \in \mathbb{R}\)</span> be i.i.d. random variables with mean 0 and value <span class="math notranslate nohighlight">\(\left\vert X_i \right\vert \le L\)</span>. Let their sum be <span class="math notranslate nohighlight">\(S = \sum_{i=1}^n X_i\)</span>. Then</p>
+<div class="section" id="inequalities">
+<span id="large-sample-inequalities"></span><h2>Inequalities<a class="headerlink" href="#inequalities" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="chernoff-bound">
+<h3>Chernoff Bound<a class="headerlink" href="#chernoff-bound" title="Permalink to this headline">¶</a></h3>
+<p>Chernoff bound gives bounds of the sum of <span class="math notranslate nohighlight">\(n\)</span> random variables over <span class="math notranslate nohighlight">\([0,1]\)</span> (not necessarily independent).</p>
+<p>Suppose <span class="math notranslate nohighlight">\(X_{1}, \cdots, X_{n}\)</span> are independent random variables with <span class="math notranslate nohighlight">\(X_{i} \in[0,1]\)</span>. Let <span class="math notranslate nohighlight">\(S=\sum_{i} X_{i}\)</span> and <span class="math notranslate nohighlight">\(\mu=\mathbb{E}[S]\)</span> be the expected sum. Then for <span class="math notranslate nohighlight">\(\lambda \in (0,1)\)</span>,</p>
 <div class="math notranslate nohighlight">
 \[
-  \mathbb{P} (\left\vert S \right\vert \ge t)  \le 2 \exp \left( \frac{- t^2}{\operatorname{Var}\left( S \right) + L t /3}  \right)
-  \]</div>
-</dd>
-</dl>
+\operatorname{\mathbb{P}} \left[ S&gt;(1+\lambda) \mu \right]&lt;e^{-\frac{\lambda^{2} \mu}{3}} \qquad \text{(upper tail)}
+\]</div>
+<p>and,</p>
+<div class="math notranslate nohighlight">
+\[
+\operatorname{\mathbb{P}} \left[ S&lt;(1-\lambda) \mu  \right]&lt;e^{-\frac{\lambda^{2} \mu}{2}} \qquad \text{(lower tail)}
+\]</div>
+<p>Together:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\mathbb{P}(|S-\mu |&gt;\lambda \mu)
+&amp; \leq 2 e^{-\lambda^{2} \mu / 3}\\
+\end{aligned}\end{split}\]</div>
+</div>
+<div class="section" id="bernstein-inequality">
+<span id="id1"></span><h3>Bernstein Inequality<a class="headerlink" href="#bernstein-inequality" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="univariate-case">
+<h4>Univariate Case<a class="headerlink" href="#univariate-case" title="Permalink to this headline">¶</a></h4>
+<p>Let <span class="math notranslate nohighlight">\(X_1, X_2, \ldots, X_n \in \mathbb{R}\)</span> be i.i.d. random variables with mean 0 and value <span class="math notranslate nohighlight">\(\left\vert X_i \right\vert \le L\)</span>. Let their sum be <span class="math notranslate nohighlight">\(S = \sum_{i=1}^n X_i\)</span>. Then</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbb{P} (\left\vert S \right\vert \ge t)  \le 2 \exp \left( \frac{- t^2}{\operatorname{Var}\left( S \right) + L t /3}  \right)
+\]</div>
 <p>If <span class="math notranslate nohighlight">\(n\)</span> is large, since <span class="math notranslate nohighlight">\(\operatorname{Var}\left( S \right) = n \sigma^2\)</span>, the bound becomes</p>
 <div class="math notranslate nohighlight">
 \[
@@ -1119,24 +1155,36 @@ Y_n=\frac{\sqrt{n}\left(\bar{X}_{n}-\mu\right)}{\sigma}\overset{\mathcal{D}}{\ri
 <p>In other words, w.h.p., we have <span class="math notranslate nohighlight">\(\frac{1}{n} \left\vert S \right\vert \le \sqrt{\frac{\log n}{n}} \sigma\)</span>.</p>
 <p>The term <span class="math notranslate nohighlight">\(Lt/3\)</span> takes into account that each r.v. could be non-Gaussian like.</p>
 </div>
-<div class="section" id="random-matrices">
-<h3>Random Matrices<a class="headerlink" href="#random-matrices" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="random-matrices-case">
+<h4>Random Matrices Case<a class="headerlink" href="#random-matrices-case" title="Permalink to this headline">¶</a></h4>
 <p><a class="reference external" href="https://arxiv.org/pdf/1501.01571.pdf">Reference</a></p>
-<dl class="simple myst">
-<dt>Inequality (Matrix Berstein)</dt><dd><p>Let <span class="math notranslate nohighlight">\(\boldsymbol{X}_1, \boldsymbol{X}_2, \ldots, \boldsymbol{X}_n \in \mathbb{R} ^\times {d_1 \times d_2}\)</span> be i.i.d. random matrices with mean 0 and spectral norm <span class="math notranslate nohighlight">\(\left\| \boldsymbol{X} _i \right\|  \le L\)</span>. Let their sum be <span class="math notranslate nohighlight">\(\boldsymbol{S} = \sum_{i=1}^n \boldsymbol{X}_i\)</span> and define the ‘variance’ as</p>
+<p>Let <span class="math notranslate nohighlight">\(\boldsymbol{X}_1, \boldsymbol{X}_2, \ldots, \boldsymbol{X}_n \in \mathbb{R} ^\times {d_1 \times d_2}\)</span> be i.i.d. random matrices with mean 0 and spectral norm <span class="math notranslate nohighlight">\(\left\| \boldsymbol{X} _i \right\|  \le L\)</span>. Let their sum be <span class="math notranslate nohighlight">\(\boldsymbol{S} = \sum_{i=1}^n \boldsymbol{X}_i\)</span> and define the ‘variance’ as</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{aligned}
-  \operatorname{Var}\left( \boldsymbol{S} \right)
-  &amp;= \max \left\{ \left\| \mathbb{E} [\boldsymbol{S} \boldsymbol{S} ^{\top} ]  \right\|, \left\| \mathbb{E} [\boldsymbol{S} ^{\top} \boldsymbol{S} ]  \right\|   \right\}\\
-  &amp;= \max \left\{ \left\| \sum_{i=1}^n \mathbb{E} [\boldsymbol{X}_i \boldsymbol{X}_i ^{\top} ]  \right\|, \left\| \sum_{i=1}^n \mathbb{E} [\boldsymbol{X}_i ^{\top} \boldsymbol{X}_i ]  \right\|   \right\}\\
-  \end{aligned}\end{split}\]</div>
+\operatorname{Var}\left( \boldsymbol{S} \right)
+&amp;= \max \left\{ \left\| \mathbb{E} [\boldsymbol{S} \boldsymbol{S} ^{\top} ]  \right\|, \left\| \mathbb{E} [\boldsymbol{S} ^{\top} \boldsymbol{S} ]  \right\|   \right\}\\
+&amp;= \max \left\{ \left\| \sum_{i=1}^n \mathbb{E} [\boldsymbol{X}_i \boldsymbol{X}_i ^{\top} ]  \right\|, \left\| \sum_{i=1}^n \mathbb{E} [\boldsymbol{X}_i ^{\top} \boldsymbol{X}_i ]  \right\|   \right\}\\
+\end{aligned}\end{split}\]</div>
 <p>Then</p>
 <div class="math notranslate nohighlight">
 \[
-  \mathbb{P} (\left\vert \boldsymbol{S}  \right\vert \ge t)  \le (d_1 + d_2) \exp \left( \frac{- t^2}{\operatorname{Var}\left( \boldsymbol{S} \right) + L t /3}  \right)
-  \]</div>
-</dd>
-</dl>
+\mathbb{P} (\left\vert \boldsymbol{S}  \right\vert \ge t)  \le (d_1 + d_2) \exp \left( \frac{- t^2}{\operatorname{Var}\left( \boldsymbol{S} \right) + L t /3}  \right)
+\]</div>
+</div>
+</div>
+<div class="section" id="hoeffdings-inequality">
+<h3>Hoeffding’s Inequality<a class="headerlink" href="#hoeffdings-inequality" title="Permalink to this headline">¶</a></h3>
+<p>Let <span class="math notranslate nohighlight">\(Z_i, \ldots, Z_n\)</span> be independent bounded random variables with <span class="math notranslate nohighlight">\(Z_i \in [a, b]\)</span> for all <span class="math notranslate nohighlight">\(i\)</span>. Then</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbb{P}\left(\frac{1}{n} \sum_{i=1}^{n}\left(Z_{i}-\mathbb{E}\left[Z_{i}\right]\right) \geq t\right) \leq \exp \left(-\frac{2 n t^{2}}{(b-a)^{2}}\right)
+\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbb{P}\left(\frac{1}{n} \sum_{i=1}^{n}\left(Z_{i}-\mathbb{E}\left[Z_{i}\right]\right) \leq - t\right) \leq \exp \left(-\frac{2 n t^{2}}{(b-a)^{2}}\right)
+\]</div>
+<p>for all <span class="math notranslate nohighlight">\(t\)</span>.</p>
 </div>
 </div>
 </div>

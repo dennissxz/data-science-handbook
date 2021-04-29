@@ -160,6 +160,148 @@ Remarks
 - node2vec performs better on node classification, while alternative methods perform better on link prediction [Goyal & Ferrara 2017]
 - in practice, choose definition of node similarity that matches application
 
+
+### PageRank
+
+
+In WWWW, Consider page as nodes and hyperlinks as directed edges. We want to rank the importance of the pages. The importance can be seen as 1-dimensional node embeddings.
+
+#### Model
+
+Assumption
+- a page is more important if it has more in-coming links
+- links from important pages worth more
+- all pages have at least one out-going links, $d_i \ge 1$
+- if a page $i$ with importance $r_i$ has $d_i$ out-links, each link gets $r_i/d_i$ importance.
+- page $j$'s own importance $r_j$ is the sum of the votes on its in-links. $r_j = \sum_{i: i \rightarrow  j} r_i/d_i$.
+- $\sum_{i=1}^{N_v} r_i =1$.
+
+Define a matrix $\boldsymbol{M}$ such that $M_{ij} = \frac{1}{d_j}$ if $j \rightarrow i$. We can see it is a column stochastic matrix. The above assumptions leads to the flow equation
+
+$$
+\boldsymbol{r} = \boldsymbol{M} \boldsymbol{r}  
+$$
+
+#### Computation
+
+To solve $\boldsymbol{r}$, we can use a linear system, but not scalable.
+
+Note that the column stochastic matrix $\boldsymbol{M}$ can define a [random walk over graphs](rw-graph): a walker at $i$ follows an out-link from $i$ uniformly at random. Since $\boldsymbol{r} = \boldsymbol{M} \boldsymbol{r}$, we know that $\boldsymbol{r}$ is a stationary distribution for the random walk.
+
+:::{admonition,seealso} R.t. Eigenvector centrality
+
+Recall [eigenvector centrality](eig-centrality) $\boldsymbol{c}$ can be solved by the first eigenvector of adjacency matrix $\boldsymbol{A}$
+
+$$
+\boldsymbol{A} \boldsymbol{c} = \lambda \boldsymbol{c}
+$$
+
+In this problem, $\boldsymbol{M} = \boldsymbol{A} \boldsymbol{D} ^{-1}$ and $\boldsymbol{r}$ is the principal eigenvector (i.e. with eigenvalue 1) of $\boldsymbol{M}$.
+
+:::
+
+We can use power iteration to find $\boldsymbol{r}$. But
+- if there is a page $i$ without out-going links (aka 'dead end'), then $M_{\cdot i} = 0$, $\boldsymbol{M}$ is not column stochastic which violates the assumption;
+- if $i$ only has a self-loop (aka 'spider traps'), i.e. $M_{ii}=1$, then $\boldsymbol{r}$ is degenerate: $r_i = 1$ in $\boldsymbol{r}$, this page has dominates importance.
+
+To overcome these issues, we use teleport trick:
+- w.p. $\beta$ follow a link uniformly at random, usually $\beta = 0.8, 0.9$
+- w.p. $1-\beta$ jumpy to a random page in $V$
+
+Hence, the PageRank equation [Brin-Page 98] is
+
+$$
+r_j = \sum_{i: i \rightarrow j} \beta \frac{r_i}{d_i}  + (1-\beta) \frac{1}{N_v}
+$$
+
+or
+
+$$
+\boldsymbol{r} = \beta \boldsymbol{M} \boldsymbol{r} + (1-\beta)/N_v  \boldsymbol{1}  
+$$
+
+Note that this formulation assumes that $\boldsymbol{M}$ has no dead ends. We can either preprocess matrix $\boldsymbol{M}$ to remove all dead ends or explicitly follow random teleport links with probability 1 from dead-ends.
+
+Let $\boldsymbol{P} = \beta \boldsymbol{M} + (1- \boldsymbol{\beta} )/N_v \boldsymbol{1} \boldsymbol{1} ^{\top}$, then we have $\boldsymbol{r}  = \boldsymbol{P} \boldsymbol{r}$. The random walk characterized by column-stochastic matrix $\boldsymbol{P}$ has no dead ends or spider traps, hence we can use the power method over $\boldsymbol{P}$.
+
+
+#### Personalized PageRank
+
+Aka Topic-specific PageRank
+
+In personalized PageRank, a walker does not teleport to all nodes $V$, but to some subset $S$ of nodes.
+
+If $S$ is the start node, then we call this **random walks with restarts**. We can then use this kind of random walk to form a proximity measure of two nodes: simulate multiple random walk starting from node $s$ with restarts, and then count the number of visits to other nodes. Nodes with higher visit count have higher proximity.
+
+The relative frequencies can also be found using power iteration. The uniform teleport probability $(1-\beta)/N_v  \boldsymbol{1}$ in PageRank now becomes $\boldsymbol{e} _s$.
+
+This method also applies to a subset $S$ of multiple nodes. The teleport probability is non-zero for $v \in S$ but 0 otherwise.
+
+
+Random walks with restarts can be used in recommender systems. The user-item networks can be viewed as a bipartite graph. We can let $S$ be a subset of items, and run the above algorithm, but only count the number of visits to items. Than we obtain a proximity measure of items.
+
+pseudo-code:
+
+```python
+item = QUERY_NODES.sample_by_weight()
+for i in range( N_STEPS ):
+  user = item.get_random_neighbor()
+  item = user.get_random_neighbor()
+  item.visit_count += 1
+  if random( ) > beta:
+    item = QUERY_NODES.sample.by_weight ()
+```
+
+The similarity consider
+- multiple connections
+- multiple paths
+- direct and indirect connections
+- degree of the node
+
+
+### R.t. Matrix Factorization
+
+Consider two simple measures
+- $\operatorname{similarity}(u, v)$: two nodes are similar if they are adjacent.
+- $\operatorname{DEC(\boldsymbol{z} _u, \boldsymbol{z} _v)} = \boldsymbol{z} _u ^{\top} \boldsymbol{z} _v$
+
+Let our $d$-dimensional embeddings be $\boldsymbol{Z} \in \mathbb{R} ^{d \times n}$. Then we want to find $\boldsymbol{Z}$ such that $\boldsymbol{A} = \boldsymbol{Z} ^{\top} \boldsymbol{Z}$. However, exact factorization of $\boldsymbol{A}$ is generally impossible (unless it is p.s.d.). We can then approximate the adjacency matrix $\boldsymbol{A}$ by $\boldsymbol{Z} ^{\top} \boldsymbol{Z}$. The problem can be formulated as
+
+$$
+\min\ \left\| \boldsymbol{A} - \boldsymbol{Z} ^{\top} \boldsymbol{Z}  \right\| _F
+$$
+
+Conclusion: inner product decoder with node similarity defined by edge connectivity is equivalent to matrix factorization of $\boldsymbol{A}$.
+
+DeepWalk and node2vec can also be formulated as matrix factorization problem.
+
+
+$$
+\boldsymbol{M} = \log \left(\operatorname{vol}(G)\left(\frac{1}{T} \sum_{r=1}^{T}\left(D^{-1} A\right)^{r}\right) D^{-1}\right)-\log b
+$$
+
+- $\operatorname{vol}(G) = \sum_{i,j}^n a_{ij}$
+- $T = \left\vert N_R(u) \right\vert$ is the length of random walks
+- $b$ is the number of negative samples.
+
+The matrix for node2vec is more complex.
+
+Hence rather than simulating random walks and then use SGD to find $\boldsymbol{Z}$, we can solve the minimization problem $\min \left\| \boldsymbol{M} - \boldsymbol{Z} ^{\top} \boldsymbol{Z}  \right\| _F$.
+
+See Network Embedding as Matrix Factorization: Unifying DeepWalk, LINE, PTE, and node2vec [WSDM 18]
+
+
+### Limitations
+
+There are limitations of node embeddings via matrix factorization and random walks.
+
+- They learn the embeddings, not a function for embedding. Hence, they cannot obtain embeddings for nodes not in the training set. (similar problem happens in PCA, MDS).
+- Cannot capture structural similarity of two nodes. Hard to define $\operatorname{similarity} (u, v)$ to measure structural similarity of two nodes, e.g. both are a vertex in a triangle in two different subgraphs in the graph. Anonymous random walk introduced below solves this problem.
+- Cannot utilize node, edge and graph features. Sol: graph neural networks.
+
+
+
+
 ## Graph Embeddings
 
 Can we entire an entire graph $G$ or some subgraph? For instance, classification of molecules, or identifying anomalous graphs.
@@ -197,7 +339,7 @@ $$
 w_{1}=111, w_{2}=112, w_{3}=121, w_{4}=122, w_{5}=123
 $$
 
-The number $\eta_\ell$ grows exponentially with $\ell$.
+The number $\eta_\ell$ grows exponentially wicvvc th $\ell$.
 
 :::{figure} graph-emb-anon-walk-number
 <img src="../imgs/graph-emb-anon-walk-number.png" width = "70%" alt=""/>
@@ -242,73 +384,186 @@ We can hierarchically cluster nodes in graphs, and sum/avg the node embeddings a
 Hierarchical Embeddings
 :::
 
+## Message Passing and Node Classification
 
-## Link Analysis
+Consider a classification problem: Given a network with node features. Some node are labeled. How do we assign labels to all other non-labeled nodes in the network?
 
-### PageRank
+One may use node embeddings to build a classifier. We also introduce a method called message passing.
 
-Consider page as nodes and hyperlinks as directed edges. We want to rank the importance of the pages.
+:::{figure} graph-node-classification
+<img src="../imgs/graph-node-classification.png" width = "50%" alt=""/>
 
-Assumption
-- a page is more important if it has more in-coming links
-- links from important pages worth more
-- all pages have at least one out-going links, $d_i \ge 1$
-- if a page $i$ with importance $r_i$ has $d_i$ out-links, each link gets $r_i/d_i$ importance.
-- page $j$'s own importance $r_j$ is the sum of the votes on its in-links. $r_j = \sum_{i: i \rightarrow  j} r_i/d_i$.
-- $\sum_{i=1}^{N_v} r_i =1$.
-
-Define a matrix $\boldsymbol{M}$ such that $M_{ij} = \frac{1}{d_j}$ if $j \rightarrow i$. We can see it is a column stochastic matrix. The above assumptions leads to the flow equation
-
-$$
-\boldsymbol{r} = \boldsymbol{M} \boldsymbol{r}  
-$$
-
-To solve $\boldsymbol{r}$, we can use a linear system, but not scalable.
-
-Note that the column stochastic matrix $\boldsymbol{M}$ can define a [random walk over graphs](rw-graph): a walker at $i$ follows an out-link from $i$ uniformly at random. Since $\boldsymbol{r} = \boldsymbol{M} \boldsymbol{r}$, we know that $\boldsymbol{r}$ is a stationary distribution for the random walk.
-
-:::{admonition,seealso} R.t. Eigenvector centrality
-
-Recall [eigenvector centrality](eig-centrality) $\boldsymbol{c}$ can be solved by the first eigenvector of adjacency matrix $\boldsymbol{A}$
-
-$$
-\boldsymbol{A} \boldsymbol{c} = \lambda \boldsymbol{c}
-$$
-
-In this problem, $\boldsymbol{M} = \boldsymbol{A} \boldsymbol{D} ^{-1}$ and $\boldsymbol{r}$ is the principal eigenvector (i.e. with eigenvalue 1) of $\boldsymbol{M}$.
-
+Node classification [Leskovec 2021]
 :::
 
-We can use power iteration to find $\boldsymbol{r}$. But
-- if there is a page $i$ without out-going links (aka 'dead end'), then $M_{\cdot i} = 0$, $\boldsymbol{M}$ is not column stochastic which violates the assumption;
-- if $i$ only has a self-loop (aka 'spider traps'), i.e. $M_{ii}=1$, then $\boldsymbol{r}$ is degenerate: $r_i = 1$ in $\boldsymbol{r}$, this page has dominates importance.
+Notation
+- Labeled data of size $\ell$: $(\mathcal{X}_\ell, \mathcal{Y}_\ell) = \left\{ (x_{1:\ell}, y_{1:\ell}) \right\}$
+- Unlabeled data $\mathcal{X}_u = \left\{ x_{\ell + 1:n} \right\}$
+- adjacency matrix of $n$ nodes $\boldsymbol{A}$, from which we can have $\boldsymbol{A} _\ell$ and $\boldsymbol{A} _u$
 
-To overcome these issues, we use teleport trick:
-- w.p. $\beta$ follow a link uniformly at random, usually $\beta = 0.8, 0.9$
-- w.p. $1-\beta$ jumpy to a random page in $V$
+This can be viewed as a [semi-supervised](semi-supervised) method, where we use $\left\{ \mathcal{X} _\ell, \mathcal{Y} _\ell, \mathcal{X} _u, \boldsymbol{A} \right\}$ to predict $\mathcal{Y} _u$. It is also a collective classification method, which assigns labels to all nodes simultaneously.
 
-Hence, the PageRank equation [Brin-Page 98] is
+Key observation: correlation exists in networks, nearby nodes have the same characteristics. In social science, there are two concepts
+- Homophily: individual characteristics affect social connection. Individuals with similar characteristics tend to be close.
+- Influence: social connection affects individual characteristics. One node's characteristics can affect that of nearby nodes.
 
-$$
-r_j = \sum_{i: i \rightarrow j} \beta \frac{r_i}{d_i}  + (1-\beta) \frac{1}{N_v}
-$$
+Hence, the label of $v$ may depend on
+- its feature $x_v$
+- its nearby nodes' features $x_u$
+- its nearby nodes' labels $y_u$
 
-or
+In general, collective classification has three steps
+1. Learn a **local** classifier to assign initial labels, using $\left\{ \mathcal{X} _\ell, \mathcal{Y} _\ell, \mathcal{X} _u \right\}$ without using network information $\boldsymbol{A}$
+2. Learn a **relational** classifier to label one node based on the labels and/or features of its neighbors. This step uses $\boldsymbol{A}$, and captures correlation between nodes.
+3. Collective inference: apply relational classifier to each node iteratively, until convergence of $\mathcal{Y}_\ell$.
 
-$$
-\boldsymbol{r} = \beta \boldsymbol{M} \boldsymbol{r} + (1-\beta)/N_v  \boldsymbol{1}  
-$$
+In the following we introduce some traditional methods, which are motivation for graphical neural networks.
 
-Note that this formulation assumes that $\boldsymbol{M}$ has no dead ends. We can either preprocess matrix $\boldsymbol{M}$ to remove all dead ends or explicitly follow random teleport links with probability 1 from dead-ends.
+### Relational Classification
 
-Let $\boldsymbol{P} = \beta \boldsymbol{M} + (1- \boldsymbol{\beta} )/N_v \boldsymbol{1} \boldsymbol{1} ^{\top}$, then we have $\boldsymbol{r}  = \boldsymbol{P} \boldsymbol{r}$. The random walk characterized by column-stochastic matrix $\boldsymbol{P}$ has no dead ends or spider traps, hence we can use the power method over $\boldsymbol{P}$.
-
-
-### Personalized PageRank
-
+Model: Class probability of a node equals the weighted average of class probability of its neighbors.
 
 
-### Random Walk with Restarts
+$$\begin{aligned}
+\mathbb{P} \left(Y_{v}=c\right)
+&= \frac{1}{d_v} \sum_{u \in \mathscr{N} (v)} \mathbb{P} (Y_u = c) \\  
+&=\frac{1}{\sum_{(v, u) \in E} A_{v, u}} \sum_{(v, u) \in E} A_{v, u} \mathbb{P} \left(Y_{u}=c\right)
+\end{aligned}$$
+
+Algorithm
+- Initialize
+  - for labeled nodes, use ground-truth label $y_v$
+  - for unlabeled nodes, use $Y_v = 0.5$
+- Run iterations until convergence of labels or maximum number of iterations achieved
+  - Update labels of all non-labeled nodes in a random order
+
+:::{figure} graph-relational-classification
+<img src="../imgs/graph-relational-classification.png" width = "70%" alt=""/>
+
+Relational classification [Leskovec 2021]
+:::
+
+If edge weights is provided, we can replace $\boldsymbol{A}$ by $\boldsymbol{W}$
+
+Cons
+- Convergence is not guaranteed
+- This method do not use features $\mathcal{X}$.
+
+### Iterative Classification
+
+Iterative classification uses both features and labels.
+
+Train two classifiers
+- $\phi_1 (x _v)$ to predict node label $y_v$ based on node feature vector $x_v$
+- $\phi_w (f_v, z_v)$ to predict node label $y_v$ based on node feature vector $f_v$ and summary $z_v$ of labels of its neighbors $\mathscr{N} (v)$. $z_v$ can be
+  - relative frequencies of the number of each label in $\mathscr{N} (v)$
+  - most common label in $\mathscr{N} (v)$
+  - number of different labels in $\mathscr{N} (v)$
+
+Learning
+
+- Phase 1: train classifiers on a training set $\left\{ \mathcal{X} _\ell, \mathcal{Y} _\ell \right\}$
+  - $\phi_1 (x)$ using $\left\{ \mathcal{X} _\ell, \mathcal{Y} _\ell \right\}$
+  - compute $\mathcal{Z}_\ell$ using $\mathcal{Y} _\ell$ and network information $\boldsymbol{A} _\ell$
+  - $\phi_2 (x, z)$ using $\left\{ \mathcal{X} _\ell, \mathcal{Z}_\ell, \mathcal{Y} _\ell \right\}$
+
+- Phase 2: iteration
+  - on test set $\left\{ \mathcal{X} _u \right\}$
+    - initialize label $\hat{\mathcal{Y}}_{u, 1}$ by $\phi_1 (x_u)$
+    - compute $z_u$ by $\hat{\mathcal{Y}}_{u, 1}$ and network information $\boldsymbol{A} _u$
+    - update label $\hat{\mathcal{Y}}_{u, 2}$ by $\phi_2 (x_u, z_u)$
+  - repeat for **each** node until labels $\hat{\mathcal{Y}}_{u, 2}$ stabilize or max number of iterations is reached
+    - compute $z_u$ by $\hat{\mathcal{Y}}_{u, 2}$ and network information $\boldsymbol{A} _u$
+    - update label $\hat{\mathcal{Y}}_{u, 2}$ by $\phi_2 (x_u, z_u)$
+
+Remarks
+- training set is only used for training $\phi_1, \phi_2$, not involved in iteration
+- $\phi_1$ is used to initialize labels $\hat{\mathcal{Y}}_{u, 1}$, which is then used in iteration
+- the output $\hat{\mathcal{Y}}_{u, 2}$, obtained from $\phi_2$, use information from both node features and labels.
+- convergence is not guaranteed.
+
+### Belief Propagation
+
+Belief propagation is a dynamic programming approach to answering probability queries in a graph. It is an iterative process of passing messages to neighbors. The message sent from $i$ to $j$
+- depends on messages $i$ received from its neighbors
+- contains $i$'s belief of the state of $j$, e.g. when the state is label, the belief can be 'node $i$ believes node $j$ belong to class 1 with likelihood ...'.
+
+When consensus is reached, we can calculate final belief.
+
+#### In Acyclic Graphs
+
+We introduce belief on labels in acyclic graphs as an example. Define
+- $\mathcal{L}$ is the set of all classes/labels
+
+- **Label-label potential matrix** $\boldsymbol{\psi}$ over $\mathcal{L} \times \mathcal{L}$. The entry is
+
+  $$\psi(Y_i, Y_j) \propto \mathbb{P} (Y_j \mid Y_i)$$
+
+  is proportional to the probability of a node $j$ being in class $Y_j$ given that it has neighbor $i$ in class $Y_i$.
+- **Prior belief** $\phi$ over $\mathcal{L}$:
+
+  $$\phi(Y_i)\propto \mathbb{P} (Y_i)$$
+
+  is proportional to the probability that node $i$ being in class $Y_i$.
+
+- $m_{i \rightarrow j}(Y_j)$ is $i$'s belief/**message**/estimate of $j$ being in class $Y_j$, which can be compute by
+
+  $$
+  m_{i \rightarrow j}(Y_j) = \sum_{Y_i \in \mathcal{L}} \left[ \psi(Y_i, Y_j) \phi (Y_i) \prod_{k \in N_i \setminus j} m_{k \rightarrow i} (Y_i) \right] \quad \forall Y_j \in \mathcal{L}
+  $$
+
+  This message is a 'combination' of conditional probabilities, prior probabilities, and 'prior' message from $i$'s neighbors.
+
+:::{figure} graph-belief-prop
+<img src="../imgs/graph-belief-prop.png" width = "40%" alt=""/>
+
+Belief propagation [Leskovec 2021]
+:::
+
+Learning
+- Learn $\boldsymbol{\Psi}$ and $\boldsymbol{\phi}$ by some methods.
+- Initialize all messages $m$ to $1$
+- Since the graph is acyclic, we can define an ordering of nodes. Start from some node, we follow this ordering to compute $m$ for each node. Repeat until convergence
+- Compute self belief as output: node $i$'s belief of being in class $Y_i$
+  $$b_i (Y_i) = \phi(Y_i) \prod_{k \in N_i} m_{k \rightarrow  i} (Y_i)\quad \forall Y_j \in \mathcal{L}$$
+
+The messages in the starting node can be viewed as **separate evidence**, since they do not depend on each other.
+
+
+#### In Cyclic Graphs
+
+It is also called loopy belief propagation since people also used it over graphs with cycles.
+
+Problems in cyclic graphs
+- Messages from different subgraphs are no longer independent. There is no 'separate' evidence.
+- The initial belief of $i$ (which could be incorrect) is reinforced/amplified by a cycle, e.g. $i \rightarrow j \rightarrow k \rightarrow  u \rightarrow i$
+- convergence guarantee and the previous interpretation may be lost
+
+:::{figure} graph-belief-prop-cycle
+<img src="../imgs/graph-belief-prop-cycle.png" width = "50%" alt=""/>
+
+Loopy belief propagation on a cyclic graph
+:::
+
+In practice, Loopy BP is still a good heuristic for complex graphs which contain many branches, few cycles, or long cycles (weak ).
+
+Since there is no ordering, some modification of the algorithm is necessary.
+- start from arbitrary nodes.
+- follow the edges to update the neighboring nodes, like a random walker.
+
+#### Review
+
+Advantages:
+- Easy to program & parallelize
+- Generalize: can apply to any graph model with any form of potentials
+  - e.g. higher order: e.g. $\phi (Y_i, Y_j, Y_k)$
+
+- Challenges:
+  - Convergence is not guaranteed (when to stop?), especially if many closed loops
+  - Potential functions (parameters) need to be estimated
+
+
+
 
 
 .
