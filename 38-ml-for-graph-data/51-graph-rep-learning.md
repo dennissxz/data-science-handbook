@@ -833,3 +833,52 @@ If edge weights $w_{vu}$ are given, we can
 - incorporate it into the design of attention mechanism $a$.
 
 In many cases, attention leads to performance gains.
+
+### Layer Design
+
+#### Modules
+
+We can include modern deep learning modules that proved to be useful in many domains, including
+- BatchNorm to stabilize neural network training, used to normalize embeddings.
+- Dropout to prevent overfitting, used in linear layers $\boldsymbol{W} _\ell \boldsymbol{h} _u ^{(\ell)}$.
+
+:::{figure} gnn-layer
+<img src="../imgs/gnn-layer.png" width = "20%" alt=""/>
+
+A GNN Layer
+:::
+
+Try design ideas in [GraphGym](https://github.com/snap-stanford/GraphGym).
+
+We then introduce how to add skip connection across layers.
+
+#### Issue with Deep GNN
+
+Unlike some other NN models, adding more GNN layers do not always help. The issue of stacking many GNN layers is that GNN suffers from the **over-smoothing** problem, where all the node embeddings converge to the same value.
+
+Let receptive field be the set of nodes that determine the embedding of a node of interest. In a $L$-layer GNN, this set is the union of $\ell$-hop neighborhood for $\ell=1, 2, \ldots, L$. As the number of layers $L$ goes large, the $L$-hop neighborhood increases exponentially. The receptive filed quickly covers all nodes in the graph.
+
+:::{figure} gnn-receptive-filed
+<img src="../imgs/gnn-receptive-filed.png" width = "80%" alt=""/>
+
+Receptive field for different layers of GNN
+:::
+
+For different nodes, the **shared** neighbors quickly grow when we
+increase the number of hops (num of GNN layers). Their computation graphs are similar, hence similar embeddings.
+
+#### Solution
+
+How to enhance the expressive power of a shallow GNN?
+- Increase the expressive power within each GNN layer
+  - make $\operatorname{AGG}$ a neural network
+- Add layers that do not pass messages
+  - MLP before and after GNN layers, as pre-process layers (image, text) and post-process layers for downstream tasks.
+
+We can also add shortcut connections (aka skip connections) in GNN. Then we automatically get a mixture of shallow GNNs and deep GNNs. We can even add shortcuts from each layer to the final layer, then final layer directly aggregates from the all the node embeddings in the previous layers
+
+:::{figure} gnn-skip-connection
+<img src="../imgs/gnn-skip-connection.png" width = "70%" alt=""/>
+
+Skip connection in GNN
+:::
