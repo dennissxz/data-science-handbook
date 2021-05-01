@@ -651,3 +651,88 @@ where we update the $v$-th row at a neuron for node $v$, or several rows corresp
 
 In practice, $\boldsymbol{A}$ is sparse, hence some sparse matrix multiplication can be used. But not all GNNs can be expressed in matrix form, when
 aggregation function is complex.
+
+### Training
+
+#### Supervised
+
+After build GNN layers, to train it, we compute loss and do SGD. The pipleine is
+
+:::{figure} gnn-training-pipeline
+<img src="../imgs/gnn-training-pipeline.png" width = "50%" alt=""/>
+
+GNN Training Piepline
+:::
+
+The prediction heads depend on whether the task is at node-level, edge-level, or graph-level.
+
+##### Node-level
+
+If we have some node label, we can minimize the loss
+
+$$
+\min\ \mathcal{L} (y_v, f(\boldsymbol{z} _v))
+$$
+
+- if $y$ is a real number, then $f$ maps embedding from $\mathbb{R} ^d$ to $\mathbb{R}$, and $\mathcal{L}$ is L2 loss
+
+- if $y$ is $C$-way categorical, $f$ maps embedding from $\mathbb{R} ^d$ to $\mathbb{R} ^C$, and $\mathcal{L}$ is cross-entropy.
+
+##### Edge-level
+
+If we have some edge label $y_{uv}$, then the loss is
+
+$$
+\min\ \mathcal{L} (y_{uv}, f(\boldsymbol{z} _u, \boldsymbol{z} _v))
+$$
+
+To aggregate the two embedding vectors, $f$ can be
+- concatenation and then linear transformation
+- inner product $\boldsymbol{z} _u ^{\top} \boldsymbol{z} _v$ (for 1-way prediction)
+- $y_{uv} ^{(r)} = \boldsymbol{z} _u ^{\top} \boldsymbol{W} ^{(r)} \boldsymbol{z} _v$ then $\hat{\boldsymbol{y}} _{uv} = [y_{uv} ^{(1)}, \ldots , y_{uv} ^{(R)}]$. The weights $\boldsymbol{W} ^{(r)}$ are trainable.
+
+##### Graph-level
+
+For graph-level task, we make prediction using all the node embeddings in our graph. The loss is
+
+$$
+\min\ \mathcal{L} (y_{G}, f \left( \left\{ \boldsymbol{z} _v, \forall v \in V \right\} \right))
+$$
+
+where $f \left( \left\{ \boldsymbol{z} _v, \forall v \in V \right\} \right)$ is similar to $\operatorname{AGG}$ in a GNN layer
+- global pooling: $f = \operatorname{max}, \operatorname{mean}, \operatorname{sum}$
+- hierarchical pooling: global pooling may lose information. We can apply pooling to some subgraphs to obtain subgraph embeddings, and then pool these subgraph embeddings.
+
+  :::{figure}
+  <img src="../imgs/graph-hier-emb.png" width = "80%" alt=""/>
+
+  Hierarchical Pooling
+  :::
+
+  To decide subgraph assignment ??
+
+#### Unsupervised
+
+In unsupervised setting, we use information from the graph itself as labels.
+
+- Node-level: some node statistics, e.g. clustering coefficient, PageRank
+- Edge-level: $y_{u, v} = 1$ when node $u$ and $v$ are similar. Similarity can be defined using random walks, node proximity, etc.
+- Graph-level: some graph statistic, e.g. predict if two graphs are isomorphic
+
+
+#### Batch
+
+We also use batch gradient descent. In each iteration, we train on a set of nodes, i.e., a batch of compute graphs.
+
+#### Dataset Splitting
+
+How do we split our dataset into train / validation / test set?
+
+
+
+### Pros
+
+Inductive capability
+
+- new graph: after training GNN on one graph, we can generalize it to an unseen graph. For instance, train on protein interaction graph from model organism A and generate embeddings on newly collected data about organism B.
+- new nodes: if an unseen node is added to the graph, we can directly run forward propagation to obtain its embedding.
