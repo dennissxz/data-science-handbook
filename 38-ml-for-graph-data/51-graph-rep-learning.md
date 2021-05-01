@@ -724,11 +724,53 @@ In unsupervised setting, we use information from the graph itself as labels.
 
 We also use batch gradient descent. In each iteration, we train on a set of nodes, i.e., a batch of compute graphs.
 
-#### Dataset Splitting
+#### Train-test Splitting
 
-How do we split our dataset into train / validation / test set?
+Given a graph input with features and labels $\boldsymbol{G} = (V, E, \boldsymbol{X} , \boldsymbol{y})$, how do we split it into train / validation / test set? The speciality of graph is that nodes as observations are connected by edges, they are not independent due to message passing.
 
+##### Node-level
 
+```{margin}
+“transductive” means the entire graph can be observed in all dataset splits
+```
+
+Transductive setting
+- training: hide some nodes' label $\boldsymbol{y} _h$, use all the remaining information $(V, E, \boldsymbol{X} , \boldsymbol{y} \setminus \boldsymbol{y} _h)$ to train a GNN. Of course, the computation graphs are for those labeled nodes.
+- test: evaluate on $\boldsymbol{y} _h$, i.e. the computation graphs are for those unlabeled nodes.
+
+Inductive setting
+- partition the graph into training subgraph $G_{\text{train} }$ and test subgraph $G_{\text{test} }$, remove across-subgraph edges. Then the two subgraphs are independent.
+- training: use $G_{\text{train} }$
+- test: use the trained model, evaluate on $G_{\text{test} }$
+- applicable to node / edge / graph tasks
+
+:::{figure} gnn-train-test-split
+<img src="../imgs/gnn-train-test-split.png" width = "70%" alt=""/>
+
+Splitting graph, transductive (left) and inductive (right)
+:::
+
+##### Link-level
+
+For link-prediction task, we first
+
+Inductive setting
+- Partition edges $E$ into
+  - message edges $E_m$, used for GNN message passing, and
+  - supervision edges $E_s$, use for computing objective, not fed into GNN
+- Partition graph into training subgraph $G_{\text{train} }$ and test subgraph $G_{\text{test} }$, remove across-subgraph edges. Each subgraph will have some $E_m$ and some $E_s$.
+- Training on $G_{\text{train} }$
+- Test on $G_{\text{test} }$
+
+Transductive setting (common setting)
+- Partition the edges into
+  - training message edges $E_{\text{train, m}}$
+  - training supervision edges $E_{\text{train, s}}$
+  - test edges $E_{\text{test}}$
+- Training: use training message edges $E_{\text{train, m}}$ to predict training supervision edges $E_{\text{train, s}}$
+- Test: Use $E_{\text{train, m}}$, $E_{\text{train, s}}$ to predict $E_{\text{test}}$
+
+After training, supervision edges are **known** to GNN. Therefore, an ideal model should use supervision edges $E_{\text{train, s}}$ in message passing at test time. If there is a validation step, then the validation edges are also used to predict $E_{\text{test}}$.
 
 ### Pros
 
