@@ -882,3 +882,56 @@ We can also add shortcut connections (aka skip connections) in GNN. Then we auto
 
 Skip connection in GNN
 :::
+
+### Graph Manipulation
+
+It is unlikely that the input graph happens to be the optimal computation graph for embeddings.
+
+Issues and solutions:
+
+- Graph Feature manipulation
+  - prob: the input graph lacks features.
+  - sol: feature augmentation
+- Graph Structure manipulation if the graph is
+  - too sparse
+    - prob: inefficient message passing
+    - sol: add virtual nodes / edges
+  - too dense
+    - prob: message passing is too costly
+    - sol: sample neighbors when doing message passing
+  - too large
+    - prob: cannot fit the computational graph into a GPU
+    - sol: sample subgraphs to compute embeddings
+
+#### Feature Augmentation
+
+Sometimes input graph does not have node features, e.g. we only have the adjacency matrix.
+
+Standard approaches to augment node features
+- assign constant values to nodes
+- assign unique IDs to nodes, in the form of $N_v$-dimensional one-hot vectors
+- assign other node-level descriptive features, that are hard to learn by GNN
+  - centrality
+  - clustering coefficients
+  - PageRank
+  - cycle count (as one-hot encoding vector)
+
+:::{figure} gnn-feature-aug
+<img src="../imgs/gnn-feature-aug.png" width = "80%" alt=""/>
+
+Comparison of feature augmentation methods
+:::
+
+#### Virtual Nodes/Edges
+
+If the graph is too sparse, then the receptive field of a node covers small number of nodes. The message passing is then inefficient.
+
+We can add a virtual node, and connected it to all $N_v$ nodes in the graph. Hence all nodes will have a distance at most 2. (too dense?? if $L=2$ then the input layer covers all nodes??)
+
+#### Neighborhood Sampling
+
+In the standard setting, for a node $v$, all the nodes in $\mathscr{N} _(v)$ are used for message passing. We can actually randomly sample a subset of a node’s neighborhood for message passing.
+
+Next time when we compute the embeddings, we can sample **different** neighbors. In expectation, we will still use all neighbors vectors.
+
+Benefits: greatly reduce computational cost. Allows for scaling to large graphs.
