@@ -935,3 +935,25 @@ In the standard setting, for a node $v$, all the nodes in $\mathscr{N} _(v)$ are
 Next time when we compute the embeddings, we can sample **different** neighbors. In expectation, we will still use all neighbors vectors.
 
 Benefits: greatly reduce computational cost. Allows for scaling to large graphs.
+
+### Reference
+
+- Tutorials and overviews:
+  - Relational inductive biases and graph networks (Battaglia et al., 2018)
+  - Representation learning on graphs: Methods and applications (Hamilton et al., 2017)
+- Attention-based neighborhood aggregation:   
+  - Graph attention networks (Hoshen, 2017; Velickovic et al., 2018; Liu et al., 2018)
+- Embedding entire graphs:
+  - Graph neural nets with edge embeddings (Battaglia et al., 2016; Gilmer et. al., 2017)
+  - Embedding entire graphs (Duvenaud et al., 2015; Dai et al., 2016; Li et al., 2018) and graph pooling (Ying et al., 2018, Zhang et al., 2018)
+  - Graph generation and relational inference (You et al., 2018; Kipf et al., 2018)
+  - How powerful are graph neural networks(Xu et al., 2017)
+- Embedding nodes:
+  - Varying neighborhood: Jumping knowledge networks (Xu et al., 2018), GeniePath (Liu et al., 2018)
+  - Position-aware GNN (You et al. 2019)
+- Spectral approaches to graph neural networks:
+  - Spectral graph CNN & ChebNet (Bruna et al., 2015; Defferrard et al., 2016)
+  - Geometric deep learning (Bronstein et al., 2017; Monti et al., 2017)
+- Other GNN techniques:
+  - Pre-training Graph Neural Networks (Hu et al., 2019)
+  - GNNExplainer: Generating Explanations for Graph Neural Networks (Ying et al., 2019)
