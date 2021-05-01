@@ -563,28 +563,91 @@ Advantages:
   - Potential functions (parameters) need to be estimated
 
 
+## Graphical Neural Networks
+
+Recall the limitations of shallow embedding methods:
+- $\mathcal{O} (N_v)$ parameters are needed
+  - no sharing of parameters between nodes
+- transductive, no out-of-sample prediction.
+- do not incorporate node features
+
+Now we introduce deep graph encoders for node embeddings, where $\operatorname{ENC}(v)$ are deep neural networks. Note that the $\operatorname{similarity}(u,v)$ measures can also be incorporated into GNN. The output can be node embeddings, sub graph embeddings, or entire graph embeddings, to be used for downstream tasks.
+
+:::{figure} gnn-pipeline
+<img src="../imgs/gnn-pipeline.png" width = "70%" alt=""/>
+
+Pipeline of graphical neural networks
+:::
 
 
+Let
+- $G$ be an undirected graph of order $N_v$
+- $\boldsymbol{A}$ be the $N_v \times N_v$ adjacency matrix
+- $\boldsymbol{X}$ be the $N_v \times d$ node features
 
-.
+A naive idea to represent the graph with features is to use the $N_v \times (N_v + d)$ matrix $[\boldsymbol{A} , \boldsymbol{X}]$, and then feed into NN. However, there are some issues
+- for node-level task
+  - $N_v + d$ parameters > $N_v$ examples (nodes), easy overfit
+- for graph-level task:
+  - not applicable to graphs of different sizes
+  - sensitive to node ordering
+
+### Structure
+
+To solve the above issues, GNN borrows idea of CNN filters (hence GNN is also called graphical convolutional neural networks GCN).
+
+#### Computation Graphs
+
+In CNN, a convolutional operator can be viewed as an operator over lattices. Can we generalize it to subgraphs? How to define sliding windows?
+
+```{margin}
+Bipartite graph can be 'projected' to obtain 'neighbors'. Useful in recommender systems.
+```
+
+Consider a 3 by 3 filter in CNN. We aggregate information in 9 cells and and then output one cell. In a graph, we can aggregate information in a neighborhood $\mathscr{N} (v)$ and output one 'node'. For instance, given messages $h_j$ from neighbor $j$ with weight $w_j$, we can output new message $\sum_{j \in \mathcal{N} (v)} w_j h_j$. In GNN, every node defines a **computation graph** based on its neighborhood
+
+:::{figure} gnn-cnn-filter
+<img src="../imgs/gnn-cnn-filter.png" width = "50%" alt=""/>
+
+CNN filter and GNN
+:::
+
+It also borrows idea from message passing. The information in GNN propagate through neighbors like those in belief networks. The number of hops determines the number of layers of GNN. For a GNN designed to find node embeddings, the information at each layer is node embeddings.
+
+:::{figure} gnn-aggregate
+<img src="../imgs/gnn-aggregate.png" width = "70%" alt=""/>
+
+Aggregation of neighbors information
+:::
+
+#### Neurons
+
+The block in the previous computation graph represents an aggregation-and-transform step, where we use neighbors' embeddings $\boldsymbol{h} _u ^{(\ell)}$'s and self embedding $\boldsymbol{h} _v ^{(\ell)}$ to obtain $\boldsymbol{h} _v ^{(\ell + 1)}$. This step work like a neuron. Different GNN models differ in this step.
 
 
-.
+:::{admonition,note} Note
+One important property of aggregation is that the aggregation operator should be permutation invariant, since neighbors have no orders.
+:::
+
+A basic approach of aggregation-and-transform is to average last layer information, take linear transformation, and then non-linear activation. Consider an $L$-layer GNN to obtain $k$-dimensional embeddings
+
+- $\boldsymbol{h} _v ^{(0)} = \boldsymbol{x} _v$: initial $0$-th layer embeddings, equal to node features
+- $\boldsymbol{h} _v ^{(\ell +1)} = \sigma \left( \boldsymbol{W} _\ell \frac{1}{d_v}\sum_{u \in \mathscr{N} (v)} \boldsymbol{h} _u ^ {(\ell)} + \boldsymbol{B} _\ell \boldsymbol{h} _v ^{(\ell)} \right)$ for $\ell = \left\{ 0, \ldots, L-1 \right\}$
+  - average last layer (its neighbors') hidden embeddings $\boldsymbol{h} _u ^{(\ell)}$, linearly transformed by $k \times k$ weight matrix $\boldsymbol{W}_ \ell$
+  - also take as input its hidden embedding $\boldsymbol{h} _v ^{(\ell)}$ at last layer (last updated embedding?? stored in $\boldsymbol{H}$??), linearly transformed by $k\times k$ weight matrix $\boldsymbol{B}_ \ell$
+  - finally activated by $\sigma$.
+- $\boldsymbol{z} _v = \boldsymbol{h} _v ^{(L)}$ final output embeddings.
+
+The weight parameters in layer $\ell$ are $\boldsymbol{W} _\ell$ and $\boldsymbol{B} _\ell$, which are shared across neurons in layer $\ell$. Hence, the number of model parameters is sub-linear in $N_v$.
+
+If we write the hidden embeddings $\boldsymbol{h} _v ^{(\ell)}$ as rows in a matrix $\boldsymbol{H}^{(\ell)}$, then the aggregation step can be written as
 
 
-.
+$$
+\boldsymbol{H} ^{(\ell+1)}=\sigma\left(\boldsymbol{D} ^{-1} \boldsymbol{A} \boldsymbol{H} ^{(\ell)} \boldsymbol{W} _{\ell}^{\top}+\boldsymbol{H} ^{(\ell)} \boldsymbol{B} _{\ell}^{\top}\right)
+$$
 
+where we update the $v$-th row at a neuron for node $v$, or several rows corresponding to neurons in a layer.
 
-.
-
-
-.
-
-
-.
-
-
-.
-
-
-.
+In practice, $\boldsymbol{A}$ is sparse, hence some sparse matrix multiplication can be used. But not all GNNs can be expressed in matrix form, when
+aggregation function is complex.
