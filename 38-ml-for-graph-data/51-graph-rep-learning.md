@@ -736,3 +736,100 @@ Inductive capability
 
 - new graph: after training GNN on one graph, we can generalize it to an unseen graph. For instance, train on protein interaction graph from model organism A and generate embeddings on newly collected data about organism B.
 - new nodes: if an unseen node is added to the graph, we can directly run forward propagation to obtain its embedding.
+
+### Variants
+
+As said, different GNN models mainly differ in the aggregation-and-transform step. Let's write the aggregation step as
+
+$$
+\operatorname{AGG} \left( \left\{ \boldsymbol{h} _u ^{(\ell)}, \forall u \in \mathscr{N} (v)  \right\} \right)
+$$
+
+In basic GNN, the aggregation function is just average. And the update function is
+
+$$\boldsymbol{h} _v ^{(\ell +1)} = \sigma \left( \boldsymbol{W} _\ell \frac{1}{d_v}\sum_{u \in \mathscr{N} (v)} \boldsymbol{h} _u ^ {(\ell)} + \boldsymbol{B} _\ell \boldsymbol{h} _v ^{(\ell)} \right)$$
+
+There are many variants and extensions to this update function. Before aggregation, there can be some transformation of the neighbor embeddings. The aggregation-and-transform step then becomes transform-aggregation-transform.
+
+#### GraphSAGE
+
+[Hamilton et al., NIPS 2017]
+
+In GraphSAGE, the update function is more general,
+
+$$\boldsymbol{h} _v ^{(\ell + 1)} = \sigma \left( \left[ \boldsymbol{W} _\ell \operatorname{AGG} \left( \left\{ \boldsymbol{h} _u ^{(\ell)}, \forall u \in \mathscr{N} (v)  \right\} \right), \boldsymbol{B} _\ell \boldsymbol{h} _v ^{(\ell)}\right] \right)$$
+
+where we concatenate two vectors instead of summation, and $\operatorname{AGG}$ is a flexible aggregation function. L2 normalization of $\boldsymbol{h} _v ^{(\ell + 1)}$ to a unit length embedding vector can also be applied. In some cases (not always), normalization of embedding results in performance improvement
+
+AGG can be
+
+- Mean
+
+  $$
+  \operatorname{AGG} = \frac{1}{d_v}\sum_{u \in \mathscr{N} (v)} \boldsymbol{h} _u ^ {(\ell)}
+  $$
+
+- Pool: Transform neighbor vectors and apply symmetric vector function $\gamma$, e.g. mean, max
+
+  $$\operatorname{AGG} = \gamma \left( \left\{ \operatorname{MLP} (\boldsymbol{h} _u ^{(\ell)} ), \forall u \in \mathscr{N} (v)   \right\} \right)$$
+
+- LSTM: apply LSTM, but to make it permutation invariant, we reshuffle the neighbors (some random order)
+
+  $$
+  \operatorname{AGG}  = \operatorname{LSTM} \left( \left[ \boldsymbol{h} _u ^{(\ell)} , \forall u \in \pi (\mathscr{N} (v)) \right] \right)
+  $$
+
+#### Matrix Operations
+
+If we use mean, then the aggregation step (ignore $\boldsymbol{B}_\ell$) can be written as
+
+$$
+\boldsymbol{H} ^{(\ell+1)}  = \boldsymbol{D} ^{-1} \boldsymbol{A} \boldsymbol{H}  ^{(\ell)}
+$$
+
+A variant [Kipf+ 2017]
+
+$$
+\boldsymbol{H} ^{(\ell+1)}  = \boldsymbol{D} ^{-1/2} \boldsymbol{A} \boldsymbol{D} ^{-1/2} \boldsymbol{H}  ^{(\ell)}
+$$
+
+!!Laplacian
+
+#### Graph Attention Networks
+
+If AGG is mean, then the message from neighbors are of equal importance with the same weight $\frac{1}{d_v}$. Can we specify some unequal weight/attention $\alpha_{vu}$?
+
+$$
+\operatorname{AGG} = \sum_{u \in \mathscr{N} (v)} \alpha_{vu} \boldsymbol{h} _u ^ {(\ell)}
+$$
+
+- Compute **attention coefficients** $e_{vu}$ across pairs of nodes $u, v$ based on their messages, by some **attention mechanism** $a$
+
+  $$
+  e_{v u}=a\left(\mathbf{W}^{(l)} \mathbf{h}_{u}^{(l-1)}, \mathbf{W}^{(l)} \boldsymbol{h}_{v}^{(l-1)}\right)
+  $$
+
+  The attention coefficients $e_{vu}$ indicates the importance of $u$'s message to node $v$.
+
+- Normalize $e_vu$ into the final **attention weight** $\alpha_{vu}$ by softmax function
+
+  $$
+  \alpha_{v u}=\frac{\exp \left(e_{v u}\right)}{\sum_{k \in N(v)} \exp \left(e_{v k}\right)}
+  $$
+
+How to design attention mechanism $a$? For instance, $a$ can be some MLP. The parameters in $a$ are trained jointly.
+
+We can generalize to use multi-head attention, which are shown to stabilizes the learning process of attention mechanism [Velickovic+ 2018]. There are $R$ independent attention mechanisms are used. Each one of them, namely a 'heard', computes a set of attention weight $\boldsymbol{\alpha} _{v} ^{(r)}$. Finally, we aggregate the $\boldsymbol{h} _v$ again, by concatenation or summation.
+- $\boldsymbol{h} _v ^{(\ell+1, \color{red}{r})} = \sigma \left( \boldsymbol{W} ^{(\ell) }\sum_{u \in \mathscr{N} (v)} \alpha_{vu}^ {(\color{red}{r})} \boldsymbol{h} _u ^ {(\ell)}  \right)$
+- $\boldsymbol{h} _v ^{(\ell + 1)}  = \operatorname{AGG} \left( \left\{ \boldsymbol{h} _v ^{(\ell+1, \color{red}{r})}, r = 1, \ldots, R \right\}  \right)$
+
+Pros
+- allow for implicitly specifying weights
+- computationally efficient, parallelizable
+- storage efficient, total number of parameters $\mathcal{O} (N_v + N_e)$
+
+If edge weights $w_{vu}$ are given, we can
+- use it as weights $\alpha_vu$, e.g. by softmax function
+- incorporate it into the design of attention mechanism $a$.
+
+In many cases, attention leads to performance gains.
