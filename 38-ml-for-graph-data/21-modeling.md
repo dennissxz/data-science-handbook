@@ -86,7 +86,7 @@ Thus, we observe
 - **small-world property**: the diameter of the graph very like $\mathcal{O} (\log N_v)$ w.h.p as $N_v \rightarrow \infty$.
 
 Reference
-- Notes on random graphs [CMU](https://www.cs.cmu.edu/~avrim/598/chap4only.pdf), [Sante Fe](http://tuvalu.santafe.edu/~aaronc/courses/5352/csci5352_2017_L3.pdf), [HSE video](https://www.youtube.com/watch?v=AmZ_MOQ-XwA&ab_channel=LeonidZhukov)
+- Notes on random graphs [CMU](https://www.cs.cmu.edu/~avrim/598/chap4only.pdf), [Sante Fe](http://tuvalu.santafe.edu/~aaronc/courses/5352/csci5352_2017_L3.pdf), [HSE video](https://www.youtube.com/watch?v=AmZ_MOQ-XwA&ab_channel=LeonidZhukov), [Stanford](http://web.stanford.edu/class/cs224w/slides/14-traditional-generation.pdf)
 
 
 ### Generalized Random Graph Models
@@ -267,7 +267,22 @@ where $\pi_H$ is the inclusion probability for $H$. Natural (although biased) es
 
 For other sampling method, see SAND pg.168.
 
-## Small-World Models
+## Real-world Models
+
+Real-world graphs do not like the $G_{n,p}$ random graphs. Many real networks have high clustering.
+
+:::{figure} graph-real-vs-random
+<img src="../imgs/graph-real-vs-random.png" width = "70%" alt=""/>
+
+Comparison of real-world graphs and random graphs with the same average degree [Leskovec 2021]
+:::
+
+We introduce two random graph models to mimic the high clustering, high diameter properties in real-world graphs.
+
+Note all these models (including $G_{n, p}$) impose prior assumption of the graph generation processes. Deep graph generative models, however, learn the graph generation process from raw data.
+
+
+### Small-World Models
 
 Developed by Watts and Strogatz that mimic certain observed 'real-world' properties: **high** levels of clustering, but **small** distances between most nodes.
 
@@ -287,8 +302,7 @@ For a lattice $G$ with parameter $r$ described above, it is easy to find
 - long diameter: $\operatorname{diam}(G) = \frac{N_v}{2r}$
 - long average distance: $\bar{l} = \frac{N_v}{4r}$
 
-But, addition of a few randomly rewired edges has the effect of
-producing ‘short-cuts’ in the graph. In numerical simulation shown below, after rewiring with some small $p$, we have $\bar{l} = \mathcal{O} (\log N_v)$ while keep clustering coefficient close to $\frac{3}{4}$.
+But, addition of a few randomly rewired edges has the effect of producing ‘short-cuts’ in the graph, but it takes a lot of randomness to ruin clustering. In numerical simulation shown below, after rewiring with some small $p$, we have $\bar{l} = \mathcal{O} (\log N_v)$ while keep clustering coefficient close to $\frac{3}{4}$.
 
 :::{figure} graph-WS-simulation
 <img src="../imgs/graph-WS-simulation.png" width = "30%" alt=""/>
@@ -297,12 +311,63 @@ Simulation results of clustering coefficient $\operatorname{clus}(G)$ (solid) an
 normalized by their largest values
 :::
 
+Essentially, it interpolate between regular lattice graphs and $G_{n,p}$ random graph.
+
+:::{figure} graph-sw-interpolate
+<img src="../imgs/graph-sw-interpolate.png" width = "70%" alt=""/>
+
+Small world model as interpolation [Leskovec 2021]
+:::
+
 However, the closed form for $\operatorname{clus}(G)$ and $\bar{l}$ are still open problems.
 
 Variation:
 - both ends of an edge are rewired [SAND 23]
 - no edges are rewired, but some small number of new edges are added to randomly selected pairs of vertices [SAND 284, 298]
 - add edge $(u, v)$ w.p. inversely proportional to $\operatorname{dist} (u,v)$, i.e. $p \propto (\operatorname{dist} )^{-r}$ for some $r > 0$. [SAND 229, 231].
+
+### Kronecker Graph Model
+
+Kronecker product $\otimes$ is a way of generating self-similar matrices. It is defined as
+
+$$
+\mathbf{C}=\mathbf{A} \otimes \mathbf{B} \doteq\left(\begin{array}{cccc}
+a_{1,1} \mathbf{B} & a_{1,2} \mathbf{B} & \ldots & a_{1, m} \mathbf{B} \\
+a_{2,1} \mathbf{B} & a_{2,2} \mathbf{B} & \ldots & a_{2, m} \mathbf{B} \\
+\vdots & \vdots & \ddots & \vdots \\
+a_{n, 1} \mathbf{B} & a_{n, 2} \mathbf{B} & \ldots & a_{n, m} \mathbf{B}
+\end{array}\right)
+$$
+
+If $\boldsymbol{A}, \boldsymbol{B}$ are the adjacency matrix of a graph, then **Kronecker power** mimics **recursive** graph/community growth.
+
+:::{figure} graph-kronecker-self
+<img src="../imgs/graph-kronecker-self.png" width = "70%" alt=""/>
+
+Kronecker power of a adjacency matrix [Leskovec 2021]
+:::
+
+Kronecker graph model uses it to construct a random matrix with Bernoulli matrix.
+1. Create $N_1 \times N_1$ probability matrix $\boldsymbol{\Theta}_1$, where all entry values are in $(0, 1)$.
+2. Compute the $k$-th Kronecker power $\boldsymbol{\Theta}_k$.
+3. For each entry $p_{uv}$ in matrix $\boldsymbol{\Theta}_k$, include an edge $(u, v)$ with probability $p_{uv}$.
+
+:::{figure} graph-kronecker-prob
+<img src="../imgs/graph-kronecker-prob.png" width = "80%" alt=""/>
+
+Adjacency matrix in Kronecker graph models [Leskovec 2021]
+:::
+
+Obviously, there involves $\mathcal{O} (N_v^2)$ Bernoulli random variables. To improve this, we can exploit the recursive structure of Kronecker graphs.
+
+It is quite close to real graphs.
+
+:::{figure} graph-kronecker-vs-real
+<img src="../imgs/graph-kronecker-vs-real.png" width = "70%" alt=""/>
+
+A Kronecker graph vs a real graph [Leskovec 2021]
+:::
+
 
 ## Growth Models
 
