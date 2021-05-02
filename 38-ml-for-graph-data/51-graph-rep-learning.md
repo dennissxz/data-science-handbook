@@ -762,6 +762,12 @@ Inductive setting
 - Training on $G_{\text{train} }$
 - Test on $G_{\text{test} }$
 
+:::{figure} gnn-split-edge-ind
+<img src="../imgs/gnn-split-edge-ind.png" width = "70%" alt=""/>
+
+Inductive splitting for link prediction
+:::
+
 Transductive setting (common setting)
 - Partition the edges into
   - training message edges $E_{\text{train, m}}$
@@ -771,6 +777,12 @@ Transductive setting (common setting)
 - Test: Use $E_{\text{train, m}}$, $E_{\text{train, s}}$ to predict $E_{\text{test}}$
 
 After training, supervision edges are **known** to GNN. Therefore, an ideal model should use supervision edges $E_{\text{train, s}}$ in message passing at test time. If there is a validation step, then the validation edges are also used to predict $E_{\text{test}}$.
+
+:::{figure} gnn-split-edge-tran
+<img src="../imgs/gnn-split-edge-tran.png" width = "70%" alt=""/>
+
+Transductive splitting for link prediction
+:::
 
 ### Pros
 
@@ -790,6 +802,8 @@ $$
 In basic GNN, the aggregation function is just average. And the update function is
 
 $$\boldsymbol{h} _v ^{(\ell +1)} = \sigma \left( \boldsymbol{W} _\ell \frac{1}{d_v}\sum_{u \in \mathscr{N} (v)} \boldsymbol{h} _u ^ {(\ell)} + \boldsymbol{B} _\ell \boldsymbol{h} _v ^{(\ell)} \right)$$
+
+This is called graph convolutional networks [Kipf and Welling ICLR 2017].
 
 There are many variants and extensions to this update function. Before aggregation, there can be some transformation of the neighbor embeddings. The aggregation-and-transform step then becomes transform-aggregation-transform.
 
@@ -875,6 +889,83 @@ If edge weights $w_{vu}$ are given, we can
 - incorporate it into the design of attention mechanism $a$.
 
 In many cases, attention leads to performance gains.
+
+#### GIN
+
+##### Expressiveness
+
+Consider a special case that node features are the same $\boldsymbol{x} _{v_1} = \boldsymbol{x} _{v_2} = \ldots$, represented by colors in the discussion below. Then if the computational graph are exactly the same for two nodes, then they have the same embeddings.
+
+:::{figure} gnn-expr-same
+<img src="../imgs/gnn-expr-same.png" width = "50%" alt=""/>
+
+Same computational graphs of two nodes
+:::
+
+Computational graphs are identical to **rooted subtree** structures around each node. GNN's node embeddings capture rooted subtree structures. Most expressive GNN maps different rooted subtrees into different node embeddings, i.e. should be like an injective function.
+
+:::{figure} gnn-injective
+<img src="../imgs/gnn-injective.png" width = "50%" alt=""/>
+
+Injective mapping from computational graph to embeddings
+:::
+
+Some of the previously seen models do not use injective function at the neighbor aggregation step. Note that neighbor aggregation is a function over multi-sets (sets with repeating elements). They are not maximally powerful GNNs in terms of expressiveness.
+- GCN (mean-pool)
+- GraphSAGE aggregation function (MLP + max-pool) cannot distinguish different multi-sets with the same set of distinct colors.
+
+:::{figure} gnn-expr-fail
+<img src="../imgs/gnn-expr-fail.png" width = "70%" alt=""/>
+
+Mean and max pooling failure cases
+:::
+
+##### GIN
+
+How to design maximally powerful GNNs? Can we design a neural network in the aggregation step that can model injective multi-set function.
+
+Theorem [Xu et al. ICLR 2019]: Any injective multi-set function can be expressed
+as:
+
+$$
+\Phi \left( \sum_{x \in S} f(x)  \right)
+$$
+
+where $f, \Phi$ are non-linear functions. To model them, we can use MLP which have universal approximation power.
+
+$$
+\operatorname{MLP}_{\Phi}  \left( \sum_{x \in S} \operatorname{MLP}_{f} (x)  \right)
+$$
+
+In practice, MLP hidden dimensionality of 100 to 500 is sufficient. The model is called Graph Isomorphism Network (GIN) [Xu+ 2019].
+
+GIN‘s neighbor aggregation function is injective. It is the most expressive GNN in the class of message-passing GNNs. The key is to use element-wise sum pooling, instead of mean-/max-pooling.
+
+##### R.t. WL Kernel
+
+It is a “neural network” version of the [WL graph kernel](wl-kernel), where the color update function is
+
+$$
+c^{(k+1)}(v)=\operatorname{HASH}\left(c^{(k)}(v),\left\{c^{(k)}(u)\right\}_{u \in N(v)}\right)
+$$
+
+Xu proved that any injective function over the tuple $\left(c^{(k)}(v),\left\{c^{(k)}(u)\right\}_{u \in N(v)}\right)$ can be modeled as
+
+$$
+\operatorname{GINConv}\left(c^{(k)}(v),\left\{c^{(k)}(u)\right\}_{u \in N(v)}\right) =  \left.\mathrm{MLP}_{\Phi}\left((1+\epsilon) \cdot \mathrm{MLP}_{f}\left(c^{(k)}(v)\right)\right)+\sum_{u \in N(v)} \mathrm{MLP}_{f}\left(c^{(k)}(u)\right)\right)
+$$
+
+where $\varepsilon$ is a learnable scalar.
+
+Advantages of GIN over the WL graph kernel are:
+- Node embeddings are low-dimensional; hence, they can capture the fine-grained similarity of different nodes.
+- Parameters of the update function can be learned for the downstream tasks.
+
+Because of the relation between GIN and the WL graph kernel, their expressive is exactly the same. If two graphs can be distinguished by GIN, they can be also distinguished by the WL kernel, and vice versa. They are powerful to distinguish most of the real graphs!
+
+#### Improvement
+
+There are basic graph structures that existing GNN framework cannot distinguish, such as difference in cycles. One node in 3-node-cycle and the other in 4-node cycle have the same computational graph when layer. GNNs’ expressive power can be improved to resolve the above problem. [You et al. AAAI 2021, Li et al. NeurIPS 2020]
 
 ### Layer Design
 
@@ -977,6 +1068,45 @@ In the standard setting, for a node $v$, all the nodes in $\mathscr{N} _(v)$ are
 Next time when we compute the embeddings, we can sample **different** neighbors. In expectation, we will still use all neighbors vectors.
 
 Benefits: greatly reduce computational cost. Allows for scaling to large graphs.
+
+### Graph Generative Models
+
+Types
+- Realistic graph generation: generate graphs that are similar to a given set of graphs. (focus)
+- goal-directed graph generation: generate graphs that optimize given objectives/constraints
+
+
+Given a set of graph, we want to
+- **Density estimation**: model the distribution of these graphs by $p_{\text{model} }$, hope it is close to $p_{\text{data} }$, e.g. maximum likelihood
+- **Sampling**: sample from $p_{\text{model} }$. A common approach is
+  - sample  from noise $z_i \sim \mathcal{N} (0, 1)$
+  - transform the noise $z_i$ via $f$ to obtain $x_i$, where $f$ can be trained NN.
+
+Challenge
+- large output space: $N^2$ bits of adjacency matrix?
+- variable output space: how to generate graph of different sizes?
+- non-unique representation: for a fixed graph, its adjacency matrix has $N_v !$ ways of representation.
+- dependency: existence of an edge may depend on the entire graph
+
+#### GraphRNN
+
+[You+ 2018](https://cs.stanford.edu/people/jure/pubs/graphrnn-icml18.pdf)
+
+Recall that by chain rule, a joint distribution can be factorized as
+
+$$
+p_{\text {model }}(\boldsymbol{x} ; \theta)=\prod_{t=1}^{n} p_{\text {model }}\left(x_{t} \mid x_{1}, \ldots, x_{t-1} ; \theta\right)
+$$
+
+In our case, $x_t$ will be the $t$-th action (add node, add edge). The ordering of nodes is a random ordering $\pi$. For a fixed ordering $\pi$ of nodes, for each node, we add a sequence of edges.
+
+:::{figure} gnn-gen
+<img src="../imgs/gnn-gen.png" width = "50%" alt=""/>
+
+Generation process of a graph
+:::
+
+It is like propagating along rows of lower-triangularized adjacency matrix corresponding to the ordering $\pi$.
 
 ### Reference
 
