@@ -1543,8 +1543,8 @@ r = \frac{\operatorname{Cov}\left( X, Y \right)}{\sqrt{\operatorname{Var}\left( 
 </div>
 <div class="section" id="graph-kernels">
 <h3>Graph Kernels<a class="headerlink" href="#graph-kernels" title="Permalink to this headline">¶</a></h3>
-<p>Recall that <a class="reference internal" href="../30-ml-basics/05-kernels.html#kernels"><span class="std std-ref">kernel functions</span></a> can be used as a similarity measures. Can we apply kernel function over graphs, i.e. <span class="math notranslate nohighlight">\(k(G, G ^\prime) \in \mathbb{R}\)</span>, to measure similarity between two graphs?</p>
-<p>A natural way to construct a graph-level feature vector is degree frequency. It counts the number of nodes that have some degree. This is a kind of bag-of * idea. Graphlet kernel and Weisfeiler-Lehman kernel both use this idea but * can be sophisticated.</p>
+<p>Recall that <a class="reference internal" href="../30-ml-basics/05-kernels.html#kernels"><span class="std std-ref">kernel functions</span></a> can be used as a similarity measures. Can we apply kernel function over graphs, i.e. <span class="math notranslate nohighlight">\(k(G, G ^\prime) = \boldsymbol{\phi} (G) ^{\top} \boldsymbol{\phi}(G ^\prime) \in \mathbb{R}\)</span>, to measure similarity between two graphs? The answer is yes, and all we need is to construct a feature vector <span class="math notranslate nohighlight">\(\boldsymbol{\phi}(G)\)</span> of a graph <span class="math notranslate nohighlight">\(G\)</span>.</p>
+<p>A natural way to construct a graph-level feature vector is to use degree frequencies of that graph. It counts the number of nodes that have some degree. This is a kind of bag-of * idea. Graphlet kernel and Weisfeiler-Lehman kernel both use this idea but * can be sophisticated.</p>
 <div class="section" id="graphlet-kernel">
 <h4>Graphlet Kernel<a class="headerlink" href="#graphlet-kernel" title="Permalink to this headline">¶</a></h4>
 <p>The * in graphlet kernel is graphlets. It counts the number of different graphlets in a graph. Note that the definition of graphlet here is different from that in node-level where we only consider rooted, connected, non-isomorphic subgraphs. Here we drop the fist two conditions. Let <span class="math notranslate nohighlight">\(\mathcal{G}_k = \left\{ g_1, g_2, \ldots g_{n_k} \right\}\)</span> be a list of graphlets of size <span class="math notranslate nohighlight">\(k\)</span>, with cardinality <span class="math notranslate nohighlight">\(n_k\)</span>. For instance,</p>
@@ -1557,7 +1557,7 @@ r = \frac{\operatorname{Cov}\left( X, Y \right)}{\sqrt{\operatorname{Var}\left( 
 \[
 [\boldsymbol{f}_G]_i = \#(g_i \subseteq G)\quad \text{for } i=1, 2, \ldots, n_k
 \]</div>
-<p>Since <span class="math notranslate nohighlight">\(G\)</span> and <span class="math notranslate nohighlight">\(G ^\prime\)</span> may have different sizes, it’s better to normalize <span class="math notranslate nohighlight">\(\boldsymbol{f}\)</span> by <span class="math notranslate nohighlight">\(\boldsymbol{h}_G = \frac{\boldsymbol{f}_G }{ \sum_{i=1}^{n_k} [\boldsymbol{f}_G]_i }\)</span>, i.e. use density rather than frequency. The graphlet kernel is then</p>
+<p>Since <span class="math notranslate nohighlight">\(G\)</span> and <span class="math notranslate nohighlight">\(G ^\prime\)</span> may have different sizes, it’s better to normalize <span class="math notranslate nohighlight">\(\boldsymbol{f}\)</span> by <span class="math notranslate nohighlight">\(\boldsymbol{h}_G = \frac{\boldsymbol{f}_G }{ \sum_{i=1}^{n_k} [\boldsymbol{f}_G]_i }\)</span>, i.e. use density rather than frequency. Using <span class="math notranslate nohighlight">\(\boldsymbol{h}\)</span> as <span class="math notranslate nohighlight">\(\boldsymbol{\phi}\)</span>, the graphlet kernel is then</p>
 <div class="math notranslate nohighlight">
 \[
 k(G, G ^\prime ) = \langle \boldsymbol{h}_G, \boldsymbol{h}_{G ^\prime} \rangle
@@ -1565,7 +1565,7 @@ k(G, G ^\prime ) = \langle \boldsymbol{h}_G, \boldsymbol{h}_{G ^\prime} \rangle
 <p>It is easy to see the counting step is expensive. In fact, subgraph isomorphism test (judging whether a graph is a subgraph of another graph) is NP-hard. If a graph’s node degree is bounded by <span class="math notranslate nohighlight">\(d_{\max}\)</span>, then an <span class="math notranslate nohighlight">\(\mathcal{O} (N_v d^{k-1}_{\max})\)</span> algorithm exists to count all the graphlets of size <span class="math notranslate nohighlight">\(k\)</span>.</p>
 </div>
 <div class="section" id="weisfeiler-lehman-kernel">
-<h4>Weisfeiler-Lehman Kernel<a class="headerlink" href="#weisfeiler-lehman-kernel" title="Permalink to this headline">¶</a></h4>
+<span id="wl-kernel"></span><h4>Weisfeiler-Lehman Kernel<a class="headerlink" href="#weisfeiler-lehman-kernel" title="Permalink to this headline">¶</a></h4>
 <p>WL kernel uses neighborhood structure to iteratively enrich node vocabulary.</p>
 <p>Algorithm: WL isomorphism test, aka color refinement.</p>
 <ul>
@@ -1577,22 +1577,15 @@ k(G, G ^\prime ) = \langle \boldsymbol{h}_G, \boldsymbol{h}_{G ^\prime} \rangle
   \]</div>
 <p>where <span class="math notranslate nohighlight">\(\texttt{hash}\)</span> maps different inputs to different colors.</p>
 </li>
-<li><p>Return a vector <span class="math notranslate nohighlight">\(\boldsymbol{\phi}\)</span> of bag-of-colors in the history, which is used as <span class="math notranslate nohighlight">\(\boldsymbol{\phi}\)</span> to construct the WL kernel.</p></li>
+<li><p>Return a vector <span class="math notranslate nohighlight">\(\boldsymbol{h}\)</span> of bag-of-colors of the final graph (or in the history??), which is used to construct the WL kernel <span class="math notranslate nohighlight">\(k(G, G ^\prime) = \langle \boldsymbol{h}_{G}, \boldsymbol{h}_{G ^\prime} \rangle\)</span>.</p></li>
 </ul>
-<p>The number of steps <span class="math notranslate nohighlight">\(K\)</span> here is related to <span class="math notranslate nohighlight">\(K\)</span>-hop neighborhood structure. When <span class="math notranslate nohighlight">\(K=1\)</span>, then <span class="math notranslate nohighlight">\(\boldsymbol{\phi}\)</span> reduces to degree frequency. The algorithm runs in <span class="math notranslate nohighlight">\(\mathcal{O} (N_e)\)</span>.</p>
+<p>The number of steps <span class="math notranslate nohighlight">\(K\)</span> here is related to <span class="math notranslate nohighlight">\(K\)</span>-hop neighborhood structure. When <span class="math notranslate nohighlight">\(K=1\)</span>, then <span class="math notranslate nohighlight">\(\boldsymbol{\phi}\)</span> reduces to degree frequency. The algorithm runs linear in <span class="math notranslate nohighlight">\(N_e\)</span>.</p>
+<p>If two graphs have the same feature vector bag-of-colors then we said they are isomorphic. WL kernel has been both theoretically and empirically shown to distinguish most of the real-world graphs [Cai et al. 1992].</p>
 <p>Other kernels</p>
 <ul class="simple">
 <li><p>random-walk kernel</p></li>
-<li><p>shortest-path kernel
-.</p></li>
+<li><p>shortest-path kernel</p></li>
 </ul>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
 </div>
 </div>
 </div>
