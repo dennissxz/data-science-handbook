@@ -479,9 +479,9 @@ Problems
 
 ### Graph Kernels
 
-Recall that [kernel functions](kernels) can be used as a similarity measures. Can we apply kernel function over graphs, i.e. $k(G, G ^\prime) \in \mathbb{R}$, to measure similarity between two graphs?
+Recall that [kernel functions](kernels) can be used as a similarity measures. Can we apply kernel function over graphs, i.e. $k(G, G ^\prime) = \boldsymbol{\phi} (G) ^{\top} \boldsymbol{\phi}(G ^\prime) \in \mathbb{R}$, to measure similarity between two graphs? The answer is yes, and all we need is to construct a feature vector $\boldsymbol{\phi}(G)$ of a graph $G$.
 
-A natural way to construct a graph-level feature vector is degree frequency. It counts the number of nodes that have some degree. This is a kind of bag-of * idea. Graphlet kernel and Weisfeiler-Lehman kernel both use this idea but * can be sophisticated.
+A natural way to construct a graph-level feature vector is to use degree frequencies of that graph. It counts the number of nodes that have some degree. This is a kind of bag-of * idea. Graphlet kernel and Weisfeiler-Lehman kernel both use this idea but * can be sophisticated.
 
 #### Graphlet Kernel
 
@@ -499,7 +499,7 @@ $$
 [\boldsymbol{f}_G]_i = \#(g_i \subseteq G)\quad \text{for } i=1, 2, \ldots, n_k
 $$
 
-Since $G$ and $G ^\prime$ may have different sizes, it's better to normalize $\boldsymbol{f}$ by $\boldsymbol{h}_G = \frac{\boldsymbol{f}_G }{ \sum_{i=1}^{n_k} [\boldsymbol{f}_G]_i }$, i.e. use density rather than frequency. The graphlet kernel is then
+Since $G$ and $G ^\prime$ may have different sizes, it's better to normalize $\boldsymbol{f}$ by $\boldsymbol{h}_G = \frac{\boldsymbol{f}_G }{ \sum_{i=1}^{n_k} [\boldsymbol{f}_G]_i }$, i.e. use density rather than frequency. Using $\boldsymbol{h}$ as $\boldsymbol{\phi}$, the graphlet kernel is then
 
 $$
 k(G, G ^\prime ) = \langle \boldsymbol{h}_G, \boldsymbol{h}_{G ^\prime} \rangle
@@ -507,6 +507,7 @@ $$
 
 It is easy to see the counting step is expensive. In fact, subgraph isomorphism test (judging whether a graph is a subgraph of another graph) is NP-hard. If a graph's node degree is bounded by $d_{\max}$, then an $\mathcal{O} (N_v d^{k-1}_{\max})$ algorithm exists to count all the graphlets of size $k$.
 
+(wl-kernel)=
 #### Weisfeiler-Lehman Kernel
 
 WL kernel uses neighborhood structure to iteratively enrich node vocabulary.
@@ -520,33 +521,15 @@ Algorithm: WL isomorphism test, aka color refinement.
   $$
 
   where $\texttt{hash}$ maps different inputs to different colors.
-- Return a vector $\boldsymbol{\phi}$ of bag-of-colors in the history, which is used as $\boldsymbol{\phi}$ to construct the WL kernel.
+
+- Return a vector $\boldsymbol{h}$ of bag-of-colors of the final graph (or in the history??), which is used to construct the WL kernel $k(G, G ^\prime) = \langle \boldsymbol{h}_{G}, \boldsymbol{h}_{G ^\prime} \rangle$.
 
 
-The number of steps $K$ here is related to $K$-hop neighborhood structure. When $K=1$, then $\boldsymbol{\phi}$ reduces to degree frequency. The algorithm runs in $\mathcal{O} (N_e)$.
+The number of steps $K$ here is related to $K$-hop neighborhood structure. When $K=1$, then $\boldsymbol{\phi}$ reduces to degree frequency. The algorithm runs linear in $N_e$.
+
+If two graphs have the same feature vector bag-of-colors then we said they are isomorphic. WL kernel has been both theoretically and empirically shown to distinguish most of the real-world graphs [Cai et al. 1992].
+
 
 Other kernels
 - random-walk kernel
 - shortest-path kernel
-.
-
-
-.
-
-
-.
-
-
-.
-
-
-.
-
-
-.
-
-
-.
-
-
-.
