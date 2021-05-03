@@ -656,7 +656,7 @@ aggregation function is complex.
 
 #### Supervised
 
-After build GNN layers, to train it, we compute loss and do SGD. The pipleine is
+After build GNN layers, to train it, we compute loss and do SGD. The pipeine is
 
 :::{figure} gnn-training-pipeline
 <img src="../imgs/gnn-training-pipeline.png" width = "50%" alt=""/>
@@ -749,6 +749,8 @@ Inductive setting
 
 Splitting graph, transductive (left) and inductive (right)
 :::
+
+In the first layer only features not labels are fed into GNN???
 
 ##### Link-level
 
@@ -1195,6 +1197,69 @@ Graph convolutional policy network
 Hierarchical generation: generate subgraphs at each step
 
 
+
+### Limitations
+
+For a perfect GNN:
+1. If two nodes have the same neighborhood structure, they must have the same embedding
+2. If two nodes have different neighborhood structure, they must have different embeddings
+
+However,
+- point 1 may not be practical, sometimes we want to assign different embeddings to two nodes with the same neighborhood structure. Solution: position-aware GNNs.
+- point 2 often cannot be satisfied. Nodes on two rings have the same computational graphs. Sol: idendity-aware GNNs
+
+#### Position-aware GNNs
+
+[J. You, R. Ying, J. Leskovec. Postion-aware Graph Neural Networks, ICML 2019](https://arxiv.org/abs/1906.04817)
+
+- structure-aware task: nodes are labeled by their structural roles in the graph
+- position-aware task: nodes are labeled by their positions in the graph
+
+:::{figure} gnn-struc-posi-aware
+<img src="../imgs/gnn-struc-posi-aware.png" width = "70%" alt=""/>
+
+Two types of labels.
+:::
+
+GNNs differentiate nodes by their computational graphs. Thus, they often work well for structure-aware task, but fail for position-aware tasks (but node features are different??)
+
+To solve this, we introduce anchors. Randomly pick some nodes or some set of nodes in the graph as **anchor-sets**. Then we compute the relative distances from every nodes to these anchor-sets.
+
+:::{figure} gnn-anchor-set
+<img src="../imgs/gnn-anchor-set.png" width = "60%" alt=""/>
+
+Anchors
+:::
+
+The distance can then be used as **position encoding**, which represent a node’s position by its distance to randomly selected anchor-set.
+
+Note that each dimension of the position encoding is tied to an anchor-set. Permutation of the order does not change the meaning of the encoding. Thus, we cannot directly use this encoding as augmented feature.
+
+We require a special NN that can maintain the permutation invariant property of position encoding. Permuting the input feature dimension will only result in the permutation of the output dimension, the **value** in each dimension won’t change.
+
+#### Identity-aware GNN
+
+[J. You, J. Gomes-Selman, R. Ying, J. Leskovec. Identity-aware Graph Neural Networks, AAAI 2021]
+
+Heterogenous: different types of message passing is applied to different nodes. Suppose two nodes $v_1, v_2$ have the same computational graph structure, but have different node colorings. Since we will apply different neural network for embedding computation, their embeddings will be different.
+
+:::{figure} gnn-idgnn
+<img src="../imgs/gnn-idgnn.png" width = "50%" alt=""/>
+
+Identity-aware GNN
+:::
+
+ID-GNN can count cycles originating from a given node, but GNN cannot.
+
+Rather than to heterogenous message passing, we can include identity information as an augmented node feature (no need to do heterogenous message passing). Use cycle counts in each layer as an augmented node feature.
+
+:::{figure} gnn-idgnn-cycle
+<img src="../imgs/gnn-idgnn-cycle.png" width = "70%" alt=""/>
+
+Cycle count at each level forms a vector
+:::
+
+ID-GNN is more expressive than their GNN counterparts. ID-GNN is the first message passing GNN that is more expressive than 1-WL test.
 
 ### Reference
 
