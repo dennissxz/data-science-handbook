@@ -221,6 +221,7 @@ $$
 \mathbb{P} (\left\vert \boldsymbol{S}  \right\vert \ge t)  \le (d_1 + d_2) \exp \left( \frac{- t^2}{\operatorname{Var}\left( \boldsymbol{S} \right) + L t /3}  \right)
 $$
 
+(hoeffding-inequality)=
 ### Hoeffding’s Inequality
 
 Let $Z_i, \ldots, Z_n$ be independent bounded random variables with $Z_i \in [a, b]$ for all $i$. Then
