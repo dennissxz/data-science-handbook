@@ -1521,7 +1521,7 @@ x \sin \theta+y \cos \theta
 <p>where <span class="math notranslate nohighlight">\(\boldsymbol{\Lambda} =\operatorname{diag}\left( \lambda_1, \lambda_2, \ldots, \lambda_n \right)\)</span> and the <span class="math notranslate nohighlight">\(\lambda_i\)</span> are the eigenvalues of <span class="math notranslate nohighlight">\(\boldsymbol{B} ^{-1} \boldsymbol{A}\)</span> or <span class="math notranslate nohighlight">\(\boldsymbol{A} \boldsymbol{B} ^{-1}\)</span>.</p>
 </div>
 <div class="section" id="singular-value-decomposition">
-<h3>Singular Value Decomposition<a class="headerlink" href="#singular-value-decomposition" title="Permalink to this headline">¶</a></h3>
+<span id="svd"></span><h3>Singular Value Decomposition<a class="headerlink" href="#singular-value-decomposition" title="Permalink to this headline">¶</a></h3>
 <dl class="simple myst">
 <dt>Definition</dt><dd><p>For any matrix <span class="math notranslate nohighlight">\(\boldsymbol{A} \in \mathbb{R} ^{n \times p}\)</span>, we can write <span class="math notranslate nohighlight">\(\boldsymbol{A} = \boldsymbol{U} \boldsymbol{\Sigma} \boldsymbol{V} ^\top\)</span>. where</p>
 </dd>
@@ -1532,18 +1532,17 @@ x \sin \theta+y \cos \theta
 </ul>
 <dl class="simple myst">
 <dt>Properties</dt><dd><ul>
-<li><p>Due to the property of <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}\)</span>, we can write SVD as</p>
+<li><p>Due to the definition of <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}\)</span>, we can write SVD as</p>
 <div class="math notranslate nohighlight">
 \[
     \boldsymbol{A}=\sigma_{1} \boldsymbol{u}_{1} \boldsymbol{v}_{1}^{\top}+\sigma_{2} \boldsymbol{u}_{2} \boldsymbol{v}_{2}^{\top}+\ldots+\sigma_{r} \boldsymbol{u}_{r} \boldsymbol{v}_{r}^{\top} = \tilde{\boldsymbol{U}}_{n \times r} \tilde{\boldsymbol{\Sigma}} _{r \times r} \tilde{\boldsymbol{V}}_{r \times r}
     \]</div>
-<p>where <span class="math notranslate nohighlight">\(r = \operatorname{rank}\left( \boldsymbol{A}  \right)\)</span>.</p>
-<p>As a result, <span class="math notranslate nohighlight">\(\boldsymbol{A} \boldsymbol{v}=\sigma \boldsymbol{u}, \boldsymbol{A}^{\top} \boldsymbol{u}=\sigma \boldsymbol{v}\)</span>.</p>
+<p>where <span class="math notranslate nohighlight">\(r = \operatorname{rank}\left( \boldsymbol{A}  \right)\)</span>. It is then easy to see that <span class="math notranslate nohighlight">\(\boldsymbol{A} \boldsymbol{v}=\sigma \boldsymbol{u}, \boldsymbol{A}^{\top} \boldsymbol{u}=\sigma \boldsymbol{v}\)</span>.</p>
 </li>
-<li><p>When <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> is symmetric, then its SVD <span class="math notranslate nohighlight">\(\boldsymbol{A} = \boldsymbol{U} \boldsymbol{\Sigma} \boldsymbol{V} ^{\top}\)</span> can be obtained from its EVD <span class="math notranslate nohighlight">\(\boldsymbol{A} \boldsymbol{W} \boldsymbol{\Lambda} \boldsymbol{W} ^{\top}\)</span>.</p>
+<li><p>When <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> is symmetric, then its SVD <span class="math notranslate nohighlight">\(\boldsymbol{A} = \boldsymbol{U} \boldsymbol{\Sigma} \boldsymbol{V} ^{\top}\)</span> can be obtained from its EVD:</p>
 <div class="math notranslate nohighlight">
 \[\boldsymbol{A} = \boldsymbol{W} \boldsymbol{\Lambda} \boldsymbol{W} ^{\top} = \sum_{i=1}^n \lambda_i \boldsymbol{w} _i \boldsymbol{w}_i ^{\top} = \sum_{i=1}^r \underbrace{\left\vert \lambda_i \right\vert }_{\sigma_i} \underbrace{\operatorname{sign}(\lambda_i) \boldsymbol{w} _i \boldsymbol{w} _i ^{\top}}_{\boldsymbol{u} _i \boldsymbol{v} _i ^{\top}}\]</div>
-<p>For instance, we can let <span class="math notranslate nohighlight">\(\boldsymbol{u} _i = \operatorname{sign}(\lambda_i) \boldsymbol{w} _i\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{v} _i = \boldsymbol{w} _i\)</span>, or <span class="math notranslate nohighlight">\(\boldsymbol{u} _i = - \boldsymbol{w} _i\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{v} _i = - \operatorname{sign}(\lambda_i) \boldsymbol{w}_i\)</span>, etc. Note that when <span class="math notranslate nohighlight">\(\lambda_\max &gt; 0\)</span>, we may <strong>not</strong> have <span class="math notranslate nohighlight">\(\sigma_\max = \lambda_\max\)</span>.</p>
+<p>For instance, we can let <span class="math notranslate nohighlight">\(\boldsymbol{u} _i = \operatorname{sign}(\lambda_i) \boldsymbol{w} _i\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{v} _i = \boldsymbol{w} _i\)</span>, or <span class="math notranslate nohighlight">\(\boldsymbol{u} _i = - \boldsymbol{w} _i\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{v} _i = - \operatorname{sign}(\lambda_i) \boldsymbol{w}_i\)</span>, etc. Note that when <span class="math notranslate nohighlight">\(\lambda_\max &gt; 0\)</span>, we may <strong>not</strong> have <span class="math notranslate nohighlight">\(\sigma_\max = \lambda_\max\)</span>, but we always have <span class="math notranslate nohighlight">\(\sigma_\max \ge \lambda_\max\)</span>.</p>
 </li>
 </ul>
 </dd>

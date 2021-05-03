@@ -2,6 +2,7 @@
 
 In this section we introduce neural networks for sequential data, like text or speech. First we introduce RNN in detail, and then briefly introduce other models.
 
+(rnn)=
 ## Recurrent Neural Networks
 
 ### I/O

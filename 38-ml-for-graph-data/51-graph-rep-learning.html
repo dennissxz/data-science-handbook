@@ -1190,6 +1190,38 @@
        GraphRNN
       </a>
      </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tractability">
+       Tractability
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#similarity-of-graphs">
+       Similarity of Graphs
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#id3">
+       Variants
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id4">
+     Limitations
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#position-aware-gnns">
+       Position-aware GNNs
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#identity-aware-gnn">
+       Identity-aware GNN
+      </a>
+     </li>
     </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
@@ -1384,7 +1416,7 @@
 <li><p>page <span class="math notranslate nohighlight">\(j\)</span>’s own importance <span class="math notranslate nohighlight">\(r_j\)</span> is the sum of the votes on its in-links. <span class="math notranslate nohighlight">\(r_j = \sum_{i: i \rightarrow  j} r_i/d_i\)</span>.</p></li>
 <li><p><span class="math notranslate nohighlight">\(\sum_{i=1}^{N_v} r_i =1\)</span>.</p></li>
 </ul>
-<p>Define a matrix <span class="math notranslate nohighlight">\(\boldsymbol{M}\)</span> such that <span class="math notranslate nohighlight">\(M_{ij} = \frac{1}{d_j}\)</span> if <span class="math notranslate nohighlight">\(j \rightarrow i\)</span>. We can see it is a column stochastic matrix. The above assumptions leads to the flow equation</p>
+<p>Define a matrix <span class="math notranslate nohighlight">\(\boldsymbol{M}\)</span> such that <span class="math notranslate nohighlight">\(M_{ij} = \frac{u, v}{d_j}\)</span> if <span class="math notranslate nohighlight">\(j \rightarrow i\)</span>. We can see it is a column stochastic matrix. The above assumptions leads to the flow equation</p>
 <div class="math notranslate nohighlight">
 \[
 \boldsymbol{r} = \boldsymbol{M} \boldsymbol{r}  
@@ -1416,22 +1448,22 @@
 <p>Hence, the PageRank equation [Brin-Page 98] is</p>
 <div class="math notranslate nohighlight">
 \[
-r_j = \sum_{i: i \rightarrow j} \beta \frac{r_i}{d_i}  + (1-\beta) \frac{1}{N_v}
+r_j = \sum_{i: i \rightarrow j} \beta \frac{r_i}{d_i}  + (1-\beta) \frac{u, v}{N_v}
 \]</div>
 <p>or</p>
 <div class="math notranslate nohighlight">
 \[
-\boldsymbol{r} = \beta \boldsymbol{M} \boldsymbol{r} + (1-\beta)/N_v  \boldsymbol{1}  
+\boldsymbol{r} = \beta \boldsymbol{M} \boldsymbol{r} + (1-\beta)/N_v  \boldsymbol{u, v}  
 \]</div>
 <p>Note that this formulation assumes that <span class="math notranslate nohighlight">\(\boldsymbol{M}\)</span> has no dead ends. We can either preprocess matrix <span class="math notranslate nohighlight">\(\boldsymbol{M}\)</span> to remove all dead ends or explicitly follow random teleport links with probability 1 from dead-ends.</p>
-<p>Let <span class="math notranslate nohighlight">\(\boldsymbol{P} = \beta \boldsymbol{M} + (1- \boldsymbol{\beta} )/N_v \boldsymbol{1} \boldsymbol{1} ^{\top}\)</span>, then we have <span class="math notranslate nohighlight">\(\boldsymbol{r}  = \boldsymbol{P} \boldsymbol{r}\)</span>. The random walk characterized by column-stochastic matrix <span class="math notranslate nohighlight">\(\boldsymbol{P}\)</span> has no dead ends or spider traps, hence we can use the power method over <span class="math notranslate nohighlight">\(\boldsymbol{P}\)</span>.</p>
+<p>Let <span class="math notranslate nohighlight">\(\boldsymbol{P} = \beta \boldsymbol{M} + (1- \boldsymbol{\beta} )/N_v \boldsymbol{u, v} \boldsymbol{u, v} ^{\top}\)</span>, then we have <span class="math notranslate nohighlight">\(\boldsymbol{r}  = \boldsymbol{P} \boldsymbol{r}\)</span>. The random walk characterized by column-stochastic matrix <span class="math notranslate nohighlight">\(\boldsymbol{P}\)</span> has no dead ends or spider traps, hence we can use the power method over <span class="math notranslate nohighlight">\(\boldsymbol{P}\)</span>.</p>
 </div>
 <div class="section" id="personalized-pagerank">
 <h4>Personalized PageRank<a class="headerlink" href="#personalized-pagerank" title="Permalink to this headline">¶</a></h4>
 <p>Aka Topic-specific PageRank</p>
 <p>In personalized PageRank, a walker does not teleport to all nodes <span class="math notranslate nohighlight">\(V\)</span>, but to some subset <span class="math notranslate nohighlight">\(S\)</span> of nodes.</p>
 <p>If <span class="math notranslate nohighlight">\(S\)</span> is the start node, then we call this <strong>random walks with restarts</strong>. We can then use this kind of random walk to form a proximity measure of two nodes: simulate multiple random walk starting from node <span class="math notranslate nohighlight">\(s\)</span> with restarts, and then count the number of visits to other nodes. Nodes with higher visit count have higher proximity.</p>
-<p>The relative frequencies can also be found using power iteration. The uniform teleport probability <span class="math notranslate nohighlight">\((1-\beta)/N_v  \boldsymbol{1}\)</span> in PageRank now becomes <span class="math notranslate nohighlight">\(\boldsymbol{e} _s\)</span>.</p>
+<p>The relative frequencies can also be found using power iteration. The uniform teleport probability <span class="math notranslate nohighlight">\((1-\beta)/N_v  \boldsymbol{u, v}\)</span> in PageRank now becomes <span class="math notranslate nohighlight">\(\boldsymbol{e} _s\)</span>.</p>
 <p>This method also applies to a subset <span class="math notranslate nohighlight">\(S\)</span> of multiple nodes. The teleport probability is non-zero for <span class="math notranslate nohighlight">\(v \in S\)</span> but 0 otherwise.</p>
 <p>Random walks with restarts can be used in recommender systems. The user-item networks can be viewed as a bipartite graph. We can let <span class="math notranslate nohighlight">\(S\)</span> be a subset of items, and run the above algorithm, but only count the number of visits to items. Than we obtain a proximity measure of items.</p>
 <p>pseudo-code:</p>
@@ -1469,7 +1501,7 @@ r_j = \sum_{i: i \rightarrow j} \beta \frac{r_i}{d_i}  + (1-\beta) \frac{1}{N_v}
 <p>DeepWalk and node2vec can also be formulated as matrix factorization problem.</p>
 <div class="math notranslate nohighlight">
 \[
-\boldsymbol{M} = \log \left(\operatorname{vol}(G)\left(\frac{1}{T} \sum_{r=1}^{T}\left(D^{-1} A\right)^{r}\right) D^{-1}\right)-\log b
+\boldsymbol{M} = \log \left(\operatorname{vol}(G)\left(\frac{u, v}{T} \sum_{r=1}^{T}\left(D^{-1} A\right)^{r}\right) D^{-1}\right)-\log b
 \]</div>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(\operatorname{vol}(G) = \sum_{i,j}^n a_{ij}\)</span></p></li>
@@ -1518,7 +1550,7 @@ r_j = \sum_{i: i \rightarrow j} \beta \frac{r_i}{d_i}  + (1-\beta) \frac{1}{N_v}
 <p>Let <span class="math notranslate nohighlight">\(\eta_\ell\)</span> be the number of distinct anonymous walks of length <span class="math notranslate nohighlight">\(\ell\)</span>. It is easy to see then when length <span class="math notranslate nohighlight">\(\ell\)</span> of a anonymous walk is <span class="math notranslate nohighlight">\(3\)</span>, there are 5 anonymous walks</p>
 <div class="math notranslate nohighlight">
 \[
-w_{1}=111, w_{2}=112, w_{3}=121, w_{4}=122, w_{5}=123
+w_{u, v}=111, w_{2}=112, w_{3}=121, w_{4}=122, w_{5}=123
 \]</div>
 <p>The number <span class="math notranslate nohighlight">\(\eta_\ell\)</span> grows exponentially wicvvc th <span class="math notranslate nohighlight">\(\ell\)</span>.</p>
 <div class="figure align-default" id="graph-emb-anon-walk-number">
@@ -1547,11 +1579,11 @@ w_{1}=111, w_{2}=112, w_{3}=121, w_{4}=122, w_{5}=123
 <p>Objective:</p>
 <div class="math notranslate nohighlight">
 \[
-\max _{\mathrm{\boldsymbol{Z}}, \mathrm{d}} \sum_{u \in V} \frac{1}{T} \sum_{t=\Delta}^{T-\Delta} \log \mathbb{P} \left(w^u_{t} \mid\left\{w^u_{t-\Delta}, \ldots, w^u_{t+\Delta}, \boldsymbol{z} _{G}\right\}\right)
+\max _{\mathrm{\boldsymbol{Z}}, \mathrm{d}} \sum_{u \in V} \frac{u, v}{T} \sum_{t=\Delta}^{T-\Delta} \log \mathbb{P} \left(w^u_{t} \mid\left\{w^u_{t-\Delta}, \ldots, w^u_{t+\Delta}, \boldsymbol{z} _{G}\right\}\right)
 \]</div>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(\mathbb{P} \left(w_{t} \mid\left\{w_{t-\Delta}, \ldots, w_{t+\Delta}, \boldsymbol{z}_{\boldsymbol{G}}\right\}\right)=\frac{\exp \left(y\left(w_{t}\right)\right)}{\sum_{i=1}^{\eta} \exp \left(y\left(w_{i}\right)\right)}\)</span>. Note the denominator is over <span class="math notranslate nohighlight">\(\eta\)</span> distinct sampled walks (require negative sampling)</p></li>
-<li><p><span class="math notranslate nohighlight">\(y\left(w_{t}\right)=\beta_0 + \boldsymbol{\beta} ^{\top} [\frac{1}{2 \Delta} \sum_{i=-\Delta}^{\Delta} \boldsymbol{z}_{i}; \boldsymbol{z}_{\boldsymbol{G}}]\)</span>, where <span class="math notranslate nohighlight">\(\beta_0, \boldsymbol{\beta}\)</span> are learnable parameters. ‘;’ stands for vertical concatenation This step represents a linear layer.</p></li>
+<li><p><span class="math notranslate nohighlight">\(y\left(w_{t}\right)=\beta_0 + \boldsymbol{\beta} ^{\top} [\frac{u, v}{2 \Delta} \sum_{i=-\Delta}^{\Delta} \boldsymbol{z}_{i}; \boldsymbol{z}_{\boldsymbol{G}}]\)</span>, where <span class="math notranslate nohighlight">\(\beta_0, \boldsymbol{\beta}\)</span> are learnable parameters. ‘;’ stands for vertical concatenation This step represents a linear layer.</p></li>
 </ul>
 </div>
 <div class="section" id="hierarchical-embeddings">
@@ -1602,8 +1634,8 @@ w_{1}=111, w_{2}=112, w_{3}=121, w_{4}=122, w_{5}=123
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{aligned}
 \mathbb{P} \left(Y_{v}=c\right)
-&amp;= \frac{1}{d_v} \sum_{u \in \mathscr{N} (v)} \mathbb{P} (Y_u = c) \\  
-&amp;=\frac{1}{\sum_{(v, u) \in E} A_{v, u}} \sum_{(v, u) \in E} A_{v, u} \mathbb{P} \left(Y_{u}=c\right)
+&amp;= \frac{u, v}{d_v} \sum_{u \in \mathscr{N} (v)} \mathbb{P} (Y_u = c) \\  
+&amp;=\frac{u, v}{\sum_{(v, u) \in E} A_{v, u}} \sum_{(v, u) \in E} A_{v, u} \mathbb{P} \left(Y_{u}=c\right)
 \end{aligned}\end{split}\]</div>
 <p>Algorithm</p>
 <ul class="simple">
@@ -1832,7 +1864,7 @@ $<span class="math notranslate nohighlight">\(b_i (Y_i) = \phi(Y_i) \prod_{k \in
 <p>A basic approach of aggregation-and-transform is to average last layer information, take linear transformation, and then non-linear activation. Consider an <span class="math notranslate nohighlight">\(L\)</span>-layer GNN to obtain <span class="math notranslate nohighlight">\(k\)</span>-dimensional embeddings</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(\boldsymbol{h} _v ^{(0)} = \boldsymbol{x} _v\)</span>: initial <span class="math notranslate nohighlight">\(0\)</span>-th layer embeddings, equal to node features</p></li>
-<li><p><span class="math notranslate nohighlight">\(\boldsymbol{h} _v ^{(\ell +1)} = \sigma \left( \boldsymbol{W} _\ell \frac{1}{d_v}\sum_{u \in \mathscr{N} (v)} \boldsymbol{h} _u ^ {(\ell)} + \boldsymbol{B} _\ell \boldsymbol{h} _v ^{(\ell)} \right)\)</span> for <span class="math notranslate nohighlight">\(\ell = \left\{ 0, \ldots, L-1 \right\}\)</span></p>
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{h} _v ^{(\ell +1)} = \sigma \left( \boldsymbol{W} _\ell \frac{u, v}{d_v}\sum_{u \in \mathscr{N} (v)} \boldsymbol{h} _u ^ {(\ell)} + \boldsymbol{B} _\ell \boldsymbol{h} _v ^{(\ell)} \right)\)</span> for <span class="math notranslate nohighlight">\(\ell = \left\{ 0, \ldots, L-1 \right\}\)</span></p>
 <ul>
 <li><p>average last layer (its neighbors’) hidden embeddings <span class="math notranslate nohighlight">\(\boldsymbol{h} _u ^{(\ell)}\)</span>, linearly transformed by <span class="math notranslate nohighlight">\(k \times k\)</span> weight matrix <span class="math notranslate nohighlight">\(\boldsymbol{W}_ \ell\)</span></p></li>
 <li><p>also take as input its hidden embedding <span class="math notranslate nohighlight">\(\boldsymbol{h} _v ^{(\ell)}\)</span> at last layer (last updated embedding?? stored in <span class="math notranslate nohighlight">\(\boldsymbol{H}\)</span>??), linearly transformed by <span class="math notranslate nohighlight">\(k\times k\)</span> weight matrix <span class="math notranslate nohighlight">\(\boldsymbol{B}_ \ell\)</span></p></li>
@@ -1856,7 +1888,7 @@ aggregation function is complex.</p>
 <h3>Training<a class="headerlink" href="#training" title="Permalink to this headline">¶</a></h3>
 <div class="section" id="supervised">
 <h4>Supervised<a class="headerlink" href="#supervised" title="Permalink to this headline">¶</a></h4>
-<p>After build GNN layers, to train it, we compute loss and do SGD. The pipleine is</p>
+<p>After build GNN layers, to train it, we compute loss and do SGD. The pipeine is</p>
 <div class="figure align-default" id="gnn-training-pipeline">
 <a class="reference internal image-reference" href="../_images/gnn-training-pipeline.png"><img alt="" src="../_images/gnn-training-pipeline.png" style="width: 50%;" /></a>
 <p class="caption"><span class="caption-number">Fig. 213 </span><span class="caption-text">GNN Training Piepline</span><a class="headerlink" href="#gnn-training-pipeline" title="Permalink to this image">¶</a></p>
@@ -1899,9 +1931,9 @@ aggregation function is complex.</p>
 <ul>
 <li><p>global pooling: <span class="math notranslate nohighlight">\(f = \operatorname{max}, \operatorname{mean}, \operatorname{sum}\)</span></p></li>
 <li><p>hierarchical pooling: global pooling may lose information. We can apply pooling to some subgraphs to obtain subgraph embeddings, and then pool these subgraph embeddings.</p>
-<div class="figure align-default" id="id3">
+<div class="figure align-default" id="id5">
 <a class="reference internal image-reference" href="../_images/graph-hier-emb.png"><img alt="" src="../_images/graph-hier-emb.png" style="width: 80%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 214 </span><span class="caption-text">Hierarchical Pooling</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 214 </span><span class="caption-text">Hierarchical Pooling</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
 </div>
 <p>To decide subgraph assignment ??</p>
 </li>
@@ -1946,6 +1978,7 @@ aggregation function is complex.</p>
 <a class="reference internal image-reference" href="../_images/gnn-train-test-split.png"><img alt="" src="../_images/gnn-train-test-split.png" style="width: 70%;" /></a>
 <p class="caption"><span class="caption-number">Fig. 215 </span><span class="caption-text">Splitting graph, transductive (left) and inductive (right)</span><a class="headerlink" href="#gnn-train-test-split" title="Permalink to this image">¶</a></p>
 </div>
+<p>In the first layer only features not labels are fed into GNN???</p>
 </div>
 <div class="section" id="link-level">
 <h5>Link-level<a class="headerlink" href="#link-level" title="Permalink to this headline">¶</a></h5>
@@ -2003,7 +2036,7 @@ aggregation function is complex.</p>
 \]</div>
 <p>In basic GNN, the aggregation function is just average. And the update function is</p>
 <div class="math notranslate nohighlight">
-\[\boldsymbol{h} _v ^{(\ell +1)} = \sigma \left( \boldsymbol{W} _\ell \frac{1}{d_v}\sum_{u \in \mathscr{N} (v)} \boldsymbol{h} _u ^ {(\ell)} + \boldsymbol{B} _\ell \boldsymbol{h} _v ^{(\ell)} \right)\]</div>
+\[\boldsymbol{h} _v ^{(\ell +1)} = \sigma \left( \boldsymbol{W} _\ell \frac{u, v}{d_v}\sum_{u \in \mathscr{N} (v)} \boldsymbol{h} _u ^ {(\ell)} + \boldsymbol{B} _\ell \boldsymbol{h} _v ^{(\ell)} \right)\]</div>
 <p>This is called graph convolutional networks [Kipf and Welling ICLR 2017].</p>
 <p>There are many variants and extensions to this update function. Before aggregation, there can be some transformation of the neighbor embeddings. The aggregation-and-transform step then becomes transform-aggregation-transform.</p>
 <div class="section" id="graphsage">
@@ -2018,7 +2051,7 @@ aggregation function is complex.</p>
 <li><p>Mean</p>
 <div class="math notranslate nohighlight">
 \[
-  \operatorname{AGG} = \frac{1}{d_v}\sum_{u \in \mathscr{N} (v)} \boldsymbol{h} _u ^ {(\ell)}
+  \operatorname{AGG} = \frac{u, v}{d_v}\sum_{u \in \mathscr{N} (v)} \boldsymbol{h} _u ^ {(\ell)}
   \]</div>
 </li>
 <li><p>Pool: Transform neighbor vectors and apply symmetric vector function <span class="math notranslate nohighlight">\(\gamma\)</span>, e.g. mean, max</p>
@@ -2049,7 +2082,7 @@ aggregation function is complex.</p>
 </div>
 <div class="section" id="graph-attention-networks">
 <h4>Graph Attention Networks<a class="headerlink" href="#graph-attention-networks" title="Permalink to this headline">¶</a></h4>
-<p>If AGG is mean, then the message from neighbors are of equal importance with the same weight <span class="math notranslate nohighlight">\(\frac{1}{d_v}\)</span>. Can we specify some unequal weight/attention <span class="math notranslate nohighlight">\(\alpha_{vu}\)</span>?</p>
+<p>If AGG is mean, then the message from neighbors are of equal importance with the same weight <span class="math notranslate nohighlight">\(\frac{u, v}{d_v}\)</span>. Can we specify some unequal weight/attention <span class="math notranslate nohighlight">\(\alpha_{vu}\)</span>?</p>
 <div class="math notranslate nohighlight">
 \[
 \operatorname{AGG} = \sum_{u \in \mathscr{N} (v)} \alpha_{vu} \boldsymbol{h} _u ^ {(\ell)}
@@ -2275,8 +2308,8 @@ increase the number of hops (num of GNN layers). Their computation graphs are si
 <h3>Graph Generative Models<a class="headerlink" href="#graph-generative-models" title="Permalink to this headline">¶</a></h3>
 <p>Types</p>
 <ul class="simple">
-<li><p>Realistic graph generation: generate graphs that are similar to a given set of graphs. (focus)</p></li>
-<li><p>goal-directed graph generation: generate graphs that optimize given objectives/constraints</p></li>
+<li><p>Realistic graph generation: generate graphs that are similar to a given set of graphs. (our focus)</p></li>
+<li><p>goal-directed graph generation: generate graphs that optimize given objectives/constraints, e.g. molecules chemical properties</p></li>
 </ul>
 <p>Given a set of graph, we want to</p>
 <ul class="simple">
@@ -2301,14 +2334,139 @@ increase the number of hops (num of GNN layers). Their computation graphs are si
 <p>Recall that by chain rule, a joint distribution can be factorized as</p>
 <div class="math notranslate nohighlight">
 \[
-p_{\text {model }}(\boldsymbol{x} ; \theta)=\prod_{t=1}^{n} p_{\text {model }}\left(x_{t} \mid x_{1}, \ldots, x_{t-1} ; \theta\right)
+p_{\text {model }}(\boldsymbol{x} ; \theta)=\prod_{t=1}^{n} p_{\text {model }}\left(x_{t} \mid x_{u, v}, \ldots, x_{t-1} ; \theta\right)
 \]</div>
 <p>In our case, <span class="math notranslate nohighlight">\(x_t\)</span> will be the <span class="math notranslate nohighlight">\(t\)</span>-th action (add node, add edge). The ordering of nodes is a random ordering <span class="math notranslate nohighlight">\(\pi\)</span>. For a fixed ordering <span class="math notranslate nohighlight">\(\pi\)</span> of nodes, for each node, we add a sequence of edges.</p>
 <div class="figure align-default" id="gnn-gen">
 <a class="reference internal image-reference" href="../_images/gnn-gen.png"><img alt="" src="../_images/gnn-gen.png" style="width: 50%;" /></a>
 <p class="caption"><span class="caption-number">Fig. 225 </span><span class="caption-text">Generation process of a graph</span><a class="headerlink" href="#gnn-gen" title="Permalink to this image">¶</a></p>
 </div>
-<p>It is like propagating along rows of lower-triangularized adjacency matrix corresponding to the ordering <span class="math notranslate nohighlight">\(\pi\)</span>.</p>
+<p>It is like propagating along columns of upper-triangularized adjacency matrix corresponding to the ordering <span class="math notranslate nohighlight">\(\pi\)</span>. Essentially, we have transformed graph generation problem into a sequence generation problem. We need to model two processes</p>
+<ol class="simple">
+<li><p>Generate a state for a new node (Node-level sequence)</p></li>
+<li><p>Generate edges for the new node based on its state (Edge-level sequence)</p></li>
+</ol>
+<p>To model these two sequences, we can use <a class="reference internal" href="../37-neural-networks/31-sequential-models.html#rnn"><span class="std std-ref">RNNs</span></a>.</p>
+<p>GraphRNN has a node-level RNN and an edge-level RNN.</p>
+<ul class="simple">
+<li><p>Node-level RNN generates the initial state for edge-level RNN</p></li>
+<li><p>Edge-level RNN sequentially predict the probability that the new node will connect to each of the previous node. Then the last hidden state is used to run node RNN for another step.</p></li>
+</ul>
+<div class="figure align-default" id="graph-rnn-pipeline">
+<a class="reference internal image-reference" href="../_images/graph-rnn-pipeline.png"><img alt="" src="../_images/graph-rnn-pipeline.png" style="width: 70%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 226 </span><span class="caption-text">GraphRNN Pipeline (node RNN + edge RNN)</span><a class="headerlink" href="#graph-rnn-pipeline" title="Permalink to this image">¶</a></p>
+</div>
+<p>The training and test pipeline is:</p>
+<div class="figure align-default" id="graph-rnn-train-test">
+<a class="reference internal image-reference" href="../_images/graph-rnn-train-test.png"><img alt="" src="../_images/graph-rnn-train-test.png" style="width: 90%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 227 </span><span class="caption-text">GraphRNN training and test example</span><a class="headerlink" href="#graph-rnn-train-test" title="Permalink to this image">¶</a></p>
+</div>
+<ul>
+<li><p>SOS means start of sequence, EOS means end of sequence.</p></li>
+<li><p>If Edge RNN outputs EOS at step 1, we know no edges are connected to the new node. We stop the graph generation. At test time, this means node sequence length is not fixed.</p></li>
+<li><p>In training of edge RNN, teacher enforcing of edge existence is applied. The loss is binary cross entropy</p>
+<div class="math notranslate nohighlight">
+\[L=- \sum _{u, v} \left[y_{u, v} \log \left(\hat{y}_{u, v}\right)+\left(1-y_{u, v}\right) \log \left(1-\hat{y}_{u, v}\right)\right]\]</div>
+<p>where <span class="math notranslate nohighlight">\(\hat{y}_{u, v}\)</span> is predicted probability of existence of edge <span class="math notranslate nohighlight">\((u, v)\)</span> and <span class="math notranslate nohighlight">\(y_{u,v}\)</span> is ground truth 1 or 0.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="tractability">
+<h4>Tractability<a class="headerlink" href="#tractability" title="Permalink to this headline">¶</a></h4>
+<p>In the structure introduced above, each edge RNN can have at most <span class="math notranslate nohighlight">\(n-1\)</span> step. How to limit this?</p>
+<p>The answer is to use Breadth-First search node ordering rather than random ordering of nodes.</p>
+<div class="figure align-default" id="graph-rnn-ordering">
+<a class="reference internal image-reference" href="../_images/graph-rnn-ordering.png"><img alt="" src="../_images/graph-rnn-ordering.png" style="width: 50%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 228 </span><span class="caption-text">Random ordering and BFS ordering</span><a class="headerlink" href="#graph-rnn-ordering" title="Permalink to this image">¶</a></p>
+</div>
+<p>Illustrated in adjacency matrix, we only look at connectivity with nodes in the BFS frontier, rather than all previous nodes.</p>
+<div class="figure align-default" id="graph-rnn-ordering-2">
+<a class="reference internal image-reference" href="../_images/graph-rnn-ordering-2.png"><img alt="" src="../_images/graph-rnn-ordering-2.png" style="width: 70%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 229 </span><span class="caption-text">Random ordering and BFS ordering in adjacency matrices</span><a class="headerlink" href="#graph-rnn-ordering-2" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+<div class="section" id="similarity-of-graphs">
+<h4>Similarity of Graphs<a class="headerlink" href="#similarity-of-graphs" title="Permalink to this headline">¶</a></h4>
+<p>How to compare two graphs? Qualitatively, we can compare visual similarity. Quantitatively, we can compare graph statistics distribution such as</p>
+<ul class="simple">
+<li><p>degree distribution</p></li>
+<li><p>clustering coefficient distribution</p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Graphlets#Graphlet-based_network_properties">Graphlet-based</a> distribution
+The distance between two distributions can be measured by <a class="reference external" href="https://en.wikipedia.org/wiki/Earth_mover%27s_distance">earth mover distance</a> (aka Wasserstein metric in math), which measure the minimum effort that move earth from one pile to the other.</p></li>
+</ul>
+<div class="figure align-default" id="emd">
+<a class="reference internal image-reference" href="../_images/emd.png"><img alt="" src="../_images/emd.png" style="width: 70%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 230 </span><span class="caption-text">Earth mover distance illustration</span><a class="headerlink" href="#emd" title="Permalink to this image">¶</a></p>
+</div>
+<p>How two compare two sets of graphs by some set distance? Each graph element may have different <span class="math notranslate nohighlight">\(N_v, N_e\)</span>. First we compute a statistic for each graph element, then compute Maximum Mean Discrepancy (MDD). If <span class="math notranslate nohighlight">\(\mathcal{X} = \mathcal{H} = \mathbb{R} ^d\)</span> and we choose <span class="math notranslate nohighlight">\(\phi: \mathcal{X} \rightarrow \mathcal{H}\)</span> to be <span class="math notranslate nohighlight">\(\phi(x)=x\)</span>, then it becomes</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+\mathrm{MMD}(P, Q) &amp;=\left\|\mathbb{E}_{X \sim P}[\varphi(X)]-\mathbb{E}_{Y \sim Q}[\varphi(Y)]\right\|_{\mathcal{H}} \\
+&amp;=\left\|\mathbb{E}_{X \sim P}[X]-\mathbb{E}_{Y \sim Q}[Y]\right\|_{\mathbb{R}^{d}} \\
+&amp;=\left\|\mu_{P}-\mu_{Q}\right\|_{\mathbb{R}^{d}}
+\end{aligned}
+\end{split}\]</div>
+<p>Given a set of input graphs, we can generate a set of graphs using some algorithms. Then compare the set distance. Many algorithms are particularly designed to generate certain graphs, but GraphRNN can learn from the input and generate any types of graphs (e.g. grid).</p>
+</div>
+<div class="section" id="id3">
+<h4>Variants<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h4>
+<p>Graph convolutional policy network</p>
+<ul class="simple">
+<li><p>use GNN to predict the generation action</p></li>
+<li><p>further uses RL to direct graph generation to certain goals</p></li>
+</ul>
+<p>Hierarchical generation: generate subgraphs at each step</p>
+</div>
+</div>
+<div class="section" id="id4">
+<h3>Limitations<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<p>For a perfect GNN:</p>
+<ol class="simple">
+<li><p>If two nodes have the same neighborhood structure, they must have the same embedding</p></li>
+<li><p>If two nodes have different neighborhood structure, they must have different embeddings</p></li>
+</ol>
+<p>However,</p>
+<ul class="simple">
+<li><p>point 1 may not be practical, sometimes we want to assign different embeddings to two nodes with the same neighborhood structure. Solution: position-aware GNNs.</p></li>
+<li><p>point 2 often cannot be satisfied. Nodes on two rings have the same computational graphs. Sol: idendity-aware GNNs</p></li>
+</ul>
+<div class="section" id="position-aware-gnns">
+<h4>Position-aware GNNs<a class="headerlink" href="#position-aware-gnns" title="Permalink to this headline">¶</a></h4>
+<p><a class="reference external" href="https://arxiv.org/abs/1906.04817">J. You, R. Ying, J. Leskovec. Postion-aware Graph Neural Networks, ICML 2019</a></p>
+<ul class="simple">
+<li><p>structure-aware task: nodes are labeled by their structural roles in the graph</p></li>
+<li><p>position-aware task: nodes are labeled by their positions in the graph</p></li>
+</ul>
+<div class="figure align-default" id="gnn-struc-posi-aware">
+<a class="reference internal image-reference" href="../_images/gnn-struc-posi-aware.png"><img alt="" src="../_images/gnn-struc-posi-aware.png" style="width: 70%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 231 </span><span class="caption-text">Two types of labels.</span><a class="headerlink" href="#gnn-struc-posi-aware" title="Permalink to this image">¶</a></p>
+</div>
+<p>GNNs differentiate nodes by their computational graphs. Thus, they often work well for structure-aware task, but fail for position-aware tasks (but node features are different??)</p>
+<p>To solve this, we introduce anchors. Randomly pick some nodes or some set of nodes in the graph as <strong>anchor-sets</strong>. Then we compute the relative distances from every nodes to these anchor-sets.</p>
+<div class="figure align-default" id="gnn-anchor-set">
+<a class="reference internal image-reference" href="../_images/gnn-anchor-set.png"><img alt="" src="../_images/gnn-anchor-set.png" style="width: 60%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 232 </span><span class="caption-text">Anchors</span><a class="headerlink" href="#gnn-anchor-set" title="Permalink to this image">¶</a></p>
+</div>
+<p>The distance can then be used as <strong>position encoding</strong>, which represent a node’s position by its distance to randomly selected anchor-set.</p>
+<p>Note that each dimension of the position encoding is tied to an anchor-set. Permutation of the order does not change the meaning of the encoding. Thus, we cannot directly use this encoding as augmented feature.</p>
+<p>We require a special NN that can maintain the permutation invariant property of position encoding. Permuting the input feature dimension will only result in the permutation of the output dimension, the <strong>value</strong> in each dimension won’t change.</p>
+</div>
+<div class="section" id="identity-aware-gnn">
+<h4>Identity-aware GNN<a class="headerlink" href="#identity-aware-gnn" title="Permalink to this headline">¶</a></h4>
+<p>[J. You, J. Gomes-Selman, R. Ying, J. Leskovec. Identity-aware Graph Neural Networks, AAAI 2021]</p>
+<p>Heterogenous: different types of message passing is applied to different nodes. Suppose two nodes <span class="math notranslate nohighlight">\(v_1, v_2\)</span> have the same computational graph structure, but have different node colorings. Since we will apply different neural network for embedding computation, their embeddings will be different.</p>
+<div class="figure align-default" id="gnn-idgnn">
+<a class="reference internal image-reference" href="../_images/gnn-idgnn.png"><img alt="" src="../_images/gnn-idgnn.png" style="width: 50%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 233 </span><span class="caption-text">Identity-aware GNN</span><a class="headerlink" href="#gnn-idgnn" title="Permalink to this image">¶</a></p>
+</div>
+<p>ID-GNN can count cycles originating from a given node, but GNN cannot.</p>
+<p>Rather than to heterogenous message passing, we can include identity information as an augmented node feature (no need to do heterogenous message passing). Use cycle counts in each layer as an augmented node feature.</p>
+<div class="figure align-default" id="gnn-idgnn-cycle">
+<a class="reference internal image-reference" href="../_images/gnn-idgnn-cycle.png"><img alt="" src="../_images/gnn-idgnn-cycle.png" style="width: 70%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 234 </span><span class="caption-text">Cycle count at each level forms a vector</span><a class="headerlink" href="#gnn-idgnn-cycle" title="Permalink to this image">¶</a></p>
+</div>
+<p>ID-GNN is more expressive than their GNN counterparts. ID-GNN is the first message passing GNN that is more expressive than 1-WL test.</p>
 </div>
 </div>
 <div class="section" id="reference">

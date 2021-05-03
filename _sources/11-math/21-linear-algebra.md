@@ -444,6 +444,7 @@ $$\boldsymbol{P} ^\top \boldsymbol{A} \boldsymbol{P} = \boldsymbol{\Lambda} \tex
 
 where $\boldsymbol{\Lambda} =\operatorname{diag}\left( \lambda_1, \lambda_2, \ldots, \lambda_n \right)$ and the $\lambda_i$ are the eigenvalues of $\boldsymbol{B} ^{-1} \boldsymbol{A}$ or $\boldsymbol{A} \boldsymbol{B} ^{-1}$.
 
+(svd)=
 ### Singular Value Decomposition
 
 Definition
@@ -453,20 +454,18 @@ Definition
 
 
 Properties
-: - Due to the property of $\boldsymbol{\Sigma}$, we can write SVD as
+: - Due to the definition of $\boldsymbol{\Sigma}$, we can write SVD as
 
     $$
     \boldsymbol{A}=\sigma_{1} \boldsymbol{u}_{1} \boldsymbol{v}_{1}^{\top}+\sigma_{2} \boldsymbol{u}_{2} \boldsymbol{v}_{2}^{\top}+\ldots+\sigma_{r} \boldsymbol{u}_{r} \boldsymbol{v}_{r}^{\top} = \tilde{\boldsymbol{U}}_{n \times r} \tilde{\boldsymbol{\Sigma}} _{r \times r} \tilde{\boldsymbol{V}}_{r \times r}
     $$
 
-    where $r = \operatorname{rank}\left( \boldsymbol{A}  \right)$.
-
-    As a result, $\boldsymbol{A} \boldsymbol{v}=\sigma \boldsymbol{u}, \boldsymbol{A}^{\top} \boldsymbol{u}=\sigma \boldsymbol{v}$.
-  - When $\boldsymbol{A}$ is symmetric, then its SVD $\boldsymbol{A} = \boldsymbol{U} \boldsymbol{\Sigma} \boldsymbol{V} ^{\top}$ can be obtained from its EVD $\boldsymbol{A} \boldsymbol{W} \boldsymbol{\Lambda} \boldsymbol{W} ^{\top}$.
+    where $r = \operatorname{rank}\left( \boldsymbol{A}  \right)$. It is then easy to see that $\boldsymbol{A} \boldsymbol{v}=\sigma \boldsymbol{u}, \boldsymbol{A}^{\top} \boldsymbol{u}=\sigma \boldsymbol{v}$.
+  - When $\boldsymbol{A}$ is symmetric, then its SVD $\boldsymbol{A} = \boldsymbol{U} \boldsymbol{\Sigma} \boldsymbol{V} ^{\top}$ can be obtained from its EVD:
 
       $$\boldsymbol{A} = \boldsymbol{W} \boldsymbol{\Lambda} \boldsymbol{W} ^{\top} = \sum_{i=1}^n \lambda_i \boldsymbol{w} _i \boldsymbol{w}_i ^{\top} = \sum_{i=1}^r \underbrace{\left\vert \lambda_i \right\vert }_{\sigma_i} \underbrace{\operatorname{sign}(\lambda_i) \boldsymbol{w} _i \boldsymbol{w} _i ^{\top}}_{\boldsymbol{u} _i \boldsymbol{v} _i ^{\top}}$$
 
-      For instance, we can let $\boldsymbol{u} _i = \operatorname{sign}(\lambda_i) \boldsymbol{w} _i$ and $\boldsymbol{v} _i = \boldsymbol{w} _i$, or $\boldsymbol{u} _i = - \boldsymbol{w} _i$ and $\boldsymbol{v} _i = - \operatorname{sign}(\lambda_i) \boldsymbol{w}_i$, etc. Note that when $\lambda_\max > 0$, we may **not** have $\sigma_\max = \lambda_\max$.
+      For instance, we can let $\boldsymbol{u} _i = \operatorname{sign}(\lambda_i) \boldsymbol{w} _i$ and $\boldsymbol{v} _i = \boldsymbol{w} _i$, or $\boldsymbol{u} _i = - \boldsymbol{w} _i$ and $\boldsymbol{v} _i = - \operatorname{sign}(\lambda_i) \boldsymbol{w}_i$, etc. Note that when $\lambda_\max > 0$, we may **not** have $\sigma_\max = \lambda_\max$, but we always have $\sigma_\max \ge \lambda_\max$.
 
 Theorem
 : Every matrix has SVD.

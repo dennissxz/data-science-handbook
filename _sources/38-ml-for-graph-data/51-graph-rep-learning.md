@@ -176,7 +176,7 @@ Assumption
 - page $j$'s own importance $r_j$ is the sum of the votes on its in-links. $r_j = \sum_{i: i \rightarrow  j} r_i/d_i$.
 - $\sum_{i=1}^{N_v} r_i =1$.
 
-Define a matrix $\boldsymbol{M}$ such that $M_{ij} = \frac{1}{d_j}$ if $j \rightarrow i$. We can see it is a column stochastic matrix. The above assumptions leads to the flow equation
+Define a matrix $\boldsymbol{M}$ such that $M_{ij} = \frac{u, v}{d_j}$ if $j \rightarrow i$. We can see it is a column stochastic matrix. The above assumptions leads to the flow equation
 
 $$
 \boldsymbol{r} = \boldsymbol{M} \boldsymbol{r}  
@@ -211,18 +211,18 @@ To overcome these issues, we use teleport trick:
 Hence, the PageRank equation [Brin-Page 98] is
 
 $$
-r_j = \sum_{i: i \rightarrow j} \beta \frac{r_i}{d_i}  + (1-\beta) \frac{1}{N_v}
+r_j = \sum_{i: i \rightarrow j} \beta \frac{r_i}{d_i}  + (1-\beta) \frac{u, v}{N_v}
 $$
 
 or
 
 $$
-\boldsymbol{r} = \beta \boldsymbol{M} \boldsymbol{r} + (1-\beta)/N_v  \boldsymbol{1}  
+\boldsymbol{r} = \beta \boldsymbol{M} \boldsymbol{r} + (1-\beta)/N_v  \boldsymbol{u, v}  
 $$
 
 Note that this formulation assumes that $\boldsymbol{M}$ has no dead ends. We can either preprocess matrix $\boldsymbol{M}$ to remove all dead ends or explicitly follow random teleport links with probability 1 from dead-ends.
 
-Let $\boldsymbol{P} = \beta \boldsymbol{M} + (1- \boldsymbol{\beta} )/N_v \boldsymbol{1} \boldsymbol{1} ^{\top}$, then we have $\boldsymbol{r}  = \boldsymbol{P} \boldsymbol{r}$. The random walk characterized by column-stochastic matrix $\boldsymbol{P}$ has no dead ends or spider traps, hence we can use the power method over $\boldsymbol{P}$.
+Let $\boldsymbol{P} = \beta \boldsymbol{M} + (1- \boldsymbol{\beta} )/N_v \boldsymbol{u, v} \boldsymbol{u, v} ^{\top}$, then we have $\boldsymbol{r}  = \boldsymbol{P} \boldsymbol{r}$. The random walk characterized by column-stochastic matrix $\boldsymbol{P}$ has no dead ends or spider traps, hence we can use the power method over $\boldsymbol{P}$.
 
 
 #### Personalized PageRank
@@ -233,7 +233,7 @@ In personalized PageRank, a walker does not teleport to all nodes $V$, but to so
 
 If $S$ is the start node, then we call this **random walks with restarts**. We can then use this kind of random walk to form a proximity measure of two nodes: simulate multiple random walk starting from node $s$ with restarts, and then count the number of visits to other nodes. Nodes with higher visit count have higher proximity.
 
-The relative frequencies can also be found using power iteration. The uniform teleport probability $(1-\beta)/N_v  \boldsymbol{1}$ in PageRank now becomes $\boldsymbol{e} _s$.
+The relative frequencies can also be found using power iteration. The uniform teleport probability $(1-\beta)/N_v  \boldsymbol{u, v}$ in PageRank now becomes $\boldsymbol{e} _s$.
 
 This method also applies to a subset $S$ of multiple nodes. The teleport probability is non-zero for $v \in S$ but 0 otherwise.
 
@@ -277,7 +277,7 @@ DeepWalk and node2vec can also be formulated as matrix factorization problem.
 
 
 $$
-\boldsymbol{M} = \log \left(\operatorname{vol}(G)\left(\frac{1}{T} \sum_{r=1}^{T}\left(D^{-1} A\right)^{r}\right) D^{-1}\right)-\log b
+\boldsymbol{M} = \log \left(\operatorname{vol}(G)\left(\frac{u, v}{T} \sum_{r=1}^{T}\left(D^{-1} A\right)^{r}\right) D^{-1}\right)-\log b
 $$
 
 - $\operatorname{vol}(G) = \sum_{i,j}^n a_{ij}$
@@ -336,7 +336,7 @@ Anonymous walks
 Let $\eta_\ell$ be the number of distinct anonymous walks of length $\ell$. It is easy to see then when length $\ell$ of a anonymous walk is $3$, there are 5 anonymous walks
 
 $$
-w_{1}=111, w_{2}=112, w_{3}=121, w_{4}=122, w_{5}=123
+w_{u, v}=111, w_{2}=112, w_{3}=121, w_{4}=122, w_{5}=123
 $$
 
 The number $\eta_\ell$ grows exponentially wicvvc th $\ell$.
@@ -368,11 +368,11 @@ Objective:
 
 
 $$
-\max _{\mathrm{\boldsymbol{Z}}, \mathrm{d}} \sum_{u \in V} \frac{1}{T} \sum_{t=\Delta}^{T-\Delta} \log \mathbb{P} \left(w^u_{t} \mid\left\{w^u_{t-\Delta}, \ldots, w^u_{t+\Delta}, \boldsymbol{z} _{G}\right\}\right)
+\max _{\mathrm{\boldsymbol{Z}}, \mathrm{d}} \sum_{u \in V} \frac{u, v}{T} \sum_{t=\Delta}^{T-\Delta} \log \mathbb{P} \left(w^u_{t} \mid\left\{w^u_{t-\Delta}, \ldots, w^u_{t+\Delta}, \boldsymbol{z} _{G}\right\}\right)
 $$
 
 - $\mathbb{P} \left(w_{t} \mid\left\{w_{t-\Delta}, \ldots, w_{t+\Delta}, \boldsymbol{z}_{\boldsymbol{G}}\right\}\right)=\frac{\exp \left(y\left(w_{t}\right)\right)}{\sum_{i=1}^{\eta} \exp \left(y\left(w_{i}\right)\right)}$. Note the denominator is over $\eta$ distinct sampled walks (require negative sampling)
-- $y\left(w_{t}\right)=\beta_0 + \boldsymbol{\beta} ^{\top} [\frac{1}{2 \Delta} \sum_{i=-\Delta}^{\Delta} \boldsymbol{z}_{i}; \boldsymbol{z}_{\boldsymbol{G}}]$, where $\beta_0, \boldsymbol{\beta}$ are learnable parameters. ';' stands for vertical concatenation This step represents a linear layer.
+- $y\left(w_{t}\right)=\beta_0 + \boldsymbol{\beta} ^{\top} [\frac{u, v}{2 \Delta} \sum_{i=-\Delta}^{\Delta} \boldsymbol{z}_{i}; \boldsymbol{z}_{\boldsymbol{G}}]$, where $\beta_0, \boldsymbol{\beta}$ are learnable parameters. ';' stands for vertical concatenation This step represents a linear layer.
 
 ### Hierarchical Embeddings
 
@@ -426,8 +426,8 @@ Model: Class probability of a node equals the weighted average of class probabil
 
 $$\begin{aligned}
 \mathbb{P} \left(Y_{v}=c\right)
-&= \frac{1}{d_v} \sum_{u \in \mathscr{N} (v)} \mathbb{P} (Y_u = c) \\  
-&=\frac{1}{\sum_{(v, u) \in E} A_{v, u}} \sum_{(v, u) \in E} A_{v, u} \mathbb{P} \left(Y_{u}=c\right)
+&= \frac{u, v}{d_v} \sum_{u \in \mathscr{N} (v)} \mathbb{P} (Y_u = c) \\  
+&=\frac{u, v}{\sum_{(v, u) \in E} A_{v, u}} \sum_{(v, u) \in E} A_{v, u} \mathbb{P} \left(Y_{u}=c\right)
 \end{aligned}$$
 
 Algorithm
@@ -632,7 +632,7 @@ One important property of aggregation is that the aggregation operator should be
 A basic approach of aggregation-and-transform is to average last layer information, take linear transformation, and then non-linear activation. Consider an $L$-layer GNN to obtain $k$-dimensional embeddings
 
 - $\boldsymbol{h} _v ^{(0)} = \boldsymbol{x} _v$: initial $0$-th layer embeddings, equal to node features
-- $\boldsymbol{h} _v ^{(\ell +1)} = \sigma \left( \boldsymbol{W} _\ell \frac{1}{d_v}\sum_{u \in \mathscr{N} (v)} \boldsymbol{h} _u ^ {(\ell)} + \boldsymbol{B} _\ell \boldsymbol{h} _v ^{(\ell)} \right)$ for $\ell = \left\{ 0, \ldots, L-1 \right\}$
+- $\boldsymbol{h} _v ^{(\ell +1)} = \sigma \left( \boldsymbol{W} _\ell \frac{u, v}{d_v}\sum_{u \in \mathscr{N} (v)} \boldsymbol{h} _u ^ {(\ell)} + \boldsymbol{B} _\ell \boldsymbol{h} _v ^{(\ell)} \right)$ for $\ell = \left\{ 0, \ldots, L-1 \right\}$
   - average last layer (its neighbors') hidden embeddings $\boldsymbol{h} _u ^{(\ell)}$, linearly transformed by $k \times k$ weight matrix $\boldsymbol{W}_ \ell$
   - also take as input its hidden embedding $\boldsymbol{h} _v ^{(\ell)}$ at last layer (last updated embedding?? stored in $\boldsymbol{H}$??), linearly transformed by $k\times k$ weight matrix $\boldsymbol{B}_ \ell$
   - finally activated by $\sigma$.
@@ -656,7 +656,7 @@ aggregation function is complex.
 
 #### Supervised
 
-After build GNN layers, to train it, we compute loss and do SGD. The pipleine is
+After build GNN layers, to train it, we compute loss and do SGD. The pipeine is
 
 :::{figure} gnn-training-pipeline
 <img src="../imgs/gnn-training-pipeline.png" width = "50%" alt=""/>
@@ -750,6 +750,8 @@ Inductive setting
 Splitting graph, transductive (left) and inductive (right)
 :::
 
+In the first layer only features not labels are fed into GNN???
+
 ##### Link-level
 
 For link-prediction task, we first
@@ -801,7 +803,7 @@ $$
 
 In basic GNN, the aggregation function is just average. And the update function is
 
-$$\boldsymbol{h} _v ^{(\ell +1)} = \sigma \left( \boldsymbol{W} _\ell \frac{1}{d_v}\sum_{u \in \mathscr{N} (v)} \boldsymbol{h} _u ^ {(\ell)} + \boldsymbol{B} _\ell \boldsymbol{h} _v ^{(\ell)} \right)$$
+$$\boldsymbol{h} _v ^{(\ell +1)} = \sigma \left( \boldsymbol{W} _\ell \frac{u, v}{d_v}\sum_{u \in \mathscr{N} (v)} \boldsymbol{h} _u ^ {(\ell)} + \boldsymbol{B} _\ell \boldsymbol{h} _v ^{(\ell)} \right)$$
 
 This is called graph convolutional networks [Kipf and Welling ICLR 2017].
 
@@ -822,7 +824,7 @@ AGG can be
 - Mean
 
   $$
-  \operatorname{AGG} = \frac{1}{d_v}\sum_{u \in \mathscr{N} (v)} \boldsymbol{h} _u ^ {(\ell)}
+  \operatorname{AGG} = \frac{u, v}{d_v}\sum_{u \in \mathscr{N} (v)} \boldsymbol{h} _u ^ {(\ell)}
   $$
 
 - Pool: Transform neighbor vectors and apply symmetric vector function $\gamma$, e.g. mean, max
@@ -853,7 +855,7 @@ $$
 
 #### Graph Attention Networks
 
-If AGG is mean, then the message from neighbors are of equal importance with the same weight $\frac{1}{d_v}$. Can we specify some unequal weight/attention $\alpha_{vu}$?
+If AGG is mean, then the message from neighbors are of equal importance with the same weight $\frac{u, v}{d_v}$. Can we specify some unequal weight/attention $\alpha_{vu}$?
 
 $$
 \operatorname{AGG} = \sum_{u \in \mathscr{N} (v)} \alpha_{vu} \boldsymbol{h} _u ^ {(\ell)}
@@ -1072,8 +1074,8 @@ Benefits: greatly reduce computational cost. Allows for scaling to large graphs.
 ### Graph Generative Models
 
 Types
-- Realistic graph generation: generate graphs that are similar to a given set of graphs. (focus)
-- goal-directed graph generation: generate graphs that optimize given objectives/constraints
+- Realistic graph generation: generate graphs that are similar to a given set of graphs. (our focus)
+- goal-directed graph generation: generate graphs that optimize given objectives/constraints, e.g. molecules chemical properties
 
 
 Given a set of graph, we want to
@@ -1095,10 +1097,11 @@ Challenge
 Recall that by chain rule, a joint distribution can be factorized as
 
 $$
-p_{\text {model }}(\boldsymbol{x} ; \theta)=\prod_{t=1}^{n} p_{\text {model }}\left(x_{t} \mid x_{1}, \ldots, x_{t-1} ; \theta\right)
+p_{\text {model }}(\boldsymbol{x} ; \theta)=\prod_{t=1}^{n} p_{\text {model }}\left(x_{t} \mid x_{u, v}, \ldots, x_{t-1} ; \theta\right)
 $$
 
 In our case, $x_t$ will be the $t$-th action (add node, add edge). The ordering of nodes is a random ordering $\pi$. For a fixed ordering $\pi$ of nodes, for each node, we add a sequence of edges.
+
 
 :::{figure} gnn-gen
 <img src="../imgs/gnn-gen.png" width = "50%" alt=""/>
@@ -1106,7 +1109,157 @@ In our case, $x_t$ will be the $t$-th action (add node, add edge). The ordering 
 Generation process of a graph
 :::
 
-It is like propagating along rows of lower-triangularized adjacency matrix corresponding to the ordering $\pi$.
+It is like propagating along columns of upper-triangularized adjacency matrix corresponding to the ordering $\pi$. Essentially, we have transformed graph generation problem into a sequence generation problem. We need to model two processes
+1. Generate a state for a new node (Node-level sequence)
+2. Generate edges for the new node based on its state (Edge-level sequence)
+
+To model these two sequences, we can use [RNNs](rnn).
+
+GraphRNN has a node-level RNN and an edge-level RNN.
+- Node-level RNN generates the initial state for edge-level RNN
+- Edge-level RNN sequentially predict the probability that the new node will connect to each of the previous node. Then the last hidden state is used to run node RNN for another step.
+
+:::{figure} graph-rnn-pipeline
+<img src="../imgs/graph-rnn-pipeline.png" width = "70%" alt=""/>
+
+GraphRNN Pipeline (node RNN + edge RNN)
+:::
+
+The training and test pipeline is:
+
+
+:::{figure} graph-rnn-train-test
+<img src="../imgs/graph-rnn-train-test.png" width = "90%" alt=""/>
+
+GraphRNN training and test example
+:::
+
+- SOS means start of sequence, EOS means end of sequence.
+- If Edge RNN outputs EOS at step 1, we know no edges are connected to the new node. We stop the graph generation. At test time, this means node sequence length is not fixed.
+- In training of edge RNN, teacher enforcing of edge existence is applied. The loss is binary cross entropy
+
+  $$L=- \sum _{u, v} \left[y_{u, v} \log \left(\hat{y}_{u, v}\right)+\left(1-y_{u, v}\right) \log \left(1-\hat{y}_{u, v}\right)\right]$$
+
+  where $\hat{y}_{u, v}$ is predicted probability of existence of edge $(u, v)$ and $y_{u,v}$ is ground truth 1 or 0.
+
+#### Tractability
+
+In the structure introduced above, each edge RNN can have at most $n-1$ step. How to limit this?
+
+The answer is to use Breadth-First search node ordering rather than random ordering of nodes.
+
+:::{figure} graph-rnn-ordering
+<img src="../imgs/graph-rnn-ordering.png" width = "50%" alt=""/>
+
+Random ordering and BFS ordering
+:::
+
+Illustrated in adjacency matrix, we only look at connectivity with nodes in the BFS frontier, rather than all previous nodes.
+
+:::{figure} graph-rnn-ordering-2
+<img src="../imgs/graph-rnn-ordering-2.png" width = "70%" alt=""/>
+
+Random ordering and BFS ordering in adjacency matrices
+:::
+
+#### Similarity of Graphs
+
+How to compare two graphs? Qualitatively, we can compare visual similarity. Quantitatively, we can compare graph statistics distribution such as
+- degree distribution
+- clustering coefficient distribution
+- [Graphlet-based](https://en.wikipedia.org/wiki/Graphlets#Graphlet-based_network_properties) distribution
+The distance between two distributions can be measured by [earth mover distance](https://en.wikipedia.org/wiki/Earth_mover%27s_distance) (aka Wasserstein metric in math), which measure the minimum effort that move earth from one pile to the other.
+
+:::{figure} emd
+<img src="../imgs/emd.png" width = "70%" alt=""/>
+
+Earth mover distance illustration
+:::
+
+How two compare two sets of graphs by some set distance? Each graph element may have different $N_v, N_e$. First we compute a statistic for each graph element, then compute Maximum Mean Discrepancy (MDD). If $\mathcal{X} = \mathcal{H} = \mathbb{R} ^d$ and we choose $\phi: \mathcal{X} \rightarrow \mathcal{H}$ to be $\phi(x)=x$, then it becomes
+
+$$
+\begin{aligned}
+\mathrm{MMD}(P, Q) &=\left\|\mathbb{E}_{X \sim P}[\varphi(X)]-\mathbb{E}_{Y \sim Q}[\varphi(Y)]\right\|_{\mathcal{H}} \\
+&=\left\|\mathbb{E}_{X \sim P}[X]-\mathbb{E}_{Y \sim Q}[Y]\right\|_{\mathbb{R}^{d}} \\
+&=\left\|\mu_{P}-\mu_{Q}\right\|_{\mathbb{R}^{d}}
+\end{aligned}
+$$
+
+Given a set of input graphs, we can generate a set of graphs using some algorithms. Then compare the set distance. Many algorithms are particularly designed to generate certain graphs, but GraphRNN can learn from the input and generate any types of graphs (e.g. grid).
+
+#### Variants
+
+Graph convolutional policy network
+- use GNN to predict the generation action
+- further uses RL to direct graph generation to certain goals
+
+Hierarchical generation: generate subgraphs at each step
+
+
+
+### Limitations
+
+For a perfect GNN:
+1. If two nodes have the same neighborhood structure, they must have the same embedding
+2. If two nodes have different neighborhood structure, they must have different embeddings
+
+However,
+- point 1 may not be practical, sometimes we want to assign different embeddings to two nodes with the same neighborhood structure. Solution: position-aware GNNs.
+- point 2 often cannot be satisfied. Nodes on two rings have the same computational graphs. Sol: idendity-aware GNNs
+
+#### Position-aware GNNs
+
+[J. You, R. Ying, J. Leskovec. Postion-aware Graph Neural Networks, ICML 2019](https://arxiv.org/abs/1906.04817)
+
+- structure-aware task: nodes are labeled by their structural roles in the graph
+- position-aware task: nodes are labeled by their positions in the graph
+
+:::{figure} gnn-struc-posi-aware
+<img src="../imgs/gnn-struc-posi-aware.png" width = "70%" alt=""/>
+
+Two types of labels.
+:::
+
+GNNs differentiate nodes by their computational graphs. Thus, they often work well for structure-aware task, but fail for position-aware tasks (but node features are different??)
+
+To solve this, we introduce anchors. Randomly pick some nodes or some set of nodes in the graph as **anchor-sets**. Then we compute the relative distances from every nodes to these anchor-sets.
+
+:::{figure} gnn-anchor-set
+<img src="../imgs/gnn-anchor-set.png" width = "60%" alt=""/>
+
+Anchors
+:::
+
+The distance can then be used as **position encoding**, which represent a node’s position by its distance to randomly selected anchor-set.
+
+Note that each dimension of the position encoding is tied to an anchor-set. Permutation of the order does not change the meaning of the encoding. Thus, we cannot directly use this encoding as augmented feature.
+
+We require a special NN that can maintain the permutation invariant property of position encoding. Permuting the input feature dimension will only result in the permutation of the output dimension, the **value** in each dimension won’t change.
+
+#### Identity-aware GNN
+
+[J. You, J. Gomes-Selman, R. Ying, J. Leskovec. Identity-aware Graph Neural Networks, AAAI 2021]
+
+Heterogenous: different types of message passing is applied to different nodes. Suppose two nodes $v_1, v_2$ have the same computational graph structure, but have different node colorings. Since we will apply different neural network for embedding computation, their embeddings will be different.
+
+:::{figure} gnn-idgnn
+<img src="../imgs/gnn-idgnn.png" width = "50%" alt=""/>
+
+Identity-aware GNN
+:::
+
+ID-GNN can count cycles originating from a given node, but GNN cannot.
+
+Rather than to heterogenous message passing, we can include identity information as an augmented node feature (no need to do heterogenous message passing). Use cycle counts in each layer as an augmented node feature.
+
+:::{figure} gnn-idgnn-cycle
+<img src="../imgs/gnn-idgnn-cycle.png" width = "70%" alt=""/>
+
+Cycle count at each level forms a vector
+:::
+
+ID-GNN is more expressive than their GNN counterparts. ID-GNN is the first message passing GNN that is more expressive than 1-WL test.
 
 ### Reference
 
