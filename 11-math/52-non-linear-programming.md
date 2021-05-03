@@ -348,7 +348,7 @@ where the eigenvector $\left\| \boldsymbol{u} \right\| =1$. This goes back to th
 
 
 
-### Max-cut Problem
+### For max-cut
 
 In a graph $G = (V, E)$ with edge weights $\boldsymbol{W}$, we want to find a maximum bisection cut
 
@@ -491,7 +491,7 @@ $$\begin{aligned}
 &= \frac{\arccos (\boldsymbol{v} _i ^{\top} \boldsymbol{v} _j)}{\pi} \\
 \end{aligned}$$
 
-In $p = 3$ case, we sample $\boldsymbol{r}$ from a unit sphere. All good $\boldsymbol{r}$ lie on two [spherical wedges](https://en.wikipedia.org/wiki/Spherical_wedge), with angle $\theta$. The ratio between the area of each spherical wedge and the area of the sphere is $\theta/2\pi$. An example is given after the proof.
+In $p = 3$ case, we sample $\boldsymbol{r}$ from a unit sphere. All good $\boldsymbol{r}$ lie on two [spherical wedges](https://en.wikipedia.org/wiki/Spherical_wedge), with angle $\theta$. The ratio between the area of each spherical wedge and the area of the sphere is $\theta/2\pi$. An example is given after the proof. 
 
 Now we compare $\operatorname{GW}(\boldsymbol{W}) = \sum_{i,j}^n w_{ij} \frac{1}{\pi}\arccos (\boldsymbol{v} _i ^{\top} \boldsymbol{v} _j)$ and $\operatorname{SDP} (\boldsymbol{W}) = \sum_{i,j}^n w_{ij} \frac{1}{2} (1 - \boldsymbol{v} _i ^{\top} \boldsymbol{v} _j)$.
 
@@ -546,7 +546,7 @@ where $K \approx 1.7$. Hence, the SDP relaxation $\Omega_{SDP}$ does not relax t
 
 To analyze it more specifically, we impose some structural assumption of $\boldsymbol{W}$, e.g. that from SBM.
 
-### For SBM
+### For min-cut
 
 The above inequalities applies to any problem instance $G=(V, E, \boldsymbol{W})$. It may give too generous or useless guarantee for some particular model. Let’s see its performance in [stochastic block models](stochastic-block-models).
 
@@ -642,9 +642,12 @@ Note that in the above setting
 - such $\boldsymbol{z} , \boldsymbol{\Lambda}$ aka dual certificate
 - complementary slackness $\boldsymbol{\Lambda} \boldsymbol{X} = \boldsymbol{0}$ says has some null space, i.e. $\operatorname{dim} (\operatorname{null}  (\boldsymbol{\Lambda})) \ge 1$, but the strict complementary condition says it is exactly $1$.
 
-#### KKT Satisfied
 
-To show that, we use first order necessary condition. Recall the problem is
+:::{admonition,note,dropdown} Geometric meaning of dual certificate: normal cone
+
+We briefly introduce the normal cone for this problem, which helps to understand the KKT conditions on dual certificate. For the simpler case where variable is a vector $\boldsymbol{x} \in \mathbb{R} ^n$, see [here](normal-cones).
+
+Recall the original problem can is
 
 $$\min\ - \langle  \boldsymbol{B}, \boldsymbol{X} \rangle \qquad \text{s.t. } \boldsymbol{X} \succeq 0, X_{ii}=1$$
 
@@ -654,17 +657,18 @@ $$
 S = \left\{ \boldsymbol{X} \mid \boldsymbol{X} \succeq \boldsymbol{0}, \langle\boldsymbol{C} _i, \boldsymbol{X}  \rangle = b_i, i \in [n] \right\}
 $$
 
-where $\boldsymbol{C} _i = \boldsymbol{e} _i \boldsymbol{e} _i ^{\top}, b_i = 1$. Similar to the $\boldsymbol{x} \in \mathbb{R} ^n$ [case](normal-cones), the normal cone of $\boldsymbol{S}$ at $\boldsymbol{x}$ is
+where $\boldsymbol{C} _i = \boldsymbol{e} _i \boldsymbol{e} _i ^{\top}, b_i = 1$. The normal cone of $\boldsymbol{S}$ at $\boldsymbol{x}$ is
 
 $$
 N_S(\boldsymbol{X}) = \left\{ \sum_{i=1}^n \lambda_i \boldsymbol{C} _i - \boldsymbol{\Lambda} \mid \boldsymbol{\Lambda} \succeq \boldsymbol{0}, \langle \boldsymbol{\Lambda} , \boldsymbol{X}  \rangle = 0\right\}
 $$
 
 Note that $- \nabla f(\boldsymbol{X}) = \boldsymbol{B}$. By the first order necessary condition $- \nabla f(\boldsymbol{X}) \in N_S(\boldsymbol{X})$, we have
-- $\boldsymbol{B} = \sum_{i=1}^n \lambda_i \boldsymbol{C} _i - \boldsymbol{\Lambda}$ for some $\lambda_i$.
-- $\boldsymbol{\Lambda} \succeq \boldsymbol{0}, \langle \boldsymbol{\Lambda} , \boldsymbol{X}  \rangle = 0$
+- $\boldsymbol{B} = \sum_{i=1}^n \lambda_i \boldsymbol{C} _i - \boldsymbol{\Lambda}$ for some $\lambda_i$. By viewing $z_i = -\lambda_i \in \mathbb{R}$, this equation is exactly the zero partial derivative of Lagrangean $\frac{\partial \mathcal{L} }{\partial \boldsymbol{X}} = -\boldsymbol{B} - \operatorname{diag}\left( \boldsymbol{z}  \right) - \boldsymbol{\Lambda} = 0$
+- $\boldsymbol{\Lambda} \succeq \boldsymbol{0}, \langle \boldsymbol{\Lambda} , \boldsymbol{X}  \rangle = 0$, which are dual feasibility and complementary slackness.
 
-...
+:::
+
 
 #### Uniqueness
 
@@ -756,20 +760,24 @@ $$\begin{aligned}
 &= \boldsymbol{J} (- \operatorname{diag}(\boldsymbol{z}) - \boldsymbol{E} ) \boldsymbol{J}  \quad\because \boldsymbol{J} \mathbb{E} [\boldsymbol{B}]  = \boldsymbol{0}  \\
 \end{aligned}$$
 
-If $(- \operatorname{diag}(\boldsymbol{z}) - \boldsymbol{E})$ is p.d, then $\boldsymbol{\Lambda} \succeq \boldsymbol{0}$ and $\operatorname{rank}(\boldsymbol{\Lambda} ) = n -1$. Now we show it indeed holds. It is equivalent to show that $- z_i \ge \left\| \boldsymbol{E}  \right\| _2$.
+If $(- \operatorname{diag}(\boldsymbol{z}) - \boldsymbol{E})$ is p.d, then $\boldsymbol{\Lambda} \succeq \boldsymbol{0}$ and $\operatorname{rank}(\boldsymbol{\Lambda} ) = n -1$. Now we show it indeed holds. Since $\boldsymbol{E}$ is symmetric, it is equivalent to show that
 
-Recall that
-- $A_{ij} \sim \operatorname{Ber}(p)$ or $\operatorname{Ber}(q)$.
-- $\boldsymbol{E} = \boldsymbol{A} - \mathbb{E} [\boldsymbol{A} ]  = \boldsymbol{B} - \mathbb{E} [\boldsymbol{B}]$.
-- $\left\| \boldsymbol{E}  \right\|_2  = \mathcal{O} (\sqrt{n p \log n})$ for $p > q \ge \frac{b \log n}{n}$.
-- $\mathbb{E} [\boldsymbol{B}] = \frac{p-q}{2} \left[\begin{array}{c}
+$$- z_i \ge \lambda_\max (\boldsymbol{E} )$$
+
+Recall definitions and facts
+1. $A_{ij} \sim \operatorname{Ber}(p)$ or $\operatorname{Ber}(q)$.
+2. $\boldsymbol{E} = \boldsymbol{A} - \mathbb{E} [\boldsymbol{A} ]  = \boldsymbol{B} - \mathbb{E} [\boldsymbol{B}]$.
+3. $\mathbb{E} [\boldsymbol{B}] = \frac{p-q}{2} \left[\begin{array}{c}
 \boldsymbol{1}  \\
 -\boldsymbol{1}
 \end{array}\right] \left[\begin{array}{cc}
 \boldsymbol{1} ^{\top}  & - \boldsymbol{1} ^{\top} \\
 \end{array}\right]$
+4. $\left\| \boldsymbol{E}  \right\|_2  = \mathcal{O} (\sqrt{n p \log n})$ for $p > q \ge \frac{b \log n}{n}$
+5. $\sigma_\max (\boldsymbol{E} ) \ge \lambda_\max (\boldsymbol{E} )$ since $\boldsymbol{E}$ is symmetric
+6. $\sum_j E_{ij} = \mathcal{O} (\sqrt{n p \log n})$ w.h.p. by [Hoeffding's inequality](hoeffding-inequality)
 
-The above equation gives
+Substituting (2) into the above equation for $\boldsymbol{z}$ gives
 
 $$\begin{aligned}
 - \operatorname{diag}\left( \boldsymbol{z} \right) \left[\begin{array}{cc}
@@ -786,33 +794,23 @@ $$\begin{aligned}
 \end{array}\right] + \boldsymbol{E}\left[\begin{array}{cc}
 \boldsymbol{1}  \\
 -\boldsymbol{1}
-\end{array}\right]  \\
+\end{array}\right]  \quad \because \text{fact (3)}
 \end{aligned}$$
 
 In scalar form,
 
 $$\begin{aligned}
-\text{for } 1\le i \le \frac{n}{2}, \qquad - z_i &= \frac{p-q}{2} n + \sum_{j=1}^{n/2} E_{ij} - \sum_{j=n/2+1}^{n} E_{ij} \\
-\text{for } \frac{n}{2} +1\le i \le n, \qquad - z_i &= \frac{p-q}{2} n - \left( \sum_{j=1}^{n/2} E_{ij} - \sum_{j=n/2+1}^{n} E_{ij} \right) \\
+-z_i
+&= \frac{p-q}{2} n \pm \left( \sum_{j=1}^{n/2} E_{ij} - \sum_{j=n/2+1}^{n} E_{ij}  \right)\\
+&= \frac{p-q}{2} n \pm \mathcal{O} (\sqrt{np \log n}) \quad \because \text{fact (6)}
 \end{aligned}$$
 
-It can be shown that $\left( \sum_{j=1}^{n/2} E_{ij} - \sum_{j=n/2+1}^{n} E_{ij} \right) = \mathcal{O} (1)$. Hence as long as $\frac{p-q}{2} n \ge \mathcal{O} (\sqrt{np \log n})$, then $-\boldsymbol{z} _i \ge \left\| \boldsymbol{E}  \right\| _2$.
+By fact (4) and (5), to ensure $- z_i \ge \lambda_\max (\boldsymbol{E} )$, a necessary condition is
 
+$$-z_i \ge \sigma _\max (\boldsymbol{E} ) = \mathcal{O} (\sqrt{np \log n})$$
 
+To ensure this, a necessary condition is
 
+$$\frac{p-q}{2}n \ge \mathcal{O} (\sqrt{np \log n})$$
 
-.
-
-.
-
-.
-
-.
-
-.
-
-.
-
-.
-
-.
+Therefore, as long as this holds, then $(- \operatorname{diag}(\boldsymbol{z}) - \boldsymbol{E})$ is p.d, and hence we have exactly recovery of $\boldsymbol{x}^*$.
