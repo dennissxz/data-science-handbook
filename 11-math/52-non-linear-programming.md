@@ -491,7 +491,9 @@ $$\begin{aligned}
 &= \frac{\arccos (\boldsymbol{v} _i ^{\top} \boldsymbol{v} _j)}{\pi} \\
 \end{aligned}$$
 
-In $p = 3$ case, we sample $\boldsymbol{r}$ from a unit sphere. All good $\boldsymbol{r}$ lie on two [spherical wedges](https://en.wikipedia.org/wiki/Spherical_wedge), with angle $\theta$. The ratio between the area of each spherical wedge and the area of the sphere is $\theta/2\pi$. An example is given after the proof. 
+In $p = 3$ case, we sample $\boldsymbol{r}$ from a unit sphere. All good $\boldsymbol{r}$ lie on two [spherical wedges](https://en.wikipedia.org/wiki/Spherical_wedge), with angle $\theta$. The ratio between the area of each spherical wedge and the area of the sphere is $\theta/2\pi$. An example is given after the proof.
+
+In higher dimensional spaces, we just project $\boldsymbol{r}$ on to the hyperplane **spanned** by $\boldsymbol{v} _i$ and $\boldsymbol{v} _j$, then it reduces to the $p=2$ case. Note that the  distribution of the projected random $\boldsymbol{r}$ is still uniform.
 
 Now we compare $\operatorname{GW}(\boldsymbol{W}) = \sum_{i,j}^n w_{ij} \frac{1}{\pi}\arccos (\boldsymbol{v} _i ^{\top} \boldsymbol{v} _j)$ and $\operatorname{SDP} (\boldsymbol{W}) = \sum_{i,j}^n w_{ij} \frac{1}{2} (1 - \boldsymbol{v} _i ^{\top} \boldsymbol{v} _j)$.
 
@@ -774,7 +776,7 @@ Recall definitions and facts
 \boldsymbol{1} ^{\top}  & - \boldsymbol{1} ^{\top} \\
 \end{array}\right]$
 4. $\left\| \boldsymbol{E}  \right\|_2  = \mathcal{O} (\sqrt{n p \log n})$ for $p > q \ge \frac{b \log n}{n}$
-5. $\sigma_\max (\boldsymbol{E} ) \ge \lambda_\max (\boldsymbol{E} )$ since $\boldsymbol{E}$ is symmetric
+5. $\sigma_\max (\boldsymbol{E} ) \ge \lambda_\max (\boldsymbol{E} )$ since $\boldsymbol{E}$ is [symmetric](svd)
 6. $\sum_j E_{ij} = \mathcal{O} (\sqrt{n p \log n})$ w.h.p. by [Hoeffding's inequality](hoeffding-inequality)
 
 Substituting (2) into the above equation for $\boldsymbol{z}$ gives
@@ -809,7 +811,7 @@ By fact (4) and (5), to ensure $- z_i \ge \lambda_\max (\boldsymbol{E} )$, a nec
 
 $$-z_i \ge \sigma _\max (\boldsymbol{E} ) = \mathcal{O} (\sqrt{np \log n})$$
 
-To ensure this, a necessary condition is
+To ensure this, substituting the scalar form of $-z_i$, a necessary condition is
 
 $$\frac{p-q}{2}n \ge \mathcal{O} (\sqrt{np \log n})$$
 
