@@ -85,7 +85,68 @@ $$
 
 There is not much point to conduct classification if the difference of the class means is not significant in the first place. On the other hand, significant difference of the class means is not sufficient to guarantee a good classification.
 
+### Extension
 
+We can extend two classes to multi-classes, and extend projection to one line to projection to some dimensions, i.e. as a dimensionality reduction method.
+
+The assumptions remain the same
+
+- equal covariance matrix $\boldsymbol{\Sigma} _1 = \ldots = \boldsymbol{\Sigma} _g = \boldsymbol{\Sigma}$
+- full rank $\operatorname{rank}\left( \boldsymbol{\Sigma}  \right) = p$
+- without normality assumption that the population are from multivariate normal.
+
+#### Learning
+
+We first consider projection to one line case. The objective is
+
+$$
+\frac{\boldsymbol{a} ^{\top}\{\text { between group variance matrix }\} \boldsymbol{a} }{\boldsymbol{a} ^{\top}\{\text { within group variance matrix }\} \boldsymbol{a} }=\frac{\boldsymbol{a} ^{\top} \boldsymbol{B} \boldsymbol{a} }{\boldsymbol{a} ^{\top} \boldsymbol{W}  \boldsymbol{a} }
+$$
+
+where
+- between-group variance matrix (different from $\boldsymbol{B}$ in [MANOVA](manova))
+
+  $$\boldsymbol{B}=\sum_{i=1}^{g}\left(\bar{\boldsymbol{x}}_{i}-\bar{\boldsymbol{x}}\right)\left(\bar{\boldsymbol{x}}_{i}-\bar{\boldsymbol{x}}\right)^{\top}$$
+
+- mean-of-means, aka overall average, in contrast to grand average
+
+  $$\bar{\boldsymbol{x}} = \frac{1}{g} \sum_{i=1}^g  \bar{\boldsymbol{x}}_i$$
+
+- within-group variance matrix (same $\boldsymbol{W}$ in MANOVA)
+
+  $$\boldsymbol{W}=\sum_{i=1}^{g}\left(n_{i}-1\right) \boldsymbol{S}_{i}=\sum_{i=1}^{g} \sum_{j=1}^{n_{i}}\left(\boldsymbol{x}_{i j}-\bar{\boldsymbol{x}}_{i}\right)\left(\boldsymbol{x}_{i j}-\bar{\boldsymbol{x}}_{i}\right)^{\top}$$
+
+This is again a Rayleigh quotient. The solution $\boldsymbol{a} ^*$ and maximum is given by the largest eigen pair of matrix $\boldsymbol{W} ^{-1} \boldsymbol{B}$.
+
+#### Interpretation
+
+After obtain one projection direction $\boldsymbol{a} _1 ^*$, we can continue for next, i.e. second largest eigenvectors. There vector $\boldsymbol{a} _j ^*$ are called **discriminant coordinates**, or **canonical variates**, come from an alternative derivation via CCA on predictor variable matrix and response variable matrix.
+
+
+They give consecutive directions that maximized the normalized variance between classes, they are not discriminant function themselves.  Analogous to the principal components in PCA, hopefully the first few sample discriminants show better separation of the groups, and can be used to classify new observations.
+
+Note that there are at most $r$ non-zero eigen values of $\boldsymbol{W} ^{-1} \boldsymbol{B}$ where
+
+$$
+r=\operatorname{rank}\left(\boldsymbol{W}^{-1} \boldsymbol{B}\right) \leq \min (g-1, p)
+$$
+
+Therefore the above method can produce up to $r$ linear discriminants.
+
+Some facts of $\boldsymbol{S} _{\text{pool} }$
+- $\boldsymbol{S} _{\text{pool} } = \frac{1}{n-g} \boldsymbol{W}$
+- $\boldsymbol{a} _{i} ^{* \top}  \boldsymbol{S} _{\text{pool} } \boldsymbol{a} ^*_{j}=\left\{\begin{array}{ll}
+1 & \text { if } i=j \leq r \\
+0 & \text { otherwise }
+\end{array}\right.$
+
+#### Prediction
+
+In case of $r$ discriminants, we allocate $\boldsymbol{x} _0$ class $k$ if
+
+$$
+\sum_{i=1}^{r}\left|\boldsymbol{a} _{i}^{\top}\left(\boldsymbol{x} _{0}-\bar{\boldsymbol{x} }_{k}\right)\right|^{2} \leq \sum_{i=1}^{r}\left|\boldsymbol{a} _{i}^{\top}\left(\boldsymbol{x} _{0}-\bar{\boldsymbol{x} }_{j}\right)\right|^{2}, \quad \text { for any } j=1, \cdots, g
+$$
 
 
 .
