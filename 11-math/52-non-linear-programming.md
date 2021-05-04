@@ -190,56 +190,79 @@ That is, the smallest/largest quotient value equals the smallest/largest eigenva
 
 -   Substitution approach
 
-    Since $\boldsymbol{B}$ is p.d., we have $\boldsymbol{B} ^{1/2}$. Let $\boldsymbol{y} = \boldsymbol{B} ^{1/2}\boldsymbol{x}$, then the denominator can be written as
+  Since $\boldsymbol{B}$ is p.d., we have $\boldsymbol{B} ^{1/2}$. Let $\boldsymbol{y} = \boldsymbol{B} ^{1/2}\boldsymbol{x}$, then the denominator can be written as
 
-    $$
-    \boldsymbol{x}^{\top} \boldsymbol{B} \boldsymbol{x}=\boldsymbol{x}^{\top} \boldsymbol{B}^{1 / 2} \boldsymbol{B}^{1 / 2} \boldsymbol{x}=\boldsymbol{y}^{\top} \boldsymbol{y}
-    $$
+  $$
+  \boldsymbol{x}^{\top} \boldsymbol{B} \boldsymbol{x}=\boldsymbol{x}^{\top} \boldsymbol{B}^{1 / 2} \boldsymbol{B}^{1 / 2} \boldsymbol{x}=\boldsymbol{y}^{\top} \boldsymbol{y}
+  $$
 
-    Substitute $\boldsymbol{x}=\left(\boldsymbol{B}^{1 / 2}\right)^{-1} \boldsymbol{y} \stackrel{\text { denote }}{=} \boldsymbol{B}^{-1 / 2} \boldsymbol{y}$ into the numerator to rewrite it in terms of the new variable $\boldsymbol{y}$. This will convert the generalized Rayleigh quotient problem back to a regular Rayleigh quotient problem, which has been solved above.
+  Substitute $\boldsymbol{x}=\left(\boldsymbol{B}^{1 / 2}\right)^{-1} \boldsymbol{y} \stackrel{\text { denote }}{=} \boldsymbol{B}^{-1 / 2} \boldsymbol{y}$ into the numerator to rewrite it in terms of the new variable $\boldsymbol{y}$. This will convert the generalized Rayleigh quotient problem back to a regular Rayleigh quotient problem, which has been solved above.
 
-    $$
-    \frac{\boldsymbol{y} \boldsymbol{B} ^{-1/2} \boldsymbol{A} \boldsymbol{B} ^{-1/2} \boldsymbol{y} }{\boldsymbol{y} ^{\top} \boldsymbol{y}}
-    $$
+  $$
+  \frac{\boldsymbol{y} \boldsymbol{B} ^{-1/2} \boldsymbol{A} \boldsymbol{B} ^{-1/2} \boldsymbol{y} }{\boldsymbol{y} ^{\top} \boldsymbol{y}}
+  $$
 
-    The optimum is the eigenvalue $\lambda$ of $\boldsymbol{C}$, which is also the eigenvalue of $\boldsymbol{B} ^{-1} \boldsymbol{A}$ since
+  The optimum is the eigenvalue $\lambda$ of $\boldsymbol{B} ^{-1/2} \boldsymbol{A} \boldsymbol{B} ^{-1/2}$, which is also the eigenvalue of $\boldsymbol{B} ^{-1} \boldsymbol{A}$ since
 
-    $$
-    \boldsymbol{C} \boldsymbol{v} = \lambda \boldsymbol{v}  \quad \Longleftrightarrow \quad \boldsymbol{B} ^{-1} \boldsymbol{A} (\boldsymbol{B} ^{-1/2} \boldsymbol{v} )= \lambda(\boldsymbol{B} ^{-1/2} \boldsymbol{v} )
-    $$
+  $$
+  \boldsymbol{B} ^{-1/2} \boldsymbol{A} \boldsymbol{B} ^{-1/2}\boldsymbol{v} = \lambda \boldsymbol{v}  \quad \Longleftrightarrow \quad \boldsymbol{B} ^{-1} \boldsymbol{A} (\boldsymbol{B} ^{-1/2} \boldsymbol{v} )= \lambda(\boldsymbol{B} ^{-1/2} \boldsymbol{v} )
+  $$
 
-    The solution is given $\boldsymbol{y} ^* = \boldsymbol{v} ^*$, i.e. $\boldsymbol{x} ^* = \boldsymbol{B} ^{-1/2} \boldsymbol{y} ^* = \boldsymbol{B} ^{-1/2} \boldsymbol{v} ^*$, the smallest/largest eigenvectors of $\boldsymbol{B} ^{-1} \boldsymbol{A}$.
+  The solution is given by $\boldsymbol{y} ^* = \boldsymbol{v} ^*$. Then $\boldsymbol{x} ^* = \boldsymbol{B} ^{-1/2} \boldsymbol{y} ^* = \boldsymbol{B} ^{-1/2} \boldsymbol{v} ^*$, which is the smallest/largest eigenvectors of $\boldsymbol{B} ^{-1} \boldsymbol{A}$.
 
 -   Lagrange multipliers approach
 
-    $$
-    \max _{\boldsymbol{x} \neq \boldsymbol{0}} \frac{\boldsymbol{x}^{\top} \boldsymbol{A} \boldsymbol{x}}{\boldsymbol{x}^{\top} \boldsymbol{B} \boldsymbol{x}}
-    $$
+  $$
+  \max _{\boldsymbol{x} \neq \boldsymbol{0}}\ \frac{\boldsymbol{x}^{\top} \boldsymbol{A} \boldsymbol{x}}{\boldsymbol{x}^{\top} \boldsymbol{B} \boldsymbol{x}}
+  $$
 
-    which is equivalent to
+  which is equivalent to
 
-    $$
-    \max _{\boldsymbol{x} \in \mathbb{R}^{n}} \boldsymbol{x}^{\top} \boldsymbol{A} \boldsymbol{x} \quad \text { subject to } \boldsymbol{x}^{\top} \boldsymbol{B} \boldsymbol{x}=1
-    $$
+  $$
+  \max _{\boldsymbol{x} \in \mathbb{R}^{n}}\ \boldsymbol{x}^{\top} \boldsymbol{A} \boldsymbol{x} \quad \text { subject to } \boldsymbol{x}^{\top} \boldsymbol{B} \boldsymbol{x}=1
+  $$
 
-    The Lagrangean is
+  The Lagrangean is
 
-    $$
-    L(\boldsymbol{x}, \lambda)=\boldsymbol{x}^{\top} \boldsymbol{A} \boldsymbol{x}-\lambda\left(\boldsymbol{x}^{\top} \boldsymbol{B} \boldsymbol{x}-1\right)
-    $$
+  $$
+  L(\boldsymbol{x}, \lambda)=\boldsymbol{x}^{\top} \boldsymbol{A} \boldsymbol{x}-\lambda\left(\boldsymbol{x}^{\top} \boldsymbol{B} \boldsymbol{x}-1\right)
+  $$
 
-    First order conditions:
+  First order conditions:
 
-    $$
-    \begin{aligned}
-    \frac{\partial L}{\partial \boldsymbol{x}} &=2 \boldsymbol{A} \boldsymbol{x}-2\lambda \boldsymbol{B}  \boldsymbol{x}=0 & \longrightarrow & \boldsymbol{A} \boldsymbol{x}=\lambda \boldsymbol{B}\boldsymbol{x} \\
-    \frac{\partial L}{\partial \lambda} &=0 & \longrightarrow & \boldsymbol{x} ^{\top} \boldsymbol{B} \boldsymbol{x} =1
-    \end{aligned}
-    $$
+  $$
+  \begin{aligned}
+  \frac{\partial L}{\partial \boldsymbol{x}} &=2 \boldsymbol{A} \boldsymbol{x}-2\lambda \boldsymbol{B}  \boldsymbol{x}=0 & \longrightarrow & \boldsymbol{A} \boldsymbol{x}=\lambda \boldsymbol{B}\boldsymbol{x} \\
+  \frac{\partial L}{\partial \lambda} &=0 & \longrightarrow & \boldsymbol{x} ^{\top} \boldsymbol{B} \boldsymbol{x} =1
+  \end{aligned}
+  $$
 
-    Hence, the objective is $\boldsymbol{x} ^{\top} \boldsymbol{A} \boldsymbol{x} = \lambda \boldsymbol{x} ^{\top} \boldsymbol{B} \boldsymbol{x} = \lambda$, where $\lambda$ satisfies $\boldsymbol{A} \boldsymbol{x}=\lambda \boldsymbol{B}\boldsymbol{x}$.
+  Hence, the objective is $\boldsymbol{x} ^{\top} \boldsymbol{A} \boldsymbol{x} = \lambda \boldsymbol{x} ^{\top} \boldsymbol{B} \boldsymbol{x} = \lambda$, where $\lambda$ satisfies $\boldsymbol{A} \boldsymbol{x}=\lambda \boldsymbol{B}\boldsymbol{x}$.
 
 :::
+
+In particular, if $\boldsymbol{A} = \boldsymbol{a} \boldsymbol{a} ^{\top}$ for some $\boldsymbol{a} \ne \boldsymbol{0}$, the quotient becomes
+
+$$
+\frac{(\boldsymbol{a} ^{\top} \boldsymbol{x} )^2}{\boldsymbol{x} ^{\top} \boldsymbol{B} \boldsymbol{x} }
+$$
+
+Obviously, it has minimum $0$ when $\boldsymbol{a} ^{\top} \boldsymbol{x} = \boldsymbol{0}$. To find its maximum, we solve the generalized eigen problem
+
+$$
+\boldsymbol{a} \boldsymbol{a} ^{\top} \boldsymbol{v} = \lambda \boldsymbol{B} \boldsymbol{v} \quad \Longleftrightarrow \quad \boldsymbol{B} ^{-1} \boldsymbol{a} \boldsymbol{a} ^{\top} \boldsymbol{v} = \lambda \boldsymbol{v}
+$$
+
+We can see that $\boldsymbol{v} = c \boldsymbol{B} ^{-1} \boldsymbol{a}$ is an eigenvector with eigenvalue $\boldsymbol{a} ^{\top} \boldsymbol{B} ^{-1} \boldsymbol{a} > 0$. Since $\operatorname{rank}\left( \boldsymbol{A} \right) = 1$, it is the only non-zero eigenvalue, i.e. largest eigenvalue.
+
+Another approach is to rearrange and get
+
+$$
+(\boldsymbol{a} ^{\top} \boldsymbol{v}) \boldsymbol{B} ^{-1} \boldsymbol{a} =  \lambda \boldsymbol{v}
+$$
+
+Hence $\boldsymbol{v} = c \boldsymbol{B} ^{-1} \boldsymbol{a}$, $\lambda = c ^{-1} \boldsymbol{a} ^{\top} \boldsymbol{v}$.
+
 
 reference: [notes](https://www.sjsu.edu/faculty/guangliang.chen/Math253S20/lec4RayleighQuotient.pdf)
 
