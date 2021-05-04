@@ -498,6 +498,7 @@ Simultaneous confidence intervals for each component
     - Scheffe simultaneous C.I.: $\sqrt{T^2_\alpha (p, n-1)}$
     - Asymptotic simultaneous C.I. using $\chi ^2$ statistic as $n$ is large: $\sqrt{\chi ^2 _p (\alpha)}$
 
+(multi-two-sample)=
 ### Two-sample Means
 
 Given two samples of $p$-variates, we are interest in whether their means are equal.
