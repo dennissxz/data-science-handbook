@@ -12,6 +12,8 @@ To predict the class of observation $\boldsymbol{x}$, use
 
 $$\mathbb{P} (y=c\vert \boldsymbol{x}, \mathcal{D}, K) = \frac{1}{K} \sum_{j \in N_K (\boldsymbol{x}, \mathcal{D})} \mathbb{I}\left( y_j =c \right)$$
 
+Validation data is used to decide the hyper-parameter $K$.
+
 ## Regression on Graph
 
 If the input is a graph $G=(V, E)$ with vertex attribute $x _v$, then for new vertex $i$ with unknown attribute but known edges, we can use to predict its attribute value we can use the average of those of its neighbors, $N_i$,
@@ -22,8 +24,18 @@ $$
 
 Note that there is no hyper-parameter $K$.
 
+## Pros
+
+- Can express complex, non-linear, non-parametric boundaries
+- Very fast training
+- Simple, yet with good performance in practice
+- Reasonably good interpretability
+
+
 ## Cons
 - It is an example of **memory-based learning** or **instance-based learning**. It stores all seen points.
+- Not among the best classifiers in terms of accuracy
+- Standardization is often necessary
 - Poor performance in high dimensional settings
 - In the graph case, how best to evaluate may not be clear in the case where $\boldsymbol{x} _j$ is not observed for one or more $j \in N_i$.
   - One solution to this dilemma is to redefine it in terms of only those vertices $j \in V_i$ that are both adjacent to $i$ and for which $\boldsymbol{x} _j$ is observed.

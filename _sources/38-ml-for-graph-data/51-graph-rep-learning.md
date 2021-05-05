@@ -1210,7 +1210,7 @@ However,
 
 #### Position-aware GNNs
 
-[J. You, R. Ying, J. Leskovec. Postion-aware Graph Neural Networks, ICML 2019](https://arxiv.org/abs/1906.04817)
+[J. You, R. Ying, J. Leskovec. Position-aware Graph Neural Networks, ICML 2019](https://arxiv.org/abs/1906.04817)
 
 - structure-aware task: nodes are labeled by their structural roles in the graph
 - position-aware task: nodes are labeled by their positions in the graph

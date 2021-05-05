@@ -190,56 +190,79 @@ That is, the smallest/largest quotient value equals the smallest/largest eigenva
 
 -   Substitution approach
 
-    Since $\boldsymbol{B}$ is p.d., we have $\boldsymbol{B} ^{1/2}$. Let $\boldsymbol{y} = \boldsymbol{B} ^{1/2}\boldsymbol{x}$, then the denominator can be written as
+  Since $\boldsymbol{B}$ is p.d., we have $\boldsymbol{B} ^{1/2}$. Let $\boldsymbol{y} = \boldsymbol{B} ^{1/2}\boldsymbol{x}$, then the denominator can be written as
 
-    $$
-    \boldsymbol{x}^{\top} \boldsymbol{B} \boldsymbol{x}=\boldsymbol{x}^{\top} \boldsymbol{B}^{1 / 2} \boldsymbol{B}^{1 / 2} \boldsymbol{x}=\boldsymbol{y}^{\top} \boldsymbol{y}
-    $$
+  $$
+  \boldsymbol{x}^{\top} \boldsymbol{B} \boldsymbol{x}=\boldsymbol{x}^{\top} \boldsymbol{B}^{1 / 2} \boldsymbol{B}^{1 / 2} \boldsymbol{x}=\boldsymbol{y}^{\top} \boldsymbol{y}
+  $$
 
-    Substitute $\boldsymbol{x}=\left(\boldsymbol{B}^{1 / 2}\right)^{-1} \boldsymbol{y} \stackrel{\text { denote }}{=} \boldsymbol{B}^{-1 / 2} \boldsymbol{y}$ into the numerator to rewrite it in terms of the new variable $\boldsymbol{y}$. This will convert the generalized Rayleigh quotient problem back to a regular Rayleigh quotient problem, which has been solved above.
+  Substitute $\boldsymbol{x}=\left(\boldsymbol{B}^{1 / 2}\right)^{-1} \boldsymbol{y} \stackrel{\text { denote }}{=} \boldsymbol{B}^{-1 / 2} \boldsymbol{y}$ into the numerator to rewrite it in terms of the new variable $\boldsymbol{y}$. This will convert the generalized Rayleigh quotient problem back to a regular Rayleigh quotient problem, which has been solved above.
 
-    $$
-    \frac{\boldsymbol{y} \boldsymbol{B} ^{-1/2} \boldsymbol{A} \boldsymbol{B} ^{-1/2} \boldsymbol{y} }{\boldsymbol{y} ^{\top} \boldsymbol{y}}
-    $$
+  $$
+  \frac{\boldsymbol{y} \boldsymbol{B} ^{-1/2} \boldsymbol{A} \boldsymbol{B} ^{-1/2} \boldsymbol{y} }{\boldsymbol{y} ^{\top} \boldsymbol{y}}
+  $$
 
-    The optimum is the eigenvalue $\lambda$ of $\boldsymbol{C}$, which is also the eigenvalue of $\boldsymbol{B} ^{-1} \boldsymbol{A}$ since
+  The optimum is the eigenvalue $\lambda$ of $\boldsymbol{B} ^{-1/2} \boldsymbol{A} \boldsymbol{B} ^{-1/2}$, which is also the eigenvalue of $\boldsymbol{B} ^{-1} \boldsymbol{A}$ since
 
-    $$
-    \boldsymbol{C} \boldsymbol{v} = \lambda \boldsymbol{v}  \quad \Longleftrightarrow \quad \boldsymbol{B} ^{-1} \boldsymbol{A} (\boldsymbol{B} ^{-1/2} \boldsymbol{v} )= \lambda(\boldsymbol{B} ^{-1/2} \boldsymbol{v} )
-    $$
+  $$
+  \boldsymbol{B} ^{-1/2} \boldsymbol{A} \boldsymbol{B} ^{-1/2}\boldsymbol{v} = \lambda \boldsymbol{v}  \quad \Longleftrightarrow \quad \boldsymbol{B} ^{-1} \boldsymbol{A} (\boldsymbol{B} ^{-1/2} \boldsymbol{v} )= \lambda(\boldsymbol{B} ^{-1/2} \boldsymbol{v} )
+  $$
 
-    The solution is given $\boldsymbol{y} ^* = \boldsymbol{v} ^*$, i.e. $\boldsymbol{x} ^* = \boldsymbol{B} ^{-1/2} \boldsymbol{y} ^* = \boldsymbol{B} ^{-1/2} \boldsymbol{v} ^*$, the smallest/largest eigenvectors of $\boldsymbol{B} ^{-1} \boldsymbol{A}$.
+  The solution is given by $\boldsymbol{y} ^* = \boldsymbol{v} ^*$. Then $\boldsymbol{x} ^* = \boldsymbol{B} ^{-1/2} \boldsymbol{y} ^* = \boldsymbol{B} ^{-1/2} \boldsymbol{v} ^*$, which is the smallest/largest eigenvectors of $\boldsymbol{B} ^{-1} \boldsymbol{A}$.
 
 -   Lagrange multipliers approach
 
-    $$
-    \max _{\boldsymbol{x} \neq \boldsymbol{0}} \frac{\boldsymbol{x}^{\top} \boldsymbol{A} \boldsymbol{x}}{\boldsymbol{x}^{\top} \boldsymbol{B} \boldsymbol{x}}
-    $$
+  $$
+  \max _{\boldsymbol{x} \neq \boldsymbol{0}}\ \frac{\boldsymbol{x}^{\top} \boldsymbol{A} \boldsymbol{x}}{\boldsymbol{x}^{\top} \boldsymbol{B} \boldsymbol{x}}
+  $$
 
-    which is equivalent to
+  which is equivalent to
 
-    $$
-    \max _{\boldsymbol{x} \in \mathbb{R}^{n}} \boldsymbol{x}^{\top} \boldsymbol{A} \boldsymbol{x} \quad \text { subject to } \boldsymbol{x}^{\top} \boldsymbol{B} \boldsymbol{x}=1
-    $$
+  $$
+  \max _{\boldsymbol{x} \in \mathbb{R}^{n}}\ \boldsymbol{x}^{\top} \boldsymbol{A} \boldsymbol{x} \quad \text { subject to } \boldsymbol{x}^{\top} \boldsymbol{B} \boldsymbol{x}=1
+  $$
 
-    The Lagrangean is
+  The Lagrangean is
 
-    $$
-    L(\boldsymbol{x}, \lambda)=\boldsymbol{x}^{\top} \boldsymbol{A} \boldsymbol{x}-\lambda\left(\boldsymbol{x}^{\top} \boldsymbol{B} \boldsymbol{x}-1\right)
-    $$
+  $$
+  L(\boldsymbol{x}, \lambda)=\boldsymbol{x}^{\top} \boldsymbol{A} \boldsymbol{x}-\lambda\left(\boldsymbol{x}^{\top} \boldsymbol{B} \boldsymbol{x}-1\right)
+  $$
 
-    First order conditions:
+  First order conditions:
 
-    $$
-    \begin{aligned}
-    \frac{\partial L}{\partial \boldsymbol{x}} &=2 \boldsymbol{A} \boldsymbol{x}-2\lambda \boldsymbol{B}  \boldsymbol{x}=0 & \longrightarrow & \boldsymbol{A} \boldsymbol{x}=\lambda \boldsymbol{B}\boldsymbol{x} \\
-    \frac{\partial L}{\partial \lambda} &=0 & \longrightarrow & \boldsymbol{x} ^{\top} \boldsymbol{B} \boldsymbol{x} =1
-    \end{aligned}
-    $$
+  $$
+  \begin{aligned}
+  \frac{\partial L}{\partial \boldsymbol{x}} &=2 \boldsymbol{A} \boldsymbol{x}-2\lambda \boldsymbol{B}  \boldsymbol{x}=0 & \longrightarrow & \boldsymbol{A} \boldsymbol{x}=\lambda \boldsymbol{B}\boldsymbol{x} \\
+  \frac{\partial L}{\partial \lambda} &=0 & \longrightarrow & \boldsymbol{x} ^{\top} \boldsymbol{B} \boldsymbol{x} =1
+  \end{aligned}
+  $$
 
-    Hence, the objective is $\boldsymbol{x} ^{\top} \boldsymbol{A} \boldsymbol{x} = \lambda \boldsymbol{x} ^{\top} \boldsymbol{B} \boldsymbol{x} = \lambda$, where $\lambda$ satisfies $\boldsymbol{A} \boldsymbol{x}=\lambda \boldsymbol{B}\boldsymbol{x}$.
+  Hence, the objective is $\boldsymbol{x} ^{\top} \boldsymbol{A} \boldsymbol{x} = \lambda \boldsymbol{x} ^{\top} \boldsymbol{B} \boldsymbol{x} = \lambda$, where $\lambda$ satisfies $\boldsymbol{A} \boldsymbol{x}=\lambda \boldsymbol{B}\boldsymbol{x}$.
 
 :::
+
+In particular, if $\boldsymbol{A} = \boldsymbol{a} \boldsymbol{a} ^{\top}$ for some $\boldsymbol{a} \ne \boldsymbol{0}$, the quotient becomes
+
+$$
+\frac{(\boldsymbol{a} ^{\top} \boldsymbol{x} )^2}{\boldsymbol{x} ^{\top} \boldsymbol{B} \boldsymbol{x} }
+$$
+
+Obviously, it has minimum $0$ when $\boldsymbol{a} ^{\top} \boldsymbol{x} = \boldsymbol{0}$. To find its maximum, we solve the generalized eigen problem
+
+$$
+\boldsymbol{a} \boldsymbol{a} ^{\top} \boldsymbol{v} = \lambda \boldsymbol{B} \boldsymbol{v} \quad \Longleftrightarrow \quad \boldsymbol{B} ^{-1} \boldsymbol{a} \boldsymbol{a} ^{\top} \boldsymbol{v} = \lambda \boldsymbol{v}
+$$
+
+We can see that $\boldsymbol{v} = c \boldsymbol{B} ^{-1} \boldsymbol{a}$ is an eigenvector with eigenvalue $\boldsymbol{a} ^{\top} \boldsymbol{B} ^{-1} \boldsymbol{a} > 0$. Since $\operatorname{rank}\left( \boldsymbol{A} \right) = 1$, it is the only non-zero eigenvalue, i.e. largest eigenvalue.
+
+Another approach is to rearrange and get
+
+$$
+(\boldsymbol{a} ^{\top} \boldsymbol{v}) \boldsymbol{B} ^{-1} \boldsymbol{a} =  \lambda \boldsymbol{v}
+$$
+
+Hence $\boldsymbol{v} = c \boldsymbol{B} ^{-1} \boldsymbol{a}$, $\lambda = c ^{-1} \boldsymbol{a} ^{\top} \boldsymbol{v}$.
+
 
 reference: [notes](https://www.sjsu.edu/faculty/guangliang.chen/Math253S20/lec4RayleighQuotient.pdf)
 
@@ -369,6 +392,8 @@ Solving this integer optimization is NP-hard. We work with relaxation of $\Omega
 
 
 #### Relaxation
+
+We want to relax $\Omega$ to some continuous domain.
 
 ##### Spectral Relaxation
 
@@ -816,3 +841,144 @@ To ensure this, substituting the scalar form of $-z_i$, a necessary condition is
 $$\frac{p-q}{2}n \ge \mathcal{O} (\sqrt{np \log n})$$
 
 Therefore, as long as this holds, then $(- \operatorname{diag}(\boldsymbol{z}) - \boldsymbol{E})$ is p.d, and hence we have exactly recovery of $\boldsymbol{x}^*$.
+
+## Compressed sensing
+
+Aka sparse sampling.
+
+:::{admonition,note} Note on convex relaxation
+Suppose we have some low-dimensional object in high-dimensional space. Our goal is to retrieve these low-dimensional object via some sparse measurement. The key is that the sensing mechanism is 'incoherent' with the object.
+:::
+
+### Problem
+
+We want to find solution $\boldsymbol{x}$ to the linear system
+
+$$
+\boldsymbol{A} \boldsymbol{x} = \boldsymbol{b}
+$$
+
+- $\boldsymbol{A} \in \mathbb{R} ^{n \times p}, \boldsymbol{b} \in \mathbb{R} ^n$
+- $\boldsymbol{x} \in \mathbb{R} ^{p}$
+- $n < p$, less equations than unknowns
+
+Since $n < p$, there is no unique solution.
+
+### Relaxation
+
+We need impose some structure on $\boldsymbol{x}$ to ensure uniqueness. For instance, a sparse structure: $\boldsymbol{x}$ have only $k$ non-zero entries. If we know the support $S = \operatorname{supp} (\boldsymbol{x})$, i.e. where the non-zero entries are, then ideally a necessary condition for uniqueness is $n \ge k$. We just need to solve $\boldsymbol{A} _S \boldsymbol{x} _S = \boldsymbol{b}$.
+
+One can thus solve
+
+$$\min\ \left\| \boldsymbol{x}  \right\|_0   \qquad \text{s.t.}\ \boldsymbol{A} \boldsymbol{x} = \boldsymbol{b}\qquad (\text{P}_0 )$$
+
+where $\left\| \boldsymbol{x} \right\| _0$ is the cardinality of $\boldsymbol{x}$. We penalize it.
+
+However, this subset-selection problem is NP-hard. The $\left\| \cdot \right\| _0$ is non-smooth, non-convex. Can we find $\left\| \cdot \right\| _\alpha$ from $\alpha$ where $\alpha > 0$ such that it approximates $\left\| \cdot \right\| _0$? For instance, $\left\| \cdot \right\| _{1/2}$ is also non-smooth, non-convex. The nearest possible convex relaxation is $\left\| \cdot \right\| _1$.
+
+The problem becomes
+
+$$\min\ \left\| \boldsymbol{x}  \right\|_1 \qquad \text{s.t.}\ \boldsymbol{A} \boldsymbol{x} = \boldsymbol{b}\qquad (\text{P}_1 )$$
+
+which aka **basis pursuit** (BP). We hope this is tractable.
+
+### Recovery
+
+How good the solution to $\text{P}_1$ recovers sparse ground truth $\boldsymbol{x} ^*$ to $\text{P}_0$?.
+
+Geometrically, the iso-surface of $\left\| \boldsymbol{x} _1 \right\|$ is pointy. It is very likely that the solution lies in some axis, i.e. sparse solution.
+
+Note that basis pursuit **cannot** recover $\boldsymbol{x} ^*$ for all $\boldsymbol{A}$ (otherwise 'P=NP'). It recovers $\boldsymbol{x} ^*$ for some $\boldsymbol{A}$, that satisfies the following conditions.
+
+- irrepresentable condition
+- restricted isometry (RIP) condition
+
+We now illustrate these two conditions with details. Recall that
+
+- $S = \operatorname{supp} (\boldsymbol{x})$
+- $\boldsymbol{A} = [\boldsymbol{A} _S\quad \boldsymbol{A} _{S^c}]$
+- $\boldsymbol{x} = \left[\begin{array}{c}
+\boldsymbol{x} _S \\
+\boldsymbol{x} _{S^c}
+\end{array}\right]$
+- $\boldsymbol{x}^* = \left[\begin{array}{c}
+\boldsymbol{x} _S ^* \\
+\boldsymbol{0}
+\end{array}\right]$
+
+
+#### Irrepresentable Condition
+
+- $\left\| \boldsymbol{A} ^{\top} _{S ^c} \boldsymbol{A} _S (\boldsymbol{A} ^{\top} _S  \boldsymbol{A} _S ) ^{-1}  \right\| _\infty < 1$
+- An eigenvalue lower bound $\lambda_\min (\boldsymbol{A} ^{\top} _S \boldsymbol{A} _S ) \ge r$, or equivalently $\boldsymbol{A} ^{\top} _S \boldsymbol{A} _S \ge r \boldsymbol{I} _k$. Otherwise, solving $\boldsymbol{A} _S \boldsymbol{x} _S = \boldsymbol{b}$ involves a high condition number matrix.
+
+If $\boldsymbol{A} \boldsymbol{x} ^* = \boldsymbol{b}$, then $\boldsymbol{A} ^{\top} \boldsymbol{A} \boldsymbol{x} ^* = \boldsymbol{A} ^{\top} \boldsymbol{b}$, written in block matrix form
+
+$$
+\left[\begin{array}{cc}
+\boldsymbol{A} _S ^{\top} \boldsymbol{A} _S & \boldsymbol{A} _S ^{\top} \boldsymbol{A} _{S^c}  \\
+\boldsymbol{A} _{S^c} ^{\top} \boldsymbol{A} _S & \boldsymbol{A} _{S^c} ^{\top} \boldsymbol{A} _{S^c}
+\end{array}\right] \left[\begin{array}{c}
+\boldsymbol{x} _S ^* \\
+\boldsymbol{0}
+\end{array}\right] = \boldsymbol{A} ^{\top} \boldsymbol{b}
+$$
+
+
+If $\hat{\boldsymbol{x} } \ne \boldsymbol{x} ^*$ s.t. $\hat{S}= \operatorname{supp}(\hat{\boldsymbol{x}}), \boldsymbol{b} = \boldsymbol{A} \hat{\boldsymbol{x} }$, WTS $\left\| \hat{\boldsymbol{x}} \right\| _1 > \left\| \boldsymbol{x} ^* \right\| _1$, hence $\boldsymbol{x} ^*$ is the unique solution to $\text{P}_1$.
+
+
+$$\begin{aligned}
+\left\| \boldsymbol{x} ^* \right\| _1
+&= \left\| \boldsymbol{x} _S^* \right\|_1 \\
+&= \left\| (\boldsymbol{A} _S ^{\top} \boldsymbol{A} _S) ^{-1} \boldsymbol{A} _S ^{\top} \boldsymbol{A} _S \boldsymbol{x}_S ^* \right\|_1 \\
+&= \left\| (\boldsymbol{A} _S ^{\top} \boldsymbol{A} _S) ^{-1} \boldsymbol{A} _S ^{\top} \boldsymbol{A} _\hat{S} \hat{\boldsymbol{x}}_{\hat{S}} \right\|_1 \quad \because \boldsymbol{A} _S \boldsymbol{x} _S ^* = \boldsymbol{b}  = \boldsymbol{A} _{\hat{S}} \hat{\boldsymbol{x}} _{\hat{S}}\\
+&= \left\| (\boldsymbol{A} _S ^{\top} \boldsymbol{A} _S) ^{-1} \boldsymbol{A} _S ^{\top} (\boldsymbol{A} _S \hat{\boldsymbol{x} }_S + \boldsymbol{A} _{\hat{S} \setminus S}  \hat{\boldsymbol{x} }_{\hat{S} \setminus S}) \right\|_1\\
+&\le \left\| (\boldsymbol{A} _S ^{\top} \boldsymbol{A} _S) ^{-1} \boldsymbol{A} _S ^{\top} \boldsymbol{A} _S \hat{\boldsymbol{x} }_S \right\|_1 + \left\| (\boldsymbol{A} _S ^{\top} \boldsymbol{A} _S) ^{-1} \boldsymbol{A} _S ^{\top} \boldsymbol{A} _{\hat{S} \setminus S}  \hat{\boldsymbol{x} }_{\hat{S} \setminus S} \right\|_1\\
+&\le \left\| \hat{\boldsymbol{x} }_S \right\|_1 + \left\| (\boldsymbol{A} _S ^{\top} \boldsymbol{A} _S) ^{-1} \boldsymbol{A} _S ^{\top} \boldsymbol{A} _{\hat{S} \setminus S} \right\|_\infty \left\| \hat{\boldsymbol{x} }_{\hat{S} \setminus S} \right\|_1 \quad \because \text{Holder inequality} \\
+&< \left\| \hat{\boldsymbol{x} } _S \right\|_1  + \left\| \hat{\boldsymbol{x} }_{\hat{S} \setminus S}  \right\|_1 \quad \because (??)\\
+&= \left\| \hat{\boldsymbol{x} }_{\hat{S}} \right\|_1 \\
+\end{aligned}$$
+
+#### RIP Condition
+
+For all $k$-sparse $\boldsymbol{x} \in \mathbb{R} ^{p}$, there exists $\delta_k \in (0,1)$ s.t.
+
+$$
+(1 - \delta_k) \left\| \boldsymbol{x}  \right\| _2 ^2 \le \left\| \boldsymbol{A} \boldsymbol{x}  \right\| _2 ^2 \le  (1 + \delta_k) \left\| \boldsymbol{x}  \right\| _2 ^2
+$$
+
+Why need this?
+
+Theorem (Candes-Tao 2006)
+: For $\boldsymbol{x} ^*$ that is $k$-sparse and $\boldsymbol{A} \boldsymbol{x} ^* = \boldsymbol{b}$, if $\delta_{2k} < \sqrt{2}-1$, then BP recovers $\boldsymbol{x} ^*$. Also need $n \ge k \log \frac{p}{k}$.
+
+
+#### Algorithms for SDP
+
+- interior point: slow, but arbitrary accuracy
+- augmented Lagrangian method: faster, but limited accuracy
+- ADMM
+
+.
+
+
+.
+
+
+.
+
+
+.
+
+
+.
+
+
+.
+
+
+.
+
+
+.

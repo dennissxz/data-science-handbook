@@ -45,7 +45,7 @@ Definition
   - $\sigma_i$ is the value in the $i$-th position after the reordering $\sigma$.
   - $\operatorname{sgn}{\sigma}$ is the signature of $\sigma$, which is $1$ if the reordering given by $\sigma$ can be achieved by successively interchanging two entries an even number of times, and $-1$ otherwise.
 
-The absolute value of the determinant of a $2 \times 2$ matrix $\boldsymbol{A} =[\boldsymbol{a} \ \boldsymbol{b}] \in \mathbb{R} ^{2 \times 2}$ can be interpreted as the area of parallelogram spanned by the vectors $\boldsymbol{a}$ and $\boldsymbol{b}$. The absolute value of the determinant of a $3 \times 3$ matrix $\boldsymbol{A} = [\boldsymbol{a} \ \boldsymbol{b} \ \boldsymbol{c}] \in \mathbb{R} ^{3 \times 3}$ equals the volume of a parallelepiped spanned by the vectors $\boldsymbol{a} ,\boldsymbol{b} ,\boldsymbol{c}$. This extends to $n$-dimensional parallelotope $P$: $\operatorname{det}(\boldsymbol{A}) = \pm \operatorname{vol} (P)$.
+The absolute value of the determinant of a $2 \times 2$ matrix $\boldsymbol{A} =[\boldsymbol{a} \quad \boldsymbol{b}] \in \mathbb{R} ^{2 \times 2}$ can be interpreted as the area of parallelogram spanned by the vectors $\boldsymbol{a}$ and $\boldsymbol{b}$. The absolute value of the determinant of a $3 \times 3$ matrix $\boldsymbol{A} = [\boldsymbol{a} \quad \boldsymbol{b} \quad \boldsymbol{c}] \in \mathbb{R} ^{3 \times 3}$ equals the volume of a parallelepiped spanned by the vectors $\boldsymbol{a} ,\boldsymbol{b} ,\boldsymbol{c}$. This extends to $n$-dimensional parallelotope $P$: $\operatorname{det}(\boldsymbol{A}) = \pm \operatorname{vol} (P)$.
 
 Properties
 : $\ $
@@ -54,8 +54,8 @@ Properties
   \begin{align}
   |\boldsymbol{A} \boldsymbol{B}|&=|\boldsymbol{A}||\boldsymbol{B}| \\
   \left\vert\begin{array}{l}
-  \boldsymbol{A} \quad C \\
-  0 \quad \boldsymbol{B}
+  \boldsymbol{A} \quad \boldsymbol{C}  \\
+  \boldsymbol{0}  \quad \boldsymbol{B}
   \end{array}\right\vert&=| \boldsymbol{A}|| \boldsymbol{B} \mid \\
   \left|\boldsymbol{I}_{p}+\boldsymbol{A} \boldsymbol{B}\right|&=\left|\boldsymbol{I}_{q}+\boldsymbol{B} \boldsymbol{A}\right|
   \end{align}
