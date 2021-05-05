@@ -393,6 +393,8 @@ Solving this integer optimization is NP-hard. We work with relaxation of $\Omega
 
 #### Relaxation
 
+We want to relax $\Omega$ to some continuous domain.
+
 ##### Spectral Relaxation
 
 Two relaxations:
@@ -839,3 +841,144 @@ To ensure this, substituting the scalar form of $-z_i$, a necessary condition is
 $$\frac{p-q}{2}n \ge \mathcal{O} (\sqrt{np \log n})$$
 
 Therefore, as long as this holds, then $(- \operatorname{diag}(\boldsymbol{z}) - \boldsymbol{E})$ is p.d, and hence we have exactly recovery of $\boldsymbol{x}^*$.
+
+## Compressed sensing
+
+Aka sparse sampling.
+
+:::{admonition,note} Note on convex relaxation
+Suppose we have some low-dimensional object in high-dimensional space. Our goal is to retrieve these low-dimensional object via some sparse measurement. The key is that the sensing mechanism is 'incoherent' with the object.
+:::
+
+### Problem
+
+We want to find solution $\boldsymbol{x}$ to the linear system
+
+$$
+\boldsymbol{A} \boldsymbol{x} = \boldsymbol{b}
+$$
+
+- $\boldsymbol{A} \in \mathbb{R} ^{n \times p}, \boldsymbol{b} \in \mathbb{R} ^n$
+- $\boldsymbol{x} \in \mathbb{R} ^{p}$
+- $n < p$, less equations than unknowns
+
+Since $n < p$, there is no unique solution.
+
+### Relaxation
+
+We need impose some structure on $\boldsymbol{x}$ to ensure uniqueness. For instance, a sparse structure: $\boldsymbol{x}$ have only $k$ non-zero entries. If we know the support $S = \operatorname{supp} (\boldsymbol{x})$, i.e. where the non-zero entries are, then ideally a necessary condition for uniqueness is $n \ge k$. We just need to solve $\boldsymbol{A} _S \boldsymbol{x} _S = \boldsymbol{b}$.
+
+One can thus solve
+
+$$\min\ \left\| \boldsymbol{x}  \right\|_0   \qquad \text{s.t.}\ \boldsymbol{A} \boldsymbol{x} = \boldsymbol{b}\qquad (\text{P}_0 )$$
+
+where $\left\| \boldsymbol{x} \right\| _0$ is the cardinality of $\boldsymbol{x}$. We penalize it.
+
+However, this subset-selection problem is NP-hard. The $\left\| \cdot \right\| _0$ is non-smooth, non-convex. Can we find $\left\| \cdot \right\| _\alpha$ from $\alpha$ where $\alpha > 0$ such that it approximates $\left\| \cdot \right\| _0$? For instance, $\left\| \cdot \right\| _{1/2}$ is also non-smooth, non-convex. The nearest possible convex relaxation is $\left\| \cdot \right\| _1$.
+
+The problem becomes
+
+$$\min\ \left\| \boldsymbol{x}  \right\|_1 \qquad \text{s.t.}\ \boldsymbol{A} \boldsymbol{x} = \boldsymbol{b}\qquad (\text{P}_1 )$$
+
+which aka **basis pursuit** (BP). We hope this is tractable.
+
+### Recovery
+
+How good the solution to $\text{P}_1$ recovers sparse ground truth $\boldsymbol{x} ^*$ to $\text{P}_0$?.
+
+Geometrically, the iso-surface of $\left\| \boldsymbol{x} _1 \right\|$ is pointy. It is very likely that the solution lies in some axis, i.e. sparse solution.
+
+Note that basis pursuit **cannot** recover $\boldsymbol{x} ^*$ for all $\boldsymbol{A}$ (otherwise 'P=NP'). It recovers $\boldsymbol{x} ^*$ for some $\boldsymbol{A}$, that satisfies the following conditions.
+
+- irrepresentable condition
+- restricted isometry (RIP) condition
+
+We now illustrate these two conditions with details. Recall that
+
+- $S = \operatorname{supp} (\boldsymbol{x})$
+- $\boldsymbol{A} = [\boldsymbol{A} _S\quad \boldsymbol{A} _{S^c}]$
+- $\boldsymbol{x} = \left[\begin{array}{c}
+\boldsymbol{x} _S \\
+\boldsymbol{x} _{S^c}
+\end{array}\right]$
+- $\boldsymbol{x}^* = \left[\begin{array}{c}
+\boldsymbol{x} _S ^* \\
+\boldsymbol{0}
+\end{array}\right]$
+
+
+#### Irrepresentable Condition
+
+- $\left\| \boldsymbol{A} ^{\top} _{S ^c} \boldsymbol{A} _S (\boldsymbol{A} ^{\top} _S  \boldsymbol{A} _S ) ^{-1}  \right\| _\infty < 1$
+- An eigenvalue lower bound $\lambda_\min (\boldsymbol{A} ^{\top} _S \boldsymbol{A} _S ) \ge r$, or equivalently $\boldsymbol{A} ^{\top} _S \boldsymbol{A} _S \ge r \boldsymbol{I} _k$. Otherwise, solving $\boldsymbol{A} _S \boldsymbol{x} _S = \boldsymbol{b}$ involves a high condition number matrix.
+
+If $\boldsymbol{A} \boldsymbol{x} ^* = \boldsymbol{b}$, then $\boldsymbol{A} ^{\top} \boldsymbol{A} \boldsymbol{x} ^* = \boldsymbol{A} ^{\top} \boldsymbol{b}$, written in block matrix form
+
+$$
+\left[\begin{array}{cc}
+\boldsymbol{A} _S ^{\top} \boldsymbol{A} _S & \boldsymbol{A} _S ^{\top} \boldsymbol{A} _{S^c}  \\
+\boldsymbol{A} _{S^c} ^{\top} \boldsymbol{A} _S & \boldsymbol{A} _{S^c} ^{\top} \boldsymbol{A} _{S^c}
+\end{array}\right] \left[\begin{array}{c}
+\boldsymbol{x} _S ^* \\
+\boldsymbol{0}
+\end{array}\right] = \boldsymbol{A} ^{\top} \boldsymbol{b}
+$$
+
+
+If $\hat{\boldsymbol{x} } \ne \boldsymbol{x} ^*$ s.t. $\hat{S}= \operatorname{supp}(\hat{\boldsymbol{x}}), \boldsymbol{b} = \boldsymbol{A} \hat{\boldsymbol{x} }$, WTS $\left\| \hat{\boldsymbol{x}} \right\| _1 > \left\| \boldsymbol{x} ^* \right\| _1$, hence $\boldsymbol{x} ^*$ is the unique solution to $\text{P}_1$.
+
+
+$$\begin{aligned}
+\left\| \boldsymbol{x} ^* \right\| _1
+&= \left\| \boldsymbol{x} _S^* \right\|_1 \\
+&= \left\| (\boldsymbol{A} _S ^{\top} \boldsymbol{A} _S) ^{-1} \boldsymbol{A} _S ^{\top} \boldsymbol{A} _S \boldsymbol{x}_S ^* \right\|_1 \\
+&= \left\| (\boldsymbol{A} _S ^{\top} \boldsymbol{A} _S) ^{-1} \boldsymbol{A} _S ^{\top} \boldsymbol{A} _\hat{S} \hat{\boldsymbol{x}}_{\hat{S}} \right\|_1 \quad \because \boldsymbol{A} _S \boldsymbol{x} _S ^* = \boldsymbol{b}  = \boldsymbol{A} _{\hat{S}} \hat{\boldsymbol{x}} _{\hat{S}}\\
+&= \left\| (\boldsymbol{A} _S ^{\top} \boldsymbol{A} _S) ^{-1} \boldsymbol{A} _S ^{\top} (\boldsymbol{A} _S \hat{\boldsymbol{x} }_S + \boldsymbol{A} _{\hat{S} \setminus S}  \hat{\boldsymbol{x} }_{\hat{S} \setminus S}) \right\|_1\\
+&\le \left\| (\boldsymbol{A} _S ^{\top} \boldsymbol{A} _S) ^{-1} \boldsymbol{A} _S ^{\top} \boldsymbol{A} _S \hat{\boldsymbol{x} }_S \right\|_1 + \left\| (\boldsymbol{A} _S ^{\top} \boldsymbol{A} _S) ^{-1} \boldsymbol{A} _S ^{\top} \boldsymbol{A} _{\hat{S} \setminus S}  \hat{\boldsymbol{x} }_{\hat{S} \setminus S} \right\|_1\\
+&\le \left\| \hat{\boldsymbol{x} }_S \right\|_1 + \left\| (\boldsymbol{A} _S ^{\top} \boldsymbol{A} _S) ^{-1} \boldsymbol{A} _S ^{\top} \boldsymbol{A} _{\hat{S} \setminus S} \right\|_\infty \left\| \hat{\boldsymbol{x} }_{\hat{S} \setminus S} \right\|_1 \quad \because \text{Holder inequality} \\
+&< \left\| \hat{\boldsymbol{x} } _S \right\|_1  + \left\| \hat{\boldsymbol{x} }_{\hat{S} \setminus S}  \right\|_1 \quad \because (??)\\
+&= \left\| \hat{\boldsymbol{x} }_{\hat{S}} \right\|_1 \\
+\end{aligned}$$
+
+#### RIP Condition
+
+For all $k$-sparse $\boldsymbol{x} \in \mathbb{R} ^{p}$, there exists $\delta_k \in (0,1)$ s.t.
+
+$$
+(1 - \delta_k) \left\| \boldsymbol{x}  \right\| _2 ^2 \le \left\| \boldsymbol{A} \boldsymbol{x}  \right\| _2 ^2 \le  (1 + \delta_k) \left\| \boldsymbol{x}  \right\| _2 ^2
+$$
+
+Why need this?
+
+Theorem (Candes-Tao 2006)
+: For $\boldsymbol{x} ^*$ that is $k$-sparse and $\boldsymbol{A} \boldsymbol{x} ^* = \boldsymbol{b}$, if $\delta_{2k} < \sqrt{2}-1$, then BP recovers $\boldsymbol{x} ^*$. Also need $n \ge k \log \frac{p}{k}$.
+
+
+#### Algorithms for SDP
+
+- interior point: slow, but arbitrary accuracy
+- augmented Lagrangian method: faster, but limited accuracy
+- ADMM
+
+.
+
+
+.
+
+
+.
+
+
+.
+
+
+.
+
+
+.
+
+
+.
+
+
+.
