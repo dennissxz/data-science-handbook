@@ -330,7 +330,7 @@ Adam combines momentum and RMSProp. It maintains a running average $\color{teal}
 
 $$
 \begin{aligned}
-\color{teal}{\tilde{\boldsymbol{g}}_{t}[i]} & =\left(1-\frac{1}{N_g }\right)\color{teal}{\tilde{\boldsymbol{g}}_{t-1}[i]}+\frac{1}{N_g }{\color{blue}{\hat{\boldsymbol{g}}_{t}[i]}}\\
+\color{teal}{\tilde{\boldsymbol{g}}_{t}[i]} & =\left(1-\frac{1}{N_g }\right){\color{teal}{\tilde{\boldsymbol{g}}_{t-1}[i]}}+\frac{1}{N_g }{\color{blue}{\hat{\boldsymbol{g}}_{t}[i]}}\\
 {\color{brown}{s_{t}[i]}} & =\left(1-\frac{1}{N_s}\right){\color{brown}{s_{t-1}[i]}} +\frac{1}{N_ s}{\color{blue}{\hat{\boldsymbol{g}}_{t}[i]}}^{2}\\
 \boldsymbol{\Phi}_{t+1}[i] & =\boldsymbol{\Phi}_{t}-\frac{\eta}{\sqrt{{\color{brown}{s_{t}[i]}}}+\epsilon}{\color{teal}{\tilde{\boldsymbol{g}}_{t}[i]}}
 \end{aligned}

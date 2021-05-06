@@ -1,10 +1,8 @@
 # Linear Discriminant Analysis
 
+We introduce Fisher's Linear Discriminant Function.
 
-
-## Fisher's Linear Discriminant Function
-
-### Objective
+## Objective
 
 We have two groups of data in $\mathbb{R} ^p$
 - $\left\{ \boldsymbol{x} _{1i} \right\}, i = 1, 2, \ldots, n_1$
@@ -35,13 +33,13 @@ $$
 Illustration of projection of data to a linear direction [C. Bishop, 2006]
 :::
 
-### Assumptions
+## Assumptions
 
 - equal covariance matrix $\boldsymbol{\Sigma} _1 = \boldsymbol{\Sigma} _2 = \boldsymbol{\Sigma}$
 - full rank $\operatorname{rank}\left( \boldsymbol{\Sigma}  \right) = p$
 - without normality assumption that the population are from multivariate normal.
 
-### Learning
+## Learning
 
 Note that the objective function
 
@@ -63,7 +61,7 @@ $$
 
 The maximum $D^2$ can be viewed as the square of the Mahalanobis distance between the population means of the original data.
 
-### Prediction
+## Prediction
 
 For a new data point $\boldsymbol{x} _0$, we compute $y_0 = \boldsymbol{a} ^{* \top } \boldsymbol{x} _0$, and use the midpoint of the transformed means $m = \frac{1}{2}(\bar{y}_1 + \bar{y}_2)$ as the partition point, assign it to closer class.
 
@@ -74,7 +72,7 @@ Suppose $\bar{y}_1 \ge \bar{y}_2$
 
 In other words, we assign $\boldsymbol{x} _0$ to class $j^* = \min_{j=1, 2} \left\vert y_0 - \bar{y}_j \right\vert$.
 
-### R.t. Two-sample Means
+## R.t. Two-sample Means
 
 The quantity $D^2$ is [used](multi-two-sample) in Hotelling's $T^2$ to test if the two means are equal. The test can be used here to check if the separation of the two population is significant enough to apply classification. Under the assumption of normal distribution of equal variance for the two populations, the test statistic is
 
@@ -85,7 +83,7 @@ $$
 
 There is not much point to conduct classification if the difference of the class means is not significant in the first place. On the other hand, significant difference of the class means is not sufficient to guarantee a good classification.
 
-### Extension
+## Extension
 
 We can extend two classes to multi-classes, and extend projection to one line to projection to some dimensions, i.e. as a dimensionality reduction method.
 
@@ -95,7 +93,7 @@ The assumptions remain the same
 - full rank $\operatorname{rank}\left( \boldsymbol{\Sigma}  \right) = p$
 - without normality assumption that the population are from multivariate normal.
 
-#### Learning
+### Learning
 
 We first consider projection to one line case. The objective is
 
@@ -118,7 +116,7 @@ where
 
 This is again a Rayleigh quotient. The solution $\boldsymbol{a} ^*$ and maximum is given by the largest eigen pair of matrix $\boldsymbol{W} ^{-1} \boldsymbol{B}$.
 
-#### Interpretation
+### Interpretation
 
 After obtain one projection direction $\boldsymbol{a} _1 ^*$, we can continue for next, i.e. second largest eigenvectors. There vector $\boldsymbol{a} _j ^*$ are called **discriminant coordinates**, or **canonical variates**, come from an alternative derivation via CCA on predictor variable matrix and response variable matrix.
 
@@ -140,34 +138,10 @@ Some facts of $\boldsymbol{S} _{\text{pool} }$
 0 & \text { otherwise }
 \end{array}\right.$
 
-#### Prediction
+### Prediction
 
 In case of $r$ discriminants, we allocate $\boldsymbol{x} _0$ class $k$ if
 
 $$
 \sum_{i=1}^{r}\left|\boldsymbol{a} _{i}^{\top}\left(\boldsymbol{x} _{0}-\bar{\boldsymbol{x} }_{k}\right)\right|^{2} \leq \sum_{i=1}^{r}\left|\boldsymbol{a} _{i}^{\top}\left(\boldsymbol{x} _{0}-\bar{\boldsymbol{x} }_{j}\right)\right|^{2}, \quad \text { for any } j=1, \cdots, g
 $$
-
-
-.
-
-
-.
-
-
-.
-
-
-.
-
-
-.
-
-
-.
-
-
-.
-
-
-.

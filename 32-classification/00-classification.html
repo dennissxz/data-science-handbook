@@ -580,6 +580,11 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="11-normal.html">
+     For Normal Data
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="21-decision-tree.html">
      Decision Tree
     </a>
@@ -905,27 +910,32 @@
                 
   <div class="section" id="classification">
 <h1>Classification<a class="headerlink" href="#classification" title="Permalink to this headline">¶</a></h1>
-<p>Recall that a classification model computes per-class score <span class="math notranslate nohighlight">\(f_{y=c}(\boldsymbol{x} ; \boldsymbol{\theta} )\)</span>. If perfect separation of training data is impossible, it is intractable to learn a separator minimizing the number of mistakes. Instead, we learn classifiers by minimizing surrogate loss functions. Two popular surrogate losses are</p>
+<p>Probabilistic classification can be carried out in many different approaches, and the criteria of goodness of the classifier can be at various levels. For example,</p>
+<ul class="simple">
+<li><p>Use discriminant functions</p></li>
+<li><p>Model per-class score <span class="math notranslate nohighlight">\(f_{y=c}(\boldsymbol{x} ; \boldsymbol{\theta} )\)</span></p></li>
+<li><p>Model the posterior distribution <span class="math notranslate nohighlight">\(\mathbb{P} (c \vert \boldsymbol{x})\)</span></p></li>
+</ul>
+<p>When learning the classifiers, some loss functions are used. Two popular surrogate losses are</p>
 <ul>
-<li><p>log loss (aka. cross entropy): assumes that <span class="math notranslate nohighlight">\(f_y (bx
-  ; \boldsymbol{\theta} ) \propto \log p(y\mid bx
-    )\)</span>,
-$<span class="math notranslate nohighlight">\(
-\ell\left(\boldsymbol{\theta}, \mathbf{x}_{i}, y_{i}\right)=-\log p\left(y_{i} \mid \mathbf{x}_{i} ; \boldsymbol{\theta}\right)
-\)</span>$</p></li>
+<li><p>log-loss (aka. cross entropy): assumes that <span class="math notranslate nohighlight">\(f_y (\boldsymbol{x} ; \boldsymbol{\theta} ) \propto \log p(y\vert \boldsymbol{x} )\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[
+  \ell\left(\boldsymbol{\theta}, \boldsymbol{x}_{i}, y_{i}\right)=-\log p\left(y_{i} \vert \boldsymbol{x}_{i} ; \boldsymbol{\theta}\right)
+  \]</div>
+</li>
 <li><p>hinge loss (no probabilistic assumption)</p>
 <div class="math notranslate nohighlight">
 \[
-  \ell\left(\boldsymbol{\theta}, \mathbf{x}_{i}, y_{i}\right)=\max \left\{0,1+\max _{c \neq y_{i}} f_{c}\left(\mathbf{x}_{i} ; \boldsymbol{\theta}\right)-f_{y_{i}}\left(\mathbf{x}_{i} ; \boldsymbol{\theta}\right)\right\}
+  \ell\left(\boldsymbol{\theta}, \boldsymbol{x}_{i}, y_{i}\right)=\max \left\{0,1+\max _{c \neq y_{i}} f_{c}\left(\boldsymbol{x}_{i} ; \boldsymbol{\theta}\right)-f_{y_{i}}\left(\boldsymbol{x}_{i} ; \boldsymbol{\theta}\right)\right\}
   \]</div>
 </li>
-<li><p>metrics</p>
+</ul>
+<p>Empirical metrics</p>
 <ul class="simple">
 <li><p>AUC</p></li>
 <li><p>F1 score</p></li>
 <li><p>see <a class="reference internal" href="../13-statistics/33-confusion-matrix.html"><span class="doc std std-doc">confusion-matrix</span></a></p></li>
-</ul>
-</li>
 </ul>
 <div class="toctree-wrapper compound">
 </div>

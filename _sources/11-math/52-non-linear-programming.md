@@ -842,6 +842,13 @@ $$\frac{p-q}{2}n \ge \mathcal{O} (\sqrt{np \log n})$$
 
 Therefore, as long as this holds, then $(- \operatorname{diag}(\boldsymbol{z}) - \boldsymbol{E})$ is p.d, and hence we have exactly recovery of $\boldsymbol{x}^*$.
 
+### Algorithms for SDP
+
+- interior point: slow, but arbitrary accuracy
+- augmented Lagrangian method: faster, but limited accuracy
+- ADMM
+
+
 ## Compressed sensing
 
 Aka sparse sampling.
@@ -888,10 +895,12 @@ How good the solution to $\text{P}_1$ recovers sparse ground truth $\boldsymbol{
 
 Geometrically, the iso-surface of $\left\| \boldsymbol{x} _1 \right\|$ is pointy. It is very likely that the solution lies in some axis, i.e. sparse solution.
 
-Note that basis pursuit **cannot** recover $\boldsymbol{x} ^*$ for all $\boldsymbol{A}$ (otherwise 'P=NP'). It recovers $\boldsymbol{x} ^*$ for some $\boldsymbol{A}$, that satisfies the following conditions.
+addimg
+
+Note that basis pursuit **cannot** recover $\boldsymbol{x} ^*$ for all $\boldsymbol{A}$ (otherwise 'P=NP'). It recovers $\boldsymbol{x} ^*$ for some $\boldsymbol{A}$, that satisfies the following conditions/properties.
 
 - irrepresentable condition
-- restricted isometry (RIP) condition
+- restricted isometry property (RIP)
 
 We now illustrate these two conditions with details. Recall that
 
@@ -909,10 +918,11 @@ We now illustrate these two conditions with details. Recall that
 
 #### Irrepresentable Condition
 
-- $\left\| \boldsymbol{A} ^{\top} _{S ^c} \boldsymbol{A} _S (\boldsymbol{A} ^{\top} _S  \boldsymbol{A} _S ) ^{-1}  \right\| _\infty < 1$
-- An eigenvalue lower bound $\lambda_\min (\boldsymbol{A} ^{\top} _S \boldsymbol{A} _S ) \ge r$, or equivalently $\boldsymbol{A} ^{\top} _S \boldsymbol{A} _S \ge r \boldsymbol{I} _k$. Otherwise, solving $\boldsymbol{A} _S \boldsymbol{x} _S = \boldsymbol{b}$ involves a high condition number matrix.
+1. $\left\| (\boldsymbol{A} _S ^{\top} \boldsymbol{A} _S) ^{-1} \boldsymbol{A} _S ^{\top} \boldsymbol{A} _{S^c} \right\|_\infty < 1$
+2. An eigenvalue lower bound $\lambda_\min (\boldsymbol{A} ^{\top} _S \boldsymbol{A} _S ) \ge r$, or equivalently $\boldsymbol{A} ^{\top} _S \boldsymbol{A} _S \ge r \boldsymbol{I} _k$. Otherwise, solving $\boldsymbol{A} _S \boldsymbol{x} _S = \boldsymbol{b}$ involves a high condition number matrix.
 
-If $\boldsymbol{A} \boldsymbol{x} ^* = \boldsymbol{b}$, then $\boldsymbol{A} ^{\top} \boldsymbol{A} \boldsymbol{x} ^* = \boldsymbol{A} ^{\top} \boldsymbol{b}$, written in block matrix form
+
+For $\boldsymbol{x} ^*$ such that $\boldsymbol{A} \boldsymbol{x} ^* = \boldsymbol{b}$, then $\boldsymbol{A} ^{\top} \boldsymbol{A} \boldsymbol{x} ^* = \boldsymbol{A} ^{\top} \boldsymbol{b}$, written in block matrix form
 
 $$
 \left[\begin{array}{cc}
@@ -925,7 +935,7 @@ $$
 $$
 
 
-If $\hat{\boldsymbol{x} } \ne \boldsymbol{x} ^*$ s.t. $\hat{S}= \operatorname{supp}(\hat{\boldsymbol{x}}), \boldsymbol{b} = \boldsymbol{A} \hat{\boldsymbol{x} }$, WTS $\left\| \hat{\boldsymbol{x}} \right\| _1 > \left\| \boldsymbol{x} ^* \right\| _1$, hence $\boldsymbol{x} ^*$ is the unique solution to $\text{P}_1$.
+If $\hat{\boldsymbol{x} } \ne \boldsymbol{x} ^*$ s.t. $\hat{S}= \operatorname{supp}(\hat{\boldsymbol{x}}), \boldsymbol{b} = \boldsymbol{A} \hat{\boldsymbol{x} }$, we want to show $\left\| \hat{\boldsymbol{x}} \right\| _1 > \left\| \boldsymbol{x} ^* \right\| _1$, hence $\boldsymbol{x} ^*$ is the unique solution to $\text{P}_1$.
 
 
 $$\begin{aligned}
@@ -936,49 +946,42 @@ $$\begin{aligned}
 &= \left\| (\boldsymbol{A} _S ^{\top} \boldsymbol{A} _S) ^{-1} \boldsymbol{A} _S ^{\top} (\boldsymbol{A} _S \hat{\boldsymbol{x} }_S + \boldsymbol{A} _{\hat{S} \setminus S}  \hat{\boldsymbol{x} }_{\hat{S} \setminus S}) \right\|_1\\
 &\le \left\| (\boldsymbol{A} _S ^{\top} \boldsymbol{A} _S) ^{-1} \boldsymbol{A} _S ^{\top} \boldsymbol{A} _S \hat{\boldsymbol{x} }_S \right\|_1 + \left\| (\boldsymbol{A} _S ^{\top} \boldsymbol{A} _S) ^{-1} \boldsymbol{A} _S ^{\top} \boldsymbol{A} _{\hat{S} \setminus S}  \hat{\boldsymbol{x} }_{\hat{S} \setminus S} \right\|_1\\
 &\le \left\| \hat{\boldsymbol{x} }_S \right\|_1 + \left\| (\boldsymbol{A} _S ^{\top} \boldsymbol{A} _S) ^{-1} \boldsymbol{A} _S ^{\top} \boldsymbol{A} _{\hat{S} \setminus S} \right\|_\infty \left\| \hat{\boldsymbol{x} }_{\hat{S} \setminus S} \right\|_1 \quad \because \text{Holder inequality} \\
-&< \left\| \hat{\boldsymbol{x} } _S \right\|_1  + \left\| \hat{\boldsymbol{x} }_{\hat{S} \setminus S}  \right\|_1 \quad \because (??)\\
+&< \left\| \hat{\boldsymbol{x} } _S \right\|_1  + \left\| \hat{\boldsymbol{x} }_{\hat{S} \setminus S}  \right\|_1\\
 &= \left\| \hat{\boldsymbol{x} }_{\hat{S}} \right\|_1 \\
 \end{aligned}$$
 
-#### RIP Condition
+The second last inequality holds since
 
-For all $k$-sparse $\boldsymbol{x} \in \mathbb{R} ^{p}$, there exists $\delta_k \in (0,1)$ s.t.
+$$\left\| (\boldsymbol{A} _S ^{\top} \boldsymbol{A} _S) ^{-1} \boldsymbol{A} _S ^{\top} \boldsymbol{A} _{\hat{S} \setminus S} \right\|_\infty \le \left\| (\boldsymbol{A} _S ^{\top} \boldsymbol{A} _S) ^{-1} \boldsymbol{A} _S ^{\top} \boldsymbol{A} _{S^c} \right\|_\infty < 1$$
+
+#### Restricted Isometry Property
+
+Definition ([Restricted Isometry Property](https://en.wikipedia.org/wiki/Restricted_isometry_property))
+: Let $\boldsymbol{A}$ be an $n \times p$ matrix and let $1 \le k \le p$ be an integer. Suppose there exists a constant $\delta_k \in (0,1)$ s.t.
+  - for every $n \times k$ submatrix $\boldsymbol{A} _k$ of $\boldsymbol{A}$
+  - for every $k$-dimensional vector $\boldsymbol{x} $
+
+
+  $$
+  (1 - \delta_k) \left\| \boldsymbol{x}  \right\| _2 ^2 \le \left\| \boldsymbol{A}_k \boldsymbol{x}  \right\| _2 ^2 \le  (1 + \delta_k) \left\| \boldsymbol{x}  \right\| _2 ^2
+  $$
+
+  Then $\boldsymbol{A}$ is said to satisfy the $k$-restricted isometry property with **restricted isometry constant** $\delta_k$.
+
+This is equivalent to stating that
+- $\left\| \boldsymbol{A} ^{\top} _k \boldsymbol{A} _k - \boldsymbol{I}  \right\|_2 \le \delta_{k}$, or
+- all eigenvalues of $\boldsymbol{A} ^{\top} _k \boldsymbol{A} _k$ are in the interval $[1 - \delta_k, 1+ \delta_k]$
+
+The RIC constant is defined as the infimum of all possible $\delta$ for a given $\boldsymbol{A}$.
 
 $$
-(1 - \delta_k) \left\| \boldsymbol{x}  \right\| _2 ^2 \le \left\| \boldsymbol{A} \boldsymbol{x}  \right\| _2 ^2 \le  (1 + \delta_k) \left\| \boldsymbol{x}  \right\| _2 ^2
+\delta_{k}=\inf \left[\delta:(1-\delta)\|y\|_{2}^{2} \leq\left\|A_{s} y\right\|_{2}^{2} \leq(1+\delta)\|y\|_{2}^{2}\right], \forall s \leq k, \forall y \in R^{s}
 $$
 
-Why need this?
+The restricted isometry property characterizes matrices which are nearly orthonormal.
+
 
 Theorem (Candes-Tao 2006)
-: For $\boldsymbol{x} ^*$ that is $k$-sparse and $\boldsymbol{A} \boldsymbol{x} ^* = \boldsymbol{b}$, if $\delta_{2k} < \sqrt{2}-1$, then BP recovers $\boldsymbol{x} ^*$. Also need $n \ge k \log \frac{p}{k}$.
+: For $\boldsymbol{x} ^*$ that is $k$-sparse and $\boldsymbol{A} \boldsymbol{x} ^* = \boldsymbol{b}$, if $\boldsymbol{A}$ satisfies $2k$-restricted isometry property with RIC coefficient $\delta_{2k} < \sqrt{2}-1$, then basis pursuit method recovers $\boldsymbol{x} ^*$.
 
-
-#### Algorithms for SDP
-
-- interior point: slow, but arbitrary accuracy
-- augmented Lagrangian method: faster, but limited accuracy
-- ADMM
-
-.
-
-
-.
-
-
-.
-
-
-.
-
-
-.
-
-
-.
-
-
-.
-
-
-.
+Implication: if $n$ is too small, then $\delta$ is small (from JL Lemma), such that the inequality cannot hold. Hence, this theorem gives a lower bound of $n$, which is $n \ge k \log \frac{p}{k}$. This says that to recover $k$-sparse $\boldsymbol{x} ^*$, we do not need too many equations. Just slightly larger than $k$ (by a factor of $\log \frac{p}{k}$) is enough.

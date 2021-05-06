@@ -580,6 +580,11 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="11-normal.html">
+     For Normal Data
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="21-decision-tree.html">
      Decision Tree
     </a>
@@ -911,6 +916,11 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#tuning">
+   Tuning
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#pros">
    Pros
   </a>
@@ -945,12 +955,21 @@
 </div>
 <div class="section" id="regression-on-graph">
 <h2>Regression on Graph<a class="headerlink" href="#regression-on-graph" title="Permalink to this headline">¶</a></h2>
-<p>If the input is a graph <span class="math notranslate nohighlight">\(G=(V, E)\)</span> with vertex attribute <span class="math notranslate nohighlight">\(x _v\)</span>, then for new vertex <span class="math notranslate nohighlight">\(i\)</span> with unknown attribute but known edges, we can use to predict its attribute value we can use the average of those of its neighbors, <span class="math notranslate nohighlight">\(N_i\)</span>,</p>
+<p>If the input is a graph <span class="math notranslate nohighlight">\(G=(V, E)\)</span> with vertex attribute <span class="math notranslate nohighlight">\(x _v\)</span>, then for new vertex <span class="math notranslate nohighlight">\(i\)</span> with unknown attribute but known edges, we can predict its attribute value by the average of those of its neighbors,</p>
 <div class="math notranslate nohighlight">
 \[
-\hat{\boldsymbol{x} }_i = \frac{\sum_{j \in N_{i}} \boldsymbol{x} _{j}}{\left|N_{i}\right|}
+\hat{\boldsymbol{x} }_i = \frac{\sum_{j \in \mathscr{N}_{i}} \boldsymbol{x} _{j}}{\left|\mathscr{N} _{i}\right|}
 \]</div>
 <p>Note that there is no hyper-parameter <span class="math notranslate nohighlight">\(K\)</span>.</p>
+</div>
+<div class="section" id="tuning">
+<h2>Tuning<a class="headerlink" href="#tuning" title="Permalink to this headline">¶</a></h2>
+<p>To choose optimal <span class="math notranslate nohighlight">\(K\)</span>, we can use train-test split.</p>
+<div class="figure align-default" id="knn-split">
+<a class="reference internal image-reference" href="../_images/knn-split.png"><img alt="" src="../_images/knn-split.png" style="width: 50%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 69 </span><span class="caption-text">Random train-test split for different ratios [Wang 2021]</span><a class="headerlink" href="#knn-split" title="Permalink to this image">¶</a></p>
+</div>
+<p>As <span class="math notranslate nohighlight">\(K\)</span> increases from 1, the test error first decreases and then increases. The error bound increases.</p>
 </div>
 <div class="section" id="pros">
 <h2>Pros<a class="headerlink" href="#pros" title="Permalink to this headline">¶</a></h2>

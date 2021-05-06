@@ -523,20 +523,38 @@ Properties
 
 
 (norm)=
-### Matrix Norms
 
-- Matrix Norm [link](https://www.uio.no/studier/emner/matnat/ifi/nedlagte-emner/INF-MAT4350/h09/undervisningsmateriale/lecture7.pdf)
-- Frobenius Norm [link](http://mlwiki.org/index.php/Frobenius_Norm)
-- Spectral norm: $\left\| \boldsymbol{A} \right\| _2$ is the largest singular value of $\boldsymbol{A}$.
-  - Equals the square root of the largest eigenvalue of $\boldsymbol{A} ^{\top} \boldsymbol{A}$
-  - Equals $\lambda_{\max}(\boldsymbol{A})$ if $\boldsymbol{A}$ is p.s.d.
-  - If $\left\| \boldsymbol{u} \right\| =1, \left\| \boldsymbol{v} \right\| =1$, let $\boldsymbol{A} = \boldsymbol{u} \boldsymbol{u} ^{\top}  - \boldsymbol{v} \boldsymbol{v} ^{\top}$, then $\left\| \boldsymbol{A} \right\| _2 = \sin \theta$, where $\theta$ is the angle between $\boldsymbol{u}$ and $\boldsymbol{v}$.
-    - To prove this, let $\alpha = \boldsymbol{u} ^{\top} \boldsymbol{v}$. It is easy to verify that $\boldsymbol{u}$, $\boldsymbol{v}$ are two eigenvectors of $\boldsymbol{A} ^{\top} \boldsymbol{A}$ with the same eigenvalue $1 - \alpha^2$. Hence $\left\| \boldsymbol{A}  \right\| _2 ^2 = 1 - \alpha^2 = 1 - \cos^2\theta$.
+### Vector Norms
+
 - For $\boldsymbol{a} , \boldsymbol{b} \in [m]^d$
 
   $$
   \|\boldsymbol{a}-\boldsymbol{b}\|_{\infty} \leq\|\boldsymbol{a}-\boldsymbol{b}\|_{2} \leq\|\boldsymbol{a}-\boldsymbol{b}\|_{1} \leq \sqrt{d}\|\boldsymbol{a}-\boldsymbol{b}\|_{2} \leq d\|\boldsymbol{a}-\boldsymbol{b}\|_{\infty}
   $$
+
+### Matrix Norms
+
+Reference [link](https://www.uio.no/studier/emner/matnat/ifi/nedlagte-emner/INF-MAT4350/h09/undervisningsmateriale/lecture7.pdf)
+
+Let $\boldsymbol{A} \in \mathbb{R} ^{n \times m}$.
+
+- Frobenius Norm [link](http://mlwiki.org/index.php/Frobenius_Norm)
+
+- Infinity norm: maximum row sum of absolute entires
+
+  $$\|A\|_{\infty}=\max _{1 \leq i \leq n}\left(\sum_{j=1}^{m}\left|a_{i j}\right|\right)$$
+
+- 1-norm: maximum column sum of absolute entires
+
+  $$\|A\|_{1}=\max _{1 \leq j \leq m}\left(\sum_{i=1}^{n}\left|a_{i j}\right|\right)$$
+
+
+- Spectral norm: $\left\| \boldsymbol{A} \right\| _2$ is the largest singular value of $\boldsymbol{A}$.
+  - Equals the square root of the largest eigenvalue of $\boldsymbol{A} ^{\top} \boldsymbol{A}$
+  - Equals $\lambda_{\max}(\boldsymbol{A})$ if $\boldsymbol{A}$ is p.s.d.
+  - If $\left\| \boldsymbol{u} \right\| =1, \left\| \boldsymbol{v} \right\| =1$, let $\boldsymbol{A} = \boldsymbol{u} \boldsymbol{u} ^{\top}  - \boldsymbol{v} \boldsymbol{v} ^{\top}$, then $\left\| \boldsymbol{A} \right\| _2 = \sin \theta$, where $\theta$ is the angle between $\boldsymbol{u}$ and $\boldsymbol{v}$.
+    - To prove this, let $\alpha = \boldsymbol{u} ^{\top} \boldsymbol{v}$. It is easy to verify that $\boldsymbol{u}$, $\boldsymbol{v}$ are two eigenvectors of $\boldsymbol{A} ^{\top} \boldsymbol{A}$ with the same eigenvalue $1 - \alpha^2$. Hence $\left\| \boldsymbol{A}  \right\| _2 ^2 = 1 - \alpha^2 = 1 - \cos^2\theta$.
+
 
 
 
@@ -751,7 +769,7 @@ $$
 Eckart–Young–Mirsky theorem: We claim that the best rank $r$ approximation to $\boldsymbol{A}$ in the Frobenius norm, denoted by $\boldsymbol{A}_{r}=\sum_{i=1}^{k} \sigma_{i} u_{i} v_{i}^{\top}$. The minimum equals
 
 $$
-\left\|\boldsymbol{A}-\boldsymbol{A}_{r}\right\|_{F}^{2}=\left\|\sum_{i=r+1}^{n} \sigma_{i} u_{i} v_{i}^{\top}\right\|_{F}^{2}=\sum_{i=r+1}^{n} \sigma_{i}^{2}
+\left\|\boldsymbol{A}-\boldsymbol{A}_{r}\right\|_{F}^{2}=\left\| \sum_{i=r+1}^{n} \sigma_{i} u_{i} v_{i}^{\top} \right\| _{F}^{2}=\sum_{i=r+1}^{n} \sigma_{i}^{2}
 $$
 
 (davis-kahan)=
