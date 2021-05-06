@@ -16,13 +16,25 @@ Validation data is used to decide the hyper-parameter $K$.
 
 ## Regression on Graph
 
-If the input is a graph $G=(V, E)$ with vertex attribute $x _v$, then for new vertex $i$ with unknown attribute but known edges, we can use to predict its attribute value we can use the average of those of its neighbors, $N_i$,
+If the input is a graph $G=(V, E)$ with vertex attribute $x _v$, then for new vertex $i$ with unknown attribute but known edges, we can predict its attribute value by the average of those of its neighbors,
 
 $$
-\hat{\boldsymbol{x} }_i = \frac{\sum_{j \in N_{i}} \boldsymbol{x} _{j}}{\left|N_{i}\right|}
+\hat{\boldsymbol{x} }_i = \frac{\sum_{j \in \mathscr{N}_{i}} \boldsymbol{x} _{j}}{\left|\mathscr{N} _{i}\right|}
 $$
 
 Note that there is no hyper-parameter $K$.
+
+## Tuning
+
+To choose optimal $K$, we can use train-test split.
+
+:::{figure} knn-split
+<img src="../imgs/knn-split.png" width = "50%" alt=""/>
+
+Random train-test split for different ratios [Wang 2021]
+:::
+
+As $K$ increases from 1, the test error first decreases and then increases. The error bound increases.
 
 ## Pros
 
