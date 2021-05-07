@@ -28,6 +28,10 @@ $$
 \boldsymbol{w} ^\top  \boldsymbol{x}  + b = 0
 $$
 
+```{margin}
+Without the absolute value $\left\vert \cdot \right\vert$, this quantity is called signed distance or directional distance.
+```
+
 Then the distance from any point $\boldsymbol{x} \in \mathbb{R} ^p$ to this hyperplane can be [shown](hyperplanes) to be
 
 $$
@@ -48,6 +52,12 @@ Definition (Margin)
 $$
 \min _{i} \frac{1}{\left\| \boldsymbol{w} \right\| } y_{i}\left(\boldsymbol{w}^{\top} \boldsymbol{x}_{i}+b\right)
 $$
+
+:::{figure} svm-margin
+<img src="../imgs/svm-margin.png" width = "60%" alt=""/>
+
+Margin [Bishop]
+:::
 
 The objective of SVM is to find a hyperplane $\boldsymbol{w}^{\top} \boldsymbol{x}+b = 0$ parameterized by $\boldsymbol{w}$ and $b$, that separates two types of points and maximizes the margin.
 
@@ -168,6 +178,14 @@ Moreover,
 - If $\left\vert \boldsymbol{w}^{* \top} \boldsymbol{x} + b^* \right\vert > 1$ then the point lie outside the two margins.
   - If we add more such points to the data set (with correct labels) and re-run SVM, then the solution is the same, since they do not affect $\min _{i} \frac{1}{|\boldsymbol{w}|} y_{i} \left( \boldsymbol{w} ^ {\top} \boldsymbol{x}_{i}+b\right)$ in the objective function.
 
+- maximized margin is
+
+:::{figure} svm-sv
+<img src="../imgs/svm-sv.png" width = "60%" alt=""/>
+
+Support vectors
+:::
+
 
 ## Extension
 
@@ -244,6 +262,13 @@ $$
 
 From optimization point of view $\xi_i$ is called a slack variable.
 
+:::{figure} svm-hinge
+<img src="../imgs/svm-hinge.png" width = "50%" alt=""/>
+
+Hinge loss of data points [Bishop]
+:::
+
+
 Applying similar conversion to the basic case above, we get
 
 $$\begin{align}
@@ -256,11 +281,15 @@ This can be solved by gradient descent.
 
 
 
-
-
 ### Kernel SVMs
 
 If the points are non-seperable, we consider transform them into a higher-dimensional space by a feature transformation $\boldsymbol{\boldsymbol{\phi}}(\boldsymbol{x})$, and find a hyperplane there to separate the points (hopefully).
+
+:::{figure} svm-kernel
+<img src="../imgs/svm-kernel.png" width = "70%" alt=""/>
+
+SVM Kernel trick
+:::
 
 #### Transformed Unconstrained Original
 
@@ -324,3 +353,12 @@ $$
 $$
 
 and we solve the QP problem for $\boldsymbol{\alpha}$.
+
+## Pros
+
+- Based on a theoretical model of learning explicitly, with guaranteed performance.
+- Not affected by local minima.
+- Do not suffer from the curse of dimensionality.
+- Quadratic program, doable.
+- Optimization algorithm instead of greedy search.
+- Integrated into other high performers such as deep neural networks.
