@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>For Normal Data &#8212; Data Science Handbook</title>
+    <title>For Gaussian Data &#8212; Data Science Handbook</title>
     
   <link href="../_static/css/theme.css" rel="stylesheet" />
   <link href="../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
@@ -55,8 +55,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Decision Tree" href="21-decision-tree.html" />
-    <link rel="prev" title="Support Vector Machine" href="11-support-vector-machine.html" />
+    <link rel="next" title="Linear Discriminant Analysis" href="13-linear-discriminant-analysis.html" />
+    <link rel="prev" title="K-nearest neighbors" href="09-k-nearest-neighbors.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
     
@@ -574,24 +574,24 @@
      K-nearest neighbors
     </a>
    </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     For Gaussian Data
+    </a>
+   </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="11-support-vector-machine.html">
+    <a class="reference internal" href="13-linear-discriminant-analysis.html">
+     Linear Discriminant Analysis
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="21-support-vector-machine.html">
      Support Vector Machine
     </a>
    </li>
-   <li class="toctree-l2 current active">
-    <a class="current reference internal" href="#">
-     For Normal Data
-    </a>
-   </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="21-decision-tree.html">
+    <a class="reference internal" href="31-decision-tree.html">
      Decision Tree
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="31-linear-discriminant-analysis.html">
-     Linear Discriminant Analysis
     </a>
    </li>
   </ul>
@@ -972,6 +972,11 @@
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#two-classes">
+     Two-classes
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#optimum-error-rate">
      Optimum Error Rate
     </a>
@@ -994,12 +999,12 @@
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#two-classes">
+    <a class="reference internal nav-link" href="#id1">
      Two-classes
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#id1">
+    <a class="reference internal nav-link" href="#id2">
      Multi-classes
     </a>
    </li>
@@ -1016,8 +1021,8 @@
         
               <div>
                 
-  <div class="section" id="for-normal-data">
-<h1>For Normal Data<a class="headerlink" href="#for-normal-data" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="for-gaussian-data">
+<h1>For Gaussian Data<a class="headerlink" href="#for-gaussian-data" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="theory">
 <h2>Theory<a class="headerlink" href="#theory" title="Permalink to this headline">¶</a></h2>
 <p>We introduced some theory behind classification for two populations <span class="math notranslate nohighlight">\(\pi_1, \pi_2\)</span>, as well as generalization to <span class="math notranslate nohighlight">\(g\)</span> populations <span class="math notranslate nohighlight">\(\pi_j, j=1, 2, \ldots, g\)</span>.</p>
@@ -1190,6 +1195,16 @@ R_{1}^{\text{Bay} }=\left\{x: \frac{f_{1}(x)}{f_{2}(x)} \geq \frac{p_{2}}{p_{1}}
 <li><p>In terms of classification regions, maximizing posterior probability is equivalent to minimizing the Total Probability of Misclassification TPM.</p></li>
 <li><p>However the values of the posterior probability <span class="math notranslate nohighlight">\(\mathbb{P}\left(\pi_{1} \vert x_{0}\right)\)</span> provide more information than the yes-or-no class boundaries, especially in the not so clear-cut cases.</p></li>
 </ul>
+<p>For multi-classes, the posterior probability that <span class="math notranslate nohighlight">\(x_0\)</span> is from <span class="math notranslate nohighlight">\(\pi_k\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbb{P} \left(\pi_{i} \mid x_{0}\right)=\frac{p_{i} f_{i}\left(x_{0}\right)}{\sum_{j=1}^{g} p_{j} f_{j}\left(x_{0}\right)}=\frac{p_{i} f_{i}\left(x_{0}\right)}{p_{1} f_{1}\left(x_{0}\right)+\cdots+p_{g} f_{g}\left(x_{0}\right)}
+\]</div>
+<p>In applications, the quantities <span class="math notranslate nohighlight">\(p_i\)</span> and <span class="math notranslate nohighlight">\(f_i\)</span> are often not known given data. Estimation procedures have to be developed to apply these criteria. For instance,</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(p_i\)</span> can be estimated by class proportions in training data.</p></li>
+<li><p><span class="math notranslate nohighlight">\(f_i\)</span> can be estimated under assumption of Gaussians with equal covariance.</p></li>
+</ul>
 </div>
 </div>
 <div class="section" id="errors">
@@ -1229,6 +1244,8 @@ observations in the training sample that are misclassified.</p>
 </div>
 <div class="section" id="equal-covariance">
 <h2>Equal Covariance<a class="headerlink" href="#equal-covariance" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="two-classes">
+<span id="da-equal-two"></span><h3>Two-classes<a class="headerlink" href="#two-classes" title="Permalink to this headline">¶</a></h3>
 <p>Let the populations <span class="math notranslate nohighlight">\(\pi_i, i=1,2\)</span> be multivariate Gaussian with density <span class="math notranslate nohighlight">\(\mathcal{N} _p (\boldsymbol{\mu} _i, \boldsymbol{\Sigma})\)</span>. The classification rule that minimizes ECM is to allocate <span class="math notranslate nohighlight">\(\color{teal}{\boldsymbol{x}_{0}}\)</span> to <span class="math notranslate nohighlight">\(\pi_1\)</span> if</p>
 <div class="math notranslate nohighlight">
 \[
@@ -1246,31 +1263,28 @@ observations in the training sample that are misclassified.</p>
 <p>The inequality</p>
 <div class="math notranslate nohighlight">
 \[
-\ln \frac{f_{1}\left(x_{0}\right)}{f_{2}\left(x_{0}\right)} \geq \ln \left( \frac{c(1 \vert 2)}{c(2 \vert 1)} \cdot \frac{p_{2}}{p_{1}} \right)
+\ln \frac{f_{1}\left(\boldsymbol{x} _{0}\right)}{f_{2}\left(\boldsymbol{x} _{0}\right)} \geq \ln \left( \frac{c(1 \vert 2)}{c(2 \vert 1)} \cdot \frac{p_{2}}{p_{1}} \right)
 \]</div>
 <p>becomes</p>
 <div class="math notranslate nohighlight">
 \[
-\left(\boldsymbol{\mu}_{1}-\boldsymbol{\mu}_{2}\right)^{\top} \boldsymbol{\Sigma}^{-1} \boldsymbol{x}_{0}-\left(\boldsymbol{\mu}_{1}-\boldsymbol{\mu}_{2}\right)^{\top} \boldsymbol{\Sigma} ^{-1} \frac{1}{2}\left(\boldsymbol{\mu}_{1}+\boldsymbol{\mu}_{2}\right) \geq \ln \left(\frac{c(1 \vert 2)}{c(2 \vert 1)} \cdot \frac{p_{2}}{p_{1}}\right)
+\left(\boldsymbol{\mu}_{1}-\boldsymbol{\mu}_{2}\right)^{\top} \boldsymbol{\Sigma}^{-1} {\color{teal}{\boldsymbol{x}_{0}}}-\left(\boldsymbol{\mu}_{1}-\boldsymbol{\mu}_{2}\right)^{\top} \boldsymbol{\Sigma} ^{-1} \frac{1}{2}\left(\boldsymbol{\mu}_{1}+\boldsymbol{\mu}_{2}\right) \geq \ln \left(\frac{c(1 \vert 2)}{c(2 \vert 1)} \cdot \frac{p_{2}}{p_{1}}\right)
 \]</div>
 </div>
 <p>In practice, sample estimates are used in the place of the the unknown population <span class="math notranslate nohighlight">\(\boldsymbol{\mu} _i, \boldsymbol{\Sigma}\)</span>. The sample classification rule is</p>
 <div class="math notranslate nohighlight">
 \[
-\left(\bar{\boldsymbol{x} }_{1}-\bar{\boldsymbol{x} }_{2}\right)^{\top} \boldsymbol{S} _{\text{pool} }^{-1} \boldsymbol{x} _{0}-\frac{1}{2}\left(\bar{\boldsymbol{x} }_{1}-\bar{\boldsymbol{x} }_{2}\right)^{\top} \boldsymbol{S} _{\text{pool} }^{-1}\left(\bar{\boldsymbol{x} }_{1}+\bar{\boldsymbol{x} }_{2}\right) \geq \ln \left(\frac{c(1 \vert 2)}{c(2 \vert 1)} \cdot \frac{p_{2}}{p_{1}}\right)
+\left(\bar{\boldsymbol{x} }_{1}-\bar{\boldsymbol{x} }_{2}\right)^{\top} \boldsymbol{S} _{\text{pool} }^{-1} {\color{teal}{\boldsymbol{x}_{0}}}-\frac{1}{2}\left(\bar{\boldsymbol{x} }_{1}-\bar{\boldsymbol{x} }_{2}\right)^{\top} \boldsymbol{S} _{\text{pool} }^{-1}\left(\bar{\boldsymbol{x} }_{1}+\bar{\boldsymbol{x} }_{2}\right) \geq \ln \left(\frac{c(1 \vert 2)}{c(2 \vert 1)} \cdot \frac{p_{2}}{p_{1}}\right)
 \]</div>
-<p>Note that</p>
-<ul class="simple">
-<li><p>The above classification rule of minimum ECM for two multivariate normal populations of equal covariance structure is a <strong>linear function</strong> of the new observation <span class="math notranslate nohighlight">\(\boldsymbol{x} _0\)</span>. The coefficients of the linear functions are determined by the training sample data.</p></li>
-<li><p>In Fisher LDA, we arrived at similar conclusions from a different perspective, without the normal assumption, which also testifies the ubiquitous nature of normal distributions.</p></li>
-</ul>
+<p>Note that the above classification rule of minimum ECM for two multivariate normal populations of equal covariance structure is a <strong>linear function</strong> of the new observation <span class="math notranslate nohighlight">\(\boldsymbol{x} _0\)</span>. The coefficients of the linear functions are determined by the training sample data.</p>
+</div>
 <div class="section" id="optimum-error-rate">
 <h3>Optimum Error Rate<a class="headerlink" href="#optimum-error-rate" title="Permalink to this headline">¶</a></h3>
 <p>Under equal cost and equal prior, we can compute optimum error rate.</p>
 <p>The classification rule is simplified to</p>
 <div class="math notranslate nohighlight">
 \[
-\left(\boldsymbol{\boldsymbol{\mu}}_{1}-\boldsymbol{\boldsymbol{\mu}}_{2}\right)^{\top} \boldsymbol{\boldsymbol{\Sigma}}^{-1} \boldsymbol{\boldsymbol{x}}_{0}\ge\left(\boldsymbol{\boldsymbol{\mu}}_{1}-\boldsymbol{\boldsymbol{\mu}}_{2}\right)^{\top} \boldsymbol{\boldsymbol{\Sigma}} ^{-1} \frac{1}{2}\left(\boldsymbol{\boldsymbol{\mu}}_{1}+\boldsymbol{\boldsymbol{\mu}}_{2}\right)
+\left(\boldsymbol{\boldsymbol{\mu}}_{1}-\boldsymbol{\boldsymbol{\mu}}_{2}\right)^{\top} \boldsymbol{\boldsymbol{\Sigma}}^{-1} \boldsymbol{\boldsymbol{x}}_{0}\ge \frac{1}{2}\left(\boldsymbol{\boldsymbol{\mu}}_{1}-\boldsymbol{\boldsymbol{\mu}}_{2}\right)^{\top} \boldsymbol{\boldsymbol{\Sigma}} ^{-1} \left(\boldsymbol{\boldsymbol{\mu}}_{1}+\boldsymbol{\boldsymbol{\mu}}_{2}\right)
 \]</div>
 <p>For <span class="math notranslate nohighlight">\(\boldsymbol{x} _0 \sim f_2\)</span>, we can define</p>
 <div class="math notranslate nohighlight">
@@ -1281,8 +1295,8 @@ observations in the training sample that are misclassified.</p>
 \begin{aligned}
 \int_{R_{1}} f_{2}(\boldsymbol{x}) \mathrm{~d} \boldsymbol{x}
 &amp;=\mathbb{P} (1 \vert 2)=\mathbb{P} \left(\boldsymbol{x} \text { is incorrectly classified as } \pi_{1}\right) \\
-&amp;=\mathbb{P}\left(y_{0}&gt;\left(\boldsymbol{\mu}_{1}-\boldsymbol{\mu}_{2}\right)^{\top} \boldsymbol{\Sigma}^{-1} \frac{1}{2}\left(\boldsymbol{\mu}_{1}+\boldsymbol{\mu}_{2}\right)\right) \\
-&amp;=\mathbb{P}\left(\frac{y_{0}-\mathbb{E}\left(y_{0}\right)}{\sqrt{\operatorname{Var}\left(y_{0}\right)}}&gt;\frac{\left(\boldsymbol{\mu}_{1}-\boldsymbol{\mu}_{2}\right)^{\top} \boldsymbol{\Sigma}^{-1} \frac{1}{2}\left(\boldsymbol{\mu}_{1}+\boldsymbol{\mu}_{2}\right)-\left(\boldsymbol{\mu}_{1}-\boldsymbol{\mu}_{2}\right)^{\top} \boldsymbol{\Sigma}^{-1} \boldsymbol{\mu}_{2}}{\sqrt{\left(\boldsymbol{\mu}_{1}-\boldsymbol{\mu}_{2}\right)^{\top} \boldsymbol{\Sigma}^{-1}\left(\boldsymbol{\mu}_{1}-\boldsymbol{\mu}_{2}\right)}}\right) \\
+&amp;=\mathbb{P}\left(y_{0}&gt;\frac{1}{2}\left(\boldsymbol{\mu}_{1}-\boldsymbol{\mu}_{2}\right)^{\top} \boldsymbol{\Sigma}^{-1} \left(\boldsymbol{\mu}_{1}+\boldsymbol{\mu}_{2}\right)\right) \\
+&amp;=\mathbb{P}\left(\frac{y_{0}-\mathbb{E}\left(y_{0}\right)}{\sqrt{\operatorname{Var}\left(y_{0}\right)}}&gt;\frac{\frac{1}{2}\left(\boldsymbol{\mu}_{1}-\boldsymbol{\mu}_{2}\right)^{\top} \boldsymbol{\Sigma}^{-1} \left(\boldsymbol{\mu}_{1}+\boldsymbol{\mu}_{2}\right)-\left(\boldsymbol{\mu}_{1}-\boldsymbol{\mu}_{2}\right)^{\top} \boldsymbol{\Sigma}^{-1} \boldsymbol{\mu}_{2}}{\sqrt{\left(\boldsymbol{\mu}_{1}-\boldsymbol{\mu}_{2}\right)^{\top} \boldsymbol{\Sigma}^{-1}\left(\boldsymbol{\mu}_{1}-\boldsymbol{\mu}_{2}\right)}}\right) \\
 &amp;=\mathbb{P}\left(Z&gt;\frac{1}{2} \sqrt{\left(\boldsymbol{\mu}_{1}-\boldsymbol{\mu}_{2}\right)^{\top} \boldsymbol{\Sigma}^{-1}\left(\boldsymbol{\mu}_{1}-\boldsymbol{\mu}_{2}\right)}\right) \\
 &amp;=\mathbb{P}\left(Z \leq-\frac{1}{2} \sqrt{\left(\boldsymbol{\mu}_{1}-\boldsymbol{\mu}_{2}\right)^{\top} \boldsymbol{\Sigma}^{-1}\left(\boldsymbol{\mu}_{1}-\boldsymbol{\mu}_{2}\right)}\right)\\
 &amp;=\Phi\left(-\frac{\Delta}{2}\right)
@@ -1299,8 +1313,8 @@ observations in the training sample that are misclassified.</p>
 errors that can be hard to evaluate.</p>
 </div>
 <div class="section" id="multi-classes">
-<h3>Multi-classes<a class="headerlink" href="#multi-classes" title="Permalink to this headline">¶</a></h3>
-<p>Apply the multi-classes classification rule</p>
+<span id="da-equal-multi"></span><h3>Multi-classes<a class="headerlink" href="#multi-classes" title="Permalink to this headline">¶</a></h3>
+<p>Apply the multi-classes classification rule under equal cost that minimizes ECM</p>
 <div class="math notranslate nohighlight">
 \[
 R_{k}=\left\{\boldsymbol{x}: p_{k} f_{k}(\boldsymbol{x}) \geq p_{i} f_{i}(\boldsymbol{x}), \forall\ i \ne k\right\}
@@ -1341,14 +1355,14 @@ R_{k}
 <p>If there are <span class="math notranslate nohighlight">\(g\)</span> populations, there are <span class="math notranslate nohighlight">\(\binom{g}{2}\)</span> hyperplanes forming the boundaries. Each can be found by equating two discriminant functions <span class="math notranslate nohighlight">\(d_i(\boldsymbol{x} ) = d_j (\boldsymbol{x} )\)</span>. The discriminant function <span class="math notranslate nohighlight">\(d_i(\boldsymbol{x})\)</span> can be estimated by sample discriminants <span class="math notranslate nohighlight">\(\hat{d}_k(\boldsymbol{x})\)</span>, thus form the borders of the sample classification regions.</p>
 <div class="figure align-default" id="lda-boundary">
 <a class="reference internal image-reference" href="../_images/lda-boundary.png"><img alt="" src="../_images/lda-boundary.png" style="width: 60%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 72 </span><span class="caption-text">Classification boundary (one is redundant) [Wang 2021]</span><a class="headerlink" href="#lda-boundary" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 71 </span><span class="caption-text">Classification boundary (one is redundant) [Wang 2021]</span><a class="headerlink" href="#lda-boundary" title="Permalink to this image">¶</a></p>
 </div>
 </div>
 </div>
 <div class="section" id="unequal-covariance">
 <h2>Unequal Covariance<a class="headerlink" href="#unequal-covariance" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="two-classes">
-<h3>Two-classes<a class="headerlink" href="#two-classes" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id1">
+<h3>Two-classes<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
 <p>When two subpopulations do not have a common covariance matrix, <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma} _1 \ne \boldsymbol{\Sigma} _2\)</span>, their population density ratio has the form</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -1361,20 +1375,22 @@ R_{k}
 <p>The minimum ECM classification regions becomes</p>
 <div class="math notranslate nohighlight">
 \[
-R_{1}:-\frac{1}{2} \boldsymbol{x}^{\top}\left(\boldsymbol{\Sigma}_{1}^{-1}-\boldsymbol{\Sigma}_{2}^{-1}\right) \boldsymbol{x}+\left(\boldsymbol{\mu}_{1}^{\top} \boldsymbol{\Sigma}_{1}^{-1}-\boldsymbol{\mu}_{2}^{\top} \boldsymbol{\Sigma}_{2}^{-1}\right) \boldsymbol{x}-k \geq \ln \left(\frac{c(1 \vert 2)}{c(2 \vert 1)} \cdot \frac{p_{2}}{p_{1}}\right)
+R_{1}:-\frac{1}{2} {\color{teal}{\boldsymbol{x}}}^{\top}\left(\boldsymbol{\Sigma}_{1}^{-1}-\boldsymbol{\Sigma}_{2}^{-1}\right) {\color{teal}{\boldsymbol{x}}}+\left(\boldsymbol{\mu}_{1}^{\top} \boldsymbol{\Sigma}_{1}^{-1}-\boldsymbol{\mu}_{2}^{\top} \boldsymbol{\Sigma}_{2}^{-1}\right) {\color{teal}{\boldsymbol{x}}}-k \geq \ln \left(\frac{c(1 \vert 2)}{c(2 \vert 1)} \cdot \frac{p_{2}}{p_{1}}\right)
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(k=\frac{1}{2}\left(\boldsymbol{\boldsymbol{\mu}}_{1}^{\top} \boldsymbol{\Sigma}_{1}^{-1} \boldsymbol{\boldsymbol{\mu}}_{1}-\boldsymbol{\boldsymbol{\mu}}_{2}^{\top} \boldsymbol{\Sigma}_{2}^{-1} \boldsymbol{\boldsymbol{\mu}}_{2}\right)+\frac{1}{2} \ln \frac{\left|\boldsymbol{\Sigma}_{1}\right|}{\left|\boldsymbol{\Sigma}_{2}\right|}\)</span>.</p>
+<p>Now the terms involving <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> are <strong>quadratic</strong> in <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span>. Hence the function is called quadratic discriminant function. In particular, if <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma} _1 = \boldsymbol{\Sigma} _2\)</span>, then the quadratic term is zero, the remaining terms reduce to the linear classification function in the equal variance case.</p>
 <p>The sample classification rule for <span class="math notranslate nohighlight">\({\color{teal}{\boldsymbol{x}_{0}}}\)</span> to <span class="math notranslate nohighlight">\(\pi_1\)</span> is</p>
 <div class="math notranslate nohighlight">
 \[
 -\frac{1}{2} {\color{teal}{\boldsymbol{x}_{0}}}^{\top}\left(\boldsymbol{S}_{1}^{-1}-\boldsymbol{S}_{2}^{-1}\right) {\color{teal}{\boldsymbol{x}_{0}}}+\left(\bar{\boldsymbol{x}}_{1}^{\top} \boldsymbol{S}_{1}^{-1}-\bar{\boldsymbol{x}}_{2}^{\top} \boldsymbol{S}_{2}^{-1}\right) {\color{teal}{\boldsymbol{x}_{0}}}-\hat{k} \geq \ln \left(\frac{c(1 \vert 2)}{c(2 \vert 1)} \cdot \frac{p_{2}}{p_{1}}\right)
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(\hat{k}=\frac{1}{2}\left(\bar{\boldsymbol{x}}_{1}^{\top} \boldsymbol{S}_{1}^{-1} \bar{\boldsymbol{x}}_{1}-\bar{\boldsymbol{x}}_{2}^{\top} \boldsymbol{S}_{2}^{-1} \bar{\boldsymbol{x}}_{2}\right)+\frac{1}{2} \ln \frac{\left|\boldsymbol{S}_{1}\right|}{\left|\boldsymbol{S}_{2}\right|}\)</span>.</p>
-<p>Now the terms involving <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> are <strong>quadratic</strong> in <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span>. So the regions can be in three pieces in general. One region, say, <span class="math notranslate nohighlight">\(R_2\)</span>, could be in the middle of two <span class="math notranslate nohighlight">\(R_1\)</span> sections, or vice versa, e.g. hyperbola in 2-d case.</p>
+<p>Since the function involves is <strong>quadratic</strong> in <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span>, the regions partitions the space to three pieces in general. One region, say, <span class="math notranslate nohighlight">\(R_2\)</span>, could be in the middle of two <span class="math notranslate nohighlight">\(R_1\)</span> sections, or vice versa, e.g. hyperbola in 2-d case.</p>
+<p>addimg</p>
 </div>
-<div class="section" id="id1">
-<h3>Multi-classes<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
-<p>Apply the multi-classes classification rule</p>
+<div class="section" id="id2">
+<h3>Multi-classes<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<p>Apply the multi-classes classification rule under equal cost that minimizes ECM</p>
 <div class="math notranslate nohighlight">
 \[
 R_{k}=\left\{\boldsymbol{x}: p_{k} f_{k}(\boldsymbol{x}) \geq p_{i} f_{i}(\boldsymbol{x}), \forall\ i \ne k\right\}
@@ -1428,8 +1444,8 @@ R_{k}
         
         <div class='prev-next-bottom'>
             
-    <a class='left-prev' id="prev-link" href="11-support-vector-machine.html" title="previous page">Support Vector Machine</a>
-    <a class='right-next' id="next-link" href="21-decision-tree.html" title="next page">Decision Tree</a>
+    <a class='left-prev' id="prev-link" href="09-k-nearest-neighbors.html" title="previous page">K-nearest neighbors</a>
+    <a class='right-next' id="next-link" href="13-linear-discriminant-analysis.html" title="next page">Linear Discriminant Analysis</a>
 
         </div>
         

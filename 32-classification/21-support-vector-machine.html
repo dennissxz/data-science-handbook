@@ -55,8 +55,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="For Normal Data" href="11-normal.html" />
-    <link rel="prev" title="K-nearest neighbors" href="09-k-nearest-neighbors.html" />
+    <link rel="next" title="Decision Tree" href="31-decision-tree.html" />
+    <link rel="prev" title="Linear Discriminant Analysis" href="13-linear-discriminant-analysis.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
     
@@ -574,24 +574,24 @@
      K-nearest neighbors
     </a>
    </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="11-normal.html">
+     For Gaussian Data
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="13-linear-discriminant-analysis.html">
+     Linear Discriminant Analysis
+    </a>
+   </li>
    <li class="toctree-l2 current active">
     <a class="current reference internal" href="#">
      Support Vector Machine
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="11-normal.html">
-     For Normal Data
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="21-decision-tree.html">
+    <a class="reference internal" href="31-decision-tree.html">
      Decision Tree
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="31-linear-discriminant-analysis.html">
-     Linear Discriminant Analysis
     </a>
    </li>
   </ul>
@@ -859,7 +859,7 @@
         <!-- ipynb file if we had a myst markdown file -->
         
         <!-- Download raw file -->
-        <a class="dropdown-buttons" href="../_sources/32-classification/11-support-vector-machine.md"><button type="button"
+        <a class="dropdown-buttons" href="../_sources/32-classification/21-support-vector-machine.md"><button type="button"
                 class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
                 data-placement="left">.md</button></a>
         <!-- Download PDF via print -->
@@ -879,7 +879,7 @@
                 data-toggle="tooltip" data-placement="left" title="Source repository"><i
                     class="fab fa-github"></i>repository</button></a>
         <a class="issues-button"
-            href="https://github.com/dennissxz/data-science-handbook/issues/new?title=Issue%20on%20page%20%2F32-classification/11-support-vector-machine.html&body=Your%20issue%20content%20here."><button
+            href="https://github.com/dennissxz/data-science-handbook/issues/new?title=Issue%20on%20page%20%2F32-classification/21-support-vector-machine.html&body=Your%20issue%20content%20here."><button
                 type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
                 title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
         
@@ -954,6 +954,11 @@
    </li>
   </ul>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#pros">
+   Pros
+  </a>
+ </li>
 </ul>
 
             </nav>
@@ -973,7 +978,7 @@
 <p>SVM uses a hyperplane to separate two types of points.</p>
 <div class="myclass figure align-default" id="svm-hard-margin">
 <a class="reference internal image-reference" href="../_images/svm-hard-margin.png"><img alt="" src="../_images/svm-hard-margin.png" style="width: 30%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 70 </span><span class="caption-text">Draw a line to separate two clusters</span><a class="headerlink" href="#svm-hard-margin" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 73 </span><span class="caption-text">Draw a line to separate two clusters</span><a class="headerlink" href="#svm-hard-margin" title="Permalink to this image">¶</a></p>
 </div>
 <p>Suppose there is a hyperplane in <span class="math notranslate nohighlight">\(p\)</span>-dimensional space characterized by the equation</p>
 <div class="math notranslate nohighlight">
@@ -985,6 +990,10 @@ w_{1} x_{1}+w_{2} x_{2}+\cdots+w_{p} x_{p} + b = 0
 \[
 \boldsymbol{w} ^\top  \boldsymbol{x}  + b = 0
 \]</div>
+<div class="margin sidebar">
+<p class="sidebar-title"></p>
+<p>Without the absolute value <span class="math notranslate nohighlight">\(\left\vert \cdot \right\vert\)</span>, this quantity is called signed distance or directional distance.</p>
+</div>
 <p>Then the distance from any point <span class="math notranslate nohighlight">\(\boldsymbol{x} \in \mathbb{R} ^p\)</span> to this hyperplane can be <a class="reference internal" href="../11-math/31-geometry.html#hyperplanes"><span class="std std-ref">shown</span></a> to be</p>
 <div class="math notranslate nohighlight">
 \[
@@ -1003,6 +1012,10 @@ d = \frac{1}{\left\Vert \boldsymbol{w}  \right\Vert}\left\vert \boldsymbol{w} ^\
 \[
 \min _{i} \frac{1}{\left\| \boldsymbol{w} \right\| } y_{i}\left(\boldsymbol{w}^{\top} \boldsymbol{x}_{i}+b\right)
 \]</div>
+<div class="figure align-default" id="svm-margin">
+<a class="reference internal image-reference" href="../_images/svm-margin.png"><img alt="" src="../_images/svm-margin.png" style="width: 60%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 74 </span><span class="caption-text">Margin [Bishop]</span><a class="headerlink" href="#svm-margin" title="Permalink to this image">¶</a></p>
+</div>
 <p>The objective of SVM is to find a hyperplane <span class="math notranslate nohighlight">\(\boldsymbol{w}^{\top} \boldsymbol{x}+b = 0\)</span> parameterized by <span class="math notranslate nohighlight">\(\boldsymbol{w}\)</span> and <span class="math notranslate nohighlight">\(b\)</span>, that separates two types of points and maximizes the margin.</p>
 <div class="math notranslate nohighlight">
 \[
@@ -1098,7 +1111,12 @@ d = \frac{1}{\left\Vert \boldsymbol{w}  \right\Vert}\left\vert \boldsymbol{w} ^\
 <li><p>If we add more such points to the data set (with correct labels) and re-run SVM, then the solution is the same, since they do not affect <span class="math notranslate nohighlight">\(\min _{i} \frac{1}{|\boldsymbol{w}|} y_{i} \left( \boldsymbol{w} ^ {\top} \boldsymbol{x}_{i}+b\right)\)</span> in the objective function.</p></li>
 </ul>
 </li>
+<li><p>maximized margin is</p></li>
 </ul>
+<div class="figure align-default" id="svm-sv">
+<a class="reference internal image-reference" href="../_images/svm-sv.png"><img alt="" src="../_images/svm-sv.png" style="width: 60%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 75 </span><span class="caption-text">Support vectors</span><a class="headerlink" href="#svm-sv" title="Permalink to this image">¶</a></p>
+</div>
 </div>
 <div class="section" id="extension">
 <h2>Extension<a class="headerlink" href="#extension" title="Permalink to this headline">¶</a></h2>
@@ -1152,7 +1170,7 @@ R(\boldsymbol{w} ,b, \boldsymbol{x}_i ,y_i) = \max \left\{ 0, 1 - y_{i}\left(\bo
 <p>which is called <strong>Hinge loss</strong>.</p>
 <div class="myclass figure align-default" id="hinge-loss">
 <a class="reference internal image-reference" href="../_images/svm-hinge-loss.png"><img alt="" src="../_images/svm-hinge-loss.png" style="width: 50%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 71 </span><span class="caption-text">Comparison of loss functions</span><a class="headerlink" href="#hinge-loss" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 76 </span><span class="caption-text">Comparison of loss functions</span><a class="headerlink" href="#hinge-loss" title="Permalink to this image">¶</a></p>
 </div>
 <p>Let <span class="math notranslate nohighlight">\(\xi_{i}=\max \left\{0,1-y_{i}\left(\boldsymbol{w}^{\top} x_{i}+w_{0}\right)\right\}\)</span>, then the objective is</p>
 <div class="math notranslate nohighlight">
@@ -1160,6 +1178,10 @@ R(\boldsymbol{w} ,b, \boldsymbol{x}_i ,y_i) = \max \left\{ 0, 1 - y_{i}\left(\bo
 \min _{\boldsymbol{w}, b}  \frac{1}{2} \boldsymbol{w}^{\top} \boldsymbol{w} + C\sum_i^n \xi_i
 \]</div>
 <p>From optimization point of view <span class="math notranslate nohighlight">\(\xi_i\)</span> is called a slack variable.</p>
+<div class="figure align-default" id="svm-hinge">
+<a class="reference internal image-reference" href="../_images/svm-hinge.png"><img alt="" src="../_images/svm-hinge.png" style="width: 50%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 77 </span><span class="caption-text">Hinge loss of data points [Bishop]</span><a class="headerlink" href="#svm-hinge" title="Permalink to this image">¶</a></p>
+</div>
 <p>Applying similar conversion to the basic case above, we get</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
@@ -1172,6 +1194,10 @@ R(\boldsymbol{w} ,b, \boldsymbol{x}_i ,y_i) = \max \left\{ 0, 1 - y_{i}\left(\bo
 <div class="section" id="kernel-svms">
 <h3>Kernel SVMs<a class="headerlink" href="#kernel-svms" title="Permalink to this headline">¶</a></h3>
 <p>If the points are non-seperable, we consider transform them into a higher-dimensional space by a feature transformation <span class="math notranslate nohighlight">\(\boldsymbol{\boldsymbol{\phi}}(\boldsymbol{x})\)</span>, and find a hyperplane there to separate the points (hopefully).</p>
+<div class="figure align-default" id="svm-kernel">
+<a class="reference internal image-reference" href="../_images/svm-kernel.png"><img alt="" src="../_images/svm-kernel.png" style="width: 70%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 78 </span><span class="caption-text">SVM Kernel trick</span><a class="headerlink" href="#svm-kernel" title="Permalink to this image">¶</a></p>
+</div>
 <div class="section" id="transformed-unconstrained-original">
 <h4>Transformed Unconstrained Original<a class="headerlink" href="#transformed-unconstrained-original" title="Permalink to this headline">¶</a></h4>
 <p>For the original problem, after transformation into <span class="math notranslate nohighlight">\(\boldsymbol{\phi}(\boldsymbol{x})\)</span> it becomes</p>
@@ -1227,6 +1253,17 @@ R(\boldsymbol{w} ,b, \boldsymbol{x}_i ,y_i) = \max \left\{ 0, 1 - y_{i}\left(\bo
 </div>
 </div>
 </div>
+<div class="section" id="pros">
+<h2>Pros<a class="headerlink" href="#pros" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Based on a theoretical model of learning explicitly, with guaranteed performance.</p></li>
+<li><p>Not affected by local minima.</p></li>
+<li><p>Do not suffer from the curse of dimensionality.</p></li>
+<li><p>Quadratic program, doable.</p></li>
+<li><p>Optimization algorithm instead of greedy search.</p></li>
+<li><p>Integrated into other high performers such as deep neural networks.</p></li>
+</ul>
+</div>
 </div>
 
     <script type="text/x-thebe-config">
@@ -1254,8 +1291,8 @@ R(\boldsymbol{w} ,b, \boldsymbol{x}_i ,y_i) = \max \left\{ 0, 1 - y_{i}\left(\bo
         
         <div class='prev-next-bottom'>
             
-    <a class='left-prev' id="prev-link" href="09-k-nearest-neighbors.html" title="previous page">K-nearest neighbors</a>
-    <a class='right-next' id="next-link" href="11-normal.html" title="next page">For Normal Data</a>
+    <a class='left-prev' id="prev-link" href="13-linear-discriminant-analysis.html" title="previous page">Linear Discriminant Analysis</a>
+    <a class='right-next' id="next-link" href="31-decision-tree.html" title="next page">Decision Tree</a>
 
         </div>
         

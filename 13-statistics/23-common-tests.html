@@ -575,23 +575,23 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../32-classification/11-support-vector-machine.html">
+    <a class="reference internal" href="../32-classification/11-normal.html">
+     For Gaussian Data
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../32-classification/13-linear-discriminant-analysis.html">
+     Linear Discriminant Analysis
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../32-classification/21-support-vector-machine.html">
      Support Vector Machine
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../32-classification/11-normal.html">
-     For Normal Data
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../32-classification/21-decision-tree.html">
+    <a class="reference internal" href="../32-classification/31-decision-tree.html">
      Decision Tree
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../32-classification/31-linear-discriminant-analysis.html">
-     Linear Discriminant Analysis
     </a>
    </li>
   </ul>
@@ -1309,7 +1309,7 @@ H_0: \mu_X - \mu_Y = 0
 <p>Analysis of variance is used to compare several univariate sample means. For instance, in the plot below, we have five levels and observed the response <span class="math notranslate nohighlight">\(y\)</span>. We are interested in whether the five means are equal.</p>
 <div class="figure align-default" id="test-one-way">
 <a class="reference internal image-reference" href="../_images/test-one-way.png"><img alt="" src="../_images/test-one-way.png" style="width: 70%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 20 </span><span class="caption-text">One-way Layout</span><a class="headerlink" href="#test-one-way" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 21 </span><span class="caption-text">One-way Layout</span><a class="headerlink" href="#test-one-way" title="Permalink to this image">¶</a></p>
 </div>
 <div class="section" id="model">
 <h3>Model<a class="headerlink" href="#model" title="Permalink to this headline">¶</a></h3>
@@ -1323,7 +1323,7 @@ X_{\ell j}=\mu+\tau_{\ell}+e_{\ell j}, \quad \ell=1, \cdots, g, \quad j=1, \cdot
 <li><p><span class="math notranslate nohighlight">\(\mu\)</span> is the <strong>overall mean</strong> parameter.</p></li>
 <li><p><span class="math notranslate nohighlight">\(\tau_{\ell}\)</span> is the <strong>treatment effect</strong> parameter of the <span class="math notranslate nohighlight">\(\ell\)</span> th population or <span class="math notranslate nohighlight">\(\ell\)</span> th treatment group.</p></li>
 <li><p><span class="math notranslate nohighlight">\(e_{\ell j} \sim N\left(0, \sigma^{2}\right)\)</span> is individual specific homogenous noise.</p></li>
-<li><p>Parameter constraints: There should be constraints on the parameters such as <span class="math notranslate nohighlight">\(\sum_{\ell=1}^{g} n_{\ell} \tau_{\ell}=0\)</span>, to avoid redundancy or unidentifiability.</p></li>
+<li><p>Parameter constraint: We have one <span class="math notranslate nohighlight">\(\mu\)</span> and <span class="math notranslate nohighlight">\(g\)</span> number of <span class="math notranslate nohighlight">\(\tau_\ell\)</span>, in total <span class="math notranslate nohighlight">\(1 + g\)</span> parameters. There should be a constraint on the parameters such as <span class="math notranslate nohighlight">\(\sum_{\ell=1}^{g} n_{\ell} \tau_{\ell}=0\)</span>, to avoid redundancy or unidentifiability.</p></li>
 </ul>
 <p>To detect differences in treatment effects among the groups,
 the first test of interest is</p>
@@ -1334,6 +1334,7 @@ H_{0}: &amp; \tau_{1}=\cdots=\tau_{g}=0 \\
 H_{1}: &amp; \tau_{\ell} \neq 0, \text { for some } \ell=1, \cdots, g
 \end{array}\right.
 \end{split}\]</div>
+<p>Equivalently, the model can be parameterized as <span class="math notranslate nohighlight">\(X_{\ell j} = \mu_\ell + e_{\ell j}\)</span> without any parameter constraint, and the null hypothesis of equal treatment effects becomes equal means <span class="math notranslate nohighlight">\(H_0: \mu_1 = \ldots = \mu_g\)</span>.</p>
 </div>
 <div class="section" id="test-statistic">
 <h3>Test Statistic<a class="headerlink" href="#test-statistic" title="Permalink to this headline">¶</a></h3>
@@ -1395,6 +1396,12 @@ F \text {-value } \\
 <p class="admonition-title"> Warning</p>
 <p>In <code class="docutils literal notranslate"><span class="pre">manova()</span></code> function in R, if the group variable <span class="math notranslate nohighlight">\(\ell\)</span> is in numerical value, it is necessary to coerce it as data type <code class="docutils literal notranslate"><span class="pre">factor</span></code> by calling <code class="docutils literal notranslate"><span class="pre">as.factor()</span></code>.</p>
 </div>
+<p>When <span class="math notranslate nohighlight">\(g=2\)</span>, the ANOVA <span class="math notranslate nohighlight">\(F\)</span>-test reduces to the two-sample means <span class="math notranslate nohighlight">\(t\)</span>-test.</p>
+<ul class="simple">
+<li><p>The null hypothesis is equal means <span class="math notranslate nohighlight">\(H_0: \mu_1 = \mu_2\)</span></p></li>
+<li><p>The test statistic have the relation <span class="math notranslate nohighlight">\(t^2 = F\)</span>.</p></li>
+<li><p>The two <span class="math notranslate nohighlight">\(p\)</span>-values are the same.</p></li>
+</ul>
 </div>
 </div>
 <div class="section" id="multivariate-settings">
@@ -1469,7 +1476,7 @@ H_{0}: \boldsymbol{\mu}=\boldsymbol{\mu}_{0} \operatorname{vs } H_{1}: \boldsymb
     \]</div>
 <div class="figure align-default" id="test-ellipsoid">
 <a class="reference internal image-reference" href="../_images/test-ellipsoid.png"><img alt="" src="../_images/test-ellipsoid.png" style="width: 50%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 21 </span><span class="caption-text">Confidence region</span><a class="headerlink" href="#test-ellipsoid" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 22 </span><span class="caption-text">Confidence region</span><a class="headerlink" href="#test-ellipsoid" title="Permalink to this image">¶</a></p>
 </div>
 </li>
 <li><p>This confidence ellipsoid above is the most precise confidence region of the vector <span class="math notranslate nohighlight">\(\boldsymbol{\mu}\)</span>, in the sense that any other form of confidence region for <span class="math notranslate nohighlight">\(\boldsymbol{\mu}\)</span> with the same confidence level <span class="math notranslate nohighlight">\((1-\alpha)\)</span> will have <strong>larger volume</strong> in the <span class="math notranslate nohighlight">\(p\)</span>-dimensional space of <span class="math notranslate nohighlight">\(\boldsymbol{\mu}\)</span> and hence less precise.</p></li>
@@ -1509,7 +1516,7 @@ H_{0}: \boldsymbol{\mu}=\boldsymbol{\mu}_{0} \operatorname{vs } H_{1}: \boldsymb
 </div>
 <div class="figure align-default" id="test-multi-bon-sch">
 <a class="reference internal image-reference" href="../_images/test-multi-Bon-Sch.png"><img alt="" src="../_images/test-multi-Bon-Sch.png" style="width: 100%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 22 </span><span class="caption-text">Bonferroni (left) and Scheffe (right) simultaneous C.I.s.</span><a class="headerlink" href="#test-multi-bon-sch" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 23 </span><span class="caption-text">Bonferroni (left) and Scheffe (right) simultaneous C.I.s.</span><a class="headerlink" href="#test-multi-bon-sch" title="Permalink to this image">¶</a></p>
 </div>
 </li>
 <li><p>If we just want to conduct univariate tests of means <span class="math notranslate nohighlight">\(H_0: \mu_k = 0\)</span> for each <span class="math notranslate nohighlight">\(k = 1, 2, \ldots, p\)</span>, i.e. <span class="math notranslate nohighlight">\(\boldsymbol{a} _k = \boldsymbol{e} _k\)</span>, then the C.I. has the general form <span class="math notranslate nohighlight">\(\bar{x}_{k} \pm c_{n, p, \alpha} \sqrt{\frac{s_{k k}}{n}}\)</span> for some multiplier <span class="math notranslate nohighlight">\(c_{n, p, \alpha}\)</span> depending on <span class="math notranslate nohighlight">\(n,p,\alpha\)</span>. The above methods can be summarized as follows</p>
@@ -1599,7 +1606,7 @@ T^{2}=\left[\left(\bar{\boldsymbol{x}}_{1}-\bar{\boldsymbol{x}}_{2}\right)-\left
 <p>The MANOVA model, generalized from ANOVA, becomes</p>
 <div class="math notranslate nohighlight">
 \[
-\boldsymbol{X}_{\ell j}=\boldsymbol{\mu}+\boldsymbol{\tau}_{\ell}+\boldsymbol{e}_{\ell j}, \quad j=1, \cdots, n_{\ell}, \quad \ell=1, \cdots, g
+\boldsymbol{x}_{\ell j}=\boldsymbol{\mu}+\boldsymbol{\tau}_{\ell}+\boldsymbol{e}_{\ell j}, \quad j=1, \cdots, n_{\ell}, \quad \ell=1, \cdots, g
 \]</div>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(\boldsymbol{\mu}\)</span> is the <strong>overall mean</strong> vector,</p></li>
@@ -1607,9 +1614,6 @@ T^{2}=\left[\left(\bar{\boldsymbol{x}}_{1}-\bar{\boldsymbol{x}}_{2}\right)-\left
 <li><p><span class="math notranslate nohighlight">\(\boldsymbol{e}_{\ell j} \sim N_{p}(0, \Sigma)\)</span> is individual specific homogenous noise.</p></li>
 <li><p>The parameter constraint here is <span class="math notranslate nohighlight">\(\sum_{\ell=1}^{g} n_{\ell} \boldsymbol{\tau}_{\ell}=0\)</span>.</p></li>
 </ul>
-</div>
-<div class="section" id="id6">
-<h4>Test Statistic<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h4>
 <p>Analogous to the univariate case, the test of interest is</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -1618,6 +1622,10 @@ H_{0}: &amp; \boldsymbol{\tau}_{1}=\cdots=\boldsymbol{\tau}_{g}=\boldsymbol{0}_{
 H_{1}: &amp; \boldsymbol{\tau}_{\ell} \neq 0_{p}, \text { for some } \ell=1, \cdots, g .
 \end{array}\right.
 \end{split}\]</div>
+<p>Equivalently, the model can be parameterized as <span class="math notranslate nohighlight">\(\boldsymbol{x}_{\ell j} = \boldsymbol{\mu}_\ell + \boldsymbol{e}_{\ell j}\)</span> without any parameter constraint, and the null hypothesis of equal treatment effects becomes equal means <span class="math notranslate nohighlight">\(H_0: \boldsymbol{\mu} _1 = \ldots = \boldsymbol{\mu} _g\)</span>.</p>
+</div>
+<div class="section" id="id6">
+<h4>Test Statistic<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h4>
 <p>The data can be decomposed similarly,</p>
 <div class="math notranslate nohighlight">
 \[
@@ -1720,16 +1728,22 @@ cross products matrix as</p>
 <li><p>We can express Wilks’ lambda by eigenvalues of <span class="math notranslate nohighlight">\(\boldsymbol{B} \boldsymbol{W} ^{-1}\)</span>, which can be seen as signal-noise ratio. If it is large, then <span class="math notranslate nohighlight">\(\lambda\)</span> is large, and <span class="math notranslate nohighlight">\(\Lambda^{*}\)</span> is small.</p>
 <div class="math notranslate nohighlight">
 \[
-  \Lambda^{*}=\frac{|\boldsymbol{W}|}{|\boldsymbol{B}+\boldsymbol{W}|}=\frac{1}{\left|\boldsymbol{W}^{-1} \boldsymbol{B}+\boldsymbol{l}\right|}=\prod_{k=1}^{p} \frac{1}{1+\lambda_{k}}
+  \Lambda^{*}=\frac{|\boldsymbol{W}|}{|\boldsymbol{B}+\boldsymbol{W}|}=\frac{1}{\left|\boldsymbol{W}^{-1} \boldsymbol{B}+\boldsymbol{I}\right|}=\prod_{k=1}^{p} \frac{1}{1+\lambda_{k}}
   \]</div>
+<p>The 2nd equality holds due to <span class="math notranslate nohighlight">\(\operatorname{det}(\boldsymbol{X} \boldsymbol{Y} ) = \operatorname{det}(\boldsymbol{X} ) \operatorname{det} (\boldsymbol{Y})\)</span>. Note that since <span class="math notranslate nohighlight">\((\boldsymbol{B} \boldsymbol{W} ^{-1} )^{\top} = \boldsymbol{W} ^{-1} \boldsymbol{B}\)</span>, the two matrices <span class="math notranslate nohighlight">\(\boldsymbol{B} \boldsymbol{W} ^{-1}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{W} ^{-1} \boldsymbol{B}\)</span> share the same eigenvalues.</p>
 </li>
 </ul>
 <p>Other test statistics using the eigenvalues of <span class="math notranslate nohighlight">\(\boldsymbol{B} \boldsymbol{W} ^{-1}\)</span> include</p>
 <ul class="simple">
-<li><p>Hotelling-Lawley’s Trace: <span class="math notranslate nohighlight">\(\operatorname{trace}\left(\mathbf{B W}^{-1}\right)=\sum_{k=1}^{p} \lambda_{k}\)</span></p></li>
-<li><p>Pillai’s Trace:  <span class="math notranslate nohighlight">\(\operatorname{trace}\left(\boldsymbol{B}(\boldsymbol{B}+\boldsymbol{W})^{-1}\right)=\operatorname{trace}\left(\boldsymbol{B} \boldsymbol{W}^{-1}\left(\boldsymbol{B} \boldsymbol{W}^{-1}+I\right)^{-1}\right)=\sum_{k=1}^{p} \frac{\lambda_{k}}{1+\lambda_{k}}\)</span></p></li>
-<li><p>Roy’s Largest Root: <span class="math notranslate nohighlight">\(\max _{k}\left\{\lambda_{k}\right\}=\left\|\boldsymbol{B} \boldsymbol{W}^{-1}\right\|_{\infty}\)</span> which gives an upper bound</p></li>
+<li><p>Hotelling-Lawley’s Trace: <span class="math notranslate nohighlight">\(\operatorname{tr}\left(\mathbf{B W}^{-1}\right)=\sum_{k=1}^{p} \lambda_{k}\)</span></p></li>
+<li><p>Pillai’s Trace:  <span class="math notranslate nohighlight">\(\operatorname{tr}\left(\boldsymbol{B}(\boldsymbol{B}+\boldsymbol{W})^{-1}\right)=\operatorname{tr}\left(\boldsymbol{B} \boldsymbol{W}^{-1}\left(\boldsymbol{B} \boldsymbol{W}^{-1}+\boldsymbol{I} \right)^{-1}\right)=\sum_{k=1}^{p} \frac{\lambda_{k}}{1+\lambda_{k}}\)</span></p></li>
+<li><p>Roy’s Largest Root: <span class="math notranslate nohighlight">\(\max _{k}\left\{\lambda_{k}\right\}=\left\|\boldsymbol{B} \boldsymbol{W}^{-1}\right\|_{\infty}\)</span> which gives an upper bound.</p></li>
 </ul>
+<!-- 
+When $g=2$, the MANOVA $F$-test reduces to the two-sample means Hotelling's $T^2$-test.
+- The null hypothesis is equal means $H_0: \boldsymbol{\mu} _1 = \boldsymbol{\mu}_2$
+- The test statistic have the relation $t^2 = F$.
+- The two $p$-values are the same. -->
 </div>
 <div class="section" id="c-i-for-difference-in-two-means">
 <h4>C.I. for Difference in Two Means<a class="headerlink" href="#c-i-for-difference-in-two-means" title="Permalink to this headline">¶</a></h4>

@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Linear Discriminant Analysis &#8212; Data Science Handbook</title>
+    <title>Decision Tree &#8212; Data Science Handbook</title>
     
   <link href="../_static/css/theme.css" rel="stylesheet" />
   <link href="../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
@@ -56,7 +56,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Dimensionality Reduction" href="../33-dimensionality-reduction/00-dimensionality-reduction.html" />
-    <link rel="prev" title="Decision Tree" href="21-decision-tree.html" />
+    <link rel="prev" title="Support Vector Machine" href="21-support-vector-machine.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
     
@@ -575,23 +575,23 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="11-support-vector-machine.html">
-     Support Vector Machine
-    </a>
-   </li>
-   <li class="toctree-l2">
     <a class="reference internal" href="11-normal.html">
-     For Normal Data
+     For Gaussian Data
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="21-decision-tree.html">
-     Decision Tree
+    <a class="reference internal" href="13-linear-discriminant-analysis.html">
+     Linear Discriminant Analysis
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="21-support-vector-machine.html">
+     Support Vector Machine
     </a>
    </li>
    <li class="toctree-l2 current active">
     <a class="current reference internal" href="#">
-     Linear Discriminant Analysis
+     Decision Tree
     </a>
    </li>
   </ul>
@@ -859,7 +859,7 @@
         <!-- ipynb file if we had a myst markdown file -->
         
         <!-- Download raw file -->
-        <a class="dropdown-buttons" href="../_sources/32-classification/31-linear-discriminant-analysis.md"><button type="button"
+        <a class="dropdown-buttons" href="../_sources/32-classification/31-decision-tree.md"><button type="button"
                 class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
                 data-placement="left">.md</button></a>
         <!-- Download PDF via print -->
@@ -879,7 +879,7 @@
                 data-toggle="tooltip" data-placement="left" title="Source repository"><i
                     class="fab fa-github"></i>repository</button></a>
         <a class="issues-button"
-            href="https://github.com/dennissxz/data-science-handbook/issues/new?title=Issue%20on%20page%20%2F32-classification/31-linear-discriminant-analysis.html&body=Your%20issue%20content%20here."><button
+            href="https://github.com/dennissxz/data-science-handbook/issues/new?title=Issue%20on%20page%20%2F32-classification/31-decision-tree.html&body=Your%20issue%20content%20here."><button
                 type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
                 title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
         
@@ -906,49 +906,58 @@
             <nav id="bd-toc-nav">
                 <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#objective">
-   Objective
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#assumptions">
-   Assumptions
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#learning">
    Learning
   </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#prediction">
-   Prediction
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#r-t-two-sample-means">
-   R.t. Two-sample Means
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#extension">
-   Extension
-  </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#id1">
-     Learning
+    <a class="reference internal nav-link" href="#algorithm">
+     Algorithm
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#interpretation">
-     Interpretation
+    <a class="reference internal nav-link" href="#partition-metrics">
+     Partition Metrics
     </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#maximum-purity">
+       Maximum Purity
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#maximum-normalized-mutual-information">
+       Maximum Normalized Mutual Information
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#maximum-likelihood">
+       Maximum Likelihood
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#minimum-entropy">
+       Minimum Entropy
+      </a>
+     </li>
+    </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#id2">
-     Prediction
+    <a class="reference internal nav-link" href="#stoping-criteria">
+     Stoping Criteria
     </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#simple-heuristics-based">
+       Simple Heuristics Based
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#cross-validation">
+       Cross-validation
+      </a>
+     </li>
+    </ul>
    </li>
   </ul>
  </li>
@@ -963,143 +972,146 @@
         
               <div>
                 
-  <div class="section" id="linear-discriminant-analysis">
-<h1>Linear Discriminant Analysis<a class="headerlink" href="#linear-discriminant-analysis" title="Permalink to this headline">¶</a></h1>
-<p>We introduce Fisher’s Linear Discriminant Function.</p>
-<div class="section" id="objective">
-<h2>Objective<a class="headerlink" href="#objective" title="Permalink to this headline">¶</a></h2>
-<p>We have two groups of data in <span class="math notranslate nohighlight">\(\mathbb{R} ^p\)</span></p>
+  <div class="section" id="decision-tree">
+<span id="id1"></span><h1>Decision Tree<a class="headerlink" href="#decision-tree" title="Permalink to this headline">¶</a></h1>
+<p>Decision trees are a top-down approach for classification.</p>
 <ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(\left\{ \boldsymbol{x} _{1i} \right\}, i = 1, 2, \ldots, n_1\)</span></p></li>
-<li><p><span class="math notranslate nohighlight">\(\left\{ \boldsymbol{x} _{2i} \right\}, i = 1, 2, \ldots, n_2\)</span></p></li>
+<li><p>Start with all data in a single node (the root)</p></li>
+<li><p>Find the <strong>best</strong> “question” for partitioning the data at a given node into two sub-nodes, according to some criteria</p></li>
+<li><p>Repeat for each newly generated nodes</p></li>
+<li><p>Stop when there is insufficient data at each node, or when the best question isn’t helpful enough</p></li>
 </ul>
-<p>We want to project them to a one dimensional line in <span class="math notranslate nohighlight">\(\mathbb{R}\)</span>, such that the projection by this line yields good separation of the two classes.</p>
-<p>Let the projection be <span class="math notranslate nohighlight">\(\boldsymbol{a} ^{\top} \boldsymbol{x}\)</span> and let the projected data be</p>
+<div class="figure align-default" id="dt-example-1">
+<a class="reference internal image-reference" href="../_images/dt-example-1.png"><img alt="" src="../_images/dt-example-1.png" style="width: 50%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 79 </span><span class="caption-text">A simple example of decision tree [Livescue 2021]</span><a class="headerlink" href="#dt-example-1" title="Permalink to this image">¶</a></p>
+</div>
+<p>We need to specify</p>
 <ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(\left\{ y _{1i} = \boldsymbol{a} ^{\top} \boldsymbol{x} _{1i} \right\}\)</span></p></li>
-<li><p><span class="math notranslate nohighlight">\(\left\{ y_{2i} = \boldsymbol{a} ^{\top} \boldsymbol{x} _{2i} \right\}\)</span></p></li>
+<li><p>Choice of questions for the splits</p></li>
+<li><p>Criterion for measuring the “best” question at each node</p></li>
+<li><p>Stopping criterion</p></li>
 </ul>
-<p>The goodness of separation is measured by th ratio of between-class difference and
-within-class variance.</p>
-<div class="math notranslate nohighlight">
-\[
-\max _ {\boldsymbol{a} \in \mathbb{R} ^p} \frac{(\bar{y}_1- \bar{y}_2)^2}{s_y^2}
-\]</div>
-<p>where <span class="math notranslate nohighlight">\(s_y^2\)</span> is the pooled variance, if we assume equal covariance structure in the two groups.</p>
-<div class="math notranslate nohighlight">
-\[
-s_{y}^{2}=\frac{\sum_{i=1}^{n_{1}}\left(y_{1 i}-\bar{y}_{1}\right)^{2}+\sum_{i=1}^{n_{2}}\left(y_{2 i}-\bar{y}_{2}\right)^{2}}{n_{1}+n_{2}-2}=\boldsymbol{a} ^{\top} \boldsymbol{S}_{x} \boldsymbol{a}=\boldsymbol{a}^{\top} \boldsymbol{S}_{\text {pool }} \boldsymbol{a}
-\]</div>
-<div class="figure align-default" id="lda-fisher">
-<a class="reference internal image-reference" href="../_images/lda-fisher.png"><img alt="" src="../_images/lda-fisher.png" style="width: 80%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 75 </span><span class="caption-text">Illustration of projection of data to a linear direction [C. Bishop, 2006]</span><a class="headerlink" href="#lda-fisher" title="Permalink to this image">¶</a></p>
-</div>
-</div>
-<div class="section" id="assumptions">
-<h2>Assumptions<a class="headerlink" href="#assumptions" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li><p>equal covariance matrix <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma} _1 = \boldsymbol{\Sigma} _2 = \boldsymbol{\Sigma}\)</span></p></li>
-<li><p>full rank <span class="math notranslate nohighlight">\(\operatorname{rank}\left( \boldsymbol{\Sigma}  \right) = p\)</span></p></li>
-<li><p>without normality assumption that the population are from multivariate normal.</p></li>
-</ul>
-</div>
 <div class="section" id="learning">
 <h2>Learning<a class="headerlink" href="#learning" title="Permalink to this headline">¶</a></h2>
-<p>Note that the objective function</p>
-<div class="math notranslate nohighlight">
-\[
-\frac{(\bar{y}_1- \bar{y}_2)^2}{s_y^2} = \frac{[\boldsymbol{a} ^{\top} (\bar{\boldsymbol{x} }_1-\bar{\boldsymbol{x} }_2)]^2}{\boldsymbol{a}^{\top} \boldsymbol{S}_{\text {pool }} \boldsymbol{a}}
-\]</div>
-<p>has the form of generalized <a class="reference internal" href="../11-math/52-non-linear-programming.html#rayleigh-quotient"><span class="std std-ref">Rayleigh quotient</span></a>. Hence the solution is given by</p>
-<div class="math notranslate nohighlight">
-\[
-\boldsymbol{a} ^*= \boldsymbol{S} _{\text{pool} } ^{-1} (\bar{\boldsymbol{x} }_1-\bar{\boldsymbol{x} }_2)
-\]</div>
-<p>with maximum</p>
-<div class="math notranslate nohighlight">
-\[
-(\bar{\boldsymbol{x} }_1-\bar{\boldsymbol{x} }_2) \boldsymbol{S} _{\text{pool} } ^{-1} (\bar{\boldsymbol{x} }_1-\bar{\boldsymbol{x} }_2) =: D^2
-\]</div>
-<p>The maximum <span class="math notranslate nohighlight">\(D^2\)</span> can be viewed as the square of the Mahalanobis distance between the population means of the original data.</p>
+<div class="section" id="algorithm">
+<h3>Algorithm<a class="headerlink" href="#algorithm" title="Permalink to this headline">¶</a></h3>
+<p>Suppose we have a fixed, discrete set of questions. Let <span class="math notranslate nohighlight">\(Q_{j\ell}\)</span> denote the <span class="math notranslate nohighlight">\(\ell\)</span>-th pre-determined question for feature <span class="math notranslate nohighlight">\(j\)</span>.</p>
+<p>Starting at the root, try splitting each node into two sub-nodes,</p>
+<div class="margin sidebar">
+<p class="sidebar-title">Questions and computation</p>
+<p>Questions about the a feature <span class="math notranslate nohighlight">\(X_1\)</span> can be like <span class="math notranslate nohighlight">\(X_1 &gt; 17, X_1^2 &lt; 10\)</span>. It can also involves multiple features, e.g. <span class="math notranslate nohighlight">\(X3 =X_{25}\)</span></p>
+<p>The questions should be pre-determined, taking the computation power into consideration.</p>
 </div>
-<div class="section" id="prediction">
-<h2>Prediction<a class="headerlink" href="#prediction" title="Permalink to this headline">¶</a></h2>
-<p>For a new data point <span class="math notranslate nohighlight">\(\boldsymbol{x} _0\)</span>, we compute <span class="math notranslate nohighlight">\(y_0 = \boldsymbol{a} ^{* \top } \boldsymbol{x} _0\)</span>, and use the midpoint of the transformed means <span class="math notranslate nohighlight">\(m = \frac{1}{2}(\bar{y}_1 + \bar{y}_2)\)</span> as the partition point, assign it to closer class.</p>
-<p>Suppose <span class="math notranslate nohighlight">\(\bar{y}_1 \ge \bar{y}_2\)</span></p>
 <ul class="simple">
-<li><p>If <span class="math notranslate nohighlight">\(y_0 &gt; m\)</span>, then assign <span class="math notranslate nohighlight">\(\boldsymbol{x} _0\)</span> to class 1</p></li>
-<li><p>otherwise, class 2.</p></li>
+<li><p>For each feature <span class="math notranslate nohighlight">\(X_j\)</span>, evaluate questions <span class="math notranslate nohighlight">\(Q_{j1}, Q_{j2} \ldots\)</span>; let <span class="math notranslate nohighlight">\(X^*, Q^*\)</span> denote the best feature and question respectively</p></li>
+<li><p>If <span class="math notranslate nohighlight">\(Q^*\)</span> isn’t sufficiently helpful in improving some partition metric, call the current node a leaf</p></li>
+<li><p>Otherwise, split the current node into two sub-nodes according
+to the answer to question <span class="math notranslate nohighlight">\(Q^*\)</span></p></li>
 </ul>
-<p>In other words, we assign <span class="math notranslate nohighlight">\(\boldsymbol{x} _0\)</span> to class <span class="math notranslate nohighlight">\(j^* = \min_{j=1, 2} \left\vert y_0 - \bar{y}_j \right\vert\)</span>.</p>
+<p>Stop when all nodes are either too small to split or have been marked as leaves (there is no “good enough” question anymore). Each leaf node represents a class.</p>
 </div>
-<div class="section" id="r-t-two-sample-means">
-<h2>R.t. Two-sample Means<a class="headerlink" href="#r-t-two-sample-means" title="Permalink to this headline">¶</a></h2>
-<p>The quantity <span class="math notranslate nohighlight">\(D^2\)</span> is <a class="reference internal" href="../13-statistics/23-common-tests.html#multi-two-sample"><span class="std std-ref">used</span></a> in Hotelling’s <span class="math notranslate nohighlight">\(T^2\)</span> to test if the two means are equal. The test can be used here to check if the separation of the two population is significant enough to apply classification. Under the assumption of normal distribution of equal variance for the two populations, the test statistic is</p>
-<div class="math notranslate nohighlight">
-\[
-\frac{n_{1}+n_{2}-p-1}{\left(n_{1}+n_{2}-2\right) p} \cdot \frac{n_{1} n_{2}}{n_{1}+n_{2}} D^{2} \sim F_{p, n_{1}+n_{2}-p-1} \quad \text { under } \quad H_{0}: \boldsymbol{\mu}_{1}=\boldsymbol{\mu}_{2}
-\]</div>
-<p>There is not much point to conduct classification if the difference of the class means is not significant in the first place. On the other hand, significant difference of the class means is not sufficient to guarantee a good classification.</p>
-</div>
-<div class="section" id="extension">
-<h2>Extension<a class="headerlink" href="#extension" title="Permalink to this headline">¶</a></h2>
-<p>We can extend two classes to multi-classes, and extend projection to one line to projection to some dimensions, i.e. as a dimensionality reduction method.</p>
-<p>The assumptions remain the same</p>
+<div class="section" id="partition-metrics">
+<h3>Partition Metrics<a class="headerlink" href="#partition-metrics" title="Permalink to this headline">¶</a></h3>
+<p>To evaluate question quality, we need some partition metrics.</p>
+<div class="section" id="maximum-purity">
+<h4>Maximum Purity<a class="headerlink" href="#maximum-purity" title="Permalink to this headline">¶</a></h4>
+<p>Suppose</p>
 <ul class="simple">
-<li><p>equal covariance matrix <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma} _1 = \ldots = \boldsymbol{\Sigma} _g = \boldsymbol{\Sigma}\)</span></p></li>
-<li><p>full rank <span class="math notranslate nohighlight">\(\operatorname{rank}\left( \boldsymbol{\Sigma}  \right) = p\)</span></p></li>
-<li><p>without normality assumption that the population are from multivariate normal.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\Omega\)</span> is the proposed clustering,</p></li>
+<li><p><span class="math notranslate nohighlight">\(C\)</span> is the ground-truth clustering</p></li>
+<li><p><span class="math notranslate nohighlight">\(w_k\)</span> is a proposed cluster with label <span class="math notranslate nohighlight">\(k\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(c_j\)</span> is a ground-truth cluster with ground truth label <span class="math notranslate nohighlight">\(j\)</span></p></li>
 </ul>
-<div class="section" id="id1">
-<h3>Learning<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
-<p>We first consider projection to one line case. The objective is</p>
+<p>Then the purity of the proposed clustering <span class="math notranslate nohighlight">\(\Omega\)</span> and the ground-truth <span class="math notranslate nohighlight">\(C\)</span> is defined as</p>
 <div class="math notranslate nohighlight">
-\[
-\frac{\boldsymbol{a} ^{\top}\{\text { between group variance matrix }\} \boldsymbol{a} }{\boldsymbol{a} ^{\top}\{\text { within group variance matrix }\} \boldsymbol{a} }=\frac{\boldsymbol{a} ^{\top} \boldsymbol{B} \boldsymbol{a} }{\boldsymbol{a} ^{\top} \boldsymbol{W}  \boldsymbol{a} }
-\]</div>
-<p>where</p>
-<ul>
-<li><p>between-group variance matrix (different from <span class="math notranslate nohighlight">\(\boldsymbol{B}\)</span> in <a class="reference internal" href="../13-statistics/23-common-tests.html#manova"><span class="std std-ref">MANOVA</span></a>)</p>
-<div class="math notranslate nohighlight">
-\[\boldsymbol{B}=\sum_{i=1}^{g}\left(\bar{\boldsymbol{x}}_{i}-\bar{\boldsymbol{x}}\right)\left(\bar{\boldsymbol{x}}_{i}-\bar{\boldsymbol{x}}\right)^{\top}\]</div>
-</li>
-<li><p>mean-of-means, aka overall average, in contrast to grand average</p>
-<div class="math notranslate nohighlight">
-\[\bar{\boldsymbol{x}} = \frac{1}{g} \sum_{i=1}^g  \bar{\boldsymbol{x}}_i\]</div>
-</li>
-<li><p>within-group variance matrix (same <span class="math notranslate nohighlight">\(\boldsymbol{W}\)</span> in MANOVA)</p>
-<div class="math notranslate nohighlight">
-\[\boldsymbol{W}=\sum_{i=1}^{g}\left(n_{i}-1\right) \boldsymbol{S}_{i}=\sum_{i=1}^{g} \sum_{j=1}^{n_{i}}\left(\boldsymbol{x}_{i j}-\bar{\boldsymbol{x}}_{i}\right)\left(\boldsymbol{x}_{i j}-\bar{\boldsymbol{x}}_{i}\right)^{\top}\]</div>
-</li>
+\[\operatorname{purity}(\Omega, C)=\frac{1}{n} \sum_{k} \max _{j}\left|\omega_{k} \cap c_{j}\right|\]</div>
+<p>That is, for each proposed cluster <span class="math notranslate nohighlight">\(w_k\)</span>, we find a true cluster <span class="math notranslate nohighlight">\(c_j\)</span> that has the maximum-cardinality intersection with <span class="math notranslate nohighlight">\(w_k\)</span>. We can view <span class="math notranslate nohighlight">\(w_k\)</span> has a “predicted” label <span class="math notranslate nohighlight">\(k\leftarrow j\)</span>. (??)</p>
+<dl class="simple myst">
+<dt>Properties</dt><dd><ul class="simple">
+<li><p>in <span class="math notranslate nohighlight">\((0,1)\)</span></p></li>
+<li><p>biased toward finer clusterings (purity <span class="math notranslate nohighlight">\(=1\)</span> if each example is in its own cluster), so this measure makes sense for comparing clusterings with a given <strong>fixed</strong> number of clusters</p></li>
 </ul>
-<p>This is again a Rayleigh quotient. The solution <span class="math notranslate nohighlight">\(\boldsymbol{a} ^*\)</span> and maximum is given by the largest eigen pair of matrix <span class="math notranslate nohighlight">\(\boldsymbol{W} ^{-1} \boldsymbol{B}\)</span>.</p>
+</dd>
+</dl>
 </div>
-<div class="section" id="interpretation">
-<h3>Interpretation<a class="headerlink" href="#interpretation" title="Permalink to this headline">¶</a></h3>
-<p>After obtain one projection direction <span class="math notranslate nohighlight">\(\boldsymbol{a} _1 ^*\)</span>, we can continue for next, i.e. second largest eigenvectors. There vector <span class="math notranslate nohighlight">\(\boldsymbol{a} _j ^*\)</span> are called <strong>discriminant coordinates</strong>, or <strong>canonical variates</strong>, come from an alternative derivation via CCA on predictor variable matrix and response variable matrix.</p>
-<p>They give consecutive directions that maximized the normalized variance between classes, they are not discriminant function themselves.  Analogous to the principal components in PCA, hopefully the first few sample discriminants show better separation of the groups, and can be used to classify new observations.</p>
-<p>Note that there are at most <span class="math notranslate nohighlight">\(r\)</span> non-zero eigen values of <span class="math notranslate nohighlight">\(\boldsymbol{W} ^{-1} \boldsymbol{B}\)</span> where</p>
-<div class="math notranslate nohighlight">
-\[
-r=\operatorname{rank}\left(\boldsymbol{W}^{-1} \boldsymbol{B}\right) \leq \min (g-1, p)
-\]</div>
-<p>Therefore the above method can produce up to <span class="math notranslate nohighlight">\(r\)</span> linear discriminants.</p>
-<p>Some facts of <span class="math notranslate nohighlight">\(\boldsymbol{S} _{\text{pool} }\)</span></p>
+<div class="section" id="maximum-normalized-mutual-information">
+<h4>Maximum Normalized Mutual Information<a class="headerlink" href="#maximum-normalized-mutual-information" title="Permalink to this headline">¶</a></h4>
+<p>Define</p>
 <ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(\boldsymbol{S} _{\text{pool} } = \frac{1}{n-g} \boldsymbol{W}\)</span></p></li>
-<li><p><span class="math notranslate nohighlight">\(\boldsymbol{a} _{i} ^{* \top}  \boldsymbol{S} _{\text{pool} } \boldsymbol{a} ^*_{j}=\left\{\begin{array}{ll}
-1 &amp; \text { if } i=j \leq r \\
-0 &amp; \text { otherwise }
-\end{array}\right.\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(p(k, j) = \frac{\left|\omega_{k} \cap c_{j}\right|}{N}\)</span> as the probability that a randomly chosen example belongs to proposed cluster <span class="math notranslate nohighlight">\(w_k\)</span> <strong>and</strong> ground-truth cluster <span class="math notranslate nohighlight">\(c_j\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(p_\Omega (k) = \frac{\left\vert w_k \right\vert}{N}\)</span> as the probability that a randomly chosen example belongs to proposed cluster <span class="math notranslate nohighlight">\(w_k\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(p_C(j)= \frac{\left\vert c_j \right\vert}{N}\)</span> likewise</p></li>
 </ul>
-</div>
-<div class="section" id="id2">
-<h3>Prediction<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
-<p>In case of <span class="math notranslate nohighlight">\(r\)</span> discriminants, we allocate <span class="math notranslate nohighlight">\(\boldsymbol{x} _0\)</span> class <span class="math notranslate nohighlight">\(k\)</span> if</p>
+<p>The mutual information of induced from the joint distribution <span class="math notranslate nohighlight">\(p(k,j)\)</span> is</p>
 <div class="math notranslate nohighlight">
 \[
-\sum_{i=1}^{r}\left|\boldsymbol{a} _{i}^{\top}\left(\boldsymbol{x} _{0}-\bar{\boldsymbol{x} }_{k}\right)\right|^{2} \leq \sum_{i=1}^{r}\left|\boldsymbol{a} _{i}^{\top}\left(\boldsymbol{x} _{0}-\bar{\boldsymbol{x} }_{j}\right)\right|^{2}, \quad \text { for any } j=1, \cdots, g
+\mathrm{I}(\Omega, C)=\sum_{k} \sum_{j} p(k, j) \log \frac{p(k, j)}{p_{\Omega}(k) p_{C}(j)}
 \]</div>
+<p>and we can define entropies <span class="math notranslate nohighlight">\(H(\Omega)\)</span> and <span class="math notranslate nohighlight">\(H(C)\)</span>.</p>
+<p>Finally, the normalized mutual information is</p>
+<div class="math notranslate nohighlight">
+\[
+\operatorname{NMI}(\Omega, C)=\frac{I(\Omega ; C)}{[H(\Omega)+H(C)] / 2}
+\]</div>
+<p>Properties</p>
+<ul class="simple">
+<li><p>Ranges from 0 and 1</p></li>
+<li><p>Mutual information alone would also favor over-clustering</p></li>
+<li><p>Entropies in the denominator act as penalty for over-clustering</p></li>
+</ul>
+<hr class="docutils" />
+<p>For unlabelled data, we can use maximum likelihood and minimum entropy.</p>
+</div>
+<div class="section" id="maximum-likelihood">
+<h4>Maximum Likelihood<a class="headerlink" href="#maximum-likelihood" title="Permalink to this headline">¶</a></h4>
+<p>The best question at a node is the maximum likelihood one, i.e. the one that maximizes the likelihood of the two newly formed (left and right) groups of data points</p>
+<div class="math notranslate nohighlight">
+\[
+\mathcal{L}\left(\text { data }_{\ell} \mid \operatorname{model}_{\ell}\right) \times \mathcal{L}\left(\text { data }_{r} \mid \text { model }_{r}\right)
+\]</div>
+<p>Often, the models for the left and right nodes are each a single Gaussian</p>
+<div class="math notranslate nohighlight">
+\[
+Q^{*}=\operatorname{argmax}_{Q} p\left(\operatorname{data}_{\ell} \mid \boldsymbol{\mu} _{\ell}, \boldsymbol{\Sigma} _{\ell}\right) \times p\left(\operatorname{data}_{r} \mid \boldsymbol{\mu} _{r}, \boldsymbol{\Sigma}_{r}\right)
+\]</div>
+<p>Note that the best question should <strong>always</strong> improve likelihood somewhat.</p>
+<div class="figure align-default" id="dt-evaluate-q">
+<a class="reference internal image-reference" href="../_images/dt-evaluate-q.png"><img alt="" src="../_images/dt-evaluate-q.png" style="width: 50%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 80 </span><span class="caption-text">Evaluating question quality by maximum likelihood</span><a class="headerlink" href="#dt-evaluate-q" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+<div class="section" id="minimum-entropy">
+<h4>Minimum Entropy<a class="headerlink" href="#minimum-entropy" title="Permalink to this headline">¶</a></h4>
+<p>Another common criterion is to minimize node entropy (uncertainty measured in bits).</p>
+<p>Recall that if <span class="math notranslate nohighlight">\(X\)</span> is a discrete random variable taking one of <span class="math notranslate nohighlight">\(n\)</span> values with probabilities <span class="math notranslate nohighlight">\(p_{1}, \ldots, p_{n}\)</span> , respectively, then the entropy of</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+H(X) &amp;=-\sum_{i=1}^{n} p_{i} \log _{2} p_{i} \\
+\Rightarrow H(X) &amp; \geq 0 \\
+H(X) &amp;=0 \Leftrightarrow p_{j}=1 \text { for some } j, p_{i}=0,\ \forall i \neq j
+\end{aligned}
+\end{split}\]</div>
+</div>
+</div>
+<div class="section" id="stoping-criteria">
+<h3>Stoping Criteria<a class="headerlink" href="#stoping-criteria" title="Permalink to this headline">¶</a></h3>
+<p>When should we stop partitioning? Or how to determine the size/depth of the tree?</p>
+<div class="section" id="simple-heuristics-based">
+<h4>Simple Heuristics Based<a class="headerlink" href="#simple-heuristics-based" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p>Leaves too small: data at node has fewer than some threshold samples</p></li>
+<li><p>Best question does not improve likelihood significantly (e.g. 10%)</p></li>
+<li><p>Out of time/memory for more nodes</p></li>
+</ul>
+</div>
+<div class="section" id="cross-validation">
+<h4>Cross-validation<a class="headerlink" href="#cross-validation" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p>Measure likelihood with different tree sizes on a <strong>held-out</strong> (development) data set, choose the tree size that maximizes likelihood</p></li>
+<li><p>Measure downstream performance on held-out data set, on some task of interest</p></li>
+</ul>
+</div>
 </div>
 </div>
 </div>
@@ -1129,7 +1141,7 @@ r=\operatorname{rank}\left(\boldsymbol{W}^{-1} \boldsymbol{B}\right) \leq \min (
         
         <div class='prev-next-bottom'>
             
-    <a class='left-prev' id="prev-link" href="21-decision-tree.html" title="previous page">Decision Tree</a>
+    <a class='left-prev' id="prev-link" href="21-support-vector-machine.html" title="previous page">Support Vector Machine</a>
     <a class='right-next' id="next-link" href="../33-dimensionality-reduction/00-dimensionality-reduction.html" title="next page">Dimensionality Reduction</a>
 
         </div>
