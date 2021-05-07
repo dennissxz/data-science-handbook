@@ -290,7 +290,7 @@ where
 - $\mu$ is the **overall mean** parameter.
 - $\tau_{\ell}$ is the **treatment effect** parameter of the $\ell$ th population or $\ell$ th treatment group.
 - $e_{\ell j} \sim N\left(0, \sigma^{2}\right)$ is individual specific homogenous noise.
-- Parameter constraints: There should be constraints on the parameters such as $\sum_{\ell=1}^{g} n_{\ell} \tau_{\ell}=0$, to avoid redundancy or unidentifiability.
+- Parameter constraint: We have one $\mu$ and $g$ number of $\tau_\ell$, in total $1 + g$ parameters. There should be a constraint on the parameters such as $\sum_{\ell=1}^{g} n_{\ell} \tau_{\ell}=0$, to avoid redundancy or unidentifiability.
 
 
 To detect differences in treatment effects among the groups,
@@ -302,6 +302,8 @@ H_{0}: & \tau_{1}=\cdots=\tau_{g}=0 \\
 H_{1}: & \tau_{\ell} \neq 0, \text { for some } \ell=1, \cdots, g
 \end{array}\right.
 $$
+
+Equivalently, the model can be parameterized as $X_{\ell j} = \mu_\ell + e_{\ell j}$ without any parameter constraint, and the null hypothesis of equal treatment effects becomes equal means $H_0: \mu_1 = \ldots = \mu_g$.
 
 ### Test Statistic
 
@@ -375,6 +377,10 @@ In `manova()` function in R, if the group variable $\ell$ is in numerical value,
 
 :::
 
+When $g=2$, the ANOVA $F$-test reduces to the two-sample means $t$-test.
+- The null hypothesis is equal means $H_0: \mu_1 = \mu_2$
+- The test statistic have the relation $t^2 = F$.
+- The two $p$-values are the same.
 
 ## Multivariate Settings
 
@@ -583,16 +589,13 @@ If there are multiple samples of multivariate observations, we use Multivariate 
 The MANOVA model, generalized from ANOVA, becomes
 
 $$
-\boldsymbol{X}_{\ell j}=\boldsymbol{\mu}+\boldsymbol{\tau}_{\ell}+\boldsymbol{e}_{\ell j}, \quad j=1, \cdots, n_{\ell}, \quad \ell=1, \cdots, g
+\boldsymbol{x}_{\ell j}=\boldsymbol{\mu}+\boldsymbol{\tau}_{\ell}+\boldsymbol{e}_{\ell j}, \quad j=1, \cdots, n_{\ell}, \quad \ell=1, \cdots, g
 $$
 
 - $\boldsymbol{\mu}$ is the **overall mean** vector,
 - $\boldsymbol{\tau} _{\ell}$ is the **treatment effect** vector of the $\ell$ th population or treatment group,
 - $\boldsymbol{e}_{\ell j} \sim N_{p}(0, \Sigma)$ is individual specific homogenous noise.
 - The parameter constraint here is $\sum_{\ell=1}^{g} n_{\ell} \boldsymbol{\tau}_{\ell}=0$.
-
-
-#### Test Statistic
 
 Analogous to the univariate case, the test of interest is
 
@@ -602,6 +605,10 @@ H_{0}: & \boldsymbol{\tau}_{1}=\cdots=\boldsymbol{\tau}_{g}=\boldsymbol{0}_{p} \
 H_{1}: & \boldsymbol{\tau}_{\ell} \neq 0_{p}, \text { for some } \ell=1, \cdots, g .
 \end{array}\right.
 $$
+
+Equivalently, the model can be parameterized as $\boldsymbol{x}_{\ell j} = \boldsymbol{\mu}_\ell + \boldsymbol{e}_{\ell j}$ without any parameter constraint, and the null hypothesis of equal treatment effects becomes equal means $H_0: \boldsymbol{\mu} _1 = \ldots = \boldsymbol{\mu} _g$.
+
+#### Test Statistic
 
 The data can be decomposed similarly,
 
@@ -726,10 +733,19 @@ Note
   \Lambda^{*}=\frac{|\boldsymbol{W}|}{|\boldsymbol{B}+\boldsymbol{W}|}=\frac{1}{\left|\boldsymbol{W}^{-1} \boldsymbol{B}+\boldsymbol{I}\right|}=\prod_{k=1}^{p} \frac{1}{1+\lambda_{k}}
   $$
 
+  The 2nd equality holds due to $\operatorname{det}(\boldsymbol{X} \boldsymbol{Y} ) = \operatorname{det}(\boldsymbol{X} ) \operatorname{det} (\boldsymbol{Y})$. Note that since $(\boldsymbol{B} \boldsymbol{W} ^{-1} )^{\top} = \boldsymbol{W} ^{-1} \boldsymbol{B}$, the two matrices $\boldsymbol{B} \boldsymbol{W} ^{-1}$ and $\boldsymbol{W} ^{-1} \boldsymbol{B}$ share the same eigenvalues.
+
 Other test statistics using the eigenvalues of $\boldsymbol{B} \boldsymbol{W} ^{-1}$ include
-- Hotelling-Lawley’s Trace: $\operatorname{trace}\left(\mathbf{B W}^{-1}\right)=\sum_{k=1}^{p} \lambda_{k}$
-- Pillai’s Trace:  $\operatorname{trace}\left(\boldsymbol{B}(\boldsymbol{B}+\boldsymbol{W})^{-1}\right)=\operatorname{trace}\left(\boldsymbol{B} \boldsymbol{W}^{-1}\left(\boldsymbol{B} \boldsymbol{W}^{-1}+I\right)^{-1}\right)=\sum_{k=1}^{p} \frac{\lambda_{k}}{1+\lambda_{k}}$
-- Roy's Largest Root: $\max _{k}\left\{\lambda_{k}\right\}=\left\|\boldsymbol{B} \boldsymbol{W}^{-1}\right\|_{\infty}$ which gives an upper bound
+- Hotelling-Lawley’s Trace: $\operatorname{tr}\left(\mathbf{B W}^{-1}\right)=\sum_{k=1}^{p} \lambda_{k}$
+- Pillai’s Trace:  $\operatorname{tr}\left(\boldsymbol{B}(\boldsymbol{B}+\boldsymbol{W})^{-1}\right)=\operatorname{tr}\left(\boldsymbol{B} \boldsymbol{W}^{-1}\left(\boldsymbol{B} \boldsymbol{W}^{-1}+\boldsymbol{I} \right)^{-1}\right)=\sum_{k=1}^{p} \frac{\lambda_{k}}{1+\lambda_{k}}$
+- Roy's Largest Root: $\max _{k}\left\{\lambda_{k}\right\}=\left\|\boldsymbol{B} \boldsymbol{W}^{-1}\right\|_{\infty}$ which gives an upper bound.
+
+<!-- 
+When $g=2$, the MANOVA $F$-test reduces to the two-sample means Hotelling's $T^2$-test.
+- The null hypothesis is equal means $H_0: \boldsymbol{\mu} _1 = \boldsymbol{\mu}_2$
+- The test statistic have the relation $t^2 = F$.
+- The two $p$-values are the same. -->
+
 
 #### C.I. for Difference in Two Means
 
