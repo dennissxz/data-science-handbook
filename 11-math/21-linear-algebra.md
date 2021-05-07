@@ -170,8 +170,20 @@ For an $N \times N$ square matrix $\boldsymbol{A}$,
   - $E=\{\boldsymbol{v}:(\boldsymbol{A} -\lambda_i \boldsymbol{I} ) \boldsymbol{v}=\boldsymbol{0}\}$ is called the **eigenspace** of $\boldsymbol{A}$ associated with $\lambda_i$. We have $\operatorname{dim}(E)=m_i$.
 
 Claims
-- eigenvectors corresponds to distinct eigenvalues are independent.
+- Eigenvectors corresponds to distinct eigenvalues $\lambda_i \ne \lambda_j$ are independent.
+- Eigenvectors corresponds to the same eigenvalues $\lambda_i = \lambda_j$ (due to algebraic multiplicity) may or may not be independent.
+- The rank of $\boldsymbol{A}$ is $N - \operatorname{dim} (E_0)$, where $E_0$ is the eigenspace corresponding to eigenvalue $0$, $E_0 = \left\{ \boldsymbol{v} : \boldsymbol{A} \boldsymbol{v}  = \boldsymbol{0} \right\}$, aka the **kernel** of $\boldsymbol{A}$.
+  - If $0$ is not an eigenvalue, then the kernel is trivial, and so the matrix has full rank $N$.
+  - The rank depends on no other eigenvalues.
 - Perron-Frobenius theorem: If $\boldsymbol{A} \in \mathbb{R} ^{n \times n}$ has all entries positive $a_{ij} > 0$, then it has a unique largest eigenvalue, and the corresponding eigenvector can be chosen to have all entires positive.
+
+Example: the matrix $\left[\begin{array}{cc}
+0 & 1 \\
+0 & 0
+\end{array}\right]$ has
+- one distinct eigenvalue $0$ with algebraic multiplicity $2$, i.e. $N_\lambda=1, n_1 = 2$
+- all eigenvectors $[c, 0]$ where $c \ne 0$ are dependent, $m_1 = 1$.
+- rank 1
 
 For more details see [Wikipedia](https://en.wikipedia.org/wiki/Eigenvalues_and_eigenvectors#Eigenvalues_and_eigenvectors_of_matrices).
 
