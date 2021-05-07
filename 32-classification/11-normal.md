@@ -1,4 +1,4 @@
-# For Normal Data
+# For Gaussian Data
 
 ## Theory
 
@@ -175,6 +175,16 @@ We conclude that
 - In terms of classification regions, maximizing posterior probability is equivalent to minimizing the Total Probability of Misclassification TPM.
 - However the values of the posterior probability $\mathbb{P}\left(\pi_{1} \vert x_{0}\right)$ provide more information than the yes-or-no class boundaries, especially in the not so clear-cut cases.
 
+For multi-classes, the posterior probability that $x_0$ is from $\pi_k$ is
+
+$$
+\mathbb{P} \left(\pi_{i} \mid x_{0}\right)=\frac{p_{i} f_{i}\left(x_{0}\right)}{\sum_{j=1}^{g} p_{j} f_{j}\left(x_{0}\right)}=\frac{p_{i} f_{i}\left(x_{0}\right)}{p_{1} f_{1}\left(x_{0}\right)+\cdots+p_{g} f_{g}\left(x_{0}\right)}
+$$
+
+In applications, the quantities $p_i$ and $f_i$ are often not known given data. Estimation procedures have to be developed to apply these criteria. For instance,
+- $p_i$ can be estimated by class proportions in training data.
+- $f_i$ can be estimated under assumption of Gaussians with equal covariance.
+
 ### Errors
 
 - **Optimum error rate**, aka minimum total probability of misclassification
@@ -209,6 +219,7 @@ observations in the training sample that are misclassified.
 
 ## Equal Covariance
 
+(da-equal-two)=
 ### Two-classes
 
 Let the populations $\pi_i, i=1,2$ be multivariate Gaussian with density $\mathcal{N} _p (\boldsymbol{\mu} _i, \boldsymbol{\Sigma})$. The classification rule that minimizes ECM is to allocate $\color{teal}{\boldsymbol{x}_{0}}$ to $\pi_1$ if
@@ -238,7 +249,7 @@ becomes
 
 
 $$
-\left(\boldsymbol{\mu}_{1}-\boldsymbol{\mu}_{2}\right)^{\top} \boldsymbol{\Sigma}^{-1} \color{teal}{\boldsymbol{x}_{0}}-\left(\boldsymbol{\mu}_{1}-\boldsymbol{\mu}_{2}\right)^{\top} \boldsymbol{\Sigma} ^{-1} \frac{1}{2}\left(\boldsymbol{\mu}_{1}+\boldsymbol{\mu}_{2}\right) \geq \ln \left(\frac{c(1 \vert 2)}{c(2 \vert 1)} \cdot \frac{p_{2}}{p_{1}}\right)
+\left(\boldsymbol{\mu}_{1}-\boldsymbol{\mu}_{2}\right)^{\top} \boldsymbol{\Sigma}^{-1} {\color{teal}{\boldsymbol{x}_{0}}}-\left(\boldsymbol{\mu}_{1}-\boldsymbol{\mu}_{2}\right)^{\top} \boldsymbol{\Sigma} ^{-1} \frac{1}{2}\left(\boldsymbol{\mu}_{1}+\boldsymbol{\mu}_{2}\right) \geq \ln \left(\frac{c(1 \vert 2)}{c(2 \vert 1)} \cdot \frac{p_{2}}{p_{1}}\right)
 $$
 
 :::
@@ -250,11 +261,8 @@ $$
 \left(\bar{\boldsymbol{x} }_{1}-\bar{\boldsymbol{x} }_{2}\right)^{\top} \boldsymbol{S} _{\text{pool} }^{-1} {\color{teal}{\boldsymbol{x}_{0}}}-\frac{1}{2}\left(\bar{\boldsymbol{x} }_{1}-\bar{\boldsymbol{x} }_{2}\right)^{\top} \boldsymbol{S} _{\text{pool} }^{-1}\left(\bar{\boldsymbol{x} }_{1}+\bar{\boldsymbol{x} }_{2}\right) \geq \ln \left(\frac{c(1 \vert 2)}{c(2 \vert 1)} \cdot \frac{p_{2}}{p_{1}}\right)
 $$
 
-Note that
+Note that the above classification rule of minimum ECM for two multivariate normal populations of equal covariance structure is a **linear function** of the new observation $\boldsymbol{x} _0$. The coefficients of the linear functions are determined by the training sample data.
 
-- The above classification rule of minimum ECM for two multivariate normal populations of equal covariance structure is a **linear function** of the new observation $\boldsymbol{x} _0$. The coefficients of the linear functions are determined by the training sample data.
-
-- In Fisher LDA, we arrived at similar conclusions from a different perspective, without the normal assumption, which also testifies the ubiquitous nature of normal distributions.
 
 
 ### Optimum Error Rate
@@ -299,9 +307,10 @@ where $\Delta$ can be estimated from sample by $\hat{\Delta}^2 = \left(\bar{\bol
 In practice, the population densities are unknown, the above estimate also has
 errors that can be hard to evaluate.
 
+(da-equal-multi)=
 ### Multi-classes
 
-Apply the multi-classes classification rule
+Apply the multi-classes classification rule under equal cost that minimizes ECM
 
 $$
 R_{k}=\left\{\boldsymbol{x}: p_{k} f_{k}(\boldsymbol{x}) \geq p_{i} f_{i}(\boldsymbol{x}), \forall\ i \ne k\right\}
@@ -378,6 +387,8 @@ $$
 
 where $k=\frac{1}{2}\left(\boldsymbol{\boldsymbol{\mu}}_{1}^{\top} \boldsymbol{\Sigma}_{1}^{-1} \boldsymbol{\boldsymbol{\mu}}_{1}-\boldsymbol{\boldsymbol{\mu}}_{2}^{\top} \boldsymbol{\Sigma}_{2}^{-1} \boldsymbol{\boldsymbol{\mu}}_{2}\right)+\frac{1}{2} \ln \frac{\left|\boldsymbol{\Sigma}_{1}\right|}{\left|\boldsymbol{\Sigma}_{2}\right|}$.
 
+Now the terms involving $\boldsymbol{x}$ are **quadratic** in $\boldsymbol{x}$. Hence the function is called quadratic discriminant function. In particular, if $\boldsymbol{\Sigma} _1 = \boldsymbol{\Sigma} _2$, then the quadratic term is zero, the remaining terms reduce to the linear classification function in the equal variance case.
+
 The sample classification rule for ${\color{teal}{\boldsymbol{x}_{0}}}$ to $\pi_1$ is
 
 $$
@@ -387,11 +398,13 @@ $$
 where $\hat{k}=\frac{1}{2}\left(\bar{\boldsymbol{x}}_{1}^{\top} \boldsymbol{S}_{1}^{-1} \bar{\boldsymbol{x}}_{1}-\bar{\boldsymbol{x}}_{2}^{\top} \boldsymbol{S}_{2}^{-1} \bar{\boldsymbol{x}}_{2}\right)+\frac{1}{2} \ln \frac{\left|\boldsymbol{S}_{1}\right|}{\left|\boldsymbol{S}_{2}\right|}$.
 
 
-Now the terms involving $\boldsymbol{x}$ are **quadratic** in $\boldsymbol{x}$. So the regions can be in three pieces in general. One region, say, $R_2$, could be in the middle of two $R_1$ sections, or vice versa, e.g. hyperbola in 2-d case.
+Since the function involves is **quadratic** in $\boldsymbol{x}$, the regions partitions the space to three pieces in general. One region, say, $R_2$, could be in the middle of two $R_1$ sections, or vice versa, e.g. hyperbola in 2-d case.
+
+addimg
 
 ### Multi-classes
 
-Apply the multi-classes classification rule
+Apply the multi-classes classification rule under equal cost that minimizes ECM
 
 $$
 R_{k}=\left\{\boldsymbol{x}: p_{k} f_{k}(\boldsymbol{x}) \geq p_{i} f_{i}(\boldsymbol{x}), \forall\ i \ne k\right\}
