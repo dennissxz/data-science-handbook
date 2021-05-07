@@ -92,6 +92,8 @@ $$
 \boldsymbol{x} ^{\top} \boldsymbol{A} \boldsymbol{x}  = \sum_{i, j=1}^n a_{ij} x_i x_j
 $$
 
+### Basic
+
 Definition (Rayleigh quotient)  
 : - For a fixed symmetric matrix $\boldsymbol{A}$, the normalized quadratic form $\frac{\boldsymbol{x} ^{\top} \boldsymbol{A} \boldsymbol{x}}{\boldsymbol{x} ^{\top} \boldsymbol{x} }$ is called a Rayleigh quotient.
   - In addition, given a positive definite matrix $\boldsymbol{B}$ of the same size, the quantity $\frac{\boldsymbol{x} ^{\top} \boldsymbol{A} \boldsymbol{x} }{\boldsymbol{x} ^{\top} \boldsymbol{B} \boldsymbol{x} }$ is called a generalized Rayleigh quotient.
@@ -177,6 +179,8 @@ Therefore, the eigenvector $\boldsymbol{v} _1$ (corresponding to largest eigenva
 
 :::
 
+### Generalized
+
 Corollary (Generalized Rayleigh quotient problem)  
 : For the generalized Rayleigh quotient $\frac{\boldsymbol{x}^{\top} \boldsymbol{A} \boldsymbol{x}}{\boldsymbol{x}^{\top} \boldsymbol{B} \boldsymbol{x}}$ where $\boldsymbol{A}$ is symmetric and $\boldsymbol{B}$ is p.d., the smallest and largest values $\lambda$ of the quotient satisfy
 
@@ -184,11 +188,22 @@ $$
 \boldsymbol{A v}=\lambda \boldsymbol{B v} \quad \Longleftrightarrow \quad \boldsymbol{B}^{-1} \boldsymbol{A v}=\lambda \boldsymbol{v}
 $$
 
-That is, the smallest/largest quotient value equals the smallest/largest eigenvalue of $(\boldsymbol{B} ^{-1} \boldsymbol{A})$, and the solutions are the corresponding eigenvectors. The left equation is called a generalized eigenvalue problem.
+The left equation is called a **generalized eigenvalue problem**.
+
+- The smallest/largest quotient value equals the smallest/largest eigenvalue of $(\boldsymbol{B} ^{-1} \boldsymbol{A})$. The number of non-zero eigenvalues is $r=\operatorname{rank}\left(\boldsymbol{B}^{-1} \boldsymbol{A}\right)$.
+
+- The solutions are the corresponding smallest/largest eigenvectors. In some problems, multiple eigenvectors are used, which can be chosen such that
+
+  $$\boldsymbol{v} _{i} ^{\top}  \boldsymbol{B} \boldsymbol{v}_{j}=\left\{\begin{array}{ll}
+  1 & \text { if } i=j \leq r \\
+  0 & \text { otherwise }
+  \end{array}\right.$$
+
+
 
 :::{admonition,dropdown,seealso} *Proof*
 
--   Substitution approach
+- Substitution approach
 
   Since $\boldsymbol{B}$ is p.d., we have $\boldsymbol{B} ^{1/2}$. Let $\boldsymbol{y} = \boldsymbol{B} ^{1/2}\boldsymbol{x}$, then the denominator can be written as
 
@@ -210,7 +225,7 @@ That is, the smallest/largest quotient value equals the smallest/largest eigenva
 
   The solution is given by $\boldsymbol{y} ^* = \boldsymbol{v} ^*$. Then $\boldsymbol{x} ^* = \boldsymbol{B} ^{-1/2} \boldsymbol{y} ^* = \boldsymbol{B} ^{-1/2} \boldsymbol{v} ^*$, which is the smallest/largest eigenvectors of $\boldsymbol{B} ^{-1} \boldsymbol{A}$.
 
--   Lagrange multipliers approach
+- Lagrange multipliers approach
 
   $$
   \max _{\boldsymbol{x} \neq \boldsymbol{0}}\ \frac{\boldsymbol{x}^{\top} \boldsymbol{A} \boldsymbol{x}}{\boldsymbol{x}^{\top} \boldsymbol{B} \boldsymbol{x}}
@@ -240,6 +255,8 @@ That is, the smallest/largest quotient value equals the smallest/largest eigenva
   Hence, the objective is $\boldsymbol{x} ^{\top} \boldsymbol{A} \boldsymbol{x} = \lambda \boldsymbol{x} ^{\top} \boldsymbol{B} \boldsymbol{x} = \lambda$, where $\lambda$ satisfies $\boldsymbol{A} \boldsymbol{x}=\lambda \boldsymbol{B}\boldsymbol{x}$.
 
 :::
+
+
 
 In particular, if $\boldsymbol{A} = \boldsymbol{a} \boldsymbol{a} ^{\top}$ for some $\boldsymbol{a} \ne \boldsymbol{0}$, the quotient becomes
 
@@ -893,11 +910,15 @@ which aka **basis pursuit** (BP). We hope this is tractable.
 
 How good the solution to $\text{P}_1$ recovers sparse ground truth $\boldsymbol{x} ^*$ to $\text{P}_0$?.
 
-Geometrically, the iso-surface of $\left\| \boldsymbol{x} _1 \right\|$ is pointy. It is very likely that the solution lies in some axis, i.e. sparse solution.
+Geometrically, the iso-surface of $\left\| \boldsymbol{x} \right\|_1$ is pointy. It is very likely that the solution lies in some axis, i.e. sparse solution.
 
-addimg
+:::{figure} lasso-pointy
+<img src="../imgs/lasso-pointy.png" width = "50%" alt=""/>
 
-Note that basis pursuit **cannot** recover $\boldsymbol{x} ^*$ for all $\boldsymbol{A}$ (otherwise 'P=NP'). It recovers $\boldsymbol{x} ^*$ for some $\boldsymbol{A}$, that satisfies the following conditions/properties.
+The constraint $\boldsymbol{a} ^{\top} \boldsymbol{x} =b$ is a line, since $1=n < p=2$. The solution is very likely to lie on an axis.
+:::
+
+Note that basis pursuit **cannot** recover $\boldsymbol{x} ^*$ for all $\boldsymbol{A}$ (otherwise 'P=NP'). It recovers $\boldsymbol{x} ^*$ for some $\boldsymbol{A}$, that satisfies one of the following conditions/properties. Either is sufficient.
 
 - irrepresentable condition
 - restricted isometry property (RIP)
