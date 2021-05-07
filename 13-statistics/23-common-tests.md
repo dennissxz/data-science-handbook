@@ -723,7 +723,7 @@ Note
 - We can express Wilks' lambda by eigenvalues of $\boldsymbol{B} \boldsymbol{W} ^{-1}$, which can be seen as signal-noise ratio. If it is large, then $\lambda$ is large, and $\Lambda^{*}$ is small.
 
   $$
-  \Lambda^{*}=\frac{|\boldsymbol{W}|}{|\boldsymbol{B}+\boldsymbol{W}|}=\frac{1}{\left|\boldsymbol{W}^{-1} \boldsymbol{B}+\boldsymbol{l}\right|}=\prod_{k=1}^{p} \frac{1}{1+\lambda_{k}}
+  \Lambda^{*}=\frac{|\boldsymbol{W}|}{|\boldsymbol{B}+\boldsymbol{W}|}=\frac{1}{\left|\boldsymbol{W}^{-1} \boldsymbol{B}+\boldsymbol{I}\right|}=\prod_{k=1}^{p} \frac{1}{1+\lambda_{k}}
   $$
 
 Other test statistics using the eigenvalues of $\boldsymbol{B} \boldsymbol{W} ^{-1}$ include

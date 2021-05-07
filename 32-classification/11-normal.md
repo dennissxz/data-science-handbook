@@ -209,6 +209,8 @@ observations in the training sample that are misclassified.
 
 ## Equal Covariance
 
+### Two-classes
+
 Let the populations $\pi_i, i=1,2$ be multivariate Gaussian with density $\mathcal{N} _p (\boldsymbol{\mu} _i, \boldsymbol{\Sigma})$. The classification rule that minimizes ECM is to allocate $\color{teal}{\boldsymbol{x}_{0}}$ to $\pi_1$ if
 
 
@@ -229,14 +231,14 @@ $$\begin{aligned}
 The inequality
 
 $$
-\ln \frac{f_{1}\left(x_{0}\right)}{f_{2}\left(x_{0}\right)} \geq \ln \left( \frac{c(1 \vert 2)}{c(2 \vert 1)} \cdot \frac{p_{2}}{p_{1}} \right)
+\ln \frac{f_{1}\left(\boldsymbol{x} _{0}\right)}{f_{2}\left(\boldsymbol{x} _{0}\right)} \geq \ln \left( \frac{c(1 \vert 2)}{c(2 \vert 1)} \cdot \frac{p_{2}}{p_{1}} \right)
 $$
 
 becomes
 
 
 $$
-\left(\boldsymbol{\mu}_{1}-\boldsymbol{\mu}_{2}\right)^{\top} \boldsymbol{\Sigma}^{-1} \boldsymbol{x}_{0}-\left(\boldsymbol{\mu}_{1}-\boldsymbol{\mu}_{2}\right)^{\top} \boldsymbol{\Sigma} ^{-1} \frac{1}{2}\left(\boldsymbol{\mu}_{1}+\boldsymbol{\mu}_{2}\right) \geq \ln \left(\frac{c(1 \vert 2)}{c(2 \vert 1)} \cdot \frac{p_{2}}{p_{1}}\right)
+\left(\boldsymbol{\mu}_{1}-\boldsymbol{\mu}_{2}\right)^{\top} \boldsymbol{\Sigma}^{-1} \color{teal}{\boldsymbol{x}_{0}}-\left(\boldsymbol{\mu}_{1}-\boldsymbol{\mu}_{2}\right)^{\top} \boldsymbol{\Sigma} ^{-1} \frac{1}{2}\left(\boldsymbol{\mu}_{1}+\boldsymbol{\mu}_{2}\right) \geq \ln \left(\frac{c(1 \vert 2)}{c(2 \vert 1)} \cdot \frac{p_{2}}{p_{1}}\right)
 $$
 
 :::
@@ -245,7 +247,7 @@ $$
 In practice, sample estimates are used in the place of the the unknown population $\boldsymbol{\mu} _i, \boldsymbol{\Sigma}$. The sample classification rule is
 
 $$
-\left(\bar{\boldsymbol{x} }_{1}-\bar{\boldsymbol{x} }_{2}\right)^{\top} \boldsymbol{S} _{\text{pool} }^{-1} \boldsymbol{x} _{0}-\frac{1}{2}\left(\bar{\boldsymbol{x} }_{1}-\bar{\boldsymbol{x} }_{2}\right)^{\top} \boldsymbol{S} _{\text{pool} }^{-1}\left(\bar{\boldsymbol{x} }_{1}+\bar{\boldsymbol{x} }_{2}\right) \geq \ln \left(\frac{c(1 \vert 2)}{c(2 \vert 1)} \cdot \frac{p_{2}}{p_{1}}\right)
+\left(\bar{\boldsymbol{x} }_{1}-\bar{\boldsymbol{x} }_{2}\right)^{\top} \boldsymbol{S} _{\text{pool} }^{-1} {\color{teal}{\boldsymbol{x}_{0}}}-\frac{1}{2}\left(\bar{\boldsymbol{x} }_{1}-\bar{\boldsymbol{x} }_{2}\right)^{\top} \boldsymbol{S} _{\text{pool} }^{-1}\left(\bar{\boldsymbol{x} }_{1}+\bar{\boldsymbol{x} }_{2}\right) \geq \ln \left(\frac{c(1 \vert 2)}{c(2 \vert 1)} \cdot \frac{p_{2}}{p_{1}}\right)
 $$
 
 Note that
@@ -262,7 +264,7 @@ Under equal cost and equal prior, we can compute optimum error rate.
 The classification rule is simplified to
 
 $$
-\left(\boldsymbol{\boldsymbol{\mu}}_{1}-\boldsymbol{\boldsymbol{\mu}}_{2}\right)^{\top} \boldsymbol{\boldsymbol{\Sigma}}^{-1} \boldsymbol{\boldsymbol{x}}_{0}\ge\left(\boldsymbol{\boldsymbol{\mu}}_{1}-\boldsymbol{\boldsymbol{\mu}}_{2}\right)^{\top} \boldsymbol{\boldsymbol{\Sigma}} ^{-1} \frac{1}{2}\left(\boldsymbol{\boldsymbol{\mu}}_{1}+\boldsymbol{\boldsymbol{\mu}}_{2}\right)
+\left(\boldsymbol{\boldsymbol{\mu}}_{1}-\boldsymbol{\boldsymbol{\mu}}_{2}\right)^{\top} \boldsymbol{\boldsymbol{\Sigma}}^{-1} \boldsymbol{\boldsymbol{x}}_{0}\ge \frac{1}{2}\left(\boldsymbol{\boldsymbol{\mu}}_{1}-\boldsymbol{\boldsymbol{\mu}}_{2}\right)^{\top} \boldsymbol{\boldsymbol{\Sigma}} ^{-1} \left(\boldsymbol{\boldsymbol{\mu}}_{1}+\boldsymbol{\boldsymbol{\mu}}_{2}\right)
 $$
 
 For $\boldsymbol{x} _0 \sim f_2$, we can define
@@ -275,8 +277,8 @@ $$
 \begin{aligned}
 \int_{R_{1}} f_{2}(\boldsymbol{x}) \mathrm{~d} \boldsymbol{x}
 &=\mathbb{P} (1 \vert 2)=\mathbb{P} \left(\boldsymbol{x} \text { is incorrectly classified as } \pi_{1}\right) \\
-&=\mathbb{P}\left(y_{0}>\left(\boldsymbol{\mu}_{1}-\boldsymbol{\mu}_{2}\right)^{\top} \boldsymbol{\Sigma}^{-1} \frac{1}{2}\left(\boldsymbol{\mu}_{1}+\boldsymbol{\mu}_{2}\right)\right) \\
-&=\mathbb{P}\left(\frac{y_{0}-\mathbb{E}\left(y_{0}\right)}{\sqrt{\operatorname{Var}\left(y_{0}\right)}}>\frac{\left(\boldsymbol{\mu}_{1}-\boldsymbol{\mu}_{2}\right)^{\top} \boldsymbol{\Sigma}^{-1} \frac{1}{2}\left(\boldsymbol{\mu}_{1}+\boldsymbol{\mu}_{2}\right)-\left(\boldsymbol{\mu}_{1}-\boldsymbol{\mu}_{2}\right)^{\top} \boldsymbol{\Sigma}^{-1} \boldsymbol{\mu}_{2}}{\sqrt{\left(\boldsymbol{\mu}_{1}-\boldsymbol{\mu}_{2}\right)^{\top} \boldsymbol{\Sigma}^{-1}\left(\boldsymbol{\mu}_{1}-\boldsymbol{\mu}_{2}\right)}}\right) \\
+&=\mathbb{P}\left(y_{0}>\frac{1}{2}\left(\boldsymbol{\mu}_{1}-\boldsymbol{\mu}_{2}\right)^{\top} \boldsymbol{\Sigma}^{-1} \left(\boldsymbol{\mu}_{1}+\boldsymbol{\mu}_{2}\right)\right) \\
+&=\mathbb{P}\left(\frac{y_{0}-\mathbb{E}\left(y_{0}\right)}{\sqrt{\operatorname{Var}\left(y_{0}\right)}}>\frac{\frac{1}{2}\left(\boldsymbol{\mu}_{1}-\boldsymbol{\mu}_{2}\right)^{\top} \boldsymbol{\Sigma}^{-1} \left(\boldsymbol{\mu}_{1}+\boldsymbol{\mu}_{2}\right)-\left(\boldsymbol{\mu}_{1}-\boldsymbol{\mu}_{2}\right)^{\top} \boldsymbol{\Sigma}^{-1} \boldsymbol{\mu}_{2}}{\sqrt{\left(\boldsymbol{\mu}_{1}-\boldsymbol{\mu}_{2}\right)^{\top} \boldsymbol{\Sigma}^{-1}\left(\boldsymbol{\mu}_{1}-\boldsymbol{\mu}_{2}\right)}}\right) \\
 &=\mathbb{P}\left(Z>\frac{1}{2} \sqrt{\left(\boldsymbol{\mu}_{1}-\boldsymbol{\mu}_{2}\right)^{\top} \boldsymbol{\Sigma}^{-1}\left(\boldsymbol{\mu}_{1}-\boldsymbol{\mu}_{2}\right)}\right) \\
 &=\mathbb{P}\left(Z \leq-\frac{1}{2} \sqrt{\left(\boldsymbol{\mu}_{1}-\boldsymbol{\mu}_{2}\right)^{\top} \boldsymbol{\Sigma}^{-1}\left(\boldsymbol{\mu}_{1}-\boldsymbol{\mu}_{2}\right)}\right)\\
 &=\Phi\left(-\frac{\Delta}{2}\right)
@@ -371,7 +373,7 @@ $$
 The minimum ECM classification regions becomes
 
 $$
-R_{1}:-\frac{1}{2} \boldsymbol{x}^{\top}\left(\boldsymbol{\Sigma}_{1}^{-1}-\boldsymbol{\Sigma}_{2}^{-1}\right) \boldsymbol{x}+\left(\boldsymbol{\mu}_{1}^{\top} \boldsymbol{\Sigma}_{1}^{-1}-\boldsymbol{\mu}_{2}^{\top} \boldsymbol{\Sigma}_{2}^{-1}\right) \boldsymbol{x}-k \geq \ln \left(\frac{c(1 \vert 2)}{c(2 \vert 1)} \cdot \frac{p_{2}}{p_{1}}\right)
+R_{1}:-\frac{1}{2} {\color{teal}{\boldsymbol{x}}}^{\top}\left(\boldsymbol{\Sigma}_{1}^{-1}-\boldsymbol{\Sigma}_{2}^{-1}\right) {\color{teal}{\boldsymbol{x}}}+\left(\boldsymbol{\mu}_{1}^{\top} \boldsymbol{\Sigma}_{1}^{-1}-\boldsymbol{\mu}_{2}^{\top} \boldsymbol{\Sigma}_{2}^{-1}\right) {\color{teal}{\boldsymbol{x}}}-k \geq \ln \left(\frac{c(1 \vert 2)}{c(2 \vert 1)} \cdot \frac{p_{2}}{p_{1}}\right)
 $$
 
 where $k=\frac{1}{2}\left(\boldsymbol{\boldsymbol{\mu}}_{1}^{\top} \boldsymbol{\Sigma}_{1}^{-1} \boldsymbol{\boldsymbol{\mu}}_{1}-\boldsymbol{\boldsymbol{\mu}}_{2}^{\top} \boldsymbol{\Sigma}_{2}^{-1} \boldsymbol{\boldsymbol{\mu}}_{2}\right)+\frac{1}{2} \ln \frac{\left|\boldsymbol{\Sigma}_{1}\right|}{\left|\boldsymbol{\Sigma}_{2}\right|}$.
