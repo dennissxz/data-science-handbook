@@ -1,5 +1,7 @@
 # MyST Markdown
 
+ref: [docu](https://jupyterbook.org/content/myst.html)
+
 ## Math
 
 No empty line in `align` environment, to avoid parse error.
