@@ -89,7 +89,7 @@ def my_function(real_name, optional_display_name=None):
       - the `type()` function returns the type of an object. An object type is unchangeable like the identity.
   - an object's value can or cannot be changed depending by its type
     - objects whose value is changed with their identity **unchanged** are said to be **mutable**, e.g., list, dictionary, set and user-defined classes.
-    - objects whose identity must be changed once its value is changed are called **immutable**, this means if we change its value then a new object (with new identity) is created, e.g., int, float, decimal, bool, string, tuple, and range. after the value is changed, its `id` also changes
+    - objects whose identity must be changed once its value is changed are called **immutable**, this means if we change its value then a new object (with new identity) is created, e.g., int, float, decimal, bool, string, tuple, and range. After the value is changed, its `id` also changes
     - the `==` operator is used to compare the values of two objects
 
 
@@ -150,6 +150,11 @@ def my_function(real_name, optional_display_name=None):
 
 
 ### Classes and Magic Methods
+
+- functions vs methods
+  - functions may be associated with packages, e.g. `np.sqrt()`
+  - methods are always associated with objects, e.g. `df.head()`
+
 
 - class variables vs instance variables
   - instance variables are unique to every object
@@ -393,8 +398,51 @@ def my_function(real_name, optional_display_name=None):
 
 ## Pandas
 
-- Indexing
-- String Column Operation
+ref
+- [note](https://caam37830.github.io/book/07_data/pandas.html?highlight=pandas#)
+
+### Series
+
+“Series = Vector + labels”
+
+attributes
+- `.index`
+- `.values`
+
+methods
+
+- `.describe()`
+- `.head(), .tail()`
+- `.plot()`
+
+### DataFrame
+
+#### Indexing
+
+| Select  | Syntax       | Result |
+|----|----------------------| ---------------------------|
+| a column | `df['col']`   |    Series                      |
+| columns by labels| `df[['col1', 'col3']`]   |       DataFrame       |
+| columns by labels | `df.loc[:, 'col1':'col3']`   |       DataFrame       |
+| a row by its label | `df.loc[label]` | Series  |
+| a row by its integer location | `df.iloc[1]` |      Series                    |
+| rows by integers | `df[1:5]`        |                        DataFrame  |
+| rows by labels | `df['row1':'row5']`        |                        DataFrame  |
+| rows by boolean | `df[mask]`   | DataFrame        |
+| entries by integers | `df.iloc[1:5, 2:6]`   |  DataFrame       |
+| entries by labels | `df.loc[['row1', 'row2'], ['col1', 'col2']]` | DataFrame |
+
+Note that
+- if only select rows or columns, then `[]` is enough.
+- `.loc` is primarily **label** based, but may also be used with a boolean array. The following are valid input
+  - a single label, a list of labels, a slice of labels, a boolean array
+- `.iloc` is primarily **integer** based. The following are valid input
+  - an integer, a list of integers, a slice of integers, a boolean array
+
+#### Methods
+
+- `.max()`
+- `.corr()`
 
 ## Plot
 
@@ -411,3 +459,9 @@ def my_function(real_name, optional_display_name=None):
   ax.spines.right.set_color('none')
   ax.spines.top.set_color('none')
   ```
+
+## Miscellaneous
+
+- `%who` will give you a list of all current user-defined variables
+- `%whos` will give you more details on all current user-defined variables
+- `dir()` will give you the list of in scope variables
