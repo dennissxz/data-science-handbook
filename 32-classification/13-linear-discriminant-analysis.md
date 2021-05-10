@@ -150,7 +150,7 @@ where
 
   $$\boldsymbol{W}=\sum_{i=1}^{g}\left(n_{i}-1\right) \boldsymbol{S}_{i}=\sum_{i=1}^{g} \sum_{j=1}^{n_{i}}\left(\boldsymbol{x}_{i j}-\bar{\boldsymbol{x}}_{i}\right)\left(\boldsymbol{x}_{i j}-\bar{\boldsymbol{x}}_{i}\right)^{\top}$$
 
-This is again a [generalized Rayleigh quotient](rayleigh-quotient). The solution $\boldsymbol{a} ^*$ and maximum is given by the largest eigen pair of matrix $\boldsymbol{W} ^{-1} \boldsymbol{B}$.
+This is again a [generalized Rayleigh quotient](rayleigh-quotient). The optimizer $\boldsymbol{a} ^*$ and maximum is given by the largest eigen pair of matrix $\boldsymbol{W} ^{-1} \boldsymbol{B}$.
 
 $$
 \boldsymbol{W} ^{-1} \boldsymbol{B} \boldsymbol{a} ^*= \lambda \boldsymbol{a}^*
@@ -163,9 +163,9 @@ $$
 $$
 
 
-After obtain one projection direction $\boldsymbol{a} _1 ^*$, we can continue for next, i.e. second largest eigenvectors. There vector $\boldsymbol{a} _j ^*$ are called **discriminant coordinates**, or **canonical variates**, come from an alternative derivation via CCA on predictor variable matrix and response variable matrix.
+After obtain one projection direction $\boldsymbol{a} _1 ^*$, we can continue for next, i.e. second largest eigenvector, and so on. There eigenvectors $\boldsymbol{a} _j ^*$ are called **discriminant coordinates**, or **canonical variates**, coming from an alternative derivation via CCA on predictor variable matrix and response variable matrix.
 
-Note that there are at most $r$ non-zero eigen values of $\boldsymbol{W} ^{-1} \boldsymbol{B}$ where
+Note that there are at most $r$ non-zero eigenvalues of $\boldsymbol{W} ^{-1} \boldsymbol{B}$ where
 
 $$
 r=\operatorname{rank}\left(\boldsymbol{W}^{-1} \boldsymbol{B}\right) \leq \min (g-1, p)
@@ -204,7 +204,7 @@ $$
 
 ### R.t. Discriminant for Gaussian Data
 
-In $g=2$ case we show that Fisher LDA is equivalent to the linear discriminant rule for Gaussian that minimizes ECM under some assumptions. Now we show they are equivalent in $g \ge 2$ case, under those assumptions.
+In the $g=2$ case above, we showed that Fisher LDA is equivalent to the linear discriminant rule for Gaussian that minimizes ECM under some assumptions. Now we show they are equivalent in $g \ge 2$ case, under those assumptions.
 
 [Recall](da-equal-multi) that under the assumptions on equal covariance, equal costs, and equal priors, the sample classification rule for multi-classes that minimizes ECM is
 
@@ -247,6 +247,7 @@ k^*
 &= \arg \min _k\ \sum_{i=1}^{r}\left|\boldsymbol{a} _{i}^{\top}\left(\boldsymbol{x} _{0}-\bar{\boldsymbol{x} }_{k}\right)\right|^{2}  \\
 &= \arg \min _k\ - 2 \bar{\boldsymbol{x} }_k \boldsymbol{S} _{\text{pool} } ^{-1} \boldsymbol{x} _0 + \bar{\boldsymbol{x} }_k \boldsymbol{S} _{\text{pool} } ^{-1}\bar{\boldsymbol{x} }_k  \\
 &= \arg \max _k\ \bar{\boldsymbol{x} }_k \boldsymbol{S} _{\text{pool} } ^{-1} \boldsymbol{x} _0 - \frac{1}{2}  \bar{\boldsymbol{x} }_k \boldsymbol{S} _{\text{pool} } ^{-1}\bar{\boldsymbol{x} }_k  \\
+&= \arg \max _k\ \bar{\boldsymbol{x} }_k \hat{d}_{k}(\boldsymbol{x})\\
 \end{aligned}$$
 
 which is exactly the linear classification rule for Gaussian Data, under those assumptions.
