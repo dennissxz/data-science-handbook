@@ -1006,3 +1006,69 @@ Theorem (Candes-Tao 2006)
 : For $\boldsymbol{x} ^*$ that is $k$-sparse and $\boldsymbol{A} \boldsymbol{x} ^* = \boldsymbol{b}$, if $\boldsymbol{A}$ satisfies $2k$-restricted isometry property with RIC coefficient $\delta_{2k} < \sqrt{2}-1$, then basis pursuit method recovers $\boldsymbol{x} ^*$.
 
 Implication: if $n$ is too small, then $\delta$ is small (from JL Lemma), such that the inequality cannot hold. Hence, this theorem gives a lower bound of $n$, which is $n \ge k \log \frac{p}{k}$. This says that to recover $k$-sparse $\boldsymbol{x} ^*$, we do not need too many equations. Just slightly larger than $k$ (by a factor of $\log \frac{p}{k}$) is enough.
+
+## Comment on Sensing
+
+### Problem
+
+How to sense/recover a high-dimensional object with smaller number of measurements? For instance,
+
+- In SDP for SBM min-cut, the underlying signal is $n \times n$ matrix $\boldsymbol{X} = \boldsymbol{x} \boldsymbol{x} ^{\top}$. Since $p \sim q \sim \mathcal{O} (\frac{\log n}{n} )$, the number of non-zero entries in the $n \times n$ adjacency matrix $\boldsymbol{A}$ is $\mathcal{O} (n \log n)$. We want to recover $n \times n$ object $\boldsymbol{X}$ from $\mathcal{O} (n \log n)$ measurements in $\boldsymbol{A}$.
+- In compressed sensing, the underlying signal is $\boldsymbol{x} \in \mathbb{R} ^{p}$, we have $\boldsymbol{A} \in \mathbb{R} ^{n \times p}$ where $n \le p$. We want to recover $p$-dim object $\boldsymbol{x}$ from $n \le p$ measurements.
+
+### Condition for Recovery
+
+Two conditions for good recovery
+- there exists certain structure of underlying object, e.g.
+  - the matrix is low-rank $\boldsymbol{X} = \boldsymbol{x} \boldsymbol{x} ^{\top}$,
+  - the vector $\boldsymbol{x} \in \mathbb{R} ^{p}$ is sparse.
+- measurements are incoherence with the underlying object
+
+### Incoherence
+
+Let $S$ be a set of measurements $\boldsymbol{M}$. Usually $S$ forms an orthonormal basis, i.e.
+- if $\boldsymbol{M} \in \mathbb{R} ^{n}$ then $\boldsymbol{M}_i = \boldsymbol{e} _i$.
+- if $\boldsymbol{M} \in \mathbb{R} ^{n \times n}$ then $\boldsymbol{M}_{ij} = \boldsymbol{e} _i \boldsymbol{e} _j ^{\top}$.
+
+
+Coherence vs Incoherence
+- If $\langle \boldsymbol{M} , \boldsymbol{X}  \rangle$ is large for some specific measurements $\boldsymbol{M} \in S$ and very small for others, then we say measurement set $S$ is **coherent** with $\boldsymbol{X}$. For instance, $\boldsymbol{M}_i = \boldsymbol{e} _i, \boldsymbol{X} = [1, 0, \ldots, 0]$. In this case, it is hard to find the good $\boldsymbol{M}$ that has large $\langle \boldsymbol{M} , \boldsymbol{X} \rangle$ value. We need many number of measurements.
+- If $\langle \boldsymbol{M} , \boldsymbol{X}  \rangle$ is small for all $\boldsymbol{M} \in S$, then we say measurement set $S$ is **incoherent** with $\boldsymbol{X}$. For instance, $\boldsymbol{M}_i = \boldsymbol{e} _i, \boldsymbol{X} = \boldsymbol{1}/\sqrt{n}$. Though each $\langle \boldsymbol{M}_i , \boldsymbol{X}  \rangle$ is small, but each contributes some quantity to the overall.
+
+
+:::{admonition,note} Example of incoherence: SDP for SBM min-cut
+
+Recall that in SDP for SBM min-cut we want to maximize
+
+$$
+\langle \boldsymbol{A} - \frac{p+q}{2} \boldsymbol{1} \boldsymbol{1} ^{\top} , \boldsymbol{X}   \rangle
+$$
+
+We can re-write this inner product as
+
+$$
+\sum_{i,j=1}^n \langle a_{ij} \boldsymbol{e} _i \boldsymbol{e} _j ^{\top} - \frac{p+q}{2}, \boldsymbol{X}  \rangle = n \sum_{i,j=1}^n \langle a_{ij} \boldsymbol{e} _i \boldsymbol{e} _j ^{\top} - \frac{p+q}{2}, \boldsymbol{X}/n \rangle
+$$
+
+Let $\boldsymbol{M} _{ij} = a_{ij} \boldsymbol{e} _i \boldsymbol{e} _j ^{\top} - \frac{p+q}{2}$, then
+
+$$
+\langle a_{ij} \boldsymbol{e} _i \boldsymbol{e} _j ^{\top} - \frac{p+q}{2}, \boldsymbol{X}/n \rangle = \langle \boldsymbol{M} _{ij}, \boldsymbol{X} /n \rangle = \mathcal{O} (1/n)
+$$
+
+In other words, although small, every single $(i,j)$ observation contributes something information about $\boldsymbol{X}$.
+
+:::
+
+
+:::{admonition,note} Example of incoherence: randomized SVD
+
+Incoherence is the reason why we pick random Gaussian directions for randomized SVD. [Recall](multi-gaussian) that, for Gaussian random vector $\boldsymbol{m} \sim \mathcal{N} _p (\boldsymbol{0} , p ^{-1}  \boldsymbol{I} )$ and some constant vector $\boldsymbol{a} \in \mathbb{R} ^{p}$, we have
+
+$$
+\mathbb{E} [ \left\| \langle \boldsymbol{m} , \boldsymbol{a}  \rangle \right\| ^2 ] = \frac{1}{p} \left\| \boldsymbol{a}  \right\| ^2 = \mathcal{O} (1/p)
+$$
+
+Although small, every single random measurement $\boldsymbol{m}$ contributes something information about $\boldsymbol{a}$.
+
+:::
