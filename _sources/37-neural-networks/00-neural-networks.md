@@ -84,7 +84,7 @@ There are several kinds of activation functions we can choose to build a neural 
 The sigmoid function is
 
 $$
-h(a)=\frac{1}{1+\exp (a)}
+\sigma(x)=\frac{1}{1+\exp (x)}
 $$
 
 :::{figure} nn-sigmoid-plot
@@ -96,7 +96,7 @@ Plot of sigmoid function
 The tanh function is
 
 $$
-h(a)=\tanh (a)
+\tanh (x) = \frac{e^{x} - e^{-x}}{e^{x}+e^{-x}}
 $$
 
 :::{figure} nn-tanh-plot
@@ -112,7 +112,7 @@ The two functions are
 - Bad: gradient is nearly zero far away from midpoint $0$,
 
     $$
-    \frac{\partial L}{\partial a}=\frac{\partial L}{\partial h(a)} \frac{d h}{d a} \approx 0
+    \frac{\partial L}{\partial x}=\frac{\partial L}{\partial h(x)} \frac{\partial h}{\partial x} \approx 0
     $$
 
     so they can make learning sensitive to initialization, and very, very slow.
@@ -122,7 +122,7 @@ The two functions are
 ReLU solves the problems of saturating gradient by making the non-linearity non-saturating, at least in part of the range. It greatly speeds up convergence compared to sigmoid (order of magnitude), and used as the “default” nonlinearity in recent work.
 
 $$
-h(a)=\max (0, a)
+\operatorname{ReLU} (x)=\max (x, 0)
 $$
 
 :::{figure} nn-relu-plot
@@ -131,6 +131,20 @@ $$
 Plot of ReLU function
 :::
 
+Parametric ReLU
+
+
+$$
+\operatorname{PReLU} (a)=\max (x, 0) + a \min (x, 0)
+$$
+
+where $a$ is a trainable parameter.
+
+:::{figure} prelu
+<img src="../imgs/prelu.png" width = "50%" alt=""/>
+
+Parametric ReLU
+:::
 
 
 ### Advantage of Deep Architecture

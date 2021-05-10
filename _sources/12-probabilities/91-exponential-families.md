@@ -16,6 +16,106 @@ kernelspec:
 # Exponential Families
 
 
+(one-dim-exponential)=
+## One-parameter Exponential Family
+
+### Definition
+
+Consider a random variable $Y$ with probability density function parameterized by $\theta \in \mathbb{R}$. If its PDF can be written in the form
+
+$$f(x;\theta) = f_0 (x) \exp \left( x\theta - b(\theta) \right) $$
+
+where
+
+- $b(\theta)$ is some function of $\theta$
+- $f_0(x)$ involves only $x$, no $\theta$
+
+then we call there PDF from one-parameter exponential family, where "one" means $\theta \in \mathbb{R} ^1$.
+
+Some examples include
+
+- Normal with known variance $\sigma^2$, parameterized by $\mu$
+
+  $$
+  f(x)=\frac{1}{\sqrt{2\pi\sigma^{2}}}\exp(-\frac{1}{2\sigma^{2}}(x^{2}-2\mu x+\mu^{2}))=\underbrace{\frac{1}{\sqrt{2\pi\sigma^{2}}}\exp\left(-\frac{x^{2}}{2\sigma^{2}}\right)}_{\theta}{f_{0}(x)}\exp\left(x\underbrace{\frac{\mu}{\sigma^{2}}}_{\theta}-\frac{\mu^{2}}{2\sigma^{2}}\right)
+  $$
+
+- Bernoulli parameterized by $p$
+
+  $$
+  \mathbb{P} (X=x)=p^{x}(1-p)^{1-x}=\exp(x\underbrace{\ln\frac{p}{1-p}}_{\theta}+\ln(1-p))
+  $$
+
+- Binomial parameterized by $p$
+
+  $$
+  \mathbb{P} (X=x)=\binom{n}{x} p^{x}(1-p)^{n-x}= \binom{n}{x}
+  \exp(x\underbrace{\ln\frac{p}{1-p}}_{\theta}+n\ln(1-p))
+  $$
+
+- Poisson parameterized by $\mu$
+
+  $$
+  \mathbb{P}  (X=x)=\frac{e^{-\mu}\mu^{x}}{x!}=\frac{1}{x!}\exp(x\underbrace{\ln\mu}_{\theta}-\mu)
+  $$
+
+Moreover, we call
+
+- $x$: sufficient statistics
+- $b(\theta)$: normalizing or cumulant function
+
+
+### Moments Relations
+
+Distributions in one-parameter exponential family has some nice properties
+
+- $\mu = \mathbb{E}\left( X \right) = b ^\prime (\theta)$
+
+- $\operatorname{Var}\left( X \right) = b ^{\prime\prime}  (\theta) = v(\mu)$
+
+  This variance-mean relation uniquely characterize a distribution class (normal/binomial//Poisson) from exponential family.
+
+- $\frac{\partial \mu}{\partial \theta} = b ^{\prime\prime}  (\theta) = \operatorname{Var}\left(X \right) > 0$.
+
+:::{admonition,dropdown,seealso} *Proof*
+
+
+$$\begin{aligned}
+1 &= \int f(x; \theta) \mathrm{~d}x \\
+&= e ^{-b(\theta)} \int e^{x\theta} f_0(x) \mathrm{~d} x\\
+\Rightarrow \quad e ^{b(\theta)}&=  \int e^{x\theta} f_0(x) \mathrm{~d} x \\
+\end{aligned}$$
+
+Taking derivative w.r.t. $\theta$ on both sides, we have
+
+
+$$\begin{aligned}
+b ^\prime (\theta) e ^{b(\theta)}
+&=  \int x e^{x\theta} f_0(x) \mathrm{~d} x \\
+&= e ^{b(\theta)} \int x e^{x\theta - b(\theta)} f_0(x) \mathrm{~d} x \\
+&= e ^{b(\theta)} \int x f(x;\theta) \mathrm{~d} x \\
+&= e ^{b(\theta)} \mathbb{E}\left( X \right)\\
+\Rightarrow \quad b ^\prime (\theta) &= \mathbb{E}\left( X \right) \\
+\end{aligned}$$
+
+With a similar approach we can find $b ^{\prime \prime }(\theta) = \operatorname{Var}\left( X \right)$
+
+:::
+
+
+
+### Likelihood
+
+Consider observations $X_1, X_2, \ldots, X_n$, each from a one-parameter exponential distribution parameterized bx $\theta_i$. The log-likelihood of $\theta_1, \theta_2, \ldots \theta_n$ is
+
+$$\begin{aligned}
+\ell(\theta)
+&= \log \prod_{i=1}^n f(x_i ;\theta)\\
+&= \sum_{i=1}^n \left\{ x_i \theta_i - b(\theta_i) + \ln f_0 (x_i) \right\}\\
+\end{aligned}$$
+
+
+
 (multi-gaussian)=
 ## Multivariate Gaussian
 
@@ -275,6 +375,7 @@ Cons
 
 
 ## Univariate Gaussian
+
 ### Test Normality
 
 For most multivariate analyses, it is important that the data indeed follow the multivariate normal, at least approximately if not exactly.

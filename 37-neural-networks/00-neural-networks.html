@@ -56,7 +56,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Stochastic Gradient Descent" href="01-stochastic-gradient-descent.html" />
-    <link rel="prev" title="Language Models" href="../35-graphical-models/33-language-models.html" />
+    <link rel="prev" title="Computation Issues" href="../35-graphical-models/91-computation.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
     
@@ -710,6 +710,11 @@
      Language Models
     </a>
    </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../35-graphical-models/91-computation.html">
+     Computation Issues
+    </a>
+   </li>
   </ul>
  </li>
  <li class="toctree-l1 current active has-children">
@@ -1050,7 +1055,7 @@ L(\boldsymbol{x}, y)=-\log \hat{p}(y \mid \boldsymbol{x})=-f_{y}(\boldsymbol{x})
 <p>The sigmoid function is</p>
 <div class="math notranslate nohighlight">
 \[
-h(a)=\frac{1}{1+\exp (a)}
+\sigma(x)=\frac{1}{1+\exp (x)}
 \]</div>
 <div class="figure align-default" id="nn-sigmoid-plot">
 <a class="reference internal image-reference" href="../_images/nn-sigmoid-plot.png"><img alt="" src="../_images/nn-sigmoid-plot.png" style="width: 30%;" /></a>
@@ -1059,7 +1064,7 @@ h(a)=\frac{1}{1+\exp (a)}
 <p>The tanh function is</p>
 <div class="math notranslate nohighlight">
 \[
-h(a)=\tanh (a)
+\tanh (x) = \frac{e^{x} - e^{-x}}{e^{x}+e^{-x}}
 \]</div>
 <div class="figure align-default" id="nn-tanh-plot">
 <a class="reference internal image-reference" href="../_images/nn-tanh-plot.png"><img alt="" src="../_images/nn-tanh-plot.png" style="width: 30%;" /></a>
@@ -1071,7 +1076,7 @@ h(a)=\tanh (a)
 <li><p>Bad: gradient is nearly zero far away from midpoint <span class="math notranslate nohighlight">\(0\)</span>,</p>
 <div class="math notranslate nohighlight">
 \[
-    \frac{\partial L}{\partial a}=\frac{\partial L}{\partial h(a)} \frac{d h}{d a} \approx 0
+    \frac{\partial L}{\partial x}=\frac{\partial L}{\partial h(x)} \frac{\partial h}{\partial x} \approx 0
     \]</div>
 <p>so they can make learning sensitive to initialization, and very, very slow.</p>
 </li>
@@ -1082,11 +1087,21 @@ h(a)=\tanh (a)
 <p>ReLU solves the problems of saturating gradient by making the non-linearity non-saturating, at least in part of the range. It greatly speeds up convergence compared to sigmoid (order of magnitude), and used as the “default” nonlinearity in recent work.</p>
 <div class="math notranslate nohighlight">
 \[
-h(a)=\max (0, a)
+\operatorname{ReLU} (x)=\max (x, 0)
 \]</div>
 <div class="figure align-default" id="nn-relu-plot">
 <a class="reference internal image-reference" href="../_images/nn-relu-plot.png"><img alt="" src="../_images/nn-relu-plot.png" style="width: 30%;" /></a>
 <p class="caption"><span class="caption-number">Fig. 140 </span><span class="caption-text">Plot of ReLU function</span><a class="headerlink" href="#nn-relu-plot" title="Permalink to this image">¶</a></p>
+</div>
+<p>Parametric ReLU</p>
+<div class="math notranslate nohighlight">
+\[
+\operatorname{PReLU} (a)=\max (x, 0) + a \min (x, 0)
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(a\)</span> is a trainable parameter.</p>
+<div class="figure align-default" id="prelu">
+<a class="reference internal image-reference" href="../_images/prelu.png"><img alt="" src="../_images/prelu.png" style="width: 50%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 141 </span><span class="caption-text">Parametric ReLU</span><a class="headerlink" href="#prelu" title="Permalink to this image">¶</a></p>
 </div>
 </div>
 </div>
@@ -1139,7 +1154,7 @@ h(a)=\max (0, a)
 <p>The learning rate <span class="math notranslate nohighlight">\(\eta\)</span> controls the step size. The effect of different learning rates are shown in the below picture. There are many algorithm that optimizes the training process by modifying <span class="math notranslate nohighlight">\(\eta\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{g} ^{(t)}\)</span>, e.g., AdaGrad, RMSProp, Adam. For more details on gradient descent, see <a class="reference internal" href="01-stochastic-gradient-descent.html"><span class="doc std std-doc">here</span></a>.</p>
 <div class="figure align-default" id="nn-lr-comparison">
 <a class="reference internal image-reference" href="../_images/nn-lr-comparison.png"><img alt="" src="../_images/nn-lr-comparison.png" style="width: 50%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 141 </span><span class="caption-text">Comparison of different learning rate [Lecun et al 1996]</span><a class="headerlink" href="#nn-lr-comparison" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 142 </span><span class="caption-text">Comparison of different learning rate [Lecun et al 1996]</span><a class="headerlink" href="#nn-lr-comparison" title="Permalink to this image">¶</a></p>
 </div>
 </div>
 <div class="section" id="backward-propagation">
@@ -1151,7 +1166,7 @@ h(a)=\max (0, a)
 <dt>Example (Computation of Backpropagation)</dt><dd><p>In the neural network below, the node <span class="math notranslate nohighlight">\(z_t\)</span> receives values from input nodes <span class="math notranslate nohighlight">\(z_{i_s}\)</span> where <span class="math notranslate nohighlight">\(j=1, \ldots, S\)</span> and feed its value to outpue nodes <span class="math notranslate nohighlight">\(z_{o_r}\)</span> where <span class="math notranslate nohighlight">\(r=1, \ldots, R\)</span>.</p>
 <div class="figure align-default" id="nn-backpropagation">
 <a class="reference internal image-reference" href="../_images/nn-backpropagation.png"><img alt="" src="../_images/nn-backpropagation.png" style="width: 30%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 142 </span><span class="caption-text">Backpropagation [Shi 2021]</span><a class="headerlink" href="#nn-backpropagation" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 143 </span><span class="caption-text">Backpropagation [Shi 2021]</span><a class="headerlink" href="#nn-backpropagation" title="Permalink to this image">¶</a></p>
 </div>
 <p>Then computation in node <span class="math notranslate nohighlight">\(z_t\)</span> is</p>
 <div class="math notranslate nohighlight">
@@ -1300,7 +1315,7 @@ x\texttt{.grad} &amp;\mathrel{+}= y\texttt{.grad} \times 2 \times x\texttt{.valu
         
         <div class='prev-next-bottom'>
             
-    <a class='left-prev' id="prev-link" href="../35-graphical-models/33-language-models.html" title="previous page">Language Models</a>
+    <a class='left-prev' id="prev-link" href="../35-graphical-models/91-computation.html" title="previous page">Computation Issues</a>
     <a class='right-next' id="next-link" href="01-stochastic-gradient-descent.html" title="next page">Stochastic Gradient Descent</a>
 
         </div>

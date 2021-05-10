@@ -710,6 +710,11 @@
      Language Models
     </a>
    </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../35-graphical-models/91-computation.html">
+     Computation Issues
+    </a>
+   </li>
   </ul>
  </li>
  <li class="toctree-l1 has-children">
@@ -1111,7 +1116,7 @@ s_{y}^{2}=\frac{\sum_{i=1}^{n_{1}}\left(y_{1 i}-\bar{y}_{1}\right)^{2}+\sum_{i=1
 \[\boldsymbol{W}=\sum_{i=1}^{g}\left(n_{i}-1\right) \boldsymbol{S}_{i}=\sum_{i=1}^{g} \sum_{j=1}^{n_{i}}\left(\boldsymbol{x}_{i j}-\bar{\boldsymbol{x}}_{i}\right)\left(\boldsymbol{x}_{i j}-\bar{\boldsymbol{x}}_{i}\right)^{\top}\]</div>
 </li>
 </ul>
-<p>This is again a <a class="reference internal" href="../11-math/52-non-linear-programming.html#rayleigh-quotient"><span class="std std-ref">generalized Rayleigh quotient</span></a>. The solution <span class="math notranslate nohighlight">\(\boldsymbol{a} ^*\)</span> and maximum is given by the largest eigen pair of matrix <span class="math notranslate nohighlight">\(\boldsymbol{W} ^{-1} \boldsymbol{B}\)</span>.</p>
+<p>This is again a <a class="reference internal" href="../11-math/52-non-linear-programming.html#rayleigh-quotient"><span class="std std-ref">generalized Rayleigh quotient</span></a>. The optimizer <span class="math notranslate nohighlight">\(\boldsymbol{a} ^*\)</span> and maximum is given by the largest eigen pair of matrix <span class="math notranslate nohighlight">\(\boldsymbol{W} ^{-1} \boldsymbol{B}\)</span>.</p>
 <div class="math notranslate nohighlight">
 \[
 \boldsymbol{W} ^{-1} \boldsymbol{B} \boldsymbol{a} ^*= \lambda \boldsymbol{a}^*
@@ -1121,8 +1126,8 @@ s_{y}^{2}=\frac{\sum_{i=1}^{n_{1}}\left(y_{1 i}-\bar{y}_{1}\right)^{2}+\sum_{i=1
 \[
 \boldsymbol{a} ^{* \top} \boldsymbol{S} _{\text{pool} } \boldsymbol{a} ^*=1
 \]</div>
-<p>After obtain one projection direction <span class="math notranslate nohighlight">\(\boldsymbol{a} _1 ^*\)</span>, we can continue for next, i.e. second largest eigenvectors. There vector <span class="math notranslate nohighlight">\(\boldsymbol{a} _j ^*\)</span> are called <strong>discriminant coordinates</strong>, or <strong>canonical variates</strong>, come from an alternative derivation via CCA on predictor variable matrix and response variable matrix.</p>
-<p>Note that there are at most <span class="math notranslate nohighlight">\(r\)</span> non-zero eigen values of <span class="math notranslate nohighlight">\(\boldsymbol{W} ^{-1} \boldsymbol{B}\)</span> where</p>
+<p>After obtain one projection direction <span class="math notranslate nohighlight">\(\boldsymbol{a} _1 ^*\)</span>, we can continue for next, i.e. second largest eigenvector, and so on. There eigenvectors <span class="math notranslate nohighlight">\(\boldsymbol{a} _j ^*\)</span> are called <strong>discriminant coordinates</strong>, or <strong>canonical variates</strong>, coming from an alternative derivation via CCA on predictor variable matrix and response variable matrix.</p>
+<p>Note that there are at most <span class="math notranslate nohighlight">\(r\)</span> non-zero eigenvalues of <span class="math notranslate nohighlight">\(\boldsymbol{W} ^{-1} \boldsymbol{B}\)</span> where</p>
 <div class="math notranslate nohighlight">
 \[
 r=\operatorname{rank}\left(\boldsymbol{W}^{-1} \boldsymbol{B}\right) \leq \min (g-1, p)
@@ -1154,7 +1159,7 @@ R_1: \quad \left\vert \boldsymbol{a} ^{\top} (\boldsymbol{x} _0 - \bar{\boldsymb
 </div>
 <div class="section" id="r-t-discriminant-for-gaussian-data">
 <h3>R.t. Discriminant for Gaussian Data<a class="headerlink" href="#r-t-discriminant-for-gaussian-data" title="Permalink to this headline">¶</a></h3>
-<p>In <span class="math notranslate nohighlight">\(g=2\)</span> case we show that Fisher LDA is equivalent to the linear discriminant rule for Gaussian that minimizes ECM under some assumptions. Now we show they are equivalent in <span class="math notranslate nohighlight">\(g \ge 2\)</span> case, under those assumptions.</p>
+<p>In the <span class="math notranslate nohighlight">\(g=2\)</span> case above, we showed that Fisher LDA is equivalent to the linear discriminant rule for Gaussian that minimizes ECM under some assumptions. Now we show they are equivalent in <span class="math notranslate nohighlight">\(g \ge 2\)</span> case, under those assumptions.</p>
 <p><a class="reference internal" href="11-normal.html#da-equal-multi"><span class="std std-ref">Recall</span></a> that under the assumptions on equal covariance, equal costs, and equal priors, the sample classification rule for multi-classes that minimizes ECM is</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{aligned}
@@ -1190,6 +1195,7 @@ k^*
 &amp;= \arg \min _k\ \sum_{i=1}^{r}\left|\boldsymbol{a} _{i}^{\top}\left(\boldsymbol{x} _{0}-\bar{\boldsymbol{x} }_{k}\right)\right|^{2}  \\
 &amp;= \arg \min _k\ - 2 \bar{\boldsymbol{x} }_k \boldsymbol{S} _{\text{pool} } ^{-1} \boldsymbol{x} _0 + \bar{\boldsymbol{x} }_k \boldsymbol{S} _{\text{pool} } ^{-1}\bar{\boldsymbol{x} }_k  \\
 &amp;= \arg \max _k\ \bar{\boldsymbol{x} }_k \boldsymbol{S} _{\text{pool} } ^{-1} \boldsymbol{x} _0 - \frac{1}{2}  \bar{\boldsymbol{x} }_k \boldsymbol{S} _{\text{pool} } ^{-1}\bar{\boldsymbol{x} }_k  \\
+&amp;= \arg \max _k\ \bar{\boldsymbol{x} }_k \hat{d}_{k}(\boldsymbol{x})\\
 \end{aligned}\end{split}\]</div>
 <p>which is exactly the linear classification rule for Gaussian Data, under those assumptions.</p>
 </div>

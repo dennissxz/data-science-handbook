@@ -656,12 +656,12 @@ aggregation function is complex.
 
 #### Supervised
 
-After build GNN layers, to train it, we compute loss and do SGD. The pipeine is
+After build GNN layers, to train it, we compute loss and do SGD. The pipeline is
 
 :::{figure} gnn-training-pipeline
 <img src="../imgs/gnn-training-pipeline.png" width = "50%" alt=""/>
 
-GNN Training Piepline
+GNN Training Pipeline
 :::
 
 The prediction heads depend on whether the task is at node-level, edge-level, or graph-level.
@@ -704,29 +704,50 @@ where $f \left( \left\{ \boldsymbol{z} _v, \forall v \in V \right\} \right)$ is 
 - hierarchical pooling: global pooling may lose information. We can apply pooling to some subgraphs to obtain subgraph embeddings, and then pool these subgraph embeddings.
 
   :::{figure}
-  <img src="../imgs/graph-hier-emb.png" width = "80%" alt=""/>
+  <img src="../imgs/graph-hier-emb.png" width = "90%" alt=""/>
 
   Hierarchical Pooling
   :::
 
-  To decide subgraph assignment ??
+  To decide subgraph assignment, standard community detection or graph partition algorithms can be used. The assignment can also be learned: we build two GNNs,
+  - GNN A: one computes node embeddings
+  - GNN B: one computes the subgraph assignment that a node belongs to
+
+  GNNs A and B at each level can be executed in parallel. See Ying et al. Hierarchical Graph Representation Learning with Differentiable Pooling, NeurIPS 2018.
 
 #### Unsupervised
 
 In unsupervised setting, we use information from the graph itself as labels.
 
-- Node-level: some node statistics, e.g. clustering coefficient, PageRank
-- Edge-level: $y_{u, v} = 1$ when node $u$ and $v$ are similar. Similarity can be defined using random walks, node proximity, etc.
-- Graph-level: some graph statistic, e.g. predict if two graphs are isomorphic
+- Node-level:
+  - some node statistics, e.g. clustering coefficient, PageRank.
+  - if we know some nodes form a cluster, then we can treat cluster assignment as node label.
+- Edge-level: $y_{u, v} = 1$ when node $u$ and $v$ are similar. Similarity can be defined by edges, random walks neighborhood, node proximity, etc.
+- Graph-level: some graph statistic, e.g. predict if two graphs are isomorphic, have similar graphlets, etc.
 
 
 #### Batch
 
 We also use batch gradient descent. In each iteration, we train on a set of nodes, i.e., a batch of compute graphs.
 
-#### Train-test Splitting
+#### Dataset Splitting
 
-Given a graph input with features and labels $\boldsymbol{G} = (V, E, \boldsymbol{X} , \boldsymbol{y})$, how do we split it into train / validation / test set? The speciality of graph is that nodes as observations are connected by edges, they are not independent due to message passing.
+Given a graph input with features and labels $\boldsymbol{G} = (V, E, \boldsymbol{X} , \boldsymbol{y})$, how do we split it into train / validation / test set?
+
+- Training set: used for optimizing GNN parameters
+- Validation set: develop model/hyperparameters
+- Test set: held out until we report final performance
+
+The speciality of graph is that nodes as observations are connected by edges, they are not independent due to message passing. Sometimes we cannot guarantee that the test set will really be held out. Some data leakage issue may exist.
+
+
+:::{admonition,note} Random split
+
+In contrast to this fixed split, another way is random split: we randomly split the data set to train / validation / test. We report average performance over different random seeds.
+
+:::
+
+The ways of splitting depends on tasks.
 
 ##### Node-level
 
@@ -734,15 +755,18 @@ Given a graph input with features and labels $\boldsymbol{G} = (V, E, \boldsymbo
 “transductive” means the entire graph can be observed in all dataset splits
 ```
 
-Transductive setting
-- training: hide some nodes' label $\boldsymbol{y} _h$, use all the remaining information $(V, E, \boldsymbol{X} , \boldsymbol{y} \setminus \boldsymbol{y} _h)$ to train a GNN. Of course, the computation graphs are for those labeled nodes.
-- test: evaluate on $\boldsymbol{y} _h$, i.e. the computation graphs are for those unlabeled nodes.
+Transductive setting: split nodes labels into $\boldsymbol{y} _{\text{train} }, \boldsymbol{y} _{\text{valid} }, \boldsymbol{y} _{\text{test} }$.
+- training: use information $(V, E, \boldsymbol{X} , \boldsymbol{y} _{\text{train} })$ to train a GNN. Of course, the computation graphs are for those labeled nodes.
+- validation: evaluate trained GNN on validation nodes with labels $\boldsymbol{y} _{\text{valid} }$, using all remaining information $(V, E, \boldsymbol{X})$
+- test: evaluate developed GNN on test nodes with labels $\boldsymbol{y} _{\text{test} }$, using all remaining information $(V, E, \boldsymbol{X})$
+- also applicable to edge-level tasks, not applicable to graph-level tasks.
 
-Inductive setting
-- partition the graph into training subgraph $G_{\text{train} }$ and test subgraph $G_{\text{test} }$, remove across-subgraph edges. Then the two subgraphs are independent.
-- training: use $G_{\text{train} }$
-- test: use the trained model, evaluate on $G_{\text{test} }$
-- applicable to node / edge / graph tasks
+Inductive setting: partition the graph $G$ into training subgraph $G_{\text{train} }$, validation subgraph $G_{\text{valid} }$, and test subgraph $G_{\text{test} }$, **remove** across-subgraph edges. Then the three subgraphs are independent.
+- training: use $G_{\text{train} }$ to train a GNN
+- valid: evaluate trained GNN on $G_{\text{valid} }$
+- test: evaluate developed GNN on $G_{\text{test} }$
+- pros: applicable to node / edge / graph tasks
+- cons: not applicable to small graphs
 
 :::{figure} gnn-train-test-split
 <img src="../imgs/gnn-train-test-split.png" width = "70%" alt=""/>
@@ -750,19 +774,20 @@ Inductive setting
 Splitting graph, transductive (left) and inductive (right)
 :::
 
-In the first layer only features not labels are fed into GNN???
+In the first layer only features not labels are fed into GNN.
 
 ##### Link-level
 
 For link-prediction task, we first
 
 Inductive setting
-- Partition edges $E$ into
-  - message edges $E_m$, used for GNN message passing, and
-  - supervision edges $E_s$, use for computing objective, not fed into GNN
-- Partition graph into training subgraph $G_{\text{train} }$ and test subgraph $G_{\text{test} }$, remove across-subgraph edges. Each subgraph will have some $E_m$ and some $E_s$.
-- Training on $G_{\text{train} }$
-- Test on $G_{\text{test} }$
+1. Partition edges $E$ into
+     - message edges $E_m$, used for GNN message passing, and
+    - supervision edges $E_s$, use for computing objective, not fed into GNN
+2. Partition graph into training subgraph $G_{\text{train} }$, valid subgraph $G_{\text{valid} }$, and test subgraph $G_{\text{test} }$, remove across-subgraph edges. Each subgraph will have some $E_m$ and some $E_s$.
+     - Training on $G_{\text{train} }$
+    - Develop on $G_{\text{valid} }$
+    - Test on $G_{\text{test} }$
 
 :::{figure} gnn-split-edge-ind
 <img src="../imgs/gnn-split-edge-ind.png" width = "70%" alt=""/>
@@ -771,14 +796,16 @@ Inductive splitting for link prediction
 :::
 
 Transductive setting (common setting)
-- Partition the edges into
-  - training message edges $E_{\text{train, m}}$
-  - training supervision edges $E_{\text{train, s}}$
-  - test edges $E_{\text{test}}$
-- Training: use training message edges $E_{\text{train, m}}$ to predict training supervision edges $E_{\text{train, s}}$
-- Test: Use $E_{\text{train, m}}$, $E_{\text{train, s}}$ to predict $E_{\text{test}}$
+1. Partition the edges into
+    - training message edges $E_{\text{train, m}}$  
+    - training supervision edges $E_{\text{train, s}}$
+    - validation edges $E_{\text{valid}}$
+    - test edges $E_{\text{test}}$
+2. Training: use training message edges $E_{\text{train, m}}$ to predict training supervision edges $E_{\text{train, s}}$
+3. Validation: Use $E_{\text{train, m}}$, $E_{\text{train, s}}$ to predict $E_{\text{valid}}$
+4. Test: Use $E_{\text{train, m}}$, $E_{\text{train, s}}$, and $E_{\text{valid}}$ to predict $E_{\text{test}}$
 
-After training, supervision edges are **known** to GNN. Therefore, an ideal model should use supervision edges $E_{\text{train, s}}$ in message passing at test time. If there is a validation step, then the validation edges are also used to predict $E_{\text{test}}$.
+After training, supervision edges are **known** to GNN. Therefore, an ideal model should use supervision edges $E_{\text{train, s}}$ in message passing at test time.
 
 :::{figure} gnn-split-edge-tran
 <img src="../imgs/gnn-split-edge-tran.png" width = "70%" alt=""/>
@@ -1059,17 +1086,33 @@ Comparison of feature augmentation methods
 
 #### Virtual Nodes/Edges
 
-If the graph is too sparse, then the receptive field of a node covers small number of nodes. The message passing is then inefficient.
+If the graph is too sparse, then the receptive field of a node covers small number of nodes. The message passing is then inefficient. We can add virtual nodes or virtual edges to augment sparse graphs.
+
+##### Virtual Edges
+
+We can connect 2-hop neighbors via virtual edges. Rather than using adjacency matrix $\boldsymbol{A}$, we use $\boldsymbol{A} + \boldsymbol{A} ^2$.
+
+For instance, in bipartite graphs, after introducing virtual edges to connect 2-hop neighbors, we obtained a folded bipartite graphs.
+
+##### Virtual Nodes
 
 We can add a virtual node, and connected it to all $N_v$ nodes in the graph. Hence all nodes will have a distance at most 2. (too dense?? if $L=2$ then the input layer covers all nodes??)
 
+:::{figure} gnn-virtual-node
+<img src="../imgs/gnn-virtual-node.png" width = "60%" alt=""/>
+
+A virtual node
+:::
+
 #### Neighborhood Sampling
 
-In the standard setting, for a node $v$, all the nodes in $\mathscr{N} _(v)$ are used for message passing. We can actually randomly sample a subset of a node’s neighborhood for message passing.
+In the standard setting, for a node $v$, all the nodes in $\mathscr{N} _(v)$ are used for message passing. If $\left\vert \mathscr{N} _(v) \right\vert$ is large, we can actually randomly sample a **subset** of a node’s neighborhood for message passing.
 
 Next time when we compute the embeddings, we can sample **different** neighbors. In expectation, we will still use all neighbors vectors.
 
-Benefits: greatly reduce computational cost. Allows for scaling to large graphs.
+Benefits:
+- greatly reduce computational cost
+- allow for scaling to large graphs.
 
 ### Graph Generative Models
 

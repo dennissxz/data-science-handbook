@@ -710,6 +710,11 @@
      Language Models
     </a>
    </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../35-graphical-models/91-computation.html">
+     Computation Issues
+    </a>
+   </li>
   </ul>
  </li>
  <li class="toctree-l1 has-children">
@@ -914,12 +919,34 @@
             <nav id="bd-toc-nav">
                 <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#one-parameter-exponential-family">
+   One-parameter Exponential Family
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#definition">
+     Definition
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#moments-relations">
+     Moments Relations
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#likelihood">
+     Likelihood
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#multivariate-gaussian">
    Multivariate Gaussian
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#definition">
+    <a class="reference internal nav-link" href="#id1">
      Definition
     </a>
    </li>
@@ -987,10 +1014,99 @@
                 
   <div class="section" id="exponential-families">
 <h1>Exponential Families<a class="headerlink" href="#exponential-families" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="multivariate-gaussian">
-<span id="multi-gaussian"></span><h2>Multivariate Gaussian<a class="headerlink" href="#multivariate-gaussian" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="one-parameter-exponential-family">
+<span id="one-dim-exponential"></span><h2>One-parameter Exponential Family<a class="headerlink" href="#one-parameter-exponential-family" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="definition">
 <h3>Definition<a class="headerlink" href="#definition" title="Permalink to this headline">¶</a></h3>
+<p>Consider a random variable <span class="math notranslate nohighlight">\(Y\)</span> with probability density function parameterized by <span class="math notranslate nohighlight">\(\theta \in \mathbb{R}\)</span>. If its PDF can be written in the form</p>
+<div class="math notranslate nohighlight">
+\[f(x;\theta) = f_0 (x) \exp \left( x\theta - b(\theta) \right) \]</div>
+<p>where</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(b(\theta)\)</span> is some function of <span class="math notranslate nohighlight">\(\theta\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(f_0(x)\)</span> involves only <span class="math notranslate nohighlight">\(x\)</span>, no <span class="math notranslate nohighlight">\(\theta\)</span></p></li>
+</ul>
+<p>then we call there PDF from one-parameter exponential family, where “one” means <span class="math notranslate nohighlight">\(\theta \in \mathbb{R} ^1\)</span>.</p>
+<p>Some examples include</p>
+<ul>
+<li><p>Normal with known variance <span class="math notranslate nohighlight">\(\sigma^2\)</span>, parameterized by <span class="math notranslate nohighlight">\(\mu\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+  f(x)=\frac{1}{\sqrt{2\pi\sigma^{2}}}\exp(-\frac{1}{2\sigma^{2}}(x^{2}-2\mu x+\mu^{2}))=\underbrace{\frac{1}{\sqrt{2\pi\sigma^{2}}}\exp\left(-\frac{x^{2}}{2\sigma^{2}}\right)}_{\theta}{f_{0}(x)}\exp\left(x\underbrace{\frac{\mu}{\sigma^{2}}}_{\theta}-\frac{\mu^{2}}{2\sigma^{2}}\right)
+  \]</div>
+</li>
+<li><p>Bernoulli parameterized by <span class="math notranslate nohighlight">\(p\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+  \mathbb{P} (X=x)=p^{x}(1-p)^{1-x}=\exp(x\underbrace{\ln\frac{p}{1-p}}_{\theta}+\ln(1-p))
+  \]</div>
+</li>
+<li><p>Binomial parameterized by <span class="math notranslate nohighlight">\(p\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+  \mathbb{P} (X=x)=\binom{n}{x} p^{x}(1-p)^{n-x}= \binom{n}{x}
+  \exp(x\underbrace{\ln\frac{p}{1-p}}_{\theta}+n\ln(1-p))
+  \]</div>
+</li>
+<li><p>Poisson parameterized by <span class="math notranslate nohighlight">\(\mu\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+  \mathbb{P}  (X=x)=\frac{e^{-\mu}\mu^{x}}{x!}=\frac{1}{x!}\exp(x\underbrace{\ln\mu}_{\theta}-\mu)
+  \]</div>
+</li>
+</ul>
+<p>Moreover, we call</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(x\)</span>: sufficient statistics</p></li>
+<li><p><span class="math notranslate nohighlight">\(b(\theta)\)</span>: normalizing or cumulant function</p></li>
+</ul>
+</div>
+<div class="section" id="moments-relations">
+<h3>Moments Relations<a class="headerlink" href="#moments-relations" title="Permalink to this headline">¶</a></h3>
+<p>Distributions in one-parameter exponential family has some nice properties</p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(\mu = \mathbb{E}\left( X \right) = b ^\prime (\theta)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\operatorname{Var}\left( X \right) = b ^{\prime\prime}  (\theta) = v(\mu)\)</span></p>
+<p>This variance-mean relation uniquely characterize a distribution class (normal/binomial//Poisson) from exponential family.</p>
+</li>
+<li><p><span class="math notranslate nohighlight">\(\frac{\partial \mu}{\partial \theta} = b ^{\prime\prime}  (\theta) = \operatorname{Var}\left(X \right) &gt; 0\)</span>.</p></li>
+</ul>
+<div class="dropdown seealso admonition">
+<p class="admonition-title"> <em>Proof</em></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+1 &amp;= \int f(x; \theta) \mathrm{~d}x \\
+&amp;= e ^{-b(\theta)} \int e^{x\theta} f_0(x) \mathrm{~d} x\\
+\Rightarrow \quad e ^{b(\theta)}&amp;=  \int e^{x\theta} f_0(x) \mathrm{~d} x \\
+\end{aligned}\end{split}\]</div>
+<p>Taking derivative w.r.t. <span class="math notranslate nohighlight">\(\theta\)</span> on both sides, we have</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+b ^\prime (\theta) e ^{b(\theta)}
+&amp;=  \int x e^{x\theta} f_0(x) \mathrm{~d} x \\
+&amp;= e ^{b(\theta)} \int x e^{x\theta - b(\theta)} f_0(x) \mathrm{~d} x \\
+&amp;= e ^{b(\theta)} \int x f(x;\theta) \mathrm{~d} x \\
+&amp;= e ^{b(\theta)} \mathbb{E}\left( X \right)\\
+\Rightarrow \quad b ^\prime (\theta) &amp;= \mathbb{E}\left( X \right) \\
+\end{aligned}\end{split}\]</div>
+<p>With a similar approach we can find <span class="math notranslate nohighlight">\(b ^{\prime \prime }(\theta) = \operatorname{Var}\left( X \right)\)</span></p>
+</div>
+</div>
+<div class="section" id="likelihood">
+<h3>Likelihood<a class="headerlink" href="#likelihood" title="Permalink to this headline">¶</a></h3>
+<p>Consider observations <span class="math notranslate nohighlight">\(X_1, X_2, \ldots, X_n\)</span>, each from a one-parameter exponential distribution parameterized bx <span class="math notranslate nohighlight">\(\theta_i\)</span>. The log-likelihood of <span class="math notranslate nohighlight">\(\theta_1, \theta_2, \ldots \theta_n\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\ell(\theta)
+&amp;= \log \prod_{i=1}^n f(x_i ;\theta)\\
+&amp;= \sum_{i=1}^n \left\{ x_i \theta_i - b(\theta_i) + \ln f_0 (x_i) \right\}\\
+\end{aligned}\end{split}\]</div>
+</div>
+</div>
+<div class="section" id="multivariate-gaussian">
+<span id="multi-gaussian"></span><h2>Multivariate Gaussian<a class="headerlink" href="#multivariate-gaussian" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id1">
+<h3>Definition<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
 <dl class="simple myst">
 <dt>Definition (Multivariate normal)</dt><dd><p>A <span class="math notranslate nohighlight">\(p\)</span>-variate random vector <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> is said to have a multivariate normal distribution (multinormal distribution) if <strong>every</strong> linear combination of its components has a univariate normal distribution. That is, <span class="math notranslate nohighlight">\(\boldsymbol{c} ^{\top} \boldsymbol{x} \sim \mathcal{N} (\boldsymbol{c} ^{\top} \boldsymbol{\mu} _x,  \boldsymbol{c} ^{\top}  \boldsymbol{\Sigma}_x \boldsymbol{c})\)</span> for any <span class="math notranslate nohighlight">\(\boldsymbol{c} \in \mathbb{R} ^p\)</span>.</p>
 </dd>
@@ -1198,7 +1314,7 @@ c &amp;= f(\boldsymbol{x} ;\boldsymbol{\mu}, \boldsymbol{\Sigma}) \\
 <p>Note that <span class="math notranslate nohighlight">\(\hat{\boldsymbol{\mu}}\)</span> is unbiased but <span class="math notranslate nohighlight">\(\hat{\boldsymbol{\Sigma} }\)</span> is unbiased. However, <span class="math notranslate nohighlight">\(\boldsymbol{S}\)</span> is unbiased for <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}\)</span>.</p>
 </div>
 <div class="section" id="wishart-distribution">
-<span id="id1"></span><h4>Wishart Distribution<a class="headerlink" href="#wishart-distribution" title="Permalink to this headline">¶</a></h4>
+<span id="id2"></span><h4>Wishart Distribution<a class="headerlink" href="#wishart-distribution" title="Permalink to this headline">¶</a></h4>
 <p>Recall that for univariate i.i.d. standard Gaussians we have <span class="math notranslate nohighlight">\(\sum_{i=1}^k Z_i^2 \sim \sigma^2 \chi ^2 _n\)</span>. The multivariate extension of this chi-squared distribution is Wishart distribution.</p>
 <dl class="simple myst">
 <dt>Definition (Wishart distribution)</dt><dd><p>Suppose <span class="math notranslate nohighlight">\(\boldsymbol{x}_1, \ldots, \boldsymbol{x} _k\)</span> and independent <span class="math notranslate nohighlight">\(\mathcal{N} _p (\boldsymbol{\mu} _i, \boldsymbol{\Sigma})\)</span>. Define a symmetric <span class="math notranslate nohighlight">\(p \times p\)</span> matrix <span class="math notranslate nohighlight">\(\boldsymbol{V}\)</span> as</p>
