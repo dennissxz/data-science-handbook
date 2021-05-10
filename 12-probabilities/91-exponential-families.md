@@ -16,6 +16,111 @@ kernelspec:
 # Exponential Families
 
 
+(one-dim-exponential)=
+## One-parameter Exponential Family
+
+### Definition
+
+Consider a random variable $Y$ with probability density function parameterized by $\theta \in \mathbb{R}$. If its PDF can be written in the form
+
+$$f(y;\theta) = e^{y\theta - b(\theta)} f_0 (y)$$
+
+where
+
+- $b(\theta)$ is some function of $\theta$
+- $f_0(y)$ involves only $y$, no $\theta$
+
+then we call there PDF from one-parameter exponential family, where "one" means $\theta \in \mathbb{R} ^1$.
+
+Some examples include
+
+- Normal with known variance $\sigma^2$
+
+  $$
+  f(y)=\frac{1}{\sqrt{2\pi\sigma^{2}}}\exp(-\frac{1}{2\sigma^{2}}(y^{2}-2\mu y+\mu^{2}))=\underbrace{\frac{1}{\sqrt{2\pi\sigma^{2}}}\exp\left(-\frac{y^{2}}{2\sigma^{2}}\right)}_{\theta}{f_{0}(y)}\exp\left(y\underbrace{\frac{\mu}{\sigma^{2}}}_{\theta}-\frac{\mu^{2}}{2\sigma^{2}}\right)
+  $$
+
+- Bernoulli
+
+  $$
+  P(y)=p^{y}(1-p)^{1-y}=\exp(y\underbrace{\ln\frac{p}{1-p}}_{\theta}+\ln(1-p))
+  $$
+
+- Binomial
+
+  $$
+  P(y)=\left(\begin{array}{c}
+  n\\
+  y
+  \end{array}\right)p^{y}(1-p)^{n-y}=\left(\begin{array}{c}
+  n\\
+  y
+  \end{array}\right)\exp(y\underbrace{\ln\frac{p}{1-p}}_{\theta}+n\ln(1-p))
+  $$
+
+- Poisson
+
+  $$
+  P(y)=\frac{e^{-\mu}\mu^{y}}{y!}=\frac{1}{y!}\exp(y\underbrace{\ln\mu}_{\theta}-\mu)
+  $$
+
+Moreover, we call
+
+- $y$: sufficient statistics
+- $b(\theta)$: normalizing or cumulant function
+
+
+### Moments Relations
+
+Distributions in one-parameter exponential family has some nice properties
+
+- $\mu = \mathbb{E}\left( Y \right) = b ^\prime (\theta)$
+
+- $\operatorname{Var}\left( Y \right) = b ^{\prime\prime}  (\theta) = v(\mu)$
+
+  This variance-mean relation uniquely characterize a distribution class (normal/binomial//Poisson) from exponential family.
+
+- $\frac{\partial \mu}{\partial \theta} = b ^{\prime\prime}  (\theta) = \operatorname{Var}\left( Y \right) > 0$.
+
+:::{admonition,dropdown,seealso} *Proof*
+
+
+$$\begin{aligned}
+1 &= \int f(y; \theta) \boldsymbol{~d}y \\
+&= e ^{-b(\theta)} \int e^{y\theta} f_0(y) \boldsymbol{~d} y\\
+\Rightarrow \quad e ^{b(\theta)}&=  \int e^{y\theta} f_0(y) \boldsymbol{~d} y \\
+\end{aligned}$$
+
+Taking derivative w.r.t. $\theta$ on both sides, we have
+
+
+$$\begin{aligned}
+b ^\prime (\theta) e ^{b(\theta)}
+&=  \int y e^{y\theta} f_0(y) \boldsymbol{~d} y \\
+&= e ^{b(\theta)} \int y e^{y\theta - b(\theta)} f_0(y) \boldsymbol{~d} y \\
+&= e ^{b(\theta)} \int y f(y;\theta) \boldsymbol{~d} y \\
+&= e ^{b(\theta)} \mathbb{E}\left( Y \right)\\
+\Rightarrow \quad b ^\prime (\theta) &= \mathbb{E}\left( Y \right) \\
+\end{aligned}$$
+
+With a similar approach we can find $b ^{\prime \prime }(\theta) = \operatorname{Var}\left( Y \right)$
+
+:::
+
+
+
+### Likelihood
+
+Consider observations $y_1, y_2, \ldots, y_n$, each from a one-parameter exponential distribution parameterized by $\theta_i$. The log-likelihood of $\theta_1, \theta_2, \ldots \theta_n$ is
+
+$$\begin{aligned}
+\ell(\theta)
+&= \log \prod_{i=1}^n f(y_i ;\theta)\\
+&= \sum_{i=1}^n \left\{ y_i \theta_i - b(\theta_i) + \ln f_0 (y_i) \right\}\\
+\end{aligned}$$
+
+
+
 (multi-gaussian)=
 ## Multivariate Gaussian
 
@@ -275,6 +380,7 @@ Cons
 
 
 ## Univariate Gaussian
+
 ### Test Normality
 
 For most multivariate analyses, it is important that the data indeed follow the multivariate normal, at least approximately if not exactly.
