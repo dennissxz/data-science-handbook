@@ -1,6 +1,15 @@
 # Gaussian Mixtures
 
-**Gaussian mixtures** are mixture models that represent the density of the data as a mixture of component densities.
+Previous cluster analysis partitions data sets into homogeneous subgroups, by finding “hard cutoff” linear boundaries. However, often there is inherent uncertainty in the allocation to subgroups. A more sophisticated method of classification is applying mixture models, which incorporate probability distributions into the model, to produce 'soft cutoff'.
+
+Similar to cluster analysis, mixture analysis assumes that the data come from two or more homogeneous populations or models, but it is not known which populations each observation was from.
+
+In mixture analysis,
+- Each cluster is represented by a probability distribution, usually a parametric model, such as N(µi, ⌃i).
+- The data set is represented as a mixture of cluster-specific component distributions.
+- The unknown cluster membership is treated as a random variable.
+
+We introduce (finite) **Gaussian mixture model**.
 
 :::{figure} gaumix-2d2k-comparison
 <img src="../imgs/gaumix-2d2k-comparison.png" width = "70%" alt=""/>
@@ -9,7 +18,7 @@ Comparison of fitting with a single Gaussian and a mixture of two Gaussians.
 :::
 
 
-## Objective
+## Model
 
 We assume there are $K$ latent Gaussian components.
 
@@ -17,7 +26,7 @@ $$
 p(\boldsymbol{x})=\sum_{k=1}^{K} \pi_{k} \underbrace{\operatorname{\mathcal{N}} \left(\boldsymbol{x} \mid \boldsymbol{\mu}_{k}, \boldsymbol{\Sigma}_{k}\right)}_{\text {component }}
 $$
 
-where $\pi_k$ are mixing coefficients,
+where $\pi_k$ are mixing coefficients, which is the probability that $\boldsymbol{x}$ is from class $k$
 
 $$
 \forall k: \pi_{k} \geqslant 0 \quad \sum_{k=1}^{K} \pi_{k}=1
@@ -49,10 +58,10 @@ $$
 \ln p(\boldsymbol{X} \mid \boldsymbol{\pi} , \boldsymbol{\theta} )=\sum_{i=1}^{n} \ln \sum_{k=1}^{K} \pi_{k} \operatorname{\mathcal{N}} \left(\boldsymbol{x}_{i} \mid \boldsymbol{\mu} _k, \boldsymbol{\Sigma} _k\right)
 $$
 
-When $K=1$, this becomes a single multivariate Gaussian problem which has a closed-form solution. But when $K\ge 2$, there is no closed-form solution $\boldsymbol{\pi}, \boldsymbol{\mu} _1, \boldsymbol{\mu} _2, \ldots, \boldsymbol{\mu} _k, \boldsymbol{\Sigma} _1, \boldsymbol{\Sigma} _2, \ldots \boldsymbol{\Sigma} _K$.
+When $K=1$, this becomes a single multivariate Gaussian problem which has a closed-form solution. But when $K\ge 2$, there is no closed-form solution $\boldsymbol{\pi}, \boldsymbol{\mu} _1, \boldsymbol{\mu} _2, \ldots, \boldsymbol{\mu} _K, \boldsymbol{\Sigma} _1, \boldsymbol{\Sigma} _2, \ldots \boldsymbol{\Sigma} _K$.
 
 ```{margin} What if $K$ is large?
-Note that $K$ is large, then there will be overfitting problem. If $K=N$, then the likelihood is $\infty$.
+Note that if $K$ is large, then there will be overfitting problem. If $K=N$, then the likelihood is $\infty$.
 ```
 
 
@@ -142,7 +151,7 @@ EM applies to estimation of any density with hidden variables.
 If an initial guess of cluster center $\boldsymbol{\mu}$ happens to be close to some data point $\boldsymbol{x}$ and the variance is happen to be small, then the ML over $\boldsymbol{x}$ is very large, i.e. overfitting.
 
 $$
-\lim _{\sigma^{2} \rightarrow 0} \operatorname{\mathcal{N}} \left(\mathbf{x} \mid \mu=\mathbf{x}, \Sigma=\sigma^{2} I\right)=\infty
+\lim _{\sigma^{2} \rightarrow 0} \operatorname{\mathcal{N}} \left(\boldsymbol{x} \mid \mu=\boldsymbol{x}, \Sigma=\sigma^{2} I\right)=\infty
 $$
 
 :::{figure} gaumix-fail
@@ -181,7 +190,7 @@ We need penalty on large $d(\mathcal{M})$. Below are some terms often used to co
 - Bayesian Information Criterion (BIC): Learn a model for each K that optimizes the likelihood L(M), then choose the model that maximizes
 
     $$
-    B I C(\mathcal{M})=L(\mathcal{M})-\frac{d(\mathcal{M})}{2} \log n
+    \operatorname{BIC} (\mathcal{M})=L(\mathcal{M})-\frac{d(\mathcal{M})}{2} \log n
     $$
 
 - Akaike information criterion (AIC), minimum description length (MDL), etc.
@@ -195,3 +204,11 @@ In practice,
   - Repeat: Split each Gaussian into two Gaussians with slightly
   different means, run EM, test on development set
   - Until no performance improvement on development set
+
+## Remarks
+
+- Any skewed sampling distribution, even slightly, can fit to several small mixtures towards the tail, even if the distribution actually is not a mixture.
+- There should be good reasons to belief that the underlying distribution is a mixture, before fitting the model.
+- A typical or common situation: There are two obvious humps, but a three-component mixture models fits much better than an obvious two-component one. The third component is small but connects the two larger ones well.
+- Mixture of normal components with covariance ⌃i = ⌘⌃ is approximately
+the same as K-means
