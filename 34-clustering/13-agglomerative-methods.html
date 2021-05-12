@@ -925,6 +925,11 @@
    Convergence Criterion
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#examples">
+   Examples
+  </a>
+ </li>
 </ul>
 
             </nav>
@@ -976,14 +981,20 @@
 </div>
 </li>
 </ul>
+<p>The choice of the measure of dissimilarity matters and has effect on the cluster structure.</p>
+<ul class="simple">
+<li><p>Single linkage merges two clusters when one pair of items are close, even though other pairs may be far apart. Thus single linkage clusters could be more spread out.</p></li>
+<li><p>Complete linkage, on the other hand, could produce more compact cluster.</p></li>
+<li><p>Average linkage strikes a balance, however sensitive to monotone changes of the similarity measure.</p></li>
+</ul>
 <p>In the examples below, <span class="math notranslate nohighlight">\(k\)</span>-means tends to produce clusters with spherical shapes, and we can see how single-linkage is good or bad.</p>
 <div class="figure align-default" id="clustering-comparison-1">
 <a class="reference internal image-reference" href="../_images/clustering-comparison-1.png"><img alt="" src="../_images/clustering-comparison-1.png" style="width: 80%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 103 </span><span class="caption-text">Comparison of clustering algorithms [Livescue 2021]</span><a class="headerlink" href="#clustering-comparison-1" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 104 </span><span class="caption-text">Comparison of clustering algorithms [Livescue 2021]</span><a class="headerlink" href="#clustering-comparison-1" title="Permalink to this image">¶</a></p>
 </div>
 <div class="figure align-default" id="clustering-comparison-2">
 <a class="reference internal image-reference" href="../_images/clustering-comparison-2.png"><img alt="" src="../_images/clustering-comparison-2.png" style="width: 80%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 104 </span><span class="caption-text">Comparison of clustering algorithms [Livescue 2021]</span><a class="headerlink" href="#clustering-comparison-2" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 105 </span><span class="caption-text">Comparison of clustering algorithms [Livescue 2021]</span><a class="headerlink" href="#clustering-comparison-2" title="Permalink to this image">¶</a></p>
 </div>
 </div>
 <div class="section" id="graph-based">
@@ -1035,7 +1046,7 @@
 <p class="sidebar-title"></p>
 <p>This is one advantage of hierarchical clustering over “flat” clustering like <span class="math notranslate nohighlight">\(k\)</span>-means</p>
 </div>
-<p>A good representation of clustering process is dendrogram. The <span class="math notranslate nohighlight">\(x\)</span>-axis represents items, and the <span class="math notranslate nohighlight">\(y\)</span>-axis is distance. It provides visual guidance to a good choice for the number of clusters</p>
+<p>A good representation of clustering process is dendrogram. The <span class="math notranslate nohighlight">\(x\)</span>-axis represents items, and the distance along <span class="math notranslate nohighlight">\(y\)</span>-axis between two connected items is proportional to the dissimilarity between two clusters at the two connected items. It provides visual guidance to a good choice for the number of clusters</p>
 <p>Stop merging when</p>
 <ul class="simple">
 <li><p>the merge cost (distance between merged clusters) would be much larger than in previous iterations (for some precise definition of “much larger”), or</p></li>
@@ -1043,12 +1054,20 @@
 </ul>
 <div class="figure align-default" id="clustering-dendrogram">
 <a class="reference internal image-reference" href="../_images/clustering-dendrogram.png"><img alt="" src="../_images/clustering-dendrogram.png" style="width: 50%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 105 </span><span class="caption-text">Representing clustering with dendrograms</span><a class="headerlink" href="#clustering-dendrogram" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 106 </span><span class="caption-text">Representing clustering with dendrograms</span><a class="headerlink" href="#clustering-dendrogram" title="Permalink to this image">¶</a></p>
 </div>
+</div>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<p>Given an <span class="math notranslate nohighlight">\(n \times p\)</span> matrix of <span class="math notranslate nohighlight">\(p\)</span> variables and <span class="math notranslate nohighlight">\(n\)</span> features, we can do two clusterings</p>
+<ul class="simple">
+<li><p>clustering of the <span class="math notranslate nohighlight">\(p\)</span> variables, where distance is <span class="math notranslate nohighlight">\(d = \sqrt{2 (1-\rho)}\)</span></p></li>
+<li><p>clustering of the <span class="math notranslate nohighlight">\(n\)</span> observations, where distance can be Euclidean distance (of normalized variable values), etc.</p></li>
+</ul>
 <p>For instance, given a matrix of phonemes and electrodes, we are interested in discovering cohesive neural regions/firing patterns and relating them to clusters of stimuli.</p>
 <div class="figure align-default" id="clustering-neural-regions">
 <a class="reference internal image-reference" href="../_images/clustering-neural-regions.png"><img alt="" src="../_images/clustering-neural-regions.png" style="width: 50%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 106 </span><span class="caption-text">Cohesive neural regions/firing patterns [Bouchard et al. 2013]</span><a class="headerlink" href="#clustering-neural-regions" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 107 </span><span class="caption-text">Cohesive neural regions/firing patterns [Bouchard et al. 2013]</span><a class="headerlink" href="#clustering-neural-regions" title="Permalink to this image">¶</a></p>
 </div>
 </div>
 </div>

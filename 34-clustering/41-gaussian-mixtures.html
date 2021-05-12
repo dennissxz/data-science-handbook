@@ -899,8 +899,8 @@
             <nav id="bd-toc-nav">
                 <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#objective">
-   Objective
+  <a class="reference internal nav-link" href="#model">
+   Model
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -937,6 +937,11 @@
    )
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#remarks">
+   Remarks
+  </a>
+ </li>
 </ul>
 
             </nav>
@@ -950,19 +955,27 @@
                 
   <div class="section" id="gaussian-mixtures">
 <h1>Gaussian Mixtures<a class="headerlink" href="#gaussian-mixtures" title="Permalink to this headline">¶</a></h1>
-<p><strong>Gaussian mixtures</strong> are mixture models that represent the density of the data as a mixture of component densities.</p>
+<p>Previous cluster analysis partitions data sets into homogeneous subgroups, by finding “hard cutoff” linear boundaries. However, often there is inherent uncertainty in the allocation to subgroups. A more sophisticated method of classification is applying mixture models, which incorporate probability distributions into the model, to produce ‘soft cutoff’.</p>
+<p>Similar to cluster analysis, mixture analysis assumes that the data come from two or more homogeneous populations or models, but it is not known which populations each observation was from.</p>
+<p>In mixture analysis,</p>
+<ul class="simple">
+<li><p>Each cluster is represented by a probability distribution, usually a parametric model, such as N(µi, ⌃i).</p></li>
+<li><p>The data set is represented as a mixture of cluster-specific component distributions.</p></li>
+<li><p>The unknown cluster membership is treated as a random variable.</p></li>
+</ul>
+<p>We introduce (finite) <strong>Gaussian mixture model</strong>.</p>
 <div class="figure align-default" id="gaumix-2d2k-comparison">
 <a class="reference internal image-reference" href="../_images/gaumix-2d2k-comparison.png"><img alt="" src="../_images/gaumix-2d2k-comparison.png" style="width: 70%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 117 </span><span class="caption-text">Comparison of fitting with a single Gaussian and a mixture of two Gaussians.</span><a class="headerlink" href="#gaumix-2d2k-comparison" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 118 </span><span class="caption-text">Comparison of fitting with a single Gaussian and a mixture of two Gaussians.</span><a class="headerlink" href="#gaumix-2d2k-comparison" title="Permalink to this image">¶</a></p>
 </div>
-<div class="section" id="objective">
-<h2>Objective<a class="headerlink" href="#objective" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="model">
+<h2>Model<a class="headerlink" href="#model" title="Permalink to this headline">¶</a></h2>
 <p>We assume there are <span class="math notranslate nohighlight">\(K\)</span> latent Gaussian components.</p>
 <div class="math notranslate nohighlight">
 \[
 p(\boldsymbol{x})=\sum_{k=1}^{K} \pi_{k} \underbrace{\operatorname{\mathcal{N}} \left(\boldsymbol{x} \mid \boldsymbol{\mu}_{k}, \boldsymbol{\Sigma}_{k}\right)}_{\text {component }}
 \]</div>
-<p>where <span class="math notranslate nohighlight">\(\pi_k\)</span> are mixing coefficients,</p>
+<p>where <span class="math notranslate nohighlight">\(\pi_k\)</span> are mixing coefficients, which is the probability that <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> is from class <span class="math notranslate nohighlight">\(k\)</span></p>
 <div class="math notranslate nohighlight">
 \[
 \forall k: \pi_{k} \geqslant 0 \quad \sum_{k=1}^{K} \pi_{k}=1
@@ -970,12 +983,12 @@ p(\boldsymbol{x})=\sum_{k=1}^{K} \pi_{k} \underbrace{\operatorname{\mathcal{N}} 
 <p>For instance, when <span class="math notranslate nohighlight">\(K=3\)</span>, and <span class="math notranslate nohighlight">\(\boldsymbol{x} \in \mathbb{R}\)</span>, then the mixture is like</p>
 <div class="figure align-default" id="gaumix-1d3k">
 <a class="reference internal image-reference" href="../_images/gaumix-1d3k.png"><img alt="" src="../_images/gaumix-1d3k.png" style="width: 50%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 118 </span><span class="caption-text">A mixture of three univariate Gaussians</span><a class="headerlink" href="#gaumix-1d3k" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 119 </span><span class="caption-text">A mixture of three univariate Gaussians</span><a class="headerlink" href="#gaumix-1d3k" title="Permalink to this image">¶</a></p>
 </div>
 <p>For bivariate cases,</p>
 <div class="figure align-default" id="gaumix-2d3k">
 <a class="reference internal image-reference" href="../_images/gaumix-2d3k.png"><img alt="" src="../_images/gaumix-2d3k.png" style="width: 50%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 119 </span><span class="caption-text">A mixture of three bivariate Gaussians</span><a class="headerlink" href="#gaumix-2d3k" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 120 </span><span class="caption-text">A mixture of three bivariate Gaussians</span><a class="headerlink" href="#gaumix-2d3k" title="Permalink to this image">¶</a></p>
 </div>
 <p>Essentially any distribution can be approximated arbitrarily well by a large enough Gaussian mixture. But, maximum-likelihood estimation of parameters is not trivial.</p>
 </div>
@@ -986,10 +999,10 @@ p(\boldsymbol{x})=\sum_{k=1}^{K} \pi_{k} \underbrace{\operatorname{\mathcal{N}} 
 \[
 \ln p(\boldsymbol{X} \mid \boldsymbol{\pi} , \boldsymbol{\theta} )=\sum_{i=1}^{n} \ln \sum_{k=1}^{K} \pi_{k} \operatorname{\mathcal{N}} \left(\boldsymbol{x}_{i} \mid \boldsymbol{\mu} _k, \boldsymbol{\Sigma} _k\right)
 \]</div>
-<p>When <span class="math notranslate nohighlight">\(K=1\)</span>, this becomes a single multivariate Gaussian problem which has a closed-form solution. But when <span class="math notranslate nohighlight">\(K\ge 2\)</span>, there is no closed-form solution <span class="math notranslate nohighlight">\(\boldsymbol{\pi}, \boldsymbol{\mu} _1, \boldsymbol{\mu} _2, \ldots, \boldsymbol{\mu} _k, \boldsymbol{\Sigma} _1, \boldsymbol{\Sigma} _2, \ldots \boldsymbol{\Sigma} _K\)</span>.</p>
+<p>When <span class="math notranslate nohighlight">\(K=1\)</span>, this becomes a single multivariate Gaussian problem which has a closed-form solution. But when <span class="math notranslate nohighlight">\(K\ge 2\)</span>, there is no closed-form solution <span class="math notranslate nohighlight">\(\boldsymbol{\pi}, \boldsymbol{\mu} _1, \boldsymbol{\mu} _2, \ldots, \boldsymbol{\mu} _K, \boldsymbol{\Sigma} _1, \boldsymbol{\Sigma} _2, \ldots \boldsymbol{\Sigma} _K\)</span>.</p>
 <div class="margin sidebar">
 <p class="sidebar-title">What if <span class="math notranslate nohighlight">\(K\)</span> is large?</p>
-<p>Note that <span class="math notranslate nohighlight">\(K\)</span> is large, then there will be overfitting problem. If <span class="math notranslate nohighlight">\(K=N\)</span>, then the likelihood is <span class="math notranslate nohighlight">\(\infty\)</span>.</p>
+<p>Note that if <span class="math notranslate nohighlight">\(K\)</span> is large, then there will be overfitting problem. If <span class="math notranslate nohighlight">\(K=N\)</span>, then the likelihood is <span class="math notranslate nohighlight">\(\infty\)</span>.</p>
 </div>
 <div class="section" id="introduce-z-ik">
 <h3>Introduce <span class="math notranslate nohighlight">\(z_{ik}\)</span><a class="headerlink" href="#introduce-z-ik" title="Permalink to this headline">¶</a></h3>
@@ -1055,7 +1068,7 @@ p(\boldsymbol{X}, \boldsymbol{Z} \mid \boldsymbol{\pi}, \boldsymbol{\theta}  ) \
 </ul>
 <div class="figure align-default" id="gaumix-em-iterations">
 <a class="reference internal image-reference" href="../_images/gaumix-em-iterations.png"><img alt="" src="../_images/gaumix-em-iterations.png" style="width: 80%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 120 </span><span class="caption-text">Iterations of EM algorithms [Livescue 2021]</span><a class="headerlink" href="#gaumix-em-iterations" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 121 </span><span class="caption-text">Iterations of EM algorithms [Livescue 2021]</span><a class="headerlink" href="#gaumix-em-iterations" title="Permalink to this image">¶</a></p>
 </div>
 <div class="margin sidebar">
 <p class="sidebar-title">General EM</p>
@@ -1068,11 +1081,11 @@ p(\boldsymbol{X}, \boldsymbol{Z} \mid \boldsymbol{\pi}, \boldsymbol{\theta}  ) \
 <p>If an initial guess of cluster center <span class="math notranslate nohighlight">\(\boldsymbol{\mu}\)</span> happens to be close to some data point <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> and the variance is happen to be small, then the ML over <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> is very large, i.e. overfitting.</p>
 <div class="math notranslate nohighlight">
 \[
-\lim _{\sigma^{2} \rightarrow 0} \operatorname{\mathcal{N}} \left(\mathbf{x} \mid \mu=\mathbf{x}, \Sigma=\sigma^{2} I\right)=\infty
+\lim _{\sigma^{2} \rightarrow 0} \operatorname{\mathcal{N}} \left(\boldsymbol{x} \mid \mu=\boldsymbol{x}, \Sigma=\sigma^{2} I\right)=\infty
 \]</div>
 <div class="figure align-default" id="gaumix-fail">
 <a class="reference internal image-reference" href="../_images/gaumix-fail.png"><img alt="" src="../_images/gaumix-fail.png" style="width: 70%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 121 </span><span class="caption-text">Gaussian mixture fails if initialized at a point</span><a class="headerlink" href="#gaumix-fail" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 122 </span><span class="caption-text">Gaussian mixture fails if initialized at a point</span><a class="headerlink" href="#gaumix-fail" title="Permalink to this image">¶</a></p>
 </div>
 <p>Solutions</p>
 <ul>
@@ -1103,7 +1116,7 @@ d(\mathcal{M})=K(D+D(D+1) / 2)+K-1
 <li><p>Bayesian Information Criterion (BIC): Learn a model for each K that optimizes the likelihood L(M), then choose the model that maximizes</p>
 <div class="math notranslate nohighlight">
 \[
-    B I C(\mathcal{M})=L(\mathcal{M})-\frac{d(\mathcal{M})}{2} \log n
+    \operatorname{BIC} (\mathcal{M})=L(\mathcal{M})-\frac{d(\mathcal{M})}{2} \log n
     \]</div>
 </li>
 <li><p>Akaike information criterion (AIC), minimum description length (MDL), etc.</p></li>
@@ -1119,6 +1132,16 @@ different means, run EM, test on development set</p></li>
 <li><p>Until no performance improvement on development set</p></li>
 </ul>
 </li>
+</ul>
+</div>
+<div class="section" id="remarks">
+<h2>Remarks<a class="headerlink" href="#remarks" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Any skewed sampling distribution, even slightly, can fit to several small mixtures towards the tail, even if the distribution actually is not a mixture.</p></li>
+<li><p>There should be good reasons to belief that the underlying distribution is a mixture, before fitting the model.</p></li>
+<li><p>A typical or common situation: There are two obvious humps, but a three-component mixture models fits much better than an obvious two-component one. The third component is small but connects the two larger ones well.</p></li>
+<li><p>Mixture of normal components with covariance ⌃i = ⌘⌃ is approximately
+the same as K-means</p></li>
 </ul>
 </div>
 </div>

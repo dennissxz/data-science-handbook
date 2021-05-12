@@ -1,6 +1,6 @@
 # Machine Learning Basics
 
-
+## Structure
 
 For each model, we introduce
 
@@ -25,6 +25,37 @@ For each model, we introduce
 
 - Extension
   - Variants of the model
+
+
+## Proximity Measures
+
+There are many similarity or dissimilarity measures (jointly called proximity measures) used in machine learning, all with certain degrees of subjectivity. Several important aspects should be considered.
+
+- The nature of the variables,
+- The scales of measurement,
+- Subject matter knowledge.
+
+```{margin}
+A stronger notion than distance is [metric](metric)
+```
+
+Some commonly used distance measures for two vectors $\boldsymbol{x} , \boldsymbol{y} \in \mathbb{R} ^{p}$
+
+- Euclidean distance $d(\boldsymbol{x}, \boldsymbol{y})=\sqrt{(\boldsymbol{x}-\boldsymbol{y})^{\prime}(\boldsymbol{x}-\boldsymbol{y})}$
+
+- Statistical or Mahalanobis distance $d(\boldsymbol{x}, \boldsymbol{y})=\sqrt{(\boldsymbol{x}-\boldsymbol{y})^{\prime} \boldsymbol{S} ^{-1}(\boldsymbol{x}-\boldsymbol{y})}$, $\boldsymbol{S}$ the sample covariance matrix
+
+- Minkowski metric: $d(\boldsymbol{x}, \boldsymbol{y})=\left(\sum_{i=1}^{p}\left|\boldsymbol{x}_{i}-y_{i}\right|^{m}\right)^{1 / m}$. Important cases in application: $m=1,2, \infty$.
+
+- Canberra metric: $d(\boldsymbol{x}, \boldsymbol{y})=\sum_{i=1}^{p} \frac{\left|\boldsymbol{x}_{i}-y_{i}\right|}{\left|\boldsymbol{x}_{i}\right|+\left|y_{i}\right|}$,
+aka normalized Manhattan distance (city block or taxicab distance)
+- Czekanowski coefficient $d(\boldsymbol{\boldsymbol{x}}, \boldsymbol{y})=1-\frac{2 \sum_{i=1}^{p} \min \left(\boldsymbol{x}_{i}, y_{i}\right)}{\sum_{i=1}^{P}\left(\boldsymbol{x}_{i}+y_{i}\right)}$
+
+For two sets $A, B$
+
+- Jaccard similarity: uses size of intersection/union $=\frac{|A \cap B|}{|A \cup B|}$
+- Simpson overlap coefficient: $\frac{|A \cap B|}{\min \{|A|,|B|\}}$
+- Sorensen-Dice coefficient: $\frac{2|A \cap B|}{|A|+|B|}$
 
 
 ## Applications

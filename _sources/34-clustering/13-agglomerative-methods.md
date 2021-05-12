@@ -42,6 +42,13 @@ Let $A$ and $B$ be two clusters and let $a, b$ be individual data points. Usuall
 
     :::
 
+The choice of the measure of dissimilarity matters and has effect on the cluster structure.
+
+- Single linkage merges two clusters when one pair of items are close, even though other pairs may be far apart. Thus single linkage clusters could be more spread out.
+- Complete linkage, on the other hand, could produce more compact cluster.
+- Average linkage strikes a balance, however sensitive to monotone changes of the similarity measure.
+
+
 In the examples below, $k$-means tends to produce clusters with spherical shapes, and we can see how single-linkage is good or bad.
 
 :::{figure} clustering-comparison-1
@@ -105,7 +112,7 @@ Optimization of the modularity function is NP-complete problem. A greedy agglome
 This is one advantage of hierarchical clustering over “flat” clustering like $k$-means
 ```
 
-A good representation of clustering process is dendrogram. The $x$-axis represents items, and the $y$-axis is distance. It provides visual guidance to a good choice for the number of clusters
+A good representation of clustering process is dendrogram. The $x$-axis represents items, and the distance along $y$-axis between two connected items is proportional to the dissimilarity between two clusters at the two connected items. It provides visual guidance to a good choice for the number of clusters
 
 Stop merging when
 - the merge cost (distance between merged clusters) would be much larger than in previous iterations (for some precise definition of “much larger”), or
@@ -116,6 +123,14 @@ Stop merging when
 
 Representing clustering with dendrograms
 :::
+
+
+## Examples
+
+Given an $n \times p$ matrix of $p$ variables and $n$ features, we can do two clusterings
+- clustering of the $p$ variables, where distance is $d = \sqrt{2 (1-\rho)}$
+- clustering of the $n$ observations, where distance can be Euclidean distance (of normalized variable values), etc.
+
 
 For instance, given a matrix of phonemes and electrodes, we are interested in discovering cohesive neural regions/firing patterns and relating them to clusters of stimuli.
 

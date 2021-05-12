@@ -904,8 +904,18 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#algorithm">
+   Algorithm
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#pros-cons">
    Pros Cons
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#relation-to">
+   Relation to
   </a>
  </li>
 </ul>
@@ -921,21 +931,34 @@
                 
   <div class="section" id="k-means-clustering">
 <h1><span class="math notranslate nohighlight">\(k\)</span>-means clustering<a class="headerlink" href="#k-means-clustering" title="Permalink to this headline">¶</a></h1>
-<p><span class="math notranslate nohighlight">\(k\)</span>-means clustering is an iterative algorithm for clustering. It initialize <span class="math notranslate nohighlight">\(k\)</span> cluster centers, assign each example to its closest center, and re-compute the center, until there is no changes in assignment.</p>
+<p>Originated by MacQueen (1967), <span class="math notranslate nohighlight">\(k\)</span>-means clustering is an iterative algorithm for clustering. It initialize <span class="math notranslate nohighlight">\(k\)</span> cluster centers, assign each example to its closest center, and re-compute the center, until there is no changes in assignment.</p>
+<div class="section" id="objective">
+<h2>Objective<a class="headerlink" href="#objective" title="Permalink to this headline">¶</a></h2>
+<p>For a given <span class="math notranslate nohighlight">\(k\)</span>, the objective is to form clusters <span class="math notranslate nohighlight">\(C_1, \ldots, C_k\)</span> that minimize the within cluster sum of squares (aka total distortion)</p>
+<div class="math notranslate nohighlight">
+\[
+D=\sum_{c=1}^{k} \sum_{\boldsymbol{x} \in \text { cluster } c}\left\|\boldsymbol{x}- \boldsymbol{\mu}_{c}\right\|^{2}
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\boldsymbol{\mu}\)</span> is the mean or centroid of objects in cluster <span class="math notranslate nohighlight">\(C_i\)</span>.</p>
+<p><span class="math notranslate nohighlight">\(k\)</span>-means is NP hard.</p>
+</div>
+<div class="section" id="algorithm">
+<h2>Algorithm<a class="headerlink" href="#algorithm" title="Permalink to this headline">¶</a></h2>
+<p>A standard algorithm for <span class="math notranslate nohighlight">\(k\)</span>-means is Lloyd-Forgy algorithm, which is an heuristic method.</p>
 <hr class="docutils" />
-<p><strong>K-means clustering</strong></p>
+<p><strong>Lloyd-Forgy algorithm for <span class="math notranslate nohighlight">\(k\)</span>-means clustering</strong></p>
 <hr class="docutils" />
 <ul>
 <li><p>Initialize <span class="math notranslate nohighlight">\(k\)</span> cluster centers <span class="math notranslate nohighlight">\(\boldsymbol{\mu} _1, \ldots, \boldsymbol{\mu} _k\)</span> at random locations.</p></li>
 <li><p>While True</p>
 <ul>
-<li><p>assign each example <span class="math notranslate nohighlight">\(\boldsymbol{x} _i\)</span> to the closest mean</p>
+<li><p>Assignment step: assign each example <span class="math notranslate nohighlight">\(\boldsymbol{x} _i\)</span> to the closest mean</p>
 <div class="math notranslate nohighlight">
 \[
       y_{i}=\operatorname{argmin}_{c}\left\|\boldsymbol{x}_{i}- \boldsymbol{\mu} _{c}\right\|
       \]</div>
 </li>
-<li><p>re-estimate each mean based on examples assigned to it</p>
+<li><p>Update step: re-estimate each mean based on examples assigned to it</p>
 <div class="math notranslate nohighlight">
 \[
       \mu_{c}=\frac{1}{n_{c}} \sum_{y_{i}=c} \boldsymbol{x}_{i}
@@ -947,18 +970,12 @@
 </li>
 </ul>
 <hr class="docutils" />
+<p>With each iteration step of the K-means algorithm, the within-cluster variations (or centered sums of squares) decrease and the algorithm converges.</p>
+<p>The standard algorithm often converges to a local minimum, rather than global minimum. The results are affected by initialization.</p>
 <div class="figure align-default" id="k-means-example">
 <a class="reference internal image-reference" href="../_images/k-means-example.png"><img alt="" src="../_images/k-means-example.png" style="width: 70%;" /></a>
 <p class="caption"><span class="caption-number">Fig. 101 </span><span class="caption-text">Iterations in <span class="math notranslate nohighlight">\(k\)</span>-means example [Livescu 2021]</span><a class="headerlink" href="#k-means-example" title="Permalink to this image">¶</a></p>
 </div>
-<div class="section" id="objective">
-<h2>Objective<a class="headerlink" href="#objective" title="Permalink to this headline">¶</a></h2>
-<p>We can define an objective for <span class="math notranslate nohighlight">\(k\)</span>-means. It minimizes the total distortion</p>
-<div class="math notranslate nohighlight">
-\[
-D=\sum_{c=1}^{k} \sum_{\boldsymbol{x} \in \text { cluster } c}\left\|\boldsymbol{x}-\mu_{c}\right\|^{2}
-\]</div>
-<p>It often converges to a local minimum, rather than global minimum. The results are affected by initialization.</p>
 </div>
 <div class="section" id="pros-cons">
 <h2>Pros Cons<a class="headerlink" href="#pros-cons" title="Permalink to this headline">¶</a></h2>
@@ -979,6 +996,15 @@ D=\sum_{c=1}^{k} \sum_{\boldsymbol{x} \in \text { cluster } c}\left\|\boldsymbol
 <a class="reference internal image-reference" href="../_images/k-means-bad.png"><img alt="" src="../_images/k-means-bad.png" style="width: 50%;" /></a>
 <p class="caption"><span class="caption-number">Fig. 102 </span><span class="caption-text"><span class="math notranslate nohighlight">\(k\)</span>-means fail for clusters with non-ideal shapes [Livescue 2021]</span><a class="headerlink" href="#k-means-bad" title="Permalink to this image">¶</a></p>
 </div>
+</div>
+<div class="section" id="relation-to">
+<h2>Relation to<a class="headerlink" href="#relation-to" title="Permalink to this headline">¶</a></h2>
+<p>Geometrically, <span class="math notranslate nohighlight">\(k\)</span>-means method is closely related to the Voronoi tessellation partition of the data space with respect to cluster centers</p>
+<div class="figure align-default" id="kmeans-voronoi">
+<a class="reference internal image-reference" href="../_images/kmeans-voronoi.png"><img alt="" src="../_images/kmeans-voronoi.png" style="width: 50%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 103 </span><span class="caption-text">Illustration of Voronoi tessellation [DJ Srolovitz]</span><a class="headerlink" href="#kmeans-voronoi" title="Permalink to this image">¶</a></p>
+</div>
+<p>Various modifications of <span class="math notranslate nohighlight">\(k\)</span>-means such as spherical <span class="math notranslate nohighlight">\(k\)</span>-means and <span class="math notranslate nohighlight">\(k\)</span>-medoids have been proposed to allow using other distance measures.</p>
 </div>
 </div>
 

@@ -1,9 +1,26 @@
 # $k$-means clustering
 
-$k$-means clustering is an iterative algorithm for clustering. It initialize $k$ cluster centers, assign each example to its closest center, and re-compute the center, until there is no changes in assignment.
+Originated by MacQueen (1967), $k$-means clustering is an iterative algorithm for clustering. It initialize $k$ cluster centers, assign each example to its closest center, and re-compute the center, until there is no changes in assignment.
+
+
+## Objective
+
+For a given $k$, the objective is to form clusters $C_1, \ldots, C_k$ that minimize the within cluster sum of squares (aka total distortion)
+
+$$
+D=\sum_{c=1}^{k} \sum_{\boldsymbol{x} \in \text { cluster } c}\left\|\boldsymbol{x}- \boldsymbol{\mu}_{c}\right\|^{2}
+$$
+
+where $\boldsymbol{\mu}$ is the mean or centroid of objects in cluster $C_i$.
+
+$k$-means is NP hard.
+
+## Algorithm
+
+A standard algorithm for $k$-means is Lloyd-Forgy algorithm, which is an heuristic method.
 
 ---
-**K-means clustering**
+**Lloyd-Forgy algorithm for $k$-means clustering**
 
 ---
 
@@ -11,13 +28,13 @@ $k$-means clustering is an iterative algorithm for clustering. It initialize $k$
 
 - While True
 
-  - assign each example $\boldsymbol{x} _i$ to the closest mean
+  - Assignment step: assign each example $\boldsymbol{x} _i$ to the closest mean
 
       $$
       y_{i}=\operatorname{argmin}_{c}\left\|\boldsymbol{x}_{i}- \boldsymbol{\mu} _{c}\right\|
       $$
 
-  - re-estimate each mean based on examples assigned to it
+  - Update step: re-estimate each mean based on examples assigned to it
 
       $$
       \mu_{c}=\frac{1}{n_{c}} \sum_{y_{i}=c} \boldsymbol{x}_{i}
@@ -29,21 +46,17 @@ $k$-means clustering is an iterative algorithm for clustering. It initialize $k$
 
 ---
 
+
+
+With each iteration step of the K-means algorithm, the within-cluster variations (or centered sums of squares) decrease and the algorithm converges.
+
+The standard algorithm often converges to a local minimum, rather than global minimum. The results are affected by initialization.
+
 :::{figure} k-means-example
 <img src="../imgs/k-means-example.png" width = "70%" alt=""/>
 
 Iterations in $k$-means example [Livescu 2021]
 :::
-
-## Objective
-
-We can define an objective for $k$-means. It minimizes the total distortion
-
-$$
-D=\sum_{c=1}^{k} \sum_{\boldsymbol{x} \in \text { cluster } c}\left\|\boldsymbol{x}-\mu_{c}\right\|^{2}
-$$
-
-It often converges to a local minimum, rather than global minimum. The results are affected by initialization.
 
 
 ## Pros Cons
@@ -64,3 +77,15 @@ Cons
 
 $k$-means fail for clusters with non-ideal shapes [Livescue 2021]
 :::
+
+## Relation to
+
+Geometrically, $k$-means method is closely related to the Voronoi tessellation partition of the data space with respect to cluster centers
+
+:::{figure} kmeans-voronoi
+<img src="../imgs/kmeans-voronoi.png" width = "50%" alt=""/>
+
+Illustration of Voronoi tessellation [DJ Srolovitz]
+:::
+
+Various modifications of $k$-means such as spherical $k$-means and $k$-medoids have been proposed to allow using other distance measures.
