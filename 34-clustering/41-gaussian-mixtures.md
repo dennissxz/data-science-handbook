@@ -72,13 +72,13 @@ For each observation $i$, we introduce a set of binary indicator variables $\bol
 
 - If we know $\boldsymbol{z}_i$, then we can obtain the ML estimates of the Gaussian components just like in the single-Gaussian case:
 
-    $$
-    \begin{aligned}
-    \hat{\boldsymbol{\mu}}_{k} &=\frac{1}{n_{k}} \sum_{i=1}^{n} z_{i k} \boldsymbol{x}_i  \\
-    \widehat{\boldsymbol{\Sigma} }_{k} &=\frac{1}{n_{k}} \sum_{i=1}^{n} z_{i k}\left(\boldsymbol{x}_i -\hat{\boldsymbol{\mu}}_{k}\right)\left(\boldsymbol{x}_i -\hat{\boldsymbol{\mu}}_{k}\right)^{\top} \\
-    \hat{\pi}_{k} &=\frac{n_{k}}{n}
-    \end{aligned}
-    $$
+  $$
+  \begin{aligned}
+  \hat{\boldsymbol{\mu}}_{k} &=\frac{1}{n_{k}} \sum_{i=1}^{n} z_{i k} \boldsymbol{x}_i  \\
+  \widehat{\boldsymbol{\Sigma} }_{k} &=\frac{1}{n_{k}} \sum_{i=1}^{n} z_{i k}\left(\boldsymbol{x}_i -\hat{\boldsymbol{\mu}}_{k}\right)\left(\boldsymbol{x}_i -\hat{\boldsymbol{\mu}}_{k}\right)^{\top} \\
+  \hat{\pi}_{k} &=\frac{n_{k}}{n}
+  \end{aligned}
+  $$
 
 
 - If we known the parameters, then the posterior probability of the indicator variables is
@@ -108,20 +108,20 @@ In reality, we know neither the parameters nor the indicators
 By introducing $z_{ik}$, we would like to maximize the **complete data** likelihood
 
 $$
-p(\boldsymbol{X}, \boldsymbol{Z} \mid \boldsymbol{\pi}, \boldsymbol{\theta}  ) \propto \prod_{i=1}^{n} \prod_{k=1}^{K}\left(\boldsymbol{\pi}_{k} \operatorname{\mathcal{N}} \left(\boldsymbol{x}_{i} \mid \boldsymbol{\mu}_{k}, \boldsymbol{\Sigma}_{k}\right)\right)^{z_{i k}}
+L(\boldsymbol{\pi} , \boldsymbol{\theta} \mid \boldsymbol{X} , \boldsymbol{Z} ) = p(\boldsymbol{X}, \boldsymbol{Z} \mid \boldsymbol{\pi}, \boldsymbol{\theta}  ) = \prod_{i=1}^{n} \prod_{k=1}^{K}\left(\pi_{k} \operatorname{\mathcal{N}} \left(\boldsymbol{x}_{i} \mid \boldsymbol{\mu}_{k}, \boldsymbol{\Sigma}_{k}\right)\right)^{z_{i k}}
 $$
 
 or its log
 
 $$
-\ln p(\boldsymbol{X}, \boldsymbol{Z} \mid \boldsymbol{\pi}, \boldsymbol{\theta} )=\text { const }+\sum_{i=1}^{n} \sum_{k=1}^{K} z_{i k}\left(\ln \boldsymbol{\pi}_{k}+\ln \operatorname{\mathcal{N}} \left(\boldsymbol{x}_{i} \mid \boldsymbol{\mu}_{k}, \boldsymbol{\Sigma}_{k}\right)\right)
+\ell(\boldsymbol{\pi} , \boldsymbol{\theta} \mid \boldsymbol{X} , \boldsymbol{Z} )  =\sum_{i=1}^{n} \sum_{k=1}^{K} z_{i k}\left(\ln \pi_{k}+\ln \operatorname{\mathcal{N}} \left(\boldsymbol{x}_{i} \mid \boldsymbol{\mu}_{k}, \boldsymbol{\Sigma}_{k}\right)\right)
 $$
 
-It can be shown that we are actually maximising its expectation w.r.t. $\boldsymbol{z}$
+It can be shown that we are actually maximizing its expectation w.r.t. $\boldsymbol{z}$
 
 
 $$
-\operatorname{E}_{z_{ik} \mid \boldsymbol{X}, \boldsymbol{\pi}, \boldsymbol{\theta}  } \left[  \ln p(\boldsymbol{X}, \boldsymbol{Z} \mid \boldsymbol{\pi}, \boldsymbol{\theta} )  \right]
+\mathbb{E} _{\boldsymbol{z} \mid \boldsymbol{X}, \boldsymbol{\pi}, \boldsymbol{\theta}  } \left[  \ell(\boldsymbol{\pi} , \boldsymbol{\theta} \mid \boldsymbol{X} , \boldsymbol{Z} ) \right]
 $$
 
 Motivated from the above analysis, we can come up with the expectation-maximization algorithm.
@@ -151,7 +151,7 @@ EM applies to estimation of any density with hidden variables.
 If an initial guess of cluster center $\boldsymbol{\mu}$ happens to be close to some data point $\boldsymbol{x}$ and the variance is happen to be small, then the ML over $\boldsymbol{x}$ is very large, i.e. overfitting.
 
 $$
-\lim _{\sigma^{2} \rightarrow 0} \operatorname{\mathcal{N}} \left(\boldsymbol{x} \mid \mu=\boldsymbol{x}, \Sigma=\sigma^{2} I\right)=\infty
+\lim _{\sigma^{2} \rightarrow 0} \operatorname{\mathcal{N}} \left(\boldsymbol{x} \mid \boldsymbol{\mu} =\boldsymbol{x}, \boldsymbol{\Sigma} =\sigma^{2} \boldsymbol{I}\right)=\infty
 $$
 
 :::{figure} gaumix-fail
@@ -169,7 +169,7 @@ Solutions
 - Instead of maximizing the expected likelihood in the M-step,
 maximize the posterior probability of $\theta$ (MAP estimate).
 
-    $$\theta=\underset{\theta}{\operatorname{argmax}} E_{z_{i k} \mid X, \pi, \theta}[\ln p(X, Z \mid \pi, \theta)]+\ln p(\theta)$$  
+    $$\boldsymbol{\theta}=\underset{\boldsymbol{\theta}}{\operatorname{argmax}} \mathbb{E} _{\boldsymbol{z} \mid \boldsymbol{X}, \boldsymbol{\pi} , \boldsymbol{\theta}}[\ln p(\boldsymbol{X} , \boldsymbol{Z}  \mid \boldsymbol{\pi}, \boldsymbol{\theta})]+\ln p(\boldsymbol{\theta} )$$  
 
 ## Model Selection ($K$)
 
@@ -178,7 +178,7 @@ Straw man idea: Choose $K$ to maximize the likelihood
 - In the limit $\Sigma \rightarrow 0$, this yields infinite likelihood
 
 
-Consider the number of parameters in a Gaussian mixture model $\mathcal{M}$ with $K$ components and dimensionality $D$.
+Consider the number of parameters in a Gaussian mixture model $\mathcal{M}$ with $K$ components and dimensionality $D$:
 
 
 $$
@@ -210,5 +210,4 @@ In practice,
 - Any skewed sampling distribution, even slightly, can fit to several small mixtures towards the tail, even if the distribution actually is not a mixture.
 - There should be good reasons to belief that the underlying distribution is a mixture, before fitting the model.
 - A typical or common situation: There are two obvious humps, but a three-component mixture models fits much better than an obvious two-component one. The third component is small but connects the two larger ones well.
-- Mixture of normal components with covariance ⌃i = ⌘⌃ is approximately
-the same as K-means
+- Mixture of normal components with covariance $\boldsymbol{\Sigma} _i = \sigma^2 \boldsymbol{\Sigma}$ is approximately the same as K-means.
