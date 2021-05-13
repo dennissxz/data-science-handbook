@@ -1011,12 +1011,12 @@ p(\boldsymbol{x})=\sum_{k=1}^{K} \pi_{k} \underbrace{\operatorname{\mathcal{N}} 
 <li><p>If we know <span class="math notranslate nohighlight">\(\boldsymbol{z}_i\)</span>, then we can obtain the ML estimates of the Gaussian components just like in the single-Gaussian case:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
-    \begin{aligned}
-    \hat{\boldsymbol{\mu}}_{k} &amp;=\frac{1}{n_{k}} \sum_{i=1}^{n} z_{i k} \boldsymbol{x}_i  \\
-    \widehat{\boldsymbol{\Sigma} }_{k} &amp;=\frac{1}{n_{k}} \sum_{i=1}^{n} z_{i k}\left(\boldsymbol{x}_i -\hat{\boldsymbol{\mu}}_{k}\right)\left(\boldsymbol{x}_i -\hat{\boldsymbol{\mu}}_{k}\right)^{\top} \\
-    \hat{\pi}_{k} &amp;=\frac{n_{k}}{n}
-    \end{aligned}
-    \end{split}\]</div>
+  \begin{aligned}
+  \hat{\boldsymbol{\mu}}_{k} &amp;=\frac{1}{n_{k}} \sum_{i=1}^{n} z_{i k} \boldsymbol{x}_i  \\
+  \widehat{\boldsymbol{\Sigma} }_{k} &amp;=\frac{1}{n_{k}} \sum_{i=1}^{n} z_{i k}\left(\boldsymbol{x}_i -\hat{\boldsymbol{\mu}}_{k}\right)\left(\boldsymbol{x}_i -\hat{\boldsymbol{\mu}}_{k}\right)^{\top} \\
+  \hat{\pi}_{k} &amp;=\frac{n_{k}}{n}
+  \end{aligned}
+  \end{split}\]</div>
 </li>
 <li><p>If we known the parameters, then the posterior probability of the indicator variables is</p>
 <div class="math notranslate nohighlight">
@@ -1042,17 +1042,17 @@ p(\boldsymbol{x})=\sum_{k=1}^{K} \pi_{k} \underbrace{\operatorname{\mathcal{N}} 
 <p>By introducing <span class="math notranslate nohighlight">\(z_{ik}\)</span>, we would like to maximize the <strong>complete data</strong> likelihood</p>
 <div class="math notranslate nohighlight">
 \[
-p(\boldsymbol{X}, \boldsymbol{Z} \mid \boldsymbol{\pi}, \boldsymbol{\theta}  ) \propto \prod_{i=1}^{n} \prod_{k=1}^{K}\left(\boldsymbol{\pi}_{k} \operatorname{\mathcal{N}} \left(\boldsymbol{x}_{i} \mid \boldsymbol{\mu}_{k}, \boldsymbol{\Sigma}_{k}\right)\right)^{z_{i k}}
+L(\boldsymbol{\pi} , \boldsymbol{\theta} \mid \boldsymbol{X} , \boldsymbol{Z} ) = p(\boldsymbol{X}, \boldsymbol{Z} \mid \boldsymbol{\pi}, \boldsymbol{\theta}  ) = \prod_{i=1}^{n} \prod_{k=1}^{K}\left(\pi_{k} \operatorname{\mathcal{N}} \left(\boldsymbol{x}_{i} \mid \boldsymbol{\mu}_{k}, \boldsymbol{\Sigma}_{k}\right)\right)^{z_{i k}}
 \]</div>
 <p>or its log</p>
 <div class="math notranslate nohighlight">
 \[
-\ln p(\boldsymbol{X}, \boldsymbol{Z} \mid \boldsymbol{\pi}, \boldsymbol{\theta} )=\text { const }+\sum_{i=1}^{n} \sum_{k=1}^{K} z_{i k}\left(\ln \boldsymbol{\pi}_{k}+\ln \operatorname{\mathcal{N}} \left(\boldsymbol{x}_{i} \mid \boldsymbol{\mu}_{k}, \boldsymbol{\Sigma}_{k}\right)\right)
+\ell(\boldsymbol{\pi} , \boldsymbol{\theta} \mid \boldsymbol{X} , \boldsymbol{Z} )  =\sum_{i=1}^{n} \sum_{k=1}^{K} z_{i k}\left(\ln \pi_{k}+\ln \operatorname{\mathcal{N}} \left(\boldsymbol{x}_{i} \mid \boldsymbol{\mu}_{k}, \boldsymbol{\Sigma}_{k}\right)\right)
 \]</div>
-<p>It can be shown that we are actually maximising its expectation w.r.t. <span class="math notranslate nohighlight">\(\boldsymbol{z}\)</span></p>
+<p>It can be shown that we are actually maximizing its expectation w.r.t. <span class="math notranslate nohighlight">\(\boldsymbol{z}\)</span></p>
 <div class="math notranslate nohighlight">
 \[
-\operatorname{E}_{z_{ik} \mid \boldsymbol{X}, \boldsymbol{\pi}, \boldsymbol{\theta}  } \left[  \ln p(\boldsymbol{X}, \boldsymbol{Z} \mid \boldsymbol{\pi}, \boldsymbol{\theta} )  \right]
+\mathbb{E} _{\boldsymbol{z} \mid \boldsymbol{X}, \boldsymbol{\pi}, \boldsymbol{\theta}  } \left[  \ell(\boldsymbol{\pi} , \boldsymbol{\theta} \mid \boldsymbol{X} , \boldsymbol{Z} ) \right]
 \]</div>
 <p>Motivated from the above analysis, we can come up with the expectation-maximization algorithm.</p>
 <p>Here comes the expectation-maximization (EM) algorithm</p>
@@ -1081,7 +1081,7 @@ p(\boldsymbol{X}, \boldsymbol{Z} \mid \boldsymbol{\pi}, \boldsymbol{\theta}  ) \
 <p>If an initial guess of cluster center <span class="math notranslate nohighlight">\(\boldsymbol{\mu}\)</span> happens to be close to some data point <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> and the variance is happen to be small, then the ML over <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> is very large, i.e. overfitting.</p>
 <div class="math notranslate nohighlight">
 \[
-\lim _{\sigma^{2} \rightarrow 0} \operatorname{\mathcal{N}} \left(\boldsymbol{x} \mid \mu=\boldsymbol{x}, \Sigma=\sigma^{2} I\right)=\infty
+\lim _{\sigma^{2} \rightarrow 0} \operatorname{\mathcal{N}} \left(\boldsymbol{x} \mid \boldsymbol{\mu} =\boldsymbol{x}, \boldsymbol{\Sigma} =\sigma^{2} \boldsymbol{I}\right)=\infty
 \]</div>
 <div class="figure align-default" id="gaumix-fail">
 <a class="reference internal image-reference" href="../_images/gaumix-fail.png"><img alt="" src="../_images/gaumix-fail.png" style="width: 70%;" /></a>
@@ -1095,7 +1095,7 @@ p(\boldsymbol{X}, \boldsymbol{Z} \mid \boldsymbol{\pi}, \boldsymbol{\theta}  ) \
 <li><p>Instead of maximizing the expected likelihood in the M-step,
 maximize the posterior probability of <span class="math notranslate nohighlight">\(\theta\)</span> (MAP estimate).</p>
 <div class="math notranslate nohighlight">
-\[\theta=\underset{\theta}{\operatorname{argmax}} E_{z_{i k} \mid X, \pi, \theta}[\ln p(X, Z \mid \pi, \theta)]+\ln p(\theta)\]</div>
+\[\boldsymbol{\theta}=\underset{\boldsymbol{\theta}}{\operatorname{argmax}} \mathbb{E} _{\boldsymbol{z} \mid \boldsymbol{X}, \boldsymbol{\pi} , \boldsymbol{\theta}}[\ln p(\boldsymbol{X} , \boldsymbol{Z}  \mid \boldsymbol{\pi}, \boldsymbol{\theta})]+\ln p(\boldsymbol{\theta} )\]</div>
 </li>
 </ul>
 </div>
@@ -1106,7 +1106,7 @@ maximize the posterior probability of <span class="math notranslate nohighlight"
 <li><p>Result: A separate, tiny Gaussian for each training example</p></li>
 <li><p>In the limit <span class="math notranslate nohighlight">\(\Sigma \rightarrow 0\)</span>, this yields infinite likelihood</p></li>
 </ul>
-<p>Consider the number of parameters in a Gaussian mixture model <span class="math notranslate nohighlight">\(\mathcal{M}\)</span> with <span class="math notranslate nohighlight">\(K\)</span> components and dimensionality <span class="math notranslate nohighlight">\(D\)</span>.</p>
+<p>Consider the number of parameters in a Gaussian mixture model <span class="math notranslate nohighlight">\(\mathcal{M}\)</span> with <span class="math notranslate nohighlight">\(K\)</span> components and dimensionality <span class="math notranslate nohighlight">\(D\)</span>:</p>
 <div class="math notranslate nohighlight">
 \[
 d(\mathcal{M})=K(D+D(D+1) / 2)+K-1
@@ -1140,8 +1140,7 @@ different means, run EM, test on development set</p></li>
 <li><p>Any skewed sampling distribution, even slightly, can fit to several small mixtures towards the tail, even if the distribution actually is not a mixture.</p></li>
 <li><p>There should be good reasons to belief that the underlying distribution is a mixture, before fitting the model.</p></li>
 <li><p>A typical or common situation: There are two obvious humps, but a three-component mixture models fits much better than an obvious two-component one. The third component is small but connects the two larger ones well.</p></li>
-<li><p>Mixture of normal components with covariance ⌃i = ⌘⌃ is approximately
-the same as K-means</p></li>
+<li><p>Mixture of normal components with covariance <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma} _i = \sigma^2 \boldsymbol{\Sigma}\)</span> is approximately the same as K-means.</p></li>
 </ul>
 </div>
 </div>

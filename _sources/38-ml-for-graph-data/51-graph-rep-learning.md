@@ -778,11 +778,11 @@ In the first layer only features not labels are fed into GNN.
 
 ##### Link-level
 
-For link-prediction task, we first
+For link-prediction task, usually negative edges are sampled as supervision edge (label: no link). In DeepSNAP, the `edge_label` and `edge_label_index` have included the negative edges (default number of negative edges is same with the number of positive edges).
 
 Inductive setting
 1. Partition edges $E$ into
-     - message edges $E_m$, used for GNN message passing, and
+    - message edges $E_m$, used for GNN message passing, and
     - supervision edges $E_s$, use for computing objective, not fed into GNN
 2. Partition graph into training subgraph $G_{\text{train} }$, valid subgraph $G_{\text{valid} }$, and test subgraph $G_{\text{test} }$, remove across-subgraph edges. Each subgraph will have some $E_m$ and some $E_s$.
      - Training on $G_{\text{train} }$
@@ -795,15 +795,17 @@ Inductive setting
 Inductive splitting for link prediction
 :::
 
-Transductive setting (common setting)
+Transductive setting (common setting, `edge_train_mode = "disjoint"` in DeepSNAP)
 1. Partition the edges into
     - training message edges $E_{\text{train, m}}$  
     - training supervision edges $E_{\text{train, s}}$
     - validation edges $E_{\text{valid}}$
     - test edges $E_{\text{test}}$
-2. Training: use training message edges $E_{\text{train, m}}$ to predict training supervision edges $E_{\text{train, s}}$
-3. Validation: Use $E_{\text{train, m}}$, $E_{\text{train, s}}$ to predict $E_{\text{valid}}$
-4. Test: Use $E_{\text{train, m}}$, $E_{\text{train, s}}$, and $E_{\text{valid}}$ to predict $E_{\text{test}}$
+2. Training: use training message edges $E_{\text{train, m}}$ to predict training supervision edges $E_{\text{train, s}} \cup E_{\text{train, s}}^{\text{neg} }$
+3. Validation: Use $E_{\text{train, m}}$, $E_{\text{train, s}}$ to predict $E_{\text{valid}} \cup E_{\text{valid}}^{\text{neg} }$
+4. Test: Use $E_{\text{train, m}}$, $E_{\text{train, s}}$, and $E_{\text{valid}}$ to predict $E_{\text{test}} \cup E_{\text{test}}^{\text{neg} }$
+
+Another transductive setting is `edge_train_mode = "all"`.
 
 After training, supervision edges are **known** to GNN. Therefore, an ideal model should use supervision edges $E_{\text{train, s}}$ in message passing at test time.
 
@@ -812,6 +814,8 @@ After training, supervision edges are **known** to GNN. Therefore, an ideal mode
 
 Transductive splitting for link prediction
 :::
+
+
 
 ### Pros
 
@@ -1325,3 +1329,77 @@ ID-GNN is more expressive than their GNN counterparts. ID-GNN is the first messa
 - Other GNN techniques:
   - Pre-training Graph Neural Networks (Hu et al., 2019)
   - GNNExplainer: Generating Explanations for Graph Neural Networks (Ying et al., 2019)
+
+### Coding
+
+#### Using PyG
+
+- In forward, GCNConv take as input both node features `x` and `edge_list`
+- In training, for convenience purpose, we feed all data, but the loss only consists of `training_idx`, i.e. only use training nodes to construct computation graphs, and update parameters
+- In validation, save the 'best' model with highest validation accuracy
+- model.train(), model.eval() flag
+
+```
+# binary label
+out = nn.Sigmoid()   # in (0, 1)
+loss_fn = nn.BCELoss() # Binary Cross Entropy
+los = loss_fn(out, y)
+```
+
+```
+# multiple classes
+out = nn.LogSoftmax(x)
+loss_fn = F.nll_loss # negative log likelihood loss
+loss = loss_fn(out, y)
+```
+
+
+```
+# multiple classes
+out = nn.Linear(..., data.num_classes) # raw, unnormalized scores for each class
+loss_fn = nn.CrossEntropyLoss() # combines LogSoftmax and NLLLoss
+loss = loss_fn(out, y)
+```
+
+#### DeepSNAP
+
+- dataset split
+- transformation, feature computation
+
+#### Examples
+
+| Colab | dataset | dataset info| task | output  | loss | remark|
+| -| -|- |- | -| -| -|
+| Colab 0 | pyg.datasets.KarateClub | 34 nodes, 34 features, 4 classes | node classification | `out = self.classifier(h)`, and `h` | `CrossEntropyLoss`  | only uses training set|
+| Colab 1 |  nx.karate_club_graph() | embedding_dim=16, label=1 (edge) or 0 (neg edge)|  node embeddings  |  `out = sigmoid()`  | `BCELoss` | convert nx graph to tensor  |
+| Colab 2 |  Open Graph Benchmark ogbn-arxiv  | 169343 nodes, 128 f|  node classification |  `out = nn.LogSoftmax(dim=-1)`   |  `F.nll_loss` | keep best model, no batch  |
+| | Open Graph Benchmark ogbg-molhiv  | 41,127 graphs, <25> nodes, 2 classes  |  graph classification | pool  |  BCEWithLogitsLoss |  AtomEncoder |
+|   | ENZYMES  | 600 graphs, 6 classes, 3 features |   |   |   |   |
+| Colab 3   | Planetoid CORA citation networks | 2708 nodes, 1433 features are elements of a bag-or-words representation of a document, 7 classes |  link prediction  | inner product  | nn.BCEWithLogitsLoss()  | Implement GraphSAGE, GAT. Loss plot. DeepSNAP |
+|   | TUDataset COX2 | many graphs |  graph classification  |   |   |  |
+
+Qs
+- Colab 0, what are the features?
+- Colab 2, batch.y == batch.y?
+.
+
+
+.
+
+
+.
+
+
+.
+
+
+.
+
+
+.
+
+
+.
+
+
+.

@@ -56,13 +56,13 @@ Under appropriate conditions, MRFs are equivalent to Gibbs random fields [SAND 3
 
 $$
 \begin{aligned}
-\mathbb{P}\left(X_{i}=x_{i} \mid \boldsymbol{X}_{(-i)}=\boldsymbol{x}_{(-i)}\right) &=\frac{\mathbb{P}(\boldsymbol{x})}{\sum_{\boldsymbol{X}^{\prime}: \boldsymbol{x}_{(-i)}^{\prime}=\boldsymbol{x}_{(-i)}} \mathbb{P}\left(\boldsymbol{x}^{\prime}\right)} \\
-&=\frac{\exp \left\{\Sigma_{c \in \mathscr{C}_{i}} U_{c}(\boldsymbol{x})\right\}}{\sum_{\boldsymbol{X}^{\prime}: \boldsymbol{x}_{(-i)}^{\prime}=\boldsymbol{x}_{(-i)}}  \exp \left\{\sum_{c \in \mathscr{C}_{i}} U_{c}\left(\boldsymbol{x}^{\prime}\right)\right\}}
+\mathbb{P}\left(X_{i}=x_{i} \mid \boldsymbol{X}_{(-i)}=\boldsymbol{x}_{(-i)}\right) &=\frac{\mathbb{P}(\boldsymbol{x})}{\sum_{\boldsymbol{x}^{\prime}: \boldsymbol{x}_{(-i)}^{\prime}=\boldsymbol{x}_{(-i)}} \mathbb{P}\left(\boldsymbol{x}^{\prime}\right)} \\
+&=\frac{\exp \left\{\Sigma_{c \in \mathcal{C}_{i}} U_{c}(\boldsymbol{x})\right\}}{\sum_{\boldsymbol{x}^{\prime}: \boldsymbol{x}_{(-i)}^{\prime}=\boldsymbol{x}_{(-i)}}  \exp \left\{\sum_{c \in \mathcal{C}_{i}} U_{c}\left(\boldsymbol{x}^{\prime}\right)\right\}}
 \end{aligned}
 $$
 
 where
-- $\mathcal{C}$ is the set of all cliques involving vertex $i$,
+- $\mathcal{C}_i$ is the set of all cliques involving vertex $i$,
 - the denominator summation is over all vectors $\boldsymbol{x} ^\prime$ such that the sub-vector $\boldsymbol{x} _{(-i)} ^\prime$ is fixed to be $\boldsymbol{x} _{(-i)}$.
 
 Cons
@@ -123,7 +123,9 @@ Other variations follow similarly.
 
 :::
 
-The auto-logistic model has been extended to the case where the $X_i$ take on values $\left\{ 0,1, \ldots, m \right\}$, for arbitrary positive integer $m$, yielding a class of models called **multilevel logistic** or multi-color models. See Strauss [371]. Other auto-models of interest include the **auto-binomial**, the **auto-Poisson**, and the **auto-Gaussian**. In auto-Gaussian, aka **Gaussian Markov random fields**, the PMF is replaced by Gaussian PDF. The conditional expectations and variances take the form
+The auto-logistic model has been extended to the case where the $X_i$ take on values $\left\{ 0,1, \ldots, m \right\}$, for arbitrary positive integer $m$, yielding a class of models called **multilevel logistic** or multi-color models. See Strauss [371]. Other auto-models of interest include the **auto-binomial**, the **auto-Poisson**, and the **auto-Gaussian**.
+
+In auto-Gaussian, aka **Gaussian Markov random fields**, the PMF is replaced by Gaussian PDF. The conditional expectations and variances take the form
 
 $$\begin{aligned}
 \mathbb{E}\left(X_{i} \mid \boldsymbol{X}_{\mathscr{N}_{i}}=\boldsymbol{x}_{\mathscr{N}_{i}}\right)
@@ -215,7 +217,7 @@ This gives a way to approximate the partition function $\kappa(\boldsymbol{\thet
 
 #### Auto-Gaussian
 
-In auto-Gaussian model, the joint distribution of $\boldsymbol{X}$ is known in closed form. In this case, MLE can be computationally tractable. Consider the homogeneous model where the mean is a constant $\alpha$ across the network and the covariance is $\sigma^2 ( \boldsymbol{I} - \beta \boldsymbol{A} ) ^{-1}$. The parameters $\boldsymbol{\theta} = (\alpha, \sigma^2 , \beta)$ can be estimated alternately:
+In auto-Gaussian model, the joint distribution of $\boldsymbol{X}$ is known in closed form to be multivariate Gaussian. In this case, MLE can be computationally tractable. Consider the homogeneous model where the mean is a constant $\alpha$ across the network and the covariance is $\sigma^2 ( \boldsymbol{I} - \beta \boldsymbol{A} ) ^{-1}$. The parameters $\boldsymbol{\theta} = (\alpha, \sigma^2 , \beta)$ can be estimated alternately:
 - maximizing the likelihood as a function of $(\alpha, \sigma^2 )$ given $\beta$,
 - then of $\beta$, given $(\alpha, \sigma^2 )$.
 
@@ -224,8 +226,20 @@ The first set of estimates can be found in closed form, while the second estimat
 
 ### Prediction
 
-\mathscr{C} -> \mathcal{C}
-\mathscr{N}_i -> \mathscr{N}_i
+Prediction is done by evaluating $\mathbb{P}_{\theta}\left(X_{i} \mid \mathbf{X}_{(-j)}=\mathbf{x}_{(-i)}\right)$. But evaluating $\kappa$ is prohibitive. We use by Gibbs sampler.
+
+## Kernel-based Regression
+
+Can we learn from the data a function relating the vertices to their attributes? We may consider a regression-based approach. However, standard methods of regression, such as classical least squares regression, being set up as they are for relating response and predictor variables in Euclidean space, are not immediately applicable to graph-indexed data.
+
+Kernel methods are found to be useful for extending the classical regression paradigm to various settings with non-traditional data.
+- encode predictor variables in a 'kernel'
+- regress a response on these kernel using an extension of ridge regression
+
+Recall that kernels can be thought of as functions that produce similarity matrices. The predictor variables used in the kernel regression are in turn derived from these similarity matrices.
+
+For a graph $G$, a kernel is mapping from $V \times V$ to $\mathbb{R}$, and the similarity is among vertices in $G$.
+
 
 .
 

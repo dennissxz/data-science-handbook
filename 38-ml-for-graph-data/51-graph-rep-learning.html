@@ -1244,6 +1244,28 @@
      Reference
     </a>
    </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#coding">
+     Coding
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#using-pyg">
+       Using PyG
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#deepsnap">
+       DeepSNAP
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#examples">
+       Examples
+      </a>
+     </li>
+    </ul>
+   </li>
   </ul>
  </li>
 </ul>
@@ -2021,7 +2043,7 @@ aggregation function is complex.</p>
 </div>
 <div class="section" id="link-level">
 <h5>Link-level<a class="headerlink" href="#link-level" title="Permalink to this headline">¶</a></h5>
-<p>For link-prediction task, we first</p>
+<p>For link-prediction task, usually negative edges are sampled as supervision edge (label: no link). In DeepSNAP, the <code class="docutils literal notranslate"><span class="pre">edge_label</span></code> and <code class="docutils literal notranslate"><span class="pre">edge_label_index</span></code> have included the negative edges (default number of negative edges is same with the number of positive edges).</p>
 <p>Inductive setting</p>
 <ol class="simple">
 <li><p>Partition edges <span class="math notranslate nohighlight">\(E\)</span> into</p>
@@ -2042,7 +2064,7 @@ aggregation function is complex.</p>
 <a class="reference internal image-reference" href="../_images/gnn-split-edge-ind.png"><img alt="" src="../_images/gnn-split-edge-ind.png" style="width: 70%;" /></a>
 <p class="caption"><span class="caption-number">Fig. 226 </span><span class="caption-text">Inductive splitting for link prediction</span><a class="headerlink" href="#gnn-split-edge-ind" title="Permalink to this image">¶</a></p>
 </div>
-<p>Transductive setting (common setting)</p>
+<p>Transductive setting (common setting, <code class="docutils literal notranslate"><span class="pre">edge_train_mode</span> <span class="pre">=</span> <span class="pre">&quot;disjoint&quot;</span></code> in DeepSNAP)</p>
 <ol class="simple">
 <li><p>Partition the edges into</p>
 <ul class="simple">
@@ -2052,10 +2074,11 @@ aggregation function is complex.</p>
 <li><p>test edges <span class="math notranslate nohighlight">\(E_{\text{test}}\)</span></p></li>
 </ul>
 </li>
-<li><p>Training: use training message edges <span class="math notranslate nohighlight">\(E_{\text{train, m}}\)</span> to predict training supervision edges <span class="math notranslate nohighlight">\(E_{\text{train, s}}\)</span></p></li>
-<li><p>Validation: Use <span class="math notranslate nohighlight">\(E_{\text{train, m}}\)</span>, <span class="math notranslate nohighlight">\(E_{\text{train, s}}\)</span> to predict <span class="math notranslate nohighlight">\(E_{\text{valid}}\)</span></p></li>
-<li><p>Test: Use <span class="math notranslate nohighlight">\(E_{\text{train, m}}\)</span>, <span class="math notranslate nohighlight">\(E_{\text{train, s}}\)</span>, and <span class="math notranslate nohighlight">\(E_{\text{valid}}\)</span> to predict <span class="math notranslate nohighlight">\(E_{\text{test}}\)</span></p></li>
+<li><p>Training: use training message edges <span class="math notranslate nohighlight">\(E_{\text{train, m}}\)</span> to predict training supervision edges <span class="math notranslate nohighlight">\(E_{\text{train, s}} \cup E_{\text{train, s}}^{\text{neg} }\)</span></p></li>
+<li><p>Validation: Use <span class="math notranslate nohighlight">\(E_{\text{train, m}}\)</span>, <span class="math notranslate nohighlight">\(E_{\text{train, s}}\)</span> to predict <span class="math notranslate nohighlight">\(E_{\text{valid}} \cup E_{\text{valid}}^{\text{neg} }\)</span></p></li>
+<li><p>Test: Use <span class="math notranslate nohighlight">\(E_{\text{train, m}}\)</span>, <span class="math notranslate nohighlight">\(E_{\text{train, s}}\)</span>, and <span class="math notranslate nohighlight">\(E_{\text{valid}}\)</span> to predict <span class="math notranslate nohighlight">\(E_{\text{test}} \cup E_{\text{test}}^{\text{neg} }\)</span></p></li>
 </ol>
+<p>Another transductive setting is <code class="docutils literal notranslate"><span class="pre">edge_train_mode</span> <span class="pre">=</span> <span class="pre">&quot;all&quot;</span></code>.</p>
 <p>After training, supervision edges are <strong>known</strong> to GNN. Therefore, an ideal model should use supervision edges <span class="math notranslate nohighlight">\(E_{\text{train, s}}\)</span> in message passing at test time.</p>
 <div class="figure align-default" id="gnn-split-edge-tran">
 <a class="reference internal image-reference" href="../_images/gnn-split-edge-tran.png"><img alt="" src="../_images/gnn-split-edge-tran.png" style="width: 70%;" /></a>
@@ -2571,6 +2594,129 @@ The distance between two distributions can be measured by <a class="reference ex
 </ul>
 </li>
 </ul>
+</div>
+<div class="section" id="coding">
+<h3>Coding<a class="headerlink" href="#coding" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="using-pyg">
+<h4>Using PyG<a class="headerlink" href="#using-pyg" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p>In forward, GCNConv take as input both node features <code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">edge_list</span></code></p></li>
+<li><p>In training, for convenience purpose, we feed all data, but the loss only consists of <code class="docutils literal notranslate"><span class="pre">training_idx</span></code>, i.e. only use training nodes to construct computation graphs, and update parameters</p></li>
+<li><p>In validation, save the ‘best’ model with highest validation accuracy</p></li>
+<li><p>model.train(), model.eval() flag</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># binary label</span>
+<span class="n">out</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sigmoid</span><span class="p">()</span>   <span class="c1"># in (0, 1)</span>
+<span class="n">loss_fn</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">BCELoss</span><span class="p">()</span> <span class="c1"># Binary Cross Entropy</span>
+<span class="n">los</span> <span class="o">=</span> <span class="n">loss_fn</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># multiple classes</span>
+<span class="n">out</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">LogSoftmax</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">loss_fn</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">nll_loss</span> <span class="c1"># negative log likelihood loss</span>
+<span class="n">loss</span> <span class="o">=</span> <span class="n">loss_fn</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># multiple classes</span>
+<span class="n">out</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">num_classes</span><span class="p">)</span> <span class="c1"># raw, unnormalized scores for each class</span>
+<span class="n">loss_fn</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">CrossEntropyLoss</span><span class="p">()</span> <span class="c1"># combines LogSoftmax and NLLLoss</span>
+<span class="n">loss</span> <span class="o">=</span> <span class="n">loss_fn</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="deepsnap">
+<h4>DeepSNAP<a class="headerlink" href="#deepsnap" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p>dataset split</p></li>
+<li><p>transformation, feature computation</p></li>
+</ul>
+</div>
+<div class="section" id="examples">
+<h4>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h4>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Colab</p></th>
+<th class="head"><p>dataset</p></th>
+<th class="head"><p>dataset info</p></th>
+<th class="head"><p>task</p></th>
+<th class="head"><p>output</p></th>
+<th class="head"><p>loss</p></th>
+<th class="head"><p>remark</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Colab 0</p></td>
+<td><p>pyg.datasets.KarateClub</p></td>
+<td><p>34 nodes, 34 features, 4 classes</p></td>
+<td><p>node classification</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">out</span> <span class="pre">=</span> <span class="pre">self.classifier(h)</span></code>, and <code class="docutils literal notranslate"><span class="pre">h</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">CrossEntropyLoss</span></code></p></td>
+<td><p>only uses training set</p></td>
+</tr>
+<tr class="row-odd"><td><p>Colab 1</p></td>
+<td><p>nx.karate_club_graph()</p></td>
+<td><p>embedding_dim=16, label=1 (edge) or 0 (neg edge)</p></td>
+<td><p>node embeddings</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">out</span> <span class="pre">=</span> <span class="pre">sigmoid()</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">BCELoss</span></code></p></td>
+<td><p>convert nx graph to tensor</p></td>
+</tr>
+<tr class="row-even"><td><p>Colab 2</p></td>
+<td><p>Open Graph Benchmark ogbn-arxiv</p></td>
+<td><p>169343 nodes, 128 f</p></td>
+<td><p>node classification</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">out</span> <span class="pre">=</span> <span class="pre">nn.LogSoftmax(dim=-1)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">F.nll_loss</span></code></p></td>
+<td><p>keep best model, no batch</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p>Open Graph Benchmark ogbg-molhiv</p></td>
+<td><p>41,127 graphs, &lt;25&gt; nodes, 2 classes</p></td>
+<td><p>graph classification</p></td>
+<td><p>pool</p></td>
+<td><p>BCEWithLogitsLoss</p></td>
+<td><p>AtomEncoder</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p>ENZYMES</p></td>
+<td><p>600 graphs, 6 classes, 3 features</p></td>
+<td><p></p></td>
+<td><p></p></td>
+<td><p></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Colab 3</p></td>
+<td><p>Planetoid CORA citation networks</p></td>
+<td><p>2708 nodes, 1433 features are elements of a bag-or-words representation of a document, 7 classes</p></td>
+<td><p>link prediction</p></td>
+<td><p>inner product</p></td>
+<td><p>nn.BCEWithLogitsLoss()</p></td>
+<td><p>Implement GraphSAGE, GAT. Loss plot. DeepSNAP</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p>TUDataset COX2</p></td>
+<td><p>many graphs</p></td>
+<td><p>graph classification</p></td>
+<td><p></p></td>
+<td><p></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<p>Qs</p>
+<ul class="simple">
+<li><p>Colab 0, what are the features?</p></li>
+<li><p>Colab 2, batch.y == batch.y?
+.</p></li>
+</ul>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+</div>
 </div>
 </div>
 </div>

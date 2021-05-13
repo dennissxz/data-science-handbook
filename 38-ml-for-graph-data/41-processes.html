@@ -954,6 +954,11 @@
    </li>
   </ul>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#kernel-based-regression">
+   Kernel-based Regression
+  </a>
+ </li>
 </ul>
 
             </nav>
@@ -1018,13 +1023,13 @@ these models.</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{aligned}
-\mathbb{P}\left(X_{i}=x_{i} \mid \boldsymbol{X}_{(-i)}=\boldsymbol{x}_{(-i)}\right) &amp;=\frac{\mathbb{P}(\boldsymbol{x})}{\sum_{\boldsymbol{X}^{\prime}: \boldsymbol{x}_{(-i)}^{\prime}=\boldsymbol{x}_{(-i)}} \mathbb{P}\left(\boldsymbol{x}^{\prime}\right)} \\
-&amp;=\frac{\exp \left\{\Sigma_{c \in \mathscr{C}_{i}} U_{c}(\boldsymbol{x})\right\}}{\sum_{\boldsymbol{X}^{\prime}: \boldsymbol{x}_{(-i)}^{\prime}=\boldsymbol{x}_{(-i)}}  \exp \left\{\sum_{c \in \mathscr{C}_{i}} U_{c}\left(\boldsymbol{x}^{\prime}\right)\right\}}
+\mathbb{P}\left(X_{i}=x_{i} \mid \boldsymbol{X}_{(-i)}=\boldsymbol{x}_{(-i)}\right) &amp;=\frac{\mathbb{P}(\boldsymbol{x})}{\sum_{\boldsymbol{x}^{\prime}: \boldsymbol{x}_{(-i)}^{\prime}=\boldsymbol{x}_{(-i)}} \mathbb{P}\left(\boldsymbol{x}^{\prime}\right)} \\
+&amp;=\frac{\exp \left\{\Sigma_{c \in \mathcal{C}_{i}} U_{c}(\boldsymbol{x})\right\}}{\sum_{\boldsymbol{x}^{\prime}: \boldsymbol{x}_{(-i)}^{\prime}=\boldsymbol{x}_{(-i)}}  \exp \left\{\sum_{c \in \mathcal{C}_{i}} U_{c}\left(\boldsymbol{x}^{\prime}\right)\right\}}
 \end{aligned}
 \end{split}\]</div>
 <p>where</p>
 <ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(\mathcal{C}\)</span> is the set of all cliques involving vertex <span class="math notranslate nohighlight">\(i\)</span>,</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathcal{C}_i\)</span> is the set of all cliques involving vertex <span class="math notranslate nohighlight">\(i\)</span>,</p></li>
 <li><p>the denominator summation is over all vectors <span class="math notranslate nohighlight">\(\boldsymbol{x} ^\prime\)</span> such that the sub-vector <span class="math notranslate nohighlight">\(\boldsymbol{x} _{(-i)} ^\prime\)</span> is fixed to be <span class="math notranslate nohighlight">\(\boldsymbol{x} _{(-i)}\)</span>.</p></li>
 </ul>
 <dl class="simple myst">
@@ -1079,7 +1084,8 @@ U(\boldsymbol{x})=\sum_{i \in V} \alpha_{i} x_i +\sum_{\{i, j\} \in E} \beta_{i 
 \]</div>
 <p>Other variations follow similarly.</p>
 </div>
-<p>The auto-logistic model has been extended to the case where the <span class="math notranslate nohighlight">\(X_i\)</span> take on values <span class="math notranslate nohighlight">\(\left\{ 0,1, \ldots, m \right\}\)</span>, for arbitrary positive integer <span class="math notranslate nohighlight">\(m\)</span>, yielding a class of models called <strong>multilevel logistic</strong> or multi-color models. See Strauss [371]. Other auto-models of interest include the <strong>auto-binomial</strong>, the <strong>auto-Poisson</strong>, and the <strong>auto-Gaussian</strong>. In auto-Gaussian, aka <strong>Gaussian Markov random fields</strong>, the PMF is replaced by Gaussian PDF. The conditional expectations and variances take the form</p>
+<p>The auto-logistic model has been extended to the case where the <span class="math notranslate nohighlight">\(X_i\)</span> take on values <span class="math notranslate nohighlight">\(\left\{ 0,1, \ldots, m \right\}\)</span>, for arbitrary positive integer <span class="math notranslate nohighlight">\(m\)</span>, yielding a class of models called <strong>multilevel logistic</strong> or multi-color models. See Strauss [371]. Other auto-models of interest include the <strong>auto-binomial</strong>, the <strong>auto-Poisson</strong>, and the <strong>auto-Gaussian</strong>.</p>
+<p>In auto-Gaussian, aka <strong>Gaussian Markov random fields</strong>, the PMF is replaced by Gaussian PDF. The conditional expectations and variances take the form</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{aligned}
 \mathbb{E}\left(X_{i} \mid \boldsymbol{X}_{\mathscr{N}_{i}}=\boldsymbol{x}_{\mathscr{N}_{i}}\right)
@@ -1155,7 +1161,7 @@ U(\boldsymbol{x}; \alpha, \beta)=\sum_{i \in V} \alpha x_{i}+\sum_{\{i, j\} \in 
 </div>
 <div class="section" id="auto-gaussian">
 <h4>Auto-Gaussian<a class="headerlink" href="#auto-gaussian" title="Permalink to this headline">¶</a></h4>
-<p>In auto-Gaussian model, the joint distribution of <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span> is known in closed form. In this case, MLE can be computationally tractable. Consider the homogeneous model where the mean is a constant <span class="math notranslate nohighlight">\(\alpha\)</span> across the network and the covariance is <span class="math notranslate nohighlight">\(\sigma^2 ( \boldsymbol{I} - \beta \boldsymbol{A} ) ^{-1}\)</span>. The parameters <span class="math notranslate nohighlight">\(\boldsymbol{\theta} = (\alpha, \sigma^2 , \beta)\)</span> can be estimated alternately:</p>
+<p>In auto-Gaussian model, the joint distribution of <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span> is known in closed form to be multivariate Gaussian. In this case, MLE can be computationally tractable. Consider the homogeneous model where the mean is a constant <span class="math notranslate nohighlight">\(\alpha\)</span> across the network and the covariance is <span class="math notranslate nohighlight">\(\sigma^2 ( \boldsymbol{I} - \beta \boldsymbol{A} ) ^{-1}\)</span>. The parameters <span class="math notranslate nohighlight">\(\boldsymbol{\theta} = (\alpha, \sigma^2 , \beta)\)</span> can be estimated alternately:</p>
 <ul class="simple">
 <li><p>maximizing the likelihood as a function of <span class="math notranslate nohighlight">\((\alpha, \sigma^2 )\)</span> given <span class="math notranslate nohighlight">\(\beta\)</span>,</p></li>
 <li><p>then of <span class="math notranslate nohighlight">\(\beta\)</span>, given <span class="math notranslate nohighlight">\((\alpha, \sigma^2 )\)</span>.</p></li>
@@ -1165,17 +1171,27 @@ U(\boldsymbol{x}; \alpha, \beta)=\sum_{i \in V} \alpha x_{i}+\sum_{\{i, j\} \in 
 </div>
 <div class="section" id="prediction">
 <h3>Prediction<a class="headerlink" href="#prediction" title="Permalink to this headline">¶</a></h3>
-<p>\mathscr{C} -&gt; \mathcal{C}
-\mathscr{N}_i -&gt; \mathscr{N}_i</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
+<p>Prediction is done by evaluating <span class="math notranslate nohighlight">\(\mathbb{P}_{\theta}\left(X_{i} \mid \mathbf{X}_{(-j)}=\mathbf{x}_{(-i)}\right)\)</span>. But evaluating <span class="math notranslate nohighlight">\(\kappa\)</span> is prohibitive. We use by Gibbs sampler.</p>
 </div>
+</div>
+<div class="section" id="kernel-based-regression">
+<h2>Kernel-based Regression<a class="headerlink" href="#kernel-based-regression" title="Permalink to this headline">¶</a></h2>
+<p>Can we learn from the data a function relating the vertices to their attributes? We may consider a regression-based approach. However, standard methods of regression, such as classical least squares regression, being set up as they are for relating response and predictor variables in Euclidean space, are not immediately applicable to graph-indexed data.</p>
+<p>Kernel methods are found to be useful for extending the classical regression paradigm to various settings with non-traditional data.</p>
+<ul class="simple">
+<li><p>encode predictor variables in a ‘kernel’</p></li>
+<li><p>regress a response on these kernel using an extension of ridge regression</p></li>
+</ul>
+<p>Recall that kernels can be thought of as functions that produce similarity matrices. The predictor variables used in the kernel regression are in turn derived from these similarity matrices.</p>
+<p>For a graph <span class="math notranslate nohighlight">\(G\)</span>, a kernel is mapping from <span class="math notranslate nohighlight">\(V \times V\)</span> to <span class="math notranslate nohighlight">\(\mathbb{R}\)</span>, and the similarity is among vertices in <span class="math notranslate nohighlight">\(G\)</span>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
 </div>
 </div>
 

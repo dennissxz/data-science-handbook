@@ -945,21 +945,26 @@ p_\theta (x_1, \ldots, x_n) = \exp \left\{ \boldsymbol{\theta} ^{\top} \boldsymb
 \]</div>
 <p>where</p>
 <ul>
-<li><p><span class="math notranslate nohighlight">\(\boldsymbol{\theta}\)</span> are the parameters of the distribution</p></li>
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{\theta}\)</span> are the parameters of the distribution, in parameter space <span class="math notranslate nohighlight">\(\Omega\)</span></p></li>
 <li><p><span class="math notranslate nohighlight">\(\boldsymbol{\phi} (\boldsymbol{x})\)</span> is a function of <span class="math notranslate nohighlight">\(\boldsymbol{x} = (x_1, \ldots, x_n)\)</span>. Its entries can be some functions of <span class="math notranslate nohighlight">\((x_1, \ldots, x_n)\)</span>, e.g.</p>
 <div class="math notranslate nohighlight">
 \[
   \boldsymbol{\phi} (\boldsymbol{x} ) = [f_1(x_1), f_{23}(x_2, x_3), \ldots]
   \]</div>
+<p>usually <span class="math notranslate nohighlight">\(f\)</span> corresponds to some objects in graph, e.g. <span class="math notranslate nohighlight">\(f_1\)</span> for node-level, <span class="math notranslate nohighlight">\(f_{23}\)</span> for edge-level, and so on.</p>
 </li>
 <li><p><span class="math notranslate nohighlight">\(b(\boldsymbol{\theta})\)</span> is a normalizing constant/function such that</p>
 <div class="math notranslate nohighlight">
 \[
-  \int p(\boldsymbol{x})\mathrm{~d} \boldsymbol{x}= \frac{1}{\exp(b(\boldsymbol{\theta}))} \int \exp (\boldsymbol{\theta} ^{\top} \boldsymbol{\phi} (\boldsymbol{x} )) \mathrm{~d} \boldsymbol{x} = 1
+  \int p_{\theta}(\boldsymbol{x})\mathrm{~d} \boldsymbol{x}= \frac{1}{\exp(b(\boldsymbol{\theta}))} \int \exp (\boldsymbol{\theta} ^{\top} \boldsymbol{\phi} (\boldsymbol{x} )) \mathrm{~d} \boldsymbol{x} = 1
   \]</div>
-<p>To compute it, we need integration, which is sometimes intractable. The denominator <span class="math notranslate nohighlight">\(\exp(b(\boldsymbol{\theta}))\)</span> is also called the partition function.</p>
+<p>The denominator <span class="math notranslate nohighlight">\(\exp(b(\boldsymbol{\theta}))\)</span> is also called the partition function, and <span class="math notranslate nohighlight">\(b(\boldsymbol{\theta})\)</span> is often called the log-partition function.</p>
+<p>To compute <span class="math notranslate nohighlight">\(b(\boldsymbol{\theta})\)</span>, we need integration, which is sometimes intractable.</p>
 </li>
 </ul>
+<p>Equivalently, we can write the distribution <span class="math notranslate nohighlight">\(p_\theta(\boldsymbol{x})\)</span> as</p>
+<div class="math notranslate nohighlight">
+\[p_{\theta}(\boldsymbol{x}) = \frac{ \exp (\boldsymbol{\theta} ^{\top} \boldsymbol{\phi} (\boldsymbol{x} )) }{\int\exp (\boldsymbol{\theta} ^{\top} \boldsymbol{\phi} (\boldsymbol{x} ))\mathrm{~d} \boldsymbol{x}} \]</div>
 <p>Examples</p>
 <ul>
 <li><p>Multivariate Gaussian <span class="math notranslate nohighlight">\(\boldsymbol{x} \in \mathbb{R} ^{n}\)</span></p>
@@ -968,14 +973,14 @@ p_\theta (x_1, \ldots, x_n) = \exp \left\{ \boldsymbol{\theta} ^{\top} \boldsymb
   p _\theta (\boldsymbol{x} ) \propto \exp (- \boldsymbol{x} ^{\top} \Theta \boldsymbol{x})
   \]</div>
 </li>
-<li><p>1-d Bernoulli <span class="math notranslate nohighlight">\(x \in \left\{ 0, 1 \right\}\)</span> parameterized by <span class="math notranslate nohighlight">\(\mu\)</span>.</p>
+<li><p>1-d Bernoulli <span class="math notranslate nohighlight">\(x \in \left\{ 0, 1 \right\}\)</span> parameterized by <span class="math notranslate nohighlight">\(\lambda\)</span>.</p>
 <div class="math notranslate nohighlight">
 \[
-  p_{\theta }(x) = \exp ( x\underbrace{\ln \frac{\mu}{1-\mu}}_{\theta}+\ln (1-\mu)) = \frac{1}{\exp (b(\theta ))} \exp (\theta x)
+  p_{\theta }(x) = \exp ( x\underbrace{\ln \frac{\lambda}{1-\lambda}}_{\theta}+\ln (1-\lambda)) = \frac{1}{\exp (b(\theta ))} \exp (\theta x)
   \]</div>
 <ul class="simple">
-<li><p>The mean is <span class="math notranslate nohighlight">\(\mu_\theta=\frac{e^\theta}{e^\theta + 1}\)</span>.</p></li>
-<li><p>The normalizing function is <span class="math notranslate nohighlight">\(b(\theta) = -\ln (1-\mu) = \ln ( 1 + e ^\theta)\)</span>.</p></li>
+<li><p>The mean is <span class="math notranslate nohighlight">\(\lambda_\theta=\frac{e^\theta}{e^\theta + 1}\)</span>.</p></li>
+<li><p>The normalizing function is <span class="math notranslate nohighlight">\(b(\theta) = -\ln (1-\lambda) = \ln ( 1 + e ^\theta)\)</span>.</p></li>
 </ul>
 </li>
 </ul>
@@ -1024,7 +1029,7 @@ b(\boldsymbol{\theta}) = \sup_{\boldsymbol{\lambda}} \left\{ \boldsymbol{\theta}
 <p>In Bernoulli case, the normalizing function is <span class="math notranslate nohighlight">\(b(\theta) = \ln ( 1 + e ^\theta)\)</span>, then its conjugate function is</p>
 <div class="math notranslate nohighlight">
 \[
-b^* (\lambda) = \sup_\theta \left\{ \lambda \theta - \ln (1 + e^\theta) \right\}
+b^* (\lambda) = \max_{\theta \in \Omega} \left\{ \lambda \theta - \ln (1 + e^\theta) \right\}
 \]</div>
 <p>Taking derivative and set to 0 gives</p>
 <div class="math notranslate nohighlight">
@@ -1068,6 +1073,99 @@ b(\theta) = \max_{\lambda \in (0, 1)} \langle \lambda \theta - b^* (\lambda) \ra
 \[b^*(\lambda) = -\operatorname{H} (p_\lambda)\]</div>
 </li>
 </ul>
+<div class="dropdown seealso admonition">
+<p class="admonition-title"> <em>Proof</em></p>
+<p>Recall the definition</p>
+<div class="math notranslate nohighlight">
+\[
+b^* (\boldsymbol{\lambda}) = \max_{\boldsymbol{\theta} \in \Omega} \left\{ \boldsymbol{\lambda} \boldsymbol{\theta}  - b(\boldsymbol{\theta}) \right\}
+\]</div>
+<p>Hence setting the first order derivative to 0 gives</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\boldsymbol{\lambda}
+&amp;= \nabla _\theta b(\boldsymbol{\theta})\\
+&amp;= \nabla _\theta \ln \int \exp( \boldsymbol{\theta} ^{\top} \boldsymbol{\phi} (\boldsymbol{x})) \mathrm{~d} \boldsymbol{x}\\
+&amp;= \frac{\int \boldsymbol{\phi} (\boldsymbol{x} ) \exp( \boldsymbol{\theta} ^{\top} \boldsymbol{\phi} (\boldsymbol{x}))) \mathrm{~d} \boldsymbol{x}}{\int \exp( \boldsymbol{\theta} ^{\top} \boldsymbol{\phi} (\boldsymbol{x}))) \mathrm{~d} \boldsymbol{x}} \\
+&amp;= \int \boldsymbol{\phi} (\boldsymbol{x}) p_\theta(\boldsymbol{x}) \mathrm{~d} \boldsymbol{x} \\
+&amp;= \mathbb{E}_{p_\theta} [\boldsymbol{\phi} (\boldsymbol{x} )]
+\end{aligned}\end{split}\]</div>
+<p>Hence <span class="math notranslate nohighlight">\(\boldsymbol{\lambda}\)</span> is the mean of <span class="math notranslate nohighlight">\(\boldsymbol{\phi} (\boldsymbol{x})\)</span> w.r.t. distribution <span class="math notranslate nohighlight">\(\boldsymbol{x} \sim p_{\boldsymbol{\theta}}\)</span>. This equation gives a relation between <span class="math notranslate nohighlight">\(\boldsymbol{\lambda}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{\theta}\)</span>.</p>
+<p>Suppose (and indeed) this relation is one-one relation, then we can solve for <span class="math notranslate nohighlight">\(\boldsymbol{\theta} = \boldsymbol{\theta} (\boldsymbol{\lambda})\)</span>. Then the maximum is</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+b^*(\boldsymbol{\lambda})
+&amp;= \langle \boldsymbol{\lambda}, \boldsymbol{\theta} (\boldsymbol{\lambda} )  \rangle - b(\boldsymbol{\theta} (\boldsymbol{\lambda} ))\\
+&amp;= \langle \mathbb{E}_{p_\theta} [\boldsymbol{\phi} (\boldsymbol{x} )], \boldsymbol{\theta} (\boldsymbol{\lambda} )  \rangle - b(\boldsymbol{\theta} (\boldsymbol{\lambda} ))\\
+&amp;= \mathbb{E}_{p_\theta} [ \langle  \boldsymbol{\phi} (\boldsymbol{x} ), \boldsymbol{\theta} (\boldsymbol{\lambda} )  \rangle - b(\boldsymbol{\theta} (\boldsymbol{\lambda} ))]\\
+&amp;= \mathbb{E}_{p_\theta} [ \ln p_{\boldsymbol{\theta} (\boldsymbol{\lambda})}]\\
+&amp;= - \operatorname{H} (p_{\boldsymbol{\theta} (\boldsymbol{\lambda})}) \\
+\end{aligned}\end{split}\]</div>
+<p>which is negative likelihood.</p>
+</div>
+<p>Then substituting this result to the optimization problem of <span class="math notranslate nohighlight">\(b(\boldsymbol{\theta})\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+b(\boldsymbol{\theta}) = \sup_{\boldsymbol{\lambda}} \left\{\langle \boldsymbol{\theta} , \boldsymbol{\lambda} \rangle - b^* (\boldsymbol{\lambda})\right\} = \sup_{\boldsymbol{\lambda}} \left\{ \langle\boldsymbol{\theta} , \boldsymbol{\lambda} \rangle + \operatorname{H} (p_{\boldsymbol{\theta} (\boldsymbol{\lambda})}) \right\}
+\]</div>
+<p>Claim:</p>
+<div class="math notranslate nohighlight">
+\[
+b(\boldsymbol{\theta}) = \sup_{p \in \mathcal{P}} \left\{ \langle \boldsymbol{\theta} , \boldsymbol{\lambda}_p \rangle + \operatorname{H} (p) \right\}
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathcal{P}\)</span> is the set of <span class="math notranslate nohighlight">\(n\)</span>-dim distribution and <span class="math notranslate nohighlight">\(\boldsymbol{\lambda} = \mathbb{E}_p [\boldsymbol{\phi} (\boldsymbol{\theta})]\)</span>.</p>
+<p>To claims to justify.</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{\lambda} = \mathbb{E} _{\boldsymbol{\theta}}[\boldsymbol{\phi} (\boldsymbol{x} )]\)</span> defines a 1-1 map between <span class="math notranslate nohighlight">\(\boldsymbol{\theta}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{\lambda}\)</span> <span class="math notranslate nohighlight">\(\Leftrightarrow\)</span> Exponential family is minimal</p></li>
+<li><p>The image of <span class="math notranslate nohighlight">\(\boldsymbol{\lambda} = \mathbb{E} _{p _\theta}[\boldsymbol{\phi} (\boldsymbol{x})]\)</span> for <span class="math notranslate nohighlight">\(p_{\theta} = e\)</span> is the interior of <span class="math notranslate nohighlight">\(M:=\left\{ \boldsymbol{\lambda} \mid \boldsymbol{\lambda} = \mathbb{E} _p[ \boldsymbol{\phi} (\boldsymbol{x} )], p \in \mathcal{P}    \right\}\)</span></p></li>
+</ul>
+<p>Proposition :</p>
+<div class="math notranslate nohighlight">
+\[
+b(\boldsymbol{\theta}) \ge \langle \boldsymbol{\theta} , \boldsymbol{\lambda} \rangle - b^*(\boldsymbol{\lambda})
+\]</div>
+<p>for all <span class="math notranslate nohighlight">\(\boldsymbol{\lambda} \in \operatorname{Int}(M)\)</span>, with equality when <span class="math notranslate nohighlight">\(\boldsymbol{\lambda} = \mathbb{E}_{\theta} [\boldsymbol{\phi} (\boldsymbol{x} )]\)</span></p>
+<p>Key: when <span class="math notranslate nohighlight">\(f\)</span> is strictly convex, then <span class="math notranslate nohighlight">\(y = \partial f(x) \Leftrightarrow x = \partial f ^* (y)\)</span>. Thus,</p>
+<div class="math notranslate nohighlight">
+\[\boldsymbol{\lambda} = \nabla b(\boldsymbol{\theta}) \Leftrightarrow \boldsymbol{\theta} = \nabla b^* (\boldsymbol{\lambda})\]</div>
+<p>Any mean parameter <span class="math notranslate nohighlight">\(\mathbb{E}_{p} [\boldsymbol{\phi} (\boldsymbol{x} )]\)</span> for <span class="math notranslate nohighlight">\(p \in \mathcal{P}\)</span> gives a lower-bound of <span class="math notranslate nohighlight">\(b(\boldsymbol{\theta})\)</span>. But <span class="math notranslate nohighlight">\(\mathcal{P}\)</span> has exponential size. Can we find a smaller set <span class="math notranslate nohighlight">\(\tilde{\mathcal{P}} \subset \mathcal{P}\)</span>?</p>
+<p>Meanfield approximation</p>
+<p>Assume mutual independence among the variables, then</p>
+<div class="math notranslate nohighlight">
+\[
+p(x_1, \ldots, x_n) = p_1 (x_1) p_2 (x_2) \cdots p_n (x_n)
+\]</div>
+<p>Thus,</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+- \operatorname{H}(p)
+&amp;= \int \log \left\{ p_1 (x_1) p_2 (x_2) \cdots p_n (x_n) \right\} p_1 (x_1) p_2 (x_2) \cdots p_n (x_n) \mathrm{~d} \boldsymbol{x} \\
+&amp;= \sum_i \int p_i (x_i) \log p_i (x_i) \mathrm{~d} x_i\\
+&amp;= - \sum_i \operatorname{H} (p_i)\\
+\end{aligned}\end{split}\]</div>
+<p>Consider an Ising model</p>
+<div class="math notranslate nohighlight">
+\[
+\langle \boldsymbol{\theta} , \boldsymbol{\phi} (\boldsymbol{x}) \rangle = \sum_i \theta_i x_i + \sum_{i,j} \theta_{ij} x_i x_j
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(x_i \in \left\{ 0,1 \right\}\)</span>. We have</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbb{E}_p [X_i] = \mathbb{E}_{p_i} [X_i]  = \mu_i
+\]</div>
+<p>Hence</p>
+<div class="math notranslate nohighlight">
+\[
+b(\boldsymbol{\theta} ) = \max_{\mu_i \in [0,1]^n}  \sum_i \theta_i \mu_i + \sum_{(i,j) \in E} \theta_{ij} \mu_i \mu_j + \sum_i \operatorname{H}(p_i)  
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\sum_i \operatorname{H} (p_i) = \sum \mu _i \log \mu _i + (1 - \mu_i) \log (1- \mu _i)\)</span>.</p>
+<p>Let <span class="math notranslate nohighlight">\(AMF\)</span> be the objective function, then</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{\partial AMF}{\mu_i} = 0 \Leftrightarrow \mu_i = \sigma \left( \theta_i + \sum_{j \in \mathscr{N} _i} \theta_{ij} \mu_j \right)
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\sigma(z) = \frac{1}{1 + \exp(-z)}\)</span> is the sigmoid function.</p>
+<p>Repeat until convergence.</p>
 </div>
 </div>
 

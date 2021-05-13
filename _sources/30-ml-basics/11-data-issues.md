@@ -72,6 +72,14 @@ Clearly, this method increases [multicollinearity](lm-multicollinearity) among t
 
 :::
 
+### By EM Algorithm
+
+We treat the missing entires as latent variables, and use EM algorithm to impute the values.
+1. Make initial guess of missing values
+2. Iterate
+    - Find ML estimates of the distribution parameters $\theta$, using $(x_{miss}, x_{obs})$
+    - Update missing values $x_{miss}$ by conditional expectation $\mathbb{E} [x_{miss} \mid x_{obs}, \theta]$
+
 
 ## Imbalanced Data
 
