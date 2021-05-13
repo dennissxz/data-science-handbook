@@ -191,13 +191,13 @@ Bayesian graphical models encode factorization of conditional distributions.
 
 ### Graph Surgery
 
-Given a graph $G$, we want to estimate $\mathbb{P} (Y \vert A)$, but $A$ may have other parents. A graph surgery is saying that, we remove edges between $A$ and its parents, obtain a new graph $G ^\prime$ estimate $\mathbb{P} _{G ^\prime }(Y \vert A)$, denoted as $\mathbb{P} (Y \vert \operatorname{do}(A) )$.
+Given a graph $G$, we want to estimate $\mathbb{P} (Y \vert A)$, but $A$ may have other parents. A graph surgery is saying that, we remove edges between $A$ and its parents $\operatorname{pa} (A)$, obtain a new graph $G ^\prime$ estimate $\mathbb{P} _{G ^\prime }(Y \vert A)$, denoted as $\mathbb{P} (Y \vert \operatorname{do}(A) )$.
 
 How to compute it?
 - If $A$ has no parents, then done.
 - Else
   - conduct RCT, if possible, or
-  - estimate by $\mathbb{E} [Y \vert \operatorname{do}(A) ] := \mathbb{E} _{\mathbb{P} (Y \vert \operatorname{do})(A)  } [Y \vert A]$, or $\mathbb{E} [Y \vert \operatorname{do}(A=a) ] - \mathbb{E} [Y \vert \operatorname{do}(A=a ^\prime) ]$
+  - estimate by $\mathbb{E} [Y \vert \operatorname{do}(A) ] := \mathbb{E} _{\mathbb{P} (Y \vert \operatorname{do}(A))  } [Y \vert A]$, or $\mathbb{E} [Y \vert \operatorname{do}(A=a) ] - \mathbb{E} [Y \vert \operatorname{do}(A=a ^\prime) ]$
 
 What if there is more than 1 causal model that is consistent with the observation data? If so, the causal model is not identifiable.
 
@@ -205,11 +205,24 @@ Causal effect is always identified if we see all variables in the graph.
 
 ### Backdoor Adjustment
 
-- Backdoor path: an undirected path between $A$ and $Y$ with an arrow into $X$.
-- Backdoor criteria for $S \in X$
+- Backdoor path: an undirected path between $A$ and $Y$ with an arrow into $A$.
+- Backdoor criteria for $S \in X \setminus \left\{ A, Y \right\}$
   - $S$ blocks all backdoor paths between $Y$ and $A$
   - $S$ contains no descendants of $A$
+
+$$\begin{aligned}
+V \rightarrow  S \\
+\downarrow \qquad \downarrow \\
+A \rightarrow Y \\
+\end{aligned}$$
+
 - Theorem: if $S$ satisfies the above criteria, then $\mathbb{P} (Y \mid \operatorname{do}(A) )  = \mathbb{E} _S [P (Y \mid A, S)]]$.
+
+### Front door
+
+FD Criteria
+: 
+
 .
 
 
