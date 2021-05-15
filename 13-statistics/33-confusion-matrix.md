@@ -70,7 +70,11 @@ ROC curve: receiver operating characteristics curves,
 - x-axis: false positive rate, aka FPR, 1-specificity
 - varying a parameter controlling the discrimination between positives and negatives
 - classifiers with curves pushing more into the upper left-hand corner are generally considered more desirable. 45 degree line is random guessing.
-- AUC: area under the curve, close to 1 is good. 0.5 is random guessing.
+- AUC: area under the curve, close to 1 is good. 0.5 is random guessing. If there are $n$ output pairs of (FPR, TPR), then area can be computed as
+
+  $$
+  \operatorname{AUC}  = \frac{1}{2}  \sum_{k=1}^n (\operatorname{FPR}_k - \operatorname{FPR} _{k-1})(\operatorname{TPR} _k + \operatorname{TPR} _{k-1})
+  $$
 
 :::{figure} roc
 <img src="../imgs/roc.png" width = "70%" alt=""/>
