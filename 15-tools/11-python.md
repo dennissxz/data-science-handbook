@@ -424,7 +424,7 @@ methods
 | a column | `df['col']`   |    Series                      |
 | columns by labels| `df[['col1', 'col3']`]   |       DataFrame       |
 | columns by labels | `df.loc[:, 'col1':'col3']`   |       DataFrame       |
-| a row by its label | `df.loc[label]` | Series  |
+| a row by its label | `df.loc['row']` | Series  |
 | a row by its integer location | `df.iloc[1]` |      Series                    |
 | rows by integers | `df[1:5]`        |                        DataFrame  |
 | rows by labels | `df['row1':'row5']`        |                        DataFrame  |
@@ -442,7 +442,20 @@ Note that
 #### Methods
 
 - `.max()`
-- `.corr()`
+- `df['col1'].corr(df['col2'])`
+- `df.dtypes` and `df['col'].dtype`
+
+- `df['col'].astype()`. To convert a column of numbers in string format to float format, two methods `pd.to_numeric('col')` or `df['col'].astype(float)` can be used. But if there is entry `missing`, it is better to use the former one, since we can specify `errors='coerce'` to set the invalid parsing as NaN.
+
+- `.rename(columns=names)` where names is a dictionary of `'old_name':'new_name'`
+
+- `.isnull()` to check missing
+- `.dropna()` to drop all rows containing any missing entries
+  - add `subset = ['col1', 'col2']` to specify columns
+- `.fillna(value='')` fill missing values with specific value
+- `.fillna(method='bfill')`
+- `.fillna(method='ffill')`
+- `df.agg(func, axis=0)` to apply built-in or self-defined functions to column(s) '0' or row(s) '1'.
 
 ## Plot
 
