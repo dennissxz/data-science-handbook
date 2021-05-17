@@ -510,6 +510,8 @@ It is easy to see the counting step is expensive. In fact, subgraph isomorphism 
 (wl-kernel)=
 #### Weisfeiler-Lehman Kernel
 
+[Shervashidze N, Schweitzer P, van Leeuwen EJ, et al. Weisfeiler-Lehman graph kernels. J Mach Learn Res 2011;12:2539–61.]
+
 WL kernel uses neighborhood structure to iteratively enrich node vocabulary.
 
 Algorithm: WL isomorphism test, aka color refinement.
@@ -532,4 +534,6 @@ If two graphs have the same feature vector bag-of-colors then we said they are i
 
 Other kernels
 - random-walk kernel
-- shortest-path kernel
+- shortest-path kernel: Borgwardt KM, Kriegel H.-P. Shortest-path kernels on graphs. In: Fifth IEEE International Conference on Data Mining (ICDM’05). IEEE, 2005
+- Gärtner T, Flach P, Wrobel S. On graph kernels: Hardness results and efficient alternatives. In: Learning theory and kernel machines. Springer, 2003, pp. 129–143
+- Sugiyama M, Ghisu ME, Llinares-López F, et al. graphkernels: R and Python packages for graph comparison. Bioinformatics, 2017;34(3):530–532.

@@ -803,8 +803,13 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../38-ml-for-graph-data/51-graph-rep-learning.html">
-     Graph Representation Learning
+    <a class="reference internal" href="../38-ml-for-graph-data/51-embeddings.html">
+     Embeddings
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../38-ml-for-graph-data/53-graph-neural-networks.html">
+     Graphical Neural Networks
     </a>
    </li>
   </ul>
@@ -1673,7 +1678,7 @@
 <td><p>DataFrame</p></td>
 </tr>
 <tr class="row-odd"><td><p>a row by its label</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">df.loc[label]</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">df.loc['row']</span></code></p></td>
 <td><p>Series</p></td>
 </tr>
 <tr class="row-even"><td><p>a row by its integer location</p></td>
@@ -1721,7 +1726,20 @@
 <h4>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h4>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">.max()</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">.corr()</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">df['col1'].corr(df['col2'])</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">df.dtypes</span></code> and <code class="docutils literal notranslate"><span class="pre">df['col'].dtype</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">df['col'].astype()</span></code>. To convert a column of numbers in string format to float format, two methods <code class="docutils literal notranslate"><span class="pre">pd.to_numeric('col')</span></code> or <code class="docutils literal notranslate"><span class="pre">df['col'].astype(float)</span></code> can be used. But if there is entry <code class="docutils literal notranslate"><span class="pre">missing</span></code>, it is better to use the former one, since we can specify <code class="docutils literal notranslate"><span class="pre">errors='coerce'</span></code> to set the invalid parsing as NaN.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.rename(columns=names)</span></code> where names is a dictionary of <code class="docutils literal notranslate"><span class="pre">'old_name':'new_name'</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.isnull()</span></code> to check missing</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.dropna()</span></code> to drop all rows containing any missing entries</p>
+<ul>
+<li><p>add <code class="docutils literal notranslate"><span class="pre">subset</span> <span class="pre">=</span> <span class="pre">['col1',</span> <span class="pre">'col2']</span></code> to specify columns</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.fillna(value='')</span></code> fill missing values with specific value</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.fillna(method='bfill')</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.fillna(method='ffill')</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">df.agg(func,</span> <span class="pre">axis=0)</span></code> to apply built-in or self-defined functions to column(s) ‘0’ or row(s) ‘1’.</p></li>
 </ul>
 </div>
 </div>

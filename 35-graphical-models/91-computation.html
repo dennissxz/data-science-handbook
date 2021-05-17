@@ -805,8 +805,13 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../38-ml-for-graph-data/51-graph-rep-learning.html">
-     Graph Representation Learning
+    <a class="reference internal" href="../38-ml-for-graph-data/51-embeddings.html">
+     Embeddings
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../38-ml-for-graph-data/53-graph-neural-networks.html">
+     Graphical Neural Networks
     </a>
    </li>
   </ul>
@@ -911,6 +916,21 @@
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#conjugate-functions">
    Conjugate Functions
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#meanfield-approximation">
+   Meanfield approximation
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#another-look">
+   Another Look
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#belief-propagation">
+   Belief Propagation
   </a>
  </li>
 </ul>
@@ -1034,7 +1054,7 @@ b^* (\lambda) = \max_{\theta \in \Omega} \left\{ \lambda \theta - \ln (1 + e^\th
 <p>Taking derivative and set to 0 gives</p>
 <div class="math notranslate nohighlight">
 \[
-\frac{\partial b^* (\lambda)}{\partial \theta} = 0 \Rightarrow \lambda = \frac{e^\theta}{ 1 + e ^\theta}  \quad \text{or} \quad  \theta^+ = \ln \frac{\lambda}{1 - \lambda}  
+\frac{\partial b^* (\lambda)}{\partial \theta} = 0 \Rightarrow \lambda = \frac{e^\theta}{ 1 + e ^\theta}  \quad \text{or} \quad  \theta^+ = \ln \frac{\lambda}{1 - \lambda}
 \]</div>
 <p>Substituting the optimizer <span class="math notranslate nohighlight">\(\theta^+\)</span> gives the conjugate function</p>
 <div class="math notranslate nohighlight">
@@ -1129,7 +1149,9 @@ b(\boldsymbol{\theta}) \ge \langle \boldsymbol{\theta} , \boldsymbol{\lambda} \r
 <div class="math notranslate nohighlight">
 \[\boldsymbol{\lambda} = \nabla b(\boldsymbol{\theta}) \Leftrightarrow \boldsymbol{\theta} = \nabla b^* (\boldsymbol{\lambda})\]</div>
 <p>Any mean parameter <span class="math notranslate nohighlight">\(\mathbb{E}_{p} [\boldsymbol{\phi} (\boldsymbol{x} )]\)</span> for <span class="math notranslate nohighlight">\(p \in \mathcal{P}\)</span> gives a lower-bound of <span class="math notranslate nohighlight">\(b(\boldsymbol{\theta})\)</span>. But <span class="math notranslate nohighlight">\(\mathcal{P}\)</span> has exponential size. Can we find a smaller set <span class="math notranslate nohighlight">\(\tilde{\mathcal{P}} \subset \mathcal{P}\)</span>?</p>
-<p>Meanfield approximation</p>
+</div>
+<div class="section" id="meanfield-approximation">
+<h2>Meanfield approximation<a class="headerlink" href="#meanfield-approximation" title="Permalink to this headline">¶</a></h2>
 <p>Assume mutual independence among the variables, then</p>
 <div class="math notranslate nohighlight">
 \[
@@ -1156,7 +1178,7 @@ p(x_1, \ldots, x_n) = p_1 (x_1) p_2 (x_2) \cdots p_n (x_n)
 <p>Hence</p>
 <div class="math notranslate nohighlight">
 \[
-b(\boldsymbol{\theta} ) = \max_{\mu_i \in [0,1]^n}  \sum_i \theta_i \mu_i + \sum_{(i,j) \in E} \theta_{ij} \mu_i \mu_j + \sum_i \operatorname{H}(p_i)  
+b(\boldsymbol{\theta} ) = \max_{\mu_i \in [0,1]^n}  \sum_i \theta_i \mu_i + \sum_{(i,j) \in E} \theta_{ij} \mu_i \mu_j + \sum_i \operatorname{H}(p_i)
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(\sum_i \operatorname{H} (p_i) = \sum \mu _i \log \mu _i + (1 - \mu_i) \log (1- \mu _i)\)</span>.</p>
 <p>Let <span class="math notranslate nohighlight">\(AMF\)</span> be the objective function, then</p>
@@ -1166,6 +1188,126 @@ b(\boldsymbol{\theta} ) = \max_{\mu_i \in [0,1]^n}  \sum_i \theta_i \mu_i + \sum
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(\sigma(z) = \frac{1}{1 + \exp(-z)}\)</span> is the sigmoid function.</p>
 <p>Repeat until convergence.</p>
+</div>
+<div class="section" id="another-look">
+<h2>Another Look<a class="headerlink" href="#another-look" title="Permalink to this headline">¶</a></h2>
+<p>Consider some distribution</p>
+<div class="math notranslate nohighlight">
+\[
+p(\boldsymbol{x} ) = \frac{1}{Z} \prod _{ij}\psi(x_i, x_j)
+\]</div>
+<p>We want to approximate <span class="math notranslate nohighlight">\(p(\boldsymbol{x} )\)</span> with <span class="math notranslate nohighlight">\(b(\boldsymbol{x})\)</span>. A measure of goodness of approximatation is KL divergence</p>
+<div class="math notranslate nohighlight">
+\[
+\operatorname{KL} (b \mid p) := \sum_{\boldsymbol{x} } b(\boldsymbol{x} ) \ln \frac{b(\boldsymbol{x})}{p(\boldsymbol{x})}
+\]</div>
+<p>Write <span class="math notranslate nohighlight">\(p(\boldsymbol{x}) = \frac{1}{Z} \exp(\boldsymbol{\theta} ^{\top} \boldsymbol{\phi} (\boldsymbol{x}))\)</span>. Define the energy function</p>
+<div class="math notranslate nohighlight">
+\[
+E(\boldsymbol{x}) = - \langle \boldsymbol{\theta} , \boldsymbol{\phi} (\boldsymbol{x} ) \rangle
+\]</div>
+<p>Then we can write</p>
+<div class="math notranslate nohighlight">
+\[
+p(\boldsymbol{x} ) = \frac{1}{Z} \exp(- E(\boldsymbol{x}))
+\]</div>
+<p>Hence the KL divergenve is</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\operatorname{KL}(b \mid p) :&amp;= \sum_{\boldsymbol{x}} b(\boldsymbol{x} ) E(\boldsymbol{x}) + \sum_{\boldsymbol{x}} b(\boldsymbol{x} ) \ln b(\boldsymbol{x})
++ \ln (Z) \\
+&amp;= - \langle \boldsymbol{\theta} , \mathbb{E} _b[\boldsymbol{\phi} (\boldsymbol{x})]\rangle - \operatorname{H}(b) + \ln Z\\
+\end{aligned}\end{split}\]</div>
+<p>Let <span class="math notranslate nohighlight">\(\mathcal{B}\)</span> be the space of distribution. Our objective is then</p>
+<div class="math notranslate nohighlight">
+\[
+\arg\max_{b \in \mathcal{B}} \left\{ \langle \boldsymbol{\theta} , \boldsymbol{\mu}  \rangle + \operatorname{H}(b)\right\}
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\boldsymbol{\mu} = \mathbb{E} _b[\boldsymbol{\phi} (\boldsymbol{x})]\)</span>.</p>
+<p>The objective can also be written as</p>
+<div class="math notranslate nohighlight">
+\[
+\arg\min_{b \in \mathcal{B}} \left\{ \mathbb{E} _b[E(\boldsymbol{x})] - \operatorname{H}(b)\right\}
+\]</div>
+<p>Hence we want to minimize average energy, and maximize entropy.</p>
+<p>Consider meanfield</p>
+<div class="math notranslate nohighlight">
+\[
+b(\boldsymbol{x} ) = b_1(x_1)b_2(x_2) \cdots b_n(x_n)
+\]</div>
+<p>pairwise:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(p(\boldsymbol{x}) = \prod_{i,j} \psi_{ij}(x_i, x_j)/Z\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(E[\boldsymbol{x}] = \sum_{i,j} \ln \psi_{ij}(x_i, x_j) = \sum_{ij}E_{ij}(x_i, x_j)\)</span></p></li>
+</ul>
+<p>The objective is then</p>
+<div class="math notranslate nohighlight">
+\[
+\min_{b} \sum_{i, j} \sum_{x_i, x_j} E_{ij}(x_i, x_j) b_{ij}(x_i, x_j) - \operatorname{H}(b)
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(b_{ij}(x_i, x_j)\)</span> is marginalization.</p>
+<div class="math notranslate nohighlight">
+\[
+b_{ij}(x_i, x_j) := \sum_{\boldsymbol{x} \setminus {x_i, x_j}} b(x_1, \ldots, x_n)
+\]</div>
+<p>Relaxation:</p>
+<ol class="simple">
+<li><p>Change the objective of optimization from <span class="math notranslate nohighlight">\(b\)</span> to <span class="math notranslate nohighlight">\(\left\{ b_{ij} \right\}_{ij}\)</span> and <span class="math notranslate nohighlight">\(\left\{ b_i \right\}_{i}\)</span>.</p></li>
+<li><p>Enforce smaller set of constraints</p></li>
+</ol>
+<p>New constraints</p>
+<ul class="simple">
+<li><p>Distribution constraint</p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(b_{ij} \ge 0, \boldsymbol{1} ^{\top} b_{ij} \boldsymbol{1} = 1\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(b_{i} \ge 0, \boldsymbol{1} ^{\top} b_{i}  = 1\)</span></p></li>
+</ul>
+</li>
+<li><p>Consistency constraint</p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(b_{ij}\boldsymbol{1} = b_i\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(b_{ij} ^{\top} \boldsymbol{1} = b_j\)</span></p></li>
+</ul>
+</li>
+</ul>
+<p>The relaxed problem is convex.</p>
+<div class="math notranslate nohighlight">
+\[
+\min_{ \left\{ b_{ij} \right\}_{ij}, \left\{ b_i \right\}_i} \sum_{ij} \langle E_{ij}, b_{ij} \rangle - \operatorname{H}(b)
+\]</div>
+<p>Bethe approxiamtion:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\operatorname{H}(b)
+&amp;\approx \operatorname{H}_{\text{Bethe} } \left( \left\{ b_{ij} \right\}_{ij}, \left\{ b_i \right\}_i \right) \\
+&amp;= \sum_{ij} \operatorname{H}(b_{ij}) - \sum_i (q_i - 1) \operatorname{H}(b_i)\\
+\end{aligned}\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(q_i\)</span> is the number of neighbors of node <span class="math notranslate nohighlight">\(i\)</span>. The second term is used to deal with over-counting.</p>
+</div>
+<div class="section" id="belief-propagation">
+<h2>Belief Propagation<a class="headerlink" href="#belief-propagation" title="Permalink to this headline">¶</a></h2>
+<p>Define Gibbs free energy</p>
+<div class="math notranslate nohighlight">
+\[
+G = \sum_{\boldsymbol{x}} E(\boldsymbol{x} ) b(\boldsymbol{x}) - H(b)
+\]</div>
+<p>Then</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+G_{\text{Bethe} }
+&amp;= \sum_{ij} \langle E_{ij}, b_{ij} \rangle - \sum_{ij} H(b_{ij}) + \sum_i (q_i - 1) \operatorname{H}(b_i)\\
+&amp;= \sum_{ij} \langle b_{ij}, E_{ij} + \ln b_{ij} \rangle - \sum_i (q_i - 1) \langle b_i, \ln b_i \rangle\\
+\end{aligned}\end{split}\]</div>
+<p>subject to the distribution constraints and consistency constraints.</p>
+<p>…</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
 </div>
 </div>
 

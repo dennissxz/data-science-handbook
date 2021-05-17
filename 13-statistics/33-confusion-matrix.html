@@ -805,8 +805,13 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../38-ml-for-graph-data/51-graph-rep-learning.html">
-     Graph Representation Learning
+    <a class="reference internal" href="../38-ml-for-graph-data/51-embeddings.html">
+     Embeddings
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../38-ml-for-graph-data/53-graph-neural-networks.html">
+     Graphical Neural Networks
     </a>
    </li>
   </ul>
@@ -959,6 +964,7 @@
 <p>Probability that the predicted result is correct</p>
 <div class="math notranslate nohighlight">
 \[\operatorname{\mathbb{P}}\left( \widehat{+} \cap +\right) + \operatorname{\mathbb{P}}\left( \widehat{-} \cap -\right) = \frac{\mathrm{TP}+\mathrm{TN}}{\text{total population}} \]</div>
+<p>Not useful when the two classes are of very different sizes. For example, assigning every object to the larger set achieves a high proportion of correct predictions, but is not generally a useful classification.</p>
 </li>
 <li><p>prevalence</p>
 <p>Proportion of true condition in a population</p>
@@ -966,9 +972,10 @@
 \[ \operatorname{\mathbb{P}}\left( + \right) = \frac{\mathrm{TP}+\mathrm{FN}}{\text{total population}} \]</div>
 </li>
 <li><p><span class="math notranslate nohighlight">\(F_1\)</span> score</p>
-<p>The <span class="math notranslate nohighlight">\(F_1\)</span> score is the harmonic mean of precision and recall. Hence, tt is often used to balance precision and recall.</p>
+<p>The <span class="math notranslate nohighlight">\(F_1\)</span> score is the harmonic mean of precision and recall. Hence, it is often used to balance precision and recall.</p>
 <div class="math notranslate nohighlight">
-\[F_1 = \frac{1}{\text{precision}^{-1} + \text{recall}^{-1}} = \frac{\mathrm{TP}}{\mathrm{TP} + \frac{1}{2}\left( \mathrm{FP} + \mathrm{FN} \right)  } \]</div>
+\[F_1 = \frac{1}{\text{precision}^{-1} + \text{recall}^{-1}} = \frac{\mathrm{TP}}{\mathrm{TP} + \frac{1}{2}\left( \mathrm{FP} + \mathrm{FN} \right)  }\]</div>
+<p>Closer to 1, better.</p>
 </li>
 <li><p>Macro <span class="math notranslate nohighlight">\(F_1\)</span> score</p>
 <p>Macro <span class="math notranslate nohighlight">\(F_1\)</span> score extends <span class="math notranslate nohighlight">\(F_1\)</span> score for multiple binary labels, or multiple classes. It is computed by first computing the F1-score per class/label and then averaging them. Aka Macro F1-averaging.</p>
@@ -978,14 +985,26 @@
   \]</div>
 <p>where <span class="math notranslate nohighlight">\(K\)</span> is the number of classes/labels.</p>
 </li>
+<li><p>Matthews correlation coefficient</p>
+<p>Simply the correlation coefficient between predicted binary values and actual binary values. Can also be computed as</p>
+<div class="math notranslate nohighlight">
+\[
+  \mathrm{MCC}=\frac{\mathrm{TP} \times \mathrm{TN}-\mathrm{FP} \times \mathrm{FN}}{\sqrt{(\mathrm{TP}+\mathrm{FP})(\mathrm{TP}+\mathrm{FN})(\mathrm{TN}+\mathrm{FP})(\mathrm{TN}+\mathrm{FN})}} \in [-1, 1]
+  \]</div>
+</li>
 </ul>
 <p>ROC curve: receiver operating characteristics curves,</p>
-<ul class="simple">
+<ul>
 <li><p>y-axis: true positive rate, aka TPR, recall, sensitivity</p></li>
 <li><p>x-axis: false positive rate, aka FPR, 1-specificity</p></li>
 <li><p>varying a parameter controlling the discrimination between positives and negatives</p></li>
 <li><p>classifiers with curves pushing more into the upper left-hand corner are generally considered more desirable. 45 degree line is random guessing.</p></li>
-<li><p>AUC: area under the curve, close to 1 is good. 0.5 is random guessing.</p></li>
+<li><p>AUC: area under the curve, close to 1 is good. 0.5 is random guessing. If there are <span class="math notranslate nohighlight">\(n\)</span> output pairs of (FPR, TPR), then area can be computed as</p>
+<div class="math notranslate nohighlight">
+\[
+  \operatorname{AUC}  = \frac{1}{2}  \sum_{k=1}^n (\operatorname{FPR}_k - \operatorname{FPR} _{k-1})(\operatorname{TPR} _k + \operatorname{TPR} _{k-1})
+  \]</div>
+</li>
 </ul>
 <div class="figure align-default" id="roc">
 <a class="reference internal image-reference" href="../_images/roc.png"><img alt="" src="../_images/roc.png" style="width: 70%;" /></a>

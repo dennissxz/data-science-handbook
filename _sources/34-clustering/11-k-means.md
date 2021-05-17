@@ -17,7 +17,7 @@ $k$-means is NP hard.
 
 ## Algorithm
 
-A standard algorithm for $k$-means is Lloyd-Forgy algorithm, which is an heuristic method.
+A standard algorithm for $k$-means is Lloyd-Forgy algorithm, which is an heuristic method. For other algorithms, see [here](https://stackoverflow.com/questions/20446053/k-means-lloyd-forgy-macqueen-hartigan-wong).
 
 ---
 **Lloyd-Forgy algorithm for $k$-means clustering**
