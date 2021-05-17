@@ -113,7 +113,7 @@ $$
 Taking derivative and set to 0 gives
 
 $$
-\frac{\partial b^* (\lambda)}{\partial \theta} = 0 \Rightarrow \lambda = \frac{e^\theta}{ 1 + e ^\theta}  \quad \text{or} \quad  \theta^+ = \ln \frac{\lambda}{1 - \lambda}  
+\frac{\partial b^* (\lambda)}{\partial \theta} = 0 \Rightarrow \lambda = \frac{e^\theta}{ 1 + e ^\theta}  \quad \text{or} \quad  \theta^+ = \ln \frac{\lambda}{1 - \lambda}
 $$
 
 Substituting the optimizer $\theta^+$ gives the conjugate function
@@ -231,7 +231,7 @@ $$\boldsymbol{\lambda} = \nabla b(\boldsymbol{\theta}) \Leftrightarrow \boldsymb
 
 Any mean parameter $\mathbb{E}_{p} [\boldsymbol{\phi} (\boldsymbol{x} )]$ for $p \in \mathcal{P}$ gives a lower-bound of $b(\boldsymbol{\theta})$. But $\mathcal{P}$ has exponential size. Can we find a smaller set $\tilde{\mathcal{P}} \subset \mathcal{P}$?
 
-Meanfield approximation
+## Meanfield approximation
 
 Assume mutual independence among the variables, then
 
@@ -264,7 +264,7 @@ $$
 Hence
 
 $$
-b(\boldsymbol{\theta} ) = \max_{\mu_i \in [0,1]^n}  \sum_i \theta_i \mu_i + \sum_{(i,j) \in E} \theta_{ij} \mu_i \mu_j + \sum_i \operatorname{H}(p_i)  
+b(\boldsymbol{\theta} ) = \max_{\mu_i \in [0,1]^n}  \sum_i \theta_i \mu_i + \sum_{(i,j) \in E} \theta_{ij} \mu_i \mu_j + \sum_i \operatorname{H}(p_i)
 $$
 
 where $\sum_i \operatorname{H} (p_i) = \sum \mu _i \log \mu _i + (1 - \mu_i) \log (1- \mu _i)$.
@@ -278,3 +278,151 @@ $$
 where $\sigma(z) = \frac{1}{1 + \exp(-z)}$ is the sigmoid function.
 
 Repeat until convergence.
+
+## Another Look
+
+Consider some distribution
+
+$$
+p(\boldsymbol{x} ) = \frac{1}{Z} \prod _{ij}\psi(x_i, x_j)
+$$
+
+We want to approximate $p(\boldsymbol{x} )$ with $b(\boldsymbol{x})$. A measure of goodness of approximatation is KL divergence
+
+$$
+\operatorname{KL} (b \mid p) := \sum_{\boldsymbol{x} } b(\boldsymbol{x} ) \ln \frac{b(\boldsymbol{x})}{p(\boldsymbol{x})}
+$$
+
+Write $p(\boldsymbol{x}) = \frac{1}{Z} \exp(\boldsymbol{\theta} ^{\top} \boldsymbol{\phi} (\boldsymbol{x}))$. Define the energy function
+
+$$
+E(\boldsymbol{x}) = - \langle \boldsymbol{\theta} , \boldsymbol{\phi} (\boldsymbol{x} ) \rangle
+$$
+
+Then we can write
+
+$$
+p(\boldsymbol{x} ) = \frac{1}{Z} \exp(- E(\boldsymbol{x}))
+$$
+
+Hence the KL divergenve is
+
+
+$$\begin{aligned}
+\operatorname{KL}(b \mid p) :&= \sum_{\boldsymbol{x}} b(\boldsymbol{x} ) E(\boldsymbol{x}) + \sum_{\boldsymbol{x}} b(\boldsymbol{x} ) \ln b(\boldsymbol{x})
++ \ln (Z) \\
+&= - \langle \boldsymbol{\theta} , \mathbb{E} _b[\boldsymbol{\phi} (\boldsymbol{x})]\rangle - \operatorname{H}(b) + \ln Z\\
+\end{aligned}$$
+
+Let $\mathcal{B}$ be the space of distribution. Our objective is then
+
+$$
+\arg\max_{b \in \mathcal{B}} \left\{ \langle \boldsymbol{\theta} , \boldsymbol{\mu}  \rangle + \operatorname{H}(b)\right\}
+$$
+
+where $\boldsymbol{\mu} = \mathbb{E} _b[\boldsymbol{\phi} (\boldsymbol{x})]$.
+
+The objective can also be written as
+
+$$
+\arg\min_{b \in \mathcal{B}} \left\{ \mathbb{E} _b[E(\boldsymbol{x})] - \operatorname{H}(b)\right\}
+$$
+
+Hence we want to minimize average energy, and maximize entropy.
+
+Consider meanfield
+
+$$
+b(\boldsymbol{x} ) = b_1(x_1)b_2(x_2) \cdots b_n(x_n)
+$$
+
+pairwise:
+- $p(\boldsymbol{x}) = \prod_{i,j} \psi_{ij}(x_i, x_j)/Z$
+- $E[\boldsymbol{x}] = \sum_{i,j} \ln \psi_{ij}(x_i, x_j) = \sum_{ij}E_{ij}(x_i, x_j)$
+
+The objective is then
+
+
+$$
+\min_{b} \sum_{i, j} \sum_{x_i, x_j} E_{ij}(x_i, x_j) b_{ij}(x_i, x_j) - \operatorname{H}(b)
+$$
+
+where $b_{ij}(x_i, x_j)$ is marginalization.
+
+$$
+b_{ij}(x_i, x_j) := \sum_{\boldsymbol{x} \setminus {x_i, x_j}} b(x_1, \ldots, x_n)
+$$
+
+Relaxation:
+1. Change the objective of optimization from $b$ to $\left\{ b_{ij} \right\}_{ij}$ and $\left\{ b_i \right\}_{i}$.
+2. Enforce smaller set of constraints
+
+New constraints
+
+- Distribution constraint
+  - $b_{ij} \ge 0, \boldsymbol{1} ^{\top} b_{ij} \boldsymbol{1} = 1$
+  - $b_{i} \ge 0, \boldsymbol{1} ^{\top} b_{i}  = 1$
+- Consistency constraint
+  - $b_{ij}\boldsymbol{1} = b_i$
+  - $b_{ij} ^{\top} \boldsymbol{1} = b_j$
+
+The relaxed problem is convex.
+
+$$
+\min_{ \left\{ b_{ij} \right\}_{ij}, \left\{ b_i \right\}_i} \sum_{ij} \langle E_{ij}, b_{ij} \rangle - \operatorname{H}(b)
+$$
+
+Bethe approxiamtion:
+
+
+$$\begin{aligned}
+\operatorname{H}(b)
+&\approx \operatorname{H}_{\text{Bethe} } \left( \left\{ b_{ij} \right\}_{ij}, \left\{ b_i \right\}_i \right) \\
+&= \sum_{ij} \operatorname{H}(b_{ij}) - \sum_i (q_i - 1) \operatorname{H}(b_i)\\
+\end{aligned}$$
+
+where $q_i$ is the number of neighbors of node $i$. The second term is used to deal with over-counting.
+
+## Belief Propagation
+
+Define Gibbs free energy
+
+$$
+G = \sum_{\boldsymbol{x}} E(\boldsymbol{x} ) b(\boldsymbol{x}) - H(b)
+$$
+
+Then
+
+
+$$\begin{aligned}
+G_{\text{Bethe} }
+&= \sum_{ij} \langle E_{ij}, b_{ij} \rangle - \sum_{ij} H(b_{ij}) + \sum_i (q_i - 1) \operatorname{H}(b_i)\\
+&= \sum_{ij} \langle b_{ij}, E_{ij} + \ln b_{ij} \rangle - \sum_i (q_i - 1) \langle b_i, \ln b_i \rangle\\
+\end{aligned}$$
+
+subject to the distribution constraints and consistency constraints.
+
+...
+
+.
+
+
+.
+
+
+.
+
+
+.
+
+
+.
+
+
+.
+
+
+.
+
+
+.
