@@ -213,7 +213,9 @@ In the first layer only features not labels are fed into GNN.
 
 #### Link-level
 
-For link-prediction task, usually negative edges are sampled as supervision edge (label: no link). In DeepSNAP, the `edge_label` and `edge_label_index` have included the negative edges (default number of negative edges is same with the number of positive edges).
+It is worth noting that a good link prediction model need to predict both existence of an edge $(a_{ij}=1)$ and non-existence of an edge $(a_{ij}=0)$, given two nodes $i$ and $j$. Hence, both positive edge and negative edge (non-existence) should be treated as labels. But often the graph is sparse, i.e. #negative edges >> #positive edges. Hence, negative edges are **sampled** in training.
+
+In DeepSNAP, the `edge_label` and `edge_label_index` have included the negative edges (default number of negative edges is same with the number of positive edges).
 
 Inductive setting
 1. Partition edges $E$ into
@@ -232,13 +234,13 @@ Inductive splitting for link prediction
 
 Transductive setting (common setting, `edge_train_mode = "disjoint"` in DeepSNAP)
 1. Partition the edges into
-    - training message edges $E_{\text{train, m}}$  
+    - training message edges $E_{\text{train, m}}$
     - training supervision edges $E_{\text{train, s}}$
     - validation edges $E_{\text{valid}}$
     - test edges $E_{\text{test}}$
-2. Training: use training message edges $E_{\text{train, m}}$ to predict training supervision edges $E_{\text{train, s}} \cup E_{\text{train, s}}^{\text{neg} }$
-3. Validation: Use $E_{\text{train, m}}$, $E_{\text{train, s}}$ to predict $E_{\text{valid}} \cup E_{\text{valid}}^{\text{neg} }$
-4. Test: Use $E_{\text{train, m}}$, $E_{\text{train, s}}$, and $E_{\text{valid}}$ to predict $E_{\text{test}} \cup E_{\text{test}}^{\text{neg} }$
+2. Training: use training message edges $E_{\text{train, m}}$ to predict training supervision edges $E_{\text{train, s}}$
+3. Validation: Use $E_{\text{train, m}}$, $E_{\text{train, s}}$ to predict $E_{\text{valid}}$
+4. Test: Use $E_{\text{train, m}}$, $E_{\text{train, s}}$, and $E_{\text{valid}}$ to predict $E_{\text{test}}$
 
 Another transductive setting is `edge_train_mode = "all"`.
 
@@ -250,6 +252,12 @@ After training, supervision edges are **known** to GNN. Therefore, an ideal mode
 Transductive splitting for link prediction
 :::
 
+Another way of train-test split for link-prediction in general ML models:
+- Assume the graph have all edges labeled (no unknown edge).
+- Partition nodes into training set $V_{train}$ and test set $V_{test}$, then training set of edges $E_{train}$ include the edges in the induced subgraph of $V_{train}$, while test set of edges include the edges in the induced subgraph of $V_{test}$, **as well as** across-subgraph edges.
+  - $E_{train} = E(V_{train})$
+  - $E_{test} = E(V_{test}) \cup E(V_{train}, V_{test})$
+- All edge sets above include both positive edges and negative edges.
 
 
 ## Pros
@@ -748,7 +756,7 @@ ID-GNN is more expressive than their GNN counterparts. ID-GNN is the first messa
 - Tutorials and overviews:
   - Relational inductive biases and graph networks (Battaglia et al., 2018)
   - Representation learning on graphs: Methods and applications (Hamilton et al., 2017)
-- Attention-based neighborhood aggregation:   
+- Attention-based neighborhood aggregation:
   - Graph attention networks (Hoshen, 2017; Velickovic et al., 2018; Liu et al., 2018)
 - Embedding entire graphs:
   - Graph neural nets with edge embeddings (Battaglia et al., 2016; Gilmer et. al., 2017)
