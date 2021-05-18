@@ -2,6 +2,10 @@
 
 Like Kernel PCA, we can generalize CCA with kernels.
 
+Ref
+- A kernel method for canonical correlation analysis. Shotaro Akaho 2001.
+- Canonical correlation analysis; An overview with application to learning methods. David R. Hardoon 2003.
+
 ## Kernelization
 
 Recall the original optimization problem of CCA
@@ -27,23 +31,24 @@ $$\begin{align}
 \end{align}$$
 
 
-```{margin} How?
-
-$$
-\boldsymbol{C} ^{-1}  _x \boldsymbol{C} _{xy} \boldsymbol{C} _y ^{-1} \boldsymbol{C} _{yx} \boldsymbol{v}  = \lambda \boldsymbol{v}  \\
-\frac{1}{n} \boldsymbol{\Phi} _x ^\top \boldsymbol{\Phi} _y \boldsymbol{C} _y ^{-1}
-\frac{1}{n} \boldsymbol{\Phi} _y ^\top \boldsymbol{\Phi} _x  \boldsymbol{v}  = \lambda \boldsymbol{C} _x \boldsymbol{v}  \\
-\boldsymbol{\Phi} _x  ^\top \boldsymbol{u}  = \lambda \boldsymbol{C} _x\boldsymbol{v}
-$$
-
-```
-
-It can be shown that, the solution vectors $\boldsymbol{v}$ and $\boldsymbol{w}$ are linear combinations of the data vectors, i.e.
+It can be shown that, the solution vectors $\boldsymbol{v}$ and $\boldsymbol{w}$ are linear combinations of the data vectors $\boldsymbol{\phi} _x(\boldsymbol{x} _i)$ and $\boldsymbol{\phi} _y (\boldsymbol{y} _i)$, i.e.
 
 $$\begin{aligned}
 \boldsymbol{v} &= \boldsymbol{\Phi} _x ^\top \boldsymbol{\alpha}\\
 \boldsymbol{w} &= \boldsymbol{\Phi} _y ^\top \boldsymbol{\beta} \\
 \end{aligned}$$
+
+:::{admonition,dropdown,seealso} *Derivation??*
+
+$$\begin{aligned}
+\boldsymbol{C} ^{-1}  _x \boldsymbol{C} _{xy} \boldsymbol{C} _y ^{-1} \boldsymbol{C} _{yx} \boldsymbol{v}  &= \lambda \boldsymbol{v}  \\
+\Rightarrow\quad \frac{1}{n} \boldsymbol{\Phi} _x ^\top \boldsymbol{\Phi} _y \boldsymbol{C} _y ^{-1}
+\frac{1}{n} \boldsymbol{\Phi} _y ^\top \boldsymbol{\Phi} _x  \boldsymbol{v}  &= \lambda \boldsymbol{C} _x \boldsymbol{v}  \\
+\Rightarrow\quad \boldsymbol{\Phi} _x  ^\top \boldsymbol{\alpha}  &= \lambda \boldsymbol{C} _x\boldsymbol{v} \\
+...&= \\
+\end{aligned}$$
+
+:::
 
 Substituting them back to the objective function, we have
 
@@ -68,7 +73,7 @@ The corresponding Lagrangian is
 
 
 $$
-\mathcal{L}(\lambda, \boldsymbol{\alpha}, \boldsymbol{\beta})=\boldsymbol{\alpha}^{\prime} \boldsymbol{K}_{x} \boldsymbol{K}_{y} \boldsymbol{\beta}-\frac{\lambda_{\boldsymbol{\alpha}}}{2}\left(\boldsymbol{\alpha}^{\prime} \boldsymbol{K}_{x}^{2} \boldsymbol{\alpha}-1\right)-\frac{\lambda_{\boldsymbol{\beta}}}{2}\left(\boldsymbol{\beta}^{\prime} \boldsymbol{K}_{y}^{2} \boldsymbol{\beta}-1\right)
+\mathcal{L}(\lambda, \boldsymbol{\alpha}, \boldsymbol{\beta})=\boldsymbol{\alpha}^{\top} \boldsymbol{K}_{x} \boldsymbol{K}_{y} \boldsymbol{\beta}-\frac{\lambda_{\boldsymbol{\alpha}}}{2}\left(\boldsymbol{\alpha}^{\top} \boldsymbol{K}_{x}^{2} \boldsymbol{\alpha}-1\right)-\frac{\lambda_{\boldsymbol{\beta}}}{2}\left(\boldsymbol{\beta}^{\top} \boldsymbol{K}_{y}^{2} \boldsymbol{\beta}-1\right)
 $$
 
 Taking derivatives w.r.t. $\boldsymbol{\boldsymbol{\alpha}}$ and $\boldsymbol{\boldsymbol{\beta}}$ gives
@@ -84,8 +89,8 @@ Subtracting $\boldsymbol{\boldsymbol{\beta}} ^\top$ times the second equation fr
 
 $$
 \begin{aligned}
-0 &=\boldsymbol{\alpha}^{\prime} \boldsymbol{K}_{x} \boldsymbol{K}_{y} \boldsymbol{\beta}-\boldsymbol{\alpha}^{\prime} \lambda_{\boldsymbol{\alpha}} \boldsymbol{K}_{x}^{2} \boldsymbol{\alpha}-\boldsymbol{\beta}^{\prime} \boldsymbol{K}_{y} \boldsymbol{K}_{x} \boldsymbol{\alpha}+\boldsymbol{\beta}^{\prime} \lambda_{\boldsymbol{\beta}} \boldsymbol{K}_{y}^{2} \boldsymbol{\beta} \\
-&=\lambda_{\boldsymbol{\beta}} \boldsymbol{\beta}^{\prime} \boldsymbol{K}_{y}^{2} \boldsymbol{\beta}-\lambda_{\boldsymbol{\alpha}} \boldsymbol{\alpha}^{\prime} \boldsymbol{K}_{x}^{2} \boldsymbol{\alpha}
+0 &=\boldsymbol{\alpha}^{\top} \boldsymbol{K}_{x} \boldsymbol{K}_{y} \boldsymbol{\beta}-\boldsymbol{\alpha}^{\top} \lambda_{\boldsymbol{\alpha}} \boldsymbol{K}_{x}^{2} \boldsymbol{\alpha}-\boldsymbol{\beta}^{\top} \boldsymbol{K}_{y} \boldsymbol{K}_{x} \boldsymbol{\alpha}+\boldsymbol{\beta}^{\top} \lambda_{\boldsymbol{\beta}} \boldsymbol{K}_{y}^{2} \boldsymbol{\beta} \\
+&=\lambda_{\boldsymbol{\beta}} \boldsymbol{\beta}^{\top} \boldsymbol{K}_{y}^{2} \boldsymbol{\beta}-\lambda_{\boldsymbol{\alpha}} \boldsymbol{\alpha}^{\top} \boldsymbol{K}_{x}^{2} \boldsymbol{\alpha}
 \end{aligned}
 $$
 
@@ -120,8 +125,8 @@ To obtain non-trivial solution, we add regularization term, which is typically t
 
 $$
 \begin{aligned}
-\rho &=\max _{\boldsymbol{\alpha}, \boldsymbol{\beta}} \frac{\boldsymbol{\alpha}^{\prime} \boldsymbol{K}_{x} \boldsymbol{K}_{y} \boldsymbol{\beta}}{\sqrt{\left.\left(\boldsymbol{\alpha}^{\prime} \boldsymbol{K}_{x}^{2} \boldsymbol{\alpha}+r\left\|\boldsymbol{v} \right\|^{2}\right) \cdot\left(\boldsymbol{\beta}^{\prime} \boldsymbol{K}_{y}^{2} \boldsymbol{\beta}+r\left\|\boldsymbol{w} \right\|^{2}\right)\right)}} \\
-&=\max _{\boldsymbol{\alpha}, \boldsymbol{\beta}} \frac{\boldsymbol{\alpha}^{\prime} \boldsymbol{K}_{x} \boldsymbol{K}_{y} \boldsymbol{\beta}}{\sqrt{\left(\boldsymbol{\alpha}^{\prime} \boldsymbol{K}_{x}^{2} \boldsymbol{\alpha}+r \boldsymbol{\alpha}^{\prime} \boldsymbol{K}_{x} \boldsymbol{\alpha}\right) \cdot\left(\boldsymbol{\beta}^{\prime} \boldsymbol{K}_{y}^{2} \boldsymbol{\beta}+r \boldsymbol{\beta}^{\prime} \boldsymbol{K}_{y} \boldsymbol{\beta}\right)}}
+\rho &=\max _{\boldsymbol{\alpha}, \boldsymbol{\beta}} \frac{\boldsymbol{\alpha}^{\top} \boldsymbol{K}_{x} \boldsymbol{K}_{y} \boldsymbol{\beta}}{\sqrt{\left.\left(\boldsymbol{\alpha}^{\top} \boldsymbol{K}_{x}^{2} \boldsymbol{\alpha}+r\left\|\boldsymbol{v} \right\|^{2}\right) \cdot\left(\boldsymbol{\beta}^{\top} \boldsymbol{K}_{y}^{2} \boldsymbol{\beta}+r\left\|\boldsymbol{w} \right\|^{2}\right)\right)}} \\
+&=\max _{\boldsymbol{\alpha}, \boldsymbol{\beta}} \frac{\boldsymbol{\alpha}^{\top} \boldsymbol{K}_{x} \boldsymbol{K}_{y} \boldsymbol{\beta}}{\sqrt{\left(\boldsymbol{\alpha}^{\top} \boldsymbol{K}_{x}^{2} \boldsymbol{\alpha}+r \boldsymbol{\alpha}^{\top} \boldsymbol{K}_{x} \boldsymbol{\alpha}\right) \cdot\left(\boldsymbol{\beta}^{\top} \boldsymbol{K}_{y}^{2} \boldsymbol{\beta}+r \boldsymbol{\beta}^{\top} \boldsymbol{K}_{y} \boldsymbol{\beta}\right)}}
 \end{aligned}
 $$
 
@@ -129,8 +134,8 @@ Likewise, we observe that the new regularized equation is not affected by re-sca
 
 $$
 \begin{aligned}
-\left(\boldsymbol{\alpha}^{\prime} \boldsymbol{K}_{x}^{2} \boldsymbol{\alpha}+r \boldsymbol{\alpha}^{\prime} \boldsymbol{K}_{x} \boldsymbol{\alpha}\right) &=1 \\
-\left(\boldsymbol{\beta}^{\prime} \boldsymbol{K}_{y}^{2} \boldsymbol{\beta}+r \boldsymbol{\beta}^{\prime} \boldsymbol{K}_{y} \boldsymbol{\beta}\right) &=1
+\left(\boldsymbol{\alpha}^{\top} \boldsymbol{K}_{x}^{2} \boldsymbol{\alpha}+r \boldsymbol{\alpha}^{\top} \boldsymbol{K}_{x} \boldsymbol{\alpha}\right) &=1 \\
+\left(\boldsymbol{\beta}^{\top} \boldsymbol{K}_{y}^{2} \boldsymbol{\beta}+r \boldsymbol{\beta}^{\top} \boldsymbol{K}_{y} \boldsymbol{\beta}\right) &=1
 \end{aligned}
 $$
 
@@ -138,9 +143,9 @@ The resulting Lagrangian is
 
 $$
 \begin{aligned}
-\mathcal{L}\left(\lambda_{\boldsymbol{\alpha}}, \lambda_{\boldsymbol{\beta}}, \boldsymbol{\alpha}, \boldsymbol{\beta}\right)=& \boldsymbol{\alpha}^{\prime} \boldsymbol{K}_{x} \boldsymbol{K}_{y} \boldsymbol{\beta} \\
-&-\frac{\lambda_{\boldsymbol{\alpha}}}{2}\left(\boldsymbol{\alpha}^{\prime} \boldsymbol{K}_{x}^{2} \boldsymbol{\alpha}+r \boldsymbol{\alpha}^{\prime} \boldsymbol{K}_{x} \boldsymbol{\alpha}-1\right) \\
-&-\frac{\lambda_{\boldsymbol{\beta}}}{2}\left(\boldsymbol{\beta}^{\prime} \boldsymbol{K}_{y}^{2} \boldsymbol{\beta}+r \boldsymbol{\beta}^{\prime} \boldsymbol{K}_{y} \boldsymbol{\beta}-1\right)
+\mathcal{L}\left(\lambda_{\boldsymbol{\alpha}}, \lambda_{\boldsymbol{\beta}}, \boldsymbol{\alpha}, \boldsymbol{\beta}\right)=& \boldsymbol{\alpha}^{\top} \boldsymbol{K}_{x} \boldsymbol{K}_{y} \boldsymbol{\beta} \\
+&-\frac{\lambda_{\boldsymbol{\alpha}}}{2}\left(\boldsymbol{\alpha}^{\top} \boldsymbol{K}_{x}^{2} \boldsymbol{\alpha}+r \boldsymbol{\alpha}^{\top} \boldsymbol{K}_{x} \boldsymbol{\alpha}-1\right) \\
+&-\frac{\lambda_{\boldsymbol{\beta}}}{2}\left(\boldsymbol{\beta}^{\top} \boldsymbol{K}_{y}^{2} \boldsymbol{\beta}+r \boldsymbol{\beta}^{\top} \boldsymbol{K}_{y} \boldsymbol{\beta}-1\right)
 \end{aligned}
 $$
 
@@ -157,8 +162,8 @@ By the same trick, we have
 
 $$
 \begin{aligned}
-0 &=\boldsymbol{\alpha}^{\prime} \boldsymbol{K}_{x} \boldsymbol{K}_{y} \boldsymbol{\beta}-\lambda_{\boldsymbol{\alpha}} \boldsymbol{\alpha}^{\prime}\left(\boldsymbol{K}_{x}^{2} \boldsymbol{\alpha}+r \boldsymbol{K}_{x} \boldsymbol{\alpha}\right)-\boldsymbol{\beta}^{\prime} \boldsymbol{K}_{y} \boldsymbol{K}_{x} \boldsymbol{\alpha}+\lambda_{\boldsymbol{\beta}} \boldsymbol{\beta}^{\prime}\left(\boldsymbol{K}_{y}^{2} \boldsymbol{\beta}+r \boldsymbol{K}_{y} \boldsymbol{\beta}\right) \\
-&=\lambda_{\boldsymbol{\beta}} \boldsymbol{\beta}^{\prime}\left(\boldsymbol{K}_{y}^{2} \boldsymbol{\beta}+r \boldsymbol{K}_{y} \boldsymbol{\beta}\right)-\lambda_{\boldsymbol{\alpha}} \boldsymbol{\alpha}^{\prime}\left(\boldsymbol{K}_{x}^{2} \boldsymbol{\alpha}+r \boldsymbol{K}_{x} \boldsymbol{\alpha}\right)
+0 &=\boldsymbol{\alpha}^{\top} \boldsymbol{K}_{x} \boldsymbol{K}_{y} \boldsymbol{\beta}-\lambda_{\boldsymbol{\alpha}} \boldsymbol{\alpha}^{\top}\left(\boldsymbol{K}_{x}^{2} \boldsymbol{\alpha}+r \boldsymbol{K}_{x} \boldsymbol{\alpha}\right)-\boldsymbol{\beta}^{\top} \boldsymbol{K}_{y} \boldsymbol{K}_{x} \boldsymbol{\alpha}+\lambda_{\boldsymbol{\beta}} \boldsymbol{\beta}^{\top}\left(\boldsymbol{K}_{y}^{2} \boldsymbol{\beta}+r \boldsymbol{K}_{y} \boldsymbol{\beta}\right) \\
+&=\lambda_{\boldsymbol{\beta}} \boldsymbol{\beta}^{\top}\left(\boldsymbol{K}_{y}^{2} \boldsymbol{\beta}+r \boldsymbol{K}_{y} \boldsymbol{\beta}\right)-\lambda_{\boldsymbol{\alpha}} \boldsymbol{\alpha}^{\top}\left(\boldsymbol{K}_{x}^{2} \boldsymbol{\alpha}+r \boldsymbol{K}_{x} \boldsymbol{\alpha}\right)
 \end{aligned}
 $$
 
@@ -166,8 +171,8 @@ which gives $\lambda_\alpha = \lambda_\beta =0$. Let them be $\lambda$, and supp
 
 $$
 \begin{aligned}
-\boldsymbol{\beta} &=\frac{\left(\boldsymbol{K}_{y}+r I\right)^{-1} \boldsymbol{K}_{y}^{-1} \boldsymbol{K}_{y} \boldsymbol{K}_{x} \boldsymbol{\alpha}}{\lambda} \\
-&=\frac{\left(\boldsymbol{K}_{y}+r I\right)^{-1} \boldsymbol{K}_{x} \boldsymbol{\alpha}}{\lambda}
+\boldsymbol{\beta} &=\frac{\left(\boldsymbol{K}_{y}+r \boldsymbol{I} \right)^{-1} \boldsymbol{K}_{y}^{-1} \boldsymbol{K}_{y} \boldsymbol{K}_{x} \boldsymbol{\alpha}}{\lambda} \\
+&=\frac{\left(\boldsymbol{K}_{y}+r \boldsymbol{I} \right)^{-1} \boldsymbol{K}_{x} \boldsymbol{\alpha}}{\lambda}
 \end{aligned}
 $$
 
@@ -175,9 +180,9 @@ and hence
 
 $$
 \begin{aligned}
-\boldsymbol{K}_{x} \boldsymbol{K}_{y}\left(\boldsymbol{K}_{y}+r I\right)^{-1} \boldsymbol{K}_{x} \boldsymbol{\alpha} &=\lambda^{2} \boldsymbol{K}_{x}\left(\boldsymbol{K}_{x}+r I\right) \boldsymbol{\alpha} \\
-\boldsymbol{K}_{y}\left(\boldsymbol{K}_{y}+r I\right)^{-1} \boldsymbol{K}_{x} \boldsymbol{\alpha} &=\lambda^{2}\left(\boldsymbol{K}_{x}+r I\right) \boldsymbol{\alpha} \\
-\left(\boldsymbol{K}_{x}+r I\right)^{-1} \boldsymbol{K}_{y}\left(\boldsymbol{K}_{y}+r I\right)^{-1} \boldsymbol{K}_{x} \boldsymbol{\alpha} &=\lambda^{2} \boldsymbol{\alpha}
+\boldsymbol{K}_{x} \boldsymbol{K}_{y}\left(\boldsymbol{K}_{y}+r \boldsymbol{I}\right)^{-1} \boldsymbol{K}_{x} \boldsymbol{\alpha} &=\lambda^{2} \boldsymbol{K}_{x}\left(\boldsymbol{K}_{x}+r \boldsymbol{I}\right) \boldsymbol{\alpha} \\
+\boldsymbol{K}_{y}\left(\boldsymbol{K}_{y}+r \boldsymbol{I}\right)^{-1} \boldsymbol{K}_{x} \boldsymbol{\alpha} &=\lambda^{2}\left(\boldsymbol{K}_{x}+r \boldsymbol{I}\right) \boldsymbol{\alpha} \\
+\left(\boldsymbol{K}_{x}+r \boldsymbol{I}\right)^{-1} \boldsymbol{K}_{y}\left(\boldsymbol{K}_{y}+r \boldsymbol{I}\right)^{-1} \boldsymbol{K}_{x} \boldsymbol{\alpha} &=\lambda^{2} \boldsymbol{\alpha}
 \end{aligned}
 $$
 
@@ -185,11 +190,11 @@ Therefore, we just solve the above eigenproblem to get meaningful $\boldsymbol{\
 
 ## Learning
 
-From the analysis above, the steps to train a kernel PCA are
+From the analysis above, the steps to train a kernel CCA are
 
 1. Choose a kernel function $k(\cdot, \cdot)$.
-2. Compute the centered kernel matrix $\boldsymbol{K} ^\prime _x = (\boldsymbol{I} - \boldsymbol{u} \boldsymbol{u} ^\top )\boldsymbol{K}_x(\boldsymbol{I} - \boldsymbol{u} \boldsymbol{u} ^\top)$ and $\boldsymbol{K} _y ^\prime$
-3. Find the first $k$ eigenvectors of $\left(\boldsymbol{K} ^\prime_{x}+r I\right)^{-1} \boldsymbol{K} ^\prime_{y}\left(\boldsymbol{K} ^\prime_{y}+r I\right)^{-1} \boldsymbol{K} ^\prime_{x}$, store in $\boldsymbol{A}$.
+2. Compute the centered kernel matrix $\boldsymbol{K} ^c _x = (\boldsymbol{I} - \boldsymbol{u} \boldsymbol{u} ^\top )\boldsymbol{K}_x(\boldsymbol{I} - \boldsymbol{u} \boldsymbol{u} ^\top)$ and $\boldsymbol{K} _y ^c$
+3. Find the first $k$ eigenvectors of $\left(\boldsymbol{K} ^c_{x}+r \boldsymbol{I}\right)^{-1} \boldsymbol{K} ^\prime_{y}\left(\boldsymbol{K} ^c_{y}+r \boldsymbol{I}\right)^{-1} \boldsymbol{K} ^c_{x}$, store in $\boldsymbol{A}$.
 
 Then
 
@@ -215,7 +220,7 @@ Then
     \vdots \\
     \boldsymbol{\alpha} _k ^\top  \boldsymbol{\Phi}_x  \\
     \end{array}\right] \boldsymbol{\phi}(\boldsymbol{x})
-    = \boldsymbol{A} ^\top \boldsymbol{\Phi}_x \boldsymbol{\phi}(\boldsymbol{x})  
+    = \boldsymbol{A} ^\top \boldsymbol{\Phi}_x \boldsymbol{\phi}(\boldsymbol{x})
     = \boldsymbol{A} ^\top \left[\begin{array}{c}
     k(\boldsymbol{x} _1, \boldsymbol{x}) \\
     k(\boldsymbol{x} _2, \boldsymbol{x}) \\
