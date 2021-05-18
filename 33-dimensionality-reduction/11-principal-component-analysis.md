@@ -46,36 +46,39 @@ Consider a $d$-dimensional random vector $\boldsymbol{x} = \left( X_1, X_2, \ldo
   \operatorname{Var}\left( X_1 \right) + \operatorname{Var}\left( X_2 \right) + \ldots + \operatorname{Var}\left( X_d \right)
   $$
 
+  and
+
 - The linear combinations $Z_i$ and $Z_j$ are **uncorrelated** for $i\ne j$. This imply that each variable in $\boldsymbol{z} = \left( Z_1, Z_2, \ldots, Z_k \right)^\top$ can be analyzed by using **univariate** techniques.
+
+The new variables $Z_j$ are called princial components.
 
 ### Formulation based on Data
 
-Other formulations of PCA based on sample data matrix $\boldsymbol{X}$ aim to find a linear mapping $\mathbb{R} ^d \rightarrow \mathbb{R} ^k$ (assume $\boldsymbol{X}$ is centered) to project the data matrix $\boldsymbol{X}_{n \times d}$ to a lower dimensional embedding matrix $\boldsymbol{Z}_{n \times k}$.
+Other formulations of PCA based on **centered** sample data matrix $\boldsymbol{X}$ aim to find a linear mapping $\mathbb{R} ^d \rightarrow \mathbb{R} ^k$ (assume $\boldsymbol{X}$ is centered) to project the data matrix $\boldsymbol{X}_{n \times d}$ to a lower dimensional embedding matrix $\boldsymbol{Z}_{n \times k}$.
 
 $$\begin{aligned}
 \boldsymbol{z}_i &= \boldsymbol{W}_{d \times k} ^\top \boldsymbol{x}_i \\
 \boldsymbol{Z}_{n \times k} &= \boldsymbol{X}_{n \times d}  \boldsymbol{W} _{d \times k} \\
 \end{aligned}$$
 
-The mapping $\boldsymbol{W} _{d \times k}$ are also called **loadings**, and the embeddings $\boldsymbol{Z} _{n \times k}$ are called **scores**. The loadings can be used to visualize how the original variables $X_j$ contributes to each principal component $Z_j$. The scores $\boldsymbol{Z} _{n \times k}$ can then be used for downstream tasks, e.g. visualization.
+The mapping $\boldsymbol{W} _{d \times k}$ are also called **loadings**, and the embeddings $\boldsymbol{Z} _{n \times k}$ are called **scores**. The loadings can be used to visualize how the original variables $X_j$ contributes to each principal component $Z_j$. The scores $\boldsymbol{Z} _{n \times k}$ can then be used for downstream tasks, e.g. visualization, classification.
 
-There are various equivalent formulations of the loadings $\boldsymbol{W}$:
+There are various equivalent formulations of optimization problems to find the loadings $\boldsymbol{W}$:
 
 - Maximize the total variances $\sum_i \operatorname{Var}\left( Z_i \right)$ of the projected data $\boldsymbol{Z} =  \boldsymbol{X}  \boldsymbol{W}$ (similar to the population formulation above)
 
     $$\begin{align}
-    \boldsymbol{W}^*  = \underset{\boldsymbol{\boldsymbol{W} } }{\operatorname{argmax}} \, & \operatorname{tr}\left( \boldsymbol{Z} ^\top \boldsymbol{Z}  \right)   \\
-     = \underset{\boldsymbol{\boldsymbol{W} } }{\operatorname{argmax}} \, & \operatorname{tr}\left( (\boldsymbol{X}\boldsymbol{W}) ^\top \boldsymbol{X} \boldsymbol{W} \right)   \\
+    \max_{\boldsymbol{W}}\, & \operatorname{tr}\left( \boldsymbol{Z} ^\top \boldsymbol{Z}  \right)   \\
      \text{s.t.}  & \ \boldsymbol{W} ^\top \boldsymbol{W} = \boldsymbol{I}  \\
-       &\ \boldsymbol{W} \in \mathbb{R} _{d \times k}
+       &\ \boldsymbol{W} \in \mathbb{R} ^{d \times k}
     \end{align}$$
 
 - Minimize total reconstruction loss, where $\hat{\boldsymbol{x} }_i = \boldsymbol{W} \boldsymbol{z} _i = \boldsymbol{W} \boldsymbol{W} ^{\top} \boldsymbol{x} _i$
 
     $$\begin{align}
-    \boldsymbol{W}^*  = \underset{\boldsymbol{\boldsymbol{W} } }{\operatorname{argmin}} \, & \sum_i^n \left\Vert \boldsymbol{x}_i - \hat{\boldsymbol{x} }_i \right\Vert ^2    \\
-     \text{s.t.}  & \boldsymbol{W} ^\top \boldsymbol{W} = \boldsymbol{I}  \\
-       &\ \boldsymbol{W} \in \mathbb{R} _{d \times k}
+    \min_{\boldsymbol{W}}\, & \sum_i^n \left\Vert \boldsymbol{x}_i - \hat{\boldsymbol{x} }_i \right\Vert ^2    \\
+    \text{s.t.}  & \boldsymbol{W} ^\top \boldsymbol{W} = \boldsymbol{I}  \\
+       &\ \boldsymbol{W} \in \mathbb{R} ^{d \times k}
     \end{align}$$
 
 - Low-dimensional Hyperplane fitting
@@ -83,11 +86,33 @@ There are various equivalent formulations of the loadings $\boldsymbol{W}$:
   Fit a low-dimensional hyperplane such that, when we project our data $\boldsymbol{X}$ onto the hyperplane and obtain $\boldsymbol{Z}$, the variance of our data is changed as little as possible. The low-dimensional hyperplane is defined by $\boldsymbol{W}$, which is the matrix of basis vectors that span it. Minimizing the change in variance between the original data $\boldsymbol{X}$ and its reconstruction $\boldsymbol{Z} \boldsymbol{W}^{\top}$ is equivalent to minimizing the sum of squared error loss:
 
   $$\begin{align}
-  \boldsymbol{W}^*  = \underset{\boldsymbol{\boldsymbol{W} } }{\operatorname{argmin}} \, & \sum_i^n \left\Vert \boldsymbol{x}_i - \boldsymbol{W} \boldsymbol{z} _i \right\Vert ^2    \\
+  \min_{\boldsymbol{W}, \left\{ \boldsymbol{z}_i \right\}}\, & \sum_i^n \left\Vert \boldsymbol{x}_i - \boldsymbol{W} \boldsymbol{z} _i \right\Vert ^2    \\
    \text{s.t.}  & \boldsymbol{W} ^\top \boldsymbol{W} = \boldsymbol{I}  \\
-     &\ \boldsymbol{W} \in \mathbb{R} _{d \times k}
+     &\ \boldsymbol{W} \in \mathbb{R} ^{d \times k}, \boldsymbol{z} _i \in \mathbb{R} ^{k}
   \end{align}$$
 
+  :::{admonition,dropdown,seealso} *Derivation of Equivalentce*
+
+  First, we write in matrix form
+
+  $$
+  \min_{\boldsymbol{W}, \left\{ \boldsymbol{z}_i \right\}}\, \sum_i^n \left\Vert \boldsymbol{x}_i - \boldsymbol{W} \boldsymbol{z} _i \right\Vert ^2
+  = \min_{\boldsymbol{W}, \boldsymbol{Z}}\, \left\| \boldsymbol{X} - \boldsymbol{Z} \boldsymbol{W} ^{\top} \right\|^2 \\
+  $$
+
+  Setting first order derivative w.r.t. $\boldsymbol{Z}$ to 0 gives $\boldsymbol{Z} = \boldsymbol{X} \boldsymbol{W}$. Hence the objective is
+
+
+  $$\begin{aligned}
+  \min_{\boldsymbol{W}}\, \left\| \boldsymbol{X} - \boldsymbol{X}\boldsymbol{W} \boldsymbol{W} ^{\top} \right\|^2
+  &= \min_{\boldsymbol{W}}\, \operatorname{tr} \left( (\boldsymbol{X} - \boldsymbol{X} \boldsymbol{W} \boldsymbol{W} ^{\top} ) ^{\top} (\boldsymbol{X} - \boldsymbol{X} \boldsymbol{W} \boldsymbol{W} ^{\top} ) \right) \\
+  &= \min_{\boldsymbol{W}}\, \operatorname{tr}(\boldsymbol{X} ^{\top} \boldsymbol{X}  - \boldsymbol{X} ^{\top} \boldsymbol{X} \boldsymbol{W} \boldsymbol{W} ^{\top}  - \boldsymbol{W} \boldsymbol{W} ^{\top} \boldsymbol{X} ^{\top} \boldsymbol{X}  + \boldsymbol{W} \boldsymbol{W} ^{\top} \boldsymbol{X} ^{\top} \boldsymbol{X} \boldsymbol{W} \boldsymbol{W} ^{\top} ) \\
+  &= \min_{\boldsymbol{W}}\, \operatorname{tr} \left( \boldsymbol{X} ^{\top} \boldsymbol{X}  - \boldsymbol{W} ^{\top} \boldsymbol{X} ^{\top} \boldsymbol{X} \boldsymbol{W}  \right)  \quad \because \text{by cyclic permutations in trace} \\
+  &\Leftrightarrow   \min_{\boldsymbol{W}}\, \operatorname{tr} (\boldsymbol{W} ^{\top} \boldsymbol{X} ^{\top} \boldsymbol{X} \boldsymbol{W})\\
+  &= \min_{\boldsymbol{W}}\, \operatorname{tr} (\boldsymbol{Z} ^{\top} \boldsymbol{Z})\\
+  \end{aligned}$$
+
+  :::
 
 ## Learning
 
@@ -206,7 +231,7 @@ where
 - $\lambda_1 > \lambda_2 > \dots> \lambda_d \ge 0$ are ordered eigenvalues of $\boldsymbol{\Sigma}$: $\boldsymbol{\Lambda} =  \operatorname{diag}(\lambda_1, \lambda_2, \ldots, \lambda_d)$
 - $\boldsymbol{u} _1, \ldots, \boldsymbol{u} _d$ are their corresponding normalized eigenvectors forming the column vectors of the orthogonal matrix $\boldsymbol{U} = \left( \boldsymbol{u} _1\  \boldsymbol{u} _2 \ \ldots \  \boldsymbol{u} _d \right)$, where $\boldsymbol{U}  ^\top \boldsymbol{U}   = \boldsymbol{I}$ or $\boldsymbol{u} _i ^\top \boldsymbol{u} _j = 1$ if $i=j$ and 0 otherwise.
 
-
+For derivation see [1](https://math.stackexchange.com/questions/3736092/how-to-solve-the-optimization-problem-of-pca?rq=1),[2](https://math.stackexchange.com/questions/1902421/prove-that-the-trace-of-the-matrix-product-uau-is-maximized-by-setting-us).
 
 The $k$-th population principal component is defined as
 
