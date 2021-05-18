@@ -116,13 +116,15 @@ Representer Theorem (Simplified)
 Example (Linear regression OLS)
 : In linear regression, we can write $\boldsymbol{\beta}$ as a linear combination of data vectors $\boldsymbol{x}_i$ (identical transformation $\boldsymbol{\phi}$).
 
+  $$\begin{aligned}
+  && \boldsymbol{X} ^\top \boldsymbol{\alpha} &= (\boldsymbol{X} ^\top \boldsymbol{X} )^{-1} \boldsymbol{X} ^\top \boldsymbol{y} \\
+  &\Rightarrow& (\boldsymbol{X} \boldsymbol{X}  ^\top )(\boldsymbol{X} \boldsymbol{X}  ^\top) \boldsymbol{\alpha} &=\boldsymbol{X} \left( \boldsymbol{X} ^\top \boldsymbol{X}  (\boldsymbol{X} ^\top \boldsymbol{X} )^{-1}  \right)\boldsymbol{X} ^\top \boldsymbol{y} \\
+  &\Rightarrow&  \boldsymbol{K}^2 \boldsymbol{\alpha} &= \boldsymbol{K} \boldsymbol{y}  \quad \text{let } \boldsymbol{K} = \boldsymbol{X} \boldsymbol{X} ^\top  \\
+  &\Rightarrow&  \boldsymbol{\alpha} &= \boldsymbol{K} ^{-1} \boldsymbol{y}  \\
+  \end{aligned}$$
 
-$$\begin{aligned}
-&& \boldsymbol{X} ^\top \boldsymbol{\alpha} &= (\boldsymbol{X} ^\top \boldsymbol{X} )^{-1} \boldsymbol{X} ^\top \boldsymbol{y} \\
-&\Rightarrow& (\boldsymbol{X} \boldsymbol{X}  ^\top )(\boldsymbol{X} \boldsymbol{X}  ^\top) \boldsymbol{\alpha} &=\boldsymbol{X} \left( \boldsymbol{X} ^\top \boldsymbol{X}  (\boldsymbol{X} ^\top \boldsymbol{X} )^{-1}  \right)\boldsymbol{X} ^\top \boldsymbol{y} \\
-&\Rightarrow&  \boldsymbol{K}^2 \boldsymbol{\alpha} &= \boldsymbol{K} \boldsymbol{y}  \quad \text{let } \boldsymbol{K} = \boldsymbol{X} \boldsymbol{X} ^\top  \\
-&\Rightarrow&  \boldsymbol{\alpha} &= \boldsymbol{K} ^{-1} \boldsymbol{y}  \\
-\end{aligned}$$
+Note that usually $\boldsymbol{K} ^{-1}$ is not invertible. But $\boldsymbol{\alpha}$ always exists, which can be proved by gradient descent, see this [note](https://www.cs.cornell.edu/courses/cs4780/2018fa/lectures/lecturenote13.html). (but why $\alpha_{i}^{(t)}=-s \sum_{r=0}^{t-1} \gamma_{i}^{(r)}$ converges??)
+
 
 **Implication**
 

@@ -1,3 +1,4 @@
+(factor-analysis)=
 # Factor Analysis
 
 Goal: Model $p$ random, observable variables as linear combinations of very **few** underlying variables commonly called **factors**.

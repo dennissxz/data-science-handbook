@@ -995,8 +995,8 @@
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#test-normality">
-     Test Normality
+    <a class="reference internal nav-link" href="#check-normality">
+     Check Normality
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
@@ -1412,8 +1412,8 @@ c &amp;= f(\boldsymbol{x} ;\boldsymbol{\mu}, \boldsymbol{\Sigma}) \\
 </div>
 <div class="section" id="univariate-gaussian">
 <h2>Univariate Gaussian<a class="headerlink" href="#univariate-gaussian" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="test-normality">
-<h3>Test Normality<a class="headerlink" href="#test-normality" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="check-normality">
+<h3>Check Normality<a class="headerlink" href="#check-normality" title="Permalink to this headline">¶</a></h3>
 <p>For most multivariate analyses, it is important that the data indeed follow the multivariate normal, at least approximately if not exactly.</p>
 <ul>
 <li><p>QQ-plots (quantile-quantile plot)</p>
@@ -1428,19 +1428,27 @@ c &amp;= f(\boldsymbol{x} ;\boldsymbol{\mu}, \boldsymbol{\Sigma}) \\
 </div>
 </li>
 <li><p>P-P plot (probability against probability plot) that plots the sample CDF against the theoretical CDF.</p></li>
-<li><p>Shapiro–Wilk <span class="math notranslate nohighlight">\(W\)</span> test</p>
+<li><p>Among all continuous random variable with mean <span class="math notranslate nohighlight">\(0\)</span>, variance <span class="math notranslate nohighlight">\(\sigma^2\)</span>, normal random variable has the largest <a class="reference internal" href="../30-ml-basics/03-information-theory.html#differential-entropy"><span class="std std-ref">differential entropy</span></a> with value <span class="math notranslate nohighlight">\(\operatorname{H}(\mathcal{N}(0, \sigma^2)) = \ln(\sigma \sqrt{2 \pi e})\)</span>. Hence, the distance of an entropy from the normal entropy (termed <strong>neg-entropy</strong>), can be used to develop measures of non-Gaussianity, or non-normality.</p></li>
+</ul>
+<p>Rigorous Tests</p>
 <ul class="simple">
+<li><p>Shapiro–Wilk <span class="math notranslate nohighlight">\(W\)</span> test</p>
+<ul>
 <li><p>test statistic: a modified version of the squared sample correlation between the sample quantiles and the expected quantiles.</p></li>
 </ul>
 </li>
 <li><p>Kolmogorov–Smirnov test</p>
-<ul class="simple">
+<ul>
 <li><p>require: large sample, at least 100s</p></li>
 <li><p>test statistic: maximum difference between the empirical CDF and the normal CDF.</p></li>
 </ul>
 </li>
 <li><p>Jarque–Bera test</p></li>
-<li><p>Test for zero skewness, zero excess kurtosis.</p></li>
+<li><p>Test for zero skewness, zero excess kurtosis.</p>
+<ul>
+<li><p>Normal distribution has kurtosis <span class="math notranslate nohighlight">\(\frac{\mu_{4}}{\mu_{2}^{2}}=3\)</span> and excess kurtosis <span class="math notranslate nohighlight">\(\frac{\mu_{4}}{\mu_{2}^{2}}-3 = 0\)</span>. Large magnitude of excess kurtosis indicates deviation from normal distribution.</p></li>
+</ul>
+</li>
 </ul>
 <p>Multivariate case:</p>
 <ul>

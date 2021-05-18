@@ -88,10 +88,10 @@ In fact, we don't need the exact form of $\boldsymbol{\phi}$ at all.
 We've implicitly assumed zero-mean in the new feature space $\mathbb{R} ^p$, but it is usually not. Hence, we should modify $\boldsymbol{K}$ by
 
 $$
-\boldsymbol{K} ^\prime = \boldsymbol{C} \boldsymbol{K} \boldsymbol{C}
+\boldsymbol{K} ^c = \boldsymbol{C} \boldsymbol{K} \boldsymbol{C}
 $$
 
-where $\boldsymbol{C}  = \left(\boldsymbol{I}-\frac{1}{n} \boldsymbol{1} \boldsymbol{1}^{\top}\right)$ is the centering matrix. Then we solve for the eigenvectors of $\boldsymbol{K} ^\prime$
+where $\boldsymbol{C}  = \left(\boldsymbol{I}-\frac{1}{n} \boldsymbol{1} \boldsymbol{1}^{\top}\right)$ is the centering matrix. Then we solve for the eigenvectors of $\boldsymbol{K} ^c$
 
 :::
 
@@ -102,8 +102,8 @@ where $\boldsymbol{C}  = \left(\boldsymbol{I}-\frac{1}{n} \boldsymbol{1} \boldsy
 From the analysis above, the steps to train a kernel PCA are
 
 1. Choose a kernel function $k(\cdot, \cdot)$.
-2. Compute the centered kernel matrix $\boldsymbol{K} ^\prime = (\boldsymbol{I} - \boldsymbol{u} \boldsymbol{u} ^\top )\boldsymbol{K}(\boldsymbol{I} - \boldsymbol{u} \boldsymbol{u} ^\top)$
-3. Find the first $k$ eigenvectors of $\boldsymbol{K} ^\prime$, stored as $\boldsymbol{A}$.
+2. Compute the centered kernel matrix $\boldsymbol{K} ^c = (\boldsymbol{I} - \boldsymbol{u} \boldsymbol{u} ^\top )\boldsymbol{K}(\boldsymbol{I} - \boldsymbol{u} \boldsymbol{u} ^\top)$
+3. Find the first $k$ eigenvectors of $\boldsymbol{K} ^c$, stored as $\boldsymbol{A}$.
 
 Then
 

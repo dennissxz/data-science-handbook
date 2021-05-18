@@ -937,6 +937,11 @@
   <div class="section" id="kernel-cca">
 <h1>Kernel CCA<a class="headerlink" href="#kernel-cca" title="Permalink to this headline">¶</a></h1>
 <p>Like Kernel PCA, we can generalize CCA with kernels.</p>
+<p>Ref</p>
+<ul class="simple">
+<li><p>A kernel method for canonical correlation analysis. Shotaro Akaho 2001.</p></li>
+<li><p>Canonical correlation analysis; An overview with application to learning methods. David R. Hardoon 2003.</p></li>
+</ul>
 <div class="section" id="kernelization">
 <h2>Kernelization<a class="headerlink" href="#kernelization" title="Permalink to this headline">¶</a></h2>
 <p>Recall the original optimization problem of CCA</p>
@@ -959,22 +964,23 @@
 \text{s.t.}  &amp;  \ \quad \boldsymbol{v} ^\top \boldsymbol{C} _{xx} \boldsymbol{v} =1 \\
   &amp;  \ \quad \boldsymbol{w} ^\top \boldsymbol{C} _{yy} \boldsymbol{w} =1 \\
 \end{align}\end{split}\]</div>
-<div class="margin sidebar">
-<p class="sidebar-title">How?</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
-\boldsymbol{C} ^{-1}  _x \boldsymbol{C} _{xy} \boldsymbol{C} _y ^{-1} \boldsymbol{C} _{yx} \boldsymbol{v}  = \lambda \boldsymbol{v}  \\
-\frac{1}{n} \boldsymbol{\Phi} _x ^\top \boldsymbol{\Phi} _y \boldsymbol{C} _y ^{-1}
-\frac{1}{n} \boldsymbol{\Phi} _y ^\top \boldsymbol{\Phi} _x  \boldsymbol{v}  = \lambda \boldsymbol{C} _x \boldsymbol{v}  \\
-\boldsymbol{\Phi} _x  ^\top \boldsymbol{u}  = \lambda \boldsymbol{C} _x\boldsymbol{v}
-\end{split}\]</div>
-</div>
-<p>It can be shown that, the solution vectors <span class="math notranslate nohighlight">\(\boldsymbol{v}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{w}\)</span> are linear combinations of the data vectors, i.e.</p>
+<p>It can be shown that, the solution vectors <span class="math notranslate nohighlight">\(\boldsymbol{v}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{w}\)</span> are linear combinations of the data vectors <span class="math notranslate nohighlight">\(\boldsymbol{\phi} _x(\boldsymbol{x} _i)\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{\phi} _y (\boldsymbol{y} _i)\)</span>, i.e.</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{aligned}
 \boldsymbol{v} &amp;= \boldsymbol{\Phi} _x ^\top \boldsymbol{\alpha}\\
 \boldsymbol{w} &amp;= \boldsymbol{\Phi} _y ^\top \boldsymbol{\beta} \\
 \end{aligned}\end{split}\]</div>
+<div class="dropdown seealso admonition">
+<p class="admonition-title"> <em>Derivation??</em></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\boldsymbol{C} ^{-1}  _x \boldsymbol{C} _{xy} \boldsymbol{C} _y ^{-1} \boldsymbol{C} _{yx} \boldsymbol{v}  &amp;= \lambda \boldsymbol{v}  \\
+\Rightarrow\quad \frac{1}{n} \boldsymbol{\Phi} _x ^\top \boldsymbol{\Phi} _y \boldsymbol{C} _y ^{-1}
+\frac{1}{n} \boldsymbol{\Phi} _y ^\top \boldsymbol{\Phi} _x  \boldsymbol{v}  &amp;= \lambda \boldsymbol{C} _x \boldsymbol{v}  \\
+\Rightarrow\quad \boldsymbol{\Phi} _x  ^\top \boldsymbol{\alpha}  &amp;= \lambda \boldsymbol{C} _x\boldsymbol{v} \\
+...&amp;= \\
+\end{aligned}\end{split}\]</div>
+</div>
 <p>Substituting them back to the objective function, we have</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{aligned}
@@ -992,7 +998,7 @@
 <p>The corresponding Lagrangian is</p>
 <div class="math notranslate nohighlight">
 \[
-\mathcal{L}(\lambda, \boldsymbol{\alpha}, \boldsymbol{\beta})=\boldsymbol{\alpha}^{\prime} \boldsymbol{K}_{x} \boldsymbol{K}_{y} \boldsymbol{\beta}-\frac{\lambda_{\boldsymbol{\alpha}}}{2}\left(\boldsymbol{\alpha}^{\prime} \boldsymbol{K}_{x}^{2} \boldsymbol{\alpha}-1\right)-\frac{\lambda_{\boldsymbol{\beta}}}{2}\left(\boldsymbol{\beta}^{\prime} \boldsymbol{K}_{y}^{2} \boldsymbol{\beta}-1\right)
+\mathcal{L}(\lambda, \boldsymbol{\alpha}, \boldsymbol{\beta})=\boldsymbol{\alpha}^{\top} \boldsymbol{K}_{x} \boldsymbol{K}_{y} \boldsymbol{\beta}-\frac{\lambda_{\boldsymbol{\alpha}}}{2}\left(\boldsymbol{\alpha}^{\top} \boldsymbol{K}_{x}^{2} \boldsymbol{\alpha}-1\right)-\frac{\lambda_{\boldsymbol{\beta}}}{2}\left(\boldsymbol{\beta}^{\top} \boldsymbol{K}_{y}^{2} \boldsymbol{\beta}-1\right)
 \]</div>
 <p>Taking derivatives w.r.t. <span class="math notranslate nohighlight">\(\boldsymbol{\boldsymbol{\alpha}}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{\boldsymbol{\beta}}\)</span> gives</p>
 <div class="math notranslate nohighlight">
@@ -1006,8 +1012,8 @@
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{aligned}
-0 &amp;=\boldsymbol{\alpha}^{\prime} \boldsymbol{K}_{x} \boldsymbol{K}_{y} \boldsymbol{\beta}-\boldsymbol{\alpha}^{\prime} \lambda_{\boldsymbol{\alpha}} \boldsymbol{K}_{x}^{2} \boldsymbol{\alpha}-\boldsymbol{\beta}^{\prime} \boldsymbol{K}_{y} \boldsymbol{K}_{x} \boldsymbol{\alpha}+\boldsymbol{\beta}^{\prime} \lambda_{\boldsymbol{\beta}} \boldsymbol{K}_{y}^{2} \boldsymbol{\beta} \\
-&amp;=\lambda_{\boldsymbol{\beta}} \boldsymbol{\beta}^{\prime} \boldsymbol{K}_{y}^{2} \boldsymbol{\beta}-\lambda_{\boldsymbol{\alpha}} \boldsymbol{\alpha}^{\prime} \boldsymbol{K}_{x}^{2} \boldsymbol{\alpha}
+0 &amp;=\boldsymbol{\alpha}^{\top} \boldsymbol{K}_{x} \boldsymbol{K}_{y} \boldsymbol{\beta}-\boldsymbol{\alpha}^{\top} \lambda_{\boldsymbol{\alpha}} \boldsymbol{K}_{x}^{2} \boldsymbol{\alpha}-\boldsymbol{\beta}^{\top} \boldsymbol{K}_{y} \boldsymbol{K}_{x} \boldsymbol{\alpha}+\boldsymbol{\beta}^{\top} \lambda_{\boldsymbol{\beta}} \boldsymbol{K}_{y}^{2} \boldsymbol{\beta} \\
+&amp;=\lambda_{\boldsymbol{\beta}} \boldsymbol{\beta}^{\top} \boldsymbol{K}_{y}^{2} \boldsymbol{\beta}-\lambda_{\boldsymbol{\alpha}} \boldsymbol{\alpha}^{\top} \boldsymbol{K}_{x}^{2} \boldsymbol{\alpha}
 \end{aligned}
 \end{split}\]</div>
 <p>which together with the constraints implies <span class="math notranslate nohighlight">\(\lambda_\alpha - \lambda_\beta =0\)</span>. Let them be <span class="math notranslate nohighlight">\(\lambda\)</span>. Suppose <span class="math notranslate nohighlight">\(\boldsymbol{\boldsymbol{K}} _x\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{\boldsymbol{K}} _y\)</span> are invertible (usually the case), then the system of equations given by the derivatives yields</p>
@@ -1037,25 +1043,25 @@ I \boldsymbol{\alpha}=\lambda^{2} \boldsymbol{\alpha}
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{aligned}
-\rho &amp;=\max _{\boldsymbol{\alpha}, \boldsymbol{\beta}} \frac{\boldsymbol{\alpha}^{\prime} \boldsymbol{K}_{x} \boldsymbol{K}_{y} \boldsymbol{\beta}}{\sqrt{\left.\left(\boldsymbol{\alpha}^{\prime} \boldsymbol{K}_{x}^{2} \boldsymbol{\alpha}+r\left\|\boldsymbol{v} \right\|^{2}\right) \cdot\left(\boldsymbol{\beta}^{\prime} \boldsymbol{K}_{y}^{2} \boldsymbol{\beta}+r\left\|\boldsymbol{w} \right\|^{2}\right)\right)}} \\
-&amp;=\max _{\boldsymbol{\alpha}, \boldsymbol{\beta}} \frac{\boldsymbol{\alpha}^{\prime} \boldsymbol{K}_{x} \boldsymbol{K}_{y} \boldsymbol{\beta}}{\sqrt{\left(\boldsymbol{\alpha}^{\prime} \boldsymbol{K}_{x}^{2} \boldsymbol{\alpha}+r \boldsymbol{\alpha}^{\prime} \boldsymbol{K}_{x} \boldsymbol{\alpha}\right) \cdot\left(\boldsymbol{\beta}^{\prime} \boldsymbol{K}_{y}^{2} \boldsymbol{\beta}+r \boldsymbol{\beta}^{\prime} \boldsymbol{K}_{y} \boldsymbol{\beta}\right)}}
+\rho &amp;=\max _{\boldsymbol{\alpha}, \boldsymbol{\beta}} \frac{\boldsymbol{\alpha}^{\top} \boldsymbol{K}_{x} \boldsymbol{K}_{y} \boldsymbol{\beta}}{\sqrt{\left.\left(\boldsymbol{\alpha}^{\top} \boldsymbol{K}_{x}^{2} \boldsymbol{\alpha}+r\left\|\boldsymbol{v} \right\|^{2}\right) \cdot\left(\boldsymbol{\beta}^{\top} \boldsymbol{K}_{y}^{2} \boldsymbol{\beta}+r\left\|\boldsymbol{w} \right\|^{2}\right)\right)}} \\
+&amp;=\max _{\boldsymbol{\alpha}, \boldsymbol{\beta}} \frac{\boldsymbol{\alpha}^{\top} \boldsymbol{K}_{x} \boldsymbol{K}_{y} \boldsymbol{\beta}}{\sqrt{\left(\boldsymbol{\alpha}^{\top} \boldsymbol{K}_{x}^{2} \boldsymbol{\alpha}+r \boldsymbol{\alpha}^{\top} \boldsymbol{K}_{x} \boldsymbol{\alpha}\right) \cdot\left(\boldsymbol{\beta}^{\top} \boldsymbol{K}_{y}^{2} \boldsymbol{\beta}+r \boldsymbol{\beta}^{\top} \boldsymbol{K}_{y} \boldsymbol{\beta}\right)}}
 \end{aligned}
 \end{split}\]</div>
 <p>Likewise, we observe that the new regularized equation is not affected by re-scaling of <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}\)</span> or <span class="math notranslate nohighlight">\(\boldsymbol{\beta}\)</span>, hence the optimization problem is subject to</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{aligned}
-\left(\boldsymbol{\alpha}^{\prime} \boldsymbol{K}_{x}^{2} \boldsymbol{\alpha}+r \boldsymbol{\alpha}^{\prime} \boldsymbol{K}_{x} \boldsymbol{\alpha}\right) &amp;=1 \\
-\left(\boldsymbol{\beta}^{\prime} \boldsymbol{K}_{y}^{2} \boldsymbol{\beta}+r \boldsymbol{\beta}^{\prime} \boldsymbol{K}_{y} \boldsymbol{\beta}\right) &amp;=1
+\left(\boldsymbol{\alpha}^{\top} \boldsymbol{K}_{x}^{2} \boldsymbol{\alpha}+r \boldsymbol{\alpha}^{\top} \boldsymbol{K}_{x} \boldsymbol{\alpha}\right) &amp;=1 \\
+\left(\boldsymbol{\beta}^{\top} \boldsymbol{K}_{y}^{2} \boldsymbol{\beta}+r \boldsymbol{\beta}^{\top} \boldsymbol{K}_{y} \boldsymbol{\beta}\right) &amp;=1
 \end{aligned}
 \end{split}\]</div>
 <p>The resulting Lagrangian is</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{aligned}
-\mathcal{L}\left(\lambda_{\boldsymbol{\alpha}}, \lambda_{\boldsymbol{\beta}}, \boldsymbol{\alpha}, \boldsymbol{\beta}\right)=&amp; \boldsymbol{\alpha}^{\prime} \boldsymbol{K}_{x} \boldsymbol{K}_{y} \boldsymbol{\beta} \\
-&amp;-\frac{\lambda_{\boldsymbol{\alpha}}}{2}\left(\boldsymbol{\alpha}^{\prime} \boldsymbol{K}_{x}^{2} \boldsymbol{\alpha}+r \boldsymbol{\alpha}^{\prime} \boldsymbol{K}_{x} \boldsymbol{\alpha}-1\right) \\
-&amp;-\frac{\lambda_{\boldsymbol{\beta}}}{2}\left(\boldsymbol{\beta}^{\prime} \boldsymbol{K}_{y}^{2} \boldsymbol{\beta}+r \boldsymbol{\beta}^{\prime} \boldsymbol{K}_{y} \boldsymbol{\beta}-1\right)
+\mathcal{L}\left(\lambda_{\boldsymbol{\alpha}}, \lambda_{\boldsymbol{\beta}}, \boldsymbol{\alpha}, \boldsymbol{\beta}\right)=&amp; \boldsymbol{\alpha}^{\top} \boldsymbol{K}_{x} \boldsymbol{K}_{y} \boldsymbol{\beta} \\
+&amp;-\frac{\lambda_{\boldsymbol{\alpha}}}{2}\left(\boldsymbol{\alpha}^{\top} \boldsymbol{K}_{x}^{2} \boldsymbol{\alpha}+r \boldsymbol{\alpha}^{\top} \boldsymbol{K}_{x} \boldsymbol{\alpha}-1\right) \\
+&amp;-\frac{\lambda_{\boldsymbol{\beta}}}{2}\left(\boldsymbol{\beta}^{\top} \boldsymbol{K}_{y}^{2} \boldsymbol{\beta}+r \boldsymbol{\beta}^{\top} \boldsymbol{K}_{y} \boldsymbol{\beta}-1\right)
 \end{aligned}
 \end{split}\]</div>
 <p>The derivatives are</p>
@@ -1070,36 +1076,36 @@ I \boldsymbol{\alpha}=\lambda^{2} \boldsymbol{\alpha}
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{aligned}
-0 &amp;=\boldsymbol{\alpha}^{\prime} \boldsymbol{K}_{x} \boldsymbol{K}_{y} \boldsymbol{\beta}-\lambda_{\boldsymbol{\alpha}} \boldsymbol{\alpha}^{\prime}\left(\boldsymbol{K}_{x}^{2} \boldsymbol{\alpha}+r \boldsymbol{K}_{x} \boldsymbol{\alpha}\right)-\boldsymbol{\beta}^{\prime} \boldsymbol{K}_{y} \boldsymbol{K}_{x} \boldsymbol{\alpha}+\lambda_{\boldsymbol{\beta}} \boldsymbol{\beta}^{\prime}\left(\boldsymbol{K}_{y}^{2} \boldsymbol{\beta}+r \boldsymbol{K}_{y} \boldsymbol{\beta}\right) \\
-&amp;=\lambda_{\boldsymbol{\beta}} \boldsymbol{\beta}^{\prime}\left(\boldsymbol{K}_{y}^{2} \boldsymbol{\beta}+r \boldsymbol{K}_{y} \boldsymbol{\beta}\right)-\lambda_{\boldsymbol{\alpha}} \boldsymbol{\alpha}^{\prime}\left(\boldsymbol{K}_{x}^{2} \boldsymbol{\alpha}+r \boldsymbol{K}_{x} \boldsymbol{\alpha}\right)
+0 &amp;=\boldsymbol{\alpha}^{\top} \boldsymbol{K}_{x} \boldsymbol{K}_{y} \boldsymbol{\beta}-\lambda_{\boldsymbol{\alpha}} \boldsymbol{\alpha}^{\top}\left(\boldsymbol{K}_{x}^{2} \boldsymbol{\alpha}+r \boldsymbol{K}_{x} \boldsymbol{\alpha}\right)-\boldsymbol{\beta}^{\top} \boldsymbol{K}_{y} \boldsymbol{K}_{x} \boldsymbol{\alpha}+\lambda_{\boldsymbol{\beta}} \boldsymbol{\beta}^{\top}\left(\boldsymbol{K}_{y}^{2} \boldsymbol{\beta}+r \boldsymbol{K}_{y} \boldsymbol{\beta}\right) \\
+&amp;=\lambda_{\boldsymbol{\beta}} \boldsymbol{\beta}^{\top}\left(\boldsymbol{K}_{y}^{2} \boldsymbol{\beta}+r \boldsymbol{K}_{y} \boldsymbol{\beta}\right)-\lambda_{\boldsymbol{\alpha}} \boldsymbol{\alpha}^{\top}\left(\boldsymbol{K}_{x}^{2} \boldsymbol{\alpha}+r \boldsymbol{K}_{x} \boldsymbol{\alpha}\right)
 \end{aligned}
 \end{split}\]</div>
 <p>which gives <span class="math notranslate nohighlight">\(\lambda_\alpha = \lambda_\beta =0\)</span>. Let them be <span class="math notranslate nohighlight">\(\lambda\)</span>, and suppose <span class="math notranslate nohighlight">\(\boldsymbol{K}_x\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{K}_y\)</span> are invertible, we have</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{aligned}
-\boldsymbol{\beta} &amp;=\frac{\left(\boldsymbol{K}_{y}+r I\right)^{-1} \boldsymbol{K}_{y}^{-1} \boldsymbol{K}_{y} \boldsymbol{K}_{x} \boldsymbol{\alpha}}{\lambda} \\
-&amp;=\frac{\left(\boldsymbol{K}_{y}+r I\right)^{-1} \boldsymbol{K}_{x} \boldsymbol{\alpha}}{\lambda}
+\boldsymbol{\beta} &amp;=\frac{\left(\boldsymbol{K}_{y}+r \boldsymbol{I} \right)^{-1} \boldsymbol{K}_{y}^{-1} \boldsymbol{K}_{y} \boldsymbol{K}_{x} \boldsymbol{\alpha}}{\lambda} \\
+&amp;=\frac{\left(\boldsymbol{K}_{y}+r \boldsymbol{I} \right)^{-1} \boldsymbol{K}_{x} \boldsymbol{\alpha}}{\lambda}
 \end{aligned}
 \end{split}\]</div>
 <p>and hence</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{aligned}
-\boldsymbol{K}_{x} \boldsymbol{K}_{y}\left(\boldsymbol{K}_{y}+r I\right)^{-1} \boldsymbol{K}_{x} \boldsymbol{\alpha} &amp;=\lambda^{2} \boldsymbol{K}_{x}\left(\boldsymbol{K}_{x}+r I\right) \boldsymbol{\alpha} \\
-\boldsymbol{K}_{y}\left(\boldsymbol{K}_{y}+r I\right)^{-1} \boldsymbol{K}_{x} \boldsymbol{\alpha} &amp;=\lambda^{2}\left(\boldsymbol{K}_{x}+r I\right) \boldsymbol{\alpha} \\
-\left(\boldsymbol{K}_{x}+r I\right)^{-1} \boldsymbol{K}_{y}\left(\boldsymbol{K}_{y}+r I\right)^{-1} \boldsymbol{K}_{x} \boldsymbol{\alpha} &amp;=\lambda^{2} \boldsymbol{\alpha}
+\boldsymbol{K}_{x} \boldsymbol{K}_{y}\left(\boldsymbol{K}_{y}+r \boldsymbol{I}\right)^{-1} \boldsymbol{K}_{x} \boldsymbol{\alpha} &amp;=\lambda^{2} \boldsymbol{K}_{x}\left(\boldsymbol{K}_{x}+r \boldsymbol{I}\right) \boldsymbol{\alpha} \\
+\boldsymbol{K}_{y}\left(\boldsymbol{K}_{y}+r \boldsymbol{I}\right)^{-1} \boldsymbol{K}_{x} \boldsymbol{\alpha} &amp;=\lambda^{2}\left(\boldsymbol{K}_{x}+r \boldsymbol{I}\right) \boldsymbol{\alpha} \\
+\left(\boldsymbol{K}_{x}+r \boldsymbol{I}\right)^{-1} \boldsymbol{K}_{y}\left(\boldsymbol{K}_{y}+r \boldsymbol{I}\right)^{-1} \boldsymbol{K}_{x} \boldsymbol{\alpha} &amp;=\lambda^{2} \boldsymbol{\alpha}
 \end{aligned}
 \end{split}\]</div>
 <p>Therefore, we just solve the above eigenproblem to get meaningful <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}\)</span>, and then compute <span class="math notranslate nohighlight">\(\boldsymbol{\beta}\)</span>.</p>
 </div>
 <div class="section" id="learning">
 <h2>Learning<a class="headerlink" href="#learning" title="Permalink to this headline">¶</a></h2>
-<p>From the analysis above, the steps to train a kernel PCA are</p>
+<p>From the analysis above, the steps to train a kernel CCA are</p>
 <ol class="simple">
 <li><p>Choose a kernel function <span class="math notranslate nohighlight">\(k(\cdot, \cdot)\)</span>.</p></li>
-<li><p>Compute the centered kernel matrix <span class="math notranslate nohighlight">\(\boldsymbol{K} ^\prime _x = (\boldsymbol{I} - \boldsymbol{u} \boldsymbol{u} ^\top )\boldsymbol{K}_x(\boldsymbol{I} - \boldsymbol{u} \boldsymbol{u} ^\top)\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{K} _y ^\prime\)</span></p></li>
-<li><p>Find the first <span class="math notranslate nohighlight">\(k\)</span> eigenvectors of <span class="math notranslate nohighlight">\(\left(\boldsymbol{K} ^\prime_{x}+r I\right)^{-1} \boldsymbol{K} ^\prime_{y}\left(\boldsymbol{K} ^\prime_{y}+r I\right)^{-1} \boldsymbol{K} ^\prime_{x}\)</span>, store in <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span>.</p></li>
+<li><p>Compute the centered kernel matrix <span class="math notranslate nohighlight">\(\boldsymbol{K} ^c _x = (\boldsymbol{I} - \boldsymbol{u} \boldsymbol{u} ^\top )\boldsymbol{K}_x(\boldsymbol{I} - \boldsymbol{u} \boldsymbol{u} ^\top)\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{K} _y ^c\)</span></p></li>
+<li><p>Find the first <span class="math notranslate nohighlight">\(k\)</span> eigenvectors of <span class="math notranslate nohighlight">\(\left(\boldsymbol{K} ^c_{x}+r \boldsymbol{I}\right)^{-1} \boldsymbol{K} ^\prime_{y}\left(\boldsymbol{K} ^c_{y}+r \boldsymbol{I}\right)^{-1} \boldsymbol{K} ^c_{x}\)</span>, store in <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span>.</p></li>
 </ol>
 <p>Then</p>
 <ul>
@@ -1124,7 +1130,7 @@ I \boldsymbol{\alpha}=\lambda^{2} \boldsymbol{\alpha}
     \vdots \\
     \boldsymbol{\alpha} _k ^\top  \boldsymbol{\Phi}_x  \\
     \end{array}\right] \boldsymbol{\phi}(\boldsymbol{x})
-    = \boldsymbol{A} ^\top \boldsymbol{\Phi}_x \boldsymbol{\phi}(\boldsymbol{x})  
+    = \boldsymbol{A} ^\top \boldsymbol{\Phi}_x \boldsymbol{\phi}(\boldsymbol{x})
     = \boldsymbol{A} ^\top \left[\begin{array}{c}
     k(\boldsymbol{x} _1, \boldsymbol{x}) \\
     k(\boldsymbol{x} _2, \boldsymbol{x}) \\

@@ -33,6 +33,70 @@ Lagrange multiplier:
 -   [formulation](https://www.youtube.com/watch?v=hQ4UNu1P2kw&t=311s&ab_channel=KhanAcademy) of Lagrangean $\mathcal{L}$: combining all equations to $\nabla\mathcal{L} = 0$.
 -   [interpretation](https://www.youtube.com/watch?v=m-G3K2GPmEQ&t=185s&ab_channel=KhanAcademy) and [proof](https://www.youtube.com/watch?v=b9B2FZ5cqbM&ab_channel=KhanAcademy) of the Lagrange multiplier $\lambda$ as $\frac{\partial f}{\partial c}$, e.g. if budget change, how much will revenue change?
 
+## Linear Systems
+
+Consider a system of linear equations: given $\boldsymbol{A} \in \mathbb{R} ^{m \times n}, \boldsymbol{b} \in \mathbb{R} ^{m}$, we want to find $\boldsymbol{x} \in \mathbb{R} ^{n}$ such that
+
+$$
+\boldsymbol{A} \boldsymbol{x} = \boldsymbol{b}
+$$
+
+### Existence and Uniqueness
+
+
+Existence
+: There exists a solution $\boldsymbol{x}$ to the above equality if and only if
+
+  $$
+  \boldsymbol{b} \in \operatorname{im}(\boldsymbol{A})
+  $$
+
+  In this case, we also say that the linear system is **consistent**.
+
+Uniqueness
+: If there exists a solution $\boldsymbol{x}$, then it is unique if and only if
+
+  $$
+  \operatorname{ker}(\boldsymbol{A})  = \emptyset
+  $$
+
+  i.e. $\boldsymbol{A}$ has full column rank.
+
+Otherwise, if $\boldsymbol{x} _0$ is a solution such that $\boldsymbol{A} \boldsymbol{x} _0 = \boldsymbol{b}$, then for $\boldsymbol{x} _1 \ne \boldsymbol{0}, \boldsymbol{x} _1 \in \operatorname{ker}(\boldsymbol{A})$ such that $\boldsymbol{A} \boldsymbol{x} _1 = \boldsymbol{0}$, we can construct infinite many solutions $\boldsymbol{x} _0 + c \boldsymbol{x} _1$.
+
+If both conditions are satisfied, there are many ways to solve for $\boldsymbol{x}$.
+
+### Ordinary Least Sqaure
+
+If $\boldsymbol{b} \notin \operatorname{im}(\boldsymbol{A})$, then we cannot find $\boldsymbol{x}$ such that $\boldsymbol{A} \boldsymbol{x} =\boldsymbol{b}$. In this case, we instead find $\boldsymbol{x}$ such that $\boldsymbol{A} \boldsymbol{x}$ is the closest to $\boldsymbol{b}$, where the closeness can be measured by $L_2$ norm.
+
+$$
+\min _{\boldsymbol{x}} \ \left\| \boldsymbol{A} \boldsymbol{x}  - \boldsymbol{b} \right\|_2^2
+$$
+
+This is called a least square method.
+
+The minimizer may not be unique, depending on whether $\boldsymbol{A}$ has full column rank.
+
+### Minimum Length
+
+If the solution (consistent and inconsistent case) is not unique, usually we find the one with minimum length, measured by $L_2$ norm.
+
+$$
+\min \left\| \boldsymbol{x}  \right\| _2\ \quad \text{s.t. } \boldsymbol{x} \in \mathcal{X}
+$$
+
+where $\mathcal{X}$ is the set of solutions to the original problem or least square problem.
+
+To summarize,
+
+| consistency \ rank | $\boldsymbol{A}$ has full column rank | Rank deficient |
+| -|-|-|
+| $\boldsymbol{b} \in \operatorname{im}(\boldsymbol{A})$  | unique  | minimum length |
+| $\boldsymbol{b} \notin \operatorname{im}(\boldsymbol{A})$  | unique least square | minimum length leaset square|
+
+
+
 ## First Order Necessary Condition
 
 Consider a minimization problem
@@ -79,7 +143,7 @@ $$\begin{aligned}
 
 which makes the objective function invariant to scaling of $\boldsymbol{x}$. How do we solve this?
 
-Definition (Quadratic forms)  
+Definition (Quadratic forms)
 : Let $\boldsymbol{A}$ be a symmetric real matrix. A quadratic form corresponding to $\boldsymbol{A}$ is a function $Q: \mathbb{R} ^n \rightarrow \mathbb{R}$ with
 
   $$
@@ -94,16 +158,16 @@ $$
 
 ### Basic
 
-Definition (Rayleigh quotient)  
+Definition (Rayleigh quotient)
 : - For a fixed symmetric matrix $\boldsymbol{A}$, the normalized quadratic form $\frac{\boldsymbol{x} ^{\top} \boldsymbol{A} \boldsymbol{x}}{\boldsymbol{x} ^{\top} \boldsymbol{x} }$ is called a Rayleigh quotient.
   - In addition, given a positive definite matrix $\boldsymbol{B}$ of the same size, the quantity $\frac{\boldsymbol{x} ^{\top} \boldsymbol{A} \boldsymbol{x} }{\boldsymbol{x} ^{\top} \boldsymbol{B} \boldsymbol{x} }$ is called a generalized Rayleigh quotient.
 
-Applications  
+Applications
 - PCA: $\max _{\boldsymbol{v} \neq 0} \frac{\boldsymbol{v}^{\top} \boldsymbol{\Sigma} \boldsymbol{v}}{\boldsymbol{v}^{\top} \boldsymbol{v}}$ where $\boldsymbol{\Sigma}$ is a covariance matrix
 - LDA: $\max _{\boldsymbol{v} \neq 0} \frac{\boldsymbol{v}^{\top} \boldsymbol{S}_{b} \boldsymbol{v}}{\boldsymbol{v}^{\top} \boldsymbol{S}_{w} \boldsymbol{v}}$ where $\boldsymbol{S} _b$ is a between-class scatter matrix, and $\boldsymbol{S} _w$ is a within-class scatter matrix
 - Spectral clustering (relaxed Ncut): $\max _{\boldsymbol{v} \neq \boldsymbol{0}} \frac{\boldsymbol{v}^{\top} \boldsymbol{L} \boldsymbol{v}}{\boldsymbol{v}^{\top} \boldsymbol{D} \boldsymbol{v}} \quad {s.t.} \boldsymbol{v} ^{\top} \boldsymbol{D} \boldsymbol{1} = 0$ where $\boldsymbol{L}$ is graph Laplacian and $\boldsymbol{D}$ is degree matrix.
 
-Theorem (Range of Rayleigh quotients)  
+Theorem (Range of Rayleigh quotients)
 : For any symmetric matrix $\boldsymbol{A} \in \mathbb{R} {n \times n}$,
 
   $$\begin{aligned}
@@ -144,7 +208,7 @@ $$
 Let $\lambda_1 \ge \lambda_2 \ge \ldots \ge \lambda_n$, then when $y_1^2 = 1$ and $y_2^2 = \ldots = y_n ^2 = 0$, the objective function attains its maximum $\boldsymbol{y} ^{\top} \boldsymbol{\Lambda} \boldsymbol{y} = \lambda_1$. In terms of $\boldsymbol{x}$, the maximizer is
 
 $$
-\boldsymbol{x} ^* = \boldsymbol{U} \boldsymbol{y} ^* = \boldsymbol{U} (\pm \boldsymbol{e} _1) = \pm \boldsymbol{u}_1   
+\boldsymbol{x} ^* = \boldsymbol{U} \boldsymbol{y} ^* = \boldsymbol{U} (\pm \boldsymbol{e} _1) = \pm \boldsymbol{u}_1
 $$
 
 In conclusion, when $\boldsymbol{x} = \pm \boldsymbol{u} _1$, i.e. the largest eigenvector, $\boldsymbol{x} ^{\top} \boldsymbol{A} \boldsymbol{x}$ attains its maximum value $\lambda_1$
@@ -181,7 +245,7 @@ Therefore, the eigenvector $\boldsymbol{v} _1$ (corresponding to largest eigenva
 
 ### Generalized
 
-Corollary (Generalized Rayleigh quotient problem)  
+Corollary (Generalized Rayleigh quotient problem)
 : For the generalized Rayleigh quotient $\frac{\boldsymbol{x}^{\top} \boldsymbol{A} \boldsymbol{x}}{\boldsymbol{x}^{\top} \boldsymbol{B} \boldsymbol{x}}$ where $\boldsymbol{A}$ is symmetric and $\boldsymbol{B}$ is p.d., the smallest and largest values $\lambda$ of the quotient satisfy
 
 $$
@@ -604,7 +668,7 @@ p \boldsymbol{1} \boldsymbol{1} ^{\top}  & q \boldsymbol{1} \boldsymbol{1} ^{\to
 q \boldsymbol{1} \boldsymbol{1} ^{\top}  & p \boldsymbol{1} \boldsymbol{1} ^{\top}  \\
 \end{array}\right] = \frac{p+q}{2} \boldsymbol{1}_n \boldsymbol{1}_n ^{\top} +  \frac{p-q}{2} \left[\begin{array}{cc}
 \boldsymbol{1}   \\
--\boldsymbol{1}  
+-\boldsymbol{1}
 \end{array}\right] [\boldsymbol{1} ^{\top} \ -\boldsymbol{1} ^{\top}]
 $$
 
@@ -612,7 +676,7 @@ We work with another matrix $\boldsymbol{B} = \left( \boldsymbol{A} - \frac{p+q}
 
 $$\mathbb{E} [\boldsymbol{B}] = \frac{p-q}{2} \left[\begin{array}{cc}
 \boldsymbol{1}   \\
--\boldsymbol{1}  
+-\boldsymbol{1}
 \end{array}\right] [\boldsymbol{1} ^{\top} \ -\boldsymbol{1} ^{\top}]$$
 
 which is a rank-1 matrix. With noise $\boldsymbol{E}$, we observe $\boldsymbol{B} = \mathbb{E} [\boldsymbol{B}] + \boldsymbol{E}$, which is no longer rank-1. In this case, we approximate the unknown $\mathbb{E} [\boldsymbol{B}]$ with a rank-1 matrix $\boldsymbol{X} = \boldsymbol{x}
@@ -628,7 +692,7 @@ We hope that the optimal solution looks like
 $$
 \boldsymbol{X} ^* = \left[\begin{array}{cc}
 \boldsymbol{1}   \\
--\boldsymbol{1}  
+-\boldsymbol{1}
 \end{array}\right] [\boldsymbol{1} ^{\top} \ -\boldsymbol{1} ^{\top}]
 $$
 

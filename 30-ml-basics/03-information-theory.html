@@ -998,7 +998,7 @@
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
 &amp; \text{Entropy} &amp; \operatorname{H}(Y)&amp;=-\sum_{\mathcal{Y}}p(y)\log p(y) \\
-&amp; \text{Differntial Entropy} &amp; h(Y)&amp;=-\int_{\mathcal{Y}}f(y)\log f(y)dy \\
+&amp; \text{Differntial Entropy} &amp; h(Y)&amp;=-\int_{\mathcal{Y}}f(y)\log f(y)\mathrm{~d}y \\
 &amp; \text{Joint Entropy} &amp; \operatorname{H}(X,Y)&amp;=-\operatorname{E}_{X,Y\sim p(x,y)}\log\operatorname{P}(X,Y) \\
 &amp; \text{Conditional Entropy} &amp; \operatorname{H}(Y\vert X)&amp;=-\operatorname{E}_{X,Y\sim p(x,y)}\log \operatorname{P}(Y\mid X) \\
 &amp; \text{Cross Entropy} &amp; \operatorname{H}(P,Q)&amp;=-\operatorname{E}_{Y\sim P}\left[\ln\left(Q(Y)\right)\right] \\
@@ -1028,12 +1028,12 @@
 </dl>
 </div>
 <div class="section" id="differential-entropy">
-<h3>Differential Entropy<a class="headerlink" href="#differential-entropy" title="Permalink to this headline">¶</a></h3>
+<span id="id1"></span><h3>Differential Entropy<a class="headerlink" href="#differential-entropy" title="Permalink to this headline">¶</a></h3>
 <dl class="simple myst">
 <dt>Definition</dt><dd><p>Let <span class="math notranslate nohighlight">\(Y\)</span> be a random variable with probability density function <span class="math notranslate nohighlight">\(f\)</span> whose support is <span class="math notranslate nohighlight">\(\mathcal{Y}\)</span>. The differential entropy of <span class="math notranslate nohighlight">\(Y\)</span>, denoted <span class="math notranslate nohighlight">\(h(Y)\)</span>, is defined as</p>
 <div class="math notranslate nohighlight">
 \[
-  h(Y)=-\int_{\mathcal{Y}}f(y)\log f(y)dy
+  h(Y)=-\int_{\mathcal{Y}}f(y)\log f(y)\mathrm{~d}y
   \]</div>
 </dd>
 </dl>
@@ -1054,7 +1054,7 @@
 </li>
 </ul>
 </dd>
-<dt>Example</dt><dd><ul>
+<dt>Examples</dt><dd><ul>
 <li><p>Consider a uniform distribution over an interval on the real line of width <span class="math notranslate nohighlight">\(\Delta\)</span>, then <span class="math notranslate nohighlight">\(p(y) = \frac{1}{\Delta}\)</span>, and hence the entropy is</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
@@ -1063,12 +1063,19 @@
     \end{align}\end{split}\]</div>
 <p>As <span class="math notranslate nohighlight">\(\Delta \rightarrow 0\)</span>, we have <span class="math notranslate nohighlight">\(h\rightarrow -\infty\)</span>.</p>
 </li>
-<li><p>The entropy for a Gaussian variable with density <span class="math notranslate nohighlight">\(N(0, \sigma)\)</span> is</p>
+<li><p>The entropy for a Gaussian variable with density <span class="math notranslate nohighlight">\(\mathcal{N}(0, \sigma^2)\)</span> is</p>
 <div class="math notranslate nohighlight">
 \[
-    h \left( N(0, \sigma) \right) = C + \ln \sigma
+    h \left( \mathcal{N}(0, \sigma^2) \right) = \ln(\sigma \sqrt{2 \pi e})
     \]</div>
-<p>As <span class="math notranslate nohighlight">\(\sigma \rightarrow 0\)</span>, we have <span class="math notranslate nohighlight">\(h\rightarrow -\infty\)</span>.</p>
+<ul>
+<li><p>Obviously, the entropy does not depend on <span class="math notranslate nohighlight">\(\mu\)</span>.</p></li>
+<li><p>As <span class="math notranslate nohighlight">\(\sigma \rightarrow 0\)</span>, we have <span class="math notranslate nohighlight">\(h\rightarrow -\infty\)</span>.</p></li>
+<li><p>Among all continuous distribution <span class="math notranslate nohighlight">\(P\)</span> with mean zero, variance <span class="math notranslate nohighlight">\(\sigma^2\)</span>, normal distribution has the largest differential entropy, i.e. most randomness.</p>
+<div class="math notranslate nohighlight">
+\[h(P) \le \ln(\sigma \sqrt{2 \pi e})\]</div>
+</li>
+</ul>
 </li>
 <li><p>Consider the uniform distribution above. Suppose the unit is meter and the interval is <span class="math notranslate nohighlight">\((0, 1000)\)</span>. Note if we change the unit to kilometer, then the interval changes to <span class="math notranslate nohighlight">\((0, 1)\)</span>, and the interval decreases from <span class="math notranslate nohighlight">\(\ln 1000\)</span> to <span class="math notranslate nohighlight">\(\ln 1\)</span>.</p>
 <div class="admonition note">
@@ -1078,7 +1085,20 @@
 </li>
 </ul>
 </dd>
+<dt>Definition (NegEntropy)</dt><dd><p>Short for Negative Entropy, is a non-Gaussian-ness measure, a measure of distance to normality. The negEntropy for a random variable <span class="math notranslate nohighlight">\(X\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[
+  J(X) = \operatorname{H} (Z) - \operatorname{H} (X)
+  \]</div>
+<p>where <span class="math notranslate nohighlight">\(\operatorname{H} (Z)\)</span> is the differential entropy of the Gaussian density with the same mean and variance as <span class="math notranslate nohighlight">\(X\)</span>.</p>
+</dd>
 </dl>
+<p>NegEntropy is use for its convenience in computation and approximation. A common approximation (supposedly from Jones 1987)</p>
+<div class="math notranslate nohighlight">
+\[
+J(X) \approx \frac{1}{12} \mathbb{E} \left(X^{3}\right)^{2}+\frac{1}{48} \kappa(X)^{2}
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\kappa(X)\)</span> is the ___ (??) of the distribution of <span class="math notranslate nohighlight">\(X\)</span>.</p>
 </div>
 <div class="section" id="joint-entropy">
 <h3>Joint Entropy<a class="headerlink" href="#joint-entropy" title="Permalink to this headline">¶</a></h3>
@@ -1100,12 +1120,12 @@
 <p>Likewise, we can define joint differential entropy for two continuous random variables with joint density <span class="math notranslate nohighlight">\(f(x,y)\)</span> as</p>
 <div class="math notranslate nohighlight">
 \[
-  h(X,Y)=-\int_{\mathcal{X},\mathcal{Y}}f(x,y)\log f(x,y)dxdy
+  h(X,Y)=-\int_{\mathcal{X},\mathcal{Y}}f(x,y)\log f(x,y) \mathrm{~d}x\mathrm{~d}y
   \]</div>
 <p>and</p>
 <div class="math notranslate nohighlight">
 \[
-  h\left(X_{1},\ldots,X_{n}\right)=-\int f\left(x_{1},\ldots,x_{n}\right)\log f\left(x_{1},\ldots,x_{n}\right)dx_{1}\ldots dx_{n}
+  h\left(X_{1},\ldots,X_{n}\right)=-\int f\left(x_{1},\ldots,x_{n}\right)\log f\left(x_{1},\ldots,x_{n}\right)\mathrm{~d}x_{1}\ldots \mathrm{~d}x_{n}
   \]</div>
 </dd>
 <dt>Properties of Discrete Joint Entropy</dt><dd><ul class="simple">
@@ -1122,10 +1142,10 @@
 <dt>Definition</dt><dd><p>For two random variables <span class="math notranslate nohighlight">\(X, Y\)</span> with density function <span class="math notranslate nohighlight">\(p(x,y)\)</span>, the conditional entropy of <span class="math notranslate nohighlight">\(Y\)</span> given <span class="math notranslate nohighlight">\(X\)</span> is defined as</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
-  \operatorname{H}(Y\mid X)	 
+  \operatorname{H}(Y\mid X)
   &amp; = \operatorname{E}_{X,Y\sim p(x, y)}\left[ - \log \operatorname{P}(Y \mid X) \right]\\
   &amp;=-\sum_{x\in\mathcal{X},y\in\mathcal{Y}}p(x,y)\log p(y\vert x) \\
-  h(Y\mid X)	&amp;=-\int_{\mathcal{X},\mathcal{Y}}f(x,y)\log f(y\vert x)dxdy
+  h(Y\mid X)	&amp;=-\int_{\mathcal{X},\mathcal{Y}}f(x,y)\log f(y\vert x)\mathrm{~d}x\mathrm{~d}y
   \end{align}\end{split}\]</div>
 <p>It also quantifies the amount of information needed to describe the outcome of a random variable <span class="math notranslate nohighlight">\(Y\)</span> given the value of another random variable <span class="math notranslate nohighlight">\(X\)</span>.</p>
 </dd>
@@ -1237,7 +1257,7 @@ Proof<div class="summary-down docutils">
 <p class="card-text">For two continuous distributions,</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
-\operatorname{KL}\left( P, Q \right) &amp; =\int_{-\infty}^{\infty}p(y)\log\left(\frac{p(y)}{q(y)}\right)dy\\
+\operatorname{KL}\left( P, Q \right) &amp; =\int_{-\infty}^{\infty}p(y)\log\left(\frac{p(y)}{q(y)}\right)\mathrm{~d}y\\
  &amp; \ge0
 \end{align}\end{split}\]</div>
 <p class="card-text">Equality holds iff <span class="math notranslate nohighlight">\(\forall y\ P(y)=Q(y)\)</span>, i.e. two distributions
@@ -1274,7 +1294,7 @@ and <span class="math notranslate nohighlight">\(\mathcal{N}(\mu_{q},\Sigma_{q})
 </dl>
 </div>
 <div class="section" id="mutual-information">
-<h3>Mutual Information<a class="headerlink" href="#mutual-information" title="Permalink to this headline">¶</a></h3>
+<span id="id2"></span><h3>Mutual Information<a class="headerlink" href="#mutual-information" title="Permalink to this headline">¶</a></h3>
 <p>Aka information gain.</p>
 <dl class="simple myst">
 <dt>Definition</dt><dd><p>Let <span class="math notranslate nohighlight">\(\left(X,Y\right)\)</span> be a pair of random variables with values over the space <span class="math notranslate nohighlight">\(\mathcal{X}\times\mathcal{Y}\)</span>. Suppose their joint distribution is <span class="math notranslate nohighlight">\(\operatorname{P}_{X,Y}\)</span> and the marginal distributions are <span class="math notranslate nohighlight">\(\operatorname{P}_{X}\)</span> and <span class="math notranslate nohighlight">\(\operatorname{P}_{Y}\)</span>. The mutual information of <span class="math notranslate nohighlight">\(X, Y\)</span> is defined by a KL divergence</p>
@@ -1291,17 +1311,25 @@ and <span class="math notranslate nohighlight">\(\mathcal{N}(\mu_{q},\Sigma_{q})
 <p>and for continuous case,</p>
 <div class="math notranslate nohighlight">
 \[
-  \operatorname{I}\left(X, Y \right)=\int_{y}\int_{\mathcal{X}}p_{X,Y}(x,y)\log\left(\frac{p_{(X,Y)}(x,y)}{p_{X}(x)p_{Y}(y)}\right)
+  \operatorname{I}\left(X, Y \right)=\int_{\mathcal{Y} }\int_{\mathcal{X}}p_{X,Y}(x,y)\log\left(\frac{p_{(X,Y)}(x,y)}{p_{X}(x)p_{Y}(y)}\right)
 \]</div>
 </dd>
-<dt>Properties</dt><dd><p><span class="math notranslate nohighlight">\(\operatorname{I}(X,Y) \ge 0\)</span>, with equality holds iff <span class="math notranslate nohighlight">\(P_{X,Y}=P_{X}P_{Y}\)</span>, i.e. when <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span> are independent, and hence there is no mutual dependence.</p>
+<dt>Properties</dt><dd><ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\operatorname{I}(X,Y) \ge 0\)</span>, with equality holds iff <span class="math notranslate nohighlight">\(P_{X,Y}=P_{X}P_{Y}\)</span>, i.e. when <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span> are independent, and hence there is no mutual dependence.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\operatorname{I}(X,Y) =\operatorname{H}(X)+\operatorname{H}(Y)-\operatorname{H}\left(X, Y \right)\)</span></p></li>
+</ul>
 </dd>
 </dl>
 <p>Mutual information is a measure of the mutual <strong>dependence</strong> between the two variables. More specifically, it quantifies the amount of information (in units such as shannons, commonly called bits) obtained about one random variable through observing the other random variable.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p>Similar to absolute correlation \left\vert \rho \right\vert? Both are non-negative, larger when
-<span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span> are dependent, and equal 0 when independent. But <span class="math notranslate nohighlight">\(\vert\rho\vert=0\ \not{\Rightarrow}\ X\perp Y\)</span> while <span class="math notranslate nohighlight">\(\operatorname{I}\left(X, Y \right)=0\ \Leftrightarrow\ X\perp Y\)</span>.</p>
+<p>Similar to absolute correlation <span class="math notranslate nohighlight">\(\left\vert \rho \right\vert\)</span>,  both are</p>
+<ul class="simple">
+<li><p>non-negative,</p></li>
+<li><p>larger when <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span> are dependent,</p></li>
+<li><p>0 when independent.</p></li>
+</ul>
+<p>But <span class="math notranslate nohighlight">\(\vert\rho\vert=0\ \not{\Rightarrow}\ X\perp Y\)</span> while <span class="math notranslate nohighlight">\(\operatorname{I}\left(X, Y \right)=0\ \Leftrightarrow\ X\perp Y\)</span>.</p>
 </div>
 </div>
 </div>
@@ -1367,7 +1395,7 @@ and <span class="math notranslate nohighlight">\(\mathcal{N}(\mu_{q},\Sigma_{q})
 \[p(x,y,z)=p(x)p(y\mid x)p(z\mid y)\]</div>
 <p>In this setting, no processing <span class="math notranslate nohighlight">\(Z(Y)\)</span> of <span class="math notranslate nohighlight">\(Y\)</span>, deterministic or random, can increase the information that <span class="math notranslate nohighlight">\(Y\)</span> contains about <span class="math notranslate nohighlight">\(X\)</span>.</p>
 <div class="math notranslate nohighlight">
-\[\operatorname{I}\left(X, Y \right)\ge I(X,Z)\]</div>
+\[\operatorname{I}\left(X, Y \right)\ge \operatorname{I} (X,Z)\]</div>
 <p>with the quality iff <span class="math notranslate nohighlight">\(Z\)</span> and <span class="math notranslate nohighlight">\(Y\)</span> contain the same information about <span class="math notranslate nohighlight">\(X\)</span>.</p>
 <p>Note that <span class="math notranslate nohighlight">\(\operatorname{H}(Z)\le \operatorname{H}(Y)\)</span> but <span class="math notranslate nohighlight">\(h(Z)\)</span> can be larger or smaller than <span class="math notranslate nohighlight">\(h(Y)\)</span>.</p>
 </div>

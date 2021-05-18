@@ -30,6 +30,21 @@ $$\begin{align}
 - The notation $X \mid Y$ means that $Y$ is a random variable and has not been observed yet. In this case, the conditional expectation (variance) is a function of the random variable $Y$, i.e., $\operatorname{\mathbb{E}}(X \mid Y) = g(Y)$, which itself is a random variable.
 :::
 
+More:
+
+- Kurtosis is a measure of peakedness of the probability density function of a random variable X, defined by
+
+  $$
+  \frac{\mu_{4}}{\mu_{2}^{2}}=\frac{\mathbb{E} [(X-\mu)^4]}{\mathbb{E} [(X-\mu)^{2}] ^{2}} \quad \in[0, \infty)
+  $$
+
+  Normal distribution has kurtosis 3.
+
+- Excess Kurtosis is defined as the deviation from the normal kurtosis:
+
+  $$
+  \frac{\mu_{4}}{\mu_{2}^{2}}-3 \quad \in[-3, \infty)
+  $$
 
 ## Identities
 
@@ -522,7 +537,7 @@ $\square$
   \operatorname{\mathbb{E}}\left( X_n \right) = 2 \operatorname{\mathbb{E}}\left( X_{n-1} \right) + 2
   $$
 
-  Let $f(n) = \operatorname{\mathbb{E}}\left( X_n\right) + 2$ then we have $f(n) = 2f(n-1)$. Since $f(1) = \operatorname{\mathbb{E}}\left( X_1 \right)+2 = 4$, we have $f(n) = 2^{n+1}$. Therefore,  
+  Let $f(n) = \operatorname{\mathbb{E}}\left( X_n\right) + 2$ then we have $f(n) = 2f(n-1)$. Since $f(1) = \operatorname{\mathbb{E}}\left( X_1 \right)+2 = 4$, we have $f(n) = 2^{n+1}$. Therefore,
 
   $$\operatorname{\mathbb{E}}\left( X_n \right) = 2^{n+1}-2$$
 

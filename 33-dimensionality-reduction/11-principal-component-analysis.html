@@ -1156,46 +1156,66 @@ social behavioral sciences.</p></li>
 \[
   \operatorname{Var}\left( X_1 \right) + \operatorname{Var}\left( X_2 \right) + \ldots + \operatorname{Var}\left( X_d \right)
   \]</div>
+<p>and</p>
 </li>
 <li><p>The linear combinations <span class="math notranslate nohighlight">\(Z_i\)</span> and <span class="math notranslate nohighlight">\(Z_j\)</span> are <strong>uncorrelated</strong> for <span class="math notranslate nohighlight">\(i\ne j\)</span>. This imply that each variable in <span class="math notranslate nohighlight">\(\boldsymbol{z} = \left( Z_1, Z_2, \ldots, Z_k \right)^\top\)</span> can be analyzed by using <strong>univariate</strong> techniques.</p></li>
 </ul>
+<p>The new variables <span class="math notranslate nohighlight">\(Z_j\)</span> are called princial components.</p>
 </div>
 <div class="section" id="formulation-based-on-data">
 <h3>Formulation based on Data<a class="headerlink" href="#formulation-based-on-data" title="Permalink to this headline">¶</a></h3>
-<p>Other formulations of PCA based on sample data matrix <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span> aim to find a linear mapping <span class="math notranslate nohighlight">\(\mathbb{R} ^d \rightarrow \mathbb{R} ^k\)</span> (assume <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span> is centered) to project the data matrix <span class="math notranslate nohighlight">\(\boldsymbol{X}_{n \times d}\)</span> to a lower dimensional embedding matrix <span class="math notranslate nohighlight">\(\boldsymbol{Z}_{n \times k}\)</span>.</p>
+<p>Other formulations of PCA based on <strong>centered</strong> sample data matrix <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span> aim to find a linear mapping <span class="math notranslate nohighlight">\(\mathbb{R} ^d \rightarrow \mathbb{R} ^k\)</span> (assume <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span> is centered) to project the data matrix <span class="math notranslate nohighlight">\(\boldsymbol{X}_{n \times d}\)</span> to a lower dimensional embedding matrix <span class="math notranslate nohighlight">\(\boldsymbol{Z}_{n \times k}\)</span>.</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{aligned}
 \boldsymbol{z}_i &amp;= \boldsymbol{W}_{d \times k} ^\top \boldsymbol{x}_i \\
 \boldsymbol{Z}_{n \times k} &amp;= \boldsymbol{X}_{n \times d}  \boldsymbol{W} _{d \times k} \\
 \end{aligned}\end{split}\]</div>
-<p>The mapping <span class="math notranslate nohighlight">\(\boldsymbol{W} _{d \times k}\)</span> are also called <strong>loadings</strong>, and the embeddings <span class="math notranslate nohighlight">\(\boldsymbol{Z} _{n \times k}\)</span> are called <strong>scores</strong>. The loadings can be used to visualize how the original variables <span class="math notranslate nohighlight">\(X_j\)</span> contributes to each principal component <span class="math notranslate nohighlight">\(Z_j\)</span>. The scores <span class="math notranslate nohighlight">\(\boldsymbol{Z} _{n \times k}\)</span> can then be used for downstream tasks, e.g. visualization.</p>
-<p>There are various equivalent formulations of the loadings <span class="math notranslate nohighlight">\(\boldsymbol{W}\)</span>:</p>
+<p>The mapping <span class="math notranslate nohighlight">\(\boldsymbol{W} _{d \times k}\)</span> are also called <strong>loadings</strong>, and the embeddings <span class="math notranslate nohighlight">\(\boldsymbol{Z} _{n \times k}\)</span> are called <strong>scores</strong>. The loadings can be used to visualize how the original variables <span class="math notranslate nohighlight">\(X_j\)</span> contributes to each principal component <span class="math notranslate nohighlight">\(Z_j\)</span>. The scores <span class="math notranslate nohighlight">\(\boldsymbol{Z} _{n \times k}\)</span> can then be used for downstream tasks, e.g. visualization, classification.</p>
+<p>There are various equivalent formulations of optimization problems to find the loadings <span class="math notranslate nohighlight">\(\boldsymbol{W}\)</span>:</p>
 <ul>
 <li><p>Maximize the total variances <span class="math notranslate nohighlight">\(\sum_i \operatorname{Var}\left( Z_i \right)\)</span> of the projected data <span class="math notranslate nohighlight">\(\boldsymbol{Z} =  \boldsymbol{X}  \boldsymbol{W}\)</span> (similar to the population formulation above)</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
-    \boldsymbol{W}^*  = \underset{\boldsymbol{\boldsymbol{W} } }{\operatorname{argmax}} \, &amp; \operatorname{tr}\left( \boldsymbol{Z} ^\top \boldsymbol{Z}  \right)   \\
-     = \underset{\boldsymbol{\boldsymbol{W} } }{\operatorname{argmax}} \, &amp; \operatorname{tr}\left( (\boldsymbol{X}\boldsymbol{W}) ^\top \boldsymbol{X} \boldsymbol{W} \right)   \\
+    \max_{\boldsymbol{W}}\, &amp; \operatorname{tr}\left( \boldsymbol{Z} ^\top \boldsymbol{Z}  \right)   \\
      \text{s.t.}  &amp; \ \boldsymbol{W} ^\top \boldsymbol{W} = \boldsymbol{I}  \\
-       &amp;\ \boldsymbol{W} \in \mathbb{R} _{d \times k}
+       &amp;\ \boldsymbol{W} \in \mathbb{R} ^{d \times k}
     \end{align}\end{split}\]</div>
 </li>
 <li><p>Minimize total reconstruction loss, where <span class="math notranslate nohighlight">\(\hat{\boldsymbol{x} }_i = \boldsymbol{W} \boldsymbol{z} _i = \boldsymbol{W} \boldsymbol{W} ^{\top} \boldsymbol{x} _i\)</span></p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
-    \boldsymbol{W}^*  = \underset{\boldsymbol{\boldsymbol{W} } }{\operatorname{argmin}} \, &amp; \sum_i^n \left\Vert \boldsymbol{x}_i - \hat{\boldsymbol{x} }_i \right\Vert ^2    \\
-     \text{s.t.}  &amp; \boldsymbol{W} ^\top \boldsymbol{W} = \boldsymbol{I}  \\
-       &amp;\ \boldsymbol{W} \in \mathbb{R} _{d \times k}
+    \min_{\boldsymbol{W}}\, &amp; \sum_i^n \left\Vert \boldsymbol{x}_i - \hat{\boldsymbol{x} }_i \right\Vert ^2    \\
+    \text{s.t.}  &amp; \boldsymbol{W} ^\top \boldsymbol{W} = \boldsymbol{I}  \\
+       &amp;\ \boldsymbol{W} \in \mathbb{R} ^{d \times k}
     \end{align}\end{split}\]</div>
 </li>
 <li><p>Low-dimensional Hyperplane fitting</p>
 <p>Fit a low-dimensional hyperplane such that, when we project our data <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span> onto the hyperplane and obtain <span class="math notranslate nohighlight">\(\boldsymbol{Z}\)</span>, the variance of our data is changed as little as possible. The low-dimensional hyperplane is defined by <span class="math notranslate nohighlight">\(\boldsymbol{W}\)</span>, which is the matrix of basis vectors that span it. Minimizing the change in variance between the original data <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span> and its reconstruction <span class="math notranslate nohighlight">\(\boldsymbol{Z} \boldsymbol{W}^{\top}\)</span> is equivalent to minimizing the sum of squared error loss:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
-  \boldsymbol{W}^*  = \underset{\boldsymbol{\boldsymbol{W} } }{\operatorname{argmin}} \, &amp; \sum_i^n \left\Vert \boldsymbol{x}_i - \boldsymbol{W} \boldsymbol{z} _i \right\Vert ^2    \\
+  \min_{\boldsymbol{W}, \left\{ \boldsymbol{z}_i \right\}}\, &amp; \sum_i^n \left\Vert \boldsymbol{x}_i - \boldsymbol{W} \boldsymbol{z} _i \right\Vert ^2    \\
    \text{s.t.}  &amp; \boldsymbol{W} ^\top \boldsymbol{W} = \boldsymbol{I}  \\
-     &amp;\ \boldsymbol{W} \in \mathbb{R} _{d \times k}
+     &amp;\ \boldsymbol{W} \in \mathbb{R} ^{d \times k}, \boldsymbol{z} _i \in \mathbb{R} ^{k}
   \end{align}\end{split}\]</div>
+<div class="dropdown seealso admonition">
+<p class="admonition-title"> <em>Derivation of Equivalentce</em></p>
+<p>First, we write in matrix form</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+  \min_{\boldsymbol{W}, \left\{ \boldsymbol{z}_i \right\}}\, \sum_i^n \left\Vert \boldsymbol{x}_i - \boldsymbol{W} \boldsymbol{z} _i \right\Vert ^2
+  = \min_{\boldsymbol{W}, \boldsymbol{Z}}\, \left\| \boldsymbol{X} - \boldsymbol{Z} \boldsymbol{W} ^{\top} \right\|^2 \\
+  \end{split}\]</div>
+<p>Setting first order derivative w.r.t. <span class="math notranslate nohighlight">\(\boldsymbol{Z}\)</span> to 0 gives <span class="math notranslate nohighlight">\(\boldsymbol{Z} = \boldsymbol{X} \boldsymbol{W}\)</span>. Hence the objective is</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+  \min_{\boldsymbol{W}}\, \left\| \boldsymbol{X} - \boldsymbol{X}\boldsymbol{W} \boldsymbol{W} ^{\top} \right\|^2
+  &amp;= \min_{\boldsymbol{W}}\, \operatorname{tr} \left( (\boldsymbol{X} - \boldsymbol{X} \boldsymbol{W} \boldsymbol{W} ^{\top} ) ^{\top} (\boldsymbol{X} - \boldsymbol{X} \boldsymbol{W} \boldsymbol{W} ^{\top} ) \right) \\
+  &amp;= \min_{\boldsymbol{W}}\, \operatorname{tr}(\boldsymbol{X} ^{\top} \boldsymbol{X}  - \boldsymbol{X} ^{\top} \boldsymbol{X} \boldsymbol{W} \boldsymbol{W} ^{\top}  - \boldsymbol{W} \boldsymbol{W} ^{\top} \boldsymbol{X} ^{\top} \boldsymbol{X}  + \boldsymbol{W} \boldsymbol{W} ^{\top} \boldsymbol{X} ^{\top} \boldsymbol{X} \boldsymbol{W} \boldsymbol{W} ^{\top} ) \\
+  &amp;= \min_{\boldsymbol{W}}\, \operatorname{tr} \left( \boldsymbol{X} ^{\top} \boldsymbol{X}  - \boldsymbol{W} ^{\top} \boldsymbol{X} ^{\top} \boldsymbol{X} \boldsymbol{W}  \right)  \quad \because \text{by cyclic permutations in trace} \\
+  &amp;\Leftrightarrow   \min_{\boldsymbol{W}}\, \operatorname{tr} (\boldsymbol{W} ^{\top} \boldsymbol{X} ^{\top} \boldsymbol{X} \boldsymbol{W})\\
+  &amp;= \min_{\boldsymbol{W}}\, \operatorname{tr} (\boldsymbol{Z} ^{\top} \boldsymbol{Z})\\
+  \end{aligned}\end{split}\]</div>
+</div>
 </li>
 </ul>
 </div>
@@ -1301,6 +1321,7 @@ LHS &amp;=2\left(\boldsymbol{u}_{1}^{\top} \Sigma \boldsymbol{u}_{2}-\boldsymbol
 <li><p><span class="math notranslate nohighlight">\(\lambda_1 &gt; \lambda_2 &gt; \dots&gt; \lambda_d \ge 0\)</span> are ordered eigenvalues of <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}\)</span>: <span class="math notranslate nohighlight">\(\boldsymbol{\Lambda} =  \operatorname{diag}(\lambda_1, \lambda_2, \ldots, \lambda_d)\)</span></p></li>
 <li><p><span class="math notranslate nohighlight">\(\boldsymbol{u} _1, \ldots, \boldsymbol{u} _d\)</span> are their corresponding normalized eigenvectors forming the column vectors of the orthogonal matrix <span class="math notranslate nohighlight">\(\boldsymbol{U} = \left( \boldsymbol{u} _1\  \boldsymbol{u} _2 \ \ldots \  \boldsymbol{u} _d \right)\)</span>, where <span class="math notranslate nohighlight">\(\boldsymbol{U}  ^\top \boldsymbol{U}   = \boldsymbol{I}\)</span> or <span class="math notranslate nohighlight">\(\boldsymbol{u} _i ^\top \boldsymbol{u} _j = 1\)</span> if <span class="math notranslate nohighlight">\(i=j\)</span> and 0 otherwise.</p></li>
 </ul>
+<p>For derivation see <a class="reference external" href="https://math.stackexchange.com/questions/3736092/how-to-solve-the-optimization-problem-of-pca?rq=1">1</a>,<a class="reference external" href="https://math.stackexchange.com/questions/1902421/prove-that-the-trace-of-the-matrix-product-uau-is-maximized-by-setting-us">2</a>.</p>
 <p>The <span class="math notranslate nohighlight">\(k\)</span>-th population principal component is defined as</p>
 <div class="math notranslate nohighlight">
 \[
