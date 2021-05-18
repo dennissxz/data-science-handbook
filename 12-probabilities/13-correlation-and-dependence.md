@@ -199,6 +199,7 @@ Theorem
 
 If two random variables are independent, then $\operatorname{\mathbb{E}}\left( XY \right) = \operatorname{\mathbb{E}}\left( X \right) \operatorname{\mathbb{E}}\left( Y \right)$, $\operatorname{Cov}\left( X,Y \right) = 0$, i.e., they are uncorrelated.
 
+
 ### Uncorrelated $\not \Rightarrow$ Independent
 
 If $\operatorname{Cov}\left( X,Y \right) = 0$ or $\rho(X,Y) = 0$, then we CAN NOT say they are independent.
@@ -207,7 +208,7 @@ For instance, let $X\sim U(-1,1)$ and $Y = \left\vert X \right\vert$. Then $Y$ i
 
 
 $$\begin{align}
-\operatorname{Cov}\left( X, Y \right)  
+\operatorname{Cov}\left( X, Y \right)
 &= \operatorname{\mathbb{E}}\left( XY \right) - \operatorname{\mathbb{E}}\left( X \right) \operatorname{\mathbb{E}}\left( Y \right)   \\
 &= \operatorname{\mathbb{E}}\left( X \left\vert X \right\vert \right) - \operatorname{\mathbb{E}}\left( X \right) \operatorname{\mathbb{E}}\left( \left\vert X \right\vert \right)\\
 &= \operatorname{\mathbb{E}}\left( X^2 \right)\cdot \frac{1}{2} + \operatorname{\mathbb{E}}\left( -X^2 \right)\cdot \frac{1}{2} - 0 \cdot \frac{1}{2} \\
@@ -219,7 +220,10 @@ so that $\rho(X,Y) = 0$
 ```{seealso}
 - One special case is bivariate normal distribution. If two variables $X,Y$ follows a bivariate normal distribution, then $\operatorname{Cov}\left( X,Y \right) = 0$ implies their independence. However, this does not hold for two arbitrary normal variables. See __.
 
-- For two random variables, if their mutual information is 0, then they are independent. See __.
+- For two random variables, if their [mutual information](mutual-information) is 0, then they are independent.
+
+- In general, correlation is a second-moment property, while independence is related to all orders of moments.
+
 ```
 
 
@@ -306,7 +310,7 @@ The Simpson's paradox says that, even if $\overrightarrow{L_{1}}$ has a smaller 
 
     $$\max(p+q-1,0) \le a \le \min(p,q)$$
 
-    The required answer is  
+    The required answer is
 
     $$\begin{align}
     p_1&= \operatorname{\mathbb{P}}(\text{raining on weekend})  \\
@@ -319,7 +323,7 @@ The Simpson's paradox says that, even if $\overrightarrow{L_{1}}$ has a smaller 
      & \in [\vert p-q\vert, \min(p+q, 2-p-q)]
     \end{align}$$
 
-    :::  
+    :::
 
 
 1. [Expected Value of the Maximum of Two Uniform Random Variables]
