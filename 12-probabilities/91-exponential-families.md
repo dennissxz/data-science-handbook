@@ -376,7 +376,7 @@ Cons
 
 ## Univariate Gaussian
 
-### Test Normality
+### Check Normality
 
 For most multivariate analyses, it is important that the data indeed follow the multivariate normal, at least approximately if not exactly.
 
@@ -394,6 +394,9 @@ For most multivariate analyses, it is important that the data indeed follow the 
 
 - P-P plot (probability against probability plot) that plots the sample CDF against the theoretical CDF.
 
+- Among all continuous random variable with mean $0$, variance $\sigma^2$, normal random variable has the largest [differential entropy](differential-entropy) with value $\operatorname{H}(\mathcal{N}(0, \sigma^2)) = \ln(\sigma \sqrt{2 \pi e})$. Hence, the distance of an entropy from the normal entropy (termed **neg-entropy**), can be used to develop measures of non-Gaussianity, or non-normality.
+
+Rigorous Tests
 
 - Shapiro–Wilk $W$ test
   - test statistic: a modified version of the squared sample correlation between the sample quantiles and the expected quantiles.
@@ -404,6 +407,7 @@ For most multivariate analyses, it is important that the data indeed follow the 
 - Jarque–Bera test
 
 - Test for zero skewness, zero excess kurtosis.
+  - Normal distribution has kurtosis $\frac{\mu_{4}}{\mu_{2}^{2}}=3$ and excess kurtosis $\frac{\mu_{4}}{\mu_{2}^{2}}-3 = 0$. Large magnitude of excess kurtosis indicates deviation from normal distribution.
 
 Multivariate case:
 
