@@ -6,7 +6,7 @@ First we introduce the definitions of some fundamental concepts in informaition 
 
 $$\begin{align}
 & \text{Entropy} & \operatorname{H}(Y)&=-\sum_{\mathcal{Y}}p(y)\log p(y) \\
-& \text{Differntial Entropy} & h(Y)&=-\int_{\mathcal{Y}}f(y)\log f(y)dy \\
+& \text{Differntial Entropy} & h(Y)&=-\int_{\mathcal{Y}}f(y)\log f(y)\mathrm{~d}y \\
 & \text{Joint Entropy} & \operatorname{H}(X,Y)&=-\operatorname{E}_{X,Y\sim p(x,y)}\log\operatorname{P}(X,Y) \\
 & \text{Conditional Entropy} & \operatorname{H}(Y\vert X)&=-\operatorname{E}_{X,Y\sim p(x,y)}\log \operatorname{P}(Y\mid X) \\
 & \text{Cross Entropy} & \operatorname{H}(P,Q)&=-\operatorname{E}_{Y\sim P}\left[\ln\left(Q(Y)\right)\right] \\
@@ -35,13 +35,14 @@ Entropy has similarity with variance. Both are non-negative, measure uncertainty
 Properties
 : $\operatorname{H}\left( Y \right) > 0$
 
+(differential-entropy)=
 ### Differential Entropy
 
 Definition
 : Let $Y$ be a random variable with probability density function $f$ whose support is $\mathcal{Y}$. The differential entropy of $Y$, denoted $h(Y)$, is defined as
 
   $$
-  h(Y)=-\int_{\mathcal{Y}}f(y)\log f(y)dy
+  h(Y)=-\int_{\mathcal{Y}}f(y)\log f(y)\mathrm{~d}y
   $$
 
 
@@ -63,7 +64,7 @@ Properties
     The entropy of processed information $h\left(z(Y)\right)$ can be larger **or** smaller than the original entropy $h(Y)$. Just consider $z=ay$ for $a>1$ and $a<1$.
 
 
-Example
+Examples
 : - Consider a uniform distribution over an interval on the real line of width $\Delta$, then $p(y) = \frac{1}{\Delta}$, and hence the entropy is
 
     $$\begin{align}
@@ -73,13 +74,17 @@ Example
 
     As $\Delta \rightarrow 0$, we have $h\rightarrow -\infty$.
 
-  - The entropy for a Gaussian variable with density $N(0, \sigma)$ is
+  - The entropy for a Gaussian variable with density $\mathcal{N}(0, \sigma^2)$ is
 
     $$
-    h \left( N(0, \sigma) \right) = C + \ln \sigma
+    h \left( \mathcal{N}(0, \sigma^2) \right) = \ln(\sigma \sqrt{2 \pi e})
     $$
 
-    As $\sigma \rightarrow 0$, we have $h\rightarrow -\infty$.
+    - Obviously, the entropy does not depend on $\mu$.
+    - As $\sigma \rightarrow 0$, we have $h\rightarrow -\infty$.
+    - Among all continuous distribution $P$ with mean zero, variance $\sigma^2$, normal distribution has the largest differential entropy, i.e. most randomness.
+
+      $$h(P) \le \ln(\sigma \sqrt{2 \pi e})$$
 
   - Consider the uniform distribution above. Suppose the unit is meter and the interval is $(0, 1000)$. Note if we change the unit to kilometer, then the interval changes to $(0, 1)$, and the interval decreases from $\ln 1000$ to $\ln 1$.
 
@@ -88,6 +93,22 @@ Example
     The right way to think about differential entropy is that, it is actually **infinite**. Recall entropy measures uncertainty. An actual real number carries an infinite number of bits, i.e. infinite amount of information. A meaningful convention is the $h(f)=+\infty$ for any continuous density $p(y)$.
     ```
 
+Definition (NegEntropy)
+: Short for Negative Entropy, is a non-Gaussian-ness measure, a measure of distance to normality. The negEntropy for a random variable $X$ is
+
+  $$
+  J(X) = \operatorname{H} (Z) - \operatorname{H} (X)
+  $$
+
+  where $\operatorname{H} (Z)$ is the differential entropy of the Gaussian density with the same mean and variance as $X$.
+
+NegEntropy is use for its convenience in computation and approximation. A common approximation (supposedly from Jones 1987)
+
+$$
+J(X) \approx \frac{1}{12} \mathbb{E} \left(X^{3}\right)^{2}+\frac{1}{48} \kappa(X)^{2}
+$$
+
+where $\kappa(X)$ is the ___ (??) of the distribution of $X$.
 
 ### Joint Entropy
 
@@ -111,13 +132,13 @@ Definition
   Likewise, we can define joint differential entropy for two continuous random variables with joint density $f(x,y)$ as
 
   $$
-  h(X,Y)=-\int_{\mathcal{X},\mathcal{Y}}f(x,y)\log f(x,y)dxdy
+  h(X,Y)=-\int_{\mathcal{X},\mathcal{Y}}f(x,y)\log f(x,y) \mathrm{~d}x\mathrm{~d}y
   $$
 
   and
 
   $$
-  h\left(X_{1},\ldots,X_{n}\right)=-\int f\left(x_{1},\ldots,x_{n}\right)\log f\left(x_{1},\ldots,x_{n}\right)dx_{1}\ldots dx_{n}
+  h\left(X_{1},\ldots,X_{n}\right)=-\int f\left(x_{1},\ldots,x_{n}\right)\log f\left(x_{1},\ldots,x_{n}\right)\mathrm{~d}x_{1}\ldots \mathrm{~d}x_{n}
   $$
 
 Properties of Discrete Joint Entropy
@@ -134,10 +155,10 @@ Definition
 
 
   $$\begin{align}
-  \operatorname{H}(Y\mid X)	 
+  \operatorname{H}(Y\mid X)
   & = \operatorname{E}_{X,Y\sim p(x, y)}\left[ - \log \operatorname{P}(Y \mid X) \right]\\
   &=-\sum_{x\in\mathcal{X},y\in\mathcal{Y}}p(x,y)\log p(y\vert x) \\
-  h(Y\mid X)	&=-\int_{\mathcal{X},\mathcal{Y}}f(x,y)\log f(y\vert x)dxdy
+  h(Y\mid X)	&=-\int_{\mathcal{X},\mathcal{Y}}f(x,y)\log f(y\vert x)\mathrm{~d}x\mathrm{~d}y
   \end{align}$$
 
   It also quantifies the amount of information needed to describe the outcome of a random variable $Y$ given the value of another random variable $X$.
@@ -248,7 +269,7 @@ Properties
     For two continuous distributions,
 
     $$\begin{align}
-    \operatorname{KL}\left( P, Q \right) & =\int_{-\infty}^{\infty}p(y)\log\left(\frac{p(y)}{q(y)}\right)dy\\
+    \operatorname{KL}\left( P, Q \right) & =\int_{-\infty}^{\infty}p(y)\log\left(\frac{p(y)}{q(y)}\right)\mathrm{~d}y\\
      & \ge0
     \end{align}$$
 
@@ -288,6 +309,7 @@ and $\mathcal{N}(\mu_{q},\Sigma_{q})$ is
 
 
 
+(mutual-information)=
 ### Mutual Information
 Aka information gain.
 
@@ -308,19 +330,23 @@ Definition
   and for continuous case,
 
   $$
-  \operatorname{I}\left(X, Y \right)=\int_{y}\int_{\mathcal{X}}p_{X,Y}(x,y)\log\left(\frac{p_{(X,Y)}(x,y)}{p_{X}(x)p_{Y}(y)}\right)
+  \operatorname{I}\left(X, Y \right)=\int_{\mathcal{Y} }\int_{\mathcal{X}}p_{X,Y}(x,y)\log\left(\frac{p_{(X,Y)}(x,y)}{p_{X}(x)p_{Y}(y)}\right)
 $$
 
 Properties
-: $\operatorname{I}(X,Y) \ge 0$, with equality holds iff $P_{X,Y}=P_{X}P_{Y}$, i.e. when $X$ and $Y$ are independent, and hence there is no mutual dependence.
+: - $\operatorname{I}(X,Y) \ge 0$, with equality holds iff $P_{X,Y}=P_{X}P_{Y}$, i.e. when $X$ and $Y$ are independent, and hence there is no mutual dependence.
+  - $\operatorname{I}(X,Y) =\operatorname{H}(X)+\operatorname{H}(Y)-\operatorname{H}\left(X, Y \right)$
 
 Mutual information is a measure of the mutual **dependence** between the two variables. More specifically, it quantifies the amount of information (in units such as shannons, commonly called bits) obtained about one random variable through observing the other random variable.
 
 
-
 ```{seealso}
-Similar to absolute correlation \left\vert \rho \right\vert? Both are non-negative, larger when
-$X$ and $Y$ are dependent, and equal 0 when independent. But $\vert\rho\vert=0\ \not{\Rightarrow}\ X\perp Y$ while $\operatorname{I}\left(X, Y \right)=0\ \Leftrightarrow\ X\perp Y$.
+Similar to absolute correlation $\left\vert \rho \right\vert$,  both are
+- non-negative,
+- larger when $X$ and $Y$ are dependent,
+- 0 when independent.
+
+But $\vert\rho\vert=0\ \not{\Rightarrow}\ X\perp Y$ while $\operatorname{I}\left(X, Y \right)=0\ \Leftrightarrow\ X\perp Y$.
 ```
 
 ## Identities
@@ -391,7 +417,7 @@ $$p(x,y,z)=p(x)p(y\mid x)p(z\mid y)$$
 
 In this setting, no processing $Z(Y)$ of $Y$, deterministic or random, can increase the information that $Y$ contains about $X$.
 
-$$\operatorname{I}\left(X, Y \right)\ge I(X,Z)$$
+$$\operatorname{I}\left(X, Y \right)\ge \operatorname{I} (X,Z)$$
 
 with the quality iff $Z$ and $Y$ contain the same information about $X$.
 
