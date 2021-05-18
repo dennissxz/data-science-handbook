@@ -19,7 +19,7 @@ $$
 $$
 
 - $\boldsymbol{x}$ is a random vector of $p$ random variables with mean $\boldsymbol{\mu}$
-- $\boldsymbol{f}$ is the model-assumed, unobservable vector of $m$ random components called **common factors**. The factors are assumed to be uncorrelated (strong assumption), usually normalized,
+- $\boldsymbol{f}$ is the model-assumed, unobservable vector of $m$ random components called **common factors**. The factors are assumed to be pairwise uncorrelated (a strong assumption), usually normalized,
 
   $$
   \mathbb{E} [\boldsymbol{f} ] = \boldsymbol{0} _k, \quad \operatorname{Cov}\left( \boldsymbol{f}  \right) = \mathbb{E} [\boldsymbol{f} \boldsymbol{f} ^{\top} ]  = \boldsymbol{I} _k
@@ -31,6 +31,7 @@ $$
 - $\boldsymbol{L}$ is called the **loading matrix**, to be estimated. $\ell_{ij}$ is the loading of the $i$-th variable $X_i$ on the $j$-th common factor $F_j$.
   - It is easy to see $\operatorname{Cov}\left( \boldsymbol{x} , \boldsymbol{f}  \right) = \boldsymbol{L}$.
   - $h_i ^2 = \ell_{i1}^2 + \ldots + \ell_{ik}^2 = \operatorname{diag}\left( \boldsymbol{L} \boldsymbol{L} ^{\top} \right)_i$ is called the $i$-th **communality**, which is the portion in $\operatorname{Var}\left( X_i \right)$ contributed by the common factors.
+
 - $\boldsymbol{\varepsilon} = \left(\epsilon_{1}, \cdots, \epsilon_{d}\right)^{\top}$ are unobservable errors, aka **specific factors**, assumed to be independent,
 
   $$

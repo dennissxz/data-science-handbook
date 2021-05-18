@@ -823,13 +823,13 @@ Let $\gamma = \lim_{n ,p \rightarrow \infty} \frac{p}{n}$. If $\gamma > 0$, the 
 We illustrate this using a simplest rank-1 (spike) signal model. Suppose a $p$-variate random vector consists of signal and noise
 
 $$
-\boldsymbol{x} = g_0 \boldsymbol{u} + \boldsymbol{g}  
+\boldsymbol{x}_i = g_{0, i} \boldsymbol{u} + \boldsymbol{g}_i
 $$
 
 where
 - $\boldsymbol{u} \in \mathbb{R} ^p$ is some fixed signal **direction**, w.l.o.g. set $\left\| \boldsymbol{u}  \right\| = 1$.
-- $g_0 \sim \mathcal{N} (0, \beta)$ and $\beta$ control randomness and variation (**energy**) of signal
-- $\boldsymbol{g} \sim \mathcal{N} (\boldsymbol{0} , \sigma^2 _{\epsilon}\boldsymbol{I} _p)$ is white noise, independent of $g_0$.
+- $g_{0,i} \sim \mathcal{N} (0, \beta)$ and $\beta$ control randomness and variation (**energy**) of signal
+- $\boldsymbol{g}_i \sim \mathcal{N} (\boldsymbol{0} , \sigma^2 _{\epsilon}\boldsymbol{I} _p)$ is white noise, independent of $g_0$.
 
 Can we recover signal direction $\boldsymbol{u}$ from principal component analysis on noisy measurements $\boldsymbol{x}$? First note the distribution of $\boldsymbol{x}$ is still Gaussian, with mean and variance
 
@@ -951,20 +951,31 @@ Key techniques in Yao's notes:
 
 #### Comparison to Davis-Kahan Theorem
 
-Recall that $\boldsymbol{x}_i = g_0 \boldsymbol{u} + \boldsymbol{g} _i$. If we use [Davis-Kahan theorem](davis-kahan), by viewing
-- truth: $\boldsymbol{\Sigma} = \beta \boldsymbol{u} \boldsymbol{u} ^{\top} + \boldsymbol{I} _p$
+Recall: $\boldsymbol{x}_i = g_{0,i} \boldsymbol{u} + \boldsymbol{g} _i$. If we use [Davis-Kahan theorem](davis-kahan), where
+- truth: $\boldsymbol{M} = \beta \boldsymbol{u} \boldsymbol{u} ^{\top}$
 - noise: $\boldsymbol{H} = \frac{1}{n} \sum_{i=1}^n  \boldsymbol{g}_i \boldsymbol{g}_i ^{\top}$
-- observed: $\widehat{\boldsymbol{\Sigma}} _n = \frac{1}{n} \sum_{i=1}^n \boldsymbol{x}_i \boldsymbol{x}_i ^{\top}$
+- observed:
 
-The distance between the first eigenvector $\hat{\boldsymbol{u}}$ of $\widehat{\boldsymbol{\Sigma}} _n$ and $\boldsymbol{u}$ of the truth $\boldsymbol{\Sigma}$ is
+  $$\begin{aligned}
+  \widehat{\boldsymbol{M}}
+  &=\widehat{\boldsymbol{\Sigma}} _n \\
+  &= \frac{1}{n} \sum_{i=1}^n \boldsymbol{x}_i \boldsymbol{x}_i ^{\top} \\
+  &= \beta \boldsymbol{u} \boldsymbol{u} ^{\top} + \boldsymbol{u}  \left(  \frac{1}{n} \sum g_{0, i} \boldsymbol{g}_i ^{\top}  \right)+  \left( \frac{1}{n} \sum g_{0, i}  \boldsymbol{g}_i \right) \boldsymbol{u}  ^{\top} + \frac{1}{n} \sum \boldsymbol{g}_i \boldsymbol{g}_i ^{\top}   \\
+  &\overset{n,p\rightarrow \infty}{=} \beta \boldsymbol{u} \boldsymbol{u} ^{\top} + \frac{1}{n} \sum \boldsymbol{g}_i \boldsymbol{g}_i ^{\top}\\
+  &= \boldsymbol{M} + \boldsymbol{H}   \\
+  \end{aligned}$$
+
+  Note that the cross-product term converges to $\boldsymbol{0}$ since $g_{0,i} \perp \boldsymbol{g}_i$,  while the last term does not converge to $\boldsymbol{I} _p$ since $p/n \rightarrow \gamma$, i.e. no enough samples for big (and growing) dimensions.
+
+The distance between the first eigenvector $\hat{\boldsymbol{u}}$ of $\widehat{\boldsymbol{M}}$ and $\boldsymbol{u}$ of the truth $\boldsymbol{M}$ is
 
 $$
-\operatorname{dist}(\hat{\boldsymbol{u}}, \boldsymbol{u})=\left\|\hat{\boldsymbol{u}} \hat{\boldsymbol{u}}^{\top}-\boldsymbol{u} \boldsymbol{u}^{\top}\right\|_{2} \leq \frac{\|\boldsymbol{H}\|}{\lambda_1(\boldsymbol{\Sigma}) - \lambda_2(\boldsymbol{\Sigma} )-\|\boldsymbol{H} \|} = \frac{\gamma_{+}}{\lambda_1 - \lambda_2 - \gamma_{+}}
+\operatorname{dist}(\hat{\boldsymbol{u}}, \boldsymbol{u})=\left\|\hat{\boldsymbol{u}} \hat{\boldsymbol{u}}^{\top}-\boldsymbol{u} \boldsymbol{u}^{\top}\right\|_{2} \leq \frac{\|\boldsymbol{H}\|}{\lambda_1(\boldsymbol{M}) - \lambda_2(\boldsymbol{M} )-\|\boldsymbol{H} \|} = \frac{\gamma_{+}}{\lambda_1 - \lambda_2 - \gamma_{+}}
 $$
 
-where the spectral norm $\|\frac{1}{n} \boldsymbol{g}_i \boldsymbol{g}_i ^{\top}\| = \gamma_{+}$ since the upper bound of the M-P distribution is $\gamma_{+}$.
+where the spectral norm $\|\boldsymbol{H}\| = \gamma_{+}$ since the eigenvalues of $\boldsymbol{H}$ follows [Marchenko-Pastur Distribution](marchenko-pastur-distribution) where the upper bound is $\gamma_{+}$.
 
-If we want $|\langle \boldsymbol{u} ,  \hat{\boldsymbol{u}}\rangle| ^2 > c$, then it is equivalent to $\left\|\hat{\boldsymbol{u}} \hat{\boldsymbol{u}}^{\top}-\boldsymbol{u} \boldsymbol{u}^{\top}\right\|_{2}^2 < 1-c$ since they [sum up to](norm) 1. That is, the denominator has some lower bound, i.e. $\lambda_1 - \lambda_2 - \gamma_{+}>  b$. In the spike model, $\lambda_1 - \lambda_2 = (1+\beta) - 1 = \beta$. Hence, the condition for $\beta$ is
+If we want $|\langle \boldsymbol{u} ,  \hat{\boldsymbol{u}}\rangle| ^2 > c$, then it is equivalent to $\left\|\hat{\boldsymbol{u}} \hat{\boldsymbol{u}}^{\top}-\boldsymbol{u} \boldsymbol{u}^{\top}\right\|_{2}^2 < 1-c$ since they [sum up to](norm) 1. That is, the denominator has some lower bound, i.e. $\lambda_1 - \lambda_2 - \gamma_{+}>  b$. In the spike model, $\lambda_1 - \lambda_2 = \beta - 0 = \beta$. Hence, the condition for $\beta$ is
 
 $$
 \beta > (1 + \sqrt{\gamma})^2 + b

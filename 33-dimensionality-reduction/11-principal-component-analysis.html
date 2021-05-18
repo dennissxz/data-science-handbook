@@ -1862,13 +1862,13 @@ p(\boldsymbol{z} \mid \boldsymbol{x})=\mathcal{N}\left(\boldsymbol{M}^{-1} \bold
 <p>We illustrate this using a simplest rank-1 (spike) signal model. Suppose a <span class="math notranslate nohighlight">\(p\)</span>-variate random vector consists of signal and noise</p>
 <div class="math notranslate nohighlight">
 \[
-\boldsymbol{x} = g_0 \boldsymbol{u} + \boldsymbol{g}  
+\boldsymbol{x}_i = g_{0, i} \boldsymbol{u} + \boldsymbol{g}_i
 \]</div>
 <p>where</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(\boldsymbol{u} \in \mathbb{R} ^p\)</span> is some fixed signal <strong>direction</strong>, w.l.o.g. set <span class="math notranslate nohighlight">\(\left\| \boldsymbol{u}  \right\| = 1\)</span>.</p></li>
-<li><p><span class="math notranslate nohighlight">\(g_0 \sim \mathcal{N} (0, \beta)\)</span> and <span class="math notranslate nohighlight">\(\beta\)</span> control randomness and variation (<strong>energy</strong>) of signal</p></li>
-<li><p><span class="math notranslate nohighlight">\(\boldsymbol{g} \sim \mathcal{N} (\boldsymbol{0} , \sigma^2 _{\epsilon}\boldsymbol{I} _p)\)</span> is white noise, independent of <span class="math notranslate nohighlight">\(g_0\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(g_{0,i} \sim \mathcal{N} (0, \beta)\)</span> and <span class="math notranslate nohighlight">\(\beta\)</span> control randomness and variation (<strong>energy</strong>) of signal</p></li>
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{g}_i \sim \mathcal{N} (\boldsymbol{0} , \sigma^2 _{\epsilon}\boldsymbol{I} _p)\)</span> is white noise, independent of <span class="math notranslate nohighlight">\(g_0\)</span>.</p></li>
 </ul>
 <p>Can we recover signal direction <span class="math notranslate nohighlight">\(\boldsymbol{u}\)</span> from principal component analysis on noisy measurements <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span>? First note the distribution of <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> is still Gaussian, with mean and variance</p>
 <div class="math notranslate nohighlight">
@@ -1996,19 +1996,30 @@ SNR = \frac{\beta}{\sigma^2 _{\epsilon}}
 </div>
 <div class="section" id="comparison-to-davis-kahan-theorem">
 <h4>Comparison to Davis-Kahan Theorem<a class="headerlink" href="#comparison-to-davis-kahan-theorem" title="Permalink to this headline">¶</a></h4>
-<p>Recall that <span class="math notranslate nohighlight">\(\boldsymbol{x}_i = g_0 \boldsymbol{u} + \boldsymbol{g} _i\)</span>. If we use <a class="reference internal" href="../11-math/21-linear-algebra.html#davis-kahan"><span class="std std-ref">Davis-Kahan theorem</span></a>, by viewing</p>
-<ul class="simple">
-<li><p>truth: <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma} = \beta \boldsymbol{u} \boldsymbol{u} ^{\top} + \boldsymbol{I} _p\)</span></p></li>
+<p>Recall: <span class="math notranslate nohighlight">\(\boldsymbol{x}_i = g_{0,i} \boldsymbol{u} + \boldsymbol{g} _i\)</span>. If we use <a class="reference internal" href="../11-math/21-linear-algebra.html#davis-kahan"><span class="std std-ref">Davis-Kahan theorem</span></a>, where</p>
+<ul>
+<li><p>truth: <span class="math notranslate nohighlight">\(\boldsymbol{M} = \beta \boldsymbol{u} \boldsymbol{u} ^{\top}\)</span></p></li>
 <li><p>noise: <span class="math notranslate nohighlight">\(\boldsymbol{H} = \frac{1}{n} \sum_{i=1}^n  \boldsymbol{g}_i \boldsymbol{g}_i ^{\top}\)</span></p></li>
-<li><p>observed: <span class="math notranslate nohighlight">\(\widehat{\boldsymbol{\Sigma}} _n = \frac{1}{n} \sum_{i=1}^n \boldsymbol{x}_i \boldsymbol{x}_i ^{\top}\)</span></p></li>
+<li><p>observed:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+  \widehat{\boldsymbol{M}}
+  &amp;=\widehat{\boldsymbol{\Sigma}} _n \\
+  &amp;= \frac{1}{n} \sum_{i=1}^n \boldsymbol{x}_i \boldsymbol{x}_i ^{\top} \\
+  &amp;= \beta \boldsymbol{u} \boldsymbol{u} ^{\top} + \boldsymbol{u}  \left(  \frac{1}{n} \sum g_{0, i} \boldsymbol{g}_i ^{\top}  \right)+  \left( \frac{1}{n} \sum g_{0, i}  \boldsymbol{g}_i \right) \boldsymbol{u}  ^{\top} + \frac{1}{n} \sum \boldsymbol{g}_i \boldsymbol{g}_i ^{\top}   \\
+  &amp;\overset{n,p\rightarrow \infty}{=} \beta \boldsymbol{u} \boldsymbol{u} ^{\top} + \frac{1}{n} \sum \boldsymbol{g}_i \boldsymbol{g}_i ^{\top}\\
+  &amp;= \boldsymbol{M} + \boldsymbol{H}   \\
+  \end{aligned}\end{split}\]</div>
+<p>Note that the cross-product term converges to <span class="math notranslate nohighlight">\(\boldsymbol{0}\)</span> since <span class="math notranslate nohighlight">\(g_{0,i} \perp \boldsymbol{g}_i\)</span>,  while the last term does not converge to <span class="math notranslate nohighlight">\(\boldsymbol{I} _p\)</span> since <span class="math notranslate nohighlight">\(p/n \rightarrow \gamma\)</span>, i.e. no enough samples for big (and growing) dimensions.</p>
+</li>
 </ul>
-<p>The distance between the first eigenvector <span class="math notranslate nohighlight">\(\hat{\boldsymbol{u}}\)</span> of <span class="math notranslate nohighlight">\(\widehat{\boldsymbol{\Sigma}} _n\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{u}\)</span> of the truth <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}\)</span> is</p>
+<p>The distance between the first eigenvector <span class="math notranslate nohighlight">\(\hat{\boldsymbol{u}}\)</span> of <span class="math notranslate nohighlight">\(\widehat{\boldsymbol{M}}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{u}\)</span> of the truth <span class="math notranslate nohighlight">\(\boldsymbol{M}\)</span> is</p>
 <div class="math notranslate nohighlight">
 \[
-\operatorname{dist}(\hat{\boldsymbol{u}}, \boldsymbol{u})=\left\|\hat{\boldsymbol{u}} \hat{\boldsymbol{u}}^{\top}-\boldsymbol{u} \boldsymbol{u}^{\top}\right\|_{2} \leq \frac{\|\boldsymbol{H}\|}{\lambda_1(\boldsymbol{\Sigma}) - \lambda_2(\boldsymbol{\Sigma} )-\|\boldsymbol{H} \|} = \frac{\gamma_{+}}{\lambda_1 - \lambda_2 - \gamma_{+}}
+\operatorname{dist}(\hat{\boldsymbol{u}}, \boldsymbol{u})=\left\|\hat{\boldsymbol{u}} \hat{\boldsymbol{u}}^{\top}-\boldsymbol{u} \boldsymbol{u}^{\top}\right\|_{2} \leq \frac{\|\boldsymbol{H}\|}{\lambda_1(\boldsymbol{M}) - \lambda_2(\boldsymbol{M} )-\|\boldsymbol{H} \|} = \frac{\gamma_{+}}{\lambda_1 - \lambda_2 - \gamma_{+}}
 \]</div>
-<p>where the spectral norm <span class="math notranslate nohighlight">\(\|\frac{1}{n} \boldsymbol{g}_i \boldsymbol{g}_i ^{\top}\| = \gamma_{+}\)</span> since the upper bound of the M-P distribution is <span class="math notranslate nohighlight">\(\gamma_{+}\)</span>.</p>
-<p>If we want <span class="math notranslate nohighlight">\(|\langle \boldsymbol{u} ,  \hat{\boldsymbol{u}}\rangle| ^2 &gt; c\)</span>, then it is equivalent to <span class="math notranslate nohighlight">\(\left\|\hat{\boldsymbol{u}} \hat{\boldsymbol{u}}^{\top}-\boldsymbol{u} \boldsymbol{u}^{\top}\right\|_{2}^2 &lt; 1-c\)</span> since they <a class="reference internal" href="../11-math/21-linear-algebra.html#norm"><span class="std std-ref">sum up to</span></a> 1. That is, the denominator has some lower bound, i.e. <span class="math notranslate nohighlight">\(\lambda_1 - \lambda_2 - \gamma_{+}&gt;  b\)</span>. In the spike model, <span class="math notranslate nohighlight">\(\lambda_1 - \lambda_2 = (1+\beta) - 1 = \beta\)</span>. Hence, the condition for <span class="math notranslate nohighlight">\(\beta\)</span> is</p>
+<p>where the spectral norm <span class="math notranslate nohighlight">\(\|\boldsymbol{H}\| = \gamma_{+}\)</span> since the eigenvalues of <span class="math notranslate nohighlight">\(\boldsymbol{H}\)</span> follows <a class="reference internal" href="../11-math/21-linear-algebra.html#marchenko-pastur-distribution"><span class="std std-ref">Marchenko-Pastur Distribution</span></a> where the upper bound is <span class="math notranslate nohighlight">\(\gamma_{+}\)</span>.</p>
+<p>If we want <span class="math notranslate nohighlight">\(|\langle \boldsymbol{u} ,  \hat{\boldsymbol{u}}\rangle| ^2 &gt; c\)</span>, then it is equivalent to <span class="math notranslate nohighlight">\(\left\|\hat{\boldsymbol{u}} \hat{\boldsymbol{u}}^{\top}-\boldsymbol{u} \boldsymbol{u}^{\top}\right\|_{2}^2 &lt; 1-c\)</span> since they <a class="reference internal" href="../11-math/21-linear-algebra.html#norm"><span class="std std-ref">sum up to</span></a> 1. That is, the denominator has some lower bound, i.e. <span class="math notranslate nohighlight">\(\lambda_1 - \lambda_2 - \gamma_{+}&gt;  b\)</span>. In the spike model, <span class="math notranslate nohighlight">\(\lambda_1 - \lambda_2 = \beta - 0 = \beta\)</span>. Hence, the condition for <span class="math notranslate nohighlight">\(\beta\)</span> is</p>
 <div class="math notranslate nohighlight">
 \[
 \beta &gt; (1 + \sqrt{\gamma})^2 + b
