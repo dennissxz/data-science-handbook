@@ -1,4 +1,4 @@
-# Kernel CCA
+## Kernel CCA
 
 Like Kernel PCA, we can generalize CCA with kernels.
 
@@ -6,7 +6,7 @@ Ref
 - A kernel method for canonical correlation analysis. Shotaro Akaho 2001.
 - Canonical correlation analysis; An overview with application to learning methods. David R. Hardoon 2003.
 
-## Kernelization
+### Kernelization
 
 Recall the original optimization problem of CCA
 
@@ -119,7 +119,7 @@ Therefore, $\boldsymbol{\alpha}$ can be any unit vector $\boldsymbol{e} _j$, and
 
 This is a trivial solution. It is therefore clear that a naive application of CCA in kernel defined feature space will not provide useful results. Regularization is necessary.
 
-## Regularization
+### Regularization
 
 To obtain non-trivial solution, we add regularization term, which is typically the norm of the weights $\boldsymbol{v}$ and $\boldsymbol{w}$.
 
@@ -188,7 +188,7 @@ $$
 
 Therefore, we just solve the above eigenproblem to get meaningful $\boldsymbol{\alpha}$, and then compute $\boldsymbol{\beta}$.
 
-## Learning
+### Learning
 
 From the analysis above, the steps to train a kernel CCA are
 
@@ -248,6 +248,6 @@ Then
     \end{array}\right]\\
     $$
 
-## Model Selection
+### Model Selection
 
 Hyperparameters/settings include number of components $k$, choice of kernel, and the regularization coefficient $r$.
