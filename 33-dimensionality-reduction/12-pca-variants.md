@@ -1,6 +1,6 @@
 # PCA Variants
 
-We introduce an extension of PCA: probabilistic PCA. For another extension Kernel PCA, see [here](kernel-pca).
+We introduce three variants of PCA: probabilistic PCA, kernel PCA, and sparse PCA.
 
 ## Probabilistic PCA
 
@@ -509,4 +509,91 @@ In short, we transform the input from $n\times d$ data matrix $\boldsymbol{X}$ t
 
 ## Sparse PCA
 
-d
+Recall that $Z$ is a linear combination of the variables $X_j$. The original optimization problem is
+
+$$
+\max\ \boldsymbol{a} ^{\top} \boldsymbol{S} \boldsymbol{a} \quad \text{s.t. } \|\boldsymbol{a} \|_2=1
+$$
+
+If we want to impose the number of non-zero coefficient $a_i$, we can add constraint $\left\| \boldsymbol{a}  \right\| _0 \le k$.
+
+### Eigen-space Approach
+
+The problem can be formulated as
+
+$$
+\max\ \boldsymbol{\beta} ^{\top} \boldsymbol{S} \boldsymbol{\beta} \quad \text{s.t. } \|\boldsymbol{\beta}\|_2=1, \left\| \boldsymbol{\beta}  \right\| _0 \le k
+$$
+
+Often $k \ll p$ is desired when $p$ is large.
+
+However, unlike the original principal components $\boldsymbol{a} _i$’s, the $\boldsymbol{\beta} _i$’s are not necessarily orthogonal or uncorrelated to each other without imposing further conditions. In addition, solving this optimization problem turns out to be a very computationally demanding process.
+
+### Penalized Regression Approach
+
+One of the alternative approaches for sparse PCA is to devise PCA in a regression setting, then utilize the [shrinkage method](penalized-regression) in linear regression.
+
+Consider the $i$-th principal direction $\boldsymbol{v}_i$ and the corresponding score $\boldsymbol{z}_i = \boldsymbol{X} \boldsymbol{v}_i$. Now we want a sparse principal direction $\boldsymbol{\beta}$, but keep the new score $\boldsymbol{X} \boldsymbol{\beta}$ as close to $\boldsymbol{z}_i$ as possible. The problem can be formulated as a penalized regression
+
+$$
+\min_{\boldsymbol{\beta}}\ \left\| \boldsymbol{z}_i - \boldsymbol{X} \boldsymbol{\beta} \right\|^2 + \lambda \left\| \boldsymbol{\beta} \right\|
+$$
+
+If we use Ridge regression, then it can be shown that the sparse optimizer $\boldsymbol{\beta}_{\text{ridge} }$ is parallel to the principal direction $\boldsymbol{v}_i$:
+
+$$
+\frac{\hat{\boldsymbol{\beta}} _{\text{ridge} }}{\left\| \hat{\boldsymbol{\beta}} _{\text{ridge} } \right\| } = \boldsymbol{v}_i
+$$
+
+:::{admonition,dropdown,seealso} *Derivation*
+
+Consider SVD $\boldsymbol{X} = \boldsymbol{U} \boldsymbol{D} \boldsymbol{V} ^{\top}$, then $\boldsymbol{X} ^{\top} \boldsymbol{X}  = \boldsymbol{V} \boldsymbol{D} ^2 \boldsymbol{V} ^{\top}$,
+
+$$
+\begin{aligned}
+\hat{\boldsymbol{\beta}}_{\text {ridge }} &=\left(\boldsymbol{V} \boldsymbol{D} ^{2} \boldsymbol{V} ^{\prime}+\lambda \boldsymbol{I} \right)^{-1} \boldsymbol{X} ^{\prime} \boldsymbol{z}_i \\
+&=\left[\boldsymbol{V} \left(\boldsymbol{D} ^{2}+\lambda \boldsymbol{I}\right) \boldsymbol{V}^{\prime}\right]^{-1} \boldsymbol{X} ^{\top} \boldsymbol{X} \boldsymbol{v}_i \\
+&=\boldsymbol{V}^{\prime-1}\left(\boldsymbol{D}^{2}+\lambda \boldsymbol{I}\right)^{-1} \boldsymbol{V}^{-1} \boldsymbol{V} \boldsymbol{D}^{2} \boldsymbol{V}^{\prime} \boldsymbol{v}_i \\
+&=\boldsymbol{V}\left(\boldsymbol{D}^{2}+\lambda \boldsymbol{I}\right)^{-1} \boldsymbol{D}^{2} \boldsymbol{e}_{i} \\
+&=\boldsymbol{V} \frac{d_{i i}^{2}}{d_{i i}^{2}+\lambda} \boldsymbol{e}_{i} \\
+&=\frac{d_{i i}^{2}}{d_{i i}^{2}+\lambda} \boldsymbol{\boldsymbol{v}}_{i}
+\end{aligned}
+$$
+
+:::
+
+We can continue to add $L_1$ norm. The problem becomes
+
+$$
+\min_{\boldsymbol{\beta}}\ \left\| \boldsymbol{z}_i - \boldsymbol{X} \boldsymbol{\beta} \right\|^2 + \lambda_1 \left\| \boldsymbol{\beta} \right\|_1 + \lambda_2 \left\| \boldsymbol{\beta} \right\|_2 ^2
+$$
+
+A larger $\lambda_1$ will give fewer non-zero component of $\hat{\boldsymbol{\beta}}$. The estimated coefficients would be an approximation of the principal direction $\boldsymbol{v} _i$
+
+$$
+\frac{\hat{\boldsymbol{\beta} }}{\left\| \hat{\boldsymbol{\beta} } \right\| } \approx \boldsymbol{v} _i
+$$
+
+where only a few components in $\hat{\boldsymbol{\beta}}$ is non-zero.
+.
+
+
+.
+
+
+.
+
+
+.
+
+
+.
+
+
+.
+
+
+.
+
+
+.
