@@ -70,7 +70,7 @@ Definition (Influential points)
 : Influential points are data points such that if we remove it, the model changes substantially. It can be quantified by Cook's distance
 
   $$
-  D_i = \frac{r_i ^2}{p} \frac{h_i}{1-h_i}  
+  D_i = \frac{r_i ^2}{p} \frac{h_i}{1-h_i}
   $$
 
   where $r_i$ is standardized residual.
@@ -90,7 +90,7 @@ Definition (Influential points)
 Suppose the true model is
 
 $$
-\boldsymbol{y} = \boldsymbol{X}_{n \times p} \boldsymbol{\beta} + \boldsymbol{\varepsilon}  
+\boldsymbol{y} = \boldsymbol{X}_{n \times p} \boldsymbol{\beta} + \boldsymbol{\varepsilon}
 $$
 
 And we omit one explanatory variable $X_j$. Thus, our new design matrix has size $n \times (p-1)$, denoted by $\boldsymbol{X}_{-j}$. Without loss of generality, let it be in the last column of the original design matrix, i.e. $\boldsymbol{X} = \left[ \boldsymbol{X} _{-j} \quad \boldsymbol{x}_j \right]$. The new estimated coefficients vector is denoted by $\widetilde{\boldsymbol{\beta}}_{-j}$. The coefficient for $\boldsymbol{x}_j$ in the true model is denoted by $\beta_j$, and the vector of coefficients for other explanatory variables is denoted by $\boldsymbol{\beta} _{-j}$. Hence, $\boldsymbol{\beta} ^\top = \left[ \boldsymbol{\beta} _{-j} \quad \beta_j \right] ^\top$.
@@ -328,14 +328,14 @@ Examples:
 (lm-multicollinearity)=
 ## Multicollinearity
 
-Definition (Multicollinearity)  
+Definition (Multicollinearity)
 Multicollinearity measure the extent of pairwise correlation of variables in the design matrix.
 
 ```{margin} Multicollinearity in computation
 From numerical algebra's perspective, the extent of correlation of variables in the design matrix $\boldsymbol{X}$ determines the condition number of $\boldsymbol{X} ^\top \boldsymbol{X}$. As the correlation increases, its inverse becomes unstable. When perfect linear relation exists, then $\boldsymbol{X} ^\top \boldsymbol{X}$ is not of full rank, and thus no inverse exists.
 ```
 
-Definition (Perfect multicollinearity)  
+Definition (Perfect multicollinearity)
 A set of variables is perfectly multicollinear if a variable does not vary, or if there is an exact linear relationship between a set of variables:
 
 $$
@@ -373,7 +373,7 @@ Finally, **correlation matrix** can also be used to measure multicollinearity si
     $$\begin{align}
      \operatorname{Var}\left( \hat{\beta}_j \right)
      &= \sigma^2 \frac{1}{1- R^2_{j}} \frac{1}{\sum_i (x_{ij} - \bar{x}_j)^2}  \\
-     &=  \sigma^2 \frac{\operatorname{VIF}_j}{\operatorname{Var}\left( X_j \right)}  
+     &=  \sigma^2 \frac{\operatorname{VIF}_j}{\operatorname{Var}\left( X_j \right)}
      \end{align}$$
 
     When perfect multicollinearity exists, the variance goes to infinity since $R^2_{j} = 1$.
@@ -433,6 +433,16 @@ If $X_1$ and $X_2$ show high correlation, then
 1.  $X_1$ may be a proxy of $X_2$.
 2.  $X_1 - X_2$ may just be noise.
 3.  If $X_2$ is removed, $X_1$ may still be good for prediction.
+
+### Remedy
+
+Since $\operatorname{Var}\left( \hat{\beta}_j \right)$ is large, we can penalize large $\left\| \boldsymbol{\beta} \right\|$ by adding it to the objective function.
+
+$$
+\min_{\boldsymbol{\beta}}\ \left\| \boldsymbol{y} - \boldsymbol{X} \boldsymbol{\beta}  \right\|_2^2 + \lambda \left\| \boldsymbol{\beta}  \right\| _p
+$$
+
+See [penalized regression](penalized-regression).
 
 ## Heteroskedasticity
 
