@@ -1,9 +1,148 @@
+# PCA Variants
+
+We introduce three variants of PCA: probabilistic PCA, kernel PCA, and sparse PCA.
+
+## Probabilistic PCA
+
+*Independently proposed by [Tipping & Bishop 1997, 1999] and [Roweis 1998]*
+
+Probabilistic PCA adds a probabilistic component (interpretation) to the PCA model. It provides
+
+- a way of approximating a Gaussian using fewer parameters (e.g. common noise variance).
+- a way of sampling from the data distribution as a probabilistic model (thus aka sensible PCA).
+
+
+### Objective
+
+In a PPCA model, we first draw low dimensional $\boldsymbol{z} \in \mathbb{R}^{k}$,
+
+$$
+p(\boldsymbol{z}) =\mathcal{N}( \boldsymbol{0}, \boldsymbol{I})
+$$
+
+and draw $\boldsymbol{x} \in \mathbb{R}^{d}, k \leq d$ by
+
+$$
+p(\boldsymbol{x} \mid \boldsymbol{z}) =\mathcal{N}\left( \boldsymbol{W} \boldsymbol{z}+\boldsymbol{\mu} , \sigma^{2} \boldsymbol{I}\right)
+$$
+
+where $\boldsymbol{W} \in \mathbb{R} ^{d \times k}$
+
+Or equivalently,
+
+$$
+\begin{equation}
+\boldsymbol{x}=\boldsymbol{W} \boldsymbol{z}+\boldsymbol{\mu} + \boldsymbol{\epsilon} , \text { where } \boldsymbol{\epsilon}  \sim \mathcal{N}\left(0, \sigma^{2} \boldsymbol{I}\right)
+\end{equation}
+$$
+
+If $\sigma = 0$ then we get standard PCA.
+
+By the property of multivariate Gaussian, we have
+
+
+$$
+p(\boldsymbol{x})=\mathcal{N}\left(\boldsymbol{\mu} , \boldsymbol{W} \boldsymbol{W}^{\top} +\sigma^{2} \boldsymbol{I}\right)
+$$
+
+The goal is to estimate the parameter $\boldsymbol{W} , \boldsymbol{\mu} , \sigma$ that maximize the log likelihood $\sum_{i=1}^{n} \log p\left(\boldsymbol{x}_{i} \mid \boldsymbol{W} , \boldsymbol{\mu} , \sigma\right)$.
+
+
+
+### Learning (MLE)
+
+```{margin} MLE not unique
+Before seeking the ML solution, notice that the solution is not unique: if $\boldsymbol{R}$ is an orthogonal matrix, then $\widetilde{\boldsymbol{W}} = \boldsymbol{W} \boldsymbol{\boldsymbol{R}}$ is indistinguishable from $\boldsymbol{W}$
+
+$$
+\widetilde{\boldsymbol{W}} \widetilde{\boldsymbol{W}} ^{\top}=\boldsymbol{W} (\boldsymbol{R} \boldsymbol{R} ^{\top}) \boldsymbol{W} ^{\top}  =\boldsymbol{W} \boldsymbol{W} ^{\top}
+$$
+
+So we will find a solution $W _{ML}$ up to a rotation $\boldsymbol{R}$.
+```
+
+Let $\boldsymbol{C}  = \boldsymbol{W} \boldsymbol{W} ^\top + \sigma^2 \boldsymbol{I}_d$. The log likelihood function is
+
+$$
+\begin{equation}
+\sum_{i=1}^{n} \log p\left(\boldsymbol{x}_{i} ; \boldsymbol{W}, \mu, \sigma^{2}\right) =
+-\frac{n d}{2} \log (2 \pi)-\frac{n}{2} \log |\boldsymbol{C}|-\frac{1}{2} \sum_{i=1}^{n}\left(\boldsymbol{x}_{i}-\boldsymbol{\mu} \right) ^{\top}  \boldsymbol{C}^{-1}\left(\boldsymbol{x}_{i}-\boldsymbol{\mu} \right)
+\end{equation}
+$$
+
+Setting the derivative w.r.t. $\boldsymbol{\mu}$ to $\boldsymbol{0} $ we have
+
+$$\boldsymbol{\mu} _{ML} = \bar{\boldsymbol{x}}$$
+
+i.e. the sample mean. The solution for $\boldsymbol{W}$ and $\sigma^2$ is more complicated, but closed form.
+
+$$
+\begin{equation}
+\begin{aligned}
+\boldsymbol{W}_{M L} &=\boldsymbol{U}_{d \times k}\left(\boldsymbol{\Lambda} _{k}-\sigma^{2} \boldsymbol{I}_k\right)^{1 / 2} \boldsymbol{R}_k \\
+\sigma_{M L}^{2} &=\frac{1}{d-k} \sum_{j=k+1}^{d} \lambda_{j}
+\end{aligned}
+\end{equation}
+$$
+
+```{margin} EM also works
+It is also possible to find the PPCA solution iteratively, visa the EM algorithm. This is useful if doing the eigenvalue decomposition is too computationally demanding.
+```
+
+where
+- $\boldsymbol{U} _{d \times k}$ is the first $k$ eigenvectors of the sample covariance matrix $\boldsymbol{S}$
+- $\boldsymbol{\Lambda}_k$ is the diagonal matrix of eigenvalues
+- $\boldsymbol{R}_k$ is an arbitrary orthogonal matrix
+
+### Properties
+
+- For $\boldsymbol{R}_k = \boldsymbol{I}_k$ , the solution for $\boldsymbol{W}$ is just a scaled version (by the diagonal matrix $\boldsymbol{\Lambda} _k - \sigma^2 \boldsymbol{I} _k$) of that of standard PCA $U_{d\times k}$.
+- $\sigma^2_{ML}$ is the average variance of the discarded dimensions in $\mathcal{X}$. We view the remaining dimensions as accounting for noise. Their average variance defines the common variance of the noise. The covariance is viewed as
+
+    $$
+    \boldsymbol{\Sigma}=\boldsymbol{U}\left[\begin{array}{cccccccc}
+    \lambda_{1} & \ldots & 0 & \ldots & \ldots & \ldots \\
+    & \ddots & 0 & \ldots & \ldots & \ldots \\
+    0 & \ldots & \lambda_{k} & \ldots & \ldots & \ldots \\
+    0 & \ldots & 0 & \sigma^{2} & 0 & \ldots \\
+    & & & & \ddots & \\
+    0 & \ldots & \ldots & \ldots & 0 & \sigma^{2}
+    \end{array}\right] \boldsymbol{U} ^\top
+    $$
+
+- If $k = d$, i.e., no dimension reduction, then the MLE for the covariance matrix $\boldsymbol{C}$ of $\boldsymbol{x}$ is equal to $\boldsymbol{S}$, which is just the standard ML solution for a Gaussian distribution.
+
+$$
+\boldsymbol{C}_{ML} = \boldsymbol{W} _{ML} \boldsymbol{W} _{ML} ^\top + \sigma^2 \boldsymbol{I}  = \boldsymbol{U} (\boldsymbol{\Lambda} - \sigma^2 I) \boldsymbol{U} ^\top  + \sigma^2 \boldsymbol{I}   = \boldsymbol{U} \boldsymbol{\Lambda} \boldsymbol{U} ^\top  = \boldsymbol{S}.
+$$
+
+### Representation
+
+The conditional distribution of $\boldsymbol{z}$ given $\boldsymbol{x}$ is
+
+$$
+p(\boldsymbol{z} \mid \boldsymbol{x})=\mathcal{N}\left(\boldsymbol{M}^{-1} \boldsymbol{W} ^{\top} (\boldsymbol{x}- \boldsymbol{\mu} ), \sigma^{2} \boldsymbol{M}^{-1}\right)
+$$
+
+where $\boldsymbol{M} = \boldsymbol{W} ^\top \boldsymbol{W}  + \sigma^2 \boldsymbol{I}_k$.
+
+A reduced-dimensionality representation of $\boldsymbol{x}$ is given by the estimated conditional mean
+
+$$
+\widehat{\operatorname{E}}\left( \boldsymbol{z} \mid \boldsymbol{x}   \right) = \boldsymbol{M}  ^{-1} _{ML} \boldsymbol{W} ^\top _{ML}(\boldsymbol{x} - \bar{\boldsymbol{x}})
+$$
+
+where $\boldsymbol{M} _{ML} = \boldsymbol{W} _{ML} ^\top \boldsymbol{W} _{ML}  + \sigma^2 _{ML} \boldsymbol{I}_k$.
+
+- As $\sigma^2 _{ML} \rightarrow 0$, the posterior mean approaches the standard PCA projection $\boldsymbol{ z } =  \boldsymbol{U}  ^\top (\boldsymbol{x}  - \bar{\boldsymbol{x} })$
+- As $\sigma^2 _{ML}> 0$, the posterior mean "shrinks" the solution in magnitude from standard PCA. Since we are less certain about the representation when the noise is large.
+
 (kernel-pca)=
-# Kernel PCA
+## Kernel PCA
 
 Kernel PCA is a nonlinear extension of PCA where dot products are replaced with generalized dot products in feature space computed by a kernel function.
 
-## Kernelization
+### Kernelization
 
 Linear PCA only consider linear subspaces
 
@@ -97,7 +236,7 @@ where $\boldsymbol{C}  = \left(\boldsymbol{I}-\frac{1}{n} \boldsymbol{1} \boldsy
 
 
 
-## Learning
+### Learning
 
 From the analysis above, the steps to train a kernel PCA are
 
@@ -137,7 +276,7 @@ Then
     $$
 
 
-## Choice of Kernel
+### Choice of Kernel
 
 As [discussed](kernels-logic), in practice, we don't engineer $\boldsymbol{\phi}(\cdot)$, but directly think about $k(\cdot, \cdot)$.
 
@@ -165,7 +304,7 @@ Gaussian kernels
 
     where the polynomial degree $p$ is a tuning parameter. $p=2$ is common.
 
-## Pros and Cos
+### Pros and Cos
 
 **Pros**
 
@@ -227,9 +366,9 @@ Gaussian kernels
 
   - just don't use kernel methods if computation is an issue
 
-## Relation to
+### Relation to
 
-### Standard PCA
+#### Standard PCA
 
 Clearly, kernel PCA with linear kernel $k(\boldsymbol{x} , \boldsymbol{y} ) = \boldsymbol{x} ^\top \boldsymbol{y}$ is equivalent to a standard PCA. That is, they give the same projection.
 
@@ -319,13 +458,13 @@ $\square$
 :::
 
 
-### Graph-based Spectral Methods
+#### Graph-based Spectral Methods
 
 Both are motivates as extensions of MDS and involves a $n \times n$ matrix.
 
 We can view kernel in kernel PCA as the edge weights in [graph-based spectral methods](23-graph-based-spectral-methods). But the main difference is that in kernel PCA we compute the kernel value of **every pair** of data points (computationally demanding), but in graph-based spectral methods we only compute weights between points that are neighbors, charactrized by an integer $k$ or distance $\epsilon$.
 
-### Neural Networks
+#### Neural Networks
 
 Kernel PCA can be viewed as a [neural network](../37-neural-networks/00-neural-networks) of one single layer with certain constraints.
 
@@ -367,3 +506,94 @@ So the neural network can be designed as
   - Loss: reconstruction loss
 
 In short, we transform the input from $n\times d$ data matrix $\boldsymbol{X}$ to $n\times n$ kernel matrix $\boldsymbol{K}$, and run PCA. In this way, the learned weights $\boldsymbol{A}$ are the eigenvectors of $\boldsymbol{K} ^{\top} \boldsymbol{K}$ (analogous to $\boldsymbol{X} ^{\top} \boldsymbol{X}$ in PCA), which are the same as $\boldsymbol{K}$, i.e. what we want for.
+
+## Sparse PCA
+
+Recall that $Z$ is a linear combination of the variables $X_j$. The original optimization problem is
+
+$$
+\max\ \boldsymbol{a} ^{\top} \boldsymbol{S} \boldsymbol{a} \quad \text{s.t. } \|\boldsymbol{a} \|_2=1
+$$
+
+If we want to impose the number of non-zero coefficient $a_i$, we can add constraint $\left\| \boldsymbol{a}  \right\| _0 \le k$.
+
+### Eigen-space Approach
+
+The problem can be formulated as
+
+$$
+\max\ \boldsymbol{\beta} ^{\top} \boldsymbol{S} \boldsymbol{\beta} \quad \text{s.t. } \|\boldsymbol{\beta}\|_2=1, \left\| \boldsymbol{\beta}  \right\| _0 \le k
+$$
+
+Often $k \ll p$ is desired when $p$ is large.
+
+However, unlike the original principal components $\boldsymbol{a} _i$’s, the $\boldsymbol{\beta} _i$’s are not necessarily orthogonal or uncorrelated to each other without imposing further conditions. In addition, solving this optimization problem turns out to be a very computationally demanding process.
+
+### Penalized Regression Approach
+
+One of the alternative approaches for sparse PCA is to devise PCA in a regression setting, then utilize the [shrinkage method](penalized-regression) in linear regression.
+
+Consider the $i$-th principal direction $\boldsymbol{v}_i$ and the corresponding score $\boldsymbol{z}_i = \boldsymbol{X} \boldsymbol{v}_i$. Now we want a sparse principal direction $\boldsymbol{\beta}$, but keep the new score $\boldsymbol{X} \boldsymbol{\beta}$ as close to $\boldsymbol{z}_i$ as possible. The problem can be formulated as a penalized regression
+
+$$
+\min_{\boldsymbol{\beta}}\ \left\| \boldsymbol{z}_i - \boldsymbol{X} \boldsymbol{\beta} \right\|^2 + \lambda \left\| \boldsymbol{\beta} \right\|
+$$
+
+If we use Ridge regression, then it can be shown that the sparse optimizer $\boldsymbol{\beta}_{\text{ridge} }$ is parallel to the principal direction $\boldsymbol{v}_i$:
+
+$$
+\frac{\hat{\boldsymbol{\beta}} _{\text{ridge} }}{\left\| \hat{\boldsymbol{\beta}} _{\text{ridge} } \right\| } = \boldsymbol{v}_i
+$$
+
+:::{admonition,dropdown,seealso} *Derivation*
+
+Consider SVD $\boldsymbol{X} = \boldsymbol{U} \boldsymbol{D} \boldsymbol{V} ^{\top}$, then $\boldsymbol{X} ^{\top} \boldsymbol{X}  = \boldsymbol{V} \boldsymbol{D} ^2 \boldsymbol{V} ^{\top}$,
+
+$$
+\begin{aligned}
+\hat{\boldsymbol{\beta}}_{\text {ridge }} &=\left(\boldsymbol{V} \boldsymbol{D} ^{2} \boldsymbol{V} ^{\prime}+\lambda \boldsymbol{I} \right)^{-1} \boldsymbol{X} ^{\prime} \boldsymbol{z}_i \\
+&=\left[\boldsymbol{V} \left(\boldsymbol{D} ^{2}+\lambda \boldsymbol{I}\right) \boldsymbol{V}^{\prime}\right]^{-1} \boldsymbol{X} ^{\top} \boldsymbol{X} \boldsymbol{v}_i \\
+&=\boldsymbol{V}^{\prime-1}\left(\boldsymbol{D}^{2}+\lambda \boldsymbol{I}\right)^{-1} \boldsymbol{V}^{-1} \boldsymbol{V} \boldsymbol{D}^{2} \boldsymbol{V}^{\prime} \boldsymbol{v}_i \\
+&=\boldsymbol{V}\left(\boldsymbol{D}^{2}+\lambda \boldsymbol{I}\right)^{-1} \boldsymbol{D}^{2} \boldsymbol{e}_{i} \\
+&=\boldsymbol{V} \frac{d_{i i}^{2}}{d_{i i}^{2}+\lambda} \boldsymbol{e}_{i} \\
+&=\frac{d_{i i}^{2}}{d_{i i}^{2}+\lambda} \boldsymbol{\boldsymbol{v}}_{i}
+\end{aligned}
+$$
+
+:::
+
+We can continue to add $L_1$ norm. The problem becomes
+
+$$
+\min_{\boldsymbol{\beta}}\ \left\| \boldsymbol{z}_i - \boldsymbol{X} \boldsymbol{\beta} \right\|^2 + \lambda_1 \left\| \boldsymbol{\beta} \right\|_1 + \lambda_2 \left\| \boldsymbol{\beta} \right\|_2 ^2
+$$
+
+A larger $\lambda_1$ will give fewer non-zero component of $\hat{\boldsymbol{\beta}}$. The estimated coefficients would be an approximation of the principal direction $\boldsymbol{v} _i$
+
+$$
+\frac{\hat{\boldsymbol{\beta} }}{\left\| \hat{\boldsymbol{\beta} } \right\| } \approx \boldsymbol{v} _i
+$$
+
+where only a few components in $\hat{\boldsymbol{\beta}}$ is non-zero.
+.
+
+
+.
+
+
+.
+
+
+.
+
+
+.
+
+
+.
+
+
+.
+
+
+.

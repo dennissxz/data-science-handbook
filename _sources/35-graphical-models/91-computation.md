@@ -426,3 +426,9 @@ subject to the distribution constraints and consistency constraints.
 
 
 .
+
+## Tensor Network
+
+In graphical models, we use nodes to represent variables and edges to represent function. There is another representation: matrix product state tensor network (1990~), aka tensor train (2011). Advantage: we can perform algebraic operation of functions.
+
+Note that in tensor network it is more convenient to represent functions by nodes and variables by edges.

@@ -146,8 +146,15 @@ In multivariate case, when $n-p$ is large, approximately,
 
 
 $$
-\sqrt{n}\left(\bar{\boldsymbol{x}}-\boldsymbol{\mu} \right)\overset{\mathcal{D}}{\rightarrow} \mathcal{N}(\boldsymbol{0},\boldsymbol{\Sigma})  
+\sqrt{n}\left(\bar{\boldsymbol{x}}-\boldsymbol{\mu} \right)\overset{\mathcal{D}}{\rightarrow} \mathcal{N}(\boldsymbol{0},\boldsymbol{\Sigma})
 $$
+
+## Eigen Analysis of Covariance Matrix
+
+Assume that $\boldsymbol{x}_i \overset{\text{iid}}{\sim}\mathcal{N} _p(\boldsymbol{\mu} , \boldsymbol{\Sigma} )$, let $(\lambda_i, \boldsymbol{u} _i)$ and $(\hat{\lambda}_i, \hat{\boldsymbol{u}} _i)$ be respectively the eigen pair of population covariance matrix $\boldsymbol{\Sigma}$ and of sample covariance matrix $\boldsymbol{S}$. Let $d_i = \sqrt{n-1} (\hat{\lambda}_i - \lambda_i)$ be a difference measure between the two eigenvalues, and $\boldsymbol{z} _i = \sqrt{n-1}(\hat{\boldsymbol{u}} _i - \boldsymbol{u} _i)$ be a difference measure between the two eigenvectors, then we have the following asymptotic results as $(n - 1 - p) \rightarrow \infty$,
+- $[d_1, \ldots, d_p]$ is independent of $[\boldsymbol{z} _1, \ldots, \boldsymbol{z} _p]$
+- $d_i$'s are independently $\mathcal{N} (0, 2\lambda_i^2)$.
+- $\boldsymbol{z} _i \sim \mathcal{N} _p(\boldsymbol{0} , \sum_{k=1 \atop k \neq i}^{p} \frac{\lambda_{i} \lambda_{k}}{\left(\lambda_{i}-\lambda_{k}\right)^{2}} \boldsymbol{u}_{k} \boldsymbol{u}_{k}^{\top})$ and $\operatorname{Cov}\left(\boldsymbol{z}_{i}, \boldsymbol{z}_{j}\right)=-\frac{\lambda_{i} \lambda_{j}}{\left(\lambda_{i}-\lambda_{j}\right)^{2}} \boldsymbol{u}_{j} \boldsymbol{u}_{i}^{\top}$
 
 (large-sample-inequalities)=
 ## Inequalities

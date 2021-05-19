@@ -237,16 +237,10 @@ We compare PCA and MDS in terms of finding representation $\boldsymbol{Z}$ given
 
     $$\boldsymbol{X}_{n\times d} = \boldsymbol{V} \boldsymbol{\Sigma} \boldsymbol{U} ^\top$$
 
-    - In PCA, the EVD of $n$ times the data covariance matrix is
-
-        $$n \boldsymbol{S}_{d \times d} = \boldsymbol{X} ^\top \boldsymbol{X} = \boldsymbol{U} \boldsymbol{\Sigma} ^\top \boldsymbol{\Sigma} \boldsymbol{U} = \boldsymbol{U} \boldsymbol{D} \boldsymbol{U}$$
-
-        where the diagonal entries in $\boldsymbol{D}$ are the squared singular values $\sigma^2 _j$ for $j=1,\ldots, d$.
-
-        The $n\times k$ projected matrix $(k\le d)$ is
+    - In PCA, the $n\times d$ embedding matrix is
 
         $$
-        \boldsymbol{Z}_{PCA} = \boldsymbol{X} \boldsymbol{U} _{[:k]}
+        \boldsymbol{Z}_{PCA} = \boldsymbol{X} \boldsymbol{U}
         $$
 
     - In MDS, the EVD of the inner product matrix $\boldsymbol{G}$ is
@@ -264,40 +258,21 @@ We compare PCA and MDS in terms of finding representation $\boldsymbol{Z}$ given
         \end{array}\right]
         $$
 
-        The $n\times k$ projected matrix $(k\le d)$ is
+        The embedding matrix is
 
         $$
-        \boldsymbol{Z} _{MDS} = \boldsymbol{V}_{[:k]} \boldsymbol{\Lambda} ^{1/2}_{[:k, :k]} = \boldsymbol{V}_{[:k]} \boldsymbol{D} ^{1/2}_{[:k, :k]}
+        \boldsymbol{Z} _{MDS} = \boldsymbol{V}_{[:d]} \boldsymbol{\Lambda} ^{1/2}_{[:d, :d]} = \boldsymbol{V}_{[:d]} \boldsymbol{D} ^{1/2}
         $$
 
-    Let $\boldsymbol{v} _j$ be an eigenvector of $\boldsymbol{G}$ with eigenvalue $\sigma^2 _j$. Pre-multiplying $\boldsymbol{G} \boldsymbol{v}_j = \sigma^2 _j \boldsymbol{v} _j$ by $\boldsymbol{X} ^\top$ yields
-
-    $$\begin{aligned}
-    \boldsymbol{X} ^\top (\boldsymbol{X} \boldsymbol{X} ^\top) \boldsymbol{v} _j &= \boldsymbol{X} ^\top (\sigma^2 _j  \boldsymbol{v} _j) \\
-    \Rightarrow \qquad  n\boldsymbol{S} (\boldsymbol{X} ^\top \boldsymbol{v} _j) &= \sigma^2 _j (\boldsymbol{X} ^\top \boldsymbol{v} _j)
-    \end{aligned}$$
-
-    Hence, we found that $\boldsymbol{X} ^\top \boldsymbol{v} _j$ is an eigenvector of $n \boldsymbol{S}$ with eigenvalue $\sigma^2 _j$, denoted $\boldsymbol{u} _j$,
-
-    $$
-    \boldsymbol{u} _j = \boldsymbol{X} ^\top \boldsymbol{v} _j
-    $$
-
-    But note that $\boldsymbol{u} _j$ is not normalized, since $\left\| \boldsymbol{u} _j \right\|^2 = \boldsymbol{v} _j ^\top \boldsymbol{X} \boldsymbol{X} ^\top \boldsymbol{v} _j = \sigma^2 _j$. After normalization, we have,
-
-    $$
-    \boldsymbol{U} _{[:d]} = \boldsymbol{X} ^\top \boldsymbol{V} _{[:d]} \boldsymbol{D} ^ {-1/2}
-    $$
-
-    Substituting this relation to the $n\times d$ projected matrix by PCA gives
+    Substituting the SVD of $\boldsymbol{X}$ to the $\boldsymbol{Z} _{PCA}$ gives
 
     $$\begin{aligned}
     \boldsymbol{Z} _{PCA}
-    &= \boldsymbol{X} \boldsymbol{U} _{[:d]} \boldsymbol{D} ^ {-1/2}\\
-    &= \boldsymbol{X} \boldsymbol{X} ^\top \boldsymbol{V}  _{[:d]} \boldsymbol{D} ^ {-1/2}\\
-    &= \boldsymbol{V} _{[:d]} \boldsymbol{D} \boldsymbol{V} ^\top _{[:d]} \boldsymbol{V}  _{[:d]} \boldsymbol{D} ^ {-1/2} \quad \because \text{EVD of } \boldsymbol{X} \boldsymbol{X} ^\top  \\
-    &= \boldsymbol{V} _{[:d]} \boldsymbol{D} \boldsymbol{D} ^ {-1/2} \quad \because \boldsymbol{V} \text{ is orthogonal} \\
-    &= \boldsymbol{V} _{[:d]}\boldsymbol{D} ^ {1/2} \\
+    &= \boldsymbol{X} \boldsymbol{U}\\
+    &= \boldsymbol{V} \boldsymbol{\Sigma} \boldsymbol{U} ^{\top} \boldsymbol{U} \\
+    &= \boldsymbol{V} \boldsymbol{\Sigma}_{n \times d}\\
+    &= \boldsymbol{V}_{[:d]} \boldsymbol{\Sigma}_{[:d, :d]}\\
+    &= \boldsymbol{V}_{[:d]} \boldsymbol{D}^ {1/2} \quad \because \text{singular value } \sigma_j \ge 0$\\
     &= \boldsymbol{Z} _{MDS} \\
     \end{aligned}$$
 
@@ -306,7 +281,7 @@ We compare PCA and MDS in terms of finding representation $\boldsymbol{Z}$ given
   - PCA finds basis $\boldsymbol{u} \in \mathbb{R} ^n$ (principle directions) for spanning $\boldsymbol{X}$, and MDS finds the coordinates $\boldsymbol{z} \in \mathbb{R} ^d$ of the embeddings associated with the PCA basis.
 
     $$\begin{aligned}
-    \boldsymbol{X} ^{\top}  
+    \boldsymbol{X} ^{\top}
     &= \boldsymbol{U} (\boldsymbol{V} \boldsymbol{\Sigma} ) ^{\top} \\
     &= \boldsymbol{U} (\boldsymbol{V}_{[:d]} \boldsymbol{\Sigma}_{[:d]} ) ^{\top} \\
     &= \boldsymbol{U} \boldsymbol{Z} _{MDS} ^{\top} \\

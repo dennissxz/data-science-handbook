@@ -545,6 +545,11 @@
      Multivariate Regression
     </a>
    </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/41-penalized-regression.html">
+     Penalized Regression
+    </a>
+   </li>
   </ul>
  </li>
  <li class="toctree-l1 has-children">
@@ -600,6 +605,11 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="12-pca-variants.html">
+     PCA Variants
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="13-canonical-correlation-analysis.html">
      Canonical Correlation Analysis
     </a>
@@ -624,16 +634,6 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="31-kernel-pca.html">
-     Kernel PCA
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="32-kernel-cca.html">
-     Kernel CCA
-    </a>
-   </li>
-   <li class="toctree-l2">
     <a class="reference internal" href="41-factor-analysis.html">
      Factor Analysis
     </a>
@@ -641,6 +641,11 @@
    <li class="toctree-l2">
     <a class="reference internal" href="51-correspondence-analysis.html">
      Correspondence Analysis
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="61-indep-component-analysis.html">
+     Independent Component Analysis
     </a>
    </li>
   </ul>
@@ -1145,7 +1150,7 @@ It interprets the similarities as inner product data, and guarantee $d_{ii} = 0$
 <p>How to choose optimal <span class="math notranslate nohighlight">\(k\)</span>? We can see how the goodness-of-fit mentioned above varies with <span class="math notranslate nohighlight">\(k\)</span>.</p>
 <div class="figure align-default" id="mds-tuning">
 <a class="reference internal image-reference" href="../_images/mds-tuning.png"><img alt="" src="../_images/mds-tuning.png" style="width: 90%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 87 </span><span class="caption-text">Stress plots (upper row) and fitted vs real distance plots (lower row). .</span><a class="headerlink" href="#mds-tuning" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 93 </span><span class="caption-text">Stress plots (upper row) and fitted vs real distance plots (lower row). .</span><a class="headerlink" href="#mds-tuning" title="Permalink to this image">¶</a></p>
 </div>
 <ul class="simple">
 <li><p>Both Stress and SStress drop when <span class="math notranslate nohighlight">\(k=1\)</span> changes to <span class="math notranslate nohighlight">\(k=2\)</span>, but both increase afterwards, i.e. the loss is not monotonically decreasing as <span class="math notranslate nohighlight">\(k\)</span> becomes large!</p></li>
@@ -1173,14 +1178,10 @@ It interprets the similarities as inner product data, and guarantee $d_{ii} = 0$
 <div class="math notranslate nohighlight">
 \[\boldsymbol{X}_{n\times d} = \boldsymbol{V} \boldsymbol{\Sigma} \boldsymbol{U} ^\top\]</div>
 <ul>
-<li><p>In PCA, the EVD of <span class="math notranslate nohighlight">\(n\)</span> times the data covariance matrix is</p>
-<div class="math notranslate nohighlight">
-\[n \boldsymbol{S}_{d \times d} = \boldsymbol{X} ^\top \boldsymbol{X} = \boldsymbol{U} \boldsymbol{\Sigma} ^\top \boldsymbol{\Sigma} \boldsymbol{U} = \boldsymbol{U} \boldsymbol{D} \boldsymbol{U}\]</div>
-<p>where the diagonal entries in <span class="math notranslate nohighlight">\(\boldsymbol{D}\)</span> are the squared singular values <span class="math notranslate nohighlight">\(\sigma^2 _j\)</span> for <span class="math notranslate nohighlight">\(j=1,\ldots, d\)</span>.</p>
-<p>The <span class="math notranslate nohighlight">\(n\times k\)</span> projected matrix <span class="math notranslate nohighlight">\((k\le d)\)</span> is</p>
+<li><p>In PCA, the <span class="math notranslate nohighlight">\(n\times d\)</span> embedding matrix is</p>
 <div class="math notranslate nohighlight">
 \[
-        \boldsymbol{Z}_{PCA} = \boldsymbol{X} \boldsymbol{U} _{[:k]}
+        \boldsymbol{Z}_{PCA} = \boldsymbol{X} \boldsymbol{U}
         \]</div>
 </li>
 <li><p>In MDS, the EVD of the inner product matrix <span class="math notranslate nohighlight">\(\boldsymbol{G}\)</span> is</p>
@@ -1196,38 +1197,22 @@ It interprets the similarities as inner product data, and guarantee $d_{ii} = 0$
         \boldsymbol{0}  &amp; \boldsymbol{0}_{(n-d) \times (n-d)}
         \end{array}\right]
         \end{split}\]</div>
-<p>The <span class="math notranslate nohighlight">\(n\times k\)</span> projected matrix <span class="math notranslate nohighlight">\((k\le d)\)</span> is</p>
+<p>The embedding matrix is</p>
 <div class="math notranslate nohighlight">
 \[
-        \boldsymbol{Z} _{MDS} = \boldsymbol{V}_{[:k]} \boldsymbol{\Lambda} ^{1/2}_{[:k, :k]} = \boldsymbol{V}_{[:k]} \boldsymbol{D} ^{1/2}_{[:k, :k]}
+        \boldsymbol{Z} _{MDS} = \boldsymbol{V}_{[:d]} \boldsymbol{\Lambda} ^{1/2}_{[:d, :d]} = \boldsymbol{V}_{[:d]} \boldsymbol{D} ^{1/2}
         \]</div>
 </li>
 </ul>
-<p>Let <span class="math notranslate nohighlight">\(\boldsymbol{v} _j\)</span> be an eigenvector of <span class="math notranslate nohighlight">\(\boldsymbol{G}\)</span> with eigenvalue <span class="math notranslate nohighlight">\(\sigma^2 _j\)</span>. Pre-multiplying <span class="math notranslate nohighlight">\(\boldsymbol{G} \boldsymbol{v}_j = \sigma^2 _j \boldsymbol{v} _j\)</span> by <span class="math notranslate nohighlight">\(\boldsymbol{X} ^\top\)</span> yields</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{aligned}
-    \boldsymbol{X} ^\top (\boldsymbol{X} \boldsymbol{X} ^\top) \boldsymbol{v} _j &amp;= \boldsymbol{X} ^\top (\sigma^2 _j  \boldsymbol{v} _j) \\
-    \Rightarrow \qquad  n\boldsymbol{S} (\boldsymbol{X} ^\top \boldsymbol{v} _j) &amp;= \sigma^2 _j (\boldsymbol{X} ^\top \boldsymbol{v} _j)
-    \end{aligned}\end{split}\]</div>
-<p>Hence, we found that <span class="math notranslate nohighlight">\(\boldsymbol{X} ^\top \boldsymbol{v} _j\)</span> is an eigenvector of <span class="math notranslate nohighlight">\(n \boldsymbol{S}\)</span> with eigenvalue <span class="math notranslate nohighlight">\(\sigma^2 _j\)</span>, denoted <span class="math notranslate nohighlight">\(\boldsymbol{u} _j\)</span>,</p>
-<div class="math notranslate nohighlight">
-\[
-    \boldsymbol{u} _j = \boldsymbol{X} ^\top \boldsymbol{v} _j
-    \]</div>
-<p>But note that <span class="math notranslate nohighlight">\(\boldsymbol{u} _j\)</span> is not normalized, since <span class="math notranslate nohighlight">\(\left\| \boldsymbol{u} _j \right\|^2 = \boldsymbol{v} _j ^\top \boldsymbol{X} \boldsymbol{X} ^\top \boldsymbol{v} _j = \sigma^2 _j\)</span>. After normalization, we have,</p>
-<div class="math notranslate nohighlight">
-\[
-    \boldsymbol{U} _{[:d]} = \boldsymbol{X} ^\top \boldsymbol{V} _{[:d]} \boldsymbol{D} ^ {-1/2}
-    \]</div>
-<p>Substituting this relation to the <span class="math notranslate nohighlight">\(n\times d\)</span> projected matrix by PCA gives</p>
+<p>Substituting the SVD of <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span> to the <span class="math notranslate nohighlight">\(\boldsymbol{Z} _{PCA}\)</span> gives</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{aligned}
     \boldsymbol{Z} _{PCA}
-    &amp;= \boldsymbol{X} \boldsymbol{U} _{[:d]} \boldsymbol{D} ^ {-1/2}\\
-    &amp;= \boldsymbol{X} \boldsymbol{X} ^\top \boldsymbol{V}  _{[:d]} \boldsymbol{D} ^ {-1/2}\\
-    &amp;= \boldsymbol{V} _{[:d]} \boldsymbol{D} \boldsymbol{V} ^\top _{[:d]} \boldsymbol{V}  _{[:d]} \boldsymbol{D} ^ {-1/2} \quad \because \text{EVD of } \boldsymbol{X} \boldsymbol{X} ^\top  \\
-    &amp;= \boldsymbol{V} _{[:d]} \boldsymbol{D} \boldsymbol{D} ^ {-1/2} \quad \because \boldsymbol{V} \text{ is orthogonal} \\
-    &amp;= \boldsymbol{V} _{[:d]}\boldsymbol{D} ^ {1/2} \\
+    &amp;= \boldsymbol{X} \boldsymbol{U}\\
+    &amp;= \boldsymbol{V} \boldsymbol{\Sigma} \boldsymbol{U} ^{\top} \boldsymbol{U} \\
+    &amp;= \boldsymbol{V} \boldsymbol{\Sigma}_{n \times d}\\
+    &amp;= \boldsymbol{V}_{[:d]} \boldsymbol{\Sigma}_{[:d, :d]}\\
+    &amp;= \boldsymbol{V}_{[:d]} \boldsymbol{D}^ {1/2} \quad \because \text{singular value } \sigma_j \ge 0$\\
     &amp;= \boldsymbol{Z} _{MDS} \\
     \end{aligned}\end{split}\]</div>
 </div>
@@ -1235,7 +1220,7 @@ It interprets the similarities as inner product data, and guarantee $d_{ii} = 0$
 <li><p>PCA finds basis <span class="math notranslate nohighlight">\(\boldsymbol{u} \in \mathbb{R} ^n\)</span> (principle directions) for spanning <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span>, and MDS finds the coordinates <span class="math notranslate nohighlight">\(\boldsymbol{z} \in \mathbb{R} ^d\)</span> of the embeddings associated with the PCA basis.</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{aligned}
-    \boldsymbol{X} ^{\top}  
+    \boldsymbol{X} ^{\top}
     &amp;= \boldsymbol{U} (\boldsymbol{V} \boldsymbol{\Sigma} ) ^{\top} \\
     &amp;= \boldsymbol{U} (\boldsymbol{V}_{[:d]} \boldsymbol{\Sigma}_{[:d]} ) ^{\top} \\
     &amp;= \boldsymbol{U} \boldsymbol{Z} _{MDS} ^{\top} \\

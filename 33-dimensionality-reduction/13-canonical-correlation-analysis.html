@@ -56,7 +56,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Multidimensional Scaling" href="21-multidimensional-scaling.html" />
-    <link rel="prev" title="Principal Component Analysis" href="11-principal-component-analysis.html" />
+    <link rel="prev" title="PCA Variants" href="12-pca-variants.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
     
@@ -545,6 +545,11 @@
      Multivariate Regression
     </a>
    </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../31-regression/41-penalized-regression.html">
+     Penalized Regression
+    </a>
+   </li>
   </ul>
  </li>
  <li class="toctree-l1 has-children">
@@ -599,6 +604,11 @@
      Principal Component Analysis
     </a>
    </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="12-pca-variants.html">
+     PCA Variants
+    </a>
+   </li>
    <li class="toctree-l2 current active">
     <a class="current reference internal" href="#">
      Canonical Correlation Analysis
@@ -624,16 +634,6 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="31-kernel-pca.html">
-     Kernel PCA
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="32-kernel-cca.html">
-     Kernel CCA
-    </a>
-   </li>
-   <li class="toctree-l2">
     <a class="reference internal" href="41-factor-analysis.html">
      Factor Analysis
     </a>
@@ -641,6 +641,11 @@
    <li class="toctree-l2">
     <a class="reference internal" href="51-correspondence-analysis.html">
      Correspondence Analysis
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="61-indep-component-analysis.html">
+     Independent Component Analysis
     </a>
    </li>
   </ul>
@@ -965,9 +970,36 @@
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#extension-regularized-cca">
-   Extension: Regularized CCA
+  <a class="reference internal nav-link" href="#regularized-cca">
+   Regularized CCA
   </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#kernel-cca">
+   Kernel CCA
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#kernelization">
+     Kernelization
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#regularization">
+     Regularization
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id1">
+     Learning
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id2">
+     Model Selection
+    </a>
+   </li>
+  </ul>
  </li>
 </ul>
 
@@ -1272,7 +1304,7 @@ H_{0}(k): \rho_{k+1}=\cdots=\rho_{k}=0
 <p>Unlike PCA, CCA has discriminative power in some cases. \boldsymbol{I}n the comparison below, in the first scatter-plot, the principal direction is the discriminative direction, while in the second plot it is not. The 3rd (same as the 2nd) and the 4th plots corresponds to <span class="math notranslate nohighlight">\(\boldsymbol{x} \in \mathbb{R} ^2\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{y} \in \mathbb{R} ^2\)</span>. The two colors means two kinds of data points in the <span class="math notranslate nohighlight">\(n\times 4\)</span> data set, but the color labels are shown to CCA. The CCA solutions to <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> (3rd plot) is the direction <span class="math notranslate nohighlight">\((-1,1)\)</span> and to <span class="math notranslate nohighlight">\(\boldsymbol{y}\)</span> (4th plot) is the direction <span class="math notranslate nohighlight">\((-1,-1)\)</span>. Because they are the highest correlation pair of directions.</p>
 <div class="myclass figure align-default" id="cca-has-disc-power">
 <a class="reference internal image-reference" href="../_images/cca-has-disc-power.png"><img alt="" src="../_images/cca-has-disc-power.png" style="width: 90%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 86 </span><span class="caption-text">CCA has discriminative power [Livescu 2021]</span><a class="headerlink" href="#cca-has-disc-power" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 92 </span><span class="caption-text">CCA has discriminative power [Livescu 2021]</span><a class="headerlink" href="#cca-has-disc-power" title="Permalink to this image">¶</a></p>
 </div>
 </div>
 <div class="section" id="overfitting">
@@ -1284,8 +1316,8 @@ H_{0}(k): \rho_{k+1}=\cdots=\rho_{k}=0
 </ul>
 </div>
 </div>
-<div class="section" id="extension-regularized-cca">
-<h2>Extension: Regularized CCA<a class="headerlink" href="#extension-regularized-cca" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="regularized-cca">
+<h2>Regularized CCA<a class="headerlink" href="#regularized-cca" title="Permalink to this headline">¶</a></h2>
 <p>To regularize CCA, we can add small constant <span class="math notranslate nohighlight">\(r\)</span> (noise) to the covariance matrices of <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{y}\)</span>.</p>
 <div class="math notranslate nohighlight">
 \[
@@ -1300,6 +1332,234 @@ H_{0}(k): \rho_{k+1}=\cdots=\rho_{k}=0
 \left(\boldsymbol{\Sigma}_{x x}+r_{x} \boldsymbol{I}\right)^{-1} \boldsymbol{\Sigma}_{x y}\left(\boldsymbol{\Sigma}_{y y}+r_{y} \boldsymbol{I}\right)^{-1} \boldsymbol{\Sigma}_{y x}
 \end{equation}
 \]</div>
+</div>
+<div class="section" id="kernel-cca">
+<h2>Kernel CCA<a class="headerlink" href="#kernel-cca" title="Permalink to this headline">¶</a></h2>
+<p>Like Kernel PCA, we can generalize CCA with kernels.</p>
+<p>Ref</p>
+<ul class="simple">
+<li><p>A kernel method for canonical correlation analysis. Shotaro Akaho 2001.</p></li>
+<li><p>Canonical correlation analysis; An overview with application to learning methods. David R. Hardoon 2003.</p></li>
+</ul>
+<div class="section" id="kernelization">
+<h3>Kernelization<a class="headerlink" href="#kernelization" title="Permalink to this headline">¶</a></h3>
+<p>Recall the original optimization problem of CCA</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+\max _{\boldsymbol{v}, \boldsymbol{w} } \operatorname{Corr}\left(\boldsymbol{v}^{\top} \boldsymbol{x} , \boldsymbol{w}^{\top} \boldsymbol{y} \right)
+= \max &amp;  _{\boldsymbol{v}, \boldsymbol{w}}  \frac{\boldsymbol{v}^{\top} \boldsymbol{\Sigma}_{xy} \boldsymbol{w}}{\sqrt{\boldsymbol{v}^{\top} \boldsymbol{\Sigma}_{xx} \boldsymbol{v} \boldsymbol{w}^{\top} \boldsymbol{\Sigma}_{yy} \boldsymbol{w}}} \\
+\text{s.t.}  &amp;  \ \quad \boldsymbol{v} ^\top \boldsymbol{\Sigma} _{xx} \boldsymbol{v} =1 \\
+  &amp;  \ \quad \boldsymbol{w} ^\top \boldsymbol{\Sigma} _{yy} \boldsymbol{w} =1 \\
+\end{align}\end{split}\]</div>
+<p>Consider two feature transformations, <span class="math notranslate nohighlight">\(\boldsymbol{\phi} _x: \mathbb{R} ^{d_x} \rightarrow \mathbb{R} ^{p_x}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{\phi} _x: \mathbb{R} ^{d_y} \rightarrow \mathbb{R} ^{p_y}\)</span>. Let</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{\Phi} _x\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{\Phi} _y\)</span> be the transformed data matrix.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{C}_x = \frac{1}{n} \boldsymbol{\Phi} _x ^\top \boldsymbol{\Phi} _x, \boldsymbol{C}_y = \frac{1}{n} \boldsymbol{\Phi} _y ^\top \boldsymbol{\Phi} _y, \boldsymbol{C}_{xy} = \frac{1}{n} \boldsymbol{\Phi} _x ^\top \boldsymbol{\Phi} _y, \boldsymbol{C}_{yx} = \frac{1}{n} \boldsymbol{\Phi} _y ^\top \boldsymbol{\Phi} _x\)</span> be the corresponding variance-covariance matrices.</p></li>
+</ul>
+<p>Then the problem is to solve <span class="math notranslate nohighlight">\(\boldsymbol{v}, \boldsymbol{w}\)</span> in</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+\max _{\boldsymbol{v} , \boldsymbol{w}} \operatorname{Corr}\left(\boldsymbol{v}^{\top} \boldsymbol{\phi}_x ( \boldsymbol{x}), \boldsymbol{w}^{\top} \boldsymbol{\phi}_y (\boldsymbol{y})\right)= \max &amp;  _{\boldsymbol{v}, \boldsymbol{w}}  \frac{\boldsymbol{v}^{\top} \boldsymbol{C}_{xy} \boldsymbol{w}}{\sqrt{\boldsymbol{v}^{\top} \boldsymbol{C}_{xx} \boldsymbol{v} \boldsymbol{w}^{\top} \boldsymbol{C}_{yy} \boldsymbol{w}}} \\
+\text{s.t.}  &amp;  \ \quad \boldsymbol{v} ^\top \boldsymbol{C} _{xx} \boldsymbol{v} =1 \\
+  &amp;  \ \quad \boldsymbol{w} ^\top \boldsymbol{C} _{yy} \boldsymbol{w} =1 \\
+\end{align}\end{split}\]</div>
+<p>It can be shown that, the solution vectors <span class="math notranslate nohighlight">\(\boldsymbol{v}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{w}\)</span> are linear combinations of the data vectors <span class="math notranslate nohighlight">\(\boldsymbol{\phi} _x(\boldsymbol{x} _i)\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{\phi} _y (\boldsymbol{y} _i)\)</span>, i.e.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\boldsymbol{v} &amp;= \boldsymbol{\Phi} _x ^\top \boldsymbol{\alpha}\\
+\boldsymbol{w} &amp;= \boldsymbol{\Phi} _y ^\top \boldsymbol{\beta} \\
+\end{aligned}\end{split}\]</div>
+<div class="dropdown seealso admonition">
+<p class="admonition-title"> <em>Derivation??</em></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\boldsymbol{C} ^{-1}  _x \boldsymbol{C} _{xy} \boldsymbol{C} _y ^{-1} \boldsymbol{C} _{yx} \boldsymbol{v}  &amp;= \lambda \boldsymbol{v}  \\
+\Rightarrow\quad \frac{1}{n} \boldsymbol{\Phi} _x ^\top \boldsymbol{\Phi} _y \boldsymbol{C} _y ^{-1}
+\frac{1}{n} \boldsymbol{\Phi} _y ^\top \boldsymbol{\Phi} _x  \boldsymbol{v}  &amp;= \lambda \boldsymbol{C} _x \boldsymbol{v}  \\
+\Rightarrow\quad \boldsymbol{\Phi} _x  ^\top \boldsymbol{\alpha}  &amp;= \lambda \boldsymbol{C} _x\boldsymbol{v} \\
+...&amp;= \\
+\end{aligned}\end{split}\]</div>
+</div>
+<p>Substituting them back to the objective function, we have</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\rho&amp;=\max _{\boldsymbol{\boldsymbol{\alpha}} , \boldsymbol{\boldsymbol{\beta}} } \frac{\boldsymbol{\alpha}^{\top} \boldsymbol{\Phi}_x \boldsymbol{\Phi}_x^{\top} \boldsymbol{\Phi}_y \boldsymbol{\Phi}_y^{\top} \boldsymbol{\beta}}{\sqrt{\boldsymbol{\alpha}^{\top} \boldsymbol{\Phi}_x \boldsymbol{\Phi}_x^{\top} \boldsymbol{\Phi}_x \boldsymbol{\Phi}_x^{\top} \boldsymbol{\alpha} \cdot \boldsymbol{\beta}^{\top} \boldsymbol{\Phi}_y \boldsymbol{\Phi}_y^{\top} \boldsymbol{\Phi}_y \boldsymbol{\Phi}_y^{\top} \boldsymbol{\beta}}} \\
+&amp;=\max _{\boldsymbol{\boldsymbol{\alpha}} , \boldsymbol{\boldsymbol{\beta}} } \frac{\boldsymbol{\alpha}^{\top} \boldsymbol{K}_x \boldsymbol{K}_y   \boldsymbol{\beta}}{\sqrt{\boldsymbol{\alpha}^\top \boldsymbol{K}_x^2  \boldsymbol{\alpha} \cdot \boldsymbol{\beta}^{\top} \boldsymbol{K}_y^2 \boldsymbol{\beta}}} \\
+\end{aligned}\end{split}\]</div>
+<p>which is the <strong>dual form</strong>.</p>
+<p>Note that the value if not affected by re-scaling of <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{\beta}\)</span> either together or independently. Hence the KCCA optimization problem is equivalent to</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+\max  _{\boldsymbol{\alpha}, \boldsymbol{\beta}} &amp;&amp;  \boldsymbol{\alpha} ^\top \boldsymbol{K}_x \boldsymbol{K} _y \boldsymbol{\beta} \\
+\text{s.t.} &amp;&amp;  \boldsymbol{\alpha} ^\top \boldsymbol{K} _x ^2 \boldsymbol{\alpha} = 1\\
+&amp;&amp; \boldsymbol{\beta} ^\top \boldsymbol{K} _y ^2 \boldsymbol{\beta} =1\\
+\end{align}\end{split}\]</div>
+<p>The corresponding Lagrangian is</p>
+<div class="math notranslate nohighlight">
+\[
+\mathcal{L}(\lambda, \boldsymbol{\alpha}, \boldsymbol{\beta})=\boldsymbol{\alpha}^{\top} \boldsymbol{K}_{x} \boldsymbol{K}_{y} \boldsymbol{\beta}-\frac{\lambda_{\boldsymbol{\alpha}}}{2}\left(\boldsymbol{\alpha}^{\top} \boldsymbol{K}_{x}^{2} \boldsymbol{\alpha}-1\right)-\frac{\lambda_{\boldsymbol{\beta}}}{2}\left(\boldsymbol{\beta}^{\top} \boldsymbol{K}_{y}^{2} \boldsymbol{\beta}-1\right)
+\]</div>
+<p>Taking derivatives w.r.t. <span class="math notranslate nohighlight">\(\boldsymbol{\boldsymbol{\alpha}}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{\boldsymbol{\beta}}\)</span> gives</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{array}{l}
+\frac{\partial f}{\partial \boldsymbol{\alpha}}=\boldsymbol{K}_{x} \boldsymbol{K}_{y} \boldsymbol{\beta}-\lambda_{\boldsymbol{\alpha}} \boldsymbol{K}_{x}^{2} \boldsymbol{\alpha}=\mathbf{0} \\
+\frac{\partial f}{\partial \boldsymbol{\beta}}=\boldsymbol{K}_{y} \boldsymbol{K}_{x} \boldsymbol{\alpha}-\lambda_{\boldsymbol{\beta}} \boldsymbol{K}_{y}^{2} \boldsymbol{\beta}=\mathbf{0}
+\end{array}
+\end{split}\]</div>
+<p>Subtracting <span class="math notranslate nohighlight">\(\boldsymbol{\boldsymbol{\beta}} ^\top\)</span> times the second equation from <span class="math notranslate nohighlight">\(\boldsymbol{\boldsymbol{\alpha}} ^\top\)</span> times the first we have</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+0 &amp;=\boldsymbol{\alpha}^{\top} \boldsymbol{K}_{x} \boldsymbol{K}_{y} \boldsymbol{\beta}-\boldsymbol{\alpha}^{\top} \lambda_{\boldsymbol{\alpha}} \boldsymbol{K}_{x}^{2} \boldsymbol{\alpha}-\boldsymbol{\beta}^{\top} \boldsymbol{K}_{y} \boldsymbol{K}_{x} \boldsymbol{\alpha}+\boldsymbol{\beta}^{\top} \lambda_{\boldsymbol{\beta}} \boldsymbol{K}_{y}^{2} \boldsymbol{\beta} \\
+&amp;=\lambda_{\boldsymbol{\beta}} \boldsymbol{\beta}^{\top} \boldsymbol{K}_{y}^{2} \boldsymbol{\beta}-\lambda_{\boldsymbol{\alpha}} \boldsymbol{\alpha}^{\top} \boldsymbol{K}_{x}^{2} \boldsymbol{\alpha}
+\end{aligned}
+\end{split}\]</div>
+<p>which together with the constraints implies <span class="math notranslate nohighlight">\(\lambda_\alpha - \lambda_\beta =0\)</span>. Let them be <span class="math notranslate nohighlight">\(\lambda\)</span>. Suppose <span class="math notranslate nohighlight">\(\boldsymbol{\boldsymbol{K}} _x\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{\boldsymbol{K}} _y\)</span> are invertible (usually the case), then the system of equations given by the derivatives yields</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+\boldsymbol{\beta} &amp;=\frac{\boldsymbol{K}_{y}^{-1} \boldsymbol{K}_{y}^{-1} \boldsymbol{K}_{y} \boldsymbol{K}_{x} \boldsymbol{\alpha}}{\lambda} \\
+&amp;=\frac{\boldsymbol{K}_{y}^{-1} \boldsymbol{K}_{x} \boldsymbol{\alpha}}{\lambda}
+\end{aligned}
+\end{split}\]</div>
+<p>and hence</p>
+<div class="math notranslate nohighlight">
+\[
+\boldsymbol{K}_{x} \boldsymbol{K}_{y} \boldsymbol{K}_{v}^{-1} \boldsymbol{K}_{x} \boldsymbol{\alpha}-\lambda^{2} \boldsymbol{K}_{x} \boldsymbol{K}_{x} \boldsymbol{\alpha}=0
+\]</div>
+<p>or</p>
+<div class="math notranslate nohighlight">
+\[
+I \boldsymbol{\alpha}=\lambda^{2} \boldsymbol{\alpha}
+\]</div>
+<p>Therefore, <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}\)</span> can be any unit vector <span class="math notranslate nohighlight">\(\boldsymbol{e} _j\)</span>, and we can find the corresponding <span class="math notranslate nohighlight">\(\boldsymbol{\beta}\)</span> be the <span class="math notranslate nohighlight">\(j\)</span>-th column of <span class="math notranslate nohighlight">\(\boldsymbol{K}_{y}^{-1} \boldsymbol{K}_{x}\)</span>. Substituting back to the objective function, we found <span class="math notranslate nohighlight">\(\rho = 1\)</span>. The corresponding weights are <span class="math notranslate nohighlight">\(\boldsymbol{v} = \boldsymbol{\Phi} _x ^\top \boldsymbol{\alpha} = \boldsymbol{\phi} (\boldsymbol{x} _j)\)</span>, and <span class="math notranslate nohighlight">\(\boldsymbol{w} = \boldsymbol{\Phi} _y ^\top \boldsymbol{\beta}\)</span>.</p>
+<p>This is a trivial solution. It is therefore clear that a naive application of CCA in kernel defined feature space will not provide useful results. Regularization is necessary.</p>
+</div>
+<div class="section" id="regularization">
+<h3>Regularization<a class="headerlink" href="#regularization" title="Permalink to this headline">¶</a></h3>
+<p>To obtain non-trivial solution, we add regularization term, which is typically the norm of the weights <span class="math notranslate nohighlight">\(\boldsymbol{v}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{w}\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+\rho &amp;=\max _{\boldsymbol{\alpha}, \boldsymbol{\beta}} \frac{\boldsymbol{\alpha}^{\top} \boldsymbol{K}_{x} \boldsymbol{K}_{y} \boldsymbol{\beta}}{\sqrt{\left.\left(\boldsymbol{\alpha}^{\top} \boldsymbol{K}_{x}^{2} \boldsymbol{\alpha}+r\left\|\boldsymbol{v} \right\|^{2}\right) \cdot\left(\boldsymbol{\beta}^{\top} \boldsymbol{K}_{y}^{2} \boldsymbol{\beta}+r\left\|\boldsymbol{w} \right\|^{2}\right)\right)}} \\
+&amp;=\max _{\boldsymbol{\alpha}, \boldsymbol{\beta}} \frac{\boldsymbol{\alpha}^{\top} \boldsymbol{K}_{x} \boldsymbol{K}_{y} \boldsymbol{\beta}}{\sqrt{\left(\boldsymbol{\alpha}^{\top} \boldsymbol{K}_{x}^{2} \boldsymbol{\alpha}+r \boldsymbol{\alpha}^{\top} \boldsymbol{K}_{x} \boldsymbol{\alpha}\right) \cdot\left(\boldsymbol{\beta}^{\top} \boldsymbol{K}_{y}^{2} \boldsymbol{\beta}+r \boldsymbol{\beta}^{\top} \boldsymbol{K}_{y} \boldsymbol{\beta}\right)}}
+\end{aligned}
+\end{split}\]</div>
+<p>Likewise, we observe that the new regularized equation is not affected by re-scaling of <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}\)</span> or <span class="math notranslate nohighlight">\(\boldsymbol{\beta}\)</span>, hence the optimization problem is subject to</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+\left(\boldsymbol{\alpha}^{\top} \boldsymbol{K}_{x}^{2} \boldsymbol{\alpha}+r \boldsymbol{\alpha}^{\top} \boldsymbol{K}_{x} \boldsymbol{\alpha}\right) &amp;=1 \\
+\left(\boldsymbol{\beta}^{\top} \boldsymbol{K}_{y}^{2} \boldsymbol{\beta}+r \boldsymbol{\beta}^{\top} \boldsymbol{K}_{y} \boldsymbol{\beta}\right) &amp;=1
+\end{aligned}
+\end{split}\]</div>
+<p>The resulting Lagrangian is</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+\mathcal{L}\left(\lambda_{\boldsymbol{\alpha}}, \lambda_{\boldsymbol{\beta}}, \boldsymbol{\alpha}, \boldsymbol{\beta}\right)=&amp; \boldsymbol{\alpha}^{\top} \boldsymbol{K}_{x} \boldsymbol{K}_{y} \boldsymbol{\beta} \\
+&amp;-\frac{\lambda_{\boldsymbol{\alpha}}}{2}\left(\boldsymbol{\alpha}^{\top} \boldsymbol{K}_{x}^{2} \boldsymbol{\alpha}+r \boldsymbol{\alpha}^{\top} \boldsymbol{K}_{x} \boldsymbol{\alpha}-1\right) \\
+&amp;-\frac{\lambda_{\boldsymbol{\beta}}}{2}\left(\boldsymbol{\beta}^{\top} \boldsymbol{K}_{y}^{2} \boldsymbol{\beta}+r \boldsymbol{\beta}^{\top} \boldsymbol{K}_{y} \boldsymbol{\beta}-1\right)
+\end{aligned}
+\end{split}\]</div>
+<p>The derivatives are</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+&amp;\frac{\partial f}{\partial \boldsymbol{\alpha}}=\boldsymbol{K}_{x} \boldsymbol{K}_{y} \boldsymbol{\beta}-\lambda_{\boldsymbol{\alpha}}\left(\boldsymbol{K}_{x}^{2} \boldsymbol{\alpha}+r \boldsymbol{K}_{x} \boldsymbol{\alpha}\right)\\
+&amp;\frac{\partial f}{\partial \boldsymbol{\beta}}=\boldsymbol{K}_{y} \boldsymbol{K}_{x} \boldsymbol{\alpha}-\lambda_{\boldsymbol{\beta}}\left(\boldsymbol{K}_{y}^{2} \boldsymbol{\beta}+r \boldsymbol{K}_{y} \boldsymbol{\beta}\right)
+\end{aligned}
+\end{split}\]</div>
+<p>By the same trick, we have</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+0 &amp;=\boldsymbol{\alpha}^{\top} \boldsymbol{K}_{x} \boldsymbol{K}_{y} \boldsymbol{\beta}-\lambda_{\boldsymbol{\alpha}} \boldsymbol{\alpha}^{\top}\left(\boldsymbol{K}_{x}^{2} \boldsymbol{\alpha}+r \boldsymbol{K}_{x} \boldsymbol{\alpha}\right)-\boldsymbol{\beta}^{\top} \boldsymbol{K}_{y} \boldsymbol{K}_{x} \boldsymbol{\alpha}+\lambda_{\boldsymbol{\beta}} \boldsymbol{\beta}^{\top}\left(\boldsymbol{K}_{y}^{2} \boldsymbol{\beta}+r \boldsymbol{K}_{y} \boldsymbol{\beta}\right) \\
+&amp;=\lambda_{\boldsymbol{\beta}} \boldsymbol{\beta}^{\top}\left(\boldsymbol{K}_{y}^{2} \boldsymbol{\beta}+r \boldsymbol{K}_{y} \boldsymbol{\beta}\right)-\lambda_{\boldsymbol{\alpha}} \boldsymbol{\alpha}^{\top}\left(\boldsymbol{K}_{x}^{2} \boldsymbol{\alpha}+r \boldsymbol{K}_{x} \boldsymbol{\alpha}\right)
+\end{aligned}
+\end{split}\]</div>
+<p>which gives <span class="math notranslate nohighlight">\(\lambda_\alpha = \lambda_\beta =0\)</span>. Let them be <span class="math notranslate nohighlight">\(\lambda\)</span>, and suppose <span class="math notranslate nohighlight">\(\boldsymbol{K}_x\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{K}_y\)</span> are invertible, we have</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+\boldsymbol{\beta} &amp;=\frac{\left(\boldsymbol{K}_{y}+r \boldsymbol{I} \right)^{-1} \boldsymbol{K}_{y}^{-1} \boldsymbol{K}_{y} \boldsymbol{K}_{x} \boldsymbol{\alpha}}{\lambda} \\
+&amp;=\frac{\left(\boldsymbol{K}_{y}+r \boldsymbol{I} \right)^{-1} \boldsymbol{K}_{x} \boldsymbol{\alpha}}{\lambda}
+\end{aligned}
+\end{split}\]</div>
+<p>and hence</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+\boldsymbol{K}_{x} \boldsymbol{K}_{y}\left(\boldsymbol{K}_{y}+r \boldsymbol{I}\right)^{-1} \boldsymbol{K}_{x} \boldsymbol{\alpha} &amp;=\lambda^{2} \boldsymbol{K}_{x}\left(\boldsymbol{K}_{x}+r \boldsymbol{I}\right) \boldsymbol{\alpha} \\
+\boldsymbol{K}_{y}\left(\boldsymbol{K}_{y}+r \boldsymbol{I}\right)^{-1} \boldsymbol{K}_{x} \boldsymbol{\alpha} &amp;=\lambda^{2}\left(\boldsymbol{K}_{x}+r \boldsymbol{I}\right) \boldsymbol{\alpha} \\
+\left(\boldsymbol{K}_{x}+r \boldsymbol{I}\right)^{-1} \boldsymbol{K}_{y}\left(\boldsymbol{K}_{y}+r \boldsymbol{I}\right)^{-1} \boldsymbol{K}_{x} \boldsymbol{\alpha} &amp;=\lambda^{2} \boldsymbol{\alpha}
+\end{aligned}
+\end{split}\]</div>
+<p>Therefore, we just solve the above eigenproblem to get meaningful <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}\)</span>, and then compute <span class="math notranslate nohighlight">\(\boldsymbol{\beta}\)</span>.</p>
+</div>
+<div class="section" id="id1">
+<h3>Learning<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<p>From the analysis above, the steps to train a kernel CCA are</p>
+<ol class="simple">
+<li><p>Choose a kernel function <span class="math notranslate nohighlight">\(k(\cdot, \cdot)\)</span>.</p></li>
+<li><p>Compute the centered kernel matrix <span class="math notranslate nohighlight">\(\boldsymbol{K} ^c _x = (\boldsymbol{I} - \boldsymbol{u} \boldsymbol{u} ^\top )\boldsymbol{K}_x(\boldsymbol{I} - \boldsymbol{u} \boldsymbol{u} ^\top)\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{K} _y ^c\)</span></p></li>
+<li><p>Find the first <span class="math notranslate nohighlight">\(k\)</span> eigenvectors of <span class="math notranslate nohighlight">\(\left(\boldsymbol{K} ^c_{x}+r \boldsymbol{I}\right)^{-1} \boldsymbol{K} ^\prime_{y}\left(\boldsymbol{K} ^c_{y}+r \boldsymbol{I}\right)^{-1} \boldsymbol{K} ^c_{x}\)</span>, store in <span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span>.</p></li>
+</ol>
+<p>Then</p>
+<ul>
+<li><p>to project a new data vector <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span>, note that</p>
+<div class="math notranslate nohighlight">
+\[
+    \boldsymbol{w} _ {x,j} = \boldsymbol{\Phi} _x ^\top  \boldsymbol{\alpha}_{j}
+    \]</div>
+<p>Hence, the embeddings <span class="math notranslate nohighlight">\(\boldsymbol{z}\)</span> of a vector <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+    \boldsymbol{z} _x
+    = \left[\begin{array}{c}
+    \boldsymbol{w} _{x, 1} ^\top \boldsymbol{\phi}(\boldsymbol{x}) \\
+    \boldsymbol{w} _{x, 2} ^\top \boldsymbol{\phi}(\boldsymbol{x}) \\
+    \vdots \\
+    \boldsymbol{w} _{x, k} ^\top \boldsymbol{\phi}(\boldsymbol{x}) \\
+    \end{array}\right]
+    = \left[\begin{array}{c}
+    \boldsymbol{\alpha} _1 ^\top  \boldsymbol{\Phi}_x  \\
+    \boldsymbol{\alpha} _2 ^\top  \boldsymbol{\Phi}_x  \\
+    \vdots \\
+    \boldsymbol{\alpha} _k ^\top  \boldsymbol{\Phi}_x  \\
+    \end{array}\right] \boldsymbol{\phi}(\boldsymbol{x})
+    = \boldsymbol{A} ^\top \boldsymbol{\Phi}_x \boldsymbol{\phi}(\boldsymbol{x})
+    = \boldsymbol{A} ^\top \left[\begin{array}{c}
+    k(\boldsymbol{x} _1, \boldsymbol{x}) \\
+    k(\boldsymbol{x} _2, \boldsymbol{x}) \\
+    \vdots \\
+    k(\boldsymbol{x} _n, \boldsymbol{x}) \\
+    \end{array}\right]\\
+    \end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\boldsymbol{A} _{n\times k}\)</span> are the first <span class="math notranslate nohighlight">\(k\)</span> eigenvectors <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}\)</span>.</p>
+</li>
+<li><p>to project the training data <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[\boldsymbol{Z} ^\top  = \boldsymbol{A} ^\top \boldsymbol{K}_x \text{ or } \boldsymbol{Z} = \boldsymbol{K}_x \boldsymbol{A} \]</div>
+</li>
+<li><p>to project a new data matrix <span class="math notranslate nohighlight">\(\boldsymbol{X} ^\prime _{m \times d}\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+    \boldsymbol{Z} _{x ^\prime} ^\top = \boldsymbol{A} ^\top \left[\begin{array}{ccc}
+    k(\boldsymbol{x} _1, \boldsymbol{x ^\prime_1}) &amp; \ldots  &amp;k(\boldsymbol{x} _1, \boldsymbol{x ^\prime_m}) \\
+    k(\boldsymbol{x} _2, \boldsymbol{x ^\prime_1}) &amp; \ldots  &amp;k(\boldsymbol{x} _2, \boldsymbol{x ^\prime_m}) \\
+    \vdots &amp;&amp;\vdots \\
+    k(\boldsymbol{x} _n, \boldsymbol{x ^\prime_1}) &amp; \ldots  &amp;k(\boldsymbol{x} _n, \boldsymbol{x ^\prime_m}) \\
+    \end{array}\right]\\
+    \end{split}\]</div>
+</li>
+</ul>
+</div>
+<div class="section" id="id2">
+<h3>Model Selection<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<p>Hyperparameters/settings include number of components <span class="math notranslate nohighlight">\(k\)</span>, choice of kernel, and the regularization coefficient <span class="math notranslate nohighlight">\(r\)</span>.</p>
+</div>
 </div>
 </div>
 
@@ -1328,7 +1588,7 @@ H_{0}(k): \rho_{k+1}=\cdots=\rho_{k}=0
         
         <div class='prev-next-bottom'>
             
-    <a class='left-prev' id="prev-link" href="11-principal-component-analysis.html" title="previous page">Principal Component Analysis</a>
+    <a class='left-prev' id="prev-link" href="12-pca-variants.html" title="previous page">PCA Variants</a>
     <a class='right-next' id="next-link" href="21-multidimensional-scaling.html" title="next page">Multidimensional Scaling</a>
 
         </div>

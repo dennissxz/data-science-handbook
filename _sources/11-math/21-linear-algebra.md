@@ -299,7 +299,7 @@ Definition(Projection matrices)
 Two square matrices $\boldsymbol{A}$ and $\boldsymbol{B}$ are called similar if there exists an invertible matrix $\boldsymbol{P}$ such that
 
 $$
-\boldsymbol{B}  = \boldsymbol{P} ^{-1} \boldsymbol{A} \boldsymbol{P}  
+\boldsymbol{B}  = \boldsymbol{P} ^{-1} \boldsymbol{A} \boldsymbol{P}
 $$
 
 Similar matrices represent the same linear operator under two (possibly) different bases, with P being the change of basis matrix. As a result, similar matrices share all properties of their shared underlying operator:
@@ -358,7 +358,7 @@ Inequalities
     $$
     \lambda_{\min}(\boldsymbol{B} ^{-1} \boldsymbol{A} )
     \le
-    \frac{\boldsymbol{a} ^\top \boldsymbol{A} \boldsymbol{a} }{\boldsymbol{a} ^\top \boldsymbol{B} \boldsymbol{a} }  
+    \frac{\boldsymbol{a} ^\top \boldsymbol{A} \boldsymbol{a} }{\boldsymbol{a} ^\top \boldsymbol{B} \boldsymbol{a} }
     \le
     \lambda_{\max}(\boldsymbol{B} ^{-1} \boldsymbol{A} )
     $$
@@ -544,6 +544,13 @@ Properties
   \|\boldsymbol{a}-\boldsymbol{b}\|_{\infty} \leq\|\boldsymbol{a}-\boldsymbol{b}\|_{2} \leq\|\boldsymbol{a}-\boldsymbol{b}\|_{1} \leq \sqrt{d}\|\boldsymbol{a}-\boldsymbol{b}\|_{2} \leq d\|\boldsymbol{a}-\boldsymbol{b}\|_{\infty}
   $$
 
+:::{figure} norm-plot
+<img src="../imgs/norm-plot.png" width = "50%" alt=""/>
+
+Vector norms [Wang 2021]
+:::
+
+
 ### Matrix Norms
 
 Reference [link](https://www.uio.no/studier/emner/matnat/ifi/nedlagte-emner/INF-MAT4350/h09/undervisningsmateriale/lecture7.pdf)
@@ -594,7 +601,7 @@ Lemma (Norm preserving)
 
 
   $$\begin{aligned}
-  \frac{1}{k} \mathbb{E} [\left\| \boldsymbol{A} \boldsymbol{u}  \right\| ^2]  
+  \frac{1}{k} \mathbb{E} [\left\| \boldsymbol{A} \boldsymbol{u}  \right\| ^2]
   &= \frac{1}{k} \boldsymbol{u} ^{\top} \mathbb{E} [\boldsymbol{A} ^{\top} \boldsymbol{A} ] \boldsymbol{u}    \\
   &= \frac{1}{k} \boldsymbol{u} ^{\top} k \boldsymbol{I}_{n \times n} \boldsymbol{u}     \\
   &= \left\| \boldsymbol{u}  \right\|   ^2 \\
@@ -884,7 +891,7 @@ $$\Delta = \lambda_r(\boldsymbol{M} ) - \lambda_{r+1} (\widehat{\boldsymbol{M}})
 and hence the bound becomes
 
 $$
-\operatorname{dist}(\boldsymbol{U} _0, \boldsymbol{\widehat{\boldsymbol{U}}} _0) \le \frac{\left\| H \right\| }{\lambda_r(\boldsymbol{M} ) - \lambda_{r+1} (\boldsymbol{M} ) - \left\| \boldsymbol{H}  \right\|}  
+\operatorname{dist}(\boldsymbol{U} _0, \boldsymbol{\widehat{\boldsymbol{U}}} _0) \le \frac{\left\| H \right\| }{\lambda_r(\boldsymbol{M} ) - \lambda_{r+1} (\boldsymbol{M} ) - \left\| \boldsymbol{H}  \right\|}
 $$
 
 where $\lambda_r(\boldsymbol{M} ) - \lambda_{r+1} (\boldsymbol{M} )$ is the spectral gap between the $r$-th and the $(r+1)$-th eigenvalues. We can see that the bound is smaller if there is a sharp gap, and increases as noise $\left\| \boldsymbol{H} \right\|$ increases.

@@ -615,6 +615,8 @@ Thus $\boldsymbol{S} = \boldsymbol{V} \left( \frac{1}{n} \boldsymbol{D} ^{\top} 
 - the eigenvalues of $\boldsymbol{S}$ are proportional to the squared singular values of $\sigma_i$.
 
 So we can compute the PCA solutions via an SVD of data matrix $\boldsymbol{X}$.
+- principal directions: $\boldsymbol{V}$
+- scores: $\boldsymbol{Z} =\boldsymbol{X} \boldsymbol{V} = \boldsymbol{U} \boldsymbol{D} \boldsymbol{V} ^{\top} \boldsymbol{V} = \boldsymbol{U} \boldsymbol{D}$.
 
 ### Compression
 
@@ -691,153 +693,7 @@ Hence we can construct a neural network as follows
   - The activation function is simply the identity function
 
 
-## Extension
-
-We introduce an extension of PCA: probabilistic PCA. For another extension Kernel PCA, see [here](kernel-pca).
-
-*Independently proposed by [Tipping & Bishop 1997, 1999] and [Roweis 1998]*
-
-Probabilistic PCA adds a probabilistic component (interpretation) to the PCA model. It provides
-
-- a way of approximating a Gaussian using fewer parameters (e.g. common noise variance).
-- a way of sampling from the data distribution as a probabilistic model (thus aka sensible PCA).
-
-
-### Objective
-
-In a PPCA model, we first draw low dimensional $\boldsymbol{z} \in \mathbb{R}^{k}$,
-
-$$
-p(\boldsymbol{z}) =\mathcal{N}( \boldsymbol{0}, \boldsymbol{I})
-$$
-
-and draw $\boldsymbol{x} \in \mathbb{R}^{d}, k \leq d$ by
-
-$$
-p(\boldsymbol{x} \mid \boldsymbol{z}) =\mathcal{N}\left( \boldsymbol{W} \boldsymbol{z}+\boldsymbol{\mu} , \sigma^{2} \boldsymbol{I}\right)
-$$
-
-where $\boldsymbol{W} \in \mathbb{R} ^{d \times k}$
-
-Or equivalently,
-
-$$
-\begin{equation}
-\boldsymbol{x}=\boldsymbol{W} \boldsymbol{z}+\boldsymbol{\mu} + \boldsymbol{\epsilon} , \text { where } \boldsymbol{\epsilon}  \sim \mathcal{N}\left(0, \sigma^{2} \boldsymbol{I}\right)
-\end{equation}
-$$
-
-If $\sigma = 0$ then we get standard PCA.
-
-By the property of multivariate Gaussian, we have
-
-
-$$
-p(\boldsymbol{x})=\mathcal{N}\left(\boldsymbol{\mu} , \boldsymbol{W} \boldsymbol{W}^{\top} +\sigma^{2} \boldsymbol{I}\right)
-$$
-
-The goal is to estimate the parameter $\boldsymbol{W} , \boldsymbol{\mu} , \sigma$ that maximize the log likelihood $\sum_{i=1}^{n} \log p\left(\boldsymbol{x}_{i} \mid \boldsymbol{W} , \boldsymbol{\mu} , \sigma\right)$.
-
-
-
-### Learning (MLE)
-
-```{margin} MLE not unique
-Before seeking the ML solution, notice that the solution is not unique: if $\boldsymbol{R}$ is an orthogonal matrix, then $\widetilde{\boldsymbol{W}} = \boldsymbol{W} \boldsymbol{\boldsymbol{R}}$ is indistinguishable from $\boldsymbol{W}$
-
-$$
-\widetilde{\boldsymbol{W}} \widetilde{\boldsymbol{W}} ^{\top}=\boldsymbol{W} (\boldsymbol{R} \boldsymbol{R} ^{\top}) \boldsymbol{W} ^{\top}  =\boldsymbol{W} \boldsymbol{W} ^{\top}
-$$
-
-So we will find a solution $W _{ML}$ up to a rotation $\boldsymbol{R}$.
-```
-
-Let $\boldsymbol{C}  = \boldsymbol{W} \boldsymbol{W} ^\top + \sigma^2 \boldsymbol{I}_d$. The log likelihood function is
-
-$$
-\begin{equation}
-\sum_{i=1}^{n} \log p\left(\boldsymbol{x}_{i} ; \boldsymbol{W}, \mu, \sigma^{2}\right) =
--\frac{n d}{2} \log (2 \pi)-\frac{n}{2} \log |\boldsymbol{C}|-\frac{1}{2} \sum_{i=1}^{n}\left(\boldsymbol{x}_{i}-\boldsymbol{\mu} \right) ^{\top}  \boldsymbol{C}^{-1}\left(\boldsymbol{x}_{i}-\boldsymbol{\mu} \right)
-\end{equation}
-$$
-
-Setting the derivative w.r.t. $\boldsymbol{\mu}$ to $\boldsymbol{0} $ we have
-
-$$\boldsymbol{\mu} _{ML} = \bar{\boldsymbol{x}}$$
-
-i.e. the sample mean. The solution for $\boldsymbol{W}$ and $\sigma^2$ is more complicated, but closed form.
-
-$$
-\begin{equation}
-\begin{aligned}
-\boldsymbol{W}_{M L} &=\boldsymbol{U}_{d \times k}\left(\boldsymbol{\Lambda} _{k}-\sigma^{2} \boldsymbol{I}_k\right)^{1 / 2} \boldsymbol{R}_k \\
-\sigma_{M L}^{2} &=\frac{1}{d-k} \sum_{j=k+1}^{d} \lambda_{j}
-\end{aligned}
-\end{equation}
-$$
-
-```{margin} EM also works
-It is also possible to find the PPCA solution iteratively, visa the EM algorithm. This is useful if doing the eigenvalue decomposition is too computationally demanding.
-```
-
-where
-- $\boldsymbol{U} _{d \times k}$ is the first $k$ eigenvectors of the sample covariance matrix $\boldsymbol{S}$
-- $\boldsymbol{\Lambda}_k$ is the diagonal matrix of eigenvalues
-- $\boldsymbol{R}_k$ is an arbitrary orthogonal matrix
-
-### Properties
-
-- For $\boldsymbol{R}_k = \boldsymbol{I}_k$ , the solution for $\boldsymbol{W}$ is just a scaled version (by the diagonal matrix $\boldsymbol{\Lambda} _k - \sigma^2 \boldsymbol{I} _k$) of that of standard PCA $U_{d\times k}$.
-- $\sigma^2_{ML}$ is the average variance of the discarded dimensions in $\mathcal{X}$. We view the remaining dimensions as accounting for noise. Their average variance defines the common variance of the noise. The covariance is viewed as
-
-    $$
-    \boldsymbol{\Sigma}=\boldsymbol{U}\left[\begin{array}{cccccccc}
-    \lambda_{1} & \ldots & 0 & \ldots & \ldots & \ldots \\
-    & \ddots & 0 & \ldots & \ldots & \ldots \\
-    0 & \ldots & \lambda_{k} & \ldots & \ldots & \ldots \\
-    0 & \ldots & 0 & \sigma^{2} & 0 & \ldots \\
-    & & & & \ddots & \\
-    0 & \ldots & \ldots & \ldots & 0 & \sigma^{2}
-    \end{array}\right] \boldsymbol{U} ^\top
-    $$
-
-- If $k = d$, i.e., no dimension reduction, then the MLE for the covariance matrix $\boldsymbol{C}$ of $\boldsymbol{x}$ is equal to $\boldsymbol{S}$, which is just the standard ML solution for a Gaussian distribution.
-
-$$
-\boldsymbol{C}_{ML} = \boldsymbol{W} _{ML} \boldsymbol{W} _{ML} ^\top + \sigma^2 \boldsymbol{I}  = \boldsymbol{U} (\boldsymbol{\Lambda} - \sigma^2 I) \boldsymbol{U} ^\top  + \sigma^2 \boldsymbol{I}   = \boldsymbol{U} \boldsymbol{\Lambda} \boldsymbol{U} ^\top  = \boldsymbol{S}.
-$$
-
-### Representation
-
-The conditional distribution of $\boldsymbol{z}$ given $\boldsymbol{x}$ is
-
-$$
-p(\boldsymbol{z} \mid \boldsymbol{x})=\mathcal{N}\left(\boldsymbol{M}^{-1} \boldsymbol{W} ^{\top} (\boldsymbol{x}- \boldsymbol{\mu} ), \sigma^{2} \boldsymbol{M}^{-1}\right)
-$$
-
-where $\boldsymbol{M} = \boldsymbol{W} ^\top \boldsymbol{W}  + \sigma^2 \boldsymbol{I}_k$.
-
-A reduced-dimensionality representation of $\boldsymbol{x}$ is given by the estimated conditional mean
-
-$$
-\widehat{\operatorname{E}}\left( \boldsymbol{z} \mid \boldsymbol{x}   \right) = \boldsymbol{M}  ^{-1} _{ML} \boldsymbol{W} ^\top _{ML}(\boldsymbol{x} - \bar{\boldsymbol{x}})
-$$
-
-where $\boldsymbol{M} _{ML} = \boldsymbol{W} _{ML} ^\top \boldsymbol{W} _{ML}  + \sigma^2 _{ML} \boldsymbol{I}_k$.
-
-- As $\sigma^2 _{ML} \rightarrow 0$, the posterior mean approaches the standard PCA projection $\boldsymbol{ z } =  \boldsymbol{U}  ^\top (\boldsymbol{x}  - \bar{\boldsymbol{x} })$
-- As $\sigma^2 _{ML}> 0$, the posterior mean "shrinks" the solution in magnitude from standard PCA. Since we are less certain about the representation when the noise is large.
-
-## Advanced Topics
-
-### Large Sample Inference
-
-Assume that $\boldsymbol{x}_i \overset{\text{iid}}{\sim}\mathcal{N} _p(\boldsymbol{\mu} , \boldsymbol{\Sigma} )$, let $(\lambda_i, \boldsymbol{u} _i)$ and $(\hat{\lambda}_i, \hat{\boldsymbol{u}} _i)$ be respectively the eigen pair of population covariance matrix $\boldsymbol{\Sigma}$ and of sample covariance matrix $\boldsymbol{S}$. Let $d_i = \sqrt{n-1} (\hat{\lambda}_i - \lambda_i)$ be a difference measure between the two eigenvalues, and $\boldsymbol{z} _i = \sqrt{n-1}(\hat{\boldsymbol{u}} _i - \boldsymbol{u} _i)$ be a difference measure between the two eigenvectors, then we have the following asymptotic results as $(n - 1 - p) \rightarrow \infty$,
-- $[d_1, \ldots, d_p]$ is independent of $[\boldsymbol{z} _1, \ldots, \boldsymbol{z} _p]$
-- $d_i$'s are independently $\mathcal{N} (0, 2\lambda_i^2)$.
-- $\boldsymbol{z} _i \sim \mathcal{N} _p(\boldsymbol{0} , \sum_{k=1 \atop k \neq i}^{p} \frac{\lambda_{i} \lambda_{k}}{\left(\lambda_{i}-\lambda_{k}\right)^{2}} \boldsymbol{u}_{k} \boldsymbol{u}_{k}^{\top})$ and $\operatorname{Cov}\left(\boldsymbol{z}_{i}, \boldsymbol{z}_{j}\right)=-\frac{\lambda_{i} \lambda_{j}}{\left(\lambda_{i}-\lambda_{j}\right)^{2}} \boldsymbol{u}_{j} \boldsymbol{u}_{i}^{\top}$
-
-### Identifiability
+## Identifiability
 
 PCA use EVD of sample covariance matrix $\boldsymbol{S}$. As $n \rightarrow \infty$, by the Law of Large numbers, $\boldsymbol{S} \rightarrow \boldsymbol{\Sigma}$ hence its eigenvalues also converges to those of $\boldsymbol{\Sigma}$, i.e. we are able to recover the signal subspace. However, in high dimensional setting where $p$ is large, is this still true?
 
@@ -936,7 +792,7 @@ We are interested in high-dimensional setting $n, p \rightarrow \infty$, under w
 - the top eigenvalue $\hat{\lambda}$ due to signal $\boldsymbol{u}$ is distinguishable from those due to noise $\boldsymbol{g}$
 - the estimated signal direction $\hat{\boldsymbol{u}}$ is close to the true signal direction $\boldsymbol{u}$, measured by $\langle \hat{\boldsymbol{u}} , \boldsymbol{u} \rangle \ne 0$ w.h.p.
 
-#### Phase Transition
+### Phase Transition
 
 With random matrix theory, using the [Marchenko-pastur Distribution](marchenko-pastur-distribution), we have the following conclusions, as $n, p \rightarrow \infty$:
 
@@ -974,7 +830,7 @@ Key techniques in Yao's notes:
   - The number of terms in the summation, denoted $p$, is large enough, $p \rightarrow \infty$
   - No term 'explode' to $\infty$. For instance, for the summation $\sum_{i=1}^p \frac{c}{\lambda - \lambda_j}$ where $\lambda_j \sim f_{MP}$ over $[\gamma_-, \gamma_+]$, if $\lambda \in [\gamma_-, \gamma_+]$, then as $p \rightarrow \infty$, some denominator $\lambda - \lambda_j$ will be infinitely small, and that term explode.
 
-#### Comparison to Davis-Kahan Theorem
+### Comparison to Davis-Kahan Theorem
 
 Recall: $\boldsymbol{x}_i = g_{0,i} \boldsymbol{u} + \boldsymbol{g} _i$. If we use [Davis-Kahan theorem](davis-kahan), where
 - truth: $\boldsymbol{M} = \beta \boldsymbol{u} \boldsymbol{u} ^{\top}$
