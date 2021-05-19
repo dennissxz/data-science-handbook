@@ -8,7 +8,7 @@ $$
 \min_{\boldsymbol{\beta}}\ \left\| \boldsymbol{y} - \boldsymbol{X} \boldsymbol{\beta}  \right\|_2^2 + \lambda \left\| \boldsymbol{\beta}  \right\| _p
 $$
 
-where $\lambda \in [0, \infty]$ controls the penalty term.
+where $\lambda \in [0, \infty]$ controls the penalty term. Since we want smaller $\left\| \boldsymbol{\beta}  \right\| _p$, penalized regression is often known as **shrinkage method**.
 
 Different $p$-norms correspond to different problems and interpretation. In many cases we want to penalize $\boldsymbol{\beta}$, for instance, when
 - high multicollinearity exists

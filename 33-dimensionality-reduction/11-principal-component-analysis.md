@@ -615,6 +615,8 @@ Thus $\boldsymbol{S} = \boldsymbol{V} \left( \frac{1}{n} \boldsymbol{D} ^{\top} 
 - the eigenvalues of $\boldsymbol{S}$ are proportional to the squared singular values of $\sigma_i$.
 
 So we can compute the PCA solutions via an SVD of data matrix $\boldsymbol{X}$.
+- principal directions: $\boldsymbol{V}$
+- scores: $\boldsymbol{Z} =\boldsymbol{X} \boldsymbol{V} = \boldsymbol{U} \boldsymbol{D} \boldsymbol{V} ^{\top} \boldsymbol{V} = \boldsymbol{U} \boldsymbol{D}$.
 
 ### Compression
 
