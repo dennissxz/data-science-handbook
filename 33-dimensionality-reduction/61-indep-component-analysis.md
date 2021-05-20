@@ -1,3 +1,4 @@
+(independent-component-analysis)=
 # Independent Component Analysis
 
 Sometimes measurements are taken as a mixture of several sources, e.g. voice recording from a group of people talking at the same time. The source signal may not have Gaussian distribution.

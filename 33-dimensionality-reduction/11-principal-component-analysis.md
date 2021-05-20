@@ -116,6 +116,7 @@ There are various equivalent formulations of optimization problems to find the l
 
 ## Learning
 
+(pca-sequential)=
 ### Sequential Maximization
 
 The first variable in $\boldsymbol{z}$, i.e. $Z_1 = \boldsymbol{u} \boldsymbol{x}$ is obtained to maximize its variance, i.e.,
