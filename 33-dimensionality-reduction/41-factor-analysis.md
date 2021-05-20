@@ -36,10 +36,10 @@ $$
 - $\boldsymbol{\varepsilon} = \left(\epsilon_{1}, \cdots, \epsilon_{d}\right)^{\top}$ are unobservable errors, aka **specific factors**, assumed to be independent,
 
   $$
-  \mathbb{E} [\boldsymbol{\varepsilon} ] = \boldsymbol{0} , \quad \operatorname{Cov}\left( \boldsymbol{\varepsilon} \right) = \boldsymbol{\Psi} = \operatorname{diag}(\Psi_1, \ldots, \Psi_d)
+  \mathbb{E} [\boldsymbol{\varepsilon} ] = \boldsymbol{0} , \quad \operatorname{Cov}\left( \boldsymbol{\varepsilon} \right) = \boldsymbol{\Psi} = \operatorname{diag}(\psi_1, \ldots, \psi_d)
   $$
 
-  - $\Psi_i$ is called the **specific variance** or **uniqueness** of variable $X_i$.
+  - $\psi_i$ is called the **specific variance** or **uniqueness** of variable $X_i$.
   - $\boldsymbol{\varepsilon}$ is independent with $\boldsymbol{f}$.
 
 
@@ -67,7 +67,7 @@ The principal component method is easy to implement, thus commonly used in preli
 
 $$\boldsymbol{\Sigma} = \boldsymbol{U} \boldsymbol{\Lambda} \boldsymbol{U} ^{\top} = (\boldsymbol{U} \sqrt{\boldsymbol{\Lambda}})(\boldsymbol{U} \sqrt{\boldsymbol{\Lambda}}) ^{\top}$$
 
-Hence we can choose $\boldsymbol{L}_d = (\boldsymbol{U} \sqrt{\boldsymbol{\Lambda}})$. Instead using all of them, we can use the first $k < d$ columns. Then, $\boldsymbol{L} _k \boldsymbol{L} _k ^\prime \ne \boldsymbol{L} _d \boldsymbol{L} _d$. The difference in the diagonal entires is then interpreted as the specific factors $\boldsymbol{\Psi}$.
+Hence we can choose $\boldsymbol{L}_d = (\boldsymbol{U} \sqrt{\boldsymbol{\Lambda}})$. Instead of using all of them, we can use the first $k < d$ columns. Then, $\boldsymbol{L} _k \boldsymbol{L} _k ^\prime \ne \boldsymbol{L} _d \boldsymbol{L} _d$. The difference in the diagonal entires is then interpreted as the specific factors $\boldsymbol{\Psi}$.
 
 
 $$\begin{aligned}
@@ -77,7 +77,7 @@ $$\begin{aligned}
 \end{aligned}$$
 
 
-In sample data, we replace $\boldsymbol{\Sigma}$ by $\boldsymbol{S}$. The **residual matrix** is defined as $\boldsymbol{S} - (\hat{\boldsymbol{L}} _k \hat{\boldsymbol{L}} ^{\top}  _k + \hat{\boldsymbol{\Psi}})$, where the diagonal entries are 0, and the sum of squared entires is bounded by the sum remaining eigenvalues of $\boldsymbol{S}$
+When dealing with sample data, we replace $\boldsymbol{\Sigma}$ by $\boldsymbol{S}$. The **residual matrix** is defined as $\boldsymbol{S} - (\hat{\boldsymbol{L}} _k \hat{\boldsymbol{L}} ^{\top}  _k + \hat{\boldsymbol{\Psi}})$, where the diagonal entries are 0, and the sum of squared entires is bounded by the sum remaining eigenvalues of $\boldsymbol{S}$
 
 $$
 \left\| \boldsymbol{S} - (\hat{\boldsymbol{L}} _k \hat{\boldsymbol{L}} ^{\top}  _k + \hat{\boldsymbol{\Psi}}) \right\| _F^2 \le \hat{\lambda}_{k+1}^2 + \ldots + \hat{\lambda}_d^2
@@ -103,7 +103,9 @@ Note that
 
 ## Relation to
 
-PCA
+Factor model is a type of latent variable model, which has been the origin of the development of many popular statistical models, including Structured Equation Models, [Independent Component Analysis](independent-component-analysis), and [Probabilistic Principal Component Analysis](probabilistic-pca).
+
+### PCA
 - similarity
   - both for dimension reduction, easy interpretation, and beginning stage of exploratory data analysis
   - PCFA and PCA both use EVD of covariance matrix
@@ -114,8 +116,17 @@ PCA
   - PCA is generally used as a mathematical technique, factor analysis is a statistical model with many assumptions
   - PCA focuses on mapping $\boldsymbol{W}$ from observed to latent, while FA focuses on mapping $\boldsymbol{L}$ from latent to observed.
 
-Others
-- Factor model is a type of latent variable model, which has been the origin of the development of many popular statistical models, including Structured Equation Models, Independent Component Analysis, and Probability Principal Component Analysis.
+### Probabilistic PCA
+
+In FA, If we do not impose normal assumption on $\boldsymbol{f}$ or $\boldsymbol{\varepsilon}$, then we can only do estimation by principal likelihood method (EVD). If we impose normal assumptions, then we can do estimation by maximum likelihood. The difference from PPCA is that the FA assumes heterougenous 'specific variance' $\operatorname{Cov}\left( \epsilon_i \right) = \psi_i$ while PPCA assumes homogenous variance $\operatorname{Cov}\left( \epsilon_i \right) = \sigma^2$.
+
+| Name | Model| Assumptions| Estimation|
+| -| -| -| -|
+| PCFA  | $\boldsymbol{x} = \boldsymbol{\mu} + \boldsymbol{L} \boldsymbol{f} + \boldsymbol{\varepsilon}$ | $\mathbb{E} [\boldsymbol{f} ] = \boldsymbol{0} _k$, $\operatorname{Cov}\left( \boldsymbol{f}  \right) = \boldsymbol{I} _k$, <br> $\mathbb{E} [\boldsymbol{\varepsilon} ] = \boldsymbol{0}$, $\operatorname{Cov}\left( \boldsymbol{\varepsilon} \right) = \boldsymbol{\Psi} = \operatorname{diag}(\psi_1, \ldots, \psi_d)$  | EVD |
+| MLFA  | same as above | $\boldsymbol{f}\sim \mathcal{N}(0, \boldsymbol{I})$, $\boldsymbol{\varepsilon}\sim \mathcal{N}(0, \boldsymbol{\Psi})$  | ML, up to rotation  |
+| PPCA  | $\boldsymbol{x} = \boldsymbol{\mu} + \boldsymbol{W} \boldsymbol{z} + \boldsymbol{\varepsilon}$ | $\boldsymbol{z}\sim \mathcal{N}(0, \boldsymbol{I})$, $\boldsymbol{\varepsilon}\sim \mathcal{N}(0, \sigma^2 \boldsymbol{I})$ | ML, up to rotation  |
+
+
 
 More topics:
 - factor scores
