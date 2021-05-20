@@ -923,6 +923,11 @@
    Elastic Net
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#comparison">
+   Comparison
+  </a>
+ </li>
 </ul>
 
             </nav>
@@ -936,6 +941,7 @@
                 
   <div class="section" id="penalized-regression">
 <span id="id1"></span><h1>Penalized Regression<a class="headerlink" href="#penalized-regression" title="Permalink to this headline">¶</a></h1>
+<p>Aka regularized regression, or shrinkage method.</p>
 <p>In penalized regression, we penalize the maginitude of <span class="math notranslate nohighlight">\(\boldsymbol{\beta}\)</span>.</p>
 <div class="math notranslate nohighlight">
 \[
@@ -958,7 +964,7 @@
 <p>Equivalently, ridge regression can be written as solving</p>
 <div class="math notranslate nohighlight">
 \[
-\min _{\beta}\|\boldsymbol{y}-\boldsymbol{X} \boldsymbol{\beta}\|^{2}\quad \text{s.t. } \|\boldsymbol{\beta}\|_{2} \ge s
+\min _{\beta}\|\boldsymbol{y}-\boldsymbol{X} \boldsymbol{\beta}\|^{2}\quad \text{s.t. } \|\boldsymbol{\beta}\|_{2} \le s
 \]</div>
 <p>The optimizer is</p>
 <div class="math notranslate nohighlight">
@@ -1004,13 +1010,28 @@
 <p>Equivalently, LASSO regression can be written as solving</p>
 <div class="math notranslate nohighlight">
 \[
-\min _{\beta}\|\boldsymbol{y}-\boldsymbol{X} \boldsymbol{\beta}\|^{2}\quad \text{s.t. } \|\boldsymbol{\beta}\|_{1} \ge s
+\min _{\beta}\|\boldsymbol{y}-\boldsymbol{X} \boldsymbol{\beta}\|^{2}\quad \text{s.t. } \|\boldsymbol{\beta}\|_{1} \le s
 \]</div>
 <p>A characteristic of LASSO estimator <span class="math notranslate nohighlight">\(\hat{\boldsymbol{\beta} }_{\text{Lasso} }\)</span> is its sparsity. The solution would have many zero entry <span class="math notranslate nohighlight">\(\hat{\beta}_i\)</span> = 0. This is because the shape of <span class="math notranslate nohighlight">\(L_1\)</span> norm in <span class="math notranslate nohighlight">\(d\)</span>-dimensional space is pointy.</p>
 <div class="figure align-default" id="ridge-lasso">
-<a class="reference internal image-reference" href="../_images/ridge-lasso.png"><img alt="" src="../_images/ridge-lasso.png" style="width: 60%;" /></a>
+<a class="reference internal image-reference" href="../_images/ridge-lasso.png"><img alt="" src="../_images/ridge-lasso.png" style="width: 70%;" /></a>
 <p class="caption"><span class="caption-number">Fig. 71 </span><span class="caption-text">Comparison of Ridge and Lasso [Introduction to Statistical Learning]</span><a class="headerlink" href="#ridge-lasso" title="Permalink to this image">¶</a></p>
 </div>
+<p>As <span class="math notranslate nohighlight">\(\lambda\)</span> increases (or <span class="math notranslate nohighlight">\(s\)</span> decreases), more and more coefficients are shrinked toward 0.</p>
+<div class="figure align-default" id="lasso-plot">
+<a class="reference internal image-reference" href="../_images/lasso-plot.png"><img alt="" src="../_images/lasso-plot.png" style="width: 80%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 72 </span><span class="caption-text">How the coefficients are shrinked according to <span class="math notranslate nohighlight">\(s\)</span> (left) and <span class="math notranslate nohighlight">\(\lambda\)</span> (right). In <code class="docutils literal notranslate"><span class="pre">R</span></code>, use <code class="docutils literal notranslate"><span class="pre">plot(glmnet(x,y)))</span></code> or <code class="docutils literal notranslate"><span class="pre">plot(glmnet(x,y)),</span> <span class="pre">xvar='lambda')</span></code>. [Wang 2021]</span><a class="headerlink" href="#lasso-plot" title="Permalink to this image">¶</a></p>
+</div>
+<p>To choose the optimal value of <span class="math notranslate nohighlight">\(\lambda\)</span>, we can use cross-validation.</p>
+<div class="figure align-default" id="lasso-cv">
+<a class="reference internal image-reference" href="../_images/lasso-cv.png"><img alt="" src="../_images/lasso-cv.png" style="width: 50%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 73 </span><span class="caption-text">Cross validation of LASSO [Wang 2021]</span><a class="headerlink" href="#lasso-cv" title="Permalink to this image">¶</a></p>
+</div>
+<p>For the <code class="docutils literal notranslate"><span class="pre">cv.glmnet(x,</span> <span class="pre">y)</span></code> function in <code class="docutils literal notranslate"><span class="pre">R</span></code></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">lambda.min</span></code> means the value of lambda that gives minimum mean squared errors.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lambda.1se</span></code> means the <strong>largest</strong> value of lambda such that error is within 1 standard error of the minimum MSE.</p></li>
+</ul>
 </div>
 <div class="section" id="elastic-net">
 <h2>Elastic Net<a class="headerlink" href="#elastic-net" title="Permalink to this headline">¶</a></h2>
@@ -1031,6 +1052,51 @@
 <li><p>E-Net at certain value tends to either keep them all in, or leave them all out.</p></li>
 </ul>
 <p>Optimization algorithms (e.g., coordinate descent) are used to obtain parameter estimates efficiently.</p>
+</div>
+<div class="section" id="comparison">
+<h2>Comparison<a class="headerlink" href="#comparison" title="Permalink to this headline">¶</a></h2>
+<p>We can generate data to compare the above methods.</p>
+<div class="highlight-R notranslate"><div class="highlight"><pre><span></span><span class="c1"># source: Wang 2021</span>
+
+<span class="nf">library</span><span class="p">(</span><span class="n">MASS</span><span class="p">)</span> <span class="c1"># use lm.ridge</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">glmnet</span><span class="p">)</span>
+
+<span class="c1"># simulate data</span>
+<span class="nf">set.seed</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
+<span class="n">n</span> <span class="o">=</span> <span class="m">50</span>
+<span class="n">p1</span> <span class="o">=</span> <span class="m">10</span> <span class="c1"># number of signals</span>
+<span class="n">p2</span> <span class="o">=</span> <span class="m">20</span> <span class="c1"># number of noise</span>
+<span class="n">X</span> <span class="o">=</span> <span class="nf">matrix</span><span class="p">(</span><span class="nf">rnorm</span><span class="p">(</span><span class="n">n</span><span class="o">*</span><span class="p">(</span><span class="n">p1</span><span class="o">+</span><span class="n">p2</span><span class="p">)),</span> <span class="n">n</span><span class="p">,</span> <span class="n">p1</span><span class="o">+</span><span class="n">p2</span><span class="p">)</span>
+<span class="n">c1</span> <span class="o">=</span> <span class="m">0.5</span> <span class="o">+</span> <span class="p">(</span><span class="nf">runif</span><span class="p">(</span><span class="m">10</span><span class="p">))</span><span class="o">/</span><span class="m">2</span> <span class="c1"># signals coefficients 0.5 + U(0,1)/2</span>
+<span class="n">c2</span> <span class="o">=</span> <span class="p">(</span><span class="nf">runif</span><span class="p">(</span><span class="m">20</span><span class="p">))</span><span class="o">*</span><span class="m">3</span><span class="o">/</span><span class="m">10</span> <span class="c1"># noise coefficients U(0,1)*3/10</span>
+<span class="n">Y</span> <span class="o">=</span> <span class="n">X</span><span class="p">[,</span><span class="m">1</span><span class="o">:</span><span class="m">10</span><span class="p">]</span><span class="o">%*%</span><span class="n">c1</span> <span class="o">+</span> <span class="n">X</span><span class="p">[,</span><span class="m">11</span><span class="o">:</span><span class="m">30</span><span class="p">]</span><span class="o">%*%</span><span class="n">c2</span> <span class="o">+</span> <span class="nf">rnorm</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+<span class="nf">hist</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="n">c1</span><span class="p">,</span><span class="n">c2</span><span class="p">),</span><span class="n">nclass</span><span class="o">=</span><span class="m">15</span><span class="p">)</span> <span class="c1"># coefficients</span>
+
+<span class="c1"># models</span>
+<span class="n">LSfit</span> <span class="o">=</span> <span class="nf">lm</span><span class="p">(</span><span class="n">Y</span><span class="o">~</span><span class="n">X</span><span class="p">)</span> <span class="c1"># least squares</span>
+<span class="nf">lm.ridge</span><span class="p">(</span><span class="n">Y</span><span class="o">~</span><span class="n">X</span><span class="p">,</span> <span class="n">lambda</span><span class="o">=</span><span class="m">25</span><span class="p">)</span> <span class="c1"># Ridge, need to specify lambda</span>
+<span class="n">lassofit</span> <span class="o">=</span> <span class="nf">cv.glmnet</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span> <span class="c1"># Lasso, get a bunch of lambdas from cross validation</span>
+<span class="n">netfit</span> <span class="o">=</span> <span class="nf">cv.glmnet</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="m">0.5</span><span class="p">)</span> <span class="c1"># Elastic Net, need to specify alpha only. Defaulte alpha=1, i.e. Ridge</span>
+
+<span class="c1"># estiamted coefficients</span>
+<span class="nf">points</span><span class="p">(</span><span class="nf">rep</span><span class="p">(</span><span class="m">2</span><span class="p">,</span><span class="m">30</span><span class="p">),</span><span class="nf">lm</span><span class="p">(</span><span class="n">Y</span><span class="o">~</span><span class="n">X</span><span class="p">)</span><span class="o">$</span><span class="n">coef</span><span class="p">[</span><span class="m">2</span><span class="o">:</span><span class="m">31</span><span class="p">],</span><span class="n">cex</span><span class="o">=</span><span class="n">.</span><span class="m">5</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="nf">rep</span><span class="p">(</span><span class="m">2</span><span class="p">,</span><span class="m">10</span><span class="p">),</span><span class="nf">rep</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="m">20</span><span class="p">)),</span> <span class="n">pch</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="nf">rep</span><span class="p">(</span><span class="m">2</span><span class="p">,</span><span class="m">10</span><span class="p">),</span><span class="nf">rep</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="m">20</span><span class="p">)))</span>
+<span class="nf">points</span><span class="p">(</span><span class="nf">rep</span><span class="p">(</span><span class="m">3</span><span class="p">,</span><span class="m">30</span><span class="p">),</span><span class="nf">lm.ridge</span><span class="p">(</span><span class="n">Y</span><span class="o">~</span><span class="n">X</span><span class="p">,</span><span class="n">lambda</span><span class="o">=</span><span class="m">25</span><span class="p">)</span><span class="o">$</span><span class="n">coef</span><span class="p">,</span><span class="n">cex</span><span class="o">=</span><span class="n">.</span><span class="m">5</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="nf">rep</span><span class="p">(</span><span class="m">2</span><span class="p">,</span><span class="m">10</span><span class="p">),</span><span class="nf">rep</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="m">20</span><span class="p">)),</span> <span class="n">pch</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="nf">rep</span><span class="p">(</span><span class="m">2</span><span class="p">,</span><span class="m">10</span><span class="p">),</span><span class="nf">rep</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="m">20</span><span class="p">)))</span>
+<span class="nf">points</span><span class="p">(</span><span class="nf">rep</span><span class="p">(</span><span class="m">4</span><span class="p">,</span><span class="m">30</span><span class="p">),</span><span class="nf">coef</span><span class="p">(</span><span class="n">lassofit</span><span class="p">,</span><span class="n">s</span><span class="o">=</span><span class="s">&quot;lambda.min&quot;</span><span class="p">)[</span><span class="m">2</span><span class="o">:</span><span class="m">31</span><span class="p">],</span><span class="n">cex</span><span class="o">=</span><span class="n">.</span><span class="m">5</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="nf">rep</span><span class="p">(</span><span class="m">2</span><span class="p">,</span><span class="m">10</span><span class="p">),</span><span class="nf">rep</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="m">20</span><span class="p">)),</span> <span class="n">pch</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="nf">rep</span><span class="p">(</span><span class="m">2</span><span class="p">,</span><span class="m">10</span><span class="p">),</span><span class="nf">rep</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="m">20</span><span class="p">)))</span>
+<span class="nf">points</span><span class="p">(</span><span class="nf">rep</span><span class="p">(</span><span class="m">5</span><span class="p">,</span><span class="m">30</span><span class="p">),</span><span class="nf">coef</span><span class="p">(</span><span class="n">lassofit</span><span class="p">,</span><span class="n">s</span><span class="o">=</span><span class="s">&quot;lambda.1se&quot;</span><span class="p">)[</span><span class="m">2</span><span class="o">:</span><span class="m">31</span><span class="p">],</span><span class="n">cex</span><span class="o">=</span><span class="n">.</span><span class="m">5</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="nf">rep</span><span class="p">(</span><span class="m">2</span><span class="p">,</span><span class="m">10</span><span class="p">),</span><span class="nf">rep</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="m">20</span><span class="p">)),</span> <span class="n">pch</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="nf">rep</span><span class="p">(</span><span class="m">2</span><span class="p">,</span><span class="m">10</span><span class="p">),</span><span class="nf">rep</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="m">20</span><span class="p">)))</span>
+<span class="nf">points</span><span class="p">(</span><span class="nf">rep</span><span class="p">(</span><span class="m">6</span><span class="p">,</span><span class="m">30</span><span class="p">),</span><span class="nf">coef</span><span class="p">(</span><span class="n">netfit</span><span class="p">,</span><span class="n">s</span><span class="o">=</span><span class="s">&quot;lambda.1se&quot;</span><span class="p">)[</span><span class="m">2</span><span class="o">:</span><span class="m">31</span><span class="p">],</span><span class="n">cex</span><span class="o">=</span><span class="n">.</span><span class="m">5</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="nf">rep</span><span class="p">(</span><span class="m">2</span><span class="p">,</span><span class="m">10</span><span class="p">),</span><span class="nf">rep</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="m">20</span><span class="p">)),</span> <span class="n">pch</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="nf">rep</span><span class="p">(</span><span class="m">2</span><span class="p">,</span><span class="m">10</span><span class="p">),</span><span class="nf">rep</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="m">20</span><span class="p">)))</span>
+<span class="nf">title</span><span class="p">(</span><span class="s">&quot;True coefficients, LS, Ridge, Lasso.min, Lasso.1se, Net.1se&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The coefficients of signals are in <span class="math notranslate nohighlight">\({\color{red}{\Delta}}\)</span> and that of noise are in <span class="math notranslate nohighlight">\(\circ\)</span>. We can see that</p>
+<ul class="simple">
+<li><p>LS fail to separte signal and noise</p></li>
+<li><p>Ridge has shrinkage edffect but also mix some signal with noise</p></li>
+<li><p>Lasso with 1se and E-net do a good job</p></li>
+</ul>
+<div class="figure align-default" id="penalize-comparison">
+<a class="reference internal image-reference" href="../_images/penalize-comparison.png"><img alt="" src="../_images/penalize-comparison.png" style="width: 70%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 74 </span><span class="caption-text">Comparison of estiamted coefficients [Wang 2021]</span><a class="headerlink" href="#penalize-comparison" title="Permalink to this image">¶</a></p>
+</div>
 </div>
 </div>
 

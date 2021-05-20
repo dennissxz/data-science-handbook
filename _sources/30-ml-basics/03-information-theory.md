@@ -105,10 +105,10 @@ Definition (NegEntropy)
 NegEntropy is use for its convenience in computation and approximation. A common approximation (supposedly from Jones 1987)
 
 $$
-J(X) \approx \frac{1}{12} \mathbb{E} \left(X^{3}\right)^{2}+\frac{1}{48} \kappa(X)^{2}
+J(X) \approx \frac{1}{12} \mathbb{E} [X^{3}]^{2}+\frac{1}{48} \kappa(X)^{2}
 $$
 
-where $\kappa(X)$ is the ___ (??) of the distribution of $X$.
+where $\kappa(X)$ is the excess kurtosis of the distribution of $X$.
 
 ### Joint Entropy
 

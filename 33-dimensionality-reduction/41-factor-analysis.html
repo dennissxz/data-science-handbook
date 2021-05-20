@@ -934,6 +934,18 @@
   <a class="reference internal nav-link" href="#relation-to">
    Relation to
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pca">
+     PCA
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#probabilistic-pca">
+     Probabilistic PCA
+    </a>
+   </li>
+  </ul>
  </li>
 </ul>
 
@@ -984,10 +996,10 @@ subject matter.</p></li>
 <li><p><span class="math notranslate nohighlight">\(\boldsymbol{\varepsilon} = \left(\epsilon_{1}, \cdots, \epsilon_{d}\right)^{\top}\)</span> are unobservable errors, aka <strong>specific factors</strong>, assumed to be independent,</p>
 <div class="math notranslate nohighlight">
 \[
-  \mathbb{E} [\boldsymbol{\varepsilon} ] = \boldsymbol{0} , \quad \operatorname{Cov}\left( \boldsymbol{\varepsilon} \right) = \boldsymbol{\Psi} = \operatorname{diag}(\Psi_1, \ldots, \Psi_d)
+  \mathbb{E} [\boldsymbol{\varepsilon} ] = \boldsymbol{0} , \quad \operatorname{Cov}\left( \boldsymbol{\varepsilon} \right) = \boldsymbol{\Psi} = \operatorname{diag}(\psi_1, \ldots, \psi_d)
   \]</div>
 <ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(\Psi_i\)</span> is called the <strong>specific variance</strong> or <strong>uniqueness</strong> of variable <span class="math notranslate nohighlight">\(X_i\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\psi_i\)</span> is called the <strong>specific variance</strong> or <strong>uniqueness</strong> of variable <span class="math notranslate nohighlight">\(X_i\)</span>.</p></li>
 <li><p><span class="math notranslate nohighlight">\(\boldsymbol{\varepsilon}\)</span> is independent with <span class="math notranslate nohighlight">\(\boldsymbol{f}\)</span>.</p></li>
 </ul>
 </li>
@@ -1013,14 +1025,14 @@ subject matter.</p></li>
 <p>The principal component method is easy to implement, thus commonly used in preliminary estimation of factor loadings. Consider EVD of <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}\)</span>:</p>
 <div class="math notranslate nohighlight">
 \[\boldsymbol{\Sigma} = \boldsymbol{U} \boldsymbol{\Lambda} \boldsymbol{U} ^{\top} = (\boldsymbol{U} \sqrt{\boldsymbol{\Lambda}})(\boldsymbol{U} \sqrt{\boldsymbol{\Lambda}}) ^{\top}\]</div>
-<p>Hence we can choose <span class="math notranslate nohighlight">\(\boldsymbol{L}_d = (\boldsymbol{U} \sqrt{\boldsymbol{\Lambda}})\)</span>. Instead using all of them, we can use the first <span class="math notranslate nohighlight">\(k &lt; d\)</span> columns. Then, <span class="math notranslate nohighlight">\(\boldsymbol{L} _k \boldsymbol{L} _k ^\prime \ne \boldsymbol{L} _d \boldsymbol{L} _d\)</span>. The difference in the diagonal entires is then interpreted as the specific factors <span class="math notranslate nohighlight">\(\boldsymbol{\Psi}\)</span>.</p>
+<p>Hence we can choose <span class="math notranslate nohighlight">\(\boldsymbol{L}_d = (\boldsymbol{U} \sqrt{\boldsymbol{\Lambda}})\)</span>. Instead of using all of them, we can use the first <span class="math notranslate nohighlight">\(k &lt; d\)</span> columns. Then, <span class="math notranslate nohighlight">\(\boldsymbol{L} _k \boldsymbol{L} _k ^\prime \ne \boldsymbol{L} _d \boldsymbol{L} _d\)</span>. The difference in the diagonal entires is then interpreted as the specific factors <span class="math notranslate nohighlight">\(\boldsymbol{\Psi}\)</span>.</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{aligned}
 \boldsymbol{\Psi} &amp;= \operatorname{diag}(\boldsymbol{\Sigma} - \boldsymbol{L} _k \boldsymbol{L} _k ^{\top} ) \\
 \psi_{i}&amp;=\sigma_{i i}-\left(\ell_{i 1}^{2}+\cdots+\ell_{i k}^{2}\right) \\
 &amp;=0 \quad \text{if } k=d
 \end{aligned}\end{split}\]</div>
-<p>In sample data, we replace <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}\)</span> by <span class="math notranslate nohighlight">\(\boldsymbol{S}\)</span>. The <strong>residual matrix</strong> is defined as <span class="math notranslate nohighlight">\(\boldsymbol{S} - (\hat{\boldsymbol{L}} _k \hat{\boldsymbol{L}} ^{\top}  _k + \hat{\boldsymbol{\Psi}})\)</span>, where the diagonal entries are 0, and the sum of squared entires is bounded by the sum remaining eigenvalues of <span class="math notranslate nohighlight">\(\boldsymbol{S}\)</span></p>
+<p>When dealing with sample data, we replace <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}\)</span> by <span class="math notranslate nohighlight">\(\boldsymbol{S}\)</span>. The <strong>residual matrix</strong> is defined as <span class="math notranslate nohighlight">\(\boldsymbol{S} - (\hat{\boldsymbol{L}} _k \hat{\boldsymbol{L}} ^{\top}  _k + \hat{\boldsymbol{\Psi}})\)</span>, where the diagonal entries are 0, and the sum of squared entires is bounded by the sum remaining eigenvalues of <span class="math notranslate nohighlight">\(\boldsymbol{S}\)</span></p>
 <div class="math notranslate nohighlight">
 \[
 \left\| \boldsymbol{S} - (\hat{\boldsymbol{L}} _k \hat{\boldsymbol{L}} ^{\top}  _k + \hat{\boldsymbol{\Psi}}) \right\| _F^2 \le \hat{\lambda}_{k+1}^2 + \ldots + \hat{\lambda}_d^2
@@ -1048,7 +1060,9 @@ subject matter.</p></li>
 </div>
 <div class="section" id="relation-to">
 <h2>Relation to<a class="headerlink" href="#relation-to" title="Permalink to this headline">¶</a></h2>
-<p>PCA</p>
+<p>Factor model is a type of latent variable model, which has been the origin of the development of many popular statistical models, including Structured Equation Models, <a class="reference internal" href="61-indep-component-analysis.html#independent-component-analysis"><span class="std std-ref">Independent Component Analysis</span></a>, and <a class="reference internal" href="12-pca-variants.html#probabilistic-pca"><span class="std std-ref">Probabilistic Principal Component Analysis</span></a>.</p>
+<div class="section" id="pca">
+<h3>PCA<a class="headerlink" href="#pca" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>similarity</p>
 <ul>
@@ -1066,15 +1080,42 @@ subject matter.</p></li>
 </ul>
 </li>
 </ul>
-<p>Others</p>
-<ul class="simple">
-<li><p>Factor model is a type of latent variable model, which has been the origin of the development of many popular statistical models, including Structured Equation Models, Independent Component Analysis, and Probability Principal Component Analysis.</p></li>
-</ul>
+</div>
+<div class="section" id="probabilistic-pca">
+<h3>Probabilistic PCA<a class="headerlink" href="#probabilistic-pca" title="Permalink to this headline">¶</a></h3>
+<p>In FA, If we do not impose normal assumption on <span class="math notranslate nohighlight">\(\boldsymbol{f}\)</span> or <span class="math notranslate nohighlight">\(\boldsymbol{\varepsilon}\)</span>, then we can only do estimation by principal likelihood method (EVD). If we impose normal assumptions, then we can do estimation by maximum likelihood. The difference from PPCA is that the FA assumes heterougenous ‘specific variance’ <span class="math notranslate nohighlight">\(\operatorname{Cov}\left( \epsilon_i \right) = \psi_i\)</span> while PPCA assumes homogenous variance <span class="math notranslate nohighlight">\(\operatorname{Cov}\left( \epsilon_i \right) = \sigma^2\)</span>.</p>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Model</p></th>
+<th class="head"><p>Assumptions</p></th>
+<th class="head"><p>Estimation</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>PCFA</p></td>
+<td><p><span class="math notranslate nohighlight">\(\boldsymbol{x} = \boldsymbol{\mu} + \boldsymbol{L} \boldsymbol{f} + \boldsymbol{\varepsilon}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\mathbb{E} [\boldsymbol{f} ] = \boldsymbol{0} _k\)</span>, <span class="math notranslate nohighlight">\(\operatorname{Cov}\left( \boldsymbol{f}  \right) = \boldsymbol{I} _k\)</span>, <br> <span class="math notranslate nohighlight">\(\mathbb{E} [\boldsymbol{\varepsilon} ] = \boldsymbol{0}\)</span>, <span class="math notranslate nohighlight">\(\operatorname{Cov}\left( \boldsymbol{\varepsilon} \right) = \boldsymbol{\Psi} = \operatorname{diag}(\psi_1, \ldots, \psi_d)\)</span></p></td>
+<td><p>EVD</p></td>
+</tr>
+<tr class="row-odd"><td><p>MLFA</p></td>
+<td><p>same as above</p></td>
+<td><p><span class="math notranslate nohighlight">\(\boldsymbol{f}\sim \mathcal{N}(0, \boldsymbol{I})\)</span>, <span class="math notranslate nohighlight">\(\boldsymbol{\varepsilon}\sim \mathcal{N}(0, \boldsymbol{\Psi})\)</span></p></td>
+<td><p>ML, up to rotation</p></td>
+</tr>
+<tr class="row-even"><td><p>PPCA</p></td>
+<td><p><span class="math notranslate nohighlight">\(\boldsymbol{x} = \boldsymbol{\mu} + \boldsymbol{W} \boldsymbol{z} + \boldsymbol{\varepsilon}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\boldsymbol{z}\sim \mathcal{N}(0, \boldsymbol{I})\)</span>, <span class="math notranslate nohighlight">\(\boldsymbol{\varepsilon}\sim \mathcal{N}(0, \sigma^2 \boldsymbol{I})\)</span></p></td>
+<td><p>ML, up to rotation</p></td>
+</tr>
+</tbody>
+</table>
 <p>More topics:</p>
 <ul class="simple">
 <li><p>factor scores</p></li>
 <li><p>factor rotation</p></li>
 </ul>
+</div>
 </div>
 </div>
 
