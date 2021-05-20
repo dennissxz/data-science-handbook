@@ -2,6 +2,7 @@
 
 We introduce three variants of PCA: probabilistic PCA, kernel PCA, and sparse PCA.
 
+(probabilistic-pca)=
 ## Probabilistic PCA
 
 *Independently proposed by [Tipping & Bishop 1997, 1999] and [Roweis 1998]*
@@ -96,7 +97,7 @@ where
 
 ### Properties
 
-- For $\boldsymbol{R}_k = \boldsymbol{I}_k$ , the solution for $\boldsymbol{W}$ is just a scaled version (by the diagonal matrix $\boldsymbol{\Lambda} _k - \sigma^2 \boldsymbol{I} _k$) of that of standard PCA $U_{d\times k}$.
+- For $\boldsymbol{R}_k = \boldsymbol{I}_k$ , the solution for $\boldsymbol{W}$ is just a scaled version (by the diagonal matrix $\boldsymbol{\Lambda} _k - \sigma^2 \boldsymbol{I} _k$) of that of standard PCA $\boldsymbol{U}_{d\times k}$.
 - $\sigma^2_{ML}$ is the average variance of the discarded dimensions in $\mathcal{X}$. We view the remaining dimensions as accounting for noise. Their average variance defines the common variance of the noise. The covariance is viewed as
 
     $$
@@ -527,6 +528,18 @@ $$
 
 Often $k \ll p$ is desired when $p$ is large.
 
+Similar to [sequential approach](pca-sequential) in PCA, after obtaining the first principal component $\boldsymbol{\beta} _1$, we define
+
+$$
+\boldsymbol{S} _1 = \boldsymbol{S}  - (\boldsymbol{\beta} ^{\top}_1 \boldsymbol{S} \boldsymbol{\beta}_1)  \boldsymbol{\beta}_1 \boldsymbol{\beta} ^{\top} _1
+$$
+
+and the second sparse principal components can be found by solving the problem
+
+$$
+\max\ \boldsymbol{\beta} ^{\top} \boldsymbol{S}_1 \boldsymbol{\beta} \quad \text{s.t. } \|\boldsymbol{\beta}\|_2=1, \left\| \boldsymbol{\beta}  \right\| _0 \le k
+$$
+
 However, unlike the original principal components $\boldsymbol{a} _i$’s, the $\boldsymbol{\beta} _i$’s are not necessarily orthogonal or uncorrelated to each other without imposing further conditions. In addition, solving this optimization problem turns out to be a very computationally demanding process.
 
 ### Penalized Regression Approach
@@ -562,7 +575,7 @@ $$
 
 :::
 
-We can continue to add $L_1$ norm. The problem becomes
+Hence the loadings are scaled down (attenuated), but still non-zero. We can continue to add $L_1$ norm. The problem becomes
 
 $$
 \min_{\boldsymbol{\beta}}\ \left\| \boldsymbol{z}_i - \boldsymbol{X} \boldsymbol{\beta} \right\|^2 + \lambda_1 \left\| \boldsymbol{\beta} \right\|_1 + \lambda_2 \left\| \boldsymbol{\beta} \right\|_2 ^2
@@ -575,25 +588,15 @@ $$
 $$
 
 where only a few components in $\hat{\boldsymbol{\beta}}$ is non-zero.
-.
 
 
-.
+:::{admonition,note} Implementation in `R` with function `spca`
 
+In `R` function `spca` in library `elasticnet`, there are many options
+- `type=`
+  - `predictor`: use data matrix as input
+  - `Gram`: use covariance matrix or correlation matrix as input
+- `sparse='varnum', para=c(nnz_1, nnz_2)`: To find sparse loadings, use number of non-zero entries as criteria $\left\| \boldsymbol{\beta}_i\right\|_0 \le \texttt{nnz_i}$. The numbers are specified in `para`.
+- `sparse='penalty', para=c(norm_1, norm_2)`: To find sparse loadings, use the 1-norm of loadings as criteria $\left\| \boldsymbol{\beta}_i\right\|_1 \le \texttt{norm_i}$. The values of norms are specified in `para`.
 
-.
-
-
-.
-
-
-.
-
-
-.
-
-
-.
-
-
-.
+:::
