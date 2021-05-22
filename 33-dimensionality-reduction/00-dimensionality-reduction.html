@@ -981,7 +981,7 @@ P(\boldsymbol{x} ; \boldsymbol{\theta}): \mathbb{R}^{d} \rightarrow \mathbb{R}^{
 <li><p>For linear dimensionality models, the projection <span class="math notranslate nohighlight">\(P(\boldsymbol{x}; \boldsymbol{\theta} )\)</span> can be represented by a <span class="math notranslate nohighlight">\(d \times k\)</span> matrix <span class="math notranslate nohighlight">\(\boldsymbol{W}\)</span>. The low dimensional representation <span class="math notranslate nohighlight">\(\boldsymbol{z}\)</span> is computed by</p>
 <div class="math notranslate nohighlight">
 \[
-    \boldsymbol{z} = \boldsymbol{W} ^\top \boldsymbol{x}  
+    \boldsymbol{z} = \boldsymbol{W} ^\top \boldsymbol{x}
     \]</div>
 <p>and the reconstruction of <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> is a weighted combination of the vectors in <span class="math notranslate nohighlight">\(\boldsymbol{W}\)</span>:</p>
 <div class="math notranslate nohighlight">
@@ -1101,6 +1101,33 @@ P(\boldsymbol{x} ; \boldsymbol{\theta}): \mathbb{R}^{d} \rightarrow \mathbb{R}^{
 <td><p><span class="math notranslate nohighlight">\(\min \sum_{i, j}\left(\boldsymbol{x}_{i} ^\top  \boldsymbol{x}_{j}-\boldsymbol{z}_{i} ^\top\boldsymbol{z}_{j}\right)^2\)</span></p></td>
 <td><p><span class="math notranslate nohighlight">\(\boldsymbol{G}  = \boldsymbol{X} \boldsymbol{X} ^\top = \boldsymbol{V} \boldsymbol{\Lambda} \boldsymbol{V}\)</span> <br> <span class="math notranslate nohighlight">\(\boldsymbol{Z}=\boldsymbol{V}_{[: k]} \boldsymbol{\Lambda}_{[: k, k]}^{1 / 2}\)</span></p></td>
 <td class="text-align:left"><p>1. Retain inner product <br> 2. Gives exactly the embeddings as PCA: <span class="math notranslate nohighlight">\(\boldsymbol{Z}_{P C A}=\boldsymbol{Z}_{M D S}\)</span></p></td>
+</tr>
+</tbody>
+</table>
+<p>Factor Analysis vs PPCA</p>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Model</p></th>
+<th class="head"><p>Assumptions</p></th>
+<th class="head"><p>Estimation</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>PCFA</p></td>
+<td><p><span class="math notranslate nohighlight">\(\boldsymbol{x} = \boldsymbol{\mu} + \boldsymbol{L} \boldsymbol{f} + \boldsymbol{\varepsilon}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\mathbb{E} [\boldsymbol{f} ] = \boldsymbol{0} _k\)</span>, <span class="math notranslate nohighlight">\(\operatorname{Cov}\left( \boldsymbol{f}  \right) = \boldsymbol{I} _k\)</span>, <br> <span class="math notranslate nohighlight">\(\mathbb{E} [\boldsymbol{\varepsilon} ] = \boldsymbol{0}\)</span>, <span class="math notranslate nohighlight">\(\operatorname{Cov}\left( \boldsymbol{\varepsilon} \right) = \boldsymbol{\Psi} = \operatorname{diag}(\psi_1, \ldots, \psi_d)\)</span></p></td>
+<td><p>EVD</p></td>
+</tr>
+<tr class="row-odd"><td><p>MLFA</p></td>
+<td><p>same as above</p></td>
+<td><p><span class="math notranslate nohighlight">\(\boldsymbol{f}\sim \mathcal{N}(0, \boldsymbol{I})\)</span>, <span class="math notranslate nohighlight">\(\boldsymbol{\varepsilon}\sim \mathcal{N}(0, \boldsymbol{\Psi})\)</span></p></td>
+<td><p>ML, up to rotation</p></td>
+</tr>
+<tr class="row-even"><td><p>PPCA</p></td>
+<td><p><span class="math notranslate nohighlight">\(\boldsymbol{x} = \boldsymbol{\mu} + \boldsymbol{W} \boldsymbol{z} + \boldsymbol{\varepsilon}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\boldsymbol{z}\sim \mathcal{N}(0, \boldsymbol{I})\)</span>, <span class="math notranslate nohighlight">\(\boldsymbol{\varepsilon}\sim \mathcal{N}(0, \sigma^2 \boldsymbol{I})\)</span></p></td>
+<td><p>ML, up to rotation</p></td>
 </tr>
 </tbody>
 </table>
