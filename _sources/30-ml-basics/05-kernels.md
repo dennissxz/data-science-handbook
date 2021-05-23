@@ -45,9 +45,9 @@ If $k, k_1, k_2$  are real PSD kernels on some arbitrary set $\mathcal{S}$, the 
 
 - Polynomial kernel: $k(\boldsymbol{x}, \boldsymbol{y})=p\left(\boldsymbol{x}^{\top} \boldsymbol{y}\right)$ with non-negative coefficients
 
-- Gaussian (RBF) kernel: $k\left(\boldsymbol{x}, \boldsymbol{y} ; \sigma^{2}\right)=\exp \left(-\frac{\|\boldsymbol{x}-\boldsymbol{y}\|^{2}}{2 \sigma^{2}}\right)$
+- Gaussian (RBF) kernel: $k\left(\boldsymbol{x}, \boldsymbol{y} ; \sigma^{2}\right)=\exp \left(-\frac{\|\boldsymbol{x}-\boldsymbol{y}\|^{2}}{2 \sigma^{2}}\right) = \exp \left(-\gamma \|\boldsymbol{x}-\boldsymbol{y}\|^{2}\right)$ (two parameterization)
 
-- Laplacian kernel: $k\left(\boldsymbol{x}, \boldsymbol{y}\right)=\exp \left(-\|\boldsymbol{x}-\boldsymbol{y}\|_{1}\right)$
+- Laplacian kernel: $k\left(\boldsymbol{x}, \boldsymbol{y}\right)=\exp \left(-\|\boldsymbol{x}-\boldsymbol{y}\|_{p}/\sigma\right)$, usually $p=2$, sometimes $1$.
 
 - Cauchy kernel: $k\left(\boldsymbol{x}, \boldsymbol{y}\right) = (1 + \left\| \boldsymbol{x} - \boldsymbol{y}  \right\|^2 ) ^{-1}$
 

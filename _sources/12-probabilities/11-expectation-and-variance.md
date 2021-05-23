@@ -46,6 +46,31 @@ More:
   \frac{\mu_{4}}{\mu_{2}^{2}}-3 \quad \in[-3, \infty)
   $$
 
+- $q$-quantiles are values that partition a finite set of values into $q$ subsets of (nearly) equal sizes. There are $q-1$ of the $q$-quantiles, one for each integer $k$ satisfying $0 < k <q$.
+  - $x$ is a $k$-th $q$-quantile for a variable $X$ if
+
+    $$
+    \mathbb{P} (X < x)\leq k / q
+    $$
+
+  - If, instead of using integers $k$ and $q$, the "$\tau$-quantile" is based on a real number $p$ with $0 < \tau < 1$ then $\tau$ replaces $k/q$ in the above formulas. This broader terminology is used when quantiles are used to parameterize continuous probability distributions.
+  - computing sample $\tau$-quantile can be formulated as an optimization problem
+
+    $$
+    \tau\text{-th sample quantile} = \arg\min_\xi \sum_{i=1}^n \rho_\tau (x_i - \xi)
+    $$
+
+    where
+
+
+    $$\begin{aligned}
+    \rho_\tau(u)
+    &= u(\tau - \mathbb{I} \left\{ u < 0 \right\})\\
+    &= \mathbb{I} \left(u>0\right) \tau\left|u\right|+\mathbb{I} \left(u\le 0\right)(1-\tau)\left|u\right| \\
+    \end{aligned}$$
+
+    In particular, $\tau = 0.5$ we obtain median = $\arg\min_\xi \sum_{i=1}^n \left\vert x_i - \xi \right\vert$.
+
 ## Identities
 
 ### Basics
