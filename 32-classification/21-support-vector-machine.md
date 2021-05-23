@@ -354,7 +354,9 @@ $$
 
 and we solve the QP problem for $\boldsymbol{\alpha}$.
 
-## Pros
+## Pros and Cons
+
+Pros
 
 - Based on a theoretical model of learning explicitly, with guaranteed performance.
 - Not affected by local minima.
@@ -362,3 +364,10 @@ and we solve the QP problem for $\boldsymbol{\alpha}$.
 - Quadratic program, doable.
 - Optimization algorithm instead of greedy search.
 - Integrated into other high performers such as deep neural networks.
+- Kernel trick
+
+
+Cons
+
+- Do not directly output probablitity, only scores
+  - there are some methods to output class membership probability estimates, e.g. Platt scaling, which use logistic regression on the output scores and cross-validation. see [here](https://scikit-learn.org/stable/modules/svm.html#scores-probabilities).
