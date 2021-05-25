@@ -948,6 +948,11 @@
        Minimum Entropy
       </a>
      </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#minimum-rss">
+       Minimum RSS
+      </a>
+     </li>
     </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
@@ -966,6 +971,33 @@
       </a>
      </li>
     </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#pruning">
+   Pruning
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#comment">
+   Comment
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#random-forest">
+   Random Forest
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id2">
+     Learning
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#variable-importance">
+     Variable Importance
+    </a>
    </li>
   </ul>
  </li>
@@ -998,6 +1030,11 @@
 <li><p>Choice of questions for the splits</p></li>
 <li><p>Criterion for measuring the “best” question at each node</p></li>
 <li><p>Stopping criterion</p></li>
+</ul>
+<p>Decision tree can also be used for regression.</p>
+<ul class="simple">
+<li><p>Regression Tree for estimating a continuous response variable: Take an average as the prediction in each partition region.</p></li>
+<li><p>Classification Tree for classifying a categorical response variable: Take a vote as the prediction in each partition region.</p></li>
 </ul>
 <div class="section" id="learning">
 <h2>Learning<a class="headerlink" href="#learning" title="Permalink to this headline">¶</a></h2>
@@ -1067,8 +1104,10 @@ to the answer to question <span class="math notranslate nohighlight">\(Q^*\)</sp
 <li><p>Mutual information alone would also favor over-clustering</p></li>
 <li><p>Entropies in the denominator act as penalty for over-clustering</p></li>
 </ul>
-<hr class="docutils" />
+<div class="note admonition">
+<p class="admonition-title"> Note</p>
 <p>For unlabelled data, we can use maximum likelihood and minimum entropy.</p>
+</div>
 </div>
 <div class="section" id="maximum-likelihood">
 <h4>Maximum Likelihood<a class="headerlink" href="#maximum-likelihood" title="Permalink to this headline">¶</a></h4>
@@ -1101,6 +1140,14 @@ H(X) &amp;=0 \Leftrightarrow p_{j}=1 \text { for some } j, p_{i}=0,\ \forall i \
 \end{aligned}
 \end{split}\]</div>
 </div>
+<div class="section" id="minimum-rss">
+<h4>Minimum RSS<a class="headerlink" href="#minimum-rss" title="Permalink to this headline">¶</a></h4>
+<p>For regression, i.e. <span class="math notranslate nohighlight">\(y\)</span> is a continuous variable, we can use residual sum of square (RSS) as a splitting criteria. For two sub nodes <span class="math notranslate nohighlight">\(R_m\)</span> where <span class="math notranslate nohighlight">\(m = 1, 2\)</span> by some splitting rule, the RSS is</p>
+<div class="math notranslate nohighlight">
+\[
+\sum_{m=1}^{2} \sum_{i \in R_{m}}\left(y_{i}-\bar{y}_{R_{m}}\right)^{2}
+\]</div>
+</div>
 </div>
 <div class="section" id="stoping-criteria">
 <h3>Stoping Criteria<a class="headerlink" href="#stoping-criteria" title="Permalink to this headline">¶</a></h3>
@@ -1108,18 +1155,78 @@ H(X) &amp;=0 \Leftrightarrow p_{j}=1 \text { for some } j, p_{i}=0,\ \forall i \
 <div class="section" id="simple-heuristics-based">
 <h4>Simple Heuristics Based<a class="headerlink" href="#simple-heuristics-based" title="Permalink to this headline">¶</a></h4>
 <ul class="simple">
-<li><p>Leaves too small: data at node has fewer than some threshold samples</p></li>
+<li><p>Leaves too small: data at a node has fewer than some threshold samples</p></li>
 <li><p>Best question does not improve likelihood significantly (e.g. 10%)</p></li>
 <li><p>Out of time/memory for more nodes</p></li>
 </ul>
 </div>
 <div class="section" id="cross-validation">
 <h4>Cross-validation<a class="headerlink" href="#cross-validation" title="Permalink to this headline">¶</a></h4>
-<ul class="simple">
+<ul>
 <li><p>Measure likelihood with different tree sizes on a <strong>held-out</strong> (development) data set, choose the tree size that maximizes likelihood</p></li>
+<li><p>Build multiple trees according to the loss with tree size penality, for varying <span class="math notranslate nohighlight">\(\alpha\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+  loss = loss_0 + \alpha \left\vert T \right\vert
+  \]</div>
+<p>select best <span class="math notranslate nohighlight">\(\alpha\)</span> and the corresponding tree based on performance on validation set (like selecting <span class="math notranslate nohighlight">\(\lambda\)</span> in LASSO).</p>
+</li>
 <li><p>Measure downstream performance on held-out data set, on some task of interest</p></li>
 </ul>
 </div>
+</div>
+</div>
+<div class="section" id="pruning">
+<h2>Pruning<a class="headerlink" href="#pruning" title="Permalink to this headline">¶</a></h2>
+<p>For a regression tree <span class="math notranslate nohighlight">\(T\)</span>, we can remove the <strong>weakest link</strong>. The subtree <span class="math notranslate nohighlight">\(T ^\prime\)</span> minimizes cost complexity</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{RSS(T ^\prime) - RSS(T)}{\left\vert T \right\vert - \left\vert T ^\prime \right\vert}
+\]</div>
+</div>
+<div class="section" id="comment">
+<h2>Comment<a class="headerlink" href="#comment" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Larger tree, easier to overfit</p></li>
+<li><p>If underlying relation is linear, then linear models probably works better. If non-linear, tree-based methods may work better.</p></li>
+</ul>
+</div>
+<div class="section" id="random-forest">
+<h2>Random Forest<a class="headerlink" href="#random-forest" title="Permalink to this headline">¶</a></h2>
+<p>Group of weaker classifiers can form a stronger one!</p>
+<div class="section" id="id2">
+<h3>Learning<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<p>Given a data set of <span class="math notranslate nohighlight">\(n\)</span> observations and <span class="math notranslate nohighlight">\(p\)</span> features.</p>
+<ul class="simple">
+<li><p>Boostrap sampling rows and columns to build <span class="math notranslate nohighlight">\(T\)</span> trees</p>
+<ul>
+<li><p>Select a size <span class="math notranslate nohighlight">\(n\)</span> random sample <strong>with</strong> replacement from the original sample data to grow a classification tree (same size with original data set, but some observations appear multiple times)</p></li>
+<li><p><strong>At each node</strong> of the tree, randomly select <span class="math notranslate nohighlight">\(m&lt;p\)</span> input variables to split the node.</p>
+<ul>
+<li><p>If <span class="math notranslate nohighlight">\(m=p\)</span>, then called ‘bagging’</p></li>
+<li><p>Usually <span class="math notranslate nohighlight">\(m \sim \sqrt{p}\)</span>. may perform better than bagging.</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Decision: For the <span class="math notranslate nohighlight">\(k\)</span>-th observation, the classification rule is by the most votes of trees or by taking the average (as in regression) where the <span class="math notranslate nohighlight">\(k\)</span>-th observation is not used in the tree construction (out-of-bag, OOB).</p>
+<ul>
+<li><p>Each observation is OOB for about one third of the trees (thus no validation sample is needed)</p></li>
+<li><p>The average of the error rate of the <span class="math notranslate nohighlight">\(n\)</span> observations is the OOB error rate of the forest.</p>
+<ul>
+<li><p>Error rate of the forest increases with the correlation between trees. Then the more uncorrelated the trees, the better. Inter-tree correlation increases with <span class="math notranslate nohighlight">\(m\)</span>.</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="variable-importance">
+<h3>Variable Importance<a class="headerlink" href="#variable-importance" title="Permalink to this headline">¶</a></h3>
+<p>OOB observations also used to evaluate variable importance.
+Each variable is randomly <strong>permuted</strong> to check its impact on some cost measures, e.g. MSE, Gini Node Purity.</p>
+<p>The mean decrease in the cost across all trees is reported.</p>
+<p>Note that if a variable has very little predictive power, shuffling may lead to a slight decrease in cost due to random noise. This in turn can give rise to small negative importance scores, which can be essentially regarded as equivalent to zero importance.</p>
 </div>
 </div>
 </div>
