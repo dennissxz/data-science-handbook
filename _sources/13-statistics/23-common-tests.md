@@ -371,9 +371,9 @@ $$
 $$
 
 
-:::{admonition,warning} Warning
+:::{admonition,warning} Cavests in using `anova()`
 
-In `manova()` function in R, if the group variable $\ell$ is in numerical value, it is necessary to coerce it as data type `factor` by calling `as.factor()`.
+In `anova()` function in R, if the group variable $\ell$ is in numerical value, it is necessary to coerce it as data type `factor` by calling `as.factor()`.
 
 :::
 
@@ -421,7 +421,7 @@ H_{0}: \boldsymbol{\mu}=\boldsymbol{\mu}_{0} \operatorname{vs } H_{1}: \boldsymb
 $$
 
 Test statistic under $H_0$
-: - $\boldsymbol{\Sigma}$ is known:   
+: - $\boldsymbol{\Sigma}$ is known:
 
     $$T^{2}=n\left(\bar{\boldsymbol{x}}-\boldsymbol{\mu}_{0}\right)^{\top} \boldsymbol{\Sigma}^{-1}\left(\bar{\boldsymbol{x}}-\boldsymbol{\mu}_{0}\right) \sim \chi^{2}(p)$$
 
@@ -431,7 +431,7 @@ Test statistic under $H_0$
     $$\begin{aligned}
     T^{2}=n\left(\bar{\boldsymbol{x}}-\boldsymbol{\mu}_{0}\right)^{\top} \boldsymbol{S}^{-1}\left(\bar{\boldsymbol{x}}-\boldsymbol{\mu}_{0}\right) &\sim T^{2}(p, n-1) \\
     &\sim \frac{(n-1) p}{n-p} F(p, n-p) \\
-    & \rightarrow \chi ^2 _p \quad \text{as } n \rightarrow \infty  
+    & \rightarrow \chi ^2 _p \quad \text{as } n \rightarrow \infty
     \end{aligned}$$
 
   - Analogously, in univariate case,
@@ -740,7 +740,7 @@ Other test statistics using the eigenvalues of $\boldsymbol{B} \boldsymbol{W} ^{
 - Pillai’s Trace:  $\operatorname{tr}\left(\boldsymbol{B}(\boldsymbol{B}+\boldsymbol{W})^{-1}\right)=\operatorname{tr}\left(\boldsymbol{B} \boldsymbol{W}^{-1}\left(\boldsymbol{B} \boldsymbol{W}^{-1}+\boldsymbol{I} \right)^{-1}\right)=\sum_{k=1}^{p} \frac{\lambda_{k}}{1+\lambda_{k}}$
 - Roy's Largest Root: $\max _{k}\left\{\lambda_{k}\right\}=\left\|\boldsymbol{B} \boldsymbol{W}^{-1}\right\|_{\infty}$ which gives an upper bound.
 
-<!-- 
+<!--
 When $g=2$, the MANOVA $F$-test reduces to the two-sample means Hotelling's $T^2$-test.
 - The null hypothesis is equal means $H_0: \boldsymbol{\mu} _1 = \boldsymbol{\mu}_2$
 - The test statistic have the relation $t^2 = F$.

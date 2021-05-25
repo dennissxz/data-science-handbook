@@ -1362,7 +1362,7 @@
 <p>Since the first column of <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span> is <span class="math notranslate nohighlight">\(\boldsymbol{1}\)</span> , we have</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
-\sum_i \hat{\varepsilon}_i  
+\sum_i \hat{\varepsilon}_i
 &amp;= \sum_i(y_i - \hat{y}_i)  \\
 &amp;= \sum_i(y_i - \boldsymbol{x}_i ^\top \hat{\boldsymbol{\beta} }_i)  \\
 &amp;= 0
@@ -1423,12 +1423,12 @@
 <p>and hence the sum of squared normal variables follows</p>
 <div class="math notranslate nohighlight">
 \[
-\left\| \boldsymbol{U} _\bot ^\top \boldsymbol{\varepsilon} \right\|  ^2 \sim \sigma^2 \chi ^2 _{n-p}  
+\left\| \boldsymbol{U} _\bot ^\top \boldsymbol{\varepsilon} \right\|  ^2 \sim \sigma^2 \chi ^2 _{n-p}
 \]</div>
 <p>Thus,</p>
 <div class="math notranslate nohighlight">
 \[
-\left\| \hat{\boldsymbol{\varepsilon}}  \right\|  ^2 \sim \sigma^2 \chi ^2 _{n-p}  
+\left\| \hat{\boldsymbol{\varepsilon}}  \right\|  ^2 \sim \sigma^2 \chi ^2 _{n-p}
 \]</div>
 <p>The first moment is</p>
 <div class="math notranslate nohighlight">
@@ -1649,7 +1649,7 @@ RSS:  [0.57142857]
 ay = 1, aw = 0 --------------------------------------------------
 X^T y:  [ 4.  4. 12.]
 coefficients:  [-1.0658141e-14 -2.0000000e+00  1.0000000e+00]
-RSS:  [5.67979852e-28]
+RSS:  [5.01715536e-28]
 
 ay = 1, aw = 1 --------------------------------------------------
 X^T y:  [ 4.  4. 12.]
@@ -1704,7 +1704,7 @@ RSS:  [0.07142857]
 FULL MODEl --------------------------------------------------
 x2 and y are uncorrelated, dot product is: [0]
 coefficients:  [ 0.44444444  0.66666667 -0.11111111]
-RSS:  [2.76101317e-30]
+RSS:  [6.27390939e-30]
 </pre></div>
 </div>
 </div>
@@ -1870,7 +1870,7 @@ H_1
 <p>Also recall that the RSS has the distribution</p>
 <div class="math notranslate nohighlight">
 \[
-(n-p)\frac{\hat{\sigma}^2}{\sigma^2 } \sim \chi ^2 _{n-p}  
+(n-p)\frac{\hat{\sigma}^2}{\sigma^2 } \sim \chi ^2 _{n-p}
 \]</div>
 <p>and the two quantities <span class="math notranslate nohighlight">\(\boldsymbol{v} ^\top \hat{\boldsymbol{\beta}}\)</span> and <span class="math notranslate nohighlight">\((n-p)\frac{\hat{\sigma}^2}{\sigma^2 }\)</span> are <a class="reference internal" href="#lm-independent-beta-sigma"><span class="std std-ref">independent</span></a>. Therefore, with a standard normal and a Chi-squared that are independent, we can construct a <span class="math notranslate nohighlight">\(t\)</span>-test statistic</p>
 <div class="math notranslate nohighlight">
@@ -2028,8 +2028,11 @@ RSS_{\text{full} } =  \left\| \boldsymbol{U} _3 ^\top \boldsymbol{y}  \right\|  
 \]</div>
 </div>
 <div class="warning admonition">
-<p class="admonition-title"> Warning</p>
-<p>A <span class="math notranslate nohighlight">\(F\)</span>-test on <span class="math notranslate nohighlight">\(\beta_1=\beta_2=0\)</span> is difference from two univariate <span class="math notranslate nohighlight">\(t\)</span>-tests <span class="math notranslate nohighlight">\(\beta_1=0, \beta_2=0\)</span>. A group of <span class="math notranslate nohighlight">\(t\)</span>-tests may be misleading if the regressors are highly correlated.</p>
+<p class="admonition-title"> Caveats</p>
+<ul class="simple">
+<li><p>A <span class="math notranslate nohighlight">\(F\)</span>-test on <span class="math notranslate nohighlight">\(\beta_1=\beta_2=0\)</span> is difference from two individual univariate <span class="math notranslate nohighlight">\(t\)</span>-tests <span class="math notranslate nohighlight">\(\beta_1=0, \beta_2=0\)</span>. A group of <span class="math notranslate nohighlight">\(t\)</span>-tests may be misleading if the regressors are highly correlated.</p></li>
+<li><p>When there are multiple covariates, we can conduct sequential <span class="math notranslate nohighlight">\(F\)</span>-test by using <code class="docutils literal notranslate"><span class="pre">anova()</span></code> function in R. The <span class="math notranslate nohighlight">\(F\)</span>-test in each row compares the existing model and the model plus the additional covariate. Hence, the order of input covariates matters. Exchanging order of terms usually changes sum of squares and <span class="math notranslate nohighlight">\(F\)</span>-test <span class="math notranslate nohighlight">\(p\)</span>-value.</p></li>
+</ul>
 </div>
 </div>
 <div class="section" id="compare-two-groups-of-data">
@@ -2070,7 +2073,7 @@ F=\frac{\left(RSS_{\text{reduced}}-RSS_{\text{full}}\right) /(k+1)}{RSS_{\text{f
 <p>Equivalently, there is a method called <strong>Chow test</strong>. It uses the fact that</p>
 <div class="math notranslate nohighlight">
 \[
-RSS_{\text{full}} = RSS_{1} + RSS_{2}  
+RSS_{\text{full}} = RSS_{1} + RSS_{2}
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(RSS_1\)</span> and <span class="math notranslate nohighlight">\(RSS_2\)</span> are the RSS obtained when we run the following regression model on two groups of data respectively,</p>
 <div class="math notranslate nohighlight">

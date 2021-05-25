@@ -202,6 +202,15 @@ $$
 \sum_{i=1}^{r}\left|\boldsymbol{a} _{i}^{\top}\left(\boldsymbol{x} _{0}-\bar{\boldsymbol{x} }_{k}\right)\right|^{2} \leq \sum_{i=1}^{r}\left|\boldsymbol{a} _{i}^{\top}\left(\boldsymbol{x} _{0}-\bar{\boldsymbol{x} }_{j}\right)\right|^{2}, \quad \text { for any } j=1, \cdots, g
 $$
 
+Equivalently,
+
+$$
+\left\| \boldsymbol{A} ^{\top} (\boldsymbol{x} _0 - \boldsymbol{x} _k) \right\|^2  \leq \left\| \boldsymbol{A} ^{\top} (\boldsymbol{x} _0 - \boldsymbol{x} _j) \right\|^2, \quad \text { for any } j=1, \cdots, g
+$$
+
+where $\boldsymbol{A} \in \mathbb{R} ^{p \times r}$ and consists $r$ scaled eigenvectors such that $\boldsymbol{A} ^{\top} \boldsymbol{S} _{\text{pool} }\boldsymbol{A} = \boldsymbol{I} _r$.
+
+
 ### R.t. Discriminant for Gaussian Data
 
 In the $g=2$ case above, we showed that Fisher LDA is equivalent to the linear discriminant rule for Gaussian that minimizes ECM under some assumptions. Now we show they are equivalent in $g \ge 2$ case, under those assumptions.

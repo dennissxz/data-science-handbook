@@ -150,7 +150,7 @@ $$\begin{align}
 
 ### Efficiency (BLUE)
 
-Theorem (Gauss–Markov)  
+Theorem (Gauss–Markov)
 : The ordinary least squares (OLS) estimator has the **lowest** sampling variance within the class of linear unbiased estimators, if the errors in the linear regression model are uncorrelated, have equal variances and expectation value of zero. In abbreviation, the OLS estimator is BLUE: Best (lowest variance) Linear Unbiased Estimator.
 
 :::{admonition,dropdown,seealso} *Proof*
@@ -283,7 +283,7 @@ $$
 
 ### Residuals $\hat{\boldsymbol{\varepsilon}}$
 
-Definition  
+Definition
 : The residual is defined as the difference between the true response value $y$ and our fitted response value $\hat{y}$.
 
   $$\hat\varepsilon_i = y_i - \hat{y}_i = y_i - \boldsymbol{x}_i ^\top \hat{\boldsymbol{\beta}}$$
@@ -315,7 +315,7 @@ $$
 Since the first column of $\boldsymbol{X}$ is $\boldsymbol{1}$ , we have
 
 $$\begin{align}
-\sum_i \hat{\varepsilon}_i  
+\sum_i \hat{\varepsilon}_i
 &= \sum_i(y_i - \hat{y}_i)  \\
 &= \sum_i(y_i - \boldsymbol{x}_i ^\top \hat{\boldsymbol{\beta} }_i)  \\
 &= 0
@@ -391,13 +391,13 @@ $$\begin{aligned}
 and hence the sum of squared normal variables follows
 
 $$
-\left\| \boldsymbol{U} _\bot ^\top \boldsymbol{\varepsilon} \right\|  ^2 \sim \sigma^2 \chi ^2 _{n-p}  
+\left\| \boldsymbol{U} _\bot ^\top \boldsymbol{\varepsilon} \right\|  ^2 \sim \sigma^2 \chi ^2 _{n-p}
 $$
 
 Thus,
 
 $$
-\left\| \hat{\boldsymbol{\varepsilon}}  \right\|  ^2 \sim \sigma^2 \chi ^2 _{n-p}  
+\left\| \hat{\boldsymbol{\varepsilon}}  \right\|  ^2 \sim \sigma^2 \chi ^2 _{n-p}
 $$
 
 The first moment is
@@ -481,7 +481,7 @@ $$\begin{aligned}
 &\Rightarrow& \quad  f(\boldsymbol{U} ^\top _S \boldsymbol{z})  &\perp\!\!\!\perp f(\boldsymbol{U} ^\top _T \boldsymbol{z})  \\
 \end{aligned}$$
 
-Let $\boldsymbol{y} = \boldsymbol{\mu} + \sigma \boldsymbol{z}$, then  
+Let $\boldsymbol{y} = \boldsymbol{\mu} + \sigma \boldsymbol{z}$, then
 
 $$
 \boldsymbol{P} _S(\boldsymbol{y} ) = \boldsymbol{U} _S \boldsymbol{U} _S ^\top (\boldsymbol{\mu} + \sigma \boldsymbol{z} ) \perp\!\!\!\perp \boldsymbol{U} _T \boldsymbol{U} _T ^\top (\boldsymbol{\mu} + \sigma \boldsymbol{z} ) = \boldsymbol{P} _T(\boldsymbol{y} )
@@ -755,14 +755,14 @@ we will have $RSS > TSS$, i.e. $R^2 < 0$.
 
 Due to the non-decrease property of $R$-squared, we define adjusted $R$-squared which is a better measure of goodness of fitting.
 
-Definition  
+Definition
 : Adjusted $R$-squared, denoted by $\bar{R}^2$, is defined as
 
 $$
   \bar{R}^2 = 1-\frac{RSS / (n-p)}{ TSS / (n-1)}
   $$
 
-Properties  
+Properties
 -   $\bar{R}^2$ can increase or decrease. When a new variable is included, $RSS$ decreases, but $(n-p)$ also decreases.
     -   Relation to $R$-squared is
 
@@ -852,7 +852,7 @@ $$
 Also recall that the RSS has the distribution
 
 $$
-(n-p)\frac{\hat{\sigma}^2}{\sigma^2 } \sim \chi ^2 _{n-p}  
+(n-p)\frac{\hat{\sigma}^2}{\sigma^2 } \sim \chi ^2 _{n-p}
 $$
 
 and the two quantities $\boldsymbol{v} ^\top \hat{\boldsymbol{\beta}}$ and $(n-p)\frac{\hat{\sigma}^2}{\sigma^2 }$ are [independent](lm-independent-beta-sigma). Therefore, with a standard normal and a Chi-squared that are independent, we can construct a $t$-test statistic
@@ -1055,9 +1055,11 @@ $$
 :::
 
 
-:::{admonition,warning} Warning
+:::{admonition,warning} Caveats
 
-A $F$-test on $\beta_1=\beta_2=0$ is difference from two univariate $t$-tests $\beta_1=0, \beta_2=0$. A group of $t$-tests may be misleading if the regressors are highly correlated.
+- A $F$-test on $\beta_1=\beta_2=0$ is difference from two individual univariate $t$-tests $\beta_1=0, \beta_2=0$. A group of $t$-tests may be misleading if the regressors are highly correlated.
+
+- When there are multiple covariates, we can conduct sequential $F$-test by using `anova()` function in R. The $F$-test in each row compares the existing model and the model plus the additional covariate. Hence, the order of input covariates matters. Exchanging order of terms usually changes sum of squares and $F$-test $p$-value.
 
 :::
 
@@ -1108,7 +1110,7 @@ Can you show why the fact holds?
 Equivalently, there is a method called **Chow test**. It uses the fact that
 
 $$
-RSS_{\text{full}} = RSS_{1} + RSS_{2}  
+RSS_{\text{full}} = RSS_{1} + RSS_{2}
 $$
 
 where $RSS_1$ and $RSS_2$ are the RSS obtained when we run the following regression model on two groups of data respectively,
