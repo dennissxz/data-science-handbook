@@ -58,6 +58,16 @@ The standard algorithm often converges to a local minimum, rather than global mi
 Iterations in $k$-means example [Livescu 2021]
 :::
 
+## Tuning
+
+To choose the optimal $k$, we can plot some measure versus $k$, e.g. total within-cluster sum of squares, and look for an elbow.
+
+:::{figure} kmeans-elbow
+<img src="../imgs/kmeans-elbow.png" width = "50%" alt=""/>
+
+Within-cluster SS decreases as $k$ increases.
+:::
+
 
 ## Pros Cons
 

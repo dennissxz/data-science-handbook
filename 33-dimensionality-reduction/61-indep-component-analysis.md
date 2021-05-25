@@ -7,6 +7,8 @@ Given this kind of observed data, ICA aims to identify and separate **independen
 
 ICA is also called Blind Signal Separation in the signal procession context. Technically, Independent Component Analysis can be viewed as one of the many variations of Principal Component Analysis.
 
+In this section we introduce noiseless, equal-dimension ICA.
+
 ## Assumptions
 
 - The observed multivariate data are considered as a **linear** combinations of the latent components $S_i$
