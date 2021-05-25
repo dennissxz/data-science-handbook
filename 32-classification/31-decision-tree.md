@@ -20,6 +20,11 @@ We need to specify
 - Criterion for measuring the “best” question at each node
 - Stopping criterion
 
+Decision tree can also be used for regression.
+- Regression Tree for estimating a continuous response variable: Take an average as the prediction in each partition region.
+- Classification Tree for classifying a categorical response variable: Take a vote as the prediction in each partition region.
+
+
 ## Learning
 
 ### Algorithm
@@ -95,9 +100,11 @@ Properties
 - Entropies in the denominator act as penalty for over-clustering
 
 
----
 
+
+:::{admonition,note} Note
 For unlabelled data, we can use maximum likelihood and minimum entropy.
+:::
 
 
 #### Maximum Likelihood
@@ -138,6 +145,14 @@ H(X) &=0 \Leftrightarrow p_{j}=1 \text { for some } j, p_{i}=0,\ \forall i \neq 
 \end{aligned}
 $$
 
+#### Minimum RSS
+
+For regression, i.e. $y$ is a continuous variable, we can use residual sum of square (RSS) as a splitting criteria. For two sub nodes $R_m$ where $m = 1, 2$ by some splitting rule, the RSS is
+
+$$
+\sum_{m=1}^{2} \sum_{i \in R_{m}}\left(y_{i}-\bar{y}_{R_{m}}\right)^{2}
+$$
+
 
 ### Stoping Criteria
 
@@ -145,7 +160,7 @@ When should we stop partitioning? Or how to determine the size/depth of the tree
 
 #### Simple Heuristics Based
 
-- Leaves too small: data at node has fewer than some threshold samples
+- Leaves too small: data at a node has fewer than some threshold samples
 
 - Best question does not improve likelihood significantly (e.g. 10%)
 
@@ -155,4 +170,55 @@ When should we stop partitioning? Or how to determine the size/depth of the tree
 
 - Measure likelihood with different tree sizes on a **held-out** (development) data set, choose the tree size that maximizes likelihood
 
+- Build multiple trees according to the loss with tree size penality, for varying $\alpha$
+
+  $$
+  loss = loss_0 + \alpha \left\vert T \right\vert
+  $$
+
+  select best $\alpha$ and the corresponding tree based on performance on validation set (like selecting $\lambda$ in LASSO).
+
 - Measure downstream performance on held-out data set, on some task of interest
+
+
+## Pruning
+
+For a regression tree $T$, we can remove the **weakest link**. The subtree $T ^\prime$ minimizes cost complexity
+
+$$
+\frac{RSS(T ^\prime) - RSS(T)}{\left\vert T \right\vert - \left\vert T ^\prime \right\vert}
+$$
+
+## Comment
+
+- Larger tree, easier to overfit
+- If underlying relation is linear, then linear models probably works better. If non-linear, tree-based methods may work better.
+
+## Random Forest
+
+Group of weaker classifiers can form a stronger one!
+
+### Learning
+
+Given a data set of $n$ observations and $p$ features.
+
+- Boostrap sampling rows and columns to build $T$ trees
+  - Select a size $n$ random sample **with** replacement from the original sample data to grow a classification tree (same size with original data set, but some observations appear multiple times)
+  - **At each node** of the tree, randomly select $m<p$ input variables to split the node.
+    - If $m=p$, then called 'bagging'
+    - Usually $m \sim \sqrt{p}$. may perform better than bagging.
+
+- Decision: For the $k$-th observation, the classification rule is by the most votes of trees or by taking the average (as in regression) where the $k$-th observation is not used in the tree construction (out-of-bag, OOB).
+
+  - Each observation is OOB for about one third of the trees (thus no validation sample is needed)
+  - The average of the error rate of the $n$ observations is the OOB error rate of the forest.
+    - Error rate of the forest increases with the correlation between trees. Then the more uncorrelated the trees, the better. Inter-tree correlation increases with $m$.
+
+### Variable Importance
+
+OOB observations also used to evaluate variable importance.
+Each variable is randomly **permuted** to check its impact on some cost measures, e.g. MSE, Gini Node Purity.
+
+The mean decrease in the cost across all trees is reported.
+
+Note that if a variable has very little predictive power, shuffling may lead to a slight decrease in cost due to random noise. This in turn can give rise to small negative importance scores, which can be essentially regarded as equivalent to zero importance.
