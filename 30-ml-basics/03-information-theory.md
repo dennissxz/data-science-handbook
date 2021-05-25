@@ -286,6 +286,7 @@ Properties
 
 Cross entropy is tightly related to KL divergence.
 
+(kl-divergence)=
 ### Kullback-Leibler Divergence
 
 Definition
@@ -400,6 +401,123 @@ Similar to absolute correlation $\left\vert \rho \right\vert$,  both are
 
 But $\vert\rho\vert=0\ \not{\Rightarrow}\ X\perp Y$ while $\operatorname{I}\left(X, Y \right)=0\ \Leftrightarrow\ X\perp Y$.
 ```
+
+(wasserstein-distance)=
+### Wasserstein Distance
+
+#### Definition
+
+KL divergence can measure the 'distance' between two distributions, but it is asymmetric. Wasserstein distance of two distributions, is symmetric, and it is actually a metric.
+
+Definition
+: Given two distributions $P$ and $Q$ over a region $D$ in $\mathbb{R} ^{d}$, let $\mathcal{\Pi}$ be all joint distributions $\pi(X, Y)$ over $D \times D$ that have marginals $P$ and $Q$. Then the $p$-Wasserstein distance between $P$ and $Q$ is defined as
+
+$$
+W_{p}(P, Q)=\left(\inf _{\pi \in \mathcal{\Pi} (P, Q)} \int\|x-y\|^{p} \pi(x, y) \mathrm{~d}x \mathrm{~d} y \right)^{1 / p}
+$$
+
+Specifically, $\mathcal{\Pi} (P, Q)$ represents the collection of all binary functions $\pi$ satisfying
+- $\int \pi(x,y) \mathrm{~d}y = P(x)$
+- $\int \pi(x,y) \mathrm{~d}x = Q(y)$
+- $\pi(x,y) \ge 0$
+
+It can be shown that $W_p$ satisfies all the axioms of a metric.
+
+Usually, $p=1$ is used. $1$-Wasserstein distance is also known as Earth mover's distance (EMD) in computer science. Informally, if the distributions are interpreted as two different ways of piling up a certain amount of dirt over the region $D$, the EMD is the minimum cost of turning one pile into the other.
+
+(wasserstein-dual)=
+#### Dual Form
+
+It can be shown that the dual formulation is
+
+$$
+W_p ^p(P, Q) =\sup _{\psi, \phi} \int \psi(y)  Q(y) \mathrm{~d}y-\int \phi(x)  P(x) \mathrm{~d}x
+$$
+
+where $\psi(y) - \phi(x) \le \left\| x - y \right\| ^p$.
+
+In special case where $p=1$ we have the very simple representation
+
+$$\begin{aligned}
+\sup_{f \text{ is 1-Lipschitz} } && \int f (x) P(x) \mathrm{~d} x -  \int f (y) Q(y) \mathrm{~d} y\\
+\end{aligned}$$
+
+:::{admonition,dropdown,seealso} *Proof*
+
+When $p=1$, consider the above three constarints, the Lagragean is
+
+$$\begin{aligned}
+\mathcal{L} (\pi, f_1, f_2, M)
+&= \int \left\| x - y \right\| \pi(x, y) \mathrm{~d}x \mathrm{~d} y   \\
+&- \langle f_1, \int \pi(\cdot,y) \mathrm{~d}y - p(\cdot) \rangle \\
+&- \langle f_2, \int \pi(x,\cdot) \mathrm{~d}y - p_T(\cdot) \rangle \\
+&- \langle M, \pi \rangle \\
+\end{aligned}$$
+
+where $f_1 (\cdot), f_2(\cdot)$ and $M(\cdot, \cdot)$ are dual functions, and $\langle \cdot, \cdot \rangle$ is the inner product of two functions: $\langle f, g \rangle = \int f(x)g(x) \mathrm{~d}x$.
+
+Setting the first order derivative to 0 gives
+
+$$
+\frac{\partial \mathcal{L}}{\partial \pi} = 0  \Leftrightarrow \left\| x - y \right\| - f_1 (x) - f_2 (y) = M \ge 0
+$$
+
+Substituting this equality, the dual problem is then
+
+$$\begin{aligned}
+\sup_{f_1, f_2} && \int f_1 (x) P(x) \mathrm{~d} x +  \int f_2 (y) Q(y) \mathrm{~d} y\\
+\mathrm{s.t.}
+&& \left\| x- y \right\|  \ge f_1(x) + f_2(y)\\
+\end{aligned}$$
+
+Lemma: For $W_1$, we have a relation of two maximizers $f_2 = - f_1$.
+
+Hence, the problem becomes.
+
+$$\begin{aligned}
+\sup_{f_1} && \int f_1 (x) P(x) \mathrm{~d} x -  \int f_1 (y) Q(y) \mathrm{~d} y\\
+\mathrm{s.t.}
+&& \left\| x- y \right\|  \ge f_1(x) - f_1(y)\\
+\end{aligned}$$
+
+Equivalently,
+
+$$\begin{aligned}
+\sup_{f \text{ is 1-Lipshitz} } && \int f (x) P(x) \mathrm{~d} x -  \int f (y) Q(y) \mathrm{~d} y\\
+\end{aligned}$$
+
+:::
+
+#### Examples
+
+- In particular, when $d=1$, the distance has a closed form
+
+  $$
+  W_{p}(P, Q)=\left(\int_{0}^{1}\left|F^{-1}(z)-G^{-1}(z)\right|^{p}\right)^{1 / p}
+  $$
+
+  where $F$ and $G$ are the CDF's of $P$ and $Q$.
+
+  If $P$ is the empirical distribution of a dataset $x_1, x_2, \ldots, x_n$ and $Q$ is the empirical distribution of another dataset $y_1, y_2, \ldots, y_n$ of the same size, then the distance takes a very simple function of the order statistics:
+
+  $$
+  W_{p}(P, Q)=\left(\sum_{i=1}^{n}\left\|x_{(i)}-y_{(i)}\right\|^{p}\right)^{1 / p}
+  $$
+
+- An interesting special case occurs for normal distributions. If $P=\mathcal{N}\left(\boldsymbol{\mu}_{1}, \boldsymbol{\Sigma}_{1}\right)$ and $Q=\mathcal{N}\left(\boldsymbol{\mu}_{2}, \boldsymbol{\Sigma}_{2}\right)$ then
+
+  $$
+  W^{2}(P, Q)=\left\|\boldsymbol{\mu}_{1}-\boldsymbol{\mu}_{2}\right\|^{2}+B^{2}\left(\boldsymbol{\Sigma}_{1}, \boldsymbol{\Sigma} _2\right)
+  $$
+
+  where
+
+  $$
+  B^{2}\left(\boldsymbol{\Sigma}_{1}, \boldsymbol{\Sigma} _2\right)=\operatorname{tr}\left(\boldsymbol{\Sigma}_{1}\right)+\operatorname{tr}\left(\boldsymbol{\Sigma}_{2}\right)-2 \operatorname{tr}\left[\left(\boldsymbol{\Sigma}_{1}^{1 / 2} \boldsymbol{\Sigma}_{2} \boldsymbol{\Sigma}_{1}^{1 / 2}\right)^{1 / 2}\right]
+  $$
+
+Reference
+- [Larry's notes](https://www.stat.cmu.edu/~larry/=sml/Opt.pdf)
 
 ## Identities
 
