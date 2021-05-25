@@ -23,3 +23,6 @@ Empirical metrics
 - AUC
 - F1 score
 - see [confusion-matrix](../13-statistics/33-confusion-matrix.md)
+
+Note
+- Depending on the distributions of the data, a classifier may be good at discriminating some groups if their distributions are separted, but not others if their distributions overlap a lot. It helps to plot the data (if possible) to check the distributions.
