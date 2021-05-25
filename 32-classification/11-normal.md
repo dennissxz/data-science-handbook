@@ -365,6 +365,8 @@ If there are $g$ populations, there are $\binom{g}{2}$ hyperplanes forming the b
 Classification boundary (one is redundant) [Wang 2021]
 :::
 
+The dashed line in the plotted area is redundant: the classification of any point by the line would be re-evaluated by the other two partition lines. But the dashed line would not be redundant in slightly expanded areas outside the plot.
+
 ## Unequal Covariance
 
 ### Two-classes
@@ -398,9 +400,13 @@ $$
 where $\hat{k}=\frac{1}{2}\left(\bar{\boldsymbol{x}}_{1}^{\top} \boldsymbol{S}_{1}^{-1} \bar{\boldsymbol{x}}_{1}-\bar{\boldsymbol{x}}_{2}^{\top} \boldsymbol{S}_{2}^{-1} \bar{\boldsymbol{x}}_{2}\right)+\frac{1}{2} \ln \frac{\left|\boldsymbol{S}_{1}\right|}{\left|\boldsymbol{S}_{2}\right|}$.
 
 
-Since the function involves is **quadratic** in $\boldsymbol{x}$, the regions partitions the space to three pieces in general. One region, say, $R_2$, could be in the middle of two $R_1$ sections, or vice versa, e.g. hyperbola in 2-d case.
+Since the function involves is **quadratic** in $\boldsymbol{x}$, the regions partitions the space to three pieces in general. One region, say, $R_2$, could be in the middle of two $R_1$ sections, or vice versa, e.g. hyperbola in 2-d case. This sometimes does not make sense.
 
-addimg
+:::{figure} normal-disc-quad
+<img src="../imgs/normal-disc-quad.png" width = "50%" alt=""/>
+
+A qudratic classification rule seperates the space into cross-over regions.
+:::
 
 ### Multi-classes
 
@@ -425,6 +431,8 @@ where $d_i^Q(\boldsymbol{x})$ is the **quadratic discrimination score**
 $$
 d_{i}^{Q}(\boldsymbol{x})=\ln \left(p_{i}\right)-\frac{1}{2} \ln \left|\boldsymbol{\Sigma}_{i}\right|-\frac{1}{2}\left(\boldsymbol{x}-\boldsymbol{\mu}_{i}\right)^{\top} \boldsymbol{\Sigma}_{i}^{-1}\left(\boldsymbol{x}-\boldsymbol{\mu}_{i}\right), \quad i=1, \cdots, g
 $$
+
+To avoid ties, we usually require $(\boldsymbol{\mu} _i, \boldsymbol{\Sigma} _i) \ne (\boldsymbol{\mu} _j, \boldsymbol{\Sigma} _j)$ for all $i \ne j$.
 
 The classification region becomes
 
