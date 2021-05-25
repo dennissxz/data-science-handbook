@@ -767,6 +767,11 @@
      Generative Adversarial Networks
     </a>
    </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../37-neural-networks/81-density-fitting.html">
+     Application to Density Fitting
+    </a>
+   </li>
   </ul>
  </li>
  <li class="toctree-l1 has-children">
@@ -948,6 +953,28 @@
      Mutual Information
     </a>
    </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#wasserstein-distance">
+     Wasserstein Distance
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#definition">
+       Definition
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#dual-form">
+       Dual Form
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#examples">
+       Examples
+      </a>
+     </li>
+    </ul>
+   </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -1002,13 +1029,14 @@
 <p>First we introduce the definitions of some fundamental concepts in informaition theory summarized in the table below.</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
-&amp; \text{Entropy} &amp; \operatorname{H}(Y)&amp;=-\sum_{\mathcal{Y}}p(y)\log p(y) \\
-&amp; \text{Differntial Entropy} &amp; h(Y)&amp;=-\int_{\mathcal{Y}}f(y)\log f(y)\mathrm{~d}y \\
-&amp; \text{Joint Entropy} &amp; \operatorname{H}(X,Y)&amp;=-\operatorname{E}_{X,Y\sim p(x,y)}\log\operatorname{P}(X,Y) \\
-&amp; \text{Conditional Entropy} &amp; \operatorname{H}(Y\vert X)&amp;=-\operatorname{E}_{X,Y\sim p(x,y)}\log \operatorname{P}(Y\mid X) \\
-&amp; \text{Cross Entropy} &amp; \operatorname{H}(P,Q)&amp;=-\operatorname{E}_{Y\sim P}\left[\ln\left(Q(Y)\right)\right] \\
-&amp; \text{KL Divergence} &amp; \operatorname{KL}(P,Q)&amp;=\operatorname{E}_{Y\sim P}\left[\ln\frac{P(Y)}{Q(Y)}\right] \\
-&amp; \text{Mutual Information} &amp; \operatorname{I}(X,Y)&amp;=\operatorname{KL}\left(P_{X,Y},P_{X}P_{Y}\right)
+&amp; \text{Name} &amp; &amp; \text{Definition}  &amp; &amp; \text{Remark}  \\
+&amp; \text{Entropy} &amp; \operatorname{H}(Y)&amp;=-\sum_{\mathcal{Y}}p(y)\log p(y) &amp; &amp; \text{Non-negative} \\
+&amp; \text{Differntial Entropy} &amp; h(Y)&amp;=-\int_{\mathcal{Y}}f(y)\log f(y)\mathrm{~d}y &amp; &amp; \text{Can be negative} \\
+&amp; \text{Joint Entropy} &amp; \operatorname{H}(X,Y)&amp;=-\mathbb{E}_{X,Y\sim p(x,y)}\log\operatorname{P}(X,Y) &amp; &amp; \\
+&amp; \text{Conditional Entropy} &amp; \operatorname{H}(Y\vert X)&amp;=-\mathbb{E}_{X,Y\sim p(x,y)}\log \operatorname{P}(Y\mid X) &amp; &amp; \text{Sampling from } p(x,y) \\
+&amp; \text{Cross Entropy} &amp; \operatorname{H}(P,Q)&amp;=-\mathbb{E}_{Y\sim P}\log Q(Y) &amp; &amp; \text{Asymmetric} \\
+&amp; \text{KL Divergence} &amp; \operatorname{KL}(P,Q)&amp;=\mathbb{E}_{Y\sim P}\log\frac{P(Y)}{Q(Y)} &amp; &amp; \text{Non-negative. Asymmetric} \\
+&amp; \text{Mutual Information} &amp; \operatorname{I}(X,Y)&amp;=\operatorname{KL}\left(P_{X,Y},P_{X}P_{Y}\right) &amp;&amp; \text{Non-negative. Symmetric}
 \end{align}\end{split}\]</div>
 <div class="section" id="shannon-entropy">
 <h3>Shannon Entropy<a class="headerlink" href="#shannon-entropy" title="Permalink to this headline">¶</a></h3>
@@ -1019,7 +1047,7 @@
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
 \operatorname{H}\left( Y \right)
-&amp;= \operatorname{E}_{Y\sim p(y)}\left[ - \log \operatorname{P}\left( Y \right) \right]\\
+&amp;= \mathbb{E}_{Y\sim p(y)}\left[ - \log \operatorname{P}\left( Y \right) \right]\\
 &amp;= -\sum_{i=1}^{n}p(y_i)\log p(y_i)
 \end{align}\end{split}\]</div>
 <p>This quantity measures the average level of “information”, or “uncertainty” inherent in the variables’ possible outcomes.</p>
@@ -1028,7 +1056,7 @@
 <p>Entropy has similarity with variance. Both are non-negative, measure uncertainty/information. But variance depends on the observed value <span class="math notranslate nohighlight">\(y\)</span> of the random variable <span class="math notranslate nohighlight">\(Y\)</span>, while entropy only depends on the probability <span class="math notranslate nohighlight">\(p(y)\)</span>.</p>
 </div>
 <dl class="simple myst">
-<dt>Properties</dt><dd><p><span class="math notranslate nohighlight">\(\operatorname{H}\left( Y \right) &gt; 0\)</span></p>
+<dt>Properties</dt><dd><p><span class="math notranslate nohighlight">\(\operatorname{H}\left( Y \right) \ge 0\)</span> with equalit iff <span class="math notranslate nohighlight">\(p(y)=1\)</span> for some <span class="math notranslate nohighlight">\(y\)</span>, i.e. no uncertainty.</p>
 </dd>
 </dl>
 </div>
@@ -1063,26 +1091,68 @@
 <li><p>Consider a uniform distribution over an interval on the real line of width <span class="math notranslate nohighlight">\(\Delta\)</span>, then <span class="math notranslate nohighlight">\(p(y) = \frac{1}{\Delta}\)</span>, and hence the entropy is</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
-    h(X) &amp;= \operatorname{E}_{x\sim p(\cdot)}\left( - \ln \frac{1}{\Delta}  \right)\\
+    h(Y) &amp;= \mathbb{E}_{y\sim p(\cdot)} \left[ - \ln \frac{1}{\Delta} \right]\\
     &amp;= \ln \Delta \\
     \end{align}\end{split}\]</div>
-<p>As <span class="math notranslate nohighlight">\(\Delta \rightarrow 0\)</span>, we have <span class="math notranslate nohighlight">\(h\rightarrow -\infty\)</span>.</p>
+<p>When <span class="math notranslate nohighlight">\(\Delta &lt; 1\)</span>, we have <span class="math notranslate nohighlight">\(h\rightarrow &lt; 0\)</span>.</p>
 </li>
-<li><p>The entropy for a Gaussian variable with density <span class="math notranslate nohighlight">\(\mathcal{N}(0, \sigma^2)\)</span> is</p>
+<li><p>The entropy for a Gaussian variable with density <span class="math notranslate nohighlight">\(\mathcal{N}(\mu, \sigma^2)\)</span> is</p>
 <div class="math notranslate nohighlight">
 \[
-    h \left( \mathcal{N}(0, \sigma^2) \right) = \ln(\sigma \sqrt{2 \pi e})
+    h \left( \mathcal{N}(\mu, \sigma^2) \right) = \ln(\sigma \sqrt{2 \pi e})
     \]</div>
-<ul>
-<li><p>Obviously, the entropy does not depend on <span class="math notranslate nohighlight">\(\mu\)</span>.</p></li>
-<li><p>As <span class="math notranslate nohighlight">\(\sigma \rightarrow 0\)</span>, we have <span class="math notranslate nohighlight">\(h\rightarrow -\infty\)</span>.</p></li>
-<li><p>Among all continuous distribution <span class="math notranslate nohighlight">\(P\)</span> with mean zero, variance <span class="math notranslate nohighlight">\(\sigma^2\)</span>, normal distribution has the largest differential entropy, i.e. most randomness.</p>
+<div class="dropdown seealso admonition">
+<p class="admonition-title"> <em>Proof</em></p>
+<p>Let <span class="math notranslate nohighlight">\(\phi(y)\)</span> be the density of <span class="math notranslate nohighlight">\(\mathcal{N} (\mu, \sigma^2)\)</span></p>
 <div class="math notranslate nohighlight">
-\[h(P) \le \ln(\sigma \sqrt{2 \pi e})\]</div>
+\[\begin{split}\begin{aligned}
+    h(Y)
+    &amp;= -\int_{\mathcal{Y}}\phi(y)\ln \phi(y)\mathrm{~d}y\\
+    &amp;= - \int \frac{1}{\sqrt{2 \pi} \sigma} \exp \left( -\frac{(y-\mu)^2}{\sigma^2} \right) \left[ - \ln(\sqrt{2 \pi} \sigma)  -\frac{(y-\mu)^2}{2\sigma^2} \right] \mathrm{~d} y\\
+    &amp;=  \ln(\sqrt{2 \pi} \sigma) + \int \frac{1}{\sqrt{2 \pi} \sigma} \exp \left( -\frac{(y-\mu)^2}{\sigma^2} \right) \left[\frac{(y-\mu)^2}{2\sigma^2} \right] \mathrm{~d} y\\
+    &amp;= \ln(\sqrt{2 \pi} \sigma) +  \mathbb{E} \left[\frac{(y-\mu)^2}{2\sigma^2} \right] \\
+    &amp;= \ln(\sqrt{2 \pi} \sigma) +  \frac{\mathbb{E} [X^2] - 2\mu \mathbb{E} [X] + \mu^2  } {2\sigma^2} \\
+    &amp;= \ln(\sqrt{2 \pi} \sigma) +  \frac{1}{2}  \\
+    &amp;= \ln(\sqrt{2 \pi e} \sigma)\\
+    \end{aligned}\end{split}\]</div>
+</div>
+<ul>
+<li><p>Obviously, the entropy does not depend on location <span class="math notranslate nohighlight">\(\mu\)</span> but only depends on scale <span class="math notranslate nohighlight">\(\sigma\)</span>.</p></li>
+<li><p>When <span class="math notranslate nohighlight">\(\sigma &lt; \frac{1}{\sqrt{2 \pi e}}\)</span>, we have <span class="math notranslate nohighlight">\(h&lt; 0\)</span>.</p></li>
+<li><p>Among all continuous distribution <span class="math notranslate nohighlight">\(f(y)\)</span> with mean <span class="math notranslate nohighlight">\(\mu\)</span>, variance <span class="math notranslate nohighlight">\(\sigma^2\)</span>, normal distribution has the largest differential entropy, i.e. most randomness.</p>
+<div class="math notranslate nohighlight">
+\[h(Y) \le \ln(\sigma \sqrt{2 \pi e})\quad \forall f(y): \mathbb{E} [Y] = \mu, \operatorname{Var}\left( Y \right) = \sigma^2\]</div>
+<div class="dropdown seealso admonition">
+<p class="admonition-title"> <em>Proof</em></p>
+<p>Lemma: Let <span class="math notranslate nohighlight">\(\phi(y)\)</span> be the density of <span class="math notranslate nohighlight">\(\mathcal{N} (\mu, \sigma^2)\)</span>, then note that</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+      -\int_{\mathcal{Y}}f(y)\ln \phi(y)\mathrm{~d}y
+      &amp;= - \int f(y) \left[ - \ln(\sqrt{2 \pi} \sigma)  -\frac{(y-\mu)^2}{2\sigma^2} \right] \mathrm{~d} y\\
+      &amp;=  \ln(\sqrt{2 \pi} \sigma) + \int f(y) \left[\frac{(y-\mu)^2}{2\sigma^2} \right] \mathrm{~d} y\\
+      &amp;= \ln(\sqrt{2 \pi} \sigma) +  \mathbb{E} \left[\frac{(y-\mu)^2}{2\sigma^2} \right] \\
+      &amp;= \ln(\sqrt{2 \pi} \sigma) +  \frac{\mathbb{E} [Y^2] - 2\mu \mathbb{E} [Y] + \mu^2  } {2\sigma^2} \\
+      &amp;= \ln(\sqrt{2 \pi} \sigma) +  \frac{1}{2}  \\
+      &amp;= \ln(\sqrt{2 \pi e} \sigma)\\
+      \end{aligned}\end{split}\]</div>
+<p>Hence,</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+      h(Y)
+      &amp;= - \int f(y) \ln f(y) \mathrm{~d} y\\
+      &amp;= - \int f(y) \ln \left( \frac{f(y)}{\phi(y)} \phi(y) \right)  \mathrm{~d} y\\
+      &amp;= - \int f(y) \ln \frac{f(y)}{\phi(y)}  \mathrm{~d} y - \int f(y) \ln \phi (y)  \mathrm{~d} y\\
+      &amp;= - \mathbb{E} _f\left[- \ln \frac{\phi(y)}{f (y)}  \right] +  \ln(\sqrt{2 \pi e} \sigma) \quad \because \text{Lemma} \\
+      &amp;\le \ln \mathbb{E} _f\left[ \frac{\phi(y)}{f (y)}  \right] +  \ln(\sqrt{2 \pi e} \sigma) \quad \because \text{Jensen's inequality}  \\
+      &amp;= \ln \int f(y) \frac{\phi(y)}{f(y)}  \mathrm{~d} y+  \ln(\sqrt{2 \pi e} \sigma) \\
+      &amp;= \ln(\sqrt{2 \pi e} \sigma)\\
+      \end{aligned}\end{split}\]</div>
+<p>The equality hold if and only if <span class="math notranslate nohighlight">\(\frac{\phi(y)}{f(y)}\)</span> is a constant for all <span class="math notranslate nohighlight">\(y\)</span>, i.e. <span class="math notranslate nohighlight">\(Y\)</span> is of normal distribution.</p>
+</div>
 </li>
 </ul>
 </li>
-<li><p>Consider the uniform distribution above. Suppose the unit is meter and the interval is <span class="math notranslate nohighlight">\((0, 1000)\)</span>. Note if we change the unit to kilometer, then the interval changes to <span class="math notranslate nohighlight">\((0, 1)\)</span>, and the interval decreases from <span class="math notranslate nohighlight">\(\ln 1000\)</span> to <span class="math notranslate nohighlight">\(\ln 1\)</span>.</p>
+<li><p>Consider the uniform distribution above. Suppose the unit is meter and the interval is <span class="math notranslate nohighlight">\((0, 1000)\)</span>. Note if we change the unit to kilometer, then the interval changes to <span class="math notranslate nohighlight">\((0, 1)\)</span>, and the entropy decreases from <span class="math notranslate nohighlight">\(\ln 1000\)</span> to <span class="math notranslate nohighlight">\(\ln 1\)</span>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The right way to think about differential entropy is that, it is actually <strong>infinite</strong>. Recall entropy measures uncertainty. An actual real number carries an infinite number of bits, i.e. infinite amount of information. A meaningful convention is the <span class="math notranslate nohighlight">\(h(f)=+\infty\)</span> for any continuous density <span class="math notranslate nohighlight">\(p(y)\)</span>.</p>
@@ -1090,7 +1160,7 @@
 </li>
 </ul>
 </dd>
-<dt>Definition (NegEntropy)</dt><dd><p>Short for Negative Entropy, is a non-Gaussian-ness measure, a measure of distance to normality. The negEntropy for a random variable <span class="math notranslate nohighlight">\(X\)</span> is</p>
+<dt>Definition (NegEntropy)</dt><dd><p>Short for Negative Entropy, it is a non-Gaussian-ness measure, a measure of distance to normality. The negEntropy for a random variable <span class="math notranslate nohighlight">\(X\)</span> is</p>
 <div class="math notranslate nohighlight">
 \[
   J(X) = \operatorname{H} (Z) - \operatorname{H} (X)
@@ -1098,7 +1168,7 @@
 <p>where <span class="math notranslate nohighlight">\(\operatorname{H} (Z)\)</span> is the differential entropy of the Gaussian density with the same mean and variance as <span class="math notranslate nohighlight">\(X\)</span>.</p>
 </dd>
 </dl>
-<p>NegEntropy is use for its convenience in computation and approximation. A common approximation (supposedly from Jones 1987)</p>
+<p>NegEntropy is used for its convenience in computation and approximation. A common approximation (supposedly from Jones 1987)</p>
 <div class="math notranslate nohighlight">
 \[
 J(X) \approx \frac{1}{12} \mathbb{E} [X^{3}]^{2}+\frac{1}{48} \kappa(X)^{2}
@@ -1113,7 +1183,7 @@ J(X) \approx \frac{1}{12} \mathbb{E} [X^{3}]^{2}+\frac{1}{48} \kappa(X)^{2}
 \[\begin{split}
   \begin{align}
   \operatorname{H}(X,Y)
-  &amp; = \operatorname{E}_{X,Y\sim p(x, y)}\left[ - \log \operatorname{P}(X,Y) \right]\\
+  &amp; = \mathbb{E}_{X,Y\sim p(x, y)}\left[ - \log \operatorname{P}(X,Y) \right]\\
   &amp; = - \sum_{x\in\mathcal{X}}\sum_{y\in\mathcal{Y}}p(x,y)\log_{2}[p(x,y)]
   \end{align}
   \end{split}\]</div>
@@ -1136,7 +1206,7 @@ J(X) \approx \frac{1}{12} \mathbb{E} [X^{3}]^{2}+\frac{1}{48} \kappa(X)^{2}
 <dt>Properties of Discrete Joint Entropy</dt><dd><ul class="simple">
 <li><p>Nonnegativeity: <span class="math notranslate nohighlight">\(\operatorname{H}(X,Y)\ge0\)</span></p></li>
 <li><p>Greater than or equal to individual entropies: <span class="math notranslate nohighlight">\(\operatorname{H}(X,Y)\ge\max\left(\operatorname{H}(X),\operatorname{H}(Y)\right)\)</span></p></li>
-<li><p>Less than or equal to the sum of individual entropies <span class="math notranslate nohighlight">\(\operatorname{H}(X,Y)\le \operatorname{H}(X)+\operatorname{H}(Y)\)</span></p></li>
+<li><p>Less than or equal to the sum of individual entropies <span class="math notranslate nohighlight">\(\operatorname{H}(X,Y)\le \operatorname{H}(X)+\operatorname{H}(Y)\)</span>. Equality holds iff <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span> are independent.</p></li>
 </ul>
 </dd>
 </dl>
@@ -1148,7 +1218,7 @@ J(X) \approx \frac{1}{12} \mathbb{E} [X^{3}]^{2}+\frac{1}{48} \kappa(X)^{2}
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
   \operatorname{H}(Y\mid X)
-  &amp; = \operatorname{E}_{X,Y\sim p(x, y)}\left[ - \log \operatorname{P}(Y \mid X) \right]\\
+  &amp; = \mathbb{E}_{X,Y\sim p(x, y)}\left[ - \log \operatorname{P}(Y \mid X) \right]\\
   &amp;=-\sum_{x\in\mathcal{X},y\in\mathcal{Y}}p(x,y)\log p(y\vert x) \\
   h(Y\mid X)	&amp;=-\int_{\mathcal{X},\mathcal{Y}}f(x,y)\log f(y\vert x)\mathrm{~d}x\mathrm{~d}y
   \end{align}\end{split}\]</div>
@@ -1204,7 +1274,7 @@ support <span class="math notranslate nohighlight">\(\mathcal{Y}\)</span> is def
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{align}
-\operatorname{H}\left( P, Q \right) &amp; =\operatorname{E}_{Y\sim p(y)}\left[-\ln\left(Q(Y)\right)\right]\\
+\operatorname{H}\left( P, Q \right) &amp; =\mathbb{E}_{Y\sim p(y)}\left[-\ln\left(Q(Y)\right)\right]\\
  &amp; =\int_{\mathcal{Y}}f_{P}(y)\left[-\ln\left(f_{Q}(y)\right)\right]\text{d}y\quad\text{for continuous}\ P,Q\\
  &amp; =-\sum_{y\in\mathcal{Y}}P(y)\log Q(y)\qquad\qquad\text{for discrete}\ P,Q
 \end{align}
@@ -1229,46 +1299,45 @@ using the imperfect code defined by <span class="math notranslate nohighlight">\
 <p>Cross entropy is tightly related to KL divergence.</p>
 </div>
 <div class="section" id="kullback-leibler-divergence">
-<h3>Kullback-Leibler Divergence<a class="headerlink" href="#kullback-leibler-divergence" title="Permalink to this headline">¶</a></h3>
-<p>: The KL Divergence of two distributions <span class="math notranslate nohighlight">\(P\)</span> and <span class="math notranslate nohighlight">\(Q\)</span> on the \textbf{same}
+<span id="kl-divergence"></span><h3>Kullback-Leibler Divergence<a class="headerlink" href="#kullback-leibler-divergence" title="Permalink to this headline">¶</a></h3>
+<dl class="simple myst">
+<dt>Definition</dt><dd><p>The KL Divergence of two distributions <span class="math notranslate nohighlight">\(P\)</span> and <span class="math notranslate nohighlight">\(Q\)</span> on the \textbf{same}
 support <span class="math notranslate nohighlight">\(\mathcal{Y}\)</span> is defined as</p>
 <div class="math notranslate nohighlight">
 \[
   \begin{aligned}
-  \operatorname{KL}\left( P, Q \right) &amp; =\operatorname{E}_{Y\sim p(y)}\left[\ln\frac{P(Y)}{Q(Y)}\right]
+  \operatorname{KL}\left( P, Q \right) &amp; =\mathbb{E}_{Y\sim p(y)}\left[\ln\frac{P(Y)}{Q(Y)}\right]
   \end{aligned}
   \]</div>
-<p>Kullback–Leibler divergence (also called relative entropy) is a  measure of how one probability distribution is different from a second,  reference probability distribution, i.e. the <strong>distance</strong> between  two distributions on the same support. It is a distribution-wise <strong>asymmetric</strong> measure and thus does not qualify as a statistical <strong>metric</strong> of spread - it also does not satisfy the triangle inequality.</p>
+</dd>
+</dl>
+<p>Kullback–Leibler divergence (also called relative entropy) is a  measure of how one probability distribution is different from a second, reference probability distribution, i.e. the <strong>distance</strong> between two distributions on the same support.</p>
 <dl class="simple myst">
 <dt>Properties</dt><dd><ul>
 <li><p><span class="math notranslate nohighlight">\(\operatorname{KL}\left( P, Q \right) \ge 0\)</span>, with equality iff the two distributions are identical.</p>
-<details class="sphinx-bs dropdown card mb-3">
-<summary class="summary-title card-header">
-Proof<div class="summary-down docutils">
-<svg version="1.1" width="24" height="24" class="octicon octicon-chevron-down" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M5.22 8.72a.75.75 0 000 1.06l6.25 6.25a.75.75 0 001.06 0l6.25-6.25a.75.75 0 00-1.06-1.06L12 14.44 6.28 8.72a.75.75 0 00-1.06 0z"></path></svg></div>
-<div class="summary-up docutils">
-<svg version="1.1" width="24" height="24" class="octicon octicon-chevron-up" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M18.78 15.28a.75.75 0 000-1.06l-6.25-6.25a.75.75 0 00-1.06 0l-6.25 6.25a.75.75 0 101.06 1.06L12 9.56l5.72 5.72a.75.75 0 001.06 0z"></path></svg></div>
-</summary><div class="summary-content card-body docutils">
-<p class="card-text">KL divergence is non-negative by Jensen’s inequality of convex functions</p>
+<div class="dropdown seealso admonition">
+<p class="admonition-title"> <em>Proof</em></p>
+<p>KL divergence is non-negative by Jensen’s inequality of convex functions</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
-\begin{aligned}\operatorname{KL}\left( P, Q \right) &amp; =\operatorname{E}_{y\sim p(\cdot)}\left[-\ln\frac{Q(y)}{P(y)}\right]\\
- &amp; \geq-\ln \operatorname{E}_{y\sim p(\cdot)}\frac{Q(y)}{P(y)}\\
- &amp; =-\ln\sum_{y}P(y)\frac{Q(y)}{P(y)}\\
- &amp; =-\ln\sum_{y}Q(y)\\
- &amp; =0
-\end{aligned}
-\end{split}\]</div>
-<p class="card-text">For two continuous distributions,</p>
+    \begin{aligned}\operatorname{KL}\left( P, Q \right) &amp; =\mathbb{E}_{y\sim p(\cdot)}\left[-\ln\frac{Q(y)}{P(y)}\right]\\
+     &amp; \geq-\ln \mathbb{E}_{y\sim p(\cdot)}\frac{Q(y)}{P(y)}\\
+     &amp; =-\ln\sum_{y}P(y)\frac{Q(y)}{P(y)}\\
+     &amp; =-\ln\sum_{y}Q(y)\\
+     &amp; =0
+    \end{aligned}
+    \end{split}\]</div>
+<p>For two continuous distributions,</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
-\operatorname{KL}\left( P, Q \right) &amp; =\int_{-\infty}^{\infty}p(y)\log\left(\frac{p(y)}{q(y)}\right)\mathrm{~d}y\\
- &amp; \ge0
-\end{align}\end{split}\]</div>
-<p class="card-text">Equality holds iff <span class="math notranslate nohighlight">\(\forall y\ P(y)=Q(y)\)</span>, i.e. two distributions
+    \operatorname{KL}\left( P, Q \right) &amp; =\int_{-\infty}^{\infty}p(y)\log\left(\frac{p(y)}{q(y)}\right)\mathrm{~d}y\\
+     &amp; \ge0
+    \end{align}\end{split}\]</div>
+<p>Equality holds iff <span class="math notranslate nohighlight">\(\forall y\ P(y)=Q(y)\)</span>, i.e. two distributions
 are identical.</p>
 </div>
-</details></li>
+</li>
+<li><p>It is a distribution-wise <strong>asymmetric</strong> measure and thus does not qualify as a statistical <strong>metric</strong> of spread - it also does not satisfy the triangle inequality.</p></li>
 <li><p>Relation to cross entropy:</p>
 <div class="math notranslate nohighlight">
 \[
@@ -1284,16 +1353,16 @@ are identical.</p>
 </li>
 </ul>
 </dd>
-<dt>Example</dt><dd><p>The KL-Divergence between two multivariate Gaussian <span class="math notranslate nohighlight">\(\mathcal{N}(\mu_{p},\Sigma_{p})\)</span>
-and <span class="math notranslate nohighlight">\(\mathcal{N}(\mu_{q},\Sigma_{q})\)</span> is</p>
+<dt>Example</dt><dd><p>The KL-Divergence between two multivariate Gaussian <span class="math notranslate nohighlight">\(\mathcal{N}(\boldsymbol{\mu}_{p},\boldsymbol{\Sigma}_{p})\)</span>
+and <span class="math notranslate nohighlight">\(\mathcal{N}(\boldsymbol{\mu}_{q},\boldsymbol{\Sigma}\boldsymbol{\Sigma}_{q})\)</span> is</p>
 <div class="math notranslate nohighlight">
 \[
-  \operatorname{KL}\left( P, Q \right)=\frac{1}{2}\left[\log\frac{\left|\Sigma_{q}\right|}{\left|\Sigma_{p}\right|}-k+\left(\mu_{p}-\mu_{q}\right)^{T}\Sigma_{q}^{-1}\left(\mu_{p}-\mu_{q}\right)+\operatorname{tr}\left\{ \Sigma_{q}^{-1}\Sigma_{p}\right\} \right]
+  \operatorname{KL}\left( P, Q \right)=\frac{1}{2}\left[\log\frac{\left|\boldsymbol{\Sigma}_{q}\right|}{\left|\boldsymbol{\Sigma}_{p}\right|}-k+\left(\boldsymbol{\mu}_{p}-\boldsymbol{\mu}_{q}\right)^{\top}\boldsymbol{\Sigma}_{q}^{-1}\left(\boldsymbol{\mu}_{p}-\boldsymbol{\mu}_{q}\right)+\operatorname{tr} (\boldsymbol{\Sigma}_{q}^{-1}\boldsymbol{\Sigma}_{p}) \right]
   \]</div>
 <p>In particular, if the reference distribution <span class="math notranslate nohighlight">\(Q\)</span> is <span class="math notranslate nohighlight">\(\mathcal{N}(0,I)\)</span> then we get</p>
 <div class="math notranslate nohighlight">
 \[
-  \operatorname{KL}\left( P, Q \right)=\frac{1}{2}\left[\Vert\mu_{p}\Vert^{2}+\operatorname{tr}\left\{ \Sigma_{p}\right\} -k-\log\left|\Sigma_{p}\right|\right]
+  \operatorname{KL}\left( P, Q \right)=\frac{1}{2}\left[\Vert\boldsymbol{\mu}_{p}\Vert^{2}+\operatorname{tr}(\boldsymbol{\Sigma}_{p}) -k-\log\left|\boldsymbol{\Sigma}_{p}\right|\right]
   \]</div>
 </dd>
 </dl>
@@ -1306,7 +1375,7 @@ and <span class="math notranslate nohighlight">\(\mathcal{N}(\mu_{q},\Sigma_{q})
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
   \operatorname{I}\left(X, Y \right) &amp; = \operatorname{KL}\left(\operatorname{P}_{X,Y},\operatorname{P}_{X}\operatorname{P}_{Y}\right)\\
-   &amp; = \operatorname{E}_{X,Y}\left[ \ln\frac{\operatorname{P}_{X,Y}(X,Y)}{\operatorname{P}_X(X)\operatorname{P}_Y(Y)} \right]\\
+   &amp; = \mathbb{E}_{X,Y}\left[ \ln\frac{\operatorname{P}_{X,Y}(X,Y)}{\operatorname{P}_X(X)\operatorname{P}_Y(Y)} \right]\\
   \end{align}\end{split}\]</div>
 <p>For discrete case,</p>
 <div class="math notranslate nohighlight">
@@ -1317,11 +1386,11 @@ and <span class="math notranslate nohighlight">\(\mathcal{N}(\mu_{q},\Sigma_{q})
 <div class="math notranslate nohighlight">
 \[
   \operatorname{I}\left(X, Y \right)=\int_{\mathcal{Y} }\int_{\mathcal{X}}p_{X,Y}(x,y)\log\left(\frac{p_{(X,Y)}(x,y)}{p_{X}(x)p_{Y}(y)}\right)
-\]</div>
+  \]</div>
 </dd>
 <dt>Properties</dt><dd><ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(\operatorname{I}(X,Y) \ge 0\)</span>, with equality holds iff <span class="math notranslate nohighlight">\(P_{X,Y}=P_{X}P_{Y}\)</span>, i.e. when <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span> are independent, and hence there is no mutual dependence.</p></li>
 <li><p><span class="math notranslate nohighlight">\(\operatorname{I}(X,Y) =\operatorname{H}(X)+\operatorname{H}(Y)-\operatorname{H}\left(X, Y \right)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\operatorname{I}(X,Y) \ge 0\)</span>, with equality iff <span class="math notranslate nohighlight">\(P_{X,Y}=P_{X}P_{Y}\)</span>, i.e. when <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span> are independent, and hence there is no mutual dependence.</p></li>
 </ul>
 </dd>
 </dl>
@@ -1337,6 +1406,113 @@ and <span class="math notranslate nohighlight">\(\mathcal{N}(\mu_{q},\Sigma_{q})
 <p>But <span class="math notranslate nohighlight">\(\vert\rho\vert=0\ \not{\Rightarrow}\ X\perp Y\)</span> while <span class="math notranslate nohighlight">\(\operatorname{I}\left(X, Y \right)=0\ \Leftrightarrow\ X\perp Y\)</span>.</p>
 </div>
 </div>
+<div class="section" id="wasserstein-distance">
+<span id="id3"></span><h3>Wasserstein Distance<a class="headerlink" href="#wasserstein-distance" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="definition">
+<h4>Definition<a class="headerlink" href="#definition" title="Permalink to this headline">¶</a></h4>
+<p>KL divergence can measure the ‘distance’ between two distributions, but it is asymmetric. Wasserstein distance of two distributions, is symmetric, and it is actually a metric.</p>
+<dl class="simple myst">
+<dt>Definition</dt><dd><p>Given two distributions <span class="math notranslate nohighlight">\(P\)</span> and <span class="math notranslate nohighlight">\(Q\)</span> over a region <span class="math notranslate nohighlight">\(D\)</span> in <span class="math notranslate nohighlight">\(\mathbb{R} ^{d}\)</span>, let <span class="math notranslate nohighlight">\(\mathcal{\Pi}\)</span> be all joint distributions <span class="math notranslate nohighlight">\(\pi(X, Y)\)</span> over <span class="math notranslate nohighlight">\(D \times D\)</span> that have marginals <span class="math notranslate nohighlight">\(P\)</span> and <span class="math notranslate nohighlight">\(Q\)</span>. Then the <span class="math notranslate nohighlight">\(p\)</span>-Wasserstein distance between <span class="math notranslate nohighlight">\(P\)</span> and <span class="math notranslate nohighlight">\(Q\)</span> is defined as</p>
+</dd>
+</dl>
+<div class="math notranslate nohighlight">
+\[
+W_{p}(P, Q)=\left(\inf _{\pi \in \mathcal{\Pi} (P, Q)} \int\|x-y\|^{p} \pi(x, y) \mathrm{~d}x \mathrm{~d} y \right)^{1 / p}
+\]</div>
+<p>Specifically, <span class="math notranslate nohighlight">\(\mathcal{\Pi} (P, Q)\)</span> represents the collection of all binary functions <span class="math notranslate nohighlight">\(\pi\)</span> satisfying</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\int \pi(x,y) \mathrm{~d}y = P(x)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\int \pi(x,y) \mathrm{~d}x = Q(y)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\pi(x,y) \ge 0\)</span></p></li>
+</ul>
+<p>It can be shown that <span class="math notranslate nohighlight">\(W_p\)</span> satisfies all the axioms of a metric.</p>
+<p>Usually, <span class="math notranslate nohighlight">\(p=1\)</span> is used. <span class="math notranslate nohighlight">\(1\)</span>-Wasserstein distance is also known as Earth mover’s distance (EMD) in computer science. Informally, if the distributions are interpreted as two different ways of piling up a certain amount of dirt over the region <span class="math notranslate nohighlight">\(D\)</span>, the EMD is the minimum cost of turning one pile into the other.</p>
+</div>
+<div class="section" id="dual-form">
+<span id="wasserstein-dual"></span><h4>Dual Form<a class="headerlink" href="#dual-form" title="Permalink to this headline">¶</a></h4>
+<p>It can be shown that the dual formulation is</p>
+<div class="math notranslate nohighlight">
+\[
+W_p ^p(P, Q) =\sup _{\psi, \phi} \int \psi(y)  Q(y) \mathrm{~d}y-\int \phi(x)  P(x) \mathrm{~d}x
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\psi(y) - \phi(x) \le \left\| x - y \right\| ^p\)</span>.</p>
+<p>In special case where <span class="math notranslate nohighlight">\(p=1\)</span> we have the very simple representation</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\sup_{f \text{ is 1-Lipschitz} } &amp;&amp; \int f (x) P(x) \mathrm{~d} x -  \int f (y) Q(y) \mathrm{~d} y\\
+\end{aligned}\end{split}\]</div>
+<div class="dropdown seealso admonition">
+<p class="admonition-title"> <em>Proof</em></p>
+<p>When <span class="math notranslate nohighlight">\(p=1\)</span>, consider the above three constarints, the Lagragean is</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\mathcal{L} (\pi, f_1, f_2, M)
+&amp;= \int \left\| x - y \right\| \pi(x, y) \mathrm{~d}x \mathrm{~d} y   \\
+&amp;- \langle f_1, \int \pi(\cdot,y) \mathrm{~d}y - p(\cdot) \rangle \\
+&amp;- \langle f_2, \int \pi(x,\cdot) \mathrm{~d}y - p_T(\cdot) \rangle \\
+&amp;- \langle M, \pi \rangle \\
+\end{aligned}\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(f_1 (\cdot), f_2(\cdot)\)</span> and <span class="math notranslate nohighlight">\(M(\cdot, \cdot)\)</span> are dual functions, and <span class="math notranslate nohighlight">\(\langle \cdot, \cdot \rangle\)</span> is the inner product of two functions: <span class="math notranslate nohighlight">\(\langle f, g \rangle = \int f(x)g(x) \mathrm{~d}x\)</span>.</p>
+<p>Setting the first order derivative to 0 gives</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{\partial \mathcal{L}}{\partial \pi} = 0  \Leftrightarrow \left\| x - y \right\| - f_1 (x) - f_2 (y) = M \ge 0
+\]</div>
+<p>Substituting this equality, the dual problem is then</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\sup_{f_1, f_2} &amp;&amp; \int f_1 (x) P(x) \mathrm{~d} x +  \int f_2 (y) Q(y) \mathrm{~d} y\\
+\mathrm{s.t.}
+&amp;&amp; \left\| x- y \right\|  \ge f_1(x) + f_2(y)\\
+\end{aligned}\end{split}\]</div>
+<p>Lemma: For <span class="math notranslate nohighlight">\(W_1\)</span>, we have a relation of two maximizers <span class="math notranslate nohighlight">\(f_2 = - f_1\)</span>.</p>
+<p>Hence, the problem becomes.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\sup_{f_1} &amp;&amp; \int f_1 (x) P(x) \mathrm{~d} x -  \int f_1 (y) Q(y) \mathrm{~d} y\\
+\mathrm{s.t.}
+&amp;&amp; \left\| x- y \right\|  \ge f_1(x) - f_1(y)\\
+\end{aligned}\end{split}\]</div>
+<p>Equivalently,</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\sup_{f \text{ is 1-Lipshitz} } &amp;&amp; \int f (x) P(x) \mathrm{~d} x -  \int f (y) Q(y) \mathrm{~d} y\\
+\end{aligned}\end{split}\]</div>
+</div>
+</div>
+<div class="section" id="examples">
+<h4>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h4>
+<ul>
+<li><p>In particular, when <span class="math notranslate nohighlight">\(d=1\)</span>, the distance has a closed form</p>
+<div class="math notranslate nohighlight">
+\[
+  W_{p}(P, Q)=\left(\int_{0}^{1}\left|F^{-1}(z)-G^{-1}(z)\right|^{p}\right)^{1 / p}
+  \]</div>
+<p>where <span class="math notranslate nohighlight">\(F\)</span> and <span class="math notranslate nohighlight">\(G\)</span> are the CDF’s of <span class="math notranslate nohighlight">\(P\)</span> and <span class="math notranslate nohighlight">\(Q\)</span>.</p>
+<p>If <span class="math notranslate nohighlight">\(P\)</span> is the empirical distribution of a dataset <span class="math notranslate nohighlight">\(x_1, x_2, \ldots, x_n\)</span> and <span class="math notranslate nohighlight">\(Q\)</span> is the empirical distribution of another dataset <span class="math notranslate nohighlight">\(y_1, y_2, \ldots, y_n\)</span> of the same size, then the distance takes a very simple function of the order statistics:</p>
+<div class="math notranslate nohighlight">
+\[
+  W_{p}(P, Q)=\left(\sum_{i=1}^{n}\left\|x_{(i)}-y_{(i)}\right\|^{p}\right)^{1 / p}
+  \]</div>
+</li>
+<li><p>An interesting special case occurs for normal distributions. If <span class="math notranslate nohighlight">\(P=\mathcal{N}\left(\boldsymbol{\mu}_{1}, \boldsymbol{\Sigma}_{1}\right)\)</span> and <span class="math notranslate nohighlight">\(Q=\mathcal{N}\left(\boldsymbol{\mu}_{2}, \boldsymbol{\Sigma}_{2}\right)\)</span> then</p>
+<div class="math notranslate nohighlight">
+\[
+  W^{2}(P, Q)=\left\|\boldsymbol{\mu}_{1}-\boldsymbol{\mu}_{2}\right\|^{2}+B^{2}\left(\boldsymbol{\Sigma}_{1}, \boldsymbol{\Sigma} _2\right)
+  \]</div>
+<p>where</p>
+<div class="math notranslate nohighlight">
+\[
+  B^{2}\left(\boldsymbol{\Sigma}_{1}, \boldsymbol{\Sigma} _2\right)=\operatorname{tr}\left(\boldsymbol{\Sigma}_{1}\right)+\operatorname{tr}\left(\boldsymbol{\Sigma}_{2}\right)-2 \operatorname{tr}\left[\left(\boldsymbol{\Sigma}_{1}^{1 / 2} \boldsymbol{\Sigma}_{2} \boldsymbol{\Sigma}_{1}^{1 / 2}\right)^{1 / 2}\right]
+  \]</div>
+</li>
+</ul>
+<p>Reference</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.stat.cmu.edu/~larry/=sml/Opt.pdf">Larry’s notes</a></p></li>
+</ul>
+</div>
+</div>
 </div>
 <div class="section" id="identities">
 <h2>Identities<a class="headerlink" href="#identities" title="Permalink to this headline">¶</a></h2>
@@ -1347,7 +1523,20 @@ and <span class="math notranslate nohighlight">\(\mathcal{N}(\mu_{q},\Sigma_{q})
 \[
 \operatorname{H}(Y\vert X)=\operatorname{H}(X,Y)-\operatorname{H}(X)
 \]</div>
-<p>where we have the following interpretation</p>
+<div class="dropdown seealso admonition">
+<p class="admonition-title"> <em>Proof</em></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}\operatorname{H}(Y\vert X)
+&amp; = -\sum_{x\in\mathcal{X},y\in\mathcal{Y}}p(x,y)\log\frac{p(x)}{p(x,y)}\\
+ &amp; =- \sum_{x\in\mathcal{X},y\in\mathcal{Y}}p(x,y)(\log p(x)-\log p(x,y))\\
+ &amp; =-\sum_{x\in\mathcal{X},y\in\mathcal{Y}}p(x,y)\log p(x,y)+\sum_{x\in\mathcal{X},y\in\mathcal{Y}}p(x,y)\log p(x)\\
+ &amp; =\operatorname{H}(X,Y)+\sum_{x\in\mathcal{X}}p(x)\log p(x)\\
+ &amp; =\operatorname{H}(X,Y)-\operatorname{H}(X)
+\end{aligned}
+\end{split}\]</div>
+</div>
+<p>Interpretation</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(\operatorname{H}(X,Y)\)</span> measures the bits of information on average to describe the state of the combined system <span class="math notranslate nohighlight">\((X,Y)\)</span></p></li>
 <li><p><span class="math notranslate nohighlight">\(\operatorname{H}(X)\)</span> measures the bits of information we have about <span class="math notranslate nohighlight">\(\operatorname{H}(X)\)</span></p></li>
@@ -1358,18 +1547,6 @@ and <span class="math notranslate nohighlight">\(\mathcal{N}(\mu_{q},\Sigma_{q})
 \[ \operatorname{H}\left(X_{1},X_{2},\ldots,X_{n}\right)=\sum_{i=1}^{n}\operatorname{H}\left(X_{i}\vert X_{1},\ldots,X_{i-1}\right)
 \]</div>
 <p>which has a similar form to chain rule in probability theory, except that here is addition <span class="math notranslate nohighlight">\(\sum_{i=1}^{n}\)</span> instead of multiplication <span class="math notranslate nohighlight">\(\Pi_{i=1}^{n}\)</span>.</p>
-<p><em><strong>Proof</strong></em></p>
-<p>By definition,</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
-  \begin{aligned}\operatorname{H}(Y\vert X)
-  &amp; = -\sum_{x\in\mathcal{X},y\in\mathcal{Y}}p(x,y)\log\frac{p(x)}{p(x,y)}\\
-   &amp; =- \sum_{x\in\mathcal{X},y\in\mathcal{Y}}p(x,y)(\log p(x)-\log p(x,y))\\
-   &amp; =-\sum_{x\in\mathcal{X},y\in\mathcal{Y}}p(x,y)\log p(x,y)+\sum_{x\in\mathcal{X},y\in\mathcal{Y}}p(x,y)\log p(x)\\
-   &amp; =\operatorname{H}(X,Y)+\sum_{x\in\mathcal{X}}p(x)\log p(x)\\
-   &amp; =\operatorname{H}(X,Y)-\operatorname{H}(X)
-  \end{aligned}
-  \end{split}\]</div>
 </div>
 <div class="section" id="bayes-rule-for-conditional-entropy">
 <h3>Bayes’ Rule for Conditional Entropy<a class="headerlink" href="#bayes-rule-for-conditional-entropy" title="Permalink to this headline">¶</a></h3>

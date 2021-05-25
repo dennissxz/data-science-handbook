@@ -5,13 +5,14 @@
 First we introduce the definitions of some fundamental concepts in informaition theory summarized in the table below.
 
 $$\begin{align}
-& \text{Entropy} & \operatorname{H}(Y)&=-\sum_{\mathcal{Y}}p(y)\log p(y) \\
-& \text{Differntial Entropy} & h(Y)&=-\int_{\mathcal{Y}}f(y)\log f(y)\mathrm{~d}y \\
-& \text{Joint Entropy} & \operatorname{H}(X,Y)&=-\operatorname{E}_{X,Y\sim p(x,y)}\log\operatorname{P}(X,Y) \\
-& \text{Conditional Entropy} & \operatorname{H}(Y\vert X)&=-\operatorname{E}_{X,Y\sim p(x,y)}\log \operatorname{P}(Y\mid X) \\
-& \text{Cross Entropy} & \operatorname{H}(P,Q)&=-\operatorname{E}_{Y\sim P}\left[\ln\left(Q(Y)\right)\right] \\
-& \text{KL Divergence} & \operatorname{KL}(P,Q)&=\operatorname{E}_{Y\sim P}\left[\ln\frac{P(Y)}{Q(Y)}\right] \\
-& \text{Mutual Information} & \operatorname{I}(X,Y)&=\operatorname{KL}\left(P_{X,Y},P_{X}P_{Y}\right)
+& \text{Name} & & \text{Definition}  & & \text{Remark}  \\
+& \text{Entropy} & \operatorname{H}(Y)&=-\sum_{\mathcal{Y}}p(y)\log p(y) & & \text{Non-negative} \\
+& \text{Differntial Entropy} & h(Y)&=-\int_{\mathcal{Y}}f(y)\log f(y)\mathrm{~d}y & & \text{Can be negative} \\
+& \text{Joint Entropy} & \operatorname{H}(X,Y)&=-\mathbb{E}_{X,Y\sim p(x,y)}\log\operatorname{P}(X,Y) & & \\
+& \text{Conditional Entropy} & \operatorname{H}(Y\vert X)&=-\mathbb{E}_{X,Y\sim p(x,y)}\log \operatorname{P}(Y\mid X) & & \text{Sampling from } p(x,y) \\
+& \text{Cross Entropy} & \operatorname{H}(P,Q)&=-\mathbb{E}_{Y\sim P}\log Q(Y) & & \text{Asymmetric} \\
+& \text{KL Divergence} & \operatorname{KL}(P,Q)&=\mathbb{E}_{Y\sim P}\log\frac{P(Y)}{Q(Y)} & & \text{Non-negative. Asymmetric} \\
+& \text{Mutual Information} & \operatorname{I}(X,Y)&=\operatorname{KL}\left(P_{X,Y},P_{X}P_{Y}\right) && \text{Non-negative. Symmetric}
 \end{align}$$
 
 ### Shannon Entropy
@@ -22,7 +23,7 @@ Definition
 
 $$\begin{align}
 \operatorname{H}\left( Y \right)
-&= \operatorname{E}_{Y\sim p(y)}\left[ - \log \operatorname{P}\left( Y \right) \right]\\
+&= \mathbb{E}_{Y\sim p(y)}\left[ - \log \operatorname{P}\left( Y \right) \right]\\
 &= -\sum_{i=1}^{n}p(y_i)\log p(y_i)
 \end{align}$$
 
@@ -33,7 +34,7 @@ Entropy has similarity with variance. Both are non-negative, measure uncertainty
 ```
 
 Properties
-: $\operatorname{H}\left( Y \right) > 0$
+: $\operatorname{H}\left( Y \right) \ge 0$ with equalit iff $p(y)=1$ for some $y$, i.e. no uncertainty.
 
 (differential-entropy)=
 ### Differential Entropy
@@ -47,7 +48,7 @@ Definition
 
 
 ```{note}
-  Differential Entropy began as an attempt by Shannon to extend the idea of Shannon entropy to continuous PDF. Actually, the correct extension of Shannon entropy to continuous distributions is called limiting density of discrete points (LDDP), while differential entropy, aka continuous entropy, is a limiting case of the LDDP.
+Differential Entropy began as an attempt by Shannon to extend the idea of Shannon entropy to continuous PDF. Actually, the correct extension of Shannon entropy to continuous distributions is called limiting density of discrete points (LDDP), while differential entropy, aka continuous entropy, is a limiting case of the LDDP.
 ```
 
 Properties
@@ -68,25 +69,73 @@ Examples
 : - Consider a uniform distribution over an interval on the real line of width $\Delta$, then $p(y) = \frac{1}{\Delta}$, and hence the entropy is
 
     $$\begin{align}
-    h(X) &= \operatorname{E}_{x\sim p(\cdot)}\left( - \ln \frac{1}{\Delta}  \right)\\
+    h(Y) &= \mathbb{E}_{y\sim p(\cdot)} \left[ - \ln \frac{1}{\Delta} \right]\\
     &= \ln \Delta \\
     \end{align}$$
 
-    As $\Delta \rightarrow 0$, we have $h\rightarrow -\infty$.
+    When $\Delta < 1$, we have $h\rightarrow < 0$.
 
-  - The entropy for a Gaussian variable with density $\mathcal{N}(0, \sigma^2)$ is
+  - The entropy for a Gaussian variable with density $\mathcal{N}(\mu, \sigma^2)$ is
 
     $$
-    h \left( \mathcal{N}(0, \sigma^2) \right) = \ln(\sigma \sqrt{2 \pi e})
+    h \left( \mathcal{N}(\mu, \sigma^2) \right) = \ln(\sigma \sqrt{2 \pi e})
     $$
 
-    - Obviously, the entropy does not depend on $\mu$.
-    - As $\sigma \rightarrow 0$, we have $h\rightarrow -\infty$.
-    - Among all continuous distribution $P$ with mean zero, variance $\sigma^2$, normal distribution has the largest differential entropy, i.e. most randomness.
+    :::{admonition,dropdown,seealso} *Proof*
 
-      $$h(P) \le \ln(\sigma \sqrt{2 \pi e})$$
+    Let $\phi(y)$ be the density of $\mathcal{N} (\mu, \sigma^2)$
 
-  - Consider the uniform distribution above. Suppose the unit is meter and the interval is $(0, 1000)$. Note if we change the unit to kilometer, then the interval changes to $(0, 1)$, and the interval decreases from $\ln 1000$ to $\ln 1$.
+    $$\begin{aligned}
+    h(Y)
+    &= -\int_{\mathcal{Y}}\phi(y)\ln \phi(y)\mathrm{~d}y\\
+    &= - \int \frac{1}{\sqrt{2 \pi} \sigma} \exp \left( -\frac{(y-\mu)^2}{\sigma^2} \right) \left[ - \ln(\sqrt{2 \pi} \sigma)  -\frac{(y-\mu)^2}{2\sigma^2} \right] \mathrm{~d} y\\
+    &=  \ln(\sqrt{2 \pi} \sigma) + \int \frac{1}{\sqrt{2 \pi} \sigma} \exp \left( -\frac{(y-\mu)^2}{\sigma^2} \right) \left[\frac{(y-\mu)^2}{2\sigma^2} \right] \mathrm{~d} y\\
+    &= \ln(\sqrt{2 \pi} \sigma) +  \mathbb{E} \left[\frac{(y-\mu)^2}{2\sigma^2} \right] \\
+    &= \ln(\sqrt{2 \pi} \sigma) +  \frac{\mathbb{E} [X^2] - 2\mu \mathbb{E} [X] + \mu^2  } {2\sigma^2} \\
+    &= \ln(\sqrt{2 \pi} \sigma) +  \frac{1}{2}  \\
+    &= \ln(\sqrt{2 \pi e} \sigma)\\
+    \end{aligned}$$
+
+    :::
+
+    - Obviously, the entropy does not depend on location $\mu$ but only depends on scale $\sigma$.
+    - When $\sigma < \frac{1}{\sqrt{2 \pi e}}$, we have $h< 0$.
+    - Among all continuous distribution $f(y)$ with mean $\mu$, variance $\sigma^2$, normal distribution has the largest differential entropy, i.e. most randomness.
+
+      $$h(Y) \le \ln(\sigma \sqrt{2 \pi e})\quad \forall f(y): \mathbb{E} [Y] = \mu, \operatorname{Var}\left( Y \right) = \sigma^2$$
+
+      :::{admonition,dropdown,seealso} *Proof*
+
+      Lemma: Let $\phi(y)$ be the density of $\mathcal{N} (\mu, \sigma^2)$, then note that
+
+      $$\begin{aligned}
+      -\int_{\mathcal{Y}}f(y)\ln \phi(y)\mathrm{~d}y
+      &= - \int f(y) \left[ - \ln(\sqrt{2 \pi} \sigma)  -\frac{(y-\mu)^2}{2\sigma^2} \right] \mathrm{~d} y\\
+      &=  \ln(\sqrt{2 \pi} \sigma) + \int f(y) \left[\frac{(y-\mu)^2}{2\sigma^2} \right] \mathrm{~d} y\\
+      &= \ln(\sqrt{2 \pi} \sigma) +  \mathbb{E} \left[\frac{(y-\mu)^2}{2\sigma^2} \right] \\
+      &= \ln(\sqrt{2 \pi} \sigma) +  \frac{\mathbb{E} [Y^2] - 2\mu \mathbb{E} [Y] + \mu^2  } {2\sigma^2} \\
+      &= \ln(\sqrt{2 \pi} \sigma) +  \frac{1}{2}  \\
+      &= \ln(\sqrt{2 \pi e} \sigma)\\
+      \end{aligned}$$
+
+      Hence,
+
+      $$\begin{aligned}
+      h(Y)
+      &= - \int f(y) \ln f(y) \mathrm{~d} y\\
+      &= - \int f(y) \ln \left( \frac{f(y)}{\phi(y)} \phi(y) \right)  \mathrm{~d} y\\
+      &= - \int f(y) \ln \frac{f(y)}{\phi(y)}  \mathrm{~d} y - \int f(y) \ln \phi (y)  \mathrm{~d} y\\
+      &= - \mathbb{E} _f\left[- \ln \frac{\phi(y)}{f (y)}  \right] +  \ln(\sqrt{2 \pi e} \sigma) \quad \because \text{Lemma} \\
+      &\le \ln \mathbb{E} _f\left[ \frac{\phi(y)}{f (y)}  \right] +  \ln(\sqrt{2 \pi e} \sigma) \quad \because \text{Jensen's inequality}  \\
+      &= \ln \int f(y) \frac{\phi(y)}{f(y)}  \mathrm{~d} y+  \ln(\sqrt{2 \pi e} \sigma) \\
+      &= \ln(\sqrt{2 \pi e} \sigma)\\
+      \end{aligned}$$
+
+      The equality hold if and only if $\frac{\phi(y)}{f(y)}$ is a constant for all $y$, i.e. $Y$ is of normal distribution.
+
+      :::
+
+  - Consider the uniform distribution above. Suppose the unit is meter and the interval is $(0, 1000)$. Note if we change the unit to kilometer, then the interval changes to $(0, 1)$, and the entropy decreases from $\ln 1000$ to $\ln 1$.
 
 
     ```{note}
@@ -94,7 +143,7 @@ Examples
     ```
 
 Definition (NegEntropy)
-: Short for Negative Entropy, is a non-Gaussian-ness measure, a measure of distance to normality. The negEntropy for a random variable $X$ is
+: Short for Negative Entropy, it is a non-Gaussian-ness measure, a measure of distance to normality. The negEntropy for a random variable $X$ is
 
   $$
   J(X) = \operatorname{H} (Z) - \operatorname{H} (X)
@@ -102,7 +151,7 @@ Definition (NegEntropy)
 
   where $\operatorname{H} (Z)$ is the differential entropy of the Gaussian density with the same mean and variance as $X$.
 
-NegEntropy is use for its convenience in computation and approximation. A common approximation (supposedly from Jones 1987)
+NegEntropy is used for its convenience in computation and approximation. A common approximation (supposedly from Jones 1987)
 
 $$
 J(X) \approx \frac{1}{12} \mathbb{E} [X^{3}]^{2}+\frac{1}{48} \kappa(X)^{2}
@@ -118,7 +167,7 @@ Definition
   $$
   \begin{align}
   \operatorname{H}(X,Y)
-  & = \operatorname{E}_{X,Y\sim p(x, y)}\left[ - \log \operatorname{P}(X,Y) \right]\\
+  & = \mathbb{E}_{X,Y\sim p(x, y)}\left[ - \log \operatorname{P}(X,Y) \right]\\
   & = - \sum_{x\in\mathcal{X}}\sum_{y\in\mathcal{Y}}p(x,y)\log_{2}[p(x,y)]
   \end{align}
   $$
@@ -144,7 +193,7 @@ Definition
 Properties of Discrete Joint Entropy
 : - Nonnegativeity: $\operatorname{H}(X,Y)\ge0$
   - Greater than or equal to individual entropies: $\operatorname{H}(X,Y)\ge\max\left(\operatorname{H}(X),\operatorname{H}(Y)\right)$
-  - Less than or equal to the sum of individual entropies $\operatorname{H}(X,Y)\le \operatorname{H}(X)+\operatorname{H}(Y)$
+  - Less than or equal to the sum of individual entropies $\operatorname{H}(X,Y)\le \operatorname{H}(X)+\operatorname{H}(Y)$. Equality holds iff $X$ and $Y$ are independent.
 
 
 
@@ -156,7 +205,7 @@ Definition
 
   $$\begin{align}
   \operatorname{H}(Y\mid X)
-  & = \operatorname{E}_{X,Y\sim p(x, y)}\left[ - \log \operatorname{P}(Y \mid X) \right]\\
+  & = \mathbb{E}_{X,Y\sim p(x, y)}\left[ - \log \operatorname{P}(Y \mid X) \right]\\
   &=-\sum_{x\in\mathcal{X},y\in\mathcal{Y}}p(x,y)\log p(y\vert x) \\
   h(Y\mid X)	&=-\int_{\mathcal{X},\mathcal{Y}}f(x,y)\log f(y\vert x)\mathrm{~d}x\mathrm{~d}y
   \end{align}$$
@@ -213,7 +262,7 @@ support $\mathcal{Y}$ is defined as
 
 $$
 \begin{align}
-\operatorname{H}\left( P, Q \right) & =\operatorname{E}_{Y\sim p(y)}\left[-\ln\left(Q(Y)\right)\right]\\
+\operatorname{H}\left( P, Q \right) & =\mathbb{E}_{Y\sim p(y)}\left[-\ln\left(Q(Y)\right)\right]\\
  & =\int_{\mathcal{Y}}f_{P}(y)\left[-\ln\left(f_{Q}(y)\right)\right]\text{d}y\quad\text{for continuous}\ P,Q\\
  & =-\sum_{y\in\mathcal{Y}}P(y)\log Q(y)\qquad\qquad\text{for discrete}\ P,Q
 \end{align}
@@ -237,29 +286,31 @@ Properties
 
 Cross entropy is tightly related to KL divergence.
 
+(kl-divergence)=
 ### Kullback-Leibler Divergence
 
+Definition
 : The KL Divergence of two distributions $P$ and $Q$ on the \textbf{same}
 support $\mathcal{Y}$ is defined as
 
   $$
   \begin{aligned}
-  \operatorname{KL}\left( P, Q \right) & =\operatorname{E}_{Y\sim p(y)}\left[\ln\frac{P(Y)}{Q(Y)}\right]
+  \operatorname{KL}\left( P, Q \right) & =\mathbb{E}_{Y\sim p(y)}\left[\ln\frac{P(Y)}{Q(Y)}\right]
   \end{aligned}
   $$
 
-Kullback--Leibler divergence (also called relative entropy) is a  measure of how one probability distribution is different from a second,  reference probability distribution, i.e. the **distance** between  two distributions on the same support. It is a distribution-wise **asymmetric** measure and thus does not qualify as a statistical **metric** of spread - it also does not satisfy the triangle inequality.
+Kullback--Leibler divergence (also called relative entropy) is a  measure of how one probability distribution is different from a second, reference probability distribution, i.e. the **distance** between two distributions on the same support.
 
 Properties
 : - $\operatorname{KL}\left( P, Q \right) \ge 0$, with equality iff the two distributions are identical.
 
+    :::{admonition,dropdown,seealso} *Proof*
 
-    ```{dropdown} Proof
     KL divergence is non-negative by Jensen's inequality of convex functions
 
     $$
-    \begin{aligned}\operatorname{KL}\left( P, Q \right) & =\operatorname{E}_{y\sim p(\cdot)}\left[-\ln\frac{Q(y)}{P(y)}\right]\\
-     & \geq-\ln \operatorname{E}_{y\sim p(\cdot)}\frac{Q(y)}{P(y)}\\
+    \begin{aligned}\operatorname{KL}\left( P, Q \right) & =\mathbb{E}_{y\sim p(\cdot)}\left[-\ln\frac{Q(y)}{P(y)}\right]\\
+     & \geq-\ln \mathbb{E}_{y\sim p(\cdot)}\frac{Q(y)}{P(y)}\\
      & =-\ln\sum_{y}P(y)\frac{Q(y)}{P(y)}\\
      & =-\ln\sum_{y}Q(y)\\
      & =0
@@ -275,8 +326,10 @@ Properties
 
     Equality holds iff $\forall y\ P(y)=Q(y)$, i.e. two distributions
     are identical.
-    ```
 
+    :::
+
+  - It is a distribution-wise **asymmetric** measure and thus does not qualify as a statistical **metric** of spread - it also does not satisfy the triangle inequality.
 
   - Relation to cross entropy:
 
@@ -294,23 +347,23 @@ Properties
     i.e. minimizing/maximizing the KL divergence $\operatorname{KL}\left( P, Q \right)$ of two distributions is equivalent to minimizing/maximizing their cross entropy $\operatorname{H}\left( P, Q \right)$, given $P$ is a fixed distribution.
 
 Example
-: The KL-Divergence between two multivariate Gaussian $\mathcal{N}(\mu_{p},\Sigma_{p})$
-and $\mathcal{N}(\mu_{q},\Sigma_{q})$ is
+: The KL-Divergence between two multivariate Gaussian $\mathcal{N}(\boldsymbol{\mu}_{p},\boldsymbol{\Sigma}_{p})$
+and $\mathcal{N}(\boldsymbol{\mu}_{q},\boldsymbol{\Sigma}\boldsymbol{\Sigma}_{q})$ is
 
   $$
-  \operatorname{KL}\left( P, Q \right)=\frac{1}{2}\left[\log\frac{\left|\Sigma_{q}\right|}{\left|\Sigma_{p}\right|}-k+\left(\mu_{p}-\mu_{q}\right)^{T}\Sigma_{q}^{-1}\left(\mu_{p}-\mu_{q}\right)+\operatorname{tr}\left\{ \Sigma_{q}^{-1}\Sigma_{p}\right\} \right]
+  \operatorname{KL}\left( P, Q \right)=\frac{1}{2}\left[\log\frac{\left|\boldsymbol{\Sigma}_{q}\right|}{\left|\boldsymbol{\Sigma}_{p}\right|}-k+\left(\boldsymbol{\mu}_{p}-\boldsymbol{\mu}_{q}\right)^{\top}\boldsymbol{\Sigma}_{q}^{-1}\left(\boldsymbol{\mu}_{p}-\boldsymbol{\mu}_{q}\right)+\operatorname{tr} (\boldsymbol{\Sigma}_{q}^{-1}\boldsymbol{\Sigma}_{p}) \right]
   $$
 
   In particular, if the reference distribution $Q$ is $\mathcal{N}(0,I)$ then we get
 
   $$
-  \operatorname{KL}\left( P, Q \right)=\frac{1}{2}\left[\Vert\mu_{p}\Vert^{2}+\operatorname{tr}\left\{ \Sigma_{p}\right\} -k-\log\left|\Sigma_{p}\right|\right]
+  \operatorname{KL}\left( P, Q \right)=\frac{1}{2}\left[\Vert\boldsymbol{\mu}_{p}\Vert^{2}+\operatorname{tr}(\boldsymbol{\Sigma}_{p}) -k-\log\left|\boldsymbol{\Sigma}_{p}\right|\right]
   $$
-
 
 
 (mutual-information)=
 ### Mutual Information
+
 Aka information gain.
 
 Definition
@@ -318,7 +371,7 @@ Definition
 
   $$\begin{align}
   \operatorname{I}\left(X, Y \right) & = \operatorname{KL}\left(\operatorname{P}_{X,Y},\operatorname{P}_{X}\operatorname{P}_{Y}\right)\\
-   & = \operatorname{E}_{X,Y}\left[ \ln\frac{\operatorname{P}_{X,Y}(X,Y)}{\operatorname{P}_X(X)\operatorname{P}_Y(Y)} \right]\\
+   & = \mathbb{E}_{X,Y}\left[ \ln\frac{\operatorname{P}_{X,Y}(X,Y)}{\operatorname{P}_X(X)\operatorname{P}_Y(Y)} \right]\\
   \end{align}$$
 
   For discrete case,
@@ -331,11 +384,11 @@ Definition
 
   $$
   \operatorname{I}\left(X, Y \right)=\int_{\mathcal{Y} }\int_{\mathcal{X}}p_{X,Y}(x,y)\log\left(\frac{p_{(X,Y)}(x,y)}{p_{X}(x)p_{Y}(y)}\right)
-$$
+  $$
 
 Properties
-: - $\operatorname{I}(X,Y) \ge 0$, with equality holds iff $P_{X,Y}=P_{X}P_{Y}$, i.e. when $X$ and $Y$ are independent, and hence there is no mutual dependence.
-  - $\operatorname{I}(X,Y) =\operatorname{H}(X)+\operatorname{H}(Y)-\operatorname{H}\left(X, Y \right)$
+: - $\operatorname{I}(X,Y) =\operatorname{H}(X)+\operatorname{H}(Y)-\operatorname{H}\left(X, Y \right)$
+  - $\operatorname{I}(X,Y) \ge 0$, with equality iff $P_{X,Y}=P_{X}P_{Y}$, i.e. when $X$ and $Y$ are independent, and hence there is no mutual dependence.
 
 Mutual information is a measure of the mutual **dependence** between the two variables. More specifically, it quantifies the amount of information (in units such as shannons, commonly called bits) obtained about one random variable through observing the other random variable.
 
@@ -349,6 +402,123 @@ Similar to absolute correlation $\left\vert \rho \right\vert$,  both are
 But $\vert\rho\vert=0\ \not{\Rightarrow}\ X\perp Y$ while $\operatorname{I}\left(X, Y \right)=0\ \Leftrightarrow\ X\perp Y$.
 ```
 
+(wasserstein-distance)=
+### Wasserstein Distance
+
+#### Definition
+
+KL divergence can measure the 'distance' between two distributions, but it is asymmetric. Wasserstein distance of two distributions, is symmetric, and it is actually a metric.
+
+Definition
+: Given two distributions $P$ and $Q$ over a region $D$ in $\mathbb{R} ^{d}$, let $\mathcal{\Pi}$ be all joint distributions $\pi(X, Y)$ over $D \times D$ that have marginals $P$ and $Q$. Then the $p$-Wasserstein distance between $P$ and $Q$ is defined as
+
+$$
+W_{p}(P, Q)=\left(\inf _{\pi \in \mathcal{\Pi} (P, Q)} \int\|x-y\|^{p} \pi(x, y) \mathrm{~d}x \mathrm{~d} y \right)^{1 / p}
+$$
+
+Specifically, $\mathcal{\Pi} (P, Q)$ represents the collection of all binary functions $\pi$ satisfying
+- $\int \pi(x,y) \mathrm{~d}y = P(x)$
+- $\int \pi(x,y) \mathrm{~d}x = Q(y)$
+- $\pi(x,y) \ge 0$
+
+It can be shown that $W_p$ satisfies all the axioms of a metric.
+
+Usually, $p=1$ is used. $1$-Wasserstein distance is also known as Earth mover's distance (EMD) in computer science. Informally, if the distributions are interpreted as two different ways of piling up a certain amount of dirt over the region $D$, the EMD is the minimum cost of turning one pile into the other.
+
+(wasserstein-dual)=
+#### Dual Form
+
+It can be shown that the dual formulation is
+
+$$
+W_p ^p(P, Q) =\sup _{\psi, \phi} \int \psi(y)  Q(y) \mathrm{~d}y-\int \phi(x)  P(x) \mathrm{~d}x
+$$
+
+where $\psi(y) - \phi(x) \le \left\| x - y \right\| ^p$.
+
+In special case where $p=1$ we have the very simple representation
+
+$$\begin{aligned}
+\sup_{f \text{ is 1-Lipschitz} } && \int f (x) P(x) \mathrm{~d} x -  \int f (y) Q(y) \mathrm{~d} y\\
+\end{aligned}$$
+
+:::{admonition,dropdown,seealso} *Proof*
+
+When $p=1$, consider the above three constarints, the Lagragean is
+
+$$\begin{aligned}
+\mathcal{L} (\pi, f_1, f_2, M)
+&= \int \left\| x - y \right\| \pi(x, y) \mathrm{~d}x \mathrm{~d} y   \\
+&- \langle f_1, \int \pi(\cdot,y) \mathrm{~d}y - p(\cdot) \rangle \\
+&- \langle f_2, \int \pi(x,\cdot) \mathrm{~d}y - p_T(\cdot) \rangle \\
+&- \langle M, \pi \rangle \\
+\end{aligned}$$
+
+where $f_1 (\cdot), f_2(\cdot)$ and $M(\cdot, \cdot)$ are dual functions, and $\langle \cdot, \cdot \rangle$ is the inner product of two functions: $\langle f, g \rangle = \int f(x)g(x) \mathrm{~d}x$.
+
+Setting the first order derivative to 0 gives
+
+$$
+\frac{\partial \mathcal{L}}{\partial \pi} = 0  \Leftrightarrow \left\| x - y \right\| - f_1 (x) - f_2 (y) = M \ge 0
+$$
+
+Substituting this equality, the dual problem is then
+
+$$\begin{aligned}
+\sup_{f_1, f_2} && \int f_1 (x) P(x) \mathrm{~d} x +  \int f_2 (y) Q(y) \mathrm{~d} y\\
+\mathrm{s.t.}
+&& \left\| x- y \right\|  \ge f_1(x) + f_2(y)\\
+\end{aligned}$$
+
+Lemma: For $W_1$, we have a relation of two maximizers $f_2 = - f_1$.
+
+Hence, the problem becomes.
+
+$$\begin{aligned}
+\sup_{f_1} && \int f_1 (x) P(x) \mathrm{~d} x -  \int f_1 (y) Q(y) \mathrm{~d} y\\
+\mathrm{s.t.}
+&& \left\| x- y \right\|  \ge f_1(x) - f_1(y)\\
+\end{aligned}$$
+
+Equivalently,
+
+$$\begin{aligned}
+\sup_{f \text{ is 1-Lipshitz} } && \int f (x) P(x) \mathrm{~d} x -  \int f (y) Q(y) \mathrm{~d} y\\
+\end{aligned}$$
+
+:::
+
+#### Examples
+
+- In particular, when $d=1$, the distance has a closed form
+
+  $$
+  W_{p}(P, Q)=\left(\int_{0}^{1}\left|F^{-1}(z)-G^{-1}(z)\right|^{p}\right)^{1 / p}
+  $$
+
+  where $F$ and $G$ are the CDF's of $P$ and $Q$.
+
+  If $P$ is the empirical distribution of a dataset $x_1, x_2, \ldots, x_n$ and $Q$ is the empirical distribution of another dataset $y_1, y_2, \ldots, y_n$ of the same size, then the distance takes a very simple function of the order statistics:
+
+  $$
+  W_{p}(P, Q)=\left(\sum_{i=1}^{n}\left\|x_{(i)}-y_{(i)}\right\|^{p}\right)^{1 / p}
+  $$
+
+- An interesting special case occurs for normal distributions. If $P=\mathcal{N}\left(\boldsymbol{\mu}_{1}, \boldsymbol{\Sigma}_{1}\right)$ and $Q=\mathcal{N}\left(\boldsymbol{\mu}_{2}, \boldsymbol{\Sigma}_{2}\right)$ then
+
+  $$
+  W^{2}(P, Q)=\left\|\boldsymbol{\mu}_{1}-\boldsymbol{\mu}_{2}\right\|^{2}+B^{2}\left(\boldsymbol{\Sigma}_{1}, \boldsymbol{\Sigma} _2\right)
+  $$
+
+  where
+
+  $$
+  B^{2}\left(\boldsymbol{\Sigma}_{1}, \boldsymbol{\Sigma} _2\right)=\operatorname{tr}\left(\boldsymbol{\Sigma}_{1}\right)+\operatorname{tr}\left(\boldsymbol{\Sigma}_{2}\right)-2 \operatorname{tr}\left[\left(\boldsymbol{\Sigma}_{1}^{1 / 2} \boldsymbol{\Sigma}_{2} \boldsymbol{\Sigma}_{1}^{1 / 2}\right)^{1 / 2}\right]
+  $$
+
+Reference
+- [Larry's notes](https://www.stat.cmu.edu/~larry/=sml/Opt.pdf)
+
 ## Identities
 
 ### Chain Rule for Conditional Entropy
@@ -359,7 +529,22 @@ $$
 \operatorname{H}(Y\vert X)=\operatorname{H}(X,Y)-\operatorname{H}(X)
 $$
 
-where we have the following interpretation
+:::{admonition,dropdown,seealso} *Proof*
+
+$$
+\begin{aligned}\operatorname{H}(Y\vert X)
+& = -\sum_{x\in\mathcal{X},y\in\mathcal{Y}}p(x,y)\log\frac{p(x)}{p(x,y)}\\
+ & =- \sum_{x\in\mathcal{X},y\in\mathcal{Y}}p(x,y)(\log p(x)-\log p(x,y))\\
+ & =-\sum_{x\in\mathcal{X},y\in\mathcal{Y}}p(x,y)\log p(x,y)+\sum_{x\in\mathcal{X},y\in\mathcal{Y}}p(x,y)\log p(x)\\
+ & =\operatorname{H}(X,Y)+\sum_{x\in\mathcal{X}}p(x)\log p(x)\\
+ & =\operatorname{H}(X,Y)-\operatorname{H}(X)
+\end{aligned}
+$$
+
+:::
+
+Interpretation
+
 - $\operatorname{H}(X,Y)$ measures the bits of information on average to describe the state of the combined system $(X,Y)$
 
 - $\operatorname{H}(X)$ measures the bits of information we have about $\operatorname{H}(X)$
@@ -374,19 +559,6 @@ $$
 which has a similar form to chain rule in probability theory, except that here is addition $\sum_{i=1}^{n}$ instead of multiplication $\Pi_{i=1}^{n}$.
 
 
-***Proof***
-
-By definition,
-
-  $$
-  \begin{aligned}\operatorname{H}(Y\vert X)
-  & = -\sum_{x\in\mathcal{X},y\in\mathcal{Y}}p(x,y)\log\frac{p(x)}{p(x,y)}\\
-   & =- \sum_{x\in\mathcal{X},y\in\mathcal{Y}}p(x,y)(\log p(x)-\log p(x,y))\\
-   & =-\sum_{x\in\mathcal{X},y\in\mathcal{Y}}p(x,y)\log p(x,y)+\sum_{x\in\mathcal{X},y\in\mathcal{Y}}p(x,y)\log p(x)\\
-   & =\operatorname{H}(X,Y)+\sum_{x\in\mathcal{X}}p(x)\log p(x)\\
-   & =\operatorname{H}(X,Y)-\operatorname{H}(X)
-  \end{aligned}
-  $$
 
 ### Bayes' Rule for Conditional Entropy
 
