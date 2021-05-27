@@ -214,7 +214,7 @@ The term $Lt/3$ takes into account that each r.v. could be non-Gaussian like.
 
 [Reference](https://arxiv.org/pdf/1501.01571.pdf)
 
-Let $\boldsymbol{X}_1, \boldsymbol{X}_2, \ldots, \boldsymbol{X}_n \in \mathbb{R} ^\times {d_1 \times d_2}$ be i.i.d. random matrices with mean 0 and spectral norm $\left\| \boldsymbol{X} _i \right\|  \le L$. Let their sum be $\boldsymbol{S} = \sum_{i=1}^n \boldsymbol{X}_i$ and define the 'variance' as
+Let $\boldsymbol{X}_1, \boldsymbol{X}_2, \ldots, \boldsymbol{X}_n \in \mathbb{R} ^ {d_1 \times d_2}$ be i.i.d. random matrices with mean 0 and spectral norm $\left\| \boldsymbol{X} _i \right\|  \le L$. Let their sum be $\boldsymbol{S} = \sum_{i=1}^n \boldsymbol{X}_i$ and define the 'variance' as
 
 $$\begin{aligned}
 \operatorname{Var}\left( \boldsymbol{S} \right)

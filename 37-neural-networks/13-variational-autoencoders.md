@@ -1,8 +1,8 @@
 # Variational Autoencoders
 
-More or less simultaneously proposed by Kingma & Welling (2013) and Rezende et al. (2014)
+More or less simultaneously proposed by [Kingma & Welling](https://arxiv.org/pdf/1312.6114.pdf) (2013) and Rezende et al. (2014). A good introduction is done by [Dürr](https://tensorchiefs.github.io/bbs/files/vae.pdf) (2016). Besides, [Zhao et el.](https://arxiv.org/pdf/1702.08658.pdf) (2017) made a paper for deeper understanding.
 
-VAE is a type of generative model for a vector of random variables $\boldsymbol{x}$ assumed to be generated from a set of latent variables $\boldsymbol{z}$. Assuming both $\boldsymbol{x} \in \mathbb{R}^d$ and $\boldsymbol{z} \in \mathbb{R}^k$ are continuous, the unconditional distribution of $\boldsymbol{x}$ can be written as
+VAE is a type of generative model for a vector of random variables $\boldsymbol{x}$ assumed to be generated from a set of latent variables $\boldsymbol{z}$. Assuming both $\boldsymbol{x} \in \mathbb{R}^D$ and $\boldsymbol{z} \in \mathbb{R}^J$ are continuous, the unconditional distribution of $\boldsymbol{x}$ can be written as
 
 $$
 p(\boldsymbol{x})=\int_{\boldsymbol{z}} p(\boldsymbol{x} \vert \boldsymbol{z}) p(\boldsymbol{z}) \mathrm{~d} \boldsymbol{z}
@@ -78,7 +78,7 @@ L &=\log p(x) \\
 &=\sum_{z} q(z \vert x) \log \left(\frac{p(z, x)}{p(z \vert x)}\right) \\
 \text { multiply by 1, } \quad&=\sum_{z} q(z \vert x) \log \left(\frac{p(z, x)}{q(z \vert x)} \frac{q(z \vert x)}{p(z \vert x)}\right) \\
 &=\sum_{z} q(z \vert x) \log \left(\frac{p(z, x)}{q(z \vert x)}\right)+\sum_{z} q(z \vert x) \log \left(\frac{q(z \vert x)}{p(z \vert x)}\right) \\
-&=L^{v} + KL \left[ q(z \vert x), p(z \vert x) \right] \\
+&=L^{v} + \operatorname{KL} \left[ q(z \vert x), p(z \vert x) \right] \\
 & \geq L^{v}
 \end{aligned}
 $$
@@ -95,8 +95,8 @@ $$
 L^{v} &=\sum_{z} q(z \vert x) \log \left(\frac{p(z, x)}{q(z \vert x)}\right) \\
 &=\sum_{z} q(z \vert x) \log \left(\frac{p(x \vert z) p(z)}{q(z \vert x)}\right) \\
 &=\sum_{z} q(z \vert x) \log \left(\frac{p(z)}{q(z \vert x)}\right)+\sum_{z} q(z \vert x) \log p(x \vert z)\\
-&=-KL \left[ q(z \vert x), p(z) \right]+E_{z \sim q(z \vert x)}\left[ \log p(x \vert z) \right] \\
-\text { for } x_{i} \ldots &=-KL \left[ q\left(z \vert x_{i}\right), p(z) \right]+E_{z \sim q\left(z \vert x_{i}\right)}\left[ \log p\left(x_{i} \vert z\right) \right]
+&=-\operatorname{KL} \left[ q(z \vert x), p(z) \right]+\mathbb{E}_{z \sim q(z \vert x)}\left[ \log p(x \vert z) \right] \\
+\text { for } x_{i} \quad &=-\operatorname{KL} \left[ q\left(z \vert x_{i}\right), p(z) \right]+\mathbb{E}_{z \sim q\left(z \vert x_{i}\right)}\left[ \log p\left(x_{i} \vert z\right) \right]
 \end{aligned}
 $$
 
@@ -104,44 +104,56 @@ We then maximizing the last line.
 
 - The first term is the negative KL divergence between the posterior and the prior (often Gaussian). We want to minimize the distance. It can be viewed as a regularizer.
 
-    When $p(z) = N (0, 1)$ and $q(z|x)$ is also Gaussian, this KL divergence has a closed form
+    When $p(z) = \mathcal{N} (0, 1)$ and $q(z|x)$ is also Gaussian, this KL divergence has a closed form
 
     $$
-    -KL \left[ q\left(z \vert x_{i}\right), p(z) \right]=\frac{1}{2} \sum_{j=1}^{J} 1+\log \left(\sigma_{z_{i, j}}^{2}\right)-\mu_{z_{i, j}}^{2}-\sigma_{z_{i, j}}^{2}
+    -\operatorname{KL} \left[ q\left(z \vert x_{i}\right), p(z) \right]=\frac{1}{2} \sum_{j=1}^{J} 1+\log \left(\sigma_{z_{i, j}}^{2}\right)-\mu_{z_{i, j}}^{2}-\sigma_{z_{i, j}}^{2}
     $$
+
+    where $J$ is the dimension of $\boldsymbol{z}$. See the previous VAE structure [plot](vae-networks) where $J=1$.
 
 - The second term can be seen as a reconstruction loss, which equals $\log(1)$ if $\boldsymbol{x}_i$ is perfectly reconstructed from $\boldsymbol{z}$. In training, the expectation is estimated by sampling $B$ samples $z_{j,l}$ from the encoder network $q(z\vert x_i)$ and compute the average of $\log p\left(x_{i} \mid z_{i, l}\right)$
 
     $$
-    E_{q(z \vert x)}\left[ \log p(x \vert z) \right] = \frac{1}{B} \sum_{l=1}^{B}\log p\left(x_{i} \vert z_{i, l}\right)
+    \mathbb{E}_{q(z \vert x)}\left[ \log p(x \vert z) \right] = \frac{1}{B} \sum_{l=1}^{B}\log p\left(x_{i} \vert z_{i, l}\right)
     $$
 
     If $p(x \vert z)$ is Gaussian and $B=1$ (often used), then it is just a least squares loss
 
     $$
-    \log p\left(x_{i} \vert z_{i}\right)=\sum_{j=1}^{d} \frac{1}{2} \log \sigma_{x_{j}}^{2}+\frac{\left(x_{i, j}-\mu_{x_{j}}\right)^{2}}{2 \sigma_{x_{j}}^{2}}
+    \log p\left(x_{i} \vert z_{i}\right)=\sum_{j=1}^{D} \frac{1}{2} \log \sigma_{x_{j}}^{2}+\frac{\left(x_{i, j}-\mu_{x_{j}}\right)^{2}}{2 \sigma_{x_{j}}^{2}}
     $$
 
-**Overall objective of VAE**: We want the representation $\boldsymbol{x}$ be as accurate as possible, and use it to reconstruct $\boldsymbol{x}$ as accurate possible
+    where $D$ is the dimension of $\boldsymbol{x}$.
+
+Hence, the overall objective of VAE is: We want the representation $\boldsymbol{x}$ be as accurate as possible (KL divergence), and use it to reconstruct $\boldsymbol{x}$ as accurate possible (reconstruction loss).
+
+In practice, we can add a hyperparamter: weight coefficient, to one of the two terms.
 
 
 :::{admonition,note} VAE vs denoising AE
 
 - Denoising AE:
 
-    $$
-    \boldsymbol{x} + \boldsymbol{\varepsilon}  \overset{\text{encoder}}{\longrightarrow} \boldsymbol{z} \overset{\text{decoder}}{\longrightarrow} \boldsymbol{x} ^\prime
-    $$
+  $$
+  \boldsymbol{x} + \boldsymbol{\varepsilon}  \overset{\text{encoder}}{\longrightarrow} \boldsymbol{z} \overset{\text{decoder}}{\longrightarrow} \boldsymbol{x} ^\prime
+  $$
 
-    with reconstruction loss $\left\| \boldsymbol{x} - \boldsymbol{x} ^\prime  \right\|^2$.
+  with reconstruction loss $\left\| \boldsymbol{x} - \boldsymbol{x} ^\prime  \right\|^2$.
 
 - VAE:
 
-    $$
-    \boldsymbol{x} \overset{\text{encoder}}{\longrightarrow} \boldsymbol{z} + \boldsymbol{\varepsilon}  \overset{\text{decoder}}{\longrightarrow} \boldsymbol{x} ^\prime
-    $$
 
-    with reconstruction loss $\left\| \boldsymbol{x} - \boldsymbol{x} ^\prime  \right\|^2$ **and** a KL divergence regularizer between prior $p(\boldsymbol{z})$ and posterior $q(\boldsymbol{z} \vert \boldsymbol{x})$.
+  $$
+  \left.\begin{array}{ll}
+  \boldsymbol{x} \overset{\text{encoder}}{\longrightarrow} &\boldsymbol{z} \\
+  &+\\
+  &\boldsymbol{\varepsilon}
+  \end{array}\right\}  \overset{\text{decoder}}{\longrightarrow} \boldsymbol{x} ^\prime
+  $$
+
+
+  with reconstruction loss $\left\| \boldsymbol{x} - \boldsymbol{x} ^\prime  \right\|^2$ **and** a KL divergence regularizer between prior $p(\boldsymbol{z})$ and posterior $q(\boldsymbol{z} \vert \boldsymbol{x})$.
 
 :::
 

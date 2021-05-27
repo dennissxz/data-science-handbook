@@ -95,7 +95,7 @@ Assume the common factors $\boldsymbol{f}$ and the specific factors $\boldsymbol
 
 Note that
 - MLFA is scale-invariant.
-- In MLFA considering $d+1$ instead of $k$ factors may change the loadings of the first $k$ factors.
+- In MLFA considering $k+1$ instead of $k$ factors may change the loadings of the first $k$ factors.
 - In general, different methods will yield different factor loadings $\boldsymbol{L}$. One may compare
   - the Frobenius norm of the residual correlation matrix, which is defined as $\boldsymbol{S} - \hat{\boldsymbol{L}}\hat{\boldsymbol{L}} ^{\top} - \hat{\boldsymbol{\Psi}}$ or $\boldsymbol{R} − \hat{\boldsymbol{L}} \hat{\boldsymbol{L}} ^{\top}-\hat{\boldsymbol{\Psi}}$, depending on which matrix is being factorized.
   - proportions of variation explained
