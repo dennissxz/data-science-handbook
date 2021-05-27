@@ -239,7 +239,7 @@ where $\mathbb{M} \boldsymbol{1} = \boldsymbol{1}, \mathbb{M} \ge 0, \lambda(\ma
 
 [Wikipedia](https://en.wikipedia.org/wiki/Seriation_(archaeology))
 
-Suppose there are $n$ archeological pieces $i = 1, \ldots, n$. Want to time order them by finding some latent ordering $\pi(i)$, given some similarity measure $w_{ij}$. The problem can be formulated as
+Suppose there are $n$ archeological pieces $i = 1, \ldots, n$. We want to time order them by finding some latent ordering $\pi(i)$, given some similarity measure $w_{ij}$. The problem can be formulated as
 
 $$
 \min_{\pi: [n] \rightarrow [n] }\ \sum_{i,j=1}^n w_{ij} \left\| \pi(i) - \pi(j)  \right\|  ^2
@@ -248,10 +248,18 @@ $$
 Solving permutation is hard. Spectral relaxation drop the permutation constraint and solve
 
 $$
-\min_{f_1, \ldots, f_n  }\ \sum_{i,j=1}^n w_{ij} \left\| f_i  - f_j   \right\| ^2
+\min_{\boldsymbol{f} \in \mathbb{R} ^{n} }\ \sum_{i,j=1}^n w_{ij} \left\| f_i  - f_j   \right\| ^2 \quad \text{s.t. } \left\| \boldsymbol{f}  \right\| = 1, \boldsymbol{f} ^{\top} \boldsymbol{1} = 0
 $$
 
-Hope that the relative order in $f^*$ can tell information about $\pi^*$.
+Hope that the relative order in $\boldsymbol{f} ^*$ can tell information about $\pi^*$.
+
+An example of applying MDS to seriation problem is shown below. The data is the “distances” between 9 archaeological sites from different periods, based upon the frequencies of different types of potsherds found at the sites. The MDS algorithm successfully separate years (1137, 1131) from the rest (918~1062). Moreover, we can see that in the group (918~1062), there is roughly a upward line, that aligns these seven sites chronologically. All th ese observations suggest that MDS successfully preserves the distance between among the 9 sites.
+
+:::{figure} mds-seriation
+<img src="../imgs/mds-seriation.png" width = "50%" alt=""/>
+
+Applying MDS to similarity matrix of sites.
+:::
 
 What if we have some information, say some $i$ is known to be in some year? Can we use this information?
 
