@@ -1103,6 +1103,12 @@ Coherence vs Incoherence
 - If $\langle \boldsymbol{M} , \boldsymbol{X}  \rangle$ is large for some specific measurements $\boldsymbol{M} \in S$ and very small for others, then we say measurement set $S$ is **coherent** with $\boldsymbol{X}$. For instance, $\boldsymbol{M}_i = \boldsymbol{e} _i, \boldsymbol{X} = [1, 0, \ldots, 0]$. In this case, it is hard to find the good $\boldsymbol{M}$ that has large $\langle \boldsymbol{M} , \boldsymbol{X} \rangle$ value. We need many number of measurements.
 - If $\langle \boldsymbol{M} , \boldsymbol{X}  \rangle$ is small for all $\boldsymbol{M} \in S$, then we say measurement set $S$ is **incoherent** with $\boldsymbol{X}$. For instance, $\boldsymbol{M}_i = \boldsymbol{e} _i, \boldsymbol{X} = \boldsymbol{1}/\sqrt{n}$. Though each $\langle \boldsymbol{M}_i , \boldsymbol{X}  \rangle$ is small, but each contributes some quantity to the overall.
 
+:::{figure} incoherence
+<img src="../imgs/incoherence.png" width = "70%" alt=""/>
+
+Incoherence vs coherence [Hieromnimon, Xu, and Fu 2021]
+:::
+
 
 :::{admonition,note} Example of incoherence: SDP for SBM min-cut
 

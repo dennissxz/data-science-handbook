@@ -170,24 +170,37 @@ When should we stop partitioning? Or how to determine the size/depth of the tree
 
 - Measure likelihood with different tree sizes on a **held-out** (development) data set, choose the tree size that maximizes likelihood
 
-- Build multiple trees according to the loss with tree size penality, for varying $\alpha$
-
-  $$
-  loss = loss_0 + \alpha \left\vert T \right\vert
-  $$
-
-  select best $\alpha$ and the corresponding tree based on performance on validation set (like selecting $\lambda$ in LASSO).
-
 - Measure downstream performance on held-out data set, on some task of interest
 
 
 ## Pruning
 
-For a regression tree $T$, we can remove the **weakest link**. The subtree $T ^\prime$ minimizes cost complexity
+If there are too many nodes (size of the tree), the tree model may overfit. To avoid it, we can prune the tree, i.e. remove some splits.
+
+### Cost complexity pruning
+
+Aka weakest link pruning. Take regression tree as an example.
+
+We first define the cost of a tree $T$
 
 $$
-\frac{RSS(T ^\prime) - RSS(T)}{\left\vert T \right\vert - \left\vert T ^\prime \right\vert}
+\operatorname{cost}_\alpha(T)  = \operatorname{RSS} (T) + \alpha \left\vert T \right\vert
 $$
+
+The optimal pruned tree is selected by cross validation (like selecting $\lambda$ in LASSO).
+
+1. Split the data into $K$ folds.
+
+1. Construct a range of $\alpha$ values. For each $\alpha$,
+
+    1. Fit a tree on $(K-1)$ folds by minimizing $\operatorname{cost}_\alpha(T)$.
+    2. Evaluate the fitted tree on the hold-out fold, compute RSS.
+    3. Repeat for $K$ folds, compute average RSS.
+
+1. select best $\alpha^*$ that minimizes average RSS. Build a tree using full data by minimizing $\operatorname{cost} _{\alpha^*}(T)$. This is the output tree.
+
+
+
 
 ## Comment
 

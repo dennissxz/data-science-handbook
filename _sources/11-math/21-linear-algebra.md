@@ -909,7 +909,7 @@ The distribution describe the spectrum of $\hat{\boldsymbol{\Sigma}}$, i.e. the 
 If $\boldsymbol{x}_i \sim \mathcal{N} (\boldsymbol{0} , \boldsymbol{I} _p)$, then the eigenvalues of the (biased) sample covariance matrix $\hat{\boldsymbol{\Sigma}}= \frac{1}{n} \boldsymbol{X} ^{\top} \boldsymbol{X}$, as $p, n \rightarrow \infty$, follows Marchenko–Pastur distribution parameterized by $\gamma = \lim _{n, p \rightarrow \infty} \frac{p}{n}$,
 
 $$
-\mu^{M P}(t)=\left(1-\frac{1}{\gamma}\right) \delta(x) \mathbb{I}  \left\{ \gamma>1 \right\}+\left\{\begin{array}{ll}
+\mu^{M P}(t)=\left(1-\frac{1}{\gamma}\right) \delta(t) \mathbb{I}  \left\{ \gamma>1 \right\}+\left\{\begin{array}{ll}
 0 & t \notin[\gamma_{-}, \gamma_{+}], \\
 \frac{\sqrt{(\gamma_{+}-t)(t-\gamma_{-})}}{2 \pi \gamma t} \mathrm{~d} t & t \in[\gamma_{-}, \gamma_{+}],
 \end{array}\right.
@@ -919,10 +919,16 @@ $$
 - If $\gamma \le 1$, the distribution has a support on $[\gamma_{-}, \gamma_{+}]$
 - If $\gamma > 1$, it has an additional point mass $1 - \gamma ^{-1}$ at the origin.
 
-:::{figure} mp-distribution
-<img src="../imgs/mp-distribution.png" width = "70%" alt=""/>
+:::{figure} mp-distribution-exp
+<img src="../imgs/mp-distribution-exp.png" width = "80%" alt=""/>
 
-Marchenko-Pastur distribution with $\gamma=2$ (left, with a point mass at origin) and $\gamma = 0.5$ (rigt). [Yao]
+Marchenko-Pastur distribution with $\gamma=1/2$ (left, $d=2000, n=4000$) and $\gamma = 0.5$ (right, $d=8000, n=4000$, with a point mass at origin). [Li & Yi 2021]
 :::
 
 Note that when $p$ is fixed and sample size $n$ increases, $\gamma \rightarrow 0$, the interval $\left[\gamma_{-}, \gamma_{+}\right]$ is tighter, i.e. more concentrated.
+
+:::{figure} mp-distribution
+<img src="../imgs/mp-distribution.png" width = "60%" alt=""/>
+
+Illustration when $\gamma$ goes to zero [Li & Yi 2021]
+:::

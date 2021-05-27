@@ -978,6 +978,13 @@
   <a class="reference internal nav-link" href="#pruning">
    Pruning
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#cost-complexity-pruning">
+     Cost complexity pruning
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#comment">
@@ -1023,7 +1030,7 @@
 </ul>
 <div class="figure align-default" id="dt-example-1">
 <a class="reference internal image-reference" href="../_images/dt-example-1.png"><img alt="" src="../_images/dt-example-1.png" style="width: 50%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 85 </span><span class="caption-text">A simple example of decision tree [Livescue 2021]</span><a class="headerlink" href="#dt-example-1" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 87 </span><span class="caption-text">A simple example of decision tree [Livescue 2021]</span><a class="headerlink" href="#dt-example-1" title="Permalink to this image">¶</a></p>
 </div>
 <p>We need to specify</p>
 <ul class="simple">
@@ -1124,7 +1131,7 @@ Q^{*}=\operatorname{argmax}_{Q} p\left(\operatorname{data}_{\ell} \mid \boldsymb
 <p>Note that the best question should <strong>always</strong> improve likelihood somewhat.</p>
 <div class="figure align-default" id="dt-evaluate-q">
 <a class="reference internal image-reference" href="../_images/dt-evaluate-q.png"><img alt="" src="../_images/dt-evaluate-q.png" style="width: 50%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 86 </span><span class="caption-text">Evaluating question quality by maximum likelihood</span><a class="headerlink" href="#dt-evaluate-q" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 88 </span><span class="caption-text">Evaluating question quality by maximum likelihood</span><a class="headerlink" href="#dt-evaluate-q" title="Permalink to this image">¶</a></p>
 </div>
 </div>
 <div class="section" id="minimum-entropy">
@@ -1162,15 +1169,8 @@ H(X) &amp;=0 \Leftrightarrow p_{j}=1 \text { for some } j, p_{i}=0,\ \forall i \
 </div>
 <div class="section" id="cross-validation">
 <h4>Cross-validation<a class="headerlink" href="#cross-validation" title="Permalink to this headline">¶</a></h4>
-<ul>
+<ul class="simple">
 <li><p>Measure likelihood with different tree sizes on a <strong>held-out</strong> (development) data set, choose the tree size that maximizes likelihood</p></li>
-<li><p>Build multiple trees according to the loss with tree size penality, for varying <span class="math notranslate nohighlight">\(\alpha\)</span></p>
-<div class="math notranslate nohighlight">
-\[
-  loss = loss_0 + \alpha \left\vert T \right\vert
-  \]</div>
-<p>select best <span class="math notranslate nohighlight">\(\alpha\)</span> and the corresponding tree based on performance on validation set (like selecting <span class="math notranslate nohighlight">\(\lambda\)</span> in LASSO).</p>
-</li>
 <li><p>Measure downstream performance on held-out data set, on some task of interest</p></li>
 </ul>
 </div>
@@ -1178,11 +1178,28 @@ H(X) &amp;=0 \Leftrightarrow p_{j}=1 \text { for some } j, p_{i}=0,\ \forall i \
 </div>
 <div class="section" id="pruning">
 <h2>Pruning<a class="headerlink" href="#pruning" title="Permalink to this headline">¶</a></h2>
-<p>For a regression tree <span class="math notranslate nohighlight">\(T\)</span>, we can remove the <strong>weakest link</strong>. The subtree <span class="math notranslate nohighlight">\(T ^\prime\)</span> minimizes cost complexity</p>
+<p>If there are too many nodes (size of the tree), the tree model may overfit. To avoid it, we can prune the tree, i.e. remove some splits.</p>
+<div class="section" id="cost-complexity-pruning">
+<h3>Cost complexity pruning<a class="headerlink" href="#cost-complexity-pruning" title="Permalink to this headline">¶</a></h3>
+<p>Aka weakest link pruning. Take regression tree as an example.</p>
+<p>We first define the cost of a tree <span class="math notranslate nohighlight">\(T\)</span></p>
 <div class="math notranslate nohighlight">
 \[
-\frac{RSS(T ^\prime) - RSS(T)}{\left\vert T \right\vert - \left\vert T ^\prime \right\vert}
+\operatorname{cost}_\alpha(T)  = \operatorname{RSS} (T) + \alpha \left\vert T \right\vert
 \]</div>
+<p>The optimal pruned tree is selected by cross validation (like selecting <span class="math notranslate nohighlight">\(\lambda\)</span> in LASSO).</p>
+<ol class="simple">
+<li><p>Split the data into <span class="math notranslate nohighlight">\(K\)</span> folds.</p></li>
+<li><p>Construct a range of <span class="math notranslate nohighlight">\(\alpha\)</span> values. For each <span class="math notranslate nohighlight">\(\alpha\)</span>,</p>
+<ol class="simple">
+<li><p>Fit a tree on <span class="math notranslate nohighlight">\((K-1)\)</span> folds by minimizing <span class="math notranslate nohighlight">\(\operatorname{cost}_\alpha(T)\)</span>.</p></li>
+<li><p>Evaluate the fitted tree on the hold-out fold, compute RSS.</p></li>
+<li><p>Repeat for <span class="math notranslate nohighlight">\(K\)</span> folds, compute average RSS.</p></li>
+</ol>
+</li>
+<li><p>select best <span class="math notranslate nohighlight">\(\alpha^*\)</span> that minimizes average RSS. Build a tree using full data by minimizing <span class="math notranslate nohighlight">\(\operatorname{cost} _{\alpha^*}(T)\)</span>. This is the output tree.</p></li>
+</ol>
+</div>
 </div>
 <div class="section" id="comment">
 <h2>Comment<a class="headerlink" href="#comment" title="Permalink to this headline">¶</a></h2>
