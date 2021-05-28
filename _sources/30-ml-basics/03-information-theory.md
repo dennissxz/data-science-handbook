@@ -20,12 +20,11 @@ $$\begin{align}
 Definition
 : The Shannon Entropy of a discrete distribution $p\left( y \right)$ is defined by
 
-
-$$\begin{align}
-\operatorname{H}\left( Y \right)
-&= \mathbb{E}_{Y\sim p(y)}\left[ - \log \operatorname{P}\left( Y \right) \right]\\
-&= -\sum_{i=1}^{n}p(y_i)\log p(y_i)
-\end{align}$$
+  $$\begin{align}
+  \operatorname{H}\left( Y \right)
+  &= \mathbb{E}_{Y\sim p(y)}\left[ - \log \operatorname{P}\left( Y \right) \right]\\
+  &= -\sum_{i=1}^{n}p(y_i)\log p(y_i)
+  \end{align}$$
 
 This quantity measures the average level of “information”, or “uncertainty” inherent in the variables' possible outcomes.
 
@@ -33,8 +32,19 @@ This quantity measures the average level of “information”, or “uncertainty
 Entropy has similarity with variance. Both are non-negative, measure uncertainty/information. But variance depends on the observed value $y$ of the random variable $Y$, while entropy only depends on the probability $p(y)$.
 ```
 
+Examples
+- For a binary varible $Y\sim \operatorname{Ber}(p)$, its entropy is
+
+  $$
+  H(Y) = -p\log p  - (1-p) \log(1-p)
+  $$
+
+  which is maximized when $p=1/2$. The maximum is 1 if we use $\log_2$.
+
+
+
 Properties
-: $\operatorname{H}\left( Y \right) \ge 0$ with equalit iff $p(y)=1$ for some $y$, i.e. no uncertainty.
+: $\operatorname{H}\left( Y \right) \ge 0$ with equality iff $p(y)=1$ for some $y$, i.e. no uncertainty.
 
 (differential-entropy)=
 ### Differential Entropy
@@ -402,6 +412,34 @@ Similar to absolute correlation $\left\vert \rho \right\vert$,  both are
 But $\vert\rho\vert=0\ \not{\Rightarrow}\ X\perp Y$ while $\operatorname{I}\left(X, Y \right)=0\ \Leftrightarrow\ X\perp Y$.
 ```
 
+### Jensen-Shannon Divergence
+KL divergence can measure the 'distance' between two distributions, but it is asymmetric. Jensen-Shannon distance of two distributions, is symmetric, and it always has a finite value.
+
+Definition
+: Given two distributions $P$ and $Q$, the Jenson-Shannon divergence (JSD) is defined as
+
+  $$
+  \operatorname{JSD}(P, Q) = \frac{1}{2} \operatorname{KL}(P, M) + \frac{1}{2} \operatorname{KL}(Q, M)
+  $$
+
+  where $M = \frac{1}{2}(P + Q)$.
+
+Properties
+: - $0 \le \operatorname{JSD}(P, Q) \le 1$ if we use 2 logarithm.
+  - For (discrete) distributions $P_1, \ldots, P_n$ with weights $\pi_1, \ldots \pi_n$, we have
+
+
+    $$
+    \operatorname{JSD}_{\pi_{1}, \ldots, \pi_{n}}\left(P_{1}, P_{2}, \ldots, P_{n}\right)=H\left(\sum_{i=1}^{n} \pi_{i} P_{i}\right)-\sum_{i=1}^{n} \pi_{i} H\left(P_{i}\right)
+    $$
+
+    where $H(P)$ is the Shannon entropy for distribution $P$.
+
+  - The square root of the Jensen–Shannon divergence is a metric often referred to as **Jensen-Shannon distance**.
+
+
+
+
 (wasserstein-distance)=
 ### Wasserstein Distance
 
@@ -412,16 +450,19 @@ KL divergence can measure the 'distance' between two distributions, but it is as
 Definition
 : Given two distributions $P$ and $Q$ over a region $D$ in $\mathbb{R} ^{d}$, let $\mathcal{\Pi}$ be all joint distributions $\pi(X, Y)$ over $D \times D$ that have marginals $P$ and $Q$. Then the $p$-Wasserstein distance between $P$ and $Q$ is defined as
 
-$$
-W_{p}(P, Q)=\left(\inf _{\pi \in \mathcal{\Pi} (P, Q)} \int\|x-y\|^{p} \pi(x, y) \mathrm{~d}x \mathrm{~d} y \right)^{1 / p}
-$$
+
+$$\begin{aligned}
+W_{p}(P, Q)
+&=\left(\inf _{\pi \in \mathcal{\Pi} (P, Q)} \mathbb{E}_{x, y \sim \pi} [\left\| x - y \right\|^p ]  \right)^{1 / p} \\
+&=\left(\inf _{\pi \in \mathcal{\Pi} (P, Q)} \int\|x-y\|^{p} \pi(x, y) \mathrm{~d}x \mathrm{~d} y \right)^{1 / p}
+\end{aligned}$$
 
 Specifically, $\mathcal{\Pi} (P, Q)$ represents the collection of all binary functions $\pi$ satisfying
 - $\int \pi(x,y) \mathrm{~d}y = P(x)$
 - $\int \pi(x,y) \mathrm{~d}x = Q(y)$
 - $\pi(x,y) \ge 0$
 
-It can be shown that $W_p$ satisfies all the axioms of a metric.
+It can be shown that $W_p$ satisfies all the axioms of a metric. The optimal $\pi^*$ is called the optimal **coupling** of $P$ and $Q$.
 
 Usually, $p=1$ is used. $1$-Wasserstein distance is also known as Earth mover's distance (EMD) in computer science. Informally, if the distributions are interpreted as two different ways of piling up a certain amount of dirt over the region $D$, the EMD is the minimum cost of turning one pile into the other.
 

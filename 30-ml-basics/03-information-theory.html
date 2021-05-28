@@ -954,6 +954,11 @@
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#jensen-shannon-divergence">
+     Jensen-Shannon Divergence
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#wasserstein-distance">
      Wasserstein Distance
     </a>
@@ -1042,21 +1047,31 @@
 <h3>Shannon Entropy<a class="headerlink" href="#shannon-entropy" title="Permalink to this headline">¶</a></h3>
 <dl class="simple myst">
 <dt>Definition</dt><dd><p>The Shannon Entropy of a discrete distribution <span class="math notranslate nohighlight">\(p\left( y \right)\)</span> is defined by</p>
-</dd>
-</dl>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
-\operatorname{H}\left( Y \right)
-&amp;= \mathbb{E}_{Y\sim p(y)}\left[ - \log \operatorname{P}\left( Y \right) \right]\\
-&amp;= -\sum_{i=1}^{n}p(y_i)\log p(y_i)
-\end{align}\end{split}\]</div>
+  \operatorname{H}\left( Y \right)
+  &amp;= \mathbb{E}_{Y\sim p(y)}\left[ - \log \operatorname{P}\left( Y \right) \right]\\
+  &amp;= -\sum_{i=1}^{n}p(y_i)\log p(y_i)
+  \end{align}\end{split}\]</div>
+</dd>
+</dl>
 <p>This quantity measures the average level of “information”, or “uncertainty” inherent in the variables’ possible outcomes.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <p>Entropy has similarity with variance. Both are non-negative, measure uncertainty/information. But variance depends on the observed value <span class="math notranslate nohighlight">\(y\)</span> of the random variable <span class="math notranslate nohighlight">\(Y\)</span>, while entropy only depends on the probability <span class="math notranslate nohighlight">\(p(y)\)</span>.</p>
 </div>
+<p>Examples</p>
+<ul>
+<li><p>For a binary varible <span class="math notranslate nohighlight">\(Y\sim \operatorname{Ber}(p)\)</span>, its entropy is</p>
+<div class="math notranslate nohighlight">
+\[
+  H(Y) = -p\log p  - (1-p) \log(1-p)
+  \]</div>
+<p>which is maximized when <span class="math notranslate nohighlight">\(p=1/2\)</span>. The maximum is 1 if we use <span class="math notranslate nohighlight">\(\log_2\)</span>.</p>
+</li>
+</ul>
 <dl class="simple myst">
-<dt>Properties</dt><dd><p><span class="math notranslate nohighlight">\(\operatorname{H}\left( Y \right) \ge 0\)</span> with equalit iff <span class="math notranslate nohighlight">\(p(y)=1\)</span> for some <span class="math notranslate nohighlight">\(y\)</span>, i.e. no uncertainty.</p>
+<dt>Properties</dt><dd><p><span class="math notranslate nohighlight">\(\operatorname{H}\left( Y \right) \ge 0\)</span> with equality iff <span class="math notranslate nohighlight">\(p(y)=1\)</span> for some <span class="math notranslate nohighlight">\(y\)</span>, i.e. no uncertainty.</p>
 </dd>
 </dl>
 </div>
@@ -1406,6 +1421,31 @@ and <span class="math notranslate nohighlight">\(\mathcal{N}(\boldsymbol{\mu}_{q
 <p>But <span class="math notranslate nohighlight">\(\vert\rho\vert=0\ \not{\Rightarrow}\ X\perp Y\)</span> while <span class="math notranslate nohighlight">\(\operatorname{I}\left(X, Y \right)=0\ \Leftrightarrow\ X\perp Y\)</span>.</p>
 </div>
 </div>
+<div class="section" id="jensen-shannon-divergence">
+<h3>Jensen-Shannon Divergence<a class="headerlink" href="#jensen-shannon-divergence" title="Permalink to this headline">¶</a></h3>
+<p>KL divergence can measure the ‘distance’ between two distributions, but it is asymmetric. Jensen-Shannon distance of two distributions, is symmetric, and it always has a finite value.</p>
+<dl class="simple myst">
+<dt>Definition</dt><dd><p>Given two distributions <span class="math notranslate nohighlight">\(P\)</span> and <span class="math notranslate nohighlight">\(Q\)</span>, the Jenson-Shannon divergence (JSD) is defined as</p>
+<div class="math notranslate nohighlight">
+\[
+  \operatorname{JSD}(P, Q) = \frac{1}{2} \operatorname{KL}(P, M) + \frac{1}{2} \operatorname{KL}(Q, M)
+  \]</div>
+<p>where <span class="math notranslate nohighlight">\(M = \frac{1}{2}(P + Q)\)</span>.</p>
+</dd>
+<dt>Properties</dt><dd><ul>
+<li><p><span class="math notranslate nohighlight">\(0 \le \operatorname{JSD}(P, Q) \le 1\)</span> if we use 2 logarithm.</p></li>
+<li><p>For (discrete) distributions <span class="math notranslate nohighlight">\(P_1, \ldots, P_n\)</span> with weights <span class="math notranslate nohighlight">\(\pi_1, \ldots \pi_n\)</span>, we have</p>
+<div class="math notranslate nohighlight">
+\[
+    \operatorname{JSD}_{\pi_{1}, \ldots, \pi_{n}}\left(P_{1}, P_{2}, \ldots, P_{n}\right)=H\left(\sum_{i=1}^{n} \pi_{i} P_{i}\right)-\sum_{i=1}^{n} \pi_{i} H\left(P_{i}\right)
+    \]</div>
+<p>where <span class="math notranslate nohighlight">\(H(P)\)</span> is the Shannon entropy for distribution <span class="math notranslate nohighlight">\(P\)</span>.</p>
+</li>
+<li><p>The square root of the Jensen–Shannon divergence is a metric often referred to as <strong>Jensen-Shannon distance</strong>.</p></li>
+</ul>
+</dd>
+</dl>
+</div>
 <div class="section" id="wasserstein-distance">
 <span id="id3"></span><h3>Wasserstein Distance<a class="headerlink" href="#wasserstein-distance" title="Permalink to this headline">¶</a></h3>
 <div class="section" id="definition">
@@ -1416,16 +1456,18 @@ and <span class="math notranslate nohighlight">\(\mathcal{N}(\boldsymbol{\mu}_{q
 </dd>
 </dl>
 <div class="math notranslate nohighlight">
-\[
-W_{p}(P, Q)=\left(\inf _{\pi \in \mathcal{\Pi} (P, Q)} \int\|x-y\|^{p} \pi(x, y) \mathrm{~d}x \mathrm{~d} y \right)^{1 / p}
-\]</div>
+\[\begin{split}\begin{aligned}
+W_{p}(P, Q)
+&amp;=\left(\inf _{\pi \in \mathcal{\Pi} (P, Q)} \mathbb{E}_{x, y \sim \pi} [\left\| x - y \right\|^p ]  \right)^{1 / p} \\
+&amp;=\left(\inf _{\pi \in \mathcal{\Pi} (P, Q)} \int\|x-y\|^{p} \pi(x, y) \mathrm{~d}x \mathrm{~d} y \right)^{1 / p}
+\end{aligned}\end{split}\]</div>
 <p>Specifically, <span class="math notranslate nohighlight">\(\mathcal{\Pi} (P, Q)\)</span> represents the collection of all binary functions <span class="math notranslate nohighlight">\(\pi\)</span> satisfying</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(\int \pi(x,y) \mathrm{~d}y = P(x)\)</span></p></li>
 <li><p><span class="math notranslate nohighlight">\(\int \pi(x,y) \mathrm{~d}x = Q(y)\)</span></p></li>
 <li><p><span class="math notranslate nohighlight">\(\pi(x,y) \ge 0\)</span></p></li>
 </ul>
-<p>It can be shown that <span class="math notranslate nohighlight">\(W_p\)</span> satisfies all the axioms of a metric.</p>
+<p>It can be shown that <span class="math notranslate nohighlight">\(W_p\)</span> satisfies all the axioms of a metric. The optimal <span class="math notranslate nohighlight">\(\pi^*\)</span> is called the optimal <strong>coupling</strong> of <span class="math notranslate nohighlight">\(P\)</span> and <span class="math notranslate nohighlight">\(Q\)</span>.</p>
 <p>Usually, <span class="math notranslate nohighlight">\(p=1\)</span> is used. <span class="math notranslate nohighlight">\(1\)</span>-Wasserstein distance is also known as Earth mover’s distance (EMD) in computer science. Informally, if the distributions are interpreted as two different ways of piling up a certain amount of dirt over the region <span class="math notranslate nohighlight">\(D\)</span>, the EMD is the minimum cost of turning one pile into the other.</p>
 </div>
 <div class="section" id="dual-form">

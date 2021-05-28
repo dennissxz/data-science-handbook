@@ -518,6 +518,8 @@ $$
 
 If we want to impose the number of non-zero coefficient $a_i$, we can add constraint $\left\| \boldsymbol{a}  \right\| _0 \le k$.
 
+[Hui ZOU, Trevor HASTIE, and Robert TIBSHIRANI, 2006](http://web.stanford.edu/~hastie/Papers/sparsepc.pdf)
+
 ### Eigen-space Approach
 
 The problem can be formulated as
