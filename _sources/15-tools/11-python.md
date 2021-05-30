@@ -452,10 +452,37 @@ Note that
 - `.isnull()` to check missing
 - `.dropna()` to drop all rows containing any missing entries
   - add `subset = ['col1', 'col2']` to specify columns
+
 - `.fillna(value='')` fill missing values with specific value
-- `.fillna(method='bfill')`
-- `.fillna(method='ffill')`
-- `df.agg(func, axis=0)` to apply built-in or self-defined functions to column(s) '0' or row(s) '1'.
+  - `.fillna(method='bfill')`
+  - `.fillna(method='ffill')`
+
+- `df.agg(func, axis=0)` to apply built-in aggregation or self-defined functions to column(s) '0' or row(s) '1'.
+- `df.apply(fun)` apply self-defined function to columns or rows
+  - `axis = {0 or ‘index’, 1 or ‘columns’}`, default 0
+- `df.applymap(fun)` apply self-defined function to each **entry**
+
+- `df._get_numeric_data()` filter only numeric columns
+
+- `df.sort_values(by, axis=0, ascending=True)` sort values
+
+Multiple methods can be applied sequentially and arranged in a easy-to-read format using `()`
+
+```python
+(df
+  .groupby('type')
+  .mean()
+  .sort_values()
+  .plot
+  .bar(
+    figsize = (4,3),
+    layout = (4,5), 
+  )
+)
+
+```
+
+
 
 ## Plot
 
