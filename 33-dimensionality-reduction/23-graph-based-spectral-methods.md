@@ -237,7 +237,7 @@ where $\mathbb{M} \boldsymbol{1} = \boldsymbol{1}, \mathbb{M} \ge 0, \lambda(\ma
 
 ### Seriation Problem
 
-[Wikipedia](https://en.wikipedia.org/wiki/Seriation_(archaeology))
+[Wikipedia](https://en.wikipedia.org/wiki/Seriation_(archaeology)). [Fogel](https://arxiv.org/pdf/1406.5370.pdf).
 
 Suppose there are $n$ archeological pieces $i = 1, \ldots, n$. We want to time order them by finding some latent ordering $\pi(i)$, given some similarity measure $w_{ij}$. The problem can be formulated as
 
