@@ -23,7 +23,7 @@ Ridge regression uses $L_2$ norm. The objective function is
 
 
 $$
-\min_{\boldsymbol{\beta}}\ \left\| \boldsymbol{y} - \boldsymbol{X} \boldsymbol{\beta}  \right\|_2 + \lambda \left\| \boldsymbol{\beta}  \right\| _2^2
+\min_{\boldsymbol{\beta}}\ \left\| \boldsymbol{y} - \boldsymbol{X} \boldsymbol{\beta}  \right\|^2 + \lambda \left\| \boldsymbol{\beta}  \right\| _2^2
 $$
 
 Equivalently, ridge regression can be written as solving
@@ -43,10 +43,10 @@ Effect of $\lambda$
 - When $\lambda = \infty$, we obtain $\hat{\boldsymbol{\beta} }_{\text{ridge} } = 0$
 - In general, as $\lambda$ increases
   - bias $\left\| \mathbb{E} [\hat{\boldsymbol{\beta} }_{\text{ridge} }] - \boldsymbol{\beta}  \right\|$ increases
-  - variance $\operatorname{Var}\left( \hat{\boldsymbol{\beta} }_{\text{ridge} } \right)$  decreases
-  - The overall mean squared error $\mathbb{E} [\left\| \hat{\boldsymbol{\beta} }_{\text{ridge} } - \boldsymbol{\beta}  \right\|_2^2 ]$ can be reduced for a range of $\lambda$ compared to $\hat{\boldsymbol{\beta} }_{\text{OLS} }$.
+  - variance $\operatorname{tr}\left( \operatorname{Cov}\left( \hat{\boldsymbol{\beta} }_{\text{ridge} } \right) \right)$  decreases
+  - The overall mean squared error $\mathbb{E} [\left\| \hat{\boldsymbol{\beta} }_{\text{ridge} } - \boldsymbol{\beta}  \right\|_2^2 ]$ can be reduced for a range of $\lambda$ compared to $\hat{\boldsymbol{\beta} }_{\text{OLS} }$. In fact, this range always exists. See [here](https://www.statlect.com/fundamentals-of-statistics/ridge-regression).
 
-Note that Ridge regression will include all variables by haveing $\hat{\boldsymbol{\beta} _i} = 0$ for all coefiicients. Hence no effect of varibale selection.
+Note that Ridge regression will include all variables by having $\hat{\boldsymbol{\beta} _i} = 0$ for all coefiicients. Hence no effect of varibale selection.
 
 Application:
 - When $\boldsymbol{X} ^{\top} \boldsymbol{X}$ in not invertible or close to singularity.
