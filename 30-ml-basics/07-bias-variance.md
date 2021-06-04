@@ -1,4 +1,6 @@
-# Bias-variance tradeoff
+## Bias-variance tradeoff
+
+This section tryies to clarify bias and variance for estimator and for test error. They are different quantities but are related.
 
 Notations:
 
@@ -6,8 +8,9 @@ Notations:
 - $\boldsymbol{\beta}$: true coefficient
 
 
-## MSE of $\hat{\boldsymbol{\beta}}$
+### MSE of an estimator $\hat{\boldsymbol{\beta}}$
 
+Let $\hat{\boldsymbol{\beta}}$ be an estimator of parameter $\boldsymbol{\beta}$, its mean squared error can be decomposed into a variance component and a bias $^2$ component.
 
 $$\begin{aligned}
 \operatorname{MSE}(\hat{\boldsymbol{\beta}} )
@@ -19,7 +22,7 @@ $$\begin{aligned}
 
 where $\mathbb{E} _{\mathcal{D}}$ means the expectation is taken over randomly drawn data set $\mathcal{D}$.
 
-### Ridge Regression
+#### Ridge Regression
 
 $$
 \min_{\boldsymbol{\beta}}\ \left\| \boldsymbol{y} - \boldsymbol{X} \boldsymbol{\beta}  \right\|^2 + \lambda \left\| \boldsymbol{\beta}  \right\| _2^2
@@ -36,14 +39,14 @@ $$
 
 |Term| Compared to OLS |As $\lambda$ increases|
 |-|-| -|
-| bias of $\hat{\boldsymbol{\beta}}_{\text{Ridge} }$ |larger | increases from $0$ to $\infty$ |
-| variance of $\hat{\boldsymbol{\beta}}_{\text{Ridge} }$  | smaller  | decreases to 0 |
+| bias of $\hat{\boldsymbol{\beta}}_{\text{Ridge} }$ |larger | increases from $0$ to $\left\| \boldsymbol{\beta} \right\|$ $\color{red}{(?)}$ |
+| variance of $\hat{\boldsymbol{\beta}}_{\text{Ridge} }$  | smaller  | decreases to 0 $\color{red}{(?)}$ |
 | MSE of $\hat{\boldsymbol{\beta}}_{\text{Ridge} }$  | smaller for some $\lambda$  | first decreases then increases |
 
 Reference: https://www.statlect.com/fundamentals-of-statistics/ridge-regression
 
 
-### Lasso Regression
+#### Lasso Regression
 
 $$
 \min _{\beta}\|\boldsymbol{y}-\boldsymbol{X} \boldsymbol{\beta}\|^{2}+\lambda\|\boldsymbol{\beta}\|_{1}
@@ -54,11 +57,11 @@ $$
 
 |Term| Compared to OLS |As $\lambda$ increases|
 |-|-| -|
-| bias of $\hat{\boldsymbol{\beta}}_{\text{Lasso} }$  |larger | increases from $0$ to $\infty$ |
-| variance $\hat{\boldsymbol{\beta}}_{\text{Lasso} }$  | smaller  | decreases to 0 |
+| bias of $\hat{\boldsymbol{\beta}}_{\text{Lasso} }$  |larger | increases from $0$ to $\left\| \boldsymbol{\beta} \right\|$ $\color{red}{(?)}$|
+| variance $\hat{\boldsymbol{\beta}}_{\text{Lasso} }$  | smaller  | decreases to 0 $\color{red}{(?)}$|
 | MSE of $\hat{\boldsymbol{\beta}}_{\text{Lasso} }$  | smaller for some $\lambda$  | first decreases then increases |
 
-## Expected Test Error (ETE)
+### Expected Test Error (ETE)
 
 Given an algorithm (e.g. OLS, SVM), we draw a data set $\mathcal{D}$, use the algorithm to train a linear model $h$, then evaluate it on an unseen data point $(\boldsymbol{x} ,y)$. Note that all $\mathcal{D} , \boldsymbol{x} , y$ are random. This expectation is called **expected test error**. It can be decomposed into three components: variance, bias, and noise (aka irreducible error)
 
@@ -83,7 +86,7 @@ $$
 This quantity is also known as (cross-validation) 'mean squared error' since it has the 'mean' and 'square' forms. If the algorithm depends on some parameter, e.g. Ridge with $\lambda$, then we can compute this quantity for different values of $\lambda$ and compare them, to select an optimal $\lambda$ that minimizes this quantity.
 
 
-## Expected Test Error given a model
+### Expected Test Error given a model
 
 Given a trained model $h$ and a test set $\mathcal{D}_{\text{test} } = \left\{ (\boldsymbol{x} ,y) \right\}_{1, \ldots, n_{\text{test} }}$, a commonly used notion is (test set) 'mean squared error'
 
@@ -99,7 +102,7 @@ $$
 
 (Imagine a fitted line and a true line in linear regression)
 
-## Confusion
+### Confusion
 
 When people talk about bias-variance tradeoff, sometimes they refer to the bias and variance components in the MSE of the estimator
 
@@ -122,7 +125,7 @@ In Ridge regression, as $\lambda$ increases, we have two facts
 1. $\operatorname{Var}\left( \hat{\boldsymbol{\beta}} _{\text{Ridge} } \right)$ decreases but $\operatorname{Bias}\left( \hat{\boldsymbol{\beta}} _{\text{Ridge} } \right)$ increases, and overall $\operatorname{MSE}\left( \hat{\boldsymbol{\beta}} _{\text{Ridge} } \right)$ first decreases and then increases
 2. Expected test error (cross-validation MSE) first decreases and then increases
 
-Many notes conclude that *'Ridge estimator is biased but it reduces prediction error'*. However, the *'bias'* refer to the bias term in fact 1 while *'reduces prediction error'* refers to the expected test error in fact 2, which is confusing.
+Many online notes conclude that *'Ridge estimator is biased but it reduces prediction error'*. However, the *'bias'* refer to the bias term in fact 1 while *'prediction error'* refers to the expected test error in fact 2, which is confusing.
 
 **How are the bias and variance terms in $\operatorname{MSE}\left( \hat{\boldsymbol{\beta}} _{\text{Ridge} } \right)$ related to those in Expected test error (ETE)?** When the bias in $\operatorname{MSE}\left( \hat{\boldsymbol{\beta}} _{\text{Ridge} } \right)$ increases, does the bias in ETE also increases? How about variance and overall MSE?
 
@@ -143,7 +146,7 @@ Many notes conclude that *'Ridge estimator is biased but it reduces prediction e
   &= \boldsymbol{b} ^{\top} \mathbb{E}_{\boldsymbol{x}}\left[\boldsymbol{x} \boldsymbol{x} ^{\top}\right] \boldsymbol{b}\\
   \end{aligned}$$
 
-  In general, as $\operatorname{Bias}^2(\hat{\boldsymbol{\beta}} ) = \left\| \boldsymbol{b}  \right\|^2 = \boldsymbol{b} ^{\top} \boldsymbol{b}$ increases, this quantity increases.
+  In general, as $\operatorname{Bias}^2(\hat{\boldsymbol{\beta}} ) = \left\| \boldsymbol{b}  \right\|^2 = \boldsymbol{b} ^{\top} \boldsymbol{b}$ increases, this quantity increases $\color{red}{(?)}$.
 
 - For the variance term in ETE,
 
@@ -162,4 +165,4 @@ Many notes conclude that *'Ridge estimator is biased but it reduces prediction e
   &=\mathbb{E}_{\mathcal{D}}\left[ \hat{\boldsymbol{b} }_{\mathcal{D}} ^{\top} \mathbb{E}_{\boldsymbol{x}} [\boldsymbol{x} \boldsymbol{x} ^{\top}]  \hat{\boldsymbol{b} } _{\mathcal{D}}\right] \\
   \end{aligned}$$
 
-  In general, as $\operatorname{Var}(\hat{\boldsymbol{\beta}} ) = \mathbb{E}_{\mathcal{D}} \left[ \left\| \hat{\boldsymbol{b}}_{\mathcal{D}}  \right\|^2 \right] = \mathbb{E}_{\mathcal{D}} [\hat{\boldsymbol{b}}_{\mathcal{D}} ^{\top} \hat{\boldsymbol{b}}_{\mathcal{D}}]$ increases, this quantity increases.
+  In general, as $\operatorname{Var}(\hat{\boldsymbol{\beta}} ) = \mathbb{E}_{\mathcal{D}} \left[ \left\| \hat{\boldsymbol{b}}_{\mathcal{D}}  \right\|^2 \right] = \mathbb{E}_{\mathcal{D}} [\hat{\boldsymbol{b}}_{\mathcal{D}} ^{\top} \hat{\boldsymbol{b}}_{\mathcal{D}}]$ increases, this quantity increases $\color{red}{(?)}$.
