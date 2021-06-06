@@ -124,7 +124,7 @@ $$
 | variance of $\hat{\boldsymbol{\beta}}_{\text{Ridge} }$  | smaller  | decreases to 0 |
 | MSE of $\hat{\boldsymbol{\beta}}_{\text{Ridge} }$  | smaller for some $\lambda$  | first decreases then increases |
 
-Reference: https://www.statlect.com/fundamentals-of-statistics/ridge-regression
+[Reference](https://www.statlect.com/fundamentals-of-statistics/ridge-regression)
 
 
 #### Lasso Regression
@@ -156,7 +156,7 @@ where
 - **Expected Label**: $\bar{y}(\mathbf{x})=\mathbb{E}_{y \mid \mathbf{x}}[Y]=\int_{y} y \operatorname{Pr}(y \mid \mathbf{x}) \mathrm{~d} y$
 - **Expected Predictor**: $\bar{h}=\mathbb{E}_{\mathcal{D}}\left[h_{\mathcal{D}}\right]=\int_{\mathcal{D}} h_{\mathcal{D}} \operatorname{Pr}(\mathcal{D}) \mathrm{~d} \mathcal{D}$
 
-Reference: https://www.cs.cornell.edu/courses/cs4780/2018fa/lectures/lecturenote12.html
+[Reference](https://www.cs.cornell.edu/courses/cs4780/2018fa/lectures/lecturenote12.html)
 
 Given an algorithm (e.g. OLS, SVM) and a data set $\mathcal{D}$, we can use cross-validation to compute the 'sample' test error. The cross-validation procedure mimics the random procedures of drawing $\boldsymbol{x} ,y$ and $\mathcal{D}$. For instance, for a $K$-fold cross-validation, this quantity is computed as
 
