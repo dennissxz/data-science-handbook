@@ -67,7 +67,7 @@ One important property of aggregation is that the aggregation operator should be
 A basic approach of aggregation-and-transform is to average last layer information, take linear transformation, and then non-linear activation. Consider an $L$-layer GNN to obtain $k$-dimensional embeddings
 
 - $\boldsymbol{h} _v ^{(0)} = \boldsymbol{x} _v$: initial $0$-th layer embeddings, equal to node features
-- $\boldsymbol{h} _v ^{(\ell +1)} = \sigma \left( \boldsymbol{W} _\ell \frac{u, v}{d_v}\sum_{u \in \mathscr{N} (v)} \boldsymbol{h} _u ^ {(\ell)} + \boldsymbol{B} _\ell \boldsymbol{h} _v ^{(\ell)} \right)$ for $\ell = \left\{ 0, \ldots, L-1 \right\}$
+- $\boldsymbol{h} _v ^{(\ell +1)} = \sigma \left( \boldsymbol{W} _\ell \frac{1}{d_v}\sum_{u \in \mathscr{N} (v)} \boldsymbol{h} _u ^ {(\ell)} + \boldsymbol{B} _\ell \boldsymbol{h} _v ^{(\ell)} \right)$ for $\ell = \left\{ 0, \ldots, L-1 \right\}$
   - average last layer (its neighbors') hidden embeddings $\boldsymbol{h} _u ^{(\ell)}$, linearly transformed by $k \times k$ weight matrix $\boldsymbol{W}_ \ell$
   - also take as input its hidden embedding $\boldsymbol{h} _v ^{(\ell)}$ at last layer (last updated embedding?? stored in $\boldsymbol{H}$??), linearly transformed by $k\times k$ weight matrix $\boldsymbol{B}_ \ell$
   - finally activated by $\sigma$.
