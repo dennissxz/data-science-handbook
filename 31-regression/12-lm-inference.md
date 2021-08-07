@@ -562,7 +562,7 @@ This is equivalent to say [$R$-squared](lm-rsquared) is non-decreasing, if an in
 
 Given a data set, when we add an new explanatory variable into a regression model, $RSS$ is non-increasing.
 
-This can be better understood if we view the linear regression problem as an approximation problem: Given a target vector $\boldsymbol{y} \in \mathbb{R} ^n$ and candidate vectors $\boldsymbol{x} _1, \boldsymbol{x} _2,  \ldots, \boldsymbol{x} _p \in \mathbb{R} ^n$, where $\boldsymbol{x} _1 = \boldsymbol{1}_n$ and $\boldsymbol{x} _1, \ldots, \boldsymbol{x} _{p+1}$ are linearly independent, we want to find a linear combination of $\boldsymbol{x}$'s to approximate $\boldsymbol{y}$.
+This can be better understood if we view the linear regression problem as an approximation problem: Given a target vector $\boldsymbol{y} \in \mathbb{R} ^n$ and candidate vectors $\boldsymbol{x} _1, \boldsymbol{x} _2,  \ldots, \boldsymbol{x} _p \in \mathbb{R} ^n$, where $\boldsymbol{x} _1 = \boldsymbol{1}_n$ and $\boldsymbol{x} _1, \ldots, \boldsymbol{x} _{p}$ are linearly independent, we want to find a linear combination of $\boldsymbol{x}$'s to approximate $\boldsymbol{y}$.
 
 $$
 \min \left\| \boldsymbol{y}  - (\beta_1 \boldsymbol{x} _1 +  \ldots + \beta_p \boldsymbol{x} _p) \right\|  ^2
