@@ -1,5 +1,6 @@
 # Largest Sum Subsequence
 
+[LeetCode 300](https://leetcode.com/problems/longest-increasing-subsequence/)
 
 ## Problem
 
