@@ -23,7 +23,7 @@
 
     
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/sphinx-book-theme.e8e5499552300ddf5d7adccae7cc3b70.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinx-book-theme.5f77b4aec8189eecf79907ce328c390d.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
@@ -1771,6 +1771,63 @@ R^2 = \frac{\sum (\hat{y}_i - \bar{y})^2}{\sum (y_i - \bar{y})^2}
 <div class="dropdown seealso admonition">
 <p class="admonition-title"> <em>Solution</em></p>
 <p>In general, NO. Whether <span class="math notranslate nohighlight">\(\boldsymbol{x}_{p} ^\top \boldsymbol{y} = 0\)</span> depends only on these two vectors, but whether <span class="math notranslate nohighlight">\(\hat{\beta}_{p}=0\)</span> depends on existing covariates in the model. See detailed <a class="reference internal" href="12-lm-inference.html#lm-rss-nonincreasing"><span class="std std-ref">discussion</span></a>.</p>
+</div>
+</li>
+<li><p>Given <span class="math notranslate nohighlight">\(R^2=0.3\)</span> for <span class="math notranslate nohighlight">\(Y\sim X_1\)</span>, and <span class="math notranslate nohighlight">\(R^2 = 0.4\)</span> for <span class="math notranslate nohighlight">\(Y \sim X_1\)</span>, what is <span class="math notranslate nohighlight">\(R^2\)</span> for <span class="math notranslate nohighlight">\(Y \sim X_1 + X_2\)</span>?</p>
+<div class="dropdown seealso admonition">
+<p class="admonition-title"> <em>Solution</em></p>
+<p><strong>Short answer</strong></p>
+<p>Since <span class="math notranslate nohighlight">\(R^2\)</span> is increasing when adding an additional regressor, the lower bound is <span class="math notranslate nohighlight">\(\max(0.3, 0.4)\)</span>. The upper bound is 1 (this is a bold guess, see details below).</p>
+<p><strong>Long answer</strong></p>
+<p>First we find the range of <span class="math notranslate nohighlight">\(\rho_{X_1, X_2}\)</span> by veryfying the positive semi-definitess of the correlation matrix <span class="math notranslate nohighlight">\(\operatorname{Cov}\left( [Y, X_1, X_2] \right)\)</span>. Note that we only know <span class="math notranslate nohighlight">\(\rho^2_{Y, X_1}\)</span> and <span class="math notranslate nohighlight">\(\rho^2_{Y, X_2}\)</span> but don’t know the signs <span class="math notranslate nohighlight">\(\mathrm{sign}(\rho_{Y, X_1})\)</span> and <span class="math notranslate nohighlight">\(\mathrm{sign}(\rho_{Y, X_2})\)</span>, so we have 4 scenarios (actually it reduces to 2 scenarios). For simplicity we write <span class="math notranslate nohighlight">\(\rho_{Y, X_1} = \rho_1, \rho_{Y, X_2} = \rho_1,\rho_{X_2, X_2} = \rho_{12}\)</span>. By Sylvester’s criterion, <span class="math notranslate nohighlight">\(\rho_{12}\)</span> needs to satisfies:</p>
+<div class="math notranslate nohighlight">
+\[
+    \rho_{12}^2 - 2s \left\vert \rho_1\rho_2 \right\vert \rho_{12} + \rho_1^2 + \rho_2^2 -1 \le 0 \qquad (1)
+    \]</div>
+<p>where <span class="math notranslate nohighlight">\(s = \mathrm{sign}(\rho_{1}) \times \mathrm{sign}(\rho_{2}) \in \left\{ -1, 1 \right\}\)</span>. Note that this inequality always has a solution for <span class="math notranslate nohighlight">\(\rho_{12}\)</span> iff <span class="math notranslate nohighlight">\((\rho_1^2 - 1)(\rho_2^2 - 1) \ge 0\)</span>, which always holds.</p>
+<p>Then, we use the formula for <a class="reference external" href="https://en.wikipedia.org/wiki/Coefficient_of_multiple_correlation">multiple correlation coefficient</a></p>
+<div class="math notranslate nohighlight">
+\[
+    R^{2}=\boldsymbol{r}_{yx}^{\top} \boldsymbol{R} _{x x}^{-1} \boldsymbol{r}_{yx}
+    \]</div>
+<p>where <span class="math notranslate nohighlight">\(\boldsymbol{r}_{yx}\)</span> is the vector of correlation coefficients between <span class="math notranslate nohighlight">\(Y\)</span> and each <span class="math notranslate nohighlight">\(X\)</span>, and <span class="math notranslate nohighlight">\(\boldsymbol{R} _{xx}\)</span> is the correlation matrix of <span class="math notranslate nohighlight">\(X\)</span>’s.</p>
+<p>We first consider the case when <span class="math notranslate nohighlight">\(\rho_{1}^2\ne \rho_{2}^2\)</span>. The above formula can be written as</p>
+<div class="math notranslate nohighlight">
+\[
+    R^{2}=\frac{\rho_1^2 + \rho_2^2-2 s\left\vert \rho_1 \rho_2 \right\vert \rho_{12}}{1-\rho_{12}^{2}} \qquad (2)
+    \]</div>
+<p>Note that <span class="math notranslate nohighlight">\(\rho_{12}^2 \ne 1\)</span>, otherwise <span class="math notranslate nohighlight">\((1)\)</span> becomes <span class="math notranslate nohighlight">\((\left\vert \rho_1 \right\vert \pm \left\vert \rho_2 \right\vert)^2 \le 0\)</span> which gives <span class="math notranslate nohighlight">\(\rho_1^2 = \rho_2^2\)</span>, contradiction.</p>
+<ul>
+<li><p>It is easy to see that, when the equality in <span class="math notranslate nohighlight">\((1)\)</span> holds, substituing it to (2) gives <span class="math notranslate nohighlight">\(R^2 = 1\)</span>. In this case, <span class="math notranslate nohighlight">\(Y\)</span> has a perfect linear relation with <span class="math notranslate nohighlight">\(X_1\)</span> and <span class="math notranslate nohighlight">\(X_2\)</span>, and the covariance matrix <span class="math notranslate nohighlight">\(\operatorname{Cov}\left( [Y, X_1, X_2] \right)\)</span> has rank 2. Besides, solving the equality gives four solutions of <span class="math notranslate nohighlight">\(\rho_{12}\)</span>: <span class="math notranslate nohighlight">\(s \left\vert \rho_1\rho_2 \right\vert \pm \sqrt{(\rho_1 ^2 - 1)(\rho_2^2-1)}\)</span> which are all inside the range <span class="math notranslate nohighlight">\([-1, 1]\)</span>.
+When <span class="math notranslate nohighlight">\(\rho_1^2 = 0.3, \rho_2^2 = 0.4\)</span>, we have <span class="math notranslate nohighlight">\(\rho_{12} = s\sqrt{0.12} \pm \sqrt{0.42} \approx 0.9945s, 0.3017s\)</span>.</p></li>
+<li><p>When strict inequality holds in <span class="math notranslate nohighlight">\((1)\)</span>, <span class="math notranslate nohighlight">\(0&lt; R^2 &lt; 1\)</span>. We take derivative of <span class="math notranslate nohighlight">\(R^2\)</span> w.r.t. <span class="math notranslate nohighlight">\(\rho_{12}\)</span> and check its roots. WLOG, suppose <span class="math notranslate nohighlight">\(\rho_1^2 &lt; \rho_2^2\)</span>. We can find that</p>
+<ul class="simple">
+<li><p>When <span class="math notranslate nohighlight">\(s = 1\)</span>, <span class="math notranslate nohighlight">\(R^2\)</span> has a minimum <span class="math notranslate nohighlight">\(\rho_2^2\)</span> at <span class="math notranslate nohighlight">\(\rho_{12} = \left\vert \frac{\rho_1}{\rho_2}  \right\vert\)</span>.</p></li>
+<li><p>When <span class="math notranslate nohighlight">\(s = - 1\)</span>, <span class="math notranslate nohighlight">\(R^2\)</span> has a minimum <span class="math notranslate nohighlight">\(\rho_2^2\)</span> at <span class="math notranslate nohighlight">\(\rho_{12} = -\left\vert \frac{\rho_1}{\rho_2}  \right\vert\)</span></p></li>
+</ul>
+<p>In fact, when <span class="math notranslate nohighlight">\(R^2\)</span> takes its minimum, it corresponds to the <span class="math notranslate nohighlight">\(a_y = 0, a_w \ne 0\)</span> case in the detailed explanation <a class="reference internal" href="12-lm-inference.html#lm-rss-nonincreasing"><span class="std std-ref">here</span></a>.</p>
+</li>
+</ul>
+<p>Then we consider the case when <span class="math notranslate nohighlight">\(\rho_1 ^2 = \rho_2^2\)</span>. First let’s see two trivial cases:</p>
+<ul class="simple">
+<li><p>If <span class="math notranslate nohighlight">\(\rho_1 ^2 = \rho_2^2 = 1\)</span> then <span class="math notranslate nohighlight">\(R^2 = 1\)</span> by non-increasing property of <span class="math notranslate nohighlight">\(R^2\)</span>.</p></li>
+<li><p>If <span class="math notranslate nohighlight">\(\rho_1 ^2 = \rho_2^2 = 0\)</span> then <span class="math notranslate nohighlight">\(R^2 = 0\)</span> since neither <span class="math notranslate nohighlight">\(X_1\)</span> or <span class="math notranslate nohighlight">\(X_2\)</span> contains relevant information (<span class="math notranslate nohighlight">\(a_y =0\)</span>).</p></li>
+</ul>
+<p>We discuss the case when <span class="math notranslate nohighlight">\(0 &lt; \rho_1 ^2 = \rho_2^2 &lt; 1\)</span>. The equality in (*) gives four solutions of <span class="math notranslate nohighlight">\(\rho_{12}\)</span>: <span class="math notranslate nohighlight">\(s, s(2 \rho_1^2 - 1)\)</span>.</p>
+<ul class="simple">
+<li><p>When <span class="math notranslate nohighlight">\(s = 1\)</span>, the range for <span class="math notranslate nohighlight">\(\rho_{12}\)</span> is <span class="math notranslate nohighlight">\([2 \rho_1^2 -1, 1]\)</span>. <span class="math notranslate nohighlight">\(R^2\)</span> is monotonically decreasing over this range. When <span class="math notranslate nohighlight">\(\rho_{12} = 2 \rho_1^2 -1\)</span> it reaches maximum <span class="math notranslate nohighlight">\(1\)</span>, and when <span class="math notranslate nohighlight">\(\rho_{12} = 1\)</span>, two regressors are linearly perfectly correlated, so <span class="math notranslate nohighlight">\(R^2 = \rho_1^2 &lt; 1\)</span>.</p></li>
+<li><p>Similarly, when <span class="math notranslate nohighlight">\(s= -1\)</span>, the range for <span class="math notranslate nohighlight">\(\rho_{12}\)</span> is <span class="math notranslate nohighlight">\([-1, 2 \rho_1^2 -1]\)</span>. <span class="math notranslate nohighlight">\(R^2\)</span> is monotonically increasing over this range with minimum <span class="math notranslate nohighlight">\(R^2 = \rho_1^2 &lt; 1\)</span> and maximum <span class="math notranslate nohighlight">\(1\)</span>.</p></li>
+</ul>
+<p>To conclude, <span class="math notranslate nohighlight">\(R^2\)</span> is</p>
+<ul class="simple">
+<li><p>0 if <span class="math notranslate nohighlight">\(\rho_1 ^2 = \rho_2^2 = 0\)</span></p></li>
+<li><p>in <span class="math notranslate nohighlight">\([\max(\rho_1^2, \rho_2^2), 1]\)</span> for any cases else.</p>
+<ul>
+<li><p>It is possible that <span class="math notranslate nohighlight">\(\rho_1^2 = 0, \rho_2^2 = 0.01\)</span> and <span class="math notranslate nohighlight">\(R^2 = 1\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(R^2 &gt; \max(\rho_1^2, \rho_2^2)\)</span> is called enhancement. See <a class="reference external" href="https://www.jstor.org/stable/2988294">this paper</a>.</p></li>
+</ul>
+</li>
+</ul>
 </div>
 </li>
 <li><p>Causal?</p>

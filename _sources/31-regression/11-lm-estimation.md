@@ -918,6 +918,66 @@ SLR stands for simple linear regression $y_i = \beta_0 + \beta_1 x_i + \varepsil
 
     :::
 
+1. Given $R^2=0.3$ for $Y\sim X_1$, and $R^2 = 0.4$ for $Y \sim X_1$, what is $R^2$ for $Y \sim X_1 + X_2$?
+
+    :::{admonition,dropdown,seealso} *Solution*
+
+    **Short answer**
+
+    Since $R^2$ is increasing when adding an additional regressor, the lower bound is $\max(0.3, 0.4)$. The upper bound is 1 (this is a bold guess, see details below).
+
+    **Long answer**
+
+    First we find the range of $\rho_{X_1, X_2}$ by veryfying the positive semi-definitess of the correlation matrix $\operatorname{Cov}\left( [Y, X_1, X_2] \right)$. Note that we only know $\rho^2_{Y, X_1}$ and $\rho^2_{Y, X_2}$ but don't know the signs $\mathrm{sign}(\rho_{Y, X_1})$ and $\mathrm{sign}(\rho_{Y, X_2})$, so we have 4 scenarios (actually it reduces to 2 scenarios). For simplicity we write $\rho_{Y, X_1} = \rho_1, \rho_{Y, X_2} = \rho_1,\rho_{X_2, X_2} = \rho_{12}$. By Sylvester’s criterion, $\rho_{12}$ needs to satisfies:
+
+
+    $$
+    \rho_{12}^2 - 2s \left\vert \rho_1\rho_2 \right\vert \rho_{12} + \rho_1^2 + \rho_2^2 -1 \le 0 \qquad (1)
+    $$
+
+    where $s = \mathrm{sign}(\rho_{1}) \times \mathrm{sign}(\rho_{2}) \in \left\{ -1, 1 \right\}$. Note that this inequality always has a solution for $\rho_{12}$ iff $(\rho_1^2 - 1)(\rho_2^2 - 1) \ge 0$, which always holds.
+
+    Then, we use the formula for [multiple correlation coefficient](https://en.wikipedia.org/wiki/Coefficient_of_multiple_correlation)
+
+
+    $$
+    R^{2}=\boldsymbol{r}_{yx}^{\top} \boldsymbol{R} _{x x}^{-1} \boldsymbol{r}_{yx}
+    $$
+
+    where $\boldsymbol{r}_{yx}$ is the vector of correlation coefficients between $Y$ and each $X$, and $\boldsymbol{R} _{xx}$ is the correlation matrix of $X$'s.
+
+    We first consider the case when $\rho_{1}^2\ne \rho_{2}^2$. The above formula can be written as
+
+    $$
+    R^{2}=\frac{\rho_1^2 + \rho_2^2-2 s\left\vert \rho_1 \rho_2 \right\vert \rho_{12}}{1-\rho_{12}^{2}} \qquad (2)
+    $$
+
+    Note that $\rho_{12}^2 \ne 1$, otherwise $(1)$ becomes $(\left\vert \rho_1 \right\vert \pm \left\vert \rho_2 \right\vert)^2 \le 0$ which gives $\rho_1^2 = \rho_2^2$, contradiction.
+
+    - It is easy to see that, when the equality in $(1)$ holds, substituing it to (2) gives $R^2 = 1$. In this case, $Y$ has a perfect linear relation with $X_1$ and $X_2$, and the covariance matrix $\operatorname{Cov}\left( [Y, X_1, X_2] \right)$ has rank 2. Besides, solving the equality gives four solutions of $\rho_{12}$: $s \left\vert \rho_1\rho_2 \right\vert \pm \sqrt{(\rho_1 ^2 - 1)(\rho_2^2-1)}$ which are all inside the range $[-1, 1]$.
+    When $\rho_1^2 = 0.3, \rho_2^2 = 0.4$, we have $\rho_{12} = s\sqrt{0.12} \pm \sqrt{0.42} \approx 0.9945s, 0.3017s$.
+    - When strict inequality holds in $(1)$, $0< R^2 < 1$. We take derivative of $R^2$ w.r.t. $\rho_{12}$ and check its roots. WLOG, suppose $\rho_1^2 < \rho_2^2$. We can find that
+      - When $s = 1$, $R^2$ has a minimum $\rho_2^2$ at $\rho_{12} = \left\vert \frac{\rho_1}{\rho_2}  \right\vert$.
+      - When $s = - 1$, $R^2$ has a minimum $\rho_2^2$ at $\rho_{12} = -\left\vert \frac{\rho_1}{\rho_2}  \right\vert$
+
+      In fact, when $R^2$ takes its minimum, it corresponds to the $a_y = 0, a_w \ne 0$ case in the detailed explanation [here](lm-rss-nonincreasing).
+
+    Then we consider the case when $\rho_1 ^2 = \rho_2^2$. First let's see two trivial cases:
+    - If $\rho_1 ^2 = \rho_2^2 = 1$ then $R^2 = 1$ by non-increasing property of $R^2$.
+    - If $\rho_1 ^2 = \rho_2^2 = 0$ then $R^2 = 0$ since neither $X_1$ or $X_2$ contains relevant information ($a_y =0$).
+
+    We discuss the case when $0 < \rho_1 ^2 = \rho_2^2 < 1$. The equality in (*) gives four solutions of $\rho_{12}$: $s, s(2 \rho_1^2 - 1)$.
+    - When $s = 1$, the range for $\rho_{12}$ is $[2 \rho_1^2 -1, 1]$. $R^2$ is monotonically decreasing over this range. When $\rho_{12} = 2 \rho_1^2 -1$ it reaches maximum $1$, and when $\rho_{12} = 1$, two regressors are linearly perfectly correlated, so $R^2 = \rho_1^2 < 1$.
+    - Similarly, when $s= -1$, the range for $\rho_{12}$ is $[-1, 2 \rho_1^2 -1]$. $R^2$ is monotonically increasing over this range with minimum $R^2 = \rho_1^2 < 1$ and maximum $1$.
+
+    To conclude, $R^2$ is
+    - 0 if $\rho_1 ^2 = \rho_2^2 = 0$
+    - in $[\max(\rho_1^2, \rho_2^2), 1]$ for any cases else.
+      - It is possible that $\rho_1^2 = 0, \rho_2^2 = 0.01$ and $R^2 = 1$.
+      - $R^2 > \max(\rho_1^2, \rho_2^2)$ is called enhancement. See [this paper](https://www.jstor.org/stable/2988294).
+
+    :::
+
 1. Causal?
 
     313.qz1.q2
