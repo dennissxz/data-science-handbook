@@ -176,3 +176,29 @@ def count_trailing_zeros(n):
 ```
 
 (random-points-semi)=
+## Random Points on a common Semi-circle
+
+*We randomly distribute $n$ points on the circumference of a circle. What is the probability that they will all fall in a common semi-circle?*
+
+
+:::{admonition,dropdown,seealso} *Solution*
+
+We introduce a easy-to-understand solution. First we consider $n$ *distinguishable* points. We want to distribute them on the circumference of a circle. If ther fall in a common semi-circle, then there must be a *leading* point such that all other $n-1$ points fall in a semi-circle in a clockwise direction starting from this leading point. Let's call this semi-circle the *right* semi-circle of the leading point, and the other half the *left* semi-circle.
+
+Now we fix a leading point, and discuss how to distribute the remaining $n-1$ points such that they fall in a common semi-circle. For each of the remaining $n-1$ points, it has $1/2$ probability to fall in the right semi-circle and $1/2$ probability to fall in the left semi-circle. Therefore, the probability that all of the $n-1$ points fall into the right semi-circle is $(1/2)^{n-1}$.
+
+Finally, there are $n$ distinguishable points that can be chosen as a leading point. Hence, the probability is $n\cdot (1/2)^{n-1}$.
+
+:::
+
+Related problems
+
+- Equivalent problems
+  - Randomly distribute $n$ points *inside* a circle. What is the probability that they will all fall in a common semi-circle?
+
+- Complementary problems
+  - Randomly distribute $n$ points on the circumference of a circle. Draw a polygon whose vertices are these $n$ points. What is the probability that the center of the circle is inside this? (Hint: A polygon covers the center iff all the vertices are NOT on a common semi-ciecle.)
+  - If you break a stick at two points chosen uniformly, what's the probability the three resulting sticks form a triangle? (Hint: connect the two ends of the stick to form a circle, and break it at three random points. A triangle is feasible iff no stick is longer than 1/2, i.e. three points are NOT on a common semi-circle)
+
+- Extension
+  - What's the probability that the origin 0 is not in the convex hull of $n$ random points in $\mathbb{R} ^{d}$? See [here](https://mathoverflow.net/questions/33112/estimate-probability-0-is-in-the-convex-hull-of-n-random-points).
