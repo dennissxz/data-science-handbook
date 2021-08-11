@@ -922,23 +922,6 @@
   <a class="reference internal nav-link" href="#digit-number-puzzle">
    10-digit Number Puzzle
   </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#sol-1-enumeration-by-hand">
-     Sol.1 Enumeration by Hand
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#sol-2-enumeration-by-computer">
-     Sol.2 Enumeration by Computer
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#sol-3-mathematical-reasoning">
-     Sol.3 Mathematical Reasoning
-    </a>
-   </li>
-  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#trailing-zeros-in-n-factorial">
@@ -948,6 +931,28 @@
    </span>
    factorial
   </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#random-points-on-a-common-semi-circle">
+   Random Points on a common Semi-circle
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#clock">
+   Clock
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#hands-overlap">
+     Hands Overlap
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#hands-in-a-common-semi-circle">
+     Hands in a Common Semi-circle
+    </a>
+   </li>
+  </ul>
  </li>
 </ul>
 
@@ -966,19 +971,19 @@
 <div class="section" id="digit-number-puzzle">
 <h2>10-digit Number Puzzle<a class="headerlink" href="#digit-number-puzzle" title="Permalink to this headline">¶</a></h2>
 <p>Tags: Jane Street, Trader, 18Q4</p>
-<p>There is a 10-digit number. From left to right, the first digit equals the number of 0’s in that number, the second digit equals the number of 1’s in that number, and so on. What is this number?</p>
-<div class="section" id="sol-1-enumeration-by-hand">
-<h3>Sol.1 Enumeration by Hand<a class="headerlink" href="#sol-1-enumeration-by-hand" title="Permalink to this headline">¶</a></h3>
+<p><em>There is a 10-digit number. From left to right, the first digit equals the number of 0’s in that number, the second digit equals the number of 1’s in that number, and so on. What is this number?</em></p>
+<div class="dropdown seealso admonition">
+<p class="admonition-title"> <em>Sol.1 Enumeration by Hand</em></p>
 <p>Suppose this number is <span class="math notranslate nohighlight">\(\underline{d_0d_1d_2d_3d_4d_5d_6d_7d_8d_9}\)</span>, where</p>
 <div class="math notranslate nohighlight">
-\[d_{i} = \sum_j\mathbb{I}[d_j=i]\in \{0,1,2,\dots,9\}\]</div>
-<p>Consider a summation of the digits,</p>
+\[d_{i} = \sum_{j=0}^9\mathbb{I}[d_j=i]\in \{0,1,2,\dots,9\}\]</div>
+<p>Consider the summation of the digits,</p>
 <div class="math notranslate nohighlight">
 \[S_1 = \sum_{i=0}^{9} d_i\]</div>
-<p>Since each digit counts the number of appearances, the summation should be <span class="math notranslate nohighlight">\(S=10\)</span>.</p>
+<p>Since each digit counts the number of appearances and there are 10 digits in total, the summation should be <span class="math notranslate nohighlight">\(S_1=10\)</span>.</p>
 <p>Note that the summation can also be written as</p>
 <div class="math notranslate nohighlight">
-\[S_1 = \sum_{i=0}^{9} d_i \times i :=S_2\]</div>
+\[S_2 = \sum_{i=0}^{9} d_i \times i\]</div>
 <p>Thus, we have</p>
 <div class="math notranslate nohighlight">
 \[S_1 = S_2 = 10\]</div>
@@ -1029,39 +1034,39 @@
 <p>…</p>
 <p>Enumeration by hand is tedious. We have found a solution 6210001000 but we have to enumerate all other cases to see if there exists any other solutions.</p>
 </div>
-<div class="section" id="sol-2-enumeration-by-computer">
-<h3>Sol.2 Enumeration by Computer<a class="headerlink" href="#sol-2-enumeration-by-computer" title="Permalink to this headline">¶</a></h3>
-<p>It seems that the time complexity is <span class="math notranslate nohighlight">\(O(10^{n-1})\)</span> for a <span class="math notranslate nohighlight">\(n\)</span>-digit number, but in fact we can optimize it by adding the constraints.</p>
-<p>Since <span class="math notranslate nohighlight">\(\sum_i i\cdot d_i = 10\)</span> we have <span class="math notranslate nohighlight">\(d_i \le \lfloor \frac{10}{i} \rfloor\)</span> for <span class="math notranslate nohighlight">\(i \ge 1\)</span>. So the time complexity is greatly reduced to <span class="math notranslate nohighlight">\(O(\Pi_{i=1}^{n-1} \lfloor \frac{10}{i} \rfloor)\)</span></p>
-<p>A python script can be</p>
+<div class="dropdown seealso admonition">
+<p class="admonition-title"> <em>Sol.2 Enumeration by Computer</em></p>
+<p>It seems that the time complexity is <span class="math notranslate nohighlight">\(O(10^{n})\)</span> for an <span class="math notranslate nohighlight">\(n\)</span>-digit number (<span class="math notranslate nohighlight">\(n &lt;= 10\)</span>), but in fact we can optimize it by adding the constraints.</p>
+<p>Since <span class="math notranslate nohighlight">\(\sum_{i=0}^9 i\cdot d_i = n\)</span> we have <span class="math notranslate nohighlight">\(d_i \le \lfloor \frac{n}{i} \rfloor\)</span> for <span class="math notranslate nohighlight">\(i \ge 1\)</span>. So the time complexity is greatly reduced to <span class="math notranslate nohighlight">\(O(\Pi_{i=1}^{n-1} \lfloor \frac{n}{i} \rfloor)\)</span></p>
+<p>A python script is shown below</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">product</span>
 <span class="k">for</span> <span class="n">ds</span> <span class="ow">in</span> <span class="n">product</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="o">*</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">10</span> <span class="o">//</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">))):</span>
-    <span class="k">if</span> <span class="nb">sum</span><span class="p">(</span><span class="n">ds</span><span class="p">)</span> <span class="o">==</span> <span class="mi">10</span> <span class="ow">and</span> <span class="nb">sum</span><span class="p">(</span><span class="n">i</span> <span class="o">*</span> <span class="n">ds</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span> <span class="o">==</span> <span class="mi">10</span><span class="p">:</span>
+    <span class="k">if</span> <span class="nb">sum</span><span class="p">(</span><span class="n">ds</span><span class="p">)</span> <span class="o">==</span> <span class="mi">10</span> <span class="ow">and</span> <span class="nb">sum</span><span class="p">(</span><span class="n">i</span> <span class="o">*</span> <span class="n">ds</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span> <span class="o">==</span> <span class="mi">10</span><span class="p">:</span> <span class="c1"># verify property S1 = S2</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">ds</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">!=</span> <span class="n">ds</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
-                <span class="k">break</span>
-        <span class="k">else</span><span class="p">:</span> <span class="c1"># no break</span>
+            <span class="k">if</span> <span class="n">ds</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">!=</span> <span class="n">ds</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span> <span class="c1"># verify definition for each digit</span>
+                <span class="k">break</span> <span class="c1"># next number</span>
+        <span class="k">else</span><span class="p">:</span> <span class="c1"># definition satisfied, output</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">ds</span><span class="p">))</span>
 </pre></div>
 </div>
 <p>It turns out that 6210001000 is the unique solution.</p>
 </div>
-<div class="section" id="sol-3-mathematical-reasoning">
-<h3>Sol.3 Mathematical Reasoning<a class="headerlink" href="#sol-3-mathematical-reasoning" title="Permalink to this headline">¶</a></h3>
-<p>In the above solutions we did partial reasoning and partial enumeration. Now we try more rigorous reasoning.</p>
-<p>Define a set <span class="math notranslate nohighlight">\(A = \{d_i\vert d_i\ge 1\}\)</span>. Then the cardinality is</p>
+<div class="dropdown seealso admonition">
+<p class="admonition-title"> <em>Sol.3 Mathematical Reasoning</em></p>
+<p>In the above solutions we did partial reasoning and partial enumeration. Now we try to use more rigorous reasoning.</p>
+<p>Consider an <span class="math notranslate nohighlight">\(n\)</span>-digit number. Define a set <span class="math notranslate nohighlight">\(A = \{d_i\vert d_i\ge 1\}\)</span>. Then the cardinality is</p>
 <div class="math notranslate nohighlight">
-\[\vert A \vert = \sum_i \mathbb{I}[d_i \ge 1] = n - \sum_i \mathbb{I}[d_i=0] =   n - d_0\]</div>
+\[\vert A \vert = \sum_{i=0}^{n-1} \mathbb{I}[d_i \ge 1] = n - \sum_{i=0}^{n-1} \mathbb{I}[d_i=0] =   n - d_0\]</div>
 <p>and the sum of the elements in <span class="math notranslate nohighlight">\(A\)</span> is</p>
 <div class="math notranslate nohighlight">
-\[\sum_{d_i \in A} d_i = \sum_i d_i = n\]</div>
+\[\sum_{d_i \in A} d_i = \sum_{i=0}^{n-1} d_i = n\]</div>
 <p>Define another set <span class="math notranslate nohighlight">\(B = A \backslash \{d_0\} = \{d_i\vert d_i \ge 1, i\ge 1 \}\)</span>. Then</p>
 <div class="math notranslate nohighlight">
 \[\vert B \vert = \vert A \vert - 1 = n - d_0 - 1\]</div>
 <p>and the sum of the elements in <span class="math notranslate nohighlight">\(B\)</span> is</p>
 <div class="math notranslate nohighlight">
 \[\sum_{d_i \in B} d_i = \sum_{d_i \in A}d_i - d_0 = n - d_0\]</div>
-<p>Since all the <span class="math notranslate nohighlight">\(d_i \ge 1 \ \forall \  d_i\in B\)</span>, we derive that there are <span class="math notranslate nohighlight">\(n-d_0-2\ge0\)</span> number of <span class="math notranslate nohighlight">\(1\)</span>’s and one <span class="math notranslate nohighlight">\(2\)</span> in <span class="math notranslate nohighlight">\(B\)</span>. Hence,</p>
+<p>Given the above two equalities and note that <span class="math notranslate nohighlight">\(d_i \ge 1 \ \forall \  d_i\in B\)</span>, there must be exactly <span class="math notranslate nohighlight">\(n-d_0-2\)</span> number of <span class="math notranslate nohighlight">\(1\)</span>’s and one <span class="math notranslate nohighlight">\(2\)</span> in <span class="math notranslate nohighlight">\(B\)</span>. Hence, we obtain three constraints</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{align}
@@ -1103,14 +1108,14 @@ d_i &amp;\le 2 \ \  \forall \ i\ge1 &amp;(3)
 </div>
 <div class="section" id="trailing-zeros-in-n-factorial">
 <h2>Trailing zeros in <span class="math notranslate nohighlight">\(n\)</span> factorial<a class="headerlink" href="#trailing-zeros-in-n-factorial" title="Permalink to this headline">¶</a></h2>
-<p><em>Find the number of trailing zeros</em> in <span class="math notranslate nohighlight">\(n!\)</span>.</p>
+<p><em>Find the number of trailing zeros in <span class="math notranslate nohighlight">\(n!\)</span></em>.</p>
 <p>It is easy to see the trailing zeros are produced by prime factors <span class="math notranslate nohighlight">\(2\)</span> and <span class="math notranslate nohighlight">\(5\)</span>. If there are <span class="math notranslate nohighlight">\(m\)</span> number of factor <span class="math notranslate nohighlight">\(2\)</span> and <span class="math notranslate nohighlight">\(n\)</span> number of factor <span class="math notranslate nohighlight">\(5\)</span> in <span class="math notranslate nohighlight">\(n!\)</span>, then there will be <span class="math notranslate nohighlight">\(\min(m,n)\)</span> number of trailing zeros.</p>
 <p>Also note that</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(m&gt;n\)</span>, since every <span class="math notranslate nohighlight">\(5\)</span> numbers produce a factor <span class="math notranslate nohighlight">\(5\)</span> and at least <span class="math notranslate nohighlight">\(3\)</span> factors of <span class="math notranslate nohighlight">\(2\)</span>.</p></li>
 <li><p>multiples of 5 like <span class="math notranslate nohighlight">\(25, 125\)</span> bring more than one factor of <span class="math notranslate nohighlight">\(5\)</span>.</p></li>
 </ul>
-<p>Therefore, we conclude that <span class="math notranslate nohighlight">\(\min(m,n) = n\)</span>. How to count <span class="math notranslate nohighlight">\(n\)</span>? The easiest way is <span class="math notranslate nohighlight">\(\lfloor \frac{n}{5} \rfloor\)</span>. But we have to take numbers like <span class="math notranslate nohighlight">\(25, 125\)</span> into consideration. The solution is to add <span class="math notranslate nohighlight">\(\lfloor \frac{n}{25} \rfloor, \lfloor \frac{n}{125} \rfloor\)</span>, etc.</p>
+<p>Therefore, we conclude that <span class="math notranslate nohighlight">\(\min(m,n) = n\)</span>. How to count <span class="math notranslate nohighlight">\(n\)</span>? The easiest way is <span class="math notranslate nohighlight">\(\lfloor \frac{n}{5} \rfloor\)</span>. But we have to take numbers like <span class="math notranslate nohighlight">\(25, 125\)</span> into consideration. A easy way is to to add <span class="math notranslate nohighlight">\(\lfloor \frac{n}{25} \rfloor, \lfloor \frac{n}{125} \rfloor\)</span>, etc. to the solution.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">count_trailing_zeros</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
 
     <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
@@ -1121,6 +1126,108 @@ d_i &amp;\le 2 \ \  \forall \ i\ge1 &amp;(3)
 
     <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">count</span><span class="p">)</span>
 </pre></div>
+</div>
+</div>
+<div class="section" id="random-points-on-a-common-semi-circle">
+<span id="random-points-semi"></span><h2>Random Points on a common Semi-circle<a class="headerlink" href="#random-points-on-a-common-semi-circle" title="Permalink to this headline">¶</a></h2>
+<p><em>We randomly distribute <span class="math notranslate nohighlight">\(n\)</span> points on the circumference of a circle. What is the probability that they will all fall in a common semi-circle?</em></p>
+<div class="dropdown seealso admonition">
+<p class="admonition-title"> <em>Solution</em></p>
+<p>We introduce a easy-to-understand solution. First we consider <span class="math notranslate nohighlight">\(n\)</span> <em>distinguishable</em> points. We want to distribute them on the circumference of a circle. If ther fall in a common semi-circle, then there must be a <em>leading</em> point such that all other <span class="math notranslate nohighlight">\(n-1\)</span> points fall in a semi-circle in a clockwise direction starting from this leading point. Let’s call this semi-circle the <em>right</em> semi-circle of the leading point, and the other half the <em>left</em> semi-circle.</p>
+<p>Now we fix a leading point, and discuss how to distribute the remaining <span class="math notranslate nohighlight">\(n-1\)</span> points such that they fall in a common semi-circle. For each of the remaining <span class="math notranslate nohighlight">\(n-1\)</span> points, it has <span class="math notranslate nohighlight">\(1/2\)</span> probability to fall in the right semi-circle and <span class="math notranslate nohighlight">\(1/2\)</span> probability to fall in the left semi-circle. Therefore, the probability that all of the <span class="math notranslate nohighlight">\(n-1\)</span> points fall into the right semi-circle is <span class="math notranslate nohighlight">\((1/2)^{n-1}\)</span>.</p>
+<p>Finally, there are <span class="math notranslate nohighlight">\(n\)</span> distinguishable points that can be chosen as a leading point. Hence, the probability is <span class="math notranslate nohighlight">\(n\cdot (1/2)^{n-1}\)</span>.</p>
+</div>
+<p>Related problems</p>
+<ul class="simple">
+<li><p>Equivalent problems</p>
+<ul>
+<li><p>Randomly distribute <span class="math notranslate nohighlight">\(n\)</span> points <em>inside</em> a circle. What is the probability that they will all fall in a common semi-circle?</p></li>
+</ul>
+</li>
+<li><p>Complementary problems</p>
+<ul>
+<li><p>Randomly distribute <span class="math notranslate nohighlight">\(n\)</span> points on the circumference of a circle. Draw a polygon whose vertices are these <span class="math notranslate nohighlight">\(n\)</span> points. What is the probability that the center of the circle is inside this? (Hint: A polygon covers the center iff all the vertices are NOT on a common semi-ciecle.)</p></li>
+<li><p>If you break a stick at two points chosen uniformly, what’s the probability the three resulting sticks form a triangle? (Hint: connect the two ends of the stick to form a circle, and break it at three random points. A triangle is feasible iff no stick is longer than 1/2, i.e. three points are NOT on a common semi-circle)</p></li>
+</ul>
+</li>
+<li><p>Extension</p>
+<ul>
+<li><p>What’s the probability that the origin 0 is not in the convex hull of <span class="math notranslate nohighlight">\(n\)</span> random points in <span class="math notranslate nohighlight">\(\mathbb{R} ^{d}\)</span>? See <a class="reference external" href="https://mathoverflow.net/questions/33112/estimate-probability-0-is-in-the-convex-hull-of-n-random-points">here</a>.</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="clock">
+<h2>Clock<a class="headerlink" href="#clock" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="hands-overlap">
+<h3>Hands Overlap<a class="headerlink" href="#hands-overlap" title="Permalink to this headline">¶</a></h3>
+<p><em>How many times a day do a clock’s hands overlap?</em></p>
+<div class="dropdown seealso admonition">
+<p class="admonition-title"> <em>Solution</em></p>
+<p><strong>Summary</strong></p>
+<ol class="simple">
+<li><p>There are 22 times a day if you only count the minute and hour hands overlapping.</p></li>
+<li><p>There are 2 times a day if you only count when all three hands overlap. This occurs at midnight and noon.</p></li>
+</ol>
+<p><strong>Analysis</strong></p>
+<p>We assume that the hands rotates continuously. In reality, they rotate discretely. You can see the second hand ‘jump’ over an interval on quartz watches.</p>
+<p>We analyse the first case. Every miniute, the hour hand rotates <span class="math notranslate nohighlight">\(30/60=0.5°\)</span>, the minute hand rotates <span class="math notranslate nohighlight">\(360/60=6°\)</span>, the relative speed is <span class="math notranslate nohighlight">\(6-0.5=5.5°\)</span>. Hence, the time needed for the minite hand to catch up the hour hand is <span class="math notranslate nohighlight">\(360/5.5=720/11 = 65 \frac{5}{11}\)</span> minutes. In a half-day (a full cycle of the clock) there are 720 minutes. Hence there are <span class="math notranslate nohighlight">\(720/(720/11)=11\)</span> times of overlaps. A day has 22 overlaps.</p>
+<p>For the second case, it should be a subset of the 11 times above. We may check where the second hand is for these 11 times. But before that, note that it must be a factor of 11 (think about what happen otherwise). Therefore, we only need to check the 1st time and the 11th time. For the 1st time at <span class="math notranslate nohighlight">\(65 \frac{5}{11}\)</span> minutes, the second hand is near 6 while the hour and minute hands are near 1, not feasible. For the 11th time, all three hands are at 12. Hence, there are two overlaps.</p>
+</div>
+</div>
+<div class="section" id="hands-in-a-common-semi-circle">
+<h3>Hands in a Common Semi-circle<a class="headerlink" href="#hands-in-a-common-semi-circle" title="Permalink to this headline">¶</a></h3>
+<p><em>What’s the probability that all three hands are in a common semi-circle?</em></p>
+<div class="dropdown seealso admonition">
+<p class="admonition-title"> <em>Solution</em></p>
+<p>Let the speed of the hour, minute, second hands be <span class="math notranslate nohighlight">\(\omega_h, \omega_m, \omega_s\)</span>. It is easy to see that <span class="math notranslate nohighlight">\(\omega_m = 12 \omega_h\)</span> and <span class="math notranslate nohighlight">\(\omega_s = 60\omega_m = 720 \omega_h\)</span>. Now we use the hour hand as a reference system. The relative speeds are <span class="math notranslate nohighlight">\(\omega_m ^\prime = \omega_m - \omega_h = 11 \omega_h\)</span> and <span class="math notranslate nohighlight">\(\omega_s ^\prime = \omega_s - \omega_h = 719 \omega_h\)</span>. This means that, when the minute hand rotates 1 cycle, the second hand rotates <span class="math notranslate nohighlight">\(\frac{719}{11}\)</span> cycles. Let <span class="math notranslate nohighlight">\(d_m \in [0, 1]\)</span> be the angle that the proportion of a cycle that the minute hand rotates, and let <span class="math notranslate nohighlight">\(d_s = (\frac{719}{11} d_m \times ) \ \%\ 1\)</span> be that for the second hand, where <span class="math notranslate nohighlight">\(\%\)</span> is the modulus operation. The conditions that all three hands are in a common semi-circle are</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(d_m &lt; 0.5\)</span> and <span class="math notranslate nohighlight">\(d_s &lt; 0.5\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(d_m &gt; 0.5\)</span> and <span class="math notranslate nohighlight">\(d_s &gt; 0.5\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\left\vert d_m - d_s \right\vert &gt; 0.5\)</span></p></li>
+</ul>
+<p>To simplify these conditions, we can shift the values <span class="math notranslate nohighlight">\(d_m, d_s\)</span> in <span class="math notranslate nohighlight">\([0.5, 1]\)</span> to <span class="math notranslate nohighlight">\([-0.5, 0]\)</span>. Then the three conditions reduce to <span class="math notranslate nohighlight">\(\left\vert d_m - d_s \right\vert &lt; 0.5\)</span>.</p>
+<p>One can then write a code to simulate <span class="math notranslate nohighlight">\(d_m, d_s\)</span> and compute the probability. A python code is given below.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="k">def</span> <span class="nf">prob</span><span class="p">(</span><span class="n">slope</span><span class="p">,</span> <span class="n">plot</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mf">0.0001</span><span class="p">)</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">m</span><span class="o">*</span><span class="n">slope</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">m</span> <span class="o">%</span> <span class="mi">1</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">s</span> <span class="o">%</span> <span class="mi">1</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">m</span> <span class="o">&gt;</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">m</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">m</span><span class="p">)</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">s</span> <span class="o">&gt;</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">s</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+    <span class="n">semi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">m</span> <span class="o">-</span> <span class="n">s</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">0.5</span>
+
+    <span class="k">if</span> <span class="n">plot</span><span class="p">:</span>
+
+        <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mf">0.005</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;square&#39;</span><span class="p">)</span>
+        <span class="n">y1</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">]</span>
+        <span class="n">y2</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">]</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span>
+                         <span class="n">facecolor</span><span class="o">=</span><span class="s2">&quot;orange&quot;</span><span class="p">,</span> <span class="c1"># The fill color</span>
+                         <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span>       <span class="c1"># The outline color</span>
+                         <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>          <span class="c1"># Transparency of the fill</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">semi</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">semi</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We can plot <span class="math notranslate nohighlight">\(d_s\)</span> vs <span class="math notranslate nohighlight">\(d_m\)</span>, as well as the region <span class="math notranslate nohighlight">\(\left\vert d_m - d_s \right\vert &lt; 0.5\)</span>. Since the factor <span class="math notranslate nohighlight">\(\frac{719}{11}\)</span> is too large, the parallel lines are quite dence. We also show the case when the factor is <span class="math notranslate nohighlight">\(2\)</span>.</p>
+<div class="figure align-default" id="clock-semi-prob">
+<a class="reference internal image-reference" href="../_images/clock-semi-prob.png"><img alt="" src="../_images/clock-semi-prob.png" style="width: 80%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 17 </span><span class="caption-text">Plot of <span class="math notranslate nohighlight">\(d_s\)</span> vs <span class="math notranslate nohighlight">\(d_m\)</span> with different factor <span class="math notranslate nohighlight">\(2\)</span> (left) and <span class="math notranslate nohighlight">\(\frac{719}{11}\)</span> (right).</span><a class="headerlink" href="#clock-semi-prob" title="Permalink to this image">¶</a></p>
+</div>
+<p>The simulated probability when the factor is <span class="math notranslate nohighlight">\(\frac{719}{11}\)</span> is close to <span class="math notranslate nohighlight">\(0.75\)</span>. It is easy to see this result from the plot above since the parallel lines almost ‘fill’ the <span class="math notranslate nohighlight">\([-0.5, 0.5] \times [-0.5, 0.5]\)</span> region. Besides, it is easy to compute that if <span class="math notranslate nohighlight">\(f=1\)</span> then <span class="math notranslate nohighlight">\(p=1\)</span>, and if <span class="math notranslate nohighlight">\(f=2\)</span> then <span class="math notranslate nohighlight">\(p=0.5\)</span> (plot above). Their relations are shown in the plot below</p>
+<div class="figure align-default" id="clock-semi">
+<a class="reference internal image-reference" href="../_images/clock-semi.png"><img alt="" src="../_images/clock-semi.png" style="width: 70%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 18 </span><span class="caption-text">Relation between probability <span class="math notranslate nohighlight">\(p\)</span> and factor <span class="math notranslate nohighlight">\(f\)</span>.</span><a class="headerlink" href="#clock-semi" title="Permalink to this image">¶</a></p>
+</div>
+<p>The probability <span class="math notranslate nohighlight">\(p\)</span> converges to <span class="math notranslate nohighlight">\(0.75\)</span> as the factor <span class="math notranslate nohighlight">\(f\)</span> increases. When <span class="math notranslate nohighlight">\(f\)</span> is large, we can regard the deterministic relation between <span class="math notranslate nohighlight">\(d_s\)</span> and <span class="math notranslate nohighlight">\(d_m\)</span> as random – the three hands are three uniformly random points in a circle, and we are going to find the probability that they fall in to a common semicircle, which is introduced <a class="reference internal" href="#random-points-semi"><span class="std std-ref">above</span></a>.</p>
+</div>
 </div>
 </div>
 </div>

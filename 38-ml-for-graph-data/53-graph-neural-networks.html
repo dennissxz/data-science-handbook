@@ -1197,7 +1197,7 @@
 <p>Now we introduce deep graph encoders for node embeddings, where <span class="math notranslate nohighlight">\(\operatorname{ENC}(v)\)</span> are deep neural networks. Note that the <span class="math notranslate nohighlight">\(\operatorname{similarity}(u,v)\)</span> measures can also be incorporated into GNN. The output can be node embeddings, sub graph embeddings, or entire graph embeddings, to be used for downstream tasks.</p>
 <div class="figure align-default" id="gnn-pipeline">
 <a class="reference internal image-reference" href="../_images/gnn-pipeline.png"><img alt="" src="../_images/gnn-pipeline.png" style="width: 70%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 232 </span><span class="caption-text">Pipeline of graphical neural networks</span><a class="headerlink" href="#gnn-pipeline" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 234 </span><span class="caption-text">Pipeline of graphical neural networks</span><a class="headerlink" href="#gnn-pipeline" title="Permalink to this image">¶</a></p>
 </div>
 <p>Let</p>
 <ul class="simple">
@@ -1232,12 +1232,12 @@
 <p>Consider a 3 by 3 filter in CNN. We aggregate information in 9 cells and and then output one cell. In a graph, we can aggregate information in a neighborhood <span class="math notranslate nohighlight">\(\mathscr{N} (v)\)</span> and output one ‘node’. For instance, given messages <span class="math notranslate nohighlight">\(h_j\)</span> from neighbor <span class="math notranslate nohighlight">\(j\)</span> with weight <span class="math notranslate nohighlight">\(w_j\)</span>, we can output new message <span class="math notranslate nohighlight">\(\sum_{j \in \mathcal{N} (v)} w_j h_j\)</span>. In GNN, every node defines a <strong>computation graph</strong> based on its neighborhood</p>
 <div class="figure align-default" id="gnn-cnn-filter">
 <a class="reference internal image-reference" href="../_images/gnn-cnn-filter.png"><img alt="" src="../_images/gnn-cnn-filter.png" style="width: 50%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 233 </span><span class="caption-text">CNN filter and GNN</span><a class="headerlink" href="#gnn-cnn-filter" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 235 </span><span class="caption-text">CNN filter and GNN</span><a class="headerlink" href="#gnn-cnn-filter" title="Permalink to this image">¶</a></p>
 </div>
 <p>It also borrows idea from message passing. The information in GNN propagate through neighbors like those in belief networks. The number of hops determines the number of layers of GNN. For a GNN designed to find node embeddings, the information at each layer is node embeddings.</p>
 <div class="figure align-default" id="gnn-aggregate">
 <a class="reference internal image-reference" href="../_images/gnn-aggregate.png"><img alt="" src="../_images/gnn-aggregate.png" style="width: 70%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 234 </span><span class="caption-text">Aggregation of neighbors information</span><a class="headerlink" href="#gnn-aggregate" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 236 </span><span class="caption-text">Aggregation of neighbors information</span><a class="headerlink" href="#gnn-aggregate" title="Permalink to this image">¶</a></p>
 </div>
 </div>
 <div class="section" id="neurons">
@@ -1277,7 +1277,7 @@ aggregation function is complex.</p>
 <p>After build GNN layers, to train it, we compute loss and do SGD. The pipeline is</p>
 <div class="figure align-default" id="gnn-training-pipeline">
 <a class="reference internal image-reference" href="../_images/gnn-training-pipeline.png"><img alt="" src="../_images/gnn-training-pipeline.png" style="width: 50%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 235 </span><span class="caption-text">GNN Training Pipeline</span><a class="headerlink" href="#gnn-training-pipeline" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 237 </span><span class="caption-text">GNN Training Pipeline</span><a class="headerlink" href="#gnn-training-pipeline" title="Permalink to this image">¶</a></p>
 </div>
 <p>The prediction heads depend on whether the task is at node-level, edge-level, or graph-level.</p>
 <div class="section" id="node-level">
@@ -1319,7 +1319,7 @@ aggregation function is complex.</p>
 <li><p>hierarchical pooling: global pooling may lose information. We can apply pooling to some subgraphs to obtain subgraph embeddings, and then pool these subgraph embeddings.</p>
 <div class="figure align-default" id="id4">
 <a class="reference internal image-reference" href="../_images/graph-hier-emb.png"><img alt="" src="../_images/graph-hier-emb.png" style="width: 90%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 236 </span><span class="caption-text">Hierarchical Pooling</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 238 </span><span class="caption-text">Hierarchical Pooling</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
 </div>
 <p>To decide subgraph assignment, standard community detection or graph partition algorithms can be used. The assignment can also be learned: we build two GNNs,</p>
 <ul class="simple">
@@ -1386,7 +1386,7 @@ aggregation function is complex.</p>
 </ul>
 <div class="figure align-default" id="gnn-train-test-split">
 <a class="reference internal image-reference" href="../_images/gnn-train-test-split.png"><img alt="" src="../_images/gnn-train-test-split.png" style="width: 70%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 237 </span><span class="caption-text">Splitting graph, transductive (left) and inductive (right)</span><a class="headerlink" href="#gnn-train-test-split" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 239 </span><span class="caption-text">Splitting graph, transductive (left) and inductive (right)</span><a class="headerlink" href="#gnn-train-test-split" title="Permalink to this image">¶</a></p>
 </div>
 <p>In the first layer only features not labels are fed into GNN.</p>
 </div>
@@ -1412,7 +1412,7 @@ aggregation function is complex.</p>
 </ol>
 <div class="figure align-default" id="gnn-split-edge-ind">
 <a class="reference internal image-reference" href="../_images/gnn-split-edge-ind.png"><img alt="" src="../_images/gnn-split-edge-ind.png" style="width: 70%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 238 </span><span class="caption-text">Inductive splitting for link prediction</span><a class="headerlink" href="#gnn-split-edge-ind" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 240 </span><span class="caption-text">Inductive splitting for link prediction</span><a class="headerlink" href="#gnn-split-edge-ind" title="Permalink to this image">¶</a></p>
 </div>
 <p>Transductive setting (common setting, <code class="docutils literal notranslate"><span class="pre">edge_train_mode</span> <span class="pre">=</span> <span class="pre">&quot;disjoint&quot;</span></code> in DeepSNAP)</p>
 <ol class="simple">
@@ -1432,7 +1432,7 @@ aggregation function is complex.</p>
 <p>After training, supervision edges are <strong>known</strong> to GNN. Therefore, an ideal model should use supervision edges <span class="math notranslate nohighlight">\(E_{\text{train, s}}\)</span> in message passing at test time.</p>
 <div class="figure align-default" id="gnn-split-edge-tran">
 <a class="reference internal image-reference" href="../_images/gnn-split-edge-tran.png"><img alt="" src="../_images/gnn-split-edge-tran.png" style="width: 70%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 239 </span><span class="caption-text">Transductive splitting for link prediction</span><a class="headerlink" href="#gnn-split-edge-tran" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 241 </span><span class="caption-text">Transductive splitting for link prediction</span><a class="headerlink" href="#gnn-split-edge-tran" title="Permalink to this image">¶</a></p>
 </div>
 <p>Another way of train-test split for link-prediction in general ML models:</p>
 <ul class="simple">
@@ -1557,12 +1557,12 @@ aggregation function is complex.</p>
 <p>Consider a special case that node features are the same <span class="math notranslate nohighlight">\(\boldsymbol{x} _{v_1} = \boldsymbol{x} _{v_2} = \ldots\)</span>, represented by colors in the discussion below. Then if the computational graph are exactly the same for two nodes, then they have the same embeddings.</p>
 <div class="figure align-default" id="gnn-expr-same">
 <a class="reference internal image-reference" href="../_images/gnn-expr-same.png"><img alt="" src="../_images/gnn-expr-same.png" style="width: 50%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 240 </span><span class="caption-text">Same computational graphs of two nodes</span><a class="headerlink" href="#gnn-expr-same" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 242 </span><span class="caption-text">Same computational graphs of two nodes</span><a class="headerlink" href="#gnn-expr-same" title="Permalink to this image">¶</a></p>
 </div>
 <p>Computational graphs are identical to <strong>rooted subtree</strong> structures around each node. GNN’s node embeddings capture rooted subtree structures. Most expressive GNN maps different rooted subtrees into different node embeddings, i.e. should be like an injective function.</p>
 <div class="figure align-default" id="gnn-injective">
 <a class="reference internal image-reference" href="../_images/gnn-injective.png"><img alt="" src="../_images/gnn-injective.png" style="width: 50%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 241 </span><span class="caption-text">Injective mapping from computational graph to embeddings</span><a class="headerlink" href="#gnn-injective" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 243 </span><span class="caption-text">Injective mapping from computational graph to embeddings</span><a class="headerlink" href="#gnn-injective" title="Permalink to this image">¶</a></p>
 </div>
 <p>Some of the previously seen models do not use injective function at the neighbor aggregation step. Note that neighbor aggregation is a function over multi-sets (sets with repeating elements). They are not maximally powerful GNNs in terms of expressiveness.</p>
 <ul class="simple">
@@ -1571,7 +1571,7 @@ aggregation function is complex.</p>
 </ul>
 <div class="figure align-default" id="gnn-expr-fail">
 <a class="reference internal image-reference" href="../_images/gnn-expr-fail.png"><img alt="" src="../_images/gnn-expr-fail.png" style="width: 70%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 242 </span><span class="caption-text">Mean and max pooling failure cases</span><a class="headerlink" href="#gnn-expr-fail" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 244 </span><span class="caption-text">Mean and max pooling failure cases</span><a class="headerlink" href="#gnn-expr-fail" title="Permalink to this image">¶</a></p>
 </div>
 </div>
 <div class="section" id="id2">
@@ -1628,7 +1628,7 @@ c^{(k+1)}(v)=\operatorname{HASH}\left(c^{(k)}(v),\left\{c^{(k)}(u)\right\}_{u \i
 </ul>
 <div class="figure align-default" id="gnn-layer">
 <a class="reference internal image-reference" href="../_images/gnn-layer.png"><img alt="" src="../_images/gnn-layer.png" style="width: 20%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 243 </span><span class="caption-text">A GNN Layer</span><a class="headerlink" href="#gnn-layer" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 245 </span><span class="caption-text">A GNN Layer</span><a class="headerlink" href="#gnn-layer" title="Permalink to this image">¶</a></p>
 </div>
 <p>Try design ideas in <a class="reference external" href="https://github.com/snap-stanford/GraphGym">GraphGym</a>.</p>
 <p>We then introduce how to add skip connection across layers.</p>
@@ -1639,7 +1639,7 @@ c^{(k+1)}(v)=\operatorname{HASH}\left(c^{(k)}(v),\left\{c^{(k)}(u)\right\}_{u \i
 <p>Let receptive field be the set of nodes that determine the embedding of a node of interest. In a <span class="math notranslate nohighlight">\(L\)</span>-layer GNN, this set is the union of <span class="math notranslate nohighlight">\(\ell\)</span>-hop neighborhood for <span class="math notranslate nohighlight">\(\ell=1, 2, \ldots, L\)</span>. As the number of layers <span class="math notranslate nohighlight">\(L\)</span> goes large, the <span class="math notranslate nohighlight">\(L\)</span>-hop neighborhood increases exponentially. The receptive filed quickly covers all nodes in the graph.</p>
 <div class="figure align-default" id="gnn-receptive-filed">
 <a class="reference internal image-reference" href="../_images/gnn-receptive-filed.png"><img alt="" src="../_images/gnn-receptive-filed.png" style="width: 80%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 244 </span><span class="caption-text">Receptive field for different layers of GNN</span><a class="headerlink" href="#gnn-receptive-filed" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 246 </span><span class="caption-text">Receptive field for different layers of GNN</span><a class="headerlink" href="#gnn-receptive-filed" title="Permalink to this image">¶</a></p>
 </div>
 <p>For different nodes, the <strong>shared</strong> neighbors quickly grow when we
 increase the number of hops (num of GNN layers). Their computation graphs are similar, hence similar embeddings.</p>
@@ -1662,7 +1662,7 @@ increase the number of hops (num of GNN layers). Their computation graphs are si
 <p>We can also add shortcut connections (aka skip connections) in GNN. Then we automatically get a mixture of shallow GNNs and deep GNNs. We can even add shortcuts from each layer to the final layer, then final layer directly aggregates from the all the node embeddings in the previous layers</p>
 <div class="figure align-default" id="gnn-skip-connection">
 <a class="reference internal image-reference" href="../_images/gnn-skip-connection.png"><img alt="" src="../_images/gnn-skip-connection.png" style="width: 70%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 245 </span><span class="caption-text">Skip connection in GNN</span><a class="headerlink" href="#gnn-skip-connection" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 247 </span><span class="caption-text">Skip connection in GNN</span><a class="headerlink" href="#gnn-skip-connection" title="Permalink to this image">¶</a></p>
 </div>
 </div>
 </div>
@@ -1718,7 +1718,7 @@ increase the number of hops (num of GNN layers). Their computation graphs are si
 </ul>
 <div class="figure align-default" id="gnn-feature-aug">
 <a class="reference internal image-reference" href="../_images/gnn-feature-aug.png"><img alt="" src="../_images/gnn-feature-aug.png" style="width: 80%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 246 </span><span class="caption-text">Comparison of feature augmentation methods</span><a class="headerlink" href="#gnn-feature-aug" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 248 </span><span class="caption-text">Comparison of feature augmentation methods</span><a class="headerlink" href="#gnn-feature-aug" title="Permalink to this image">¶</a></p>
 </div>
 </div>
 <div class="section" id="virtual-nodes-edges">
@@ -1734,7 +1734,7 @@ increase the number of hops (num of GNN layers). Their computation graphs are si
 <p>We can add a virtual node, and connected it to all <span class="math notranslate nohighlight">\(N_v\)</span> nodes in the graph. Hence all nodes will have a distance at most 2. (too dense?? if <span class="math notranslate nohighlight">\(L=2\)</span> then the input layer covers all nodes??)</p>
 <div class="figure align-default" id="gnn-virtual-node">
 <a class="reference internal image-reference" href="../_images/gnn-virtual-node.png"><img alt="" src="../_images/gnn-virtual-node.png" style="width: 60%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 247 </span><span class="caption-text">A virtual node</span><a class="headerlink" href="#gnn-virtual-node" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 249 </span><span class="caption-text">A virtual node</span><a class="headerlink" href="#gnn-virtual-node" title="Permalink to this image">¶</a></p>
 </div>
 </div>
 </div>
@@ -1784,7 +1784,7 @@ p_{\text {model }}(\boldsymbol{x} ; \theta)=\prod_{t=1}^{n} p_{\text {model }}\l
 <p>In our case, <span class="math notranslate nohighlight">\(x_t\)</span> will be the <span class="math notranslate nohighlight">\(t\)</span>-th action (add node, add edge). The ordering of nodes is a random ordering <span class="math notranslate nohighlight">\(\pi\)</span>. For a fixed ordering <span class="math notranslate nohighlight">\(\pi\)</span> of nodes, for each node, we add a sequence of edges.</p>
 <div class="figure align-default" id="gnn-gen">
 <a class="reference internal image-reference" href="../_images/gnn-gen.png"><img alt="" src="../_images/gnn-gen.png" style="width: 50%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 248 </span><span class="caption-text">Generation process of a graph</span><a class="headerlink" href="#gnn-gen" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 250 </span><span class="caption-text">Generation process of a graph</span><a class="headerlink" href="#gnn-gen" title="Permalink to this image">¶</a></p>
 </div>
 <p>It is like propagating along columns of upper-triangularized adjacency matrix corresponding to the ordering <span class="math notranslate nohighlight">\(\pi\)</span>. Essentially, we have transformed graph generation problem into a sequence generation problem. We need to model two processes</p>
 <ol class="simple">
@@ -1799,12 +1799,12 @@ p_{\text {model }}(\boldsymbol{x} ; \theta)=\prod_{t=1}^{n} p_{\text {model }}\l
 </ul>
 <div class="figure align-default" id="graph-rnn-pipeline">
 <a class="reference internal image-reference" href="../_images/graph-rnn-pipeline.png"><img alt="" src="../_images/graph-rnn-pipeline.png" style="width: 70%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 249 </span><span class="caption-text">GraphRNN Pipeline (node RNN + edge RNN)</span><a class="headerlink" href="#graph-rnn-pipeline" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 251 </span><span class="caption-text">GraphRNN Pipeline (node RNN + edge RNN)</span><a class="headerlink" href="#graph-rnn-pipeline" title="Permalink to this image">¶</a></p>
 </div>
 <p>The training and test pipeline is:</p>
 <div class="figure align-default" id="graph-rnn-train-test">
 <a class="reference internal image-reference" href="../_images/graph-rnn-train-test.png"><img alt="" src="../_images/graph-rnn-train-test.png" style="width: 90%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 250 </span><span class="caption-text">GraphRNN training and test example</span><a class="headerlink" href="#graph-rnn-train-test" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 252 </span><span class="caption-text">GraphRNN training and test example</span><a class="headerlink" href="#graph-rnn-train-test" title="Permalink to this image">¶</a></p>
 </div>
 <ul>
 <li><p>SOS means start of sequence, EOS means end of sequence.</p></li>
@@ -1822,12 +1822,12 @@ p_{\text {model }}(\boldsymbol{x} ; \theta)=\prod_{t=1}^{n} p_{\text {model }}\l
 <p>The answer is to use Breadth-First search node ordering rather than random ordering of nodes.</p>
 <div class="figure align-default" id="graph-rnn-ordering">
 <a class="reference internal image-reference" href="../_images/graph-rnn-ordering.png"><img alt="" src="../_images/graph-rnn-ordering.png" style="width: 50%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 251 </span><span class="caption-text">Random ordering and BFS ordering</span><a class="headerlink" href="#graph-rnn-ordering" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 253 </span><span class="caption-text">Random ordering and BFS ordering</span><a class="headerlink" href="#graph-rnn-ordering" title="Permalink to this image">¶</a></p>
 </div>
 <p>Illustrated in adjacency matrix, we only look at connectivity with nodes in the BFS frontier, rather than all previous nodes.</p>
 <div class="figure align-default" id="graph-rnn-ordering-2">
 <a class="reference internal image-reference" href="../_images/graph-rnn-ordering-2.png"><img alt="" src="../_images/graph-rnn-ordering-2.png" style="width: 70%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 252 </span><span class="caption-text">Random ordering and BFS ordering in adjacency matrices</span><a class="headerlink" href="#graph-rnn-ordering-2" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 254 </span><span class="caption-text">Random ordering and BFS ordering in adjacency matrices</span><a class="headerlink" href="#graph-rnn-ordering-2" title="Permalink to this image">¶</a></p>
 </div>
 </div>
 <div class="section" id="similarity-of-graphs">
@@ -1841,7 +1841,7 @@ The distance between two distributions can be measured by <a class="reference ex
 </ul>
 <div class="figure align-default" id="emd">
 <a class="reference internal image-reference" href="../_images/emd.png"><img alt="" src="../_images/emd.png" style="width: 70%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 253 </span><span class="caption-text">Earth mover distance illustration</span><a class="headerlink" href="#emd" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 255 </span><span class="caption-text">Earth mover distance illustration</span><a class="headerlink" href="#emd" title="Permalink to this image">¶</a></p>
 </div>
 <p>How two compare two sets of graphs by some set distance? Each graph element may have different <span class="math notranslate nohighlight">\(N_v, N_e\)</span>. First we compute a statistic for each graph element, then compute Maximum Mean Discrepancy (MDD). If <span class="math notranslate nohighlight">\(\mathcal{X} = \mathcal{H} = \mathbb{R} ^d\)</span> and we choose <span class="math notranslate nohighlight">\(\phi: \mathcal{X} \rightarrow \mathcal{H}\)</span> to be <span class="math notranslate nohighlight">\(\phi(x)=x\)</span>, then it becomes</p>
 <div class="math notranslate nohighlight">
@@ -1885,13 +1885,13 @@ The distance between two distributions can be measured by <a class="reference ex
 </ul>
 <div class="figure align-default" id="gnn-struc-posi-aware">
 <a class="reference internal image-reference" href="../_images/gnn-struc-posi-aware.png"><img alt="" src="../_images/gnn-struc-posi-aware.png" style="width: 70%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 254 </span><span class="caption-text">Two types of labels.</span><a class="headerlink" href="#gnn-struc-posi-aware" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 256 </span><span class="caption-text">Two types of labels.</span><a class="headerlink" href="#gnn-struc-posi-aware" title="Permalink to this image">¶</a></p>
 </div>
 <p>GNNs differentiate nodes by their computational graphs. Thus, they often work well for structure-aware task, but fail for position-aware tasks (but node features are different??)</p>
 <p>To solve this, we introduce anchors. Randomly pick some nodes or some set of nodes in the graph as <strong>anchor-sets</strong>. Then we compute the relative distances from every nodes to these anchor-sets.</p>
 <div class="figure align-default" id="gnn-anchor-set">
 <a class="reference internal image-reference" href="../_images/gnn-anchor-set.png"><img alt="" src="../_images/gnn-anchor-set.png" style="width: 60%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 255 </span><span class="caption-text">Anchors</span><a class="headerlink" href="#gnn-anchor-set" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 257 </span><span class="caption-text">Anchors</span><a class="headerlink" href="#gnn-anchor-set" title="Permalink to this image">¶</a></p>
 </div>
 <p>The distance can then be used as <strong>position encoding</strong>, which represent a node’s position by its distance to randomly selected anchor-set.</p>
 <p>Note that each dimension of the position encoding is tied to an anchor-set. Permutation of the order does not change the meaning of the encoding. Thus, we cannot directly use this encoding as augmented feature.</p>
@@ -1903,13 +1903,13 @@ The distance between two distributions can be measured by <a class="reference ex
 <p>Heterogenous: different types of message passing is applied to different nodes. Suppose two nodes <span class="math notranslate nohighlight">\(v_1, v_2\)</span> have the same computational graph structure, but have different node colorings. Since we will apply different neural network for embedding computation, their embeddings will be different.</p>
 <div class="figure align-default" id="gnn-idgnn">
 <a class="reference internal image-reference" href="../_images/gnn-idgnn.png"><img alt="" src="../_images/gnn-idgnn.png" style="width: 50%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 256 </span><span class="caption-text">Identity-aware GNN</span><a class="headerlink" href="#gnn-idgnn" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 258 </span><span class="caption-text">Identity-aware GNN</span><a class="headerlink" href="#gnn-idgnn" title="Permalink to this image">¶</a></p>
 </div>
 <p>ID-GNN can count cycles originating from a given node, but GNN cannot.</p>
 <p>Rather than to heterogenous message passing, we can include identity information as an augmented node feature (no need to do heterogenous message passing). Use cycle counts in each layer as an augmented node feature.</p>
 <div class="figure align-default" id="gnn-idgnn-cycle">
 <a class="reference internal image-reference" href="../_images/gnn-idgnn-cycle.png"><img alt="" src="../_images/gnn-idgnn-cycle.png" style="width: 70%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 257 </span><span class="caption-text">Cycle count at each level forms a vector</span><a class="headerlink" href="#gnn-idgnn-cycle" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 259 </span><span class="caption-text">Cycle count at each level forms a vector</span><a class="headerlink" href="#gnn-idgnn-cycle" title="Permalink to this image">¶</a></p>
 </div>
 <p>ID-GNN is more expressive than their GNN counterparts. ID-GNN is the first message passing GNN that is more expressive than 1-WL test.</p>
 </div>
