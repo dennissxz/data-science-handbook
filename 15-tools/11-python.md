@@ -476,7 +476,7 @@ Multiple methods can be applied sequentially and arranged in a easy-to-read form
   .plot
   .bar(
     figsize = (4,3),
-    layout = (4,5), 
+    layout = (4,5),
   )
 )
 
@@ -498,6 +498,16 @@ Multiple methods can be applied sequentially and arranged in a easy-to-read form
   ax.spines.bottom.set_position('center')
   ax.spines.right.set_color('none')
   ax.spines.top.set_color('none')
+  ```
+
+- Shaded area
+
+
+  ```
+  plt.fill_between(x, yhigh, ylow,
+                 facecolor="orange", # The fill color
+                 color='blue',       # The outline color
+                 alpha=0.2)          # Transparency of the fill
   ```
 
 ## Miscellaneous
