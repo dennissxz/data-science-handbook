@@ -202,3 +202,96 @@ Related problems
 
 - Extension
   - What's the probability that the origin 0 is not in the convex hull of $n$ random points in $\mathbb{R} ^{d}$? See [here](https://mathoverflow.net/questions/33112/estimate-probability-0-is-in-the-convex-hull-of-n-random-points).
+
+
+
+## Clock
+
+### Hands Overlap
+
+*How many times a day do a clock’s hands overlap?*
+
+:::{admonition,dropdown,seealso} *Solution*
+
+**Summary**
+
+1. There are 22 times a day if you only count the minute and hour hands overlapping.
+2. There are 2 times a day if you only count when all three hands overlap. This occurs at midnight and noon.
+
+**Analysis**
+
+We assume that the hands rotates continuously. In reality, they rotate discretely. You can see the second hand 'jump' over an interval on quartz watches.
+
+We analyse the first case. Every miniute, the hour hand rotates $30/60=0.5°$, the minute hand rotates $360/60=6°$, the relative speed is $6-0.5=5.5°$. Hence, the time needed for the minite hand to catch up the hour hand is $360/5.5=720/11 = 65 \frac{5}{11}$ minutes. In a half-day (a full cycle of the clock) there are 720 minutes. Hence there are $720/(720/11)=11$ times of overlaps. A day has 22 overlaps.
+
+For the second case, it should be a subset of the 11 times above. We may check where the second hand is for these 11 times. But before that, note that it must be a factor of 11 (think about what happen otherwise). Therefore, we only need to check the 1st time and the 11th time. For the 1st time at $65 \frac{5}{11}$ minutes, the second hand is near 6 while the hour and minute hands are near 1, not feasible. For the 11th time, all three hands are at 12. Hence, there are two overlaps.
+
+
+:::
+
+### Hands in a Common Semi-circle
+
+*What's the probability that all three hands are in a common semi-circle?*
+
+::::{admonition,dropdown,seealso} *Solution*
+
+Let the speed of the hour, minute, second hands be $\omega_h, \omega_m, \omega_s$. It is easy to see that $\omega_m = 12 \omega_h$ and $\omega_s = 60\omega_m = 720 \omega_h$. Now we use the hour hand as a reference system. The relative speeds are $\omega_m ^\prime = \omega_m - \omega_h = 11 \omega_h$ and $\omega_s ^\prime = \omega_s - \omega_h = 719 \omega_h$. This means that, when the minute hand rotates 1 cycle, the second hand rotates $\frac{719}{11}$ cycles. Let $d_m \in [0, 1]$ be the angle that the proportion of a cycle that the minute hand rotates, and let $d_s = (\frac{719}{11} d_m \times ) \ \%\ 1$ be that for the second hand, where $\%$ is the modulus operation. The conditions that all three hands are in a common semi-circle are
+- $d_m < 0.5$ and $d_s < 0.5$
+- $d_m > 0.5$ and $d_s > 0.5$
+- $\left\vert d_m - d_s \right\vert > 0.5$
+
+To simplify these conditions, we can shift the values $d_m, d_s$ in $[0.5, 1]$ to $[-0.5, 0]$. Then the three conditions reduce to $\left\vert d_m - d_s \right\vert < 0.5$.
+
+One can then write a code to simulate $d_m, d_s$ and compute the probability. A python code is given below.
+
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+
+def prob(slope, plot=False):
+    m = np.arange(0, 11, 0.0001)
+    s = m*slope
+    m = m % 1
+    s = s % 1
+    m = np.where(m > 0.5, m-1, m)
+    s = np.where(s > 0.5, s-1, s)
+    semi = np.abs(m - s) < 0.5
+
+    if plot:
+
+        plt.scatter(m, s, s=0.005)
+        plt.axis('square')
+        y1 = [0, 0.5, 0.5]
+        y2 = [-0.5, -0.5, 0]
+        x = [-0.5, 0, 0.5]
+        plt.fill_between(x, y1, y2,
+                         facecolor="orange", # The fill color
+                         color='blue',       # The outline color
+                         alpha=0.2)          # Transparency of the fill
+        plt.show()
+
+    return sum(semi) / len(semi)
+```
+
+We can plot $d_s$ vs $d_m$, as well as the region $\left\vert d_m - d_s \right\vert < 0.5$. Since the factor $\frac{719}{11}$ is too large, the parallel lines are quite dence. We also show the case when the factor is $2$.
+
+:::{figure} clock-semi-prob
+<img src="../imgs/clock-semi-prob.png" width = "80%" alt=""/>
+
+Plot of $d_s$ vs $d_m$ with different factor $2$ (left) and $\frac{719}{11}$ (right).
+:::
+
+The simulated probability when the factor is $\frac{719}{11}$ is close to $0.75$. It is easy to see this result from the plot above since the parallel lines almost 'fill' the $[-0.5, 0.5] \times [-0.5, 0.5]$ region. Besides, it is easy to compute that if $f=1$ then $p=1$, and if $f=2$ then $p=0.5$ (plot above). Their relations are shown in the plot below
+
+:::{figure} clock-semi
+<img src="../imgs/clock-semi.png" width = "70%" alt=""/>
+
+Relation between probability $p$ and factor $f$.
+
+:::
+
+The probability $p$ converges to $0.75$ as the factor $f$ increases. When $f$ is large, we can regard the deterministic relation between $d_s$ and $d_m$ as random -- the three hands are three uniformly random points in a circle, and we are going to find the probability that they fall in to a common semicircle, which is introduced [above](random-points-semi).
+
+
+::::
