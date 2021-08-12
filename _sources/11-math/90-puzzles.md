@@ -155,6 +155,9 @@ When $n\le 6$, if $d_0 \ge 3$, then $\vert A \vert =4$ and $n=d_0+4>7$, contradi
 
 *Find the number of trailing zeros in $n!$*.
 
+:::{admonition,dropdown,seealso} *Solution*
+
+
 It is easy to see the trailing zeros are produced by prime factors $2$ and $5$. If there are $m$ number of factor $2$ and $n$ number of factor $5$ in $n!$, then there will be $\min(m,n)$ number of trailing zeros.
 
 Also note that
@@ -174,6 +177,7 @@ def count_trailing_zeros(n):
 
     return int(count)
 ```
+:::
 
 (random-points-semi)=
 ## Random Points on a common Semi-circle
@@ -205,7 +209,7 @@ Related problems
 
 
 
-## Clock
+## Clocks
 
 ### Hands Overlap
 
@@ -222,9 +226,9 @@ Related problems
 
 We assume that the hands rotates continuously. In reality, they rotate discretely. You can see the second hand 'jump' over an interval on quartz watches.
 
-We analyse the first case. Every miniute, the hour hand rotates $30/60=0.5°$, the minute hand rotates $360/60=6°$, the relative speed is $6-0.5=5.5°$. Hence, the time needed for the minite hand to catch up the hour hand is $360/5.5=720/11 = 65 \frac{5}{11}$ minutes. In a half-day (a full cycle of the clock) there are 720 minutes. Hence there are $720/(720/11)=11$ times of overlaps. A day has 22 overlaps.
+We analyse the first case. Every miniute, the hour hand rotates $30/60=0.5°$, the minute hand rotates $360/60=6°$, the relative speed is $6-0.5=5.5°$. Hence, the time needed for the minite hand to catch up the hour hand is $360/5.5=720/11 = 65 \frac{4}{11}$ minutes. In a half-day (a full cycle of the clock) there are 720 minutes. Hence there are $720/(720/11)=11$ times of overlaps. A day has 22 overlaps.
 
-For the second case, it should be a subset of the 11 times above. We may check where the second hand is for these 11 times. But before that, note that it must be a factor of 11 (think about what happen otherwise). Therefore, we only need to check the 1st time and the 11th time. For the 1st time at $65 \frac{5}{11}$ minutes, the second hand is near 6 while the hour and minute hands are near 1, not feasible. For the 11th time, all three hands are at 12. Hence, there are two overlaps.
+For the second case, it should be a subset of the 11 times above. We may check where the second hand is for these 11 times. But before that, note that it must be a factor of 11 (think about what happen otherwise). Therefore, we only need to check the 1st time and the 11th time. For the 1st time at $65 \frac{4}{11}$ minutes, the second hand is near 6 while the hour and minute hands are near 1, not feasible. For the 11th time, all three hands are at 12. Hence, there are two overlaps.
 
 
 :::
@@ -235,7 +239,7 @@ For the second case, it should be a subset of the 11 times above. We may check w
 
 ::::{admonition,dropdown,seealso} *Solution*
 
-Let the speed of the hour, minute, second hands be $\omega_h, \omega_m, \omega_s$. It is easy to see that $\omega_m = 12 \omega_h$ and $\omega_s = 60\omega_m = 720 \omega_h$. Now we use the hour hand as a reference system. The relative speeds are $\omega_m ^\prime = \omega_m - \omega_h = 11 \omega_h$ and $\omega_s ^\prime = \omega_s - \omega_h = 719 \omega_h$. This means that, when the minute hand rotates 1 cycle, the second hand rotates $\frac{719}{11}$ cycles. Let $d_m \in [0, 1]$ be the angle that the proportion of a cycle that the minute hand rotates, and let $d_s = (\frac{719}{11} d_m \times ) \ \%\ 1$ be that for the second hand, where $\%$ is the modulus operation. The conditions that all three hands are in a common semi-circle are
+Let the speed of the hour, minute, second hands be $\omega_h, \omega_m, \omega_s$. It is easy to see that $\omega_m = 12 \omega_h$ and $\omega_s = 60\omega_m = 720 \omega_h$. Now we use the hour hand as a reference system. The relative speeds are $\omega_m ^\prime = \omega_m - \omega_h = 11 \omega_h$ and $\omega_s ^\prime = \omega_s - \omega_h = 719 \omega_h$. This means that, when the minute hand rotates 1 cycle, the second hand rotates $\frac{719}{11}$ cycles. Their least common multiple is 11. Let $c_m \in [0, 11)$ be the number of cycles the minute hand travels, and $c_s = \frac{719}{11} c_m$ the number of cycles the second hand travels. Let $d_m = c_m \mathrm{~mod~}1$ be the proportion of a cycle that the minute hand travels, and let $d_s = c_s \mathrm{~mod~}1$ be that for the second hand. The conditions that all three hands are in a common semi-circle are
 - $d_m < 0.5$ and $d_s < 0.5$
 - $d_m > 0.5$ and $d_s > 0.5$
 - $\left\vert d_m - d_s \right\vert > 0.5$
@@ -274,12 +278,12 @@ def prob(slope, plot=False):
     return sum(semi) / len(semi)
 ```
 
-We can plot $d_s$ vs $d_m$, as well as the region $\left\vert d_m - d_s \right\vert < 0.5$. Since the factor $\frac{719}{11}$ is too large, the parallel lines are quite dence. We also show the case when the factor is $2$.
+We can plot $d_s$ vs $d_m$, as well as the region $\left\vert d_m - d_s \right\vert < 0.5$. Since the factor $\frac{719}{11} \approx 65.36$ is too large, the parallel lines are quite dence. We also show the case when the factor is $1.5$ and $2$. Note that when the factor is not an integer, there might be multiple values of $d_s$ for a given value of $d_m$.
 
 :::{figure} clock-semi-prob
 <img src="../imgs/clock-semi-prob.png" width = "80%" alt=""/>
 
-Plot of $d_s$ vs $d_m$ with different factor $2$ (left) and $\frac{719}{11}$ (right).
+Plot of $d_s$ vs $d_m$ with different factors.
 :::
 
 The simulated probability when the factor is $\frac{719}{11}$ is close to $0.75$. It is easy to see this result from the plot above since the parallel lines almost 'fill' the $[-0.5, 0.5] \times [-0.5, 0.5]$ region. Besides, it is easy to compute that if $f=1$ then $p=1$, and if $f=2$ then $p=0.5$ (plot above). Their relations are shown in the plot below
@@ -293,5 +297,27 @@ Relation between probability $p$ and factor $f$.
 
 The probability $p$ converges to $0.75$ as the factor $f$ increases. When $f$ is large, we can regard the deterministic relation between $d_s$ and $d_m$ as random -- the three hands are three uniformly random points in a circle, and we are going to find the probability that they fall in to a common semicircle, which is introduced [above](random-points-semi).
 
-
 ::::
+
+### Hands are $120^{\circ}$ Apart
+
+*What time is it when all three hands are $120^{\circ}$ apart?*
+
+:::{admonition,dropdown,seealso} *Solution*
+
+By the same method above, let the cycles of the minute and second hands be respectively
+- $c_m \in [0, 11)$
+- $c_s = \frac{719}{11}c_m \in [0, 719)$
+
+If all three hands are $120^{\circ}$ apart, then we may have two scenarios
+1. $c_m = \frac{1}{3} + k$ and $c_s = \frac{2}{3} +j$, i.e. clockwisely the three hands are hour, minute, second.
+1. $c_m = \frac{2}{3} + k$ and $c_s = \frac{1}{3} +j$, i.e. clockwisely the three hands are hour, second, minute.
+
+where $k = 0, \ldots, 10$ and $j = 0, \ldots, 718$.
+
+1. For the first scenario, from the relation $c_s = \frac{719}{11}c_m$, we have $\frac{719}{11}(\frac{1}{3}+k ) = \frac{2}{3}+j$. To cancel the divisor $11$ on the LHS, we must have $k=7$. Then $j = 718 \times \frac{2}{3}$, not an integer.
+2. For the second scenario, we have $\frac{719}{11}(\frac{2}{3}+k ) = \frac{1}{3}+j$. To cancel the divisor $11$ on the LHS, we must have $k=3$. Then $j = 718 \times \frac{1}{3}$, not an integer.
+
+Therefore, we conclude that there are no integer solutions $j, k$. Hence, it is impossible for the thre hands to be $120 ^{\circ}$ apart.
+
+:::
