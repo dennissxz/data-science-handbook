@@ -155,6 +155,9 @@ When $n\le 6$, if $d_0 \ge 3$, then $\vert A \vert =4$ and $n=d_0+4>7$, contradi
 
 *Find the number of trailing zeros in $n!$*.
 
+:::{admonition,dropdown,seealso} *Solution*
+
+
 It is easy to see the trailing zeros are produced by prime factors $2$ and $5$. If there are $m$ number of factor $2$ and $n$ number of factor $5$ in $n!$, then there will be $\min(m,n)$ number of trailing zeros.
 
 Also note that
@@ -174,6 +177,7 @@ def count_trailing_zeros(n):
 
     return int(count)
 ```
+:::
 
 (random-points-semi)=
 ## Random Points on a common Semi-circle
@@ -205,7 +209,7 @@ Related problems
 
 
 
-## Clock
+## Clocks
 
 ### Hands Overlap
 
@@ -293,5 +297,27 @@ Relation between probability $p$ and factor $f$.
 
 The probability $p$ converges to $0.75$ as the factor $f$ increases. When $f$ is large, we can regard the deterministic relation between $d_s$ and $d_m$ as random -- the three hands are three uniformly random points in a circle, and we are going to find the probability that they fall in to a common semicircle, which is introduced [above](random-points-semi).
 
-
 ::::
+
+### Hands are $120^{\circ}$ Apart
+
+*What time is it when all three hands are $120^{\circ}$ apart?*
+
+:::{admonition,dropdown,seealso} *Solution*
+
+By the same method above, let the cycles of the minute and second hands be respectively
+- $c_m \in [0, 11)$
+- $c_s = \frac{719}{11}c_m \in [0, 719)$
+
+If all three hands are $120^{\circ}$ apart, then we may have two scenarios
+1. $c_m = \frac{1}{3} + k$ and $c_s = \frac{2}{3} +j$, i.e. clockwisely the three hands are hour, minute, second.
+1. $c_m = \frac{2}{3} + k$ and $c_s = \frac{1}{3} +j$, i.e. clockwisely the three hands are hour, second, minute.
+
+where $k = 0, \ldots, 10$ and $j = 0, \ldots, 718$.
+
+1. For the first scenario, from the relation $c_s = \frac{719}{11}c_m$, we have $\frac{719}{11}(\frac{1}{3}+k ) = \frac{2}{3}+j$. To cancel the divisor $11$ on the LHS, we must have $k=7$. Then $j = 718 \times \frac{2}{3}$, not an integer.
+2. For the second scenario, we have $\frac{719}{11}(\frac{2}{3}+k ) = \frac{1}{3}+j$. To cancel the divisor $11$ on the LHS, we must have $k=3$. Then $j = 718 \times \frac{1}{3}$, not an integer.
+
+Therefore, we conclude that there are no integer solutions $j, k$. Hence, it is impossible for the thre hands to be $120 ^{\circ}$ apart.
+
+:::
