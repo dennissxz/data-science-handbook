@@ -237,6 +237,11 @@ def my_function(real_name, optional_display_name=None):
   - `.close()` to close
   - see https://github.com/yasoob/intermediatePython/blob/master/coroutines.rst
 
+### Operations
+
+- Complexity of operations (link)[https://www.cnblogs.com/luozx207/p/12793168.html].
+
+- `set.remove()` vs `set.discard()`: The `remove()` method raises an error when the specified element doesn't exist in the given set, however the `discard()` method doesn't raise any error if the specified element is not present in the set and the set remains unchanged.
 
 ### `collections` module
 - the `collections` python module contains a number of useful container data types
