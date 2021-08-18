@@ -321,3 +321,6 @@ where $k = 0, \ldots, 10$ and $j = 0, \ldots, 718$.
 Therefore, we conclude that there are no integer solutions $j, k$. Hence, it is impossible for the thre hands to be $120 ^{\circ}$ apart.
 
 :::
+
+
+## Circle Chasing
