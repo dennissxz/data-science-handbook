@@ -211,3 +211,16 @@ It is easy to see that our algorithm computes a schedule with no inverted pairs.
 ### Complexity
 
 We first sort all jobs by their deadlines in time $O(n\log n)$, and then schedule jobs according to this order in time $O(n)$, so the running time of the algorithm is $O(n\log n)$.
+
+## Coding Exercise
+
+1. Given a list of intervals, decide if some of them overlap. Equivalent problems:
+   1.1 can someone participate all the meetings? (lc 252e)
+2. Given a list of intervals, return the maximum number of overlapping intervals. Equivalent problems:
+   2.1 minimize machines/meeting rooms used (lc 253m)
+   2.2 count the number of people on the bus given their [get on, get off] points
+   2.3 in addition, given a list of points, return the number of intervals that each point is in
+3. Given two lists of intervals, return the maximum overlapping interval length. Equivalent problems:
+   3.1 schedule a meeting of a given duration for two persons (lc 2229m)
+4. Given a list of intervals with values, find a way to select non-overlapping intervals to maximize the total value
+   4.1 select up to $k$ meetings out of $n$ meetings to join to maximize the total value (lc 1751h)
