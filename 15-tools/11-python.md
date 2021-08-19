@@ -259,6 +259,7 @@ def my_function(real_name, optional_display_name=None):
     print(d["a"]) ## 1
     print(d["b"]) ## "Not Present"
     ```
+  - one can also specify the default 'null' type of the value by `defaultdict(factory_function)`, where `factory_function` can be `int, str, set, list` etc.
 
 - `OrderedDict`
   - `OrderedDict` keeps its entries sorted as they are initially inserted. Overwriting a value of an existing key doesn't change the position of that key. However, deleting and reinserting an entry moves the key to the end of the dictionary.
