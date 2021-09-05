@@ -52,7 +52,7 @@ Imputation means how we fill the missing entries.
 
 #### Drop
 
-Simple drop observation $i$ if any entry $x_{ij}$ is missing. This is acceptable when in MAR, MCAR and when the missing is infrequent.  
+Simple drop observation $i$ if any entry $x_{ij}$ is missing. This is acceptable when in MAR, MCAR and when the missing is infrequent.
 
 #### By Mean or Mode
 
@@ -77,7 +77,7 @@ Clearly, this method increases [multicollinearity](lm-multicollinearity) among t
 We treat the missing entires as latent variables, and use EM algorithm to impute the values.
 1. Make initial guess of missing values
 2. Iterate
-    - Find ML estimates of the distribution parameters $\theta$, using $(x_{miss}, x_{obs})$
+    - Find maximum likelihood estimates of the parameters $\theta$ of the assumed joint distribution of the variables, using all data $(x_{miss}, x_{obs})$
     - Update missing values $x_{miss}$ by conditional expectation $\mathbb{E} [x_{miss} \mid x_{obs}, \theta]$
 
 
