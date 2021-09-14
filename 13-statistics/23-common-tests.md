@@ -18,6 +18,95 @@ with $Y_{1} \sim \chi_{d_{1}}^{2}, \quad Y_{1} \sim \chi_{d_{2}}^{2}$ and $Y_{1}
 
 ## $\chi^2$-test -->
 
+## Theories
+
+We first introduce some theories for statistical inference.
+
+### Sample Statistics
+
+For a random sample $(X_1, \ldots, X_n)$, the sample mean and sample variance can be computed as
+
+
+$$\begin{aligned}
+\bar{X} = \bar{X}_n &= \frac{1}{n}  \sum_{i=1}^n X_i \\
+S^2 = S_n^2 &= \frac{1}{n-1}  \sum_{i=1}^n (X_i - \bar{X})^2 \\
+&= \frac{1}{n-1}  \sum_{i=1}^n X_i^2 - \frac{n}{n-1} \bar{X}^2
+
+\end{aligned}$$
+
+They are **unbiased estimators** since
+
+
+$$\begin{aligned}
+
+\mathbb{E} [\bar{X}] &= \frac{1}{n} \sum_{i=1}^n \mathbb{E} [X_i] = \mu  \\
+\mathbb{E} [S^2]
+&= \frac{1}{n-1} \sum_{i=1}^n \mathbb{E} [X_i^2]  - \frac{n}{n-1} \mathbb{E} [\bar{X}^2]   \\
+&= \frac{1}{n-1} \sum_{i=1}^n (\sigma^2 + \mu^2)  - \frac{n}{n-1} \left( \frac{1}{n} \sigma^2 + \mu^2 \right)   \\
+&= \sigma^2\\
+\end{aligned}$$
+
+where we used the fact that $\mathbb{E} [\bar{X}^2] = \operatorname{Var}\left( \bar{X} \right) + \mathbb{E} [\bar{X}] ^2 =  \frac{1}{n} \sigma^2 + \mu^2$.
+
+If the random variables are i.i.d. sampled from normal distribution $X_i \overset{\text{iid}}{\sim} \mathcal{N}$, then $\bar{X}$ and $S^2$ (both are random) are **independent**.
+
+### Distribution Derived from Normal
+
+#### Chi-squared Distributions
+
+If $Z_i \overset{\text{iid}}{\sim} \mathcal{N} (0, 1)$, then their squared sum follows Chi-squared distribution with degree of freedom $n$.
+
+$$\begin{aligned}
+V &= \sum_{i=1}^n Z_i ^2 \sim \chi ^2 _n  \\
+\mathbb{E} [V] &= \sum_{i=1}^n \mathbb{E} [Z_i^2] = n\\
+\operatorname{Var}\left( V \right) &= \sum_{i=1}^n \operatorname{Var}\left( Z_i^2 \right) = 2n\\
+\end{aligned}$$
+
+If $X_i \overset{\text{iid}}{\sim} \mathcal{N} (\mu, \sigma^2)$, then we can find a distribution for the sample variance $S^2$ as
+
+$$\begin{aligned}
+V &= (n-1) \frac{S^2}{\sigma^2}  \sim \chi ^2 _{n-1}  \\
+\end{aligned}$$
+
+which does not depends on the true mean $\mu$.
+
+#### $t$ Distributions
+
+If $Z \sim \mathcal{N} (0, 1)$, and $V \sim \chi ^2 _n$ and $Z$ and $V$ are independent, then
+
+$$
+T = \frac{Z}{\sqrt{V/n}} \sim t_{n-1}
+$$
+
+In short, independent standard normal and chi-squared random variables can be used to construct a $t$ distribution.
+
+If $X_i \overset{\text{iid}}{\sim} \mathcal{N} (\mu, \sigma^2)$, then
+
+$$
+\frac{\bar{X} - \mu}{S/\sqrt{n}}  \sim t_{n-1}
+$$
+
+:::{admonition,dropdown,seealso} *Proof*
+
+Rewritting the LHS gives
+
+$$
+\frac{\bar{X} - \mu}{S/\sqrt{n}}  = \frac{\sqrt{n} \frac{\bar{X} - \mu}{\sigma}}{\sqrt{\frac{(n-1)S^2}{\sigma^2}/ (n-1) } }
+$$
+
+Note that the numerator on the RHS $Z = \sqrt{n} \frac{\bar{X} - \mu}{\sigma} \sim \mathcal{N} (0, 1)$ by the Central Limit Theorem, while the denominator $V = \frac{(n-1)S^2}{\sigma^2} \sim \chi ^2 _{n-1}$ by the theorem above, and they are independent since $\bar{X}$ and $S^2$ are independent.
+
+:::
+
+
+
+
+## One-sample Mean Tests
+
+The most common test is to test the mean of a given sample of observations.
+
+
+
 ## Two-sample Mean Tests
 
 Suppose we have two samples of data $\left\{x_{1}, \cdots, x_{n}\right\}$ and $\left\{y_{1}, \cdots, y_{m}\right\}$.
@@ -268,9 +357,9 @@ $$
 | Independent with unequal variance | $\frac{\left( \bar{X}-\bar{Y} \right)-\left(\mu_{X}-\mu_{Y}\right)}{\sqrt{\frac{S_{X}^{2}}{n}+\frac{S_{Y}^{2}}{m}}}$ | / | $\stackrel{\mathcal{D}}{\longrightarrow} t_v$ |
 
 
-## ANOVA
+## Multi-sample Mean Tests
 
-Analysis of variance is used to compare several univariate sample means. For instance, in the plot below, we have five levels and observed the response $y$. We are interested in whether the five means are equal.
+Analysis of variance (ANOVA) is used to compare several univariate sample means. For instance, in the plot below, we have five levels and observed the response $y$. We are interested in whether the five means are equal.
 
 :::{figure} test-one-way
 <img src="../imgs/test-one-way.png" width = "70%" alt=""/>
