@@ -26,19 +26,20 @@ We first introduce some theories for statistical inference.
 
 For a random sample $(X_1, \ldots, X_n)$, the sample mean and sample variance can be computed as
 
+```{margin}
+Sometimes people also write $\bar{X}_n$ and $S^2_n$ to emphasize the sample size $n$.
+```
 
 $$\begin{aligned}
-\bar{X} = \bar{X}_n &= \frac{1}{n}  \sum_{i=1}^n X_i \\
-S^2 = S_n^2 &= \frac{1}{n-1}  \sum_{i=1}^n (X_i - \bar{X})^2 \\
+\bar{X} &= \frac{1}{n}  \sum_{i=1}^n X_i \\
+S^2 &= \frac{1}{n-1}  \sum_{i=1}^n (X_i - \bar{X})^2 \\
 &= \frac{1}{n-1}  \sum_{i=1}^n X_i^2 - \frac{n}{n-1} \bar{X}^2
-
 \end{aligned}$$
 
 They are **unbiased estimators** since
 
 
 $$\begin{aligned}
-
 \mathbb{E} [\bar{X}] &= \frac{1}{n} \sum_{i=1}^n \mathbb{E} [X_i] = \mu  \\
 \mathbb{E} [S^2]
 &= \frac{1}{n-1} \sum_{i=1}^n \mathbb{E} [X_i^2]  - \frac{n}{n-1} \mathbb{E} [\bar{X}^2]   \\
@@ -52,7 +53,7 @@ If the random variables are i.i.d. sampled from normal distribution $X_i \overse
 
 ### Distribution Derived from Normal
 
-#### Normal
+#### Standard Normal Distributions
 
 If $X_i \overset{\text{iid}}{\sim} \mathcal{N} (\mu, \sigma^2)$, then
 
@@ -100,7 +101,7 @@ $$
 T = \frac{Z}{\sqrt{V/n}} \sim t_{n}
 $$
 
-In short, independent standard normal and chi-squared random variables can be used to construct a $t$ distribution.
+In short, an independent standard normal random variable and a chi-squared random variable can be used to construct a $t$ distribution. We will use this lemma in a moment.
 
 If $X_i \overset{\text{iid}}{\sim} \mathcal{N} (\mu, \sigma^2)$, then
 
@@ -124,14 +125,14 @@ For the numerator we have shown that $Y=\sqrt{n} \frac{\bar{X} - \mu}{\sigma} \s
 
 Given a sample $(X_1, \ldots, X_n)$, we want to find two bounds $\hat{\theta}_L$ and $\hat{\theta}_R$ for the unknown parameter $\theta$, such that $\mathbb{P} (\hat{\theta}_L <\theta < \hat{\theta}_R) = 1- \alpha$. The interval $(\hat{\theta}_L,  \hat{\theta}_R)$ is called the $(1-\alpha)\%$ confidence interval.
 
-We first give a summary table
+We first give a summary table and then introduce the details.
 
 |Scenario| Distribution| C.I|
 |-|-|-|
 | Normal Means (known $\sigma$)   |  $\frac{\bar{X} - \mu}{\sigma/\sqrt{n}} \sim \mathcal{N} (0, 1)$ | $\bar{X} \pm z_{\alpha/2} \frac{\sigma}{\sqrt{n}}$  |
 | Normal Means (unknown $\sigma$)   |  $\frac{\bar{X} - \mu}{S/\sqrt{n}} \sim t_{n-1}$ | $\bar{X} \pm t_{\alpha/2} \frac{S}{\sqrt{n}}$  |
 | Normal Variance   |  $\frac{(n-1)S^2}{\sigma^2 } \sim \chi ^2 _{n-1}$ | $\left(\frac{(n-1) S^{2}}{\chi_{R, n-1}^{2}}, \frac{(n-1) S^{2}}{\chi_{L, n-1}^{2}}\right)$  |
-| General Means ($n \ge 30$)   |  $\frac{\left(\bar{X}-\mu\right)}{\sigma/\sqrt{n}}\overset{\mathcal{D}}{\rightarrow} \mathcal{N}(0,1)$ | $\bar{X} \pm z_{\alpha/2} \frac{\sigma}{\sqrt{n}}$ * |
+| General Means ($n \ge 30$)   |  $\frac{\left(\bar{X}-\mu\right)}{\sigma/\sqrt{n}}\overset{\mathcal{D}}{\rightarrow} \mathcal{N}(0,1)$ | $\bar{X} \pm z_{\alpha/2} \frac{\sigma}{\sqrt{n}}$ (*) |
 
 $*$ Approximate. Replace $\sigma$ by $S$ if $\sigma$ is unknown.
 
@@ -265,7 +266,140 @@ If $\sigma$ is unknonw, then replace it by $S$.
 
 The most common test is to test the mean of a given sample of observations.
 
+The null hypothesis is $H_0: \mu = \mu_0$. The alterntive hypothesis is $H_1: \mu \ne \mu_0$ for a two-sided test, or $H_1: \mu < \mu_0$ or $H_1: \mu > \mu_0$ for one-sided tests.
 
+### Normal Means
+
+#### Known Variance
+
+Suppose the observations are from a normal distribution, $X_i \overset{\text{iid}}{\sim} \mathcal{N} (\mu, \sigma^2)$ where $\sigma^2$ is **known**. We have shown that
+
+$$
+\frac{\bar{X} - \mu}{\sigma/\sqrt{n}} \sim \mathcal{N} (0, 1)
+$$
+
+Hence, a test statistic can be
+
+
+$$
+Z=\frac{\bar{X}-\mu_{0}}{\sigma / \sqrt{n}}
+$$
+
+which follows a standard normal distribution under $H_0$. The rejection region (RR) depends on the alternative hypoehtsis.
+
+| $H_1$ | RR| RR if $\alpha = 0.05$ |
+|-|-| - |
+| $\mu < \mu_0$   |  $Z < - z_\alpha$ | $Z < - 1.645$ |
+| $\mu > \mu_0$   |  $Z > z_\alpha$ | $Z > 1.645$ |
+| $\mu \ne \mu_0$   |  $\left\vert Z \right\vert > z_{\alpha/2}$ | $\left\vert Z \right\vert > 1.960$ |
+
+This is often known as a $Z$-test. But in practice, the population variance $\sigma^2$ is unknown.
+
+#### Unknown Variance
+
+When $X_i \overset{\text{iid}}{\sim} \mathcal{N} (\mu, \sigma^2)$ where $\sigma^2$ is *unknown*, we have shown that
+
+$$
+\frac{\bar{X} - \mu}{S/\sqrt{n}} \sim t_{n-1}
+$$
+
+Hence, a test statistic can be
+
+
+$$
+T=\frac{\bar{X}-\mu_{0}}{S / \sqrt{n}}
+$$
+
+which follows a $t_{n-1}$ distribution under $H_0$. The rejection region (RR) depends on the alternative hypoehtsis.
+
+| $H_1$ | RR|
+|-|-|
+| $\mu < \mu_0$   |  $T < - t_{n-1}^{\alpha}$ |
+| $\mu > \mu_0$   |  $T > t_{n-1}^{\alpha}$ |
+| $\mu \ne \mu_0$   |  $\left\vert T \right\vert > t_{n-1}^{\alpha/2}$ |
+
+This is often known as a $t$-test.
+
+### General Means
+
+By CLT, in for any distribution of $X_i$, when the sample is large $(n \ge 30)$, we have
+
+$$
+\frac{\sqrt{n}\left(\bar{X}-\mu\right)}{\sigma}\overset{\mathcal{D}}{\rightarrow} \mathcal{N}(0,1)
+$$
+
+Hence a test statistic is
+
+
+$$
+Z=\frac{\bar{X}-\mu_{0}}{\sigma / \sqrt{n}}
+$$
+
+which approximately follows standard normal distribution. Then we use the usual $Z$ test to decide the rejection regions.
+
+
+For instance, if the null hypothesis is about a proportion $H_0: p = p_0$, then we can model the random (binary) variable by a Bernoulli distribution $X_i \sim \mathrm{Ber}(p_0)$ with mean $p_0$ and variance $p_0 (1-p_0)$. Therefore, the test statistic is
+
+
+$$
+Z = \frac{\hat{p} - p_0}{\sqrt{p_0 (1-p_0)} / \sqrt{n}}
+$$
+
+where $\hat{p}$ is the observed proportion. A ususal $Z$ test follows.
+
+### $p$-value Approach
+
+Sometimes we can use the fundamental definition of $p$-value to compute it. Recall the definition is the probability of obtaining test results at least as extreme as the results actually observed, under the assumption that the null hypothesis is correct.
+
+#### Binomial Distribution
+
+We flip the coin 10 times and let $X$ be the number of heads. Suppose we total number of heads $X_{1}+\cdots+X_{10}=7$. Can we find the $p$-value for a test with rejection region of the form $\{x \geq k\}$
+
+The observed value of the test statistic is $\bar{X}=0.7$.
+
+$$
+\begin{aligned}
+p\text {-value } &=\mathbb{P}(\bar{X} \ge 0.7 \mid p=0.5) \\
+&=\mathbb{P}\left(X_{1}+\cdots+X_{10} \geq 7 \mid  p=0.5\right) \\
+&=\sum_{k=7}^{10}\binom{10}{k} 0.5^{k} 0.5^{10-k}=0.178
+\end{aligned}
+$$
+
+Since under the null hypothesis $X=X_{1}+\cdots+X_{10} \sim \operatorname{Binomial}(10,0.5)$. Note the alternative hypothesis here is $H_1: p > 0.5$.
+
+For a two-sided test where $H_1: p \ne 0.5$, the $p$-value is computed as
+
+$$\sum_{k=7}^{10} \binom{10}{k}0.5^{k} 0.5^{10-k} + \sum_{k=0}^{3}\binom{10}{k} 0.5^{k} 0.5^{10-k} = 0.356$$
+
+since '7 or more heads' are as extreme as '3 or less heads' under $H_0$.
+
+#### Geometric Distribution
+
+Given $X \sim \mathrm{Geo}(p)$, we can conduct a one-sided test
+
+$$
+H_0: p = p_0, \ \text{vs}\ H_1: p > p_0
+$$
+
+Let the observed value be $k$. The $p$-value can be computed as
+
+$$
+\begin{aligned}
+p\text {-value } &=\mathbb{P}(X \ge k \mid p=p_0) \\
+&=(1-p_0)^{k-1}
+\end{aligned}
+$$
+
+We then compare it with the significance level $\alpha$ and draw a conclusion.
+
+Alternatively, we can find a critical region by finding the integer $j$ such that
+
+
+$$
+\mathbb{P}(X \ge j-1 \mid p=p_0) > \alpha \quad \text{and} \quad \mathbb{P}(X \ge j \mid p=p_0) \le \alpha
+$$
+
+If $k \ge j$ then we reject $H_0$. The actual significance level used here is $\mathbb{P}(X \ge j \mid p=p_0)$.
 
 ## Two-sample Mean Tests
 
