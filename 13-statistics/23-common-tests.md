@@ -52,21 +52,43 @@ If the random variables are i.i.d. sampled from normal distribution $X_i \overse
 
 ### Distribution Derived from Normal
 
-#### Chi-squared Distributions
+#### Normal
 
-If $Z_i \overset{\text{iid}}{\sim} \mathcal{N} (0, 1)$, then their squared sum follows Chi-squared distribution with degree of freedom $n$.
+If $X_i \overset{\text{iid}}{\sim} \mathcal{N} (\mu, \sigma^2)$, then
+
+$$\frac{\bar{X} - \mu}{\sigma / \sqrt{n}} \sim \mathcal{N} (0,1)$$
+
+:::{admonition,dropdown,seealso} *Proof*
+
+Since $X_i \overset{\text{iid}}{\sim}\mathcal{N} (\mu, \sigma)$, then $Z_i = \frac{  X_i - \mu}{ \sigma} \overset{\text{iid}}{\sim} \mathcal{N} (0, 1)$
+
 
 $$\begin{aligned}
-V &= \sum_{i=1}^n Z_i ^2 \sim \chi ^2 _n  \\
-\mathbb{E} [V] &= \sum_{i=1}^n \mathbb{E} [Z_i^2] = n\\
-\operatorname{Var}\left( V \right) &= \sum_{i=1}^n \operatorname{Var}\left( Z_i^2 \right) = 2n\\
+\sqrt{n} \frac{\bar{X} - \mu}{\sigma}
+&= \sqrt{n} \frac{\frac{1}{n} \sum_{i=1}^n X_i - \mu}{ \sigma} \\
+&= \sqrt{n}\frac{1}{n} \sum_{i=1}^n\frac{  X_i - \mu}{ \sigma} \\
+&= \frac{1}{\sqrt{n}} \sum_{i=1}^n Z_i \\
+&\sim \frac{1}{\sqrt{n}} \mathcal{N} (0, n) \\
+&\sim \mathcal{N} (0, 1) \\
 \end{aligned}$$
+
+:::
+
+#### Chi-squared Distributions
+
+If $Z_i \overset{\text{iid}}{\sim} \mathcal{N} (0, 1)$, then their squared sum follows Chi-squared distribution with degree of freedom $n$, mean $n$, and variance $2n$.
+
+
+$$
+V = \sum_{i=1}^n Z_i ^2 \sim \chi ^2 _n
+$$
 
 If $X_i \overset{\text{iid}}{\sim} \mathcal{N} (\mu, \sigma^2)$, then we can find a distribution for the sample variance $S^2$ as
 
-$$\begin{aligned}
-V &= (n-1) \frac{S^2}{\sigma^2}  \sim \chi ^2 _{n-1}  \\
-\end{aligned}$$
+
+$$
+V = (n-1) \frac{S^2}{\sigma^2}  \sim \chi ^2 _{n-1}
+$$
 
 which does not depends on the true mean $\mu$.
 
@@ -75,7 +97,7 @@ which does not depends on the true mean $\mu$.
 If $Z \sim \mathcal{N} (0, 1)$, and $V \sim \chi ^2 _n$ and $Z$ and $V$ are independent, then
 
 $$
-T = \frac{Z}{\sqrt{V/n}} \sim t_{n-1}
+T = \frac{Z}{\sqrt{V/n}} \sim t_{n}
 $$
 
 In short, independent standard normal and chi-squared random variables can be used to construct a $t$ distribution.
@@ -94,12 +116,150 @@ $$
 \frac{\bar{X} - \mu}{S/\sqrt{n}}  = \frac{\sqrt{n} \frac{\bar{X} - \mu}{\sigma}}{\sqrt{\frac{(n-1)S^2}{\sigma^2}/ (n-1) } }
 $$
 
-Note that the numerator on the RHS $Z = \sqrt{n} \frac{\bar{X} - \mu}{\sigma} \sim \mathcal{N} (0, 1)$ by the Central Limit Theorem, while the denominator $V = \frac{(n-1)S^2}{\sigma^2} \sim \chi ^2 _{n-1}$ by the theorem above, and they are independent since $\bar{X}$ and $S^2$ are independent.
+For the numerator we have shown that $Y=\sqrt{n} \frac{\bar{X} - \mu}{\sigma} \sim \mathcal{N} (0, 1)$. For the ratio in the denominator $V = \frac{(n-1)S^2}{\sigma^2} \sim \chi ^2 _{n-1}$ by the theorem above. Also note that $Y$ and $V$ are independent since $\bar{X}$ and $S^2$ are independent. By the theorem above, the $\frac{Y}{\sqrt{V/(n-1)}}$ follows a $t$ distribution with d.f. $n-1$.
 
 :::
 
+## Confidence Intervals
+
+Given a sample $(X_1, \ldots, X_n)$, we want to find two bounds $\hat{\theta}_L$ and $\hat{\theta}_R$ for the unknown parameter $\theta$, such that $\mathbb{P} (\hat{\theta}_L <\theta < \hat{\theta}_R) = 1- \alpha$. The interval $(\hat{\theta}_L,  \hat{\theta}_R)$ is called the $(1-\alpha)\%$ confidence interval.
+
+We first give a summary table
+
+|Scenario| Distribution| C.I|
+|-|-|-|
+| Normal Means (known $\sigma$)   |  $\frac{\bar{X} - \mu}{\sigma/\sqrt{n}} \sim \mathcal{N} (0, 1)$ | $\bar{X} \pm z_{\alpha/2} \frac{\sigma}{\sqrt{n}}$  |
+| Normal Means (unknown $\sigma$)   |  $\frac{\bar{X} - \mu}{S/\sqrt{n}} \sim t_{n-1}$ | $\bar{X} \pm t_{\alpha/2} \frac{S}{\sqrt{n}}$  |
+| Normal Variance   |  $\frac{(n-1)S^2}{\sigma^2 } \sim \chi ^2 _{n-1}$ | $\left(\frac{(n-1) S^{2}}{\chi_{R, n-1}^{2}}, \frac{(n-1) S^{2}}{\chi_{L, n-1}^{2}}\right)$  |
+| General Means ($n \ge 30$)   |  $\frac{\left(\bar{X}-\mu\right)}{\sigma/\sqrt{n}}\overset{\mathcal{D}}{\rightarrow} \mathcal{N}(0,1)$ | $\bar{X} \pm z_{\alpha/2} \frac{\sigma}{\sqrt{n}}$ * |
+
+$*$ Approximate. Replace $\sigma$ by $S$ if $\sigma$ is unknown.
+
+### CI for Normal Means
+
+#### Known Variance
+
+Suppose the observations are from a normal distribution, $X_i \overset{\text{iid}}{\sim} \mathcal{N} (\mu, \sigma^2)$ where $\sigma^2$ is **known**. We have shown that
+
+$$
+Z = \frac{\bar{X} - \mu}{\sigma/\sqrt{n}} \sim \mathcal{N} (0, 1)
+$$
+
+Hence, from the standard normal distribution, we can find the cutoff $z_{\alpha/2}$ such that
+
+$$
+\mathbb{P} (- z_{\alpha/2} \le Z \le z_{\alpha/2}) = 1 - \alpha
+$$
+
+Substituting $Z = \frac{\bar{X} - \mu}{\sigma/\sqrt{n}}$ gives the confidence interval for $\mu$.
+
+$$
+\mathbb{P} \left( \bar{X} - z_{\alpha/2} \frac{\sigma}{\sqrt{n}} \le \mu \le \bar{X} + z_{\alpha/2} \frac{\sigma}{\sqrt{n}}  \right)  = 1 - \alpha
+$$
+
+Sometimes people just write $\bar{X} \pm z_{\alpha/2} \frac{\sigma}{\sqrt{n}}$.
+
+#### Unknwon Variance
+
+Suppose the observations are from a normal distribution, $X_i \overset{\text{iid}}{\sim} \mathcal{N} (\mu, \sigma^2)$ where $\sigma^2$ is **unknown**. We have shown that
+
+$$
+T = \frac{\bar{X} - \mu}{S/\sqrt{n}} \sim t_{n-1}
+$$
+
+Hence, from the $t_{n-1}$ distribution, we can find a cutoff $t_{\alpha/2}$ such that
+
+$$
+\mathbb{P} (- t_{\alpha/2} \le T \le t_{\alpha/2}) = 1 - \alpha
+$$
+
+Substituting $T = \frac{\bar{X} - \mu}{S/\sqrt{n}}$ gives the confidence interval for $\mu$.
+
+$$
+\mathbb{P} \left( \bar{X} - t_{\alpha/2} \frac{S}{\sqrt{n}} \le \mu \le \bar{X} + t_{\alpha/2} \frac{S}{\sqrt{n}}  \right)  = 1 - \alpha
+$$
+
+Sometimes people just write $\bar{X} \pm t_{\alpha/2} \frac{S}{\sqrt{n}}$.
 
 
+:::{admonition,note} Why "Confidence"?
+
+
+Note that the confidence interval $\left( \bar{X} - t_{\alpha/2} \frac{S}{\sqrt{n}}, \bar{X} + t_{\alpha/2} \frac{S}{\sqrt{n}}  \right)$ is a random interval; its center $\bar{X}$ and its width $t_{\alpha/2} \frac{S}{\sqrt{n}}$ both depend on the data. After generating the data and calculating $\bar{X}$ and $S^2$, this gives us a specific interval. It is no longer accurate to say that $\mathbb{P} (\mu \in \text{interval} )  = 1-\alpha$; the statement is either TRUE or FALSE (i.e. the event $\left\{ \mu \in \text{interval} \right\}$ has already either occurred or not).
+
+However, we cannot see whether it's true or false as we don't know $\mu$. Since before drawing the data we had a $1-\alpha$ probability of construting an interval for which the statement is true, we now say that we have $1-\alpha$ confidence that the statement is true. This is a confidence interval for $\mu$.
+
+:::
+
+### CI for Normal Variances
+
+
+Suppose the observations are from a normal distribution, $X_i \overset{\text{iid}}{\sim} \mathcal{N} (\mu, \sigma^2)$ where $\sigma^2$ is **unknown**. We have shown that
+
+$$
+\frac{(n-1)S^2}{\sigma^2 } \sim \chi ^2 _{n-1}
+$$
+
+Let $\chi ^2 _{L, n-1}$ and $\chi ^2 _{R, n-1}$ be positive number such that
+
+$$
+\mathbb{P} \left( \chi ^2 _{L, n-1} \le W \le \chi ^2 _{R, n-1} \right) = 1-\alpha, \quad \text{where} \ W \sim \chi ^2 _{n-1}
+$$
+
+Then replacing $W$ by $\frac{(n-1)S^2}{\sigma^2 }$ in the above we obtain
+
+$$
+\mathbb{P}\left(\frac{(n-1) S^{2}}{\chi_{R, n-1}^{2}} \leq \sigma^{2} \leq \frac{(n-1) S^{2}}{\chi_{L, n-1}^{2}}\right)=1-\alpha
+$$
+
+Therefore
+
+$$
+\left(\frac{(n-1) S^{2}}{\chi_{R, n-1}^{2}}, \frac{(n-1) S^{2}}{\chi_{L, n-1}^{2}}\right)
+$$
+
+is a $1-\alpha$ confidence interval for $\sigma^2$.
+
+Note that the $\chi ^2$ distribution is not symmetric. A common way to choose $\chi ^2 _{L, n-1}$ and $\chi ^2 _{R, n-1}$ is such that the two tail probabilities are both $\alpha/2$, as shown below.
+
+:::{figure} chi-ci
+<img src="../imgs/chi-ci.png" width = "50%" alt=""/>
+
+Equal-tail confidence interval in $\chi ^2$ distributions. [[Dkernler](https://faculty.elgin.edu/dkernler/statistics/ch09/9-3.html)]
+:::
+
+A less common way is to find a horizontal line such that the two resulting tail probabilities sum up to $\alpha$.
+
+### CI for General Means
+
+The [Central Limit Theorem](CLT) says the normalized sample mean converge in distribution to a standard normal random variable,
+
+$$
+\frac{\sqrt{n}\left(\bar{X}_{n}-\mu\right)}{\sigma}\overset{\mathcal{D}}{\rightarrow} \mathcal{N}(0,1)
+$$
+
+Hence, we have, approximately,
+
+$$
+\mathbb{P}\left(-z_{\alpha / 2} \leq \sqrt{n} \frac{\bar{X}-\mu}{\sigma} \leq z_{\alpha / 2}\right) \approx 1-\alpha
+$$
+
+Rearranging the terms gives
+
+$$
+\mathbb{P}\left(\bar{X}-z_{\alpha / 2} \frac{\sigma}{\sqrt{n}} \leq \mu \leq \bar{X}+z_{\alpha / 2} \frac{\sigma}{\sqrt{n}}\right) \approx 1-\alpha .
+$$
+
+Therefore,
+
+
+$$
+\left(\bar{X}-z_{\alpha / 2} \frac{\sigma}{\sqrt{n}}, \bar{X}+z_{\alpha / 2} \frac{\sigma}{\sqrt{n}}\right)
+$$
+
+is, approximately, a $1-\alpha$ confidence interval for $\mu$. The approximation is good if sample size $n > 30$
+
+If $\sigma$ is unknonw, then replace it by $S$.
 
 ## One-sample Mean Tests
 
