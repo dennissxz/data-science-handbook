@@ -83,7 +83,7 @@ We treat the missing entires as latent variables, and use EM algorithm to impute
 
 ## Imbalanced Data
 
-- un/down sampling to make them balance in the data set
+- up/down sampling to make them balance in the data set
   - Synthetic Minority Oversampling Technique (SMOTE)
 - up/down weighting in the loss function
 

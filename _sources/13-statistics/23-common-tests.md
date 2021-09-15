@@ -18,6 +18,389 @@ with $Y_{1} \sim \chi_{d_{1}}^{2}, \quad Y_{1} \sim \chi_{d_{2}}^{2}$ and $Y_{1}
 
 ## $\chi^2$-test -->
 
+## Theories
+
+We first introduce some theories for statistical inference.
+
+### Sample Statistics
+
+For a random sample $(X_1, \ldots, X_n)$, the sample mean and sample variance can be computed as
+
+```{margin}
+Sometimes people also write $\bar{X}_n$ and $S^2_n$ to emphasize the sample size $n$.
+```
+
+$$\begin{aligned}
+\bar{X} &= \frac{1}{n}  \sum_{i=1}^n X_i \\
+S^2 &= \frac{1}{n-1}  \sum_{i=1}^n (X_i - \bar{X})^2 \\
+&= \frac{1}{n-1}  \sum_{i=1}^n X_i^2 - \frac{n}{n-1} \bar{X}^2
+\end{aligned}$$
+
+They are **unbiased estimators** since
+
+
+$$\begin{aligned}
+\mathbb{E} [\bar{X}] &= \frac{1}{n} \sum_{i=1}^n \mathbb{E} [X_i] = \mu  \\
+\mathbb{E} [S^2]
+&= \frac{1}{n-1} \sum_{i=1}^n \mathbb{E} [X_i^2]  - \frac{n}{n-1} \mathbb{E} [\bar{X}^2]   \\
+&= \frac{1}{n-1} \sum_{i=1}^n (\sigma^2 + \mu^2)  - \frac{n}{n-1} \left( \frac{1}{n} \sigma^2 + \mu^2 \right)   \\
+&= \sigma^2\\
+\end{aligned}$$
+
+where we used the fact that $\mathbb{E} [\bar{X}^2] = \operatorname{Var}\left( \bar{X} \right) + \mathbb{E} [\bar{X}] ^2 =  \frac{1}{n} \sigma^2 + \mu^2$.
+
+If the random variables are i.i.d. sampled from normal distribution $X_i \overset{\text{iid}}{\sim} \mathcal{N}$, then $\bar{X}$ and $S^2$ (both are random) are **independent**.
+
+### Distribution Derived from Normal
+
+#### Standard Normal Distributions
+
+If $X_i \overset{\text{iid}}{\sim} \mathcal{N} (\mu, \sigma^2)$, then
+
+$$\frac{\bar{X} - \mu}{\sigma / \sqrt{n}} \sim \mathcal{N} (0,1)$$
+
+:::{admonition,dropdown,seealso} *Proof*
+
+Since $X_i \overset{\text{iid}}{\sim}\mathcal{N} (\mu, \sigma)$, then $Z_i = \frac{  X_i - \mu}{ \sigma} \overset{\text{iid}}{\sim} \mathcal{N} (0, 1)$
+
+
+$$\begin{aligned}
+\sqrt{n} \frac{\bar{X} - \mu}{\sigma}
+&= \sqrt{n} \frac{\frac{1}{n} \sum_{i=1}^n X_i - \mu}{ \sigma} \\
+&= \sqrt{n}\frac{1}{n} \sum_{i=1}^n\frac{  X_i - \mu}{ \sigma} \\
+&= \frac{1}{\sqrt{n}} \sum_{i=1}^n Z_i \\
+&\sim \frac{1}{\sqrt{n}} \mathcal{N} (0, n) \\
+&\sim \mathcal{N} (0, 1) \\
+\end{aligned}$$
+
+:::
+
+#### Chi-squared Distributions
+
+If $Z_i \overset{\text{iid}}{\sim} \mathcal{N} (0, 1)$, then their squared sum follows Chi-squared distribution with degree of freedom $n$, mean $n$, and variance $2n$.
+
+
+$$
+V = \sum_{i=1}^n Z_i ^2 \sim \chi ^2 _n
+$$
+
+If $X_i \overset{\text{iid}}{\sim} \mathcal{N} (\mu, \sigma^2)$, then we can find a distribution for the sample variance $S^2$ as
+
+
+$$
+V = (n-1) \frac{S^2}{\sigma^2}  \sim \chi ^2 _{n-1}
+$$
+
+which does not depends on the true mean $\mu$.
+
+#### $t$ Distributions
+
+If $Z \sim \mathcal{N} (0, 1)$, and $V \sim \chi ^2 _n$ and $Z$ and $V$ are independent, then
+
+$$
+T = \frac{Z}{\sqrt{V/n}} \sim t_{n}
+$$
+
+In short, an independent standard normal random variable and a chi-squared random variable can be used to construct a $t$ distribution. We will use this lemma in a moment.
+
+If $X_i \overset{\text{iid}}{\sim} \mathcal{N} (\mu, \sigma^2)$, then
+
+$$
+\frac{\bar{X} - \mu}{S/\sqrt{n}}  \sim t_{n-1}
+$$
+
+:::{admonition,dropdown,seealso} *Proof*
+
+Rewritting the LHS gives
+
+$$
+\frac{\bar{X} - \mu}{S/\sqrt{n}}  = \frac{\sqrt{n} \frac{\bar{X} - \mu}{\sigma}}{\sqrt{\frac{(n-1)S^2}{\sigma^2}/ (n-1) } }
+$$
+
+For the numerator we have shown that $Y=\sqrt{n} \frac{\bar{X} - \mu}{\sigma} \sim \mathcal{N} (0, 1)$. For the ratio in the denominator $V = \frac{(n-1)S^2}{\sigma^2} \sim \chi ^2 _{n-1}$ by the theorem above. Also note that $Y$ and $V$ are independent since $\bar{X}$ and $S^2$ are independent. By the theorem above, the $\frac{Y}{\sqrt{V/(n-1)}}$ follows a $t$ distribution with d.f. $n-1$.
+
+:::
+
+## Confidence Intervals
+
+Given a sample $(X_1, \ldots, X_n)$, we want to find two bounds $\hat{\theta}_L$ and $\hat{\theta}_R$ for the unknown parameter $\theta$, such that $\mathbb{P} (\hat{\theta}_L <\theta < \hat{\theta}_R) = 1- \alpha$. The interval $(\hat{\theta}_L,  \hat{\theta}_R)$ is called the $(1-\alpha)\%$ confidence interval.
+
+We first give a summary table and then introduce the details.
+
+|Scenario| Distribution| C.I|
+|-|-|-|
+| Normal Means (known $\sigma$)   |  $\frac{\bar{X} - \mu}{\sigma/\sqrt{n}} \sim \mathcal{N} (0, 1)$ | $\bar{X} \pm z_{\alpha/2} \frac{\sigma}{\sqrt{n}}$  |
+| Normal Means (unknown $\sigma$)   |  $\frac{\bar{X} - \mu}{S/\sqrt{n}} \sim t_{n-1}$ | $\bar{X} \pm t_{\alpha/2} \frac{S}{\sqrt{n}}$  |
+| Normal Variance   |  $\frac{(n-1)S^2}{\sigma^2 } \sim \chi ^2 _{n-1}$ | $\left(\frac{(n-1) S^{2}}{\chi_{R, n-1}^{2}}, \frac{(n-1) S^{2}}{\chi_{L, n-1}^{2}}\right)$  |
+| General Means ($n \ge 30$)   |  $\frac{\left(\bar{X}-\mu\right)}{\sigma/\sqrt{n}}\overset{\mathcal{D}}{\rightarrow} \mathcal{N}(0,1)$ | $\bar{X} \pm z_{\alpha/2} \frac{\sigma}{\sqrt{n}}$ (*) |
+
+$*$ Approximate. Replace $\sigma$ by $S$ if $\sigma$ is unknown.
+
+### CI for Normal Means
+
+#### Known Variance
+
+Suppose the observations are from a normal distribution, $X_i \overset{\text{iid}}{\sim} \mathcal{N} (\mu, \sigma^2)$ where $\sigma^2$ is **known**. We have shown that
+
+$$
+Z = \frac{\bar{X} - \mu}{\sigma/\sqrt{n}} \sim \mathcal{N} (0, 1)
+$$
+
+Hence, from the standard normal distribution, we can find the cutoff $z_{\alpha/2}$ such that
+
+$$
+\mathbb{P} (- z_{\alpha/2} \le Z \le z_{\alpha/2}) = 1 - \alpha
+$$
+
+Substituting $Z = \frac{\bar{X} - \mu}{\sigma/\sqrt{n}}$ gives the confidence interval for $\mu$.
+
+$$
+\mathbb{P} \left( \bar{X} - z_{\alpha/2} \frac{\sigma}{\sqrt{n}} \le \mu \le \bar{X} + z_{\alpha/2} \frac{\sigma}{\sqrt{n}}  \right)  = 1 - \alpha
+$$
+
+Sometimes people just write $\bar{X} \pm z_{\alpha/2} \frac{\sigma}{\sqrt{n}}$.
+
+#### Unknwon Variance
+
+Suppose the observations are from a normal distribution, $X_i \overset{\text{iid}}{\sim} \mathcal{N} (\mu, \sigma^2)$ where $\sigma^2$ is **unknown**. We have shown that
+
+$$
+T = \frac{\bar{X} - \mu}{S/\sqrt{n}} \sim t_{n-1}
+$$
+
+Hence, from the $t_{n-1}$ distribution, we can find a cutoff $t_{\alpha/2}$ such that
+
+$$
+\mathbb{P} (- t_{\alpha/2} \le T \le t_{\alpha/2}) = 1 - \alpha
+$$
+
+Substituting $T = \frac{\bar{X} - \mu}{S/\sqrt{n}}$ gives the confidence interval for $\mu$.
+
+$$
+\mathbb{P} \left( \bar{X} - t_{\alpha/2} \frac{S}{\sqrt{n}} \le \mu \le \bar{X} + t_{\alpha/2} \frac{S}{\sqrt{n}}  \right)  = 1 - \alpha
+$$
+
+Sometimes people just write $\bar{X} \pm t_{\alpha/2} \frac{S}{\sqrt{n}}$.
+
+
+:::{admonition,note} Why "Confidence"?
+
+
+Note that the confidence interval $\left( \bar{X} - t_{\alpha/2} \frac{S}{\sqrt{n}}, \bar{X} + t_{\alpha/2} \frac{S}{\sqrt{n}}  \right)$ is a random interval; its center $\bar{X}$ and its width $t_{\alpha/2} \frac{S}{\sqrt{n}}$ both depend on the data. After generating the data and calculating $\bar{X}$ and $S^2$, this gives us a specific interval. It is no longer accurate to say that $\mathbb{P} (\mu \in \text{interval} )  = 1-\alpha$; the statement is either TRUE or FALSE (i.e. the event $\left\{ \mu \in \text{interval} \right\}$ has already either occurred or not).
+
+However, we cannot see whether it's true or false as we don't know $\mu$. Since before drawing the data we had a $1-\alpha$ probability of construting an interval for which the statement is true, we now say that we have $1-\alpha$ confidence that the statement is true. This is a confidence interval for $\mu$.
+
+:::
+
+### CI for Normal Variances
+
+
+Suppose the observations are from a normal distribution, $X_i \overset{\text{iid}}{\sim} \mathcal{N} (\mu, \sigma^2)$ where $\sigma^2$ is **unknown**. We have shown that
+
+$$
+\frac{(n-1)S^2}{\sigma^2 } \sim \chi ^2 _{n-1}
+$$
+
+Let $\chi ^2 _{L, n-1}$ and $\chi ^2 _{R, n-1}$ be positive number such that
+
+$$
+\mathbb{P} \left( \chi ^2 _{L, n-1} \le W \le \chi ^2 _{R, n-1} \right) = 1-\alpha, \quad \text{where} \ W \sim \chi ^2 _{n-1}
+$$
+
+Then replacing $W$ by $\frac{(n-1)S^2}{\sigma^2 }$ in the above we obtain
+
+$$
+\mathbb{P}\left(\frac{(n-1) S^{2}}{\chi_{R, n-1}^{2}} \leq \sigma^{2} \leq \frac{(n-1) S^{2}}{\chi_{L, n-1}^{2}}\right)=1-\alpha
+$$
+
+Therefore
+
+$$
+\left(\frac{(n-1) S^{2}}{\chi_{R, n-1}^{2}}, \frac{(n-1) S^{2}}{\chi_{L, n-1}^{2}}\right)
+$$
+
+is a $1-\alpha$ confidence interval for $\sigma^2$.
+
+Note that the $\chi ^2$ distribution is not symmetric. A common way to choose $\chi ^2 _{L, n-1}$ and $\chi ^2 _{R, n-1}$ is such that the two tail probabilities are both $\alpha/2$, as shown below.
+
+:::{figure} chi-ci
+<img src="../imgs/chi-ci.png" width = "50%" alt=""/>
+
+Equal-tail confidence interval in $\chi ^2$ distributions. [[Dkernler](https://faculty.elgin.edu/dkernler/statistics/ch09/9-3.html)]
+:::
+
+A less common way is to find a horizontal line such that the two resulting tail probabilities sum up to $\alpha$.
+
+### CI for General Means
+
+The [Central Limit Theorem](CLT) says the normalized sample mean converge in distribution to a standard normal random variable,
+
+$$
+\frac{\sqrt{n}\left(\bar{X}_{n}-\mu\right)}{\sigma}\overset{\mathcal{D}}{\rightarrow} \mathcal{N}(0,1)
+$$
+
+Hence, we have, approximately,
+
+$$
+\mathbb{P}\left(-z_{\alpha / 2} \leq \sqrt{n} \frac{\bar{X}-\mu}{\sigma} \leq z_{\alpha / 2}\right) \approx 1-\alpha
+$$
+
+Rearranging the terms gives
+
+$$
+\mathbb{P}\left(\bar{X}-z_{\alpha / 2} \frac{\sigma}{\sqrt{n}} \leq \mu \leq \bar{X}+z_{\alpha / 2} \frac{\sigma}{\sqrt{n}}\right) \approx 1-\alpha .
+$$
+
+Therefore,
+
+
+$$
+\left(\bar{X}-z_{\alpha / 2} \frac{\sigma}{\sqrt{n}}, \bar{X}+z_{\alpha / 2} \frac{\sigma}{\sqrt{n}}\right)
+$$
+
+is, approximately, a $1-\alpha$ confidence interval for $\mu$. The approximation is good if sample size $n > 30$
+
+If $\sigma$ is unknonw, then replace it by $S$.
+
+## One-sample Mean Tests
+
+The most common test is to test the mean of a given sample of observations.
+
+The null hypothesis is $H_0: \mu = \mu_0$. The alterntive hypothesis is $H_1: \mu \ne \mu_0$ for a two-sided test, or $H_1: \mu < \mu_0$ or $H_1: \mu > \mu_0$ for one-sided tests.
+
+### Normal Means
+
+#### Known Variance
+
+Suppose the observations are from a normal distribution, $X_i \overset{\text{iid}}{\sim} \mathcal{N} (\mu, \sigma^2)$ where $\sigma^2$ is **known**. We have shown that
+
+$$
+\frac{\bar{X} - \mu}{\sigma/\sqrt{n}} \sim \mathcal{N} (0, 1)
+$$
+
+Hence, a test statistic can be
+
+
+$$
+Z=\frac{\bar{X}-\mu_{0}}{\sigma / \sqrt{n}}
+$$
+
+which follows a standard normal distribution under $H_0$. The rejection region (RR) depends on the alternative hypoehtsis.
+
+| $H_1$ | RR| RR if $\alpha = 0.05$ |
+|-|-| - |
+| $\mu < \mu_0$   |  $Z < - z_\alpha$ | $Z < - 1.645$ |
+| $\mu > \mu_0$   |  $Z > z_\alpha$ | $Z > 1.645$ |
+| $\mu \ne \mu_0$   |  $\left\vert Z \right\vert > z_{\alpha/2}$ | $\left\vert Z \right\vert > 1.960$ |
+
+This is often known as a $Z$-test. But in practice, the population variance $\sigma^2$ is unknown.
+
+#### Unknown Variance
+
+When $X_i \overset{\text{iid}}{\sim} \mathcal{N} (\mu, \sigma^2)$ where $\sigma^2$ is *unknown*, we have shown that
+
+$$
+\frac{\bar{X} - \mu}{S/\sqrt{n}} \sim t_{n-1}
+$$
+
+Hence, a test statistic can be
+
+
+$$
+T=\frac{\bar{X}-\mu_{0}}{S / \sqrt{n}}
+$$
+
+which follows a $t_{n-1}$ distribution under $H_0$. The rejection region (RR) depends on the alternative hypoehtsis.
+
+| $H_1$ | RR|
+|-|-|
+| $\mu < \mu_0$   |  $T < - t_{n-1}^{\alpha}$ |
+| $\mu > \mu_0$   |  $T > t_{n-1}^{\alpha}$ |
+| $\mu \ne \mu_0$   |  $\left\vert T \right\vert > t_{n-1}^{\alpha/2}$ |
+
+This is often known as a $t$-test.
+
+### General Means
+
+By CLT, in for any distribution of $X_i$, when the sample is large $(n \ge 30)$, we have
+
+$$
+\frac{\sqrt{n}\left(\bar{X}-\mu\right)}{\sigma}\overset{\mathcal{D}}{\rightarrow} \mathcal{N}(0,1)
+$$
+
+Hence a test statistic is
+
+
+$$
+Z=\frac{\bar{X}-\mu_{0}}{\sigma / \sqrt{n}}
+$$
+
+which approximately follows standard normal distribution. Then we use the usual $Z$ test to decide the rejection regions.
+
+
+For instance, if the null hypothesis is about a proportion $H_0: p = p_0$, then we can model the random (binary) variable by a Bernoulli distribution $X_i \sim \mathrm{Ber}(p_0)$ with mean $p_0$ and variance $p_0 (1-p_0)$. Therefore, the test statistic is
+
+
+$$
+Z = \frac{\hat{p} - p_0}{\sqrt{p_0 (1-p_0)} / \sqrt{n}}
+$$
+
+where $\hat{p}$ is the observed proportion. A ususal $Z$ test follows.
+
+### $p$-value Approach
+
+Sometimes we can use the fundamental definition of $p$-value to compute it. Recall the definition is the probability of obtaining test results at least as extreme as the results actually observed, under the assumption that the null hypothesis is correct.
+
+#### Binomial Distribution
+
+We flip the coin 10 times and let $X$ be the number of heads. Suppose we total number of heads $X_{1}+\cdots+X_{10}=7$. Can we find the $p$-value for a test with rejection region of the form $\{x \geq k\}$
+
+The observed value of the test statistic is $\bar{X}=0.7$.
+
+$$
+\begin{aligned}
+p\text {-value } &=\mathbb{P}(\bar{X} \ge 0.7 \mid p=0.5) \\
+&=\mathbb{P}\left(X_{1}+\cdots+X_{10} \geq 7 \mid  p=0.5\right) \\
+&=\sum_{k=7}^{10}\binom{10}{k} 0.5^{k} 0.5^{10-k}=0.178
+\end{aligned}
+$$
+
+Since under the null hypothesis $X=X_{1}+\cdots+X_{10} \sim \operatorname{Binomial}(10,0.5)$. Note the alternative hypothesis here is $H_1: p > 0.5$.
+
+For a two-sided test where $H_1: p \ne 0.5$, the $p$-value is computed as
+
+$$\sum_{k=7}^{10} \binom{10}{k}0.5^{k} 0.5^{10-k} + \sum_{k=0}^{3}\binom{10}{k} 0.5^{k} 0.5^{10-k} = 0.356$$
+
+since '7 or more heads' are as extreme as '3 or less heads' under $H_0$.
+
+#### Geometric Distribution
+
+Given $X \sim \mathrm{Geo}(p)$, we can conduct a one-sided test
+
+$$
+H_0: p = p_0, \ \text{vs}\ H_1: p > p_0
+$$
+
+Let the observed value be $k$. The $p$-value can be computed as
+
+$$
+\begin{aligned}
+p\text {-value } &=\mathbb{P}(X \ge k \mid p=p_0) \\
+&=(1-p_0)^{k-1}
+\end{aligned}
+$$
+
+We then compare it with the significance level $\alpha$ and draw a conclusion.
+
+Alternatively, we can find a critical region by finding the integer $j$ such that
+
+
+$$
+\mathbb{P}(X \ge j-1 \mid p=p_0) > \alpha \quad \text{and} \quad \mathbb{P}(X \ge j \mid p=p_0) \le \alpha
+$$
+
+If $k \ge j$ then we reject $H_0$. The actual significance level used here is $\mathbb{P}(X \ge j \mid p=p_0)$.
+
 ## Two-sample Mean Tests
 
 Suppose we have two samples of data $\left\{x_{1}, \cdots, x_{n}\right\}$ and $\left\{y_{1}, \cdots, y_{m}\right\}$.
@@ -268,9 +651,9 @@ $$
 | Independent with unequal variance | $\frac{\left( \bar{X}-\bar{Y} \right)-\left(\mu_{X}-\mu_{Y}\right)}{\sqrt{\frac{S_{X}^{2}}{n}+\frac{S_{Y}^{2}}{m}}}$ | / | $\stackrel{\mathcal{D}}{\longrightarrow} t_v$ |
 
 
-## ANOVA
+## Multi-sample Mean Tests
 
-Analysis of variance is used to compare several univariate sample means. For instance, in the plot below, we have five levels and observed the response $y$. We are interested in whether the five means are equal.
+Analysis of variance (ANOVA) is used to compare several univariate sample means. For instance, in the plot below, we have five levels and observed the response $y$. We are interested in whether the five means are equal.
 
 :::{figure} test-one-way
 <img src="../imgs/test-one-way.png" width = "70%" alt=""/>

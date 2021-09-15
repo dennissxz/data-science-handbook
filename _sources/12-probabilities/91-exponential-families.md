@@ -374,11 +374,11 @@ Cons
   - sol: assume special structure: diagonal, spherical
 
 
-## Univariate Gaussian
+### Normality Check
 
-### Check Normality
+For most univariate/multivariate analyses, it is important that the data indeed follow the normal distribution, at least approximately if not exactly.
 
-For most multivariate analyses, it is important that the data indeed follow the multivariate normal, at least approximately if not exactly.
+#### Qualitative Ways
 
 - QQ-plots (quantile-quantile plot)
 
@@ -387,7 +387,7 @@ For most multivariate analyses, it is important that the data indeed follow the 
   - non-linearity may indicate a need to transform the variable.
 
   :::{figure} gaussian-qq-plot
-  <img src="../imgs/gaussian-qq-plot.png" width = "80%" alt=""/>
+  <img src="../imgs/gaussian-qq-plot.png" width = "100%" alt=""/>
 
   QQ-plots for Gaussian (left) and non-Gaussian (right)
   :::
@@ -396,20 +396,20 @@ For most multivariate analyses, it is important that the data indeed follow the 
 
 - Among all continuous random variable with mean $0$, variance $\sigma^2$, normal random variable has the largest [differential entropy](differential-entropy) with value $\operatorname{H}(\mathcal{N}(0, \sigma^2)) = \ln(\sigma \sqrt{2 \pi e})$. Hence, the distance of an entropy from the normal entropy (termed **neg-entropy**), can be used to develop measures of non-Gaussianity, or non-normality.
 
-Rigorous Tests
+#### Rigorous Tests
 
 - Shapiro–Wilk $W$ test
   - test statistic: a modified version of the squared sample correlation between the sample quantiles and the expected quantiles.
+
 - Kolmogorov–Smirnov test
-  - require: large sample, at least 100s
-  - test statistic: maximum difference between the empirical CDF and the normal CDF.
+  - Require: large sample, at least 100s
+  - Test statistic: maximum difference between the empirical CDF and the normal CDF.
 
 - Jarque–Bera test
-
-- Test for zero skewness, zero excess kurtosis.
+  - Test for zero skewness, zero excess kurtosis.
   - Normal distribution has kurtosis $\frac{\mu_{4}}{\mu_{2}^{2}}=3$ and excess kurtosis $\frac{\mu_{4}}{\mu_{2}^{2}}-3 = 0$. Large magnitude of excess kurtosis indicates deviation from normal distribution.
 
-Multivariate case:
+#### Multivariate Cases
 
 - Check whether the squared generalized distance as defined below follows a chi-squared distribution by a Q-Q plot (necessary and sufficient conditions for very large sample size))
 
@@ -423,7 +423,7 @@ Multivariate case:
 
 
 (transform-normality)=
-### Transformation to Near Normality
+#### Transformation to Near Normality
 
 To achieve the multinormality of the data, univariate transformation is applied to each variable individually. After then, the multinormality of transformed variables is checked again (Notice that each of the $X_p$ variables after transformation is normally distributed does not imply that they jointly follow a multivariate normal distribution).
 

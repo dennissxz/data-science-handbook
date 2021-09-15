@@ -1007,22 +1007,32 @@
      Pros and Cons
     </a>
    </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#univariate-gaussian">
-   Univariate Gaussian
-  </a>
-  <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#check-normality">
-     Check Normality
+    <a class="reference internal nav-link" href="#normality-check">
+     Normality Check
     </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#transformation-to-near-normality">
-     Transformation to Near Normality
-    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#qualitative-ways">
+       Qualitative Ways
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#rigorous-tests">
+       Rigorous Tests
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#multivariate-cases">
+       Multivariate Cases
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#transformation-to-near-normality">
+       Transformation to Near Normality
+      </a>
+     </li>
+    </ul>
    </li>
   </ul>
  </li>
@@ -1429,12 +1439,11 @@ c &amp;= f(\boldsymbol{x} ;\boldsymbol{\mu}, \boldsymbol{\Sigma}) \\
 </li>
 </ul>
 </div>
-</div>
-<div class="section" id="univariate-gaussian">
-<h2>Univariate Gaussian<a class="headerlink" href="#univariate-gaussian" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="check-normality">
-<h3>Check Normality<a class="headerlink" href="#check-normality" title="Permalink to this headline">¶</a></h3>
-<p>For most multivariate analyses, it is important that the data indeed follow the multivariate normal, at least approximately if not exactly.</p>
+<div class="section" id="normality-check">
+<h3>Normality Check<a class="headerlink" href="#normality-check" title="Permalink to this headline">¶</a></h3>
+<p>For most univariate/multivariate analyses, it is important that the data indeed follow the normal distribution, at least approximately if not exactly.</p>
+<div class="section" id="qualitative-ways">
+<h4>Qualitative Ways<a class="headerlink" href="#qualitative-ways" title="Permalink to this headline">¶</a></h4>
 <ul>
 <li><p>QQ-plots (quantile-quantile plot)</p>
 <ul class="simple">
@@ -1443,14 +1452,16 @@ c &amp;= f(\boldsymbol{x} ;\boldsymbol{\mu}, \boldsymbol{\Sigma}) \\
 <li><p>non-linearity may indicate a need to transform the variable.</p></li>
 </ul>
 <div class="figure align-default" id="gaussian-qq-plot">
-<a class="reference internal image-reference" href="../_images/gaussian-qq-plot.png"><img alt="" src="../_images/gaussian-qq-plot.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="../_images/gaussian-qq-plot.png"><img alt="" src="../_images/gaussian-qq-plot.png" style="width: 100%;" /></a>
 <p class="caption"><span class="caption-number">Fig. 22 </span><span class="caption-text">QQ-plots for Gaussian (left) and non-Gaussian (right)</span><a class="headerlink" href="#gaussian-qq-plot" title="Permalink to this image">¶</a></p>
 </div>
 </li>
 <li><p>P-P plot (probability against probability plot) that plots the sample CDF against the theoretical CDF.</p></li>
 <li><p>Among all continuous random variable with mean <span class="math notranslate nohighlight">\(0\)</span>, variance <span class="math notranslate nohighlight">\(\sigma^2\)</span>, normal random variable has the largest <a class="reference internal" href="../30-ml-basics/03-information-theory.html#differential-entropy"><span class="std std-ref">differential entropy</span></a> with value <span class="math notranslate nohighlight">\(\operatorname{H}(\mathcal{N}(0, \sigma^2)) = \ln(\sigma \sqrt{2 \pi e})\)</span>. Hence, the distance of an entropy from the normal entropy (termed <strong>neg-entropy</strong>), can be used to develop measures of non-Gaussianity, or non-normality.</p></li>
 </ul>
-<p>Rigorous Tests</p>
+</div>
+<div class="section" id="rigorous-tests">
+<h4>Rigorous Tests<a class="headerlink" href="#rigorous-tests" title="Permalink to this headline">¶</a></h4>
 <ul class="simple">
 <li><p>Shapiro–Wilk <span class="math notranslate nohighlight">\(W\)</span> test</p>
 <ul>
@@ -1459,18 +1470,20 @@ c &amp;= f(\boldsymbol{x} ;\boldsymbol{\mu}, \boldsymbol{\Sigma}) \\
 </li>
 <li><p>Kolmogorov–Smirnov test</p>
 <ul>
-<li><p>require: large sample, at least 100s</p></li>
-<li><p>test statistic: maximum difference between the empirical CDF and the normal CDF.</p></li>
+<li><p>Require: large sample, at least 100s</p></li>
+<li><p>Test statistic: maximum difference between the empirical CDF and the normal CDF.</p></li>
 </ul>
 </li>
-<li><p>Jarque–Bera test</p></li>
-<li><p>Test for zero skewness, zero excess kurtosis.</p>
+<li><p>Jarque–Bera test</p>
 <ul>
+<li><p>Test for zero skewness, zero excess kurtosis.</p></li>
 <li><p>Normal distribution has kurtosis <span class="math notranslate nohighlight">\(\frac{\mu_{4}}{\mu_{2}^{2}}=3\)</span> and excess kurtosis <span class="math notranslate nohighlight">\(\frac{\mu_{4}}{\mu_{2}^{2}}-3 = 0\)</span>. Large magnitude of excess kurtosis indicates deviation from normal distribution.</p></li>
 </ul>
 </li>
 </ul>
-<p>Multivariate case:</p>
+</div>
+<div class="section" id="multivariate-cases">
+<h4>Multivariate Cases<a class="headerlink" href="#multivariate-cases" title="Permalink to this headline">¶</a></h4>
 <ul>
 <li><p>Check whether the squared generalized distance as defined below follows a chi-squared distribution by a Q-Q plot (necessary and sufficient conditions for very large sample size))</p>
 <div class="math notranslate nohighlight">
@@ -1483,7 +1496,7 @@ c &amp;= f(\boldsymbol{x} ;\boldsymbol{\mu}, \boldsymbol{\Sigma}) \\
 </ul>
 </div>
 <div class="section" id="transformation-to-near-normality">
-<span id="transform-normality"></span><h3>Transformation to Near Normality<a class="headerlink" href="#transformation-to-near-normality" title="Permalink to this headline">¶</a></h3>
+<span id="transform-normality"></span><h4>Transformation to Near Normality<a class="headerlink" href="#transformation-to-near-normality" title="Permalink to this headline">¶</a></h4>
 <p>To achieve the multinormality of the data, univariate transformation is applied to each variable individually. After then, the multinormality of transformed variables is checked again (Notice that each of the <span class="math notranslate nohighlight">\(X_p\)</span> variables after transformation is normally distributed does not imply that they jointly follow a multivariate normal distribution).</p>
 <p>Assume <span class="math notranslate nohighlight">\(x &gt; 0\)</span>.</p>
 <ul>
@@ -1521,6 +1534,7 @@ c &amp;= f(\boldsymbol{x} ;\boldsymbol{\mu}, \boldsymbol{\Sigma}) \\
 </li>
 </ul>
 <!-- ## Weibull Distribution --></div>
+</div>
 </div>
 </div>
 
